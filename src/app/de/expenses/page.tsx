@@ -2,345 +2,790 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { RelatedServices } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Steuerabsetzbare Ausgaben für Backpacker in Australien',
-  description: 'Was Backpacker bei ihrer australischen Steuererklärung geltend machen können. Beispiele nach Beruf für Gastronomie, Farmarbeit, Bauarbeit, Küchenhilfen, Rideshare-Fahrer und Reinigungskräfte, sowie wie Autokosten berechnet werden.',
-  keywords: [
-    'Backpacker Steuerabsetzung',
-    'Working Holiday Steuerabsetzung',
-    'was können Backpacker absetzen',
-    'ATO Absetzungen Working Holiday Maker',
-    'Steuererklärung Absetzungen Backpacker',
-    'Kilometerpauschale ATO',
-    'WHV Steuerabsetzung',
-    '417 Visum Steuerabsetzung',
+  "title": "Steuerabzüge nach Job in Australien",
+  "description": "Was absetzbar ist, hängt davon ab, was du gearbeitet hast. Listen für Farmarbeit, Gastronomie, Bau, Lieferdienste, Reinigung, Zeitarbeit und FIFO.",
+  "keywords": [
+    "Backpacker Steuerabzüge Australien",
+    "Working Holiday steuerlich absetzen",
+    "was können Backpacker absetzen",
+    "ATO Abzüge Working Holiday Maker",
+    "arbeitsbezogene Kosten Australien",
+    "Kilometerpauschale Australien",
+    "417 Visum Steuerabzüge",
+    "462 Visum Steuerabzüge"
   ],
-  alternates: { canonical: '/de/expenses', languages: { 'en-AU': '/expenses', 'de': '/de/expenses', 'x-default': '/expenses' } },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'de_DE',
-    url: `${SITE_URL}/de/expenses`,
-    siteName: 'Working Holiday Tax',
-    title: 'Steuerabsetzbare Ausgaben für Backpacker in Australien',
-    description: 'Was Backpacker wirklich bei ihrer australischen Steuererklärung absetzen können, nach Beruf sortiert.',
+  "alternates": {
+    "canonical": "/de/expenses",
+    "languages": {
+      "en-AU": "/expenses",
+      "de": "/de/expenses",
+      "ja": "/ja/expenses",
+      "x-default": "/expenses"
+    }
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: 'Steuerabsetzbare Ausgaben für Backpacker in Australien',
-    description: 'Was Backpacker wirklich absetzen können, nach Beruf sortiert.',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "de_DE",
+    "url": `${SITE_URL}/de/expenses`,
+    "siteName": "Working Holiday Tax",
+    "title": "Steuerlich absetzbar in Australien: nach Job sortiert",
+    "description": "Ein Fruit Picker und ein Lieferfahrer setzen nicht dasselbe ab. Such deinen Job und sieh, was wirklich gilt."
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "Steuerlich absetzbar in Australien: nach Job sortiert",
+    "description": "Ein Fruit Picker und ein Lieferfahrer setzen nicht dasselbe ab. Such deinen Job und sieh, was wirklich gilt."
+  },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const GOLDEN_RULES = [
-  'Du musst das Geld selbst ausgegeben haben, ohne Erstattung durch deinen Arbeitgeber.',
-  'Die Ausgabe muss direkt mit der Erzielung deines Einkommens zusammenhängen - keine private oder häusliche Ausgabe.',
-  'Du brauchst einen Nachweis - eine Quittung, Rechnung oder einen Kontoauszug, der zeigt, was du gekauft hast und wann.',
-]
+const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Absetzbare Kosten in meinem Job" })
 
-const CAR_METHOD_ROWS = [
-  ['Satz (2024-25 & 2025-26)', '88 Cent / km'],
-  ['Satz (2026-27, ab 1. Juli 2026)', '91 Cent / km'],
-  ['Maximal absetzbar', '5.000 km / Auto / Jahr'],
-  ['Belege nötig?', 'Nein - aber du musst zeigen können, wie du die Kilometer ermittelt hast'],
-]
-
-const LOGBOOK_ROWS = [
-  ['Funktionsweise', 'Absetzung des arbeitsbezogenen Prozentsatzes aller tatsächlichen Kosten'],
-  ['Fahrtenbuch-Zeitraum', '12 zusammenhängende Wochen, gültig für 5 Jahre'],
-  ['Maximal absetzbar', 'Keine Grenze - basiert auf deinem tatsächlichen Arbeitsanteil'],
-  ['Belege nötig?', 'Ja - für jede Ausgabe, die du absetzt'],
-]
-
-type Occupation = {
-  emoji: string
-  title: string
-  subtitle: string
-  can: string[]
-  cannot: string[]
+const UI = {
+  "ctaLabel": "Schreib uns auf WhatsApp",
+  "ctaSub": "Antwort in etwa einer Stunde. Frag ruhig erst nach.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.",
+  "guaranteeBody": "Working-Holiday-Steuer ist das Einzige, was wir machen. Deine Steuererklärung wird von unserem Team vorbereitet und vor der Einreichung beim ATO von einem registrierten Steuerberater geprüft und freigegeben.",
+  "faqHeading": "Fragen, die uns dazu gestellt werden",
+  "guidesHeading": "Danach lesenswert",
+  "otherJobs": "Anderer Job? Hier sind alle Berufe.",
+  "servicesLabel": "Weiter auf der Website",
+  "wrongLabel": "Abgesetzt, obwohl es nicht ging",
+  "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "hubHref": "/de/expenses"
 }
 
-const OCCUPATIONS: Occupation[] = [
+const CRUMBS = [
   {
-    emoji: '🍸',
-    title: 'Gastronomie & Bar',
-    subtitle: 'Bars, Cafés, Restaurants, Hotels',
-    can: [
-      'RSA-Zertifikat (Responsible Service of Alcohol) und dessen Erneuerung',
-      'Rutschfeste, geschlossene Schutzschuhe',
-      'Reinigung einer verpflichtenden Uniform mit dem Logo deines Arbeitgebers',
-      'Ein Erste-Hilfe-Zertifikat, falls für deine Rolle erforderlich',
-    ],
-    cannot: [
-      'Einfache schwarze Kleidung oder Schuhe ohne Logo - auch wenn dein Betrieb sie verlangt, gilt das für die ATO als gewöhnliche Kleidung, nicht als Uniform',
-    ],
+    "name": "Startseite",
+    "item": "/de"
   },
   {
-    emoji: '🌾',
-    title: 'Farmarbeit & Obsternte',
-    subtitle: 'Obstplantagen, Weingüter, ländliche Farmarbeit',
-    can: [
-      'Sonnenschutz: breitkrempiger Hut, Sonnencreme und Sonnenbrille für Arbeit im Freien',
-      'Schutzhandschuhe und -stiefel',
-      'Fahrtkosten zwischen verschiedenen Farmen oder Arbeitsorten während des Tages',
-    ],
-    cannot: [
-      'Gewöhnliche Kleidung wie Jeans oder T-Shirts, auch wenn sie bei der Arbeit abgenutzt oder schmutzig wird',
-      'Die tägliche Fahrt von zuhause zur ersten Farm - das gilt als gewöhnlicher Arbeitsweg',
-    ],
-  },
-  {
-    emoji: '🏗️',
-    title: 'Bauarbeit',
-    subtitle: 'Hilfsarbeiten, Gewerke, Baustellen',
-    can: [
-      'Erneuerung deiner White Card (Construction Induction Card)',
-      'Stahlkappenschuhe und Warnschutzkleidung',
-      'Werkzeug und Ausrüstung - Gegenstände unter $300 sind sofort absetzbar, über $300 werden sie über die Nutzungsdauer abgeschrieben',
-      'Sonnenschutz für Arbeit im Freien auf der Baustelle',
-    ],
-    cannot: [
-      'Gewöhnliche Kleidung, auch wenn sie auf der Baustelle beschädigt oder schmutzig wird',
-      'Deine allererste White Card, wenn du sie nur gebraucht hast, um für den Job überhaupt zugelassen zu werden',
-    ],
-  },
-  {
-    emoji: '🔪',
-    title: 'Koch & Küchenhilfe',
-    subtitle: 'Gewerbeküchen, Restaurants',
-    can: [
-      'Kochmesser und andere Küchenwerkzeuge, die du selbst kaufst',
-      'Kochjacke oder karierte Kochhose - diese zählen als berufsspezifische Kleidung',
-      'Rutschfeste Küchenschuhe',
-      'Ein Food-Safety-Supervisor-Zertifikat, falls für deine Rolle erforderlich',
-    ],
-    cannot: [
-      'Alltagskleidung, die unter der Kochjacke getragen wird',
-    ],
-  },
-  {
-    emoji: '🚗',
-    title: 'Rideshare & Lieferfahrten',
-    subtitle: 'Uber, Uber Eats, DoorDash und Ähnliches',
-    can: [
-      'Autokosten für den arbeitsbezogenen Anteil deiner Fahrten - per Kilometerpauschale oder Fahrtenbuch (siehe unten)',
-      'Der arbeitsbezogene Anteil deines Mobilfunkvertrags',
-      'Autowäsche, um das Auto in einem für Fahrgäste angemessenen Zustand zu halten',
-      'Parkgebühren, die während der Arbeit anfallen',
-    ],
-    cannot: [
-      'Der private Anteil jeder Fahrt oder dein gewöhnlicher Arbeitsweg',
-      'Park- oder Geschwindigkeitsstrafen - diese sind nie absetzbar, egal aus welchem Grund',
-    ],
-  },
-  {
-    emoji: '🧹',
-    title: 'Reinigung',
-    subtitle: 'Gewerbliche und private Reinigungsarbeit',
-    can: [
-      'Reinigungsmittel und -ausrüstung, die du selbst kaufst und nicht erstattet bekommst',
-      'Schutzhandschuhe',
-      'Fahrtkosten zwischen Kundenorten während des Tages',
-    ],
-    cannot: [
-      'Die tägliche Fahrt von zuhause zum ersten Auftrag',
-      'Gewöhnliche Kleidung, die beim Putzen getragen wird',
-    ],
-  },
+    "name": "Abzüge",
+    "item": "/de/expenses"
+  }
 ]
+
+const HERO = {
+  "kicker": "Working-Holiday-Visa 417 und 462",
+  "h1lead": "Abzüge sind keine Einheitsliste.",
+  "h1accent": "Es ist deine Liste.",
+  "lede": "Sieben Berufe, jeder mit eigener Liste, eigenen Nachweisen und eigenen Posten, die abgelehnt werden."
+}
+
+/**
+ * Der Einwand, mit dem jeder Lead ankommt, hier konkret zu den Abzügen.
+ *
+ * Die Startseite beantwortet ihn allgemein. Hier muss jede Zeile vom leeren Feld
+ * handeln: Es nimmt jede Zahl, es schlägt nichts vor, und es weiß nicht, in
+ * welchem Job du gearbeitet hast. Keine Zeile behauptet, myGov sei schlecht. Es
+ * erfasst einen Abzug. Welche Abzüge dir zustanden, entscheidet es nicht.
+ */
+const MYGOV_UI = {
+  "kicker": "Selbst machen",
+  "h2lead": "myGov hat ein Feld für Abzüge",
+  "h2accent": "und keine Ahnung, was dein Job da hineinschreibt.",
+  "lede": "Was in dieses Feld gehört und welcher Nachweis hinter jedem Posten steht, wird geklärt, bevor irgendetwas getippt wird.",
+  "colLeft": "Auf myGov",
+  "colRight": "Mit uns",
+  "close": "Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches Formular welches ist. Wir regeln das direkt mit dem ATO."
+}
+
+const MYGOV = [
+  {
+    "mygov": "Das Feld für Abzüge ist leer und bleibt leer. Nichts schlägt vor, was dein Job absetzen darf.",
+    "us": "Wir starten bei der Arbeit, die du wirklich gemacht hast, und gehen die Liste dazu durch."
+  },
+  {
+    "mygov": "Es nimmt jede Zahl an, auch eine, die du im Zweifel nicht belegen könntest.",
+    "us": "Wir sagen dir, wofür du eine Quittung brauchst, wo ein Kontoauszug reicht und was einer Prüfung nicht standhält."
+  },
+  {
+    "mygov": "Nirgends steht, dass ein Fruit Picker, ein Barista und ein Bauhelfer nicht dasselbe absetzen.",
+    "us": "Sieben Arbeitsbereiche, jeder mit eigener Liste und eigener Nachweisregel."
+  },
+  {
+    "mygov": "Miete, Essen und der Weg zur Arbeit sehen absetzbar aus und sind es nicht.",
+    "us": "Wir behalten die Abzüge, die halten, und lassen die anderen weg, damit später nichts rückabgewickelt werden muss."
+  }
+]
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
+  {
+    "kind": "answer",
+    "h2": "Was können Working Holiday Maker in Australien steuerlich absetzen?",
+    "paras": [
+      "Du kannst absetzen, was du ausgegeben hast, um das Einkommen zu verdienen, das du angibst, solange du selbst bezahlt und nichts erstattet bekommen hast. Working Holiday Maker haben dieselben Abzugsmöglichkeiten wie alle anderen. Am 417- oder 462-Visum liegt es nicht.",
+      "Was die Liste verändert, ist der Job. Sonnenschutz ist absetzbar, wenn du in einer offenen Plantage pflückst, und nicht, wenn du hinter der Bar stehst. Ein Handyvertrag ist für einen Lieferfahrer ein echter Abzug und für einen Küchenhelfer fast nichts. Genau das kann ein allgemeiner Ratgeber nicht leisten, weil er nicht weiß, was du gemacht hast."
+    ]
+  },
+  {
+    "kind": "occupations",
+    "h2": "Welchen Job hast du tatsächlich gemacht?",
+    "intro": "Sieben Seiten, jede rund um das geschrieben, was dieser Beruf absetzt, was er fälschlich absetzt und was er liegen lässt.",
+    "jobs": [
+      {
+        "href": "/de/expenses/farm-work",
+        "title": "Farmarbeit und Fruit Picking",
+        "line": "Sonnenschutz, Pflückausrüstung und Fahrten zwischen Blöcken am selben Tag."
+      },
+      {
+        "href": "/de/expenses/hospitality",
+        "title": "Gastronomie und Küche",
+        "line": "RSA-Verlängerung, rutschfeste Schuhe, Kochjacke, und warum das schwarze Outfit keine Uniform ist."
+      },
+      {
+        "href": "/de/expenses/construction",
+        "title": "Bau",
+        "line": "Die 300-Dollar-Regel für Werkzeug, Schutzausrüstung, und die White Card, die erst beim zweiten Mal zählt."
+      },
+      {
+        "href": "/de/expenses/delivery-drivers",
+        "title": "Lieferdienste",
+        "line": "Auto- und Fahrradkosten, Arbeitsanteil am Handy, und die GST-Regel, die sich mit Fahrgästen ändert."
+      },
+      {
+        "href": "/de/expenses/cleaners",
+        "title": "Reinigung",
+        "line": "Ausrüstung und Mittel, Wäschepauschale, und die Fahrt zwischen den Häusern, die kaum jemand absetzt."
+      },
+      {
+        "href": "/de/expenses/labouring",
+        "title": "Zeitarbeit und Lager",
+        "line": "Mehrere Agenturen, mehrere Income Statements, Fahrten zwischen zwei Einsatzorten an einem Tag."
+      },
+      {
+        "href": "/de/expenses/fifo",
+        "title": "FIFO und Camp",
+        "line": "Verlängerte Tickets, Schutzausrüstung, und der Zone Tax Offset, den fast niemand im Roster bekommt."
+      }
+    ]
+  },
+  {
+    "kind": "numbered",
+    "h2": "Was muss stimmen, damit überhaupt etwas absetzbar ist?",
+    "intro": "Drei Tests, die für jeden Abzug auf dieser Website gelten. Fällt ein Abzug durch einen davon, ist er komplett weg, egal wie arbeitsbezogen er sich anfühlt.",
+    "steps": [
+      "Du hast das Geld selbst ausgegeben, und dein Arbeitgeber oder Kunde hat es dir nicht erstattet.",
+      "Die Ausgabe ist beim Verdienen deines Einkommens entstanden, nicht dabei, dich erst in die Lage zu bringen, es zu verdienen, und sie ist nicht privat.",
+      "Du hast einen Nachweis, aus dem hervorgeht, was du wann bei wem für wie viel gekauft hast."
+    ],
+    "note": "Der zweite Test richtet den Schaden an. Deshalb ist deine erste White Card nicht absetzbar und die Verlängerung schon, und deshalb ist der Weg zur Arbeit nicht absetzbar, die Fahrt zwischen zwei Jobs am selben Tag aber sehr wohl."
+  },
+  {
+    "kind": "answer",
+    "h2": "Was musst du belegen können?",
+    "paras": [
+      "Ein Beleg, eine Rechnung oder ein Kontoauszug mit Betrag, Datum, Anbieter und der Angabe, worum es ging. Ein Foto auf dem Handy zählt, und du musst es fünf Jahre lang vorlegen können.",
+      "Es gibt eine Ausnahme. Wenn deine gesamten arbeitsbezogenen Abzüge im Jahr bei 300 Dollar oder weniger liegen, brauchst du dafür keine schriftlichen Nachweise, musst aber trotzdem erklären können, wie du auf die Summe kommst. Das ist etwas anderes als die 300-Dollar-Regel für einzelne Anschaffungen, bei der es darum geht, wie ein einzelner Gegenstand abgeschrieben wird."
+    ]
+  },
+  {
+    "kind": "note",
+    "label": "Neu ab 1. Juli 2026",
+    "title": "Pauschal 1.000 Dollar oder deine echten Kosten. Nicht beides.",
+    "body": "Ab dem 1. Juli 2026 kannst du pauschal 1.000 Dollar an arbeitsbezogenen Kosten ganz ohne Belege absetzen, oder deine tatsächlichen Kosten mit vollständigen Nachweisen. Es gilt für das ganze Jahr entweder das eine oder das andere. Liegen deine echten Kosten bei 1.400 Dollar und du nimmst die Pauschale, verschenkst du 400 Dollar. Die Wahl gilt erstmals für die Steuererklärung 2026-27, die ab Juli 2027 eingereicht wird. Für die Erklärung 2025-26, die gerade eingereicht wird, gelten noch die alten Regeln."
+  },
+  {
+    "kind": "tables",
+    "h2": "Wie werden Autokosten berechnet?",
+    "intro": "Es gibt zwei Methoden, und du kannst pro Auto und Jahr nur eine davon nutzen. In beiden Fällen zählen nur arbeitsbezogene Fahrten, nie dein normaler Arbeitsweg von zu Hause zu einem festen Arbeitsplatz.",
+    "tables": [
+      {
+        "label": "Kilometerpauschale",
+        "rows": [
+          [
+            "Satz 2024-25 und 2025-26",
+            "88 Cent pro km"
+          ],
+          [
+            "Satz ab 2026-27",
+            "91 Cent pro km"
+          ],
+          [
+            "Maximum",
+            "5.000 km pro Auto und Jahr"
+          ],
+          [
+            "Belege",
+            "Nicht nötig, aber du musst zeigen, wie du auf die Kilometer kommst"
+          ]
+        ]
+      },
+      {
+        "label": "Fahrtenbuch",
+        "rows": [
+          [
+            "So funktioniert es",
+            "Du setzt den arbeitsbezogenen Prozentsatz aller echten Betriebskosten ab"
+          ],
+          [
+            "Zeitraum",
+            "12 zusammenhängende Wochen, fünf Jahre gültig"
+          ],
+          [
+            "Maximum",
+            "Keine Grenze. Es folgt deinem tatsächlichen Arbeitsanteil"
+          ],
+          [
+            "Belege",
+            "Für jede einzelne Ausgabe erforderlich"
+          ]
+        ]
+      }
+    ],
+    "note": "Ab etwa 5.000 Arbeitskilometern im Jahr bringt das Fahrtenbuch normalerweise den größeren Abzug, weil es Benzin, Versicherung, Zulassung, Wartung, Abschreibung und die Zinsen eines Autokredits erfasst statt einer Pauschale. Es kostet dich zwölf Wochen Aufzeichnungen und einen Beleg für alles. Was sich lohnt, hängt davon ab, wie viel du fährst und was dein Auto im Unterhalt kostet."
+  },
+  {
+    "kind": "traps",
+    "h2": "Was machen Backpacker in jedem Job falsch?",
+    "intro": "Das kommt in jedem Beruf vor. Die erste Liste macht aus einer Rückerstattung eine korrigierte Veranlagung. Die zweite, das Geld, das niemand anfordert, ist häufiger und teurer.",
+    "wrong": [
+      {
+        "t": "Normale Kleidung, die ein Dresscode vorschreibt",
+        "d": "Schwarze Hose, schlichtes Polo, gewöhnliche Boots, Jeans. Das ATO schaut darauf, was der Gegenstand ist, nicht warum du ihn gekauft hast. Alltagskleidung, die jeder überall tragen könnte, wird keine Uniform, weil ein Chef darauf besteht."
+      },
+      {
+        "t": "Die erste Lizenz, das erste Ticket, das erste Zertifikat",
+        "d": "Erste White Card, erste RSA, erstes Staplerticket. Diese Kosten haben dich überhaupt erst für den Job qualifiziert, und das ist etwas anderes als Kosten der Arbeit selbst. Verlängerungen desselben Tickets sind absetzbar, sobald du arbeitest."
+      },
+      {
+        "t": "Der Weg von zu Hause zur Arbeit",
+        "d": "Der normale Arbeitsweg ist privat, egal wie weit, wie früh oder wie zäh der Verkehr. Die Fahrt zwischen zwei Arbeitsplätzen am selben Tag ist etwas völlig anderes und meistens absetzbar."
+      },
+      {
+        "t": "Alles, was dir erstattet wurde",
+        "d": "Wenn ein Arbeitgeber, eine Agentur oder eine Plattform dir das Geld zurückgegeben oder den Gegenstand gestellt hat, sind dir keine Kosten geblieben. Es trotzdem abzusetzen heißt, denselben Dollar zweimal zu holen."
+      },
+      {
+        "t": "Bußgelder",
+        "d": "Park- und Geschwindigkeitsstrafen sind nie absetzbar, egal was du gerade gemacht hast."
+      }
+    ],
+    "missed": [
+      {
+        "t": "Jeder Gegenstand unter 300 Dollar, komplett im Kaufjahr",
+        "d": "Boots, Handschuhe, Hut, Messerrolle, Stirnlampe, Handyhalter. Jeder Gegenstand wird einzeln geprüft, also summiert sich ein Jahr kleiner Käufe zu einem echten Abzug. Die meisten werfen die Belege weg."
+      },
+      {
+        "t": "Gegenstände über 300 Dollar, die trotzdem absetzbar sind",
+        "d": "Über 300 Dollar verschwindet der Abzug nicht, nur der Zeitpunkt ändert sich. Die Kosten werden über die Nutzungsdauer verteilt statt sofort abgezogen. Viele hören \"über 300\" und hören auf."
+      },
+      {
+        "t": "Das Waschen von Pflicht- oder Schutzkleidung",
+        "d": "Das ATO erlaubt 1 Dollar pro Waschgang, wenn nur Arbeitskleidung drin ist, oder 50 Cent pro Waschgang, wenn du sie mit allem anderen wäschst. Ab 150 Dollar Wäschekosten im Jahr brauchst du ein einfaches Tagebuch statt einer Schätzung."
+      },
+      {
+        "t": "Fahrten zwischen zwei Jobs am selben Tag",
+        "d": "Zwei Farmen, zwei Häuser, zwei Lager, zwei Betriebe. Diese Strecke ist Arbeitsfahrt, kein Arbeitsweg, und bei Arbeit an mehreren Orten oft der größte einzelne Abzug der Steuererklärung."
+      },
+      {
+        "t": "Wochen mit 45 Prozent Einbehalt, bevor die TFN da war",
+        "d": "Kein Abzug, aber dasselbe Geld. Wenn ein Arbeitgeber zum Höchstsatz einbehalten hat, während deine Tax File Number Declaration noch in der Schublade lag, kommt das mit der Steuererklärung zurück. Von allein passiert das nicht."
+      }
+    ]
+  },
+  {
+    "kind": "answer",
+    "h2": "Wo hängt es von deiner eigenen Situation ab?",
+    "paras": [
+      "Manches davon ist eindeutig, anderes ist eine Beurteilung deiner konkreten Lage. Ob deine Fahrten als wechselnde Einsatzorte gelten statt als Arbeitsweg, hängt davon ab, wie deine Woche aufgebaut war: wie oft der Einsatzort wechselte, ob es eine feste Basis gab und ob dein Arbeitgeber die Bewegung verlangt hat. Zwei Leute mit derselben Jobbezeichnung können unterschiedlich dastehen.",
+      "Dein steuerlicher Wohnsitz ist die zweite Frage, und sie ist mehr wert als alle Abzüge auf dieser Seite zusammen. Britische, deutsche und japanische Pässe können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen, aber nur wenn die Person steuerlich in Australien ansässig war. Kein Tageszähler entscheidet das. Es kommt darauf an, was du mit deinem Jahr gemacht hast."
+    ]
+  }
+]
+
+const FAQS = [
+  {
+    "question": "Kann ich das nicht einfach selbst über myGov machen?",
+    "answer": "Kannst du, und das Einreichen ist wirklich der einfache Teil. Das Schwierige an Abzügen ist, dass das Feld leer ist und leer bleibt. Nichts auf dem Bildschirm schlägt vor, was dein Job absetzen darf, nichts unterscheidet einen Fruit Picker von einem Lieferfahrer von einem Bauhelfer, und nichts warnt dich davor, dass Miete, Lebensmittel und der Weg zur Arbeit absetzbar aussehen und es nicht sind. Es nimmt außerdem jede Zahl an, auch eine, die du dem ATO im Zweifel nicht belegen könntest, und genau die muss später rückabgewickelt werden. Herauszufinden, welche Kosten aus deiner Arbeit entstanden sind, wofür du eine Quittung brauchst und wo ein Kontoauszug reicht, ist eine Beurteilung zu deinem konkreten Jahr und kein Feld zum Ausfüllen. Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches Formular welches ist. Wir regeln das direkt mit dem ATO."
+  },
+  {
+    "question": "Haben Working Holiday Maker weniger Abzüge als Australier?",
+    "answer": "Nein. Die Abzugsregeln sind für Inhaber eines 417- oder 462-Visums dieselben wie für alle anderen, die in Australien Einkommen verdienen. Der Unterschied liegt bei den Einnahmen, nicht bei den Ausgaben: Einkommen von Working Holiday Makern wird bis 45.000 Dollar mit 15 Prozent besteuert, statt dass ein Steuerfreibetrag gilt, sofern dein steuerlicher Wohnsitz daran nichts ändert. Deine Abzüge werden genauso berechnet wie bei einem australischen Steueransässigen im selben Job."
+  },
+  {
+    "question": "Ich hatte vier verschiedene Jobs in einem Jahr. Sind das vier Listen?",
+    "answer": "Du gibst eine Steuererklärung für das Steuerjahr ab, und darin steckt jeder Abzug aus jedem Job. Wichtig ist nur, dass jede Ausgabe zu Arbeit gehört, die du damals tatsächlich gemacht hast. Boots für einen Lagerjob im September und Sonnencreme für einen Farmjob im Januar gehören in dieselbe Erklärung, und dass die Arbeitgeber unterschiedlich waren, ändert daran nichts."
+  },
+  {
+    "question": "Was ist, wenn ich die Belege verloren habe?",
+    "answer": "Ein Kontoauszug mit Betrag, Datum und Anbieter wird meistens akzeptiert, wenn der Beleg weg ist, und bei vielen Käufen hat es nie mehr gegeben. Bleiben deine arbeitsbezogenen Abzüge im ganzen Jahr bei höchstens 300 Dollar, brauchst du den Beleg ohnehin nicht, nur eine Erklärung, wie die Summe zustande kommt. Was nicht geht: eine Zahl erfinden und hoffen."
+  },
+  {
+    "question": "Kann ich Miete, Essen oder Reisen in Australien absetzen?",
+    "answer": "Nein. Unterkunft, Lebensmittel und die Kosten, dich fortzubewegen, sind private Lebenshaltungskosten, und daran ändert sich nichts, wenn du extra für einen Job in eine ländliche Region gezogen bist. Die enge Ausnahme sind vom Arbeitgeber verlangte Reisen, bei denen du über Nacht von zu Hause weg bist. Dafür gelten andere Regeln und andere Nachweise."
+  },
+  {
+    "question": "Lohnt sich das überhaupt, wenn ich nur ein paar Monate gearbeitet habe?",
+    "answer": "Meistens ja. Auch ein kurzer Aufenthalt verursacht echte Kosten, und jeder Dollar Abzug senkt das Einkommen, auf das die Steuer berechnet wird. Bei einem kurzen Jahr steckt der größere Betrag aber oft gar nicht in den Abzügen, sondern in den Wochen mit 45 Prozent Einbehalt, bevor deine Tax File Number beim Arbeitgeber war, und in der Frage, ob dein steuerlicher Wohnsitz richtig angegeben wurde."
+  }
+]
+
+const GUIDES = [
+  {
+    "href": "/de/blog/tax-deductions-working-holiday-makers",
+    "label": "Absetzbare Kosten für Working Holiday Maker: die vollständige Liste",
+    "desc": "Alle Kategorien, und was das ATO ablehnt."
+  },
+  {
+    "href": "/de/blog/tools-equipment-under-300-instant-deduction-whv",
+    "label": "Die 300-Dollar-Sofortabschreibung für Werkzeug und Ausrüstung",
+    "desc": "Warum jedes Teil einzeln geprüft wird und was ein Set daran ändert."
+  },
+  {
+    "href": "/de/blog/1000-dollar-instant-deduction-rule-2026",
+    "label": "Die 1.000-Dollar-Pauschale ab 1. Juli 2026",
+    "desc": "Pauschale ohne Belege oder tatsächliche Kosten. Du bekommst nur eins von beidem."
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/de/tax-return",
+    "label": "Steuererklärung"
+  },
+  {
+    "href": "/de/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/de/tax-residency",
+    "label": "Steuerlicher Wohnsitz"
+  }
+]
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map(f => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+}
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Ausgaben', item: `${SITE_URL}/de/expenses` },
-  ],
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
 }
 
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
-  headline: 'Steuerabsetzbare Ausgaben für Backpacker in Australien',
-  description: 'Was Backpacker bei ihrer australischen Steuererklärung absetzen können, nach Beruf sortiert.',
+  headline: "Steuerlich absetzbar in Australien: nach Job sortiert",
+  description: "Ein Fruit Picker und ein Lieferfahrer setzen nicht dasselbe ab. Such deinen Job und sieh, was wirklich gilt.",
   url: `${SITE_URL}/de/expenses`,
-  inLanguage: 'de-DE',
+  inLanguage: "de-DE",
   author: { '@type': 'Organization', name: 'Working Holiday Tax' },
   publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
 }
 
-function CompareTable({ label, rows, highlight }: { label: string; rows: string[][]; highlight?: boolean }) {
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/de/expenses#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/de/expenses`,
+}
+
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
   return (
-    <div className="taxres-table-card" style={highlight ? { borderColor: '#0B5240', boxShadow: '0 8px 20px -8px rgba(11, 82, 64, 0.18)' } : {}}>
-      <h3 className="taxres-table-title">{label}</h3>
-      <table className="taxres-table">
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>
-          ))}
-        </tbody>
-      </table>
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"de"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
     </div>
   )
 }
 
-function OccupationCard({ o }: { o: Occupation }) {
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
   return (
-    <div className="exp-card">
-      <div className="exp-card-head">
-        <span className="exp-card-emoji" aria-hidden="true">{o.emoji}</span>
-        <div>
-          <h3 className="exp-card-title">{o.title}</h3>
-          <p className="exp-card-subtitle">{o.subtitle}</p>
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
         </div>
-      </div>
-      <div className="exp-card-section">
-        <p className="exp-card-label exp-card-label-yes">✓ Kann eventuell abgesetzt werden</p>
-        <ul className="exp-card-list">
-          {o.can.map((item, i) => <li key={i}>{item}</li>)}
-        </ul>
-      </div>
-      <div className="exp-card-section">
-        <p className="exp-card-label exp-card-label-no">✕ Normalerweise nicht absetzbar</p>
-        <ul className="exp-card-list">
-          {o.cannot.map((item, i) => <li key={i}>{item}</li>)}
-        </ul>
-      </div>
+      ))}
     </div>
   )
 }
 
-export default function ExpensesPageDE() {
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/de" style={{ color: '#587066' }}>Home</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>Ausgaben</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '24ch' }}>
-                Was können Backpacker wirklich <span style={{ color: '#0B5240' }}>steuerlich absetzen</span>?
-              </h1>
-              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '46ch' }}>
-                Arbeitsbezogene Absetzungen können deiner Rückerstattung Hunderte Dollar hinzufügen - aber nur, wenn die Ausgabe wirklich qualifiziert. Hier ist genau, was zählt, nach Beruf.
-              </p>
-            </div>
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}{' '}
+              <span style={{ color: FOREST, fontStyle: 'italic' }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
           </div>
         </section>
 
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <p className="font-bold mx-auto" style={{ fontSize: '14.5px', color: '#1A2822', lineHeight: 1.7, maxWidth: '54ch' }}>
-                Vor allen berufsspezifischen Beispielen muss jede einzelne Absetzung diese drei ATO-Tests bestehen:
-              </p>
-            </div>
-            <div className="max-w-[680px] mx-auto">
-              <div className="flex flex-col gap-3">
-                {GOLDEN_RULES.map((c, i) => (
-                  <div key={i} className="taxres-condition-item">
-                    <span className="taxres-condition-num">{i + 1}</span>
-                    <p className="taxres-condition-text">{c}</p>
+        {/* DER EINWAND, KONKRET ZU DEN ABZÜGEN */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <p style={kickerS}>{MYGOV_UI.kicker}</p>
+            <h2 style={h2s}>
+              <span style={{ display: 'block', color: BODY, fontWeight: 400 }}>{MYGOV_UI.h2lead}</span>
+              <span style={{ display: 'block' }}>{MYGOV_UI.h2accent}</span>
+            </h2>
+            <p style={{ ...ps, color: MUTED, marginBottom: '20px' }}>{MYGOV_UI.lede}</p>
+
+            <div style={{ background: '#fff', border: '1px solid #CDE3DB', borderRadius: '14px', overflow: 'hidden' }}>
+              {MYGOV.map((row, i) => (
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : `1px solid ${HAIR}` }}>
+                  <div style={{ padding: '15px 18px' }}>
+                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: MUTED, margin: '0 0 5px' }}>
+                      {MYGOV_UI.colLeft}
+                    </p>
+                    <p style={{ ...ps, margin: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
                   </div>
-                ))}
-              </div>
+                  <div className="border-t md:border-t-0 md:border-l" style={{ padding: '15px 18px', background: '#F2FAF7', borderColor: HAIR }}>
+                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: FOREST, margin: '0 0 5px' }}>
+                      {MYGOV_UI.colRight}
+                    </p>
+                    <p style={{ ...ps, margin: 0, color: INK, fontWeight: 500, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        </section>
 
-        <section style={{ background: '#F5F9F7', paddingTop: '32px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="taxres-savings-box" style={{ flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-              <div>
-                <p className="taxres-savings-heading">Nachweise aufbewahren</p>
-                <p className="taxres-savings-body">
-                  Bewahre eine Quittung, Rechnung oder einen Kontoauszug für alles auf, was du absetzen möchtest - ein Foto auf deinem Handy reicht. Wenn deine gesamten arbeitsbezogenen Absetzungen im Jahr unter $300 liegen, verlangt die ATO keinen schriftlichen Nachweis, aber du musst trotzdem erklären können, wie du auf den Betrag gekommen bist.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Autokosten: zwei Methoden
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch' }}>
-                Nur arbeitsbezogenes Fahren zählt - niemals dein gewöhnlicher Arbeitsweg. Es gibt zwei Methoden; du kannst pro Auto und Jahr nur eine verwenden.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="Kilometerpauschale" rows={CAR_METHOD_ROWS} highlight />
-              <CompareTable label="Fahrtenbuch-Methode" rows={LOGBOOK_ROWS} />
-            </div>
-            <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, maxWidth: '60ch', marginTop: '18px' }}>
-              Wenn du mehr als 5.000 arbeitsbezogene km im Jahr fährst, bringt die Fahrtenbuch-Methode meist eine höhere Rückerstattung - erfordert aber ein 12-wöchiges Fahrtenbuch und alle Belege.
+            <p style={{ fontFamily: 'var(--font-serif), Georgia, serif', fontSize: '18px', lineHeight: 1.45, fontWeight: 700, color: FOREST, margin: '22px 0 0' }}>
+              {MYGOV_UI.close}
             </p>
           </div>
         </section>
 
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '20px' }}>
-          <div className="max-w-[1040px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Absetzungen nach Beruf
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                Die häufigsten Jobs, in denen Backpacker in Australien arbeiten, und genau was in der Regel absetzbar ist - und was nicht.
-              </p>
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
+
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                </div>
+              )}
             </div>
-            <div className="exp-grid">
-              {OCCUPATIONS.map((o, i) => <OccupationCard key={i} o={o} />)}
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"de"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
+              </p>
             </div>
           </div>
         </section>
 
-        <RelatedServices
-          label="Ausführliche Guides nach Beruf"
-          items={[
-            { label: 'Essenslieferung', desc: 'Uber Eats, DoorDash & mehr',        href: '/de/expenses/delivery-drivers' },
-            { label: 'Gastronomie',     desc: 'Bars, Cafés & Restaurants',         href: '/de/expenses/hospitality' },
-            { label: 'Farmarbeit',      desc: 'Obsternte & Farmjobs',              href: '/de/expenses/farm-work' },
-            { label: 'Bauarbeit',       desc: 'Werkzeug, PSA & White Card',        href: '/de/expenses/construction' },
-            { label: 'Hilfsarbeiten',   desc: 'Lager & Zeitarbeit',                href: '/de/expenses/labouring' },
-            { label: 'Reinigungskräfte',desc: 'ABN, GST & Fahrten zwischen Jobs',  href: '/de/expenses/cleaners' },
-            { label: 'FIFO',            desc: 'Zone-Offset & Reisekosten',         href: '/de/expenses/fifo' },
-          ]}
-        />
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              Dies sind allgemeine Informationen, keine persönliche Steuerberatung - jede Situation ist etwas anders. Wenn du deine Erklärung bei uns einreichst, gehen wir deinen spezifischen Beruf und deine Umstände durch, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
-            </p>
-            <Link href="/de/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              Steuerrückerstattung beantragen →
-            </Link>
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
+              ))}
+            </div>
+
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/de/tax-form" lang="de" />
+
+      <MobileCta href={WA} lang={"de"} topic="expenses" />
     </>
   )
 }

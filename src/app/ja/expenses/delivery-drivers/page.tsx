@@ -1,432 +1,701 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: '配達ドライバーの税金｜Uber Eats・DoorDashのABNとTFN雇用',
-  description: 'Uber Eats、DoorDash、Menulog、Amazon Flexのドライバーは従業員ではなく、ABNを持つ個人事業主として働きます。一方、TFNで給与を受け取る配達の仕事もあります。ワーキングホリデーメーカーが請求できるもの、1kmあたりの定額法とログブック法、そして自分がどちらに当てはまるかの見分け方を解説します。',
-  keywords: [
-    '配達ドライバー 税金 オーストラリア',
-    'Uber Eats 税金 ワーホリ',
-    'DoorDash 税金 オーストラリア',
-    'DoorDash ABN ワーホリ',
-    'Menulog 配達ドライバー 税金',
-    'Amazon Flex 税金 オーストラリア',
-    'フードデリバリー 経費 控除',
-    'ABN TFN 配達ドライバー',
-    '配達ドライバー ABN ワーホリ',
-    'ギグエコノミー 税金 オーストラリア',
-    '走行距離控除 配達ドライバー',
-    '配達ドライバー 車両費',
-    'シェアリングエコノミー ATO 報告',
-    'ライドシェア 配達 税金控除',
-    '417 462ビザ 配達ドライバー 税金',
+  "title": "デリバリーの経費控除：車、携帯、GST",
+  "description": "Uber Eats、DoorDash、Menulogなどの配達員が控除できるもの。車や自転車の維持費、携帯の仕事使用分、バッグや装備。",
+  "keywords": [
+    "デリバリー 税金 控除 オーストラリア",
+    "Uber Eats 税金 ワーホリ",
+    "DoorDash 税金 オーストラリア",
+    "フードデリバリー 経費 控除",
+    "キロメートル単価 配達",
+    "デリバリー ABN ワーホリ",
+    "GST ライドシェア オーストラリア",
+    "自転車 配達 控除"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/ja/expenses/delivery-drivers`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/delivery-drivers`,
-      'de': `${SITE_URL}/de/expenses/delivery-drivers`,
-      'ja': `${SITE_URL}/ja/expenses/delivery-drivers`,
-      'x-default': `${SITE_URL}/expenses/delivery-drivers`,
-    },
+  "alternates": {
+    "canonical": "/ja/expenses/delivery-drivers",
+    "languages": {
+      "en-AU": "/expenses/delivery-drivers",
+      "de": "/de/expenses/delivery-drivers",
+      "ja": "/ja/expenses/delivery-drivers",
+      "x-default": "/expenses/delivery-drivers"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'ja_JP',
-    url: `${SITE_URL}/ja/expenses/delivery-drivers`,
-    siteName: 'Working Holiday Tax',
-    title: '配達ドライバーの税金｜Uber Eats・DoorDashのABNとTFN雇用',
-    description: 'Uber Eats、DoorDash、Amazon FlexはABNの請負業務で、TFNの雇用ではありません。その違いと、配達ドライバーが税金で請求できるものを解説します。',
-  },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: '配達ドライバーの税金｜Uber Eats・DoorDashのABNとTFN雇用',
-    description: 'Uber Eats、DoorDash、Amazon FlexはABNの請負業務で、TFNの雇用ではありません。その違いと、配達ドライバーが税金で請求できるものを解説します。',
-  },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
-}
-
-const CAR_METHOD_ROWS = [
-  ['レート（2024-25・2025-26年度）', '1kmあたり88セント'],
-  ['レート（2026-27年度、2026年7月1日から）', '1kmあたり91セント'],
-  ['請求できる上限', '1台あたり年間5,000km'],
-  ['領収書は必要？', '不要、ただし走行距離の算出方法を示せる必要あり'],
-]
-
-const LOGBOOK_ROWS = [
-  ['仕組み', '実際にかかった費用のうち、仕事で使用した割合を請求'],
-  ['ログブック記録期間', '連続12週間、5年間有効'],
-  ['請求できる上限', '上限なし、実際の仕事使用率に基づく'],
-  ['領収書は必要？', '必要、請求するすべての費用について'],
-]
-
-type DriverType = {
-  emoji: string
-  kind: string
-  title: string
-  subtitle: string
-  signals: string[]
-  ctaLabel: string
-  ctaHref: string
-}
-
-const FORK_CARDS: DriverType[] = [
-  {
-    emoji: '🛵',
-    kind: 'ABN',
-    title: 'プラットフォーム・アプリ配達',
-    subtitle: 'Uber Eats、DoorDash、Menulog、Amazon Flex',
-    signals: [
-      'シフト表ではなく、アプリで仕事を受けて働いている',
-      '給与明細ではなく、週次の明細書や請求書で支払いを受けている',
-      '入金前に税金が源泉徴収されることはない',
-      '勤務時間は自分で決められ、好きなときにログオン・ログオフできる',
-      '収入に上乗せしてスーパーが支払われることはない',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
     ],
-    ctaLabel: 'まずはこちら：ABNを登録する →',
-    ctaHref: '/ja/abn',
+    "type": "website",
+    "locale": "ja_JP",
+    "url": `${SITE_URL}/ja/expenses/delivery-drivers`,
+    "siteName": "Working Holiday Tax",
+    "title": "デリバリーの経費控除：車、携帯、GST",
+    "description": "走行距離と携帯の仕事使用分がすべてです。罰金と私的な区間は最初から対象外です。"
   },
-  {
-    emoji: '🍕',
-    kind: 'TFN',
-    title: '1つのレストランや店舗に雇用されている',
-    subtitle: '通常はシフト制で、給与を直接支払われる',
-    signals: [
-      '1つのレストラン、テイクアウト店、または企業で決まったシフト勤務をしている',
-      '税金が源泉徴収済みであることを示す給与明細を受け取っている',
-      '会社が給与額、勤務時間、仕事の進め方を決めている',
-      '給与に加えてスーパーが支払われる',
-      '働き始めるときにTFN宣言書に記入した',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
     ],
-    ctaLabel: 'まずはこちら：TFNを申請する →',
-    ctaHref: '/ja/tfn',
+    "card": "summary_large_image",
+    "title": "デリバリーの経費控除：車、携帯、GST",
+    "description": "走行距離と携帯の仕事使用分がすべてです。罰金と私的な区間は最初から対象外です。"
   },
-]
-
-const faqs = [
-  {
-    question: 'ワーキングホリデービザでUber Eatsの配達をするにはABNが必要ですか？',
-    answer: 'はい。Uber Eats、DoorDash、Menulog、Amazon Flexはいずれもドライバーを従業員ではなく請負業者として契約するため、登録して報酬を受け取る前にABNが必要です。まずTFNが必要で、ABNはそれに代わるものではありません。その上で、配達の仕事のためにABNを登録します。',
-  },
-  {
-    question: '配達ドライバーは携帯電話代を経費として請求できますか？',
-    answer: '携帯電話とデータプランのうち、仕事で使用した割合、つまり配達アプリ、GPSナビ、仕事の依頼を受けるために実際に使っている部分を請求できます。ほとんどの人がそうであるように、私的な通話やネット閲覧にも同じ携帯電話を使っている場合、請求額の全体を計上することはできません。請求する割合には、公正で正直な根拠が必要です。',
-  },
-  {
-    question: 'プラットフォームではなく、1つのレストランの従業員として配達をしている場合はどうなりますか？',
-    answer: '1つのテイクアウト店、レストラン、またはピザ店でシフト勤務をしており、税金が源泉徴収済みの給与明細を受け取っている場合、あなたは請負業者ではなく従業員です。必要なのはABNではなくTFNで、自宅からその職場までの通常の移動は、他のどんな仕事とも同様に、控除の対象にならない私的な通勤として扱われます。',
-  },
-  {
-    question: '配達ドライバーはどちらの車両費の計算方法を使うべきですか？',
-    answer: '仕事でどれだけ運転するかによります。年間の仕事関連の走行距離が5,000km未満であれば、領収書が不要で、走行距離の算出方法を合理的に記録するだけでよい1kmあたりの定額法の方が、通常は簡単です。それを超える場合や、実際の維持費が高い場合は、5年間有効な12週間のログブックを使うログブック法の方が、大きな控除額になることが多いですが、請求するすべての費用について領収書が必要です。',
-  },
-  {
-    question: 'Uber EatsやDoorDashは私の収入をATOに報告していますか？',
-    answer: 'はい。ATOのシェアリングエコノミー報告制度のもと、UberやDoorDashを含むプラットフォームはドライバーの収入データを直接ATOに報告しています。あなたが申告するかどうかにかかわらず、配達で得た収入はすでにATOに把握されているため、金額がどれだけ少なく、不規則に感じられても、タックスリターンに含める必要があります。',
-  },
-  {
-    question: '車ではなく自転車やeスクーターで配達をしていますが、それでも何か請求できますか？',
-    answer: 'はい。自転車やeスクーターにも、車と同じ「仕事で使った分」という考え方が適用されます。維持費や修理費のうち仕事で使った部分に加えて、ヘルメットや高視認性ウェアなどの安全装備についても、配達での使用と私的な使用の割合に応じて請求できます。',
-  },
-]
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-    { '@type': 'ListItem', position: 2, name: '経費', item: `${SITE_URL}/ja/expenses` },
-    { '@type': 'ListItem', position: 3, name: '配達ドライバー', item: `${SITE_URL}/ja/expenses/delivery-drivers` },
-  ],
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: '配達ドライバーの税金｜Uber Eats・DoorDashのABNとTFN雇用',
-  description: '配達の仕事がABNの請負業務なのか、TFNの雇用なのか、そしてどちらの場合でも税金で何を請求できるかを解説。',
-  url: `${SITE_URL}/ja/expenses/delivery-drivers`,
-  inLanguage: 'ja-JP',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "デリバリーとライドシェア" })
+
+const UI = {
+  "ctaLabel": "WhatsAppで相談する",
+  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "guaranteeHeading": "還付金が料金に届かなかった場合、その差額はお返しします。",
+  "guaranteeBody": "417・462ビザのプラットフォーム配達員は、当社の仕事の大きな部分を占めます。だから運転日誌の選択とGSTの線引きは、申告書を書き始める前に片づきます。作成は当社のチーム、提出前に登録税理士が確認して承認します。",
+  "faqHeading": "よくある質問",
+  "guidesHeading": "次に読むと役に立つガイド",
+  "otherJobs": "別の仕事の場合は、職種別の一覧へ。",
+  "servicesLabel": "サイト内の関連ページ",
+  "wrongLabel": "控除できないのに申告されがちなもの",
+  "missedLabel": "控除できるのに申告されないもの",
+  "disclaimer": "これは一般的な情報であり、個別の税務アドバイスではありません。何を控除できるかは、雇用主、手元の記録、実際の働き方によって変わります。当社にご依頼いただいた場合は、あなたの状況を一つずつ確認し、控除できるものはすべて申告し、できないものは申告しません。",
+  "hubHref": "/ja/expenses"
 }
+
+const CRUMBS = [
+  {
+    "name": "ホーム",
+    "item": "/ja"
+  },
+  {
+    "name": "控除",
+    "item": "/ja/expenses"
+  },
+  {
+    "name": "デリバリー",
+    "item": "/ja/expenses/delivery-drivers"
+  }
+]
+
+const HERO = {
+  "kicker": "Uber Eats、DoorDash、Menulog、Amazon Flex",
+  "h1lead": "走行距離が控除の中心です。",
+  "h1accent": "他はほとんど小さな額です。",
+  "lede": "キロメートル単価か運転日誌か。1台につき年に1つだけ選べます。ここを間違えるのが、この仕事でいちばん高くつくミスです。"
+}
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
+  {
+    "kind": "answer",
+    "h2": "デリバリーの配達員は何を控除できますか？",
+    "paras": [
+      "控除できるのは、車、自転車、スクーターの維持費の仕事使用分、携帯とデータ通信の仕事使用分、勤務中に払った駐車料金、食品を運べる状態に保つための清掃、そして保温バッグ、スマホホルダー、ヘルメット、高視認性ウェアなど仕事のために買った装備です。私的な部分は除きます。",
+      "金額のほとんどは車両にあります。安定して走る配達員は他のワーホリの仕事では生じない距離を走り、2つの計算方法の差は1年で見ると他のすべての控除を合わせたより大きくなることも珍しくありません。"
+    ]
+  },
+  {
+    "kind": "items",
+    "h2": "この仕事に固有の控除",
+    "intro": "ここにあるものはすべて按分します。仕事使用分だけを控除し、その割合には合理的な根拠が必要です。",
+    "items": [
+      {
+        "t": "車の維持費",
+        "d": "キロメートル単価方式か運転日誌で計算します。下の表で比較しています。運転日誌なら、ガソリン、保険、登録費用、整備と修理、減価償却、車のローン利息までを仕事使用割合で拾えます。キロメートル単価方式ではそれらをまとめた定額になります。"
+      },
+      {
+        "t": "自転車、電動アシスト自転車、スクーターの費用",
+        "d": "二輪でも同じ考え方です。維持、修理、点検の費用を仕事使用分だけ控除でき、ヘルメット、高視認性ウェア、ライトも対象です。自転車やスクーターは税務上「車」ではないのでキロメートル単価方式は使えず、実費を按分して申告します。"
+      },
+      {
+        "t": "携帯とデータの仕事使用分",
+        "d": "仕事全体がアプリで動くので、契約の仕事使用割合は本物の控除です。配達アプリ、ナビ、注文に関する連絡が対象です。代表的な期間をとって正直に割合を出してください。私生活にも使う携帯で全額を申告するのは、申告全体を見られる一番の近道です。"
+      },
+      {
+        "t": "勤務中に払った駐車料金",
+        "d": "注文の袋詰めを待つ間のショッピングセンターの5ドルは控除できます。罰金は理由を問わず控除できません。"
+      },
+      {
+        "t": "仕事のために買った装備",
+        "d": "保温デリバリーバッグ、スマホホルダー、充電器、自転車の鍵、レインウェア、ヘッドライト。1点300ドル以下なら購入年に全額控除できます。"
+      },
+      {
+        "t": "仕事のための車両の清掃",
+        "d": "食品を運べる状態に車を保つこと、自転車を走れる状態に保つことは、仕事使用分だけ控除できます。乗客を乗せるライドシェアと同じ考え方です。"
+      }
+    ]
+  },
+  {
+    "kind": "tables",
+    "h2": "車の経費はどう計算しますか？",
+    "intro": "どちらの方法でも対象は仕事の走行だけです。シフトで店に入る配達員の場合、自宅から店までは入りません。",
+    "tables": [
+      {
+        "label": "キロメートル単価方式",
+        "rows": [
+          [
+            "2024-25年度と2025-26年度",
+            "1kmあたり88セント"
+          ],
+          [
+            "2026-27年度以降",
+            "1kmあたり91セント"
+          ],
+          [
+            "上限",
+            "1台につき年5,000km"
+          ],
+          [
+            "領収書",
+            "不要。ただし走行距離の根拠は示す必要があります"
+          ]
+        ]
+      },
+      {
+        "label": "運転日誌方式",
+        "rows": [
+          [
+            "仕組み",
+            "実際の維持費すべてに仕事使用の割合を掛けて控除します"
+          ],
+          [
+            "記録期間",
+            "連続12週間、5年間有効"
+          ],
+          [
+            "上限",
+            "なし。実際の仕事使用割合に従います"
+          ],
+          [
+            "領収書",
+            "控除するすべての支出に必要です"
+          ]
+        ]
+      }
+    ],
+    "note": "毎日走る配達員なら、5,000kmは数か月で超えます。そこから先は通常、運転日誌のほうが大きくなります。ガソリン、保険、登録費用、整備、減価償却、ローン利息を、定額ではなく仕事使用割合で拾えるからです。代償は12週間の記録と、すべての支出の領収書です。どちらが得かは、走行距離と車の維持費次第です。"
+  },
+  {
+    "kind": "answer",
+    "h2": "配達員は何を提示できる必要がありますか？",
+    "paras": [
+      "どの控除も3つのテストを通ります。自分で支払ったこと、払い戻されていないこと、申告する収入を得るために使ったことです。配達なら、運転日誌か走行距離の記録、仕事使用割合の裏づけになる携帯の請求書、そしてバッグやホルダーなど装備の領収書です。",
+      "記録に必要なのは金額、日付、支払先、内容で、領収書でも請求書でも銀行明細でもスマホの写真でも構いません。5年間は保管してください。その年の仕事関連の控除が合計300ドル以下なら書面の証拠は不要ですが、金額の根拠は説明できる必要があります。1点を一度に償却するか耐用年数で配分するかを決める300ドルとは、別のルールです。"
+    ]
+  },
+  {
+    "kind": "note",
+    "label": "意外と知られていない点",
+    "title": "フードデリバリーと乗客輸送は、GSTでは別物です。",
+    "body": "食品や荷物の配達だけなら、GST登録が義務になるのは年間売上が75,000ドルを超えてからで、そこまで届く配達員はほとんどいません。ところが有料の乗客を1人でも乗せた瞬間、この基準は消えます。ライドソーシングは売上に関係なく最初の1回からGST登録が必要で、Business Activity Statementの提出も伴います。平日にUber Eatsを走り、金曜の夜に乗客を乗せている人は、知らないうちにこの線を越えています。"
+  },
+  {
+    "kind": "traps",
+    "h2": "デリバリーの配達員がよく間違えることは？",
+    "intro": "金額が大きいぶん、過大な申告もどの職種より大きくなります。取りこぼしも同じです。",
+    "wrong": [
+      {
+        "t": "携帯代の全額",
+        "d": "配達だけに携帯を使っている人はまずいません。私生活にも使う契約の100%を申告するのは説明がつきませんし、ATOは申告全体の様子と照らし合わせて確認できます。"
+      },
+      {
+        "t": "罰金",
+        "d": "注文を3階まで運んでいる間に切られた駐車違反も控除できません。スピード違反も、受け渡しの時間がどれだけ厳しくても同じです。"
+      },
+      {
+        "t": "勤務中に買った食事",
+        "d": "配達の合間の自分の夕食は私的な支出です。周りが配達を受け取っている人だらけでも変わりません。"
+      },
+      {
+        "t": "アプリを開いている間のすべての距離",
+        "d": "アプリが動いていたからといって、私的な区間が業務移動になるわけではありません。受け渡しに向かう途中の用事は控除から外れますし、シフト制の被雇用者なら店までの通常の通勤も外れます。"
+      },
+      {
+        "t": "少額のプラットフォーム収入をまるごと除外する",
+        "d": "Uber、DoorDashなどはシェアリングエコノミー報告制度のもとで配達員の収入をATOに報告しています。収入はすでに見えているので、週末の数百ドルを外しても節税にはならず、不一致になるだけです。"
+      }
+    ],
+    "missed": [
+      {
+        "t": "明らかに有利だったのに使わなかった運転日誌",
+        "d": "キロメートル単価方式は5,000kmで頭打ちです。安定して走る配達員は簡単に超え、超えた分は単純に失われます。12週間の記録は一度取れば5年間有効です。"
+      },
+      {
+        "t": "利息、保険、登録費用、減価償却",
+        "d": "これらは運転日誌方式でしか使えず、たいていこれが逆転の理由になります。簡単だからとキロメートル単価方式を選び、もう一方だといくらだったかを知らないままの人が多くいます。"
+      },
+      {
+        "t": "保温バッグとスマホホルダー",
+        "d": "小さく、当たり前で、完全に控除できるのに、領収書ごと捨てられています。自転車のヘルメット、ライト、レインウェアも同じです。"
+      },
+      {
+        "t": "初回配達より前に発生した費用",
+        "d": "ABNを登録してプラットフォームに登録した頃、始めるための準備として買った装備は通常控除できます。購入と開始の間隔が問われるので、日付を残しておいてください。"
+      },
+      {
+        "t": "請求されると思い込んで申告ごと諦めるABN配達員",
+        "d": "プラットフォームの支払いからは源泉徴収されないので、お金がそのまま入り、納税に身構えることになります。その収入に対する控除こそがそれを小さくするのに、最も多く抜け落ちるのがそれです。"
+      }
+    ]
+  },
+  {
+    "kind": "answer",
+    "h2": "ルールではなく走り方で決まるのはどこですか？",
+    "paras": [
+      "Uber Eats、DoorDash、Menulog、Amazon Flexは配達員を個人事業主として契約します。ABNが必要で、源泉徴収もスーパーもありません。1軒のピザ店のシフトに入り、ペイスリップをもらっているならTFNでの雇用です。1軒の店がシフトを決め、作業を管理し、自転車まで貸しているのにABNを求めてくるなら、偽装雇用かもしれません。登録する前に確認してください。",
+      "控除できる走行がどこから始まるかは、そこから決まります。被雇用者なら店までの通勤は私的で、店と受け渡し先の間だけが対象です。ABNなら走行は仕事へ行く手段ではなく仕事そのものなので、線の位置は別のところに移り、実際の働き方で決まります。",
+      "税務上の居住区分は、そもそも利益がどう課税されるかを決めます。イギリス、ドイツ、日本のパスポート保持者で税務上オーストラリア居住者だった人は、Addy判決のもとで満額の非課税枠を受けられる可能性があります。1つの都市で1年走り続けるのは、きちんと確認する価値のあるパターンです。"
+    ]
+  }
+]
+
+const FAQS = [
+  {
+    "question": "Uber EatsやDoorDashにABNは必要ですか？",
+    "answer": "はい。これらのプラットフォームは配達員を被雇用者ではなく個人事業主として契約するため、報酬を受け取る前にABNが必要です。ABNはTFNの代わりにはならないので、TFNも必要です。支払いからは何も源泉徴収されないため収入がそのまま入り、その税金は申告時に精算します。"
+  },
+  {
+    "question": "車の経費はどちらの方法を使うべきですか？",
+    "answer": "走行距離と車の維持費によります。キロメートル単価方式は簡単で領収書も不要ですが、年5,000kmで頭打ちになり、それを超えた分は失われます。運転日誌方式には上限がなく、ガソリン、保険、登録費用、整備、減価償却、ローン利息を仕事使用割合で拾えますが、連続12週間の記録とすべての支出の領収書が必要です。"
+  },
+  {
+    "question": "携帯代は控除できますか？",
+    "answer": "携帯とデータ通信の仕事使用割合、つまり配達アプリ、ナビ、仕事の連絡に実際に使った分を控除できます。日常生活にも使っている場合、ほぼ全員がそうですが、全額を控除することはできません。割合には公正で正直な根拠と、それを裏づけるものが必要です。"
+  },
+  {
+    "question": "GSTの登録は必要ですか？",
+    "answer": "配達だけをしているうちは、ほとんどの方に登録義務はありません。売上が年75,000ドルに届いて初めて必要になります。ただし有料の乗客を1人でも運んだなら、その時点から登録が必要で、四半期ごとのBAS提出も付いてきます。どちらに当たるかは、使っているアプリの名前ではなく、実際に運んだのが人か荷物かで決まります。"
+  },
+  {
+    "question": "車ではなく自転車です。何か控除できますか？",
+    "answer": "はい。自転車や電動キックボードは税務上「車」ではないのでキロメートル単価方式は使えませんが、維持、修理、点検の費用の仕事使用分と、ヘルメット、ライト、高視認性ウェアなどの安全装備は控除できます。配達と私的利用を合理的に按分し、領収書を保管してください。"
+  }
+]
+
+const GUIDES = [
+  {
+    "href": "/ja/blog/uber-doordash-rideshare-abn-working-holiday",
+    "label": "Uber、DoorDashとABN",
+    "desc": "なぜABNが必要で、取得後に何が変わるのか。"
+  },
+  {
+    "href": "/ja/blog/bicycle-motorcycle-vehicle-deductions-working-holiday",
+    "label": "自転車、バイク、車の控除",
+    "desc": "乗り物ごとの扱いと、向いている計算方法。"
+  },
+  {
+    "href": "/ja/blog/uber-eats-delivery-rider-working-holiday-australia",
+    "label": "ワーホリのデリバリー配達",
+    "desc": "経費を引いたあと、実際にいくら残るのか。"
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/ja/abn",
+    "label": "ABN"
+  },
+  {
+    "href": "/ja/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/ja/tax-return",
+    "label": "タックスリターン"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
-function CompareTable({ label, rows, highlight }: { label: string; rows: string[][]; highlight?: boolean }) {
-  return (
-    <div className="taxres-table-card" style={highlight ? { borderColor: '#0B5240', boxShadow: '0 8px 20px -8px rgba(11, 82, 64, 0.18)' } : {}}>
-      <h3 className="taxres-table-title">{label}</h3>
-      <table className="taxres-table">
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
 }
 
-function ForkCard({ f }: { f: DriverType }) {
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "デリバリーの経費控除：車、携帯、GST",
+  description: "走行距離と携帯の仕事使用分がすべてです。罰金と私的な区間は最初から対象外です。",
+  url: `${SITE_URL}/ja/expenses/delivery-drivers`,
+  inLanguage: "ja-JP",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/ja/expenses/delivery-drivers#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/ja/expenses/delivery-drivers`,
+}
+
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
   return (
-    <div className="exp-card">
-      <div className="exp-card-head">
-        <span className="exp-card-emoji" aria-hidden="true">{f.emoji}</span>
-        <div>
-          <h3 className="exp-card-title">{f.title}</h3>
-          <p className="exp-card-subtitle">{f.subtitle}</p>
-        </div>
-      </div>
-      <p className="font-semibold" style={{ fontSize: '11.5px', color: '#0B5240', margin: '14px 0 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-        必要なもの：{f.kind}
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"ja"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
       </p>
-      <div className="exp-card-section">
-        <p className="exp-card-label" style={{ color: '#587066' }}>当てはまるサイン</p>
-        <ul className="exp-card-list">
-          {f.signals.map((s, i) => <li key={i}>{s}</li>)}
-        </ul>
-      </div>
-      <Link href={f.ctaHref} className="inline-flex items-center justify-center font-semibold"
-        style={{ marginTop: '18px', height: '42px', padding: '0 20px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '13px', textDecoration: 'none', width: '100%' }}>
-        {f.ctaLabel}
-      </Link>
     </div>
   )
 }
 
-export default function DeliveryDriversExpensesPageJA() {
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="パンくずリスト" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/ja" style={{ color: '#587066' }}>ホーム</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/ja/expenses" style={{ color: '#587066' }}>経費</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>配達ドライバー</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '22ch' }}>
-                配達ドライバーの税金：<span style={{ color: '#0B5240' }}>ABN、TFN、それとも両方？</span>
-              </h1>
-              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '50ch' }}>
-                Uber Eats、DoorDash、Amazon FlexはABNのもとで行うギグワークです。1つのレストランでシフト制で運転する場合は、通常はTFNの一般的な仕事になります。ここでは両者の見分け方と、どちらの場合でも具体的に何を請求できるかを解説します。
-              </p>
-            </div>
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}
+              <span style={{ color: FOREST }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
           </div>
         </section>
 
-        {/* ── THE ABN / TFN FORK (this page's unique hook) ────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '20px' }}>
-          <div className="max-w-[1040px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                ABNかTFNか：まず自分がどちらに当てはまるかを確認する
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                ワーキングホリデービザでの配達の仕事の多くは、ABNのもとで行うギグワークです。一部は、TFNのもとで行う通常の従業員としての仕事にあたります。この2つは課税のされ方がまったく異なるため、最初に正しく見極めておくべきポイントです。
-              </p>
-            </div>
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
 
-            <div className="exp-grid">
-              {FORK_CARDS.map((f, i) => <ForkCard key={i} f={f} />)}
-            </div>
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
 
-            <div className="max-w-[680px] mx-auto text-center" style={{ marginTop: '8px' }}>
-              <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7, marginBottom: '10px' }}>
-                1年の中でその両方を行う人は珍しくありません。TFNでのシフト制の仕事と、副業としてのUber EatsやDoorDashをABNで組み合わせるパターンです。これはごく普通のことで、両方の収入種別を同じタックスリターンで申告すればよく、それぞれについて別々に記録を残しておくのが理想的です。
-              </p>
-              <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7 }}>
-                1つ注意点があります。1つのレストランや店舗が、シフトを指定し、あなたの仕事を監督し、配達バッグや自転車まで支給しているにもかかわらずABNの取得を求めてくる場合、その契約形態は本来の請負ではなく、偽装請負（雇用を請負に見せかけたもの）である可能性があります。ABNというラベルだけで判断せず、登録前に一度確認しておく価値があります。
-              </p>
-            </div>
-          </div>
-        </section>
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
 
-        {/* ── WHAT YOU CAN / CAN'T CLAIM ───────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                配達ドライバーが実際に請求できるもの
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                考え方はすべて共通しています。経費のうち仕事に関連する部分だけが対象になり、請求するものについては記録が必要です。
-              </p>
-            </div>
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '0 0 8px', lineHeight: 1.3 }}>
-              車両費・維持費
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              何に乗っていても、これは通常どのドライバーにとっても最大の控除項目です。車両のうち仕事に関連する部分を、1kmあたりの定額法かログブック法のいずれか（下記で詳しく比較）で請求します。対象になるのは、実際に仕事の一部である運転のみで、私的な移動は含まれません。
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              従業員として働く配達ドライバーの場合、通勤に関するルールは他のどんな仕事とも同じです。自宅から出勤先のレストランや店舗までの行き、シフト終了後の帰りの移動は私的な移動であり、控除の対象にはなりません。シフトに入ってから、店舗と配達先の間で行う運転のみが仕事関連として認められます。
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              ABNのもとで運転している場合は、少し事情が異なります。運転は単なる通勤手段ではなく、仕事そのものだからです。配達収入を得ることに直接かつ明らかに関係する移動は、従業員の通勤のように自動的に対象外となるわけではありません。例えば、自宅からその日最初の配達先までの移動が対象になるかどうかなど、線引きがどこにあるかは、実際の働き方の具体的な事実関係によって変わります。すべての走行距離が控除対象だと決めつけず、自分の状況について個別にアドバイスを受ける価値があります。
-            </p>
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              携帯電話・データ通信費
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              配達の仕事はアプリを通じて行われるため、携帯電話とデータプランのうち仕事に関連する割合は控除の対象になります。これは、Uber、DoorDash、Menulogのドライバーアプリ、GPSナビ、仕事に関するメッセージのやり取りに実際に使っている部分です。この割合については、公正で正直な見積もりが必要です。日常生活にも使っている携帯電話の料金全体を請求することは正当化できません。
-            </p>
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
 
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              駐車料金と罰金
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              仕事中に支払う駐車料金、例えばショッピングセンターで注文の準備を待っている間の駐車料金は控除の対象になります。一方、駐車違反やスピード違反の罰金はまったく別の話です。配達中に発生したものであっても、どんな事情があっても控除の対象にはなりません。
-            </p>
-
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              自転車・eスクーターで配達する場合
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              フードデリバリーは、4輪ではなく2輪で行われることが増えています。考え方は同じで、自転車やeスクーターの維持費・修理費のうち仕事に関連する部分に加えて、ヘルメットや高視認性ウェアなど仕事に必要な安全装備についても、配達での使用と私的な使用の割合に応じて請求できます。
-            </p>
-
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              車両を清潔に保つ
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              食品や荷物を運ぶのにふさわしい状態を保つための洗車代は、仕事に関連する部分について控除の対象になります。これは、乗客を乗せるライドシェアドライバーにも当てはまるのと同じ考え方です。
-            </p>
-
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              請求できないもの
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              毎年、何人かのドライバーがつまずくポイントがいくつかあります。移動のうち私的な部分、例えば配達先へ向かう途中で個人的な用事を済ませる場合は控除の対象になりません。従業員が自宅と決まった職場との間を移動する通常の通勤も同様です。駐車違反やスピード違反の罰金は、どのような経緯で発生したものであっても控除の対象にはなりません。また、給油代など、プラットフォームや雇用主からすでに払い戻しを受けているものについては、タックスリターンで再度請求することはできません。同じ費用を二重に請求することになってしまうからです。
-            </p>
-          </div>
-        </section>
-
-        {/* ── GST & SHARING ECONOMY REPORTING ──────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '34px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(20px, 2.6vw, 26px)', letterSpacing: '-0.02em' }}>
-                プラットフォームドライバーが知っておくべき2つのこと
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-              <div className="taxres-savings-box">
-                <div>
-                  <p className="taxres-savings-heading">GSTが関係するのは売上が一定額を超えてから</p>
-                  <p className="taxres-savings-body">
-                    ABNのもとで働いていて、配達の仕事による年間売上が75,000ドルを超えると、GST登録が義務になります。フードデリバリーアプリでパートタイムとして働くワーキングホリデーメーカーのほとんどはこの金額には遠く及びませんが、勤務時間や収入が増えるにつれて、この基準が存在することを知っておく価値はあります。
-                  </p>
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
                 </div>
-              </div>
-              <div className="taxres-savings-box">
-                <div>
-                  <p className="taxres-savings-heading">プラットフォームはすでに収入をATOに報告している</p>
-                  <p className="taxres-savings-body">
-                    Uber、DoorDashなどのプラットフォームは、ATOの「シェアリングエコノミー報告制度（Sharing Economy Reporting Regime）」の対象であり、ドライバーの収入データを直接ATOに報告しています。あなたが申告するかどうかにかかわらず、配達で得た収入はATOに把握されているため、プラットフォームでの収入がひっそりと見逃されるということはあり得ません。
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
-          </div>
-        </section>
+          </section>
+        ))}
 
-        {/* ── CAR EXPENSE METHODS ──────────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                車両費を請求する2つの方法
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch' }}>
-                ABNかTFNかにかかわらず、車両費については同じ2つの方法が適用されます。1台の車につき、1年で使える方法は1つだけです。
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"ja"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
               </p>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="1kmあたりの定額法" rows={CAR_METHOD_ROWS} highlight />
-              <CompareTable label="ログブック法" rows={LOGBOOK_ROWS} />
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
+              ))}
             </div>
-            <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, maxWidth: '60ch', marginTop: '18px' }}>
-              配達の仕事での年間走行距離が5,000kmを超える場合、通常はログブック法の方が実際の費用をより多く反映できますが、12週間のログブックと、ガソリン代・整備費・車両登録費用などすべての領収書を保管する必要があります。
+
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
         </section>
 
-        {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-        <section className="py-10 lg:py-14 bg-white">
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">よくあるご質問</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  配達ドライバーの税金に関するご質問
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  掲載されていないご質問もお気軽にお問い合わせください。
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-        <NextStep
-          eyebrow="次のステップ"
-          heading="ABNかTFNか、状況は把握できましたか？"
-          body="配達の収入と経費が整理できたら、次はワーキングホリデーのタックスリターンを提出する番です。"
-          cta="タックスリターンに進む →"
-          href="/ja/tax-return"
-        />
-
-        {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません。あなたが請負業者に当たるか従業員に当たるか、そして具体的に何を請求できるかは、実際の働き方の詳細によって変わります。当社でお手続きいただく際には、配達による収入、車・自転車・スクーターの経費、そしてABNかTFNかという状況を確認し、請求できるものはすべて、請求できないものは含めないようにサポートします。
-            </p>
-            <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              税金の還付金を受け取る →
-            </Link>
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/ja/tax-form" lang="ja" />
+
+      <MobileCta href={WA} lang={"ja"} topic="expenses" />
     </>
   )
 }

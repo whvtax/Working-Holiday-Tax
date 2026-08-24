@@ -231,11 +231,16 @@ export default function CategoryHero({
   }
 
 
+  // Browse card variant.
+  //
+  // aria-hidden, not role="img". On a category page every card renders this
+  // immediately above an <h3> carrying the same article title, so the old
+  // aria-label made a screen reader announce each headline twice, up to 44
+  // times on one page. The emoji carries no information the title does not.
   return (
     <div
       className="category-hero-image"
-      role="img"
-      aria-label={`${CATEGORY_LABEL[category]}: ${title}`}
+      aria-hidden="true"
       style={{
         width: '100%',
         height: '100%',
@@ -296,12 +301,12 @@ export default function CategoryHero({
           position: 'absolute',
           left: '14px',
           bottom: '10px',
-          fontSize: '10px',
+          fontSize: '10.5px',
           fontWeight: 600,
-          letterSpacing: '0.12em',
+          letterSpacing: '0.15em',
           textTransform: 'uppercase',
           color: colors.text,
-          opacity: 0.55,
+          opacity: 0.75,
         }}
       >
         {CATEGORY_LABEL[category]}

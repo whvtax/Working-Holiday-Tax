@@ -1,196 +1,412 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep, RelatedServices } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'FIFOの税金控除ガイド：交通費・PPE・Zone Offsetの誤解（オーストラリア）',
-  description: 'ワーキングホリデービザでFIFO（フライ・イン・フライ・アウト）勤務をする人が確定申告で経費計上できるものを解説：PPEと工具、資格・免許の更新費用、携帯電話と自己啓発費用。さらに、典型的なFIFOロースターでZone Tax Offsetが通常適用されない理由と、雇用主が提供するキャンプの宿泊・食事がタックスリターンにどう影響するかも説明します。',
-  keywords: [
-    'FIFO 税金控除',
-    'フライ・イン・フライ・アウト 税金',
-    'FIFO 確定申告 オーストラリア',
-    'Zone Tax Offset FIFO',
-    'ゾーン税額控除 ワーキングホリデー',
-    'FIFO キャンプ 宿泊 税金',
-    '鉱山キャンプ 食事 FBT 非課税',
-    'バックパッカー FIFO 仕事 税金',
-    '417 462ビザ FIFO 税金控除',
-    'High Risk Work Licence 税金控除',
-    'Working at Heights ticket 控除',
-    'FIFO ロースター 税金',
-    '遠隔地 現場作業員 税金控除',
-    'FIFO PPE 税金控除',
+  "title": "FIFOの経費控除：保護具、資格、Zone Offset",
+  "description": "FIFOやキャンプで働く人が控除できるもの。保護具と道具、資格の更新、メディカル、携帯の仕事使用分。Zone Tax Offsetは基本的に対象外です。",
+  "keywords": [
+    "FIFO 税金 控除 オーストラリア",
+    "フライインフライアウト 税金",
+    "Zone Tax Offset FIFO",
+    "FIFO キャンプ 宿泊 税金",
+    "High Risk Work Licence 控除",
+    "FIFO 保護具 控除",
+    "ワーホリ FIFO 税金",
+    "鉱山 仕事 控除 オーストラリア"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/ja/expenses/fifo`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/fifo`,
-      'de': `${SITE_URL}/de/expenses/fifo`,
-      'ja': `${SITE_URL}/ja/expenses/fifo`,
-      'x-default': `${SITE_URL}/expenses/fifo`,
-    },
+  "alternates": {
+    "canonical": "/ja/expenses/fifo",
+    "languages": {
+      "en-AU": "/expenses/fifo",
+      "de": "/de/expenses/fifo",
+      "ja": "/ja/expenses/fifo",
+      "x-default": "/expenses/fifo"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'ja_JP',
-    url: `${SITE_URL}/ja/expenses/fifo`,
-    siteName: 'Working Holiday Tax',
-    title: 'FIFOの税金控除ガイド：交通費・PPE・Zone Offsetの誤解（オーストラリア）',
-    description: 'FIFO勤務者が確定申告で実際に経費計上できるものと、典型的なFIFOロースターでZone Tax Offsetが通常適用されない理由を解説。',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "ja_JP",
+    "url": `${SITE_URL}/ja/expenses/fifo`,
+    "siteName": "Working Holiday Tax",
+    "title": "FIFOの経費控除：保護具、資格、Zone Offset",
+    "description": "キャンプの食事も空港までの運転も控除できません。Zone Tax Offsetもおそらく対象外です。"
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: 'FIFOの税金控除ガイド：交通費・PPE・Zone Offsetの誤解（オーストラリア）',
-    description: 'FIFO勤務者が確定申告で実際に経費計上できるものと、典型的なFIFOロースターでZone Tax Offsetが通常適用されない理由を解説。',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "FIFOの経費控除：保護具、資格、Zone Offset",
+    "description": "キャンプの食事も空港までの運転も控除できません。Zone Tax Offsetもおそらく対象外です。"
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const REALISTIC_ROLES = [
-  {
-    t: 'キャンプサービス（現実的な入り口）',
-    d: 'キャンプの食堂でのケータリングやキッチンハンドの仕事、清掃やハウスキーピング、ランドリー業務、キャンプや現場事務所でのフロント業務・事務、そして現場の売店や小売業務。ワーキングホリデーメーカーがFIFOの仕事に就く場合、実際にはほとんどがここに行き着きます。',
-  },
-  {
-    t: '技術職・鉱山関連の専門職',
-    d: '鉱山やプラントで直接作業するオペレーター、職人、技術職の仕事もありますが、通常は特定の職業資格やチケット、あるいは数年単位の経験が求められ、現場の技術職ではオーストラリア国籍者や永住権保持者を優先する雇用主も少なくありません。不可能ではありませんが、ほとんどのワーキングホリデーメーカーにとっては現実的な出発点とは言いにくいでしょう。',
-  },
-]
+const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "FIFOとキャンプの仕事" })
 
-const CAMP_PROVIDED_ROWS = [
-  ['スウィング中の宿泊', '雇用主が直接手配・負担'],
-  ['スウィング中の食事', '雇用主が直接手配・負担'],
-  ['FBTの扱い', '雇用主側は通常非課税'],
-  ['タックスリターンで控除できる？', 'いいえ、自分で支払っていないため'],
-]
-
-const ON_YOUR_OWN_ROWS = [
-  ['PPEと安全装備', 'つなぎ、ブーツ、手袋、ゴーグル、マスクなど、自分で購入した場合'],
-  ['工具・機材', '$300未満は全額控除、$300以上は減価償却'],
-  ['チケット・免許の更新', 'すでにその職に就いて働いている場合'],
-  ['携帯電話・インターネット', '仕事で使用した割合のみ'],
-]
-
-const BULKY_TOOLS_CONDITIONS = [
-  'その工具が、その日行っている作業に欠かせないこと。',
-  '工具が本当にかさばること、持ち運びに車両が必要なのは単なる利便性ではなく、実際のサイズや重量が理由であること。',
-  '現場に安全に保管できる場所がなく、自宅まで持ち帰らざるを得ないこと。',
-]
-
-const UNDER_300_ROWS = [
-  ['申請方法', '全額を即時申請'],
-  ['いつ申請するか', '購入した年'],
-  ['例', '$190の先芯入り安全靴'],
-]
-
-const OVER_300_ROWS = [
-  ['申請方法', '耐用年数にわたって分割申請'],
-  ['いつ申請するか', '所有している各年に一部ずつ'],
-  ['例', '現場作業用の$600の工具セット'],
-]
-
-const FIRST_TICKET_ROWS = [
-  ['内容', 'その職種で初めて取得するチケットや免許'],
-  ['必要だった理由', 'そもそもその仕事に就く資格を得るため'],
-  ['控除できる？', 'いいえ、私的な支出'],
-]
-
-const RENEWAL_TICKET_ROWS = [
-  ['内容', 'すでに持っているチケットや免許の更新'],
-  ['必要な理由', 'すでに現場で働いており、有効な状態を保つ必要があるため'],
-  ['控除できる？', 'はい'],
-]
-
-const faqs = [
-  {
-    question: 'スウィング前の空港までの移動は経費にできますか？',
-    answer: '通常はできません。スウィングのために自宅から空港や出発地点まで移動する区間は、フライトがどれだけ早朝であっても、自宅が空港からどれだけ離れていても、他の誰もが行う職場までの移動、つまり通常の私的な通勤と同じ扱いになります。本当にかさばる必須の工具を運ぶ必要があり、職場に安全に保管できる場所がない場合に限り狭い例外が認められますが、ほとんどのFIFOの仕事、特にキャンプサービス系の仕事ではこの例外は適用されません。',
-  },
-  {
-    question: 'FIFO勤務者はZone Tax Offsetを受けられますか？',
-    answer: '通常は受けられません。これはFIFOの税金に関する最大の誤解です。2015年の法改正以降、対象になるかどうかは、実際にどこで働いているかではなく、あなたの通常の居住地がどこにあるかによって決まります。あなたの通常の居住地そのものが、指定された辺境ゾーンに年間183日を超えて所在している必要があります。ゾーン内のロースターで働くために飛行機で通っていても、あなたの通常の居住地——パースやブリスベンなど、スウィングの合間の拠点であるシェアハウスや賃貸物件——がそのゾーンの外にある場合、たとえ1年の大半を現場で過ごしていたとしても、この基準は満たされません。FIFOの仕事をするほとんどのワーキングホリデーメーカーにとって、これはつまりこのオフセットが単純に適用されないということです。',
-  },
-  {
-    question: 'キャンプの宿泊費や食費は経費にできますか？',
-    answer: 'できません。現場での宿泊と食事は雇用主が直接手配して費用を負担しており、本当に遠隔地の現場であれば、通常はあなたへの追加所得としてではなく、雇用主にとっての非課税のフリンジベネフィットとして扱われます。いずれにしても、あなたが部屋や食事の代金を自分で支払ったことは一度もないため、控除として申請できる経費がそもそも存在しません。控除は、あなたが実際に自分で使ったお金しか取り戻すことができません。',
-  },
-  {
-    question: '工具やPPEに関する$300ルールとは何ですか？',
-    answer: '仕事のために工具、機材、保護具を自分で購入し、雇用主から支給も払い戻しも受けていない場合、$300未満の品物は購入した年に全額を申請できます。$300以上の品物は、一度に全額ではなく、耐用年数にわたって少しずつ減価償却して申請します。これはこのサイトで紹介しているすべての職業に共通する、同じ基準・同じルールであり、FIFOの仕事に限った特別なものではありません。',
-  },
-  {
-    question: 'High Risk Work LicenceやWorking at Heightsのチケットは経費にできますか？',
-    answer: 'それが初めての取得か更新かによって異なります。High Risk Work Licence、Working at Heightsのチケット、フォークリフト免許などを初めて取得する費用は、初めての運転免許証の取得と同様に私的な支出として扱われます。そもそもその職に就く資格を得るためのものだからです。すでにその仕事をしていて、働き続けるためにチケットの更新が必要になった場合、更新費用は控除の対象になります。これは建設業のWhite Cardにも当てはまる、初回取得と更新を区別する同じ考え方です。',
-  },
-  {
-    question: 'ロースター中の携帯電話とインターネットの費用は経費にできますか？',
-    answer: 'できます。ただし仕事に関連する部分のみです。ロースターの確認、タイムシートの提出、必須のオンライン導入研修や訓練の受講など、仕事のために携帯電話や自宅のインターネットを実際に使用している場合、その利用分を請求できます。実際に仕事で使用している割合について、公平で正直な見積もりが必要です。日常生活にも使っている携帯電話の請求額を全額申請することは正当化できません。',
-  },
-]
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-    { '@type': 'ListItem', position: 2, name: '経費', item: `${SITE_URL}/ja/expenses` },
-    { '@type': 'ListItem', position: 3, name: 'FIFO', item: `${SITE_URL}/ja/expenses/fifo` },
-  ],
+const UI = {
+  "ctaLabel": "WhatsAppで相談する",
+  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "guaranteeHeading": "料金を下回る還付なら、差額は返金します。お客様の持ち出しはありません。",
+  "guaranteeBody": "扱うのは417・462ビザだけなので、Zone Offset、居住区分、3つのファンドに散ったスーパーをまとめて見ます。申告書は当社のチームが作成し、提出の前に登録税理士が確認して承認します。",
+  "faqHeading": "よくある質問",
+  "guidesHeading": "次に読むと役に立つガイド",
+  "otherJobs": "別の仕事の場合は、職種別の一覧へ。",
+  "servicesLabel": "サイト内の関連ページ",
+  "wrongLabel": "控除できないのに申告されがちなもの",
+  "missedLabel": "控除できるのに申告されないもの",
+  "disclaimer": "これは一般的な情報であり、個別の税務アドバイスではありません。何を控除できるかは、雇用主、手元の記録、実際の働き方によって変わります。当社にご依頼いただいた場合は、あなたの状況を一つずつ確認し、控除できるものはすべて申告し、できないものは申告しません。",
+  "hubHref": "/ja/expenses"
 }
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'FIFOの税金控除ガイド：交通費・PPE・Zone Offsetの誤解（オーストラリア）',
-  description: 'ワーキングホリデービザでFIFO勤務をする人がオーストラリアの確定申告で経費計上できるものを解説：PPEと工具、資格・免許の更新費用、携帯電話と自己啓発費用、そして典型的なフライ・イン・フライ・アウトのロースターでZone Tax Offsetが通常適用されない理由。',
-  url: `${SITE_URL}/ja/expenses/fifo`,
-  inLanguage: 'ja-JP',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+const CRUMBS = [
+  {
+    "name": "ホーム",
+    "item": "/ja"
+  },
+  {
+    "name": "控除",
+    "item": "/ja/expenses"
+  },
+  {
+    "name": "FIFO",
+    "item": "/ja/expenses/fifo"
+  }
+]
+
+const HERO = {
+  "kicker": "ローター、キャンプ、遠隔地の現場",
+  "h1lead": "Zone Tax Offsetはおそらく対象外です。",
+  "h1accent": "対象になるのはこちらです。",
+  "lede": "キャンプの部屋も、メスホールの食事も、現場へのフライトも会社の費用です。あなたに残るのは保護具、資格の更新、メディカル、そして携帯です。"
 }
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
+  {
+    "kind": "answer",
+    "h2": "FIFOで働く人は何を控除できますか？",
+    "paras": [
+      "控除できるのは、自費で買った保護具とその洗濯、道具と機材、すでに持っている資格やライセンスの更新、雇用主が求めるメディカルや薬物アルコール検査で自費だったもの、携帯とインターネットの仕事使用分、そして今の仕事に関係する研修です。",
+      "そのリストに入らないのが、FIFOを高くつくものに見せているすべてです。キャンプの部屋もメスホールの食事も会社が手配して支払っており、現場までのフライトもたいていそうです。控除は自分の財布から出たお金しか戻せないので、キャンプ生活の費用が高いこと自体は申告に何も乗せません。"
+    ]
+  },
+  {
+    "kind": "items",
+    "h2": "この仕事に固有の控除",
+    "intro": "ここにあるものすべてに同じ条件が付きます。自分で払ったこと、そして会社の支給品ではないことです。",
+    "items": [
+      {
+        "t": "自費で買った保護具と、その洗濯",
+        "d": "ツナギ、安全靴、手袋、保護ゴーグル、防音保護具、マスク。現場の具体的な危険から身を守るため控除できます。控除できる保護衣類の洗濯もATOの単価で申告でき、仕事着だけなら1回1ドル、私服と一緒なら50セントです。"
+      },
+      {
+        "t": "道具と機材",
+        "d": "仕事のために買い、会社の支給品ではないもの。1点300ドル以下なら購入年に全額控除し、それを超えるなら耐用年数にわたって配分します。合計300ドル以上の工具セットは1つの資産です。"
+      },
+      {
+        "t": "持っている資格やライセンスの更新",
+        "d": "High Risk Work Licence、Working at Heightsの資格、フォークリフト資格。すでにその役割で働いていれば更新は控除できます。最初の取得は、最初のホワイトカードや最初の運転免許と同じ理由で控除できません。"
+      },
+      {
+        "t": "雇用主が求めるメディカルと検査",
+        "d": "多くの現場が就業条件として事前メディカルと薬物アルコール検査を求めます。すでに就いている役割のために雇用主が求め、あなたが自費で払った場合、その費用は控除できます。"
+      },
+      {
+        "t": "携帯とインターネットの仕事使用分",
+        "d": "ローターの確認、タイムシートの提出、必須のオンライン導入教育や再教育。全額ではなく、公正で正直な根拠に基づく仕事使用割合を申告します。"
+      },
+      {
+        "t": "今の仕事に関係する研修",
+        "d": "今の技能や資格を維持する短期の講座やユニットは控除でき、雇用主の指示で拠点を離れて受講する場合は移動と宿泊も対象です。役割に就く資格を得るための最初の入門資格は対象外です。"
+      }
+    ]
+  },
+  {
+    "kind": "note",
+    "label": "FIFO最大の誤解",
+    "title": "ゾーンで働くことと、ゾーンに住むことは別です。",
+    "body": "2015年の法改正以降、Zone Tax Offsetはローターがどこへ連れて行くかではなく、通常の居住地がどこかで決まります。通常の居住地そのものが、指定された遠隔地ゾーン内に年間183日を超えて所在している必要があります。スイングの合間にパース、ブリスベン、ダーウィンに住みながらゾーン内へ飛んで働く形は、年の大半を現場で過ごしていてもこの条件を満たしません。キャンプは一時的でローターに結びついているため、通常の居住地にはあたりません。FIFOのローターで働くワーキングホリデーメーカーのほとんどにとって、このオフセットは該当しません。申告書に書き込まれてから気づくより、先に知っておくほうが安全です。"
+  },
+  {
+    "kind": "answer",
+    "h2": "FIFOの控除には何の裏づけが要りますか？",
+    "paras": [
+      "控除は3つの問いを通ります。自分で払ったか。払い戻されなかったか。申告する収入を得るために使ったか。ローター勤務なら、支給されなかった安全靴の領収書、メディカルの請求書、そして携帯の仕事使用割合の根拠になる明細です。",
+      "必要なのは金額、日付、支払先、内容で、領収書でも請求書でも銀行明細でもレジで撮った写真でも構いません。5年間は保管してください。その年の仕事関連の控除が合計300ドル以下なら書面の証拠は不要ですが、金額の根拠は説明できる必要があります。工具を一度に償却するか耐用年数で配分するかを決める300ドルとは、別のルールです。"
+    ]
+  },
+  {
+    "kind": "traps",
+    "h2": "FIFOで働く人がよく間違えることは？",
+    "intro": "このサイトのどの職種より、自信たっぷりに繰り返される誤情報が多い分野です。以下は毎年申告されていて、通らないものです。",
+    "wrong": [
+      {
+        "t": "Zone Tax Offset",
+        "d": "FIFOで働く人が権利もないのに最も多く申告するものです。決め手は飛んで行く先ではなく通常どこに住んでいるかで、キャンプは住んでいることになりません。"
+      },
+      {
+        "t": "キャンプの宿泊と食事",
+        "d": "部屋もメスホールも雇用主が手配して支払っており、本当に遠隔地の現場では通常、会社側の非課税のフリンジベネフィットとして扱われ、あなたの収入にはなりません。いずれにせよ支払っていないので、控除するものがありません。"
+      },
+      {
+        "t": "スイング前の空港までの運転",
+        "d": "それは通常の通勤です。フライトがどれだけ早くても、空港がどれだけ遠くても変わりません。かさばる道具の狭い例外はありますが、かさばるものがないか安全に置ける場所があるキャンプサービス職では、まず当てはまりません。"
+      },
+      {
+        "t": "仕事のためのパースやブリスベンへの引越し",
+        "d": "FIFOの仕事に就くために行った引越しの航空券、荷物の輸送、一時的な宿泊は私的な移転費用です。収入を得られる状態に自分を置くことは、収入を得ることとは違います。"
+      },
+      {
+        "t": "最初のHigh Risk Work Licence",
+        "d": "雇ってもらうために払った資格は私的な費用です。その資格ですでに働いている状態での更新は控除できます。"
+      }
+    ],
+    "missed": [
+      {
+        "t": "自費で買った保護具と、その洗濯",
+        "d": "支給を待たずに自分で安全靴や手袋を買う人は多いのに、装備も、公表単価での洗濯も申告されないままになっています。"
+      },
+      {
+        "t": "自費で払ったメディカルと薬物アルコール検査",
+        "d": "すでに就いている役割のために雇用主が求めているなら控除できます。支出ではなく通過儀礼のように感じられるため、ほとんど申告されません。"
+      },
+      {
+        "t": "スイング中の携帯とインターネットの仕事使用分",
+        "d": "ローター、タイムシート、必須の導入教育はすべて個人の端末で行われます。金額は控えめでも、まったく正当な控除です。"
+      },
+      {
+        "t": "長いローターの1年での資格更新",
+        "d": "スイングの合間に払ったHigh Risk Work LicenceやWorking at Heightsの更新は、年度末には見失いやすいものです。"
+      },
+      {
+        "t": "複数の基金に残されたスーパーアニュエーション",
+        "d": "FIFOは賃金が高いぶん、スーパーの残高も他のワーホリの仕事より大きくなります。出国してもそのまま残るので、ビザが失効したあとにDASPとして請求する必要があります。"
+      }
+    ]
+  },
+  {
+    "kind": "answer",
+    "h2": "FIFOで結論が開いたままなのはどこですか？",
+    "paras": [
+      "Zone Tax Offsetは不可能ではなく、たいてい当てはまらないだけです。ワーキングホリデー中の拠点が指定ゾーン内にあった場合、たとえば大都市ではなく遠隔地の町の賃貸に住んでいた場合は、この問いは現実のものになります。通常どこに住み、どれだけの期間、そこに何を置いていたかで決まります。",
+      "かさばる道具の例外は、キャンプサービス職より、自前の工具セットを持って飛ぶ職人にとって重要です。何を運んだか、現場がどんな保管を用意していたかで決まり、確認される控除なので事実を説明できるようにしておいてください。",
+      "FIFOの申告で最大の問いは税務上の居住区分です。金額が大きいからです。長いスイング、その合間の固定した拠点、年単位の滞在という形は、イギリス、ドイツ、日本のパスポート保持者が税務上オーストラリア居住者だった場合にAddy判決が最も当てはまりやすいパターンです。その年の実態に対する判断なので、きちんと見てもらう価値があります。"
+    ]
+  }
+]
+
+const FAQS = [
+  {
+    "question": "FIFOで働くとZone Tax Offsetをもらえますか？",
+    "answer": "たいていもらえません。これがFIFOの税金で最大の誤解です。2015年の法改正以降、条件は物理的にどこで働くかではなく、通常の居住地が指定された遠隔地ゾーン内に年間183日を超えて所在していることです。スイングの合間に大都市に住みながらゾーン内の現場へ飛ぶ形はこの条件を満たしませんし、キャンプの宿泊は一時的でローターに結びついているため通常の居住地とは扱われません。"
+  },
+  {
+    "question": "キャンプの宿泊や食事は控除できますか？",
+    "answer": "できません。控除は自分の財布から出たお金しか戻せません。現場での部屋も食事も雇用主が手配して支払っているため、あなたの側に支出が存在しないからです。給与の額も、キャンプの環境がどうかも、この結論を変えません。"
+  },
+  {
+    "question": "スイング前の空港までの運転は控除できますか？",
+    "answer": "ほぼすべての場合できません。自宅から出発する空港までの移動は、他の人が職場へ向かうのと同じ通常の私的な通勤で、フライトがどれだけ早くても変わりません。本当にかさばる必要不可欠な道具を運ばなければならず、職場に安全に保管できない場合の狭い例外はありますが、キャンプサービス職ではまず当てはまりません。"
+  },
+  {
+    "question": "High Risk Work Licenceは控除できますか？",
+    "answer": "すでに持っているライセンスの更新は控除できます。最初の取得は控除できません。それはその役割に就く資格を得るための費用で、すでに就いている仕事をするための費用ではないからです。ATOが建設のホワイトカードや最初の運転免許に適用しているのと同じ、最初の取得と更新の区別です。"
+  },
+  {
+    "question": "ローター中の携帯とインターネットは何を控除できますか？",
+    "answer": "仕事使用分です。自分の携帯やインターネットをローターの確認、タイムシートの提出、必須のオンライン導入教育や研修に使っているなら、その割合は控除できます。割合には公正で正直な見積もりが必要です。他のことにも使っている端末で全額を申告しても通りません。"
+  }
+]
+
+const GUIDES = [
+  {
+    "href": "/ja/blog/tools-equipment-under-300-instant-deduction-whv",
+    "label": "300ドル以下の道具は全額即時控除",
+    "desc": "1点ずつ判定される理由と、セット購入で変わる点。"
+  },
+  {
+    "href": "/ja/blog/1000-dollar-instant-deduction-rule-2026",
+    "label": "2026年7月1日からの1,000ドル定額控除",
+    "desc": "領収書なしの定額か、実費か。選べるのは片方だけ。"
+  },
+  {
+    "href": "/ja/superannuation",
+    "label": "出国時のスーパーアニュエーション請求",
+    "desc": "DASPの仕組みと、そこから引かれる税。"
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/ja/tax-return",
+    "label": "タックスリターン"
+  },
+  {
+    "href": "/ja/superannuation",
+    "label": "スーパーアニュエーション"
+  },
+  {
+    "href": "/ja/tax-residency",
+    "label": "税務上の居住区分"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
+}
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "FIFOの経費控除：保護具、資格、Zone Offset",
+  description: "キャンプの食事も空港までの運転も控除できません。Zone Tax Offsetもおそらく対象外です。",
+  url: `${SITE_URL}/ja/expenses/fifo`,
+  inLanguage: "ja-JP",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   '@id': `${SITE_URL}/ja/expenses/fifo#webpage`,
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', '.hero-sub'],
-  },
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
   url: `${SITE_URL}/ja/expenses/fifo`,
 }
 
-function CompareTable({ label, rows, highlight }: { label: string; rows: string[][]; highlight?: boolean }) {
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
   return (
-    <div className="taxres-table-card" style={highlight ? { borderColor: '#0B5240', boxShadow: '0 8px 20px -8px rgba(11, 82, 64, 0.18)' } : {}}>
-      <h3 className="taxres-table-title">{label}</h3>
-      <table className="taxres-table">
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>
-          ))}
-        </tbody>
-      </table>
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"ja"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
     </div>
   )
 }
 
-export default function FifoExpensesPageJA() {
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -198,281 +414,238 @@ export default function FifoExpensesPageJA() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/ja" style={{ color: '#587066' }}>ホーム</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/ja/expenses" style={{ color: '#587066' }}>経費</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>FIFO</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '27ch' }}>
-                FIFOの税金控除：ロースターとキャンプ、そして<span style={{ color: '#0B5240' }}>Zone Offsetの誤解</span>
-              </h1>
-              <p className="font-semibold mx-auto hero-sub" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '56ch' }}>
-                2週間勤務・1週間休み——現場まで飛行機で向かい、スウィングをこなし、また飛行機で家に帰る。キャンプでの宿泊と食事は、通常あなたではなく雇用主が負担します。FIFOのロースターで実際に何を経費にできるか、そして多くのFIFO勤務者が当然もらえると思い込んでいるZone Tax Offsetの真実を、ここで正確にお伝えします。
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}
+              <span style={{ color: FOREST }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
+          </div>
+        </section>
+
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
+
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"ja"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
               </p>
             </div>
           </div>
         </section>
 
-        {/* ── REALISTIC FIFO ROLES ─────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                ワーキングホリデーメーカーが実際に就けるFIFOの仕事とは？
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '62ch' }}>
-                FIFO（フライ・イン・フライ・アウト）とは、遠隔地の鉱山や資源開発プロジェクトへ、決められた期間——スウィングやロースターと呼ばれ、一般的には2週間勤務・1週間休みのような形——だけ飛行機で向かい、次の勤務が始まるまでまた飛行機で家に帰る働き方です。れっきとした仕事であり、ワーキングホリデーメーカーが実際にFIFOの仕事に就くこともありますが、現実的にはFIFOの仕事の中でも特定の一部に限られることがほとんどです。
-              </p>
-            </div>
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5 max-w-[840px] mx-auto">
-              {REALISTIC_ROLES.map((c, i) => (
-                <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#F7FBF9', border: '1.5px solid #E2EFE9' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '8px' }}>{c.t}</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7 }}>{c.d}</p>
-                </div>
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* ── CAMP LIFE: THE UNIQUE HOOK ───────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                キャンプでの生活：雇用主が負担するものと、自己負担になるもの
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '60ch' }}>
-                FIFOのロースターには、他のバックパッカーの仕事にはあまりない特徴があります。現場にいる間の宿泊と食事を、雇用主が直接手配して負担してくれることです。
-              </p>
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
             </div>
-
-            <div className="max-w-[680px] mx-auto" style={{ marginBottom: '26px' }}>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                スウィング中、キャンプの部屋も食堂での食事も、あなたではなく会社が予約し、費用を負担しています。本当に遠隔地にある現場であれば、この種の宿泊と食事は通常、FBT（フリンジベネフィット税）のリモートエリア規則のもとで、あなたへの課税対象所得としてではなく、雇用主にとっての非課税のフリンジベネフィットとして扱われます。いずれにしても、タックスリターンにおける結論はシンプルです。あなたが部屋や食事の代金を自分のポケットから支払ったことは一度もないため、控除として申請できる費用がそもそも存在しないということです。控除は、あなたが実際に自分で使ったお金しか取り戻すことができません。
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="雇用主が負担するもの" rows={CAMP_PROVIDED_ROWS} highlight />
-              <CompareTable label="自分で負担するもの" rows={ON_YOUR_OWN_ROWS} />
-            </div>
-
-            <div className="max-w-[680px] mx-auto" style={{ marginTop: '30px' }}>
-              <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-                現場までの移動
-              </h3>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                現場までのフライト自体は、通常ロースターの一部として雇用主が手配し、費用を負担します。対象外なのは、自宅から空港や出発地点までの、あなた自身の移動です。これは他の誰もが行う職場までの移動と同じ、通常の私的な通勤にあたり、フライトがどれだけ早朝であっても、自宅が空港からどれだけ離れていても控除の対象にはなりません。
-              </p>
-
-              <div className="flex flex-col gap-3" style={{ marginBottom: '14px' }}>
-                {BULKY_TOOLS_CONDITIONS.map((c, i) => (
-                  <div key={i} className="taxres-condition-item">
-                    <span className="taxres-condition-num">{i + 1}</span>
-                    <p className="taxres-condition-text">{c}</p>
-                  </div>
-                ))}
-              </div>
-              <p className="font-light" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.6, marginBottom: '22px' }}>
-                その移動が控除の対象になるには、この3つの条件すべてに当てはまる必要があります。実際には、これは自分の工具一式を持って現場入りする職人にとってより意味のある狭い例外であり、ほとんどのキャンプサービス系の仕事では、通常はそこまでかさばるものがなかったり、現場に安全に保管できない理由がなかったりします。
-              </p>
-
-              <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-                FIFOの仕事に就くための引っ越し
-              </h3>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                たとえばパースやブリスベンなど、FIFOの仕事のために拠点を置く目的で移住する場合、その引っ越し自体にかかる費用——航空券、貨物輸送費、生活が落ち着くまでの一時的な宿泊費など——は、仕事に関連する控除ではなく、私的な引っ越し費用として扱われます。その引っ越しが仕事に就くことと明らかに関係していたとしても、この点は変わりません。ATOは、新しい仕事のために引っ越す費用を、収入を得られる立場に自分を置くための費用とみなし、実際にそこで収入を得るための費用とはみなさないためです。
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ── ZONE TAX OFFSET: PROMINENT MYTH-CORRECTION (unique hook) ────── */}
-        <section className="bg-white" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <span className="section-label">FIFOの税金に関する最大の誤解</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 18px' }}>
-              Zone Tax Offset：ゾーンで働くことと、ゾーンに住むことは同じではありません
-            </h2>
-
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              遠隔地の鉱山や資源開発現場にフライ・イン・フライ・アウトで通っているというだけで、その現場がATOの指定する辺境ゾーンの中にあるからといって、自動的にZone Tax Offsetの対象になると考えている人は少なくありません。しかし典型的なFIFOの勤務形態では、この思い込みは通常誤りです。
-            </p>
-
-            <div className="rounded-2xl" style={{ padding: '20px 22px', background: '#FDF0D5', border: '1.5px solid #F9D88A', borderLeft: '4px solid #E9A020', margin: '22px 0' }}>
-              <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '8px', letterSpacing: '-0.01em' }}>
-                大切なのは、どこに住んでいるかであって、どこへ飛行機で向かうかではありません。
-              </p>
-              <p className="font-light" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.75 }}>
-                2015年の法改正以降、この基準はもはや、ゾーン内で実際に何日働いたかだけで判断されるものではありません。対象となるためには、あなたの通常の居住地——単に出勤して働いている場所ではなく、実際に生活している場所——そのものが、その会計年度中に183日を超えて指定ゾーン内に所在している必要があります。ゾーン内のロースターで働くために飛行機で通っていても、あなたの通常の居住地がそのゾーンの外にある場合、たとえ複数のスウィングを通じて年間183日をはるかに超えて現場で過ごしていたとしても、この基準は満たされません。
-              </p>
-            </div>
-
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              FIFOの仕事をしているほとんどのワーキングホリデーメーカーにとって、これによってオフセットの対象外となります。ワーキングホリデー中のあなたの通常の居住地は、鉱山のキャンプではありません。キャンプでの宿泊は一時的なもので、ロースターに紐づいており、その週にもし現場にいなければ本来生活していたはずの場所ではないからです。あなたの通常の居住地は、スウィングの合間に実際に拠点としている場所——パース、ブリスベン、ダーウィン、カラサ、あるいはワーキングホリデー中にあなたが「自宅」と呼ぶその他のどこか——です。その拠点そのものが指定ゾーンの中にない限り、現場がどれだけ遠隔地にあっても、年に何回スウィングをこなしても、飛行機で仕事に通うだけではオフセットを受けることはできません。
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              もしご自身の状況が実際に異なる場合——たとえば、ワーキングホリデー中の実際の拠点が指定ゾーンの中にある場合——は、どちらとも決めつけずに、タックスリターンを作成する際に確認しておく価値があります。
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
         </section>
 
-        {/* ── PPE, TOOLS & THE $300 RULE ───────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                PPE、工具と$300ルール
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                仕事のために実際に自分で購入し、払い戻しを受けていないものは控除の対象になります。どのように申請するかは、それが何であるか、そしていくらであるかによって変わります。
-              </p>
-            </div>
-
-            <div className="max-w-[680px] mx-auto" style={{ marginBottom: '24px' }}>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                自分で購入する個人保護具——つなぎ、先芯入りの安全靴、手袋、保護メガネ、マスクなど——は、単に持っていると便利だからではなく、現場での特定のリスクからあなたを守るものであるため控除の対象になります。その装備を自分で洗濯する費用も控除の対象です。これは、雇用主がストアから支給したり、貸与したり、払い戻したりしたものには一切当てはまりません。控除できるのは、実際に自分のポケットから出たものだけです。
-              </p>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                普通のズボン、Tシャツ、現場の寒い朝のためのセーターといった普段着は、スウィングの間にどれだけ傷んだり汚れたりしても、控除の対象には一切なりません。対象となるには、上記のPPEのように実際の保護機能を持っている必要があり、単に仕事にふさわしい服装であるというだけでは不十分です。
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="$300未満" rows={UNDER_300_ROWS} highlight />
-              <CompareTable label="$300以上" rows={OVER_300_ROWS} />
-            </div>
-            <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, maxWidth: '62ch', marginTop: '18px' }}>
-              複数の工具をまとめてセットとして購入し、合計金額が$300以上になる場合は、個々の工具が単体では$300未満であっても、セット全体を耐用年数にわたって減価償却します。
-            </p>
-          </div>
-        </section>
-
-        {/* ── TICKETS & LICENCES: FIRST VS RENEWAL ─────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                チケットと免許：初回取得と更新の違い
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                High Risk Work Licence、Working at Heightsのチケット、フォークリフト免許——そのどれが控除の対象になるかは、同じ一つの違いによって決まります。
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="最初のチケットや免許" rows={FIRST_TICKET_ROWS} />
-              <CompareTable label="すでに持っているチケットの更新" rows={RENEWAL_TICKET_ROWS} highlight />
-            </div>
-
-            <p className="font-light mx-auto text-center" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.7, maxWidth: '64ch', marginTop: '20px' }}>
-              これは、このサイトが建設業のWhite Cardに適用しているのと同じ考え方であり、ATOが運転免許証に適用しているのと同じ考え方でもあります。ある職に就くために必要な資格や許可を初めて取得する費用は私的な支出ですが、すでに仕事で使っている資格を維持する費用は控除の対象になります。初めて取得するHigh Risk Work Licence、Working at Heightsのチケット、フォークリフト免許は私的な支出であり、すでに現場でそれを使って働いている状態で更新する費用は控除の対象になります。
-            </p>
-          </div>
-        </section>
-
-        {/* ── PHONE, SELF-EDUCATION, TESTING & RECORDS ─────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                携帯電話、研修、検査、そして記録の保管
-              </h2>
-            </div>
-
-            <div className="max-w-[680px] mx-auto">
-              <p className="font-light" style={{ fontSize: '14px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '16px' }}>
-                仕事に関連する通話は控除の対象になり、ロースターの確認、タイムシートの提出、必須のオンライン導入研修や訓練モジュールの受講など、仕事のために実際に必要としている場合は、携帯電話とインターネットプランの按分された部分も控除の対象になります。請求額の全額を申請するのではなく、仕事で使用している割合について公平で正直な見積もりをつけておきましょう。
-              </p>
-              <p className="font-light" style={{ fontSize: '14px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '16px' }}>
-                すでに従事している仕事に直接関連する短期コースやTAFEの単位は控除の対象になり、これはこのサイトで紹介しているすべての職業に共通する自己啓発費用の基準と同じです。雇用主からセミナーや研修の受講のために出張を求められ、通常の拠点を離れて滞在する必要がある場合、その交通費と宿泊費も控除の対象になります。最初のCertificate IIのように、そもそもその職に就く資格を得るためだけに受講する入門レベルのコースは、最初のチケットと同じ扱いになります。つまり、すでに就いている仕事をするための費用ではなく、その仕事に就く資格を得るための私的な費用です。
-              </p>
-              <p className="font-light" style={{ fontSize: '14px', color: '#2A3C34', lineHeight: 1.8 }}>
-                多くのFIFOの雇用主は、現場で働くための条件として健康診断や薬物・アルコール検査を求めます。すでに就いている職のために雇用主がこれを求めており、その費用を自分で支払う必要がある場合、その費用は控除の対象になります。
-              </p>
-            </div>
-
-            <div className="taxres-savings-box" style={{ marginTop: '28px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-              <div>
-                <p className="taxres-savings-heading">記録の保管について</p>
-                <p className="taxres-savings-body">
-                  請求するすべての項目について、金額、日付、購入先、購入した物の説明が記載されたレシート、請求書、または銀行明細を保管してください。スマートフォンで撮った写真でも構いませんが、5年間提示できる状態にしておく必要があります。
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-        <NextStep
-          eyebrow="準備ができたら"
-          heading="FIFOの経費、いくらになるか確認しましょう"
-          body="無料の計算ツールで手軽に概算するか、直接メッセージをお送りいただければ、あなたのロースターやチケット、キャンプでの取り決めを一つひとつ確認します。"
-          cta="計算ツールを試す →"
-          href="/ja/calculator"
-        />
-
-        {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-        <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">よくあるご質問</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  FIFOの控除に関するご質問
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  ご自身のロースターや現場について質問がありますか？お気軽に直接メッセージをお送りください。
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── RELATED SERVICES ─────────────────────────────────────────────── */}
-        <RelatedServices
-          label="関連サービス"
-          items={[
-            { label: 'TFN申請', desc: '初めてのスウィングの前にタックスファイルナンバーを取得しておきましょう。', href: '/ja/tfn' },
-            { label: 'タックスリターン', desc: '申告書を提出し、FIFOの仕事の経費を申請しましょう。', href: '/ja/tax-return' },
-            { label: 'スーパーアニュエーション（DASP）', desc: 'オーストラリア出国後にスーパーを取り戻しましょう。', href: '/ja/superannuation' },
-            { label: '職業別の控除ガイド', desc: 'FIFOだけでなく、あらゆるバックパッカーの仕事の控除を確認できます。', href: '/ja/expenses' },
-          ]}
-        />
-
-        {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません。ロースター、現場、キャンプでの取り決めは一人ひとり少しずつ異なり、特にZone Tax Offsetは、ロースターでどこへ行くかではなく、あなた自身の通常の居住地によって判断されます。当社にご依頼いただいた場合、タックスリターンはワーホリ専門のチームによって作成され、お客様の具体的なロースター、チケット、状況を確認したうえで、請求できるものはすべて、請求できないものは一切含めないようにいたします。
-            </p>
-            <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              税金の還付金を受け取る →
-            </Link>
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/ja/tax-form" lang="ja" />
+
+      <MobileCta href={WA} lang={"ja"} topic="expenses" />
     </>
   )
 }

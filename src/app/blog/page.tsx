@@ -2,10 +2,12 @@ import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { guides, categoryMeta } from './data'
 import BlogClient from './BlogClient'
+import { MobileCta } from '@/components/ui/MobileCta'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Working Holiday Tax Refund Blog - WHV Tax Guides for Backpackers',
-  description: 'Working holiday tax refund guides for backpackers in Australia. Practical articles on WHV tax returns, refund amounts, TFN, ABN, super refund (DASP), 417/462 visa tax - everything you need to claim your Australian tax refund.',
+  title: 'Backpacker Tax Guides for 417 and 462',
+  description: 'Working holiday tax guides for backpackers in Australia. WHV tax returns, refund amounts, TFN, ABN, super refund (DASP) and 417 and 462 visa tax.',
   keywords: [
     'working holiday tax refund blog',
     'WHV tax refund guide Australia',
@@ -57,6 +59,10 @@ export const metadata: Metadata = {
     },
   },
 }
+
+// Card fields only. Anything passed to BlogClient crosses into the client
+// bundle, and the article bodies are megabytes the listing never renders.
+const guideCards = guides.map(({ body: _body, ...card }) => card)
 
 export default function BlogPage() {
   // CollectionPage schema for the blog hub, with ItemList of all category pages.
@@ -134,8 +140,9 @@ export default function BlogPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
       <main style={{ background: '#fff', minHeight: '100vh' }}>
-        <BlogClient guides={guides} />
+        <BlogClient guides={guideCards} />
       </main>
+      <MobileCta href={waUrl({ topic: "guide", lang: "en" })} lang="en" topic="guide" />
     </>
   )
 }

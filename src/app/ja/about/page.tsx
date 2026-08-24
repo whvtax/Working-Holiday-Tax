@@ -1,15 +1,16 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { ReviewsGate } from '@/components/ui/ReviewsGate'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
-import { WA_URL, SITE_URL } from '@/lib/constants'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
+import { SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: '当社について - 運営者情報 | Working Holiday Tax',
-  description: '当社のお客様はただ一種類、417・462ビザのワーキングホリデーメーカーだけです。タックスリターン、TFN、スーパー（DASP）、ABN - 素早い返信、完全オンライン、あなたの言語で対応します。',
+  title: '運営者情報：417・462ビザ専門です',
+  description: 'ワーホリの税金だけを扱っています。お客様は全員417または462ビザの方。最初の給与明細から帰りの飛行機まで、私たちが見ている1年の話です。',
   keywords: [
     'ワーホリ 税金 専門 オーストラリア',
     'バックパッカー 税金 サポート',
@@ -31,8 +32,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    title: 'Working Holiday Taxについて - 運営者情報',
-    description: 'お客様はワーキングホリデーメーカーだけ。複数の雇用主、ホステルの住所、年度途中の帰国 - ワーホリの1年をよく知るチームが、素早くお答えします。',
+    title: 'Working Holiday Taxについて',
+    description: 'お客様は417・462ビザのワーホリの方だけ。最初の給与明細から帰りの飛行機まで、私たちが毎日見ている1年の話です。',
     url: `${SITE_URL}/ja/about`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -41,32 +42,72 @@ export const metadata: Metadata = {
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Working Holiday Taxについて - 運営者情報',
-    description: 'お客様はワーキングホリデーメーカーだけ。素早い返信、完全オンライン、あなたの言語で。',
+    title: 'Working Holiday Taxについて',
+    description: 'ワーホリの税金だけを扱っています。お客様は全員417または462ビザの方です。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
+const WA = waUrl({ topic: 'general', lang: 'ja' })
+
+/**
+ * 英語版と同じ方針です。物語は読み手自身の1年であって、作られた会社の
+ * 沿革ではありません。すべての文が文字どおり事実である必要があります。
+ * 物語より実際の事実のほうが強い箇所には、推測を書かずにJOマーカーを
+ * 残してあります。
+ */
+const chapters = [
+  {
+    stage: '最初の1週間',
+    title: '2週間先までしか決まっていない計画で到着した',
+    body: 'ホステル、SIMカード、銀行口座、そしてできるだけ早く仕事。TFN（タックスファイルナンバー）もリストのどこかにはあって、申請だけして、あとは目の前のことに追われた。みんなそうです。オーストラリアの会計年度の仕組みを説明してくれる人は、この時点では誰もいませんでした。説明する理由のある人がいなかったからです。',
+  },
+  {
+    stage: '最初の給与明細',
+    title: 'TFNが届く前に、最初の仕事が始まった',
+    body: 'TFNが登録されていないと、雇用主はワーホリの通常の税率である15%ではなく、最も高い税率で源泉徴収することが義務づけられています。だから最初の数週間分は、半分近くが引かれています。職場の誰も説明しませんでした。それは雇用主の仕事ではないからです。この分は、年度末に自動で戻ってくるものではありません。誰かが請求しなければ、そのままです。',
+  },
+  {
+    stage: 'クリスマスまでに',
+    title: '雇用主は4つ、半分はカジュアル、誰も何も教えてくれない',
+    body: 'ホステルの仕事、カフェ、3週間だけの倉庫、そして最後の給与明細をもらえないまま辞めた仕事。オーストラリアの会計年度が12月ではなく6月に終わることも、誰も言いませんでした。なくした給与明細のことを、内心まずいと思っているかもしれません。問題ありません。雇用主が報告した内容はATOを通じて私たちに見えるので、あなたの受信トレイではなく公式の記録から作業を始めます。',
+  },
+  {
+    stage: '88日',
+    title: 'やったのなら、そのためにかなり遠くまで行ったはずです',
+    body: '西へ、北へ、聞いたこともない町からさらに3時間。宿泊費は受け取る前の給料から直接引かれ、給与明細も都市部のものとは形が違っていた。この期間について、みなさん一番自信がありません。そしてここは、チェックを入れて済ませるのではなく、きちんと見る必要が最も多い部分でもあります。',
+  },
+  {
+    stage: '帰りの飛行機',
+    title: 'あなたは帰り、お金は残った',
+    body: 'スーパーアニュエーションは、オーストラリアを出国してビザが失効した後でなければ請求できません。だからあなたの分は、自分で選んだ覚えもないファンドにまだ残っています。最初の数週間に引かれすぎた税金も、ATOにそのままあります。空港でも、出国ゲートでも、働いた先の誰からも、そのことは言われません。',
+  },
+]
+
 const faqs = [
   {
-    question: '普通の会計士と何が違うのですか？',
-    answer: '一般の会計士がワーキングホリデーメーカーを担当するのは年に数回程度です。当社はそれ以外を扱いません。417・462ビザの税率表、出国後のDASPスーパー請求、パスポートによって変わるメディケア免除、1年で3つの州・4つの雇用主 - これらは当社にとって「調べなければならない特殊ケース」ではなく、毎日の仕事そのものです。この専門特化こそが、速さと正確さの理由です。',
+    question: 'どんな人を対象にしているのですか？',
+    answer: 'ワーキングホリデーの方だけです。お客様は全員、417または462ビザでオーストラリアにいる方か、かつてそのビザで滞在して現在は帰国された方です。オーストラリアの居住者、学生ビザの方、就労ビザの方、法人のお客様はお受けしていません。つまりワーホリの1年は、たまに扱う案件ではなく、私たちが扱う唯一の案件です。',
   },
   {
-    question: '実際、どのくらい早く返信してもらえますか？',
-    answer: 'WhatsAppでメッセージを送っていただければ、営業時間内なら通常1時間以内に、実在のスタッフが返信します。コールセンターも、チケット待ちの列も、「5〜7営業日お待ちください」もありません。確認が必要な場合は、そのこともすぐにお伝えします。',
+    question: 'すでにオーストラリアを出国していても対応できますか？',
+    answer: 'はい。むしろ業務の大きな部分がそれです。スーパーアニュエーションは出国してビザが失効した後でなければ請求できませんし、すでに終わった年度のタックスリターンはどこからでも提出できます。すべてオンラインで完結します。1点だけ先に。ATOはタックスリターンの還付金をオーストラリアの口座にしか支払えませんが、スーパー（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、最初のメッセージで教えてください。',
   },
   {
-    question: 'ワーホリの1年がどんなものか、本当に理解していますか？',
-    answer: 'はい - それだけを扱っているからです。ホステルの郵送先住所、何かおかしいファームの給与明細、申告方法に迷う現金払いの数週間、最後の給与明細をもらわずに辞めた仕事、会計年度の途中での帰国。あなたのワーホリの1年がどんな形でも、当社はほぼ確実に同じケースを扱ったことがあります。',
+    question: '給与明細（ペイスリップ）は必要ですか？',
+    answer: 'いりません。雇用主が源泉徴収して報告した内容はATOを通じて私たちに見えるので、8か月前に辞めた職場の書類を探していただく必要はありません。お聞きした内容と雇用主の報告が食い違っている場合は、その差をこちらで処理します。公式の記録から始めるのは、そのためでもあります。',
   },
   {
-    question: 'オーストラリアに滞在中の方だけが対象ですか？',
-    answer: 'いいえ。当社が行う業務の多く、特にスーパーアニュエーション（DASP）請求や過年度分のタックスリターンは、すでにオーストラリアを離れて帰国された後に発生しています。書類のアップロード、本人確認と署名の電子手続き、還付金のオーストラリアまたは海外の銀行口座への振込まで、すべてオンラインで完結します。',
+    question: 'myGovのアカウントは必要ですか？',
+    answer: 'いりません。myGovにログインしたり、オーストラリアのIDを連携したり、どの書類がどれなのかを調べたりする必要は一切ありません。ATOとのやり取りはこちらで行います。すでに試して本人確認のところで止まってしまった方も多いのですが、それによって私たちがお手伝いできるかどうかが変わることはありません。',
   },
   {
-    question: '対応している言語は何ですか？',
-    answer: 'サイトは英語・ドイツ語・日本語で運営していますが、サポートはそれに限りません。あなたが一番使いやすい言語でご連絡ください。その言語で対応します。オーストラリアの税金を初めて知る方に分かりやすく説明することが当社の仕事の中心です - どの言語でも。',
+    question: '返信は何語で来ますか？',
+    answer: 'あなたが書いた言語で返ってきます。日本語でも英語でも、ご自分の状況を一番説明しやすい言語でお書きください。その言語でお返事します。この仕事の大半は、オーストラリアの税金に初めて触れる方に分かるように説明することです。母語でも十分ややこしい話ですから。',
+  },
+  {
+    question: '結果的に還付がなかった場合はどうなりますか？',
+    answer: '還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。すべてのワーホリの1年に還付が出るわけではないので、見込みが薄いのであれば、引き受けて期待させるより先にお伝えします。',
   },
 ]
 
@@ -76,6 +117,7 @@ const aboutPageSchema = {
   '@id': `${SITE_URL}/ja/about#webpage`,
   url: `${SITE_URL}/ja/about`,
   name: 'Working Holiday Taxについて',
+  description: 'ワーホリの税金だけを扱っています。お客様は全員417または462ビザの方です。',
   inLanguage: 'ja',
   mainEntity: { '@id': `${SITE_URL}/#business` },
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.about-lead'] },
@@ -101,6 +143,8 @@ const breadcrumbSchema = {
   ],
 }
 
+const bodyStyle = { fontSize: 'clamp(15px,1.2vw,16px)', lineHeight: 1.85, color: '#2A3C34', fontWeight: 300 } as const
+
 export default function JapaneseAboutPage() {
   return (
     <>
@@ -110,153 +154,183 @@ export default function JapaneseAboutPage() {
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-9 lg:pt-14 lg:pb-14">
 
           <nav aria-label="パンくずリスト" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
-            <Link href="/ja" className="transition-colors hover:text-forest-500">ホーム</Link>
-            <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
-            <span aria-current="page">当社について</span>
+            style={{ fontSize: '13px', color: '#4C6459' }}>
+            <Link href="/ja" className="transition-colors hover:text-forest-500" style={{ padding: '4px 0' }}>ホーム</Link>
+            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-current="page" style={{ color: '#0B5240' }}>当社について</span>
           </nav>
 
-          <div className="grid lg:grid-cols-[1fr_360px] gap-8 lg:gap-12 lg:items-center">
-            <div className="max-w-[560px] lg:max-w-[700px]">
-              <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-                <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                  当社について
-                </span>
-              </div>
-
-              <h1 className="font-serif font-black text-ink"
-                style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
-                バックパッカーのために。それ以外はやらないチームです。
-              </h1>
-
-              <p className="about-lead font-semibold text-ink"
-                style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.4 }}>
-                Working Holiday Taxのお客様はただ一種類、417または462のワーキングホリデービザ保持者だけです。タックスリターン、TFN、ABN、スーパー、メディケア - それが仕事のすべて。だからこそ速く、正確なのです。
-              </p>
-
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '46ch' }}>
-                WhatsAppでメッセージを送れば、実在のスタッフが返信します - 営業時間内なら通常1時間以内。オーストラリア滞在中でも、帰国後でも。
-              </p>
-
-              <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4" style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
-                <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex justify-center"
-                  style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
-                  お気軽にご相談ください →
-                </a>
-                <Link href="/ja/contact" className="inline-flex btn-ghost-dark justify-center"
-                  style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
-                  お問い合わせ →
-                </Link>
-              </div>
+          <div className="max-w-[680px]">
+            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
+              <span className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240' }}>
+                当社について
+              </span>
             </div>
 
-            <div className="max-w-[280px] mx-auto w-full lg:max-w-none">
-              <div className="rounded-3xl overflow-hidden" style={{ aspectRatio: '532/745', border: '1.5px solid #E2EFE9', boxShadow: '0 20px 40px -20px rgba(11,82,64,0.25)' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/about/team-office.jpg" alt="協力して働く若いプロフェッショナルたち" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
+            {/* JO: このページは「読み手自身の1年」として書いています。すべての文が
+                事実であると言い切れる物語が、これしかないためです。実際の創業の
+                いきさつをここに置きたい場合は、2〜3文いただければ差し替えます。 */}
+            <h1 className="font-serif font-black text-ink"
+              style={{ fontSize: 'clamp(25px,3.2vw,40px)', lineHeight: 1.25, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+              計画は持って来た。<br />税金の話は、誰もしなかった。
+            </h1>
+
+            <p className="about-lead text-ink"
+              style={{ fontSize: 'clamp(16.5px,1.5vw,18px)', fontWeight: 500, lineHeight: 1.7, marginBottom: '12px' }}>
+              私たちはワーホリの税金だけを扱っています。下の1年に心当たりがあるなら、オーストラリアにはまだ、あなたの名前のついたお金が残っているはずです。
+            </p>
+
+            <div className="flex flex-col gap-3 sm:flex-row" style={{ marginTop: '26px', maxWidth: '480px' }}>
+              <WaLink href={WA} position="hero" topic="general" lang="ja"
+                className="btn-primary inline-flex justify-center"
+                style={{ minHeight: '54px', padding: '0 30px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
+                なんでも聞いてください →
+              </WaLink>
+              <Link href="/ja/contact" className="inline-flex btn-ghost-dark justify-center"
+                style={{ minHeight: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
+                その他の連絡方法 →
+              </Link>
+            </div>
+            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+              返信するのは実在のスタッフです。営業時間内なら、だいたい1時間以内にお返事します。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── ワーホリの1年 ─────────────────────────────────────────────────── */}
+      <section className="py-11 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px] mx-auto">
+
+            <span className="section-label">ワーホリの1年</span>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.35, letterSpacing: '-0.02em', margin: '10px 0 16px' }}>
+              私たちから見たワーホリの1年は、どんな形をしていますか？
+            </h2>
+            <p style={{ ...bodyStyle, marginBottom: '30px' }}>
+              名前と地名が違うだけで、だいたいこの形です。417・462ビザのほぼ全員に、おおよそこの順番で5つのことが起きます。そのうち4つは、あとから取り戻せることが多いお金の話です。
+            </p>
+
+            <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+              {chapters.map((c, i) => (
+                <li key={i} style={{
+                  position: 'relative',
+                  paddingLeft: '20px',
+                  paddingBottom: i === chapters.length - 1 ? 0 : '28px',
+                  borderLeft: i === chapters.length - 1 ? 'none' : '1.5px solid #CDE3DB',
+                  marginLeft: '4px',
+                }}>
+                  <span aria-hidden="true" style={{
+                    position: 'absolute', left: '-6px', top: '6px', width: '10px', height: '10px',
+                    borderRadius: '999px', background: '#16775C', border: '2px solid #F5F9F7',
+                  }} />
+                  <p className="font-medium" style={{ fontSize: '11.5px', letterSpacing: '0.1em', color: '#16775C', marginBottom: '6px' }}>
+                    {c.stage}
+                  </p>
+                  <h3 className="font-serif font-bold text-ink" style={{ fontSize: 'clamp(17px,1.7vw,20px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '8px' }}>
+                    {c.title}
+                  </h3>
+                  <p style={bodyStyle}>{c.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 私たちが存在する理由 ──────────────────────────────────────────── */}
+      <section className="py-11 lg:py-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px] mx-auto">
+            <span className="section-label">私たちが存在する理由</span>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.35, letterSpacing: '-0.02em', margin: '10px 0 16px' }}>
+              なぜワーキングホリデーの方だけを扱うのですか？
+            </h2>
+            <p style={{ ...bodyStyle, marginBottom: '14px' }}>
+              そこが唯一向き合っている年だからです。お客様は全員417または462ビザの方なので、あなたの還付額を左右する要素は、調べ直さなければならない珍しいケースではありません。毎日それを見ています。
+            </p>
+            <p style={{ ...bodyStyle, marginBottom: '14px' }}>
+              一般の会計士がバックパッカーに会うのは、7月に、200件の普通の申告の合間に年に数回です。417・462の税率表、日数の数え方だけでは決まらない居住区分の判断、パスポート（国籍）で変わるメディケア免除、出国から11か月後に東京や大阪の自室から出すスーパーアニュエーションの請求。私たちにとっては、どれもごく普通の1日の仕事です。
+            </p>
+            <p style={bodyStyle}>
+              送信ボタンを押すだけなら誰にでもできます。仕事はその前にあります。あなたの1年を洗い直し、手早く済む選択肢ではなく正しいほうを確かめ、そのうえで申告します。
+            </p>
+
+            {/* JO: 「なぜワーホリ専門なのか」の本当の答えだけは、こちらで書けません。
+                ご自身の言葉で2〜3文いただければ、ちょうどここに入ります。 */}
+
+            {/* JO: 旧版のこのページには「2020年から運営」という数字と、チームの写真の
+                ように読めるストック画像がありました。裏取りできないため両方外して
+                います。創業年をご確認いただき、実際の写真をいただければ戻します。 */}
+
+            <div className="rounded-2xl" style={{ marginTop: '28px', padding: '20px', background: '#F2FAF7', border: '1.5px solid #C8EAE0' }}>
+              <p className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.6, marginBottom: '8px' }}>
+                還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。
+              </p>
+              <p style={{ ...bodyStyle, fontSize: '15px' }}>
+                すべてのワーホリの1年に還付が出るわけではありません。見込みが薄い場合は、そのこともお伝えします。決める前に、まず聞いてください。質問は無料で、返信するのは実在のスタッフです。
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── TRUST SIGNALS STRIP ───────────────────────────────────────────── */}
-      <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-            {[
-              { stat: <GoogleRating variant="number" lang="ja" />, label: 'Google評価' },
-              { stat: <GoogleRating variant="count" lang="ja" />, label: ' ' },
-              { stat: '2020', label: '運営開始' },
-              { stat: '全言語', label: 'あなたの言語でサポート' },
-            ].map((item, i) => (
-              <div key={i} className="text-center">
-                <div className="font-serif" style={{ fontSize: 'clamp(20px, 3.4vw, 26px)', fontWeight: 800, color: '#0B5240', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '4px' }}>
-                  {item.stat}
-                </div>
-                <div style={{ fontSize: '11px', color: '#587066', letterSpacing: '0.02em' }}>
-                  {item.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── ワーホリの1年を理解しています ─────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      {/* ── 連絡方法 ─────────────────────────────────────────────────────── */}
+      <section className="py-11 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[720px] mx-auto">
-            <span className="section-label">選ばれる理由</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,32px)', lineHeight: 1.12, letterSpacing: '-0.025em', margin: '10px 0 18px' }}>
-              ワーホリの1年を理解しています
+          <div className="max-w-[680px] mx-auto">
+            <span className="section-label">ご連絡について</span>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.35, letterSpacing: '-0.02em', margin: '10px 0 16px' }}>
+              どうやって連絡すればいいですか？
             </h2>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              ワーキングホリデーの1年は、普通の納税者の1年とはまったく違います - 当社はそれを前提に仕事をしています。3つの州にまたがる4つの雇用主。何かがおかしいファームの給与明細。郵送先はホステル。最後の給与明細をもらえないまま辞めた仕事。会計年度の途中での帰国。これらは当社にとって「特殊なケース」ではなく、ごく普通の毎日です。
+            <p style={{ ...bodyStyle, marginBottom: '14px' }}>
+              WhatsAppです。ボットでも、チケット番号でも、「5〜7営業日お待ちください」という自動フォームでもありません。質問ひとつだけ送って、それで終わりにしても構いません。メッセージを送ったからといって、何かが決まるわけではありません。
             </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              417・462の案件だけを扱っているため、あなたの状況を二度説明する必要はありません。どのファーム雇用主が間違った税率で源泉徴収しがちか、どのスーパーファンドが認証コピーを求めるか、あなたのパスポートでメディケア免除がいくらの価値になるか、海外から申告すると何が変わるか - すべて把握しています。情報を一度送っていただければ、あとは当社が動きます。
+            <p style={{ ...bodyStyle, marginBottom: '22px' }}>
+              説明しやすい言語で書いてください。その言語のままお返事します。始めるのにmyGovのアカウントも、オーストラリアのIDも、給与明細も必要ありません。オーストラリアに滞在中でも、帰国して2年経っていても、扱いは変わりません。
             </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              そしてスピードもバックパッカー仕様です。すべてオンライン、窓口はWhatsApp、返信するのは実在のスタッフ - 営業時間内なら通常1時間以内。オフィスへの来訪も、電話の自動音声も、帰国便が近づく中で1週間返事を待つこともありません。
-            </p>
-          </div>
-        </div>
-      </section>
 
-      {/* ── なぜワーホリ専門か ────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">専門分野</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px' }}>
-              ワーキングホリデーメーカーだけに特化する理由
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 max-w-5xl mx-auto">
-            {[
-              { t: '独自の税率表', d: '417・462ビザ向けの税率表は、45,000ドルまで1ドル目から15%が適用される仕組みで、一般的な税務ソフトが前提とする居住者向けの税率表とは異なります。' },
-              { t: '出国後のDASP', d: 'スーパーアニュエーションは、オーストラリアを出国しビザが失効した後にのみ利用できる特定の手続き（DASP）を通じて払い戻しを請求します。一般的な会計士がこれを扱うことはほとんどありません。' },
-              { t: '国籍で変わるメディケア', d: 'メディケア・レヴィ免除が適用されるかどうかは、パスポート（国籍）とオーストラリアの社会保険協定によって決まります。一般的なチェックリストでは見落とされやすいポイントです。' },
-              { t: '季節労働・複数雇用主の収入', d: 'ファーム、飲食業、配達の仕事など、1年の間に複数の州・雇用主にまたがる収入がある場合、そのすべてを正しく突き合わせて申告する必要があります。' },
-            ].map((c, i) => (
-              <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#F7FBF9', border: '1.5px solid #E2EFE9' }}>
-                <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '8px' }}>{c.t}</p>
-                <p className="font-light" style={{ fontSize: '12.5px', color: 'rgba(10,15,13,0.6)', lineHeight: 1.7 }}>{c.d}</p>
-              </div>
-            ))}
+            <WaLink href={WA} position="section" topic="general" lang="ja"
+              className="btn-primary inline-flex justify-center w-full sm:w-auto"
+              style={{ minHeight: '54px', padding: '0 32px', fontSize: '15px', borderRadius: '100px', minWidth: '260px' }}>
+              WhatsAppで相談する →
+            </WaLink>
           </div>
         </div>
       </section>
 
       {/* ── REVIEWS ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center mb-8 reveal">
-            <span className="section-label center">実際の声</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              ワーホリ参加者からのお声
-            </h2>
+      {/* Hidden entirely when the reviews feed is empty, so the heading
+          never stands alone over blank space. */}
+      <ReviewsGate>
+        <section className="py-10 lg:py-14 bg-white">
+          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+            <div className="max-w-xl mx-auto text-center mb-8">
+              <span className="section-label center">実際の声</span>
+              <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(20px,2.04vw,26px)', lineHeight: 1.4, letterSpacing: '-0.02em' }}>
+                ワーホリ参加者からのお声
+              </h2>
+            </div>
+            <GoogleReviews lang="ja" />
           </div>
-          <GoogleReviews lang="ja" />
-        </div>
-      </section>
+        </section>
+      </ReviewsGate>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
+      <section className="py-11 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-            <div className="text-center">
-              <span className="section-label center">よくあるご質問</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                当社についてのご質問
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-start">
+            <div>
+              <span className="section-label">よくあるご質問</span>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.04vw,26px)', lineHeight: 1.4, letterSpacing: '-0.02em', marginTop: '10px', marginBottom: '10px' }}>
+                メッセージを送る前によく聞かれること
               </h2>
-              <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                他にご質問があれば、お気軽に直接メッセージをお送りください。
+              <p style={{ ...bodyStyle, marginBottom: '22px' }}>
+                ほかにも気になることがあれば、WhatsAppで聞いてください。読むより早いです。
               </p>
             </div>
             <div className="max-w-[700px]">
@@ -266,16 +340,29 @@ export default function JapaneseAboutPage() {
         </div>
       </section>
 
-      {/* ── NEXT STEP ────────────────────────────────────────────────────── */}
-      <NextStep
-        eyebrow="準備ができたら"
-        heading="受け取れる金額を確認しましょう"
-        body="無料の計算ツールをお試しいただくか、直接メッセージをお送りください。あなたの状況に何が当てはまるか具体的にご案内します。"
-        cta="計算ツールを試す →"
-        href="/ja/calculator"
-      />
+      {/* ── 最後のCTA ────────────────────────────────────────────────────── */}
+      <section style={{ background: '#0B5240', paddingTop: '48px', paddingBottom: '56px' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[540px] mx-auto text-center">
+            <p className="font-medium" style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.12em', marginBottom: '12px' }}>
+              準備ができたら、いつでも
+            </p>
+            <h2 className="font-serif font-black text-white" style={{ fontSize: 'clamp(21px,2.8vw,30px)', lineHeight: 1.4, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+              あなたの1年を聞かせてください
+            </h2>
+            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, marginBottom: '24px', fontWeight: 300 }}>
+              どこで働いたか、だいたいの時期、そしてもう出国したかどうか。それだけ分かれば、何を追いかける価値があるかをお伝えできます。
+            </p>
+            <WaLink href={WA} position="footer" topic="general" lang="ja"
+              className="btn-primary w-full sm:w-auto"
+              style={{ minHeight: '54px', padding: '0 32px', fontSize: '15px', minWidth: '260px' }}>
+              WhatsAppで相談する →
+            </WaLink>
+          </div>
+        </div>
+      </section>
 
-      <MobileCta href={WA_URL} lang="ja" />
+      <MobileCta href={WA} lang="ja" topic="general" variant="neutral" />
     </>
   )
 }

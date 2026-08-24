@@ -1,226 +1,462 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Delivery Driver Tax Australia: Uber Eats, DoorDash & Employed Drivers',
-  description: 'Uber Eats, DoorDash, Menulog and Amazon Flex drivers work as ABN sole traders, not employees. Some delivery jobs pay wages under a TFN instead. What working holiday makers can claim, the cents-per-km and logbook methods, and how to tell which setup applies to you.',
-  keywords: [
-    'delivery driver tax Australia',
-    'Uber Eats tax working holiday',
-    'DoorDash tax Australia',
-    'DoorDash ABN working holiday',
-    'Menulog delivery driver tax',
-    'Amazon Flex tax Australia',
-    'food delivery driver tax deductions',
-    'ABN or TFN delivery driver',
-    'delivery driver ABN working holiday',
-    'gig economy tax Australia',
-    'cents per kilometre delivery driver',
-    'delivery driver car expenses',
-    'sharing economy reporting ATO',
-    'rideshare delivery tax deductions',
-    '417 462 visa delivery driver tax',
+  "title": { absolute: "Delivery Driver Tax Deductions Australia: Car, Phone, GST" },
+  "description": "What Uber Eats, DoorDash, Menulog and Amazon Flex riders can claim: car and bike running costs, the work share of a phone, bags and gear.",
+  "keywords": [
+    "delivery driver tax deductions Australia",
+    "Uber Eats tax working holiday",
+    "DoorDash tax Australia",
+    "food delivery driver tax deductions",
+    "cents per kilometre delivery driver",
+    "delivery rider ABN working holiday",
+    "GST rideshare threshold Australia",
+    "bicycle delivery tax deduction"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/expenses/delivery-drivers`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/delivery-drivers`,
-      'de': `${SITE_URL}/de/expenses/delivery-drivers`,
-      'ja': `${SITE_URL}/ja/expenses/delivery-drivers`,
-      'x-default': `${SITE_URL}/expenses/delivery-drivers`,
-    },
+  "alternates": {
+    "canonical": "/expenses/delivery-drivers",
+    "languages": {
+      "en-AU": "/expenses/delivery-drivers",
+      "de": "/de/expenses/delivery-drivers",
+      "ja": "/ja/expenses/delivery-drivers",
+      "x-default": "/expenses/delivery-drivers"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'en_AU',
-    url: `${SITE_URL}/expenses/delivery-drivers`,
-    siteName: 'Working Holiday Tax',
-    title: 'Delivery Driver Tax Australia: Uber Eats, DoorDash & Employed Drivers',
-    description: 'Uber Eats, DoorDash and Amazon Flex are ABN contractor work, not TFN employment. Here is the difference, and what delivery drivers can claim on tax.',
-  },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: 'Delivery Driver Tax Australia: Uber Eats, DoorDash & Employed Drivers',
-    description: 'Uber Eats, DoorDash and Amazon Flex are ABN contractor work, not TFN employment. Here is the difference, and what delivery drivers can claim on tax.',
-  },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
-}
-
-const CAR_METHOD_ROWS = [
-  ['Rate (2024-25 & 2025-26)', '88c / km'],
-  ['Rate (2026-27, from 1 Jul 2026)', '91c / km'],
-  ['Maximum claimable', '5,000 km / car / year'],
-  ['Receipts required?', 'No, but you need to show how you worked out your kilometres'],
-]
-
-const LOGBOOK_ROWS = [
-  ['How it works', 'Claim the work-related % of all actual running costs'],
-  ['Logbook period', '12 continuous weeks, valid for 5 years'],
-  ['Maximum claimable', 'No cap, based on your actual work-use percentage'],
-  ['Receipts required?', 'Yes, for every expense you claim'],
-]
-
-type DriverType = {
-  emoji: string
-  kind: string
-  title: string
-  subtitle: string
-  signals: string[]
-  ctaLabel: string
-  ctaHref: string
-}
-
-const FORK_CARDS: DriverType[] = [
-  {
-    emoji: '🛵',
-    kind: 'an ABN',
-    title: 'Platform & app-based delivery',
-    subtitle: 'Uber Eats, DoorDash, Menulog, Amazon Flex',
-    signals: [
-      'You accept jobs through an app rather than working a roster',
-      'You are paid via a weekly statement or invoice, not a payslip',
-      'No tax is withheld before the money lands in your account',
-      'You choose your own hours and can log on or off whenever you like',
-      'There is no superannuation paid on top of what you earn',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
     ],
-    ctaLabel: 'Start here: register your ABN →',
-    ctaHref: '/abn',
+    "type": "website",
+    "locale": "en_AU",
+    "url": `${SITE_URL}/expenses/delivery-drivers`,
+    "siteName": "Working Holiday Tax",
+    "title": "Delivery Driver Tax Deductions Australia: Car, Phone, GST",
+    "description": "Your kilometres and the work share of your phone are the whole game. Fines and the private leg never were."
   },
-  {
-    emoji: '🍕',
-    kind: 'a TFN',
-    title: 'Employed by one restaurant or shop',
-    subtitle: 'Paid wages directly, usually on a roster',
-    signals: [
-      'You work set or rostered shifts for one restaurant, takeaway shop or business',
-      'You receive a payslip showing tax already withheld',
-      'The business sets your pay rate, your hours and how the job is done',
-      'You get superannuation paid on top of your wages',
-      'You filled out a TFN declaration form when you started',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
     ],
-    ctaLabel: 'Start here: apply for your TFN →',
-    ctaHref: '/tfn',
+    "card": "summary_large_image",
+    "title": "Delivery Driver Tax Deductions Australia: Car, Phone, GST",
+    "description": "Your kilometres and the work share of your phone are the whole game. Fines and the private leg never were."
   },
-]
-
-const faqs = [
-  {
-    question: 'Do I need an ABN to drive for Uber Eats on a working holiday visa?',
-    answer: "Yes. Uber Eats, DoorDash, Menulog and Amazon Flex all engage drivers as contractors rather than employees, so you need an ABN before you can sign up and get paid. You need a TFN first - an ABN does not replace it - and then you register an ABN for the delivery work itself.",
-  },
-  {
-    question: 'Can I claim my phone bill as a delivery driver?',
-    answer: 'You can claim the work-related percentage of your phone and data plan - the share you genuinely use for delivery apps, GPS navigation and accepting jobs. You cannot claim the whole bill if you also use the phone for personal calls and browsing, which almost everyone does, so you need a fair and honest basis for the percentage you claim.',
-  },
-  {
-    question: 'What if I deliver for one restaurant as an employee, not a platform?',
-    answer: 'If you are on a roster for one takeaway shop, restaurant or pizza place and receive a payslip with tax already withheld, you are an employee, not a contractor. You need a TFN rather than an ABN, and the ordinary trip from home to that workplace is treated as private commuting, not a deductible expense, the same as any other job.',
-  },
-  {
-    question: 'Which car expense method should I use as a delivery driver?',
-    answer: 'It depends on how much work-related driving you do. Under 5,000 work kilometres a year, cents-per-kilometre is usually simpler because it needs no receipts, just a reasonable record of how you worked out the kilometres. Above that cap, or if your actual running costs are high, the logbook method - a 12-week logbook valid for five years - often produces a larger deduction, but every expense needs a receipt.',
-  },
-  {
-    question: 'Does Uber Eats or DoorDash report my income to the ATO?',
-    answer: "Yes. Under the ATO's sharing economy reporting regime, platforms including Uber and DoorDash report driver income data directly to the ATO. Your delivery earnings are already visible to the ATO independently of what you declare, so they need to go on your tax return regardless of how small or irregular the amounts feel.",
-  },
-  {
-    question: 'I ride a bike or e-scooter for deliveries instead of driving - can I still claim anything?',
-    answer: 'Yes. The same work-use logic applies to bikes and e-scooters as it does to cars: you can claim the work-related portion of running and maintenance costs, plus safety gear such as a helmet and hi-vis clothing, apportioned between your delivery riding and personal use.',
-  },
-]
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Expenses', item: `${SITE_URL}/expenses` },
-    { '@type': 'ListItem', position: 3, name: 'Delivery Drivers', item: `${SITE_URL}/expenses/delivery-drivers` },
-  ],
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'Delivery Driver Tax Australia: Uber Eats, DoorDash & Employed Drivers',
-  description: 'Whether delivery driving is ABN contractor work or TFN employment, and what working holiday makers can claim on tax either way.',
-  url: `${SITE_URL}/expenses/delivery-drivers`,
-  inLanguage: 'en-AU',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Delivery driving and rideshare" })
+
+const UI = {
+  "ctaLabel": "Message us on WhatsApp",
+  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "guaranteeHeading": "Come out with a refund smaller than our fee and we refund the difference.",
+  "guaranteeBody": "Platform riders on 417 and 462 visas are a large part of what we do, which is why the logbook question and the GST line get settled before the return is written. Prepared by our team, then reviewed and signed off by a registered tax agent before it is lodged.",
+  "faqHeading": "Questions people ask about this",
+  "guidesHeading": "Worth reading next",
+  "otherJobs": "A different job? Every occupation is here.",
+  "servicesLabel": "Elsewhere on the site",
+  "wrongLabel": "Claimed, and it should not have been",
+  "missedLabel": "Not claimed, and it should have been",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "hubHref": "/expenses"
 }
+
+const CRUMBS = [
+  {
+    "name": "Home",
+    "item": "/"
+  },
+  {
+    "name": "Deductions",
+    "item": "/expenses"
+  },
+  {
+    "name": "Delivery driving",
+    "item": "/expenses/delivery-drivers"
+  }
+]
+
+const HERO = {
+  "kicker": "Uber Eats, DoorDash, Menulog, Amazon Flex",
+  "h1lead": "Your kilometres are the deduction.",
+  "h1accent": "Almost everything else is small.",
+  "lede": "Cents per kilometre or a logbook, and you pick one per car per year. Choosing the wrong one is the most expensive mistake in the trade."
+}
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
+  {
+    "kind": "answer",
+    "h2": "What can a delivery driver or rider claim on tax?",
+    "paras": [
+      "A delivery driver can claim the work related portion of running a car, bike or scooter, the work related share of a phone and data plan, parking paid while working, cleaning to keep a vehicle fit to carry food, and gear bought for the job such as a thermal bag, a phone mount, a helmet or hi vis. The private share of everything is excluded.",
+      "Almost all of the value sits in the vehicle. A rider doing steady hours puts up kilometres that no other backpacker job produces, and the difference between the two calculation methods, over a year, is frequently larger than every other deduction on the return combined."
+    ]
+  },
+  {
+    "kind": "items",
+    "h2": "The claims that belong to this work specifically",
+    "intro": "Everything here is apportioned. You claim the work share, and you need a fair basis for the number you used.",
+    "items": [
+      {
+        "t": "Car running costs",
+        "d": "Claimed through the cents per kilometre method or a logbook, compared below. Under a logbook the claim picks up fuel, insurance, registration, servicing and repairs, depreciation, and the interest on a car loan, at your work use percentage. Under cents per kilometre it is a flat rate covering all of it."
+      },
+      {
+        "t": "Bike, e-bike and scooter costs",
+        "d": "The same logic applies on two wheels. Running, repair and maintenance costs are claimable at the work related share, along with a helmet, hi vis and lights. Bikes and scooters are not cars for tax purposes, so the cents per kilometre method does not apply to them and you claim actual costs apportioned instead."
+      },
+      {
+        "t": "The work share of your phone and data",
+        "d": "The whole job runs through an app, so the working percentage of your plan is a genuine deduction: the driver app, navigation, messages about orders. Work out the percentage honestly over a representative period. Claiming the full bill on a phone you also live on is the fastest way to have the rest of your return looked at."
+      },
+      {
+        "t": "Parking paid while working",
+        "d": "The five dollars at a shopping centre while an order is being bagged is deductible. Fines never are, however you got them."
+      },
+      {
+        "t": "Gear bought for the job",
+        "d": "A thermal delivery bag, a phone mount, a charger, a bike lock, wet weather gear, a head torch. Each item costing $300 or less is deducted in full in the year you bought it."
+      },
+      {
+        "t": "Cleaning the vehicle for the work",
+        "d": "Keeping a car in a state fit to carry food, or a bike serviceable, is claimable at the work related share. This is the same principle that applies to a rideshare driver carrying passengers."
+      }
+    ]
+  },
+  {
+    "kind": "tables",
+    "h2": "How are car expenses worked out?",
+    "intro": "Only work driving counts under either method, and for a rostered driver the run from home to the shop never does.",
+    "tables": [
+      {
+        "label": "Cents per kilometre",
+        "rows": [
+          [
+            "Rate, 2024-25 and 2025-26",
+            "88c per km"
+          ],
+          [
+            "Rate, 2026-27 onwards",
+            "91c per km"
+          ],
+          [
+            "Maximum",
+            "5,000 km per car per year"
+          ],
+          [
+            "Receipts",
+            "Not required, but you must show how you worked out the kilometres"
+          ]
+        ]
+      },
+      {
+        "label": "Logbook",
+        "rows": [
+          [
+            "How it works",
+            "You claim the work related percentage of every actual running cost"
+          ],
+          [
+            "Logbook period",
+            "12 continuous weeks, valid for five years"
+          ],
+          [
+            "Maximum",
+            "No cap. It follows your real work use percentage"
+          ],
+          [
+            "Receipts",
+            "Required for every expense claimed"
+          ]
+        ]
+      }
+    ],
+    "note": "A steady rider passes 5,000 kilometres in a few months, and beyond that the logbook is normally the bigger claim: fuel, insurance, registration, servicing, depreciation and loan interest at your work percentage rather than a flat rate. It costs twelve weeks of records and a receipt for every expense. Which one wins depends on your kilometres and what the car costs to run."
+  },
+  {
+    "kind": "answer",
+    "h2": "What does a rider need to be able to produce?",
+    "paras": [
+      "Every claim rests on three things: you paid, nobody paid you back, and the money went to earning the income you are declaring. For a rider that is a logbook or a kilometre record, the phone bill sitting behind your work percentage, and receipts for the bag, the mount and the rest of the gear.",
+      "A record shows the amount, the date, the supplier and the item, and a receipt, an invoice, a bank statement or a phone photo all qualify. Keep them for five years. Work claims totalling $300 or less across the year need no written evidence, though the figure still has to be explainable. Different rule from the $300 that decides whether an item is written off at once or over its life."
+    ]
+  },
+  {
+    "kind": "note",
+    "label": "The one that surprises people",
+    "title": "Food delivery and passengers are not the same for GST.",
+    "body": "If you only deliver food and parcels, GST registration is compulsory once your turnover passes $75,000 a year, which most riders never approach. The moment you carry a paying passenger, that threshold disappears. Ride sourcing requires GST registration from the very first fare, whatever you earn, and that means business activity statements as well. Anyone who drives Uber Eats during the week and takes passenger trips on a Friday night has quietly stepped over that line."
+  },
+  {
+    "kind": "traps",
+    "h2": "What do delivery drivers get wrong?",
+    "intro": "The overstated claims here are bigger than in any other occupation, because the numbers are bigger. So are the missed ones.",
+    "wrong": [
+      {
+        "t": "The whole phone bill",
+        "d": "Almost nobody uses a phone only for delivering. Claiming one hundred per cent of a plan you also use for everything else is not defensible, and it is a claim the ATO can test against how the rest of the return looks."
+      },
+      {
+        "t": "Fines",
+        "d": "A parking ticket picked up while running an order up three flights of stairs is still not deductible. Neither is a speeding fine, however tight the drop off window was."
+      },
+      {
+        "t": "Food bought while working",
+        "d": "Your own dinner between drops is private, even when you are surrounded by other people getting theirs delivered."
+      },
+      {
+        "t": "Every kilometre driven with the app open",
+        "d": "The private leg of a trip does not become work travel because the app was running. An errand on the way to a drop off comes out of the claim, and for an employed driver on a roster the ordinary commute to the shop is out as well."
+      },
+      {
+        "t": "Leaving small platform income off entirely",
+        "d": "Uber, DoorDash and the rest report driver income to the ATO under the sharing economy reporting regime. Your earnings are already visible, so a few hundred dollars of weekend work left off a return is not a saving, it is a mismatch."
+      }
+    ],
+    "missed": [
+      {
+        "t": "The logbook, when the logbook was clearly better",
+        "d": "The cents per kilometre method caps out at 5,000 kilometres. A steady rider clears that easily, and everything past it is simply lost. Twelve weeks of logbook, kept once, is valid for five years."
+      },
+      {
+        "t": "Interest, insurance, rego and depreciation",
+        "d": "These are only available through the logbook method, and they are usually the reason it wins. People choose cents per kilometre because it is easier and never find out what the alternative would have paid."
+      },
+      {
+        "t": "The thermal bag and the phone mount",
+        "d": "Small, obvious, entirely deductible, and thrown out with the receipt. The same goes for a helmet, lights and wet weather gear on a bike."
+      },
+      {
+        "t": "Costs incurred before the first delivery",
+        "d": "Gear bought while you were setting yourself up to start, around the time you registered the ABN and signed up to the platform, is generally claimable. The gap between buying and starting matters, so keep the dates."
+      },
+      {
+        "t": "The whole return, by ABN riders who assume they owe rather than claim",
+        "d": "No tax is withheld from platform payouts, so the money lands whole and people brace for a bill. Deductions against that income are exactly what shrinks it, and they are the thing most often left out."
+      }
+    ]
+  },
+  {
+    "kind": "answer",
+    "h2": "What depends on how you ride, not on the rules?",
+    "paras": [
+      "Uber Eats, DoorDash, Menulog and Amazon Flex engage riders as contractors: an ABN, nothing withheld, no super. A roster at one pizza shop that hands you a payslip is employment under a TFN. A single shop that sets your shifts, supervises your work and supplies the bike, then asks you to register an ABN, may be an employer in disguise. Check before you register anything.",
+      "Where the deductible driving starts follows from that. An employee's trip to the shop is private, and only shop to drop off counts. Under an ABN the driving is the work rather than the way you reach it, so the line sits somewhere else, decided by how you run.",
+      "Residency decides how the profit is taxed at all. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision, and a year of riding in one city is the pattern that deserves a proper look."
+    ]
+  }
+]
+
+const FAQS = [
+  {
+    "question": "Do I need an ABN to deliver for Uber Eats or DoorDash?",
+    "answer": "Yes. Those platforms engage riders and drivers as contractors rather than employees, so an ABN is required before you can be paid. It does not replace a TFN, which you still need. Nothing is withheld from your payouts, so the income arrives whole and the tax on it is settled when the return is lodged."
+  },
+  {
+    "question": "Which car expense method should I use?",
+    "answer": "It depends on how far you drive and what your car costs to run. Cents per kilometre is simpler and needs no receipts, but it caps at 5,000 work kilometres a year and everything beyond that is lost. A logbook has no cap and picks up fuel, insurance, registration, servicing, depreciation and loan interest at your work use percentage, at the cost of twelve continuous weeks of records and a receipt for every expense."
+  },
+  {
+    "question": "Can I claim my phone bill?",
+    "answer": "You can claim the work related percentage of your phone and data plan, being the share used for the driver app, navigation and job messages. You cannot claim the whole bill if you also use the phone for ordinary life, which nearly everyone does, so you need a fair and honest basis for the percentage and something to support it."
+  },
+  {
+    "question": "Do I need to register for GST?",
+    "answer": "For food and parcel delivery only, GST registration becomes compulsory once turnover passes $75,000 a year, and most part time riders never get close. Ride sourcing is different: carrying paying passengers requires GST registration from the first dollar regardless of turnover. If you do both, the passenger side pulls you over the line."
+  },
+  {
+    "question": "I ride a bike, not a car. Can I claim anything?",
+    "answer": "Yes. A bicycle or e-scooter is not a car for tax purposes, so the cents per kilometre method does not apply, but you can still claim the work related share of running, repair and maintenance costs, plus safety gear such as a helmet, lights and hi vis. Apportion between delivery riding and personal use on a fair basis and keep the receipts."
+  }
+]
+
+const GUIDES = [
+  {
+    "href": "/blog/uber-doordash-rideshare-abn-working-holiday",
+    "label": "Uber, DoorDash and your ABN",
+    "desc": "Why the platforms need one, and what changes the moment you have it."
+  },
+  {
+    "href": "/blog/bicycle-motorcycle-vehicle-deductions-working-holiday",
+    "label": "Bike, scooter and car deductions",
+    "desc": "How each vehicle is treated, and which method suits which one."
+  },
+  {
+    "href": "/blog/uber-eats-delivery-rider-working-holiday-australia",
+    "label": "Delivery riding on a working holiday",
+    "desc": "What the work actually pays once the costs come out."
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/abn",
+    "label": "ABN"
+  },
+  {
+    "href": "/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/tax-return",
+    "label": "Tax return"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
+}
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "Delivery Driver Tax Deductions Australia: Car, Phone, GST",
+  description: "Your kilometres and the work share of your phone are the whole game. Fines and the private leg never were.",
+  url: `${SITE_URL}/expenses/delivery-drivers`,
+  inLanguage: "en-AU",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   '@id': `${SITE_URL}/expenses/delivery-drivers#webpage`,
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', '.hero-sub'],
-  },
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
   url: `${SITE_URL}/expenses/delivery-drivers`,
 }
 
-function CompareTable({ label, rows, highlight }: { label: string; rows: string[][]; highlight?: boolean }) {
-  return (
-    <div className="taxres-table-card" style={highlight ? { borderColor: '#0B5240', boxShadow: '0 8px 20px -8px rgba(11, 82, 64, 0.18)' } : {}}>
-      <h3 className="taxres-table-title">{label}</h3>
-      <table className="taxres-table">
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
 }
 
-function ForkCard({ f }: { f: DriverType }) {
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
   return (
-    <div className="exp-card">
-      <div className="exp-card-head">
-        <span className="exp-card-emoji" aria-hidden="true">{f.emoji}</span>
-        <div>
-          <h3 className="exp-card-title">{f.title}</h3>
-          <p className="exp-card-subtitle">{f.subtitle}</p>
-        </div>
-      </div>
-      <p className="font-semibold" style={{ fontSize: '11.5px', color: '#0B5240', margin: '14px 0 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-        What you need: {f.kind}
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"en"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
       </p>
-      <div className="exp-card-section">
-        <p className="exp-card-label" style={{ color: '#587066' }}>Signs this is you</p>
-        <ul className="exp-card-list">
-          {f.signals.map((s, i) => <li key={i}>{s}</li>)}
-        </ul>
-      </div>
-      <Link href={f.ctaHref} className="inline-flex items-center justify-center font-semibold"
-        style={{ marginTop: '18px', height: '42px', padding: '0 20px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '13px', textDecoration: 'none', width: '100%' }}>
-        {f.ctaLabel}
-      </Link>
     </div>
   )
 }
 
-export default function DeliveryDriversExpensesPage() {
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -228,217 +464,238 @@ export default function DeliveryDriversExpensesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/" style={{ color: '#587066' }}>Home</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/expenses" style={{ color: '#587066' }}>Expenses</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>Delivery Drivers</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '22ch' }}>
-                Delivery driver tax: <span style={{ color: '#0B5240' }}>ABN, TFN, or both?</span>
-              </h1>
-              <p className="font-semibold mx-auto hero-sub" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '50ch' }}>
-                Uber Eats, DoorDash and Amazon Flex are gig work under an ABN. Driving for one restaurant on a roster is usually a normal TFN job. Here&apos;s how to tell the difference, and exactly what you can claim either way.
-              </p>
-            </div>
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}{' '}
+              <span style={{ color: FOREST, fontStyle: 'italic' }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
           </div>
         </section>
 
-        {/* ── THE ABN / TFN FORK (this page's unique hook) ────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '20px' }}>
-          <div className="max-w-[1040px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                ABN or TFN: work out which one you are first
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                Most delivery driving on a working holiday visa is gig work under an ABN. Some of it is an ordinary employee job under a TFN. The two are taxed completely differently, so this is the first thing to get right.
-              </p>
-            </div>
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
 
-            <div className="exp-grid">
-              {FORK_CARDS.map((f, i) => <ForkCard key={i} f={f} />)}
-            </div>
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
 
-            <div className="max-w-[680px] mx-auto text-center" style={{ marginTop: '8px' }}>
-              <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7, marginBottom: '10px' }}>
-                Plenty of people do both across a year - a rostered shift job under a TFN, and Uber Eats or DoorDash on the side under an ABN. That&apos;s completely normal; you just declare both income types on the same tax return, ideally with separate records for each.
-              </p>
-              <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7 }}>
-                One caution: if a single restaurant or shop asks you to get an ABN even though they set your shifts, supervise your work and provide your delivery bag or bike, that arrangement may be disguised employment rather than genuine contracting. It&apos;s worth getting that checked before you register, rather than assuming the ABN label settles it.
-              </p>
-            </div>
-          </div>
-        </section>
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
 
-        {/* ── WHAT YOU CAN / CAN'T CLAIM ───────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                What delivery drivers can actually claim
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                The same principle runs through all of it: only the work-related portion of an expense counts, and you need a record for anything you claim.
-              </p>
-            </div>
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '0 0 8px', lineHeight: 1.3 }}>
-              Car and running costs
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              This is usually the biggest deduction for any driver, whatever you drive. You claim the work-related portion of your vehicle using either the cents-per-kilometre method or the logbook method (compared in detail below), and only for driving that is genuinely part of the job, never a private trip.
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              For an employee delivery driver, the commute rule is the same as it is for any other job: the drive from home to the restaurant or shop where you clock on, and back again at the end of a shift, is private travel, not a deduction. Only the driving you do once you are rostered on, between the shop and drop-off points, counts as work-related.
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              If you drive under an ABN, the position is a little different, because the driving is not just how you get to work, it is the work itself. Trips that are directly and demonstrably part of earning your delivery income are not automatically ruled out the way an employee&apos;s commute is. Exactly where that line falls - for instance, whether the trip from home to your first delivery of the day counts - depends on the specific facts of how you operate, so it&apos;s worth getting advice on your own situation rather than assuming every kilometre is deductible.
-            </p>
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Phone and data
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Delivery work runs through an app, so the work-related percentage of your phone and data plan is deductible - the share you genuinely use for the Uber, DoorDash or Menulog driver app, GPS navigation, and messages about jobs. You need a fair, honest estimate of that percentage; claiming the whole bill on a phone you also use for everyday life is not defensible.
-            </p>
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
 
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Parking and fines
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Parking fees you pay while working - waiting at a shopping centre for an order to be ready, for example - are deductible. Parking and speeding fines are a different story: they are never deductible, no matter the circumstances, even if you picked one up while making a delivery.
-            </p>
-
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Bike and e-scooter riders
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Food delivery increasingly happens on two wheels rather than four. The same work-use logic applies: you can claim the work-related portion of your bike or e-scooter&apos;s running and repair costs, plus safety gear you need for the job, such as a helmet and hi-vis clothing, apportioned between delivery riding and personal use.
-            </p>
-
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Keeping the vehicle presentable
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Cleaning your car so it is in a suitable state to carry food or parcels can be a deductible expense for the work-related portion, the same principle that applies to rideshare drivers carrying passengers.
-            </p>
-
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              What you can&apos;t claim
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              A few things catch drivers out every year. The private part of any trip - a personal errand on the way to a drop-off, for example - is not deductible, and neither is an employee&apos;s ordinary commute between home and a fixed workplace. Parking and speeding fines are never deductible, regardless of how they happened. And if a platform or employer has already reimbursed you for something, a fuel top-up, for instance, you can&apos;t claim it again on your tax return; that would mean claiming the same cost twice.
-            </p>
-          </div>
-        </section>
-
-        {/* ── GST & SHARING ECONOMY REPORTING ──────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '34px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(20px, 2.6vw, 26px)', letterSpacing: '-0.02em' }}>
-                Two things every platform driver should know
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-              <div className="taxres-savings-box">
-                <div>
-                  <p className="taxres-savings-heading">GST only matters at higher turnover</p>
-                  <p className="taxres-savings-body">
-                    If you operate under an ABN and your turnover from delivery work passes $75,000 in a year, GST registration becomes compulsory. Most working holiday makers driving part-time for food delivery apps come nowhere near this, but it&apos;s worth knowing the threshold exists as your hours or earnings grow.
-                  </p>
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
                 </div>
-              </div>
-              <div className="taxres-savings-box">
-                <div>
-                  <p className="taxres-savings-heading">Platforms already report your income to the ATO</p>
-                  <p className="taxres-savings-body">
-                    Uber, DoorDash and similar platforms fall under the ATO&apos;s sharing economy reporting regime, meaning they report driver income data directly to the ATO. Your delivery earnings are visible to the ATO independently of what you declare, so there&apos;s no version of this where platform income quietly goes unnoticed.
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
-          </div>
-        </section>
+          </section>
+        ))}
 
-        {/* ── CAR EXPENSE METHODS ──────────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Two ways to claim your car expenses
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch' }}>
-                Whichever side of the ABN/TFN fork you&apos;re on, the same two methods apply to your car. You can only use one method per car per year.
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"en"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
               </p>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="Cents per kilometre method" rows={CAR_METHOD_ROWS} highlight />
-              <CompareTable label="Logbook method" rows={LOGBOOK_ROWS} />
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
+              ))}
             </div>
-            <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, maxWidth: '60ch', marginTop: '18px' }}>
-              Rack up more than 5,000 work kilometres a year delivering, and the logbook method usually captures more of your real costs, though it means keeping a 12-week logbook and every fuel, service and rego receipt.
+
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
         </section>
 
-        {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-        <section className="py-10 lg:py-14 bg-white">
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">FAQs</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  Delivery driver tax questions
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  Anything else? Message us directly.
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-        <NextStep
-          eyebrow="What's next?"
-          heading="Know your ABN or TFN status? Good."
-          body="Once your delivery income and expenses are sorted, the next step is lodging your working holiday tax return."
-          cta="Continue to your tax return →"
-          href="/tax-return"
-        />
-
-        {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              This is general information, not personal tax advice. Whether you&apos;re a contractor or an employee, and exactly what you can claim, depends on the specific facts of how you work. When you lodge with us, we&apos;ll go through your delivery income, your car, bike or scooter expenses, and your ABN or TFN situation, to make sure you claim everything you&apos;re entitled to, and nothing you&apos;re not.
-            </p>
-            <Link href="/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              Claim Your Tax Refund →
-            </Link>
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/tax-form" lang="en" />
+
+      <MobileCta href={WA} lang={"en"} topic="expenses" />
     </>
   )
 }

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker (Subclass 417 und 462). Spezialisiert auf Steuererklärung, TFN, Superauszahlung (DASP) und ABN - alles online.',
+    'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker (Subclass 417 und 462). Spezialisiert auf Steuererklärung, TFN, Superauszahlung (DASP) und ABN, alles online.',
   keywords: [
     'Steuerrückerstattung Australien',
     'Steuerrückerstattung Working Holiday',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     'TFN beantragen Australien',
     'Backpacker Steuer Australien',
     'Super auszahlen Australien',
-    'DASP Auszahlung',
+    'DASP-Auszahlung',
     'DASP Rückerstattung',
     '417 Visum Steuer',
     '462 Visum Steuer',
@@ -69,18 +69,18 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrückerstattung Australien für Working Holiday Maker | WHV Steuer',
-    description: 'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker. Spezialisiert auf Steuererklärung, TFN, Super (DASP) und ABN - alles online erledigt.',
+    description: 'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker. Spezialisiert auf Steuererklärung, TFN, Super (DASP) und ABN, alles online erledigt.',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
       height: 630,
-      alt: 'Steuerrückerstattung Australien für Working Holiday Maker - Backpacker Steuer',
+      alt: 'Steuerrückerstattung Australien für Working Holiday Maker, Backpacker Steuer',
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Steuerrückerstattung Australien für Backpacker - WHV',
-    description: 'Hol dir deine Steuerrückerstattung als Working Holiday Maker in Australien. Von Working-Holiday-Spezialisten - alles online.',
+    title: 'Steuerrückerstattung Australien für Backpacker, WHV',
+    description: 'Hol dir deine Steuerrückerstattung als Working Holiday Maker in Australien. Von Working-Holiday-Spezialisten, alles online.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

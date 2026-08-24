@@ -123,7 +123,7 @@ function Pagination({
       </button>
       {getPages().map((p, i) =>
         p === '...' ? (
-          <span key={`dot-${i}`} style={{ ...btnBase, border: 'none', cursor: 'default', color: '#8AADA3' }}>…</span>
+          <span key={`dot-${i}`} style={{ ...btnBase, border: 'none', cursor: 'default', color: '#4C6459' }}>…</span>
         ) : (
           <button
             key={p}
@@ -158,6 +158,8 @@ function getCategorySlug(cat: Category): string {
   return meta?.slug ?? ''
 }
 
+export type GuideCard = Omit<Guide, 'body'>
+
 export default function BlogClient({
   guides,
   initialCategory,
@@ -166,7 +168,16 @@ export default function BlogClient({
   blogBasePath = '/blog',
   homePath = '/',
 }: {
-  guides: Guide[]
+  /**
+   * Deliberately without `body`.
+   *
+   * This is a client component, so every field on every object here is
+   * serialised into the RSC payload and shipped to the phone. Passing the full
+   * Guide type meant /blog sent the complete text of all 154 articles, 351 KB
+   * gzipped, of which the page renders not one word. The listing needs the
+   * card fields only.
+   */
+  guides: GuideCard[]
   initialCategory?: Category
   lang?: 'en' | 'de' | 'ja'
   ui?: BlogUIStrings
@@ -240,7 +251,7 @@ export default function BlogClient({
           <div style={{ maxWidth: '720px', marginBottom: '32px' }}>
 
             <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
+              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
               <span className="font-medium uppercase"
                 style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
                 {ui.blogLabel}
@@ -281,7 +292,7 @@ export default function BlogClient({
 
           {/* Search input */}
           <div style={{ maxWidth: '560px', marginBottom: '24px', position: 'relative' }}>
-            <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#8AADA3' }}>
+            <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#4C6459' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -300,7 +311,9 @@ export default function BlogClient({
                 borderRadius: '12px',
                 border: '1px solid #E2EFE9',
                 background: '#fff',
-                fontSize: '14px',
+                // 16px, not 14: anything smaller makes iOS zoom the whole page
+                // on focus, and the reader then has to pinch back out.
+                fontSize: '16px',
                 color: '#2A3C34',
                 fontWeight: 400,
                 transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
@@ -311,7 +324,7 @@ export default function BlogClient({
               <button
                 onClick={() => handleSearchChange('')}
                 className="clear-search-btn"
-                style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: '#8AADA3', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: '#4C6459', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 aria-label={ui.clearSearch}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -454,7 +467,7 @@ export default function BlogClient({
                         {article.category}
                       </span>
                       <span style={{ color: '#CDE3DB' }}>·</span>
-                      <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{article.readTime} {ui.minRead}</span>
+                      <span style={{ fontSize: '11.5px', color: '#4C6459' }}>{article.readTime} {ui.minRead}</span>
                     </div>
 
                     {/* Title */}
@@ -490,7 +503,7 @@ export default function BlogClient({
 
         {/* Count */}
         {filtered.length > 0 && (
-          <p style={{ textAlign: 'center', fontSize: '12px', color: '#8AADA3', marginTop: '16px' }}>
+          <p style={{ textAlign: 'center', fontSize: '12px', color: '#4C6459', marginTop: '16px' }}>
             {ui.showing} {(page - 1) * PER_PAGE + 1}-{Math.min(page * PER_PAGE, filtered.length)} {ui.of} {filtered.length} {filtered.length === 1 ? ui.article : ui.articles}
           </p>
         )}

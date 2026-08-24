@@ -3,8 +3,8 @@ import { SITE_URL } from '@/lib/constants'
 import { FormClient } from '@/app/super-form/FormClient'
 
 export const metadata: Metadata = {
-  title: 'Superauszahlung beantragen (DASP) | Working Holiday Tax',
-  description: 'Beantrage deine Superauszahlung (DASP) nach Verlassen Australiens. Wir reichen den kompletten Antrag bei deinem Superfonds und beim ATO ein - direkt auf dein Konto.',
+  title: 'Superauszahlung (DASP) beantragen',
+  description: 'Nach dem Rückflug holen wir deine Super zurück. Wir reichen den Antrag bei deinem Superfonds und beim ATO ein, die Auszahlung geht auf dein Konto.',
   keywords: ['Super Auszahlung Antrag', 'DASP beantragen', 'Super Refund Working Holiday', 'Super Formular Deutsch', 'Departing Australia Superannuation Payment Antrag', 'Super zurückholen Australien', 'WHV Super Auszahlung Formular', 'Backpacker Super Antrag'],
   alternates: {
     canonical: '/de/super-form',

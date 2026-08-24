@@ -1,36 +1,24 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
 import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: '還付金・年金（Super）計算機 - ワーキングホリデー オーストラリア',
-  description: 'ワーキングホリデー（417・462ビザ）の還付金と、65%のDASP税を差し引いた後の年金受取額を無料で試算。最新税率を使用、登録不要。',
+  title: { absolute: 'ワーホリのタックスリターン計算ツール（2025-26年度）' },
+  description:
+    'オーストラリアの還付金と、65%のDASP税を引いた後のスーパー受取額を試算します。417・462ビザの最新税率、あくまで目安です。',
   keywords: [
-    // Refund-focused
-    'タックスリターン 還付金 計算機',
     'タックスリターン 還付金 計算',
     'オーストラリア タックスリターン 還付金 計算',
-    'オーストラリア 還付金 計算 ワーホリ',
     'ワーキングホリデー 還付金 計算',
     'ワーホリ 還付金 いくら シミュレーション',
-    'ワーホリ 還付金 シミュレーション',
-    'WHV 還付金 計算機',
-    'バックパッカー 還付金 計算 オーストラリア',
     '417ビザ 還付金 計算',
     '462ビザ 還付金 計算',
-    'オーストラリア タックスリターン 還付 見積もり',
     'オーストラリア 税金 戻る 計算',
-    // Adjacent
-    '税金 計算機 オーストラリア',
-    'ワーキングホリデー 税金 計算',
-    'バックパッカー 税金 シミュレーター',
-    '417ビザ 税金 計算',
-    '462ビザ 税金 計算',
-    'WHM 税率 計算機',
-    'オーストラリア 還付金 見積もり',
-    'オーストラリア 税金 計算 無料',
-    'タックスリターン 還付金 計算 日本語',
+    'ワーホリ 税金 計算',
+    'WHM 税率 計算',
+    'スーパー受取 計算 DASP',
   ],
   alternates: {
     canonical: `${SITE_URL}/ja/calculator`,
@@ -42,48 +30,59 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/calculator`,
     siteName: 'Working Holiday Tax',
-    title: '還付金・年金（Super）計算機 - ワーキングホリデー オーストラリア',
-    description: '還付金と、65%のDASP税を引いた後の年金受取額を無料で試算。即時・登録不要。',
+    title: 'ワーホリのタックスリターン計算ツール（2025-26年度）',
+    description: '還付金の目安と、65%のDASP税を引いた後のスーパー受取額を試算します。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: '還付金・年金（Super）計算機 - ワーホリ オーストラリア',
-    description: '還付金と65%のDASP税を引いた後の年金受取額を無料で試算。',
+    title: 'ワーホリのタックスリターン計算ツール',
+    description: '還付金の目安と、65%のDASP税を引いた後のスーパー受取額。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
   {
-    question: 'この計算機はどのくらい正確ですか？',
-    answer: 'この計算機は2025-26年度のワーキングホリデーメーカーおよびオーストラリア税務居住者の税率を使用しています。入力したデータに基づいて見積もりを提供します。実際の還付額は控除可能な経費、税額控除、その他の要因によって異なる場合があります。正確な計算には、私たちがタックスリターンを行います。',
+    question: '金額が分かったので、myGovで自分で提出してはいけないのですか。',
+    answer:
+      'ご自身で提出できますし、提出は簡単な部分です。ただし概算にできないのは、その金額そのものを動かすことです。すでに手元にある数字で計算しているだけだからです。実際の結果を決めるのは3つで、そのどれもこのページには載っていません。1つ目は居住区分です。日本のパスポートでも、1ドル目からワーキングホリデー税率が適用されるのではなく、18,200ドルの非課税枠が適用され得ます。滞在日数だけで決まるものではありません。2つ目はメディケア税で、課税所得の2%が既定で差し引かれますが、417・462ビザの多くの方はそもそも負担すべきものではありません。3つ目は控除で、myGovでは空欄のまま、あなたの職種で何が控除できるかの案内はありません。これらは入力欄ではなく、あなたの1年についての判断です。この3点をどう見るかで、ここに出た概算がそのまま最終額になることも、大きく変わることもあります。',
   },
   {
-    question: 'この計算機はどの税率を使用していますか？',
-    answer: 'ワーキングホリデーメーカー：最初の$45,000まで15%、$45,001〜$135,000は30%、$135,001〜$190,000は37%、$190,000超は45%。オーストラリア税務居住者：$18,200まで非課税、$45,000まで16%、$135,000まで30%、$190,000まで37%、それ以上は45%。',
+    question: 'この計算ツールはどのくらい正確ですか。',
+    answer:
+      '入力された数字に対する計算としては正確ですが、それ以上のことはできません。2025-26年度のワーキングホリデーメーカーおよびオーストラリア税務居住者の税率を、入力された収入と源泉徴収額に当てはめているだけです。居住区分、メディケア税の免除が使えるかどうか、職種ごとの控除は分からず、その3つはいずれも結果を変えます。最終的な答えではなく、相談の出発点としてお使いください。',
   },
   {
-    question: '還付金が出る結果になりました。次はどうすればいいですか？',
-    answer: 'WhatsAppでご連絡ください。タックスリターンを代行し、すべての控除可能な経費を申請します。多くの場合、ここでの見積もりよりも高額な還付金を取り戻せます。',
+    question: 'どの税率を使っていますか。',
+    answer:
+      '417・462ビザのワーキングホリデーメーカーには、最初の45,000ドルまで15%、45,001〜135,000ドルは30%、135,001〜190,000ドルは37%、190,000ドル超は45%を、非課税枠なしで適用します。オーストラリア税務居住者には、18,200ドルまで非課税、45,000ドルまで16%、135,000ドルまで30%、190,000ドルまで37%、それ以上は45%を適用します。どちらが当てはまるかは設定ではなく、状況を踏まえた判断です。',
   },
   {
-    question: '追加納税の結果になりました。どうすればいいですか？',
-    answer: 'すぐにご相談ください。状況を確認し、見逃された控除を見つけ、タックスリターンを正しく提出します。多くの場合、適切な控除を申請することで、追加納税を減らしたり、完全に避けることができます。',
+    question: 'なぜメディケア税が含まれていないのですか。',
+    answer:
+      'この計算ツールを使う方の多くは、そもそも支払う義務がないからです。メディケア税は課税所得の2%で、日本のように相互協定を結んでいない国のワーキングホリデーメーカーは、免除証明書によって外すことができます。既定で含めてしまうと、多数派には還付額を低く、少数派には高く見せることになります。そのため、実際の対象資格を確認できる段階で扱っています。',
   },
   {
-    question: '日本に帰国後でもこの計算機を使えますか？',
-    answer: 'はい。この計算機は出身国や現在の居住地に関係なく利用できます。税率はビザの種類（417または462）とオーストラリアで得た収入に基づいており、現在どこに住んでいるかは関係ありません。日本に帰国された後でも、この見積もりは有効です。',
+    question: '追加納税と表示されました。これで確定ですか。',
+    answer:
+      'たいていは確定ではありません。納税と表示される場合、源泉徴収がほとんどされていない収入、たとえばABNでの仕事が含まれているか、控除を入力する欄がないために控除がまったく反映されていないかのどちらかです。控除は課税所得を下げるため、納税が還付に変わることもあります。この数字を最終と考えず、一度確認することをおすすめします。',
   },
   {
-    question: 'この計算機にメディケア税は含まれていますか？',
-    answer: 'この計算機は所得税に焦点を当てています。メディケア税は別途2%の課税ですが、ほとんどのワーキングホリデーメーカーは免除対象です。当社がタックスリターンを提出する際、対象資格があれば免除申請を行います。そのため実際の還付金は計算機の見積もりより高くなる場合があります。',
-  }
+    question: '日本に帰国した後でも使えますか。',
+    answer:
+      '使えます。オーストラリアの税務上の立場は、現在の居住地ではなく、オーストラリアで得た収入と、その時に保持していたビザで決まります。東京からでもシドニーからでも計算結果は同じで、タックスリターンも海外から提出できます。帰国後に変わるのは、スーパーもDASPとして受け取れるようになる点です。',
+  },
+  {
+    question: 'スーパー残高はどのように計算されますか。',
+    answer:
+      '入力された残高にDASPの税率を当てはめ、口座に届く金額を表示します。417・462ビザを一度でも保持した方は課税対象部分に65%が適用されるため、10,000ドルの残高なら受取額は約3,500ドルです。スーパーの受け取りはタックスリターンとは別の申請で、オーストラリアを出国し、ビザが失効または取り消された後にのみ可能です。',
+  },
 ]
 
 const faqSchema = {
@@ -102,24 +101,30 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-    { '@type': 'ListItem', position: 2, name: '税金計算機', item: `${SITE_URL}/ja/calculator` },
+    { '@type': 'ListItem', position: 2, name: '計算ツール', item: `${SITE_URL}/ja/calculator` },
   ],
 }
 
+// offersブロックは置きません。料金は本文にもスキーマにも載せず、この計算
+// ツール自体を売り物として前面に出さない方針です。
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
-  name: 'ワーキングホリデー税金計算機',
-  description: 'オーストラリアのワーキングホリデービザ保持者向け無料税金計算機。',
+  name: 'ワーホリのタックスリターン計算ツール',
+  description:
+    'ワーキングホリデービザ保持者向けに、オーストラリアの還付金とDASPスーパー受取額の目安を2025-26年度の税率で試算します。',
   url: `${SITE_URL}/ja/calculator`,
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Any',
   inLanguage: 'ja',
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'AUD',
-  },
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/ja/calculator#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/ja/calculator`,
 }
 
 export default function JapaneseCalculatorPage() {
@@ -128,8 +133,9 @@ export default function JapaneseCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <CalculatorClient faqs={faqs} />
-      <MobileCta href="/ja/tax-form" lang="ja" />
+      <MobileCta href={waUrl({ topic: 'calculator', lang: 'ja' })} lang="ja" topic="calculator" />
     </>
   )
 }

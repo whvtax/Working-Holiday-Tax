@@ -1,132 +1,405 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Hospitality Tax Deductions Australia: RSA, Uniforms & Tips',
-  description: 'What bar, café and restaurant staff can claim on tax: RSA certificates, non-slip shoes, uniform laundering. Plus the tax-free threshold mistake that catches working holiday makers running two or three casual jobs at once, and whether tips count as taxable income.',
-  keywords: [
-    'hospitality tax deductions Australia',
-    'bartender tax deductions',
-    'waitress tax deductions Australia',
-    'RSA certificate tax deductible',
-    'can I claim my work shoes tax',
-    'are tips taxable Australia',
-    'working two jobs tax Australia',
-    'tax-free threshold multiple employers',
-    'working holiday hospitality tax',
-    '417 462 visa hospitality job tax',
-    'backpacker bar job tax return',
-    'casual hospitality tax deductions',
+  "title": { absolute: "Hospitality Tax Deductions Australia: RSA, Shoes, Uniform" },
+  "description": "What bar, cafe, restaurant and kitchen staff can claim on an Australian tax return: RSA renewals, non slip shoes, chef whites and uniform laundry.",
+  "keywords": [
+    "hospitality tax deductions Australia",
+    "bartender tax deductions",
+    "waiter tax deductions Australia",
+    "chef tax deductions Australia",
+    "RSA certificate tax deductible",
+    "can I claim my work shoes tax",
+    "are tips taxable Australia",
+    "working holiday hospitality tax"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/expenses/hospitality`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/hospitality`,
-      'de': `${SITE_URL}/de/expenses/hospitality`,
-      'ja': `${SITE_URL}/ja/expenses/hospitality`,
-      'x-default': `${SITE_URL}/expenses/hospitality`,
-    },
+  "alternates": {
+    "canonical": "/expenses/hospitality",
+    "languages": {
+      "en-AU": "/expenses/hospitality",
+      "de": "/de/expenses/hospitality",
+      "ja": "/ja/expenses/hospitality",
+      "x-default": "/expenses/hospitality"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'en_AU',
-    url: `${SITE_URL}/expenses/hospitality`,
-    siteName: 'Working Holiday Tax',
-    title: 'Hospitality Tax Deductions Australia: RSA, Uniforms & Tips',
-    description: 'What bar, café and restaurant workers can claim on tax, and the tax-free threshold mistake that catches working holiday makers with more than one casual job.',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "en_AU",
+    "url": `${SITE_URL}/expenses/hospitality`,
+    "siteName": "Working Holiday Tax",
+    "title": "Hospitality Tax Deductions Australia: RSA, Shoes, Uniform",
+    "description": "Non slip shoes and chef whites are deductible. The all black outfit your venue insists on is not. What hospitality actually claims."
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: 'Hospitality Tax Deductions Australia: RSA, Uniforms & Tips',
-    description: 'What bar, café and restaurant workers can claim on tax, and the tax-free threshold mistake that catches working holiday makers with more than one casual job.',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "Hospitality Tax Deductions Australia: RSA, Shoes, Uniform",
+    "description": "Non slip shoes and chef whites are deductible. The all black outfit your venue insists on is not. What hospitality actually claims."
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const EMPLOYER_CHECKLIST = [
-  'Your TFN and a completed Tax File Number Declaration for that specific employer - it does not carry across automatically just because another employer already has it on file.',
-  'Working Holiday Maker selected as your residency status on the form, which is what your payroll system uses to identify you as eligible for the working holiday maker withholding rate.',
-  'The tax-free threshold question answered No, at every employer, every time - including the one paying you the most.',
+const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Hospitality, bar and kitchen work" })
+
+const UI = {
+  "ctaLabel": "Message us on WhatsApp",
+  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "guaranteeHeading": "We pay back the difference whenever the fee comes to more than the refund.",
+  "guaranteeBody": "Four venues, four income statements and super in four funds is the usual hospitality year here, and every client is on a 417 or a 462. Prepared by our team, then reviewed and signed off by a registered tax agent before it reaches the ATO.",
+  "faqHeading": "Questions people ask about this",
+  "guidesHeading": "Worth reading next",
+  "otherJobs": "A different job? Every occupation is here.",
+  "servicesLabel": "Elsewhere on the site",
+  "wrongLabel": "Claimed, and it should not have been",
+  "missedLabel": "Not claimed, and it should have been",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "hubHref": "/expenses"
+}
+
+const CRUMBS = [
+  {
+    "name": "Home",
+    "item": "/"
+  },
+  {
+    "name": "Deductions",
+    "item": "/expenses"
+  },
+  {
+    "name": "Hospitality",
+    "item": "/expenses/hospitality"
+  }
 ]
 
-const faqs = [
+const HERO = {
+  "kicker": "Bars, cafes, restaurants and kitchens",
+  "h1lead": "Your non slip shoes are deductible.",
+  "h1accent": "The all black outfit is not.",
+  "lede": "The list is short, so the money on a hospitality return usually sits on the income side: several venues, several withholding rates, super in several funds."
+}
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
   {
-    question: 'Can I claim my black work shoes and pants?',
-    answer: "Plain black clothing or shoes with no logo are not deductible, even if your venue's dress code requires them - the ATO treats these as ordinary clothing, not a uniform. Non-slip, enclosed shoes are different: if you genuinely need them for a wet bar floor or a busy kitchen pass, they count as protective footwear and are deductible regardless of their colour.",
+    "kind": "answer",
+    "h2": "What can a bar, cafe or kitchen worker claim on tax?",
+    "paras": [
+      "Hospitality staff can claim protective non slip footwear, occupation specific clothing such as chef whites and checked chef trousers, the laundering of a compulsory uniform that carries an employer logo, renewals of an RSA or Food Safety Supervisor certificate, and kitchen tools bought out of their own pocket. Everything else in the wardrobe is ordinary clothing.",
+      "The reason the list is short is that hospitality gives you very little that is unique to the job. You are indoors, your employer supplies the equipment, and the clothing a venue asks for is usually clothing anybody could wear anywhere. The value on a hospitality return is more often in the income side, in the withholding across several employers, than in the deductions."
+    ]
   },
   {
-    question: 'I work at two bars at once - what do I need to tell each employer?',
-    answer: "Give each employer your TFN and complete a separate Tax File Number Declaration for every one of them - your TFN doesn't transfer across automatically. On each form, select Working Holiday Maker as your residency status and answer No to the tax-free threshold question, at every employer, not just your main one. Because the working holiday maker rate is a flat 15% up to $45,000, none of your jobs should ever apply the $18,200 resident tax-free threshold.",
+    "kind": "items",
+    "h2": "The claims that belong to this work specifically",
+    "intro": "Clothing carries an extra test on top of the general ones, and it is where nearly every hospitality dispute happens.",
+    "items": [
+      {
+        "t": "Non slip, enclosed protective footwear",
+        "d": "Deductible where you need it: a wet floor behind a bar, spills around a coffee machine, hot plates carried across a kitchen pass. These count as protective footwear rather than ordinary shoes because they do a specific safety job, and that stays true whatever colour they are."
+      },
+      {
+        "t": "Chef whites and checked chef trousers",
+        "d": "Occupation specific clothing, meaning clothing that identifies you as a member of a particular trade and would look absurd anywhere else. That is a recognised category in its own right, separate from a branded uniform, and it is why a chef gets a clothing deduction and a waiter usually does not."
+      },
+      {
+        "t": "Laundering a compulsory uniform with a logo",
+        "d": "If your employer requires a uniform that carries their logo or a genuinely distinctive design, washing it is deductible at $1 a load where the load is only work items, or 50 cents a load washed in with everything else. Past $150 of laundry claims for the year you need a simple diary rather than an estimate."
+      },
+      {
+        "t": "Renewing an RSA or Food Safety Supervisor certificate",
+        "d": "Renewing a certificate you already hold, while you are already working in the role that needs it, is deductible. Your first one is not, on the same distinction the ATO applies to a first drivers licence."
+      },
+      {
+        "t": "Knives and kitchen tools you bought yourself",
+        "d": "A knife roll, your own chef knives, a thermometer, a mandoline. Each item costing $300 or less is claimed in full in the year you bought it. A set bought together for $300 or more is treated as one asset and written off across its effective life, even if each piece would have been under $300 on its own."
+      },
+      {
+        "t": "Aprons, gloves and protective gear you paid for",
+        "d": "Heat resistant gloves, cut resistant gloves, a protective apron. Deductible where they protect you from a hazard of the job and your employer did not supply them or pay you back for them."
+      }
+    ]
   },
   {
-    question: 'Are my tips taxable?',
-    answer: "Yes. Tips and service charges paid through your employer's payroll, including pooled or tronc tips, are included in your wages, already taxed, and shown on your income statement. Cash tips handed to you directly are just as taxable, but nobody tracks them for you - you're responsible for keeping a simple record and declaring the total yourself.",
+    "kind": "answer",
+    "h2": "What has to sit behind a hospitality claim?",
+    "paras": [
+      "The same three tests as everywhere: the money was yours, nobody paid it back, and it went to earning the income you are declaring. In a venue that means the receipt for the shoes and the knife roll, the written uniform policy, and a laundry diary once the loads add up.",
+      "Any record showing the amount, the date, the supplier and the item does the job, whether a receipt, an invoice, a bank statement or a photo on your phone, and it has to survive five years. A year of claims totalling $300 or less needs no written evidence at all, but the number still has to be one you can justify. Different $300 from the one deciding whether a knife set is written off at once or over its life."
+    ]
   },
   {
-    question: 'Do I get superannuation on a casual hospitality job?',
-    answer: "Yes. Your employer has to pay 12% super on top of your wages for casual work the same as any other job, from your very first dollar - there's no minimum monthly earnings threshold anymore. Work more than one venue and each employer pays super independently, so your contributions may end up spread across more than one fund.",
+    "kind": "traps",
+    "h2": "What do hospitality workers get wrong?",
+    "intro": "The clothing rule is the one that catches everybody, and it catches them because it feels unfair. The missed claims are quieter and are usually about pay rather than expenses.",
+    "wrong": [
+      {
+        "t": "The all black outfit the venue requires",
+        "d": "Plain black trousers, a plain black shirt, plain black shoes with no logo. You only own them for work, you would not have chosen them, and your manager sends you home without them. None of that matters. The ATO looks at what the item is, and conventional clothing anyone could wear anywhere is private, whatever the dress code says."
+      },
+      {
+        "t": "Your first RSA",
+        "d": "The certificate you paid for before you had the job is what made you eligible to be hired, and that is a private cost. Once you are working and it needs renewing to keep working, the renewal is deductible. Same certificate, different answer, depending on which side of your first shift it sits."
+      },
+      {
+        "t": "Haircuts, grooming and makeup for a front of house standard",
+        "d": "Personal grooming stays private even where a venue has a written standard for it. There is no version of a haircut that is a work expense in hospitality."
+      },
+      {
+        "t": "A meal on shift, or a drink after close",
+        "d": "Staff meals and knock off drinks are private, whether you paid for them, got them at a discount, or were given them. Being at work when you eat does not make eating deductible."
+      },
+      {
+        "t": "Cash tips left off the return",
+        "d": "This one runs the other way. Tips handed to you directly are taxable income even though nobody tracks them. Pooled tips and service charges paid through payroll are already in your income statement, but cash is yours to declare, and it is not optional."
+      }
+    ],
+    "missed": [
+      {
+        "t": "Laundering a logo uniform, all year",
+        "d": "A few dollars a week that almost nobody claims, because it never occurred to them that washing a shirt was a tax matter. Over a year of shifts it is a real figure, and the ATO publishes the rate so there is no estimating involved."
+      },
+      {
+        "t": "The non slip shoes, because \"you cannot claim clothes\"",
+        "d": "People read that hospitality clothing is not deductible, correctly, and then apply it to protective footwear, incorrectly. Protective shoes are a different category and they are claimable."
+      },
+      {
+        "t": "A second or third employer withholding at the wrong rate",
+        "d": "If a venue never got your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, it withholds far more than 15 per cent. None of it is lost, but it only comes back when a return is lodged that brings every employer together."
+      },
+      {
+        "t": "Super sitting in three different funds",
+        "d": "Every venue pays 12 per cent super on top of your wages from the first dollar, with no minimum monthly earnings. Work four casual jobs and you can finish the year with four accounts, each charging fees, and most people only ever find one of them."
+      },
+      {
+        "t": "A venue that unlawfully charged you for the uniform",
+        "d": "Not a deduction. Deductions from your wages for uniforms, laundry, breakages or till shortages are almost always unlawful under the Fair Work Act, and that is money back rather than a tax claim."
+      }
+    ]
   },
   {
-    question: 'One of my employers is withholding a lot more tax than the others - why?',
-    answer: "That usually means that employer doesn't have your Tax File Number Declaration on file yet, or isn't registered to withhold at working holiday maker rates - either way, they're required to withhold at a higher default rate until it's sorted. It isn't lost money: once all your employers' income is combined on your tax return, the correct 15% rate applies to your total earnings and the extra comes back.",
-  },
-  {
-    question: 'Can I claim my RSA or First Aid certificate?',
-    answer: "Yes. The cost of getting or renewing an RSA (Responsible Service of Alcohol) certificate is deductible if your role requires it, and the same applies to a First Aid certificate if holding one is part of your job. Keep the receipt from the training provider as your evidence.",
-  },
+    "kind": "answer",
+    "h2": "What has to be judged rather than looked up?",
+    "paras": [
+      "The clothing question, first. Whether an item is a compulsory uniform turns on how distinctive it is and whether the employer requires it. Whether footwear is protective turns on the hazard in your venue. A written uniform policy and a photograph of the item usually settle it either way.",
+      "The income side is where a professional view pays. Working holiday makers do not get the tax free threshold, so the answer to that question on every Tax File Number Declaration, at every venue, is no. That flips if the Addy decision applies to you, which it can for British, German and Japanese passport holders who were Australian residents for tax purposes. Three casual jobs, a mid year arrival and a settled address make it a live question."
+    ]
+  }
 ]
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Expenses', item: `${SITE_URL}/expenses` },
-    { '@type': 'ListItem', position: 3, name: 'Hospitality', item: `${SITE_URL}/expenses/hospitality` },
-  ],
-}
+const FAQS = [
+  {
+    "question": "Can I claim my black work shoes and trousers?",
+    "answer": "Plain black clothing with no logo is not deductible, even where the venue dress code requires it, because the ATO treats it as ordinary clothing rather than a uniform. Non slip enclosed shoes are a separate matter. If you need them for a wet bar floor or a busy kitchen pass they count as protective footwear and are deductible whatever colour they are."
+  },
+  {
+    "question": "Can I claim my RSA certificate?",
+    "answer": "You can claim the cost of renewing an RSA you already hold while you are working in a role that requires it. The first one is not deductible, because the ATO treats getting yourself qualified for work as a private cost, the same way it treats a first drivers licence. A Food Safety Supervisor certificate follows the identical rule."
+  },
+  {
+    "question": "Are my tips taxable?",
+    "answer": "Yes, all of them. Tips and service charges paid out through payroll, including a pooled or tronc arrangement, are part of your wages, already taxed, and already on your income statement. Cash handed to you directly is just as taxable but nobody is tracking it for you, so you need to keep a simple running note and declare the total yourself."
+  },
+  {
+    "question": "I work at three venues. What do I put on each TFN declaration?",
+    "answer": "Each employer needs its own Tax File Number Declaration, because your TFN does not carry across when you start somewhere new. On each one you select working holiday maker as your residency status and answer no to the tax free threshold question, at every venue including the one paying you most. Working holiday makers do not get a tax free threshold from any employer, so answering yes anywhere causes that venue to under withhold and turns into a bill later."
+  },
+  {
+    "question": "Do I get super on a casual hospitality job?",
+    "answer": "Yes. Your employer pays 12 per cent super on top of your wages for casual work from your first dollar, with no minimum monthly earnings threshold. Each venue pays independently, so working several jobs usually means contributions spread across more than one fund, and those are worth tracking down before you leave Australia."
+  }
+]
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'Hospitality Tax Deductions Australia: RSA, Uniforms & Tips',
-  description: 'What bar, café and restaurant workers can claim on tax, and the tax-free threshold mistake that catches working holiday makers running more than one casual job.',
-  url: `${SITE_URL}/expenses/hospitality`,
-  inLanguage: 'en-AU',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
-}
+const GUIDES = [
+  {
+    "href": "/blog/hospitality-award-working-holiday-makers",
+    "label": "The Hospitality Award and what you should be paid",
+    "desc": "Casual loading, penalty rates and where venues get it wrong."
+  },
+  {
+    "href": "/blog/uniform-laundry-deductions-illegal-australia",
+    "label": "Uniform and laundry costs taken out of your pay",
+    "desc": "When a deduction from your wages is unlawful, and how to get it back."
+  },
+  {
+    "href": "/blog/tax-deductions-working-holiday-makers",
+    "label": "Tax deductions for working holiday makers: the full list",
+    "desc": "Every category, with what the ATO rejects and why."
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/tax-return",
+    "label": "Tax return"
+  },
+  {
+    "href": "/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/superannuation",
+    "label": "Superannuation"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
+}
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "Hospitality Tax Deductions Australia: RSA, Shoes, Uniform",
+  description: "Non slip shoes and chef whites are deductible. The all black outfit your venue insists on is not. What hospitality actually claims.",
+  url: `${SITE_URL}/expenses/hospitality`,
+  inLanguage: "en-AU",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   '@id': `${SITE_URL}/expenses/hospitality#webpage`,
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', '.hero-sub'],
-  },
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
   url: `${SITE_URL}/expenses/hospitality`,
 }
 
-const linkStyle = { color: '#0B5240', textDecoration: 'underline' }
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
 
-export default function HospitalityExpensesPage() {
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
+  return (
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"en"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
+    </div>
+  )
+}
+
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -134,204 +407,238 @@ export default function HospitalityExpensesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/" style={{ color: '#587066' }}>Home</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/expenses" style={{ color: '#587066' }}>Expenses</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>Hospitality</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '24ch' }}>
-                What can <span style={{ color: '#0B5240' }}>hospitality workers</span> claim on tax?
-              </h1>
-              <p className="font-semibold mx-auto hero-sub" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '50ch' }}>
-                Bar, café and restaurant pay is usually simple. The real catch for working holiday makers is juggling two or three casual jobs at once - starting with the tax-free threshold question on your TFN declaration.
-              </p>
-            </div>
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}{' '}
+              <span style={{ color: FOREST, fontStyle: 'italic' }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
           </div>
         </section>
 
-        {/* ── WORKING MORE THAN ONE JOB (this page's unique hook) ──────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Working more than one hospitality job at once
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                It&apos;s common in hospitality to stack two or three casual jobs in the same week - a few lunch shifts at one café, evening service at a restaurant, a weekend shift behind a bar. That&apos;s completely normal and isn&apos;t a problem on its own. What it does mean is getting one form right with every single employer, not just your main one.
-              </p>
-            </div>
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
 
-            <p className="font-semibold text-center" style={{ fontSize: '13px', color: '#0B5240', marginBottom: '16px' }}>
-              Every new employer needs three things from you:
-            </p>
-            <div className="max-w-[680px] mx-auto" style={{ marginBottom: '28px' }}>
-              <div className="flex flex-col gap-3">
-                {EMPLOYER_CHECKLIST.map((c, i) => (
-                  <div key={i} className="taxres-condition-item">
-                    <span className="taxres-condition-num">{i + 1}</span>
-                    <p className="taxres-condition-text">{c}</p>
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
+
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-            <div className="max-w-[680px] mx-auto">
-              <div className="taxres-savings-box">
-                <div>
-                  <p className="taxres-savings-heading">Not the same rule as an Australian resident&apos;s</p>
-                  <p className="taxres-savings-body">
-                    You might hear from an Australian friend or coworker that you should only claim the tax-free threshold from your highest-paying job. That advice is for tax residents, who get their first $18,200 of income tax-free each year. It doesn&apos;t apply to you on a 417 or 462 visa - working holiday makers don&apos;t get a tax-free threshold at all, from any employer, so the correct answer on every TFN declaration you fill in is No. Answering Yes anywhere, even for your smallest shift, causes that employer to under-withhold, and the shortfall turns into a bill once your tax return is lodged.
-                  </p>
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
                 </div>
+              )}
+            </div>
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"en"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
               </div>
-            </div>
-
-            <div className="max-w-[680px] mx-auto" style={{ marginTop: '22px' }}>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                Two different things can go wrong here, and they don&apos;t feel the same at the time. Answer Yes to the tax-free threshold question anywhere, and that employer under-withholds for as long as you work there - the shortfall becomes a bill once your <Link href="/tax-return" style={linkStyle}>tax return</Link> is lodged. Miss submitting a declaration to a new employer, or end up at one that isn&apos;t registered with the ATO to withhold at working holiday maker rates, and the opposite happens: too much tax comes out of that job specifically. Nothing is lost - once every employer&apos;s income statement is combined on your return, the correct 15% rate applies to your total earnings and the extra comes back as part of your refund.
-              </p>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                Superannuation works independently of all this. Each employer has to pay <Link href="/superannuation" style={linkStyle}>12% super</Link> on top of your wages for casual hospitality work the same as any other job, from your very first dollar - there hasn&apos;t been a minimum monthly earnings threshold since July 2022. Work more than one venue and don&apos;t be surprised if your super ends up spread across more than one fund; it&apos;s all still yours, and something we can help track down before you leave Australia.
-              </p>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                If you&apos;re not sure your TFN declaration is set up correctly at each job, our <Link href="/tfn" style={linkStyle}>TFN page</Link> walks through exactly what each employer needs and why.
-              </p>
-            </div>
+            ))}
           </div>
         </section>
 
-        {/* ── TIPS, PENALTY RATES & CASUAL LOADING ─────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Are tips, penalty rates and casual loading taxable?
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch' }}>
-                Short answer: yes, all of it. Here&apos;s how each type of hospitality pay is actually treated.
-              </p>
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
+              ))}
             </div>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Casual loading and penalty rates for evenings, weekends and public holidays aren&apos;t a separate or informal payment - they&apos;re ordinary wages, taxed the same as the rest of your pay and already included in the gross figure on your payslip and income statement.
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Tips and service charges work the same way. If your venue pools tips or adds a service charge to bills and pays it out through payroll, sometimes called a tronc system, that amount is part of your wages: tax is withheld from it along with everything else, and it&apos;s already reflected in your income statement. There&apos;s nothing extra for you to do with it when your <Link href="/tax-return" style={linkStyle}>tax return</Link> is prepared.
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              Cash handed to you directly by a customer is taxable too, it just isn&apos;t tracked by anyone else. You&apos;re responsible for keeping a simple record of what you receive - a running note of the date and a rough amount is enough - and declaring the total as income at tax time.
+
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
         </section>
 
-        {/* ── WHAT YOU CAN / CAN'T CLAIM ───────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                What you can and can&apos;t claim
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                A short, genuine list of work-related expenses - and why plain black work clothes don&apos;t make the cut, even when your venue requires them.
-              </p>
-            </div>
-
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Beyond your wages, there&apos;s a short, genuine list of work-related expenses hospitality workers can claim. The test is the same one that applies to every occupation: you paid for it yourself, it&apos;s directly connected to earning your income, and you can show a receipt. Clothing has its own extra test on top of that, and it&apos;s where most hospitality workers get caught out.
-            </p>
-
-            <h3 className="font-serif font-black" style={{ fontSize: 'clamp(16px,1.7vw,19px)', color: '#0B5240', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              RSA and First Aid certificates
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              If your role requires you to hold a current RSA (Responsible Service of Alcohol) certificate, the cost of getting it and renewing it is deductible. The same applies to a First Aid certificate if holding one is a requirement of your job. Both are direct costs of being qualified to do the work you&apos;re paid for, which is exactly what the deduction test is looking for - not a general skill you&apos;d have picked up anyway.
-            </p>
-
-            <h3 className="font-serif font-black" style={{ fontSize: 'clamp(16px,1.7vw,19px)', color: '#0B5240', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Protective, non-slip footwear
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Non-slip, enclosed shoes are deductible if you genuinely need them for the job - a wet floor behind a bar, spills around a coffee machine, carrying hot plates through a kitchen pass. These count as protective footwear, a different category to ordinary shoes, because they&apos;re doing a specific safety job rather than just meeting a dress code.
-            </p>
-
-            <h3 className="font-serif font-black" style={{ fontSize: 'clamp(16px,1.7vw,19px)', color: '#0B5240', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Laundering a compulsory uniform
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              If your employer requires you to wear a uniform carrying their logo, the cost of laundering it is deductible. The logo is what makes it a uniform for tax purposes rather than ordinary clothing - it&apos;s a compulsory, distinctive item you wouldn&apos;t choose to wear outside work.
-            </p>
-
-            <h3 className="font-serif font-black" style={{ fontSize: 'clamp(16px,1.7vw,19px)', color: '#B54708', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              What you can&apos;t claim
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Plain black pants, a plain black shirt, or plain black shoes with no logo are not deductible, even when your venue&apos;s dress code requires them. This is the one that catches the most people out, because it feels unfair - you only bought the outfit for work, and probably wouldn&apos;t have chosen all-black otherwise. But the ATO doesn&apos;t look at why you bought something, it looks at what the item actually is. Plain black clothing is ordinary, everyday clothing that anyone could wear anywhere, regardless of what your employer&apos;s dress code says about it.
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              For an item to count as a deductible uniform, it has to be either occupation-specific or protective, like the non-slip shoes above, or a compulsory uniform that&apos;s genuinely distinctive, like a logo. Your employer being strict about a dress code doesn&apos;t move an item from one category to the other - a plain black shirt is still a plain black shirt, worn anywhere, by anyone, whether or not a manager insists on it.
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              Work a different job on the side, or curious how other occupations compare? See the full <Link href="/expenses" style={linkStyle}>deductions by occupation</Link> guide.
-            </p>
-          </div>
-        </section>
-
-        {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }} className="lg:py-14">
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">FAQs</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  Hospitality tax questions
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  Anything else? Message us directly.
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-        <NextStep
-          eyebrow="What's next?"
-          heading="Working more than one job? Good."
-          body="Once your TFN declarations are correct at every employer, the next step is lodging a tax return that brings all of your hospitality income together."
-          cta="Continue to your tax return →"
-          href="/tax-return"
-        />
-
-        {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              This is general information, not personal tax advice. Everyone&apos;s situation is a little different, especially once you add more than one employer into the mix. When you lodge with us, we&apos;ll go through your specific payslips and income statements, prepared by our working-holiday-only team, to make sure your tax-free threshold answers, deductions and tips are all accounted for correctly.
-            </p>
-            <Link href="/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              Claim Your Tax Refund →
-            </Link>
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/tax-form" lang="en" />
+
+      <MobileCta href={WA} lang={"en"} topic="expenses" />
     </>
   )
 }

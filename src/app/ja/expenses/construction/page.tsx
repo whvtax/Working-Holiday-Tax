@@ -1,467 +1,660 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep, RelatedServices } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: '建設業の税金控除ガイド：工具・PPE・White Card（オーストラリア）',
-  description: '建設業で働くワーキングホリデーメーカーが確定申告で経費計上できるものを解説。$300未満・以上の工具や機材、保護服とPPE、White Cardの更新費用と初回取得費用の違い、ユートなどの車両費、自己啓発費用まで、ATOの職人向けガイダンスに基づいて解説します。',
-  keywords: [
-    '建設業 税金控除',
-    'ワーホリ 建設業 税金',
-    'White Card 確定申告',
-    'White Card 税金控除',
-    '工具 税金控除 オーストラリア',
-    'PPE 税金控除 建設業',
-    'バックパッカー 建設業 確定申告',
-    '417ビザ 建設業 控除',
-    '建設現場 税金 控除',
-    '職人 控除 ATO',
+  "title": "建設の経費控除：道具、保護具、ホワイトカード",
+  "description": "建設現場で働く人が控除できるもの。300ドル以下と300ドル超の道具、保護具、ホワイトカードの更新、日焼け対策、ユートが対象になる狭い条件。",
+  "keywords": [
+    "建設 税金 控除 オーストラリア",
+    "ホワイトカード 控除",
+    "工具 控除 ATO",
+    "保護具 控除 建設",
+    "ワーホリ 建設 タックスリターン",
+    "417ビザ 建設 控除",
+    "ユート 控除 運転日誌",
+    "現場 経費 オーストラリア"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/ja/expenses/construction`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/construction`,
-      'de': `${SITE_URL}/de/expenses/construction`,
-      'ja': `${SITE_URL}/ja/expenses/construction`,
-      'x-default': `${SITE_URL}/expenses/construction`,
-    },
+  "alternates": {
+    "canonical": "/ja/expenses/construction",
+    "languages": {
+      "en-AU": "/expenses/construction",
+      "de": "/de/expenses/construction",
+      "ja": "/ja/expenses/construction",
+      "x-default": "/expenses/construction"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'ja_JP',
-    url: `${SITE_URL}/ja/expenses/construction`,
-    siteName: 'Working Holiday Tax',
-    title: '建設業の税金控除ガイド：工具・PPE・White Card（オーストラリア）',
-    description: 'ワーキングホリデーで建設業として働く人が実際に経費計上できるものとは。工具、PPE、White Cardの更新費用、車両費まで解説します。',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "ja_JP",
+    "url": `${SITE_URL}/ja/expenses/construction`,
+    "siteName": "Working Holiday Tax",
+    "title": "建設の経費控除：道具、保護具、ホワイトカード",
+    "description": "道具、保護具、ホワイトカードの更新は控除できます。最初のホワイトカードと破れたジーンズはできません。"
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: '建設業の税金控除ガイド：工具・PPE・White Card（オーストラリア）',
-    description: 'ワーキングホリデーで建設業として働く人が実際に経費計上できるものとは。工具、PPE、White Cardの更新費用、車両費まで解説します。',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "建設の経費控除：道具、保護具、ホワイトカード",
+    "description": "道具、保護具、ホワイトカードの更新は控除できます。最初のホワイトカードと破れたジーンズはできません。"
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const ATO_TRADIES_URL = 'https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records/tradies-be-certain-about-what-you-can-claim'
+const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "建設と現場作業" })
 
-const UNDER_300_ROWS = [
-  ['申請方法', '全額を即時申請'],
-  ['いつ申請するか', '購入した年'],
-  ['例', '$180のコードレスドリル'],
-]
-
-const OVER_300_ROWS = [
-  ['申請方法', '耐用年数にわたって分割申請'],
-  ['いつ申請するか', '所有している各年に一部ずつ'],
-  ['例', '$650のコンクリートミキサー'],
-]
-
-const FIRST_CARD_ROWS = [
-  ['内容', '初めて取得するWhite Card'],
-  ['必要だった理由', 'そもそも建設現場での仕事に就くための資格を得るため'],
-  ['控除できる？', 'いいえ、私的な支出'],
-]
-
-const RENEWAL_CARD_ROWS = [
-  ['内容', 'すでに持っているWhite Cardの更新'],
-  ['必要な理由', 'すでに現場で働いており、有効な状態を保つ必要があるため'],
-  ['控除できる？', 'はい'],
-]
-
-const CENTS_PER_KM_ROWS = [
-  ['現在のレート（2026-27年度、2026年7月1日から）', '1kmあたり91セント'],
-  ['以前のレート（2024-25・2025-26年度）', '1kmあたり88セント'],
-  ['請求できる上限', '1台あたり年間5,000km'],
-  ['ユート・バン（積載量1トン以上）', '対象外、ログブック法を使用'],
-]
-
-const LOGBOOK_ROWS = [
-  ['仕組み', '実際にかかった費用のうち、仕事で使用した割合を請求'],
-  ['ログブック記録期間', '連続12週間、5年間有効'],
-  ['請求できる上限', '上限なし、実際の仕事使用率に基づく'],
-  ['ユート・バンにも必要？', '必要、車両費を請求する場合は'],
-]
-
-const VEHICLE_CONDITIONS = [
-  'その工具が、その日行っている作業に欠かせないこと。',
-  '工具が本当にかさばること、持ち運びに車両が必要なのは単なる利便性ではなく、実際のサイズや重量が理由であること。',
-  '現場に安全に保管できる場所がなく、自宅まで持ち帰らざるを得ないこと。',
-]
-
-type CardData = {
-  emoji: string
-  title: string
-  subtitle: string
-  can: string[]
-  cannot: string[]
+const UI = {
+  "ctaLabel": "WhatsAppで相談する",
+  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "guaranteeHeading": "還付金より料金のほうが高くついたら、差額は返金します。持ち出しにはなりません。",
+  "guaranteeBody": "現場の申告、資格の更新、ユートをめぐる線引き。どれもここでは毎週の仕事で、お客様は全員417・462ビザの方です。申告書は当社のチームが作成し、ATOへ提出する前に登録税理士が確認して承認します。",
+  "faqHeading": "よくある質問",
+  "guidesHeading": "次に読むと役に立つガイド",
+  "otherJobs": "別の仕事の場合は、職種別の一覧へ。",
+  "servicesLabel": "サイト内の関連ページ",
+  "wrongLabel": "控除できないのに申告されがちなもの",
+  "missedLabel": "控除できるのに申告されないもの",
+  "disclaimer": "これは一般的な情報であり、個別の税務アドバイスではありません。何を控除できるかは、雇用主、手元の記録、実際の働き方によって変わります。当社にご依頼いただいた場合は、あなたの状況を一つずつ確認し、控除できるものはすべて申告し、できないものは申告しません。",
+  "hubHref": "/ja/expenses"
 }
 
-const TOOLS_CARD: CardData = {
-  emoji: '\u{1F6E0}️',
-  title: '工具・機材',
-  subtitle: '仕事のために自分で購入するもの',
-  can: [
-    '自分で購入する手動・電動工具：ドリル、グラインダー、電動のこぎり、サンダー、釘打ち機',
-    '自分で用意する大型の現場用機材（コンクリートミキサー、はしご、リーフブロワーなど）',
-    '仕事のために購入した工具箱や作業灯',
-  ],
-  cannot: [
-    '雇用主から支給・貸与された工具、または雇用主があなたに代わって購入した工具',
-    '自分で支払った後に払い戻しを受けた工具',
-  ],
-}
-
-const PPE_CARD: CardData = {
-  emoji: '\u{1F9BA}',
-  title: '保護服・PPE',
-  subtitle: '実際に安全機能を持つ装備',
-  can: [
-    '高視認性のベストやシャツ、先芯入りの安全靴、保護メガネ、ヘルメット、耳当て（イヤーマフ）',
-    '屋外での現場作業のための日焼け止め、サンハット、サングラス',
-    '手指消毒液、フェイスマスク、作業用手袋',
-  ],
-  cannot: [
-    'ジーンズやTシャツ、パーカーなどの普段着。現場作業で傷んだり擦り切れたりしても対象外',
-    '仕事に実用的であっても、実際の保護機能を持たないもの',
-  ],
-}
-
-const faqs = [
+const CRUMBS = [
   {
-    question: '最初のWhite Cardは控除できますか？',
-    answer: 'いいえ。ATOは、あなたが初めて取得するWhite Card（正式名称：Construction Induction Card）を、初めて取得する運転免許証と同じように扱います。そもそもその仕事に就くための資格を得るために必要だった費用は、控除ではなく私的な支出です。すでに現場で働いていて、働き続けるためにカードの更新が必要になった場合、その更新費用は控除の対象になります。同じ考え方が、初めて取得するフォークリフトの資格や大型車両の許可証にも当てはまります。',
+    "name": "ホーム",
+    "item": "/ja"
   },
   {
-    question: '建設業の仕事では、どんな工具を控除できますか？',
-    answer: '現場作業のために自分で購入した工具や機材は、雇用主から支給されたり払い戻しを受けたりしていない限り、控除の対象になります。ドリル、グラインダー、サンダー、手動工具など、1点あたり$300未満のものは、購入した年に全額を申請できます。大型の電動工具やコンクリートミキサーなど、1点$300以上のものは、一度に全額ではなく、耐用年数にわたって少しずつ申請します。',
+    "name": "控除",
+    "item": "/ja/expenses"
   },
   {
-    question: '複数の現場に移動するためのユートは控除できますか？',
-    answer: '自宅から普段の職場までの運転は、その職場が建設現場であっても、通常は私的な通勤として扱われ、控除の対象になりません。ただし狭い例外があります。工具が本当にかさばり、仕事に欠かせず、現場に安全に保管できる場所がない場合、その工具を運ぶための移動は控除の対象になります。ほとんどのユートやパネルバンは積載量が1トン以上あるため、よりシンプルな1kmあたりの定額法の対象外となり、車両費を請求したい場合はログブックが必要になります。',
-  },
-  {
-    question: '先芯入りの安全靴や高視認性の作業着は税金控除の対象になりますか？',
-    answer: 'はい。先芯入りの安全靴、高視認性のベスト、保護メガネ、ヘルメット、耳当てなどの保護用品は、現場での特定の負傷リスクからあなたを守るものであるため控除の対象になります。これがATOの適用する基準です。日焼け止め、サンハット、サングラスなどの日焼け対策も、屋外で働く場合は控除の対象になります。',
-  },
-  {
-    question: '現場で作業着が破れたり汚れたりした場合、控除できますか？',
-    answer: 'いいえ。ジーンズやTシャツ、フランネルシャツなどの普段着は、建設現場で傷んだり、汚れたり、擦り切れたりしても、それだけで控除の対象にはなりません。ATOは普段着の通常の消耗を私的な支出として扱います。対象となるには、上記のPPEのような実際の保護機能があるか、義務付けられたロゴ入り制服である必要があります。',
-  },
-  {
-    question: '職業訓練コースや研修は控除できますか？',
-    answer: '自己啓発費用は、すでに従事している職種や役割に直接関連する場合、たとえば既存のスキルや資格をアップグレードする講座であれば控除の対象になります。別の職種への転向を目的とした講座は、たとえ建設関連であっても控除の対象になりません。今使っている資格を維持するのではなく、新しい資格を築くことになるためです。',
-  },
+    "name": "建設",
+    "item": "/ja/expenses/construction"
+  }
 ]
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-    { '@type': 'ListItem', position: 2, name: '経費', item: `${SITE_URL}/ja/expenses` },
-    { '@type': 'ListItem', position: 3, name: '建設業', item: `${SITE_URL}/ja/expenses/construction` },
-  ],
+const HERO = {
+  "kicker": "現場、労務、職人仕事",
+  "h1lead": "道具は控除できます。",
+  "h1accent": "最初のホワイトカードはできません。",
+  "lede": "現場仕事の控除リストは、ワーホリの仕事のなかで最も長いものです。そのなかでユートだけは、たいていあなたの控除になりません。"
 }
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: '建設業の税金控除ガイド：工具・PPE・White Card（オーストラリア）',
-  description: 'ワーキングホリデーで建設業として働く人がオーストラリアの確定申告で経費計上できるものを解説：工具・機材、保護服とPPE、White Cardの更新費用、車両費、自己啓発費用。',
-  url: `${SITE_URL}/ja/expenses/construction`,
-  inLanguage: 'ja-JP',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
-}
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
+  {
+    "kind": "answer",
+    "h2": "建設作業員は何を控除できますか？",
+    "paras": [
+      "控除できるのは、自費で買った道具や機材、保護衣類と保護具、屋外現場のための日焼け対策、すでに持っているホワイトカードや操作資格の更新、携帯電話代の仕事使用分、そして今すでに就いている職種に関係する自己研鑽です。雇用主が支給または払い戻したものは対象外です。",
+      "リストが長いのは、この仕事が具体的な費用を生むからです。安全靴は落ちてきたブロックから、ヘルメットは頭上の危険から、日焼け止めは日陰のないスラブでの6時間から守ります。控除の判定が探しているのはまさにこの結びつきで、だからこのサイトの職種のなかで現場作業は控除合計が最も大きくなりがちです。"
+    ]
+  },
+  {
+    "kind": "items",
+    "h2": "この仕事に固有の控除",
+    "intro": "以下の金額の線引きは、控除できるかどうかではなくタイミングの話です。300ドルを超えても控除は消えず、配分されるだけです。",
+    "items": [
+      {
+        "t": "1点300ドル以下の道具と機材",
+        "d": "ドリル、グラインダー、ネイルガン、水平器、腰袋、のみのセット。1点300ドル以下なら購入年に全額控除します。1点ごとに判定されるので、1年分の小さな買い物が、多くの人がレジで捨てる領収書からまとまった控除を作ります。"
+      },
+      {
+        "t": "1点300ドル以上の道具と機材",
+        "d": "こちらも控除できますが、一度にではなく耐用年数にわたって配分します。コンクリートミキサーやしっかりした卓上丸のこがここに入ります。落とし穴は、合計300ドル以上のセットとしてまとめ買いした場合で、1点ずつなら300ドル未満でもセット全体が1つの資産として扱われます。"
+      },
+      {
+        "t": "保護具と保護衣類",
+        "d": "高視認性のシャツやベスト、安全靴、保護メガネ、ヘルメット、イヤーマフ、作業手袋、防塵マスク。ATOが見るのは現場で役に立つかどうかではなく、具体的な負傷リスクから身を守る機能があるかどうかです。"
+      },
+      {
+        "t": "屋外作業のための日焼け対策",
+        "d": "日焼け止め、つばの広い帽子、サングラスは、現場が屋外なら他の屋外職と同じ根拠で控除できます。真夏のスラブでは本物の、しかも繰り返し発生する費用ですが、領収書を取っておく人はほとんどいません。"
+      },
+      {
+        "t": "ホワイトカードや操作資格の更新",
+        "d": "すでに持っているカードや資格を、現場に入っている状態で更新する費用は控除できます。最初のホワイトカードは控除できません。それは建設の仕事に就く資格を得るための費用だからです。最初のフォークリフト、高所作業車、大型車の資格にも同じ区別が当てはまります。"
+      },
+      {
+        "t": "携帯電話とインターネットの仕事使用分",
+        "d": "自分の携帯で職長に連絡する、図面を確認する、シフトの連絡を受けるなら、契約の仕事使用割合が控除できます。割合の根拠は公正で正直なものにしてください。私生活にも使う携帯で全額を申告しても通りません。"
+      },
+      {
+        "t": "今の職種に関係する研修",
+        "d": "今使っている技能や資格を高める講座は控除できます。別の職種に移るための講座は、建設関連であっても控除できません。今の収入を生んでいる資格を維持するのではなく、新しい資格を作るものだからです。"
+      }
+    ]
+  },
+  {
+    "kind": "answer",
+    "h2": "道具の控除には何の裏づけが要りますか？",
+    "paras": [
+      "どの控除も3つのテストを通ります。自分で支払ったこと、払い戻されていないこと、申告する収入を得るために使ったことです。現場なら、ドリル、安全靴、資格更新の領収書を、ダッシュボードに置き去りにせず手元に残すことです。",
+      "記録は領収書でも請求書でも銀行明細でもよく、金額、日付、支払先、内容が分かれば足ります。スマホの写真で構いません。5年間は保管してください。その年の仕事関連の控除が合計300ドル以下なら書面の証拠は不要ですが、金額の根拠は説明できる必要があります。丸のこを一度に償却するか耐用年数で配分するかを決める300ドルとは、別のルールです。"
+    ]
+  },
+  {
+    "kind": "numbered",
+    "h2": "現場までの運転が控除になるのはどんなときですか？",
+    "intro": "自宅から通常の職場までの運転は私的な移動で、現場も職場です。例外はかさばる道具の1つだけで、次の3つが同時に成り立つ必要があります。",
+    "steps": [
+      "その道具がその日の作業に不可欠であること。",
+      "本当にかさばること。つまり大きさや重さが車を必要とする実際の理由であって、単に便利だからではないこと。",
+      "現場に安全に置いておける場所がなく、持ち帰らざるを得ないこと。"
+    ],
+    "note": "現場に施錠できる小屋、コンテナ、ケージがある場合、または持ち物が普通のバッグに収まる場合、その移動は通常の通勤のままです。例外に当てはまる場合でも、積載量1トン以上のユートやバンはキロメートル単価方式をまったく使えないため、多くの人にとって運転日誌が唯一の方法になります。"
+  },
+  {
+    "kind": "traps",
+    "h2": "建設で働く人がよく間違えることは？",
+    "intro": "誤って申告されるのはたいてい衣類とユートです。取りこぼされるのは、明らかに控除できたのに誰も領収書を残さなかったものです。",
+    "wrong": [
+      {
+        "t": "現場で駄目になった普段着",
+        "d": "ジーンズ、Tシャツ、ネルシャツ、パーカー。現場が駄目にしますし、仕事のために買ったものですが、どちらも関係ありません。普段着の通常の摩耗は私的な支出です。切創、日光、騒音、粉じん、衝撃から身を守る品でなければならず、1日耐えるだけでは足りません。"
+      },
+      {
+        "t": "最初のホワイトカード",
+        "d": "雇ってもらえるようになる前に払ったカードは、その職業に就く資格を得るための費用で、ATOは最初の運転免許と同じように扱います。働き始めてからの更新は別で、控除できます。"
+      },
+      {
+        "t": "ユートを当然のように",
+        "d": "ユートを所有して現場へ運転すること自体は控除になりません。上記のかさばる道具の3条件がすべて必要で、施錠できる保管場所がある多くの現場では成り立ちません。この業種で最も過大に申告される項目です。"
+      },
+      {
+        "t": "雇用主が支給または支払った道具",
+        "d": "トラックから出てきたもの、現場コンテナのもの、払い戻されたものは、あなたの負担が残っていません。道具を使う人と、道具の代金を払った人は別です。"
+      },
+      {
+        "t": "別の職種に移るための講座",
+        "d": "新しい職業に移るための学習は、どれだけ建設に関係していても控除できません。既存の稼得能力を維持するのではなく、新しい稼得能力を作るものだからです。"
+      }
+    ],
+    "missed": [
+      {
+        "t": "小さな道具を1点ずつ",
+        "d": "一定額を超えないと道具は申告する価値がないと思われがちですが、そんな基準はありません。40ドルの買い物が12回なら480ドルの控除で、それぞれが個別に300ドルの基準で判定されます。"
+      },
+      {
+        "t": "300ドル超をまるごと諦める",
+        "d": "「300ドル超」と聞いて、その道具は控除できないと結論づける人が意外と多くいます。控除はできます。耐用年数にわたって配分するだけです。落としてしまうと、一部を先送りするどころか控除全体を失います。"
+      },
+      {
+        "t": "屋外現場での日焼け止めと帽子",
+        "d": "屋外作業では認められているのに、職人にはほとんど申告されません。日焼け対策はファームの話だと思われがちですが、2月の日陰のないスラブも同じ曝露です。"
+      },
+      {
+        "t": "高視認性ウェアや保護具の洗濯",
+        "d": "控除できる保護衣類の洗濯自体も控除でき、ATOの単価は仕事着だけなら1回1ドル、私服と一緒なら50セントです。年間150ドルを超えたら簡単な記録を付けてください。"
+      },
+      {
+        "t": "自費で払った資格の更新",
+        "d": "ホワイトカード、フォークリフト、高所作業車の更新は7月には忘れがちで、とくに土曜午前の講習で現金払いだった場合はなおさらです。"
+      }
+    ]
+  },
+  {
+    "kind": "answer",
+    "h2": "あなたの事実だけで決まるのはどこですか？",
+    "paras": [
+      "まず、かさばる道具の例外です。何を運んだか、現場がどんな保管を用意していたか、その日その道具が不可欠だったかで決まります。同じクルーの2人でも結論が分かれますし、実際に確認される控除なので、説明できるようにしておいてください。",
+      "講座も同じ構図です。今の技能の維持なのか、新しい職業への準備なのかは、案内ではなく今の役割で決まります。",
+      "税務上の居住区分は、リストのどの道具より価値があります。イギリス、ドイツ、日本のパスポート保持者で税務上オーストラリア居住者だった人は、Addy判決のもとで満額の非課税枠を受けられる可能性があります。現場仕事は1つの住所に長く落ち着く形になりやすく、この問いが現実になるパターンです。"
+    ]
+  }
+]
+
+const FAQS = [
+  {
+    "question": "最初のホワイトカードは控除できますか？",
+    "answer": "できません。ATOは最初のホワイトカードを最初の運転免許と同じように、仕事をするための費用ではなく仕事に就く資格を得るための費用として扱います。すでに現場で働いていて、続けるために更新が必要になった時点で、更新費用は控除できます。最初のフォークリフト資格や大型車の許可にも同じ理屈が当てはまります。"
+  },
+  {
+    "question": "建設作業員はどんな道具を控除できますか？",
+    "answer": "現場のために自分で買った道具や機材はすべてです。ただし雇用主が支給も払い戻しもしていないことが条件です。会社の道具を使っている日がある場合、その分まで自分の控除にはできません。中古で買ったものや、こわれて買い替えたものも、支払った記録があれば同じように扱えます。"
+  },
+  {
+    "question": "現場へ行くユートは控除できますか？",
+    "answer": "狭い場合に限られます。自宅から通常の職場への運転は私的な移動で、その職場が建設現場でも変わりません。控除できるのは、運ぶ道具がその日不可欠で、本当にかさばり、現場に安全に保管できない場合だけです。ほとんどのユートやバンは積載量が1トン以上あるためキロメートル単価方式の対象外で、控除するなら運転日誌しかありません。"
+  },
+  {
+    "question": "安全靴や高視認性ウェアは控除できますか？",
+    "answer": "はい。安全靴、高視認性のシャツやベスト、保護メガネ、ヘルメット、イヤーマフ、作業手袋などの保護具は、現場の具体的な負傷リスクから身を守るため控除できます。これがATOの判断基準です。屋外現場の日焼け対策も同じ根拠で控除でき、保護具の洗濯も同様です。"
+  },
+  {
+    "question": "現場で服が駄目になります。なぜ控除できないのですか？",
+    "answer": "ATOが見るのは、その服に何が起きたかではなく品物そのものだからです。ジーンズ、Tシャツ、ネルシャツは誰がどこでも着られる普段着で、その通常の摩耗は仕事がどれだけ早く駄目にしても私的な費用です。控除できるようになるのは、上記の保護具のように本物の保護機能がある場合か、ロゴ入りの必須制服である場合です。"
+  }
+]
+
+const GUIDES = [
+  {
+    "href": "/ja/blog/white-card-australia-working-holiday",
+    "label": "ホワイトカードと、その費用",
+    "desc": "取得方法と、最初の1枚が控除にならない理由。"
+  },
+  {
+    "href": "/ja/blog/tools-equipment-under-300-instant-deduction-whv",
+    "label": "300ドル以下の道具は全額即時控除",
+    "desc": "1点ずつ判定される理由と、セット購入で変わる点。"
+  },
+  {
+    "href": "/ja/blog/construction-laborer-working-holiday-australia",
+    "label": "ワーホリの建設現場の仕事",
+    "desc": "賃金の目安と、現場が持参を求めるもの。"
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/ja/tax-return",
+    "label": "タックスリターン"
+  },
+  {
+    "href": "/ja/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/ja/superannuation",
+    "label": "スーパーアニュエーション"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
-function CompareTable({ label, rows, highlight }: { label: string; rows: string[][]; highlight?: boolean }) {
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
+}
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "建設の経費控除：道具、保護具、ホワイトカード",
+  description: "道具、保護具、ホワイトカードの更新は控除できます。最初のホワイトカードと破れたジーンズはできません。",
+  url: `${SITE_URL}/ja/expenses/construction`,
+  inLanguage: "ja-JP",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/ja/expenses/construction#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/ja/expenses/construction`,
+}
+
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
   return (
-    <div className="taxres-table-card" style={highlight ? { borderColor: '#0B5240', boxShadow: '0 8px 20px -8px rgba(11, 82, 64, 0.18)' } : {}}>
-      <h3 className="taxres-table-title">{label}</h3>
-      <table className="taxres-table">
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>
-          ))}
-        </tbody>
-      </table>
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"ja"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
     </div>
   )
 }
 
-function ClaimCard({ d }: { d: CardData }) {
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
   return (
-    <div className="exp-card">
-      <div className="exp-card-head">
-        <span className="exp-card-emoji" aria-hidden="true">{d.emoji}</span>
-        <div>
-          <h3 className="exp-card-title">{d.title}</h3>
-          <p className="exp-card-subtitle">{d.subtitle}</p>
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
         </div>
-      </div>
-      <div className="exp-card-section">
-        <p className="exp-card-label exp-card-label-yes">✓ 控除できる可能性があるもの</p>
-        <ul className="exp-card-list">
-          {d.can.map((item, i) => <li key={i}>{item}</li>)}
-        </ul>
-      </div>
-      <div className="exp-card-section">
-        <p className="exp-card-label exp-card-label-no">✕ 通常、控除できないもの</p>
-        <ul className="exp-card-list">
-          {d.cannot.map((item, i) => <li key={i}>{item}</li>)}
-        </ul>
-      </div>
+      ))}
     </div>
   )
 }
 
-export default function ConstructionExpensesPageJA() {
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)' }}>
-        <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
+      <main style={{ background: '#fff' }}>
 
-          <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-            <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-              <li><Link href="/ja" style={{ color: '#587066' }}>ホーム</Link></li>
-              <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-              <li><Link href="/ja/expenses" style={{ color: '#587066' }}>経費</Link></li>
-              <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-              <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>建設業</li>
-            </ol>
-          </nav>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </nav>
 
-          <div className="text-center">
-            <h1 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '26ch' }}>
-              <span style={{ color: '#0B5240' }}>建設現場で働く人</span>が実際に経費計上できるものとは？
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}
+              <span style={{ color: FOREST }}>{HERO.h1accent}</span>
             </h1>
-            <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '52ch' }}>
-              建設現場は、バックパッカーの仕事の中でもATOのガイダンスが最も詳細に定められている分野です。工具や保護具、White Card（建設従事者証）、そしてユートがいつ本当に対象になるか。ここでは、何が控除の対象になるのかを正確に解説します。
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
             </p>
+            <Cta position="hero" />
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── TOOLS & EQUIPMENT (centerpiece pt.1) ─────────────────────────── */}
-      <section className="bg-white" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-        <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="text-center mb-6">
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-              工具・機材：$300のルール
-            </h2>
-            <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-              現場作業のために自分で工具を購入し、雇用主から支給されたり払い戻しを受けたりしていない場合、その費用は控除の対象になります。申請方法は価格によって異なり、詳しくは{' '}
-              <a href={ATO_TRADIES_URL} target="_blank" rel="noopener noreferrer" style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
-                ATOの職人向けガイダンス
-              </a>
-              をご覧ください。
-            </p>
-          </div>
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-            <CompareTable label="$300未満" rows={UNDER_300_ROWS} highlight />
-            <CompareTable label="$300以上" rows={OVER_300_ROWS} />
-          </div>
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
 
-          <div className="info-block" style={{ marginTop: '22px', marginBottom: '22px' }}>
-            <p>
-              工具をセットで購入する場合は扱いが変わります。複数の工具をまとめてセットとして購入し、合計金額が$300以上になる場合、個々の工具が単体では$300未満であっても、セット全体を耐用年数にわたって減価償却する必要があります。
-            </p>
-          </div>
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
 
-          <div className="max-w-[560px] mx-auto">
-            <ClaimCard d={TOOLS_CARD} />
-          </div>
-        </div>
-      </section>
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-      {/* ── PPE & PROTECTIVE CLOTHING (centerpiece pt.2) ─────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-        <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="text-center mb-6">
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-              保護服とPPE（個人保護具）
-            </h2>
-            <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-              ATOが適用する基準は、それが現場で役立つかどうかではありません。その品物に、特定の負傷リスクからあなたを守る機能や特性があるかどうかです。
-            </p>
-          </div>
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-          <div className="max-w-[560px] mx-auto">
-            <ClaimCard d={PPE_CARD} />
-          </div>
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
 
-          <div className="info-block" style={{ marginTop: '22px', maxWidth: '680px', marginLeft: 'auto', marginRight: 'auto' }}>
-            <p>
-              普段着が通常の使用で傷むのは私的な支出であり、現場でどれだけ本当にボロボロになったとしても変わりません。その品物は、単に仕事に耐えられるだけでなく、切り傷、日差し、騒音、粉じん、衝撃などから実際にあなたを守るものでなければなりません。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHITE CARD & OTHER LICENCES ──────────────────────────────────── */}
-      <section className="bg-white" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-        <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="text-center mb-6">
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-              White Card：初回取得と更新の違い
-            </h2>
-            <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-              これは建設業の控除の中で最も誤解されやすいポイントで、たった一つの違いに集約されます。
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-            <CompareTable label="最初のWhite Card" rows={FIRST_CARD_ROWS} />
-            <CompareTable label="White Cardの更新" rows={RENEWAL_CARD_ROWS} highlight />
-          </div>
-
-          <p className="font-light mx-auto text-center" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.7, maxWidth: '62ch', marginTop: '20px' }}>
-            これは、ATOが運転免許証に適用しているのと同じ考え方です。ある職業に就くために必要な資格や許可を初めて取得する費用は私的な支出ですが、すでに仕事で使っている資格を維持する費用は控除の対象になります。同じ考え方はフォークリフトの資格や大型車両の許可証にも当てはまり、最初の取得は私的な支出、すでに仕事で使っているものを更新する費用は控除の対象になります。
-          </p>
-        </div>
-      </section>
-
-      {/* ── VEHICLE EXPENSES ─────────────────────────────────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-        <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="text-center mb-6">
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-              ユート・バン・車：いつ本当に対象になるか
-            </h2>
-            <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '60ch' }}>
-              自宅から普段の職場まで運転するのは、通常は私的な通勤とみなされ、その職場が建設現場であっても変わりません。ただし一つだけ狭い例外があり、以下の3つの条件すべてに当てはまる必要があります。
-            </p>
-          </div>
-
-          <div className="max-w-[680px] mx-auto mb-6">
-            <div className="flex flex-col gap-3">
-              {VEHICLE_CONDITIONS.map((c, i) => (
-                <div key={i} className="taxres-condition-item">
-                  <span className="taxres-condition-num">{i + 1}</span>
-                  <p className="taxres-condition-text">{c}</p>
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
                 </div>
+              )}
+            </div>
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"ja"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
               ))}
             </div>
-            <p className="font-light mx-auto" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch', marginTop: '16px', textAlign: 'center' }}>
-              現場に施錠できる工具小屋やコンテナ、ケージがある場合、または工具が普通のバッグに収まる場合は、その移動は通常の通勤とみなされ、控除の対象にはなりません。
+
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
+        </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-            <CompareTable label="1kmあたりの定額法" rows={CENTS_PER_KM_ROWS} highlight />
-            <CompareTable label="ログブック法" rows={LOGBOOK_ROWS} />
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
-          <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, maxWidth: '64ch', marginTop: '18px' }}>
-            ユート、積載量1トン以上のパネルバン、9人以上乗車できるように作られたミニバンは、1kmあたりの定額法を一切使用できません。該当する車両で車両費を請求したい場合は、ログブック法だけが選択肢になります。
-          </p>
-        </div>
-      </section>
+        </section>
 
-      {/* ── SELF-EDUCATION, PHONE & RECORDS ──────────────────────────────── */}
-      <section className="bg-white" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-        <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="text-center mb-6">
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-              研修・携帯電話・記録の保管
-            </h2>
-          </div>
+      </main>
 
-          <div className="max-w-[680px] mx-auto">
-            <p className="font-light" style={{ fontSize: '14px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '16px' }}>
-              すでに従事している職種のスキルを維持するための講座、たとえば資格のアップグレードや現在の役割で使う技術を学ぶ講座は、控除の対象になります。別の職種への転向を目的とした講座は、たとえ建設関連であっても対象外です。今使っている資格を維持するのではなく、新しい資格を築くことになるためです。
-            </p>
-            <p className="font-light" style={{ fontSize: '14px', color: '#2A3C34', lineHeight: 1.8 }}>
-              自分の携帯電話を使って現場監督に電話したり、予定を確認したり、シフトについてメッセージを送ったりする場合、携帯電話・インターネットプランのうち仕事で使用した部分は控除の対象になります。請求額の全額を申請するのではなく、仕事での使用割合についておおまかで正直な記録をつけておきましょう。
-            </p>
-          </div>
-
-          <div className="taxres-savings-box" style={{ marginTop: '28px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-            <div>
-              <p className="taxres-savings-heading">記録の保管について</p>
-              <p className="taxres-savings-body">
-                請求するすべての項目について、金額、日付、購入先、購入した物の説明が記載されたレシート、請求書、または銀行明細を保管してください。スマートフォンで撮った写真でも構いませんが、5年間提示できる状態にしておく必要があります。
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-      <NextStep
-        eyebrow="準備ができたら"
-        heading="現場の経費、いくらになるか確認しましょう"
-        body="無料の計算ツールで手軽に概算するか、直接メッセージをお送りいただければ、あなたの工具やPPE、現場での仕事内容を一つひとつ確認します。"
-        cta="計算ツールを試す →"
-        href="/ja/calculator"
-      />
-
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-            <div className="text-center">
-              <span className="section-label center">よくあるご質問</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                建設業の控除に関するご質問
-              </h2>
-              <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                ご自身の状況について質問がありますか？お気軽に直接メッセージをお送りください。
-              </p>
-            </div>
-            <div className="max-w-[700px]">
-              <Accordion items={faqs} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── RELATED SERVICES ─────────────────────────────────────────────── */}
-      <RelatedServices
-        label="関連サービス"
-        items={[
-          { label: 'TFN申請', desc: '初シフトの前にタックスファイルナンバーを取得しておきましょう。', href: '/ja/tfn' },
-          { label: 'タックスリターン', desc: '申告書を提出し、建設業の経費を申請しましょう。', href: '/ja/tax-return' },
-          { label: 'スーパーアニュエーション（DASP）', desc: 'オーストラリア出国後にスーパーを取り戻しましょう。', href: '/ja/superannuation' },
-          { label: '職業別の控除ガイド', desc: '建設業だけでなく、あらゆるバックパッカーの仕事の控除を確認できます。', href: '/ja/expenses' },
-        ]}
-      />
-
-      {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '48px' }}>
-        <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-          <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-            これは一般的な情報であり、個別の税務アドバイスではありません。現場や役割によって状況は少しずつ異なります。当社にご依頼いただいた場合、ワーホリ専門のチームがお客様の申告書を作成し、あなたの工具、資格、現場での仕事内容を具体的に確認したうえで、請求できるものはすべて、請求できないものは一切含めないようにいたします。
-          </p>
-          <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
-            style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-            税金の還付金を受け取る →
-          </Link>
-        </div>
-      </section>
-
-      <MobileCta href="/ja/tax-form" lang="ja" />
+      <MobileCta href={WA} lang={"ja"} topic="expenses" />
     </>
   )
 }

@@ -1,40 +1,51 @@
 import type { Metadata } from 'next'
-import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
+import { SITE_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
+import { WaLink } from '../HomeWa'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 
+/*
+ * The answer hub for the whole superannuation cluster.
+ *
+ * This page took 4,255 impressions and zero clicks at position 41. It was not
+ * thin and it was not missing schema. It failed on intent: the H1 was a sales
+ * line with no query language in it, and no H2 contained DASP, claim,
+ * eligibility or timing. Twenty two narrow Super guides were competing with it
+ * for the same words and outranking it.
+ *
+ * So the structure below is the fix. Every H2 is a question somebody actually
+ * types, and every one is answered immediately in a complete paragraph that
+ * stands on its own out of context. The sales layer sits underneath the answer
+ * rather than in place of it.
+ */
+
+const WA = waUrl({ topic: 'super', lang: 'en' })
+
 export const metadata: Metadata = {
-  title: "Departing Australia Superannuation Payment (DASP) | Claim Your Super Refund",
-  description: "Departing Australia Superannuation Payment (DASP) - how to claim your superannuation refund after leaving Australia. Working holiday super claim process, DASP refund, 65% tax rate explained.",
+  title: { absolute: 'Claim Your Super After Leaving Australia (DASP 2026)' },
+  description:
+    'Left Australia on a 417 or 462 visa? Your super is claimable through DASP. Eligibility, the 65% tax, documents, timing, and how we lodge it for you.',
   keywords: [
-    'DASP super refund',
-    'DASP super refund Australia',
-    'super refund Australia working holiday',
-    'super refund Australia backpacker',
-    'Departing Australia Superannuation Payment',
-    'Departing Australia Superannuation Payment 417',
-    'super refund working holiday',
+    'claim superannuation',
+    'claim superannuation australia',
     'claim super after leaving Australia',
-    'claim super back Australia working holiday',
-    'super withdrawal 417 visa',
-    'super withdrawal 462 visa',
-    'backpacker super refund',
-    'WHM superannuation claim',
+    'superannuation working holiday visa',
+    'superannuation working holiday',
+    'superannuation backpacker',
+    'withdraw super leaving australia',
+    'departing australia superannuation payment',
+    'DASP claim',
+    'DASP 417 visa',
+    'DASP 462 visa',
     'super refund working holiday maker',
-    'DASP refund 417',
-    'DASP refund 462',
-    'how to claim super refund Australia backpacker',
-    'super refund after leaving Australia',
-    'get my super back Australia working holiday',
+    'how to claim super when leaving Australia',
+    'super tax working holiday maker',
+    'claim super back',
     'lost super Australia working holiday',
-    'find my super Australia backpacker',
-    'super refund UK backpacker Australia',
-    'super refund German backpacker Australia',
-    'super refund Japanese working holiday',
+    'ATO held super working holiday',
   ],
   alternates: {
     canonical: '/superannuation',
@@ -46,111 +57,107 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/superannuation`,
     siteName: 'Working Holiday Tax',
-    title: 'Super Refund DASP for Working Holiday Visa Holders',
-    description: 'Claim your Australian superannuation refund (DASP) after leaving. Your employer paid 12% of wages into super - get it back.',
+    title: 'Claim Your Super After Leaving Australia (DASP 2026)',
+    description:
+      'Who can claim a DASP, how much survives the 65% tax, what documents you need and how long it takes.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Super Refund DASP for Working Holiday Visa Holders',
-    description: 'Claim your Australian superannuation refund after leaving.',
+    title: 'Claim Your Super After Leaving Australia (DASP)',
+    description: 'Eligibility, the 65% rate, documents, timing and multiple funds, answered.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
+/* ── The jump nav. Every entry is an H2 below. ───────────────────────────── */
+const JUMP = [
+  { id: 'who-can-claim',      label: 'Who can claim' },
+  { id: 'how-much',           label: 'How much you get' },
+  { id: 'documents',          label: 'Documents' },
+  { id: 'how-long',           label: 'How long it takes' },
+  { id: 'find-your-fund',     label: 'Finding your funds' },
+  { id: 'from-overseas',      label: 'Claiming from home' },
+  { id: 'dasp-vs-leaving',    label: 'Claim or leave it' },
+  { id: 'while-in-australia', label: 'Still in Australia' },
+  { id: 'never-claimed',      label: 'If you never claim' },
+  { id: 'with-us',            label: 'Yourself or with us' },
+]
+
+/**
+ * The objection every lead arrives holding, answered about super specifically.
+ *
+ * Section 10 expands it at the bottom of the page. This is the compact version,
+ * placed high because it is what the reader arrives holding. Every row is about
+ * DASP: the portal takes one fund at a time, and only the ones you can name.
+ * Nothing here says the ATO's system is bad. It does a different job.
+ */
+const MYGOV = [
+  {
+    mygov: 'The claim handles one fund at a time, and only the ones you already know about.',
+    us: 'We search every account linked to your tax file number, including the ones an employer opened for you without asking.',
+  },
+  {
+    mygov: 'Nothing tells you a balance has already left the fund and been transferred to the ATO as unclaimed super.',
+    us: 'About six months after your visa expires that is where it goes, so we look there as well.',
+  },
+  {
+    mygov: 'The claim is checked against your visa record, and a visa that has not ceased stops it dead.',
+    us: 'We check all three conditions first, so you do not spend a fortnight on a claim that cannot be paid yet.',
+  },
+  {
+    mygov: 'Super is one claim and your tax return is a separate one. Nothing connects them for you.',
+    us: 'The return side is usually where most of the money is, so we do both and neither gets left behind.',
+  },
+]
+
 const faqs = [
   {
-    question: 'What does it cost, and what if there is nothing to claim?',
-    answer: 'We tell you the fee before any chargeable work starts, and it is a fixed amount - never a percentage of your super. If we check and find you have no claimable balance, the assessment fee is waived in full and you pay nothing.',
+    question: 'Can I not just claim my super myself on myGov?',
+    answer:
+      'You can, and if you had one fund, your documents are in order and nothing is queried, that is the sensible thing to do and we will say so. The reason it usually is not that simple is that casual and seasonal work scatters super across accounts nobody remembers opening, and the claim handles one fund at a time and only the ones you can name. It will not tell you that a balance has already been transferred to the ATO as unclaimed super, which is where it goes about six months after your visa expires. It will not tell you that certification from overseas, an old passport number or an address you have not lived at for two years are what send applications back to the start. And it will not connect the claim to your tax return, which is usually where the larger half of the money is. Lodging is the easy part. You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.',
   },
   {
-    question: 'I do not know which super fund I was with. Is that a problem?',
-    answer: 'No - it is the most common situation we deal with. We search every fund linked to your Tax File Number, including balances that have already been transferred to the ATO, so you do not need to remember employer or fund names.',
+    question: 'Do you get superannuation if you worked under an ABN?',
+    answer:
+      'Generally no. Superannuation guarantee contributions are an employer obligation attached to PAYG employment, so gig, rideshare and freelance work invoiced under an ABN usually does not generate super. The exception is where you were engaged as a contractor but worked like an employee, with set hours, tools provided and no ability to send somebody else in your place. In that case super may still be owed, and it is worth checking rather than assuming.',
   },
   {
-    question: 'Can I just do this myself through the ATO?',
-    answer: 'You can. The ATO DASP portal is free and works well if you had one fund, your documents are in order and nothing is queried. Where people get stuck is multiple forgotten funds, certified copies requested from overseas, and funds that stop responding - which is exactly the part we take over.',
+    question: 'Is a DASP the same thing as a tax refund?',
+    answer:
+      'No. They are two separate payments from two separate pots. A tax refund is the difference between the tax withheld from your wages during the year and the tax you actually owed, and it comes from the ATO after a tax return is lodged. A Departing Australia Superannuation Payment is the release of the retirement savings your employer paid on top of your wages, and it comes from your super fund. Most working holiday makers are owed both, and each is claimed in a completely different way.',
   },
   {
-    question: 'I left Australia years ago, can I still claim my super?',
-    answer: 'Yes. There is no time limit to claim your superannuation. Even if your balance has been transferred to the ATO, you can still make a claim.',
+    question: 'Do you need your tax file number to claim your super?',
+    answer:
+      'A fund can usually identify you without it, from your name, date of birth and passport details, so a lost tax file number does not stop a claim. In practice the TFN matters a great deal, because it is what the ATO uses to link every super account back to you, and it is the only reliable way to find funds you have forgotten about. A lost TFN can be recovered, and doing that first is normally faster than searching fund by fund.',
   },
   {
-    question: 'I worked for multiple employers - do I have multiple super accounts?',
-    answer: 'You may have multiple super accounts from different employers. We help you find and combine everything before submitting your claim.',
+    question: 'Why is the DASP rate 65% for working holiday makers and 35% for others?',
+    answer:
+      'The 65% rate is set in law specifically for anyone who has held a subclass 417 or 462 visa. Temporary residents who never held one, such as students and many sponsored workers, are taxed at 35% on the taxed element instead. Holding a working holiday visa at any point during your time in Australia puts the whole payment at the higher rate, even if you later moved onto a different visa. The rate follows your visa history, not the visa you held last, and no agent can reduce it.',
   },
   {
-    question: 'How long does it take to receive my super?',
-    answer: 'Super withdrawals (DASP) are usually paid within 2-4 weeks after the application is approved. The payment goes directly to your bank account.',
+    question: 'What if an employer never paid your super at all?',
+    answer:
+      'Super can only be claimed if it was actually paid into a fund. Where an employer should have made contributions and did not, that is an unpaid superannuation guarantee matter, and the ATO can investigate and recover the money on your behalf. It is a separate process from a DASP claim and it takes considerably longer. It is worth raising before you claim, because contributions recovered after your accounts are closed mean going through the whole claim a second time.',
   },
   {
-    question: 'Where is my super paid - Australian or overseas bank account?',
-    answer: 'Your super is paid directly to your bank account. We can arrange payment to either an Australian or overseas account based on your preference.',
-  },
-  {
-    question: 'Can I claim my DASP super refund from the UK, Germany, or Japan?',
-    answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries claim their DASP super refund entirely online after they have returned home. Your super refund can be paid directly to your overseas bank account.',
-  },
-  {
-    question: 'How is my DASP super refund taxed?',
-    answer: 'DASP payments are taxed at a fixed rate set by the ATO, which is deducted before the payment is sent to you. The amount you receive is the net figure after this tax has been applied. The exact rate depends on your visa subclass and the type of super being paid out.',
-  },
-  {
-    question: 'I am on a working holiday visa - can I claim my super?',
-    answer: 'Yes. Working holiday makers on subclass 417 or 462 visas are eligible to claim their superannuation (DASP) once they have left Australia and their visa has expired or been cancelled. You must apply from outside Australia. The DASP withholding tax rate for working holiday makers is 65% of the taxable component.',
-  },
-  {
-    question: 'What is the superannuation tax rate for working holiday makers?',
-    answer: 'Working holiday makers pay a fixed withholding tax of 65% on the taxable component of their DASP super withdrawal. This is deducted before payment is sent to you. The amount you actually receive is 35% of the taxable component (net of tax). Non-working-visa temporary residents like students pay a different rate of 35%.',
-  },
-  {
-    question: 'How do I claim superannuation when leaving Australia?',
-    answer: 'To claim superannuation (DASP) when leaving Australia, your visa must have expired or been cancelled, and you must have permanently left Australia. Contact a tax agent or lodge through the ATO DASP portal. You will need your TFN, passport details, visa information, and super fund details. Payment typically arrives within 28 days of approval.',
-  },
-  {
-    question: 'Do working holiday makers pay Medicare Levy?',
-    answer: 'No. Working holiday makers on subclass 417 and 462 visas are exempt from the Medicare Levy (2% tax). You must claim this exemption on your tax return - it is not automatic. The exemption saves you 2% of your taxable income, which adds to your tax refund at the end of the financial year.',
-  },
-  {
-    question: 'What is DASP - the Departing Australia Superannuation Payment?',
-    answer: 'DASP (Departing Australia Superannuation Payment) is the official process for withdrawing your Australian superannuation once you have permanently left the country and your visa has expired or been cancelled. It is the only way working holiday makers can access their super - it stays locked while you are still in Australia. Applications go directly to the ATO or your super fund, from anywhere in the world.',
-  },
-  {
-    question: "I'm on a 417 or 462 visa - how do I actually get my superannuation back?",
-    answer: 'Once you have left Australia and your working holiday visa has expired or been cancelled, you (or a tax agent on your behalf) submit a DASP application with your passport, visa and super fund details. Most working holiday makers have several small super accounts from casual and seasonal jobs - we search all of them under your TFN, combine the claim, and lodge it correctly the first time, so nothing is left behind and nothing is delayed by a mismatched detail.',
-  },
-  {
-    question: 'Do I get superannuation if I worked under an ABN?',
-    answer: 'Generally no. Superannuation Guarantee contributions are an employer obligation tied to PAYG employment, not ABN/contractor income - so gig, rideshare or freelance work invoiced under an ABN usually does not generate super automatically. If you were engaged as a contractor but worked more like a regular employee (set hours, tools provided, no ability to subcontract), you may still be entitled to super under the ATO’s expanded definition of "employee" - worth checking rather than assuming.',
-  },
-  {
-    question: 'What happens if I never claim my super after leaving Australia?',
-    answer: 'It is not lost. About six months after your visa expires, an unclaimed super fund is required to transfer your balance to the ATO as "ATO-held super". It still belongs to you and earns no fees while held there, and there is no deadline - you can lodge a DASP claim years later and the ATO will pay it out, though fund fees and insurance premiums along the way can quietly shrink a balance left too long before it transfers.',
+    question: 'Does claiming your super affect your tax return or a future Australian visa?',
+    answer:
+      'Neither. A DASP does not go on your Australian tax return, because the withholding tax deducted before payment is a final tax and the payment is not assessable income in Australia. Claiming also has no bearing on any future visa application. The one practical consequence is that your super accounts close, so if you come back to Australia to work you start again with a new fund.',
   },
 ]
-
-const STEPS = [
-  { n: '1', title: 'Tell us about your situation', body: 'Share your visa and work details so we can guide you correctly.' },
-  { n: '2', title: 'Send your details in minutes',  body: 'Passport, TFN and super fund info - quick and simple.' },
-  { n: '3', title: 'We handle everything for you',  body: 'We prepare and submit your claim correctly.' },
-  { n: '4', title: 'Receive your super payment',    body: 'Your money is paid directly to your bank account, in Australia or overseas.' },
-]
-
-
-const IconStar = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-    <path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/>
-  </svg>
-)
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  inLanguage: 'en-AU',
   mainEntity: faqs.map(f => ({
     '@type': 'Question',
     name: f.question,
@@ -163,7 +170,7 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-    { '@type': 'ListItem', position: 2, name: 'Super Withdrawal', item: `${SITE_URL}/superannuation` },
+    { '@type': 'ListItem', position: 2, name: 'Superannuation', item: `${SITE_URL}/superannuation` },
   ],
 }
 
@@ -171,42 +178,76 @@ const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   '@id': `${SITE_URL}/superannuation#service`,
-  name: 'DASP Super Refund Service for Working Holiday Makers',
+  name: 'DASP superannuation claim service for working holiday makers',
   serviceType: 'Departing Australia Superannuation Payment (DASP) claim',
-  description: 'DASP super refund claim service for 417 and 462 working holiday visa holders, handled end to end by working holiday specialists. Claim your super back after leaving Australia.',
+  description:
+    'Departing Australia Superannuation Payment claims for 417 and 462 working holiday visa holders, from finding every fund linked to a tax file number through to payment into an Australian or overseas account.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
-  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) leaving Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (subclass 417 / 462) who has left Australia' },
   inLanguage: 'en-AU',
 }
-
 
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   '@id': `${SITE_URL}/superannuation#webpage`,
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', '.hero-sub'],
-  },
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
   url: `${SITE_URL}/superannuation`,
 }
 
-// HowTo schema for the 4-step claim process below (STEPS array) - gives Google
-// and AI answer engines an explicit, structured procedure to extract and cite
-// for "how do I claim my superannuation / DASP" style queries.
+/*
+ * The HowTo describes the ATO's DASP procedure, not our sales funnel. The old
+ * version listed "Tell us about your situation" as step one, which is useless
+ * as an answer to "how do I claim my super" and was very likely part of why
+ * this page was read as a landing page rather than a source.
+ */
 const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
-  name: 'How to claim your superannuation (DASP) after leaving Australia',
-  description: 'The step-by-step process working holiday makers use to claim their superannuation back through the Departing Australia Superannuation Payment (DASP) once their visa has expired or been cancelled and they have left Australia.',
+  inLanguage: 'en-AU',
+  name: 'How to claim your superannuation after leaving Australia (DASP)',
+  description:
+    'The Departing Australia Superannuation Payment procedure for a working holiday maker on a subclass 417 or 462 visa, from confirming eligibility to receiving payment.',
   totalTime: 'P28D',
-  step: STEPS.map(s => ({
-    '@type': 'HowToStep',
-    position: Number(s.n),
-    name: s.title,
-    text: s.body,
-  })),
+  step: [
+    { name: 'Confirm you are eligible', text: 'Your visa must have expired or been cancelled and you must have permanently left Australia. Both conditions have to be true at the same time.' },
+    { name: 'Gather your details', text: 'Passport, Australian tax file number, visa details, the name and member number of each super fund, and the bank account the payment should go to.' },
+    { name: 'Find every fund', text: 'Search all super accounts linked to your tax file number, including balances a fund has already transferred to the ATO as unclaimed super.' },
+    { name: 'Lodge a claim with each fund', text: 'A separate DASP application goes to each fund holding a balance, or to the ATO where the balance has already transferred there.' },
+    { name: 'Withholding tax is deducted', text: 'Working holiday makers are taxed at 65% on the taxable component. The fund deducts it and pays the ATO before releasing the balance.' },
+    { name: 'Receive the payment', text: 'Payment typically arrives within 28 days of the application being approved, to an Australian or an overseas bank account.' },
+  ].map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.name, text: s.text })),
+}
+
+/* ── Shared section shells, so every answer looks the same ───────────────── */
+const H2: React.CSSProperties = {
+  fontSize: 'clamp(21px,2.6vw,30px)',
+  lineHeight: 1.16,
+  letterSpacing: '-0.025em',
+  marginBottom: '12px',
+  scrollMarginTop: '84px',
+}
+const BODY: React.CSSProperties = {
+  fontSize: '15px',
+  lineHeight: 1.7,
+  color: '#2A3C34',
+  marginBottom: '14px',
+}
+
+function Answer({
+  id, heading, children, tint = false,
+}: { id: string; heading: string; children: React.ReactNode; tint?: boolean }) {
+  return (
+    <section id={id} className="py-8 lg:py-11" style={{ background: tint ? '#F5F9F7' : '#fff' }}>
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[680px]">
+          <h2 className="font-serif font-black text-ink" style={H2}>{heading}</h2>
+          {children}
+        </div>
+      </div>
+    </section>
+  )
 }
 
 export default function SuperannuationPage() {
@@ -217,371 +258,396 @@ export default function SuperannuationPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
+
+      {/* ── HERO. The determinant this page owns is how many funds your money */}
+      {/*    landed in, and whether every one of them is actually found. ───── */}
+      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
+            style={{ fontSize: '13px', color: '#4C6459' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
-            <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>
+            <span aria-hidden="true">/</span>
             <span aria-current="page">Superannuation</span>
           </nav>
 
-          <div className="max-w-[560px] lg:max-w-[700px]">
+          <div className="max-w-[680px]">
 
             <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
+              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
               <span className="font-medium uppercase"
-                style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
-                Super Withdrawal
+                style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240' }}>
+                Superannuation &middot; DASP
               </span>
             </div>
 
             <h1 className="font-serif font-black text-ink"
-              style={{
-                fontSize:'clamp(24px,3.2vw,44px)',
-                lineHeight:1.06,
-                letterSpacing:'-0.03em',
-                marginBottom:'10px',
-              }}>
-              {/* Desktop: locked 2 lines - nowrap per line */}
-              <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Your super is still in Australia.</span>
-                <span style={{ display:'block', color:'#0B5240' }}>We get it back for you.</span>
-              </span>
-              {/* Mobile: 2 lines with green second line */}
-              <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Your super is still in Australia.</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>We get it back for you.</span>
-              </span>
+              style={{ fontSize: 'clamp(28px,3.4vw,44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '12px' }}>
+              How to claim your superannuation after leaving Australia
             </h1>
 
-            <p className="font-semibold text-ink"
-              style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
-              
-              Your employer paid 12% of every wage into a super fund. It is your money and it is still sitting there.
-            
+            <p className="hero-sub font-semibold text-ink"
+              style={{ fontSize: 'clamp(16px,1.6vw,18px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+              Your employer paid it on top of your wages, never out of them. It is still sitting in Australia.
             </p>
 
-            <p className="font-light"
-              style={{
-                fontSize:'clamp(13px,1.2vw,15px)',
-                lineHeight:1.65,
-                color:'rgba(10,15,13,0.58)',
-                maxWidth:'44ch',
-                marginBottom:'0',
-              }}>
-              
-              We handle the funds, the paperwork and the payment. You send four details. Most claims are paid within 28 days.
-            
-            </p>
-
-            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
-              style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+            <div className="flex flex-col gap-3 lg:flex-row lg:gap-4"
+              style={{ marginTop: '24px', marginBottom: '22px', maxWidth: '480px' }}>
+              <WaLink href={WA} position="hero" topic="super" lang="en"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
-                Claim your super →
-              </a>
-              <a href="#how-it-works"
-                className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
-                See how it works →
+                style={{ minHeight: '54px', padding: '0 32px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
+                Ask us about your super
+              </WaLink>
+              <a href="#who-can-claim"
+                className="inline-flex btn-ghost-dark justify-center items-center"
+                style={{ minHeight: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
+                Start with eligibility
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['Working holiday makers, worldwide',<GoogleRating key="rating" variant="pill" lang="en" />,'Registered tax agent supervision','~1 hour response time'].map((t,i) => (
-                <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                  style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
-                </span>
+            <p style={{ fontSize: '13px', color: '#4C6459' }}>
+              Replies in about an hour. Ask anything first.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── JUMP NAV. Ten questions, one tap each, scrollable on a phone. ─── */}
+      <nav aria-label="On this page"
+        style={{ background: '#0B5240', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="max-w-[1280px] mx-auto">
+          <ul style={{ display: 'flex', gap: '8px', overflowX: 'auto', padding: '12px 20px', margin: 0, listStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
+            {JUMP.map(j => (
+              <li key={j.id} style={{ flex: '0 0 auto' }}>
+                <a href={`#${j.id}`}
+                  className="inline-flex items-center"
+                  style={{
+                    minHeight: '44px', padding: '0 16px', borderRadius: '999px',
+                    fontSize: '13.5px', whiteSpace: 'nowrap', color: '#EAF6F1',
+                    border: '1px solid rgba(200,234,224,0.35)',
+                  }}>
+                  {j.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+
+      {/* ── 0b. THE OBJECTION, ANSWERED ABOUT SUPER ────────────────────────── */}
+      <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px]">
+
+            <p className="font-medium uppercase"
+              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
+              Doing it yourself
+            </p>
+
+            <h2 className="font-serif font-black text-ink" style={H2}>
+              <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>The claim form has one box for a super fund.{' '}</span>
+              <span style={{ display: 'block' }}>Four casual jobs can mean four.{' '}</span>
+            </h2>
+
+            <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
+              Two of those accounts were opened for you without you choosing anything, and nothing on the portal
+              mentions them.
+            </p>
+
+            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+              {MYGOV.map((row, i) => (
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                  <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
+                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                      On the ATO portal
+                    </p>
+                    <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
+                  </div>
+                  <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                    style={{ padding: '15px 18px', background: '#F2FAF7' }}>
+                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
+                      With us
+                    </p>
+                    <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word' }}>{row.us}</p>
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ── WHAT IS SUPER? - Unique design: "Don't leave it behind" ───── */}
-      <section className="super-intro-section">
-        <div className="super-intro-container">
-          <div className="super-intro-grid">
-
-            {/* Left: Explainer */}
-            <div className="super-intro-content">
-              <p className="super-intro-eyebrow">Hidden money in your name</p>
-              <h2 className="super-intro-heading">
-                What is superannuation?
-              </h2>
-              <p className="super-intro-body">
-                <strong>Superannuation</strong> (or &quot;super&quot;) is a retirement savings system in Australia. By law, your employer pays <strong>12% of your wages</strong> into a super fund on top of your salary - so you have been earning more than you think.
-              </p>
-              <p className="super-intro-body">
-                As a working holiday maker, you can claim this money back when you leave Australia through a process called <strong>DASP - Departing Australia Superannuation Payment</strong>.
-              </p>
-              <p className="super-intro-body">
-                The withdrawal is taxed at 65%, but the remaining 35% is still real money in your pocket. For most backpackers, this is between <strong>$2,000 and $5,000</strong> they did not know they had.
-              </p>
-              <p className="super-intro-body">
-                Not sure what you are owed? Our{' '}
-                <Link href="/calculator" className="font-semibold" style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
-                  free tax and super refund calculator
-                </Link>{' '}
-                gives working holiday makers on a 417 or 462 visa a quick estimate before you commit to anything.
-              </p>
-            </div>
-
-            {/* Right: Visual - "Don't leave it behind" boarding pass */}
-            <div className="super-intro-visual">
-              <div className="super-boarding-card">
-                <div className="super-boarding-header">
-                  <span className="super-boarding-from">AUS</span>
-                  <svg width="32" height="20" viewBox="0 0 32 20" fill="none" aria-hidden="true">
-                    <path d="M2 10h28M22 4l8 6-8 6" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span className="super-boarding-to">HOME</span>
-                </div>
-                <div className="super-boarding-divider"></div>
-                <div className="super-boarding-meta">
-                  <div>
-                    <p className="super-boarding-meta-label">Passenger</p>
-                    <p className="super-boarding-meta-value">You</p>
-                  </div>
-                  <div>
-                    <p className="super-boarding-meta-label">Status</p>
-                    <p className="super-boarding-meta-value super-boarding-status-warn">
-                      Leaving super behind
-                    </p>
-                  </div>
-                </div>
-                <div className="super-boarding-amount-block">
-                  <p className="super-boarding-amount-label">Unclaimed super</p>
-                  <p className="super-boarding-amount">$2,000 - $5,000</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* CTA strip to OUR service */}
-          <div className="service-cta-strip">
-            <div className="service-cta-text">
-              <h3 className="service-cta-heading">We claim your super back for you</h3>
-              <p className="service-cta-sub">Tell us your situation and we will tell you what you are owed. From identifying your funds to handling the DASP application - we manage the entire process so you do not leave your money behind in Australia.</p>
-            </div>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
-              Claim my super →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW MUCH DO YOU GET BACK ──────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background:'#fff' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-3xl mx-auto text-center" style={{ marginBottom:'26px' }}>
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize:'clamp(21px,2.6vw,32px)', lineHeight:1.12, letterSpacing:'-0.025em', marginBottom:'10px' }}>
-              How much comes back to you?
-            </h2>
-            <p className="font-light" style={{ fontSize:'clamp(13px,1.2vw,15px)', lineHeight:1.7, color:'rgba(10,15,13,0.58)' }}>
-              Super for working holiday makers is taxed at 65% when it is paid out, so roughly 35 cents
-              of every dollar reaches your account. A typical year of full-time work looks like this.
+            <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
+              You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5 max-w-3xl mx-auto">
-            {[
-              { bal:'$3,000', net:'$1,050', note:'a few months of casual work' },
-              { bal:'$6,000', net:'$2,100', note:'around six months full-time' },
-              { bal:'$10,000', net:'$3,500', note:'a full working holiday year' },
-            ].map((r,i) => (
-              <div key={i} className="rounded-2xl" style={{ padding:'20px', background:'#F7FBF9', border:'1.5px solid #E2EFE9', textAlign:'center' }}>
-                <p className="font-medium" style={{ fontSize:'11px', letterSpacing:'0.06em', textTransform:'uppercase', color:'rgba(10,15,13,0.45)', marginBottom:'6px' }}>
-                  Super balance
-                </p>
-                <p className="font-semibold text-ink" style={{ fontSize:'17px', marginBottom:'10px' }}>{r.bal}</p>
-                <p className="font-serif font-black" style={{ fontSize:'clamp(24px,3vw,30px)', color:'#0B5240', lineHeight:1, marginBottom:'8px' }}>
-                  {r.net}
-                </p>
-                <p className="font-light" style={{ fontSize:'12px', color:'rgba(10,15,13,0.55)', lineHeight:1.6 }}>
-                  paid to you &middot; {r.note}
-                </p>
-              </div>
-            ))}
+      {/* ── 1 ──────────────────────────────────────────────────────────────── */}
+      <Answer id="who-can-claim" heading="Who can claim a DASP super refund?">
+        <p style={BODY}>
+          You can claim a Departing Australia Superannuation Payment if you worked in Australia on a
+          temporary visa, that visa has expired or been cancelled, and you have permanently left the
+          country. All three have to be true at the same time. Working holiday makers on subclass 417 and
+          462 visas qualify, and so do most other temporary visa holders including students and sponsored
+          workers. Australian and New Zealand citizens and permanent residents cannot claim, because their
+          super stays preserved until retirement.
+        </p>
+        <p style={BODY}>
+          Your visa status is checked against Department of Home Affairs records when the claim is lodged,
+          so there is nothing separate to prove. Holding a bridging visa, or still being onshore on any
+          valid visa, blocks the claim until that changes.
+        </p>
+      </Answer>
+
+      {/* ── 2 ──────────────────────────────────────────────────────────────── */}
+      <Answer id="how-much" heading="How much super will you actually get back?" tint>
+        <p style={BODY}>
+          Working holiday makers pay 65% withholding tax on the taxable component of a DASP, so roughly 35
+          cents in every dollar reaches your account. A $10,000 balance pays out about $3,500. The rate is
+          fixed in law, applies to anyone who has held a 417 or 462 visa at any point, and cannot be
+          reduced by any agent or by waiting. What changes your figure is finding the accounts you had
+          forgotten, and claiming before fees and insurance premiums quietly shrink the balance.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ margin: '20px 0 14px' }}>
+          {[
+            { bal: '$3,000', net: '$1,050', note: 'a few months of casual work' },
+            { bal: '$6,000', net: '$2,100', note: 'around six months full time' },
+            { bal: '$10,000', net: '$3,500', note: 'a full working holiday year' },
+          ].map((r, i) => (
+            <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #E2EFE9', textAlign: 'center' }}>
+              <p className="font-medium" style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#4C6459', marginBottom: '6px' }}>
+                Super balance
+              </p>
+              <p className="font-semibold text-ink" style={{ fontSize: '17px', marginBottom: '10px' }}>{r.bal}</p>
+              <p className="font-serif font-black" style={{ fontSize: 'clamp(26px,3vw,33px)', color: '#0B5240', lineHeight: 1, marginBottom: '8px' }}>
+                {r.net}
+              </p>
+              <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.55 }}>
+                paid to you &middot; {r.note}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p style={{ ...BODY, fontSize: '13px', color: '#4C6459' }}>
+          Figures are after the 65% DASP withholding set by the ATO, on a balance made up entirely of
+          taxed contributions. A small untaxed element, which some funds hold, is withheld at a higher
+          rate, so treat these as illustrations rather than a quote.
+        </p>
+      </Answer>
+
+      {/* ── 3 ──────────────────────────────────────────────────────────────── */}
+      <Answer id="documents" heading="What documents do you need for a DASP claim?">
+        <p style={BODY}>
+          You need your passport, your Australian tax file number, your visa details, the name of each
+          super fund and, where you still have it, your member number for each one. You also need bank
+          details for the account the money should be paid into, which can be Australian or overseas. A
+          missing member number is rarely fatal, because a fund can normally match you from your tax file
+          number and date of birth.
+        </p>
+        <p style={BODY}>
+          The step that stalls claims is certification. Where a single fund holds a balance of $5,000 or
+          more it will usually ask for certified copies of your passport and visa rather than accepting a
+          photo, and arranging certification from the UK, Germany or Japan takes longer than people expect.
+          Getting that organised before you lodge, rather than after a fund rejects the first attempt, is
+          most of the difference between a claim that takes a month and one that takes six.
+        </p>
+      </Answer>
+
+      {/* ── 4 ──────────────────────────────────────────────────────────────── */}
+      <Answer id="how-long" heading="How long does a DASP payment take?" tint>
+        <p style={BODY}>
+          Payment typically arrives within 28 days of the application being approved. The clock starts when
+          the fund or the ATO has everything it needs, not when you first apply. An application missing a
+          certified document, or carrying an address that does not match the fund's records, can sit for
+          weeks before those 28 days begin at all.
+        </p>
+        <p style={BODY}>
+          If your money is spread across several funds, the claim is only as fast as the slowest of them,
+          because each fund assesses and pays separately. Balances already transferred to the ATO are
+          claimed from the ATO instead, and are worked to the same service standard.
+        </p>
+      </Answer>
+
+      {/* ── 5 ──────────────────────────────────────────────────────────────── */}
+      <Answer id="find-your-fund" heading="What if you do not know which super fund you were in?">
+        <p style={BODY}>
+          This is the normal situation, not an unusual one. Every fund an employer paid into is linked to
+          your tax file number, so the accounts can be traced from the TFN
+          without you remembering an employer name, a fund name or a member number. Balances that a fund
+          has already handed to the ATO appear in the same search.
+        </p>
+        <p style={BODY}>
+          What is not automatic is the claim itself. Finding an account lodges nothing, and each fund still
+          needs its own application with its own documents. The account people miss is almost always the
+          first job, taken before they understood what super was.
+        </p>
+      </Answer>
+
+      {/* ── 6 ──────────────────────────────────────────────────────────────── */}
+      <Answer id="from-overseas" heading="Can you claim your super from the UK, Germany or Japan?" tint>
+        <p style={BODY}>
+          Yes, and you have to. A DASP can only be made once you have left Australia, so every
+          claim is made from overseas by definition, and where you are living now has no bearing on your
+          entitlement. The whole process runs on documents and can be completed from home.
+        </p>
+        <p style={BODY}>
+          Two things to settle before you close your Australian bank account. Not every
+          fund will send an electronic transfer to an overseas account, and some issue a cheque instead,
+          which is slow and awkward to bank. Whether your own country then taxes the payment depends on its
+          rules rather than Australia's, and that is a question for an adviser where you live.
+        </p>
+      </Answer>
+
+      {/* ── 7 ──────────────────────────────────────────────────────────────── */}
+      <Answer id="dasp-vs-leaving" heading="Is it better to claim your super or leave it in Australia?">
+        <p style={BODY}>
+          For almost every working holiday maker, claiming is better. A balance left behind is no longer
+          receiving contributions but is still paying administration fees and, in a lot of funds, insurance
+          premiums you cannot use from overseas. Whatever survives that eventually lands with the ATO,
+          where nothing is charged against it and nothing is invested either.
+        </p>
+        <p style={BODY}>
+          The argument for leaving it is narrow. It only holds if you intend to return to Australia
+          to live and work permanently, since the account would then start receiving contributions again.
+          Waiting does not reduce the 65%, and it does not grow the balance either.{' '}
+          <Link href="/blog/dasp-vs-leaving-super-in-australia-pros-cons" className="font-semibold"
+            style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+            The full comparison is here
+          </Link>.
+        </p>
+      </Answer>
+
+      {/* ── 8 ──────────────────────────────────────────────────────────────── */}
+      <Answer id="while-in-australia" heading="Can you claim your super while you are still in Australia?" tint>
+        <p style={BODY}>
+          No. Super is preserved while you hold a valid visa and while you are in the country, and there is
+          no early release available on a working holiday visa for leaving a job, for buying a flight home
+          or for financial hardship. Both conditions have to be satisfied together: you have to have
+          departed, and the visa you worked on has to have expired or been cancelled.
+        </p>
+        <p style={BODY}>
+          If you are flying home well before your visa runs out, you do not have to wait it out. Once you
+          have left, you can ask the Department of Home Affairs to cancel the remaining visa, which makes
+          you eligible immediately instead of months later.
+        </p>
+      </Answer>
+
+      {/* ── 9 ──────────────────────────────────────────────────────────────── */}
+      <Answer id="never-claimed" heading="What happens to your super if you never claim it?">
+        <p style={BODY}>
+          It is not lost and there is no deadline. About six months after your visa expires and you have
+          left the country, a fund holding an unclaimed balance is required to transfer it to the ATO,
+          where it is held in your name, charged no fees, and stays claimable. People lodge a DASP years
+          after they got home and are paid, at the same 65% rate as everybody else.
+        </p>
+        <p style={BODY}>
+          What is lost is whatever the administration fees and insurance premiums took out of the
+          balance in the months before it transferred. On a small balance that can be a meaningful share of
+          it, and no one can recover it afterwards. That is the only real argument for claiming sooner
+          rather than later, and it is enough of one.
+        </p>
+      </Answer>
+
+      {/* ── 10. The sales section, deliberately last. ──────────────────────── */}
+      <Answer id="with-us" heading="Claim it yourself, or have us do it" tint>
+        <p style={BODY}>
+          You can lodge a DASP yourself through the ATO's online application system, and it is free. If you
+          had one fund, your documents are in order and nothing is queried, that is the sensible thing to
+          do and we will tell you so. Nothing on this page is behind a wall.
+        </p>
+        <p style={BODY}>
+          What we take over is the part that is not that. Finding every account linked to your tax file
+          number including balances already sitting with the ATO. Getting certification arranged from
+          overseas. Chasing funds that stop replying. Making sure an old passport number or an address you
+          have not lived at since 2023 does not send the application back to the start. Working holiday tax
+          is the only thing we do, so none of it is unfamiliar.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4" style={{ margin: '22px 0' }}>
+          <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #E2EFE9' }}>
+            <p className="font-semibold" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#4C6459', marginBottom: '14px' }}>
+              On your own
+            </p>
+            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {[
+                'Tracing funds from four or five casual jobs',
+                'Certified copies arranged from overseas',
+                'A separate application per fund',
+                'No one to chase a fund that goes quiet',
+              ].map((t, i) => (
+                <li key={i} style={{ fontSize: '14px', lineHeight: 1.6, color: '#2A3C34' }}>{t}</li>
+              ))}
+            </ul>
           </div>
+          <div className="rounded-2xl" style={{ padding: '20px', background: '#EAF6F1', border: '1.5px solid #C8EAE0' }}>
+            <p className="font-semibold" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0B5240', marginBottom: '14px' }}>
+              With us
+            </p>
+            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {[
+                'Every fund linked to your TFN searched, ATO held super included',
+                'Documents checked before anything is lodged',
+                'One point of contact for all of the funds',
+                'Followed through to the money landing',
+              ].map((t, i) => (
+                <li key={i} className="font-semibold" style={{ fontSize: '14px', lineHeight: 1.6, color: '#080F0D' }}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
-          <p className="font-light text-center" style={{ fontSize:'12.5px', color:'rgba(10,15,13,0.5)', marginTop:'18px', lineHeight:1.7 }}>
-            Figures are after the 65% DASP withholding tax set by the ATO. Fund fees and insurance
-            premiums reduce the balance the longer it sits unclaimed, which is why claiming early matters.
+        <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0', marginBottom: '20px' }}>
+          <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
+            If your refund is less than our fee, we refund the difference, so you are never out of pocket.
+          </p>
+          <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
+            Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged
+            with the ATO.
           </p>
         </div>
-      </section>
 
-      {/* ── EARLY SOCIAL PROOF ────────────────────────────────────────────── */}
-      <section className="py-8 lg:py-10 bg-white">
+        <WaLink href={WA} position="section" topic="super" lang="en"
+          className="btn-primary flex justify-center"
+          style={{ minHeight: '54px', width: '100%', maxWidth: '360px', fontSize: '15px', borderRadius: '100px' }}>
+          Message us on WhatsApp
+        </WaLink>
+        <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '10px' }}>
+          Replies in about an hour. Ask anything first.
+        </p>
+      </Answer>
+
+      {/* ── FAQ ────────────────────────────────────────────────────────────── */}
+      <section className="py-10 lg:py-14" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center mb-8 reveal">
-            <span className="section-label center">What travellers say</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              See how travellers like you got their super back
+          <div className="max-w-[760px]">
+            <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '18px' }}>
+              Other questions people ask about DASP
             </h2>
-          </div>
-          <GoogleReviews lang="en" />
-        </div>
-      </section>
-
-
-
-      {/* ── COMPARISON ── */}
-      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">The easy way</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              There is a simpler way to claim your super
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
-            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
-              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                Claiming your super (DASP) yourself can be slow and confusing
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-                {['Tracking down lost or multiple super funds','Complex DASP forms and ATO requirements','Getting the withholding tax wrong','No help if your claim is delayed'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
-                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
-              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                Use our guided DASP service
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
-                {['We locate every super fund for you','We prepare and lodge your DASP correctly','Withholding tax handled the right way','Support until the money reaches your account'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
-                Claim your super →
-              </a>
-            </div>
+            <Accordion items={faqs} />
           </div>
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
-            <span className="section-label center">Step by step</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              How it works in 4 simple steps
-            </h2>
-            <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
-              Simple, guided process from start to finish
-            </p>
-          </div>
-
-          <div className="reveal delay-1">
-            <div className="hidden lg:block">
-              <div className="relative flex items-start">
-                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
-                {STEPS.map((s, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #F5F9F7, 0 0 0 5px #C8EAE0' }}>
-                      {s.n}
-                    </div>
-                    <p className="text-[14px] font-semibold text-ink mb-2 text-center" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.7] text-center">{s.body}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="lg:hidden flex flex-col">
-              {STEPS.map((s, i) => (
-                <div key={i} className="flex gap-4" style={{ paddingBottom: i < STEPS.length - 1 ? '20px' : '0' }}>
-                  <div className="flex flex-col items-center flex-shrink-0">
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-bold text-white" style={{ background: '#0B5240' }}>{s.n}</div>
-                    {i < STEPS.length - 1 && <div className="flex-1 w-px mt-2" style={{ minHeight: '20px', background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
-                  </div>
-                  <div style={{ paddingTop: '3px' }}>
-                    <p className="text-[14px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{s.title}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.65]">{s.body}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="text-center mt-8 reveal delay-2">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
-              Claim your super →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHAT TO HAVE READY ── */}
-
-      {/* ── FAQ ───────────────────────────────────────────────────────────── */}
+      {/* ── RELATED GUIDES. The narrow guides that already rank, pointed at  */}
+      {/*    from the hub rather than competing with it. ───────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-
-            <div className="text-center">
-              <span className="section-label center">FAQs</span>
-              <h2 className="font-serif font-black text-ink"
-                style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-                Superannuation questions answered
-              </h2>
-              <p className="font-light text-muted"
-                style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
-                Have a question? Message us directly.
-              </p>
-            </div>
-
-            <div className="max-w-[700px]">
-              <Accordion items={faqs} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
-      <section className="py-10 lg:py-14">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="text-center mb-6">
-            <span className="section-label center">Learn more</span>
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              Guides on claiming your super back
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+          <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
+            Go deeper on one part of the claim
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px]">
             {[
-              { href: '/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'DASP vs leaving your super in Australia: pros and cons' },
-              { href: '/blog/super-for-casual-and-part-time-workers', label: 'Super for casual and part-time working holiday makers' },
-              { href: '/blog/how-to-choose-super-fund', label: 'How to choose a super fund on a working holiday visa' },
-              { href: '/blog/what-is-dasp-super-withdrawal', label: 'What is DASP? Departing Australia Superannuation Payment explained' },
-              { href: '/blog/dasp-tax-rate-65-percent-explained', label: 'Why DASP is taxed at 65% and what it means for your refund' },
-              { href: '/blog/how-long-does-dasp-take', label: 'How long does a DASP super refund take to arrive?' },
-            ].map((g) => (
-              <Link
-                key={g.href}
-                href={g.href}
-                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
-              >
+              { href: '/blog/how-long-does-dasp-take', label: 'How long a DASP takes, stage by stage' },
+              { href: '/blog/dasp-documents-required', label: 'The documents a DASP claim needs' },
+              { href: '/blog/dasp-tax-rate-65-percent-explained', label: 'Why DASP is taxed at 65%, and what is left' },
+              { href: '/blog/dasp-rejected-what-to-do', label: 'What to do if your DASP claim is rejected' },
+              { href: '/blog/super-multiple-funds-consolidation', label: 'Claiming when your super sits in several funds' },
+              { href: '/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'Claim now or leave it invested: the comparison' },
+            ].map(g => (
+              <Link key={g.href} href={g.href}
+                className="block rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
+                style={{ padding: '16px', fontSize: '14px', lineHeight: 1.5, color: '#080F0D', minHeight: '44px' }}>
                 {g.label}
               </Link>
             ))}
@@ -589,17 +655,15 @@ export default function SuperannuationPage() {
         </div>
       </section>
 
-      {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="What is next?"
-        heading="Check if you are eligible for Medicare"
-        body="Depending on your country of origin, you may be eligible for Medicare or exempt from the Medicare levy."
-        cta="Check your Medicare eligibility →"
+        eyebrow="What is next"
+        heading="The 2% Medicare levy is the other one nobody claims"
+        body="Most 417 and 462 holders never owed it. It comes off with a certificate almost nobody applies for."
+        cta="Read about the exemption"
         href="/medicare"
       />
 
-      {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      <MobileCta href={WA_URL} lang="en" />
+      <MobileCta href={WA} lang="en" topic="super" />
     </>
   )
 }

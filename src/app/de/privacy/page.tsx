@@ -3,8 +3,8 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Datenschutzerklärung | Working Holiday Tax',
-  description: 'Datenschutzerklärung von Working Holiday Tax - wie wir deine personenbezogenen Daten erheben, verwenden und schützen.',
+  title: 'Datenschutzerklärung',
+  description: 'Wie wir deine personenbezogenen Daten erheben, verwenden, speichern und schützen, und welche Rechte du daran hast.',
   alternates: {
     canonical: '/de/privacy',
     languages: {

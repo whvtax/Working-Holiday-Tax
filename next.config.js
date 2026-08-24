@@ -106,8 +106,8 @@ const nextConfig = {
   async redirects() {
     return [
       // The two-stage intake (/start + /complete/<token>) has been removed in
-      // favour of the single full /tax-form. These redirects are NOT for SEO —
-      // both routes were noindex — they exist so a customer who still has one
+      // favour of the single full /tax-form. These redirects are NOT for SEO,
+      // both routes were noindex. They exist so a customer who still has one
       // of those links sitting in their WhatsApp lands on the real form instead
       // of a 404. A dead link is a lost customer.
       // Temporary (302) on purpose: these are not canonical URLs and should not
@@ -120,7 +120,33 @@ const nextConfig = {
       { source: '/start',    destination: '/tax-form',    permanent: false },
       { source: '/de/start', destination: '/de/tax-form', permanent: false },
       { source: '/ja/start', destination: '/ja/tax-form', permanent: false },
-      // Permanent 301 redirects: old /guides URLs → new /blog URLs
+      // ─── Superannuation cluster consolidation (Aug 2026) ──────────────────
+      // Five broad "how do I claim my super" guides were merged into the
+      // /superannuation answer hub. They ranked 21-33 while narrow DASP guides
+      // with a unique intent ranked 7-13, which is cannibalisation rather than
+      // an authority problem. Their unique content was folded into the hub and
+      // into /blog/dasp-documents-required before removal.
+      // Two near-dead super-rate guides were merged into
+      // /blog/how-much-super-should-employer-pay.
+      // 301 in all three languages so no accrued authority is thrown away.
+      // The /guides/* variants are listed explicitly to avoid a double hop on
+      // mobile: /guides/:path* would otherwise 301 to /blog/* and then again.
+      ...[
+        ['best-way-to-claim-super-leaving-australia', 'superannuation'],
+        ['how-to-apply-for-super-back',               'superannuation'],
+        ['what-is-dasp-super-withdrawal',             'superannuation'],
+        ['can-you-withdraw-super-in-australia',       'superannuation'],
+        ['what-is-superannuation',                    'superannuation'],
+        ['super-stapling-rule-australia',             'blog/how-much-super-should-employer-pay'],
+        ['super-rate-12-percent-2025-2026-increase',  'blog/how-much-super-should-employer-pay'],
+      ].flatMap(([slug, target]) => [
+        { source: `/blog/${slug}`,    destination: `/${target}`,     permanent: true },
+        { source: `/guides/${slug}`,  destination: `/${target}`,     permanent: true },
+        { source: `/de/blog/${slug}`, destination: `/de/${target}`,  permanent: true },
+        { source: `/ja/blog/${slug}`, destination: `/ja/${target}`,  permanent: true },
+      ]),
+
+      // Permanent 301 redirects: old /guides URLs to the new /blog URLs
       // Preserves SEO authority of any external links pointing to the old paths.
       {
         source: '/guides',
@@ -154,6 +180,7 @@ const nextConfig = {
         destination: '/ja/blog/minimum-wage-australia-2026-27',
         permanent: true,
       },
+
     ]
   },
 }

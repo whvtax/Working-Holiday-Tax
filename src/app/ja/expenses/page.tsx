@@ -2,344 +2,789 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { RelatedServices } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'バックパッカーの税金控除ガイド：オーストラリア完全版',
-  description: 'バックパッカーがオーストラリアの確定申告で経費として計上できるものとは。飲食業、農場労働、建設業、キッチンハンド、ライドシェアドライバー、清掃業など職業別の控除例と、車両費の計算方法を解説。',
-  keywords: [
-    'バックパッカー 税金控除',
-    'ワーキングホリデー 税金控除',
-    'バックパッカー 確定申告 経費',
-    'ATO 控除 ワーキングホリデーメーカー',
-    '走行距離控除 ATO',
-    'WHV 税金控除',
-    '417ビザ 税金控除',
+  "title": "オーストラリアの経費控除、職種別ガイド",
+  "description": "何を控除できるかは、どんな仕事をしたかで決まります。ファーム、飲食、建設、デリバリー、清掃、派遣、FIFOの職種別リストと必要な記録。",
+  "keywords": [
+    "ワーホリ 税金 控除",
+    "ワーキングホリデー 経費 控除",
+    "オーストラリア 控除 バックパッカー",
+    "ATO 控除 ワーキングホリデー",
+    "タックスリターン 経費 オーストラリア",
+    "キロメートル単価 控除",
+    "417ビザ 税金 控除",
+    "462ビザ 税金 控除"
   ],
-  alternates: { canonical: '/ja/expenses', languages: { 'en-AU': '/expenses', 'de': '/de/expenses', 'x-default': '/expenses' } },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'ja_JP',
-    url: `${SITE_URL}/ja/expenses`,
-    siteName: 'Working Holiday Tax',
-    title: 'バックパッカーの税金控除ガイド：オーストラリア完全版',
-    description: 'バックパッカーが確定申告で実際に経費計上できるものを職業別に解説。',
+  "alternates": {
+    "canonical": "/ja/expenses",
+    "languages": {
+      "en-AU": "/expenses",
+      "de": "/de/expenses",
+      "ja": "/ja/expenses",
+      "x-default": "/expenses"
+    }
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: 'バックパッカーの税金控除ガイド：オーストラリア完全版',
-    description: 'バックパッカーが確定申告で実際に経費計上できるものを職業別に解説。',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "ja_JP",
+    "url": `${SITE_URL}/ja/expenses`,
+    "siteName": "Working Holiday Tax",
+    "title": "オーストラリアの経費控除、職種別ガイド",
+    "description": "フルーツピッカーとデリバリー配達員では、控除できるものが違います。自分の仕事を選んでください。"
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "オーストラリアの経費控除、職種別ガイド",
+    "description": "フルーツピッカーとデリバリー配達員では、控除できるものが違います。自分の仕事を選んでください。"
+  },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const GOLDEN_RULES = [
-  'そのお金を自分で支払っており、雇用主から払い戻しを受けていないこと。',
-  'その支出が収入を得ることに直接関係していること、私的・家庭的な支出ではないこと。',
-  '証拠となる記録があること、何をいつ購入したかを示すレシート、請求書、または銀行明細。',
-]
+const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "自分の職種で控除できるもの" })
 
-const CAR_METHOD_ROWS = [
-  ['レート（2024-25・2025-26年度）', '1kmあたり88セント'],
-  ['レート（2026-27年度、2026年7月1日から）', '1kmあたり91セント'],
-  ['請求できる上限', '1台あたり年間5,000km'],
-  ['領収書は必要？', '不要、ただし走行距離の算出方法を示せる必要あり'],
-]
-
-const LOGBOOK_ROWS = [
-  ['仕組み', '実際にかかった費用のうち、仕事で使用した割合を請求'],
-  ['ログブック記録期間', '連続12週間、5年間有効'],
-  ['請求できる上限', '上限なし、実際の仕事使用率に基づく'],
-  ['領収書は必要？', '必要、請求するすべての費用について'],
-]
-
-type Occupation = {
-  emoji: string
-  title: string
-  subtitle: string
-  can: string[]
-  cannot: string[]
+const UI = {
+  "ctaLabel": "WhatsAppで相談する",
+  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "guaranteeHeading": "還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。",
+  "guaranteeBody": "ワーキングホリデーの税金だけを専門にしています。申告書は当社のチームが作成し、ATOへ提出する前に登録税理士が確認して承認します。",
+  "faqHeading": "よくある質問",
+  "guidesHeading": "次に読むと役に立つガイド",
+  "otherJobs": "別の仕事の場合は、職種別の一覧へ。",
+  "servicesLabel": "サイト内の関連ページ",
+  "wrongLabel": "控除できないのに申告されがちなもの",
+  "missedLabel": "控除できるのに申告されないもの",
+  "disclaimer": "これは一般的な情報であり、個別の税務アドバイスではありません。何を控除できるかは、雇用主、手元の記録、実際の働き方によって変わります。当社にご依頼いただいた場合は、あなたの状況を一つずつ確認し、控除できるものはすべて申告し、できないものは申告しません。",
+  "hubHref": "/ja/expenses"
 }
 
-const OCCUPATIONS: Occupation[] = [
+const CRUMBS = [
   {
-    emoji: '🍸',
-    title: '飲食・バーテンダー',
-    subtitle: 'バー、カフェ、レストラン、ホテル',
-    can: [
-      'RSA（責任あるアルコール提供）資格とその更新費用',
-      '滑り止め付きの保護靴',
-      '雇用主のロゴが入った制服の必須クリーニング代',
-      '職務上必要な応急処置資格',
-    ],
-    cannot: [
-      'ロゴのない普通の黒い服や靴、職場で義務付けられていても、ATOはこれを制服ではなく普段着とみなします',
-    ],
+    "name": "ホーム",
+    "item": "/ja"
   },
   {
-    emoji: '🌾',
-    title: '農場労働・果物摘み',
-    subtitle: '果樹園、ワイナリー、地方の農場労働',
-    can: [
-      '屋外作業のための日焼け対策：つばの広い帽子、日焼け止め、サングラス',
-      '保護用手袋・ブーツ',
-      '日中に異なる農場や作業場所間を移動する際の車両費',
-    ],
-    cannot: [
-      '仕事で汚れたり傷んだりしても、ジーンズやTシャツなどの普段着',
-      '自宅から最初の農場までの毎日の移動、これは通常の通勤とみなされます',
-    ],
-  },
-  {
-    emoji: '🏗️',
-    title: '建設業',
-    subtitle: '労務作業、専門工事、建設現場',
-    can: [
-      'White Card（建設従事者証）の更新費用',
-      '安全靴（先芯入り）と高視認性の作業着',
-      '工具・機材、$300未満は即時控除、$300以上は耐用年数にわたって減価償却',
-      '屋外現場作業のための日焼け対策',
-    ],
-    cannot: [
-      '現場で汚れたり傷んだりしても、普段着',
-      'その仕事に就くために必要だった最初のWhite Card',
-    ],
-  },
-  {
-    emoji: '🔪',
-    title: 'シェフ・キッチンハンド',
-    subtitle: '商業用キッチン、レストラン',
-    can: [
-      '自分で購入したシェフナイフやその他の調理器具',
-      'シェフコートやチェック柄のシェフパンツ、職業に特有の衣類として認められます',
-      '滑り止め付きのキッチンシューズ',
-      '職務上必要な食品安全管理者資格',
-    ],
-    cannot: [
-      'シェフコートの下に着る普段着',
-    ],
-  },
-  {
-    emoji: '🚗',
-    title: 'ライドシェア・配達',
-    subtitle: 'Uber、Uber Eats、DoorDashなど',
-    can: [
-      '仕事に関連する運転部分の車両費、1kmあたりの定額法またはログブック法（下記参照）',
-      '携帯電話プランのうち仕事で使用した割合',
-      '乗客のために車を適切な状態に保つための洗車代',
-      '仕事中に発生した駐車料金',
-    ],
-    cannot: [
-      '各移動のうち私的な部分、または通常の通勤',
-      '駐車違反やスピード違反の罰金、理由を問わず控除の対象にはなりません',
-    ],
-  },
-  {
-    emoji: '🧹',
-    title: '清掃業',
-    subtitle: '商業用・住宅用の清掃業務',
-    can: [
-      '自分で購入し払い戻しを受けていない清掃用品・機材',
-      '保護用手袋',
-      '日中に顧客先の間を移動する際の車両費',
-    ],
-    cannot: [
-      '自宅から最初の現場までの毎日の移動',
-      '清掃中に着用する普段着',
-    ],
-  },
+    "name": "控除",
+    "item": "/ja/expenses"
+  }
 ]
+
+const HERO = {
+  "kicker": "ワーキングホリデービザ 417 と 462",
+  "h1lead": "控除リストは1つではありません。",
+  "h1accent": "あなた専用のリストです。",
+  "lede": "7つの職種。それぞれに固有の控除があり、固有の記録が要り、固有の落とし穴があります。"
+}
+
+/**
+ * 誰もが抱えたまま来る反論を、控除に即して答える。
+ *
+ * トップページは一般論。ここでは各行が空欄の話でなければならない。どんな数字でも
+ * 受け付け、何も提案せず、あなたがどの職種で働いたかも知らない。myGovが悪いとは
+ * 書いていない。控除を記録するのが役割で、何を控除できたかを決めるわけではない。
+ */
+const MYGOV_UI = {
+  "kicker": "自分でやる場合",
+  "h2lead": "myGovの控除欄は1つだけ。",
+  "h2accent": "あなたの職種が何を入れるかは知りません。",
+  "lede": "その欄に何が入るのか、そして各控除に何の裏づけが要るのか。どちらも入力の前に決まります。",
+  "colLeft": "myGovの場合",
+  "colRight": "当社の場合",
+  "close": "myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。"
+}
+
+const MYGOV = [
+  {
+    "mygov": "控除欄は空欄のままで、あなたの職種で何が控除できるかの提案はありません。",
+    "us": "実際にやった仕事から出発し、その仕事に対応する項目を順に見ていきます。"
+  },
+  {
+    "mygov": "証明できない金額でも、入力すればそのまま受け付けられます。",
+    "us": "領収書が要るもの、銀行明細で足りるもの、確認されたら通らないものを区別してお伝えします。"
+  },
+  {
+    "mygov": "フルーツピッカーとバリスタと大工が同じものを控除するわけではないことは、どこにも書かれていません。",
+    "us": "7つの職種それぞれに、独自の項目と独自の証明ルールがあります。"
+  },
+  {
+    "mygov": "家賃、食費、通勤費は控除できそうに見えますが、できません。",
+    "us": "通る控除を残し、通らないものは外します。後から取り消す事態を避けるためです。"
+  }
+]
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
+  {
+    "kind": "answer",
+    "h2": "ワーキングホリデーメーカーはタックスリターンで何を控除できますか？",
+    "paras": [
+      "申告する収入を得るために使ったお金は控除できます。条件は、自分で支払ったこと、そして払い戻しを受けていないことです。ワーキングホリデーメーカーの控除の範囲は他の人と同じで、417ビザや462ビザだからといって制限されることはありません。",
+      "リストを変えるのは職種です。日焼け止めは屋外の果樹園で働く人には控除でき、バーカウンターの中の人には控除できません。携帯電話代はデリバリー配達員にとって本物の控除ですが、キッチンハンドにはほとんど関係ありません。一般的なアドバイスがここまでできないのは、あなたが何をしたかを知らないからです。"
+    ]
+  },
+  {
+    "kind": "occupations",
+    "h2": "あなたが実際にやった仕事はどれですか？",
+    "intro": "7つのページがあります。それぞれ、その職種が控除できるもの、間違えて申告しがちなもの、取りこぼしているものを中心に書いています。",
+    "jobs": [
+      {
+        "href": "/ja/expenses/farm-work",
+        "title": "ファームとフルーツピッキング",
+        "line": "日焼け止め、収穫用具、同じ日にブロック間を移動した分の交通費。"
+      },
+      {
+        "href": "/ja/expenses/hospitality",
+        "title": "飲食とキッチン",
+        "line": "RSAの更新、滑り止めの靴、コックコート、そして黒一色の服が制服にならない理由。"
+      },
+      {
+        "href": "/ja/expenses/construction",
+        "title": "建設",
+        "line": "道具の300ドルルール、保護具、そして2枚目からしか使えないホワイトカード。"
+      },
+      {
+        "href": "/ja/expenses/delivery-drivers",
+        "title": "デリバリー",
+        "line": "車や自転車の費用、携帯の仕事使用分、そして乗客を乗せた瞬間に変わるGSTのルール。"
+      },
+      {
+        "href": "/ja/expenses/cleaners",
+        "title": "清掃",
+        "line": "道具と洗剤、洗濯の定額、そしてほとんど誰も申告しない現場間の移動。"
+      },
+      {
+        "href": "/ja/expenses/labouring",
+        "title": "派遣と倉庫",
+        "line": "複数のエージェンシー、複数のインカムステートメント、1日に2現場を回る移動。"
+      },
+      {
+        "href": "/ja/expenses/fifo",
+        "title": "FIFOとキャンプ",
+        "line": "チケット更新、保護具、そしてローター勤務ではほぼ該当しないZone Tax Offset。"
+      }
+    ]
+  },
+  {
+    "kind": "numbered",
+    "h2": "控除が認められる前提は何ですか？",
+    "intro": "3つのテストが、このサイトのすべての控除に適用されます。1つでも外せば、どれだけ仕事に関係していても丸ごと認められません。",
+    "steps": [
+      "自分でお金を払っていて、雇用主や顧客から払い戻しを受けていないこと。",
+      "収入を得る過程で生じた費用であること。収入を得られる立場になるための費用ではなく、私的な支出でもないこと。",
+      "何を、いつ、どこで、いくらで買ったかが分かる記録があること。"
+    ],
+    "note": "厄介なのは2番目です。最初のホワイトカードが控除できず更新は控除できるのも、通勤が控除できず同じ日に2つの職場を移動する分は控除できるのも、これが理由です。"
+  },
+  {
+    "kind": "answer",
+    "h2": "何を証明できる必要がありますか？",
+    "paras": [
+      "領収書、請求書、または金額、日付、支払先、内容が分かる銀行明細です。スマホの写真でも構いませんが、5年間は提示できるようにしておく必要があります。",
+      "例外が1つあります。その年の仕事関連の控除の合計が300ドル以下なら、書面の証拠は不要です。ただし、その金額をどう計算したかは説明できなければなりません。これは個々の資産に関する300ドルのルールとは別のもので、そちらは1点をどう償却するかという話です。"
+    ]
+  },
+  {
+    "kind": "note",
+    "label": "2026年7月1日からの変更",
+    "title": "定額1,000ドルか、実費か。両方は選べません。",
+    "body": "2026年7月1日から、領収書なしで仕事関連経費を一律1,000ドル控除するか、記録をそろえて実費を控除するかを選べます。年単位でどちらか一方だけです。実費が1,400ドルなのに定額を選べば、400ドルを捨てることになります。この選択が最初に適用されるのは2026-27年度の申告で、提出は2027年7月以降です。いま多くの人が提出している2025-26年度の申告には、従来のルールが適用されます。"
+  },
+  {
+    "kind": "tables",
+    "h2": "車の経費はどう計算しますか？",
+    "intro": "方法は2つあり、1台につき年に1つしか使えません。どちらの場合も対象になるのは仕事のための走行だけで、自宅から固定の職場への通勤は含まれません。",
+    "tables": [
+      {
+        "label": "キロメートル単価方式",
+        "rows": [
+          [
+            "2024-25年度と2025-26年度",
+            "1kmあたり88セント"
+          ],
+          [
+            "2026-27年度以降",
+            "1kmあたり91セント"
+          ],
+          [
+            "上限",
+            "1台につき年5,000km"
+          ],
+          [
+            "領収書",
+            "不要。ただし走行距離の根拠は示す必要があります"
+          ]
+        ]
+      },
+      {
+        "label": "運転日誌方式",
+        "rows": [
+          [
+            "仕組み",
+            "実際の維持費すべてに仕事使用の割合を掛けて控除します"
+          ],
+          [
+            "記録期間",
+            "連続12週間、5年間有効"
+          ],
+          [
+            "上限",
+            "なし。実際の仕事使用割合に従います"
+          ],
+          [
+            "領収書",
+            "控除するすべての支出に必要です"
+          ]
+        ]
+      }
+    ],
+    "note": "年間およそ5,000km を超えると、通常は運転日誌のほうが控除額は大きくなります。ガソリン、保険、登録費用、整備、減価償却、車のローン利息まで拾えるからです。その代わり12週間の記録と、すべての領収書が必要になります。どちらが得かは、走行距離と車の維持費次第です。"
+  },
+  {
+    "kind": "traps",
+    "h2": "職種を問わず、よくある間違いは何ですか？",
+    "intro": "職種を問わず出てきます。前半は、あとで修正申告につながるもの。後半は誰も請求しないもので、件数も損失も大きいのはこちらです。",
+    "wrong": [
+      {
+        "t": "ドレスコードで指定された普通の服",
+        "d": "黒いパンツ、無地のポロシャツ、普通の作業靴、ジーンズ。ATOが見るのは品物そのものであって、買った理由ではありません。誰がどこでも着られる服は、上司が指定したからといって制服にはなりません。"
+      },
+      {
+        "t": "最初のライセンス、チケット、資格",
+        "d": "最初のホワイトカード、最初のRSA、最初のフォークリフト免許。これらはその仕事に就く資格を得るための費用であって、仕事をするための費用ではありません。働き始めたあとの同じチケットの更新は控除できます。"
+      },
+      {
+        "t": "自宅から職場への通勤",
+        "d": "通常の通勤は私的な移動です。距離も出発時刻も渋滞も関係ありません。同じ日に2つの職場を移動するのはまったく別の話で、そちらは通常控除できます。"
+      },
+      {
+        "t": "払い戻しを受けたもの",
+        "d": "雇用主、エージェンシー、プラットフォームから払い戻された、あるいは現物で支給された場合、あなたの負担は残っていません。それを申告するのは同じ1ドルを二重に取ることです。"
+      },
+      {
+        "t": "罰金",
+        "d": "駐車違反もスピード違反も、何をしている最中でも控除できません。"
+      }
+    ],
+    "missed": [
+      {
+        "t": "300ドル以下の品を1点ずつ全額",
+        "d": "安全靴、手袋、帽子、ナイフケース、ヘッドライト、スマホホルダー。1点ずつ判定されるので、小さな買い物が1年分たまれば本物の控除になります。多くの人が領収書を捨てています。"
+      },
+      {
+        "t": "300ドルを超えても控除はできる",
+        "d": "300ドルを超えても控除がなくなるのではなく、タイミングが変わるだけです。耐用年数にわたって配分して控除します。「300ドル超」と聞いた時点であきらめる人が少なくありません。"
+      },
+      {
+        "t": "制服や保護具の洗濯",
+        "d": "ATOは仕事着だけの洗濯なら1回1ドル、私服と一緒なら1回50セントを認めています。年間の洗濯控除が150ドルを超えたら、概算ではなく簡単な記録が必要です。"
+      },
+      {
+        "t": "同じ日に2つの仕事を移動した分",
+        "d": "2つのファーム、2軒の家、2つの倉庫、2つの店。この区間は通勤ではなく業務移動で、複数現場で働く人にとっては申告全体で最大の控除になることも多いです。"
+      },
+      {
+        "t": "TFNが届く前に45%で引かれた分",
+        "d": "控除ではありませんが、同じお金です。Tax File Number Declarationが処理される前に最高税率で源泉徴収されていた分は、申告すれば戻ります。放っておいても戻りません。"
+      }
+    ]
+  },
+  {
+    "kind": "answer",
+    "h2": "あなた自身の事情で変わるのはどこですか？",
+    "paras": [
+      "明確な部分もあれば、あなたの事実関係を見て判断する部分もあります。移動が通勤ではなく巡回勤務にあたるかどうかは、1週間の働き方の実態で決まります。現場がどれだけ頻繁に変わるか、戻る拠点があるか、雇用主が移動を求めているか。同じ職種名でも結論が分かれます。",
+      "もう1つは税務上の居住区分で、これはこのページのすべての控除を合わせたより大きな金額になります。イギリス、ドイツ、日本のパスポートは、Addy判決のもとで満額の非課税枠を受けられる可能性がありますが、それは税務上オーストラリア居住者だった場合に限られます。滞在日数だけでは決まらず、その年に何をしたかで決まります。"
+    ]
+  }
+]
+
+const FAQS = [
+  {
+    "question": "myGovで自分でやってはいけないのですか。",
+    "answer": "ご自身でできますし、提出は簡単な部分です。控除が難しいのは、入力欄が空欄のままだからです。画面のどこにも、あなたの職種で何が控除できるかの提案はなく、フルーツピッカーとデリバリー配達員と大工の違いも示されず、家賃や食費や通勤費が控除できそうに見えて実際にはできないことへの注意もありません。どの費用が仕事から生じたのか、どれに領収書が必要でどれなら銀行明細で足りるのかを見極めるのは、入力欄を埋める作業ではなく、あなたが実際に過ごした1年についての判断です。ご相談の際は、その年にどんな仕事をしたかを伺うところから始めます。"
+  },
+  {
+    "question": "ワーキングホリデーメーカーの控除はオーストラリア人より少ないですか？",
+    "answer": "いいえ。417ビザや462ビザでも、控除のルールはオーストラリアで収入を得る他の人とまったく同じです。違うのは支出側ではなく収入側です。ワーキングホリデーメーカーの収入は非課税枠ではなく45,000ドルまで15%で課税されます。ただし居住区分によっては変わります。控除の計算方法は、同じ仕事をしている居住者とまったく同じです。"
+  },
+  {
+    "question": "1年で4つの仕事をしました。リストは4つに分かれますか？",
+    "answer": "申告は年度ごとに1回で、そのなかにすべての仕事のすべての控除が入ります。大事なのは、それぞれの支出が当時実際にやっていた仕事と結びついていることです。9月の倉庫仕事のために買った安全靴も、1月のファーム仕事のために買った日焼け止めも、同じ申告に入ります。雇用主が違っても分かれることはありません。"
+  },
+  {
+    "question": "領収書をなくしてしまいました。",
+    "answer": "領収書がない場合、金額、日付、支払先が分かる銀行やカードの明細で認められることが多く、そもそも明細しか残らない買い物もあります。どの支出が明細だけで通り、どれが通らないかは、買ったものと使い道を伺えば一つずつ判断できます。できないのは、数字を作って通ることを期待することです。"
+  },
+  {
+    "question": "オーストラリア滞在中の家賃、食費、移動費は控除できますか？",
+    "answer": "できません。住居費、食料品、移動の費用は私的な生活費であり、仕事のために地方の町へ移った場合でも変わりません。狭い例外は、雇用主の指示で自宅を離れて宿泊を伴う出張をした場合で、これは別のルールと別の記録が必要になります。"
+  },
+  {
+    "question": "数か月しか働いていなくても控除する意味はありますか？",
+    "answer": "たいていあります。短期でも実際の出費はありますし、控除は課税対象になる収入を減らします。ただし短い年度で金額が大きいのは控除よりも、Tax File Numberが雇用主に届く前に45%で引かれていた分と、居住区分が正しく申告されているかどうかであることが多いです。"
+  }
+]
+
+const GUIDES = [
+  {
+    "href": "/ja/blog/tax-deductions-working-holiday-makers",
+    "label": "ワーキングホリデーの控除リスト",
+    "desc": "すべてのカテゴリーと、ATOが認めないもの。"
+  },
+  {
+    "href": "/ja/blog/tools-equipment-under-300-instant-deduction-whv",
+    "label": "300ドル以下の道具は全額即時控除",
+    "desc": "1点ずつ判定される理由と、セット購入で変わる点。"
+  },
+  {
+    "href": "/ja/blog/1000-dollar-instant-deduction-rule-2026",
+    "label": "1,000ドル定額控除の選び方",
+    "desc": "実費といくらで損益が分かれるか、記録は何が要るか。"
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/ja/tax-return",
+    "label": "タックスリターン"
+  },
+  {
+    "href": "/ja/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/ja/tax-residency",
+    "label": "税務上の居住区分"
+  }
+]
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map(f => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+}
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: '経費', item: `${SITE_URL}/ja/expenses` },
-  ],
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
 }
 
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
-  headline: 'バックパッカーの税金控除ガイド：オーストラリア完全版',
-  description: 'バックパッカーが確定申告で経費計上できるものを職業別に解説。',
+  headline: "オーストラリアの経費控除、職種別ガイド",
+  description: "フルーツピッカーとデリバリー配達員では、控除できるものが違います。自分の仕事を選んでください。",
   url: `${SITE_URL}/ja/expenses`,
-  inLanguage: 'ja-JP',
+  inLanguage: "ja-JP",
   author: { '@type': 'Organization', name: 'Working Holiday Tax' },
   publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
 }
 
-function CompareTable({ label, rows, highlight }: { label: string; rows: string[][]; highlight?: boolean }) {
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/ja/expenses#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/ja/expenses`,
+}
+
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
   return (
-    <div className="taxres-table-card" style={highlight ? { borderColor: '#0B5240', boxShadow: '0 8px 20px -8px rgba(11, 82, 64, 0.18)' } : {}}>
-      <h3 className="taxres-table-title">{label}</h3>
-      <table className="taxres-table">
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>
-          ))}
-        </tbody>
-      </table>
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"ja"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
     </div>
   )
 }
 
-function OccupationCard({ o }: { o: Occupation }) {
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
   return (
-    <div className="exp-card">
-      <div className="exp-card-head">
-        <span className="exp-card-emoji" aria-hidden="true">{o.emoji}</span>
-        <div>
-          <h3 className="exp-card-title">{o.title}</h3>
-          <p className="exp-card-subtitle">{o.subtitle}</p>
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
         </div>
-      </div>
-      <div className="exp-card-section">
-        <p className="exp-card-label exp-card-label-yes">✓ 控除できる可能性があるもの</p>
-        <ul className="exp-card-list">
-          {o.can.map((item, i) => <li key={i}>{item}</li>)}
-        </ul>
-      </div>
-      <div className="exp-card-section">
-        <p className="exp-card-label exp-card-label-no">✕ 通常、控除できないもの</p>
-        <ul className="exp-card-list">
-          {o.cannot.map((item, i) => <li key={i}>{item}</li>)}
-        </ul>
-      </div>
+      ))}
     </div>
   )
 }
 
-export default function ExpensesPageJA() {
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/ja" style={{ color: '#587066' }}>ホーム</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>経費</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(26px, 4.5vw, 40px)', lineHeight: 1.3, letterSpacing: '-0.01em', marginBottom: '14px', maxWidth: '24ch' }}>
-                バックパッカーが実際に<span style={{ color: '#0B5240' }}>経費計上できるもの</span>とは？
-              </h1>
-              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.8, color: '#0B5240', maxWidth: '46ch' }}>
-                仕事に関連する控除は還付金に数百ドルを上乗せすることがあります、ただし、その支出が本当に条件を満たしている場合に限ります。職業別に、何が対象になるかを正確に解説します。
-              </p>
-            </div>
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}
+              <span style={{ color: FOREST }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
           </div>
         </section>
 
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <p className="font-bold mx-auto" style={{ fontSize: '14.5px', color: '#1A2822', lineHeight: 1.9, maxWidth: '54ch' }}>
-                職業別の具体例の前に、すべての控除はこの3つのATOのテストをクリアする必要があります：
-              </p>
-            </div>
-            <div className="max-w-[680px] mx-auto">
-              <div className="flex flex-col gap-3">
-                {GOLDEN_RULES.map((c, i) => (
-                  <div key={i} className="taxres-condition-item">
-                    <span className="taxres-condition-num">{i + 1}</span>
-                    <p className="taxres-condition-text">{c}</p>
+        {/* 反論への回答、控除に即して */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <p style={kickerS}>{MYGOV_UI.kicker}</p>
+            <h2 style={h2s}>
+              <span style={{ display: 'block', color: BODY, fontWeight: 400 }}>{MYGOV_UI.h2lead}</span>
+              <span style={{ display: 'block' }}>{MYGOV_UI.h2accent}</span>
+            </h2>
+            <p style={{ ...ps, color: MUTED, marginBottom: '20px' }}>{MYGOV_UI.lede}</p>
+
+            <div style={{ background: '#fff', border: '1px solid #CDE3DB', borderRadius: '14px', overflow: 'hidden' }}>
+              {MYGOV.map((row, i) => (
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : `1px solid ${HAIR}` }}>
+                  <div style={{ padding: '15px 18px' }}>
+                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: MUTED, margin: '0 0 5px' }}>
+                      {MYGOV_UI.colLeft}
+                    </p>
+                    <p style={{ ...ps, margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
-                ))}
-              </div>
+                  <div className="border-t md:border-t-0 md:border-l" style={{ padding: '15px 18px', background: '#F2FAF7', borderColor: HAIR }}>
+                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: FOREST, margin: '0 0 5px' }}>
+                      {MYGOV_UI.colRight}
+                    </p>
+                    <p style={{ ...ps, margin: 0, color: INK, fontWeight: 500, overflowWrap: 'break-word' }}>{row.us}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        </section>
 
-        <section style={{ background: '#F5F9F7', paddingTop: '32px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="taxres-savings-box" style={{ flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-              <div>
-                <p className="taxres-savings-heading">記録の保管について</p>
-                <p className="taxres-savings-body">
-                  請求を予定しているものについては、レシート、請求書、または銀行明細を保管してください、スマートフォンで撮った写真でも構いません。年間の仕事関連の請求合計が$300未満の場合、ATOは書面での証拠を求めませんが、その金額をどのように算出したかは説明できる必要があります。
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.01em', marginBottom: '10px' }}>
-                車両費：2つの計算方法
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.8, maxWidth: '54ch' }}>
-                仕事に関連する運転のみが対象です、通常の通勤は含まれません。方法は2つあり、1台の車につき1年で1つの方法しか使えません。
-              </p>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="1kmあたりの定額法" rows={CAR_METHOD_ROWS} highlight />
-              <CompareTable label="ログブック法" rows={LOGBOOK_ROWS} />
-            </div>
-            <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.8, maxWidth: '60ch', marginTop: '18px' }}>
-              年間の仕事関連の走行距離が5,000kmを超える場合、通常はログブック法の方が還付額が大きくなります、ただし12週間のログブックとすべての領収書の保管が必要です。
+            <p style={{ fontFamily: 'var(--font-serif), Georgia, serif', fontSize: '17px', lineHeight: 1.75, fontWeight: 700, color: FOREST, margin: '22px 0 0' }}>
+              {MYGOV_UI.close}
             </p>
           </div>
         </section>
 
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '20px' }}>
-          <div className="max-w-[1040px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.01em', marginBottom: '10px' }}>
-                職業別の控除ガイド
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.8, maxWidth: '56ch' }}>
-                バックパッカーがオーストラリアで従事する代表的な職業と、実際に対象になるもの・ならないものを解説します。
-              </p>
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
+
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                </div>
+              )}
             </div>
-            <div className="exp-grid">
-              {OCCUPATIONS.map((o, i) => <OccupationCard key={i} o={o} />)}
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"ja"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
+              </p>
             </div>
           </div>
         </section>
 
-        <RelatedServices
-          label="職業別の詳しいガイド"
-          items={[
-            { label: 'デリバリー',     desc: 'Uber Eats・DoorDashなど',   href: '/ja/expenses/delivery-drivers' },
-            { label: 'ホスピタリティ', desc: 'バー・カフェ・レストラン', href: '/ja/expenses/hospitality' },
-            { label: 'ファームワーク', desc: '果物の収穫・農場の仕事',   href: '/ja/expenses/farm-work' },
-            { label: '建設業',         desc: '工具・保護具・ホワイトカード', href: '/ja/expenses/construction' },
-            { label: '軽作業',         desc: '倉庫・人材派遣',           href: '/ja/expenses/labouring' },
-            { label: '清掃業',         desc: 'ABN・GST・現場間の移動',    href: '/ja/expenses/cleaners' },
-            { label: 'FIFO',           desc: 'ゾーンオフセット・交通費', href: '/ja/expenses/fifo' },
-          ]}
-        />
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.9, marginBottom: '26px' }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません、状況は人それぞれ異なります。当社でお手続きいただく際には、お客様の具体的な職業や状況を確認し、請求できるものはすべて、請求できないものは含めないようにサポートします。
-            </p>
-            <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              税金の還付金を受け取る →
-            </Link>
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
+              ))}
+            </div>
+
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/ja/tax-form" lang="ja" />
+
+      <MobileCta href={WA} lang={"ja"} topic="expenses" />
     </>
   )
 }

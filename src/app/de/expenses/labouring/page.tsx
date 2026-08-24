@@ -1,291 +1,645 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { RelatedServices } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Steuerabsetzung für Zeitarbeits- und Lagerarbeiter in Australien',
-  description: 'Was Backpacker, die über Zeitarbeits- und Personalvermittlungsagenturen arbeiten, steuerlich absetzen können - Lagerhäuser, Umzugsfirmen, Landschaftsbau, Fabrikarbeit und Events - und was sich ändert, sobald du bei mehr als einer Agentur gleichzeitig registriert bist.',
-  keywords: [
-    'Zeitarbeit Steuerabsetzung',
-    'Lagerarbeit Steuerabsetzung Australien',
-    'Personalvermittler Steuer Working Holiday',
-    'Steuerabsetzung Leiharbeit Australien',
-    'Backpacker Lagerjob Steuer',
-    'mehrere Arbeitgeber Steuerfreibetrag Australien',
-    'Fahrtkosten Steuerabsetzung Zeitarbeit',
-    'WHV Zeitarbeit Steuererklärung',
-    'Umzugsfirma Steuerabsetzung Backpacker',
-    '417 Visum Zeitarbeit Steuer',
+  "title": "Zeitarbeit und Lager: was du absetzt",
+  "description": "Schutzausrüstung je Einsatzort, Ticketverlängerungen, Werkzeug und Fahrten zwischen zwei Einsatzorten am selben Tag.",
+  "keywords": [
+    "Zeitarbeit Steuerabzüge Australien",
+    "Lagerjob Steuer Australien",
+    "Labour Hire Steuer Working Holiday",
+    "Hilfsarbeiter Steuerabzüge Australien",
+    "Fahrten zwischen Einsatzorten absetzen",
+    "Staplerschein absetzbar Australien",
+    "Backpacker Lagerarbeit Steuer",
+    "mehrere Arbeitgeber Steuererklärung Australien"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/de/expenses/labouring`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/labouring`,
-      'de': `${SITE_URL}/de/expenses/labouring`,
-      'ja': `${SITE_URL}/ja/expenses/labouring`,
-      'x-default': `${SITE_URL}/expenses/labouring`,
-    },
+  "alternates": {
+    "canonical": "/de/expenses/labouring",
+    "languages": {
+      "en-AU": "/expenses/labouring",
+      "de": "/de/expenses/labouring",
+      "ja": "/ja/expenses/labouring",
+      "x-default": "/expenses/labouring"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'de_DE',
-    url: `${SITE_URL}/de/expenses/labouring`,
-    siteName: 'Working Holiday Tax',
-    title: 'Steuerabsetzung für Zeitarbeits- und Lagerarbeiter in Australien',
-    description: 'Was Backpacker, die über Zeitarbeits- und Personalvermittlungsagenturen arbeiten, steuerlich absetzen können, und was sich ändert, sobald mehr als eine Agentur im Spiel ist.',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "de_DE",
+    "url": `${SITE_URL}/de/expenses/labouring`,
+    "siteName": "Working Holiday Tax",
+    "title": "Zeitarbeit und Lager in Australien: was absetzbar ist",
+    "description": "Zwei Agenturen sind zwei Income Statements. Zwei Einsatzorte an einem Tag sind ein Abzug, den fast niemand macht."
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: 'Steuerabsetzung für Zeitarbeits- und Lagerarbeiter in Australien',
-    description: 'Was Backpacker über Zeitarbeitsagenturen wirklich absetzen können, und was sich mit mehreren Agenturen ändert.',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "Zeitarbeit und Lager in Australien: was absetzbar ist",
+    "description": "Zwei Agenturen sind zwei Income Statements. Zwei Einsatzorte an einem Tag sind ein Abzug, den fast niemand macht."
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const CAN_CLAIM = [
+const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Zeitarbeit und Lagerarbeit" })
+
+const UI = {
+  "ctaLabel": "Schreib uns auf WhatsApp",
+  "ctaSub": "Antwort in etwa einer Stunde. Frag ruhig erst nach.",
+  "guaranteeHeading": "Liegt unser Honorar am Ende über der Rückerstattung, kommt die Differenz zu dir zurück.",
+  "guaranteeBody": "Vier Agenturen und eine vergessene Einzelschicht in eine Erklärung zu ziehen ist hier normale Arbeit, und jeder Kunde ist auf einem 417 oder 462. Von unserem Team vorbereitet, dann von einem registrierten Steuerberater geprüft und freigegeben, bevor beim ATO eingereicht wird.",
+  "faqHeading": "Fragen, die uns dazu gestellt werden",
+  "guidesHeading": "Danach lesenswert",
+  "otherJobs": "Anderer Job? Hier sind alle Berufe.",
+  "servicesLabel": "Weiter auf der Website",
+  "wrongLabel": "Abgesetzt, obwohl es nicht ging",
+  "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "hubHref": "/de/expenses"
+}
+
+const CRUMBS = [
   {
-    title: 'Schutzkleidung und Sicherheitsausrüstung',
-    body: "Stahlkappenschuhe, Handschuhe, Warnschutzkleidung und Schutzbrillen sind absetzbar, wenn die jeweilige Einsatzrolle sie vorschreibt. Der Test, den die ATO anwendet, ist nicht, wie körperlich anstrengend sich die Arbeit allgemein anfühlt, sondern ob der Gegenstand dich vor einem konkret erkennbaren Verletzungsrisiko bei genau diesem Job schützt. Was du absetzen kannst, richtet sich also nach der tatsächlichen Rolle, die du an diesem Tag ausgeübt hast - egal ob im Lager, im Landschaftsbau-Team oder beim Aufbau einer Veranstaltung.",
+    "name": "Startseite",
+    "item": "/de"
   },
   {
-    title: 'Lizenzen und Scheine, die du erneuerst - nicht erstmals erwirbst',
-    body: "Wenn eine Rolle einen Gabelstaplerschein, ein EWP-Ticket (Elevated Work Platform, also eine Hebebühnen-Berechtigung) oder eine ähnliche Betriebsberechtigung verlangt, und du sie bereits besitzt und für den Job nutzt, ist die Erneuerung dieser Berechtigung absetzbar. Den Schein zum allerersten Mal zu erwerben, ist es nicht, weil diese Kosten dich überhaupt erst zur Bewerbung auf die Rolle berechtigen, statt Kosten für einen Job zu sein, den du bereits hast. Es gilt dasselbe Prinzip wie beim ersten Führerschein, oder der ersten White Card für jemanden, der gerade erst im Baugewerbe anfängt.",
+    "name": "Abzüge",
+    "item": "/de/expenses"
   },
   {
-    title: 'Werkzeug und Ausrüstung, die du selbst kaufst',
-    body: "Manche Zeitarbeitsrollen erwarten, dass du grundlegendes eigenes Werkzeug mitbringst. Alles, was du kaufst und nicht erstattet bekommst, ist absetzbar: Gegenstände, die $300 oder weniger kosten, kannst du im Jahr des Kaufs vollständig absetzen, während alles über $300 abgeschrieben wird - schrittweise über die Nutzungsdauer statt auf einmal.",
-  },
+    "name": "Zeitarbeit",
+    "item": "/de/expenses/labouring"
+  }
 ]
 
-const CANNOT_CLAIM_TEXT = "Ein paar Dinge bringen Leute regelmäßig durcheinander, egal über welche Agentur oder an welchem Einsatzort du in einer bestimmten Woche arbeitest. Gewöhnliche Kleidung - einfache Arbeitshosen, ein T-Shirt oder unspezialisierte Schuhe - ist nicht absetzbar, selbst wenn sie bei der Arbeit schmutzig, zerrissen oder abgenutzt wird; die ATO behandelt das als normale Kleidungskosten, die jeder hat, nicht als arbeitsspezifische Kosten. Deine Fahrt von zuhause zu einem einzigen, regelmäßigen Arbeitsplatz gilt als gewöhnlicher Arbeitsweg, nicht als die oben beschriebenen Fahrten ohne festen Standort, selbst wenn es eine lange Fahrt ist. Und alles, was deine Agentur dir erstattet oder dir direkt zur Verfügung stellt - eine Uniform, Schutzausrüstung, Werkzeug - kannst du nicht noch einmal in deiner Steuererklärung absetzen. Du kannst nur absetzen, was wirklich aus deiner eigenen Tasche kam."
+const HERO = {
+  "kicker": "Lager, Umzüge, Garten und Events",
+  "h1lead": "Zwei Agenturen sind zwei Income Statements.",
+  "h1accent": "Zwei Einsatzorte sind ein Abzug.",
+  "lede": "Eine vergessene Agentur kostet mehr als jeder fehlende Beleg, und eine Erklärung muss jede einzelne tragen."
+}
 
-const faqs = [
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
   {
-    question: "Ich bin gleichzeitig bei zwei oder drei Zeitarbeitsagenturen registriert - was muss ich steuerlich wissen?",
-    answer: "Jede Agentur gilt rechtlich als eigenständiger Arbeitgeber, deshalb hast du bei jeder ein eigenes TFN Declaration-Formular und zum Steuerzeitpunkt ein eigenes Income Statement - selbst wenn sie dich an überlappende Einsatzorte schicken. Dein Lohn als Working Holiday Maker wird normalerweise nach dem Working-Holiday-Maker-Satz besteuert statt nach dem Steuerfreibetrag für Steuerresidenten, weshalb die klassische Falle 'Freibetrag nur bei einem Zahler beanspruchen' für deinen tatsächlichen Steuerabzug weniger relevant ist. Was bei mehreren gleichzeitig laufenden Agenturen wirklich zählt, ist einfacher: Notiere dir, bei welcher Agentur, an welchen Einsatzorten und an welchen Tagen du gearbeitet hast, damit bei der Erstellung deiner Steuererklärung nichts übersehen wird.",
+    "kind": "answer",
+    "h2": "Was können Hilfskräfte über eine Agentur absetzen?",
+    "paras": [
+      "Absetzbar sind Schutzausrüstung, die der Einsatzort verlangt, die Verlängerung eines Tickets, das du bereits hast, selbst gekauftes Werkzeug, die Fahrt zwischen zwei Einsatzorten am selben Tag und der arbeitsbezogene Anteil deines Handys. Was absetzbar ist, folgt der Arbeit, die du an diesem Tag wirklich gemacht hast, nicht der Jobbezeichnung im Agenturvertrag.",
+      "Genau das macht Zeitarbeit anders. Eine Woche im Kühllager, eine Woche in einer Gartenkolonne und ein Wochenende beim Event-Abbau erzeugen drei verschiedene Kostenbilder, und der Abzug folgt der tatsächlichen Arbeit statt einem einzigen Berufslabel."
+    ]
   },
   {
-    question: 'Kann ich Fahrten zwischen verschiedenen Einsatzorten absetzen?',
-    answer: "Ja, in den meisten Fällen. Fahrten zwischen zwei oder mehr getrennten Arbeitsorten - zum Beispiel wenn dich eine Agentur morgens in ein Lagerhaus und nachmittags an einen anderen Einsatzort schickt - sind absetzbar, anders als deine gewöhnliche Fahrt von zuhause zu einem einzigen, regelmäßigen Arbeitsplatz. Je echter dein Arbeitsmuster ohne festen Standort ist (kein fester Stützpunkt, regelmäßig wechselnde Einsatzorte während der Woche), desto stärker ist der Fall dafür, mehr von dieser Fahrt abzusetzen - es hängt aber von den konkreten Umständen deines Dienstplans ab.",
+    "kind": "items",
+    "h2": "Die Abzüge, die zu dieser Arbeit gehören",
+    "intro": "Alles hier folgt dem Einsatzort. Frag, was der Einsatzort verlangt hat, nicht wie die Agentur dich genannt hat.",
+    "items": [
+      {
+        "t": "Fahrten zwischen zwei Einsatzorten am selben Tag",
+        "d": "Vormittags ein Lager, nachmittags ein anderer Ort ist Fahrt zwischen Arbeitsplätzen und absetzbar. Je wechselnder das Muster ist, ohne feste Basis und mit wechselnden Orten in der Woche, desto mehr davon lässt sich ansetzen. Die erste Fahrt von zu Hause bleibt der Arbeitsweg."
+      },
+      {
+        "t": "Schutzausrüstung, die der Einsatzort verlangt hat",
+        "d": "Sicherheitsschuhe mit Stahlkappe, Handschuhe, Warnkleidung, Schutzbrille, Gehörschutz, schnittfeste Ärmel. Absetzbar, wenn das Teil dich vor einer erkennbaren Gefahr in diesem konkreten Job schützt und du es selbst bezahlt hast."
+      },
+      {
+        "t": "Verlängerung von Stapler-, Hubarbeitsbühnen- oder anderen Tickets",
+        "d": "Die Verlängerung eines Tickets, das du hast und für die Arbeit nutzt, ist absetzbar. Das gilt für Stapler, Hubarbeitsbühne und White Card gleichermaßen, und immer nur für die Verlängerung."
+      },
+      {
+        "t": "Selbst gekauftes Werkzeug",
+        "d": "Manche Einsätze erwarten eigenes Basiswerkzeug. Alles, was du gekauft und nicht erstattet bekommen hast, ist absetzbar: bis 300 Dollar voll im Kaufjahr, darüber verteilt über die Nutzungsdauer."
+      },
+      {
+        "t": "Schutzkleidung für Kälte und Wetter",
+        "d": "Eine Kühlhausjacke für Arbeit im Kühl- oder Tiefkühllager, Regenkleidung für Gartenarbeit draußen. Das gilt als Schutzkleidung und nicht als Alltagskleidung, weil es dich vor einer Bedingung schützt, in die die Arbeit dich bringt."
+      },
+      {
+        "t": "Arbeitsanteil deines Handys",
+        "d": "Agenturen laufen über Nachrichten: Schichtangebote um sechs Uhr morgens, Adressen, Stundenzettel. Der arbeitsbezogene Prozentsatz deines Vertrags ist ein echter Abzug, wenn du dafür dein eigenes Handy nutzt."
+      }
+    ]
   },
   {
-    question: "Was ist steuerlich der Unterschied zwischen Zeitarbeit und Bauarbeit?",
-    answer: "Die grundlegenden Absetzungstests sind dieselben, aber die konkreten Posten unterscheiden sich. Arbeit auf Baustellen erfordert normalerweise eine White Card und Standard-Schutzausrüstung wie Stahlkappenschuhe und Warnschutzkleidung, während allgemeine Zeitarbeit ein viel breiteres Spektrum an Einsatzorten abdeckt - Lagerhäuser, Umzüge, Landschaftsbau, Veranstaltungen, Fertigungslinien -, wo die benötigte Ausrüstung von der tatsächlichen Einsatzrolle abhängt und eine White Card normalerweise nicht nötig ist, außer die Arbeit findet wirklich auf einer Baustelle statt. Wenn deine Einsätze speziell auf Baustellen stattfinden, geht unsere Bauarbeit-Seite genauer darauf ein.",
+    "kind": "answer",
+    "h2": "Was musst du über alle Einsätze hinweg aufheben?",
+    "paras": [
+      "Ein Abzug, drei Tests: du hast bezahlt, dir hat es niemand erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Über mehrere Einsätze heißt das Belege für selbst gekaufte Stiefel und Handschuhe, für die Ticketverlängerung und eine Notiz zu Daten, Orten und Entfernungen hinter den Fahrten.",
+      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, solange Betrag, Datum, Anbieter und Gegenstand daraus hervorgehen, und du hebst ihn fünf Jahre auf. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen keinen schriftlichen Nachweis, du musst die Summe aber erklären können. Diese 300 Dollar sind nicht die, die entscheiden, ob ein Ausrüstungsteil sofort oder über die Nutzungsdauer abgeschrieben wird."
+    ]
   },
   {
-    question: 'Brauche ich einen Gabelstaplerschein für Lagerarbeit, und kann ich ihn absetzen?',
-    answer: "Nicht jede Rolle im Lager erfordert einen, aber viele schon. Wenn du bereits einen Gabelstaplerschein oder eine ähnliche Betriebsberechtigung besitzt und sie für den Job nutzt, ist die Erneuerung absetzbar. Den Schein zum ersten Mal zu erwerben, ist es im Allgemeinen nicht, weil diese Kosten dich überhaupt erst für die Rolle berechtigen, statt Kosten für einen Job zu sein, den du bereits hast.",
+    "kind": "traps",
+    "h2": "Was machen Zeitarbeitskräfte falsch?",
+    "intro": "Die falschen Abzüge sind meist Kleidung und Arbeitsweg. Die übersehenen drehen sich fast alle um die Zahl der Arbeitgeber, und genau da verliert Zeitarbeit still Geld.",
+    "wrong": [
+      {
+        "t": "Arbeitshose und Boots ohne Schutzfunktion",
+        "d": "Schlichte Arbeitshose, T-Shirt, gewöhnliche Boots, die nur robust sind. Alltagskleidung bleibt privat, so schwer die Arbeit auch ist und so schnell sie verschleißt."
+      },
+      {
+        "t": "Der Weg zu einem festen Einsatzort",
+        "d": "Wenn eine Agentur dich zwei Monate lang in dasselbe Lager schickt, ist die Fahrt dorthin normaler Arbeitsweg und keine wechselnde Einsatztätigkeit. Absetzbar wird die Fahrt durch den Wechsel zwischen Arbeitsplätzen, nicht dadurch, dass eine Agentur dich geschickt hat."
+      },
+      {
+        "t": "Ausrüstung, die die Agentur ausgegeben hat",
+        "d": "Die meisten Agenturen stellen Warnkleidung und manchmal Schuhe. Wurde es dir ausgegeben oder erstattet, sind keine Kosten übrig."
+      },
+      {
+        "t": "Das erste Ticket als Arbeitskost",
+        "d": "Der Staplerschein, den du bezahlt hast, damit dich eine Agentur vorschlägt, ist eine Qualifikationskost, keine Arbeitskost. Verlängerungen im laufenden Einsatz sind absetzbar."
+      },
+      {
+        "t": "Anzunehmen, die Agentur habe deine Steuer erledigt",
+        "d": "Eine Agentur behält Steuer ein und meldet deinen Lohn. Sie gibt keine Erklärung für dich ab, setzt keine Kosten für dich an und prüft nicht, ob die anderen beiden Agenturen deine Daten richtig erfasst haben."
+      }
+    ],
+    "missed": [
+      {
+        "t": "Ein Income Statement einer vergessenen Agentur",
+        "d": "Der klassische Zeitarbeitsfehler. Drei Wochen bei einer Agentur im März, eine Schicht in einem anderen Bundesstaat im Juni, und die Erklärung geht ohne sie raus. Das ist schlimmer als ein vergessener Abzug, weil es später eine Korrektur bedeutet."
+      },
+      {
+        "t": "Fahrten zwischen zwei Einsatzorten an einem Tag",
+        "d": "Bei Agenturen, die eine Crew verschieben, sehr üblich, und fast nie abgesetzt, weil die Bewegung von jemand anderem entschieden wurde. Es bleibt absetzbare Fahrt zwischen Arbeitsplätzen."
+      },
+      {
+        "t": "Selbst gekaufte Boots und Handschuhe zwischen zwei Einsätzen",
+        "d": "Ausrüstung, die du gekauft hast, um den nächsten Job annehmen zu können, wird in Eile bezahlt und nie belegt. Jeder Gegenstand unter 300 Dollar ist ein voller Abzug im Kaufjahr."
+      },
+      {
+        "t": "Eine bar bezahlte Ticketverlängerung",
+        "d": "Verlängerungen für Stapler oder Hubarbeitsbühne sind günstig genug, um sie bis Juli zu vergessen, und absetzbar, sobald du mit dem Ticket bereits arbeitest."
+      },
+      {
+        "t": "Wochen mit falschem Einbehalt",
+        "d": "Eine neue Agentur, die deine Tax File Number Declaration noch nicht verarbeitet hat oder nicht als Arbeitgeber von Working Holiday Makern registriert ist, behält deutlich mehr als 15 Prozent ein. Das kommt mit der Erklärung zurück, die alle Agenturen zusammenführt, und nur dort."
+      }
+    ]
   },
   {
-    question: 'Welche Schutzausrüstung kann ich über verschiedene Zeitarbeitsjobs hinweg absetzen?',
-    answer: "Stahlkappenschuhe, Handschuhe, Warnschutzkleidung und Schutzbrillen sind im Allgemeinen absetzbar, wenn die jeweilige Einsatzrolle sie erfordert, weil der Test ist, ob der Gegenstand dich vor einem erkennbaren Verletzungsrisiko bei diesem Job schützt. Gewöhnliche Kleidung - einfache Arbeitshosen oder ein T-Shirt, das schmutzig oder abgenutzt wird - ist nach den ATO-Regeln nicht absetzbar, egal wie körperlich anstrengend die Arbeit ist. Und wenn deine Agentur dich dafür entschädigt oder die Ausrüstung selbst stellt, kannst du sie nicht noch einmal in deiner eigenen Steuererklärung absetzen.",
-  },
-  {
-    question: 'Ich habe nur ein paar Casual-Schichten über eine Agentur gearbeitet - lohnt es sich trotzdem, Absetzungen geltend zu machen?',
-    answer: "Normalerweise ja, solange du das Geld wirklich selbst ausgegeben und keine Erstattung dafür bekommen hast. Selbst ein paar Schichten können echte Kosten mit sich bringen - Schuhe, Handschuhe, eine Lizenzerneuerung, Fahrten zwischen Einsatzorten - und jede davon senkt die Steuer, die für dich berechnet wird. Die Voraussetzung bleibt gleich, egal wie viele Schichten du gearbeitet hast: arbeitsbezogen, nicht erstattet, und mit einem Nachweis belegbar.",
-  },
+    "kind": "answer",
+    "h2": "Welche Teile hängen daran, wie dein Jahr lief?",
+    "paras": [
+      "Wie wechselnd die Arbeit war, entscheidet, wie viel deiner Fahrten absetzbar ist, und das ist eine Tatsachenfrage, keine Regel. Wie oft der Ort wechselte, ob es eine Basis gab, zu der du immer zurückkehrtest, ob die Agentur die Bewegung verlangt hat und wie die Woche aufgebaut war, fließt alles ein. Zwei Leute derselben Agentur können sehr unterschiedliche Fahrtabzüge haben, und eine Notiz zu Daten, Orten und Entfernungen macht den stärkeren Fall belegbar.",
+      "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehaltsverhältnis und eigenem Income Statement. Als Working Holiday Maker lautet die Antwort auf die Freibetragsfrage überall Nein, der doppelt beanspruchte Freibetrag ist also selten das Problem. Ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt, schon.",
+      "Darunter liegt der steuerliche Wohnsitz. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen, mehr wert als alle Abzüge auf dieser Seite. Eine Stadt und lokale Agenturen über längere Zeit ist das Muster, das die Frage offen macht."
+    ]
+  }
 ]
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Ausgaben', item: `${SITE_URL}/de/expenses` },
-    { '@type': 'ListItem', position: 3, name: 'Zeitarbeit', item: `${SITE_URL}/de/expenses/labouring` },
-  ],
-}
+const FAQS = [
+  {
+    "question": "Ich bin bei drei Agenturen registriert. Ändert das meine Steuer?",
+    "answer": "Jede Agentur ist rechtlich ein eigener Arbeitgeber, du füllst also bei jeder eine eigene Tax File Number Declaration aus und bekommst am Jahresende von jeder ein eigenes Income Statement. Alles kommt in eine Erklärung. Als Working Holiday Maker wird dein Lohn zum Working-Holiday-Maker-Satz besteuert statt gegen einen Steuerfreibetrag, das eigentliche Risiko bei mehreren Agenturen ist also nicht der Satz, sondern dass eine davon fehlt."
+  },
+  {
+    "question": "Kann ich Fahrten zwischen verschiedenen Einsatzorten absetzen?",
+    "answer": "Meistens ja. Fahrten zwischen zwei oder mehr getrennten Arbeitsorten, etwa vormittags ein Lager und nachmittags ein anderer Ort, sind absetzbar, anders als dein normaler Weg von zu Hause zu einem festen Arbeitsplatz. Wie viel davon zählt, hängt davon ab, wie wechselnd das Muster ist, also notiere Daten, Orte und Entfernungen."
+  },
+  {
+    "question": "Was ist steuerlich der Unterschied zwischen Zeitarbeit und Bau?",
+    "answer": "Die Tests sind identisch, die Posten nicht. Baustellenarbeit verlangt meist eine White Card und typische Baustellen-Schutzausrüstung, während allgemeine Zeitarbeit Lager, Umzüge, Garten, Produktionslinien und Events abdeckt, wo die nötige Ausrüstung dem Einsatzort folgt und eine White Card oft gar nicht gebraucht wird. Wenn deine Einsätze speziell auf Baustellen sind, geht die Bau-Seite tiefer auf White-Card-Kosten und Baustellenausrüstung ein."
+  },
+  {
+    "question": "Kann ich einen Staplerschein absetzen?",
+    "answer": "Die Verlängerung ja, den ersten Erwerb nein. Nutzt du den Schein bereits im Einsatz, ist seine Verlängerung eine Kost der Arbeit. Der erste Schein lag davor und hat dich überhaupt erst vermittelbar gemacht, und das behandelt das ATO als privat. Für Hubarbeitsbühne, White Card und Führerschein zieht sie dieselbe Grenze."
+  },
+  {
+    "question": "Ich hatte nur ein paar Schichten. Lohnt sich das überhaupt?",
+    "answer": "Meistens ja, sofern du die Sachen selbst bezahlt und nichts erstattet bekommen hast. Auch wenige Schichten bringen Boots, Handschuhe, eine Ticketverlängerung oder Fahrten zwischen Einsatzorten mit sich, und jeder Dollar Abzug senkt das Einkommen, auf das die Steuer berechnet wird. Der Test ändert sich mit der Zahl der Schichten nicht: arbeitsbezogen, nicht erstattet und belegbar."
+  }
+]
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'Steuerabsetzung für Zeitarbeit und Lagerarbeit in Australien',
-  description: 'Was Backpacker, die über Zeitarbeits- und Personalvermittlungsagenturen arbeiten, steuerlich absetzen können, und was sich ändert, sobald mehr als eine Agentur im Spiel ist.',
-  url: `${SITE_URL}/de/expenses/labouring`,
-  inLanguage: 'de-DE',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
-}
+const GUIDES = [
+  {
+    "href": "/de/blog/labour-hire-agencies-working-holiday-australia",
+    "label": "Zeitarbeitsfirmen in Australien",
+    "desc": "Wer eigentlich dein Arbeitgeber ist, wenn dich eine Agentur vermittelt."
+  },
+  {
+    "href": "/de/blog/white-card-australia-working-holiday",
+    "label": "Die White Card und was sie dich kostet",
+    "desc": "Wie du sie bekommst und warum die erste kein Abzug ist."
+  },
+  {
+    "href": "/de/blog/tools-equipment-under-300-instant-deduction-whv",
+    "label": "Die 300-Dollar-Sofortabschreibung für Werkzeug und Ausrüstung",
+    "desc": "Warum jedes Teil einzeln geprüft wird und was ein Set daran ändert."
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/de/tax-return",
+    "label": "Steuererklärung"
+  },
+  {
+    "href": "/de/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/de/superannuation",
+    "label": "Superannuation"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
-export default function LabouringExpensesPageDE() {
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
+}
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "Zeitarbeit und Lager in Australien: was absetzbar ist",
+  description: "Zwei Agenturen sind zwei Income Statements. Zwei Einsatzorte an einem Tag sind ein Abzug, den fast niemand macht.",
+  url: `${SITE_URL}/de/expenses/labouring`,
+  inLanguage: "de-DE",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/de/expenses/labouring#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/de/expenses/labouring`,
+}
+
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
+  return (
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"de"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
+    </div>
+  )
+}
+
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Brotkrümelnavigation" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/de" style={{ color: '#587066' }}>Home</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/de/expenses" style={{ color: '#587066' }}>Ausgaben</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>Zeitarbeit</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '27ch' }}>
-                Was können Zeitarbeits- und Lagerarbeiter <span style={{ color: '#0B5240' }}>steuerlich absetzen</span>?
-              </h1>
-              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '58ch' }}>
-                Lagerhäuser, Umzüge, Landschaftsbau, Fabrikarbeit, Auf- und Abbau von Veranstaltungen - die vielfältige körperliche Arbeit, in die Zeitarbeits- und Personalvermittlungsagenturen Backpacker vermitteln. Hier erfährst du, was du absetzen kannst, und wie die Steuer funktioniert, sobald mehr als eine Agentur im Spiel ist.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ── MULTIPLE AGENCIES, MULTIPLE WORKSITES (unique hook) ─────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Mehrere Agenturen, mehrere Einsatzorte
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                Was Zeitarbeit wirklich von einem normalen Einzeljob unterscheidet, und was das konkret für deine Steuer bedeutet.
-              </p>
-            </div>
-
-            <div className="max-w-[680px] mx-auto">
-              <h3 className="font-serif font-bold text-ink" style={{ fontSize: '18px', letterSpacing: '-0.01em', marginBottom: '10px', lineHeight: 1.3 }}>
-                Jede Agentur ist ein eigenständiger Arbeitgeber, auch wenn die Arbeit gleich aussieht
-              </h3>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                Wenn du dich bei einer Zeitarbeits- oder Personalvermittlungsagentur anmeldest, füllst du ein TFN Declaration-Formular speziell für diese eine Agentur aus - nicht für die Unternehmen, bei denen sie dich einsetzt. Rechtlich ist die Agentur dein Arbeitgeber, und der Einsatzbetrieb - das Lagerhaus, die Umzugsfirma, der Veranstaltungsort - ist einfach der Ort, an den dich die Agentur an diesem Tag zum Arbeiten geschickt hat. Meldest du dich bei einer zweiten oder dritten Agentur an, um deinen Dienstplan zu füllen, hat jede davon ihr eigenes TFN Declaration-Formular und ihre eigene PAYG-Einbehaltung - auch wenn es sich für dich wie eine durchgehende Casual-Beschäftigung anfühlen kann.
-              </p>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '22px' }}>
-                Jedes TFN Declaration-Formular fragt, ob du den Steuerfreibetrag beanspruchen möchtest, und die Standardregel lautet, dass du das immer nur bei einem Zahler gleichzeitig tun kannst. Für die meisten Working Holiday Maker ist das weniger relevant, als es für einen australischen Steuerresidenten mit zwei Jobs wäre, weil dein Lohn als Inhaber eines 417- oder 462-Visums normalerweise nach dem Working-Holiday-Maker-Satz besteuert wird - einem Pauschalsatz von 15 % bis 45.000 $ - statt nach dem Steuerfreibetrag für Steuerresidenten. Diese Antwort sollte also in der Regel nicht verändern, wie viel eine einzelne Agentur einbehält. Was mit zwei oder drei gleichzeitig laufenden Agenturen wirklich zählt, ist grundlegender: sicherzustellen, dass jede korrekt auf deinen Income Statements erscheint, dass jede zum richtigen Satz für einen Working Holiday Maker einbehält, und dass bei der Erstellung deiner Steuererklärung nichts übersehen wird. Unsere <Link href="/de/tfn" style={{ color: '#0B5240', textDecoration: 'underline' }}>TFN-Seite</Link> erklärt, wie das TFN Declaration-Formular und der Einbehaltungssatz tatsächlich funktionieren.
-              </p>
-
-              <h3 className="font-serif font-bold text-ink" style={{ fontSize: '18px', letterSpacing: '-0.01em', marginBottom: '10px', lineHeight: 1.3 }}>
-                Fahrten zwischen Einsätzen können absetzbar sein - dein gewöhnlicher Arbeitsweg nicht
-              </h3>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                Die allgemeine Regel der ATO lautet: Die Fahrt von zuhause zu einem einzigen, regelmäßigen Arbeitsplatz ist gewöhnlicher Arbeitsweg und niemals absetzbar, egal wie weit du vom Job entfernt wohnst. Zeitarbeit passt oft nicht in dieses Muster. Wenn dich eine Agentur morgens an einen Einsatzort und nachmittags an einen anderen schickt, oder deine Einsätze im Laufe der Woche wirklich von Lager zu Lager, von Veranstaltung zu Veranstaltung oder von Kunde zu Kunde wechseln, ohne festen Standort, dann ist die Fahrt zwischen diesen Arbeitsorten - nicht deine allererste Fahrt von zuhause - normalerweise absetzbar.
-              </p>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                Je echter dein Arbeitsmuster ohne festen Standort ist, desto stärker ist der Fall dafür, mehr von dieser Fahrt abzusetzen: Wie oft der Einsatzort wechselt, ob du einen festen Stützpunkt hast, zu dem du zurückkehrst, und wie die Arbeit tatsächlich organisiert ist, beeinflusst das alles die Antwort - es hängt also von den konkreten Umständen deines Dienstplans ab und ist nicht automatisch. Es lohnt sich, dir Datum, Einsatzort und gefahrene Strecke einfach zu notieren. Die Autokosten selbst werden nach der Kilometerpauschale oder der Fahrtenbuch-Methode berechnet - unsere <Link href="/de/expenses" style={{ color: '#0B5240', textDecoration: 'underline' }}>Ausgaben-Seite</Link> zeigt, wie das berechnet wird.
-              </p>
-            </div>
-
-            <div className="taxres-savings-box" style={{ flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: '680px', marginLeft: 'auto', marginRight: 'auto' }}>
-              <div>
-                <p className="taxres-savings-heading">Eine Gewohnheit, die sich bei mehr als einer Agentur auszahlt</p>
-                <p className="taxres-savings-body">
-                  Notiere dir einfach, bei welcher Agentur, an welchem Einsatzort und an welchen Tagen du gearbeitet hast, dazu Belege für jede Ausrüstung, Lizenzerneuerung oder Fahrt, die du selbst bezahlt hast. Bei nur einer Agentur spielt das kaum eine Rolle. Bei zwei oder drei, die im selben Finanzjahr gleichzeitig laufen, verhindert genau das, dass ein Income Statement übersehen wird oder deine Steuererklärung später korrigiert werden muss.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── WHAT YOU CAN / CAN'T CLAIM ───────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '40px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Was du absetzen kannst - und was nicht
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                Dieselben Regeln, die für jeden körperlichen Job auf dieser Seite gelten, angewendet speziell auf Lagerhäuser, Umzüge, Landschaftsbau, Fertigungslinien und Veranstaltungen.
-              </p>
-            </div>
-
-            <div className="max-w-[680px] mx-auto">
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '24px' }}>
-                Für jede Absetzung auf dieser Seite gelten dieselben drei Tests: Du hast es selbst bezahlt und keine Erstattung bekommen, es hängt direkt mit der Arbeit zusammen, die du tatsächlich ausgeübt hast, und du kannst einen Nachweis dafür vorlegen. (Unsere <Link href="/de/expenses" style={{ color: '#0B5240', textDecoration: 'underline' }}>Ausgaben-Seite</Link> geht genauer auf diese Tests ein - sie gelten für jeden Beruf, nicht nur für Zeitarbeit.) Speziell angewendet auf Lagerarbeit, Umzüge, Landschaftsbau, Fabrikarbeit und Veranstaltungen: Hier ist, was sich in der Regel bewährt - und was nicht.
-              </p>
-
-              <p className="exp-card-label exp-card-label-yes" style={{ marginBottom: '12px' }}>✓ Normalerweise absetzbar</p>
-              {CAN_CLAIM.map((item, i) => (
-                <div key={i} style={{ marginBottom: '18px' }}>
-                  <h3 className="font-serif font-bold text-ink" style={{ fontSize: '16.5px', letterSpacing: '-0.01em', marginBottom: '6px', lineHeight: 1.3 }}>
-                    {item.title}
-                  </h3>
-                  <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                    {item.body}
-                  </p>
-                </div>
-              ))}
-
-              <p className="exp-card-label exp-card-label-no" style={{ marginTop: '8px', marginBottom: '12px' }}>✕ Normalerweise nicht absetzbar</p>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '22px' }}>
-                {CANNOT_CLAIM_TEXT}
-              </p>
-
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                Wenn deine Einsätze speziell auf Baustellen stattfinden statt bei allgemeiner Zeitarbeit, geht unsere <Link href="/de/expenses/construction" style={{ color: '#0B5240', textDecoration: 'underline' }}>Bauarbeit-Seite</Link> genauer auf White-Card-Kosten und baustellenspezifische Schutzausrüstung ein.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-        <section className="py-10 lg:py-14 bg-white">
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">FAQ</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  Steuerfragen zur Zeitarbeit
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  Noch unsicher, wie sich deine Agenturen auf deine Steuererklärung auswirken? Schreib uns direkt.
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── RELATED PAGES ────────────────────────────────────────────────── */}
-        <RelatedServices label="Ähnliche Leistungen" items={[
-          { label: 'Alle Berufe', desc: 'Der komplette Guide, was Backpacker je nach Jobart absetzen können', href: '/de/expenses' },
-          { label: 'TFN erledigen', desc: 'Wie dein TFN Declaration-Formular und dein Einbehaltungssatz wirklich funktionieren', href: '/de/tfn' },
-          { label: 'Steuererklärung einreichen', desc: 'Lass deine Erklärung vorbereiten und einreichen, auch aus dem Ausland', href: '/de/tax-return' },
-          { label: 'Stattdessen auf der Baustelle?', desc: 'White-Card-Kosten und baustellenspezifische Ausrüstung', href: '/de/expenses/construction' },
-        ]} />
-
-        {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              Das sind allgemeine Informationen, keine persönliche Steuerberatung. Bei welchen Agenturen du registriert bist, wie deine Einsätze strukturiert sind, und wie wechselnd dein Arbeitsmuster wirklich ist, beeinflusst alles, was du absetzen kannst - behandle die Beispiele auf dieser Seite deshalb als Ausgangspunkt und nicht als endgültige Antwort. Wenn du deine Erklärung bei uns einreichst, wird sie von unserem Team vorbereitet, das nur mit Working Holiday Makern arbeitet und deine tatsächlichen Agenturen, Einsatzorte und Belege durchgeht, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}{' '}
+              <span style={{ color: FOREST, fontStyle: 'italic' }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
             </p>
-            <Link href="/de/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              Steuerrückerstattung beantragen →
-            </Link>
+            <Cta position="hero" />
+          </div>
+        </section>
+
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
+
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"de"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
+              ))}
+            </div>
+
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
+            </p>
+          </div>
+        </section>
+
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/de/tax-form" lang="de" />
+
+      <MobileCta href={WA} lang={"de"} topic="expenses" />
     </>
   )
 }

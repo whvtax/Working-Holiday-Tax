@@ -2,10 +2,12 @@ import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import BlogClient from '@/app/blog/BlogClient'
 import { getJapaneseGuides, jaCategoryMeta, blogUI } from './data'
+import { MobileCta } from '@/components/ui/MobileCta'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'オーストラリア タックスリターン 還付金 ブログ - ワーホリ完全ガイド',
-  description: 'オーストラリアのワーキングホリデーで知っておきたいタックスリターン還付金、TFN、ABN、スーパー受取（DASP）、労働者の権利を実用的に解説。還付金を取り戻すための情報を網羅。',
+  title: 'オーストラリア タックスリターン 還付金 ブログ｜ワーホリ',
+  description: 'オーストラリアのワーキングホリデーのタックスリターン還付金、TFN、ABN、スーパー受取（DASP）、労働者の権利を実用的に解説します。',
   keywords: [
     // Refund-focused
     'オーストラリア タックスリターン 還付金 ブログ',
@@ -38,7 +40,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    title: 'オーストラリア タックスリターン 還付金 ブログ - ワーホリ完全ガイド',
+    title: 'オーストラリア タックスリターン 還付金 ブログ｜ワーホリ',
     description: 'オーストラリアのワーキングホリデーのタックスリターン還付金、TFN、ABN、スーパー受取まで、実用情報をわかりやすくお届けします。',
     url: `${SITE_URL}/ja/blog`,
     siteName: 'Working Holiday Tax',
@@ -48,7 +50,7 @@ export const metadata: Metadata = {
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'オーストラリア タックスリターン 還付金 ブログ - ワーホリ',
+    title: 'オーストラリア タックスリターン 還付金 ブログ｜ワーホリ',
     description: 'オーストラリアのワーホリのタックスリターン還付金まで、実用情報をわかりやすく。',
   },
   robots: {
@@ -65,6 +67,9 @@ export const metadata: Metadata = {
 
 export default function JapaneseBlogPage() {
   const guides = getJapaneseGuides()
+  // Card fields only: anything passed to BlogClient is serialised into the
+  // client payload, and the article bodies are never rendered by the listing.
+  const guideCards = guides.map(({ body: _body, ...card }) => card)
 
   const collectionLd = {
     '@context': 'https://schema.org',
@@ -134,13 +139,14 @@ export default function JapaneseBlogPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
       <main style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient
-          guides={guides}
+          guides={guideCards}
           lang="ja"
           ui={blogUI}
           blogBasePath="/ja/blog"
           homePath="/ja"
         />
       </main>
+      <MobileCta href={waUrl({ topic: "guide", lang: "ja" })} lang="ja" topic="guide" />
     </>
   )
 }

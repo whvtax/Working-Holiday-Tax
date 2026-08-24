@@ -1,22 +1,23 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { ReviewsGate } from '@/components/ui/ReviewsGate'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
-import { WA_URL, SITE_URL } from '@/lib/constants'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
+import { SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Über uns - Wer wir sind | Working Holiday Tax',
-  description: 'Wir arbeiten mit nur einer Art von Kunden: Working Holiday Makern mit 417- oder 462-Visum. Steuererklärung, TFN, Super (DASP) und ABN - schnelle Antworten, komplett online, in deiner Sprache.',
+  title: 'Über uns: 417 und 462, sonst nichts',
+  description: 'Working-Holiday-Steuer ist das Einzige, was wir machen. Jeder Kunde ist auf einem 417 oder 462. Vom ersten Payslip bis zum Rückflug, immer dasselbe Jahr.',
   keywords: [
     'Working Holiday Tax Spezialisten',
     'Backpacker Steuerhilfe Australien',
     'wer ist Working Holiday Tax',
     'ist Working Holiday Tax seriös',
     'Working Holiday Tax Bewertungen',
-    'Backpacker Steuerexperten 417 462',
+    '417 462 Steuer Spezialisten',
     'Working Holiday Visum Steuerhilfe',
     'Steuerhilfe für Backpacker Australien',
   ],
@@ -31,8 +32,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    title: 'Über Working Holiday Tax - Wer wir sind',
-    description: 'Nur eine Art von Kunden: Working Holiday Maker. Wir verstehen das Backpacker-Jahr - mehrere Arbeitgeber, Hostel-Adressen, Abreise mitten im Jahr - und antworten schnell.',
+    title: 'Über Working Holiday Tax',
+    description: 'Nur eine Art von Kunden: Working Holiday Maker mit 417 oder 462. Das Jahr, das wir sehen, vom ersten Payslip bis zum Rückflug.',
     url: `${SITE_URL}/de/about`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -41,32 +42,72 @@ export const metadata: Metadata = {
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Über Working Holiday Tax - Wer wir sind',
-    description: 'Nur eine Art von Kunden: Working Holiday Maker. Schnelle Antworten, komplett online, in deiner Sprache.',
+    title: 'Über Working Holiday Tax',
+    description: 'Working-Holiday-Steuer ist das Einzige, was wir machen. Jeder Kunde ist auf einem 417 oder 462.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
+const WA = waUrl({ topic: 'general', lang: 'de' })
+
+/**
+ * Wie in der englischen Fassung: die Geschichte ist das Jahr der Leserin oder
+ * des Lesers, keine erfundene Firmengeschichte. Jeder Satz muss wörtlich wahr
+ * sein. Wo ein echtes Detail stärker wäre als die Erzählung, steht ein
+ * JO-Marker statt einer Vermutung.
+ */
+const chapters = [
+  {
+    stage: 'Die erste Woche',
+    title: 'Du bist mit einem Plan angekommen, der ungefähr zwei Wochen weit reichte',
+    body: 'Hostel, SIM-Karte, Bankkonto und so schnell wie möglich ein Job. Die Tax File Number stand irgendwo auf der Liste, du hast sie beantragt und dich dann um den Rest gekümmert, so wie alle. Das australische Steuerjahr hat dir zu keinem Zeitpunkt jemand erklärt, und es gab auch keinen Grund, warum jemand das getan hätte.',
+  },
+  {
+    stage: 'Die ersten Payslips',
+    title: 'Der erste Job fing an, bevor die Nummer da war',
+    body: 'Ohne hinterlegte Tax File Number muss ein Arbeitgeber den höchsten Satz einbehalten statt der fünfzehn Prozent, die ein Working Holiday Maker normalerweise zahlt. In den ersten Wochen fehlt deshalb fast die Hälfte. Erklärt hat es dir dort niemand, weil das nicht die Aufgabe deines Arbeitgebers war. Dieses Geld kommt am Jahresende nicht von allein zurück. Jemand muss es zurückholen.',
+  },
+  {
+    stage: 'Bis Weihnachten',
+    title: 'Vier Arbeitgeber, die Hälfte davon casual, keiner davon erklärt dir etwas',
+    body: 'Ein Job im Hostel, ein Café, drei Wochen Lager, und einer, den du ohne letzten Payslip verlassen hast. Dass das australische Steuerjahr im Juni endet und nicht im Dezember, hat auch keiner erwähnt. Insgeheim gehst du davon aus, dass die verlorenen Payslips jetzt ein Problem sind. Sind sie nicht.',
+  },
+  {
+    stage: 'Die 88 Tage',
+    title: 'Wenn du sie gemacht hast, bist du weit dafür gefahren',
+    body: 'Irgendwohin nach Westen, nach Norden, drei Stunden hinter einen Ort, von dem du nie gehört hattest. Die Unterkunft wurde direkt vom Lohn abgezogen, bevor du ihn überhaupt gesehen hast, die Payslips sahen anders aus als die aus der Stadt, und bei diesem Abschnitt sind sich die meisten am unsichersten. Genau dieser Teil braucht meistens einen richtigen Blick statt eines gesetzten Häkchens.',
+  },
+  {
+    stage: 'Der Rückflug',
+    title: 'Du bist geflogen, das Geld ist geblieben',
+    body: 'Superannuation kannst du erst zurückholen, wenn du Australien verlassen hast und das Visum abgelaufen ist. Deine liegt also noch bei einem Fonds, den du dir vermutlich nicht bewusst ausgesucht hast. Die zu viel einbehaltene Steuer aus den ersten Wochen liegt weiter beim ATO. Beides erwähnt am Flughafen niemand, und keiner deiner Arbeitgeber tut es auch.',
+  },
+]
+
 const faqs = [
   {
-    question: 'Was unterscheidet euch von einem normalen Steuerberater?',
-    answer: 'Ein allgemeiner Steuerberater sieht ein paar Mal im Jahr einen Working Holiday Maker. Wir sehen nichts anderes. Der 417/462-Steuersatz, DASP-Superanträge nach der Abreise, Medicare-Befreiungen, die vom Pass abhängen, vier Arbeitgeber in drei Bundesstaaten in einem Jahr - das ist unser Alltag, kein Sonderfall, den jemand nachschlagen muss. Genau diese Spezialisierung macht uns schnell und präzise.',
+    question: 'Mit wem arbeitet ihr?',
+    answer: 'Mit Working Holiday Makern, und mit sonst niemandem. Jeder unserer Kunden ist mit einem 417- oder 462-Visum in Australien oder war es und ist inzwischen wieder zu Hause. Wir nehmen keine australischen Steuerresidenten, keine Studierenden, keine gesponserten Arbeitskräfte und keine Unternehmen an. Das Working-Holiday-Jahr ist für uns also kein Fall, den wir gelegentlich sehen. Es ist der einzige Fall, den wir sehen.',
   },
   {
-    question: 'Wie schnell antwortet ihr wirklich?',
-    answer: 'Schreib uns auf WhatsApp und ein echter Mensch antwortet - während der Geschäftszeiten meist innerhalb einer Stunde. Kein Callcenter, keine Ticket-Warteschlange, kein "bitte 5-7 Werktage Geduld". Wenn etwas geprüft werden muss, sagen wir dir auch das - sofort.',
+    question: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
+    answer: 'Ja, und ein großer Teil unserer Arbeit ist genau das. Superannuation kannst du überhaupt erst beantragen, nachdem du ausgereist bist und dein Visum abgelaufen ist, und eine Steuererklärung für ein bereits abgeschlossenes Jahr lässt sich von überall einreichen. Alles läuft aus der Ferne. Eins solltest du früh wissen: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Konto zahlen, deine Super dagegen auch ins Ausland. Wenn dein australisches Konto schon zu ist, sag uns das in der ersten Nachricht.',
   },
   {
-    question: 'Versteht ihr, wie ein Backpacker-Jahr wirklich aussieht?',
-    answer: 'Ja - weil wir uns mit nichts anderem beschäftigen. Hostel-Postadressen, Farm-Lohnzettel, die falsch aussehen, Wochen in bar, ein Job ohne letzten Payslip, Abreise mitten im Steuerjahr. Welche Version des Working-Holiday-Jahres du auch hattest - wir hatten sie mit ziemlicher Sicherheit schon auf dem Tisch.',
+    question: 'Brauche ich meine Payslips?',
+    answer: 'Nein. Was deine Arbeitgeber einbehalten und gemeldet haben, sehen wir über das ATO. Wir arbeiten also mit diesen Daten, statt dich Papiere aus einem Job suchen zu lassen, den du vor acht Monaten verlassen hast. Wenn etwas, das du uns erzählst, nicht zu dem passt, was ein Arbeitgeber gemeldet hat, kümmern wir uns um die Differenz.',
   },
   {
-    question: 'Arbeitet ihr nur mit Menschen, die noch in Australien sind?',
-    answer: 'Nein. Ein großer Teil unserer Arbeit - vor allem Superannuation-Anträge (DASP) und Steuererklärungen für Vorjahre - findet statt, nachdem jemand Australien bereits verlassen hat und wieder zu Hause ist. Alles läuft aus der Ferne: Dokumente per Upload, Identität und Unterschriften elektronisch, und Rückerstattungen werden auf ein australisches oder ausländisches Bankkonto ausgezahlt.',
+    question: 'Brauche ich ein myGov-Konto?',
+    answer: 'Nein. Du musst dich nie bei myGov einloggen, keinen australischen Ausweis verknüpfen und nicht herausfinden, welches Formular welches ist. Wir haben direkt mit dem ATO zu tun. Wenn du es schon versucht hast und bei der Identitätsprüfung hängen geblieben bist, und genau da bleiben die meisten hängen, ändert das nichts daran, ob wir dir helfen können.',
   },
   {
-    question: 'In welchen Sprachen arbeitet ihr?',
-    answer: 'Die Website läuft auf Englisch, Deutsch und Japanisch - der Support ist aber nicht darauf beschränkt. Schreib uns in der Sprache, in der du dich wohlfühlst, und wir arbeiten mit dir darin. Australische Steuern jemandem zu erklären, der ihnen zum ersten Mal begegnet, ist der Kern unserer Arbeit - in jeder Sprache.',
+    question: 'In welcher Sprache bekomme ich eine Antwort?',
+    answer: 'In der, in der du uns schreibst. Schreib auf Deutsch, auf Englisch oder in der Sprache, in der du deine Situation am besten erklären kannst, und genau so kommt die Antwort zurück. Der größte Teil dieser Arbeit besteht darin, australische Steuern jemandem zu erklären, der ihnen zum ersten Mal begegnet, und das ist schon in der Muttersprache anstrengend genug.',
+  },
+  {
+    question: 'Was ist, wenn am Ende keine Rückerstattung herauskommt?',
+    answer: 'Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wir sagen dir das lieber vorher, als den Auftrag anzunehmen und zu hoffen. Frag einfach, bevor du dich zu irgendetwas entscheidest: Fragen kosten nichts, und es antwortet ein echter Mensch.',
   },
 ]
 
@@ -76,6 +117,7 @@ const aboutPageSchema = {
   '@id': `${SITE_URL}/de/about#webpage`,
   url: `${SITE_URL}/de/about`,
   name: 'Über Working Holiday Tax',
+  description: 'Working-Holiday-Steuer ist das Einzige, was wir machen. Jeder Kunde ist auf einem 417- oder 462-Visum.',
   inLanguage: 'de-DE',
   mainEntity: { '@id': `${SITE_URL}/#business` },
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.about-lead'] },
@@ -101,6 +143,8 @@ const breadcrumbSchema = {
   ],
 }
 
+const bodyStyle = { fontSize: 'clamp(15px,1.2vw,16px)', lineHeight: 1.7, color: '#2A3C34', fontWeight: 300 } as const
+
 export default function GermanAboutPage() {
   return (
     <>
@@ -110,153 +154,188 @@ export default function GermanAboutPage() {
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-9 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
-            <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
-            <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
-            <span aria-current="page">Über uns</span>
+            style={{ fontSize: '13px', color: '#4C6459' }}>
+            <Link href="/de" className="transition-colors hover:text-forest-500" style={{ padding: '4px 0' }}>Startseite</Link>
+            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-current="page" style={{ color: '#0B5240' }}>Über uns</span>
           </nav>
 
-          <div className="grid lg:grid-cols-[1fr_360px] gap-8 lg:gap-12 lg:items-center">
-            <div className="max-w-[560px] lg:max-w-[700px]">
-              <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-                <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                  Über uns
-                </span>
-              </div>
-
-              <h1 className="font-serif font-black text-ink"
-                style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
-                Für Backpacker gemacht - von Leuten, die nichts anderes tun.
-              </h1>
-
-              <p className="about-lead font-semibold text-ink"
-                style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.4 }}>
-                Working Holiday Tax arbeitet mit nur einer Art von Kunden: Menschen mit einem 417- oder 462-Working-Holiday-Visum. Steuererklärung, TFN, ABN, Super und Medicare - das ist der ganze Job, und genau deshalb sind wir schnell und präzise darin.
-              </p>
-
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '46ch' }}>
-                Schreib uns auf WhatsApp und ein echter Mensch antwortet - während der Geschäftszeiten meist innerhalb einer Stunde. In Australien oder nachdem du längst wieder zu Hause bist.
-              </p>
-
-              <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4" style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
-                <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex justify-center"
-                  style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
-                  Frag uns alles →
-                </a>
-                <Link href="/de/contact" className="inline-flex btn-ghost-dark justify-center"
-                  style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
-                  Kontakt aufnehmen →
-                </Link>
-              </div>
+          <div className="max-w-[680px]">
+            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
+              <span className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240' }}>
+                Über uns
+              </span>
             </div>
 
-            <div className="max-w-[280px] mx-auto w-full lg:max-w-none">
-              <div className="rounded-3xl overflow-hidden" style={{ aspectRatio: '532/745', border: '1.5px solid #E2EFE9', boxShadow: '0 20px 40px -20px rgba(11,82,64,0.25)' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/about/team-office.jpg" alt="Junge Berufstätige arbeiten zusammen" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
+            {/* JO: diese Seite ist bewusst als das Jahr der Leserin oder des Lesers
+                geschrieben, weil das die einzige Geschichte ist, die in jedem Satz
+                wahr ist. Wenn hier stattdessen eine echte Entstehungsgeschichte
+                stehen soll, schick mir zwei bis drei Sätze dazu, wie das Geschäft
+                wirklich angefangen hat. */}
+            <h1 className="font-serif font-black text-ink"
+              style={{ fontSize: 'clamp(26px,3.4vw,42px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px' }}>
+              Du kamst mit einem Plan an.<br />Von Steuern hat keiner geredet.
+            </h1>
+
+            <p className="about-lead text-ink"
+              style={{ fontSize: 'clamp(16.5px,1.5vw,18px)', fontWeight: 500, lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+              Working-Holiday-Steuer ist das Einzige, was wir machen. Kommt dir das Jahr hier unten bekannt vor,
+              liegt in Australien wahrscheinlich noch Geld mit deinem Namen darauf.
+            </p>
+
+            <div className="flex flex-col gap-3 sm:flex-row" style={{ marginTop: '26px', maxWidth: '480px' }}>
+              <WaLink href={WA} position="hero" topic="general" lang="de"
+                className="btn-primary inline-flex justify-center"
+                style={{ minHeight: '54px', padding: '0 30px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
+                Frag uns alles →
+              </WaLink>
+              <Link href="/de/contact" className="inline-flex btn-ghost-dark justify-center"
+                style={{ minHeight: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
+                Andere Wege zu uns →
+              </Link>
+            </div>
+            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+              Es antwortet ein echter Mensch, während der Geschäftszeiten meist in etwa einer Stunde.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── DAS JAHR ──────────────────────────────────────────────────────── */}
+      <section className="py-11 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px] mx-auto">
+
+            <span className="section-label">Das Jahr</span>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(22px,2.6vw,32px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 16px' }}>
+              Wie sieht ein Working-Holiday-Jahr für uns aus?
+            </h2>
+            <p style={{ ...bodyStyle, marginBottom: '30px' }}>
+              So, nur mit anderen Namen und anderen Orten. Fünf Dinge passieren fast jedem auf einem 417 oder 462, ungefähr in dieser Reihenfolge, und vier davon kosten Geld, das sich hinterher meistens zurückholen lässt.
+            </p>
+
+            <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+              {chapters.map((c, i) => (
+                <li key={i} style={{
+                  position: 'relative',
+                  paddingLeft: '20px',
+                  paddingBottom: i === chapters.length - 1 ? 0 : '28px',
+                  borderLeft: i === chapters.length - 1 ? 'none' : '1.5px solid #CDE3DB',
+                  marginLeft: '4px',
+                }}>
+                  <span aria-hidden="true" style={{
+                    position: 'absolute', left: '-6px', top: '5px', width: '10px', height: '10px',
+                    borderRadius: '999px', background: '#16775C', border: '2px solid #F5F9F7',
+                  }} />
+                  <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.14em', color: '#16775C', marginBottom: '6px' }}>
+                    {c.stage}
+                  </p>
+                  <h3 className="font-serif font-bold text-ink" style={{ fontSize: 'clamp(17px,1.7vw,20px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '8px' }}>
+                    {c.title}
+                  </h3>
+                  <p style={bodyStyle}>{c.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WARUM ES UNS GIBT ─────────────────────────────────────────────── */}
+      <section className="py-11 lg:py-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px] mx-auto">
+            <span className="section-label">Warum es uns gibt</span>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(22px,2.6vw,32px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 16px' }}>
+              Warum arbeiten wir nur mit Working Holiday Makern?
+            </h2>
+            <p style={{ ...bodyStyle, marginBottom: '14px' }}>
+              Weil es das einzige Jahr ist, an dem wir arbeiten. Jeder unserer Kunden ist auf einem 417 oder 462, also sind die Dinge, die über deine Rückerstattung entscheiden, für uns keine Sonderfälle zum Nachschlagen. Sie sind unser Tagesgeschäft.
+            </p>
+            <p style={{ ...bodyStyle, marginBottom: '14px' }}>
+              Ein allgemeiner Steuerberater sieht ein paar Mal im Jahr einen Backpacker, im Juli, zwischen zweihundert normalen Erklärungen. Der 417/462-Steuersatz, die Frage nach dem steuerlichen Wohnsitz, die an weit mehr hängt als an gezählten Tagen, die Medicare-Befreiung, die davon abhängt, welchen Pass du hast, ein Superannuation-Antrag aus einem Zimmer in Hamburg oder München, elf Monate nach der Ausreise: für uns ist das ein ganz normaler Dienstag.
+            </p>
+            <p style={bodyStyle}>
+              Auf Absenden drücken kann jeder. Die Arbeit passiert davor: dein Jahr durchgehen, herausfinden, was daran stimmt, statt anzukreuzen, was am schnellsten geht, und dann einreichen.
+            </p>
+
+            {/* JO: die ehrliche Antwort auf "warum nur Backpacker" ist das Einzige auf
+                dieser Seite, das ich nicht für dich schreiben kann. Zwei bis drei Sätze
+                in deinen eigenen Worten würden genau hierhin gehören. */}
+
+            {/* JO: die alte Fassung dieser Seite trug ein "2020, aktiv seit" und ein
+                Stockfoto, das als unser Team gelesen wurde. Beides habe ich entfernt,
+                statt etwas zu behaupten, das ich nicht prüfen kann. Bestätige das
+                Gründungsjahr und schick ein echtes Foto, dann kommen beide zurück. */}
+
+            <div className="rounded-2xl" style={{ marginTop: '28px', padding: '20px', background: '#F2FAF7', border: '1.5px solid #C8EAE0' }}>
+              <p className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.35, marginBottom: '8px' }}>
+                Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
+              </p>
+              <p style={{ ...bodyStyle, fontSize: '15px' }}>
+                Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das. Frag vorher. Fragen kosten nichts, und es antwortet ein echter Mensch.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── TRUST SIGNALS STRIP ───────────────────────────────────────────── */}
-      <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-            {[
-              { stat: <GoogleRating variant="number" lang="de" />, label: 'Google-Bewertung' },
-              { stat: <GoogleRating variant="count" lang="de" />, label: ' ' },
-              { stat: '2020', label: 'Aktiv seit' },
-              { stat: 'Jede', label: 'Sprache - Support in deiner' },
-            ].map((item, i) => (
-              <div key={i} className="text-center">
-                <div className="font-serif" style={{ fontSize: 'clamp(20px, 3.4vw, 26px)', fontWeight: 800, color: '#0B5240', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '4px' }}>
-                  {item.stat}
-                </div>
-                <div style={{ fontSize: '11px', color: '#587066', letterSpacing: '0.02em' }}>
-                  {item.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── WIR VERSTEHEN BACKPACKER ──────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      {/* ── WIE DU UNS ERREICHST ──────────────────────────────────────────── */}
+      <section className="py-11 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[720px] mx-auto">
-            <span className="section-label">Warum das funktioniert</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,32px)', lineHeight: 1.12, letterSpacing: '-0.025em', margin: '10px 0 18px' }}>
-              Wir verstehen das Backpacker-Jahr
+          <div className="max-w-[680px] mx-auto">
+            <span className="section-label">Kontakt</span>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(22px,2.6vw,32px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 16px' }}>
+              Wie erreichst du uns?
             </h2>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Ein Working-Holiday-Jahr sieht nicht aus wie ein normales Steuerjahr - und wir tun auch nicht so. Vier Arbeitgeber in drei Bundesstaaten. Ein Farm-Lohnzettel, der falsch aussieht. Ein Hostel als Postadresse. Ein Job, den du ohne letzten Payslip verlassen hast. Abreise mitten im Steuerjahr. Für uns sind das keine Sonderfälle - das ist ein ganz normaler Dienstag.
+            <p style={{ ...bodyStyle, marginBottom: '14px' }}>
+              Über WhatsApp. Kein Bot, keine Ticketnummer, kein Formular, das dir fünf bis sieben Werktage verspricht. Du kannst eine einzige Frage stellen und es dabei belassen. Uns zu schreiben verpflichtet dich zu nichts.
             </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Weil wir nur 417- und 462-Fälle bearbeiten, musst du uns nichts zweimal erklären. Wir wissen, welche Farm-Arbeitgeber mit dem falschen Satz einbehalten, welche Superfonds beglaubigte Kopien verlangen, was die Medicare-Befreiung für deinen Pass wert ist und was sich ändert, wenn du aus dem Ausland einreichst. Du schickst deine Daten einmal - wir wissen, was damit zu tun ist.
+            <p style={{ ...bodyStyle, marginBottom: '22px' }}>
+              Schreib in der Sprache, in der du das lieber erklärst, und in genau der Sprache kommt die Antwort zurück. Für den Anfang brauchst du kein myGov-Konto, keinen australischen Ausweis und keine Payslips. Und es macht keinen Unterschied, ob du noch in Australien bist oder seit zwei Jahren wieder zu Hause.
             </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              Und wir arbeiten in Backpacker-Geschwindigkeit. Alles läuft online, WhatsApp ist die Eingangstür, und echte Menschen antworten schnell - während der Geschäftszeiten meist innerhalb einer Stunde. Keine Bürotermine, keine Warteschleifen, keine Woche Wartezeit, während dein Heimflug näher rückt.
-            </p>
-          </div>
-        </div>
-      </section>
 
-      {/* ── WARUM NUR EINE VISUMKATEGORIE ────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Unser Fokus</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px' }}>
-              Warum wir nur mit Working Holiday Makern arbeiten
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 max-w-5xl mx-auto">
-            {[
-              { t: 'Ein eigener Steuersatz', d: 'Der 417/462-Steuersatz für Working Holiday Maker (15 % ab dem ersten Dollar bis zu 45.000 $) ist nicht derselbe wie der Steuersatz für Steuerresidenten, von dem die meisten allgemeinen Steuerprogramme ausgehen.' },
-              { t: 'DASP nach der Abreise', d: 'Superannuation wird über ein eigenes Verfahren (DASP) zurückgeholt, das erst verfügbar ist, sobald du Australien verlassen hast und dein Visum abgelaufen ist - die meisten allgemeinen Steuerberater haben damit kaum Erfahrung.' },
-              { t: 'Medicare abhängig von der Staatsangehörigkeit', d: 'Ob die Medicare-Levy-Befreiung gilt, hängt von deinem Pass und Australiens Sozialversicherungsabkommen (RHCA) ab - ein Detail, das man mit einer allgemeinen Checkliste leicht falsch macht.' },
-              { t: 'Saisonarbeit, mehrere Arbeitgeber', d: 'Einkommen aus Farmarbeit, Gastronomie und Lieferdiensten, verteilt über mehrere Bundesstaaten und Arbeitgeber innerhalb eines Jahres, braucht eine Steuererklärung, die alles korrekt zusammenführt.' },
-            ].map((c, i) => (
-              <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#F7FBF9', border: '1.5px solid #E2EFE9' }}>
-                <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '8px' }}>{c.t}</p>
-                <p className="font-light" style={{ fontSize: '12.5px', color: 'rgba(10,15,13,0.6)', lineHeight: 1.7 }}>{c.d}</p>
-              </div>
-            ))}
+            <WaLink href={WA} position="section" topic="general" lang="de"
+              className="btn-primary inline-flex justify-center w-full sm:w-auto"
+              style={{ minHeight: '54px', padding: '0 32px', fontSize: '15px', borderRadius: '100px', minWidth: '260px' }}>
+              Schreib uns auf WhatsApp →
+            </WaLink>
           </div>
         </div>
       </section>
 
       {/* ── REVIEWS ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center mb-8 reveal">
-            <span className="section-label center">In ihren eigenen Worten</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              Was Working Holiday Maker sagen
-            </h2>
+      {/* Hidden entirely when the reviews feed is empty, so the heading
+          never stands alone over blank space. */}
+      <ReviewsGate>
+        <section className="py-10 lg:py-14 bg-white">
+          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+            <div className="max-w-xl mx-auto text-center mb-8">
+              <span className="section-label center">In ihren eigenen Worten</span>
+              <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(20px,2.04vw,26px)', lineHeight: 1.15, letterSpacing: '-0.025em' }}>
+                Was Working Holiday Maker sagen
+              </h2>
+            </div>
+            <GoogleReviews lang="de" />
           </div>
-          <GoogleReviews lang="de" />
-        </div>
-      </section>
+        </section>
+      </ReviewsGate>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
+      <section className="py-11 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-            <div className="text-center">
-              <span className="section-label center">FAQ</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                Fragen zu uns
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-start">
+            <div>
+              <span className="section-label">FAQ</span>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.04vw,26px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px' }}>
+                Fragen, die vor der ersten Nachricht kommen
               </h2>
-              <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                Noch eine Frage? Schreib uns direkt.
+              <p style={{ ...bodyStyle, marginBottom: '22px' }}>
+                Noch etwas offen? Frag es auf WhatsApp, das geht schneller als lesen.
               </p>
             </div>
             <div className="max-w-[700px]">
@@ -266,16 +345,29 @@ export default function GermanAboutPage() {
         </div>
       </section>
 
-      {/* ── NEXT STEP ────────────────────────────────────────────────────── */}
-      <NextStep
-        eyebrow="Bereit, wenn du es bist"
-        heading="Finde heraus, was dir zusteht"
-        body="Nutze den kostenlosen Rechner, oder schreib uns direkt - wir sagen dir, was für deine Situation gilt."
-        cta="Rechner ausprobieren →"
-        href="/de/calculator"
-      />
+      {/* ── ABSCHLUSS-CTA ────────────────────────────────────────────────── */}
+      <section style={{ background: '#0B5240', paddingTop: '48px', paddingBottom: '56px' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[540px] mx-auto text-center">
+            <p className="font-medium uppercase" style={{ fontSize: '10.5px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.15em', marginBottom: '12px' }}>
+              Wann immer du so weit bist
+            </p>
+            <h2 className="font-serif font-black text-white" style={{ fontSize: 'clamp(21px,2.8vw,32px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '12px' }}>
+              Erzähl uns von deinem Jahr
+            </h2>
+            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, marginBottom: '24px', fontWeight: 300 }}>
+              Wo du gearbeitet hast, ungefähr wann, und ob du schon ausgereist bist. Das reicht uns, um dir zu sagen, was sich zu verfolgen lohnt.
+            </p>
+            <WaLink href={WA} position="footer" topic="general" lang="de"
+              className="btn-primary w-full sm:w-auto"
+              style={{ minHeight: '54px', padding: '0 32px', fontSize: '15px', minWidth: '260px' }}>
+              Schreib uns auf WhatsApp →
+            </WaLink>
+          </div>
+        </div>
+      </section>
 
-      <MobileCta href={WA_URL} lang="de" />
+      <MobileCta href={WA} lang="de" topic="general" variant="neutral" />
     </>
   )
 }

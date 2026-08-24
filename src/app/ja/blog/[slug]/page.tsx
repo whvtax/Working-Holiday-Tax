@@ -7,8 +7,16 @@ import { guides, getCategoryColor } from '@/app/blog/data'
 import GuideArticle from '@/app/blog/[slug]/GuideArticle'
 import StickyBreadcrumbs from '@/app/blog/[slug]/StickyBreadcrumbs'
 import CategoryHero from '@/app/blog/[slug]/CategoryHero'
+// The corpus was reframed on this date. dateModified previously mirrored
+// datePublished on every article, which told search engines nothing had
+// changed and was, after tonight, simply untrue.
+const CORPUS_REVISED = '2026-08-22'
+
 import { isoGuideDate, formatGuideDateJa } from '@/lib/blog-dates'
 import { getJapaneseGuide, getJapaneseCategoryMeta, jaCategoryMeta, blogUI } from '../data'
+import { GuideCta } from '@/components/ui/GuideCta'
+import { MobileCta } from '@/components/ui/MobileCta'
+import { waUrl } from '@/lib/wa'
 
 
 const OG_BY_CATEGORY: Record<string, string> = {
@@ -85,7 +93,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { guide, isTranslated } = result
   const categoryKeywords = CATEGORY_KEYWORDS[guide.category] || []
   return {
-    title: `${guide.title} | Working Holiday Tax`,
+    // A guide title already names its subject, so the " | Working Holiday Tax"
+    // suffix the layout template appends costs about 200px of the roughly 580px
+    // Google renders and buys nothing. Absolute drops it here only; service and
+    // landing pages keep it.
+    title: { absolute: guide.title },
     description: guide.description,
     keywords: [
       // Core working holiday tax refund keywords (Japanese)
@@ -148,18 +160,103 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+/* ── Related guides ───────────────────────────────────────────────────────
+   Ranked rather than shuffled. The guides named below sit closest to a
+   decision in their category, so a reader who is nearly ready meets the
+   article that names what is at stake rather than whichever three the random
+   draw produced. The block then closes with the service page for the
+   category, which is the one link out of the blog. Anything not named still
+   appears, in file order, behind the ranked ones.                          */
+const DECISION_GUIDES: Record<string, string[]> = {
+  'TFN': [
+    'what-happens-without-your-tfn',
+    'tfn-vs-abn-difference',
+    'tax-file-number-declaration-form',
+    'tfn-application-delayed',
+  ],
+  'ABN': [
+    'can-you-have-tfn-and-abn',
+    'employee-vs-contractor-australia',
+    'abn-deductions-business-expenses',
+    'gst-and-abn-for-working-holiday-makers',
+  ],
+  'Tax Return': [
+    'diy-tax-return-vs-tax-agent-working-holiday',
+    'tax-residency-working-holiday-makers',
+    'tax-deductions-working-holiday-makers',
+    'how-to-lodge-tax-return-from-overseas',
+    'multiple-jobs-tax-return-working-holiday',
+  ],
+  'Super': [
+    'best-way-to-claim-super-leaving-australia',
+    'dasp-tax-rate-65-percent-explained',
+    'super-multiple-funds-consolidation',
+    'how-to-find-lost-superannuation',
+  ],
+  'Medicare & Other': [
+    'medicare-levy-working-holiday-makers',
+    'countries-with-medicare-agreement-australia',
+    'tax-obligations-after-leaving-australia',
+    'tax-residency-working-holiday-makers',
+  ],
+  'Work Rights': [
+    'employer-not-paying-correctly',
+    'wage-theft-working-holiday-australia',
+    'how-to-read-a-payslip-australia-working-holiday',
+    'super-employer-not-paying-what-to-do',
+  ],
+}
+
+/** The one money page each category belongs to. Never a form route. */
+const SERVICE_FOR_CATEGORY: Record<string, { path: string; label: string; blurb: string }> = {
+  'TFN': {
+    path: '/ja/tfn',
+    label: 'TFNと申告フォームについて当社がすること',
+    blurb: '番号の取得は無料で10分です。金額を左右するのは雇用主に出す申告フォームで、そこを当社が担当します。',
+  },
+  'ABN': {
+    path: '/ja/abn',
+    label: 'ABNで請求していた場合に当社がすること',
+    blurb: '給与と請求による収入は課税の扱いも申告書での位置も異なります。この切り分けを正しく行うことが実際の作業です。',
+  },
+  'Tax Return': {
+    path: '/ja/tax-return',
+    label: 'すべてのタックスリターンで当社が確認すること',
+    blurb: '税務上の居住区分、誤った税率で引かれていた期間、メディケア税の扱い、そして実際にした仕事に対応する控除。',
+  },
+  'Super': {
+    path: '/ja/superannuation',
+    label: '出国前にスーパーについて当社がすること',
+    blurb: 'カジュアル勤務ではスーパーが複数のファンドに分散します。TFNからすべての口座を探し、正しい順序で一度に申請します。',
+  },
+  'Medicare & Other': {
+    path: '/ja/medicare',
+    label: 'メディケア税について当社がすること',
+    blurb: 'メディケア税は自動的に引かれます。免除には自分で申請する証明書が必要で、ワーホリの申告で最も見落とされやすい項目です。',
+  },
+  'Work Rights': {
+    path: '/ja/tax-return',
+    label: 'すべてのタックスリターンで当社が確認すること',
+    blurb: '給与や労働時間に関わることは、たいていタックスリターンにも表れます。',
+  },
+}
+
 function getRelatedGuides(current: { slug: string; category: string }, count = 3) {
   const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category)
-  const shuffled = [...sameCategory]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  const ranked = DECISION_GUIDES[current.category] ?? []
+  const rank = (slug: string) => {
+    const i = ranked.indexOf(slug)
+    return i === -1 ? ranked.length + 1 : i
   }
-  // Get Japanese versions of related guides
-  return shuffled.slice(0, count).map(g => {
-    const result = getJapaneseGuide(g.slug)
-    return result ? result.guide : g
-  })
+  return [...sameCategory]
+    .map((g, i) => ({ g, i }))
+    .sort((a, b) => rank(a.g.slug) - rank(b.g.slug) || a.i - b.i)
+    .slice(0, count)
+    // Get Japanese versions of related guides
+    .map(x => {
+      const result = getJapaneseGuide(x.g.slug)
+      return result ? result.guide : x.g
+    })
 }
 
 function calcReadTime(body: string) {
@@ -171,41 +268,147 @@ function calcWordCount(body: string) {
   return body.trim().split(/\s+/).length
 }
 
-function extractFAQs(body: string): Array<{ question: string; answer: string }> {
+/* ── FAQ extraction ───────────────────────────────────────────────────────
+   Same rewrite as the English template. The old extractor walked from a
+   question H2 to the first non-empty line and stopped at the first bullet, so
+   on the house pattern of question, colon terminated lead in, bullet list, it
+   published the lead in and threw the answer away. The median published answer
+   was 68 characters.
+
+   It now reads the whole section as ordered blocks and joins them into one
+   paragraph. Prose first. A list is pulled in only where it completes an open
+   colon, or where the prose alone is too short to be an answer. Anything that
+   still cannot produce a usable answer is omitted rather than published as a
+   fragment.
+
+   The length floor is measured in characters, so it is language aware:
+   Japanese carries roughly twice the meaning per character, and a 150
+   character floor would reject perfectly complete Japanese answers. Bodies
+   that have not been translated yet are still English and are measured on the
+   English floor.                                                            */
+
+const FAQ_MIN_ANSWER_EN = 150
+const FAQ_MIN_ANSWER_JA = 70
+const FAQ_TARGET_ANSWER = 400
+const FAQ_MAX_ANSWER = 900
+
+/** Japanese text is far denser per character, so the floor moves with it. */
+function faqMinAnswer(text: string): number {
+  return /[぀-ヿ㐀-䶿一-鿿]/.test(text) ? FAQ_MIN_ANSWER_JA : FAQ_MIN_ANSWER_EN
+}
+
+function cleanInline(s: string): string {
+  return s
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*\n]+)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function listAsSentence(items: string[]): string {
+  const cleaned = items.map(i => i.replace(/[;,.\s、。]+$/, '').trim()).filter(Boolean)
+  if (cleaned.length === 0) return ''
+  const japanese = /[぀-ヿ㐀-䶿一-鿿]/.test(cleaned.join(''))
+  return japanese ? `${cleaned.join('、')}。` : `${cleaned.join('; ')}.`
+}
+
+function trimToSentence(text: string, max: number): string {
+  if (text.length <= max) return text
+  const slice = text.slice(0, max)
+  const cut = Math.max(slice.lastIndexOf('. '), slice.lastIndexOf('。'), slice.lastIndexOf('! '), slice.lastIndexOf('? '))
+  if (cut > max * 0.5) return slice.slice(0, cut + 1).trim()
+  // A truncated Japanese answer ends with the ideographic full stop, not '.'.
+  const ja = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]/.test(slice)
+  if (ja) return `${slice.replace(/[\s、]+[^、。]*$/, '').trim()}。`
+  return `${slice.replace(/\s+\S*$/, '').trim()}.`
+}
+
+type FaqBlock = { type: 'p'; text: string } | { type: 'list'; items: string[] }
+
+function sectionBlocks(lines: string[]): FaqBlock[] {
+  const blocks: FaqBlock[] = []
+  let list: string[] = []
+  const flush = () => {
+    if (list.length > 0) {
+      blocks.push({ type: 'list', items: list })
+      list = []
+    }
+  }
+
+  for (let i = 1; i < lines.length; i++) {
+    const raw = lines[i].trim()
+    if (!raw) continue
+    if (raw.startsWith('|') || /^[-=*_]{3,}$/.test(raw)) { flush(); continue }
+    if (/^#{1,6}\s/.test(raw)) {
+      flush()
+      const t = cleanInline(raw.replace(/^#{1,6}\s+/, ''))
+      if (t) blocks.push({ type: 'p', text: /[.:!?：。]$/.test(t) ? t : `${t}:` })
+      continue
+    }
+    const bullet = raw.match(/^[-*+]\s+(.*)$/) ?? raw.match(/^\d+[.)]\s+(.*)$/)
+    if (bullet) {
+      const t = cleanInline(bullet[1])
+      if (t) list.push(t)
+      continue
+    }
+    flush()
+    const t = cleanInline(raw.replace(/^>\s*/, ''))
+    if (t) blocks.push({ type: 'p', text: t })
+  }
+  flush()
+  return blocks
+}
+
+/** Japanese runs unspaced, so blocks are joined with nothing at all. */
+const isJa = (t: string) => /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]/.test(t)
+const joinBlocks = (a: string, b: string) => (isJa(a) || isJa(b) ? `${a}${b}` : `${a} ${b}`)
+
+function buildFaqAnswer(blocks: FaqBlock[]): string {
+  let out = ''
+  for (const b of blocks) {
+    const openColon = /[:：]$/.test(out)
+    if (out.length >= FAQ_TARGET_ANSWER && !openColon) break
+    if (b.type === 'p') {
+      out = out ? joinBlocks(out, b.text) : b.text
+      continue
+    }
+    if (!openColon && out.length >= faqMinAnswer(out)) continue
+    const rendered = listAsSentence(b.items)
+    if (!rendered) continue
+    out = out ? joinBlocks(out, rendered) : rendered
+  }
+
+  out = out.replace(/\s+/g, ' ').trim()
+  if (/[:：]$/.test(out)) {
+    const cut = Math.max(out.lastIndexOf('. '), out.lastIndexOf('。'))
+    out = cut > 0 ? out.slice(0, cut + 1).trim() : ''
+  }
+  if (!out) return ''
+  if (!/[.!?。！？]$/.test(out)) out += '。'
+  return trimToSentence(out, FAQ_MAX_ANSWER)
+}
+
+/** Matches the id GuideArticle gives every H2, so each answer can be deep linked. */
+function headingAnchor(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+}
+
+function extractFAQs(body: string): Array<{ question: string; answer: string; anchor: string }> {
   const sections = body.split(/^## /m).slice(1)
-  const faqs: Array<{ question: string; answer: string }> = []
+  const faqs: Array<{ question: string; answer: string; anchor: string }> = []
 
   for (const section of sections) {
     const lines = section.split('\n')
-    const heading = lines[0]?.trim() ?? ''
-    if (!heading) continue
-    if (!/[?？]/.test(heading)) continue
+    const rawHeading = lines[0]?.trim() ?? ''
+    const heading = cleanInline(rawHeading)
+    if (!heading || !/[?？]/.test(heading)) continue
 
-    let answer = ''
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim()
-      if (!line) {
-        if (answer) break
-        continue
-      }
-      if (line.startsWith('##') || line.startsWith('#')) break
-      if (line.startsWith('-') || line.startsWith('*')) {
-        if (!answer) continue
-        break
-      }
-      answer = answer ? `${answer} ${line}` : line
-      if (answer.length > 280) break
-    }
+    const answer = buildFaqAnswer(sectionBlocks(lines))
+    if (!answer || answer.length < faqMinAnswer(answer)) continue
 
-    if (!answer) continue
-
-    const cleanedAnswer = answer
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      .replace(/\*\*([^*]+)\*\*/g, '$1')
-      .replace(/\s+/g, ' ')
-      .trim()
-
-    faqs.push({ question: heading, answer: cleanedAnswer })
+    faqs.push({ question: heading, answer, anchor: headingAnchor(rawHeading) })
   }
 
   return faqs.slice(0, 10)
@@ -279,7 +482,7 @@ function extractMentions(body: string, category: string): Array<{ '@type': strin
 
   // Australian government entities
   const orgEntities = [
-    { match: /\bATO\b|Australian Taxation Office|オーストラリア国税局/, name: 'Australian Taxation Office', sameAs: 'https://www.ato.gov.au/' },
+    { match: /\bATO\b|Australian Taxation Office|オーストラリア税務署|オーストラリア国税局/, name: 'Australian Taxation Office', sameAs: 'https://www.ato.gov.au/' },
     { match: /Fair Work|フェアワーク/i, name: 'Fair Work Ombudsman', sameAs: 'https://www.fairwork.gov.au/' },
     { match: /\bABR\b|Australian Business Register/, name: 'Australian Business Register', sameAs: 'https://www.abr.gov.au/' },
     { match: /Services Australia|Medicare|メディケア/, name: 'Services Australia', sameAs: 'https://www.servicesaustralia.gov.au/' },
@@ -372,6 +575,14 @@ export default function JapaneseGuidePage({ params }: Props) {
   const howToSteps = isTranslated && isHowToPost(guide.slug) ? extractHowToSteps(guide.body) : []
   const citations = getRelevantCitations(guide.slug, guide.category)
   const mentions = extractMentions(guide.body, guide.category)
+  const service = SERVICE_FOR_CATEGORY[guide.category]
+
+  // `reviewed` is optional and may not be populated on a given guide yet, so
+  // it is read defensively. Where it is absent the page shows a publication
+  // date only and never labels it as an update.
+  const reviewedDate = (guide as { reviewed?: string }).reviewed
+  const publishedIso = isoGuideDate(guide.date)
+  const modifiedIso = reviewedDate ? isoGuideDate(reviewedDate) : publishedIso
 
   // Set inLanguage based on whether body is Japanese or still English
   const articleLang = isTranslated ? 'ja' : 'en-AU'
@@ -388,8 +599,20 @@ export default function JapaneseGuidePage({ params }: Props) {
     wordCount,
     timeRequired: `PT${readTime}M`,
     inLanguage: articleLang,
-    datePublished: isoGuideDate(guide.date),
-    dateModified: isoGuideDate(guide.date),
+    datePublished: publishedIso,
+    dateModified: modifiedIso,
+    // Preparation and professional review are two different steps done by two
+    // different parties, so they are modelled separately rather than pointing
+    // reviewedBy at the author's own @id. The node is deliberately unnamed
+    // here: Working Holiday Tax is not itself a registered tax agent and must
+    // never be described as one, and the supervising firm's name belongs on
+    // the site wide entity graph. The @id is stable, so the two merge when
+    // that node lands.
+    reviewedBy: {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#supervising-agent`,
+      description: 'Working Holiday Taxが作成した内容を確認し承認する登録税理士（registered tax agent）。',
+    },
     author: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,
@@ -471,7 +694,8 @@ export default function JapaneseGuidePage({ params }: Props) {
         text: leadParagraph,
         inLanguage: 'ja',
         author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-        upvoteCount: 1,
+        // No upvoteCount. It was hard coded to 1, which is a fabricated
+        // engagement signal on a page that has no votes at all.
         url: `${SITE_URL}/ja/blog/${guide.slug}`,
       },
     },
@@ -497,7 +721,17 @@ export default function JapaneseGuidePage({ params }: Props) {
     mainEntity: faqs.map(f => ({
       '@type': 'Question',
       name: f.question,
-      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.answer,
+        // Every H2 carries a slugified id, so each answer gets a deep link to
+        // the exact passage, which is what turns a page level citation into a
+        // passage level one. The slug rule strips everything that is not a
+        // latin letter or a digit, so a fully Japanese heading yields nothing
+        // to link to and the url is left off rather than pointing at a bare
+        // hash.
+        ...(f.anchor ? { url: `${SITE_URL}/ja/blog/${guide.slug}#${f.anchor}` } : {}),
+      },
     })),
   } : null
 
@@ -528,7 +762,19 @@ export default function JapaneseGuidePage({ params }: Props) {
       {qaPageLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(qaPageLd) }} />
       )}
-      <main style={{ paddingTop: '68px', background: '#fff', minHeight: '100vh' }}>
+      {/* Guide route only.
+          The language banner is fixed at bottom 16px with z-index 70 and the
+          sticky CTA bar is fixed at bottom 0 with z-index 60, so on a phone the
+          banner lands squarely on top of the bar and hides the only conversion
+          control on the page from exactly the visitors it is meant to help.
+
+          The banner and the shared stylesheet are owned elsewhere, so this
+          lifts the banner clear of the bar from inside the guide template
+          rather than reaching into either. Scoped to these routes and to
+          phones, and to be replaced by the site wide z-index scale. */}
+      <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 767px){body > div[role="dialog"]{bottom:calc(88px + env(safe-area-inset-bottom, 0px)) !important}}` }} />
+
+      <main style={{ paddingTop: '68px', background: '#fff', minHeight: '100dvh' }}>
 
         {categoryInfo && (
           <StickyBreadcrumbs
@@ -543,7 +789,7 @@ export default function JapaneseGuidePage({ params }: Props) {
 
         <div style={{ background: categoryColors.bg }}>
           <div style={{ padding: '12px 0' }}>
-            <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '6px', alignItems: 'center', fontSize: '12px', color: 'rgba(10,15,13,0.45)', flexWrap: 'wrap' }}>
+            <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '10px', alignItems: 'center', fontSize: '13px', color: '#4C6459', flexWrap: 'wrap' }}>
               <Link href="/ja" style={{ color: '#587066', textDecoration: 'none' }}>ホーム</Link>
               <span>/</span>
               <Link href="/ja/blog" style={{ color: '#587066', textDecoration: 'none' }}>ブログ</Link>
@@ -556,7 +802,7 @@ export default function JapaneseGuidePage({ params }: Props) {
                   <span>/</span>
                 </>
               )}
-              <span style={{ color: '#8AADA3', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50%' }}>{guide.title}</span>
+              <span style={{ color: '#4C6459', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50%' }}>{guide.title}</span>
             </div>
           </div>
 
@@ -569,8 +815,8 @@ export default function JapaneseGuidePage({ params }: Props) {
                       <Link
                         href={`/ja/blog/category/${categoryInfo.slug}`}
                         style={{
-                          fontSize: '11px',
-                          padding: '4px 12px',
+                          fontSize: '13px',
+                          padding: '7px 14px',
                           borderRadius: '100px',
                           background: '#fff',
                           color: categoryColors.text,
@@ -585,9 +831,18 @@ export default function JapaneseGuidePage({ params }: Props) {
                       <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
                     </>
                   )}
-                  <span style={{ fontSize: '12px', color: 'rgba(10,15,13,0.55)' }}>最終更新：{formatGuideDateJa(guide.date)}</span>
-                  <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
-                  <span style={{ fontSize: '12px', color: 'rgba(10,15,13,0.55)' }}>{readTime}分で読めます</span>
+                  {/* 「最終更新」は公開日を表示していたため、1年から2年前の
+                      日付が更新日として出ていました。事実と違うので、公開日と
+                      確認日を分けて表示します。 */}
+                  <span style={{ fontSize: '13px', color: '#4C6459' }}>公開日 {formatGuideDateJa(guide.date)}</span>
+                  {reviewedDate && (
+                    <>
+                      <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
+                      <span style={{ fontSize: '13px', color: '#4C6459' }}>確認日 {formatGuideDateJa(reviewedDate)}</span>
+                    </>
+                  )}
+                  <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
+                  <span style={{ fontSize: '13px', color: '#4C6459' }}>{readTime}分で読めます</span>
                 </div>
 
                 <h1
@@ -597,7 +852,7 @@ export default function JapaneseGuidePage({ params }: Props) {
                   {guide.title}
                 </h1>
 
-                <p className="guide-lead" style={{ fontSize: 'clamp(16px, 1.5vw, 18px)', color: 'rgba(10,15,13,0.7)', lineHeight: 1.75, marginBottom: '0', fontWeight: 300 }}>
+                <p className="guide-lead" style={{ fontSize: 'clamp(16.5px, 1.5vw, 18px)', color: '#2A3C34', lineHeight: 1.8, marginBottom: '0', fontWeight: 400 }}>
                   {guide.description}
                 </p>
               </div>
@@ -635,19 +890,49 @@ export default function JapaneseGuidePage({ params }: Props) {
 
           <article style={{ padding: '2rem 0 3rem 0' }} itemScope itemType="https://schema.org/Article">
             <meta itemProp="headline" content={guide.title} />
-            <meta itemProp="datePublished" content={isoGuideDate(guide.date)} />
+            <meta itemProp="datePublished" content={publishedIso} />
+            <meta itemProp="dateModified" content={modifiedIso} />
             <meta itemProp="author" content="Working Holiday Tax" />
             <GuideArticle guide={guide} locale="ja" />
           </article>
 
-          <p style={{ fontSize: '12.5px', color: '#8AADA3', fontWeight: 500, maxWidth: '780px', margin: '0 0 2rem 0' }}>
-            Written by Working Holiday Tax
-          </p>
+          {/* このガイドについて。
+              これまでは「Written by Working Holiday Tax」という一行だけで、
+              お金に関わるテーマとしては最も弱い信頼シグナルでした。
+              登録税理士が「作業に対して何をするか」だけを書き、当社自身が
+              登録税理士であるとは決して書きません。実在しない著者名も
+              写真も作りません。 */}
+          <aside
+            aria-labelledby="about-this-guide"
+            style={{ maxWidth: '780px', margin: '0 0 2rem 0', padding: '18px 20px', border: '1px solid #E2EFE9', borderRadius: '12px', background: '#F7F9F8' }}
+          >
+            <p id="about-this-guide" style={{ fontSize: '13px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.08em', margin: '0 0 8px' }}>
+              このガイドについて
+            </p>
+            <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.85, margin: 0, fontWeight: 400 }}>
+              417・462ビザ保持者だけを専門に扱うWorking Holiday Taxチームが執筆し、ATOおよびFair Workの最新ガイダンスに基づいて確認しています。一般的な情報であり、個別の税務アドバイスではありません。
+            </p>
+            <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.85, margin: '10px 0 0', fontWeight: 400 }}>
+              当チームが作成した申告書は、ATOへ提出する前に登録税理士が確認し、承認します。
+            </p>
+            <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.7, margin: '12px 0 0', fontWeight: 400 }}>
+              公開日 {formatGuideDateJa(guide.date)}{reviewedDate ? ` · 確認日 ${formatGuideDateJa(reviewedDate)}` : ''}
+            </p>
+          </aside>
+
+          {/* The close. Until this shipped, guide pages carried no conversion
+              path in any language while taking most of the site's traffic. */}
+          <GuideCta
+            category={guide.category}
+            slug={guide.slug}
+            lang="ja"
+            title={guide.title}
+          />
 
           {relatedGuides.length > 0 && (
             <div style={{ borderTop: '1px solid #E2EFE9', paddingTop: '2.5rem', paddingBottom: '3rem', maxWidth: '780px' }}>
-              <p style={{ fontSize: '11px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
-                関連記事
+              <p style={{ fontSize: '13px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+                次に読むもの
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {relatedGuides.map(g => {
@@ -657,8 +942,8 @@ export default function JapaneseGuidePage({ params }: Props) {
                       <div style={{ border: '1px solid #E2EFE9', borderRadius: '12px', padding: '1.1rem 1.4rem', transition: 'border-color 0.2s ease, transform 0.2s ease' }} className="related-card">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                           <span style={{
-                            fontSize: '10px',
-                            padding: '2px 8px',
+                            fontSize: '13px',
+                            padding: '3px 10px',
                             borderRadius: '100px',
                             background: gColors.bg,
                             color: gColors.text,
@@ -668,25 +953,42 @@ export default function JapaneseGuidePage({ params }: Props) {
                           }}>
                             {catLabelJa(g.category)}
                           </span>
-                          <span style={{ fontSize: '11px', color: '#8AADA3' }}>{g.readTime}分で読めます</span>
+                          <span style={{ fontSize: '13px', color: '#4C6459' }}>{g.readTime}分で読めます</span>
                         </div>
-                        <p style={{ fontSize: '14.5px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: 1.4 }}>
+                        <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: 1.45 }}>
                           {g.title}
                         </p>
-                        <p style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.75, margin: 0, fontWeight: 300 }}>
+                        <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.8, margin: 0, fontWeight: 400 }}>
                           {g.description}
                         </p>
                       </div>
                     </Link>
                   )
                 })}
+
+                {/* The one link here that is not another article. */}
+                {service && (
+                  <Link href={service.path} style={{ textDecoration: 'none' }} className="related-link">
+                    <div style={{ border: '1px solid #C8EAE0', background: '#F2FAF7', borderRadius: '12px', padding: '1.1rem 1.4rem' }} className="related-card">
+                      <p style={{ fontSize: '13px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.08em', margin: '0 0 8px' }}>
+                        当社がすること
+                      </p>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: 1.45 }}>
+                        {service.label}
+                      </p>
+                      <p style={{ fontSize: '13px', color: '#2A3C34', lineHeight: 1.7, margin: 0, fontWeight: 400 }}>
+                        {service.blurb}
+                      </p>
+                    </div>
+                  </Link>
+                )}
               </div>
 
               {categoryInfo && (
                 <div style={{ marginTop: '24px' }}>
                   <Link
                     href={`/ja/blog/category/${categoryInfo.slug}`}
-                    style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                    style={{ fontSize: '15px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '8px 0' }}
                   >
                     {catLabelJa(categoryInfo.category)}の記事をすべて見る →
                   </Link>
@@ -696,7 +998,17 @@ export default function JapaneseGuidePage({ params }: Props) {
           )}
         </div>
 
+        {/* The sticky CTA bar is fixed at the bottom of the viewport and
+            renders no spacer of its own, so without this the last paragraph of
+            every guide is read through a translucent white bar. */}
+        <div
+          aria-hidden="true"
+          className="md:hidden"
+          style={{ height: 'calc(84px + env(safe-area-inset-bottom, 0px))' }}
+        />
+
       </main>
+      <MobileCta href={waUrl({ topic: "guide", lang: "ja" })} lang="ja" topic="guide" />
     </>
   )
 }

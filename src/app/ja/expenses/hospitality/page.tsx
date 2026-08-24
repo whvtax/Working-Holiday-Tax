@@ -1,326 +1,644 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: '飲食業の税金控除：RSA資格・制服・チップの扱い（ワーホリ向け）',
-  description: 'バー・カフェ・レストランで働くスタッフが確定申告で控除できるもの（RSA資格、滑り止め靴、制服のクリーニング代）を解説。あわせて、2つ・3つのカジュアルな仕事を掛け持ちするワーキングホリデーメーカーが陥りやすい非課税枠の間違いと、チップが課税対象になるかどうかも紹介します。',
-  keywords: [
-    '飲食業 税金控除 オーストラリア',
-    'バーテンダー 税金控除',
-    'ウェイトレス 確定申告 オーストラリア',
-    'RSA資格 控除',
-    '仕事の靴 税金 控除できる',
-    'チップ 課税 オーストラリア',
-    '掛け持ち 税金 オーストラリア',
-    '非課税枠 複数雇用主',
-    'ワーキングホリデー 飲食業 税金',
-    '417 462ビザ 飲食業 税金',
-    'バックパッカー バー 仕事 タックスリターン',
-    'カジュアル 飲食業 税金控除',
+  "title": "飲食の経費控除：RSA、靴、制服、チップ",
+  "description": "バー、カフェ、レストラン、キッチンで働く人が控除できるもの。RSAの更新、滑り止めの靴、コックコート、制服の洗濯を解説します。",
+  "keywords": [
+    "飲食 税金 控除 オーストラリア",
+    "カフェ ワーホリ タックスリターン",
+    "バーテンダー 控除 オーストラリア",
+    "シェフ 控除 オーストラリア",
+    "RSA 資格 控除",
+    "仕事靴 控除 ATO",
+    "チップ 課税 オーストラリア",
+    "ワーホリ 飲食 税金"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/ja/expenses/hospitality`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/hospitality`,
-      'de': `${SITE_URL}/de/expenses/hospitality`,
-      'ja': `${SITE_URL}/ja/expenses/hospitality`,
-      'x-default': `${SITE_URL}/expenses/hospitality`,
-    },
+  "alternates": {
+    "canonical": "/ja/expenses/hospitality",
+    "languages": {
+      "en-AU": "/expenses/hospitality",
+      "de": "/de/expenses/hospitality",
+      "ja": "/ja/expenses/hospitality",
+      "x-default": "/expenses/hospitality"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'ja_JP',
-    url: `${SITE_URL}/ja/expenses/hospitality`,
-    siteName: 'Working Holiday Tax',
-    title: '飲食業の税金控除：RSA資格・制服・チップの扱い（ワーホリ向け）',
-    description: '飲食業で働く人が控除できるものと、複数のカジュアル勤務を掛け持ちするワーキングホリデーメーカーが陥りやすい非課税枠の間違いを解説。',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "ja_JP",
+    "url": `${SITE_URL}/ja/expenses/hospitality`,
+    "siteName": "Working Holiday Tax",
+    "title": "飲食の経費控除：RSA、靴、制服、チップ",
+    "description": "滑り止めの靴とコックコートは控除できます。店が指定する黒一色の服は控除できません。"
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: '飲食業の税金控除：RSA資格・制服・チップの扱い（ワーホリ向け）',
-    description: '飲食業で働く人が控除できるものと、複数のカジュアル勤務を掛け持ちするワーキングホリデーメーカーが陥りやすい非課税枠の間違いを解説。',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "飲食の経費控除：RSA、靴、制服、チップ",
+    "description": "滑り止めの靴とコックコートは控除できます。店が指定する黒一色の服は控除できません。"
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const EMPLOYER_CHECKLIST = [
-  'あなたのTFNと、その雇用主専用に記入したTax File Number Declaration（TFN宣言書）を提出すること。別の雇用主にすでに提出済みだからといって、自動的には引き継がれません。',
-  '宣言書の居住区分で「Working Holiday Maker」を選択すること。雇用主の給与システムは、この選択をもとにワーキングホリデーメーカー向けの源泉徴収税率の対象かどうかを判断します。',
-  '非課税枠の質問には、すべての雇用主に対して毎回「いいえ（No）」と答えること。最も収入の多い仕事であっても例外ではありません。',
+const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "飲食、バー、キッチンの仕事" })
+
+const UI = {
+  "ctaLabel": "WhatsAppで相談する",
+  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "guaranteeHeading": "料金が還付金を上回った分は、こちらでお返しします。",
+  "guaranteeBody": "4店舗、4通のインカムステートメント、4つのファンドに散ったスーパー。飲食では珍しくない1年で、お客様は全員417・462ビザの方です。申告書は当社のチームが作成し、ATOへ提出する前に登録税理士が確認して承認します。",
+  "faqHeading": "よくある質問",
+  "guidesHeading": "次に読むと役に立つガイド",
+  "otherJobs": "別の仕事の場合は、職種別の一覧へ。",
+  "servicesLabel": "サイト内の関連ページ",
+  "wrongLabel": "控除できないのに申告されがちなもの",
+  "missedLabel": "控除できるのに申告されないもの",
+  "disclaimer": "これは一般的な情報であり、個別の税務アドバイスではありません。何を控除できるかは、雇用主、手元の記録、実際の働き方によって変わります。当社にご依頼いただいた場合は、あなたの状況を一つずつ確認し、控除できるものはすべて申告し、できないものは申告しません。",
+  "hubHref": "/ja/expenses"
+}
+
+const CRUMBS = [
+  {
+    "name": "ホーム",
+    "item": "/ja"
+  },
+  {
+    "name": "控除",
+    "item": "/ja/expenses"
+  },
+  {
+    "name": "飲食",
+    "item": "/ja/expenses/hospitality"
+  }
 ]
 
-const faqs = [
+const HERO = {
+  "kicker": "バー、カフェ、レストラン、キッチン",
+  "h1lead": "滑り止めの靴は控除できます。",
+  "h1accent": "黒一色の服はできません。",
+  "lede": "控除リストが短いぶん、飲食の申告でお金が動くのは収入側です。複数の店舗、複数の源泉徴収率、複数のファンドに散ったスーパー。"
+}
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
   {
-    question: '黒い仕事用の靴やパンツは控除できますか？',
-    answer: 'ロゴのない無地の黒い服や靴は、職場のドレスコードで義務付けられていても控除の対象になりません。ATOはこれを制服ではなく普段着とみなします。滑り止め付きの靴は別です。バーの濡れた床や忙しいキッチンパスで本当に必要な場合は保護靴として扱われ、色にかかわらず控除できます。',
+    "kind": "answer",
+    "h2": "バー、カフェ、キッチンで働く人は何を控除できますか？",
+    "paras": [
+      "控除できるのは、滑り止めの保護靴、コックコートやチェック柄のコックパンツのような職種特有の衣類、雇用主のロゴが入った必須制服の洗濯、RSAやFood Safety Supervisor資格の更新、そして自費で買ったキッチン道具です。それ以外のクローゼットの中身は普通の衣類です。",
+      "リストが短いのは、飲食にはその仕事だけに固有のものがほとんどないからです。屋内で働き、道具は雇用主が用意し、店が求める服装はたいてい誰がどこでも着られるものです。飲食の申告で金額が動くのは控除より、複数の雇用主にまたがる源泉徴収であることが多いです。"
+    ]
   },
   {
-    question: '2つのバーで同時に働いています。それぞれの雇用主に何を伝える必要がありますか？',
-    answer: '各雇用主にTFNを伝え、雇用主ごとに個別のTax File Number Declaration（TFN宣言書）を記入してください。TFNは自動的には引き継がれません。どの宣言書でも居住区分は「Working Holiday Maker」を選択し、非課税枠の質問には「いいえ」と答えてください。メインの仕事だけでなく、すべての雇用主で同じです。ワーキングホリデーメーカーの税率は年収45,000ドルまで一律15%のため、どちらの仕事にも18,200ドルの居住者向け非課税枠を適用してはいけません。',
+    "kind": "items",
+    "h2": "この仕事に固有の控除",
+    "intro": "衣類には一般的な条件に加えてもう1つ条件があり、飲食のもめごとはほぼそこで起きます。",
+    "items": [
+      {
+        "t": "滑り止めの、つま先が覆われた保護靴",
+        "d": "必要とする現場なら控除できます。バックバーの濡れた床、コーヒーマシン周りの液体、キッチンのパスを横切って運ぶ熱い皿など。普通の靴ではなく保護靴として扱われるのは、具体的な安全上の役割を果たしているからで、色は関係ありません。"
+      },
+      {
+        "t": "コックコートとチェック柄のコックパンツ",
+        "d": "職種特有の衣類、つまり特定の職業の人だと分かる服で、他の場所で着れば場違いになるものです。ロゴ入り制服とは別に認められたカテゴリーで、シェフには衣類の控除があり、ウェイターには通常ないのはこのためです。"
+      },
+      {
+        "t": "ロゴ入り必須制服の洗濯",
+        "d": "雇用主がロゴ入り、または明確に識別できるデザインの制服を義務づけている場合、洗濯が控除できます。仕事着だけの洗濯なら1回1ドル、私服と一緒なら1回50セントです。年間の洗濯控除が150ドルを超えたら、概算ではなく簡単な記録が必要です。"
+      },
+      {
+        "t": "RSAやFood Safety Supervisorの更新",
+        "d": "すでに持っている資格を、その資格が必要な仕事に就いている状態で更新する費用は控除できます。最初の取得は控除できません。それは仕事に就く資格を得るための費用で、仕事をするための費用ではないからです。ATOは最初の運転免許にも同じ考え方を使います。"
+      },
+      {
+        "t": "自費で買った包丁やキッチン道具",
+        "d": "ナイフケース、自前の包丁、温度計、スライサー。1点300ドル以下なら購入年に全額控除できます。合計300ドル以上のセットとして買った場合は1つの資産として扱われ、個々の品が300ドル未満でも耐用年数にわたって配分します。"
+      },
+      {
+        "t": "自費で買ったエプロン、手袋、保護具",
+        "d": "耐熱手袋、耐切創手袋、保護用エプロン。仕事の危険から身を守るもので、雇用主が支給も払い戻しもしていない場合に控除できます。"
+      }
+    ]
   },
   {
-    question: 'チップは課税対象になりますか？',
-    answer: 'はい、課税対象です。給与システムを通じて支払われるチップやサービス料（プールされたチップやトロンク制度によるものを含む）は給与の一部として扱われ、すでに課税済みで、インカムステートメントにも反映されています。お客様から直接手渡しされる現金のチップも同様に課税対象ですが、誰もそれを記録してくれません。ご自身で簡単な記録をつけ、合計額を申告する責任があります。',
+    "kind": "answer",
+    "h2": "飲食の控除には何の裏づけが要りますか？",
+    "paras": [
+      "テストはどこでも同じ3つです。自分のお金だったこと、返してもらっていないこと、申告する収入を得るために使ったこと。店舗なら、靴とナイフケースの領収書、制服規程の文書、そして洗濯が増えてきたときの回数のメモです。",
+      "金額、日付、支払先、内容が分かる記録なら、領収書でも請求書でも銀行明細でもスマホの写真でも構いません。5年間は保管してください。その年の仕事関連の控除が合計300ドル以下なら書面の証拠は不要ですが、金額の根拠は説明できる必要があります。ナイフセットを一度に償却するか耐用年数で配分するかを決める300ドルとは、別のルールです。"
+    ]
   },
   {
-    question: 'カジュアルの飲食業の仕事でもスーパーアニュエーションはもらえますか？',
-    answer: 'はい、もらえます。カジュアルの仕事でも他の仕事と同様に、雇用主は最初の1ドルから給与に加えて12%のスーパーを支払う義務があります。毎月の最低収入基準は現在はありません。複数の職場で働く場合、それぞれの雇用主が独立してスーパーを支払うため、拠出先が複数のファンドに分かれることがあります。',
+    "kind": "traps",
+    "h2": "飲食で働く人がよく間違えることは？",
+    "intro": "衣類のルールは全員が引っかかりますし、理不尽に感じるからこそ引っかかります。取りこぼしのほうは目立たず、経費より賃金にまつわるものが中心です。",
+    "wrong": [
+      {
+        "t": "店が指定する黒一色の服",
+        "d": "無地の黒いパンツ、無地の黒いシャツ、ロゴのない黒い靴。仕事のためだけに持っていて、自分では選ばず、それがないと帰されます。それでも関係ありません。ATOが見るのは品物であり、誰がどこでも着られる普段着はドレスコードが何と言おうと私的な支出です。"
+      },
+      {
+        "t": "最初のRSA",
+        "d": "仕事に就く前に払った資格の費用は、雇ってもらえる状態になるための費用であり私的なものです。働き始めて、続けるために更新が必要になった時点で更新費用は控除できます。同じ資格でも、最初のシフトのどちら側にあるかで答えが変わります。"
+      },
+      {
+        "t": "接客基準のための美容院、身だしなみ、化粧品",
+        "d": "身だしなみは、店に文書化された基準があっても私的なままです。飲食において髪を切る費用が仕事の経費になるパターンはありません。"
+      },
+      {
+        "t": "シフト中の食事や閉店後の1杯",
+        "d": "まかないも閉店後の飲み物も私的です。自分で払っても、割引でも、無料でも同じです。仕事中に食べたからといって、食事が控除になることはありません。"
+      },
+      {
+        "t": "申告から抜けた現金のチップ",
+        "d": "これは逆方向の間違いです。直接手渡されたチップは、誰も記録していなくても課税対象の収入です。プールされたチップやサービス料が給与経由で支払われている場合はすでにインカムステートメントに入っていますが、現金は自分で申告するもので、任意ではありません。"
+      }
+    ],
+    "missed": [
+      {
+        "t": "1年分の制服の洗濯",
+        "d": "週に数ドルですが、シャツを洗うことが税金の話だと思う人がほとんどいないため、ほぼ誰も申告しません。1年分のシフトでは実際の金額になりますし、ATOが単価を公表しているので概算する必要もありません。"
+      },
+      {
+        "t": "「服は無理」だと思って諦める滑り止めの靴",
+        "d": "飲食の衣類は控除できないという正しい情報を読み、それを保護靴にまで誤って当てはめてしまう例です。保護靴は別のカテゴリーで、控除できます。"
+      },
+      {
+        "t": "2つ目、3つ目の雇用主の誤った源泉徴収",
+        "d": "店があなたのTax File Number Declarationを受け取っていない、またはワーキングホリデーメーカーの雇用主として登録していない場合、15%よりはるかに多く徴収されます。失われるわけではありませんが、すべての雇用主をまとめた申告をして初めて戻ります。"
+      },
+      {
+        "t": "3つの基金に散らばったスーパーアニュエーション",
+        "d": "どの店も最初の1ドルから給与とは別に12%のスーパーを払い、月額の最低基準もありません。カジュアルを4つ掛け持ちすれば口座が4つになり、それぞれ手数料がかかりますが、多くの人は1つしか見つけられません。"
+      },
+      {
+        "t": "制服代を違法に天引きしていた店",
+        "d": "控除の話ではありません。制服、洗濯、破損、レジの不足分などを賃金から差し引くのはFair Work Actのもとでほぼ違法で、これは税ではなく返金の問題です。"
+      }
+    ]
   },
   {
-    question: 'ある雇用主だけ、他よりも税金が多く源泉徴収されています。なぜですか？',
-    answer: '多くの場合、その雇用主がまだあなたのTax File Number Declaration（TFN宣言書）を受理していないか、ワーキングホリデーメーカー税率での源泉徴収登録をしていないことが原因です。いずれの場合も、状況が解消されるまでは通常よりも高い税率で源泉徴収することが義務付けられています。お金が失われるわけではありません。すべての雇用主からの収入がタックスリターン上で合算されると、総収入に対して正しい15%の税率が適用され、多く引かれていた分は還付されます。',
-  },
-  {
-    question: 'RSA資格や応急処置資格の費用は控除できますか？',
-    answer: 'はい、できます。職務上必要な場合、RSA（責任あるアルコール提供）資格の取得・更新費用は控除の対象になります。応急処置資格の保有が仕事の一部である場合も同様です。証拠として、研修機関発行のレシートを保管しておいてください。',
-  },
+    "kind": "answer",
+    "h2": "調べるのではなく判断が要るのはどこですか？",
+    "paras": [
+      "まず衣類です。ある品が必須制服かどうかは、どれだけ識別性があるか、雇用主が義務づけているかで決まります。靴が保護具かどうかは、あなたの店にある危険で決まります。制服規程の文書と品物の写真があれば、たいていどちらかに結論が出ます。",
+      "専門家の目が効くのは収入側です。ワーキングホリデーメーカーには非課税枠がないので、どの店のTax File Number Declarationでも、この質問の正しい答えは「いいえ」です。ただしAddy判決が適用されるなら、その前提はひっくり返ります。イギリス、ドイツ、日本のパスポート保持者で税務上オーストラリア居住者だった人に起こりうることです。カジュアル3つ掛け持ち、年度途中の入国、落ち着いた住所という条件がそろえば、現実の論点になります。"
+    ]
+  }
 ]
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-    { '@type': 'ListItem', position: 2, name: '経費', item: `${SITE_URL}/ja/expenses` },
-    { '@type': 'ListItem', position: 3, name: 'ホスピタリティ', item: `${SITE_URL}/ja/expenses/hospitality` },
-  ],
-}
+const FAQS = [
+  {
+    "question": "黒い仕事靴とパンツは控除できますか？",
+    "answer": "ロゴのない無地の黒い衣類は、店のドレスコードで指定されていても控除できません。ATOが制服ではなく普通の衣類として扱うためです。滑り止めでつま先が覆われた靴は別です。バックバーの濡れた床や忙しいキッチンのパスのために必要なら、保護靴として色に関係なく控除できます。"
+  },
+  {
+    "question": "RSAの費用は控除できますか？",
+    "answer": "すでに持っているRSAを、それが必要な仕事をしている状態で更新する費用は控除できます。最初の取得は控除できません。それは雇ってもらえる状態になるための費用であって、すでに就いている仕事をするための費用ではないからです。Food Safety Supervisor資格や最初の運転免許にも同じ区別が当てはまります。"
+  },
+  {
+    "question": "チップは課税されますか？",
+    "answer": "はい、すべてです。給与経由で支払われるチップやサービス料は、プールやトロンク方式であっても給与の一部で、すでに課税済みでインカムステートメントにも載っています。直接手渡される現金も同じく課税対象ですが、誰も記録していないので、簡単なメモを付けて自分で合計を申告する必要があります。"
+  },
+  {
+    "question": "3店舗で働いています。各TFN申告書には何を書きますか？",
+    "answer": "雇用主ごとにTax File Number Declarationが必要です。TFNは新しい職場に自動では引き継がれません。それぞれで居住区分としてワーキングホリデーメーカーを選び、非課税枠の質問には「いいえ」と答えます。最も稼いでいる店を含め、すべての店で同じです。ワーキングホリデーメーカーはどの雇用主からも非課税枠を受けられないので、どこかで「はい」と答えると源泉徴収が不足し、後で納税額として跳ね返ります。"
+  },
+  {
+    "question": "カジュアルの仕事でもスーパーはもらえますか？",
+    "answer": "はい。雇用主はカジュアルでも最初の1ドルから、給与とは別に12%のスーパーを支払います。月額の最低収入基準はありません。店ごとに独立して支払われるので、掛け持ちすると複数の基金に分散するのが普通です。オーストラリアを離れる前に探し出しておく価値があります。"
+  }
+]
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: '飲食業の税金控除：RSA資格・制服・チップの扱い（ワーホリ向け）',
-  description: '飲食業で働く人が控除できるものと、複数のカジュアル勤務を掛け持ちするワーキングホリデーメーカーが陥りやすい非課税枠の間違いを解説。',
-  url: `${SITE_URL}/ja/expenses/hospitality`,
-  inLanguage: 'ja',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
-}
+const GUIDES = [
+  {
+    "href": "/ja/blog/hospitality-award-working-holiday-makers",
+    "label": "Hospitality Awardと本来もらえる時給",
+    "desc": "カジュアル手当と割増、店側が間違えやすい点。"
+  },
+  {
+    "href": "/ja/blog/uniform-laundry-deductions-illegal-australia",
+    "label": "制服代やクリーニング代を給料から引かれたら",
+    "desc": "違法な天引きの見分け方と、取り戻し方。"
+  },
+  {
+    "href": "/ja/blog/tax-deductions-working-holiday-makers",
+    "label": "ワーキングホリデーの控除リスト",
+    "desc": "すべてのカテゴリーと、ATOが認めないもの。"
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/ja/tax-return",
+    "label": "タックスリターン"
+  },
+  {
+    "href": "/ja/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/ja/superannuation",
+    "label": "スーパーアニュエーション"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  inLanguage: 'ja',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
-const linkStyle = { color: '#0B5240', textDecoration: 'underline' }
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
+}
 
-export default function HospitalityExpensesPageJA() {
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "飲食の経費控除：RSA、靴、制服、チップ",
+  description: "滑り止めの靴とコックコートは控除できます。店が指定する黒一色の服は控除できません。",
+  url: `${SITE_URL}/ja/expenses/hospitality`,
+  inLanguage: "ja-JP",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/ja/expenses/hospitality#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/ja/expenses/hospitality`,
+}
+
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
+  return (
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"ja"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
+    </div>
+  )
+}
+
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="パンくずリスト" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/ja" style={{ color: '#587066' }}>ホーム</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/ja/expenses" style={{ color: '#587066' }}>経費</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>ホスピタリティ</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '24ch' }}>
-                <span style={{ color: '#0B5240' }}>飲食業で働く人</span>が確定申告で控除できるものとは？
-              </h1>
-              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '50ch' }}>
-                バーやカフェ、レストランでの給与計算自体はシンプルです。ワーキングホリデーメーカーにとって本当の落とし穴は、2つ、3つのカジュアルな仕事を同時に掛け持ちすること。まず気をつけたいのが、TFN宣言書にある非課税枠（タックスフリースレッショルド）の質問です。
-              </p>
-            </div>
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}
+              <span style={{ color: FOREST }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
           </div>
         </section>
 
-        {/* ── WORKING MORE THAN ONE JOB (this page's unique hook) ──────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                複数の飲食業の仕事を同時に掛け持ちする場合
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                飲食業では、同じ週に2つ、3つのカジュアルな仕事を掛け持ちするのは珍しくありません。あるカフェでのランチタイムのシフト、レストランでのディナータイムの仕事、週末のバーでのシフトといった具合です。これ自体はまったく普通のことで、何も問題はありません。大切なのは、メインの仕事だけでなく、すべての雇用主に対して1つの書類を正しく提出することです。
-              </p>
-            </div>
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
 
-            <p className="font-semibold text-center" style={{ fontSize: '13px', color: '#0B5240', marginBottom: '16px' }}>
-              新しい雇用主ごとに、次の3つが必要です：
-            </p>
-            <div className="max-w-[680px] mx-auto" style={{ marginBottom: '28px' }}>
-              <div className="flex flex-col gap-3">
-                {EMPLOYER_CHECKLIST.map((c, i) => (
-                  <div key={i} className="taxres-condition-item">
-                    <span className="taxres-condition-num">{i + 1}</span>
-                    <p className="taxres-condition-text">{c}</p>
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
+
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-            <div className="max-w-[680px] mx-auto">
-              <div className="taxres-savings-box">
-                <div>
-                  <p className="taxres-savings-heading">オーストラリア居住者向けのルールとは異なります</p>
-                  <p className="taxres-savings-body">
-                    オーストラリア人の友人や同僚から、「非課税枠は一番収入が多い仕事だけで申請すればいい」と聞くことがあるかもしれません。しかしそれは税務上の居住者向けのアドバイスで、居住者は毎年最初の18,200ドルの所得が非課税になります。417・462ビザで働くあなたには当てはまりません。ワーキングホリデーメーカーには、そもそもどの雇用主からも非課税枠が一切適用されないため、記入するすべてのTFN宣言書で正しい答えは「いいえ」です。どんなに小さなシフトの仕事であっても「はい」と答えてしまうと、その雇用主の源泉徴収が不足し、タックスリターンを提出した時点でその不足分が納税額として請求されることになります。
-                  </p>
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
                 </div>
+              )}
+            </div>
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"ja"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
               </div>
-            </div>
-
-            <div className="max-w-[680px] mx-auto" style={{ marginTop: '22px' }}>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                ここで起こりうる問題は2種類あり、その場では同じようには感じられません。どこかで非課税枠の質問に「はい」と答えてしまうと、その雇用主ではその後も源泉徴収が不足したままとなり、<Link href="/ja/tax-return" style={linkStyle}>タックスリターン</Link>を提出した時点でその不足分が納税額として請求されます。逆に、新しい雇用主に宣言書を提出し忘れたり、ATOにワーキングホリデーメーカー税率での源泉徴収登録をしていない雇用主のもとで働いたりすると、反対のことが起こります。その仕事の分だけ税金が引かれすぎるのです。ただし、お金が失われるわけではありません。すべての雇用主のインカムステートメント（年間の収入報告書）がタックスリターン上で合算されると、総収入に対して正しい15%の税率が適用され、引かれすぎていた分は還付金の一部として戻ってきます。
-              </p>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                スーパーアニュエーションは、これらとは完全に別の話です。カジュアルの飲食業の仕事でも、他の仕事と同様に、雇用主は最初の1ドルから給与に加えて<Link href="/ja/superannuation" style={linkStyle}>12%のスーパー</Link>を支払う義務があります。2022年7月以降、毎月の最低収入基準はありません。複数の職場で働いていると、スーパーが複数のファンドに分かれてしまうことも珍しくありませんが、それでもすべてあなたのお金であり、オーストラリアを離れる前に当社が見つけ出すお手伝いをします。
-              </p>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                それぞれの職場でTFN宣言書が正しく設定されているか不安な場合は、当社の<Link href="/ja/tfn" style={linkStyle}>TFNページ</Link>で、各雇用主が何を必要としているのか、その理由も含めて詳しく解説しています。
-              </p>
-            </div>
+            ))}
           </div>
         </section>
 
-        {/* ── TIPS, PENALTY RATES & CASUAL LOADING ─────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                チップ、ペナルティレート、カジュアルローディングは課税対象ですか？
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch' }}>
-                結論から言うと、はい、すべて課税対象です。飲食業の給与の種類ごとに、実際にどう扱われるかを見ていきましょう。
-              </p>
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
+              ))}
             </div>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              カジュアルローディングや、夜間・週末・祝日のペナルティレートは、別枠やインフォーマルな支払いではありません。これらは通常の給与の一部であり、他の給与と同じように課税され、給与明細やインカムステートメントに記載されている総支給額にすでに含まれています。
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              チップやサービス料も同じ扱いです。お店がチップをプールしたり、会計にサービス料を上乗せしたりして給与システムを通じて支払う場合（トロンク制度と呼ばれることもあります）、その金額はあなたの給与の一部です。他の給与と同じように税金が源泉徴収され、インカムステートメントにもすでに反映されています。<Link href="/ja/tax-return" style={linkStyle}>タックスリターン</Link>を作成する際、それとは別に何かする必要はありません。
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              お客様から直接手渡しされる現金も課税対象です。ただ、それは誰も記録してくれません。日付とおおよその金額を簡単にメモしておく程度で構いませんので、ご自身で記録をつけ、タックスリターンの際に合計額を所得として申告する責任があります。
+
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
         </section>
 
-        {/* ── WHAT YOU CAN / CAN'T CLAIM ───────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                控除できるもの・できないもの
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                実際に控除できる、仕事に関連した経費を簡潔にまとめました。あわせて、職場で義務付けられていても無地の黒い仕事着が対象外になる理由も解説します。
-              </p>
-            </div>
-
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              給与以外にも、飲食業で働く人が控除できる、仕事に関連した経費が実際にいくつかあります。判断基準はどの職業でも共通で、自分で支払ったこと、収入を得ることに直接関係していること、そしてレシートを提示できることです。衣類についてはさらに追加の基準があり、飲食業で働く人の多くがここでつまずきます。
-            </p>
-
-            <h3 className="font-serif font-black" style={{ fontSize: 'clamp(16px,1.7vw,19px)', color: '#0B5240', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              RSA資格・応急処置資格
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              職務上、有効なRSA（責任あるアルコール提供）資格の保有が必要な場合、取得・更新にかかった費用は控除の対象になります。応急処置資格の保有が職務上必要な場合も同様です。どちらも、報酬を得ている仕事をするための資格を得るための直接的な費用であり、これはまさに控除の判断基準が求めているものです。どのみち身につけていたであろう一般的なスキルとは異なります。
-            </p>
-
-            <h3 className="font-serif font-black" style={{ fontSize: 'clamp(16px,1.7vw,19px)', color: '#0B5240', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              滑り止め付きの保護靴
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              滑り止め付きのつま先を覆う靴は、仕事上本当に必要な場合、控除の対象になります。たとえば、バーの濡れた床、コーヒーマシン周りのこぼれた液体、キッチンパスで熱い皿を運ぶ場面などです。これらは普段の靴とは異なる「保護靴」というカテゴリーとして扱われます。ドレスコードを満たすためではなく、特定の安全上の役割を果たしているからです。
-            </p>
-
-            <h3 className="font-serif font-black" style={{ fontSize: 'clamp(16px,1.7vw,19px)', color: '#0B5240', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              必須の制服のクリーニング代
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              雇用主のロゴが入った制服の着用が義務付けられている場合、そのクリーニング代は控除の対象になります。税務上、それを普段着ではなく「制服」たらしめているのはロゴの存在です。仕事以外では自分から選んで着ることのない、義務的かつ特徴的なアイテムだからです。
-            </p>
-
-            <h3 className="font-serif font-black" style={{ fontSize: 'clamp(16px,1.7vw,19px)', color: '#B54708', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              控除できないもの
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              無地の黒いパンツ、無地の黒いシャツ、ロゴのない無地の黒い靴は、職場のドレスコードで義務付けられていても控除の対象にはなりません。これは最も多くの人がつまずくポイントです。仕事のためだけに購入した服で、普段なら全身黒でコーディネートすることもなかったはずなのに、不公平に感じられるからです。しかしATOが見ているのは、なぜそれを購入したかではなく、そのアイテムが実際に何であるかです。無地の黒い服は、雇用主のドレスコードの内容にかかわらず、誰でもどこでも着られる普通の普段着とみなされます。
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              控除対象の制服として認められるには、上記の滑り止め靴のように職業に特有であるか保護的な役割を持つか、あるいはロゴのように本当に特徴的な必須の制服である必要があります。雇用主がドレスコードに厳格であっても、それだけでアイテムのカテゴリーが変わるわけではありません。マネージャーがどれだけ強く求めても、無地の黒いシャツはあくまで無地の黒いシャツであり、誰がどこで着ても変わりません。
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              他の仕事も掛け持ちしている方、他の職業と比べてみたい方は、<Link href="/ja/expenses" style={linkStyle}>職業別の控除ガイド</Link>をご覧ください。
-            </p>
-          </div>
-        </section>
-
-        {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }} className="lg:py-14">
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">よくあるご質問</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  飲食業の税金に関するご質問
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  掲載されていないご質問もお気軽にお問い合わせください。
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-        <NextStep
-          eyebrow="次のステップ"
-          heading="複数の仕事の掛け持ちでも大丈夫です。"
-          body="すべての雇用主でTFN宣言書を正しく提出できたら、次のステップは飲食業の収入をすべてまとめてタックスリターンを提出することです。"
-          cta="タックスリターンに進む →"
-          href="/ja/tax-return"
-        />
-
-        {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません。特に雇用主が複数になると、一人ひとりの状況は少しずつ異なります。当社でお手続きいただく際には、ワーホリ専門のチームが、お客様の給与明細やインカムステートメントを一つひとつ確認し、非課税枠の回答、控除、チップがすべて正しく反映されるようにいたします。
-            </p>
-            <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              税金の還付金を受け取る →
-            </Link>
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/ja/tax-form" lang="ja" />
+
+      <MobileCta href={WA} lang={"ja"} topic="expenses" />
     </>
   )
 }

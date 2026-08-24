@@ -89,12 +89,23 @@ export default function MobileTOC({
 
   return (
     <>
-      {/* Floating button */}
+      {/* Floating button.
+          Moved to the bottom left. It used to sit bottom right, 16px above the
+          global back to top button: two identical green circles, same size,
+          same colour, in the one corner a thumb lands in. Hitting back to top
+          by accident on a 7,000px article costs the reader their place.
+          It also clears the sticky CTA bar and the home indicator inset. */}
       <button
         className="mobile-toc-button has-toc"
         onClick={() => setOpen(true)}
         aria-label={ui.openLabel}
         aria-expanded={open}
+        style={{
+          left: '20px',
+          right: 'auto',
+          bottom: 'calc(84px + env(safe-area-inset-bottom, 0px))',
+          zIndex: 45,
+        }}
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <line x1="8" y1="6" x2="21" y2="6" />
@@ -106,26 +117,41 @@ export default function MobileTOC({
         </svg>
       </button>
 
-      {/* Overlay */}
+      {/* Overlay. Raised above the sticky CTA bar (z 60) so the bar does not
+          sit on top of the dim while the drawer is open. */}
       <div
         className={`mobile-toc-overlay ${open ? 'open' : ''}`}
         onClick={() => setOpen(false)}
         aria-hidden="true"
+        style={{ zIndex: 65 }}
       />
 
-      {/* Panel */}
+      {/* Panel.
+          The drag handle is gone. It was a 40x4 pill that looked draggable and
+          was not: the panel has no drag gesture, so the affordance was a
+          promise the component could not keep. Rather than build a gesture
+          tonight, the affordance goes and the close button does the work. */}
       <div
         className={`mobile-toc-panel ${open ? 'open' : ''}`}
         role="dialog"
         aria-label={ui.tocLabel}
         aria-modal="true"
+        aria-hidden={!open}
+        // Keeps the closed panel's links out of the tab order and the screen
+        // reader rotor. It is only translated off screen, not removed.
+        {...(!open ? ({ inert: '' } as Record<string, string>) : {})}
+        style={{
+          zIndex: 66,
+          visibility: open ? 'visible' : 'hidden',
+          // Keeps the stylesheet's slide and delays the visibility flip until
+          // it has finished, so closing still animates.
+          transition: `transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear ${open ? '0s' : '0.3s'}`,
+        }}
       >
-        <div className="mobile-toc-panel-handle" aria-hidden="true" />
-
-        <div style={{ padding: '4px 24px 32px' }}>
+        <div style={{ padding: '20px 24px 32px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <div>
-              <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#2FA880', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '4px' }}>
+              <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#16775C', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '4px' }}>
                 {ui.onThisPage}
               </p>
               <p className="font-serif" style={{ fontSize: '17px', fontWeight: 700, color: '#080F0D', margin: 0, letterSpacing: '-0.015em' }}>
@@ -134,7 +160,7 @@ export default function MobileTOC({
             </div>
             <button
               onClick={() => setOpen(false)}
-              style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#587066' }}
+              style={{ background: 'transparent', border: 'none', cursor: 'pointer', width: '44px', height: '44px', margin: '-10px -10px 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#587066' }}
               aria-label={ui.closeLabel}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -156,9 +182,10 @@ export default function MobileTOC({
                         display: 'block',
                         width: '100%',
                         textAlign: 'left',
-                        padding: '10px 12px',
+                        minHeight: '44px',
+                        padding: '12px',
                         marginLeft: '-2px',
-                        fontSize: '14px',
+                        fontSize: '15px',
                         color: isActive ? '#0B5240' : '#587066',
                         background: isActive ? '#F7F9F8' : 'transparent',
                         textDecoration: 'none',

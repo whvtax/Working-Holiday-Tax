@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { WA_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'ページが見つかりません | Working Holiday Tax',
+  title: 'ページが見つかりません',
   description: 'お探しのページは存在しません。トップページにお戻りください。',
   robots: { index: false, follow: true },
 }
@@ -29,14 +29,14 @@ export default function NotFoundJA() {
           className="font-light text-muted leading-[1.7] max-w-[380px] mx-auto mb-8"
           style={{ fontSize: '14px' }}
         >
-          お探しのページは存在しません。トップページよりご利用ください。
+          お探しのページは見つかりませんでした。トップページからお探しください。
         </p>
         <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
           <Link href="/ja" className="btn-primary" style={{ height: '46px', padding: '0 24px', fontSize: '13.5px' }}>
             トップページへ →
           </Link>
           <a
-            href={WA_URL}
+            href={waUrl({ topic: 'general', lang: 'ja' })}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-ghost-dark"

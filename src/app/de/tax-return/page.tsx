@@ -1,586 +1,548 @@
 import type { Metadata } from 'next'
+import type { CSSProperties } from 'react'
+import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
-import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
-import { NextStep } from '@/components/ui/NextStep'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { NextStep } from '@/components/ui/NextStep'
+import { SITE_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
+import { WaLink } from '@/app/HomeWa'
 
+// ─── METADATA ───────────────────────────────────────────────────────────
+// Diese Seite beantwortet die transaktionale Suche: jemand hat sich bereits
+// entschieden und will wissen, was als Nächstes passiert. Die Startseite
+// gehört der informationalen Seite ("warum nicht selbst machen"), deshalb
+// wiederholt hier nichts ihren Hero, ihre drei Zahlen oder den myGov-Vergleich.
+// Kein Preis im Titel, in der Beschreibung oder im Schema, und keine
+// Behauptung, selbst ein registrierter Steuerberater zu sein.
 export const metadata: Metadata = {
-  title: "Du hast wahrscheinlich zu viel Steuer gezahlt | Steuererklärung Australien",
-  description: "Steuern zurück aus Australien, ohne myGov und ohne Formulare. Wir bearbeiten deine 417/462-Steuererklärung, holen die Medicare-Levy-Befreiung und jeden Abzug, der dir zusteht - auch nach deiner Rückkehr nach Deutschland.",
+  // Das Root-Layout hängt " | Working Holiday Tax" an, deshalb ist der Titel
+  // hier kurz genug, dass das Ganze in ein mobiles Suchergebnis passt.
+  title: 'Steuererklärung Australien ohne myGov',
+  description:
+    'Pass und australisches Bankkonto, keine Payslips. Wir holen deine ATO-Daten, bereiten die Erklärung vor und reichen ein. Rückerstattung in 14 Werktagen.',
   keywords: [
-    'Steuerrückerstattung Australien',
-    'Steuerrückerstattung Australien Working Holiday',
-    'Working Holiday Steuerrückerstattung',
-    'WHV Steuerrückerstattung',
-    'Steuerrückerstattung 417 Visum',
-    'Steuerrückerstattung 462 Visum',
-    'Backpacker Steuerrückerstattung Australien',
-    'Working Holiday Maker Steuerrückerstattung',
-    'Steuer zurückholen Australien Backpacker',
-    'Steuer zurück Australien',
-    'Steuer zurück Australien Working Holiday',
-    'Steuer zurück Australien Backpacker',
-    'Steuern zurück aus Australien',
-    'Du hast wahrscheinlich zu viel Steuer gezahlt. Working Holiday',
-    'Du hast wahrscheinlich zu viel Steuer gezahlt. Backpacker',
-    'WHV Steuererklärung',
-    '417 Visum Steuererklärung',
-    '462 Visum Steuererklärung',
-    'Steuererklärung einreichen Australien',
-    'Du hast wahrscheinlich zu viel Steuer gezahlt. nach Rückkehr',
-    'Du hast wahrscheinlich zu viel Steuer gezahlt. nach Heimkehr',
-    'Du hast wahrscheinlich zu viel Steuer gezahlt. aus Deutschland',
-    'Steuerrückerstattung nach Australien Aufenthalt',
-    'Steuerrückerstattung Backpacker Rechner',
-    'wie viel Steuern zurück Australien',
-    'wie bekomme ich Steuern zurück Australien',
-    'Steuererklärung Backpacker Deutsch',
-    'Work and Travel Steuerrückerstattung',
-    'Work and Travel Steuer zurück',
-    'Steueragent Australien Deutsch',
-    'Notice of Assessment Australien Deutsch',
-    'PAYG Summary verstehen',
+    'Steuererklärung Australien machen lassen',
+    'Steuererklärung Australien einreichen',
+    'Steuererklärung Australien aus Deutschland',
+    'Steuererklärung 417 Visum',
+    'Steuererklärung 462 Visum',
+    'Steuer zurück Australien nach Rückkehr',
+    'Steuererklärung Australien ohne Payslip',
+    'Income Statement ATO Working Holiday',
+    'Steuererklärung Australien Vorjahre',
+    'wie lange dauert Steuerrückerstattung Australien',
+    'Steuererklärung Australien Ablauf',
+    'Work and Travel Steuererklärung einreichen',
+    'Backpacker Steuererklärung Australien',
+    'Steuererklärung Australien Hilfe deutsch',
   ],
-  alternates: { canonical: '/de/tax-return', languages: { 'en-AU': '/tax-return', 'de': '/de/tax-return', 'ja': '/ja/tax-return', 'x-default': '/tax-return' } },
+  alternates: {
+    canonical: `${SITE_URL}/de/tax-return`,
+    languages: {
+      'en-AU': `${SITE_URL}/tax-return`,
+      de: `${SITE_URL}/de/tax-return`,
+      ja: `${SITE_URL}/ja/tax-return`,
+      'x-default': `${SITE_URL}/tax-return`,
+    },
+  },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Steuererklärung für Working Holiday Maker in Australien einreichen lassen' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: "Du hast wahrscheinlich zu viel Steuer gezahlt | Steuererklärung Australien",
-    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Spezialisiert auf Backpacker - alles online, auch aus Deutschland.',
+    title: 'Steuererklärung Australien ohne myGov (417 & 462)',
+    description:
+      'Dein Pass und deine Bankdaten. Wir lesen die ATO-Daten, bereiten die Erklärung vor, du unterschreibst, wir reichen ein. Rückerstattung in 14 Werktagen.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Steuerrückerstattung Australien | WHV Steuererklärung',
-    description: 'Steuerrückerstattung als Working Holiday Maker (417/462) - alles online erledigt.',
+    title: 'Steuererklärung Australien ohne myGov (417 & 462)',
+    description: 'Pass, Bankdaten, keine Payslips. Du unterschreibst, wir reichen ein, Rückerstattung in etwa 14 Werktagen.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
-const faqs = [
-  {
-    question: 'Was ist das Addy-Urteil und betrifft es mich?',
-    answer: 'Der australische High Court hat im November 2021 entschieden, dass die Backpacker-Steuer gegen den Gleichbehandlungsartikel im Doppelbesteuerungsabkommen verstößt. Die ATO wendet das Urteil auf Working Holiday Maker an, die steuerlich in Australien ansässig waren und die Staatsangehörigkeit von Großbritannien, Chile, Finnland, Deutschland, Japan, Norwegen oder der Türkei haben. Deutschland ist dabei, Österreich und die Schweiz nicht. Entscheidend ist die steuerliche Ansässigkeit, die die wenigsten erfüllen, aber wer länger an einem Ort geblieben ist, kommt durchaus in Frage. Wir prüfen das im Einzelfall.',
-  },
-  {
-    question: 'Was kostet das, und was ist, wenn mir doch nichts zusteht?',
-    answer: 'Die Gebühr ist ein fester Betrag, den wir dir vor jeder kostenpflichtigen Arbeit nennen - nie ein Prozentsatz deiner Erstattung. Ergibt die Prüfung, dass dir keine Erstattung zusteht, entfällt die Gebühr vollständig.',
-  },
-  {
-    question: 'Ich bin schon zurück in Deutschland. Ist es zu spät?',
-    answer: 'Nein. Wir reichen routinemäßig aus dem Ausland ein, auch für zurückliegende Jahre. Deine Income Statements holen wir direkt bei der ATO - verlorene Payslips sind kein Hindernis.',
-  },
-  {
-    question: 'Kann ich das nicht selbst über myTax machen?',
-    answer: 'Kannst du, und bei einem einfachen Jahr ist das eine legitime Wahl. Geld kostet es bei den Residency-Fragen, beim Medicare-Entitlement-Statement, das Wochen vorher bestellt werden muss, und beim Abgleich mehrerer Arbeitgeber - genau das übernehmen wir.',
-  },
-  {
-    question: 'Was ist eine Working Holiday Steuerrückerstattung und bekomme ich eine?',
-    answer: 'Eine Working Holiday Steuerrückerstattung ist das Geld, das dir das ATO (australisches Finanzamt) zurückzahlt, wenn während des Jahres mehr Steuern von deinem Lohn einbehalten wurden, als du tatsächlich schuldest. Wenn du in Australien mit einem 417 oder 462 Visum gearbeitet hast, hast du oft Anspruch - zum Beispiel wenn dein Arbeitgeber den falschen Steuersatz angewendet hat, du absetzbare Werbungskosten hast, oder du nur einen Teil des Steuerjahres gearbeitet hast. Der einzige Weg, das herauszufinden, ist eine Steuererklärung einzureichen.',
-  },
-  {
-    question: 'Muss ich eine Steuererklärung machen, wenn ich nur kurz gearbeitet habe?',
-    answer: 'Ja. Wenn du in Australien Einkommen hattest, musst du eventuell trotzdem eine Steuererklärung einreichen, auch wenn du nur kurz gearbeitet hast. Bei kurzen Aufenthalten wird oft zu viel Steuer einbehalten - die Steuererklärung ist meistens der einzige Weg, die Differenz zurückzuholen.',
-  },
-  {
-    question: 'Kann ich meine Steuerrückerstattung aus Australien beantragen, wenn ich schon zurück in Deutschland bin?',
-    answer: 'Ja. Du kannst deine australische Steuererklärung aus dem Ausland einreichen - egal ob du nach Deutschland, Österreich, in die Schweiz oder sonst wohin zurückgekehrt bist. Wir erledigen den gesamten Prozess online. Deine Steuerrückerstattung muss auf ein australisches Bankkonto überwiesen werden.',
-  },
-  {
-    question: 'Woher weiß ich, ob ich eine Steuerrückerstattung bekomme?',
-    answer: 'Du bekommst eine Steuerrückerstattung, wenn du im Laufe des Jahres mehr Steuern gezahlt hast als nötig. Das passiert bei Working Holiday Makern oft, wenn der falsche Steuersatz angewendet wurde, deine TFN zu spät hinterlegt war, oder du absetzbare Kosten hast. Wir prüfen deine Situation und sorgen dafür, dass deine Erklärung korrekt eingereicht wird und du nichts verpasst, was dir zusteht.',
-  },
-  {
-    question: 'Wie viel Steuerrückerstattung aus Australien bekomme ich?',
-    answer: 'Der Betrag hängt von deiner individuellen Situation ab: dein Einkommen, der einbehaltene Steuerbetrag, dein steuerlicher Wohnsitzstatus, deine Visumsklasse und deine absetzbaren Kosten. Wir können dir keine bestimmte Summe versprechen - was wir machen, ist deine Steuererklärung korrekt einzureichen und jeden Abzug zu beantragen, der dir zusteht.',
-  },
-  {
-    question: 'Wie lange dauert die Steuerrückerstattung?',
-    answer: 'Nach Einreichung bearbeitet das ATO die meisten Steuererklärungen innerhalb von 7 bis 14 Werktagen. In stark frequentierten Zeiten kann es länger dauern. Die Rückerstattung wird dann direkt auf dein angegebenes Konto überwiesen.',
-  }
-  ]
-
-
-const STEPS = [
-  { n: '1', title: 'Erzähl uns deine Situation', body: 'Schick uns deine Einkommens- und Arbeitsdaten, damit wir deine Working Holiday Steuererklärung korrekt vorbereiten können.' },
-  { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Gehaltsabrechnungen und Basisinfos, schnell und einfach, auch aus dem Ausland.' },
-  { n: '3', title: 'Wir kümmern uns um alles',  body: 'Wir reichen deine Steuererklärung direkt beim ATO ein.' },
-  { n: '4', title: 'Dein Bescheid kommt',           body: 'Sobald das ATO deine Steuererklärung bearbeitet hat, wird eine eventuelle Rückerstattung innerhalb von 7-14 Tagen auf dein australisches Bankkonto überwiesen.' },
-]
-
-
-const IconStar = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-    <path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/>
+// ─── ICONS ──────────────────────────────────────────────────────────────
+const IconWhatsApp = () => (
+  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
   </svg>
 )
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  inLanguage: 'de',
-  mainEntity: faqs.map(f => ({
-    '@type': 'Question',
-    name: f.question,
-    acceptedAnswer: { '@type': 'Answer', text: f.answer },
-  })),
-}
+// ─── COPY ───────────────────────────────────────────────────────────────
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/de` },
-    { '@type': 'ListItem', position: 2, name: 'Steuererklärung', item: `${SITE_URL}/de/tax-return` },
-  ],
-}
-
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  '@id': `${SITE_URL}/de/tax-return#service`,
-  name: 'Australische Steuererklärung für Working Holiday Maker',
-  description: 'Komplette Bearbeitung deiner australischen Steuererklärung - Vorbereitung, Optimierung und Einreichung beim ATO.',
-  serviceType: 'Tax Return Preparation',
-  category: 'Tax Preparation Service',
-  url: `${SITE_URL}/de/tax-return`,
-  inLanguage: 'de',
-  areaServed: {
-    '@type': 'Country',
-    name: 'Australia',
+/** Alles, was du beisteuern musst. Drei Dinge, mehr nicht. */
+const NEEDED = [
+  {
+    label: 'Dein Pass und dein Visum',
+    body: 'Welchen Pass du hast und auf welchem Subclass du warst. Dieses Paar entscheidet, welche Steuersätze, welche Abkommensposition und welche Medicare-Regeln für dich überhaupt infrage kommen. Deshalb fragen wir zuerst danach.',
   },
-  audience: {
-    '@type': 'Audience',
-    name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
+  {
+    label: 'Ein australisches Bankkonto',
+    body: 'Das ATO zahlt eine Steuerrückerstattung auf ein australisches Konto aus und sonst nirgendwohin. Wenn deins schon geschlossen ist, sag es gleich am Anfang, denn dadurch ändert sich die Reihenfolge.',
   },
-  provider: {
-    '@type': 'Organization',
-    '@id': `${SITE_URL}/#organization`,
-    name: 'Working Holiday Tax',
-    url: `${SITE_URL}`,
-    description: 'Steuerservice spezialisiert auf Working Holiday Maker.',
-    knowsLanguage: ['de', 'en', 'ja'],
+  {
+    label: 'Ungefähr wo und wann du gearbeitet hast',
+    body: 'Ein Ort, die Art der Arbeit, grobe Monate. Keine korrekt geschriebenen Firmennamen, keine taggenauen Daten. Wir gleichen das mit den ATO-Daten ab und ergänzen den Rest.',
   },
-}
+]
 
+/** Der Ablauf, in der Reihenfolge, in der er passiert, samt Wartezeiten. */
+const SEQUENCE = [
+  {
+    n: '01',
+    title: 'Du schreibst uns',
+    body: 'WhatsApp, auf Deutsch, Englisch oder Japanisch. Du erzählst grob, wie das Jahr aussah, wir sagen dir, wo du stehst, und das Honorar wird vereinbart, bevor irgendetwas beginnt. Während der Geschäftszeiten antworten wir meist innerhalb einer Stunde.',
+  },
+  {
+    n: '02',
+    title: 'Ein Fragebogen, etwa zehn Minuten',
+    body: 'Pass- und Visumsdaten, Bankdaten, die Orte und die Art der Arbeit. Es ist das einzige Formular, das du ausfüllst, und du füllst es genau einmal aus. Was auf dein Jahr nicht passt, lässt du offen, dann fragen wir nach.',
+  },
+  {
+    n: '03',
+    title: 'Wir öffnen deine ATO-Daten',
+    body: 'Jeder Arbeitgeber, der dich gemeldet hat, jedes Income Statement, jeder einbehaltene Dollar und jedes frühere Jahr, das noch offen liegt. Vergessene Jobs und Wochen zum Höchstsatz tauchen fast immer hier auf und nicht in der Erinnerung.',
+  },
+  {
+    n: '04',
+    title: 'Die Beurteilungen, die den Betrag bewegen',
+    body: 'Der steuerliche Wohnsitz für das Jahr, die Wochen vor dem Eingang deiner TFN, ob die Medicare Levy überhaupt deine war, und was deine Art von Arbeit absetzen darf. Das ist der langsame Teil, und genau dafür bezahlst du.',
+  },
+  {
+    n: '05',
+    title: 'Du liest und unterschreibst',
+    body: 'Du bekommst die fertige Erklärung, jede Zahl in normaler Sprache erklärt, und nichts geht ans ATO, bevor du gelesen und die Erklärung unterschrieben hast. Unterschrieben wird elektronisch, das funktioniert auch vom Handy auf der anderen Erdhalbkugel.',
+  },
+  {
+    n: '06',
+    title: 'Es wird eingereicht',
+    body: 'Vorbereitet von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten, und du musst dafür nicht wach sein.',
+  },
+  {
+    n: '07',
+    title: 'Das ATO zahlt aus',
+    body: 'Rückerstattungen kommen meist etwa 14 Werktage nach der Einreichung an, direkt auf das australische Konto, das du uns genannt hast. Fragt das ATO vorher nach, beantworten wir das und sagen dir, worum es ging. Du hörst so oder so von uns.',
+  },
+]
 
+/** Zwei Regeln, die die Reihenfolge ändern, deshalb stehen sie vor Schritt 01. */
+const RULES = [
+  {
+    label: 'Die Rückerstattung geht nur auf ein australisches Konto',
+    body: 'Die Super-Auszahlung (DASP) kann auf ein Konto im Ausland gehen. Eine Steuerrückerstattung nicht. Wenn du dein australisches Konto schließen willst, warte, bis die Rückerstattung da ist, oder sag uns vorher Bescheid.',
+  },
+  {
+    label: 'Frühere Jahre kannst du dir noch holen',
+    body: 'Ein Steuerjahr, für das du nie eingereicht hast, verschwindet nicht von allein. Jedes Jahr ist eine eigene Erklärung und eine eigene Rückerstattung, und wir arbeiten sie vom ältesten an ab, damit nichts halb fertig liegen bleibt.',
+  },
+]
 
-export default function GermanTaxReturnPage() {
+const FAQS = [
+  {
+    question: 'Wie lange dauert eine Steuererklärung für Working Holiday Maker?',
+    answer:
+      'Ab dem Tag, an dem dein Fragebogen da ist, brauchen Vorbereitung und Prüfung bei einem unkomplizierten Jahr wenige Tage. Nach der Einreichung zahlt das ATO die Rückerstattung meist in etwa 14 Werktagen aus. Ein Jahr mit fünf Arbeitgebern, mit über eine ABN abgerechnetem Einkommen oder mit einem Wohnsitz, der begründet werden muss, dauert bei uns länger. Wir sagen dir, welcher Fall deiner ist, statt dich raten zu lassen.',
+  },
+  {
+    question: 'Braucht ihr meine Payslips?',
+    answer:
+      'Nein, und das überrascht die meisten am meisten. Jeder Arbeitgeber, der dich über eine Lohnabrechnung bezahlt hat, hat dem ATO ein Income Statement gemeldet, und daraus entsteht die Erklärung. Verlorene Abrechnungen, ein Job, dessen Namen du nicht mehr weißt, und ein Arbeitgeber, den es nicht mehr gibt, sind normale Ausgangspunkte. Das Einzige, wonach sich Suchen lohnt, sind Belege für berufliche Ausgaben. Gibt es die nicht, beschreib uns die Arbeit, und wir sagen dir, was auch ohne Belege absetzbar ist.',
+  },
+  {
+    question: 'Was muss ich selbst tun?',
+    answer:
+      'Drei Dinge. Den Fragebogen einmal ausfüllen, die fertige Erklärung lesen und sie unterschreiben. Das ist dein kompletter Teil. Du legst kein Behördenkonto an, bestehst keine australische Identitätsprüfung und musst kein ATO-Formular deuten, weil die Einreichung über uns läuft.',
+  },
+  {
+    question: 'Geht das auch, wenn ich Australien schon verlassen habe?',
+    answer:
+      'Ja, und ein großer Teil der Erklärungen, die wir einreichen, gehört Leuten, die längst wieder in Deutschland, Österreich oder der Schweiz sind. Fragebogen, Unterschrift und Einreichung laufen komplett online. Das Einzige, was nicht mitreist, ist die Rückerstattung selbst: Das ATO kann sie nur auf ein australisches Bankkonto auszahlen, die Super-Rückerstattung (DASP) dagegen auch ins Ausland. Wenn dein australisches Konto schon geschlossen ist, schreib es uns in der ersten Nachricht.',
+  },
+  {
+    question: 'Was ist, wenn ich für ein früheres Jahr nie eingereicht habe?',
+    answer:
+      'Das lässt sich jetzt noch nachholen. Jedes Steuerjahr steht für sich, mit eigener Erklärung und eigener Rückerstattung, und an den ATO-Daten sehen wir, welche Jahre noch offen sind. Wir arbeiten sie vom ältesten an ab. Eine späte Erklärung ist für das ATO kein Problem, solange sie kommt, und in den meisten Working-Holiday-Jahren steht am Ende Geld für dich und nicht gegen dich.',
+  },
+  {
+    question: 'Was passiert, wenn am Ende eine Nachzahlung steht?',
+    answer:
+      'Das kommt vor, meistens dann, wenn Einkommen über eine ABN abgerechnet wurde und unterwegs nichts einbehalten worden ist. Du siehst diesen Betrag, bevor irgendetwas eingereicht wird, zusammen mit der Erklärung, wo er herkommt und welche Zahlungswege das ATO anbietet. Ohne deine Unterschrift geht nichts raus, es gibt also keine Variante, in der du es erst hinterher erfährst.',
+  },
+]
+
+const GUIDES = [
+  {
+    href: '/de/blog/how-to-lodge-tax-return-from-overseas',
+    title: 'Einreichen nach der Rückkehr',
+    desc: 'Was aus Deutschland weiter funktioniert, und die Kontoregel, die viele übersieht.',
+  },
+  {
+    href: '/de/blog/tax-residency-working-holiday-makers',
+    title: 'Bist du steuerlich ansässig',
+    desc: 'Die Beurteilung hinter Schritt 04, ausführlich erklärt.',
+  },
+  {
+    href: '/de/blog/tax-deductions-working-holiday-makers',
+    title: 'Was du absetzen kannst',
+    desc: 'Abzüge nach Art der Arbeit, statt einer allgemeinen Liste.',
+  },
+]
+
+const WA_TR = waUrl({ topic: 'tax-return', lang: 'de' })
+
+// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
+const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
+const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.58 }
+const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.62 }
+
+export default function TaxReturnPageDE() {
+  const webPageLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/de/tax-return#webpage`,
+    url: `${SITE_URL}/de/tax-return`,
+    name: 'Steuererklärung Australien machen lassen',
+    description:
+      'Wie eine australische Steuererklärung mit 417- oder 462-Visum eingereicht wird: was wir von dir brauchen, was wir prüfen, wie du unterschreibst und wann die Rückerstattung kommt.',
+    inLanguage: 'de',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    about: { '@id': `${SITE_URL}/#business` },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+  }
+
+  const serviceLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE_URL}/de/tax-return#service`,
+    name: 'Steuererklärung für Working Holiday Maker einreichen',
+    serviceType: 'Steuererklärung Vorbereitung und Einreichung',
+    description:
+      'Australische Steuererklärungen für Inhaber von 417- und 462-Visa. Vorbereitet von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird, auch aus dem Ausland.',
+    provider: { '@id': `${SITE_URL}/#business` },
+    areaServed: { '@type': 'Country', name: 'Australien' },
+    audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 und 462)' },
+    availableLanguage: ['de', 'en', 'ja'],
+    inLanguage: 'de',
+  }
+
+  // Die sieben Schritte, maschinenlesbar. Das ist der eigene Schematyp dieser
+  // Seite: die Startseite beansprucht kein HowTo.
+  const howToLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    '@id': `${SITE_URL}/de/tax-return#howto`,
+    name: 'Wie eine Steuererklärung für Working Holiday Maker eingereicht wird',
+    description:
+      'Die Reihenfolge, in der eine Steuererklärung mit 417- oder 462-Visum vorbereitet und eingereicht wird, von der ersten Nachricht bis zur Rückerstattung.',
+    inLanguage: 'de',
+    totalTime: 'P14D',
+    step: SEQUENCE.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.title,
+      text: s.body,
+    })),
+  }
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'de',
+    mainEntity: FAQS.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  }
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/de` },
+      { '@type': 'ListItem', position: 2, name: 'Steuererklärung', item: `${SITE_URL}/de/tax-return` },
+    ],
+  }
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-          <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
-            <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
-            <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>
+      {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
+
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+            <Link href="/de" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Startseite</Link>
+            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
             <span aria-current="page">Steuererklärung</span>
           </nav>
 
-          <div className="max-w-[560px] lg:max-w-[700px]">
+          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
+            Working Holiday Visum 417 &amp; 462
+          </p>
 
-            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-              <span className="font-medium uppercase"
-                style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
-                Steuererklärung
-              </span>
-            </div>
+          <h1 className="font-serif font-black text-ink hero-animate"
+            style={{ fontSize: 'clamp(27px, 4.6vw, 41px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
+            <span style={{ display: 'block' }}>Dein Pass und deine Bankdaten.{' '}</span>
+            <span style={{ display: 'block', color: '#0B5240' }}>Den Rest übernehmen wir.{' '}</span>
+          </h1>
 
-            <h1 className="font-serif font-black text-ink"
-              style={{
-                fontSize:'clamp(24px,3.2vw,44px)',
-                lineHeight:1.06,
-                letterSpacing:'-0.03em',
-                marginBottom:'10px',
-              }}>
-              {/* Desktop: locked 2 lines - nowrap per line */}
-              <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Du hast wahrscheinlich zu viel Steuer gezahlt.</span>
-                <span style={{ display:'block', color:'#0B5240' }}>Wir holen sie für dich zurück.</span>
-              </span>
-              {/* Mobile: 2 lines with green second line */}
-              <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Du hast wahrscheinlich zu viel Steuer gezahlt.</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>Wir holen sie für dich zurück.</span>
-              </span>
-            </h1>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '52ch', marginBottom: '26px' }}>
+            Keine Payslips, kein myGov-Konto, kein Formular zum Entziffern. Ein Fragebogen, eine Unterschrift,
+            und die Rückerstattung kommt etwa 14 Werktage nach der Einreichung.
+          </p>
 
-            <p className="font-semibold text-ink"
-              style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
-              
-              Den meisten Working Holiday Makern steht Geld zu, und sie holen es nie ab.
-            
+          <div className="hero-animate-delay-2">
+            <WaLink href={WA_TR} position="hero" topic="tax-return" lang="de"
+              className="btn-primary inline-flex items-center justify-center gap-2"
+              style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '340px', width: '100%' }}>
+              <IconWhatsApp />
+              Schreib uns auf WhatsApp
+            </WaLink>
+            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+              Antwort in ca. einer Stunde. Frag einfach.
             </p>
+          </div>
 
-            <p className="font-light"
-              style={{
-                fontSize:'clamp(13px,1.2vw,15px)',
-                lineHeight:1.65,
-                color:'rgba(10,15,13,0.58)',
-                maxWidth:'48ch',
-                marginBottom:'0',
-              }}>
-              <span>Für 417 und 462 Visuminhaber. Die meisten Steuererklärungen reichen wir innerhalb von 24 Stunden ein - auch nach deiner Rückkehr aus Australien.</span>
-            </p>
-
-            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
-              style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
-                Steuererklärung starten →
-              </a>
-              <a href="#how-it-works"
-                className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
-                So funktioniert es →
-              </a>
-            </div>
-
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['Vertraut von Backpackern',<GoogleRating key="rating" variant="pill" lang="de" />,'International','~1 Std. Antwortzeit'].map((t,i) => (
-                <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                  style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
-                </span>
-              ))}
-            </div>
+          <div className="flex" style={{ marginTop: '20px' }}>
+            <GoogleRating variant="pill" lang="de" />
           </div>
         </div>
       </section>
 
-      {/* ── WHAT IS A TAX RETURN? - Unique design: refund/money motif ─── */}
-      <section className="taxret-intro-section">
-        <div className="taxret-intro-container">
-          <div className="taxret-intro-grid">
+      {/* ── 2. WAS WIR VON DIR BRAUCHEN ──────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-            {/* Left: Visual - money refund */}
-            <div className="taxret-intro-visual">
-              <div className="taxret-refund-card">
-                <p className="taxret-refund-label">Unser Versprechen</p>
-                <p className="taxret-refund-amount">Jeder Abzug, der dir zusteht</p>
-                <p className="taxret-refund-detail">vollständig für dich beantragt</p>
-                <div className="taxret-refund-stars">
-                  {Array.from({length:5}).map((_,i) => (
-                    <svg key={i} width="14" height="14" viewBox="0 0 12 12" aria-hidden="true">
-                      <path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/>
-                    </svg>
-                  ))}
-                </div>
-              </div>
-              <div className="taxret-arrows">
-                <div className="taxret-arrow-item">
-                  <span>Du</span>
-                  <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-                    <path d="M1 7h18M14 2l5 5-5 5" stroke="#2FA880" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span>ATO</span>
-                </div>
-                <div className="taxret-arrow-item taxret-arrow-back">
-                  <span>Du</span>
-                  <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-                    <path d="M19 7H1M6 2L1 7l5 5" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span>ATO</span>
-                </div>
-              </div>
-            </div>
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Dein Teil</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '12px' }}>
+            Was wir von dir brauchen
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
+            Drei Dinge, und das ist die ganze Liste. Die meisten erwarten, erst einen Ordner zusammenstellen zu müssen.
+            Der Ordner war nie das, was hier gefehlt hat.
+          </p>
 
-            {/* Right: Explainer */}
-            <div className="taxret-intro-content">
-              <p className="taxret-intro-eyebrow">Den meisten WHM-Inhabern steht Geld zu</p>
-              <h2 className="taxret-intro-heading">
-                Was ist eine Working Holiday Steuererklärung?
-              </h2>
-              <p className="taxret-intro-body">
-                Eine <strong>Steuererklärung</strong> ist die jährliche Abrechnung zwischen dir und dem ATO (australisches Finanzamt). Du gibst an, wie viel du verdient hast, machst absetzbare Kosten geltend und gleichst das mit den Steuern ab, die schon von deinem Lohn einbehalten wurden.
-              </p>
-              <p className="taxret-intro-body">
-                Viele Working Holiday Maker auf 417 und 462 Visa <strong>zahlen im Laufe des Jahres zu viel Steuern</strong>. In dem Fall zahlt dir das ATO die Differenz zurück, deine Working Holiday Steuerrückerstattung.
-              </p>
-              <p className="taxret-intro-body">
-                Du kannst deine Steuererklärung von überall auf der Welt machen, auch nachdem du Australien verlassen hast und nach Deutschland oder in ein anderes Land zurückgekehrt bist. Deine Steuerrückerstattung wird auf dein australisches Bankkonto überwiesen.
-              </p>
-            </div>
-
-          </div>
-
-          {/* CTA strip to OUR service */}
-          <div className="service-cta-strip">
-            <div className="service-cta-text">
-              <h3 className="service-cta-heading">Wir bereiten deine Working Holiday Steuererklärung vor und reichen sie für dich ein</h3>
-              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung. Keine Formulare, keine ATO-Portale, kein Stress. Wir beantragen jeden Abzug, der dir zusteht, und erledigen alles online - auch wenn du Australien schon verlassen hast.</p>
-            </div>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
-              Steuererklärung starten →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Warum unser Service</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '28ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Wir machen deine Working Holiday Steuererklärung von A bis Z
-            </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '38ch' }}>
-              Kein Stress, keine Verwirrung - eine korrekt eingereichte Steuererklärung und jede Rückerstattung, die dir zusteht.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
-            {[
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Wir prüfen deine komplette Steuersituation', body:'Wir prüfen dein Einkommen, absetzbare Kosten und deinen Steuerstatus, damit alles korrekt erfasst wird.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Wir reichen deine Steuererklärung korrekt ein', body:'Wir bereiten alles vor und reichen deine Working Holiday Steuererklärung direkt beim ATO für dich ein.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Wir beantragen jeden Abzug, der dir zusteht', body:'Wir identifizieren alle absetzbaren Werbungskosten, damit nichts übersehen wird.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Kein Stress, keine Verwirrung', body:'Schick uns einfach deine Daten - wir machen den Rest. Keine ATO-Portale, kein Papierkram nötig.' },
-            ].map((item,i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-4"
-                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
-                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
-                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
-                  {item.icon}
-                </div>
-                <div style={{ paddingTop:'2px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
-                </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {NEEDED.map((item) => (
+              <div key={item.label} style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{item.label}</h3>
+                <p style={{ ...BODY, color: '#2A3C34' }}>{item.body}</p>
               </div>
             ))}
           </div>
 
-          <div className="text-center reveal delay-2" style={{ marginTop: '32px' }}>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
-              Steuererklärung starten →
-            </a>
-            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>Dauert 2 Minuten&nbsp;&bull;&nbsp;Keine Vorabkosten</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── EARLY SOCIAL PROOF ────────────────────────────────────────────── */}
-      <section className="py-8 lg:py-10 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center mb-8 reveal">
-            <span className="section-label center">Was Reisende sagen</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              Das sagen Working Holiday Maker über uns
-            </h2>
-          </div>
-          <p className="text-center font-medium text-muted" style={{ fontSize: '12px', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '16px', color: 'rgba(10,15,13,0.4)' }}>Backpacker aus Deutschland, UK, Japan und mehr</p>
-          <GoogleReviews lang="de" />
-        </div>
-      </section>
-
-      {/* ── COMPARISON ── */}
-      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">Der einfache Weg</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              Es gibt einen einfacheren Weg, deine Steuererklärung einzureichen
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
-            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
-              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                Die Steuererklärung selbst einzureichen kann schiefgehen
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-                {['Verwirrende ATO-Formulare und Systeme','Leicht, dir zustehende Abzüge zu übersehen','Kostet Zeit und Mühe, es richtig zu machen','Keine Unterstützung, wenn etwas schiefgeht'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
-                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
-              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                Nutze unseren geführten Service
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
-                {['Von Anfang an korrekt gemacht','Alle möglichen Abzüge identifiziert','Kein Stress, keine Verwirrung','Echte Unterstützung bei jedem Schritt'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
-                Steuererklärung starten →
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-12 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
-            <span className="section-label center">Schritt für Schritt</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              In 4 einfachen Schritten
-            </h2>
-            <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
-              Einfach, geführt, von Anfang bis Ende
+          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #CDE3DB' }}>
+            <p className="font-serif" style={{ fontSize: '19px', lineHeight: 1.45, color: '#0B5240', fontWeight: 700, marginBottom: '10px', maxWidth: '32ch' }}>
+              Payslips brauchst du keine.
+            </p>
+            <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch' }}>
+              Jeder Arbeitgeber, der dich auf eine Lohnabrechnung gesetzt hat, hat längst ein Income Statement zu deiner
+              TFN gemeldet, und daraus entsteht die Erklärung. Über das ATO ist das für uns alles sichtbar. Ein
+              Schuhkarton voller Papier, ein verlorenes Handy, ein Hosteljob, dessen Namen du nie richtig gelernt hast:
+              nichts davon hält irgendetwas auf. Belege für berufliche Ausgaben sind das Einzige, wonach sich Suchen
+              lohnt, und wenn es keine gibt, beschreib uns stattdessen die Arbeit.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="reveal delay-1">
-            <div className="hidden lg:block">
-              <div className="relative flex items-start">
-                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
-                {STEPS.map((s, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #ffffff, 0 0 0 5px #C8EAE0' }}>
-                      {s.n}
-                    </div>
-                    <p className="text-[14px] font-semibold text-ink mb-2 text-center" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.7] text-center">{s.body}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="lg:hidden flex flex-col">
-              {STEPS.map((s, i) => (
-                <div key={i} className="flex gap-4" style={{ paddingBottom: '20px' }}>
-                  <div className="flex flex-col items-center flex-shrink-0">
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-bold text-white" style={{ background: '#0B5240' }}>{s.n}</div>
-                    {i < STEPS.length - 1 && <div className="flex-1 w-px mt-2 min-h-[20px]" style={{ background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
-                  </div>
-                  <div className="pt-1">
-                    <p className="text-[14px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{s.title}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.65]">{s.body}</p>
-                  </div>
+      {/* ── 3. DER ABLAUF ────────────────────────────────────────────────── */}
+      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Von Anfang bis Ende</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            In welcher Reihenfolge das läuft
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
+            Sieben Schritte. Du kommst in zweien davon vor, am Anfang und noch einmal zum Unterschreiben. Alles
+            dazwischen ist unsere Sache, und du kannst in der Zwischenzeit wieder deinem Leben nachgehen.
+          </p>
+
+          <ol className="flex flex-col" style={{ gap: '22px' }}>
+            {SEQUENCE.map((s) => (
+              <li key={s.n} className="flex gap-4">
+                <span className="font-serif font-black flex-shrink-0"
+                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px' }}
+                  aria-hidden="true">{s.n}</span>
+                <div>
+                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
+                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
                 </div>
-              ))}
-            </div>
-          </div>
+              </li>
+            ))}
+          </ol>
 
-          <div className="text-center mt-8 reveal delay-2">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 32px', fontSize: '15px' }}>
-              Steuererklärung starten →
-            </a>
-            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>Dauert 2 Minuten&nbsp;&bull;&nbsp;Keine Vorabkosten</p>
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '24px', maxWidth: '60ch' }}>
+            Mehr zu Schritt 04:{' '}
+            <Link href="/de/tax-residency" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>wie der Wohnsitz bestimmt wird</Link>, und{' '}
+            <Link href="/de/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>was eine ABN ändert</Link>, falls ein Teil deines Einkommens abgerechnet statt ausgezahlt wurde.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 4. ZWEI REGELN VORAB ─────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '14px' }}>
+            Zwei Regeln ändern die Reihenfolge
+          </h2>
+          <p style={{ ...LEDE, color: '#4C6459', maxWidth: '54ch', marginBottom: '26px' }}>
+            Beide sind am Anfang leichter zu lösen als auf halber Strecke.
+          </p>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {RULES.map((r) => (
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
+                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── WHAT TO HAVE READY ── */}
+      {/* ── 5. GARANTIE ──────────────────────────────────────────────────── */}
+      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
+          <p className="font-serif font-black text-white mx-auto"
+            style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
+            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
+          </p>
+          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
+            Von dem, was das ATO überweist, wird nie etwas abgezogen. Der Betrag wird vor Schritt 01 auf WhatsApp mit dir
+            geklärt, sodass es beim Fragebogen nichts mehr zu verhandeln gibt.
+          </p>
+        </div>
+      </section>
 
-      {/* ── ADDY-URTEIL ───────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[760px] mx-auto reveal">
-            <span className="section-label">Addy v Commissioner of Taxation</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '14px' }}>
-              Deutschland steht auf der Liste: das Urteil zur Backpacker-Steuer
-            </h2>
-            <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
-              Im November 2021 entschied der australische High Court, dass die Backpacker-Steuer gegen den Gleichbehandlungsartikel im Doppelbesteuerungsabkommen verstößt. Wer dieselbe Arbeit am selben Ort macht, darf nicht höher besteuert werden als ein Australier.
-            </p>
-            <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
-              Die ATO wendet die Entscheidung auf Working Holiday Maker an, die steuerlich in Australien ansässig waren und die Staatsangehörigkeit eines dieser Laender haben: Großbritannien, Chile, Finnland, Deutschland, Japan, Norwegen oder die Türkei. <strong>Deutschland ist dabei, Österreich und die Schweiz nicht.</strong>
-            </p>
-            <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
-              Entscheidend ist die steuerliche Ansässigkeit, und die erfüllen die wenigsten. Wer aber länger an einem Ort geblieben ist, dort gemietet und gearbeitet hat, kommt durchaus in Frage. Dann gilt der Grundfreibetrag und die niedrigeren Resident-Saetze, was den Unterschied deutlich macht.
-            </p>
-            <p className="text-[14px] font-light text-muted leading-[1.75]">
-              Früher eingereichte Steuererklärungen lassen sich innerhalb der ueblichen Änderungsfrist noch korrigieren. Wenn du länger als ein Jahr am selben Ort warst, lohnt sich eine Prüfung, statt einfach anzunehmen, dass es dich nicht betrifft.
+      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '14px' }}>
+            Fang mit einer Nachricht an, nicht mit einem Formular
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
+            Schick uns die Orte, in denen du gearbeitet hast, ungefähr welche Monate, und ob du je über eine ABN
+            abgerechnet hast. Daraus sagen wir dir, welche Jahre noch offen sind und wie dein Teil der Arbeit aussieht.
+            Ob du vor zwei Jahren heimgeflogen bist, spielt dabei keine Rolle.
+          </p>
+          <WaLink href={WA_TR} position="section" topic="tax-return" lang="de"
+            className="btn-primary inline-flex items-center justify-center gap-2"
+            style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '340px', width: '100%' }}>
+            <IconWhatsApp />
+            Schreib uns auf WhatsApp
+          </WaLink>
+          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            Antwort in ca. einer Stunde. Frag einfach.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 7. VERTRAUEN ─────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Working-Holiday-Steuer ist das Einzige, was wir machen.
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+            Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Deshalb
+            wird dir so wenig abverlangt, und deshalb sind die unangenehmen Fälle für uns keine Überraschung. Vorbereitet
+            von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO
+            eingereicht wird.
+          </p>
+
+          <GoogleReviews lang="de" />
+
+          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
+              <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
+              <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
+              <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <p style={{ ...BODY, color: '#2A3C34' }}>
+              <strong style={{ color: '#080F0D' }}>Niemand Seriöses fragt dich nach deinem myGov-Passwort.</strong>{' '}
+              Wir fragen in keinem Schritt danach, weil der Weg oben es nicht braucht. Wenn dich eine Nachricht danach
+              fragt, kommt sie nicht von uns.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
-      <section className="py-10 lg:py-14">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="text-center mb-6">
-            <span className="section-label center">Mehr erfahren</span>
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              Ratgeber zu deiner Steuererklärung
-            </h2>
+      {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
+            Was gefragt wird, bevor jemand etwas schickt
+          </h2>
+
+          <div className="flex flex-col" style={{ gap: '4px' }}>
+            {FAQS.map((f, i) => (
+              <details key={i} name="tax-return-faq-de" className="contact-faq-item">
+                <summary className="contact-faq-summary">
+                  <span style={{ flex: 1 }}>{f.question}</span>
+                  <span className="contact-faq-plus" aria-hidden="true">+</span>
+                </summary>
+                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+              </details>
+            ))}
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
-            {[
-              { href: '/de/blog/how-to-lodge-tax-return-working-holiday', label: 'Working Holiday Steuererklärung einreichen: Schritt-für-Schritt' },
-              { href: '/de/blog/backpacker-tax-rate-australia', label: 'Backpacker-Steuersatz Australien: Erklärung für 417 & 462 Visum' },
-              { href: '/de/blog/tax-deductions-working-holiday-makers', label: 'Werbungskosten für Working Holiday Maker: vollständige Anleitung' },
-              { href: '/de/blog/how-long-does-tax-refund-take-australia', label: 'Wie lange dauert eine Steuerrückerstattung in Australien?' },
-              { href: '/de/blog/tax-residency-working-holiday-makers', label: 'Sind Working Holiday Maker Steuerresidenten Australiens?' },
-              { href: '/de/blog/what-is-a-tax-refund-australia', label: 'Was ist eine Steuerrückerstattung und steht dir eine zu?' },
-            ].map((g) => (
-              <Link
-                key={g.href}
-                href={g.href}
-                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
-              >
-                {g.label}
+        </div>
+      </section>
+
+      {/* ── 9. RATGEBER ──────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Die lange Fassung der schwierigen Schritte
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
+            Wenn du die Begründung lieber siehst, bevor du etwas aus der Hand gibst, steht sie vollständig da.
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-3">
+            {GUIDES.map((g) => (
+              <Link key={g.href} href={g.href}
+                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
+                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-
-            <div className="text-center">
-              <span className="section-label center">FAQ</span>
-              <h2 className="font-serif font-black text-ink"
-                style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-                Fragen zur Working Holiday Steuerrückerstattung
-              </h2>
-              <p className="font-light text-muted"
-                style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
-                Noch eine Frage? Schreib uns direkt.
-              </p>
-            </div>
-
-            <div className="max-w-[700px]">
-              <Accordion items={faqs} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="Was kommt als nächstes?"
-        heading="Lass deine Super nicht zurück"
-        body="Dein Arbeitgeber hat während deiner Arbeit in Australien zusätzlich zum Lohn in deine Super eingezahlt. Wenn du Australien verlässt, kannst du dir das auszahlen lassen."
-        cta="Superberechtigung prüfen →"
-        trustLine="In wenigen Minuten geprüft"
+        eyebrow="Was kommt als Nächstes"
+        heading="Lass deine Super nicht liegen"
+        body="Dein Arbeitgeber hat zusätzlich zum Lohn Superannuation für dich eingezahlt. Wenn du Australien endgültig verlässt, kannst du sie beantragen, und das ist ein eigener Vorgang neben der Erklärung."
+        cta="Wie der Super-Antrag läuft →"
         href="/de/superannuation"
       />
 
-      {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      <MobileCta href={WA_URL} lang="de" />
+      <MobileCta href={WA_TR} lang="de" topic="tax-return" />
     </>
   )
 }

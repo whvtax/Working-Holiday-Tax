@@ -1,432 +1,701 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Lieferfahrer-Steuer in Australien: Uber Eats, DoorDash & Angestellte Fahrer',
-  description: 'Fahrer für Uber Eats, DoorDash, Menulog und Amazon Flex arbeiten als Sole Trader unter einer ABN, nicht als Angestellte. Manche Lieferjobs zahlen stattdessen Lohn unter einer TFN. Was Working Holiday Maker absetzen können, die Kilometerpauschale und die Fahrtenbuch-Methode, und wie du erkennst, welches Setup für dich gilt.',
-  keywords: [
-    'Lieferfahrer Steuer Australien',
-    'Uber Eats Steuer Working Holiday',
-    'DoorDash Steuer Australien',
-    'DoorDash ABN Working Holiday',
-    'Menulog Lieferfahrer Steuer',
-    'Amazon Flex Steuer Australien',
-    'Essenslieferung Steuerabsetzungen',
-    'ABN oder TFN Lieferfahrer',
-    'Lieferfahrer ABN Working Holiday',
-    'Gig Economy Steuer Australien',
-    'Kilometerpauschale Lieferfahrer',
-    'Autokosten Lieferfahrer',
-    'Sharing Economy Meldung ATO',
-    'Rideshare Lieferung Steuerabsetzungen',
-    '417 462 Visum Lieferfahrer Steuer',
+  "title": "Lieferfahrer: Kilometer, Handy, GST",
+  "description": "Uber Eats, DoorDash, Menulog, Amazon Flex: Auto- und Fahrradkosten, Arbeitsanteil am Handy, Taschen. Dazu die GST-Regel ab dem ersten Fahrgast.",
+  "keywords": [
+    "Lieferfahrer Steuerabzüge Australien",
+    "Uber Eats Steuer Working Holiday",
+    "DoorDash Steuer Australien",
+    "Essenslieferung Steuer absetzen",
+    "Kilometerpauschale Lieferfahrer",
+    "Lieferfahrer ABN Working Holiday",
+    "GST Rideshare Australien",
+    "Fahrrad Lieferdienst absetzen"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/de/expenses/delivery-drivers`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/delivery-drivers`,
-      'de': `${SITE_URL}/de/expenses/delivery-drivers`,
-      'ja': `${SITE_URL}/ja/expenses/delivery-drivers`,
-      'x-default': `${SITE_URL}/expenses/delivery-drivers`,
-    },
+  "alternates": {
+    "canonical": "/de/expenses/delivery-drivers",
+    "languages": {
+      "en-AU": "/expenses/delivery-drivers",
+      "de": "/de/expenses/delivery-drivers",
+      "ja": "/ja/expenses/delivery-drivers",
+      "x-default": "/expenses/delivery-drivers"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'de_DE',
-    url: `${SITE_URL}/de/expenses/delivery-drivers`,
-    siteName: 'Working Holiday Tax',
-    title: 'Lieferfahrer-Steuer in Australien: Uber Eats, DoorDash & Angestellte Fahrer',
-    description: 'Uber Eats, DoorDash und Amazon Flex sind Contractor-Arbeit unter einer ABN, keine TFN-Anstellung. Hier erfährst du den Unterschied - und was Lieferfahrer steuerlich absetzen können.',
-  },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: 'Lieferfahrer-Steuer in Australien: Uber Eats, DoorDash & Angestellte Fahrer',
-    description: 'Uber Eats, DoorDash und Amazon Flex sind Contractor-Arbeit unter einer ABN, keine TFN-Anstellung. Hier erfährst du den Unterschied - und was Lieferfahrer steuerlich absetzen können.',
-  },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
-}
-
-const CAR_METHOD_ROWS = [
-  ['Satz (2024-25 & 2025-26)', '88 Cent / km'],
-  ['Satz (2026-27, ab 1. Juli 2026)', '91 Cent / km'],
-  ['Maximal absetzbar', '5.000 km / Auto / Jahr'],
-  ['Belege nötig?', 'Nein - aber du musst zeigen können, wie du die Kilometer ermittelt hast'],
-]
-
-const LOGBOOK_ROWS = [
-  ['Funktionsweise', 'Absetzung des arbeitsbezogenen Prozentsatzes aller tatsächlichen Kosten'],
-  ['Fahrtenbuch-Zeitraum', '12 zusammenhängende Wochen, gültig für 5 Jahre'],
-  ['Maximal absetzbar', 'Keine Grenze - basiert auf deinem tatsächlichen Arbeitsanteil'],
-  ['Belege nötig?', 'Ja - für jede Ausgabe, die du absetzt'],
-]
-
-type DriverType = {
-  emoji: string
-  kind: string
-  title: string
-  subtitle: string
-  signals: string[]
-  ctaLabel: string
-  ctaHref: string
-}
-
-const FORK_CARDS: DriverType[] = [
-  {
-    emoji: '🛵',
-    kind: 'eine ABN',
-    title: 'Liefern über Plattform & App',
-    subtitle: 'Uber Eats, DoorDash, Menulog, Amazon Flex',
-    signals: [
-      'Du nimmst Aufträge über eine App an, statt einen festen Dienstplan zu haben',
-      'Du wirst per wöchentlicher Abrechnung oder Rechnung bezahlt, nicht per Gehaltsabrechnung',
-      'Es wird keine Steuer einbehalten, bevor das Geld auf deinem Konto landet',
-      'Du bestimmst deine eigenen Zeiten und kannst dich an- und abmelden, wann du willst',
-      'Es wird keine Super zusätzlich zu deinem Verdienst gezahlt',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
     ],
-    ctaLabel: 'Hier starten: ABN registrieren →',
-    ctaHref: '/de/abn',
+    "type": "website",
+    "locale": "de_DE",
+    "url": `${SITE_URL}/de/expenses/delivery-drivers`,
+    "siteName": "Working Holiday Tax",
+    "title": "Lieferfahrer Australien: Auto, Handy, GST absetzen",
+    "description": "Deine Kilometer und der Arbeitsanteil am Handy sind das ganze Spiel. Bußgelder und Privatfahrten waren es nie."
   },
-  {
-    emoji: '🍕',
-    kind: 'eine TFN',
-    title: 'Angestellt bei einem Restaurant oder Shop',
-    subtitle: 'Erhält direkt Lohn, meist nach Dienstplan',
-    signals: [
-      'Du arbeitest feste oder geplante Schichten für ein Restaurant, einen Take-away-Shop oder ein Unternehmen',
-      'Du bekommst eine Gehaltsabrechnung, auf der schon Steuer einbehalten ist',
-      'Der Betrieb legt deinen Stundenlohn, deine Arbeitszeiten und die Art der Ausführung fest',
-      'Du bekommst Super zusätzlich zu deinem Lohn gezahlt',
-      'Du hast bei Arbeitsbeginn ein TFN Declaration Form ausgefüllt',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
     ],
-    ctaLabel: 'Hier starten: TFN beantragen →',
-    ctaHref: '/de/tfn',
+    "card": "summary_large_image",
+    "title": "Lieferfahrer Australien: Auto, Handy, GST absetzen",
+    "description": "Deine Kilometer und der Arbeitsanteil am Handy sind das ganze Spiel. Bußgelder und Privatfahrten waren es nie."
   },
-]
-
-const faqs = [
-  {
-    question: 'Brauche ich eine ABN, um mit Working Holiday Visum für Uber Eats zu fahren?',
-    answer: 'Ja. Uber Eats, DoorDash, Menulog und Amazon Flex engagieren ihre Fahrer alle als Contractor statt als Angestellte - du brauchst also eine ABN, bevor du dich anmelden und bezahlt werden kannst. Zuerst brauchst du eine TFN - eine ABN ersetzt sie nicht -, und dann registrierst du eine ABN für die Lieferarbeit selbst.',
-  },
-  {
-    question: 'Kann ich meine Handyrechnung als Lieferfahrer absetzen?',
-    answer: 'Du kannst den arbeitsbezogenen Prozentsatz deines Handy- und Datentarifs absetzen - den Anteil, den du wirklich für Lieferapps, GPS-Navigation und die Annahme von Aufträgen nutzt. Die gesamte Rechnung kannst du nicht absetzen, wenn du das Handy auch privat zum Telefonieren und Surfen nutzt, was fast alle tun - du brauchst also eine faire und ehrliche Grundlage für den Prozentsatz, den du ansetzt.',
-  },
-  {
-    question: 'Was, wenn ich für ein Restaurant als Angestellter liefere, nicht über eine Plattform?',
-    answer: 'Wenn du für einen Take-away-Shop, ein Restaurant oder eine Pizzeria nach Dienstplan arbeitest und eine Gehaltsabrechnung mit bereits einbehaltener Steuer bekommst, bist du Angestellter, kein Contractor. Du brauchst eine TFN statt einer ABN, und die gewöhnliche Fahrt von zuhause zu diesem Arbeitsplatz gilt als privates Pendeln, nicht als absetzbare Ausgabe - genau wie bei jedem anderen Job.',
-  },
-  {
-    question: 'Welche Methode für Autokosten sollte ich als Lieferfahrer nutzen?',
-    answer: 'Das hängt davon ab, wie viel du arbeitsbezogen fährst. Unter 5.000 arbeitsbezogenen Kilometern im Jahr ist die Kilometerpauschale meist einfacher, weil sie keine Belege braucht, nur eine nachvollziehbare Aufzeichnung, wie du auf die Kilometer gekommen bist. Darüber, oder wenn deine tatsächlichen laufenden Kosten hoch sind, bringt die Fahrtenbuch-Methode - ein 12-wöchiges Fahrtenbuch, gültig für fünf Jahre - oft eine höhere Absetzung, aber dafür brauchst du für jede Ausgabe einen Beleg.',
-  },
-  {
-    question: 'Melden Uber Eats oder DoorDash mein Einkommen an das ATO?',
-    answer: 'Ja. Unter dem Sharing Economy Reporting Regime des ATO melden Plattformen wie Uber und DoorDash die Einkommensdaten der Fahrer direkt an das ATO. Deine Liefereinnahmen sind für das ATO bereits sichtbar, unabhängig davon, was du angibst - deshalb gehören sie in deine Steuererklärung, egal wie klein oder unregelmäßig sich die Beträge anfühlen.',
-  },
-  {
-    question: 'Ich fahre für Lieferungen mit dem Fahrrad oder E-Scooter statt mit dem Auto - kann ich trotzdem etwas absetzen?',
-    answer: 'Ja. Für Fahrräder und E-Scooter gilt dieselbe Logik wie für Autos: Du kannst den arbeitsbezogenen Anteil der laufenden Kosten und Wartung absetzen, dazu Sicherheitsausrüstung wie Helm und Warnschutzkleidung - aufgeteilt zwischen deinen Lieferfahrten und der privaten Nutzung.',
-  },
-]
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Ausgaben', item: `${SITE_URL}/de/expenses` },
-    { '@type': 'ListItem', position: 3, name: 'Lieferfahrer', item: `${SITE_URL}/de/expenses/delivery-drivers` },
-  ],
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'Lieferfahrer-Steuer in Australien: Uber Eats, DoorDash & Angestellte Fahrer',
-  description: 'Ob Lieferfahren ABN-Contractor-Arbeit oder TFN-Anstellung ist, und was Working Holiday Maker in beiden Fällen steuerlich absetzen können.',
-  url: `${SITE_URL}/de/expenses/delivery-drivers`,
-  inLanguage: 'de-DE',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Lieferdienst und Rideshare" })
+
+const UI = {
+  "ctaLabel": "Schreib uns auf WhatsApp",
+  "ctaSub": "Antwort in etwa einer Stunde. Frag ruhig erst nach.",
+  "guaranteeHeading": "Kommt am Ende weniger Rückerstattung heraus als unser Honorar, erstatten wir die Differenz.",
+  "guaranteeBody": "Fahrer auf Lieferplattformen mit 417- und 462-Visum sind ein großer Teil unserer Arbeit, deshalb sind die Fahrtenbuchfrage und die GST-Zeile geklärt, bevor die Erklärung geschrieben wird. Von unserem Team vorbereitet, dann von einem registrierten Steuerberater geprüft und freigegeben.",
+  "faqHeading": "Fragen, die uns dazu gestellt werden",
+  "guidesHeading": "Danach lesenswert",
+  "otherJobs": "Anderer Job? Hier sind alle Berufe.",
+  "servicesLabel": "Weiter auf der Website",
+  "wrongLabel": "Abgesetzt, obwohl es nicht ging",
+  "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "hubHref": "/de/expenses"
 }
+
+const CRUMBS = [
+  {
+    "name": "Startseite",
+    "item": "/de"
+  },
+  {
+    "name": "Abzüge",
+    "item": "/de/expenses"
+  },
+  {
+    "name": "Lieferdienste",
+    "item": "/de/expenses/delivery-drivers"
+  }
+]
+
+const HERO = {
+  "kicker": "Uber Eats, DoorDash, Menulog, Amazon Flex",
+  "h1lead": "Deine Kilometer sind der Abzug.",
+  "h1accent": "Fast alles andere ist klein.",
+  "lede": "Kilometerpauschale oder Fahrtenbuch, eins davon pro Auto und Jahr. Die falsche Wahl ist der teuerste Fehler in diesem Job."
+}
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
+  {
+    "kind": "answer",
+    "h2": "Was können Lieferfahrer und Radkuriere absetzen?",
+    "paras": [
+      "Absetzbar sind der arbeitsbezogene Anteil an Auto, Fahrrad oder Roller, der arbeitsbezogene Anteil an Handy und Datenvolumen, Parkgebühren während der Arbeit, die Reinigung eines Fahrzeugs, das Essen transportiert, und Ausrüstung für den Job wie Thermotasche, Handyhalter, Helm oder Warnweste. Der private Anteil bleibt außen vor.",
+      "Fast der gesamte Wert steckt im Fahrzeug. Wer regelmäßig fährt, sammelt Kilometer, die kein anderer Backpacker-Job erzeugt, und der Unterschied zwischen den beiden Berechnungsmethoden ist über ein Jahr häufig größer als alle übrigen Abzüge zusammen."
+    ]
+  },
+  {
+    "kind": "items",
+    "h2": "Die Abzüge, die zu dieser Arbeit gehören",
+    "intro": "Alles hier wird aufgeteilt. Du setzt den Arbeitsanteil ab und brauchst eine nachvollziehbare Grundlage für den Prozentsatz.",
+    "items": [
+      {
+        "t": "Betriebskosten des Autos",
+        "d": "Berechnet über die Kilometerpauschale oder ein Fahrtenbuch, unten verglichen. Mit Fahrtenbuch erfasst der Abzug Benzin, Versicherung, Zulassung, Wartung und Reparaturen, Abschreibung und die Zinsen eines Autokredits, jeweils zu deinem Arbeitsanteil. Bei der Kilometerpauschale ist all das im Satz enthalten."
+      },
+      {
+        "t": "Kosten für Fahrrad, E-Bike und Roller",
+        "d": "Auf zwei Rädern gilt dieselbe Logik. Betriebs-, Reparatur- und Wartungskosten sind zum Arbeitsanteil absetzbar, dazu Helm, Warnkleidung und Licht. Fahrräder und Roller sind steuerlich keine Autos, also gilt die Kilometerpauschale für sie nicht und du setzt anteilige tatsächliche Kosten an."
+      },
+      {
+        "t": "Arbeitsanteil an Handy und Daten",
+        "d": "Der ganze Job läuft über eine App, also ist der berufliche Prozentsatz deines Vertrags ein echter Abzug: Fahrer-App, Navigation, Nachrichten zu Bestellungen. Ermittle den Prozentsatz ehrlich über einen repräsentativen Zeitraum. Die volle Rechnung bei einem Handy, auf dem auch dein Leben stattfindet, ist der schnellste Weg, dass der Rest der Erklärung angeschaut wird."
+      },
+      {
+        "t": "Parkgebühren während der Arbeit",
+        "d": "Die fünf Dollar im Einkaufszentrum, während eine Bestellung gepackt wird, sind absetzbar. Bußgelder nie, egal wie sie entstanden sind."
+      },
+      {
+        "t": "Ausrüstung für den Job",
+        "d": "Thermotasche, Handyhalter, Ladegerät, Fahrradschloss, Regenkleidung, Stirnlampe. Jeder Gegenstand bis 300 Dollar wird im Kaufjahr voll abgesetzt."
+      },
+      {
+        "t": "Reinigung des Fahrzeugs für die Arbeit",
+        "d": "Ein Auto in einem Zustand zu halten, in dem es Essen transportieren kann, oder ein Fahrrad fahrbereit zu halten, ist zum Arbeitsanteil absetzbar. Dasselbe Prinzip gilt für Rideshare-Fahrer mit Fahrgästen."
+      }
+    ]
+  },
+  {
+    "kind": "tables",
+    "h2": "Wie werden Autokosten berechnet?",
+    "intro": "Unter beiden Methoden zählen nur Arbeitsfahrten, und bei einem Fahrer im Dienstplan nie die Fahrt von zu Hause zum Laden.",
+    "tables": [
+      {
+        "label": "Kilometerpauschale",
+        "rows": [
+          [
+            "Satz 2024-25 und 2025-26",
+            "88 Cent pro km"
+          ],
+          [
+            "Satz ab 2026-27",
+            "91 Cent pro km"
+          ],
+          [
+            "Maximum",
+            "5.000 km pro Auto und Jahr"
+          ],
+          [
+            "Belege",
+            "Nicht nötig, aber du musst zeigen, wie du auf die Kilometer kommst"
+          ]
+        ]
+      },
+      {
+        "label": "Fahrtenbuch",
+        "rows": [
+          [
+            "So funktioniert es",
+            "Du setzt den arbeitsbezogenen Prozentsatz aller echten Betriebskosten ab"
+          ],
+          [
+            "Zeitraum",
+            "12 zusammenhängende Wochen, fünf Jahre gültig"
+          ],
+          [
+            "Maximum",
+            "Keine Grenze. Es folgt deinem tatsächlichen Arbeitsanteil"
+          ],
+          [
+            "Belege",
+            "Für jede einzelne Ausgabe erforderlich"
+          ]
+        ]
+      }
+    ],
+    "note": "Wer regelmäßig fährt, ist nach ein paar Monaten über 5.000 Kilometer, und darüber ist das Fahrtenbuch normalerweise der größere Abzug: Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil statt einer Pauschale. Es kostet zwölf Wochen Aufzeichnungen und einen Beleg für jede Ausgabe. Was gewinnt, hängt an deinen Kilometern und daran, was dein Auto im Unterhalt kostet."
+  },
+  {
+    "kind": "answer",
+    "h2": "Was muss ein Fahrer vorlegen können?",
+    "paras": [
+      "Jeder Abzug steht auf drei Punkten: du hast bezahlt, dir hat es niemand erstattet, und das Geld ging in das Einkommen, das du angibst. Bei einem Fahrer heißt das ein Fahrtenbuch oder eine Kilometeraufstellung, die Handyrechnung hinter deinem Arbeitsanteil und Belege für Tasche, Halterung und den Rest der Ausrüstung.",
+      "Aus dem Nachweis müssen Betrag, Datum, Anbieter und Gegenstand hervorgehen, und ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto tun es alle. Fünf Jahre aufheben. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen gar keinen schriftlichen Nachweis, die Summe musst du trotzdem erklären können. Das ist eine andere Regel als die 300 Dollar, die entscheiden, ob ein Gegenstand sofort oder über die Nutzungsdauer abgeschrieben wird."
+    ]
+  },
+  {
+    "kind": "note",
+    "label": "Der Punkt, der überrascht",
+    "title": "Essen liefern und Fahrgäste fahren ist bei der GST nicht dasselbe.",
+    "body": "Wenn du nur Essen und Pakete lieferst, wird die GST-Registrierung erst ab 75.000 Dollar Umsatz im Jahr Pflicht, und dahin kommen die wenigsten. In dem Moment, in dem du einen zahlenden Fahrgast mitnimmst, fällt diese Grenze weg. Ride Sourcing verlangt die GST-Registrierung ab der allerersten Fahrt, unabhängig vom Umsatz, und damit auch Business Activity Statements. Wer unter der Woche Uber Eats fährt und freitagabends Fahrgäste mitnimmt, hat diese Linie stillschweigend überschritten."
+  },
+  {
+    "kind": "traps",
+    "h2": "Was machen Lieferfahrer falsch?",
+    "intro": "Die überzogenen Abzüge sind hier größer als in jedem anderen Beruf, weil die Zahlen größer sind. Die übersehenen auch.",
+    "wrong": [
+      {
+        "t": "Die ganze Handyrechnung",
+        "d": "Fast niemand nutzt ein Handy ausschließlich zum Liefern. Hundert Prozent eines Vertrags anzusetzen, den du auch sonst nutzt, hält nicht stand, und es ist ein Punkt, den das ATO mit dem Rest der Erklärung abgleichen kann."
+      },
+      {
+        "t": "Bußgelder",
+        "d": "Ein Strafzettel, den du dir beim Hochtragen einer Bestellung eingefangen hast, bleibt nicht absetzbar. Ein Tempoverstoß auch nicht, so eng das Lieferfenster war."
+      },
+      {
+        "t": "Essen während der Arbeit",
+        "d": "Dein eigenes Abendessen zwischen zwei Lieferungen ist privat, auch wenn du gerade von Leuten umgeben bist, die ihres geliefert bekommen."
+      },
+      {
+        "t": "Jeder Kilometer mit offener App",
+        "d": "Die private Strecke wird nicht zur Arbeitsfahrt, weil die App lief. Eine Besorgung auf dem Weg zur Übergabe fällt raus, und bei einem angestellten Fahrer im Dienstplan fällt auch der normale Weg zum Laden raus."
+      },
+      {
+        "t": "Kleine Plattformeinnahmen ganz weglassen",
+        "d": "Uber, DoorDash und die anderen melden Fahrereinnahmen im Rahmen des Sharing-Economy-Meldesystems an das ATO. Deine Einnahmen sind ohnehin sichtbar, ein paar hundert Dollar Wochenendarbeit wegzulassen spart also nichts, es erzeugt eine Abweichung."
+      }
+    ],
+    "missed": [
+      {
+        "t": "Das Fahrtenbuch, wenn es klar besser gewesen wäre",
+        "d": "Die Kilometerpauschale ist bei 5.000 Kilometern gedeckelt. Wer regelmäßig fährt, ist schnell darüber, und alles darüber ist einfach weg. Zwölf Wochen Fahrtenbuch, einmal geführt, gelten fünf Jahre."
+      },
+      {
+        "t": "Zinsen, Versicherung, Zulassung und Abschreibung",
+        "d": "Die gibt es nur über das Fahrtenbuch, und meistens sind sie der Grund, warum es gewinnt. Viele wählen die Pauschale, weil sie einfacher ist, und erfahren nie, was die Alternative gebracht hätte."
+      },
+      {
+        "t": "Thermotasche und Handyhalter",
+        "d": "Klein, offensichtlich, komplett absetzbar und mit dem Beleg im Müll. Dasselbe gilt für Helm, Licht und Regenkleidung auf dem Rad."
+      },
+      {
+        "t": "Kosten vor der ersten Lieferung",
+        "d": "Ausrüstung, die du beim Aufbau gekauft hast, ungefähr zu der Zeit, als du die ABN registriert und dich bei der Plattform angemeldet hast, ist in der Regel absetzbar. Der Abstand zwischen Kauf und Start zählt, also heb die Daten auf."
+      },
+      {
+        "t": "Die ganze Erklärung, weil ABN-Fahrer nur mit Nachzahlung rechnen",
+        "d": "Von Plattformauszahlungen wird nichts einbehalten, das Geld kommt also vollständig an und viele stellen sich auf eine Rechnung ein. Genau die Abzüge gegen dieses Einkommen verkleinern sie, und genau die bleiben am häufigsten weg."
+      }
+    ]
+  },
+  {
+    "kind": "answer",
+    "h2": "Was hängt daran, wie du fährst, statt an der Regel?",
+    "paras": [
+      "Uber Eats, DoorDash, Menulog und Amazon Flex beauftragen dich als Selbstständigen: ABN, kein Einbehalt, keine Superannuation. Wer für eine einzelne Pizzeria im Dienstplan fährt und einen Payslip bekommt, ist angestellt, mit TFN. Ein einzelner Laden, der deine Schichten festlegt, deine Arbeit beaufsichtigt, das Rad stellt und dann eine ABN verlangt, kann ein Arbeitgeber in Verkleidung sein. Prüf das, bevor du irgendetwas registrierst.",
+      "Wo die absetzbaren Fahrten beginnen, folgt daraus. Bei Angestellten ist der Weg zum Laden privat, nur Laden bis Übergabepunkt zählt. Mit ABN sind die Fahrten die Arbeit und nicht der Weg dorthin, die Grenze liegt also woanders und richtet sich danach, wie du arbeitest.",
+      "Der steuerliche Wohnsitz entscheidet, wie der Gewinn überhaupt besteuert wird. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen, und ein Jahr Liefern in einer Stadt ist genau das Muster, das einen genauen Blick verdient."
+    ]
+  }
+]
+
+const FAQS = [
+  {
+    "question": "Brauche ich eine ABN für Uber Eats oder DoorDash?",
+    "answer": "Ja. Diese Plattformen beauftragen Fahrer und Radkuriere als Selbstständige und nicht als Angestellte, also brauchst du eine ABN, bevor du bezahlt werden kannst. Sie ersetzt keine TFN, die brauchst du weiterhin. Von deinen Auszahlungen wird nichts einbehalten, das Einkommen kommt also vollständig an und die Steuer darauf wird mit der Erklärung geregelt."
+  },
+  {
+    "question": "Welche Methode für Autokosten soll ich nehmen?",
+    "answer": "Das hängt davon ab, wie weit du fährst und was dein Auto im Unterhalt kostet. Die Kilometerpauschale ist einfacher und braucht keine Belege, ist aber bei 5.000 Arbeitskilometern im Jahr gedeckelt, und alles darüber ist verloren. Ein Fahrtenbuch hat keine Grenze und erfasst Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil, kostet dich aber zwölf zusammenhängende Wochen Aufzeichnungen und einen Beleg für jede Ausgabe."
+  },
+  {
+    "question": "Kann ich meine Handyrechnung absetzen?",
+    "answer": "Du kannst den arbeitsbezogenen Prozentsatz deines Handy- und Datenvertrags absetzen, also den Anteil, den du für die Fahrer-App, Navigation und Nachrichten zu Aufträgen nutzt. Die ganze Rechnung geht nicht, wenn du das Handy auch privat nutzt, was praktisch alle tun. Du brauchst also eine faire und ehrliche Grundlage für den Prozentsatz und etwas, das sie stützt."
+  },
+  {
+    "question": "Muss ich mich für die GST registrieren?",
+    "answer": "Bei reiner Essens- und Paketlieferung wird die GST-Registrierung erst ab 75.000 Dollar Umsatz im Jahr Pflicht, und die meisten Teilzeitfahrer kommen nicht in die Nähe. Ride Sourcing ist anders: Wer zahlende Fahrgäste befördert, muss sich ab dem ersten Dollar registrieren, unabhängig vom Umsatz. Wer beides macht, wird über die Fahrgastseite hineingezogen."
+  },
+  {
+    "question": "Ich fahre Fahrrad statt Auto. Kann ich trotzdem etwas absetzen?",
+    "answer": "Ja. Ein Fahrrad oder E-Scooter ist steuerlich kein Auto, die Kilometerpauschale gilt also nicht, aber du kannst den arbeitsbezogenen Anteil an Betriebs-, Reparatur- und Wartungskosten absetzen, dazu Sicherheitsausrüstung wie Helm, Licht und Warnkleidung. Teile fair zwischen Lieferfahrten und privater Nutzung auf und heb die Belege auf."
+  }
+]
+
+const GUIDES = [
+  {
+    "href": "/de/blog/uber-doordash-rideshare-abn-working-holiday",
+    "label": "Uber, DoorDash und deine ABN",
+    "desc": "Warum die Plattformen eine brauchen und was sich damit ändert."
+  },
+  {
+    "href": "/de/blog/bicycle-motorcycle-vehicle-deductions-working-holiday",
+    "label": "Fahrrad, Roller und Auto absetzen",
+    "desc": "Wie jedes Fahrzeug behandelt wird und welche Methode wozu passt."
+  },
+  {
+    "href": "/de/blog/uber-eats-delivery-rider-working-holiday-australia",
+    "label": "Liefern mit dem Working-Holiday-Visum",
+    "desc": "Was die Arbeit wirklich zahlt, wenn die Kosten abgezogen sind."
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/de/abn",
+    "label": "ABN"
+  },
+  {
+    "href": "/de/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/de/tax-return",
+    "label": "Steuererklärung"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
-function CompareTable({ label, rows, highlight }: { label: string; rows: string[][]; highlight?: boolean }) {
-  return (
-    <div className="taxres-table-card" style={highlight ? { borderColor: '#0B5240', boxShadow: '0 8px 20px -8px rgba(11, 82, 64, 0.18)' } : {}}>
-      <h3 className="taxres-table-title">{label}</h3>
-      <table className="taxres-table">
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
 }
 
-function ForkCard({ f }: { f: DriverType }) {
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "Lieferfahrer Australien: Auto, Handy, GST absetzen",
+  description: "Deine Kilometer und der Arbeitsanteil am Handy sind das ganze Spiel. Bußgelder und Privatfahrten waren es nie.",
+  url: `${SITE_URL}/de/expenses/delivery-drivers`,
+  inLanguage: "de-DE",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/de/expenses/delivery-drivers#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/de/expenses/delivery-drivers`,
+}
+
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
   return (
-    <div className="exp-card">
-      <div className="exp-card-head">
-        <span className="exp-card-emoji" aria-hidden="true">{f.emoji}</span>
-        <div>
-          <h3 className="exp-card-title">{f.title}</h3>
-          <p className="exp-card-subtitle">{f.subtitle}</p>
-        </div>
-      </div>
-      <p className="font-semibold" style={{ fontSize: '11.5px', color: '#0B5240', margin: '14px 0 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-        Was du brauchst: {f.kind}
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"de"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
       </p>
-      <div className="exp-card-section">
-        <p className="exp-card-label" style={{ color: '#587066' }}>Anzeichen, dass das auf dich zutrifft</p>
-        <ul className="exp-card-list">
-          {f.signals.map((s, i) => <li key={i}>{s}</li>)}
-        </ul>
-      </div>
-      <Link href={f.ctaHref} className="inline-flex items-center justify-center font-semibold"
-        style={{ marginTop: '18px', height: '42px', padding: '0 20px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '13px', textDecoration: 'none', width: '100%' }}>
-        {f.ctaLabel}
-      </Link>
     </div>
   )
 }
 
-export default function DeliveryDriversExpensesPageDE() {
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/de" style={{ color: '#587066' }}>Home</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/de/expenses" style={{ color: '#587066' }}>Ausgaben</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>Lieferfahrer</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '22ch' }}>
-                Lieferfahrer-Steuer: <span style={{ color: '#0B5240' }}>ABN, TFN oder beides?</span>
-              </h1>
-              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '50ch' }}>
-                Uber Eats, DoorDash und Amazon Flex sind Gig-Arbeit unter einer ABN. Fährst du für ein einzelnes Restaurant nach Dienstplan, ist das meist ein normaler TFN-Job. Hier erfährst du, wie du den Unterschied erkennst - und was du in beiden Fällen absetzen kannst.
-              </p>
-            </div>
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}{' '}
+              <span style={{ color: FOREST, fontStyle: 'italic' }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
           </div>
         </section>
 
-        {/* ── THE ABN / TFN FORK (this page's unique hook) ────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '20px' }}>
-          <div className="max-w-[1040px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                ABN oder TFN: Finde zuerst heraus, was auf dich zutrifft
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                Die meisten Lieferfahrten auf einem Working Holiday Visum sind Gig-Arbeit unter einer ABN. Ein Teil davon ist ein ganz normaler Angestelltenjob unter einer TFN. Beide werden völlig unterschiedlich besteuert - deshalb solltest du das als Erstes klären.
-              </p>
-            </div>
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
 
-            <div className="exp-grid">
-              {FORK_CARDS.map((f, i) => <ForkCard key={i} f={f} />)}
-            </div>
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
 
-            <div className="max-w-[680px] mx-auto text-center" style={{ marginTop: '8px' }}>
-              <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7, marginBottom: '10px' }}>
-                Viele machen im Laufe eines Jahres beides - einen festen Schichtjob unter TFN und nebenbei Uber Eats oder DoorDash unter einer ABN. Das ist völlig normal; du gibst einfach beide Einkommensarten in derselben Steuererklärung an, idealerweise mit getrennten Aufzeichnungen für jede.
-              </p>
-              <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7 }}>
-                Eine Warnung: Wenn ein einzelnes Restaurant oder ein Shop von dir verlangt, eine ABN zu haben, obwohl er deine Schichten festlegt, deine Arbeit beaufsichtigt und dir die Liefertasche oder das Fahrrad stellt, könnte das eine Scheinselbstständigkeit sein und kein echtes Contracting. Das solltest du lieber prüfen lassen, bevor du dich registrierst, statt einfach davon auszugehen, dass die Bezeichnung ABN das schon klärt.
-              </p>
-            </div>
-          </div>
-        </section>
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
 
-        {/* ── WHAT YOU CAN / CAN'T CLAIM ───────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Was Lieferfahrer wirklich absetzen können
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                Dabei gilt überall dasselbe Prinzip: Nur der arbeitsbezogene Anteil einer Ausgabe zählt, und du brauchst für alles, was du absetzt, einen Nachweis.
-              </p>
-            </div>
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '0 0 8px', lineHeight: 1.3 }}>
-              Auto und laufende Kosten
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Das ist für die meisten Fahrer die größte Absetzung, egal was du fährst. Du setzt den arbeitsbezogenen Anteil deines Fahrzeugs entweder mit der Kilometerpauschale oder der Fahrtenbuch-Methode ab (weiter unten im Detail verglichen) - und zwar nur für Fahrten, die wirklich Teil des Jobs sind, nie für private Fahrten.
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Für einen angestellten Lieferfahrer gilt dieselbe Pendel-Regel wie bei jedem anderen Job: Die Fahrt von zuhause zum Restaurant oder Shop, wo du einstempelst, und am Ende der Schicht wieder zurück, ist private Fahrt und keine Absetzung. Nur das Fahren, sobald du im Dienst bist - zwischen Shop und Lieferadressen - zählt als arbeitsbezogen.
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Fährst du unter einer ABN, sieht die Lage etwas anders aus, weil das Fahren nicht nur der Weg zur Arbeit ist, sondern die Arbeit selbst. Fahrten, die direkt und nachweisbar Teil deiner Einkommenserzielung durch die Lieferungen sind, sind nicht automatisch ausgeschlossen wie beim Pendelweg eines Angestellten. Wo genau die Grenze verläuft - zum Beispiel, ob die Fahrt von zuhause zu deiner ersten Lieferung des Tages zählt - hängt von den konkreten Umständen ab, wie du arbeitest. Es lohnt sich daher, deine eigene Situation prüfen zu lassen, statt anzunehmen, dass jeder Kilometer absetzbar ist.
-            </p>
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
 
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Handy und Datentarif
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Lieferarbeit läuft über eine App, deshalb ist der arbeitsbezogene Prozentsatz deiner Handyrechnung und deines Datentarifs absetzbar - der Anteil, den du wirklich für die Fahrer-App von Uber, DoorDash oder Menulog, GPS-Navigation und Nachrichten zu Aufträgen nutzt. Du brauchst eine faire, ehrliche Schätzung dieses Anteils; die gesamte Rechnung für ein Handy abzusetzen, das du auch privat nutzt, lässt sich nicht rechtfertigen.
-            </p>
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
 
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Parkgebühren und Strafzettel
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Parkgebühren, die während der Arbeit anfallen - zum Beispiel, während du in einem Einkaufszentrum auf eine fertige Bestellung wartest - sind absetzbar. Bei Park- oder Geschwindigkeitsstrafen sieht es anders aus: Sie sind nie absetzbar, ganz gleich unter welchen Umständen, selbst wenn du sie während einer Lieferung bekommen hast.
-            </p>
-
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Fahrrad- und E-Scooter-Fahrer
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Essenslieferung läuft immer öfter auf zwei statt auf vier Rädern. Es gilt dieselbe Logik wie beim Auto: Du kannst den arbeitsbezogenen Anteil der laufenden Kosten und Reparaturen deines Fahrrads oder E-Scooters absetzen, dazu Sicherheitsausrüstung, die du für den Job brauchst, wie Helm und Warnschutzkleidung - aufgeteilt zwischen Lieferfahrten und privater Nutzung.
-            </p>
-
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Das Fahrzeug in einem ordentlichen Zustand halten
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Die Reinigung deines Autos, damit es in einem für den Transport von Essen oder Paketen angemessenen Zustand ist, kann für den arbeitsbezogenen Anteil absetzbar sein - dasselbe Prinzip, das für Rideshare-Fahrer mit Fahrgästen gilt.
-            </p>
-
-            <h3 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(16px,1.7vw,19px)', letterSpacing: '-0.015em', margin: '26px 0 8px', lineHeight: 1.3 }}>
-              Was du nicht absetzen kannst
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              Ein paar Dinge bringen Fahrer jedes Jahr in Schwierigkeiten. Der private Teil einer Fahrt - zum Beispiel eine private Besorgung auf dem Weg zu einer Lieferung - ist nicht absetzbar, genauso wenig wie der gewöhnliche Arbeitsweg eines Angestellten zwischen zuhause und einem festen Arbeitsplatz. Park- und Geschwindigkeitsstrafen sind nie absetzbar, egal wie es dazu kam. Und wenn eine Plattform oder ein Arbeitgeber dir etwas bereits erstattet hat - zum Beispiel eine Tankfüllung - kannst du es nicht noch einmal in deiner Steuererklärung absetzen; das würde bedeuten, dieselbe Ausgabe zweimal geltend zu machen.
-            </p>
-          </div>
-        </section>
-
-        {/* ── GST & SHARING ECONOMY REPORTING ──────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '34px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(20px, 2.6vw, 26px)', letterSpacing: '-0.02em' }}>
-                Zwei Dinge, die jeder Plattform-Fahrer wissen sollte
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-              <div className="taxres-savings-box">
-                <div>
-                  <p className="taxres-savings-heading">GST spielt erst bei höherem Umsatz eine Rolle</p>
-                  <p className="taxres-savings-body">
-                    Wenn du unter einer ABN arbeitest und dein Umsatz aus der Lieferarbeit im Jahr 75.000 $ übersteigt, wird die GST-Registrierung verpflichtend. Die meisten Working Holiday Maker, die Teilzeit für Essenslieferungs-Apps fahren, kommen an diese Schwelle bei weitem nicht heran - trotzdem lohnt es sich, sie im Hinterkopf zu behalten, falls deine Stunden oder Einnahmen wachsen.
-                  </p>
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
                 </div>
-              </div>
-              <div className="taxres-savings-box">
-                <div>
-                  <p className="taxres-savings-heading">Plattformen melden dein Einkommen bereits an das ATO</p>
-                  <p className="taxres-savings-body">
-                    Uber, DoorDash und ähnliche Plattformen fallen unter das Sharing Economy Reporting Regime des ATO, das heißt, sie melden die Einkommensdaten der Fahrer direkt an das ATO. Deine Liefereinnahmen sind für das ATO sichtbar, unabhängig davon, was du angibst - es gibt also keine Version, bei der Plattformeinkommen einfach unbemerkt bleibt.
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
-          </div>
-        </section>
+          </section>
+        ))}
 
-        {/* ── CAR EXPENSE METHODS ──────────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Zwei Wege, deine Autokosten abzusetzen
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch' }}>
-                Egal, ob ABN oder TFN auf dich zutrifft: Für dein Auto gelten in beiden Fällen dieselben zwei Methoden. Du kannst pro Auto und Jahr nur eine Methode verwenden.
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"de"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
               </p>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="Kilometerpauschale" rows={CAR_METHOD_ROWS} highlight />
-              <CompareTable label="Fahrtenbuch-Methode" rows={LOGBOOK_ROWS} />
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
+              ))}
             </div>
-            <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, maxWidth: '60ch', marginTop: '18px' }}>
-              Kommst du beim Liefern auf mehr als 5.000 arbeitsbezogene Kilometer im Jahr, deckt die Fahrtenbuch-Methode meist mehr deiner tatsächlichen Kosten ab - dafür musst du aber ein 12-wöchiges Fahrtenbuch führen und jede Tank-, Service- und Zulassungsquittung aufheben.
+
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
         </section>
 
-        {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-        <section className="py-10 lg:py-14 bg-white">
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">FAQ</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  Steuerfragen für Lieferfahrer
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  Noch eine Frage? Schreib uns direkt.
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-        <NextStep
-          eyebrow="Was kommt als Nächstes?"
-          heading="Weißt du, ob ABN oder TFN für dich gilt? Gut."
-          body="Sobald dein Liefereinkommen und deine Ausgaben geklärt sind, ist der nächste Schritt deine Working Holiday Steuererklärung."
-          cta="Weiter zur Steuererklärung →"
-          href="/de/tax-return"
-        />
-
-        {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              Dies sind allgemeine Informationen, keine persönliche Steuerberatung. Ob du Contractor oder Angestellter bist und was du im Einzelnen absetzen kannst, hängt von den konkreten Umständen ab, wie du arbeitest. Wenn du deine Erklärung bei uns einreichst, gehen wir dein Liefereinkommen, deine Auto-, Fahrrad- oder Scooter-Kosten und deine ABN- oder TFN-Situation durch, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
-            </p>
-            <Link href="/de/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              Steuerrückerstattung beantragen →
-            </Link>
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/de/tax-form" lang="de" />
+
+      <MobileCta href={WA} lang={"de"} topic="expenses" />
     </>
   )
 }

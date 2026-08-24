@@ -1,31 +1,41 @@
 import type { Metadata } from 'next'
-import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
+import { SITE_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
+import { WaLink } from '../HomeWa'
 import { NextStep } from '@/components/ui/NextStep'
+import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 
+/*
+ * The best performing service page on the site, so this is a tightening rather
+ * than a rebuild. What it owns is the exemption certificate: the levy comes off
+ * by default, an agreement country removes the entitlement to claim it back,
+ * and the exemption itself needs a statement almost nobody applies for. That is
+ * the determinant, and it now leads the page.
+ */
+
+const WA = waUrl({ topic: 'medicare', lang: 'en' })
+
 export const metadata: Metadata = {
-  title: "Medicare Levy Exemption - We Claim The 2% Back For You",
-  description: "Most 417 and 462 visa holders never owed the 2% Medicare levy - about $500 on $25,000 earned. We obtain your Medicare Entitlement Statement and claim the exemption with your return.",
+  title: { absolute: 'Medicare Levy Exemption for 417 and 462 Visa Holders' },
+  description:
+    'The 2% Medicare levy comes off by default, and most working holiday makers never owed it. Who is exempt, and the certificate the exemption needs.',
   keywords: [
-    'Medicare working holiday',
-    'Medicare levy exemption backpacker',
     'Medicare levy exemption working holiday',
+    'Medicare levy exemption backpacker',
     'Medicare levy exemption 417 visa',
     'Medicare levy exemption 462 visa',
+    'Medicare levy exemption certificate',
+    'Medicare Entitlement Statement working holiday',
+    'do working holiday makers pay Medicare levy',
+    'RHCA Australia',
+    'Reciprocal Health Care Agreement working holiday',
     'Medicare 417 visa',
     'Medicare 462 visa',
-    'RHCA Australia',
-    'Reciprocal Health Care Agreement',
-    'Reciprocal Health Care Agreement working holiday',
-    'Medicare levy exemption certificate',
-    'apply for Medicare levy exemption',
-    'Medicare levy 2% backpacker',
-    'do working holiday makers pay Medicare levy',
-    'Medicare exemption UK backpacker',
     'Medicare exemption German backpacker',
     'Medicare exemption Japanese working holiday',
+    'Medicare exemption UK backpacker',
   ],
   alternates: {
     canonical: '/medicare',
@@ -37,67 +47,98 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/medicare`,
     siteName: 'Working Holiday Tax',
-    title: "Medicare Levy Exemption - We Claim The 2% Back For You",
-    description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder. Claim your levy exemption.',
+    title: 'Medicare Levy Exemption for 417 and 462 Visa Holders',
+    description: 'The 2% levy comes off by default. Who is exempt, and the certificate the exemption needs.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Medicare Levy Exemption for Working Holiday Visa Holders',
-    description: 'Understand Medicare eligibility and the Medicare levy. Claim your exemption.',
+    description: 'The 2% levy comes off by default. Who is exempt, and what the exemption needs.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
-const rhca = [
-  'United Kingdom', 'New Zealand', 'Ireland', 'Sweden',
-  'Netherlands', 'Finland', 'Belgium', 'Italy',
-  'Malta', 'Norway', 'Slovenia',
+const RHCA = [
+  'United Kingdom', 'Ireland', 'New Zealand', 'Italy',
+  'Sweden', 'Netherlands', 'Belgium', 'Finland',
+  'Norway', 'Malta', 'Slovenia',
+]
+
+/**
+ * The objection every lead arrives holding, answered about the levy.
+ *
+ * Not a copy of the homepage table. Every row is about this 2%: it is applied
+ * by default, what decides it is the passport rather than the visa, and taking
+ * it off needs a certificate applied for somewhere else entirely. No row here
+ * criticises myGov. Lodging is not the part that goes wrong.
+ */
+const MYGOV = [
+  {
+    mygov: 'The levy is added when the return is assessed, so the first sign of it is a refund that came back smaller.',
+    us: 'We settle that question before the return goes in, rather than after the assessment lands.',
+  },
+  {
+    mygov: 'Nothing on the screen mentions that your passport country, not your visa, is what decides it.',
+    us: 'Whether Australia has a reciprocal health care agreement with your country is the whole question, and it is the first one we ask.',
+  },
+  {
+    mygov: 'Taking the levy off needs an exemption certificate, applied for separately and not through the return at all.',
+    us: 'We apply for the certificate, wait on it, and lodge so the exemption is actually claimed for the right year.',
+  },
+  {
+    mygov: 'The exemption box is there whether you hold the certificate or not.',
+    us: 'We only claim it with the evidence behind it, which is what makes the claim stand up later.',
+  },
 ]
 
 const faqs = [
   {
-    question: 'How much is the exemption actually worth?',
-    answer: 'The levy is 2% of taxable income, so about $500 on $25,000 earned. It comes back through your tax return, not your payslip, which is why most people never notice they paid it.',
+    question: 'Can I not just do this myself on myGov?',
+    answer:
+      'You can lodge the return yourself, and lodging is the easy part. The difficulty with the Medicare levy is that nothing in the lodgement flow tells you the levy may not have been yours to pay. What decides whether you owed it is not your visa but whether your passport country has a reciprocal health care agreement with Australia, and removing it is not a tick box either: it needs a Medicare Entitlement Statement, which is applied for separately from Services Australia and takes time to come back. Claiming the exemption without that statement behind it is the version that gets queried. You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.',
   },
   {
-    question: 'Does everyone on a 417 or 462 visa get the exemption?',
-    answer: 'Most do, but not everyone. If your country has a reciprocal health care agreement with Australia - the UK, Ireland, Italy, New Zealand and several others - you are generally entitled to Medicare, and that removes the exemption. We check your specific situation before claiming anything.',
+    question: 'How much is the Medicare levy exemption actually worth?',
+    answer:
+      'The levy is 2% of taxable income, so it is about $500 on $25,000 earned and about $1,000 on $50,000. It is settled when your return is assessed rather than taken out of your wages week by week, so the exemption claimed in the return is what puts the money back, and it is the same money whether you noticed losing it or not.',
   },
   {
-    question: 'What is the Medicare levy exemption?',
-    answer: 'If you are not eligible for Medicare - which applies to most Working Holiday Visa holders - you can apply to have the Medicare levy waived when you lodge your tax return. We handle this as part of our tax return service.',
+    question: 'Does every 417 or 462 visa holder get the exemption?',
+    answer:
+      'Most do, but not all, and the deciding factor is your passport rather than your visa. Eleven countries hold a reciprocal health care agreement with Australia, the United Kingdom, Ireland and Italy among them, and a national of one of those is generally entitled to Medicare here. Entitlement is what removes the exemption, whether or not you ever enrolled or used it. Germany and Japan hold no agreement, so the exemption is normally available to working holiday makers from either.',
   },
   {
-    question: 'I am from the UK. Am I eligible for Medicare?',
-    answer: 'The UK has a Reciprocal Health Care Agreement with Australia. This means UK citizens on certain visas may access some Medicare services. However, coverage is limited and a Medicare card is not always issued automatically. We recommend confirming your status when you arrive.',
+    question: 'What is a Medicare Entitlement Statement and do you need one?',
+    answer:
+      'A Medicare Entitlement Statement is a document from Services Australia confirming that you were not entitled to Medicare for a stated period. It is the evidence behind the exemption, and the ATO can ask to see it, so an exemption claimed without one is a claim you cannot support. Applying for it is a separate process from lodging your tax return and it takes time to come back, which is the main reason people skip the exemption entirely.',
   },
   {
-    question: 'If I am not eligible for Medicare, do I still pay the levy?',
-    answer: 'Not if you apply for an exemption. If you are not eligible for Medicare, you should claim a Medicare levy exemption on your tax return - which means you will not be charged.',
+    question: 'Can you claim the exemption for only part of the year?',
+    answer:
+      'Yes, and for a lot of working holiday makers that is the correct answer rather than a full year exemption. The exemption is worked out in days, so if you arrived in November, or if your circumstances changed partway through, only the days you were not entitled to Medicare are exempt. Claiming a full year when only part of it applies is the kind of error that gets a return amended later.',
   },
   {
-    question: 'Does my Working Holiday visa affect my Medicare eligibility?',
-    answer: 'Yes. Most Working Holiday visa holders are not eligible for Medicare unless they are from a country with a Reciprocal Health Care Agreement. If you are not eligible, we apply a Medicare levy exemption as part of your tax return.',
+    question: 'Does travel insurance or private health cover change any of this?',
+    answer:
+      'No. Travel insurance and private hospital cover are separate from Medicare and have no bearing on the levy or the exemption. The levy is a tax question about entitlement to the public system, not a question about whether you are insured. Private hospital cover matters for a different charge, the Medicare levy surcharge, which applies at high incomes and is rarely relevant on a working holiday.',
   },
   {
-    question: 'How does the Medicare levy exemption affect my working holiday tax refund?',
-    answer: 'The Medicare levy is 2% of your taxable income. If you are not eligible for Medicare and the levy was applied during the year, claiming the exemption removes it from your tax return - which can mean a larger refund. We check your eligibility and apply the exemption as part of preparing your tax return.',
+    question: 'What happens if the levy was already taken during the year?',
+    answer:
+      'Nothing is lost. The levy is calculated when your tax return is assessed, not when you are paid, so what came out of your wages during the year was tax withheld generally rather than the levy specifically. Claiming a valid exemption removes the levy from the assessment, which increases your refund or reduces what you owe. If a previous year was lodged without the exemption and you were entitled to it, that return can usually be amended.',
   },
-  {
-    question: 'Am I from a country with a Medicare agreement with Australia?',
-    answer: 'Australia has Reciprocal Health Care Agreements with 11 countries including the UK, Ireland, Italy, Sweden, the Netherlands, Belgium, Finland, Norway, Malta, Slovenia and New Zealand. Working holiday makers from Germany and Japan are not covered by an RHCA and should claim a Medicare levy exemption on their tax return.',
-  }
 ]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  inLanguage: 'en-AU',
   mainEntity: faqs.map(f => ({
     '@type': 'Question',
     name: f.question,
@@ -118,12 +159,13 @@ const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   '@id': `${SITE_URL}/medicare#service`,
-  name: 'Medicare Levy Exemption Service for Working Holiday Makers',
+  name: 'Medicare levy exemption service for working holiday makers',
   serviceType: 'Medicare levy exemption claim',
-  description: 'Medicare levy exemption claim handled as part of your working holiday tax return. For 417 and 462 visa holders not covered by Medicare.',
+  description:
+    'Medicare levy exemption handled as part of a working holiday tax return, including the Medicare Entitlement Statement, for 417 and 462 visa holders not entitled to Medicare.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
-  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) not covered by Medicare' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (subclass 417 / 462) not entitled to Medicare' },
   inLanguage: 'en-AU',
 }
 
@@ -131,11 +173,22 @@ const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   '@id': `${SITE_URL}/medicare#webpage`,
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', '.hero-sub'],
-  },
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
   url: `${SITE_URL}/medicare`,
+}
+
+const H2: React.CSSProperties = {
+  fontSize: 'clamp(21px,2.6vw,30px)',
+  lineHeight: 1.16,
+  letterSpacing: '-0.025em',
+  marginBottom: '12px',
+  scrollMarginTop: '84px',
+}
+const BODY: React.CSSProperties = {
+  fontSize: '15px',
+  lineHeight: 1.7,
+  color: '#2A3C34',
+  marginBottom: '14px',
 }
 
 export default function MedicarePage() {
@@ -146,289 +199,225 @@ export default function MedicarePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
+      {/* ── HERO. The determinant is the agreement country, not the task. ─── */}
+      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
+            style={{ fontSize: '13px', color: '#4C6459' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
-            <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>
+            <span aria-hidden="true">/</span>
             <span aria-current="page">Medicare</span>
           </nav>
 
-          <div className="max-w-[560px] lg:max-w-[700px]">
+          <div className="max-w-[680px]">
 
             <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
+              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
               <span className="font-medium uppercase"
-                style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
-                Medicare
+                style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240' }}>
+                Medicare levy
               </span>
             </div>
 
             <h1 className="font-serif font-black text-ink"
-              style={{
-                fontSize:'clamp(24px,3.2vw,44px)',
-                lineHeight:1.06,
-                letterSpacing:'-0.03em',
-                marginBottom:'10px',
-              }}>
-              {/* Desktop: locked 2 lines - nowrap per line */}
-              <span className="hidden lg:block">
-                <span style={{ display:'block', whiteSpace:'nowrap' }}>Most backpackers never owed the 2% levy.</span>
-                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>We claim it back for you.</span>
-              </span>
-              <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Most backpackers never owed the 2% levy.</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>We claim it back for you.</span>
-              </span>
+              style={{ fontSize: 'clamp(28px,3.4vw,44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '12px' }}>
+              A 2% levy you never owed
             </h1>
 
-            <p className="font-semibold text-ink"
-              style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
-              
-              The Medicare levy is 2% of your taxable income - about $500 on $25,000 earned. Most 417 and 462 holders can have it exempted in full.
-            
+            <p className="hero-sub font-semibold text-ink"
+              style={{ fontSize: 'clamp(16px,1.6vw,18px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+              Your passport decides it, not your visa. Removable with a certificate almost nobody applies for.
             </p>
 
-            <p className="font-light"
-              style={{
-                fontSize:'clamp(13px,1.2vw,15px)',
-                lineHeight:1.65,
-                color:'rgba(10,15,13,0.58)',
-                maxWidth:'44ch',
-                marginBottom:'0',
-              }}>
-              
-              We help you determine your correct status.
-            
-            </p>
-
-            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
-              style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+            <div className="flex flex-col gap-3 lg:flex-row lg:gap-4"
+              style={{ marginTop: '24px', marginBottom: '22px', maxWidth: '480px' }}>
+              <WaLink href={WA} position="hero" topic="medicare" lang="en"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
-                Check your eligibility →
-              </a>
-              <a href="#how-it-works"
-                className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
-                See how it works →
+                style={{ minHeight: '54px', padding: '0 32px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
+                Check where you stand
+              </WaLink>
+              <a href="#who-is-exempt"
+                className="inline-flex btn-ghost-dark justify-center items-center"
+                style={{ minHeight: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
+                Who is exempt
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['Trusted by backpackers',<GoogleRating key="rating" variant="pill" lang="en" />,'Worldwide reach','~1 hour response time'].map((t,i) => (
-                <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                  style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
-                </span>
+            <p style={{ fontSize: '13px', color: '#4C6459' }}>
+              Replies in about an hour. Ask anything first.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── THE OBJECTION, ANSWERED ABOUT THE LEVY ─────────────────────────── */}
+      <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px]">
+
+            <p className="font-medium uppercase"
+              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
+              Doing it yourself
+            </p>
+
+            <h2 className="font-serif font-black text-ink" style={H2}>
+              <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Nobody asks whether the levy was ever yours.{' '}</span>
+              <span style={{ display: 'block' }}>myGov applies it and moves on.{' '}</span>
+            </h2>
+
+            <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
+              It is 2% of taxable income, about $500 on a $25,000 year. It never appears on a payslip, which is why
+              almost nobody notices paying it.
+            </p>
+
+            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+              {MYGOV.map((row, i) => (
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                  <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
+                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                      On myGov
+                    </p>
+                    <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
+                  </div>
+                  <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                    style={{ padding: '15px 18px', background: '#F2FAF7' }}>
+                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
+                      With us
+                    </p>
+                    <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word' }}>{row.us}</p>
+                  </div>
+                </div>
               ))}
             </div>
+
+            <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
+              You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
+            </p>
           </div>
         </div>
       </section>
 
-
-      {/* ── WHAT IS MEDICARE? - Unique design: 2% Levy / Exemption motif ─ */}
-      <section className="medicare-intro-section">
-        <div className="medicare-intro-container">
-          <div className="medicare-intro-grid">
-
-            {/* Left: Explainer */}
-            <div className="medicare-intro-content">
-              <p className="medicare-intro-eyebrow">Healthcare &amp; the 2% levy</p>
-              <h2 className="medicare-intro-heading">
-                What is Medicare?
-              </h2>
-              <p className="medicare-intro-body">
-                <strong>Medicare</strong> is Australia&apos;s public healthcare system. It provides access to subsidised medical services and is funded partly through a <strong>2% Medicare levy</strong> automatically deducted from your taxable income.
-              </p>
-              <p className="medicare-intro-body">
-                Most working holiday visa holders are <strong>not eligible</strong> for Medicare benefits. If you are not eligible, you should not be paying the levy - and you can claim it back.
-              </p>
-              <p className="medicare-intro-body">
-                The way to remove the levy is through a <strong>Medicare Levy Exemption Certificate</strong>. This is applied when lodging your tax return, and can save you hundreds to thousands of dollars.
-              </p>
-            </div>
-
-            {/* Right: Visual - Eligibility check card */}
-            <div className="medicare-intro-visual">
-              <div className="medicare-check-card">
-                <div className="medicare-check-header">
-                  <p className="medicare-check-title">Are you paying the 2% levy?</p>
-                  <p className="medicare-check-subtitle">Most working holiday makers should not be</p>
-                </div>
-
-                <div className="medicare-check-items">
-                  <div className="medicare-check-item">
-                    <div className="medicare-check-icon medicare-check-x">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <path d="M3.5 3.5l7 7M10.5 3.5l-7 7" stroke="#9A3412" strokeWidth="1.8" strokeLinecap="round"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="medicare-check-label">Not eligible for Medicare</p>
-                      <p className="medicare-check-desc">Most 417 / 462 visa holders</p>
-                    </div>
-                  </div>
-
-                  <div className="medicare-check-arrow">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M12 5v14M5 12l7 7 7-7" stroke="#2FA880" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-
-                  <div className="medicare-check-item medicare-check-result">
-                    <div className="medicare-check-icon medicare-check-v">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <path d="M3 7l3 3 5-6" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="medicare-check-label">Claim levy exemption</p>
-                      <p className="medicare-check-desc">Recover the 2% paid during the year</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="medicare-check-savings">
-                  <p className="medicare-check-savings-label">Potential refund</p>
-                  <p className="medicare-check-savings-amount">$500 - $2,000+</p>
-                  <p className="medicare-check-savings-detail">depending on your income</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* CTA strip to OUR service */}
-          <div className="service-cta-strip">
-            <div className="service-cta-text">
-              <h3 className="service-cta-heading">We claim your Medicare levy exemption for you</h3>
-              <p className="service-cta-sub">Tell us your situation and we will tell you what you are owed. We assess your eligibility, prepare your exemption certificate, and apply it correctly when lodging your tax return - so you get back what you should not have paid.</p>
-            </div>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
-              Check my exemption →
-            </a>
+      {/* ── WHAT GOES WRONG ALONE ──────────────────────────────────────────── */}
+      <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px]">
+            <h2 className="font-serif font-black text-ink" style={H2}>
+              Why is the levy on your assessment at all?
+            </h2>
+            <p style={BODY}>
+              Because it is the default. The Medicare levy is applied to your taxable income when the ATO
+              assesses your return, and it comes off unless an exemption is claimed. Nothing in the process
+              asks whether you were entitled to Medicare, and nothing prompts you at the point where it
+              matters, so the commonest outcome is that a working holiday maker pays 2% of a year's income
+              towards a system they were never able to use.
+            </p>
+            <p style={BODY}>
+              The second commonest outcome is worse in a quiet way: the exemption is ticked without the
+              statement that backs it. The exemption is evidenced by a Medicare Entitlement Statement from
+              Services Australia, which is a separate application to a separate agency, and it takes time
+              to come back. Claiming without it leaves a return that cannot be supported if the ATO asks,
+              which is the kind of thing that surfaces a year later when you are no longer in the country.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
+      {/* ── THE DETERMINANT ────────────────────────────────────────────────── */}
+      <section id="who-is-exempt" className="py-8 lg:py-11" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px]">
+            <h2 className="font-serif font-black text-ink" style={H2}>
+              Who is exempt from the Medicare levy?
+            </h2>
+            <p style={BODY}>
+              You are generally exempt if you were not entitled to Medicare, and on a working holiday visa
+              that comes down to your passport. Australia has reciprocal health care agreements with eleven
+              countries. A national of one of those is generally entitled to Medicare while here, which
+              removes the exemption even if you never enrolled and never used it, because the test is
+              entitlement rather than use. Everybody else, Germany and Japan included, is normally not
+              entitled and can claim the exemption for the days that applies.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[880px]" style={{ marginTop: '20px' }}>
+            <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0' }}>
+              <p className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '8px' }}>
+                From an agreement country
+              </p>
+              <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '12px' }}>
+                Generally entitled to Medicare, so generally not exempt. We make sure the levy is applied
+                correctly rather than twice, and check whether any part of the year was different.
+              </p>
+              <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#4C6459' }}>
+                {RHCA.join(' · ')}
+              </p>
+            </div>
+            <div className="rounded-2xl" style={{ padding: '20px', background: '#EAF6F1', border: '1.5px solid #C8EAE0' }}>
+              <p className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '8px' }}>
+                From anywhere else
+              </p>
+              <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '12px' }}>
+                Normally not entitled to Medicare, so normally exempt. Germany and Japan are both in this
+                group, and together they are a large share of the people reading this page.
+              </p>
+              <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#4C6459' }}>
+                The exemption is counted in days, not as a single yes or no for the year.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT WE DO ─────────────────────────────────────────────────────── */}
+      <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px]">
+            <h2 className="font-serif font-black text-ink" style={H2}>
+              What do we do about it?
+            </h2>
+            <p style={BODY}>
+              We work out whether you were entitled to Medicare and for which part of the year, which is a
+              question about your nationality, your visa and your dates rather than a box to tick. Where
+              you were not entitled, we apply for the Medicare Entitlement Statement on your behalf, and we
+              claim the exemption in your return for the correct number of days, so the figure holds up if
+              it is ever looked at.
+            </p>
+            <p style={BODY}>
+              It is part of the return rather than a separate job, worked out alongside your residency
+              position and what your line of work can deduct.
+            </p>
+
+            <div className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1.5px solid #C8EAE0', margin: '20px 0' }}>
+              <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
+                If your refund is less than our fee, we refund the difference, so you are never out of pocket.
+              </p>
+              <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
+                Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged
+                with the ATO.
+              </p>
+            </div>
+
+            <WaLink href={WA} position="section" topic="medicare" lang="en"
+              className="btn-primary flex justify-center"
+              style={{ minHeight: '54px', width: '100%', maxWidth: '360px', fontSize: '15px', borderRadius: '100px' }}>
+              Message us on WhatsApp
+            </WaLink>
+            <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '10px' }}>
+              Replies in about an hour. Ask anything first.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── VIDEO. Kept, it earns its place on the best performing page. ──── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Your two scenarios</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px' }}>
-              You may be exempt from the Medicare levy, depending on your country of origin.
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ ...H2, maxWidth: '22ch' }}>
+              The exemption in two minutes
             </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 mb-8 lg:mb-10 reveal delay-1">
-            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ marginBottom: '10px', background: '#EAF6F1' }}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <circle cx="10" cy="10" r="8" stroke="#0B5240" strokeWidth="1.4"/>
-                  <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>From an RHCA country</p>
-              <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ marginBottom: '10px' }}>
-                If you are eligible for Medicare, we ensure it is correctly applied in your tax return so you only pay what you owe.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ marginBottom: '10px', background: '#FFFCF5' }}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <circle cx="10" cy="10" r="8" stroke="#C47E10" strokeWidth="1.4"/>
-                  <path d="M10 6v5M10 13.5v.5" stroke="#C47E10" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-              </div>
-              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>From a non-RHCA country</p>
-              <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ marginBottom: '10px' }}>
-                If you are not eligible for Medicare, we ensure your Medicare levy exemption is correctly applied so you don&apos;t overpay tax.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── NOT SURE? - MAIN ENTRY POINT ──────────────────────────────────── */}
-      <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[560px] mx-auto text-center">
-            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '10px' }}>
-              Not sure if you are eligible for Medicare?
-            </p>
-            <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              We check your eligibility and apply everything correctly.
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center font-semibold"
-              style={{ height: '46px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px' }}>
-              Check your eligibility →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHAT WE DO ────────────────────────────────────────────────────── */}
-      <section className="py-9 lg:py-12 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">What we do for you</span>
-            <h2 className="font-serif font-black text-ink mx-auto lg:whitespace-nowrap" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
-              We handle this as part of your tax return
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5 reveal delay-1">
-            {[
-              {
-                title: 'We determine your eligibility',
-                body: 'We assess your visa type and country of origin to determine your Medicare eligibility.',
-              },
-              {
-                title: 'We apply the correct treatment',
-                body: 'We ensure the Medicare levy or exemption is correctly applied in your tax return.',
-              },
-              {
-                title: 'We help you avoid paying unnecessary tax',
-                body: "We ensure you are not charged the Medicare levy if you are not required to pay it.",
-              },
-            ].map((item, i) => (
-              <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1px solid #C8EAE0' }}>
-                <div className="flex items-center gap-2" style={{ marginBottom: '6px' }}>
-                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </span>
-                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)', letterSpacing: '-0.01em' }}>{item.title}</p>
-                </div>
-                <p className="font-light text-muted leading-[1.65]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '26ch', paddingLeft:'26px' }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── MEDICARE LEVY EXEMPTION + VIDEO ───────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-2xl mx-auto text-center reveal">
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Medicare levy exemption
-            </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '40ch', marginBottom: '28px' }}>
-              If you are not eligible for Medicare, you may need a Medicare levy exemption We claim it back for you..
-            </p>
-            {/* Mobile: portrait 9/16, Desktop: landscape 16/9 */}
-            <div className="reveal delay-1 rounded-2xl overflow-hidden mx-auto w-full">
-              {/* Mobile only (portrait) */}
+            <div className="rounded-2xl overflow-hidden mx-auto w-full" style={{ marginTop: '18px' }}>
               <div className="block sm:hidden" style={{ aspectRatio: '9/16', maxWidth: '360px', margin: '0 auto' }}>
                 <iframe
                   src="https://www.youtube.com/embed/oj7ZSOHAxJk"
@@ -440,7 +429,6 @@ export default function MedicarePage() {
                   style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
                 />
               </div>
-              {/* Desktop (landscape) */}
               <div className="hidden sm:block" style={{ aspectRatio: '16/9', maxWidth: '720px', margin: '0 auto' }}>
                 <iframe
                   src="https://www.youtube.com/embed/oj7ZSOHAxJk"
@@ -457,31 +445,36 @@ export default function MedicarePage() {
         </div>
       </section>
 
-      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
-      <section className="py-10 lg:py-14">
+      {/* ── FAQ ────────────────────────────────────────────────────────────── */}
+      <section className="py-10 lg:py-14" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="text-center mb-6">
-            <span className="section-label center">Learn more</span>
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              Guides on Medicare and health cover
+          <div className="max-w-[760px]">
+            <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '18px' }}>
+              Common questions about the levy and the exemption
             </h2>
+            <Accordion items={faqs} />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+        </div>
+      </section>
+
+      {/* ── RELATED GUIDES ─────────────────────────────────────────────────── */}
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
+            Go deeper on Medicare and health cover
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px]">
             {[
-              { href: '/blog/what-is-medicare-working-holiday-makers', label: 'Medicare for working holiday makers: who is covered?' },
-              { href: '/blog/medicare-levy-working-holiday-makers', label: 'Medicare levy exemption for working holiday makers' },
-              { href: '/blog/countries-with-medicare-agreement-australia', label: 'Reciprocal Health Care Agreement countries with Australia' },
-              { href: '/blog/private-health-insurance-working-holiday-australia', label: 'Do working holiday makers need private health insurance?' },
-              { href: '/blog/emergency-medical-care-working-holiday-no-medicare', label: 'Emergency medical care without Medicare in Australia' },
-              { href: '/uk-working-holiday-tax', label: 'UK passport holders: how Medicare and the levy work for you' },
-              { href: '/blog/uk-medicare-reciprocal-agreement-australia', label: 'UK-Australia Reciprocal Health Care Agreement explained' },
-            ].map((g) => (
-              <Link
-                key={g.href}
-                href={g.href}
-                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
-              >
+              { href: '/blog/medicare-levy-working-holiday-makers', label: 'The Medicare levy exemption for working holiday makers' },
+              { href: '/blog/countries-with-medicare-agreement-australia', label: 'Which countries have a health care agreement with Australia' },
+              { href: '/blog/what-is-medicare-working-holiday-makers', label: 'What Medicare is, and who is actually covered' },
+              { href: '/blog/uk-medicare-reciprocal-agreement-australia', label: 'The UK agreement, and what it means for your return' },
+              { href: '/blog/private-health-insurance-working-holiday-australia', label: 'Does private health cover change the levy?' },
+              { href: '/uk-working-holiday-tax', label: 'UK passport holders: how the levy works for you' },
+            ].map(g => (
+              <Link key={g.href} href={g.href}
+                className="block rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
+                style={{ padding: '16px', fontSize: '14px', lineHeight: 1.5, color: '#080F0D', minHeight: '44px' }}>
                 {g.label}
               </Link>
             ))}
@@ -489,44 +482,15 @@ export default function MedicarePage() {
         </div>
       </section>
 
-      {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '28px' }}>
-            <span className="section-label center">FAQs</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '24ch', marginTop: '8px', textWrap: 'balance' }}>
-              Common questions about Medicare
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 reveal delay-1">
-            {[
-              { q: 'Do I need to sign up for Medicare?', a: 'You only need to sign up if you are from an eligible RHCA country. Otherwise, we apply the exemption in your tax return.' },
-              { q: 'Why is the Medicare levy showing on my tax bill?', a: 'If your Medicare status was not applied correctly, the levy may appear. We fix this when preparing your tax return.' },
-              { q: 'I do not use Medicare - why am I being charged?', a: 'If no exemption is applied, the ATO may charge the levy automatically. We apply the correct exemption so you do not overpay.' },
-              { q: 'Does travel insurance replace Medicare?', a: 'No. Travel insurance and Medicare are separate systems. If you are not eligible for Medicare, you should rely on your travel insurance for medical coverage.' },
-              { q: 'Does my Working Holiday visa affect Medicare?', a: 'Yes. Most Working Holiday visa holders are not eligible for Medicare, unless they are from a Reciprocal Health Care Agreement (RHCA) country. We ensure your Medicare status is correctly applied in your tax return.' },
-              { q: 'Can I get a Medicare card on a Working Holiday visa?', a: 'Only if you are from an eligible RHCA country. Otherwise, we apply a Medicare levy exemption instead.' },
-            ].map((item, i) => (
-              <div key={i} className="bg-white rounded-xl" style={{ padding: '16px', border: '1px solid #C8EAE0', boxShadow: '0 1px 2px rgba(0,0,0,.02)' }}>
-                <p className="text-[13px] font-semibold text-ink" style={{ marginBottom: '6px' }}>{item.q}</p>
-                <p className="text-[12.5px] font-light text-muted leading-[1.65]">{item.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="What is next?"
-        heading="You are all set to lodge your tax return"
-        body="We ensure your Medicare status is correctly applied so you do not overpay tax."
-        cta="Start your tax return →"
+        eyebrow="What is next"
+        heading="The exemption is one line of a return, not the whole of it"
+        body="Your residency position and your deductions are worth more. All three are worked out together."
+        cta="How the return is prepared"
         href="/tax-return"
       />
 
-      {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      <MobileCta href={WA_URL} lang="en" />
+      <MobileCta href={WA} lang="en" topic="medicare" />
     </>
   )
 }

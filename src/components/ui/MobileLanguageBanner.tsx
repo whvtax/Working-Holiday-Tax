@@ -119,10 +119,14 @@ export function MobileLanguageBanner() {
       aria-label={cfg.dialogLabel}
       style={{
         position: 'fixed',
-        bottom: '16px',
+        // Stacks ABOVE the sticky WhatsApp bar rather than on top of it. At
+        // bottom:16px with z-index 70 this banner completely covered the only
+        // conversion action on the site, and it only ever shows to German and
+        // Japanese visitors, who are 40% of paying customers.
+        bottom: 'calc(88px + env(safe-area-inset-bottom, 0px))',
         left: '12px',
         right: '12px',
-        zIndex: 70,
+        zIndex: 62,
         background: '#fff',
         borderRadius: '16px',
         boxShadow: '0 8px 28px rgba(11, 82, 64, 0.18), 0 2px 8px rgba(11, 82, 64, 0.08)',

@@ -1,15 +1,25 @@
 import type { Metadata } from 'next'
+import type { CSSProperties } from 'react'
+import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
-import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
-import { NextStep } from '@/components/ui/NextStep'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { NextStep } from '@/components/ui/NextStep'
+import { SITE_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
+import { WaLink } from '@/app/HomeWa'
 
+// ─── METADATA ───────────────────────────────────────────────────────────
+// The head terms stay, because they rank. What changes is what the page
+// claims: this page owns the cost of the gap between starting work and the
+// TFN reaching the employer. No price in the title, the description or the
+// schema, and no first person claim to being a registered tax agent.
 export const metadata: Metadata = {
-  title: "TFN Application for Working Holiday Visa (417/462) - Avoid 45% Tax",
-  description: "Applying for a TFN on a working holiday visa? Without one your employer withholds 45% instead of 15%. We apply for you - fast and fully online.",
+  // The root layout appends " | Working Holiday Tax", so the base title is kept
+  // short enough that the whole thing still fits a mobile SERP.
+  title: 'Working Holiday TFN: Avoid 45% Tax',
+  description:
+    'The TFN itself is free. What costs money is every payslip that lands before your employer has it, withheld at 45% instead of 15%.',
   keywords: [
     'TFN application Australia',
     'TFN application working holiday',
@@ -18,483 +28,533 @@ export const metadata: Metadata = {
     'Tax File Number 417 visa',
     'Tax File Number 462 visa',
     'apply for TFN backpacker',
-    'apply for TFN working holiday',
     'get TFN Australia',
     'how to apply for TFN Australia',
     'TFN for WHV',
     'TFN for working holiday tax refund',
-    'TFN application working holiday maker',
-    'how to apply for TFN backpacker',
-    'TFN Australia online application WHV',
-    'TFN application before arriving Australia',
     'TFN Australia processing time',
-    'TFN for working holiday tax return',
+    'no TFN 45 percent tax Australia',
+    'TFN 28 day rule Australia',
+    'TFN application rejected working holiday',
     'register for TFN Australia backpacker',
   ],
   alternates: {
     canonical: '/tfn',
     languages: {
       'en-AU': '/tfn',
-      'de': '/de/tfn',
-      'ja': '/ja/tfn',
+      de: '/de/tfn',
+      ja: '/ja/tfn',
       'x-default': '/tfn',
     },
   },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'TFN application for working holiday makers in Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/tfn`,
     siteName: 'Working Holiday Tax',
-    title: "Get Your TFN - We Apply For You (No 45% Tax) | Working Holiday",
-    description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. We handle the application for you, fully online.',
+    title: 'TFN for a Working Holiday Visa: Avoid the 45% Weeks',
+    description:
+      'The number is free. The weeks without it are not. We prepare and lodge the TFN application so it goes through first time, on a 417 or 462 visa.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'TFN Application for Working Holiday Visa Holders',
-    description: 'Get your Tax File Number sorted fast - the first step to your Australian tax refund.',
+    title: 'TFN for a Working Holiday Visa: Avoid the 45% Weeks',
+    description: 'The number is free. The weeks before your employer has it are not.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
-const faqs = [
+// ─── ICONS ──────────────────────────────────────────────────────────────
+const IconWhatsApp = () => (
+  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
+  </svg>
+)
+
+// ─── COPY ───────────────────────────────────────────────────────────────
+
+/** The three places a working holiday TFN application actually fails. */
+const FAILURE_POINTS = [
   {
-    question: 'The TFN application is free on the ATO site. What am I paying you for?',
-    answer: 'The number itself is free and we will say so plainly. What we charge for is getting the application through first time - the passport details that must match immigration records exactly, the address that has to hold mail for four weeks, and chasing the ATO if it stalls past 28 days. If you would rather do it yourself, our blog walks through it step by step.',
+    n: '01',
+    title: 'The name on the form is not the name immigration holds',
+    body: 'The ATO matches your application against the record the Department of Home Affairs holds for your visa. A middle name you left out, a maiden name, a passport renewed since the visa was granted, a name written in a different order: any of those can send the application into manual checking or straight back to you. On a form you fill in once and then wait a month on, it is a slow way to find out.',
   },
   {
-    question: 'I have already started work without a TFN. Is it too late?',
-    answer: 'No. You have 28 days from starting a job before the 45% rate applies, and any excess already withheld comes back through your tax return. We can usually have the application lodged the same day you contact us.',
+    n: '02',
+    title: 'The address will not be holding your post in four weeks',
+    body: 'Your TFN arrives as a letter, posted to an Australian address, and the ATO can take up to 28 days to issue it. Backpackers move. A hostel bed you had for six nights, a share house you left, a farm you have already finished at: the letter goes there and nobody forwards it. Choosing an address that will still work in a month is a real decision, not a form field.',
   },
-  { question:'Can I start work before I receive my TFN?', answer:'Yes. You can start working, but you must provide your TFN within 28 days. Until then, your employer may withhold tax at a higher rate.' },
-  { question:'Can I get a TFN on a tourist visa?', answer:'No. You must hold a valid work visa, such as a Working Holiday visa (Subclass 417 or 462), to apply for a TFN.' },
-  { question:'What if I forget my TFN?', answer:'You can find your TFN by contacting the ATO directly, by checking previous tax documents, or by asking your tax agent.' },
-  { question:'What is a TFN Declaration Form?', answer:'A form you complete when starting a job. It tells your employer how much tax to withhold from your pay.' },
-  { question:'Can I apply for a TFN before arriving in Australia?', answer:'You can only apply once you arrive in Australia and your working holiday visa is activated. If you apply before arrival, the ATO will need an Australian postal address to send your TFN to.' },
-  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate - which usually means a larger refund when you lodge your tax return.' },
-  { question:'How long does it take to get a Tax File Number?', answer:'The ATO processes TFN applications within 28 days maximum. In practice, most working holiday makers receive their TFN within 2-4 weeks. The TFN arrives as a letter posted to your Australian address.' },
-  { question:'How long does the TFN take to arrive?', answer:'Your TFN letter typically arrives within 2-4 weeks after you submit your application. The ATO can take up to 28 days to process. You can start work before it arrives using your application reference number.' },
-  { question:'What is a Tax File Number for a working holiday visa?', answer:'A Tax File Number (TFN) is a unique 9-digit identifier issued by the ATO. For working holiday visa holders (417 and 462), it determines your tax withholding rate. With a TFN, your employer withholds 15% instead of 45% - essential for your tax refund and superannuation claiming.' },
-  { question:'How long does a TFN take to process and come in the mail?', answer:'Processing takes up to 28 days maximum, typically 2-4 weeks. The TFN arrives by post to your Australian address. Most working holiday makers receive theirs within 2-3 weeks of submitting their application.' },
-  { question:'Can you work without a TFN in Australia?', answer:'Technically yes, but you should not. Without a TFN, your employer is required by law to withhold tax at 45% instead of 15%. You can work while waiting for your TFN to arrive (up to 28 days) by providing your application reference number to your employer.' },
-  { question:'Can you apply for a TFN before entering Australia?', answer:'No. You can only apply for a TFN once you have arrived in Australia and your working holiday visa is activated. You need an Australian residential address to receive your TFN by post, which the ATO verifies is real.' }
+  {
+    n: '03',
+    title: 'It was lodged before the visa was active',
+    body: 'You apply for a TFN once you are in Australia on an activated working holiday visa, not before you fly. Applications lodged too early are the ones that quietly go nowhere, and the person who lodged it usually finds out weeks later, after they have already started a job and pay is coming through at the top rate.',
+  },
 ]
 
-const STEPS = [
-  { n:'1', title:'Tell us about your situation', body:'Share your visa details so we can guide you correctly.' },
-  { n:'2', title:'Submit your documents in minutes',  body:'Just your passport and a few personal details, quick and simple.' },
-  { n:'3', title:'We process your TFN application',  body:'We prepare and submit everything accurately on your behalf.' },
-  { n:'4', title:'Receive your TFN',             body:'Your TFN is issued by the ATO and sent to your Australian address within 28 days.' },
+/** What the service does about the gap. Nothing here is a promise about timing. */
+const WHAT_WE_DO = [
+  {
+    title: 'We check your visa is active first',
+    body: 'A one minute question that stops the most common wasted month.',
+  },
+  {
+    title: 'We match your details to your immigration record',
+    body: 'Passport, name order, date of birth and visa grant, checked against each other before anything is lodged.',
+  },
+  {
+    title: 'We work out the address problem with you',
+    body: 'Where you will actually be in four weeks, and what to do if the answer is a farm or a van.',
+  },
+  {
+    title: 'We chase it if it stalls',
+    body: 'The ATO has 28 days. Past that, someone has to ring them, and it is not going to be you from a hostel in Cairns.',
+  },
+  {
+    title: 'We tell your employer what to do in the meantime',
+    body: 'A TFN application reference number, quoted correctly, is what keeps the first pay runs off the top rate while you wait.',
+  },
+  {
+    title: 'We claim the gap back at the end of the year',
+    body: 'Anything already withheld at 45% only comes back through a tax return, and only if the return says so.',
+  },
 ]
 
-
-const IconStar  = () => (<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
-const CheckIcon = () => (<svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
-    '@type': 'Question',
-    name: f.question,
-    acceptedAnswer: { '@type': 'Answer', text: f.answer },
-  })),
-}
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-    { '@type': 'ListItem', position: 2, name: 'TFN Application', item: `${SITE_URL}/tfn` },
-  ],
-}
-
-// Service schema - signals what we offer
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  '@id': `${SITE_URL}/tfn#service`,
-  name: 'TFN Application Service for Working Holiday Makers',
-  serviceType: 'Tax File Number application',
-  description: 'TFN application service for 417 and 462 working holiday visa holders, prepared and submitted for you, fully online.',
-  provider: { '@id': `${SITE_URL}/#business` },
-  areaServed: { '@type': 'Country', name: 'Australia' },
-  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
-  inLanguage: 'en-AU',
-}
-
-
-// Speakable - cues Google Assistant for voice answers
-const speakableSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${SITE_URL}/tfn#webpage`,
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', '.hero-sub'],
+const FAQS = [
+  {
+    question: 'Can I not just do this myself on myGov?',
+    answer:
+      'You can, and applying for a tax file number really is a short form. What the form does not do is tell you anything about the money around it. It does not mention that you have 28 days from starting a job to give your employer the number, that every pay run before then is withheld at 45% instead of the 15% working holiday maker rate, or that the excess only comes back through a tax return that has been lodged and reconciled against every employer you had. It also does not check your name and postal address against the record immigration holds, which is what sends applications into manual review or straight back to you. That is the work, and lodging is the easy part of it. You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.',
   },
-  url: `${SITE_URL}/tfn`,
-}
+  {
+    question: 'The TFN application is free on the ATO website. What am I paying for?',
+    answer:
+      'The number itself is free and we will always say so plainly. What we charge for is getting the application through first time and dealing with what happens if it does not. That means matching your passport and name exactly to the record immigration holds, choosing an address that will still be receiving your post in four weeks, quoting the application reference number to your employer so the first pay runs are not withheld at the top rate, and chasing the ATO if nothing has arrived after 28 days. If you would rather do all of that yourself, our guides walk through it in full and hold nothing back.',
+  },
+  {
+    question: 'What actually happens if I start work without a TFN?',
+    answer:
+      'Your employer is required to withhold tax at the top rate of 45% instead of the 15% working holiday maker rate until you give them a tax file number, and you have 28 days from starting the job to do that. On a $25 an hour job that is roughly $7.50 an hour going to the ATO rather than to you, for every hour worked in that window. The money is not lost, but it does not come back automatically either: it only returns through a tax return that is lodged, and lodged correctly, after the financial year ends.',
+  },
+  {
+    question: 'I have already been working for weeks without a TFN. Is it too late?',
+    answer:
+      'No. There is no deadline that closes on you here. Apply now so the top rate stops applying to future pay, and the excess already withheld comes back when your tax return is lodged for that financial year. We can usually have an application ready to lodge the same day you message us, and if you have already worked several weeks at 45% that is worth telling us about, because it changes what your return needs to say.',
+  },
+  {
+    question: 'How long does a TFN take to arrive?',
+    answer:
+      'The ATO states it processes TFN applications within 28 days, and in practice most working holiday makers have theirs inside two to four weeks. It arrives as a letter posted to the Australian address on the application, which is why that address matters more than people expect. You can keep working during the wait by giving your employer the application reference number, which is what stops the 28 day clock running out on you.',
+  },
+  {
+    question: 'Can I apply for a TFN before I arrive in Australia?',
+    answer:
+      'Not on a working holiday visa. You apply once you are in Australia with your 417 or 462 visa activated, because the application is matched against your arrival and visa record. You also need an Australian postal address for the letter, which is a problem worth solving before you land rather than after. Applications lodged before arrival are the ones that most often disappear without anyone being told why.',
+  },
+  {
+    question: 'Do I need a new TFN for a second year visa?',
+    answer:
+      'No. A tax file number is issued to you once and stays with you for life, including across a second or third working holiday visa, a change of visa class, and any gap where you left Australia entirely. If you have lost the number rather than never had one, that is a different and much faster problem to fix, so tell us which of the two it is.',
+  },
+]
+
+const GUIDES = [
+  {
+    href: '/blog/what-happens-without-your-tfn',
+    title: 'What happens if you work without a TFN',
+    desc: 'The 45% withholding, the 28 day window, and how the money comes back.',
+  },
+  {
+    href: '/blog/tfn-reference-number-before-tfn-arrives',
+    title: 'The application reference number',
+    desc: 'What to give your employer while you are still waiting on the letter.',
+  },
+  {
+    href: '/blog/how-long-does-it-take-to-get-a-tfn',
+    title: 'How long a TFN takes',
+    desc: 'What the ATO commits to, what usually happens, and when to chase it.',
+  },
+]
+
+/**
+ * The objection every lead arrives holding: "I can just do this myself."
+ *
+ * It is answered on the homepage in general terms. Here it has to be answered
+ * about a TFN specifically, or it reads as filler and duplicates the homepage
+ * for no benefit. Every row below is about the application and the weeks around
+ * it. Nothing here says myGov is bad, because it is not. It does a different job.
+ */
+const MYGOV = [
+  {
+    mygov: 'The form takes the name and the postal address you type in.',
+    us: 'We check both first: the name against the record immigration holds, the address against where your post will actually be in four weeks.',
+  },
+  {
+    mygov: 'Nothing on the screen mentions the 28 days you have from starting a job to give your employer the number.',
+    us: 'We give you the application reference number to hand over, which is what keeps the first pay runs off the top rate.',
+  },
+  {
+    mygov: 'Nothing tells you the weeks before your employer had the number were withheld at 45% instead of 15%.',
+    us: 'We work out what that gap is worth and claim it back through the return, because it does not come back on its own.',
+  },
+  {
+    mygov: 'If the application stalls, there is no screen that tells you so.',
+    us: 'Past 28 days somebody has to ring the ATO, and it is not going to be you from a hostel in Cairns.',
+  },
+]
+
+const WA_TFN = waUrl({ topic: 'tfn', lang: 'en' })
+
+// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
+const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
+const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.58 }
+const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.62 }
 
 export default function TFNPage() {
+  const webPageLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/tfn#webpage`,
+    url: `${SITE_URL}/tfn`,
+    name: 'TFN for a Working Holiday Visa',
+    description:
+      'What it costs to work before your tax file number reaches your employer, why working holiday TFN applications fail, and how the excess withheld comes back.',
+    inLanguage: 'en-AU',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    about: { '@id': `${SITE_URL}/#business` },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+  }
+
+  const serviceLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE_URL}/tfn#service`,
+    name: 'TFN Application for Working Holiday Makers',
+    serviceType: 'Tax File Number application',
+    description:
+      'Tax file number applications prepared and lodged for holders of 417 and 462 working holiday visas, including the reference number for the employer and follow up with the ATO.',
+    provider: { '@id': `${SITE_URL}/#business` },
+    areaServed: { '@type': 'Country', name: 'Australia' },
+    audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 and 462)' },
+    availableLanguage: ['en', 'de', 'ja'],
+    inLanguage: 'en-AU',
+  }
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'en-AU',
+    mainEntity: FAQS.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  }
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'TFN Application', item: `${SITE_URL}/tfn` },
+    ],
+  }
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
-            <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
-            <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>
-            <span aria-current="page">TFN Application</span>
+      {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
+
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+            <Link href="/" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Home</Link>
+            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-current="page">TFN</span>
           </nav>
 
-          <div className="max-w-[560px] lg:max-w-[700px]">
+          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
+            Working holiday visas 417 &amp; 462
+          </p>
 
-            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-              <span className="font-medium uppercase"
-                style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
-                TFN Application
-              </span>
-            </div>
+          <h1 className="font-serif font-black text-ink hero-animate"
+            style={{ fontSize: 'clamp(31px, 5.2vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
+            <span style={{ display: 'block' }}>The number is free.{' '}</span>
+            <span style={{ display: 'block', color: '#0B5240' }}>The weeks without it are not.{' '}</span>
+          </h1>
 
-            <h1 className="font-serif font-black text-ink"
-              style={{ fontSize:'clamp(24px,3.2vw,44px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'10px' }}>
-              {/* Desktop: 2 lines - line 1 black, line 2 green */}
-              <span className="hidden lg:block">
-                <span style={{ display:'block' }}>No TFN means 45% tax.</span>
-                <span style={{ display:'block', color:'#0B5240' }}>We sort it for you.</span>
-              </span>
-              {/* Mobile: 2 lines with green second line */}
-              <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>No TFN means 45% tax.</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>We sort it for you.</span>
-              </span>
-            </h1>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '50ch', marginBottom: '26px' }}>
+            Until your employer has the number, 45% of your pay is withheld instead of 15%. On a $25 job that is about
+            $7.50 an hour, every hour, for as long as the gap runs.
+          </p>
 
-            <p className="font-semibold text-ink"
-              style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
-              With a TFN on file you are taxed at 15% instead of 45% - about $7.50 an hour back on a $25 job.
+          <div className="hero-animate-delay-2">
+            <WaLink href={WA_TFN} position="hero" topic="tfn" lang="en"
+              className="btn-primary inline-flex items-center justify-center gap-2"
+              style={{ height: '54px', padding: '0 32px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
+              <IconWhatsApp />
+              Message us on WhatsApp
+            </WaLink>
+            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+              Replies in about an hour. Ask anything first.
             </p>
+          </div>
 
-            <p className="font-light"
-              style={{ fontSize:'clamp(13px,1.2vw,15px)', lineHeight:1.65, color:'rgba(10,15,13,0.58)', maxWidth:'44ch', marginBottom:'0' }}>
-              <span>Without a TFN, WHV holders are taxed at 45%.</span>
-            </p>
-
-            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
-              style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
-                Apply for a TFN →
-              </a>
-              <a href="#how-to-apply"
-                className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
-                See how it works →
-              </a>
-            </div>
-
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['Trusted by backpackers',<GoogleRating key="rating" variant="pill" lang="en" />,'Worldwide reach','~1 hour response time'].map((t,i) => (
-                <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                  style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
-                </span>
-              ))}
-            </div>
+          <div className="flex" style={{ marginTop: '20px' }}>
+            <GoogleRating variant="pill" lang="en" />
           </div>
         </div>
       </section>
 
-      {/* ── WHAT IS A TFN? - Unique design: "Step 1 of your Australia journey" ─ */}
-      <section className="tfn-intro-section">
-        <div className="tfn-intro-container reveal">
-          <div className="tfn-intro-grid">
+      {/* ── 1b. MYGOV, ABOUT THE TFN SPECIFICALLY ────────────────────────── */}
+      <section className="py-11 lg:py-14 bg-white">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-            {/* Left: Explainer */}
-            <div className="tfn-intro-content">
-              <h2 className="tfn-intro-heading">
-                What is a TFN?
-              </h2>
-              <p className="tfn-intro-body">
-                A <strong>Tax File Number (TFN)</strong> is a personal ID issued by the Australian Taxation Office (ATO). It is the first thing you need before starting work in Australia.
-              </p>
-              <p className="tfn-intro-body">
-                Without a TFN, your employer is required by law to withhold the maximum tax rate of <strong>45%</strong> from every pay, regardless of how much you earn.
-              </p>
-              <p className="tfn-intro-body">
-                With a TFN, you are taxed at the standard working holiday rate of <strong>15%</strong> on income up to $45,000. That is a huge difference, sometimes hundreds of dollars per week.
-              </p>
-            </div>
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>The easy part</p>
 
-            {/* Right: Visual - tax savings comparison */}
-            <div className="tfn-intro-visual">
-              <div className="tfn-comparison-card tfn-comparison-bad">
-                <p className="tfn-comparison-label">Without TFN</p>
-                <p className="tfn-comparison-rate">45%</p>
-                <p className="tfn-comparison-detail">Withheld from every pay</p>
-              </div>
-              <div className="tfn-comparison-divider">
-                <div className="tfn-comparison-arrow">↓</div>
-                <p className="tfn-comparison-savings">Save up to 30%</p>
-              </div>
-              <div className="tfn-comparison-card tfn-comparison-good">
-                <p className="tfn-comparison-label">With TFN</p>
-                <p className="tfn-comparison-rate">15%</p>
-                <p className="tfn-comparison-detail">Standard WHM rate</p>
-              </div>
-            </div>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
+            <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Nowhere in the application{' '}</span>
+            <span style={{ display: 'block' }}>does anyone mention the weeks at 45%.{' '}</span>
+          </h2>
 
-          </div>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '22px' }}>
+            The form is short and myGov will take it. What that form leaves out is the money, on all four counts below.
+          </p>
 
-          {/* CTA strip to OUR service */}
-          <div className="service-cta-strip">
-            <div className="service-cta-text">
-              <h3 className="service-cta-heading">We handle the entire TFN application for you</h3>
-              <p className="service-cta-sub">Tell us your situation and we will tell you what you are owed on WhatsApp. We submit your application correctly the first time - usually within an hour.</p>
-            </div>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
-              Apply for my TFN →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">Why choose our service</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
-              We manage your entire TFN application for you
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
-            {[
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Submitted correctly the first time.', body:'Every application is checked before submission to prevent errors or processing delays.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Start working at the correct tax rate.', body:'Apply early to avoid being taxed at the highest rate as a Working Holiday visa holder.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Avoid ATO systems and confusing forms.', body:'No need to deal with government portals or paperwork. We handle it for you.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Fast, simple, and fully online.', body:'Provide your details and we take care of the entire TFN application process.' },
-            ].map((item,i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-4"
-                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
-                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
-                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
-                  {item.icon}
+          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            {MYGOV.map((row, i) => (
+              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
+                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>On myGov</p>
+                  <p style={{ ...BODY, color: '#2A3C34', overflowWrap: 'break-word' }}>{row.mygov}</p>
                 </div>
-                <div style={{ paddingTop:'2px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
+                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
+                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>With us</p>
+                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, overflowWrap: 'break-word' }}>{row.us}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="text-center mt-6 lg:mt-10">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-              style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Apply for a TFN →
-            </a>
+          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
+            You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 2. WHAT THE GAP COSTS ────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '14px' }}>
+            What does it cost to start work before your TFN arrives?
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
+            An employer with no tax file number on file must withhold at the top rate of 45%, not the 15% working holiday
+            maker rate that applies to the first $45,000. You have 28 days from starting a job to hand it over, and
+            nobody warns you when they are up.
+          </p>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '28px' }}>
+            The money is not gone. It sits with the ATO until a return lodged after 30 June reconciles every employer you
+            had and claims it back.
+          </p>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
+              <p className="font-serif font-black text-forest-500" style={{ fontSize: '33px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>45%</p>
+              <p style={{ ...BODY, color: '#2A3C34' }}>Withheld from every dollar while no TFN is on file, instead of fifteen.</p>
+            </div>
+            <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
+              <p className="font-serif font-black text-forest-500" style={{ fontSize: '33px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>28 days</p>
+              <p style={{ ...BODY, color: '#2A3C34' }}>From starting a job to give your employer the number. Also what the ATO allows itself to issue it.</p>
+            </div>
+            <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
+              <p className="font-serif font-black text-forest-500" style={{ fontSize: '33px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>1 return</p>
+              <p style={{ ...BODY, color: '#2A3C34' }}>The only route back for anything already withheld at the wrong rate.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── SOCIAL PROOF ──────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="text-center mb-7 lg:mb-10">
-            <span className="section-label center">What travellers say</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'30ch' }}>
-              See how backpackers like you got their TFN sorted quickly
-            </h2>
+      {/* ── 3. WHERE IT GOES WRONG ───────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Doing it yourself</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            Why do working holiday TFN applications fail?
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
+            The form is short and most people get through it without trouble. When it does go wrong, it is almost always
+            one of three things, and all three cost the same thing: another month at the top rate while you wait for a
+            letter that is not coming.
+          </p>
+
+          <ol className="flex flex-col" style={{ gap: '22px' }}>
+            {FAILURE_POINTS.map((s) => (
+              <li key={s.n} className="flex gap-4">
+                <span className="font-serif font-black flex-shrink-0"
+                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px', letterSpacing: '-0.01em' }}
+                  aria-hidden="true">{s.n}</span>
+                <div>
+                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
+                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── 4. WHAT WE DO ────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>The work</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            What we do about it
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
+            You send us your passport and your visa details on WhatsApp. Everything below happens on our side.
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {WHAT_WE_DO.map((c) => (
+              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F5F9F7', border: '1px solid #E2EFE9' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{c.title}</h3>
+                <p style={{ ...BODY, color: '#2A3C34' }}>{c.body}</p>
+              </div>
+            ))}
           </div>
+
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '60ch' }}>
+            Already have the number and want the weeks at 45% back?{' '}
+            <Link href="/tax-return" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>That is the tax return</Link>.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 5. GUARANTEE ─────────────────────────────────────────────────── */}
+      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Our guarantee</p>
+          <p className="font-serif font-black text-white mx-auto"
+            style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '22ch' }}>
+            If your refund is less than our fee, we refund the difference, so you are never out of pocket.
+          </p>
+          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
+            The fee is flat and never a percentage of what comes back. We agree it with you on WhatsApp before any work
+            starts, so nothing about it is a surprise later.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
+            Tell us where you are up to
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
+            Whether you have landed yet, whether you have started a job, and whether anything has already been paid at
+            45%. Three answers is enough for us to tell you what to do next.
+          </p>
+          <WaLink href={WA_TFN} position="section" topic="tfn" lang="en"
+            className="btn-primary inline-flex items-center justify-center gap-2"
+            style={{ height: '54px', padding: '0 32px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
+            <IconWhatsApp />
+            Message us on WhatsApp
+          </WaLink>
+          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            Replies in about an hour. Ask anything first.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 7. TRUST ─────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Working holiday tax is the only thing we do.
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+            Every TFN application we lodge belongs to somebody on a 417 or 462 visa, which is why the same three things
+            go wrong on all of them. Returns are prepared by our team, reviewed and signed off by a registered tax agent
+            before they are lodged with the ATO.
+          </p>
           <GoogleReviews lang="en" />
         </div>
       </section>
 
-      {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">The easy way</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              There is a simpler way to get your TFN sorted
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
-            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
-              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                Applying through the ATO can seem simple, but it often leads to confusion and delays.
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-                {['Complex government forms and unclear steps','Small errors can slow down your TFN approval','No support if anything goes wrong','You are left to figure it out alone'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
-                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
-              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                Use our guided TFN service
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
-                {['Simple, guided process from start to finish','We check everything before submission','Done correctly the first time','Support available whenever you need help'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
-                Apply for a TFN →
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
+            TFN questions people ask before they message us
+          </h2>
 
-      {/* ── HOW IT WORKS ──────────────────────────────────────────────────── */}
-      <section id="how-to-apply" className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">Step by step</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
-              How it works in 4 simple steps
-            </h2>
-            <p className="font-light text-muted" style={{ fontSize:'13.5px', lineHeight:1.7 }}>
-              Simple, guided process from start to finish.
-            </p>
-          </div>
-
-          {/* Desktop */}
-          <div className="hidden lg:block" style={{ marginBottom:'56px' }}>
-            <div className="relative flex items-start">
-              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-5 h-[2px]"
-                style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 20%, #0B5240 80%, #C8EAE0 100%)' }}
-                aria-hidden="true" />
-              {STEPS.map((s,i) => (
-                <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex:1 }}>
-                  <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width:'40px', height:'40px', background:'#0B5240', fontSize:'15px', marginBottom:'18px', boxShadow:'0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0' }}>
-                    {s.n}
-                  </div>
-                  <p className="font-semibold text-ink text-center" style={{ fontSize:'14px', marginBottom:'7px', letterSpacing:'-0.01em', lineHeight:1.3 }}>{s.title}</p>
-                  <p className="font-light text-muted text-center" style={{ fontSize:'12.5px', lineHeight:1.7 }}>{s.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile */}
-          <div className="lg:hidden flex flex-col" style={{ marginBottom:'28px', gap:'0' }}>
-            {STEPS.map((s,i) => (
-              <div key={i} className="flex gap-3.5" style={{ paddingBottom: i < STEPS.length-1 ? '18px':'0' }}>
-                <div className="flex flex-col items-center flex-shrink-0">
-                  <div className="rounded-full flex items-center justify-center font-bold text-white"
-                    style={{ width:'28px', height:'28px', background:'#0B5240', fontSize:'12px', flexShrink:0 }}>
-                    {s.n}
-                  </div>
-                  {i < STEPS.length-1 && (
-                    <div className="flex-1 mt-1.5"
-                      style={{ width:'1px', minHeight:'18px', background:'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }}
-                      aria-hidden="true" />
-                  )}
-                </div>
-                <div style={{ paddingTop:'3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'14px', marginBottom:'3px', letterSpacing:'-0.01em', lineHeight:1.3 }}>{s.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize:'12.5px', lineHeight:1.65 }}>{s.body}</p>
-                </div>
-              </div>
+          <div className="flex flex-col" style={{ gap: '4px' }}>
+            {FAQS.map((f, i) => (
+              <details key={i} name="tfn-faq" className="contact-faq-item">
+                <summary className="contact-faq-summary">
+                  <span style={{ flex: 1 }}>{f.question}</span>
+                  <span className="contact-faq-plus" aria-hidden="true">+</span>
+                </summary>
+                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+              </details>
             ))}
           </div>
-
-          <div className="text-center mt-8 lg:mt-10">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary"
-              style={{ height:'52px', padding:'0 40px', fontSize:'15px', maxWidth:'320px', width:'100%', display:'inline-flex', alignItems:'center', justifyContent:'center' }}>
-              Apply for a TFN →
-            </a>
-          </div>
         </div>
       </section>
 
-      {/* ── WHAT TO HAVE READY ── */}
-
-      {/* ── ONCE YOUR TFN IS SORTED (internal links) ────────────────────────── */}
-      <section className="py-10 lg:py-14">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-          <span className="section-label center">What is next?</span>
+      {/* ── 9. GUIDES ────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Guides</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-            Once your TFN is sorted
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Read the whole answer first, if you would rather
           </h2>
-          <p className="font-light text-muted max-w-[640px] mx-auto" style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'20px' }}>
-            Your TFN unlocks the rest of your tax setup in Australia. Here is what most working holiday makers check next.
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
+            Nothing is held back to make you get in touch. If the guide answers it, that is a good outcome.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-[900px] mx-auto">
-            <Link href="/tax-return" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
-              Lodge your tax return
-            </Link>
-            <Link href="/superannuation" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
-              Claim your super back when you leave (DASP)
-            </Link>
-            <Link href="/abn" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
-              Working as a contractor? Get an ABN
-            </Link>
+
+          <div className="grid gap-3 sm:grid-cols-3">
+            {GUIDES.map((g) => (
+              <Link key={g.href} href={g.href}
+                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
+                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-
-            <div className="text-center">
-              <span className="section-label center">FAQs</span>
-              <h2 className="font-serif font-black text-ink"
-                style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-                TFN questions answered
-              </h2>
-              <p className="font-light text-muted"
-                style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
-                Have a question? Message us directly.
-              </p>
-            </div>
-
-            <div className="max-w-[700px]">
-              <Accordion items={faqs} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="What is next?"
-        heading="Already have your TFN?"
-        body="If you are working as a contractor or freelancer, you may also need an ABN to invoice correctly."
-        cta="Check your ABN eligibility →"
-        href="/abn"
+        eyebrow="What is next"
+        heading="The weeks at 45% come back through a return"
+        body="Once the number is on file, the second half of the job is the tax return that reconciles every employer you had and claims the excess back."
+        cta="How the return works →"
+        href="/tax-return"
       />
-      <MobileCta href={WA_URL} lang="en" />
+
+      <MobileCta href={WA_TFN} lang="en" topic="tfn" />
     </>
   )
 }

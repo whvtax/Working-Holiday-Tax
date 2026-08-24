@@ -1,13 +1,20 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { WA_URL, EMAIL } from '@/lib/constants'
+import { EMAIL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
+import { trackWhatsApp } from '@/lib/analytics'
 
 export function Footer() {
   const pathname = usePathname() || '/'
   const isGerman   = pathname === '/de' || pathname.startsWith('/de/')
   const isJapanese = pathname === '/ja' || pathname.startsWith('/ja/')
   const locale: 'en' | 'de' | 'ja' = isJapanese ? 'ja' : isGerman ? 'de' : 'en'
+  const waHref = waUrl({ topic: 'general', lang: locale })
+  // /about is the one page that must not mention the supervising agent at all.
+  // The sticky bar already switches to its neutral variant there, and the footer
+  // has to agree with it or the exclusion is pointless.
+  const isAbout = /^\/(de\/|ja\/)?about\/?$/.test(pathname)
 
   // Localized strings + paths
   const t =
@@ -36,7 +43,7 @@ export function Footer() {
         connectLinks: [
           { label: 'Facebook',   href: 'https://www.facebook.com/workingholidaytax', external: true },
           { label: 'E-Mail',     href: `mailto:${EMAIL}`, external: false },
-          { label: 'WhatsApp',   href: WA_URL, external: true },
+          { label: 'WhatsApp',   href: waUrl({ topic: 'general', lang: locale }), external: true },
           { label: 'TikTok',     href: 'https://www.tiktok.com/@workingholidaytax', external: true },
           { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
         ],
@@ -71,7 +78,7 @@ export function Footer() {
         connectLinks: [
           { label: 'Facebook',   href: 'https://www.facebook.com/workingholidaytax', external: true },
           { label: 'メール',     href: `mailto:${EMAIL}`, external: false },
-          { label: 'WhatsApp',   href: WA_URL, external: true },
+          { label: 'WhatsApp',   href: waUrl({ topic: 'general', lang: locale }), external: true },
           { label: 'TikTok',     href: 'https://www.tiktok.com/@workingholidaytax', external: true },
           { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
         ],
@@ -106,7 +113,7 @@ export function Footer() {
         connectLinks: [
           { label: 'Facebook',   href: 'https://www.facebook.com/workingholidaytax', external: true },
           { label: 'Email',      href: `mailto:${EMAIL}`, external: false },
-          { label: 'WhatsApp',   href: WA_URL, external: true },
+          { label: 'WhatsApp',   href: waUrl({ topic: 'general', lang: locale }), external: true },
           { label: 'TikTok',     href: 'https://www.tiktok.com/@workingholidaytax', external: true },
           { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
         ],
@@ -148,7 +155,7 @@ export function Footer() {
                 {t.intro}
               </p>
 
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+              <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsApp({ position: 'footer', lang: locale })}
                 className="font-medium"
                 style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, marginBottom: 0, display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}>
                 {t.askUs}
@@ -161,7 +168,9 @@ export function Footer() {
                   className="footer-social-icon flex items-center justify-center rounded-full"
                   style={{ width: '38px', height: '38px', border: '1.5px solid #C8EAE0', background: '#fff' }}>
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
+                    {/* evenodd, or the cross subpath fills as well and the whole
+                        mark renders as a solid blue dot. */}
+                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
                   </svg>
                 </a>
                 <div className="flex items-center justify-center rounded-full"
@@ -207,6 +216,32 @@ export function Footer() {
       {/* ─── Bottom bar - DARK GREEN brand layer ──────────────────────────── */}
       <div style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
+
+
+          {/* Who reviews the work.
+              This is the honest disclosure, and it is the anchor the guide
+              Article schema references as reviewedBy. It sits in the footer so
+              it appears on every page without ever becoming a headline claim:
+              the business is not a registered tax agent, it works under the
+              supervision of one. */}
+          {!isAbout && (
+          <p
+            id="supervising-agent"
+            style={{
+              fontSize: '12.5px',
+              lineHeight: 1.6,
+              color: 'rgba(255,255,255,0.62)',
+              maxWidth: '62ch',
+              marginBottom: '14px',
+            }}
+          >
+            {locale === 'de'
+              ? 'Steuererklärungen werden von unserem Team vorbereitet und vor der Einreichung beim ATO von einem registrierten Steueragenten geprüft und freigegeben.'
+              : locale === 'ja'
+                ? 'タックスリターンは当社チームが作成し、ATOへの提出前に登録税理士が確認し署名します。'
+                : 'Returns are prepared by our team, then reviewed and signed off by a registered tax agent before they are lodged with the ATO.'}
+          </p>
+          )}
 
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
 

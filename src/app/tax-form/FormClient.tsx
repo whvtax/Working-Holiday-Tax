@@ -783,13 +783,13 @@ const styles = `
   .file-empty { padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
   .file-upload-icon { width: 44px; height: 44px; border-radius: 12px; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 2px; }
   .file-upload-label { font-size: 13px; font-weight: 600; color: #1A2822; }
-  .file-upload-sub { font-size: 11px; color: #8AADA3; }
+  .file-upload-sub { font-size: 11px; color: #4C6459; }
   .file-selected { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
   .file-img-preview { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
   .file-icon-box { width: 48px; height: 48px; border-radius: 8px; background: #EAF6F1; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
   .file-meta { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .file-name { font-size: 12.5px; font-weight: 600; color: #080F0D; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .file-size { font-size: 11px; color: #8AADA3; }
+  .file-size { font-size: 11px; color: #4C6459; }
   .file-remove { width: 30px; height: 30px; border-radius: 8px; background: #FEE2E2; color: #ef4444; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; flex-shrink: 0; }
   .check-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #D4EAE2; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all .15s; }
   .check-box.checked { background: #0B5240; border-color: #0B5240; }
@@ -802,10 +802,10 @@ const styles = `
   .btn-loading { display: flex; align-items: center; gap: 8px; }
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .form-footer-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; line-height: 1.6; }
+  .form-footer-note { text-align: center; font-size: 11px; color: #4C6459; margin-top: 14px; line-height: 1.6; }
   /* Same quiet treatment as the footer note, but sitting under the stepper.
      Deliberately small: it reassures, it does not compete with the title. */
-  .form-time-note { text-align: center; font-size: 11px; color: #8AADA3; margin: 10px 0 0; line-height: 1.6; }
+  .form-time-note { text-align: center; font-size: 11px; color: #4C6459; margin: 10px 0 0; line-height: 1.6; }
   .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
   .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 10px; }

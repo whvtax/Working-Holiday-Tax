@@ -48,7 +48,19 @@ export default function ReadingProgress({ readTime, locale = 'en' }: { readTime:
   const minutesLeft = Math.max(1, Math.ceil(readTime * (1 - progress / 100)))
 
   return (
-    <div className={`reading-progress-badge ${visible ? 'visible' : ''}`} aria-live="polite">
+    // Desktop only.
+    //
+    // On a phone this badge sat at bottom 16px left 16px at z-index 48, which
+    // is inside the footprint of the sticky CTA bar (bottom 0, 72px tall,
+    // z-index 60). It was painted over by the bar, and where it was not it was
+    // competing with the bar, the table of contents button and the back to top
+    // button for the bottom quarter of a 667px screen.
+    //
+    // It is also the least useful of the four: the 3px progress bar under the
+    // nav already tells a reader how far through they are, on every scroll
+    // frame, without taking any of the screen. So on mobile it goes, and the
+    // bottom of the article belongs to the one control that converts.
+    <div className={`reading-progress-badge hidden md:block ${visible ? 'visible' : ''}`} aria-live="polite" style={{ fontSize: '13px' }}>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10" />

@@ -3,7 +3,7 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'プライバシーポリシー | Working Holiday Tax',
+  title: 'プライバシーポリシー',
   description: 'Working Holiday Taxのプライバシーポリシー。お客様の個人情報の収集、利用、保護方法について説明します。',
   alternates: {
     canonical: '/ja/privacy',

@@ -21,8 +21,12 @@ import { SITE_URL } from '@/lib/constants'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'オーストラリア タックスリターン 還付金 - ワーキングホリデー専門',
-    template: '%s | Working Holiday Tax',
+    default: 'オーストラリア タックスリターン 還付金｜ワーキングホリデー専門',
+    // The Latin brand suffix costs about 200px of the roughly 580px Google
+    // renders, and on a Japanese title that is a third of the line spent on a
+    // name the reader already sees in the URL. Japanese pages carry their own
+    // full title instead.
+    template: '%s',
   },
   description:
     'オーストラリアのワーキングホリデー（417・462ビザ）専門。タックスリターン還付金の受取、TFN申請、スーパー受取（DASP）、ABN登録までオンラインで完結。',
@@ -89,18 +93,18 @@ export const metadata: Metadata = {
     alternateLocale: ['en_AU', 'de_DE'],
     url: `${SITE_URL}/ja`,
     siteName: 'Working Holiday Tax',
-    title: 'オーストラリア タックスリターン 還付金 - ワーキングホリデー専門',
+    title: 'オーストラリア タックスリターン 還付金｜ワーキングホリデー専門',
     description: 'オーストラリアのワーホリ（417・462ビザ）専門。タックスリターン還付金、TFN、スーパー受取（DASP）まですべてオンライン。',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
       height: 630,
-      alt: 'オーストラリア タックスリターン 還付金 - ワーキングホリデー専門',
+      alt: 'オーストラリア タックスリターン 還付金｜ワーキングホリデー専門',
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'オーストラリア タックスリターン 還付金 - ワーホリ専門',
+    title: 'オーストラリア タックスリターン 還付金｜ワーホリ専門',
     description: 'オーストラリアのワーホリ専門。タックスリターン還付金を最大化。',
     images: [`${SITE_URL}/og-image.png`],
   },

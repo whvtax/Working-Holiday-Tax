@@ -2,7 +2,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
-import { WA_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
+import { trackWhatsApp } from '@/lib/analytics'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
 const Logo = ({ locale }: { locale: 'en' | 'de' | 'ja' }) => {
@@ -14,15 +15,17 @@ const Logo = ({ locale }: { locale: 'en' | 'de' | 'ja' }) => {
     : 'Working Holiday Tax - Home'
   return (
   <Link href={href} className="flex items-center gap-2.5 flex-shrink-0" aria-label={aria}>
+    {/* The bar is forest green now, so the mark inverts: the filled square
+        carries the tick in green on white instead of white on green. */}
     <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
-      <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#0B5240" strokeWidth="2"/>
-      <rect x="13" y="13" width="19" height="19" rx="4.5" fill="#0B5240"/>
-      <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.2" strokeLinecap="round" opacity="0.7"/>
-      <circle cx="2" cy="2" r="1.6" fill="#E9A020" opacity="0.7"/>
-      <path d="M22.5 17 L27 19 L27 23.5 Q27 27 22.5 29 Q18 27 18 23.5 L18 19 Z" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="1.2" strokeLinejoin="round"/>
-      <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#FFFFFF" strokeWidth="2" opacity="0.85"/>
+      <rect x="13" y="13" width="19" height="19" rx="4.5" fill="#FFFFFF"/>
+      <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.2" strokeLinecap="round"/>
+      <circle cx="2" cy="2" r="1.6" fill="#E9A020"/>
+      <path d="M22.5 17 L27 19 L27 23.5 Q27 27 22.5 29 Q18 27 18 23.5 L18 19 Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
+      <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
-    <span className="font-serif text-[15px] font-bold text-ink" style={{ letterSpacing: '-0.02em' }}>Working Holiday Tax</span>
+    <span className="font-serif text-[15px] font-bold text-white" style={{ letterSpacing: '-0.02em' }}>Working Holiday Tax</span>
   </Link>
   )
 }
@@ -68,6 +71,9 @@ export function Nav() {
   const isGerman = pathname === '/de' || pathname?.startsWith('/de/')
   const isJapanese = pathname === '/ja' || pathname?.startsWith('/ja/')
   const locale: 'en' | 'de' | 'ja' = isJapanese ? 'ja' : isGerman ? 'de' : 'en'
+  // Every WhatsApp link on the site carries context now, so the chat does
+  // not open on an anonymous "hi" that costs two messages to unpick.
+  const waHref = waUrl({ topic: 'general', lang: locale })
 
   // Localized link sets
   const servicesLinks =
@@ -199,8 +205,12 @@ export function Nav() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-xl shadow-sm' : ''}`}
-        style={scrolled ? { borderBottom: '1px solid rgba(205,227,219,0.45)' } : {}}>
+      {/* The bar is forest green on every page and every language. On pages
+          with a dark hero it merges into it; everywhere else it reads as a
+          solid brand band. The scrolled state only adds a shadow now, because
+          fading to white would break that band halfway down the page. */}
+      <nav className="nav-dark fixed top-0 left-0 right-0 z-50 transition-shadow duration-300"
+        style={{ background: '#0B5240', ...(scrolled ? { boxShadow: '0 2px 14px rgba(8,15,13,0.22)' } : {}) }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="h-[68px] flex items-center justify-between gap-5">
             <Logo locale={locale} />
@@ -215,7 +225,7 @@ export function Nav() {
                   onClick={() => setServicesOpen(!servicesOpen)}
                   onMouseEnter={() => setServicesOpen(true)}
                   className="nav-link inline-flex items-center gap-1 text-[13.5px] cursor-pointer bg-transparent border-none p-0"
-                  style={{ color: isServicePage ? '#0B5240' : '#587066', fontWeight: isServicePage ? 600 : 400 }}
+                  style={{ color: isServicePage ? '#F9D88A' : 'rgba(255,255,255,0.80)', fontWeight: isServicePage ? 600 : 400 }}
                   aria-expanded={servicesOpen}
                   aria-haspopup="true"
                 >
@@ -223,7 +233,7 @@ export function Nav() {
                   <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
                     <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  {isServicePage && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-forest-500" />}
+                  {isServicePage && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-amber-100" />}
                 </button>
 
                 {/* Dropdown Panel */}
@@ -279,7 +289,7 @@ export function Nav() {
                   onClick={() => setExpensesOpen(!expensesOpen)}
                   onMouseEnter={() => setExpensesOpen(true)}
                   className="nav-link inline-flex items-center gap-1 text-[13.5px] cursor-pointer bg-transparent border-none p-0"
-                  style={{ color: isExpensePage ? '#0B5240' : '#587066', fontWeight: isExpensePage ? 600 : 400 }}
+                  style={{ color: isExpensePage ? '#F9D88A' : 'rgba(255,255,255,0.80)', fontWeight: isExpensePage ? 600 : 400 }}
                   aria-expanded={expensesOpen}
                   aria-haspopup="true"
                 >
@@ -287,7 +297,7 @@ export function Nav() {
                   <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: expensesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
                     <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  {isExpensePage && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-forest-500" />}
+                  {isExpensePage && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-amber-100" />}
                 </button>
 
                 {/* Dropdown Panel */}
@@ -344,10 +354,10 @@ export function Nav() {
                     key={l.href}
                     href={l.href}
                     className="nav-link relative text-[13.5px]"
-                    style={{ color: active ? '#0B5240' : '#587066', fontWeight: active ? 600 : 400 }}
+                    style={{ color: active ? '#F9D88A' : 'rgba(255,255,255,0.80)', fontWeight: active ? 600 : 400 }}
                   >
                     {l.label}
-                    {active && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-forest-500" />}
+                    {active && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-amber-100" />}
                   </Link>
                 )
               })}
@@ -357,11 +367,12 @@ export function Nav() {
             <div className="hidden lg:flex items-center gap-3">
               <LanguageSwitcher variant="desktop" />
               <a
-                href={WA_URL}
+                href={waHref}
+                onClick={() => trackWhatsApp({ position: 'nav', lang: locale })}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="nav-cta inline-flex items-center gap-2 font-semibold text-white"
-                style={{ height: '40px', padding: '0 18px', background: '#0B5240', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.06), 0 2px 8px rgba(11,82,64,0.18)' }}
+                className="nav-cta inline-flex items-center gap-2 font-semibold"
+                style={{ height: '40px', padding: '0 18px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,0.14)' }}
               >
                 {ctaLabel}
               </a>
@@ -372,9 +383,9 @@ export function Nav() {
               <LanguageSwitcher variant="desktop" />
               <button type="button" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}
                 className="flex flex-col justify-center gap-[5px] w-10 h-10 bg-transparent border-none p-2">
-                <span className={`block h-[1.5px] bg-ink rounded-sm transition-all duration-300 w-5 ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
-                <span className={`block h-[1.5px] bg-ink rounded-sm transition-all duration-200 w-5 ${open ? 'opacity-0' : ''}`} />
-                <span className={`block h-[1.5px] bg-ink rounded-sm transition-all duration-300 ${open ? 'w-5 -translate-y-[6.5px] -rotate-45' : 'w-3.5'}`} />
+                <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-300 w-5 ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
+                <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-200 w-5 ${open ? 'opacity-0' : ''}`} />
+                <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-300 ${open ? 'w-5 -translate-y-[6.5px] -rotate-45' : 'w-3.5'}`} />
               </button>
             </div>
           </div>
@@ -382,76 +393,43 @@ export function Nav() {
       </nav>
 
       {/* Mobile Menu - flat list, no categorization */}
-      <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+      {/* When closed, the drawer was translated off screen but still in the
+          accessibility tree and still focusable, so every page carried 18
+          phantom tab stops before a keyboard user reached any content, and
+          Next prefetched every link inside it. `inert` removes both: no focus,
+          no pointer events, no announcement, and no prefetch of hidden links. */}
+      <div
+        {...(open ? {} : { inert: '' as unknown as boolean })}
+        aria-hidden={!open}
+        className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full invisible'}`}
+      >
 
-        {/* All links - flat list */}
-        {(locale === 'de'
-          ? [
-              { label: 'Steuernummer (TFN)',   href: '/de/tfn' },
-              { label: 'ABN',                  href: '/de/abn' },
-              { label: 'Steuererklärung',      href: '/de/tax-return' },
-              { label: 'Super (DASP)',         href: '/de/superannuation' },
-              { label: 'Medicare',             href: '/de/medicare' },
-              { label: 'Ausgaben',             href: '/de/expenses' },
-              { label: 'Essenslieferung',      href: '/de/expenses/delivery-drivers' },
-              { label: 'Gastronomie',          href: '/de/expenses/hospitality' },
-              { label: 'Farmarbeit',           href: '/de/expenses/farm-work' },
-              { label: 'Bauarbeit',            href: '/de/expenses/construction' },
-              { label: 'Hilfsarbeiten',        href: '/de/expenses/labouring' },
-              { label: 'Reinigungskräfte',     href: '/de/expenses/cleaners' },
-              { label: 'FIFO',                 href: '/de/expenses/fifo' },
-              { label: 'Rechner',              href: '/de/calculator' },
-              { label: 'Blog',                 href: '/de/blog' },
-              { label: 'Kontakt',              href: '/de/contact' },
-            ]
-          : locale === 'ja'
-          ? [
-              { label: 'TFN申請',           href: '/ja/tfn' },
-              { label: 'ABN登録',           href: '/ja/abn' },
-              { label: 'タックスリターン',   href: '/ja/tax-return' },
-              { label: 'スーパー受取',       href: '/ja/superannuation' },
-              { label: 'メディケア',         href: '/ja/medicare' },
-              { label: '経費',               href: '/ja/expenses' },
-              { label: 'デリバリー',         href: '/ja/expenses/delivery-drivers' },
-              { label: 'ホスピタリティ',     href: '/ja/expenses/hospitality' },
-              { label: 'ファームワーク',     href: '/ja/expenses/farm-work' },
-              { label: '建設業',             href: '/ja/expenses/construction' },
-              { label: '軽作業',             href: '/ja/expenses/labouring' },
-              { label: '清掃業',             href: '/ja/expenses/cleaners' },
-              { label: 'FIFO',               href: '/ja/expenses/fifo' },
-              { label: '計算機',             href: '/ja/calculator' },
-              { label: 'ブログ',             href: '/ja/blog' },
-              { label: 'お問い合わせ',       href: '/ja/contact' },
-            ]
-          : [
-              { label: 'TFN',         href: '/tfn' },
-              { label: 'ABN',         href: '/abn' },
-              { label: 'Tax Return',  href: '/tax-return' },
-              { label: 'Super',       href: '/superannuation' },
-              { label: 'Medicare',    href: '/medicare' },
-              { label: 'Expenses',    href: '/expenses' },
-              { label: 'Delivery Drivers', href: '/expenses/delivery-drivers' },
-              { label: 'Hospitality',      href: '/expenses/hospitality' },
-              { label: 'Farm Work',        href: '/expenses/farm-work' },
-              { label: 'Construction',     href: '/expenses/construction' },
-              { label: 'Labouring',        href: '/expenses/labouring' },
-              { label: 'Cleaners',         href: '/expenses/cleaners' },
-              { label: 'FIFO',             href: '/expenses/fifo' },
-              { label: 'Calculator',  href: '/calculator' },
-              { label: 'Blog',        href: '/blog' },
-              { label: 'Contact',     href: '/contact' },
-            ]
-        ).map(l => (
-          <Link key={l.href} href={l.href} onClick={close}
-            className="block font-sans text-[17px] font-medium text-ink py-4 transition-colors hover:text-forest-500"
-            style={{ borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
-            {l.label}
-          </Link>
+        {/* Grouped by section, same groups as the desktop dropdowns, so the
+            menu reads as three short lists instead of sixteen equal rows.
+            The link sets are the localized ones defined above - one source. */}
+        {[
+          { title: servicesLabel, links: servicesLinks },
+          { title: expensesLabel, links: expensesLinks },
+          { title: locale === 'de' ? 'Mehr' : locale === 'ja' ? 'その他' : 'More', links: topLinks },
+        ].map(group => (
+          <div key={group.title} style={{ marginBottom: '18px' }}>
+            <p className="font-semibold uppercase"
+              style={{ fontSize: '11px', letterSpacing: '0.14em', color: '#16775C', padding: '6px 0 4px', borderBottom: '1px solid #E2EFE9', marginBottom: '2px' }}>
+              {group.title}
+            </p>
+            {group.links.map(l => (
+              <Link key={l.href} href={l.href} onClick={close}
+                className="block font-sans text-[16px] font-medium text-ink transition-colors hover:text-forest-500"
+                style={{ padding: '11px 0', borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
         ))}
 
         {/* CTA */}
         <div className="mt-6">
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '54px', borderRadius: '100px', fontSize: '15px' }}>
+          <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={() => { trackWhatsApp({ position: 'nav', lang: locale }); close() }} className="btn-primary w-full justify-center" style={{ height: '54px', borderRadius: '100px', fontSize: '15px' }}>
             {ctaLabel} →
           </a>
         </div>

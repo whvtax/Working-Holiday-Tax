@@ -5,7 +5,7 @@ import ResidencyStep from '@/components/ui/ResidencyStep'
 // have its own URL. Kept out of the sitemap and marked noindex so it isn't
 // treated as standalone site content.
 export const metadata: Metadata = {
-  title: '税務上の居住区分 | Working Holiday Tax',
+  title: '税務上の居住区分',
   robots: { index: false, follow: false },
 }
 

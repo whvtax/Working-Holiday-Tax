@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { getCategoryColor } from '@/app/blog/data'
 import CategoryHero from '@/app/blog/[slug]/CategoryHero'
 import { getJapaneseGuides, jaCategoryMeta, getJapaneseCategoryMeta } from '../../data'
+import { MobileCta } from '@/components/ui/MobileCta'
+import { waUrl } from '@/lib/wa'
 
 interface Props {
   params: { slug: string }
@@ -19,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = getJapaneseCategoryMeta(params.slug)
   if (!meta) return {}
   return {
-    title: `${meta.title} | Working Holiday Tax`,
+    title: meta.title,
     description: meta.description,
     keywords: [
       'オーストラリア ワーホリ 税金',
@@ -67,6 +69,67 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+/* ── The category introduction ────────────────────────────────────────────
+   Same rewrite as the English category pages. A category page is the natural
+   hub for its cluster and these were one sentence of throat clearing above a
+   grid of cards. Two paragraphs per category that stand on their own: what
+   the category covers, and who it is for, ending on what decides the answer
+   rather than on how to do it yourself. Then one link to the service page
+   that owns the cluster, which the localised category meta never carried.
+
+   The copy lives here rather than in data.ts because another rewrite owns
+   that file.                                                               */
+
+interface CategoryIntro {
+  paragraphs: string[]
+  service: { path: string; label: string } | null
+}
+
+const CATEGORY_INTRO: Record<string, CategoryIntro> = {
+  'tfn': {
+    paragraphs: [
+      'Tax File Number（TFN）は、オーストラリア税務署（ATO）があなたを識別するための番号です。申請は無料で、10分ほどで終わり、誰かに頼む必要はありません。ここでは申請そのもの、番号を待っている間の就労、28日を超える遅延、番号を紛失した場合、必要な身分証明書、そしてセカンドビザで新しい番号が要るかどうかを扱っています。',
+      '対象は、着いたばかりの人や、働き始めてから給与の15%ではなく45%が引かれていることに気づいた人です。お金の差が生まれるのはTFNそのものではありません。決め手になるのは、最初の週に雇用主から渡されるTax File Number Declarationという書類、申請日ではなく初出勤日から始まる28日間、そしてその雇用主がATOにワーキングホリデー雇用主として登録されているかどうかです。ここでは繰り返しこの3点に戻ってきます。',
+    ],
+    service: { path: '/ja/tfn', label: 'TFNと申告フォームについて当社がすること' },
+  },
+  'abn': {
+    paragraphs: [
+      'Australian Business Number（ABN）は、雇用ではなく請負として支払いを受けるときに請求書に使う番号です。ここでは登録と抹消、GSTと年間売上7万5千ドルの基準、請求書の要件、事業経費、車両の走行記録、そして請求による収入が給与と同じ申告書の中でどう扱われるかを扱っています。',
+      '対象は、ファームやデリバリーのプラットフォーム、飲食店などからABNを取るように言われた人と、すでに持っていて何が変わるのか分かっていない人です。重要な点は2つです。ABNでの支払いからは源泉徴収がなく、スーパーも支払われないため、税金は少しずつではなく年度末にまとめて来ます。そして区分は契約書の言葉ではなく、実際の働き方で判断されます。同じ仕事、同じ時間、同じ指示のまま給与から請求に切り替えられた場合が、まず読むべき内容です。',
+    ],
+    service: { path: '/ja/abn', label: 'ABNで請求していた場合に当社がすること' },
+  },
+  'tax-return': {
+    paragraphs: [
+      'オーストラリアの会計年度は7月1日から6月30日までで、この期間に収入があった人はタックスリターンを提出します。ここでは期限と加算税、控除と領収書、税務上の居住区分、提出済みの年の修正、帰国後の提出、そして還付額を実際に左右するものを扱っています。',
+      '自分で提出するか任せるかを決める段階の人のためのカテゴリーなので、金額を動かす要素はすべてここに書いてあります。日数ではなく実際の暮らし方で決まる税務上の居住区分。居住区分が決まったあと、国籍によって適用される税率が変わるかどうか。TFNが給与担当に届く前に45%で引かれていた期間。メディケア税の扱い。そして実際にした仕事に対応する控除。どれも表を見て調べられるものではなく、すべてあなた自身の1年に当てはめて計算する必要があります。',
+    ],
+    service: { path: '/ja/tax-return', label: 'すべてのタックスリターンで当社が確認すること' },
+  },
+  'super': {
+    paragraphs: [
+      'スーパーアニュエーションは、給与とは別に雇用主が年金基金へ払い込むお金で、2026年7月1日からは12%です。オーストラリアを完全に離れるときに、Departing Australia Superannuation Payment（DASP）として受け取れます。ここでは積み立ての仕組み、残高の確認方法、見失った口座の探し方、DASPの手続き、必要書類、そして受取時の課税を扱っています。',
+      '対象はワーキングホリデーの終わりにいる人、特に複数の雇用主でカジュアルとして働き、お金が複数の口座に分かれている可能性がある人です。金額と所要期間を決めるのは2点です。申請前にTFNに紐づくすべての口座を見つけたかどうか。申請では指定したファンドしか引き出せません。そして、ビザの終了に対していつ申請するかです。受取額にはワーキングホリデーの場合65%の税がかかります。これは高いですが法律で決まっており、動かせません。意味があるのは、口座を残さないことです。',
+    ],
+    service: { path: '/ja/superannuation', label: '出国前にスーパーについて当社がすること' },
+  },
+  'work-rights': {
+    paragraphs: [
+      'ワーキングホリデーで働く人にも、オーストラリアの他の労働者と同じ権利があります。最低賃金、割増賃金、休憩、休暇、シフトの取り消し、解雇は、Fair Work Commissionと業種ごとのAwardで定められています。ここでは何を受け取る権利があるか、給与明細の読み方、数字が合わないときにどうするか、一部の仕事で必要な資格を扱っています。',
+      'シーズンの終わりではなく、途中にいる人に向けて書いています。ここにある内容の多くは税金の話ではありませんし、税金の話として扱ってもいません。それでもこのサイトにあるのは、同じ1年が二度出てくるからです。賃金が不足していた雇用主、現金払いだった雇用主、スーパーを払っていなかった雇用主は、そのまま所得証明が実際の支払いと一致しない雇用主でもあります。それはタックスリターンの時にまた表面化します。',
+    ],
+    service: { path: '/ja/tax-return', label: 'すべてのタックスリターンで当社が確認すること' },
+  },
+  'medicare-and-other': {
+    paragraphs: [
+      'メディケア税は課税所得に対する2%の負担で、何もしなければ自動的に引かれます。417・462ビザ保持者の多くはメディケアの対象ではなく、本来支払う必要はありませんでした。ここでは対象になる人とならない人、相互医療協定を結んでいる国、免除の申請方法、滞在中の医療保険、そしてほかに分類できない事務的な問題を扱っています。',
+      '小さなカテゴリーですが、金額は具体的です。年収2万5千ドルなら500ドルです。免除は自動ではなく、ATOが代わりに適用してくれることもありません。申告書で申請する必要があり、そのためにServices AustraliaのMedicare Entitlement Statementが必要で、これは自分で申請し、届くまで数週間かかるのが普通です。そもそも免除の対象になるかどうかはパスポートで決まります。この2点、必要な期間とパスポートに、ここでは繰り返し戻ってきます。',
+    ],
+    service: { path: '/ja/medicare', label: 'メディケア税について当社がすること' },
+  },
+}
+
 export default function JapaneseCategoryPage({ params }: Props) {
   const meta = getJapaneseCategoryMeta(params.slug)
   if (!meta) notFound()
@@ -74,6 +137,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
   const allGuides = getJapaneseGuides()
   const articles = allGuides.filter(g => g.category === meta.category)
   const colors = getCategoryColor(meta.category)
+  const intro = CATEGORY_INTRO[meta.slug]
 
   const collectionLd = {
     '@context': 'https://schema.org',
@@ -129,7 +193,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
         <section style={{ background: colors.bg }}>
           <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 20px 48px' }}>
 
-            <nav aria-label="パンくずリスト" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'rgba(10,15,13,0.45)', marginBottom: '16px' }}>
+            <nav aria-label="パンくずリスト" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#4C6459', marginBottom: '16px' }}>
               <Link href="/ja" style={{ color: 'inherit', textDecoration: 'none' }}>ホーム</Link>
               <span aria-hidden="true">/</span>
               <Link href="/ja/blog" style={{ color: 'inherit', textDecoration: 'none' }}>ブログ</Link>
@@ -139,7 +203,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
 
             <div className="inline-flex items-center gap-2" style={{ marginBottom: '12px' }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: colors.text, display: 'inline-block' }} aria-hidden="true" />
-              <span style={{ fontSize: '10px', letterSpacing: '0.16em', color: colors.text, textTransform: 'uppercase', fontWeight: 600 }}>
+              <span style={{ fontSize: '13px', letterSpacing: '0.06em', color: colors.text, fontWeight: 600 }}>
                 {articles.length}件の記事
               </span>
             </div>
@@ -148,7 +212,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
               {meta.title}
             </h1>
 
-            <p style={{ fontSize: 'clamp(14px, 1.3vw, 16px)', lineHeight: 1.75, color: 'rgba(10,15,13,0.7)', maxWidth: '680px', fontWeight: 300, marginBottom: '24px' }}>
+            <p style={{ fontSize: 'clamp(16px, 1.3vw, 17px)', lineHeight: 1.8, color: '#2A3C34', maxWidth: '680px', fontWeight: 400, marginBottom: '24px' }}>
               {meta.intro}
             </p>
 
@@ -165,7 +229,31 @@ export default function JapaneseCategoryPage({ params }: Props) {
           </div>
         </section>
 
-        <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '48px 20px 24px' }}>
+        {/* What this category covers, and who it is for */}
+        {intro && (
+          <section style={{ maxWidth: '780px', margin: '0 auto', padding: '40px 20px 8px' }}>
+            <h2 className="font-serif" style={{ fontSize: 'clamp(21px, 2.4vw, 26px)', fontWeight: 700, color: '#0B5240', letterSpacing: '-0.022em', lineHeight: 1.3, marginBottom: '14px' }}>
+              このカテゴリーが扱う内容と、対象になる人
+            </h2>
+            {intro.paragraphs.map((p, i) => (
+              <p key={i} style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.85, fontWeight: 400, marginBottom: '1rem' }}>
+                {p}
+              </p>
+            ))}
+            {intro.service && (
+              <p style={{ fontSize: '15.5px', lineHeight: 1.85, fontWeight: 400, marginBottom: 0 }}>
+                <Link
+                  href={intro.service.path}
+                  style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: '3px' }}
+                >
+                  {intro.service.label}
+                </Link>
+              </p>
+            )}
+          </section>
+        )}
+
+        <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 24px' }}>
 
           <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#080F0D', marginBottom: '24px', letterSpacing: '-0.02em' }}>
             {catLabelJa(meta.category)}の記事をすべて見る（{articles.length}件）
@@ -186,8 +274,8 @@ export default function JapaneseCategoryPage({ params }: Props) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 22px 22px', flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                     <span style={{
-                      fontSize: '10.5px',
-                      padding: '3px 10px',
+                      fontSize: '13px',
+                      padding: '4px 11px',
                       borderRadius: '100px',
                       background: colors.bg,
                       color: colors.text,
@@ -198,15 +286,15 @@ export default function JapaneseCategoryPage({ params }: Props) {
                       {catLabelJa(article.category)}
                     </span>
                     <span style={{ color: '#CDE3DB' }}>·</span>
-                    <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{article.readTime}分で読めます</span>
+                    <span style={{ fontSize: '13px', color: '#4C6459' }}>{article.readTime}分で読めます</span>
                   </div>
                   <h3 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', lineHeight: 1.4, letterSpacing: '-0.015em', margin: 0 }}>
                     {article.title}
                   </h3>
-                  <p style={{ fontSize: '13px', color: '#587066', lineHeight: 1.75, margin: 0, fontWeight: 300, flex: 1 }}>
+                  <p style={{ fontSize: '13.5px', color: '#4C6459', lineHeight: 1.75, margin: 0, fontWeight: 400, flex: 1 }}>
                     {article.description}
                   </p>
-                  <span style={{ fontSize: '12.5px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ fontSize: '14px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                     続きを読む <span className="read-arrow">→</span>
                   </span>
                 </div>
@@ -217,7 +305,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
 
         <section style={{ maxWidth: '780px', margin: '0 auto', padding: '48px 20px 60px', borderTop: '1px solid #E2EFE9', marginTop: '48px' }}>
           <div style={{ marginBottom: '24px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: colors.text, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '8px' }}>
+            <p style={{ fontSize: '13px', fontWeight: 700, color: colors.text, letterSpacing: '0.06em', marginBottom: '8px' }}>
               よくあるご質問
             </p>
             <h2 className="font-serif" style={{ fontSize: 'clamp(22px, 2.5vw, 28px)', fontWeight: 700, color: '#0B5240', marginBottom: '0', letterSpacing: '-0.02em' }}>
@@ -228,11 +316,11 @@ export default function JapaneseCategoryPage({ params }: Props) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {meta.faq.map((f, i) => (
               <details key={i} className="faq-item" style={{ borderBottom: '1px solid #E2EFE9', padding: '16px 0', cursor: 'pointer' }}>
-                <summary className="font-serif" style={{ fontSize: '15px', fontWeight: 700, color: '#080F0D', letterSpacing: '-0.015em', listStyle: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+                <summary className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', letterSpacing: '-0.015em', listStyle: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span style={{ flexShrink: 0, color: colors.text, fontSize: '20px', fontWeight: 300, lineHeight: 1 }}>+</span>
                 </summary>
-                <p style={{ fontSize: '14px', color: '#2A3C34', lineHeight: 1.85, fontWeight: 300, marginTop: '12px', marginBottom: 0 }}>
+                <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.85, fontWeight: 400, marginTop: '12px', marginBottom: 0 }}>
                   {f.answer}
                 </p>
               </details>
@@ -280,6 +368,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
         </section>
 
       </main>
+      <MobileCta href={waUrl({ topic: "guide", lang: "ja" })} lang="ja" topic="guide" />
     </>
   )
 }

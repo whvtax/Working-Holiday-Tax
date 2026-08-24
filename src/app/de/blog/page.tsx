@@ -2,10 +2,12 @@ import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import BlogClient from '@/app/blog/BlogClient'
 import { getGermanGuides, deCategoryMeta, blogUI } from './data'
+import { MobileCta } from '@/components/ui/MobileCta'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Steuerrückerstattung Australien Blog - WHV Steuer-Guides für Backpacker',
-  description: 'Praktische Artikel über Steuerrückerstattung in Australien für Working Holiday Maker. Alles zu WHV-Steuererklärung, TFN, Super (DASP), ABN, 417/462 Visum - so holst du dir deine Steuern in Australien zurück.',
+  title: 'Steuer-Guides für Work and Travel',
+  description: 'Artikel zu Steuererklärung, TFN, Super (DASP) und ABN in Australien, geschrieben für Working Holiday Maker auf 417 und 462.',
   keywords: [
     'Steuerrückerstattung Australien Blog',
     'WHV Steuerrückerstattung Guide',
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    title: 'Steuerrückerstattung Australien Blog - WHV Steuer-Guides',
+    title: 'Steuerrückerstattung Australien Blog: WHV Steuer-Guides',
     description: 'Praktische Artikel über Steuerrückerstattung in Australien für Working Holiday Maker. So holst du dir deine Steuern zurück.',
     url: `${SITE_URL}/de/blog`,
     siteName: 'Working Holiday Tax',
@@ -43,7 +45,7 @@ export const metadata: Metadata = {
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Steuerrückerstattung Australien Blog - WHV Guides',
+    title: 'Steuerrückerstattung Australien Blog: WHV Guides',
     description: 'Praktische Artikel zur Steuerrückerstattung in Australien für Backpacker.',
   },
   robots: {
@@ -60,6 +62,9 @@ export const metadata: Metadata = {
 
 export default function GermanBlogPage() {
   const guides = getGermanGuides()
+  // Card fields only: anything passed to BlogClient is serialised into the
+  // client payload, and the article bodies are never rendered by the listing.
+  const guideCards = guides.map(({ body: _body, ...card }) => card)
 
   const collectionLd = {
     '@context': 'https://schema.org',
@@ -129,13 +134,14 @@ export default function GermanBlogPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
       <main style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient
-          guides={guides}
+          guides={guideCards}
           lang="de"
           ui={blogUI}
           blogBasePath="/de/blog"
           homePath="/de"
         />
       </main>
+      <MobileCta href={waUrl({ topic: "guide", lang: "de" })} lang="de" topic="guide" />
     </>
   )
 }

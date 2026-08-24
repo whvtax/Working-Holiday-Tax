@@ -97,7 +97,9 @@ function normalize(text: string): string {
  * Score a single article against a query.
  * Returns 0 if no match, positive number otherwise (higher is better).
  */
-function scoreArticle(article: Guide, queryRaw: string): number {
+// Scores on title, description and category only, so it never needed the
+// article body and works fine on the lighter card type.
+function scoreArticle(article: Omit<Guide, 'body'>, queryRaw: string): number {
   const query = normalize(queryRaw)
   if (!query) return 0
 
@@ -181,7 +183,7 @@ function scoreArticle(article: Guide, queryRaw: string): number {
  * Run a fuzzy search across all articles.
  * Returns articles sorted by relevance (highest score first), filtered to score > 0.
  */
-export function fuzzySearch(articles: Guide[], query: string): Guide[] {
+export function fuzzySearch<T extends Omit<Guide, 'body'>>(articles: T[], query: string): T[] {
   if (!query.trim()) return articles
 
   const scored = articles

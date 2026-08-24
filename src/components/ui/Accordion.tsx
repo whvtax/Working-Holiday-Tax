@@ -27,8 +27,10 @@ export function Accordion({ items }: { items: AccItem[] }) {
                 aria-hidden="true"
                 className={`w-6 h-6 rounded-full border border-border flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isOpen ? 'bg-forest-500 border-forest-500 rotate-45' : ''}`}
               >
+                {/* A plus when closed. The rotate-45 on the wrapper turns it
+                    into a cross when open, which is the state people expect. */}
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M2 2l6 6M8 2l-6 6" stroke={isOpen ? '#fff' : '#0B5240'} strokeWidth="1.3" strokeLinecap="round" />
+                  <path d="M5 1v8M1 5h8" stroke={isOpen ? '#fff' : '#0B5240'} strokeWidth="1.3" strokeLinecap="round" />
                 </svg>
               </span>
             </button>
@@ -36,9 +38,13 @@ export function Accordion({ items }: { items: AccItem[] }) {
               id={contentId}
               role="region"
               aria-labelledby={triggerId}
-              className={`acc-body text-[12.5px] font-light text-muted leading-[1.65] ${isOpen ? 'open' : ''}`}
+              className={`acc-body ${isOpen ? 'open' : ''}`}
             >
-              {item.answer}
+              {/* The inner element is required: grid-template-rows: 0fr cannot
+                  clamp a bare text node, so without it the panel never closes. */}
+              <div className="acc-inner text-[15px] text-body leading-[1.65]">
+                {item.answer}
+              </div>
             </div>
           </div>
         )

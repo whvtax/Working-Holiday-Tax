@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { WA_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Seite nicht gefunden | Working Holiday Tax',
+  title: 'Seite nicht gefunden',
   description: 'Die gesuchte Seite existiert nicht. Zurück zur Startseite.',
   robots: { index: false, follow: true },
 }
@@ -36,7 +36,7 @@ export default function NotFoundDE() {
             Zur Startseite →
           </Link>
           <a
-            href={WA_URL}
+            href={waUrl({ topic: 'general', lang: 'de' })}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-ghost-dark"

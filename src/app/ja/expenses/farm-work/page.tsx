@@ -1,389 +1,645 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: '農場労働・フルーツピッキングの税金控除ガイド｜オーストラリア',
-  description: 'ワーキングホリデーメーカーが農場労働・フルーツピッキングの仕事で経費計上できるもの、日焼け対策やブーツ、現場間の移動費などを解説。季節労働・出来高制・複数雇用主の給与が確定申告でどう扱われるか、そして農場労働とビザの関係についても説明します。',
-  keywords: [
-    '農場労働 税金控除',
-    'フルーツピッキング 税金',
-    'ワーホリ 農場 タックス',
-    'バックパッカー 農場 税金',
-    '果物摘み 確定申告',
-    '季節労働 税金 オーストラリア',
-    'ピースレート 税金 オーストラリア',
-    '複数雇用主 タックスリターン',
-    'ワーキングホリデーメーカー 農場雇用主',
-    '地方 就労 ビザ 税金',
-    '417ビザ 農場労働',
-    '462ビザ 農場労働',
-    '収穫期 タックスリターン',
-    '農場間 移動 車両費控除',
-    '指定労働 税金 オーストラリア',
+  "title": "ファームとフルーツピッキングの経費控除",
+  "description": "ファームやフルーツピッキングで働く人が控除できるもの。日焼け止め、収穫用具、安全靴、ブロック間の移動。認められない控除も解説します。",
+  "keywords": [
+    "ファーム 税金 控除 オーストラリア",
+    "フルーツピッキング タックスリターン",
+    "ワーホリ ファーム 経費",
+    "日焼け止め 控除 ATO",
+    "ファーム間 移動 控除",
+    "出来高払い 税金 オーストラリア",
+    "セカンドビザ ファーム 税金",
+    "季節労働 控除 オーストラリア"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/ja/expenses/farm-work`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/farm-work`,
-      'de': `${SITE_URL}/de/expenses/farm-work`,
-      'ja': `${SITE_URL}/ja/expenses/farm-work`,
-      'x-default': `${SITE_URL}/expenses/farm-work`,
-    },
+  "alternates": {
+    "canonical": "/ja/expenses/farm-work",
+    "languages": {
+      "en-AU": "/expenses/farm-work",
+      "de": "/de/expenses/farm-work",
+      "ja": "/ja/expenses/farm-work",
+      "x-default": "/expenses/farm-work"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'ja_JP',
-    url: `${SITE_URL}/ja/expenses/farm-work`,
-    siteName: 'Working Holiday Tax',
-    title: '農場労働・フルーツピッキングの税金控除ガイド｜オーストラリア',
-    description: '日焼け対策やブーツ、現場間の移動費は控除の対象になりますが、普段着やその日最初の移動は対象外です。農場労働・フルーツピッキングがタックスリターンとビザにどう関わるかを解説します。',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "ja_JP",
+    "url": `${SITE_URL}/ja/expenses/farm-work`,
+    "siteName": "Working Holiday Tax",
+    "title": "ファームとフルーツピッキングの経費控除",
+    "description": "日焼け止めは控除できます。ジーンズとホステルの宿泊費はできません。"
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: '農場労働・フルーツピッキングの税金控除ガイド｜オーストラリア',
-    description: 'バックパッカーが農場労働・フルーツピッキングで経費計上できるもの、そしてワーキングホリデービザとの関係を解説します。',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "ファームとフルーツピッキングの経費控除",
+    "description": "日焼け止めは控除できます。ジーンズとホステルの宿泊費はできません。"
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const WHY_DIFFERENT = [
+const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "ファームとフルーツピッキング" })
+
+const UI = {
+  "ctaLabel": "WhatsAppで相談する",
+  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "guaranteeHeading": "還付金が料金より少なければ、その差額はあなたに戻ります。",
+  "guaranteeBody": "短いファーム仕事がいくつも並ぶ1年を1つの申告にまとめるのは、ここでは毎週の作業です。扱うのは417・462ビザの方だけ。申告書は当社のチームが作成し、ATOへ提出する前に登録税理士が確認して承認します。",
+  "faqHeading": "よくある質問",
+  "guidesHeading": "次に読むと役に立つガイド",
+  "otherJobs": "別の仕事の場合は、職種別の一覧へ。",
+  "servicesLabel": "サイト内の関連ページ",
+  "wrongLabel": "控除できないのに申告されがちなもの",
+  "missedLabel": "控除できるのに申告されないもの",
+  "disclaimer": "これは一般的な情報であり、個別の税務アドバイスではありません。何を控除できるかは、雇用主、手元の記録、実際の働き方によって変わります。当社にご依頼いただいた場合は、あなたの状況を一つずつ確認し、控除できるものはすべて申告し、できないものは申告しません。",
+  "hubHref": "/ja/expenses"
+}
+
+const CRUMBS = [
   {
-    t: '季節労働',
-    d: '収穫期は年間を通してではなく、数週間単位で続きます。多くのピッカーは一つの仕事にとどまらず、季節を追って地域から地域へ、作物から作物へと移動します。',
+    "name": "ホーム",
+    "item": "/ja"
   },
   {
-    t: '転々とする働き方',
-    d: '複数の区画やシェッド、農園をまたいで働くことが多く、同じ日に複数の場所で作業することも珍しくありません。「決まった一つの職場」と呼べる場所がないのが実情です。',
+    "name": "控除",
+    "item": "/ja/expenses"
   },
   {
-    t: '出来高制の給与',
-    d: '給与は時給制ではなく、ビン、バケツ、トレイ、または摘んだキロ数単位で計算されることがよくあります。計算方法が違うだけで、れっきとした賃金であることに変わりはありません。',
-  },
-  {
-    t: '複数の雇用主',
-    d: '一つのシーズンの中で、複数の異なる農場、請負業者、レイバーハイヤー（人材派遣）会社で働くことも珍しくなく、税務上はそれぞれが別々の雇用主として扱われます。',
-  },
+    "name": "ファーム",
+    "item": "/ja/expenses/farm-work"
+  }
 ]
 
-const faqs = [
+const HERO = {
+  "kicker": "ファーム、果樹園、パッキングシェッド",
+  "h1lead": "日焼け止めは控除できます。",
+  "h1accent": "ジーンズは最初から対象外です。",
+  "lede": "収穫、剪定、パッキングで控除できるのは6項目ほどです。それより効くのは、シーズン中の短い仕事を1つ残らず申告に載せることです。"
+}
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
   {
-    question: '今年3つの農場で働きました。タックスリターンは別々に提出する必要がありますか？',
-    answer: 'いいえ、必要ありません。1回のタックスリターンで、その会計年度（7月1日〜翌年6月30日）全体をカバーします。その間に何軒の農場や雇用主で働いたかは関係ありません。それぞれの雇用主が給与と源泉徴収税を個別にATOへ報告し、タックスリターンではそれらすべてがまとめて1つの申告になります。短期の仕事をいくつも掛け持ちした場合の一番のリスクは、そのうちの一つ、特に1週間程度の短い仕事を申告し忘れてしまうことです。ワーホリ専門チームが、提出前にまさにこの点を確認しています。',
+    "kind": "answer",
+    "h2": "フルーツピッカーやファームワーカーは何を控除できますか？",
+    "paras": [
+      "控除できるのは、屋外作業のための日焼け対策、保護用の手袋と靴、自費で買った収穫用具、そして同じ勤務日に2つのファームやブロックの間を移動した分の交通費です。いずれも自分で支払い、払い戻しを受けておらず、記録があることが条件です。",
+      "ファームでこれらが認められるのは、仕事そのものの性質によります。日焼け止めはオーストラリアではほとんどの人にとって私的な支出です。あなたの場合に控除できるのは、仕事が毎日何時間も直射日光の下に置くからで、ATOはそれを生活上の選択ではなく業務上の曝露として扱います。"
+    ]
   },
   {
-    question: '農場間を車で移動する際のガソリン代や車両費は経費にできますか？',
-    answer: 'はい、できます。同じ勤務日のうちに2つの異なる農場や作業現場の間を移動する場合が対象です。農場労働は「決まった一つの職場」を持たない転々とした働き方として扱われることが多いためです。控除の対象にならないのは、その日最初の移動、つまり自宅から最初に向かう農場までの移動で、これはどんな仕事でも同じく通常の通勤とみなされます。控除額の計算には1kmあたりの定額法、またはログブック法を使います。詳しくは経費ページをご覧ください。',
+    "kind": "items",
+    "h2": "この仕事に固有の控除",
+    "intro": "どれにも条件が付いています。条件は飾りではなく、指摘されたときに控除が残るかどうかを決めるものです。",
+    "items": [
+      {
+        "t": "日焼け対策：日焼け止め、つばの広い帽子、サングラス",
+        "d": "仕事で日光にさらされる場合に控除できます。収穫、剪定、摘果、開放型シェッドでのパッキングが該当します。屋外での曝露が根拠なので、週末のビーチ用の日焼け止めは対象外です。仕事で使った分だけを申告してください。"
+      },
+      {
+        "t": "保護用の手袋、長靴、安全靴",
+        "d": "ピッキング用手袋、雨用の長靴、シェッド作業用の安全靴。仕事が生む具体的な危険から身を守るから認められます。とげ、樹液、薬剤、ぬかるみ、落下するクレート、不整地などです。単に丈夫なだけの普通の靴は対象になりません。"
+      },
+      {
+        "t": "自費で買った収穫用具",
+        "d": "剪定ばさみ、収穫ばさみ、ピッキングバッグやバケツハーネス、早朝用のヘッドライト、膝当て。1点300ドル以下なら購入年に全額控除できます。300ドルを超える場合も控除できますが、耐用年数にわたって配分します。"
+      },
+      {
+        "t": "同じ日のファーム間、ブロック間の移動",
+        "d": "勤務が始まったあとに別の農園、ブロック、シェッドへ移動する分は控除できます。ファーム作業には固定の職場がないことが多いためです。キロメートル単価方式か運転日誌で計算します。その日最初の移動、つまり宿泊先から最初のファームまでは含まれません。"
+      },
+      {
+        "t": "本当に機能のある保護衣類",
+        "d": "雨天作業用のレインウェア、散布作業用の耐薬品ツナギ、パッキングシェッドの防塵マスク。判断基準は、仕事があなたに与える何かからその品物が守ってくれるかどうかです。暖かいだけのネルシャツは基準を満たしません。"
+      },
+      {
+        "t": "携帯電話の仕事使用分",
+        "d": "金額は小さいものの、コントラクターからシフト時間を受け取る、収穫したビンをアプリで記録するなど、自分の携帯を仕事で使っているなら控除できます。全額ではなく、合理的な根拠に基づく仕事使用割合を申告します。"
+      }
+    ]
   },
   {
-    question: '出来高制の給与は税金の扱いが違いますか？',
-    answer: 'いいえ、変わりません。ビン単位、バケツ単位、トレイ単位、あるいは時給制、どのように計算されていても、銀行口座に振り込まれた時点でそれは通常の賃金です。雇用主はその合計額をATOへ報告し、ワーキングホリデーメーカー税率のもとで源泉徴収を行い、タックスリターン提出時には他の給与と同じようにあなたの総所得に合算されます。',
+    "kind": "answer",
+    "h2": "1シーズンから何を残しておきますか？",
+    "paras": [
+      "3つがそろわなければ控除になりません。自分のお金だったこと、返してもらっていないこと、申告する収入を得るために使ったことです。シーズン中なら、日焼け止めを買ったロードハウスの領収書、手袋や剪定ばさみの控え、そしてコントラクターにブロック間を動かされたときの日付と距離のメモです。",
+      "金額、日付、支払先、内容が分かれば、領収書でも請求書でも銀行明細でも構いません。スマホの写真で足ります。5年間は保管してください。その年の仕事関連の控除が合計300ドル以下なら書面の証拠は不要ですが、金額の根拠は説明できる必要があります。1点を一度に償却するか耐用年数で配分するかを決める300ドルとは、別のルールです。"
+    ]
   },
   {
-    question: '農場労働はセカンド（またはサード）ワーキングホリデービザの条件に含まれますか？',
-    answer: '多くのワーキングホリデーメーカーにとって、答えはイエスです。オーストラリアの地方地域で指定労働を完了することは、さらなる417・462ビザを申請するための主な方法の一つであり、農場労働はその指定労働として最もよく選ばれる仕事の一つです。ただし、具体的にどの仕事、どの地域、どの期間が対象になるかを定めているのは当社ではなく内務省（Department of Home Affairs）であり、これまでにルールが変更されたこともあります。特定の仕事が条件を満たすと決めてかかる前に、必ず最新の公式情報を確認するか、登録移民代理人にご相談ください。当社がサポートできるのは、その仕事で得た収入が正しく課税・申告されるようにする部分です。',
+    "kind": "traps",
+    "h2": "ファームで働く人がよく間違えることは？",
+    "intro": "まず、毎年多くの季節労働者が申告していて、説明できないもの。次に、誰も教えてくれないまま置き去りになっているお金です。",
+    "wrong": [
+      {
+        "t": "仕事で駄目になった普段着",
+        "d": "ジーンズ、Tシャツ、ネルシャツ、朝5時スタート用のパーカー。仕事で駄目になりますし、そうでなければ買っていないので理不尽に感じます。ATOが見るのは意図ではなく品物であり、普段着は果汁のシミでどれだけ早く駄目になっても私的な支出です。"
+      },
+      {
+        "t": "ホステルの宿泊費とデポジット",
+        "d": "シーズン中どこで寝ていたかは生活費であって仕事の費用ではありません。半径50キロで唯一の宿でも、ファームが手配したものでも同じです。どこかに住むことは収入を得る費用ではありません。"
+      },
+      {
+        "t": "日中の食事や飲み物",
+        "d": "ファームでの昼食も、他の場所での昼食と同じです。食事が控除になるのは、雇用主の指示で自宅を離れて宿泊を伴う移動をした狭い場合だけで、収穫シーズンは通常あてはまりません。"
+      },
+      {
+        "t": "ホステルからファームへの移動",
+        "d": "それは通勤であり、未舗装路を50キロ走ろうと歩こうと変わりません。控除できるのは、その日の勤務が始まったあとの現場間の移動だけです。"
+      },
+      {
+        "t": "その地域までの移動費",
+        "d": "バンダバーグ、ミルドゥラ、タリーへ仕事を探しに行く飛行機代や運転は、仕事のある場所に自分を置くための費用です。そこから収入を得る費用とは違います。"
+      }
+    ],
+    "missed": [
+      {
+        "t": "日焼け止め、帽子、サングラス",
+        "d": "ファーム作業で最も見落とされる控除であり、権利が最も明確なものでもあります。ロードハウスで買った19ドルの日焼け止めの領収書を取っておく人はほとんどいませんが、1シーズン分では小さくない金額になります。"
+      },
+      {
+        "t": "手袋を1組ずつ",
+        "d": "ピッキング用手袋は消耗品です。1シーズンに6組買えば控除対象の購入が6回あるということで、1回ではありません。それぞれが個別に300ドルの基準で判定されます。"
+      },
+      {
+        "t": "同じ日のブロック間の移動",
+        "d": "大きな農園やクルーを動かすコントラクターではよくあることですが、移動という感覚がないためほとんど申告されません。日付と距離をその都度メモしておけば、簡単な控除になります。"
+      },
+      {
+        "t": "完全に忘れられた3週間のファーム仕事",
+        "d": "このページで最も高くつく間違いは控除ではありません。急いで支払われた短期の仕事、ときにコントラクター経由の仕事は申告から抜けやすく、収入の漏れは控除の取りこぼしより深刻です。"
+      },
+      {
+        "t": "未登録の雇用主による15%超の源泉徴収",
+        "d": "ワーキングホリデーメーカーの雇用主としてATOに登録している農園は、最初の1ドルから15%で源泉徴収します。未登録なら30%超で始まる非居住者の税率で徴収する義務があります。差額は申告して初めて戻ります。"
+      }
+    ]
   },
   {
-    question: '農場の雇用主がワーキングホリデーメーカー雇用主として登録されているかどうかは、どうすれば分かりますか？',
-    answer: '働き始めるときに直接聞いてみてください。ごく自然な質問ですし、たいていの農場は聞かれ慣れています。登録済みの雇用主は、最初の1ドルから正しい15%のワーキングホリデーメーカー税率で源泉徴収を行います。一方、未登録の雇用主は、代わりに30%を超えるより高い外国居住者税率で源泉徴収することが法律で義務付けられています。いずれの場合も、多く引かれすぎた分はタックスリターンを提出すれば戻ってきますが、シーズン中に毎週手元に残る金額には実際の差が出ますので、新しい農場の雇用主には直接確認しておく価値があります。',
-  },
-  {
-    question: '働いたすべての農場の給与明細（ペイスリップ）が手元にありません。問題になりますか？',
-    answer: '通常は問題ありません。ほとんどの雇用主はSingle Touch Payrollを通じてATOに給与を報告しているため、給与明細を受け取っていなかったり保管していなくても、所得明細として記録に残っています。とはいえ、どの農場で、いつ、だいたいいくら支払われたかを簡単にメモしておくと役立ちます。特に短期の仕事をいくつも掛け持ちしたシーズンでは、後で金額を照合するための手がかりになります。',
-  },
+    "kind": "answer",
+    "h2": "シーズンの組み立て方で変わるのはどこですか？",
+    "paras": [
+      "移動が通勤ではなく巡回勤務にあたるかどうかは事実認定の問題で、金額にも直結します。コントラクターに3つの農園を回され拠点がない人と、11週間同じ果樹園に通った人とでは立場が違います。現場がどれだけ変わったか、移動が仕事として求められていたか、そもそも固定の職場があったかで決まります。",
+      "より大きいのは税務上の居住区分です。収穫を追って地域を移り続ける形はATOが非居住者として扱う典型に近く、1年の大半を1つの町で過ごした場合は反対方向を示すこともあります。イギリス、ドイツ、日本のパスポート保持者が税務上オーストラリア居住者だった場合、Addy判決によって満額の非課税枠と居住者税率が戻る可能性があります。滞在日数ではなくその年の実態で決まり、このページのどの領収書より価値があります。",
+      "ファーム作業はセカンドビザにも関わりますが、その部分は税ではなく移民の話です。どの産業、どの郵便番号、どの期間が算入されるかはDepartment of Home Affairsが定めており、これまでに何度も変わっています。ある仕事が算入されると当てにする前に、最新の公式情報を確認するか登録移民エージェントに相談してください。何に算入されるにせよ、収入は正しく申告する必要があります。"
+    ]
+  }
 ]
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-    { '@type': 'ListItem', position: 2, name: '経費', item: `${SITE_URL}/ja/expenses` },
-    { '@type': 'ListItem', position: 3, name: '農場労働', item: `${SITE_URL}/ja/expenses/farm-work` },
-  ],
-}
+const FAQS = [
+  {
+    "question": "日焼け止めと帽子を本当に控除できますか？",
+    "answer": "はい。仕事で日光にさらされる場合は控除でき、ファーム作業は通常それにあたります。ATOが屋外作業者の日焼け対策を仕事の費用として認めるのは、その曝露が本人の選択ではなく仕事から生じているからです。領収書を保管し、仕事で使った分だけを申告し、どんな作業だったか説明できるようにしてください。"
+  },
+  {
+    "question": "今年は3つのファームで働きました。申告も3回ですか？",
+    "answer": "いいえ。申告は7月1日から6月30日までの年度全体をカバーする1回だけで、ファーム、コントラクター、派遣会社がいくつあっても同じです。各雇用主が給与と源泉徴収額を別々にATOへ報告し、すべてが1つの申告にまとまります。短期の仕事が続いたシーズンで怖いのは1社の抜けなので、提出前に確認する価値があります。"
+  },
+  {
+    "question": "出来高払いだと税金は変わりますか？",
+    "answer": "いいえ。出来高払いも給与です。ビン単位、バケツ単位、トレー単位、キロ単位のどれで計算されても同じです。雇用主は合計を報告し、時給と同じように源泉徴収し、他の給与と同じようにあなたの収入に加算されます。出来高払いで変わるのは記録の取り方で、日ごとに変動する支払いは後からインカムステートメントと突き合わせにくくなります。"
+  },
+  {
+    "question": "毎朝ファームへ行くガソリン代は控除できますか？",
+    "answer": "できません。その日最初の移動、つまり住んでいる場所から最初のファームまでは通常の通勤で、距離に関係なく控除できません。控除できるのは、勤務が始まったあとのファーム間、ブロック間、シェッド間の移動で、キロメートル単価方式か運転日誌で計算します。"
+  },
+  {
+    "question": "ファームからペイスリップをもらっていません。",
+    "answer": "たいていは問題ありません。ほとんどの雇用主はSingle Touch Payrollを通じて給与をATOに報告するので、ペイスリップを受け取っていなくてもインカムステートメントとして表示されます。それでも、どのファームで、いつ、いくらだったかを自分でメモしておくと、特に短期の仕事が多いシーズンでは公式の数字と照合できて安心です。"
+  }
+]
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: '農場労働・フルーツピッキングの税金控除ガイド｜オーストラリア',
-  description: 'ワーキングホリデーメーカーが農場労働・フルーツピッキングの仕事で経費計上できるもの、季節労働・出来高制・複数雇用主の給与が確定申告でどう扱われるか、そして農場労働とさらなるワーキングホリデービザとの関係を解説する記事です。',
-  url: `${SITE_URL}/ja/expenses/farm-work`,
-  inLanguage: 'ja-JP',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
-}
+const GUIDES = [
+  {
+    "href": "/ja/blog/piece-rates-farm-work-working-holiday",
+    "label": "ファームの出来高払いと最低ライン",
+    "desc": "ビン単位の計算と、それでも満たすべき水準。"
+  },
+  {
+    "href": "/ja/blog/fruit-picking-jobs-working-holiday-australia",
+    "label": "オーストラリアのファームジョブ",
+    "desc": "地域とシーズン、受ける前に確認したいこと。"
+  },
+  {
+    "href": "/ja/blog/tools-equipment-under-300-instant-deduction-whv",
+    "label": "300ドル以下の道具は全額即時控除",
+    "desc": "1点ずつ判定される理由と、セット購入で変わる点。"
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/ja/tax-return",
+    "label": "タックスリターン"
+  },
+  {
+    "href": "/ja/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/ja/tax-residency",
+    "label": "税務上の居住区分"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
-export default function FarmWorkExpensesPageJA() {
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
+}
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "ファームとフルーツピッキングの経費控除",
+  description: "日焼け止めは控除できます。ジーンズとホステルの宿泊費はできません。",
+  url: `${SITE_URL}/ja/expenses/farm-work`,
+  inLanguage: "ja-JP",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/ja/expenses/farm-work#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/ja/expenses/farm-work`,
+}
+
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
+  return (
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"ja"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
+    </div>
+  )
+}
+
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/ja" style={{ color: '#587066' }}>ホーム</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/ja/expenses" style={{ color: '#587066' }}>経費</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>農場労働</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '26ch' }}>
-                農場労働の税金控除、そしてあなたの<span style={{ color: '#0B5240' }}>ビザ</span>とのつながり
-              </h1>
-              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '54ch' }}>
-                フルーツピッキングや農場労働には、他のバックパッカーの仕事ではあまり出てこない税金の疑問がつきものです。季節労働、出来高制の給与、1年間で複数の雇用主、そして多くのワーキングホリデーメーカーにとっては、ビザとの本当のつながりもあります。
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}
+              <span style={{ color: FOREST }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
+          </div>
+        </section>
+
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
+
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"ja"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
               </p>
             </div>
           </div>
         </section>
 
-        {/* ── WHY FARM WORK IS DIFFERENT ──────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '20px' }}>
-          <div className="max-w-[1040px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                農場労働の税金の扱いが少し違う理由
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                農場労働やフルーツピッキングに特有で、他のバックパッカーの仕事ではあまり出てこない4つのポイントです。
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-              {WHY_DIFFERENT.map((c, i) => (
-                <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#F7FBF9', border: '1.5px solid #E2EFE9' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '8px' }}>{c.t}</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7 }}>{c.d}</p>
-                </div>
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* ── THE VISA CONNECTION (unique hook for this page) ─────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <span className="section-label">ビザとのつながり</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 18px' }}>
-              農場労働と、さらなるワーキングホリデービザ
-            </h2>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              農場労働は、他のバックパッカーの仕事にはほとんどない特別なもの、つまりビザそのものとつながっています。オーストラリアの地方地域で指定労働を完了することは、417または462ビザのワーキングホリデーメーカーが、さらなるワーキングホリデービザを申請できるようになるための主な方法の一つです。そして、その指定労働の多くは、農場や果樹園、そして農業・園芸分野で行われています。これが、多くのワーキングホリデーメーカーが滞在中に一度は農場の仕事を経験する大きな理由です。
-            </p>
-
-            <div className="rounded-2xl" style={{ padding: '20px 22px', background: '#FDF0D5', border: '1.5px solid #F9D88A', borderLeft: '4px solid #E9A020', margin: '22px 0' }}>
-              <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '8px', letterSpacing: '-0.01em' }}>
-                これは税務ではなく、移民に関する事項です。
-              </p>
-              <p className="font-light" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.75 }}>
-                具体的にどの業種、どの郵便番号や地域、どの期間が指定労働として認められるか、そして何日必要かを定めているのは税法ではなく内務省（Department of Home Affairs）であり、これまでに何度もルールが変更されてきました。こうした移民関連の詳細を追跡することは、ワーホリ専門チームが行う当社の税務サービスの範囲には含まれません。特定の仕事がビザの条件を満たすと決めてかかる前に、
-                <a href="https://immi.homeaffairs.gov.au/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline', color: '#0B5240' }}>内務省（Department of Home Affairs）のウェブサイト</a>
-                で最新の公式情報を確認するか、登録移民代理人にご相談ください。
-              </p>
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
             </div>
-
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              当社がサポートできるのは、その仕事の税務面です。ビザの条件として最終的に何が認められるとしても、そこから得た収入は正しく申告・課税される必要があります。どの農場で、いつ、いくら稼いだかを簡単に記録しておくことは、いずれにせよタックスリターンに役立ちますし、後でどの仕事をいつ行ったかを証明する必要が生じたときにも、そのまま便利な記録として使えることが多いです。
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
         </section>
 
-        {/* ── SEASONAL, ITINERANT, PIECE-RATE: THE TAX DETAIL ─────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                季節労働、転々とする働き方、そしてビン単位の給与
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                これらはオーストラリアの税金の基本的な仕組みを変えるものではありませんが、正しく処理する難易度には影響します。
-              </p>
-            </div>
-
-            <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-              農場が変わるたびに必要な、新しいTFN Declaration
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '24px' }}>
-              新しく働く農場、請負業者、レイバーハイヤー会社はそれぞれ別の雇用主にあたり、雇用主が変わるたびに新しいTFN Declaration（タックスファイルナンバー宣言書）の提出が必要です。前の職場で一度提出したからといって、TFNが自動的に引き継がれるわけではありません。この宣言書では、ワーキングホリデーメーカーは居住区分で「working holiday maker」を選択し、免税枠（tax-free threshold）の質問には「いいえ」を選ぶ必要があります。この免税枠はオーストラリアの居住者向けの制度であり、その年に何人の雇用主で働いたとしても、ワーキングホリデーメーカー税率が適用される収入には一切適用されません。この書類を毎回よく確認せずに記入してしまい、免税枠の質問に「はい」と答えてしまったり、いつもの癖で居住区分を間違って選んでしまったりすることは、思わぬ税金の請求が届く実によくある原因です。1シーズンのうちに複数の農場でこの手続きを繰り返していると、そのミスはなおさら起こりやすくなります。毎回正しく宣言書を提出する方法については、<Link href="/ja/tfn" style={{ color: '#0B5240', textDecoration: 'underline' }}>TFNページ</Link>をご覧ください。
-            </p>
-
-            <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-              出来高制の給与も、あくまで賃金
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '24px' }}>
-              時給制ではなく、ビン単位、バケツ単位、トレイ単位、キロ単位で給与が計算されても、税金の扱いが変わることはありません。合計金額がいくらであっても、雇用主はそれをATO（オーストラリア税務署）へ報告し、時給制の給与と同じようにワーキングホリデーメーカー税率のもとで源泉徴収を行い、タックスリターン提出時には他の給与と同様にあなたの所得に合算されます。出来高制の仕事で実際に変わってくるのは、記録管理の面です。日によって給与額が変わり、シーズン中に複数の農場を移動することも多いため、どの農場で、いつ、だいたいいくら支払われたかを自分でも簡単にメモしておくと、後で所得明細と照らし合わせる際に役立ちます。
-            </p>
-
-            <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-              その農場が登録済みのワーキングホリデーメーカー雇用主か確認する
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '8px' }}>
-              雇用主がATOにワーキングホリデーメーカーの雇用主として登録されているかどうかによって、シーズン中に給与から引かれる税額が変わってきます。登録済みの雇用主は、最初の1ドルから正しい15%のワーキングホリデーメーカー税率で源泉徴収を行います。未登録の雇用主は、代わりに30%を超えるより高い外国居住者税率を適用することが義務付けられています。いずれの場合も、多く引かれすぎた分はタックスリターンを提出すれば戻ってくるため、最終的に損をし続けるわけではありませんが、毎週実際に手元に残る金額には確かな差が出ます。新しい農場で働き始めるたびに、直接確認しておく価値があります。
-            </p>
-
-            <div className="taxres-savings-box" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-              <div>
-                <p className="taxres-savings-heading">作業の合間に、簡単な記録をつけておく</p>
-                <p className="taxres-savings-body">
-                  農場名、働いた日付、そしてだいたいの支払額をその都度メモしておくだけで、更新には1分もかかりませんが、後々の手間を大きく省いてくれます。所得明細の金額が合っているか確認するときも、届かなかった給与明細を探すときも、確定申告の時期になってどの農場で働いたか思い出そうとするときも、この記録が役立ちます。
-                </p>
-              </div>
-            </div>
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
-
-        {/* ── WHAT YOU CAN / CANNOT CLAIM ──────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '20px' }}>
-          <div className="max-w-[1040px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                経費にできるもの、できないもの
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                ここでもATOの2つの基準はどんな職業でも共通です。自分自身で支払い、雇用主から払い戻しを受けていないこと。そして、どのみち買っていたであろう私的な支出ではなく、収入を得ることに本当に関係していることです。
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6" style={{ marginBottom: '20px', alignItems: 'stretch' }}>
-
-              <div className="exp-card">
-                <p className="exp-card-label exp-card-label-yes">✓ 控除できる可能性があるもの</p>
-
-                <div style={{ marginBottom: '18px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>日焼け対策</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    収穫や剪定、あるいは屋根のないシェッドでの梱包作業など、1日の全部または一部を屋外で過ごす仕事であれば、つばの広い帽子、日焼け止め、サングラスが控除の対象になります。ATOがこれらを認めているのは、その仕事が継続的で直接的な紫外線を浴びる環境を生み出しているからであり、休日に使う日焼け止めを買うのとは事情が異なります。
-                  </p>
-                </div>
-
-                <div style={{ marginBottom: '18px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>保護用手袋・ブーツ</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    とげ、薬品、泥、農産物の取り扱い、足場の悪い地面など、その仕事特有の危険から身を守るための摘み取り用手袋、ゴム長靴、その他の保護用ブーツは、仕事上必要な保護具として控除の対象になります。
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>農場・現場間の移動</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    同じ勤務日のうちに異なる区画やシェッド、農園の間を移動することは控除の対象になります。農場労働は転々とした働き方であることが多く、「決まった一つの職場」と呼べる場所がほとんどないためです。この控除額は1kmあたりの定額法、またはログブック法で計算します。それぞれの仕組みについては<Link href="/ja/expenses" style={{ color: '#0B5240', textDecoration: 'underline' }}>経費ガイド</Link>をご覧ください。
-                  </p>
-                </div>
-              </div>
-
-              <div className="exp-card">
-                <p className="exp-card-label exp-card-label-no">✕ 通常、控除できないもの</p>
-
-                <div style={{ marginBottom: '18px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>普段着</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    ジーンズ、Tシャツ、朝の寒さ対策のセーターなど、普段着は一日中フルーツピッキングや農産物の取り扱いで破れたり、汚れたり、傷んだりしても、控除の対象には一切なりません。ATOは普段着の通常の摩耗や劣化を、他のどんな仕事とも同様に私的な支出として扱います。ただ服が汚れるという理由だけで、農場労働に特別な例外が認められることはありません。
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>その日最初の移動</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    毎日、自宅からその日最初に向かう農場や現場までの移動は、どれだけ距離があっても、どれだけ早い時間に出発しても、通常の通勤とみなされます。これは農場労働に限らず、どんな仕事でも同じです。控除の対象になるのは、すでに仕事に出た後の現場間の移動だけであり、そこにたどり着くまでの最初の移動が対象になることはありません。
-                  </p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* ── WHAT'S NEXT (internal links) ─────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <span className="section-label center">次のステップ</span>
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-              何を控除できるか分かったら
-            </h2>
-            <p className="font-light text-muted max-w-[640px] mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '20px' }}>
-              多くの農場労働者・季節労働者が次に確認する内容はこちらです。
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-[900px] mx-auto">
-              <Link href="/ja/expenses" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
-                他のバックパッカーの仕事の経費控除も確認する
-              </Link>
-              <Link href="/ja/tfn" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
-                新しい農場の仕事に備えてTFNを取得する
-              </Link>
-              <Link href="/ja/tax-return" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
-                シーズン全体を1回のタックスリターンにまとめる
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-        <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">よくあるご質問</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  農場労働の税金に関するご質問
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  その他にご不明な点があれば、お気軽にお問い合わせください。
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── DISCLAIMER ───────────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '8px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7 }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません。また、移民や渡航に関するアドバイスでもありません。農場でのシーズンは、どの雇用主で働くか、どの地域か、ビザとの関わり方まで、一人ひとり少しずつ異なります。当社にご依頼いただいた場合、タックスリターンはワーホリ専門のチームによって作成され、お客様の具体的な雇用主や状況を確認したうえで、請求できるものはすべて、請求できないものは含めないようにいたします。
-            </p>
-          </div>
-        </section>
-
-        {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-        <NextStep
-          eyebrow="準備ができたらいつでも"
-          heading="すべての農場、すべての給与明細を1回の申告にまとめて"
-          body="長い収穫期を1件だけ経験した場合でも、3つの州にまたがる5つの短期の仕事を掛け持ちした場合でも、すべての雇用主の所得明細をまとめ、源泉徴収額もあわせて確認します。"
-          cta="タックスリターンを始める →"
-          href="/ja/tax-form"
-        />
 
       </main>
-      <MobileCta href="/ja/tax-form" lang="ja" />
+
+      <MobileCta href={WA} lang={"ja"} topic="expenses" />
     </>
   )
 }

@@ -5,6 +5,8 @@ import Link from 'next/link'
 import MobileTOC from './MobileTOC'
 import ReadingProgress from './ReadingProgress'
 import { trackEvent } from './../analytics'
+import { waUrl, type WaTopic } from '@/lib/wa'
+import { trackGuideCta, trackWhatsApp } from '@/lib/analytics'
 
 interface Guide {
   slug: string
@@ -26,7 +28,7 @@ const ARTICLE_UI = {
     shareThisArticle: 'Share this article:',
     shareCopy: 'Copy link',
     shareCopied: '✓ Copied!',
-    shareWhatsApp: 'WhatsApp',
+    shareWhatsApp: 'Share on WhatsApp',
     backToBlog: 'Back to Blog',
     tocAriaLabel: 'Table of contents',
   },
@@ -36,7 +38,7 @@ const ARTICLE_UI = {
     shareThisArticle: 'Diesen Artikel teilen:',
     shareCopy: 'Link kopieren',
     shareCopied: '✓ Kopiert!',
-    shareWhatsApp: 'WhatsApp',
+    shareWhatsApp: 'Per WhatsApp teilen',
     backToBlog: 'Zurück zum Blog',
     tocAriaLabel: 'Inhaltsverzeichnis',
   },
@@ -46,7 +48,7 @@ const ARTICLE_UI = {
     shareThisArticle: 'この記事をシェア：',
     shareCopy: 'リンクをコピー',
     shareCopied: '✓ コピーしました！',
-    shareWhatsApp: 'WhatsApp',
+    shareWhatsApp: 'WhatsAppでシェア',
     backToBlog: 'ブログ一覧へ戻る',
     tocAriaLabel: '目次',
   },
@@ -54,6 +56,144 @@ const ARTICLE_UI = {
 
 function slugify(text: string) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+}
+
+/* ── The one in body CTA ──────────────────────────────────────────────────
+   A reader who is already convinced should not have to reach the end of a
+   2,000 word guide to act. So there is exactly one offer inside the body,
+   placed at the close of the third section, and none anywhere else.
+
+   One, not two. More than one and the article stops reading like a guide and
+   starts reading like a funnel, which costs the trust the guide just earned,
+   and that trust is the only reason the guide converts at all.
+
+   It sits at the END of the third section rather than directly under the
+   third H2 on purpose: the paragraph immediately after a question heading is
+   what search and AI engines lift as the answer to that question, and it must
+   not be an advert.                                                        */
+
+const INLINE_CTA_TOPIC: Record<string, WaTopic> = {
+  'TFN': 'tfn',
+  'ABN': 'abn',
+  'Tax Return': 'tax-return',
+  'Super': 'super',
+  'Medicare & Other': 'medicare',
+  'Work Rights': 'guide',
+}
+
+interface InlineCopy { body: string; cta: string }
+
+const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
+  en: {
+    'TFN': {
+      body: 'Want to know what this leaves you with? Tell us where you worked and what came off your pay, and we will tell you what your year actually looks like.',
+      cta: 'Ask us on WhatsApp',
+    },
+    'ABN': {
+      body: 'If you invoiced under an ABN as well as working on a TFN, that split is what decides your return. Send us what you did and we will work out where you stand.',
+      cta: 'Ask us on WhatsApp',
+    },
+    'Tax Return': {
+      body: 'If you would rather not work this out on your own, tell us about the year you had and we will tell you what it means for your return.',
+      cta: 'Message us on WhatsApp',
+    },
+    'Super': {
+      body: 'If you would rather we found every fund sitting under your TFN and lodged the claim once, send us your details.',
+      cta: 'Ask about your super',
+    },
+    'Medicare & Other': {
+      body: 'Not sure whether the exemption applies to you? Tell us which passport you hold and whether you ever enrolled, and we will check it.',
+      cta: 'Ask us on WhatsApp',
+    },
+    'Work Rights': {
+      body: 'If any of this touched your pay or your hours, it usually shows up in your tax return as well. We are on WhatsApp if you want to ask.',
+      cta: 'Ask us a question',
+    },
+  },
+  de: {
+    'TFN': {
+      body: 'Du willst wissen, was das für dich bedeutet? Sag uns, wo du gearbeitet hast und was von deinem Lohn abgezogen wurde, und wir sagen dir, wie dein Jahr wirklich aussieht.',
+      cta: 'Frag uns auf WhatsApp',
+    },
+    'ABN': {
+      body: 'Wenn du neben der TFN auch über eine ABN abgerechnet hast, entscheidet genau diese Aufteilung über deine Steuererklärung. Schick uns, was du gemacht hast.',
+      cta: 'Frag uns auf WhatsApp',
+    },
+    'Tax Return': {
+      body: 'Wenn du das nicht selbst durchrechnen willst: Erzähl uns von deinem Jahr und wir sagen dir, was es für deine Steuererklärung bedeutet.',
+      cta: 'Schreib uns auf WhatsApp',
+    },
+    'Super': {
+      body: 'Wenn wir alle Fonds unter deiner TFN finden und den Antrag einmal richtig stellen sollen, schick uns deine Daten.',
+      cta: 'Frag zu deiner Super',
+    },
+    'Medicare & Other': {
+      body: 'Nicht sicher, ob die Befreiung für dich gilt? Sag uns, welchen Pass du hast und ob du jemals angemeldet warst, und wir prüfen es.',
+      cta: 'Frag uns auf WhatsApp',
+    },
+    'Work Rights': {
+      body: 'Wenn davon etwas deinen Lohn oder deine Stunden betrifft, taucht es meistens auch in deiner Steuererklärung auf. Wir sind auf WhatsApp.',
+      cta: 'Stell uns eine Frage',
+    },
+  },
+  ja: {
+    'TFN': {
+      body: 'これが自分にとって何を意味するか知りたい場合は、どこで働いたか、給与から何が引かれていたかを教えてください。あなたの1年が実際どうなっているかお伝えします。',
+      cta: 'WhatsAppで相談する',
+    },
+    'ABN': {
+      body: 'TFNでの就労に加えてABNでも請求していた場合、その切り分けが申告内容を左右します。何をしたか送ってください。',
+      cta: 'WhatsAppで相談する',
+    },
+    'Tax Return': {
+      body: '自分で計算したくない場合は、あなたの1年の内容を送ってください。申告にとって何を意味するかお伝えします。',
+      cta: 'WhatsAppで相談する',
+    },
+    'Super': {
+      body: 'TFNからすべてのファンドを探して一度で申請してほしい場合は、詳細を送ってください。',
+      cta: 'スーパーについて相談する',
+    },
+    'Medicare & Other': {
+      body: '免除の対象かどうか分からない場合は、お持ちのパスポートと、メディケアに登録したことがあるかを教えてください。こちらで確認します。',
+      cta: 'WhatsAppで相談する',
+    },
+    'Work Rights': {
+      body: '給与や労働時間に関わることは、たいていタックスリターンにも表れます。質問があればWhatsAppでどうぞ。',
+      cta: '質問する',
+    },
+  },
+}
+
+function InlineGuideCta({ guide, locale }: { guide: Guide; locale: Locale }) {
+  const copy =
+    INLINE_CTA_COPY[locale]?.[guide.category] ??
+    INLINE_CTA_COPY[locale]?.['Tax Return'] ??
+    INLINE_CTA_COPY.en['Tax Return']
+  const topic = INLINE_CTA_TOPIC[guide.category] ?? 'guide'
+  const href = waUrl({ topic, lang: locale, detail: guide.title })
+
+  const onTap = () => {
+    try { navigator.vibrate?.(10) } catch { /* unsupported, which is fine */ }
+    trackGuideCta({ slug: guide.slug, category: guide.category, lang: locale, position: 'guide-inline' })
+    trackWhatsApp({ position: 'guide-inline', topic, lang: locale })
+  }
+
+  return (
+    <aside className="guide-inline-cta">
+      <p>{copy.body}</p>
+      {/* Layout only. Colour, size and underline come from .guide-inline-cta a
+          in the stylesheet; this just gives the link a 44px tap target. */}
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onTap}
+        style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}
+      >
+        {copy.cta} →
+      </a>
+    </aside>
+  )
 }
 
 /**
@@ -74,7 +214,7 @@ function shortenQuickAnswer(text: string): string {
   return result.trim() || cleaned.slice(0, 277).trim() + '…'
 }
 
-function parseBody(body: string, locale: Locale = 'en') {
+function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactNode) {
   const lines = body.trim().split('\n')
   const elements: React.ReactNode[] = []
   let key = 0
@@ -82,11 +222,22 @@ function parseBody(body: string, locale: Locale = 'en') {
   let isFirstParagraph = true
   const ui = ARTICLE_UI[locale]
 
+  // The in body CTA goes in at the close of the third section, which is the
+  // moment the fourth H2 arrives. Guides with fewer than four H2s never reach
+  // that point and correctly get no in body CTA at all: on a short guide the
+  // end of guide block is already within reach.
+  const totalH2 = lines.filter(l => l.trim().startsWith('## ')).length
+  const ctaBeforeH2 = inlineCta && totalH2 >= 4 ? 4 : 0
+  let h2Seen = 0
+
   const renderInline = (raw: string) => {
     return raw
       .replace(/\*\*([^*]+)\*\*/g, '<strong style="font-weight:600;color:#0B5240;">$1</strong>')
+      // A real underline, not a 1px #C8EAE0 bottom border at 1.18:1 against
+      // white. The border did not read as a link at all, which is the only
+      // thing an inline link has to do.
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_: string, text: string, href: string) =>
-        `<a href="${href}" style="color:#0B5240;text-decoration:none;border-bottom:1px solid #C8EAE0;font-weight:500;">${text}</a>`
+        `<a href="${href}" style="color:#0B5240;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;font-weight:600;padding:2px 0;">${text}</a>`
       )
   }
 
@@ -96,6 +247,10 @@ function parseBody(body: string, locale: Locale = 'en') {
     if (line.startsWith('## ')) {
       const text = line.replace('## ', '')
       const id = slugify(text)
+      h2Seen++
+      if (ctaBeforeH2 && h2Seen === ctaBeforeH2) {
+        elements.push(<div key={key++}>{inlineCta}</div>)
+      }
       elements.push(
         <h2
           key={key++}
@@ -133,7 +288,7 @@ function parseBody(body: string, locale: Locale = 'en') {
           {items.map((item, idx) => (
             <li
               key={idx}
-              style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.4rem', fontWeight: 300 }}
+              style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '0.45rem', fontWeight: 400 }}
               dangerouslySetInnerHTML={{ __html: renderInline(item) }}
             />
           ))}
@@ -153,7 +308,7 @@ function parseBody(body: string, locale: Locale = 'en') {
           {items.map((item, idx) => (
             <li
               key={idx}
-              style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.4rem', fontWeight: 300 }}
+              style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '0.45rem', fontWeight: 400 }}
               dangerouslySetInnerHTML={{ __html: renderInline(item) }}
             />
           ))}
@@ -192,7 +347,7 @@ function parseBody(body: string, locale: Locale = 'en') {
         elements.push(
           <p
             key={key++}
-            style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '1rem', fontWeight: 300 }}
+            style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '1rem', fontWeight: 400 }}
             dangerouslySetInnerHTML={{ __html: renderInline(line) }}
           />
         )
@@ -298,13 +453,19 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
 
   return (
     <>
-      {/* Progress Bar */}
+      {/* Progress bar.
+          It used to sit at z-index 50, the same layer as the nav, which put it
+          on top of the sticky breadcrumb bar and painted out the breadcrumbs'
+          first three pixels. It now sits below the nav and above the
+          breadcrumbs, and the breadcrumbs start at 71px so the two no longer
+          share the same three pixels at all. The fill is forest rather than
+          amber: amber on #E2EFE9 measures 1.87:1 and is effectively invisible. */}
       <div style={{
         position: 'fixed', top: '68px', left: 0, right: 0, height: '3px',
-        background: '#E2EFE9', zIndex: 50,
+        background: '#E2EFE9', zIndex: 45,
       }}>
         <div style={{
-          height: '100%', background: '#E9A020',
+          height: '100%', background: '#0B5240',
           width: `${scrollProgress}%`,
           transition: 'width 0.1s linear',
         }} />
@@ -322,19 +483,21 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
         <div style={{ minWidth: 0 }}>
 
           {/* Body */}
-          <div style={{ marginBottom: '2.5rem' }}>{parseBody(guide.body, locale)}</div>
+          <div className="guide-body" style={{ marginBottom: '2.5rem' }}>
+            {parseBody(guide.body, locale, <InlineGuideCta guide={guide} locale={locale} />)}
+          </div>
 
           {/* Share */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2rem', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '11.5px', color: '#8AADA3', fontWeight: 500 }}>{ui.shareThisArticle}</span>
+            <span style={{ fontSize: '13px', color: '#587066', fontWeight: 500 }}>{ui.shareThisArticle}</span>
             <button
               onClick={handleCopy}
               className="share-btn"
               style={{
-                display: 'inline-flex', alignItems: 'center', gap: '6px',
-                padding: '6px 14px', borderRadius: '100px',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                minHeight: '44px', padding: '10px 18px', borderRadius: '100px',
                 border: '1px solid #E2EFE9', background: 'transparent',
-                fontSize: '12px', color: '#587066', cursor: 'pointer', fontWeight: 500,
+                fontSize: '13px', color: '#587066', cursor: 'pointer', fontWeight: 500,
               }}
             >
               {copied ? ui.shareCopied : ui.shareCopy}
@@ -346,10 +509,10 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
               onClick={handleWhatsAppShare}
               className="share-btn"
               style={{
-                display: 'inline-flex', alignItems: 'center', gap: '6px',
-                padding: '6px 14px', borderRadius: '100px',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                minHeight: '44px', padding: '10px 18px', borderRadius: '100px',
                 border: '1px solid #E2EFE9', background: 'transparent',
-                fontSize: '12px', color: '#587066', textDecoration: 'none', fontWeight: 500,
+                fontSize: '13px', color: '#587066', textDecoration: 'none', fontWeight: 500,
               }}
             >
               {ui.shareWhatsApp}
@@ -379,7 +542,7 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
         {/* Desktop TOC sidebar */}
         {showToc && (
           <aside className="toc-sidebar" aria-label={ui.tocAriaLabel}>
-            <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#2FA880', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '12px' }}>
+            <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#16775C', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '12px' }}>
               {ui.onThisPage}
             </p>
             <nav>

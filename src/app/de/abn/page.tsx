@@ -1,518 +1,565 @@
 import type { Metadata } from 'next'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
-import { GoogleRating } from '@/components/ui/GoogleRating'
+import type { CSSProperties } from 'react'
 import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
-import { NextStep } from '@/components/ui/NextStep'
-import { Accordion } from '@/components/ui/Accordion'
+import { GoogleRating } from '@/components/ui/GoogleRating'
+import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { NextStep } from '@/components/ui/NextStep'
+import { SITE_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
+import { WaLink } from '@/app/HomeWa'
 
+// ─── METADATA ───────────────────────────────────────────────────────────
+// Der frühere Titelzusatz behauptete, das Unternehmen sei selbst ein
+// registrierter Steuerberater. Das ist entfernt. Kein Preis, und keine
+// Formulierung, die die Registrierung für uns beansprucht.
 export const metadata: Metadata = {
-  title: "ABN in Australien anmelden lassen - 417 & 462 | Tax Agents",
-  description: "ABN für Lieferdienste, Rideshare oder Farmarbeit? Wir melden sie korrekt für deine tatsächliche Tätigkeit an, erklären dir deine Steuerpflichten klar und halten dich aus den Fallen heraus, die Backpacker Super und Mindestlohn kosten.",
+  // Das Root-Layout hängt " | Working Holiday Tax" an, deshalb ist der Titel
+  // hier kurz genug, dass das Ganze in ein mobiles Suchergebnis passt.
+  title: 'ABN im Working Holiday: was sie ändert',
+  description:
+    'Eine ABN ändert, was deine Steuererklärung sagen muss. Rechnungen ohne Steuerabzug, Betriebsausgaben, GST und die Frage nach der Selbstständigkeit.',
   keywords: [
     'ABN Registrierung Australien',
     'ABN Working Holiday',
     'ABN beantragen Australien',
-    'ABN beantragen Working Holiday',
     'Australian Business Number Backpacker',
-    'Australian Business Number Working Holiday',
-    'Selbstständig Australien WHV',
     'Selbstständig Australien Working Holiday',
     'ABN für Freelancer',
     'ABN 417 Visum',
     'ABN 462 Visum',
-    'ABN online registrieren',
     'ABN für Steuererklärung Australien',
     'ABN vs TFN Working Holiday',
     'brauche ich eine ABN Working Holiday',
-    'ABN Backpacker Selbstständig',
+    'Angestellter oder Selbstständiger Australien',
+    'ABN Betriebsausgaben Working Holiday',
+    'GST Grenze 75000 ABN',
   ],
   alternates: {
     canonical: `${SITE_URL}/de/abn`,
     languages: {
       'en-AU': `${SITE_URL}/abn`,
-      'de': `${SITE_URL}/de/abn`,
-      'ja': `${SITE_URL}/ja/abn`,
+      de: `${SITE_URL}/de/abn`,
+      ja: `${SITE_URL}/ja/abn`,
       'x-default': `${SITE_URL}/abn`,
     },
   },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'ABN für Working Holiday Maker in Australien' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/abn`,
     siteName: 'Working Holiday Tax',
-    title: 'ABN-Registrierung für Working Holiday Visainhaber',
-    description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker in Australien.',
+    title: 'ABN im Working Holiday: was sich dadurch ändert',
+    description:
+      'Eine ABN ändert nicht deinen Job. Sie ändert deine Steuererklärung. Rechnungen ohne Abzug, Betriebsausgaben, GST und die Frage der Selbstständigkeit.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'ABN-Registrierung für Working Holiday Visainhaber',
-    description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker in Australien.',
+    title: 'ABN im Working Holiday: was sich dadurch ändert',
+    description: 'Eine ABN ändert nicht deinen Job. Sie ändert deine Steuererklärung.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
-const faqs = [
+// ─── ICONS ──────────────────────────────────────────────────────────────
+const IconWhatsApp = () => (
+  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
+  </svg>
+)
+
+// ─── COPY ───────────────────────────────────────────────────────────────
+
+const THE_SPLIT = [
   {
-    question: 'Die ABN-Registrierung ist kostenlos. Wofür zahle ich?',
-    answer: 'Die Registrierung ist kostenlos, das behaupten wir nicht anders. Bezahlt wird, dass sie zu deiner tatsächlichen Tätigkeit passt, dass du weißt, was zur Steuerzeit auf dich zukommt, und dass wir dich warnen, wenn ein Arbeitgeber dich in eine ABN drängt, um Super und Mindestlohn zu sparen.',
+    n: '01',
+    title: 'Es wurde nichts einbehalten, die Steuer bleibt trotzdem offen',
+    body: 'Lohn kommt bei dir an, nachdem die Steuer schon abgezogen wurde. Rechnungen nicht. Jeder Dollar, den du über deine ABN bekommst, erreicht dich vollständig, und die Steuer darauf wird einmal fällig, am Jahresende mit der Steuererklärung. Wer ein halbes Jahr auf Lohnabrechnung und ein halbes Jahr auf Rechnung gearbeitet hat, wird davon am häufigsten überrascht, weil die Lohnhälfte nach Rückerstattung aussieht und die Rechnungshälfte still das Gegenteil ist.',
+  },
+  {
+    n: '02',
+    title: 'Aus Werbungskosten werden Betriebsausgaben, mit anderen Regeln',
+    body: 'Als Angestellter setzt du beruflich veranlasste Kosten ab. Als Selbstständiger ziehst du die Kosten des Betriebs ab, was eine breitere Kategorie mit strengeren Nachweisen ist: Kilometer im Fahrtenbuch, Werkzeug, Handy und Daten anteilig zwischen privat und geschäftlich, Versicherungen, und die Provision, die eine Plattform einbehalten hat, bevor das Geld dich erreicht hat. Der Lieferfahrer, der nie einen Kilometer aufgeschrieben hat, und der, der es getan hat, landen am Jahresende nicht an derselben Stelle.',
+  },
+  {
+    n: '03',
+    title: 'GST ist eine Entscheidung, keine Formalie',
+    body: 'Registrierungspflicht besteht ab einem Umsatz von 75.000 $, was die meisten Working Holiday Maker nie erreichen, also sollten die meisten auch nicht registriert sein. Die Ausnahme, die viele erwischt, ist Rideshare: Wer Taxi- oder Fahrdienstleistungen anbietet, muss sich ab dem ersten Dollar für GST registrieren, unabhängig vom Umsatz. Für Essenslieferungen mit dem Rad gilt diese Regel nicht. Registriert zu sein, obwohl du es nicht musst, bringt dir BAS-Pflichten, die du nicht gebraucht hättest, und nicht registriert zu sein, obwohl du müsstest, ist schlimmer.',
+  },
+  {
+    n: '04',
+    title: 'Ob du überhaupt selbstständig warst',
+    body: 'Diese Frage entscheidet über die anderen drei. Ob du wirklich selbstständig warst, hängt an der Kontrolle und nicht am Papier, und eine ABN über Arbeit, die immer Anstellung war, ist der häufigste Grund, warum eine Backpacker-Erklärung noch einmal gemacht werden muss. Weiter unten auf dieser Seite steht mehr dazu.',
+  },
+]
+
+const WHAT_WE_DO = [
+  {
+    title: 'Wir prüfen vorher, ob du überhaupt eine brauchst',
+    body: 'Viele registrieren eine ABN für einen Job, der immer ein Angestelltenverhältnis war. Das ist ein Gespräch, kein Formular.',
+  },
+  {
+    title: 'Wir registrieren sie passend zu deiner Tätigkeit',
+    body: 'Die angegebene Tätigkeit begleitet dich durch GST, Abzüge und die Erklärung. Es lohnt sich, das einmal richtig zu machen.',
+  },
+  {
+    title: 'Wir sagen dir, was du zurücklegen solltest',
+    body: 'Ungefähr, was dich das Rechnungseinkommen zur Steuerzeit kostet, damit die Rechnung im Oktober keine Überraschung ist.',
+  },
+  {
+    title: 'Wir sagen dir, was du aufheben musst',
+    body: 'Welche Nachweise für deine Art von Arbeit einen Abzug tatsächlich tragen, und welche Belege du nicht mehr sammeln musst.',
+  },
+  {
+    title: 'Wir treffen die GST-Entscheidung bewusst',
+    body: 'Registriert, weil die Regeln es verlangen, oder nicht registriert, weil sie es nicht tun. Nie aus Versehen.',
+  },
+  {
+    title: 'Wir bringen beide Hälften in eine Erklärung',
+    body: 'Lohneinkommen und Rechnungseinkommen gehören in dieselbe Erklärung für dasselbe Jahr.',
+  },
+]
+
+const FAQS = [
+  {
+    question: 'Kann ich das nicht einfach selbst über myGov machen?',
+    answer:
+      'Kannst du, und wenn dein ganzes Jahr über die Lohnabrechnung lief, ist es unkompliziert. Genau damit macht eine ABN Schluss. Die Erklärung nimmt jede Grenze an, die du zwischen Lohn und Rechnungseinkommen einträgst, und stellt sie nie infrage, weil das Formular nicht wissen kann, wie dich welcher Arbeitgeber behandelt hat. Es fragt nicht, ob du wirklich selbstständig warst oder Angestellter, dem der Arbeitgeber die Kosten übertragen hat. Es gibt keinen Hinweis darauf, welche deiner Kosten vom Rechnungseinkommen abgehen und welche Belege dahinterstehen müssen. Und es sagt dir nicht, ob du dich für GST registrieren musstest. Das sind Beurteilungen zu deinem Jahr und keine Felder zum Ausfüllen, und eine falsch gezogene Grenze ist der häufigste Grund, warum eine Erklärung noch einmal gemacht werden muss. Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches Formular welches ist. Wir regeln das direkt mit dem ATO.',
+  },
+  {
+    question: 'Wie verändert eine ABN meine Steuererklärung?',
+    answer:
+      'Sie verändert, was die Erklärung sagen muss und wie viel Arbeit dahintersteckt. Lohn erreicht dich mit bereits einbehaltener Steuer und einem Income Statement, das dein Arbeitgeber ans ATO meldet, deshalb gleicht sich diese Hälfte weitgehend von selbst ab. Einkommen, das du über eine ABN in Rechnung stellst, kommt unversteuert an, wird als Betriebseinnahme erklärt und um die Kosten der Erzielung gemindert, die du belegen können musst. Dazu kommen die GST-Frage und, falls das ATO genauer hinsieht, die Frage, ob das wirklich Selbstständigkeit war. Die meisten Working Holiday Maker mit ABN haben beide Einkommensarten im selben Jahr, und beide landen in einer Erklärung.',
   },
   {
     question: 'Mein Arbeitgeber verlangt eine ABN für einen normalen Schichtjob. Ist das korrekt?',
-    answer: 'Meistens nicht. Wenn er deine Zeiten festlegt, dich anleitet und das Werkzeug stellt, ist das ein Angestelltenverhältnis - mit ABN gibt es keinen Steuerabzug, keine Super und keine Unfallversicherung. Schick uns die Jobdetails, bevor du dich registrierst, und wir sagen dir ehrlich, was es ist.',
+    answer:
+      'Meistens nicht, und es lohnt sich, das vor der Registrierung anzusprechen. Wenn er deinen Dienstplan macht, dir sagt, wie die Arbeit abläuft, das Werkzeug stellt und dich früher nach Hause schicken kann, wirst du wie ein Angestellter behandelt, und das Etikett auf dem Papier ändert daran nichts. Dich auf eine ABN zu setzen verschiebt die Kosten auf dich: kein Steuerabzug, keine Superannuation, kein Unfallversicherungsschutz, kein Mindestlohn und keine Zuschläge. Schick uns die Jobdetails, bevor du irgendetwas zusagst, und wir sagen dir ehrlich, wonach es aussieht.',
   },
-  { question: 'Kann ich sowohl eine TFN als auch eine ABN haben?', answer: 'Ja. Du kannst beide haben - die TFN für Anstellungen und die ABN für selbstständige Tätigkeiten.' },
-  { question: 'Bekomme ich eine ABN ohne TFN?', answer: 'Nein. Du brauchst zuerst eine TFN, bevor du eine ABN beantragen kannst.' },
-  { question: 'Muss ich mich für GST registrieren?', answer: 'Eine GST-Registrierung ist nur erforderlich, wenn dein Jahresumsatz über 75.000 AUD liegt. Die meisten Working Holiday Visainhaber müssen sich nicht für GST registrieren.' },
-  { question: 'Was passiert mit meiner ABN, wenn ich Australien verlasse?', answer: 'Du kannst deine ABN online stornieren, sobald du aufhörst, in Australien zu arbeiten.' },
-  { question: 'Brauche ich als Working Holiday Maker eine ABN?', answer: 'Du brauchst eine ABN nur, wenn du als Selbstständiger oder Freelancer arbeitest - zum Beispiel Rideshare, Lieferdienste, freie Aufträge oder direkte Bezahlung durch Kunden statt PAYG-Anstellung. Als regulärer Angestellter brauchst du nur eine TFN.' },
-  { question: 'Wie beeinflussen ABN-Einkünfte meine Working Holiday Steuererklärung?', answer: 'ABN-Einkünfte werden anders behandelt als PAYG-Lohn. Es wird keine Steuer vorab einbehalten, du musst also selbst Geld für die Steuer zurücklegen. Bei deiner Steuererklärung werden ABN-Einkünfte separat angegeben, und du kannst entsprechende Geschäftsausgaben als Werbungskosten geltend machen.' }
+  {
+    question: 'Muss ich mich mit Working Holiday Visum für GST registrieren?',
+    answer:
+      'Nur wenn dein Umsatz 75.000 $ im Jahr erreicht, was die meisten Working Holiday Maker nicht annähernd tun, oder wenn du Rideshare fährst. Wer Taxi- oder Fahrdienstleistungen anbietet, wozu Uber und die Wettbewerber gehören, muss sich ab der allerersten Fahrt für GST registrieren, egal wie wenig dabei verdient wird. Für Essenslieferungen und Kurierfahrten gilt diese Regel nicht, dort greift wie bei allen anderen die Grenze von 75.000 $. Mit der Registrierung kommen vierteljährliche Business Activity Statements, das macht man also nicht nebenbei.',
+  },
+  {
+    question: 'Kann ich sowohl eine TFN als auch eine ABN haben?',
+    answer:
+      'Ja, und die meisten Working Holiday Maker, die selbstständig arbeiten, haben am Ende beides. Die Steuernummer deckt dich als Angestellten ab, die ABN als Selbstständigen, und es ist völlig normal, im selben Jahr unter beiden zu verdienen. Es sind aber nicht zwei Erklärungen: Eine Erklärung deckt das Steuerjahr ab und meldet beides, und genau dort wird die Aufteilung wichtig. Die Steuernummer brauchst du zuerst, weil der ABN-Antrag damit abgeglichen wird.',
+  },
+  {
+    question: 'Was kann ich mit einer ABN als Betriebsausgabe absetzen?',
+    answer:
+      'Die Kosten der Einkommenserzielung, ehrlich aufgeteilt, wenn etwas auch privat genutzt wird. Bei einem Lieferfahrer sind das meist ordentlich erfasste Kilometer, die laufenden Kosten für Rad oder Auto, Handy und Daten, Versicherung, Ausrüstung und die Provision, die eine Plattform vor der Auszahlung einbehalten hat. Bei einem Subunternehmer auf dem Bau sieht es eher nach Werkzeug, Schutzausrüstung und Fahrten zwischen Einsatzorten aus. Nie dazu gehören der Flug nach Australien, der normale Weg von zu Hause zu einem Arbeitsort und alles, wofür du keinen Nachweis hast. Das ist der Teil des Jahres, der ein Fahrtenbuch ab Tag eins belohnt.',
+  },
+  {
+    question: 'Was passiert mit meiner ABN, wenn ich Australien verlasse?',
+    answer:
+      'Du meldest sie ab, sobald du nicht mehr tätig bist, und das solltest du auch tun, statt sie offen zu lassen. Eine aktive ABN sagt dem ATO, dass du weiterhin ein Gewerbe betreibst und möglicherweise weiter Pflichten hast. Die Abmeldung ändert nichts an der Erklärung für das Jahr, in dem du gearbeitet hast, die trotzdem eingereicht werden muss, und sie ändert auch nichts an deinem Anspruch auf Superannuation aus Anstellungen im selben Zeitraum. Wenn dein Abflug bald ansteht, sag früh Bescheid, denn die Reihenfolge aus Abmelden, Einreichen und Super beantragen ist wichtig.',
+  },
 ]
 
-const STEPS = [
-  { n: '1', title: 'Erzähl uns von deiner Arbeit',         body: 'Teil uns deine Arbeits- und Visumdetails mit, damit wir dich richtig beraten.' },
-  { n: '2', title: 'Schick uns deine Daten',               body: 'TFN und Reisepassinfos - schnell und einfach.' },
-  { n: '3', title: 'Wir kümmern uns um die Registrierung', body: 'Wir bereiten alles vor und reichen deinen Antrag korrekt ein.' },
-  { n: '4', title: 'Du erhältst deine ABN und legst los',  body: 'Deine ABN wird meist innerhalb einer Stunde ausgestellt. Du kannst sofort Rechnungen schreiben und arbeiten.' },
+const GUIDES = [
+  {
+    href: '/de/blog/employee-vs-contractor-australia',
+    title: 'Angestellter oder Selbstständiger',
+    desc: 'Der Test, den das ATO wirklich anlegt, und was die falsche Seite kostet.',
+  },
+  {
+    href: '/de/blog/abn-deductions-business-expenses',
+    title: 'Betriebsausgaben mit ABN',
+    desc: 'Was ein Selbstständiger absetzen kann, nach Art der Arbeit, samt Nachweisen.',
+  },
+  {
+    href: '/de/blog/gst-and-abn-for-working-holiday-makers',
+    title: 'GST und deine ABN',
+    desc: 'Die 75.000-$-Grenze, die Rideshare-Ausnahme und was die Registrierung bedeutet.',
+  },
 ]
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  inLanguage: 'de',
-  mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })),
-}
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/de` },
-    { '@type': 'ListItem', position: 2, name: 'ABN-Registrierung', item: `${SITE_URL}/de/abn` },
-  ],
-}
-
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  '@id': `${SITE_URL}/de/abn#service`,
-  name: 'ABN-Registrierung für Working Holiday Maker',
-  description: 'ABN-Registrierung für Working Holiday Maker, die als Sole Trader (Selbstständige) arbeiten - Uber, Lieferdienste, freiberufliche Tätigkeiten.',
-  serviceType: 'ABN Registration',
-  category: 'Business Registration Service',
-  url: `${SITE_URL}/de/abn`,
-  inLanguage: 'de',
-  areaServed: {
-    '@type': 'Country',
-    name: 'Australia',
+/**
+ * Der Einwand, mit dem jeder Lead ankommt, hier konkret zur ABN.
+ *
+ * Die Startseite beantwortet ihn allgemein. Auf dieser Seite muss es um das eine
+ * gehen, was in einem gemischten Jahr schiefgeht: Das Formular nimmt jede
+ * Aufteilung an, die du eintippst, und stellt sie nie infrage. Keine Zeile hier
+ * behauptet, myGov sei schlecht. Es nimmt Zahlen an. Die Zahlen zu bestimmen ist
+ * die eigentliche Arbeit.
+ */
+const MYGOV = [
+  {
+    mygov: 'Die Erklärung nimmt jede Aufteilung an, die du zwischen Lohn und Rechnungseinkommen einträgst.',
+    us: 'Wir bestimmen zuerst, wo die Grenze wirklich verläuft, Arbeitgeber für Arbeitgeber.',
   },
-  audience: {
-    '@type': 'Audience',
-    name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
+  {
+    mygov: 'Nichts fragt, ob du überhaupt selbstständig warst oder Angestellter, dem der Arbeitgeber die Kosten übertragen hat.',
+    us: 'Diese Frage entscheidet die ganze Erklärung, deshalb stellen wir sie dir als erste.',
   },
-  provider: {
-    '@type': 'Organization',
-    '@id': `${SITE_URL}/#organization`,
-    name: 'Working Holiday Tax',
-    url: `${SITE_URL}`,
-    description: 'Australischer Steuerservice, spezialisiert auf Working Holiday Maker.',
-    knowsLanguage: ['de', 'en', 'ja'],
+  {
+    mygov: 'Betriebsausgaben kommen in dasselbe leere Feld wie alles andere, ohne jeden Hinweis, was dort hineingehört.',
+    us: 'Wir wissen, welche deiner Kosten vom Rechnungseinkommen abgehen und welcher Beleg hinter jeder einzelnen stehen muss.',
   },
-}
+  {
+    mygov: 'GST ist ein Feld. Ob du dich registrieren musstest, steht dort nicht.',
+    us: 'Ob du die Grenze überschritten hast und was das für das Jahr bedeutet, ist eine bewusst getroffene Entscheidung.',
+  },
+]
 
+const WA_ABN = waUrl({ topic: 'abn', lang: 'de' })
 
+// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
+const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
+const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.58 }
+const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.62 }
 
 export default function ABNPageDE() {
+  const webPageLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/de/abn#webpage`,
+    url: `${SITE_URL}/de/abn`,
+    name: 'ABN im Working Holiday',
+    description:
+      'Was eine ABN an der australischen Steuererklärung eines Working Holiday Makers ändert: unversteuertes Rechnungseinkommen, Betriebsausgaben, die GST-Frage und Angestellter oder Selbstständiger.',
+    inLanguage: 'de',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    about: { '@id': `${SITE_URL}/#business` },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+  }
+
+  const serviceLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE_URL}/de/abn#service`,
+    name: 'ABN-Registrierung für Working Holiday Maker',
+    serviceType: 'Australian Business Number Registrierung',
+    description:
+      'ABN-Registrierung für Inhaber von 417- und 462-Visa mit echter selbstständiger Tätigkeit, inklusive GST-Entscheidung, Nachweisen und steuerlichen Folgen vor der Registrierung.',
+    provider: { '@id': `${SITE_URL}/#business` },
+    areaServed: { '@type': 'Country', name: 'Australien' },
+    audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 und 462) als Selbstständige' },
+    availableLanguage: ['de', 'en', 'ja'],
+    inLanguage: 'de',
+  }
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'de',
+    mainEntity: FAQS.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  }
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/de` },
+      { '@type': 'ListItem', position: 2, name: 'ABN', item: `${SITE_URL}/de/abn` },
+    ],
+  }
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
+      {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
-            <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
-            <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
-            <span aria-current="page">ABN-Registrierung</span>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+            <Link href="/de" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Startseite</Link>
+            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-current="page">ABN</span>
           </nav>
 
-          <div className="max-w-[560px] lg:max-w-[700px]">
+          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
+            Working Holiday Visum 417 &amp; 462
+          </p>
 
-            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-              <span className="font-medium uppercase"
-                style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                ABN-Registrierung
-              </span>
-            </div>
+          <h1 className="font-serif font-black text-ink hero-animate"
+            style={{ fontSize: 'clamp(28px, 4.8vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
+            <span style={{ display: 'block' }}>Eine ABN ändert nicht deinen Job.{' '}</span>
+            <span style={{ display: 'block', color: '#0B5240' }}>Sie ändert deine Steuererklärung.{' '}</span>
+          </h1>
 
-            <h1 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
-              <span className="hidden lg:block">
-                <span style={{ display: 'block' }}>Brauchst du eine ABN für deinen Job?</span>
-                <span style={{ display: 'block', color: '#0B5240' }}>Wir melden sie korrekt an.</span>
-              </span>
-              <span className="lg:hidden">
-                <span style={{ display: 'block', fontSize: '22px' }}>Brauchst du eine ABN für deinen Job?</span>
-                <span style={{ display: 'block', color: '#0B5240', fontSize: '22px' }}>Wir melden sie korrekt an.</span>
-              </span>
-            </h1>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '50ch', marginBottom: '26px' }}>
+            Unversteuertes Einkommen, Betriebsausgaben, eine GST-Entscheidung, und unter allen dreien eine Frage: warst
+            du überhaupt selbstständig, oder Angestellter, dem der Arbeitgeber die Kosten übertragen hat.
+          </p>
 
-            <p className="font-semibold text-ink"
-              style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.4 }}>
-              <span className="hidden lg:inline">Wir richten deine ABN von Anfang an korrekt ein.</span>
-              <span className="lg:hidden" style={{ fontSize: '13px' }}>Wir richten deine ABN von Anfang an korrekt ein.</span>
+          <div className="hero-animate-delay-2">
+            <WaLink href={WA_ABN} position="hero" topic="abn" lang="de"
+              className="btn-primary inline-flex items-center justify-center gap-2"
+              style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '340px', width: '100%' }}>
+              <IconWhatsApp />
+              Schreib uns auf WhatsApp
+            </WaLink>
+            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+              Antwort in ca. einer Stunde. Frag einfach.
             </p>
+          </div>
 
-            <p className="font-light"
-              style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '48ch', marginBottom: '0' }}>
-              Wir sorgen dafür, dass deine ABN ab Tag 1 richtig aufgesetzt ist.
-            </p>
-
-            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
-              style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center"
-                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
-                ABN registrieren →
-              </a>
-              <a href="#how-to-register"
-                className="inline-flex btn-ghost-dark justify-center"
-                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
-                So funktioniert&apos;s →
-              </a>
-            </div>
-
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['Vertraut von Backpackern', <GoogleRating key="rating" variant="pill" lang="de" />, 'International', 'Antwort in unter 1 Std'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                  style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
-                </span>
-              ))}
-            </div>
+          <div className="flex" style={{ marginTop: '20px' }}>
+            <GoogleRating variant="pill" lang="de" />
           </div>
         </div>
       </section>
 
-      {/* ── WHAT IS AN ABN? ──────────────────────────────────────────────── */}
-      <section className="abn-intro-section">
-        <div className="abn-intro-container reveal">
-          <div className="abn-intro-grid">
+      {/* ── 1b. MYGOV, KONKRET ZUR AUFTEILUNG ────────────────────────────── */}
+      <section className="py-11 lg:py-14 bg-white">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-            <div className="abn-intro-content">
-              <p className="abn-intro-eyebrow">Für Selbstständige &amp; Freelancer</p>
-              <h2 className="abn-intro-heading">
-                Was ist eine ABN?
-              </h2>
-              <p className="abn-intro-body">
-                Eine <strong>Australian Business Number (ABN)</strong> ist eine 11-stellige Identifikationsnummer, die vom Australian Business Register ausgestellt wird. Du brauchst sie, wenn du auf eigene Rechnung arbeitest statt als regulärer Angestellter mit Gehaltsabrechnung.
-              </p>
-              <p className="abn-intro-body">
-                Mit einer ABN kannst du <strong>direkt Rechnungen an Kunden stellen</strong>, als Selbstständiger oder Freelancer arbeiten und legal als &bdquo;sole trader&ldquo; auftreten. Typische ABN-Jobs für Backpacker: Farmarbeit auf Vertragsbasis, Content Creation, Uber/Rideshare, Lieferdienste und Handwerk.
-              </p>
-              <p className="abn-intro-body">
-                Eine ABN ersetzt keine TFN, die beiden haben unterschiedliche Aufgaben. Viele Working Holiday Maker haben beide: eine TFN für Anstellungen und eine ABN für selbstständige Arbeit.
-              </p>
-            </div>
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Selbst machen</p>
 
-            <div className="abn-intro-visual">
-              <div className="abn-compare-grid">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
+            <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Welches Einkommen gehört auf welche Seite?{' '}</span>
+            <span style={{ display: 'block' }}>myGov hat dazu keine Meinung.{' '}</span>
+          </h2>
 
-                <div className="abn-compare-card abn-compare-employee">
-                  <div className="abn-compare-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <circle cx="12" cy="7" r="4" stroke="#587066" strokeWidth="1.6"/>
-                      <path d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1" stroke="#587066" strokeWidth="1.6" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <p className="abn-compare-title">Angestellter</p>
-                  <p className="abn-compare-subtitle">Braucht TFN</p>
-                  <ul className="abn-compare-list">
-                    <li>Gehaltsabrechnung vom Arbeitgeber</li>
-                    <li>Steuer automatisch einbehalten</li>
-                    <li>Bekommt Superbeiträge</li>
-                  </ul>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '22px' }}>
+            Das Formular nimmt jede Grenze an, die du zwischen Lohn und Rechnungen ziehst, und fragt nie, wo sie hätte
+            liegen sollen.
+          </p>
+
+          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            {MYGOV.map((row, i) => (
+              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
+                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>Auf myGov</p>
+                  <p style={{ ...BODY, color: '#2A3C34', overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
                 </div>
-
-                <div className="abn-compare-card abn-compare-contractor">
-                  <div className="abn-compare-badge">Du</div>
-                  <div className="abn-compare-icon abn-compare-icon-active">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M3 9l9-6 9 6v11a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke="#0B5240" strokeWidth="1.6" strokeLinejoin="round"/>
-                      <path d="M9 21V12h6v9" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <p className="abn-compare-title">Selbstständig</p>
-                  <p className="abn-compare-subtitle">Braucht ABN</p>
-                  <ul className="abn-compare-list">
-                    <li>Stellt direkt Rechnungen aus</li>
-                    <li>Steuern selbst verwalten</li>
-                    <li>Kein Super vom Auftraggeber</li>
-                  </ul>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-          <div className="service-cta-strip">
-            <div className="service-cta-text">
-              <h3 className="service-cta-heading">Wir registrieren deine ABN korrekt für dich</h3>
-              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung - schreib uns auf WhatsApp. Wir registrieren deine ABN mit dem richtigen Setup für deine Tätigkeit - und erklären dir deine Steuerpflichten klar und verständlich.</p>
-            </div>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
-              Meine ABN registrieren →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW WE HELP ──────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">Warum unser Service</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px' }}>
-              Wir richten deine ABN von Anfang an korrekt ein
-            </h2>
-            <p className="font-light text-muted"
-              style={{ fontSize: '13.5px', lineHeight: 1.7, maxWidth: '34ch', margin: '0 auto', color: 'rgba(10,15,13,0.5)' }}>
-              Von der Prüfung, ob du eine brauchst, bis zur fertigen Rechnungsstellung.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
-            {[
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Wir prüfen, ob du eine ABN wirklich brauchst', body:'Viele Backpacker registrieren eine ABN, die sie gar nicht brauchen. Wir prüfen zuerst deine Tätigkeit und geben dir eine klare Antwort.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Passend zu deiner Arbeit registriert', body:'Rideshare, Lieferdienst, Freelance oder Vertrag - wir richten deine ABN korrekt für deine tatsächliche Tätigkeit ein.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'GST nur, wenn es dich betrifft', body:'Wir sagen dir, ob die 75.000 $ GST-Grenze für dich gilt - damit du dich nie für Steuern registrierst, die du nicht schuldest.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Ab Tag 1 rechnungsbereit', body:'Deine ABN ist aktiv und konform mit dem Australian Business Register - du kannst sofort loslegen.' },
-            ].map((item,i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-4"
-                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
-                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
-                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
-                  {item.icon}
-                </div>
-                <div style={{ paddingTop:'2px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
+                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
+                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>Mit uns</p>
+                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="text-center mt-6 lg:mt-8">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100%' }}>
-              ABN registrieren →
-            </a>
-            <p style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(10,15,13,0.4)' }}>
-              Konform mit dem Australian Business Register
+          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
+            Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
+            Formular welches ist. Wir regeln das direkt mit dem ATO.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 2. DIE AUFTEILUNG ────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Aufteilung</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '14px' }}>
+            Was ändert sich mit einer ABN an deiner Erklärung?
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
+            Vier Dinge, und sie verstärken sich gegenseitig. Halb Lohnabrechnung und halb Rechnungen sind nicht zwei
+            einfache Hälften, sondern eine Erklärung, die beides abgleichen muss.
+          </p>
+
+          <ol className="flex flex-col" style={{ gap: '22px' }}>
+            {THE_SPLIT.map((s) => (
+              <li key={s.n} className="flex gap-4">
+                <span className="font-serif font-black flex-shrink-0"
+                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px' }}
+                  aria-hidden="true">{s.n}</span>
+                <div>
+                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
+                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── 3. DIE WARNUNG ───────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '26ch', marginBottom: '14px' }}>
+            Solltest du eine ABN anmelden, weil ein Arbeitgeber danach fragt?
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
+            Nicht, bevor jemand den Job angesehen hat. Eine ABN über Arbeit, die in Wahrheit Anstellung ist, beendet
+            deine Superannuation, beendet den Steuerabzug, streicht den Unfallversicherungsschutz und stellt dich
+            außerhalb von Mindestlohn und Zuschlägen. All das wird zu deinen Kosten. Häufig ist das in der Farmarbeit,
+            in der Gastronomie, in der Reinigung und auf dem Bau, und es wird als normales Vorgehen dargestellt.
+          </p>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '22px' }}>
+            Entscheidend ist die Kontrolle, nicht das Papier. Wer bestimmt, wann du arbeitest, wer sagt, wie es gemacht
+            wird, wer die Ausrüstung stellt, ob du jemand anderen schicken könntest, und wer das Risiko trägt, wenn es
+            schiefgeht. Zeigen die Antworten auf ihn statt auf dich, ist eine ABN das falsche Mittel, und über eine
+            Saison kostet dich das echtes Geld.
+          </p>
+
+          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
+              <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
+              <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
+              <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <p style={{ ...BODY, color: '#2A3C34' }}>
+              <strong style={{ color: '#080F0D' }}>Schick uns den Job, bevor du dich registrierst.</strong>{' '}
+              Was die Arbeit umfasst, wer was stellt, und wie du bezahlt werden sollst. Wir sagen dir, was davon es ist,
+              auch wenn die Antwort lautet, dass du uns nicht brauchst.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── SOCIAL PROOF ── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="text-center mb-7 lg:mb-10">
-            <span className="section-label center">Was Reisende sagen</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'34ch' }}>
-              So haben Backpacker ihre ABN richtig registriert
-            </h2>
+      {/* ── 4. WAS WIR MACHEN ────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Arbeit</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            Was wir dabei machen
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
+            Die Registrierung selbst ist kostenlos und dauert Minuten. Alles, was darüber entscheidet, was sie dich
+            kostet, passiert davor und danach.
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {WHAT_WE_DO.map((c) => (
+              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F5F9F7', border: '1px solid #E2EFE9' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{c.title}</h3>
+                <p style={{ ...BODY, color: '#2A3C34' }}>{c.body}</p>
+              </div>
+            ))}
           </div>
+
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '60ch' }}>
+            Noch keine ABN und auch keine Steuernummer? Die{' '}
+            <Link href="/de/tfn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>TFN kommt zuerst</Link>, weil der
+            ABN-Antrag damit abgeglichen wird.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 5. GARANTIE ──────────────────────────────────────────────────── */}
+      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
+          <p className="font-serif font-black text-white mx-auto"
+            style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
+            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
+          </p>
+          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
+            Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt. Wir vereinbaren es mit dir auf
+            WhatsApp, bevor die Arbeit beginnt, damit später nichts daran überrascht.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '14px' }}>
+            Beschreib uns die Arbeit
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
+            Wem du Rechnungen schreiben würdest, was du dabei machst, und wer die Ausrüstung stellt. Das reicht uns, um
+            dir zu sagen, ob eine ABN hier überhaupt hingehört.
+          </p>
+          <WaLink href={waUrl({ topic: 'abn', lang: 'de', tier: 'tfn-abn' })} position="section" topic="abn" lang="de" tier="tfn-abn"
+            className="btn-primary inline-flex items-center justify-center gap-2"
+            style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '340px', width: '100%' }}>
+            <IconWhatsApp />
+            Schreib uns auf WhatsApp
+          </WaLink>
+          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            Antwort in ca. einer Stunde. Frag einfach.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 7. VERTRAUEN ─────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Working-Holiday-Steuer ist das Einzige, was wir machen.
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+            Deshalb sehen wir dieselben ABN-Konstruktionen immer wieder: der Farmvertrag, die Lieferplattform, die
+            Baustelle, die alle als Subunternehmer bezahlt. Steuererklärungen werden von unserem Team vorbereitet, dann
+            von einem registrierten Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
+          </p>
           <GoogleReviews lang="de" />
         </div>
       </section>
 
-      {/* ── COMPARISON ── */}
-      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">Der einfache Weg</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              Es gibt einen einfacheren Weg, deine ABN zu registrieren
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
-            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
-              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                Die ABN selbst zu registrieren kann teure Fehler verursachen
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-                {['Eine ABN registrieren, obwohl du Angestellter bist','Die falsche Geschäftstätigkeit wählen','Kein System, um Einnahmen zu erfassen oder Steuer zurückzulegen','Vergessen, ABN-Einnahmen bei der Steuer anzugeben'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
-                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
-              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                Nutze unseren geführten ABN-Service
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
-                {['Wir prüfen, ob eine ABN wirklich zu dir passt','Mit der korrekten Geschäftstätigkeit registriert','Klare Hinweise zu Aufzeichnungen und Steuerrücklagen','Unterstützung bis hin zu deiner Steuererklärung'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
-                ABN registrieren →
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
+            Fragen zur ABN, bevor du schreibst
+          </h2>
 
-      {/* ── HOW TO REGISTER ──────────────────────────────────────────────── */}
-      <section id="how-to-register" className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">Schritt für Schritt</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px' }}>
-              In 4 einfachen Schritten zur ABN
-            </h2>
-            <p className="font-light text-muted"
-              style={{ fontSize: '13.5px', lineHeight: 1.7 }}>
-              Einfacher, begleiteter Prozess von Anfang bis Ende
-            </p>
-          </div>
-
-          {/* Desktop */}
-          <div className="hidden lg:block" style={{ marginBottom: '48px' }}>
-            <div className="relative flex items-start">
-              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-5 h-[2px]"
-                style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 20%, #0B5240 80%, #C8EAE0 100%)' }}
-                aria-hidden="true" />
-              {STEPS.map((s, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
-                  <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0' }}>
-                    {s.n}
-                  </div>
-                  <p className="font-semibold text-ink text-center"
-                    style={{ fontSize: '14px', marginBottom: '7px', letterSpacing: '-0.01em', lineHeight: 1.3 }}>{s.title}</p>
-                  <p className="font-light text-muted text-center"
-                    style={{ fontSize: '12.5px', lineHeight: 1.7 }}>{s.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile */}
-          <div className="lg:hidden flex flex-col" style={{ marginBottom: '28px', gap: '0' }}>
-            {STEPS.map((s, i) => (
-              <div key={i} className="flex gap-3.5" style={{ paddingBottom: i < STEPS.length - 1 ? '18px' : '0' }}>
-                <div className="flex flex-col items-center flex-shrink-0">
-                  <div className="rounded-full flex items-center justify-center font-bold text-white"
-                    style={{ width: '28px', height: '28px', background: '#0B5240', fontSize: '12px', flexShrink: 0 }}>
-                    {s.n}
-                  </div>
-                  {i < STEPS.length - 1 && (
-                    <div className="flex-1 mt-1.5"
-                      style={{ width: '1px', minHeight: '18px', background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }}
-                      aria-hidden="true" />
-                  )}
-                </div>
-                <div style={{ paddingTop: '3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '3px', letterSpacing: '-0.01em', lineHeight: 1.3 }}>{s.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.65 }}>{s.body}</p>
-                </div>
-              </div>
+          <div className="flex flex-col" style={{ gap: '4px' }}>
+            {FAQS.map((f, i) => (
+              <details key={i} name="abn-faq-de" className="contact-faq-item">
+                <summary className="contact-faq-summary">
+                  <span style={{ flex: 1 }}>{f.question}</span>
+                  <span className="contact-faq-plus" aria-hidden="true">+</span>
+                </summary>
+                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+              </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── WHAT TO HAVE READY ── */}
+      {/* ── 9. RATGEBER ──────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Lies erst die ganze Antwort, wenn dir das lieber ist
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
+            Wir halten nichts zurück, damit du dich melden musst. Wenn der Ratgeber es beantwortet, ist das gut so.
+          </p>
 
-      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
-      <section className="py-10 lg:py-14">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="text-center mb-6">
-            <span className="section-label center">Mehr erfahren</span>
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              Ratgeber zur ABN für Working Holiday Maker
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
-            {[
-              { href: '/de/blog/what-is-an-abn', label: 'Was ist eine ABN und brauchst du eine mit Working Holiday Visum?' },
-              { href: '/de/blog/how-to-register-for-an-abn', label: 'Wie du als Backpacker eine ABN in Australien registrierst' },
-              { href: '/de/blog/employee-vs-contractor-australia', label: 'Angestellter oder Contractor: was Working Holiday Maker wissen müssen' },
-              { href: '/de/blog/gst-and-abn-for-working-holiday-makers', label: 'GST und ABN: müssen sich Working Holiday Maker registrieren?' },
-              { href: '/de/blog/sole-trader-vs-company-australia-working-holiday', label: 'Sole Trader vs. Company: was ist die richtige Struktur für deine ABN?' },
-              { href: '/de/blog/uber-doordash-rideshare-abn-working-holiday', label: 'Uber, DoorDash oder Rideshare: ABN- und Steuerregeln' },
-            ].map((g) => (
-              <Link
-                key={g.href}
-                href={g.href}
-                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
-              >
-                {g.label}
+          <div className="grid gap-3 sm:grid-cols-3">
+            {GUIDES.map((g) => (
+              <Link key={g.href} href={g.href}
+                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
+                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-
-            <div className="text-center">
-              <span className="section-label center">FAQ</span>
-              <h2 className="font-serif font-black text-ink"
-                style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                ABN-Fragen beantwortet
-              </h2>
-              <p className="font-light text-muted"
-                style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                Noch eine Frage? Schreib uns direkt.
-              </p>
-            </div>
-
-            <div className="max-w-[700px]">
-              <Accordion items={faqs} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── NEXT STEP ────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="Was kommt als Nächstes?"
-        heading="Nächster Schritt: deine Steuererklärung"
-        body="Am Ende des Finanzjahres musst du deine Steuererklärung einreichen und deine ABN-Einnahmen deklarieren."
-        cta="Steuererklärung starten →"
+        eyebrow="Was kommt als Nächstes"
+        heading="Beide Hälften landen in einer Erklärung"
+        body="Lohneinkommen und Rechnungseinkommen gehören in dieselbe Steuererklärung für dasselbe Jahr. Dort wird die Aufteilung entweder sauber gemacht oder eben nicht."
+        cta="Wie die Erklärung läuft →"
         href="/de/tax-return"
       />
-      <MobileCta href={WA_URL} lang="de" />
+
+      <MobileCta href={WA_ABN} lang="de" topic="abn" />
     </>
   )
 }

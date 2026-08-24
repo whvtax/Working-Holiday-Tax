@@ -112,12 +112,14 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
         style={{
           height: '32px',
           padding: '0 10px',
-          background: open ? '#F4F9F6' : 'transparent',
-          border: '1px solid #E2EFE9',
+          // The switcher only ever sits in the nav, and the nav is forest
+          // green, so the pill is drawn light instead of dark.
+          background: open ? 'rgba(255,255,255,0.16)' : 'transparent',
+          border: '1px solid rgba(255,255,255,0.34)',
           borderRadius: '100px',
           fontSize: '12px',
           fontWeight: 500,
-          color: '#587066',
+          color: 'rgba(255,255,255,0.92)',
           cursor: 'pointer',
         }}>
         {currentFlag}

@@ -1,196 +1,412 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep, RelatedServices } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'FIFO Tax Deductions Australia: Travel, PPE & the Zone Offset Myth',
-  description: 'What FIFO (fly-in-fly-out) workers on a working holiday visa can claim on tax: PPE and tools, licence and ticket renewals, phone and self-education. Plus why the Zone Tax Offset usually does not apply to a typical FIFO roster, and what employer-provided camp accommodation and meals mean for your return.',
-  keywords: [
-    'FIFO tax deductions',
-    'fly-in fly-out tax Australia',
-    'FIFO worker tax return',
-    'zone tax offset FIFO',
-    'zone tax offset working holiday visa',
-    'FIFO camp accommodation tax',
-    'mining camp meals FBT exempt',
-    'backpacker FIFO job tax',
-    '417 462 visa FIFO tax deductions',
-    'high risk work licence tax deduction',
-    'working at heights ticket tax deductible',
-    'FIFO roster tax Australia',
-    'remote site worker tax deductions',
-    'FIFO PPE tax deduction',
+  "title": { absolute: "FIFO Tax Deductions Australia: PPE, Tickets, Zone Offset" },
+  "description": "What FIFO and camp workers can claim on an Australian tax return: PPE and tools, ticket renewals, medicals and the work share of a phone.",
+  "keywords": [
+    "FIFO tax deductions",
+    "fly in fly out tax Australia",
+    "zone tax offset FIFO",
+    "FIFO camp accommodation tax",
+    "high risk work licence tax deduction",
+    "FIFO PPE tax deduction",
+    "backpacker FIFO job tax",
+    "remote site worker tax deductions"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/expenses/fifo`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/fifo`,
-      'de': `${SITE_URL}/de/expenses/fifo`,
-      'ja': `${SITE_URL}/ja/expenses/fifo`,
-      'x-default': `${SITE_URL}/expenses/fifo`,
-    },
+  "alternates": {
+    "canonical": "/expenses/fifo",
+    "languages": {
+      "en-AU": "/expenses/fifo",
+      "de": "/de/expenses/fifo",
+      "ja": "/ja/expenses/fifo",
+      "x-default": "/expenses/fifo"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'en_AU',
-    url: `${SITE_URL}/expenses/fifo`,
-    siteName: 'Working Holiday Tax',
-    title: 'FIFO Tax Deductions Australia: Travel, PPE & the Zone Offset Myth',
-    description: 'What FIFO workers can actually claim on tax, and why the Zone Tax Offset usually does not apply to a typical fly-in-fly-out roster.',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "en_AU",
+    "url": `${SITE_URL}/expenses/fifo`,
+    "siteName": "Working Holiday Tax",
+    "title": "FIFO Tax Deductions Australia: PPE, Tickets, Zone Offset",
+    "description": "Camp food and the drive to the airport are not deductible. The Zone Tax Offset is probably not yours either. Here is what is."
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: 'FIFO Tax Deductions Australia: Travel, PPE & the Zone Offset Myth',
-    description: 'What FIFO workers can actually claim on tax, and why the Zone Tax Offset usually does not apply to a typical fly-in-fly-out roster.',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "FIFO Tax Deductions Australia: PPE, Tickets, Zone Offset",
+    "description": "Camp food and the drive to the airport are not deductible. The Zone Tax Offset is probably not yours either. Here is what is."
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const REALISTIC_ROLES = [
-  {
-    t: 'Camp services (the realistic entry point)',
-    d: 'Catering and kitchen hand work in the camp mess, cleaning and housekeeping, laundry, front-of-house and admin at the camp or site office, and site store or retail roles. This is where most working holiday makers doing FIFO work actually end up.',
-  },
-  {
-    t: 'Trades & mining-technical roles',
-    d: 'Operators, tradespeople and technical roles working directly on the mine or plant exist too, but they typically call for a specific trade qualification, ticket, or years of experience, and many employers prioritise Australian citizens and permanent residents for site-based technical positions. Not impossible, just a less realistic starting point for most working holiday makers.',
-  },
-]
+const WA = waUrl({ topic: 'expenses', lang: "en", detail: "FIFO and camp work" })
 
-const CAMP_PROVIDED_ROWS = [
-  ['Accommodation on your swing', 'Provided directly by your employer'],
-  ['Meals on your swing', 'Provided directly by your employer'],
-  ['FBT treatment', 'Usually exempt for your employer'],
-  ['Deductible on your return?', 'No - you did not pay for it yourself'],
-]
-
-const ON_YOUR_OWN_ROWS = [
-  ['PPE and safety gear', 'Overalls, boots, gloves, goggles, masks - if you buy them'],
-  ['Tools and equipment', 'Under $300: full deduction; $300+: depreciated'],
-  ['Ticket and licence renewals', 'Once you are already working in the role'],
-  ['Phone and internet', 'The work-related share only'],
-]
-
-const BULKY_TOOLS_CONDITIONS = [
-  'The tools are essential for the work you are doing that day.',
-  'They are genuinely bulky - their size or weight is the actual reason a vehicle is needed to move them, not just convenience.',
-  'There is nowhere secure to leave them at the work site, so they have to travel home with you.',
-]
-
-const UNDER_300_ROWS = [
-  ['How it is claimed', 'In full, straight away'],
-  ['When you claim it', 'The year you buy it'],
-  ['Example', 'A $190 pair of steel-capped safety boots'],
-]
-
-const OVER_300_ROWS = [
-  ['How it is claimed', 'Spread over its effective life'],
-  ['When you claim it', 'A portion each year you own it'],
-  ['Example', 'A $600 personal tool kit for site work'],
-]
-
-const FIRST_TICKET_ROWS = [
-  ['What it is', 'Your very first ticket or licence for the role'],
-  ['Why you needed it', 'To become eligible for the job in the first place'],
-  ['Deductible?', 'No - a private expense'],
-]
-
-const RENEWAL_TICKET_ROWS = [
-  ['What it is', 'Renewing a ticket or licence you already hold'],
-  ['Why you need it', 'You are already working on-site and need to keep it current'],
-  ['Deductible?', 'Yes'],
-]
-
-const faqs = [
-  {
-    question: 'Can I claim the drive to the airport before my swing?',
-    answer: 'No, not usually. The trip from home to the airport or departure point you fly out from for your swing is treated the same as anyone’s drive to work - ordinary private commuting - no matter how early the flight is or how far you live from the airport. There is a narrow exception if you have to carry genuinely bulky, essential tools with no secure storage option at work, but for most FIFO roles, especially camp services roles, that exception will not apply.',
-  },
-  {
-    question: 'Do FIFO workers get the Zone Tax Offset?',
-    answer: 'Usually not, and this is the biggest misconception in FIFO tax. Since a 2015 law change, qualifying depends on where your normal residence is, not just where you physically work. Your normal residence has to itself be located in a specified remote zone for more than 183 days a year. Flying in to work a roster inside a zone while your normal residence - your share house or rental in Perth, Brisbane or wherever you are based between swings - sits outside the zone does not meet that test, even if you spend the majority of the year on-site. For most working holiday makers doing FIFO work, that means the offset simply does not apply.',
-  },
-  {
-    question: 'Can I claim my camp accommodation or meals?',
-    answer: 'No. Your accommodation and meals on-site are arranged and paid for directly by your employer, and for genuinely remote sites this is usually treated as an exempt fringe benefit to them rather than extra income to you. Either way, because you never personally paid for the room or the meal, there is no expense for you to claim - a deduction can only give back money you have actually spent yourself.',
-  },
-  {
-    question: 'What is the $300 rule for tools and PPE?',
-    answer: 'If you buy your own tools, equipment or protective gear for the job and your employer has not supplied or reimbursed you, items costing under $300 are claimed in full in the year you buy them. Items costing $300 or more are depreciated instead, claimed gradually over their effective life rather than all at once. This is the same threshold and the same rule that applies to every occupation on this site, not something specific to FIFO work.',
-  },
-  {
-    question: 'Can I claim my High Risk Work Licence or Working at Heights ticket?',
-    answer: 'It depends on whether it is your first one or a renewal. Getting a ticket like a High Risk Work Licence, a Working at Heights ticket or a forklift licence for the very first time is treated as a private expense, the same way a first driver’s licence is, because it is what makes you eligible for the role in the first place. Once you are already working and that ticket needs renewing to keep doing the job, the renewal cost is deductible - the same first-versus-renewal principle that applies to a construction White Card.',
-  },
-  {
-    question: 'Can I claim my phone and internet while I am on roster?',
-    answer: 'Yes, the work-related portion. If you genuinely use your phone or home internet for the job - checking your roster, submitting timesheets, completing mandatory online inductions or training - you can claim that share of the bill. You need a fair, honest estimate of the percentage that is actually work-related; claiming the whole bill on a phone you also use for everyday life is not defensible.',
-  },
-]
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Expenses', item: `${SITE_URL}/expenses` },
-    { '@type': 'ListItem', position: 3, name: 'FIFO', item: `${SITE_URL}/expenses/fifo` },
-  ],
+const UI = {
+  "ctaLabel": "Message us on WhatsApp",
+  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "guaranteeHeading": "A refund smaller than our fee means we refund the difference. You are never out of pocket.",
+  "guaranteeBody": "417 and 462 visas are the only tax work we take, so the zone offset, the residency position and the super sitting in three funds all get looked at together. Prepared by our team, then reviewed and signed off by a registered tax agent before lodgement.",
+  "faqHeading": "Questions people ask about this",
+  "guidesHeading": "Worth reading next",
+  "otherJobs": "A different job? Every occupation is here.",
+  "servicesLabel": "Elsewhere on the site",
+  "wrongLabel": "Claimed, and it should not have been",
+  "missedLabel": "Not claimed, and it should have been",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "hubHref": "/expenses"
 }
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'FIFO Tax Deductions Australia: Travel, PPE and the Zone Offset Myth',
-  description: 'What FIFO workers on a working holiday visa can claim on their Australian tax return: PPE and tools, licence and ticket renewals, phone and self-education, and why the Zone Tax Offset usually does not apply to a typical fly-in-fly-out roster.',
-  url: `${SITE_URL}/expenses/fifo`,
-  inLanguage: 'en-AU',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+const CRUMBS = [
+  {
+    "name": "Home",
+    "item": "/"
+  },
+  {
+    "name": "Deductions",
+    "item": "/expenses"
+  },
+  {
+    "name": "FIFO",
+    "item": "/expenses/fifo"
+  }
+]
+
+const HERO = {
+  "kicker": "Rosters, camps and remote sites",
+  "h1lead": "The Zone Tax Offset is probably not yours.",
+  "h1accent": "Here is what is.",
+  "lede": "The camp room, the mess and the flight are the company's costs, not yours. What is left to you is PPE, ticket renewals, medicals and a phone."
 }
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
+  {
+    "kind": "answer",
+    "h2": "What can a FIFO worker claim on tax?",
+    "paras": [
+      "A FIFO worker can claim PPE and protective clothing bought out of their own pocket and the laundering of it, tools and equipment, renewals of a ticket or licence they already hold, employer required medicals and drug and alcohol testing they paid for themselves, the work related share of a phone and internet, and training that relates to the job they already do.",
+      "What is not on that list is everything that makes FIFO feel expensive. Your room in camp and your meals in the mess are booked and paid for by the company, and the flight to site usually is too. A deduction only ever gives back money that left your own pocket, so the fact that camp is costly does not put anything on your return."
+    ]
+  },
+  {
+    "kind": "items",
+    "h2": "The claims that belong to this work specifically",
+    "intro": "Everything here has the same condition attached: you paid for it, and stores did not issue it.",
+    "items": [
+      {
+        "t": "PPE you bought yourself, and washing it",
+        "d": "Overalls, coveralls, steel capped boots, gloves, safety goggles, hearing protection, masks. Deductible because they protect you from a specific risk on site. Laundering deductible protective clothing is claimable at the ATO rate, $1 a load for work only loads or 50 cents mixed with everything else."
+      },
+      {
+        "t": "Tools and equipment",
+        "d": "Anything you bought for the job that stores did not issue. Each item costing $300 or less is claimed in full in the year of purchase, and anything above that is claimed across the effective life of the item. A tool kit bought as a set for $300 or more is one asset."
+      },
+      {
+        "t": "Renewing a ticket or licence you hold",
+        "d": "A High Risk Work Licence, a Working at Heights ticket, a forklift ticket. Renewals are deductible once you are already working in the role. The first one is not, on the same basis as a first White Card or a first drivers licence."
+      },
+      {
+        "t": "Employer required medicals and testing",
+        "d": "Many sites require a pre start medical and drug and alcohol testing as a condition of working. Where your employer requires it for a role you already hold and you paid for it yourself, the cost is deductible."
+      },
+      {
+        "t": "The work share of your phone and internet",
+        "d": "Checking a roster, submitting timesheets, completing mandatory online inductions and refresher modules. Claim the work related percentage on a fair, honest basis rather than the whole bill."
+      },
+      {
+        "t": "Training that relates to the work you already do",
+        "d": "A short course or unit that keeps a current skill or ticket alive is deductible, and so is the travel and accommodation where your employer requires you to attend away from your base. A first entry level certificate taken to become eligible for a role is not."
+      }
+    ]
+  },
+  {
+    "kind": "note",
+    "label": "The biggest FIFO tax myth",
+    "title": "Working in a zone is not the same as living in one.",
+    "body": "Since a change in the law in 2015, the Zone Tax Offset depends on where your normal residence is, not on where your roster takes you. Your normal residence has to itself be inside a specified remote zone for more than 183 days of the income year. Flying in to work inside a zone while you live in Perth, Brisbane or Darwin between swings does not meet that test, even if you spend most of the year physically on site. Camp is not your normal residence, because it is temporary and tied to the roster. For most working holiday makers on a FIFO roster the offset does not apply, and better to know that before it lands on a return."
+  },
+  {
+    "kind": "answer",
+    "h2": "What has to sit behind a FIFO claim?",
+    "paras": [
+      "A claim survives three questions. Did you pay for it? Were you paid back? Was it spent earning the income you are declaring? On a roster that is the receipt for the boots stores did not issue, the invoice for the medical, and the bill sitting behind your phone percentage.",
+      "Proof means the amount, the date, the supplier and the item, on a receipt, an invoice, a bank statement or a photo taken at the counter. It has to last five years. Come in at $300 or less of work claims for the year and no written evidence is required, but you still have to be able to say where the number came from. A separate rule from the $300 that decides whether a tool is written off at once or across its life."
+    ]
+  },
+  {
+    "kind": "traps",
+    "h2": "What do FIFO workers get wrong?",
+    "intro": "This trade has more confidently repeated misinformation than any other on the site. The claims below get made every year and do not hold.",
+    "wrong": [
+      {
+        "t": "The Zone Tax Offset",
+        "d": "The single most commonly claimed thing a FIFO worker is not entitled to. It turns on where you normally live, not where you fly to, and camp does not count as living there."
+      },
+      {
+        "t": "Camp accommodation and meals",
+        "d": "Your employer books and pays for the room and the mess, and at genuinely remote sites that is usually an exempt fringe benefit to them rather than income to you. Either way you never paid, so there is nothing to deduct."
+      },
+      {
+        "t": "The drive to the airport before a swing",
+        "d": "That is ordinary commuting, however early the flight and however far you live from the terminal. The narrow bulky tools exception exists but rarely applies to a camp services role, where there is either nothing bulky or somewhere secure to leave it."
+      },
+      {
+        "t": "Relocating to Perth or Brisbane for the work",
+        "d": "Flights, freight and temporary accommodation for a move you made in order to take up FIFO work are private relocation costs. Moving yourself into a position to earn income is not the same as earning it."
+      },
+      {
+        "t": "A first High Risk Work Licence",
+        "d": "The ticket you paid for so you could be hired is a private cost. Renewing it while you are already working with it is deductible."
+      }
+    ],
+    "missed": [
+      {
+        "t": "PPE bought out of pocket, and the laundry on it",
+        "d": "Plenty of workers buy their own boots or gloves rather than wait for stores, then never claim either the gear or the cost of washing it at the published rate."
+      },
+      {
+        "t": "Medicals and drug and alcohol testing you paid for",
+        "d": "Deductible where the employer requires it for a role you already hold, and almost never claimed, because it feels like a hurdle rather than an expense."
+      },
+      {
+        "t": "The work share of phone and internet on swing",
+        "d": "Rosters, timesheets and mandatory inductions all run through a personal device. It is a modest claim and a completely legitimate one."
+      },
+      {
+        "t": "Ticket renewals across a long roster year",
+        "d": "A High Risk Work Licence or Working at Heights renewal paid for between swings is easy to lose track of by the end of the year."
+      },
+      {
+        "t": "Superannuation left behind in several funds",
+        "d": "FIFO pays well, which means the super balance is larger than in most backpacker work. It sits there when you leave and it has to be claimed as a Departing Australia Superannuation Payment once your visa has ceased."
+      }
+    ]
+  },
+  {
+    "kind": "answer",
+    "h2": "What is left open on a FIFO file?",
+    "paras": [
+      "The Zone Tax Offset is usually wrong rather than impossible. If your home base during the working holiday sat inside a specified zone, a rental in a remote town rather than a capital city, the question is live. Where you normally lived, for how long, and what you kept there decide it.",
+      "The bulky tools exception matters more to a tradesperson flying in with a personal kit than to a camp services role. What you carried and what the site offered for storage settle it, and it is a claim that gets tested, so be able to describe the facts.",
+      "Residency is the largest question on a FIFO file, because the sums are larger. Long swings, a fixed base between them and a stay measured in years is the profile where the Addy decision most often applies to a British, German or Japanese passport holder who was a resident of Australia for tax purposes. A judgement about your year, and one to have somebody look at properly."
+    ]
+  }
+]
+
+const FAQS = [
+  {
+    "question": "Do FIFO workers get the Zone Tax Offset?",
+    "answer": "Usually not, and this is the biggest misconception in FIFO tax. Since a 2015 change in the law, qualifying depends on your normal residence being located inside a specified remote zone for more than 183 days of the year, not on where you physically work. Flying in to a site inside a zone while living in a capital city between swings does not meet that test, and camp accommodation is not treated as your normal residence because it is temporary and tied to the roster."
+  },
+  {
+    "question": "Can I claim my camp accommodation or meals?",
+    "answer": "No. Your room and your meals on site are arranged and paid for by your employer, and at genuinely remote sites that is usually treated as an exempt fringe benefit to them. Because you never personally paid for the room or the food, there is no expense of yours to deduct. A deduction can only give back money that left your own pocket."
+  },
+  {
+    "question": "Can I claim the drive to the airport before my swing?",
+    "answer": "No, in almost every case. The trip from home to the airport you fly out of is ordinary private commuting, the same as anyone else driving to work, however early the flight is. There is a narrow exception where you must carry genuinely bulky and essential tools with nowhere secure to store them at work, but that rarely applies to a camp services role."
+  },
+  {
+    "question": "Can I claim my High Risk Work Licence?",
+    "answer": "You can claim renewing one you already hold. You cannot claim getting it for the first time, because that cost is what made you eligible for the role rather than a cost of doing a job you already had. It is the same first versus renewal distinction the ATO applies to a construction White Card and to a first drivers licence."
+  },
+  {
+    "question": "What can I claim on phone and internet while on roster?",
+    "answer": "The work related portion. If you use your own phone or internet for the job, checking your roster, submitting timesheets, or completing mandatory online inductions and training, that share of the bill is deductible. You need a fair and honest estimate of the percentage, because claiming a full bill on a device you also use for everything else will not stand up."
+  }
+]
+
+const GUIDES = [
+  {
+    "href": "/blog/tools-equipment-under-300-instant-deduction-whv",
+    "label": "The $300 instant deduction for tools and gear",
+    "desc": "Why each item is tested on its own, and what a set does to the answer."
+  },
+  {
+    "href": "/blog/1000-dollar-instant-deduction-rule-2026",
+    "label": "The $1,000 instant deduction from 1 July 2026",
+    "desc": "A flat claim with no receipts, or your actual costs. You only get one."
+  },
+  {
+    "href": "/superannuation",
+    "label": "Claiming your super when you leave Australia",
+    "desc": "How DASP works, and what is withheld from it."
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/tax-return",
+    "label": "Tax return"
+  },
+  {
+    "href": "/superannuation",
+    "label": "Superannuation"
+  },
+  {
+    "href": "/tax-residency",
+    "label": "Tax residency"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
+}
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "FIFO Tax Deductions Australia: PPE, Tickets, Zone Offset",
+  description: "Camp food and the drive to the airport are not deductible. The Zone Tax Offset is probably not yours either. Here is what is.",
+  url: `${SITE_URL}/expenses/fifo`,
+  inLanguage: "en-AU",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   '@id': `${SITE_URL}/expenses/fifo#webpage`,
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', '.hero-sub'],
-  },
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
   url: `${SITE_URL}/expenses/fifo`,
 }
 
-function CompareTable({ label, rows, highlight }: { label: string; rows: string[][]; highlight?: boolean }) {
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
   return (
-    <div className="taxres-table-card" style={highlight ? { borderColor: '#0B5240', boxShadow: '0 8px 20px -8px rgba(11, 82, 64, 0.18)' } : {}}>
-      <h3 className="taxres-table-title">{label}</h3>
-      <table className="taxres-table">
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>
-          ))}
-        </tbody>
-      </table>
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"en"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
     </div>
   )
 }
 
-export default function FifoExpensesPage() {
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -198,280 +414,238 @@ export default function FifoExpensesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/" style={{ color: '#587066' }}>Home</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/expenses" style={{ color: '#587066' }}>Expenses</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>FIFO</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '29ch' }}>
-                FIFO tax deductions: your roster, your camp, and the <span style={{ color: '#0B5240' }}>Zone Offset myth</span>
-              </h1>
-              <p className="font-semibold mx-auto hero-sub" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '58ch' }}>
-                Two weeks on, one week off - fly to site, work your swing, fly home again. Camp accommodation and meals are usually covered by your employer, not you. Here&apos;s exactly what you can claim on a FIFO roster, and the truth about the Zone Tax Offset most FIFO workers assume they&apos;re getting.
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}{' '}
+              <span style={{ color: FOREST, fontStyle: 'italic' }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
+          </div>
+        </section>
+
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
+
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"en"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
               </p>
             </div>
           </div>
         </section>
 
-        {/* ── REALISTIC FIFO ROLES ─────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Which FIFO jobs do working holiday makers actually get?
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '62ch' }}>
-                FIFO means flying to a remote mine or resources project for a set block of work - a swing or roster, commonly something like two weeks on and one week off - then flying home again until the next one starts. It is real work, and working holiday makers do land FIFO jobs, but realistically it is usually a particular slice of FIFO work.
-              </p>
-            </div>
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5 max-w-[840px] mx-auto">
-              {REALISTIC_ROLES.map((c, i) => (
-                <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#F7FBF9', border: '1.5px solid #E2EFE9' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '8px' }}>{c.t}</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7 }}>{c.d}</p>
-                </div>
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* ── CAMP LIFE: THE UNIQUE HOOK ───────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-7">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Camp life: what your employer covers, and what is on you
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '60ch' }}>
-                FIFO rosters come with something few other backpacker jobs do - accommodation and meals arranged and paid for directly by your employer while you are on-site.
-              </p>
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
             </div>
-
-            <div className="max-w-[680px] mx-auto" style={{ marginBottom: '26px' }}>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                While you are on your swing, your room in camp and your meals in the mess are booked and paid for by the company, not you. For genuinely remote sites, this kind of accommodation and food is usually treated as an exempt fringe benefit to your employer under the FBT remote area rules, rather than extra taxable income landing on you. Either way, the result for your tax return is simple: because you never personally paid for the room or the meal, there is no cost sitting in your pocket to claim a deduction for. A deduction can only ever give back money you have genuinely spent yourself.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="What your employer covers" rows={CAMP_PROVIDED_ROWS} highlight />
-              <CompareTable label="What you pay for yourself" rows={ON_YOUR_OWN_ROWS} />
-            </div>
-
-            <div className="max-w-[680px] mx-auto" style={{ marginTop: '30px' }}>
-              <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-                Getting to site
-              </h3>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                The flight to site itself is usually arranged and paid for by your employer as part of the roster. What is not covered is your own trip from home to the airport or departure point you fly out of - that is ordinary private commuting, the same as anyone&apos;s drive to work, and it is not deductible no matter how early the flight is or how far you live from the airport.
-              </p>
-
-              <div className="flex flex-col gap-3" style={{ marginBottom: '14px' }}>
-                {BULKY_TOOLS_CONDITIONS.map((c, i) => (
-                  <div key={i} className="taxres-condition-item">
-                    <span className="taxres-condition-num">{i + 1}</span>
-                    <p className="taxres-condition-text">{c}</p>
-                  </div>
-                ))}
-              </div>
-              <p className="font-light" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.6, marginBottom: '22px' }}>
-                All three conditions have to apply before that trip becomes deductible. In practice this is a narrow exception that matters more for a tradesperson flying in with their own tool kit than for most camp services roles, where there is usually nothing bulky enough, or no reason it cannot be stored securely on-site.
-              </p>
-
-              <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-                Moving to take up a FIFO job
-              </h3>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                If you relocate, say to Perth, Brisbane or another hub, specifically to be based there for FIFO work, the cost of that move itself - flights, freight, temporary accommodation while you find your feet - is a private relocation expense, not a work-related deduction. That is true even though the move is clearly connected to taking up the job: the ATO treats the cost of relocating for a new role as a cost of putting yourself in a position to earn income, not a cost of earning it once you are there.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ── ZONE TAX OFFSET: PROMINENT MYTH-CORRECTION (unique hook) ────── */}
-        <section className="bg-white" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <span className="section-label">The biggest FIFO tax myth</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 18px' }}>
-              The Zone Tax Offset: working in a zone is not the same as living in one
-            </h2>
-
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              It is a common assumption that flying in and out of a remote mine or resources site automatically qualifies you for the Zone Tax Offset, simply because the site sits inside one of the ATO&apos;s specified remote zones. For a typical FIFO arrangement, that assumption is usually wrong.
-            </p>
-
-            <div className="rounded-2xl" style={{ padding: '20px 22px', background: '#FDF0D5', border: '1.5px solid #F9D88A', borderLeft: '4px solid #E9A020', margin: '22px 0' }}>
-              <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '8px', letterSpacing: '-0.01em' }}>
-                It is about where you live, not where you fly to.
-              </p>
-              <p className="font-light" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.75 }}>
-                Since a 2015 law change, the test is no longer just about how many days you spend physically working inside a zone. To qualify, your normal residence - where you actually live, not just where you clock on - has to itself be located in a specified zone for more than 183 days in the income year. Flying in to work a roster inside a zone, while your normal residence sits outside it, does not meet this test, even if you spend well over 183 days a year physically on-site across your swings.
-              </p>
-            </div>
-
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              For most working holiday makers doing FIFO work, this rules the offset out. Your normal residence during a working holiday is not the mine camp - camp accommodation is temporary, tied to your roster, and is not where you would otherwise be living that week. Your normal residence is wherever you are actually based between swings: a share house or rental in Perth, Brisbane, Darwin, Karratha, or wherever else you call home during your working holiday. Unless that home base is itself inside a specified zone, flying in and out for work does not get you the offset, no matter how remote the site is or how many swings you work each year.
-            </p>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              If your own circumstances are genuinely different - for example, your actual home base during your working holiday sits inside a specified zone - it is worth raising when your return is prepared rather than assuming either way.
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
         </section>
 
-        {/* ── PPE, TOOLS & THE $300 RULE ───────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                PPE, tools and the $300 rule
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                Whatever you genuinely buy yourself for the job, and are not reimbursed for, is deductible. How you claim it depends on what it is, and what it costs.
-              </p>
-            </div>
-
-            <div className="max-w-[680px] mx-auto" style={{ marginBottom: '24px' }}>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-                Personal protective equipment you buy yourself - overalls or coveralls, steel-capped boots, gloves, safety goggles, masks - is deductible, because it protects you from a specific risk on-site rather than just being practical to have. Laundering that gear yourself is deductible too. None of this applies to anything your employer issues from stores, supplies, or reimburses you for; you can only claim what genuinely came out of your own pocket.
-              </p>
-              <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-                Ordinary, everyday clothing - plain trousers, t-shirts, a jumper for cold mornings on-site - is never deductible, no matter how worn out or dirty it gets across a swing. An item has to have a genuine protective feature, like the PPE above, to qualify; being work-appropriate is not enough on its own.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="Under $300" rows={UNDER_300_ROWS} highlight />
-              <CompareTable label="$300 or more" rows={OVER_300_ROWS} />
-            </div>
-            <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, maxWidth: '62ch', marginTop: '18px' }}>
-              Buy several tools together as a set costing $300 or more in total, and the whole set is depreciated over time, even if every individual piece would have cost less than $300 on its own.
-            </p>
-          </div>
-        </section>
-
-        {/* ── TICKETS & LICENCES: FIRST VS RENEWAL ─────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Tickets and licences: your first one vs a renewal
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                A High Risk Work Licence, a Working at Heights ticket, a forklift ticket - the same distinction decides whether any of them is deductible.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <CompareTable label="Your first ticket or licence" rows={FIRST_TICKET_ROWS} />
-              <CompareTable label="Renewing a ticket you hold" rows={RENEWAL_TICKET_ROWS} highlight />
-            </div>
-
-            <p className="font-light mx-auto text-center" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.7, maxWidth: '64ch', marginTop: '20px' }}>
-              It is the same principle this site applies to a construction White Card, and the same one the ATO applies to a driver&apos;s licence: the cost of first getting a qualification or permit required to enter a role is private, but maintaining one you already use for work is deductible. Your first High Risk Work Licence, Working at Heights ticket or forklift ticket is private; renewing it once you are already using it on the job is deductible.
-            </p>
-          </div>
-        </section>
-
-        {/* ── PHONE, SELF-EDUCATION, TESTING & RECORDS ─────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Phone, training, testing and keeping records
-              </h2>
-            </div>
-
-            <div className="max-w-[680px] mx-auto">
-              <p className="font-light" style={{ fontSize: '14px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '16px' }}>
-                Work-related calls are deductible, and so is an apportioned share of your phone and internet plan if you genuinely need it for the job - checking your roster, submitting timesheets, or completing mandatory online inductions and training modules. Keep a fair, honest estimate of the work-related percentage rather than claiming the whole bill.
-              </p>
-              <p className="font-light" style={{ fontSize: '14px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '16px' }}>
-                A short course or TAFE unit that directly relates to the work you are already doing is deductible, the same self-education test that applies to every occupation on this site. If your employer requires you to travel to a seminar or refresher and stay away from your normal base to get there, that travel and accommodation is deductible too. A first, entry-level course taken just to become eligible for a role in the first place, such as a first Certificate II, is treated the same way as a first ticket: a private cost of qualifying for the job, not a cost of doing a job you already have.
-              </p>
-              <p className="font-light" style={{ fontSize: '14px', color: '#2A3C34', lineHeight: 1.8 }}>
-                Many FIFO employers require medical checks, and drug and alcohol testing, as a condition of working on-site. Where your employer requires it for a role you already hold and you have to pay for it yourself, the cost is deductible.
-              </p>
-            </div>
-
-            <div className="taxres-savings-box" style={{ marginTop: '28px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-              <div>
-                <p className="taxres-savings-heading">Keeping records</p>
-                <p className="taxres-savings-body">
-                  For everything you claim, keep a receipt, invoice or bank statement showing the amount, the date, the supplier, and a description of what you bought. A photo on your phone is fine, and you need to be able to produce it for five years.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-        <NextStep
-          eyebrow="Ready when you are"
-          heading="See what your FIFO expenses are worth"
-          body="Try the free calculator for a quick estimate, or message us directly and we will go through your specific roster, tickets and camp arrangements with you."
-          cta="Try the calculator →"
-          href="/calculator"
-        />
-
-        {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-        <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">FAQs</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  FIFO deduction questions
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  Have a question about your own roster or site? Message us directly.
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── RELATED SERVICES ─────────────────────────────────────────────── */}
-        <RelatedServices
-          items={[
-            { label: 'TFN application', desc: 'Get your Tax File Number sorted before your first swing.', href: '/tfn' },
-            { label: 'Tax return', desc: 'Lodge your return and claim your FIFO work expenses.', href: '/tax-return' },
-            { label: 'Superannuation (DASP)', desc: 'Claim your super back once you have left Australia.', href: '/superannuation' },
-            { label: 'All occupations', desc: 'See deductions for every backpacker job, not just FIFO.', href: '/expenses' },
-          ]}
-        />
-
-        {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '48px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              This is general information, not personal tax advice. Every roster, every site, and every camp arrangement is a little different, and the Zone Tax Offset in particular depends on your own normal residence, not just where your roster takes you. When you lodge with us, your return is prepared by a team that works only with working holiday makers, and we go through your specific roster, tickets and circumstances to make sure you claim everything you&apos;re entitled to, and nothing you&apos;re not.
-            </p>
-            <Link href="/tax-form" className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
-              Claim Your Tax Refund →
-            </Link>
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
 
       </main>
-      <MobileCta href="/tax-form" lang="en" />
+
+      <MobileCta href={WA} lang={"en"} topic="expenses" />
     </>
   )
 }

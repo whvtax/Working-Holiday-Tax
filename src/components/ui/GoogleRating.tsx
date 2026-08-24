@@ -26,21 +26,22 @@ function fmtRating(r: number, lang: Lang) {
   return lang === 'de' ? s.replace('.', ',') : s
 }
 
-const LOADING: Record<Lang, string> = {
-  en: 'Google reviews',
-  de: 'Google-Bewertungen',
-  ja: 'Googleの口コミ',
-}
+/**
+ * Nothing is rendered until the rating is in hand. The old behaviour was a
+ * placeholder reading "Google reviews", which is a promise of a number that
+ * never arrives if the feed is down or an ad blocker eats it, and a label with
+ * no score under it reads as broken rather than as loading.
+ */
 
 export function GoogleRating({ variant = 'pill', lang = 'en' }: { variant?: Variant; lang?: Lang }) {
   const s = useGoogleSummary()
 
   if (variant === 'number') {
-    return <span>{s ? `${fmtRating(s.rating, lang)}★` : '★'}</span>
+    return s ? <span>{`${fmtRating(s.rating, lang)}★`}</span> : null
   }
 
   if (variant === 'count') {
-    if (!s) return <span>{LOADING[lang]}</span>
+    if (!s) return null
     const txt: Record<Lang, string> = {
       en: `from ${s.count} reviews`,
       de: `von ${s.count} Bewertungen`,
@@ -50,7 +51,7 @@ export function GoogleRating({ variant = 'pill', lang = 'en' }: { variant?: Vari
   }
 
   // pill
-  if (!s) return <span>{LOADING[lang]}</span>
+  if (!s) return null
   const r = fmtRating(s.rating, lang)
   const txt: Record<Lang, string> = {
     en: `${r}★ from ${s.count} reviews`,

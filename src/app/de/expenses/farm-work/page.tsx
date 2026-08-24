@@ -1,390 +1,645 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
-import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
+import { WaLink } from '@/app/HomeWa'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Steuerabsetzungen für Farmarbeit & Obsternte in Australien',
-  description: 'Was Working Holiday Maker bei Farmarbeit und Obsternte absetzen können - Sonnenschutz, Schuhe, Fahrten zwischen Farmen - dazu wie Saisonarbeit, Akkordlohn und mehrere Arbeitgeber bei der Steuererklärung funktionieren, und wie Farmarbeit mit deinem Visum zusammenhängt.',
-  keywords: [
-    'Farmarbeit Steuerabsetzung',
-    'Obsternte Steuererklärung',
-    'Backpacker Farmarbeit Steuer',
-    'Farmarbeit Steuerabsetzung Australien',
-    'Saisonarbeit Farm Steuer Australien',
-    'Akkordlohn Steuer Australien',
-    'Obsternte Absetzungen ATO',
-    'Mehrere Arbeitgeber Farm Steuer',
-    'Working Holiday Maker Farmarbeitgeber',
-    'Regionale Arbeit Visum Steuer',
-    '417 Visum zweites Jahr Farmarbeit',
-    'Harvest Trail Steuererklärung',
-    'Fahrtkosten Wanderarbeiter',
-    'Fahrtkosten zwischen Farmen absetzen',
-    'Specified Work Steuer Australien',
+  "title": "Farmarbeit: Sonnenschutz und Fahrten",
+  "description": "Sonnenschutz, Pflückausrüstung, Schutzschuhe und Fahrten zwischen Blöcken. Dazu die Abzüge, die abgelehnt werden, und die, an die niemand denkt.",
+  "keywords": [
+    "Farmarbeit Steuerabzüge Australien",
+    "Fruit Picking Steuererklärung",
+    "Backpacker Farmarbeit Steuer",
+    "Sonnenschutz absetzbar ATO",
+    "Fahrten zwischen Farmen absetzen",
+    "Akkordlohn Steuer Australien",
+    "417 zweites Visum Farmarbeit",
+    "Saisonarbeit Abzüge Australien"
   ],
-  alternates: {
-    canonical: `${SITE_URL}/de/expenses/farm-work`,
-    languages: {
-      'en-AU': `${SITE_URL}/expenses/farm-work`,
-      'de': `${SITE_URL}/de/expenses/farm-work`,
-      'ja': `${SITE_URL}/ja/expenses/farm-work`,
-      'x-default': `${SITE_URL}/expenses/farm-work`,
-    },
+  "alternates": {
+    "canonical": "/de/expenses/farm-work",
+    "languages": {
+      "en-AU": "/expenses/farm-work",
+      "de": "/de/expenses/farm-work",
+      "ja": "/ja/expenses/farm-work",
+      "x-default": "/expenses/farm-work"
+    }
   },
-  openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    type: 'website',
-    locale: 'de_DE',
-    url: `${SITE_URL}/de/expenses/farm-work`,
-    siteName: 'Working Holiday Tax',
-    title: 'Steuerabsetzungen für Farmarbeit & Obsternte in Australien',
-    description: 'Sonnenschutz, Schuhe und Fahrten zwischen Arbeitsorten sind absetzbar; gewöhnliche Kleidung und die erste Fahrt des Tages nicht. Was Farmarbeit und Obsternte für deine Steuererklärung bedeuten - und für dein Visum.',
+  "openGraph": {
+    "images": [
+      {
+        "url": `${SITE_URL}/og-image.png`,
+        "width": 1200,
+        "height": 630,
+        "alt": "Working Holiday Tax"
+      }
+    ],
+    "type": "website",
+    "locale": "de_DE",
+    "url": `${SITE_URL}/de/expenses/farm-work`,
+    "siteName": "Working Holiday Tax",
+    "title": "Farmarbeit und Fruit Picking: was du absetzen kannst",
+    "description": "Sonnencreme ist absetzbar. Deine Jeans und die Hostelmiete nie. Was Farmarbeit wirklich absetzt."
   },
-  twitter: {
-    images: [`${SITE_URL}/og-image.png`],
-    card: 'summary_large_image',
-    title: 'Steuerabsetzungen für Farmarbeit & Obsternte in Australien',
-    description: 'Was Backpacker bei Farmarbeit und Obsternte absetzen können, und wie das mit deinem Working Holiday Visum zusammenhängt.',
+  "twitter": {
+    "images": [
+      `${SITE_URL}/og-image.png`
+    ],
+    "card": "summary_large_image",
+    "title": "Farmarbeit und Fruit Picking: was du absetzen kannst",
+    "description": "Sonnencreme ist absetzbar. Deine Jeans und die Hostelmiete nie. Was Farmarbeit wirklich absetzt."
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-snippet": -1,
+      "max-image-preview": "large"
+    }
+  }
 }
 
-const WHY_DIFFERENT = [
+const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Farmarbeit und Fruit Picking" })
+
+const UI = {
+  "ctaLabel": "Schreib uns auf WhatsApp",
+  "ctaSub": "Antwort in etwa einer Stunde. Frag ruhig erst nach.",
+  "guaranteeHeading": "Fällt die Rückerstattung kleiner aus als unser Honorar, geht die Differenz an dich zurück.",
+  "guaranteeBody": "Eine Saison aus kurzen Farmjobs, mehreren Contractors und einer Erklärung entwirren wir jede Woche, für Leute auf 417 und 462 und sonst niemanden. Von unserem Team vorbereitet, dann von einem registrierten Steuerberater geprüft und freigegeben, bevor beim ATO eingereicht wird.",
+  "faqHeading": "Fragen, die uns dazu gestellt werden",
+  "guidesHeading": "Danach lesenswert",
+  "otherJobs": "Anderer Job? Hier sind alle Berufe.",
+  "servicesLabel": "Weiter auf der Website",
+  "wrongLabel": "Abgesetzt, obwohl es nicht ging",
+  "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "hubHref": "/de/expenses"
+}
+
+const CRUMBS = [
   {
-    t: 'Saisonal',
-    d: 'Ernten dauern jeweils ein paar Wochen, nicht das ganze Jahr. Viele Pflücker ziehen von Region zu Region oder von einer Ernte zur nächsten, statt bei einem einzigen Job zu bleiben.',
+    "name": "Startseite",
+    "item": "/de"
   },
   {
-    t: 'Wandernd',
-    d: 'Es ist üblich, auf mehreren Parzellen, in Schuppen oder auf verschiedenen Grundstücken zu arbeiten - manchmal mehreren davon an einem einzigen Tag - ohne einen einzigen festen Arbeitsplatz.',
+    "name": "Abzüge",
+    "item": "/de/expenses"
   },
   {
-    t: 'Akkordlohn',
-    d: 'Der Lohn wird oft pro Kiste, Eimer, Tablett oder Kilo berechnet statt zu einem festen Stundensatz - trotzdem ganz normaler Lohn, nur anders berechnet.',
-  },
-  {
-    t: 'Mehrere Arbeitgeber',
-    d: 'Eine Saison kann eine Handvoll verschiedener Farmen, Contractors oder Personalvermittlungen bedeuten - steuerlich zählt jede einzelne als eigener Arbeitgeber.',
-  },
+    "name": "Farmarbeit",
+    "item": "/de/expenses/farm-work"
+  }
 ]
 
-const faqs = [
+const HERO = {
+  "kicker": "Farmen, Plantagen und Packhallen",
+  "h1lead": "Sonnencreme ist ein Abzug.",
+  "h1accent": "Deine Jeans war es nie.",
+  "lede": "Die Abzugsliste fürs Pflücken, Schneiden und Packen umfasst etwa sechs Posten. Wichtiger ist, jeden kurzen Job der Saison in dieselbe Erklärung zu bekommen."
+}
+
+type Section =
+  | { kind: 'answer'; h2: string; paras: string[] }
+  | { kind: 'items'; h2: string; intro: string; items: { t: string; d: string }[] }
+  | { kind: 'traps'; h2: string; intro: string; wrong: { t: string; d: string }[]; missed: { t: string; d: string }[] }
+  | { kind: 'numbered'; h2: string; intro: string; steps: string[]; note?: string }
+  | { kind: 'tables'; h2: string; intro: string; tables: { label: string; rows: string[][] }[]; note?: string }
+  | { kind: 'occupations'; h2: string; intro: string; jobs: { href: string; title: string; line: string }[] }
+  | { kind: 'note'; label: string; title: string; body: string }
+
+const SECTIONS: Section[] = [
   {
-    question: 'Ich habe dieses Jahr auf drei verschiedenen Farmen gearbeitet - brauche ich getrennte Steuererklärungen?',
-    answer: 'Nein. Eine Steuererklärung deckt das gesamte Finanzjahr ab, vom 1. Juli bis zum 30. Juni, egal wie viele Farmen oder Arbeitgeber du in dieser Zeit hattest. Jeder Arbeitgeber meldet deinen Lohn und die einbehaltene Steuer getrennt an die ATO, und am Ende wird alles in einer einzigen Erklärung zusammengeführt. Das größte Risiko bei mehreren kurzen Jobs ist, einen davon zu vergessen, besonders einen kurzen Einsatz von nur einer Woche - genau das wird geprüft, bevor eine Erklärung über unser Team eingereicht wird.',
+    "kind": "answer",
+    "h2": "Was können Fruit Picker und Farmarbeiter absetzen?",
+    "paras": [
+      "Absetzbar sind Sonnenschutz für Arbeit im Freien, Schutzhandschuhe und Schutzschuhe, selbst gekaufte Pflückausrüstung und die Fahrt zwischen zwei Farmen oder Blöcken am selben Arbeitstag. Für alles gilt: du hast selbst bezahlt, nichts erstattet bekommen und kannst es belegen.",
+      "Farmarbeit verdient sich diese Abzüge durch das, was die Arbeit körperlich ist. Sonnencreme ist für fast jeden in Australien privat. Bei dir ist sie absetzbar, weil dich der Job Tag für Tag stundenlang in die direkte Sonne stellt, und das ATO sieht darin eine arbeitsbedingte Belastung und keine Lifestyle-Entscheidung."
+    ]
   },
   {
-    question: 'Kann ich Benzin- oder Autokosten für Fahrten zwischen Farmen absetzen?',
-    answer: 'Ja, wenn du am selben Arbeitstag zwischen zwei verschiedenen Farmen oder Arbeitsorten unterwegs bist, denn Farmarbeit gilt steuerlich oft als Tätigkeit an wechselnden Orten, ohne einen einzigen festen Arbeitsplatz. Nicht absetzbar ist die allererste Fahrt des Tages, von zuhause zur ersten Farm, die wie bei jedem anderen Job als gewöhnlicher Arbeitsweg zählt. Die Absetzung selbst wird über die Kilometerpauschale oder ein Fahrtenbuch berechnet, beides erklärt auf unserer Ausgaben-Seite.',
+    "kind": "items",
+    "h2": "Die Abzüge, die zu dieser Arbeit gehören",
+    "intro": "An jedem hängt eine Bedingung. Die Bedingung ist keine Deko, sie ist das, was den Abzug bei einer Rückfrage überstehen lässt.",
+    "items": [
+      {
+        "t": "Sonnenschutz: Sonnencreme, Hut mit breiter Krempe, Sonnenbrille",
+        "d": "Absetzbar, wenn dich die Arbeit der Sonne aussetzt, also beim Pflücken, Schneiden, Ausdünnen und beim Packen in einer offenen Halle. Die Belastung im Freien macht den Abzug. Sonnencreme für ein Wochenende am Strand gehört nicht dazu, und du setzt nur den Anteil ab, den du für die Arbeit verbraucht hast."
+      },
+      {
+        "t": "Schutzhandschuhe, Gummistiefel und Sicherheitsschuhe",
+        "d": "Pflückhandschuhe, Regenstiefel, Stahlkappen für die Halle. Sie zählen, weil sie dich vor einer konkreten Gefahr der Arbeit schützen: Dornen, Harz, Chemikalien, Schlamm, herunterfallende Kisten, unebener Boden. Normale Schuhe, die einfach nur robust sind, zählen nicht."
+      },
+      {
+        "t": "Selbst gekaufte Pflückausrüstung",
+        "d": "Gartenschere, Schnippschere, Pflücktasche oder Eimergeschirr, Stirnlampe für den frühen Start, Knieschoner. Jeder Gegenstand bis 300 Dollar wird im Kaufjahr voll abgesetzt. Darüber setzt du ihn ebenfalls ab, nur verteilt über die Nutzungsdauer."
+      },
+      {
+        "t": "Fahrten zwischen Farmen oder Blöcken am selben Tag",
+        "d": "Der Wechsel von einem Grundstück, Block oder Schuppen zum nächsten, nachdem dein Arbeitstag begonnen hat, ist absetzbare Fahrt, weil Farmarbeit oft keinen festen Arbeitsplatz hat. Berechnet wird sie mit der Kilometerpauschale oder einem Fahrtenbuch. Die erste Fahrt des Tages, von deiner Unterkunft zur ersten Farm, gehört nicht dazu."
+      },
+      {
+        "t": "Schutzkleidung mit echter Funktion",
+        "d": "Regenkleidung für Arbeit bei Nässe, chemikalienbeständige Overalls beim Spritzen, eine Staubmaske in der Packhalle. Der Test ist, ob das Teil dich vor etwas schützt, das die Arbeit dir antut. Ein Flanellhemd, das warm hält, besteht ihn nicht."
+      },
+      {
+        "t": "Der Arbeitsanteil deines Handys",
+        "d": "Klein, aber real, wenn du dein eigenes Handy für den Job nutzt, etwa um Schichtzeiten vom Contractor zu bekommen oder gepflückte Bins in einer App zu erfassen. Du setzt den arbeitsbezogenen Prozentsatz auf einer nachvollziehbaren Grundlage ab, nicht die ganze Rechnung."
+      }
+    ]
   },
   {
-    question: 'Wird Akkordlohn steuerlich anders behandelt?',
-    answer: 'Nein. Egal wie dein Lohn berechnet wird - pro Kiste, pro Eimer, pro Tablett oder pro Stunde - sobald er auf deinem Konto landet, ist es einfach ganz normaler Lohn. Dein Arbeitgeber meldet den Gesamtbetrag ans ATO und behält davon Steuern nach den Working-Holiday-Maker-Sätzen ein, und bei deiner Steuererklärung wird er wie jeder andere Lohn zu deinem Gesamteinkommen addiert.',
+    "kind": "answer",
+    "h2": "Was musst du aus einer Saison aufheben?",
+    "paras": [
+      "Nichts ist absetzbar, solange nicht drei Dinge stimmen: das Geld war deins, niemand hat es dir zurückgegeben, und es diente dazu, das Einkommen zu verdienen, das in der Erklärung steht. In einer Saison sind das der Roadhouse-Beleg für die Sonnencreme, der Kassenzettel für Handschuhe und Schere und eine Notiz zu Daten und Kilometern, wann immer ein Contractor dich zwischen Blöcken bewegt hat.",
+      "Ein Beleg, eine Rechnung oder ein Kontoauszug mit Betrag, Datum, Anbieter und Gegenstand zählt, und ein Handyfoto reicht. Fünf Jahre aufheben. Liegen deine Abzüge im ganzen Jahr bei 300 Dollar oder weniger, brauchst du keinen schriftlichen Nachweis, musst aber zeigen können, wie du auf die Zahl kommst. Nicht dieselben 300 Dollar, die entscheiden, ob ein einzelner Gegenstand sofort oder über die Nutzungsdauer abgeschrieben wird."
+    ]
   },
   {
-    question: 'Zählt Farmarbeit für ein zweites (oder drittes) Working Holiday Visum?',
-    answer: 'Für viele Working Holiday Maker ja - das Absolvieren von festgelegter, berechtigter Arbeit im regionalen Australien ist einer der Hauptwege, um für ein weiteres 417- oder 462-Visum berechtigt zu werden, und Farmarbeit ist einer der häufigsten Wege, das zu erfüllen. Welche Jobs, Regionen und Zeiträume genau zählen, legt das Department of Home Affairs fest, nicht wir, und die Regeln haben sich schon mehrfach geändert - prüfe daher die aktuelle offizielle Anleitung oder sprich mit einem registrierten Migration Agent, bevor du dich darauf verlässt, dass ein bestimmter Job zählt. Womit wir helfen können, ist sicherzustellen, dass das Einkommen aus dieser Arbeit korrekt versteuert und gemeldet wird.',
+    "kind": "traps",
+    "h2": "Was machen Farmarbeiter falsch?",
+    "intro": "Zuerst die Abzüge, die Saisonarbeiter jedes Jahr ansetzen und nicht belegen können. Dann das Geld, das liegen bleibt, weil es niemand erwähnt hat.",
+    "wrong": [
+      {
+        "t": "Normale Kleidung, die der Job zerstört",
+        "d": "Jeans, T-Shirts, Flanellhemd, Pulli für den Start um fünf. Es fühlt sich unfair an, weil die Arbeit sie ruiniert und du sie sonst nicht gekauft hättest. Das ATO prüft den Gegenstand, nicht die Absicht, und Alltagskleidung bleibt privat, egal wie schnell die Fruchtflecken sie erledigen."
+      },
+      {
+        "t": "Hostelmiete und Kaution im Working Hostel",
+        "d": "Wo du in der Saison geschlafen hast, ist eine Lebenshaltungskost, keine Arbeitskost, auch wenn das Hostel die einzige Unterkunft im Umkreis von fünfzig Kilometern war und die Farm sie organisiert hat. Irgendwo zu wohnen ist keine Kost des Einkommenserwerbs."
+      },
+      {
+        "t": "Essen und Trinken tagsüber",
+        "d": "Mittagessen auf der Farm ist dasselbe wie Mittagessen woanders. Mahlzeiten werden nur in dem engen Fall absetzbar, dass dein Arbeitgeber eine Reise verlangt, bei der du über Nacht von zu Hause weg bist, und die Erntesaison erfüllt das normalerweise nicht."
+      },
+      {
+        "t": "Die Fahrt vom Hostel zur Farm",
+        "d": "Das ist der Arbeitsweg, und er bleibt es, ob du fünfzig Kilometer Schotterpiste fährst oder zu Fuß gehst. Absetzbar ist nur die Bewegung zwischen Einsatzorten, nachdem der Tag begonnen hat."
+      },
+      {
+        "t": "Die Anreise in die Region",
+        "d": "Der Flug oder die Fahrt nach Bundaberg, Mildura oder Tully, um dort Arbeit zu suchen, bringt dich erst dorthin, wo der Job ist. Das ist nicht dasselbe wie Kosten des Verdienens."
+      }
+    ],
+    "missed": [
+      {
+        "t": "Sonnencreme, Hut und Sonnenbrille",
+        "d": "Der am häufigsten übersehene Abzug in der Farmarbeit und der, auf den der Anspruch am klarsten ist. Kaum jemand hebt den Beleg für eine 19-Dollar-Flasche Sonnencreme von der Tankstelle auf, und über eine Saison ist das keine kleine Summe."
+      },
+      {
+        "t": "Jedes Paar Handschuhe einzeln",
+        "d": "Pflückhandschuhe sind Verbrauchsmaterial. Sechs Paar in einer Saison sind sechs absetzbare Käufe, nicht einer, und jeder wird einzeln an der 300-Dollar-Grenze gemessen."
+      },
+      {
+        "t": "Fahrten zwischen Blöcken am selben Tag",
+        "d": "Auf größeren Betrieben und bei Contractors, die eine Crew herumschicken, sehr üblich, und fast nie abgesetzt, weil es sich nicht wie eine Fahrt anfühlt. Notiere Datum und Kilometer laufend, dann ist es ein glatter Abzug."
+      },
+      {
+        "t": "Ein Farmjob über drei Wochen, den niemand mehr auf dem Schirm hatte",
+        "d": "Der teuerste Fehler dieser Seite ist gar kein Abzug. Ein kurzer Einsatz, hastig ausgezahlt, manchmal über einen Contractor, fehlt schnell in der Steuererklärung, und fehlendes Einkommen ist schlimmer als ein vergessener Abzug."
+      },
+      {
+        "t": "Einbehalt über 15 Prozent bei einem nicht registrierten Arbeitgeber",
+        "d": "Ein beim ATO als Arbeitgeber von Working Holiday Makern registrierter Betrieb behält ab dem ersten Dollar 15 Prozent ein. Ein nicht registrierter muss zum Satz für ausländische Steuerpflichtige einbehalten, der über 30 Prozent beginnt. Die Differenz kommt mit der Steuererklärung zurück, und nur dann."
+      }
+    ]
   },
   {
-    question: 'Woher weiß ich, ob ein Farmarbeitgeber als Working-Holiday-Maker-Arbeitgeber registriert ist?',
-    answer: 'Frag einfach gleich zu Beginn - das ist eine völlig normale Frage, und die meisten Farmen kennen sie schon. Ein registrierter Arbeitgeber behält ab dem ersten Dollar den korrekten Working-Holiday-Maker-Satz von 15 % ein, während ein nicht registrierter stattdessen den höheren Foreign-Resident-Satz anwenden muss, der bei über 30 % beginnt. So oder so kommt jede zu viel einbehaltene Steuer mit deiner Steuererklärung zurück, aber es beeinflusst, wie viel während der Saison jede Woche tatsächlich auf deinem Konto landet.',
-  },
-  {
-    question: 'Ich habe nicht von jeder Farm, auf der ich gearbeitet habe, einen Payslip. Ist das ein Problem?',
-    answer: 'Meistens nicht. Die meisten Arbeitgeber melden deinen Lohn über Single Touch Payroll ans ATO, sodass er als Income Statement erscheint, auch wenn du nie einen Payslip erhalten oder aufbewahrt hast. Trotzdem hilft es, laufend eine einfache Notiz zu führen - welche Farm, welche Daten, ungefähr was du verdient hast - besonders in einer Saison mit mehreren kurzen Jobs, damit du später etwas hast, um die Zahlen gegenzuprüfen.',
-  },
+    "kind": "answer",
+    "h2": "Was hängt daran, wie deine Saison aufgebaut war?",
+    "paras": [
+      "Ob deine Fahrten als wechselnde Einsatzorte statt als Arbeitsweg gelten, ist eine Tatsachenfrage, und es geht um echtes Geld. Wer von einem Contractor ohne feste Basis zwischen drei Betrieben geschickt wird, steht anders da als jemand, der elf Wochen zur selben Plantage gefahren ist. Wie oft der Ort wechselte, ob der Job das Reisen verlangte und ob es überhaupt einen festen Arbeitsplatz gab, entscheidet die Frage.",
+      "Der steuerliche Wohnsitz ist größer. Von Region zu Region den Ernten hinterherzuziehen sieht nach dem Muster aus, das das ATO als ausländisch ansässig behandelt, während ein Jahr an einem Ort in die andere Richtung zeigen kann. War ein britischer, deutscher oder japanischer Passinhaber steuerlich in Australien ansässig, kann die Addy-Entscheidung den vollen Steuerfreibetrag und die Sätze für Ansässige zurückbringen. Eine Beurteilung deines Jahres, kein Tageszähler, und mehr wert als jeder Beleg auf dieser Seite.",
+      "Farmarbeit zahlt außerdem auf ein weiteres Visum ein, und dieser Teil ist Einwanderungsrecht, kein Steuerrecht. Welche Branchen, Postleitzahlen und Zeiträume zählen, legt das Department of Home Affairs fest, und die Regeln haben sich mehr als einmal geändert. Prüf die aktuellen offiziellen Angaben oder frag einen registrierten Migration Agent, bevor du dich darauf verlässt, dass ein Job zählt. So oder so muss das Einkommen korrekt gemeldet werden."
+    ]
+  }
 ]
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/de` },
-    { '@type': 'ListItem', position: 2, name: 'Ausgaben', item: `${SITE_URL}/de/expenses` },
-    { '@type': 'ListItem', position: 3, name: 'Farmarbeit', item: `${SITE_URL}/de/expenses/farm-work` },
-  ],
-}
+const FAQS = [
+  {
+    "question": "Kann ich Sonnencreme und einen Hut absetzen?",
+    "answer": "Ja, wenn dich die Arbeit in die Sonne stellt, und Farmarbeit tut das normalerweise. Das ATO akzeptiert Sonnenschutz als Arbeitskost für Menschen, die im Freien arbeiten, weil die Belastung aus dem Job kommt und nicht aus deinen eigenen Entscheidungen. Belege aufheben, nur den beruflichen Anteil ansetzen und sagen können, worin die Arbeit bestand."
+  },
+  {
+    "question": "Ich war auf drei Farmen. Sind das drei Steuererklärungen?",
+    "answer": "Nein. Eine Erklärung deckt das ganze Steuerjahr vom 1. Juli bis 30. Juni ab, egal wie viele Farmen, Contractors oder Zeitarbeitsfirmen dich bezahlt haben. Jeder Arbeitgeber meldet Lohn und einbehaltene Steuer getrennt an das ATO, und alles landet in derselben Erklärung. Das Risiko einer Saison mit kurzen Jobs ist ein vergessener Arbeitgeber, und das prüft man besser vor der Abgabe."
+  },
+  {
+    "question": "Ändert Bezahlung pro Bin etwas an meiner Steuer?",
+    "answer": "Nein. Akkordlohn ist Lohn, ob pro Bin, pro Eimer, pro Tray oder pro Kilo abgerechnet wird. Dein Arbeitgeber meldet die Summe und behält Steuer ein wie bei einem Stundenlohn, und sie geht in dein Einkommen ein wie jede andere Bezahlung. Was Akkordarbeit ändert, ist die Aufzeichnung, weil stark schwankende Bezahlung sich später schwerer mit dem Income Statement abgleichen lässt."
+  },
+  {
+    "question": "Kann ich das Benzin für die tägliche Fahrt zur Farm absetzen?",
+    "answer": "Nein. Die erste Fahrt des Tages, von deiner Unterkunft zur ersten Farm, ist der normale Arbeitsweg und nicht absetzbar, egal wie weit er ist. Absetzbar sind Fahrten zwischen Farmen, Blöcken oder Hallen, nachdem dein Arbeitstag begonnen hat, berechnet mit der Kilometerpauschale oder einem Fahrtenbuch."
+  },
+  {
+    "question": "Was, wenn die Farm mir nie Payslips gegeben hat?",
+    "answer": "Meistens kein Problem. Die meisten Arbeitgeber melden deine Bezahlung über Single Touch Payroll an das ATO, also erscheint sie als Income Statement, auch wenn du nie einen Payslip bekommen hast. Trotzdem hilft eine eigene Notiz, welche Farm, welche Daten und ungefähr welcher Betrag, gerade bei einer Saison mit mehreren kurzen Jobs, damit du die offiziellen Zahlen gegenprüfen kannst."
+  }
+]
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'Steuerabsetzungen für Farmarbeit & Obsternte in Australien',
-  description: 'Was Working Holiday Maker bei Farmarbeit und Obsternte absetzen können, wie Saisonarbeit, Akkordlohn und mehrere Arbeitgeber bei der Steuererklärung funktionieren, und wie Farmarbeit mit einem weiteren Working Holiday Visum zusammenhängt.',
-  url: `${SITE_URL}/de/expenses/farm-work`,
-  inLanguage: 'de-DE',
-  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
-  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
-}
+const GUIDES = [
+  {
+    "href": "/de/blog/piece-rates-farm-work-working-holiday",
+    "label": "Akkordlohn in der Landwirtschaft und der Mindestlohn darunter",
+    "desc": "Wie Bezahlung pro Bin funktioniert und was trotzdem herauskommen muss."
+  },
+  {
+    "href": "/de/blog/fruit-picking-jobs-working-holiday-australia",
+    "label": "Fruit Picking in Australien",
+    "desc": "Regionen, Saisons und was du vor der Zusage prüfen solltest."
+  },
+  {
+    "href": "/de/blog/tools-equipment-under-300-instant-deduction-whv",
+    "label": "Die 300-Dollar-Sofortabschreibung für Werkzeug und Ausrüstung",
+    "desc": "Warum jedes Teil einzeln geprüft wird und was ein Set daran ändert."
+  }
+]
+
+const SERVICES = [
+  {
+    "href": "/de/tax-return",
+    "label": "Steuererklärung"
+  },
+  {
+    "href": "/de/tfn",
+    "label": "TFN"
+  },
+  {
+    "href": "/de/tax-residency",
+    "label": "Steuerlicher Wohnsitz"
+  }
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  inLanguage: 'de',
-  mainEntity: faqs.map(f => ({
+  mainEntity: FAQS.map(f => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 }
 
-export default function FarmWorkExpensesPageDE() {
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: CRUMBS.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: `${SITE_URL}${b.item === '/' ? '' : b.item}`,
+  })),
+}
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: "Farmarbeit und Fruit Picking: was du absetzen kannst",
+  description: "Sonnencreme ist absetzbar. Deine Jeans und die Hostelmiete nie. Was Farmarbeit wirklich absetzt.",
+  url: `${SITE_URL}/de/expenses/farm-work`,
+  inLanguage: "de-DE",
+  author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+  publisher: { '@type': 'Organization', name: 'Working Holiday Tax', url: SITE_URL },
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/de/expenses/farm-work#webpage`,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  url: `${SITE_URL}/de/expenses/farm-work`,
+}
+
+/* Tokens kept local so this page does not depend on shared CSS being finished. */
+const INK = '#080F0D'
+const BODY = '#2A3C34'
+const MUTED = '#4C6459'
+const FOREST = '#0B5240'
+const HAIR = '#E2EFE9'
+const SUNKEN = '#F5F9F7'
+const WARN = '#B54708'
+
+const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
+const h2s: React.CSSProperties = {
+  fontFamily: 'var(--font-serif), Georgia, serif',
+  fontSize: 'clamp(23px, 5.6vw, 30px)',
+  lineHeight: 1.22,
+  letterSpacing: '-0.02em',
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 14px',
+}
+const h3s: React.CSSProperties = {
+  fontSize: '16px',
+  lineHeight: 1.35,
+  fontWeight: 700,
+  color: INK,
+  margin: '0 0 6px',
+}
+const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
+const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
+const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
+const kickerS: React.CSSProperties = {
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  color: FOREST,
+  margin: '0 0 10px',
+}
+
+function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
+  return (
+    <div style={{ margin: '18px 0 0' }}>
+      <WaLink
+        href={WA}
+        position={position}
+        topic="expenses"
+        lang={"de"}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '52px',
+          padding: '0 28px',
+          background: FOREST,
+          color: '#fff',
+          borderRadius: '999px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}
+      >
+        {UI.ctaLabel}
+      </WaLink>
+      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
+        {UI.ctaSub}
+      </p>
+    </div>
+  )
+}
+
+function Bullets({ label, colour, items }: { label: string; colour: string; items: { t: string; d: string }[] }) {
+  return (
+    <div style={{ marginTop: '22px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: colour, margin: '0 0 12px' }}>
+        {label}
+      </p>
+      {items.map((it, i) => (
+        <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '13px 0' }}>
+          <p style={h3s}>{it.t}</p>
+          <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: '#fff' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
-
-            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
-              <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
-                <li><Link href="/de" style={{ color: '#587066' }}>Startseite</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li><Link href="/de/expenses" style={{ color: '#587066' }}>Ausgaben</Link></li>
-                <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
-                <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>Farmarbeit</li>
+        {/* HERO */}
+        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
+          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
+              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
+                {CRUMBS.map((b, i) => (
+                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i === CRUMBS.length - 1 ? (
+                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
+                    ) : (
+                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
+                    )}
+                  </li>
+                ))}
               </ol>
             </nav>
 
-            <div className="text-center">
-              <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '26ch' }}>
-                Steuerabsetzungen für Farmarbeit, und was für dein <span style={{ color: '#0B5240' }}>Visum</span> zählt
-              </h1>
-              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '54ch' }}>
-                Obsternte und Farmarbeit bringen Steuerfragen mit sich, die kaum ein anderer Backpacker-Job kennt - Saisonarbeit, Akkordlohn, mehrere Arbeitgeber in einem Jahr - und für viele Working Holiday Maker außerdem eine echte Verbindung zu ihrem Visum.
+            <p style={kickerS}>{HERO.kicker}</p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif), Georgia, serif',
+                fontSize: 'clamp(30px, 8.2vw, 46px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                fontWeight: 700,
+                color: INK,
+                margin: '0 0 14px',
+              }}
+            >
+              {HERO.h1lead}{' '}
+              <span style={{ color: FOREST, fontStyle: 'italic' }}>{HERO.h1accent}</span>
+            </h1>
+            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
+              {HERO.lede}
+            </p>
+            <Cta position="hero" />
+          </div>
+        </section>
+
+        {/* BODY SECTIONS */}
+        {SECTIONS.map((s, i) => (
+          <section key={i} style={i % 2 === 0 ? secLight : secSunk}>
+            <div style={wrap}>
+              {s.kind === 'answer' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  {s.paras.map((p, j) => (
+                    <p key={j} style={{ ...ps, margin: j === s.paras.length - 1 ? 0 : ps.margin }}>{p}</p>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'items' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  {s.items.map((it, j) => (
+                    <div key={j} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
+                      <p style={h3s}>{it.t}</p>
+                      <p style={{ ...ps, margin: 0 }}>{it.d}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {s.kind === 'traps' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={{ ...ps, margin: 0 }}>{s.intro}</p>
+                  <Bullets label={UI.wrongLabel} colour={WARN} items={s.wrong} />
+                  <Bullets label={UI.missedLabel} colour={FOREST} items={s.missed} />
+                </>
+              )}
+
+              {s.kind === 'numbered' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.steps.map((t, j) => (
+                      <li key={j} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '14px 16px' }}>
+                        <span aria-hidden="true" style={{ flex: '0 0 26px', width: '26px', height: '26px', borderRadius: '999px', background: FOREST, color: '#fff', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{j + 1}</span>
+                        <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'tables' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {s.tables.map((t, j) => (
+                      <div key={j} style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>{t.label}</p>
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {t.rows.map((r, k) => (
+                                <tr key={k} style={{ borderTop: k ? `1px solid ${HAIR}` : 'none' }}>
+                                  <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '46%' }}>{r[0]}</th>
+                                  <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {s.note && <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>{s.note}</p>}
+                </>
+              )}
+
+              {s.kind === 'occupations' && (
+                <>
+                  <h2 style={h2s}>{s.h2}</h2>
+                  <p style={ps}>{s.intro}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {s.jobs.map((jb, j) => (
+                      <Link key={j} href={jb.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                        <span style={{ display: 'block', fontSize: '16px', fontWeight: 700, color: FOREST, marginBottom: '4px' }}>{jb.title}</span>
+                        <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{jb.line}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {s.kind === 'note' && (
+                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                  <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
+                  <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
+                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        ))}
+
+        {/* GUARANTEE + CTA */}
+        <section style={{ background: '#0B5240', padding: '38px 0' }}>
+          <div style={wrap}>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
+              {UI.guaranteeBody}
+            </p>
+            <div style={{ marginTop: '18px' }}>
+              <WaLink
+                href={WA}
+                position="section"
+                topic="expenses"
+                lang={"de"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '52px',
+                  padding: '0 28px',
+                  background: '#E9A020',
+                  color: '#1A2822',
+                  borderRadius: '999px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {UI.ctaLabel}
+              </WaLink>
+              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
+                {UI.ctaSub}
               </p>
             </div>
           </div>
         </section>
 
-        {/* ── WHY FARM WORK IS DIFFERENT ──────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '20px' }}>
-          <div className="max-w-[1040px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Warum Farmarbeit steuerlich ein wenig anders behandelt wird
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                Vier Dinge bei Farmarbeit und Obsternte, die bei den meisten anderen Backpacker-Jobs kaum eine Rolle spielen.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-              {WHY_DIFFERENT.map((c, i) => (
-                <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#F7FBF9', border: '1.5px solid #E2EFE9' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '8px' }}>{c.t}</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.7 }}>{c.d}</p>
-                </div>
+        {/* FAQ */}
+        <section style={secLight}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.faqHeading}</h2>
+            {FAQS.map((f, i) => (
+              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
+                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
+                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* GUIDES */}
+        <section style={secSunk}>
+          <div style={wrap}>
+            <h2 style={h2s}>{UI.guidesHeading}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {GUIDES.map((g, i) => (
+                <Link key={i} href={g.href} style={{ display: 'block', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '12px', padding: '15px 16px', textDecoration: 'none', minHeight: '44px' }}>
+                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
+                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
+                </Link>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* ── THE VISA CONNECTION (unique hook for this page) ─────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[760px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <span className="section-label">Die Verbindung zum Visum</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 18px' }}>
-              Farmarbeit und ein weiteres Working Holiday Visum
-            </h2>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Farmarbeit ist mit etwas verbunden, das für keinen anderen Backpacker-Job wirklich gilt: dein Visum selbst. Das Absolvieren von festgelegter, berechtigter Arbeit im regionalen Australien ist einer der Hauptwege, wie Working Holiday Maker mit einem 417- oder 462-Visum die Berechtigung für ein weiteres Working Holiday Visum erlangen, und ein großer Teil dieser berechtigten Arbeit findet auf Farmen, in Obstplantagen und allgemein in der Landwirtschaft und im Gartenbau statt. Das ist ein wesentlicher Grund, warum so viele Working Holiday Maker während ihrer Zeit in Australien mindestens einen Farmjob machen.
-            </p>
-
-            <div className="rounded-2xl" style={{ padding: '20px 22px', background: '#FDF0D5', border: '1.5px solid #F9D88A', borderLeft: '4px solid #E9A020', margin: '22px 0' }}>
-              <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '8px', letterSpacing: '-0.01em' }}>
-                Das ist eine Einwanderungsfrage, keine Steuerfrage.
-              </p>
-              <p className="font-light" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.75 }}>
-                Welche Branchen, welche Postleitzahlen oder Regionen und welche Zeiträume genau als berechtigte Arbeit zählen, und wie viele Tage du brauchst, legt das Department of Home Affairs fest, nicht das Steuerrecht - und die Regeln haben sich über die Jahre schon mehrfach geändert. Das im Blick zu behalten, gehört nicht zu unserem steuerlichen Fachgebiet. Bevor du dich darauf verlässt, dass ein bestimmter Job für dein Visum zählt, prüfe die aktuelle offizielle Anleitung auf der{' '}
-                <a href="https://immi.homeaffairs.gov.au/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline', color: '#0B5240' }}>Website des Department of Home Affairs</a>
-                {' '}oder sprich mit einem registrierten Migration Agent.
-              </p>
+            <p style={{ ...kickerS, marginTop: '24px' }}>{UI.servicesLabel}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {SERVICES.map((s, i) => (
+                <Link key={i} href={s.href} style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', padding: '0 16px', background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '999px', fontSize: '15px', fontWeight: 600, color: FOREST, textDecoration: 'none' }}>
+                  {s.label}
+                </Link>
+              ))}
             </div>
-
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              Wo wir helfen können, ist die steuerliche Seite dieser Arbeit. Egal was am Ende für dein Visum zählt, das Einkommen daraus muss trotzdem korrekt gemeldet und versteuert werden, und eine einfache Aufzeichnung - welche Farm, welche Daten, was du verdient hast - ist so oder so nützlich für deine Steuererklärung, und dient oft gleichzeitig als praktischer Nachweis, falls du irgendwann zeigen musst, welche Arbeit du wann geleistet hast.
+            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
+              <Link href={UI.hubHref} style={{ color: FOREST, textDecoration: 'underline' }}>{UI.otherJobs}</Link>
             </p>
           </div>
         </section>
 
-        {/* ── SEASONAL, ITINERANT, PIECE-RATE: THE TAX DETAIL ─────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Saisonal, wandernd und bezahlt pro Kiste
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                Nichts davon ändert die Grundlagen der australischen Besteuerung, aber es beeinflusst, wie leicht es ist, sie richtig anzuwenden.
-              </p>
-            </div>
-
-            <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-              Ein neues TFN Declaration-Formular für jede Farm
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '24px' }}>
-              Jede neue Farm, jeder neue Contractor oder jede neue Personalvermittlung, für die du arbeitest, ist ein eigener Arbeitgeber, und jeder neue Arbeitgeber braucht sein eigenes TFN Declaration-Formular - deine TFN überträgt sich nicht automatisch, nur weil du bei der letzten Stelle schon eines ausgefüllt hast. Auf jedem dieser Formulare sollte ein Working Holiday Maker bei der Residency-Frage &bdquo;Working Holiday Maker&ldquo; und bei der Frage zum Steuerfreibetrag &bdquo;Nein&ldquo; auswählen; diese Vergünstigung steht australischen Residents zu und gilt niemals für Einkommen, das nach den Working-Holiday-Maker-Sätzen besteuert wird, egal wie viele Arbeitgeber du im Laufe des Jahres hast. Eines dieser Formulare im Autopilot auszufüllen, bei der Freibetragsfrage aus Gewohnheit Ja anzukreuzen oder das falsche Residency-Kästchen anzukreuzen, ist eine wirklich häufige Ursache für eine unerwartete Steuernachzahlung, und dieser Fehler passiert leichter, wenn du den Vorgang in einer Saison bei mehreren Farmen wiederholst. Mehr dazu, wie du die Erklärung jedes Mal richtig ausfüllst, findest du auf unserer <Link href="/de/tfn" style={{ color: '#0B5240', textDecoration: 'underline' }}>TFN-Seite</Link>.
-            </p>
-
-            <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-              Akkordlohn ist trotzdem ganz normaler Lohn
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '24px' }}>
-              Ob du pro Kiste, pro Eimer, pro Tablett oder pro Kilo bezahlt wirst statt nach Stunden, ändert nichts daran, wie das Geld versteuert wird. Egal wie hoch die Summe am Ende ist, dein Arbeitgeber meldet sie ans ATO und behält davon Steuern ein, genau wie bei einem Stundenlohn, nach den Working-Holiday-Maker-Sätzen, und sie wird bei deiner Steuererklärung wie jeder andere Lohn zu deinem Einkommen addiert. Der eigentliche Unterschied bei Akkordlohn liegt bei der Buchführung: Da der Lohn von Tag zu Tag schwankt und du in einer Saison zwischen Farmen wechselst, lohnt es sich, eine einfache eigene Notiz zu führen - welche Farm, welche Daten und ungefähr was du verdient hast - damit du später etwas hast, um deine Income Statements gegenzuprüfen.
-            </p>
-
-            <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-              Frag, ob die Farm ein registrierter WHM-Arbeitgeber ist
-            </h3>
-            <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '8px' }}>
-              Ob ein Arbeitgeber beim ATO als Arbeitgeber von Working Holiday Makern registriert ist, verändert, wie viel Steuer während der Saison von deinem Lohn abgeht. Registrierte Arbeitgeber behalten ab dem ersten Dollar den korrekten Working-Holiday-Maker-Satz von 15 % ein; nicht registrierte müssen stattdessen den höheren Foreign-Resident-Satz anwenden, der bei über 30 % beginnt. So oder so bist du nicht dauerhaft im Nachteil, da jede zu viel einbehaltene Steuer mit deiner Steuererklärung zurückkommt - aber es macht einen echten Unterschied dafür, was jede Woche tatsächlich auf deinem Konto landet, also lohnt es sich, jeden neuen Farmarbeitgeber direkt danach zu fragen.
-            </p>
-
-            <div className="taxres-savings-box" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-              <div>
-                <p className="taxres-savings-heading">Führe von Anfang an eine einfache Aufzeichnung</p>
-                <p className="taxres-savings-body">
-                  Eine laufende Notiz mit dem Namen der Farm, den Tagen, an denen du gearbeitet hast, und ungefähr dem, was du dort verdient hast, dauert nur eine Minute zu aktualisieren und kann dir später viel Ärger ersparen - egal ob du prüfst, ob deine Income Statements stimmen, einem Payslip nachjagst, der nie angekommen ist, oder einfach versuchst, dich zur Steuerzeit noch daran zu erinnern, auf welchen Farmen du überhaupt gearbeitet hast.
-                </p>
-              </div>
-            </div>
+        {/* DISCLAIMER */}
+        <section style={{ ...secLight, paddingBottom: '52px' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>{UI.disclaimer}</p>
           </div>
         </section>
-
-        {/* ── WHAT YOU CAN / CANNOT CLAIM ──────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '20px' }}>
-          <div className="max-w-[1040px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
-              <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(22px, 3vw, 30px)', letterSpacing: '-0.02em', marginBottom: '10px' }}>
-                Was du absetzen kannst (und was nicht)
-              </h2>
-              <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '58ch' }}>
-                Hier gelten dieselben zwei ATO-Tests wie für jeden anderen Beruf: Du musst es selbst bezahlt haben, ohne Erstattung, und es muss wirklich mit der Erzielung deines Einkommens zusammenhängen, statt etwas zu sein, das du sowieso gekauft hättest.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6" style={{ marginBottom: '20px', alignItems: 'stretch' }}>
-
-              <div className="exp-card">
-                <p className="exp-card-label exp-card-label-yes">✓ Kann eventuell abgesetzt werden</p>
-
-                <div style={{ marginBottom: '18px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>Sonnenschutz</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    Wenn du bei deinem Job den ganzen Tag oder einen Teil davon im Freien bist - beim Pflücken, Schneiden oder Verpacken in einem offenen Schuppen - sind ein breitkrempiger Hut, Sonnencreme und eine Sonnenbrille absetzbar. Die ATO akzeptiert das gerade wegen der direkten, andauernden UV-Belastung, die die Arbeit mit sich bringt - eine andere Situation, als wenn du dir Sonnencreme für ein freies Wochenende kaufst.
-                  </p>
-                </div>
-
-                <div style={{ marginBottom: '18px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>Schutzhandschuhe und -stiefel</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    Pflückhandschuhe, Gummistiefel oder andere Schutzstiefel, die vor den konkreten Gefahren des Jobs schützen - Dornen, Chemikalien, Schlamm, der Umgang mit Erntegut, unebenes Gelände - sind als von der Arbeit geforderte Schutzausrüstung absetzbar.
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>Fahrten zwischen Farmen oder Arbeitsorten</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    Fahrten zwischen verschiedenen Parzellen, Schuppen oder Grundstücken am selben Arbeitstag sind absetzbar, weil Farmarbeit oft an wechselnden Orten stattfindet und es selten einen einzigen festen Arbeitsplatz gibt. Das wird über die Kilometerpauschale oder ein Fahrtenbuch berechnet; wie die beiden Methoden funktionieren, erklärt unser <Link href="/de/expenses" style={{ color: '#0B5240', textDecoration: 'underline' }}>Ausgaben-Guide</Link>.
-                  </p>
-                </div>
-              </div>
-
-              <div className="exp-card">
-                <p className="exp-card-label exp-card-label-no">✕ Normalerweise nicht absetzbar</p>
-
-                <div style={{ marginBottom: '18px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>Gewöhnliche Kleidung</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    Gewöhnliche Kleidung - Jeans, T-Shirts, ein Pullover für kalte Morgen - ist nie absetzbar, auch wenn sie beim ganztägigen Obstpflücken oder beim Umgang mit Erntegut zerreißt, Flecken bekommt oder sich abnutzt. Die ATO behandelt normalen Verschleiß an Alltagskleidung als private Ausgabe, genau wie bei jedem anderen Job; es gibt keine Ausnahme für Farmarbeit, nur weil die Kleidung dabei schmutzig wird.
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px', letterSpacing: '-0.01em' }}>Die erste Fahrt des Tages</p>
-                  <p className="font-light" style={{ fontSize: '12.5px', color: '#2A3C34', lineHeight: 1.7 }}>
-                    Die Fahrt von zuhause zur ersten Farm oder zum ersten Arbeitsort des Tages ist gewöhnlicher Arbeitsweg, egal wie weit sie ist oder wie früh du losfährst - das gilt für jeden Beruf, nicht nur für Farmarbeit. Absetzbar sind nur die Fahrten zwischen Arbeitsorten, wenn du schon bei der Arbeit bist, nie die Fahrt, die dich überhaupt erst dorthin bringt.
-                  </p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* ── WHAT'S NEXT (internal links) ─────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <span className="section-label center">Was kommt als Nächstes?</span>
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-              Sobald du weißt, was du absetzen kannst
-            </h2>
-            <p className="font-light text-muted max-w-[640px] mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '20px' }}>
-              Hier geht es für die meisten Farm- und Saisonarbeiter als Nächstes weiter.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-[900px] mx-auto">
-              <Link href="/de/expenses" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
-                Absetzungen für jeden anderen Backpacker-Job ansehen
-              </Link>
-              <Link href="/de/tfn" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
-                TFN für einen neuen Farmjob klären
-              </Link>
-              <Link href="/de/tax-return" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
-                Eine Steuererklärung für die ganze Saison einreichen
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-        <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-          <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-              <div className="text-center">
-                <span className="section-label center">FAQ</span>
-                <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
-                  Fragen zur Steuer bei Farmarbeit
-                </h2>
-                <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
-                  Noch eine Frage? Schreib uns direkt.
-                </p>
-              </div>
-              <div className="max-w-[700px]">
-                <Accordion items={faqs} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── DISCLAIMER ───────────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '8px' }}>
-          <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7 }}>
-              Dies sind allgemeine Informationen, keine persönliche Steuerberatung, und keine Einwanderungs- oder Migrationsberatung. Jede Farmsaison sieht ein wenig anders aus - welche Arbeitgeber, welche Regionen, wie die Visumsseite hineinspielt. Wenn du deine Erklärung bei uns einreichst, wird sie von unserem Team erstellt, das nur mit Working Holiday Makern arbeitet und deine konkreten Arbeitgeber und Umstände durchgeht, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
-            </p>
-          </div>
-        </section>
-
-        {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
-        <NextStep
-          eyebrow="Bereit, wenn du es bist"
-          heading="Jede Farm und jeden Lohnzettel in einer Erklärung zusammenführen"
-          body="Ob es eine lange Ernte war oder fünf kurze Jobs in drei Bundesstaaten - wir führen die Income Statements aller Arbeitgeber zusammen und prüfen dabei auch deinen Steuerabzug."
-          cta="Steuererklärung starten →"
-          href="/de/tax-form"
-        />
 
       </main>
-      <MobileCta href="/de/tax-form" lang="de" />
+
+      <MobileCta href={WA} lang={"de"} topic="expenses" />
     </>
   )
 }

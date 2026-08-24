@@ -30,6 +30,7 @@ const sections: Section[] = [
       '„Mandant" bezeichnet die natürliche Person, die den Service nutzt und diese Vereinbarung abschließt.',
       '„Anbieter" bezeichnet Working Holiday Tax, das unter der Aufsicht eines registrierten Steueragenten wie oben angegeben tätig ist.',
       '„Service" bezeichnet die vom Anbieter erbrachten steuerbezogenen Dienstleistungen, einschließlich Vorbereitung und Einreichung der Steuererklärung sowie zugehörige Unterstützung bei australischen Steuerangelegenheiten.',
+      '„Prüfung" bezeichnet die vom Anbieter durchgeführte Beurteilung des Einkommens, des Ansässigkeitsstatus und der Ansprüche des Mandanten, um die dem Mandanten zur Verfügung stehenden Abzüge, Freibeträge und Befreiungen zu ermitteln. Die Prüfung ist Teil der einheitlichen Beauftragung nach Klausel 3 und wird nicht gesondert berechnet.',
       '„Steuererklärung" bezeichnet die im Namen des Mandanten vorbereitete und beim Australian Taxation Office (ATO) eingereichte australische Einkommensteuererklärung.',
       '„Rückzahlung" bezeichnet jede vom ATO ausgestellte und auf das vom Mandanten angegebene Konto überwiesene Erstattung, Zahlung oder Gutschrift.',
     ],
@@ -40,7 +41,7 @@ const sections: Section[] = [
   },
   {
     title: '3. Art des Service',
-    body: 'Unser Service erfolgt in zwei Stufen: einer Berechtigungsprüfung (Eligibility Assessment), in der wir deine Situation prüfen und feststellen, was dir zusteht, und - falls du fortfahren möchtest - der Vorbereitung und Einreichung deiner Steuererklärung auf Basis der von dir bereitgestellten Informationen. Jede Stufe ist nach Klausel 6 separat bepreist, und du erfährst die jeweilige Gebühr, bevor kostenpflichtige Arbeit beginnt. Alle endgültigen Steuerbescheide, Rückzahlungen oder Entscheidungen werden ausschließlich vom ATO getroffen. Wir garantieren nicht:',
+    body: 'Unser Service ist eine einheitliche Beauftragung. Wir prüfen deine Situation, einschließlich deines steuerlichen Ansässigkeitsstatus, einer dir zustehenden Befreiung von der Medicare Levy und der Abzüge, die für die von dir tatsächlich geleistete Arbeit gelten, und bereiten anschließend deine Steuererklärung auf Basis der von dir bereitgestellten Informationen vor und reichen sie ein. Die anfallende Gebühr wird dir offengelegt und von dir akzeptiert, bevor die Beauftragung beginnt, und ist im Voraus zahlbar. Alle endgültigen Steuerbescheide, Rückzahlungen oder Entscheidungen werden ausschließlich vom ATO getroffen. Wir garantieren nicht:',
     items: [
       'Einen bestimmten Steuerrückzahlungsbetrag.',
       'Ein bestimmtes Steuerergebnis.',
@@ -62,22 +63,20 @@ const sections: Section[] = [
   },
   {
     title: '6. Gebühren und Kosten',
-    body: 'Unser Service wird in zwei Stufen erbracht, jede mit eigener Gebühr. Beide Gebühren werden dir offengelegt und von dir akzeptiert, bevor kostenpflichtige Arbeit beginnt.',
+    body: 'Unser Service hat eine einzige Gebühr, die von der Art deiner Einkünfte abhängt. Die anfallende Gebühr wird dir offengelegt und von dir akzeptiert, bevor die Arbeit beginnt, und ist im Voraus zahlbar.',
     items: [
-      'Berechtigungsprüfung (AUD 110 $, inkl. GST): eine Prüfung deines Einkommens, deines Steuerstatus und deiner Ansprüche, bei der wir die für dich verfügbaren Abzüge, Freibeträge und Befreiungen ermitteln und deine voraussichtliche Rückzahlung schätzen. Diese Gebühr wird für die aufgewendete fachliche Arbeitszeit berechnet. Sie ist keine Gebühr für die Einreichung, die eine separate Leistung darstellt.',
-      'Kein Anspruch, keine Gebühr: ergibt die Berechtigungsprüfung, dass dir keine Rückzahlung zusteht, entfällt die Gebühr von 110 $ vollständig und du zahlst nichts.',
-      'Vollservice (AUD 220 $, inkl. GST): ergibt die Berechtigungsprüfung einen Anspruch und beauftragst du uns mit der Vorbereitung und Einreichung deiner Steuererklärung, beträgt die Gesamtgebühr 220 $. Die bereits berechnete Gebühr von 110 $ wird vollständig angerechnet, sodass insgesamt nie mehr als 220 $ zu zahlen sind.',
-      'Wenn du selbst oder über einen anderen Anbieter einreichst: wurde die Berechtigungsprüfung durchgeführt und ein Anspruch festgestellt, bleibt die Gebühr von 110 $ für die bereits geleistete Arbeit fällig. Ein weiterer Betrag ist nicht zu zahlen, und es steht dir frei, deine Steuererklärung einzureichen, wie du möchtest.',
-      'Steuererklärung vorbereitet und zur Freigabe bereitgestellt: hast du uns mit der Vorbereitung beauftragt und haben wir deine Steuererklärung fertiggestellt und dir zur Prüfung, Freigabe oder Unterschrift bereitgestellt, ist die vollständige Gebühr von 220 $ fällig, unabhängig davon, ob du uns anschließend zur Einreichung ermächtigst. Zu diesem Zeitpunkt ist die Arbeit erbracht und übergeben; offen ist nur noch die Einreichung als administrativer Schritt. Dies gilt nicht, wenn du zurücktrittst, weil wir den Service nicht mit der gebotenen Sorgfalt und Fachkunde erbracht oder die Verbrauchergarantien nach dem Australian Consumer Law nicht erfüllt haben.',
-      'Wird die vollständige Gebühr nach dem vorstehenden Absatz fällig, entstehen keine zusätzlichen Kosten und die vorbereitete Steuererklärung bleibt für dich verfügbar.',
-      'Arbeiten außerhalb des Umfangs einer üblichen Einkommensteuererklärung (zum Beispiel Erklärungen für Vorjahre, Geschäfts- oder ABN-Anlagen oder Korrekturen bereits eingereichter Erklärungen) werden vor Arbeitsbeginn separat angeboten und schriftlich vereinbart.',
-      'Rechnungen sind innerhalb von 7 Tagen nach Ausstellung zahlbar.',
+      'Steuererklärung, nur TFN-Einkünfte (AUD 220 $, inkl. GST): die vollständige Beauftragung, die die Prüfung deiner Situation sowie die Vorbereitung und Einreichung deiner Steuererklärung umfasst.',
+      'Steuererklärung, TFN- und ABN-Einkünfte (AUD 385 $, inkl. GST): wie oben, wenn du zusätzlich Einkünfte unter einer Australian Business Number erhalten hast, was die Abstimmung deiner Betriebseinnahmen und Betriebsausgaben und die Berücksichtigung deiner GST-Position erfordert.',
+      'Garantie bei zu geringer Rückzahlung: fällt die Rückzahlung, die du erhältst, geringer aus als die von dir gezahlte Gebühr, erstatten wir dir die Differenz, sodass du für unseren Service nie draufzahlst. Steht dir überhaupt keine Rückzahlung zu, wird die Gebühr vollständig erstattet.',
+      'Die Gebühr wird für die erbrachte fachliche Arbeit berechnet. Sie ist ein fester Betrag und wird nie als Prozentsatz deiner Rückzahlung berechnet.',
+      'Steuererklärung vorbereitet und zur Freigabe bereitgestellt: haben wir deine Steuererklärung fertiggestellt und dir zur Prüfung, Freigabe oder Unterschrift bereitgestellt, ist die Gebühr in voller Höhe fällig, unabhängig davon, ob du uns anschließend zur Einreichung ermächtigst. Zu diesem Zeitpunkt ist die Arbeit erbracht und übergeben; offen ist nur noch die Einreichung als administrativer Schritt. Dies gilt nicht, wenn du zurücktrittst, weil wir den Service nicht mit der gebotenen Sorgfalt und Fachkunde erbracht oder die Verbrauchergarantien nach dem Australian Consumer Law nicht erfüllt haben.',
+      'Arbeiten außerhalb des Umfangs einer üblichen Einkommensteuererklärung (zum Beispiel Erklärungen für Vorjahre, zusätzliche Geschäftsanlagen oder Korrekturen bereits eingereichter Erklärungen) werden vor Arbeitsbeginn separat angeboten und schriftlich vereinbart.',
       'Nichts in dieser Klausel beschränkt, schließt aus oder ändert Rechte oder Ansprüche, die dir nach dem Australian Consumer Law zustehen.',
     ],
   },
   {
     title: '7. Zahlungsbedingungen',
-    body: 'Die Zahlung ist bei Einreichung deiner Steuererklärung fällig oder, wenn nach Klausel 6 eine Gebühr bereits vor der Einreichung fällig wird, mit Abschluss der betreffenden Arbeitsstufe. Die Zahlung beeinflusst oder garantiert weder deine Rückzahlung noch das ATO-Ergebnis.',
+    body: 'Die Gebühr ist im Voraus zahlbar. Sobald die Zahlung eingegangen ist, senden wir dir den vollständigen Fragebogen und beginnen mit der Arbeit. Die Zahlung beeinflusst oder garantiert weder deine Rückzahlung noch das ATO-Ergebnis und unterliegt der Garantie bei zu geringer Rückzahlung nach Klausel 6.',
   },
   {
     title: '8. Haftungsbeschränkung',
@@ -176,7 +175,7 @@ const sections: Section[] = [
     body: 'Deine Rückzahlung wird vom ATO geleistet, nicht vom Anbieter. Bitte beachte:',
     items: [
       'Das ATO kann deine Rückzahlung kürzen oder einbehalten, um bestehende Schulden zu verrechnen - etwa Steuerschulden, HELP-Studienschulden, Unterhaltsverpflichtungen oder Schulden bei einer anderen Behörde.',
-      'Eine solche Verrechnung ändert nichts an den nach Klausel 6 fälligen Gebühren, da diese für die erbrachte fachliche Arbeit berechnet werden und nicht für die Höhe der letztlich erhaltenen Rückzahlung.',
+      'Eine solche Verrechnung ändert nichts an der nach Klausel 6 fälligen Gebühr und löst die Garantie bei zu geringer Rückzahlung nicht aus, da der verrechnete Betrag auf eine von dir geschuldete Verbindlichkeit angerechnet und nicht verloren wurde. Die Gebühr wird für die erbrachte fachliche Arbeit berechnet und nicht für die Höhe der letztlich erhaltenen Rückzahlung.',
       'Die Rückzahlung geht direkt auf das von dir angegebene Bankkonto. Der Anbieter erhält, verwahrt oder verrechnet keine Gebühren aus deiner Rückzahlung.',
       'Du bist für die Richtigkeit der angegebenen Bankdaten verantwortlich. Der Anbieter haftet nicht für eine Rückzahlung auf ein falsches Konto, wenn die Daten von dir stammen.',
       'Bei einem ausländischen Konto richten sich Zahlungsdauer und Bankgebühren nach dem ATO und den beteiligten Banken.',
@@ -186,8 +185,8 @@ const sections: Section[] = [
     title: '23. Stornierung und Widerruf',
     body: 'Du kannst diese Vereinbarung jederzeit schriftlich kündigen. Die Folgen sind:',
     items: [
-      'Vor Beginn der Berechtigungsprüfung ist keine Gebühr fällig.',
-      'Nach Abschluss der Berechtigungsprüfung richtet sich die Zahlungspflicht nach Klausel 6.',
+      'Bevor wir mit der Arbeit an deiner Steuererklärung beginnen, wird dir die Gebühr vollständig erstattet.',
+      'Sobald wir mit der Arbeit begonnen haben, richtet sich die Zahlungspflicht nach Klausel 6.',
       'Handelt es sich um einen unaufgefordert zustande gekommenen Verbrauchervertrag im Sinne des Australian Consumer Law (etwa wenn wir dich zuerst kontaktiert haben), steht dir eine gesetzliche Widerrufsfrist von 10 Werktagen zu. In dieser Zeit erbringen wir keine kostenpflichtigen Leistungen und nehmen keine Zahlung an, sofern du uns nicht ausdrücklich darum bittest und das Gesetz dies erlaubt.',
       'Nichts in dieser Klausel beschränkt deine gesetzlichen Ansprüche, wenn der Service nicht mit der gebotenen Sorgfalt und Fachkunde erbracht wurde.',
     ],
@@ -217,7 +216,7 @@ export default function GermanClientAgreementPage() {
         kicker="Rechtliches"
         title="Mandantenvereinbarung"
         titleEm=""
-        sub="Zuletzt aktualisiert: Mai 2026. Durch die Nutzung unserer Dienstleistungen stimmst du diesen Bedingungen zu."
+        sub="Zuletzt aktualisiert: August 2026. Durch die Nutzung unserer Dienstleistungen stimmst du diesen Bedingungen zu."
         breadcrumbs={[{ label: 'Startseite', href: '/de' }, { label: 'Mandantenvereinbarung' }]}
       />
 

@@ -1,20 +1,24 @@
 import type { Metadata, Viewport } from 'next'
-import { headers } from 'next/headers'
-import Script from 'next/script'
-import { Playfair_Display, DM_Sans } from 'next/font/google'
+import { Fraunces, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { RevealObserver } from '@/components/ui/RevealObserver'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { SITE_URL, GA_MEASUREMENT_ID } from '@/lib/constants'
+import { SITE_URL } from '@/lib/constants'
+import { Analytics } from '@/components/layout/Analytics'
 import PublicShellClient from '@/components/layout/PublicShellClient'
 import { MobileLanguageBanner } from '@/components/ui/MobileLanguageBanner'
 import { LangSync } from '@/components/ui/LangSync'
 
-const playfair = Playfair_Display({
+// Fraunces replaces Playfair Display. Playfair is a display face: its hairlines
+// are drawn for 44px headlines and thin out at the 21px where most of this
+// site's headings actually sit on a phone. Fraunces holds its weight there, is
+// rounder, and is not on every other site. It is variable, so SOFT and opsz are
+// requested alongside the weight range and set in globals.css.
+const fraunces = Fraunces({
   subsets: ['latin'],
-  weight: ['400', '700', '800', '900'],
+  axes: ['SOFT', 'WONK', 'opsz'],
   style: ['normal', 'italic'],
   variable: '--font-serif',
   display: 'swap',
@@ -142,7 +146,6 @@ const schemaOrg = {
       email: 'info@workingholidaytax.com.au',
       description: 'Specialists in TFN applications, tax returns, superannuation (DASP) and ABN registrations for working holiday visa holders (subclass 417 and 462) in Australia.',
       slogan: 'Australian tax, sorted.',
-      foundingDate: '2020',
       address: {
         '@type': 'PostalAddress',
         addressCountry: 'AU',
@@ -152,7 +155,6 @@ const schemaOrg = {
         '@type': 'Country',
         name: 'Australia',
       },
-      priceRange: '$$',
       currenciesAccepted: 'AUD',
       paymentAccepted: ['Cash', 'Credit Card', 'Bank Transfer'],
       sameAs: [
@@ -281,37 +283,41 @@ const schemaOrg = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Server-render the correct <html lang> per locale by reading the `x-locale`
-  // request header that middleware sets from the URL prefix. This fixes /de and
-  // /ja pages previously shipping lang="en-AU" in the initial HTML (bad for SEO
-  // and screen readers). TRADE-OFF: reading headers() opts routes out of static
-  // generation. If you prefer fully static pages over correct server-side lang,
-  // revert to `const lang = 'en-AU'` and rely on <LangSync/> alone.
-  const lang = headers().get('x-locale') ?? 'en-AU'
-  // Present only when CSP nonce mode is enabled (middleware). null otherwise,
-  // in which case the static 'unsafe-inline' CSP covers the inline script.
-  const nonce = headers().get('x-nonce') ?? undefined
-  // Don't tag the internal CRM/admin area - it's staff usage, not public
-  // traffic, and would otherwise pollute GA4's acquisition/behaviour data.
-  // (/crm is also disallowed in robots.ts for the same "not public" reason.)
+  // This layout used to read headers() three times, for the locale, the CSP
+  // nonce and the pathname. Any one of those reads opts every route out of
+  // static generation, which is why only 3 of 562 pages were prerendered and
+  // every visitor waited on a Sydney lambda for HTML that never changes. For an
+  // audience that is 99.999% mobile and largely outside Australia, that is the
+  // single most expensive line on the site.
   //
-  // /complete is excluded for a DIFFERENT and more serious reason: its URL
-  // carries a live, single-use completion token as a path segment.
-  // gtag('config') fires an automatic page_view whose page_location is the FULL
-  // URL, so Google, and anyone with GA property access, received working tokens
-  // granting write access to a named client's tax record for 14 days. robots
-  // noindex and Referrer-Policy do not help: the URL goes as a request
-  // parameter, not as a referrer. Never tag a page whose path contains a secret.
-  const pathname = headers().get('x-pathname') ?? ''
-  const isAdminArea = pathname.startsWith('/crm') || pathname.startsWith('/complete')
+  // All three are handled elsewhere now:
+  //   locale   -> a pre-paint script below sets <html lang> before first paint,
+  //               and hreflang plus <LangSync/> cover the rest.
+  //   pathname -> <Analytics/> reads it on the client.
+  //   nonce    -> CSP nonce mode is OFF by default (CSP_NONCE_ENABLED) and the
+  //               static CSP in next.config.js with 'unsafe-inline' applies.
+  //               ⚠️ If nonce mode is ever switched on, the JSON-LD block below
+  //               and <Analytics/> need a nonce again, which means either
+  //               restoring the header read (and losing static generation) or
+  //               relying on 'strict-dynamic'. Verify in a preview deployment
+  //               before enabling it in production.
   return (
-    <html lang={lang} className={`${playfair.variable} ${dmSans.variable}`}>
+    <html lang="en-AU" className={`${fraunces.variable} ${dmSans.variable}`}>
       <head>
         {/* Fonts are self-hosted by next/font/google at build time, so no
             runtime connection to Google Font origins is needed. */}
+        {/* Set <html lang> from the URL before first paint, so /de and /ja do
+            not ship as en-AU. Runs synchronously ahead of render, which keeps
+            the page static while still giving assistive tech and crawlers the
+            right language. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var p=location.pathname;var l=p==='/de'||p.indexOf('/de/')===0?'de-DE':p==='/ja'||p.indexOf('/ja/')===0?'ja-JP':'en-AU';document.documentElement.lang=l}catch(e){}})()",
+          }}
+        />
         <script
           type="application/ld+json"
-          nonce={nonce}
           // JSONLD-04: escape HTML/JS-context characters so a field containing
           // `</script>` (or U+2028/U+2029) cannot break out of the JSON-LD block.
           dangerouslySetInnerHTML={{
@@ -323,25 +329,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               .replace(/\u2029/g, '\\u2029'),
           }}
         />
-        {/* Google Analytics 4. Loaded afterInteractive so it never blocks
-            first paint / LCP. Skipped entirely on /crm (see isAdminArea). */}
-        {!isAdminArea && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-              nonce={nonce}
-            />
-            <Script id="ga4-init" strategy="afterInteractive" nonce={nonce}>
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_MEASUREMENT_ID}');
-              `}
-            </Script>
-          </>
-        )}
       </head>
       <body>
         {/* Skip-to-content link for keyboard users. CSS-only (no JS event handlers
@@ -361,6 +348,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <MobileLanguageBanner />
         <LangSync />
+        <Analytics />
         <RevealObserver />
         <ScrollToTop />
       </body>

@@ -1,18 +1,24 @@
 import type { Metadata } from 'next'
+import type { CSSProperties } from 'react'
+import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
-import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
-import { CtaBand } from '@/components/ui/CtaBand'
+import { MobileCta } from '@/components/ui/MobileCta'
+import { SITE_URL } from '@/lib/constants'
 import { getGoogleRating } from '@/lib/googleData'
+import { waUrl } from '@/lib/wa'
+import { WaLink } from '../HomeWa'
 
-// ─── METADATA - rich SEO + AI optimized for Japanese market ─────────────
+// ─── METADATA ───────────────────────────────────────────────────────────
+// 用語はサイト全体と同じ「タックスリターン」で統一。料金は一切出さない。
 export const metadata: Metadata = {
-  title: 'オーストラリア タックスリターン 還付金 | ワーホリ（417・462）専門',
+  // absolute, because a layout's title template applies to its child segments
+  // and not to its own page, so this one route would otherwise keep the Latin
+  // suffix every other Japanese page has dropped.
+  title: { absolute: 'オーストラリア タックスリターン 還付金｜ワーホリ専門' },
   description:
-    'オーストラリア タックスリターン 還付金を、ワーキングホリデー（417・462ビザ）専門のチームが手続き代行。TFN申請、スーパーアニュエーション返金（DASP）、ABN登録まで日本語でオンライン完結。帰国後の申請にも対応します。',
+    'ワーキングホリデー（417・462ビザ）専門のタックスリターン。居住区分、すべての雇用主、メディケア税の免除、控除を確認してから提出します。',
   keywords: [
-    // Primary refund-focused terms (core service)
     'オーストラリア タックスリターン 還付金',
     'オーストラリア タックスリターン',
     'ワーキングホリデー タックスリターン 還付',
@@ -21,7 +27,6 @@ export const metadata: Metadata = {
     'ワーホリ 還付金',
     'オーストラリア 税金 還付 ワーホリ',
     'オーストラリア 税金 戻ってくる',
-    'オーストラリア 税金 返金 ワーホリ',
     'ワーホリ 還付金 いくら',
     'バックパッカー 税還付 オーストラリア',
     '417ビザ タックスリターン 還付',
@@ -29,34 +34,23 @@ export const metadata: Metadata = {
     'WHV 還付金 オーストラリア',
     'オーストラリア タックスリターン 日本語',
     'オーストラリア タックスリターン やり方',
-    'オーストラリア タックスリターン いつ',
     'オーストラリア タックスリターン 期限',
     'ワーホリ 帰国後 タックスリターン 還付',
     'ワーホリ 帰国後 タックスリターン',
-    'タックスリターン 帰国後 オーストラリア',
-    'オーストラリア 税金 取り戻す ワーホリ',
-    'オーストラリア 確定申告 ワーホリ',
-    // Adjacent services
+    'オーストラリア 税務上の居住者 ワーホリ',
     'オーストラリア ワーホリ タックスリターン',
     'ワーホリ 税金 オーストラリア',
     'TFN 申請 オーストラリア',
     'TFN 申請 ワーホリ',
     'ABN 登録 ワーホリ',
     'スーパーアニュエーション 返金',
-    'スーパー 返金 オーストラリア',
     'スーパーアニュエーション 帰国後',
     'DASP 申請',
-    'DASP 還付',
     'DASP 申請 日本',
     '417ビザ 税金',
     '462ビザ 税金',
-    'バックパッカー 税金 オーストラリア',
-    'オーストラリア 税理士 日本人',
-    'オーストラリア 税務代理人 ワーホリ',
     'メディケア税 免除',
-    'メディケア税 還付',
     'ワーホリ 帰国後 税金',
-    // Treaty / long-tail
     '日豪租税条約 ワーホリ',
     'Notice of Assessment 日本語',
     'タックスリターン 必要書類 ワーホリ',
@@ -77,19 +71,19 @@ export const metadata: Metadata = {
     alternateLocale: ['en_AU', 'de_DE'],
     url: `${SITE_URL}/ja`,
     siteName: 'Working Holiday Tax',
-    title: 'オーストラリア タックスリターン 還付金 | ワーホリ（417・462）専門',
-    description: 'オーストラリアのワーホリ（417・462ビザ）専門。タックスリターン還付金、TFN申請、スーパーアニュエーション返金（DASP）まで日本語ですべてオンライン。帰国後も対応。',
+    title: 'オーストラリア タックスリターン 還付金｜ワーホリ専門',
+    description: '送信ボタンは誰でも押せます。大事なのはその前です。居住区分、すべての雇用主、メディケア税の免除、実際の仕事に対応する控除を確認したうえで提出します。',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
       height: 630,
-      alt: 'オーストラリア タックスリターン 還付金 - ワーホリ（417・462ビザ）専門',
+      alt: 'オーストラリア タックスリターン 還付金｜ワーホリ（417・462ビザ）専門',
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門',
-    description: 'オーストラリアのワーホリ専門。タックスリターン還付金を日本語で代行申請。帰国後でも対応。',
+    title: 'オーストラリア タックスリターン 還付金｜ワーホリ専門',
+    description: 'ワーホリ専門のタックスリターン。居住区分、メディケア税の免除、控除まで確認してから提出します。帰国後でも対応。',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
@@ -105,69 +99,134 @@ export const metadata: Metadata = {
   },
 }
 
-// ─── ICONS - relevant per service ───────────────────────────────────────
-const IconTFN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="7.5" x2="14" y2="7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="10.5" x2="11" y2="10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="13.5" x2="9" y2="13.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>)
-const IconABN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8l7-5 7 5v9a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M7.5 17v-6h5v6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
-const IconReturn  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v12M6 10l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 16v1a1 1 0 001 1h12a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
-const IconSuper   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.4"/><path d="M10 5.5v4l2.5 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>)
+// ─── ICONS ──────────────────────────────────────────────────────────────
+const IconTFN      = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="7.5" x2="14" y2="7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="10.5" x2="11" y2="10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="13.5" x2="9" y2="13.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>)
+const IconABN      = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8l7-5 7 5v9a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M7.5 17v-6h5v6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
+const IconReturn   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v12M6 10l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 16v1a1 1 0 001 1h12a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
+const IconSuper    = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.4"/><path d="M10 5.5v4l2.5 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 const IconMedicare = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17.5s-6-3.5-6-8.5a3 3 0 016-2 3 3 0 016 2c0 5-6 8.5-6 8.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><line x1="10" y1="7" x2="10" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="7.5" y1="9.5" x2="12.5" y2="9.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
-const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
+const IconWhatsApp = () => (<svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" /></svg>)
 
-// ─── TESTIMONIALS - Japanese WHV reviews ─────────────────────────────────
+// ─── COPY ───────────────────────────────────────────────────────────────
 
-const STEPS = [
-  { n: '1', title: 'ご相談・状況の確認',     body: 'TFN、ABN、ワーホリ タックスリターン、スーパー受取など、必要なサービスを最初にご案内します。' },
-  { n: '2', title: '必要書類のご準備',       body: 'シンプルなチェックリストに沿って情報をお送りいただくだけ。複雑な書類作業は不要です。' },
-  { n: '3', title: '当社が手続きを代行',     body: '書類作成からATO（オーストラリア税務署）への申請まで、すべてオンラインで代行します。' },
-  { n: '4', title: 'ATOからの結果通知',     body: 'ATOによるタックスリターン処理が完了次第、還付金が発生する場合はご指定のオーストラリアの銀行口座へ直接お振り込みします。' },
+/** 2026年8月22日承認。書き換え不可。 */
+const FIGURES = [
+  {
+    figure: '45%',
+    body: 'TFNが雇用主に届く前の期間です。15%ではなく最高税率で源泉徴収されています。誰かが申請しない限り、戻ってきません。',
+  },
+  {
+    figure: '$18,200',
+    body: '税務上の居住区分です。イギリス、ドイツ、日本のパスポートは、非課税枠をそのまま使える場合があります。滞在日数では決まりません。判断が必要です。',
+  },
+  {
+    figure: '2%',
+    body: '本来払う必要のなかったメディケア税です。証明書があれば外せますが、申請する人はほとんどいません。',
+  },
+]
+
+const ANALYSIS = [
+  {
+    n: '01',
+    title: '税務上の居住区分',
+    body: 'ほとんどの人が非居住者にチェックを入れて、それきりです。税務上の居住者であり、イギリス・ドイツ・日本のパスポートをお持ちなら、租税条約の無差別条項によって居住者と同じ税率が適用され得ます。高等裁判所のAddy判決の争点がここでした。滞在日数ではなく、どう暮らしていたかで決まる判断であり、このページで最も大きな金額が動く部分です。',
+  },
+  {
+    n: '02',
+    title: 'すべての雇用主と、すべての週',
+    body: 'カジュアルや季節労働では、1年がばらばらになります。雇用主が4社も5社も、支払いが遅れた農場、3月にはもう忘れていた仕事。記憶ではなくATOの記録と1年分を突き合わせます。最高税率で引かれていた週は、たいていそこで見つかります。',
+  },
+  {
+    n: '03',
+    title: '該当する場合はメディケア税',
+    body: 'メディケア税は所得の2%で、初期設定で引かれます。年の一部または全期間でメディケアの対象外だったなら、その期間は払う義務がありませんでした。ただしATOは、先に申請して取得する免除証明書がなければ外しません。対象かどうかを確認し、対象であれば当社が申請します。',
+  },
+  {
+    n: '04',
+    title: '実際にした仕事に対応する控除',
+    body: '控除欄が空白なのは節約ではなく、受け取れるものを手放す選択です。果物の収穫で申請できるものと、カフェで申請できるものは違います。FIFOのシフトや配達の走行距離とも、また違います。どんな仕事だったかを伺い、それに対応するものを申請し、対応しないものは入れません。',
+  },
+  {
+    n: '05',
+    title: 'そして提出',
+    body: '当社のチームが作成し、登録税理士が確認・承認したうえでATOに提出します。この部分は数分です。金額を決めるのは、その前の4つです。',
+  },
+]
+
+const COMPARISON = [
+  { mygov: '居住区分にチェックを入れるだけ',                 us: 'どちらが本当に当てはまるかを見極めます' },
+  { mygov: 'メディケア税の免除については何も出てきません',   us: '対象であれば証明書を申請します' },
+  { mygov: '控除欄は空白のまま',                             us: 'あなたの仕事で何が申請できるかを把握しています' },
+  { mygov: 'アカウントとオーストラリアのIDが必要です',       us: 'あなたは何も必要ありません。ATOとは当社がやり取りします' },
 ]
 
 const SERVICES = [
-  { n: '01', href: '/ja/tfn',            icon: <IconTFN />,      title: 'TFN申請',         desc: '初日からワーキングホリデーの正しい税率で働くために必要なタックスファイルナンバーを取得します。' },
-  { n: '02', href: '/ja/abn',            icon: <IconABN />,      title: 'ABN登録',         desc: '個人事業主として働き、正しく請求書を発行するためのABNを登録します。' },
-  { n: '03', href: '/ja/tax-return',     icon: <IconReturn />,   title: 'タックスリターン', desc: '年次のワーホリ タックスリターンを提出し、受け取るべき還付金を漏れなく申請します。' },
-  { n: '04', href: '/ja/superannuation', icon: <IconSuper />,    title: 'スーパー受取',     desc: '帰国時に、積み立てたスーパーアニュエーションをDASPで申請・受け取ります。' },
-  { n: '05', href: '/ja/medicare',       icon: <IconMedicare />, title: 'メディケア税免除', desc: '対象外の方は、所得の2%にあたるメディケア税の免除を申請できます。' },
+  { n: '01', href: '/ja/tfn',            icon: <IconTFN />,      title: 'TFN申請',         desc: '最初の給与明細より前に取得し、最高税率で引かれる期間をなくします。' },
+  { n: '02', href: '/ja/abn',            icon: <IconABN />,      title: 'ABN登録',         desc: '個人事業主として請求するために。税務上の影響も先にご説明します。' },
+  { n: '03', href: '/ja/tax-return',     icon: <IconReturn />,   title: 'タックスリターン', desc: '上記の確認をすべて行ったうえで、ATOへ提出します。' },
+  { n: '04', href: '/ja/superannuation', icon: <IconSuper />,    title: 'スーパー受取',     desc: 'TFNから全てのファンドを探し、帰国時にDASPを一度で申請します。' },
+  { n: '05', href: '/ja/medicare',       icon: <IconMedicare />, title: 'メディケア税免除', desc: 'その年の状況が条件を満たしていれば、免除証明書を申請します。' },
+]
+
+const GUIDES = [
+  { href: '/ja/blog/diy-tax-return-vs-tax-agent-working-holiday', title: '自分で申告するか、依頼するか', desc: 'それぞれ実際に何を失うのかを、正直に書いています。' },
+  { href: '/ja/blog/tax-residency-working-holiday-makers',        title: '税務上の居住者かどうか',       desc: 'ワーホリの申告で最も大きな金額が動く問いです。' },
+  { href: '/ja/blog/medicare-levy-working-holiday-makers',        title: 'メディケア税の免除',           desc: '2%を誰が払い、誰が払わないのか。外す手順まで。' },
+  { href: '/ja/blog/tax-deductions-working-holiday-makers',       title: '何が控除できるのか',           desc: '一般論ではなく、仕事の種類ごとの控除です。' },
 ]
 
 const FAQS = [
   {
-    question: 'オーストラリア タックスリターンの還付金はどのような仕組みですか？',
-    answer: '417・462ビザでオーストラリアで働いていた場合、雇用主は毎回の給与から税金を源泉徴収しています。会計年度末（6月30日）の後にATO（オーストラリア税務署）へタックスリターンを提出すると、払いすぎていた分が還付金としてあなたに戻ってきます。還付金の金額は、所得、税務上の居住者ステータス、申告可能な控除、雇用主がワーキングホリデーメーカー雇用主として登録されていたかなど、個々の状況によって異なります。ワーホリ専門チームが状況を確認し、正しく申告手続きを行います。',
+    question: 'オーストラリアのタックスリターンの還付額は何で決まりますか？',
+    answer: '大きく4つで決まります。その年の税務上の居住区分、TFNが雇用主に届く前に45%で源泉徴収された期間があるかどうか、メディケアの対象外なのに2%のメディケア税が引かれていたかどうか、そして実際にした仕事に対応する控除です。オーストラリアでまったく同じ金額を稼いだ2人でも、この4つによって還付額は大きく変わります。だからこそ提出そのものより確認作業のほうが重要で、当社は数字を1つ入力する前にこの4つを確認します。',
+  },
+  {
+    question: 'myGovで自分で申告してはいけないのですか？',
+    answer: '自分で申告することはできますし、提出自体は簡単な部分です。ただしmyGovは入力された内容をそのまま受け付けるだけで、あなたが税務上の居住者だったのか、雇用主が誤った税率で源泉徴収していたのか、メディケア税の免除証明書の対象になるのか、あなたの仕事で何が控除できるのかは教えてくれません。これらはあなた個人の1年についての判断であり、金額を決めるのはここです。自分で行う場合のリスクは提出ではなく、その中身にあります。',
   },
   {
     question: 'サービスの料金はいくらですか？',
-    answer: '初回のご相談とお見積もりは無料です。料金はサービスごとに定額制で、タックスリターンの場合は還付金から差し引いてお支払いいただくことも可能です。事前のお支払いは必要ありません。作業を始める前に必ず料金にご納得いただいてから進めます。',
+    answer: '料金は定額制で、還付金に対する歩合ではありません。作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。',
   },
   {
-    question: '帰国後でもタックスリターンや還付金の申請はできますか？',
-    answer: 'はい、もちろん対応いたします。すでにオーストラリアを離れて日本に帰国された方のワーホリ タックスリターンや、スーパーアニュエーション返金（DASP）も、日本からオンラインで申請可能です。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能です（ATOのルール）。スーパー受取（DASP）は日本の口座でもお受け取りいただけます。',
+    question: '417・462ビザだと税務上の居住者になりますか？',
+    answer: 'ビザの長さではなく、オーストラリアで実際にどう暮らしていたかで決まります。移動を続けていた方は非居住者になることが多い一方で、1つの町に落ち着き、1つの仕事を続け、生活の拠点を置いていた方は居住者に当たる場合があります。居住者であり、日本・イギリス・ドイツのように無差別条項のある国のパスポートをお持ちであれば、居住者と同じ税率と非課税枠が適用され得ます。これは高等裁判所のAddy判決で確認された点です。チェックボックスではなく判断なので、立場を決める前に必ず1年間の状況を一緒に確認します。',
   },
   {
     question: 'ワーキングホリデーメーカーの税率はいくらですか？',
-    answer: 'ワーキングホリデーメーカー（417・462ビザ保持者）には、年収45,000ドルまで一律15%、45,001〜135,000ドルは30%、135,001〜190,000ドルは37%、190,001ドル以上は45%の税率が適用されます。オーストラリア居住者向けの非課税枠（タックスフリースレッショルド）は適用されません。雇用主にTFNを提出しない場合は最高税率の45%で源泉徴収されるため、これがワーホリ参加者が還付金を受け取る最も多い理由の一つです。',
+    answer: 'ワーキングホリデーメーカーは、45,000ドルまで一律15%、135,000ドルまで30%、190,000ドルまで37%、それを超える部分は45%で課税されます。雇用主にTFNを提出していない場合は最高税率で源泉徴収されるため、これがワーホリ参加者に還付が生じる最も多い理由の一つです。ただしこの税率は出発点であって結論ではありません。税務上の居住者であり、無差別条項のある国のパスポートをお持ちであれば、非課税枠を含む居住者の税率が適用され得ます。',
   },
   {
-    question: 'タックスリターンの還付金はいくらもらえますか？',
-    answer: '還付金の金額は、収入、源泉徴収された税額、税務上の居住者ステータス、ビザの種類、申告可能な控除など、個人の状況によって大きく異なります。具体的な金額をお約束することはできませんが、当社では正確にタックスリターンを提出し、お客様が受け取るべき控除を漏れなく申告することをお約束いたします。',
+    question: '帰国後でもタックスリターンの申請はできますか？',
+    answer: 'はい。日本をはじめ多くの国から、帰国して何年も経ってからタックスリターンを提出し、スーパーアニュエーション（DASP）を申請している方と日常的にお仕事をしています。手続きはすべてオンラインです。1点だけ先に知っておいてください。ATOはタックスリターンの還付金をオーストラリアの銀行口座にしか支払えませんが、スーパー（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、進める順番が変わるので早めにお知らせください。',
+  },
+  {
+    question: 'どのくらいで返信がありますか？',
+    answer: '営業時間内（月曜から金曜、オーストラリア東部時間の9時から18時）であれば、通常1時間以内に返信します。営業時間外の場合は翌朝いちばんにご連絡します。まず質問だけでも問題ありませんし、日本語で対応します。',
   },
   {
     question: 'タックスリターンだけのサービスですか？',
-    answer: 'いいえ、税務に関するすべてのサービスを提供しています。TFN申請、ABN登録、年次のワーホリ タックスリターン、スーパーアニュエーション返金（DASP）、メディケア税免除まで、417・462ビザのワーキングホリデーメーカーに必要な手続きをワンストップでサポートいたします。',
-  }
+    answer: 'いいえ。TFN申請、ABN登録、スーパーアニュエーション（DASP）の申請、メディケア税の免除証明書も扱っており、417・462ビザで必要になる手続きはひととおりカバーしています。ワーキングホリデーの税金だけを扱っているため、すべて同じ担当が対応し、一般の会計事務所のように部署をまたいで回されることはありません。',
+  },
 ]
+
+const WA_TAX_RETURN = waUrl({ topic: 'tax-return', lang: 'ja' })
+
+// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
+const KICKER: CSSProperties = { fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }
+const BODY: CSSProperties   = { fontSize: '15px', lineHeight: 1.8 }
+const LEDE: CSSProperties   = { fontSize: '16.5px', lineHeight: 1.8 }
 
 export default async function JapaneseHomePage() {
   const gRating = await getGoogleRating()
 
-  // ─── Schema.org for Japanese page ───
   const webPageLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
     '@id': `${SITE_URL}/ja/#webpage`,
     url: `${SITE_URL}/ja`,
-    name: 'オーストラリア タックスリターン 還付金 | ワーホリ専門',
-    description: '417・462ビザのワーキングホリデーメーカー専門。タックスリターン還付金、TFN、スーパー（DASP）、ABNまで日本語ですべてオンライン。',
+    name: 'オーストラリア タックスリターン 還付金｜ワーホリ専門',
+    description: '417・462ビザ専門。税務上の居住区分、すべての雇用主、メディケア税の免除、実際の仕事に対応する控除を確認したうえでATOに提出します。',
     inLanguage: 'ja',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -180,7 +239,7 @@ export default async function JapaneseHomePage() {
     '@type': 'LocalBusiness',
     '@id': `${SITE_URL}/#business`,
     name: 'Working Holiday Tax',
-    description: 'オーストラリアのワーキングホリデービザ保持者向け税務サービス。',
+    description: 'オーストラリアのワーキングホリデービザ保持者向けタックスリターン。',
     url: SITE_URL,
     inLanguage: 'ja',
     aggregateRating: {
@@ -212,7 +271,6 @@ export default async function JapaneseHomePage() {
     ],
   }
 
-  // Organization schema with full service catalog - critical for AI search
   const organizationLd = {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
@@ -220,7 +278,6 @@ export default async function JapaneseHomePage() {
     name: 'Working Holiday Tax',
     url: SITE_URL,
     telephone: '+61424513998',
-    priceRange: '$$',
     image: `${SITE_URL}/og-image.png`,
     logo: {
       '@type': 'ImageObject',
@@ -228,81 +285,36 @@ export default async function JapaneseHomePage() {
       width: 512,
       height: 512,
     },
-    description: 'ワーキングホリデーメーカー（ビザサブクラス417・462）専門のオーストラリアの税務サービス。日本語をはじめ、どの言語でも対応。',
+    description: 'ワーキングホリデー（ビザサブクラス417・462）の税金だけを扱う税務サービス。お客様ご自身の言語で対応します。',
     foundingDate: '2020',
     knowsLanguage: ['en', 'de', 'ja'],
-    areaServed: {
-      '@type': 'Country',
-      name: 'Australia',
-    },
+    areaServed: { '@type': 'Country', name: 'Australia' },
     audience: {
       '@type': 'Audience',
       name: 'オーストラリアのワーキングホリデービザ保持者（サブクラス417・462）',
     },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'ワーキングホリデーメーカー向け税務・会計サービス',
+      name: 'ワーキングホリデーメーカー向け税務サービス',
       itemListElement: [
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'TFN（タックスファイルナンバー）取得代行',
-            description: 'ワーキングホリデーメーカーのためのTFN取得申請。',
-            url: `${SITE_URL}/ja/tfn`,
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'ABN（事業者番号）登録代行',
-            description: '個人事業主としてのABN登録。',
-            url: `${SITE_URL}/ja/abn`,
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'タックスリターン（確定申告）代行',
-            description: 'ATOへの年次タックスリターンの準備と提出。',
-            url: `${SITE_URL}/ja/tax-return`,
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'スーパーアニュエーション返金（DASP）申請',
-            description: '帰国後のスーパーアニュエーション（DASP）申請代行。',
-            url: `${SITE_URL}/ja/superannuation`,
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'メディケア税免除（Medicare Levy Exemption）申請',
-            description: 'ワーキングホリデーメーカー向けメディケア税免除証明書の申請。',
-            url: `${SITE_URL}/ja/medicare`,
-          },
-        },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'TFN（タックスファイルナンバー）取得代行', description: 'ワーキングホリデーメーカーのためのTFN取得申請。', url: `${SITE_URL}/ja/tfn` } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ABN（事業者番号）登録代行', description: '個人事業主としてのABN登録。', url: `${SITE_URL}/ja/abn` } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'タックスリターン代行', description: '居住区分、雇用主、メディケア税、控除を確認したうえでATOへ提出。', url: `${SITE_URL}/ja/tax-return` } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'スーパーアニュエーション返金（DASP）申請', description: '帰国後のスーパーアニュエーション（DASP）申請代行。', url: `${SITE_URL}/ja/superannuation` } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'メディケア税免除（Medicare Levy Exemption）申請', description: 'ワーキングホリデーメーカー向けメディケア税免除証明書の申請。', url: `${SITE_URL}/ja/medicare` } },
       ],
     },
-    sameAs: [
-    ],
     knowsAbout: [
       'オーストラリア税法',
+      'ワーキングホリデーの税務上の居住区分',
+      '日豪租税条約の無差別条項',
       'ワーキングホリデービザ サブクラス417',
       'ワーキングホリデービザ サブクラス462',
       'タックスファイルナンバー（TFN）',
       'オーストラリアビジネスナンバー（ABN）',
       'スーパーアニュエーション・DASP',
       'メディケア税免除',
-      'フェアワーク（Fair Work Australia）',
       'PAYG源泉徴収',
-      'バックパッカー税率',
     ],
   }
 
@@ -314,219 +326,241 @@ export default async function JapaneseHomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-12 lg:pb-12 text-center">
+      {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 pt-11 pb-11 lg:pt-14 lg:pb-14 text-center">
 
-          <div className="inline-flex items-center gap-2 mb-4 lg:mb-6 hero-animate">
-            <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>ワーホリ専門の税務サポート</span>
-          </div>
+          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '16px' }}>
+            ワーキングホリデービザ 417・462
+          </p>
 
-          <h1 className="font-serif font-black text-ink mx-auto hero-animate"
-            style={{ fontSize: 'clamp(28px, 5vw, 42px)', lineHeight: 1.12, letterSpacing: '-0.025em', marginBottom: '14px' }}>
-            {/* Desktop */}
-            <span style={{ display: 'block' }}>オーストラリアの</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン、</span>
-              <span style={{ display: 'block' }}>おまかせください。</span>
+          <h1 className="font-serif font-black text-ink hero-animate"
+            style={{ fontSize: 'clamp(27px, 4.6vw, 40px)', lineHeight: 1.32, letterSpacing: '-0.01em', marginBottom: '16px' }}>
+            <span style={{ display: 'block' }}>送信ボタンは誰でも押せます。</span>
+            <span style={{ display: 'block', color: '#0B5240' }}>大事なのはその前です。</span>
           </h1>
 
-          <p className="font-light mx-auto hero-animate-delay"
-            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
-            <span style={{ whiteSpace: 'nowrap' }}>417・462ビザ</span>のワーキングホリデーメーカー専門の税務サポート。
+          <p className="mx-auto hero-animate-delay"
+            style={{ ...LEDE, color: '#4C6459', maxWidth: '34ch', marginBottom: '26px' }}>
+            還付額を決めるのは5つ。どれも申告フォームには載っていません。
           </p>
 
-          <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4 hero-animate-delay-2">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
-              タックスリターンを依頼する →
-            </a>
+          <div className="hero-animate-delay-2">
+            <WaLink href={WA_TAX_RETURN} position="hero" topic="tax-return" lang="ja"
+              className="btn-primary inline-flex items-center justify-center gap-2"
+              style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
+              <IconWhatsApp />
+              WhatsAppで相談する
+            </WaLink>
+            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+              約1時間で返信します。まず質問だけでも大丈夫です。
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['信頼と実績のサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '世界中のワーホリに対応', '1時間以内に返信'].map((label, i) => (
-              <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
-                <CheckIcon />{label}
-              </span>
-            ))}
+          <div className="flex justify-center" style={{ marginTop: '20px' }}>
+            <GoogleRating variant="pill" lang="ja" />
           </div>
         </div>
       </section>
 
-      {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center reveal">
+      {/* ── 2. myGovとの比較 ─────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <span className="section-label center">選ばれる理由</span>
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>みんなが聞くこと</p>
 
-          <h2 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.12, letterSpacing: '-0.025em', maxWidth: '28ch', marginTop: '10px', marginBottom: '10px' }}>
-            417・462ビザのワーキングホリデー専門だから安心
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.5vw, 29px)', lineHeight: 1.45, letterSpacing: '-0.01em', marginBottom: '14px' }}>
+            <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>myGovは間違った申告も、</span>
+            <span style={{ display: 'block' }}>正しい申告と同じように受け付けます。</span>
           </h2>
 
-          <p className="font-light text-muted mx-auto"
-            style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.7, maxWidth: '40ch', marginBottom: '32px', textAlign: 'center' }}>
-            お客様が受け取るべきタックスリターン還付金を、漏れなく申告します。
+          <p style={{ ...LEDE, color: '#4C6459', maxWidth: '42ch', marginBottom: '26px' }}>
+            居住者だったのか、メディケア税があなたの負担だったのか、その職種で何が控除できるのか。画面上でそれを確かめる人は誰もいません。
           </p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8 reveal" style={{ marginBottom: '36px' }}>
-            {[
-              { title: 'ワーホリ税務の専門家', body: '417・462ビザのワーキングホリデーメーカーの税務だけを専門に扱うチーム。あなたに関わるルールを熟知しています。' },
-              { title: 'ATOワーホリ専門チーム', body: 'オーストラリア税務署（ATO）に登録された税理士が監督。ATOの最新ルールに完全準拠して申告します。' },
-              { title: '日本語で完全対応', body: '専門用語はわかりやすく説明。複雑な書類もこちらで代行するので、日本語だけで完結します。' },
-              { title: 'すべておまかせ', body: 'TFN取得からタックスリターン還付金の受け取りまで、オーストラリアでも帰国後でもすべてお任せください。' },
-            ].map((item, i) => (
-              <div key={i} className="why-us-card pt-4 lg:pt-6 text-center" style={{ borderTop: '1px solid #E2EFE9' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', marginBottom: '6px', lineHeight: 1.35 }}>{item.title}</h3>
-                <p className="font-light text-muted leading-[1.7]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)' }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ marginTop: '8px' }} className="lg:mt-4">
-            <Link href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height: '44px', padding: '0 24px', fontSize: '13.5px' }}>
-              タックスリターンを依頼する →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
-
-          <div className="text-center" style={{ marginBottom: '28px' }}>
-            <span className="section-label center">お客様の声</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', maxWidth: '30ch' }}>
-              ワーホリ参加者からのお声
-            </h2>
-          </div>
-
-          <GoogleReviews lang="ja" />
-
-          <div style={{ marginTop: '28px', paddingTop: '24px', borderTop: '1px solid #E2EFE9' }}>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
-              {[
-                { n: <GoogleRating variant="number" lang="ja" />, l: <GoogleRating variant="count" lang="ja" /> },
-                { n: '信頼と実績',  l: 'のサポート' },
-                { n: '1時間以内', l: 'スピード返信' },
-                { n: '100%',    l: '完全オンライン対応' },
-              ].map((s, i) => (
-                <div key={i} className="text-center py-2 lg:py-3">
-                  <p className="font-serif font-black text-forest-500"
-                    style={{ fontSize: 'clamp(18px, 2.8vw, 28px)', letterSpacing: '-0.03em', lineHeight: 1 }}>{s.n}</p>
-                  <p className="text-subtle"
-                    style={{ fontSize: 'clamp(11px, 1.1vw, 12.5px)', marginTop: '5px', lineHeight: 1.4 }}>{s.l}</p>
+          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            {COMPARISON.map((row, i) => (
+              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
+                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>myGovの場合</p>
+                  <p style={{ ...BODY, color: '#2A3C34' }}>{row.mygov}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
-
-          <div className="text-center" style={{ marginBottom: '36px' }}>
-            <span className="section-label center">ご利用の流れ</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px', maxWidth: '30ch' }}>
-              4ステップでタックスリターン還付金を申請
-            </h2>
-            <p className="font-light text-muted mx-auto"
-            style={{ fontSize: 'clamp(14px, 1.4vw, 16px)', lineHeight: 1.7, maxWidth: '40ch', marginBottom: '4px' }}>
-              <em className="not-italic text-forest-400">ワーキングホリデーメーカーのための、シンプルなプロセス。</em>
-            </p>
-          </div>
-
-          {/* Desktop 4-step horizontal */}
-          <div className="hidden lg:block" style={{ marginBottom: '56px' }}>
-            <div className="relative flex items-start">
-              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-5 h-[2px]"
-                style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 25%, #0B5240 75%, #C8EAE0 100%)' }}
-                aria-hidden="true" />
-              {STEPS.map((s, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center px-4" style={{ zIndex: 1 }}>
-                  <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '20px', boxShadow: '0 0 0 5px #fff, 0 0 0 6px #C8EAE0' }}>
-                    {s.n}
-                  </div>
-                  <p className="font-semibold text-ink text-center"
-                    style={{ fontSize: '14px', marginBottom: '8px', lineHeight: 1.3 }}>{s.title}</p>
-                  <p className="font-light text-muted text-center"
-                    style={{ fontSize: '12.5px', lineHeight: 1.7 }}>{s.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile vertical */}
-          <div className="lg:hidden flex flex-col" style={{ marginBottom: '32px' }}>
-            {STEPS.map((s, i) => (
-              <div key={i} className="flex gap-4" style={{ paddingBottom: i < STEPS.length - 1 ? '24px' : '0' }}>
-                <div className="flex flex-col items-center flex-shrink-0">
-                  <div className="rounded-full flex items-center justify-center font-bold text-white"
-                    style={{ width: '30px', height: '30px', background: '#0B5240', fontSize: '13px', flexShrink: 0 }}>
-                    {s.n}
-                  </div>
-                  {i < STEPS.length - 1 && (
-                    <div className="flex-1 w-px mt-2"
-                      style={{ minHeight: '22px', background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }}
-                      aria-hidden="true" />
-                  )}
-                </div>
-                <div style={{ paddingTop: '3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '4px' }}>{s.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.7 }}>{s.body}</p>
+                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
+                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>当社の場合</p>
+                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500 }}>{row.us}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="text-center" style={{ marginTop: '8px' }}>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
-              タックスリターンを依頼する →
-            </a>
-            <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>
-              今すぐ受給資格をチェック&nbsp;&bull;&nbsp;日本語で安心サポート
+          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.75, color: '#0B5240', marginTop: '26px', maxWidth: '36ch', fontWeight: 700 }}>
+            myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
+          </p>
+
+          <div style={{ marginTop: '22px' }}>
+            <WaLink href={WA_TAX_RETURN} position="section" topic="tax-return" lang="ja"
+              className="btn-primary inline-flex items-center justify-center gap-2"
+              style={{ height: '52px', padding: '0 28px', fontSize: '15px', borderRadius: '100px' }}>
+              <IconWhatsApp />
+              WhatsAppで相談する
+            </WaLink>
+            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '10px' }}>
+              約1時間で返信します。まず質問だけでも大丈夫です。
             </p>
           </div>
         </div>
       </section>
+      {/* ── 3. 3つの数字 ─────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-      {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            タックスリターンの還付額は何で決まりますか？
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '30px' }}>
+            多くの場合、次の3つです。
+          </p>
 
-          <div className="text-center" style={{ marginBottom: '28px' }}>
-            <span className="section-label center">サービス一覧</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px' }}>
-              ワーホリの税務をトータルサポート。
-            </h2>
-            <p className="font-light text-muted mx-auto"
-              style={{ fontSize: 'clamp(13px, 1.3vw, 15px)', textAlign: 'center', lineHeight: 1.7, maxWidth: '44ch' }}>
-              オーストラリアでの最初の仕事から、帰国後のタックスリターン還付金まで。
-            </p>
+          <div className="grid gap-5 sm:grid-cols-3">
+            {FIGURES.map((f) => (
+              <div key={f.figure} style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
+                <p className="font-serif font-black text-forest-500"
+                  style={{ fontSize: '33px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>
+                  {f.figure}
+                </p>
+                <p style={{ ...BODY, color: '#2A3C34' }}>{f.body}</p>
+              </div>
+            ))}
           </div>
 
-          <div className="services-grid grid grid-cols-1 lg:grid-cols-5 gap-3 lg:gap-4 reveal">
+          <p style={{ fontSize: '13px', lineHeight: 1.75, color: '#4C6459', marginTop: '22px', maxWidth: '48ch' }}>
+            日本、イギリス、ドイツのパスポートはいずれも無差別条項の対象なので、居住区分の問題は当社のお客様のほぼ全員に関係します。{' '}
+            <Link href="/ja/tax-residency" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>居住区分の決まり方</Link>
+          </p>
+        </div>
+      </section>
+
+      {/* ── 4. 保証 ──────────────────────────────────────────────────────── */}
+      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
+          <p className="font-serif font-black text-white mx-auto"
+            style={{ fontSize: 'clamp(21px, 2.8vw, 29px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
+            還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。
+          </p>
+          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
+            料金は定額で、戻ってくる金額に対する歩合ではありません。作業を始める前にWhatsAppでお伝えするので、後から料金で驚くことはありません。
+          </p>
+        </div>
+      </section>
+
+      {/* ── 5. すべてのタックスリターンで確認すること ────────────────────── */}
+      <section id="how-it-works" className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>実際の作業</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            すべてのタックスリターンで確認していること
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '30px' }}>
+            仕事が1つでも6つでも、同じ5つを同じ順番で確認します。そのうち4つは、申告に何かを入力する前に終わっています。
+          </p>
+
+          <ol className="flex flex-col" style={{ gap: '22px' }}>
+            {ANALYSIS.map((s) => (
+              <li key={s.n} className="flex gap-4">
+                <span className="font-serif font-black flex-shrink-0"
+                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '4px' }}
+                  aria-hidden="true">{s.n}</span>
+                <div>
+                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '6px' }}>{s.title}</h3>
+                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+
+      {/* ── 6. TFNのみか、TFNとABNか ─────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            あなたの1年はどちらでしたか？
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '26px' }}>
+            申告の中身が変わるので、話す前に知らせてほしい唯一の点です。当てはまる方を選ぶと、その内容がメッセージに入ります。
+          </p>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="bg-white rounded-[14px] flex flex-col"
+              style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFNのみ</h3>
+              <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
+                どの仕事も雇用先の給与計算を通していました。TFNを提出し、給与明細ごとに税金が引かれ、各雇用主があなたのインカムステートメントを報告しています。
+              </p>
+              <WaLink href={waUrl({ topic: 'tax-return', lang: 'ja', tier: 'tfn' })} position="inline" topic="tax-return" lang="ja" tier="tfn"
+                className="btn-primary inline-flex items-center justify-center gap-2"
+                style={{ height: '48px', fontSize: '15px', borderRadius: '100px', width: '100%' }}>
+                <IconWhatsApp />
+                こちらでした
+              </WaLink>
+            </div>
+
+            <div className="bg-white rounded-[14px] flex flex-col"
+              style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFNとABN</h3>
+              <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
+                途中で、給与ではなく請求書で支払いを受けた時期があります。フードデリバリー、建設現場の下請け、ABN宛てに支払った農場など。その収入からは源泉徴収がされておらず、申告での扱いも異なります。
+              </p>
+              <WaLink href={waUrl({ topic: 'abn', lang: 'ja', tier: 'tfn-abn' })} position="inline" topic="abn" lang="ja" tier="tfn-abn"
+                className="btn-primary inline-flex items-center justify-center gap-2"
+                style={{ height: '48px', fontSize: '15px', borderRadius: '100px', width: '100%' }}>
+                <IconWhatsApp />
+                こちらでした
+              </WaLink>
+            </div>
+          </div>
+
+          <p style={{ fontSize: '14px', color: '#4C6459', marginTop: '18px', lineHeight: 1.8 }}>
+            どちらか分からない場合は{' '}
+            <WaLink href={waUrl({ topic: 'general', lang: 'ja', tier: 'unsure' })} position="inline" topic="general" lang="ja" tier="unsure"
+              className="inline-flex items-center"
+              style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline', minHeight: '44px' }}>
+              どんな仕事だったか教えてください
+            </WaLink>
+          </p>
+        </div>
+      </section>
+
+      {/* ── 7. サポート内容 ──────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>サポート内容</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '26px' }}>
+            最初の給与明細から、帰国後についてくるお金まで
+          </h2>
+
+          <div className="services-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
             {SERVICES.map((s) => (
               <Link key={s.href} href={s.href}
                 className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
                 style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-                <span className="font-medium uppercase text-subtle" style={{ fontSize: '10px', letterSpacing: '0.1em', marginBottom: '10px' }}>{s.n}</span>
+                <span className="text-muted" style={{ ...KICKER, marginBottom: '10px' }}>{s.n}</span>
                 <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
                   style={{ marginBottom: '10px' }}>{s.icon}</span>
-                <h3 className="font-semibold text-ink service-card-title" style={{ fontSize: '13.5px', marginBottom: '5px' }}>{s.title}</h3>
-                <p className="font-light text-muted leading-[1.65] flex-1" style={{ fontSize: '12px', marginBottom: '12px' }}>{s.desc}</p>
-                <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3" style={{ fontSize: '12px' }}>
+                <h3 className="font-semibold text-ink service-card-title" style={{ fontSize: '15px', marginBottom: '5px' }}>{s.title}</h3>
+                <p className="flex-1" style={{ fontSize: '13px', lineHeight: 1.75, color: '#4C6459', marginBottom: '12px' }}>{s.desc}</p>
+                <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3" style={{ fontSize: '13px' }}>
                   詳しく見る →
                 </span>
               </Link>
@@ -535,16 +569,42 @@ export default async function JapaneseHomePage() {
         </div>
       </section>
 
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="text-center mb-8">
-            <span className="section-label center">よくあるご質問</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px' }}>
-              すぐにわかる答え
-            </h2>
+      {/* ── 8. 信頼 ──────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            ワーキングホリデーの税金だけを扱っています。
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '46ch', marginBottom: '28px' }}>
+            作成するタックスリターンは、すべて417・462ビザの方のものです。だからこそ、どの申告でも同じ4つの問いが出てきます。
+          </p>
+
+          <GoogleReviews lang="ja" />
+
+          <div className="rounded-[12px] flex gap-3"
+            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
+              <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
+              <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
+              <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <p style={{ ...BODY, color: '#2A3C34' }}>
+              <strong style={{ color: '#080F0D' }}>税理士がmyGovのログイン情報を尋ねることは絶対にありません。</strong>
+              当社も尋ねません。必要がないからです。尋ねてくる相手は当社ではありません。
+            </p>
           </div>
+        </div>
+      </section>
+
+      {/* ── 9. よくある質問 ─────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
+            相談の前によく聞かれること
+          </h2>
 
           <div className="flex flex-col" style={{ gap: '4px' }}>
             {FAQS.map((f, i) => (
@@ -558,21 +618,70 @@ export default async function JapaneseHomePage() {
             ))}
           </div>
 
-          <p className="text-center" style={{ marginTop: '28px', fontSize: '14px', color: '#587066' }}>
-            その他のご質問は <Link href="/ja/contact" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>こちらからお問い合わせください</Link>
+          <p style={{ fontSize: '14px', color: '#4C6459', marginTop: '24px', lineHeight: 1.8 }}>
+            ここにない質問は{' '}
+            <Link href="/ja/contact" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>お問い合わせ</Link>
+            からどうぞ。
           </p>
         </div>
       </section>
 
-      <CtaBand
-        eyebrow="今すぐ始める"
-        heading="日本からでも、"
-        headingEm="オーストラリアの税金対応します。"
-        sub="税務のすべてを、最初から最後までお任せください。"
-        primaryLabel="タックスリターンを依頼する"
-        trustLine=""
-        clipTop
-      />
+      {/* ── 10. ガイド ───────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>ガイド</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            先に全部読んでおきたい方へ
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '24px' }}>
+            申告の結果を決める同じ4つの問いについて書いています。連絡させるために内容を出し惜しみすることはありません。
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {GUIDES.map((g) => (
+              <Link key={g.href} href={g.href}
+                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
+                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
+                <p style={{ fontSize: '13px', lineHeight: 1.75, color: '#4C6459' }}>{g.desc}</p>
+              </Link>
+            ))}
+          </div>
+
+          <p style={{ marginTop: '18px' }}>
+            <Link href="/ja/blog" className="inline-flex items-center"
+              style={{ color: '#0B5240', fontWeight: 600, fontSize: '15px', textDecoration: 'underline', minHeight: '44px' }}>
+              ガイド一覧 →
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      {/* ── 最後のCTA ────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#0B5240' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
+          <h2 className="font-serif font-black text-white mx-auto"
+            style={{ fontSize: 'clamp(21px, 2.8vw, 29px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '14px' }}>
+            1年間の状況を教えてください
+          </h2>
+          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '38ch', marginBottom: '24px' }}>
+            どこで働いたか、だいたいの時期、ABNで請求したことがあるかどうか。それだけあれば、今の状況をお伝えできます。
+          </p>
+          <WaLink href={WA_TAX_RETURN} position="footer" topic="tax-return" lang="ja"
+            className="btn-primary inline-flex items-center justify-center gap-2"
+            style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
+            <IconWhatsApp />
+            WhatsAppで相談する
+          </WaLink>
+          <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.55)', marginTop: '12px' }}>
+            約1時間で返信します。まず質問だけでも大丈夫です。
+          </p>
+        </div>
+      </section>
+
+      <MobileCta href={WA_TAX_RETURN} lang="ja" topic="tax-return" />
     </>
   )
 }

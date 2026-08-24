@@ -40,7 +40,7 @@ const sections: Section[] = [
       'Client means the individual who uses the Service and enters into this Agreement.',
       'Provider means Working Holiday Tax, operating under the supervision of a registered tax agent as outlined above.',
       'Service means the tax-related services provided by the Provider, including tax return preparation, lodgment, and related support for Australian tax matters.',
-      'Eligibility Assessment means the review carried out by the Provider of the Client\u2019s income, residency position and entitlements, in order to identify available deductions, offsets and exemptions and to estimate the Client\u2019s likely Refund.',
+      'Review means the assessment carried out by the Provider of the Client\u2019s income, residency position and entitlements, in order to identify the deductions, offsets and exemptions available to the Client. The Review forms part of the single engagement described in clause 3 and is not separately charged.',
       'Tax Return means the Australian income tax return prepared and lodged on behalf of the Client with the Australian Taxation Office (ATO).',
       "Refund means any refund, payment, or credit issued by the ATO and paid to the Client's nominated account.",
     ],
@@ -51,7 +51,7 @@ const sections: Section[] = [
   },
   {
     title: '3. Nature of Service',
-    body: 'Our service is provided in two stages: an Eligibility Assessment, in which we review your circumstances and identify what you are entitled to claim, and, if you choose to proceed, the preparation and lodgment of your tax return based on the information you provide. Each stage is separately priced under clause 6, and you will be told the applicable fee before any chargeable work begins. All final tax assessments, refunds, or decisions are made solely by the ATO. We do not guarantee:',
+    body: 'Our service is a single engagement. We review your circumstances, including your residency position for tax purposes, any Medicare levy exemption available to you and the deductions that apply to the work you actually did, and we then prepare and lodge your tax return based on the information you provide. The applicable fee is disclosed to you and accepted by you before the engagement begins, and is payable in advance. All final tax assessments, refunds, or decisions are made solely by the ATO. We do not guarantee:',
     items: [
       'Any tax refund amount.',
       'Any specific tax outcome.',
@@ -73,22 +73,20 @@ const sections: Section[] = [
   },
   {
     title: '6. Fees and Charges',
-    body: 'Our service is delivered in two stages, each with its own fee. Both fees are disclosed to you and accepted by you before any chargeable work begins.',
+    body: 'Our service has a single fee, which depends on the type of income you received. The applicable fee is disclosed to you and accepted by you before any work begins, and is payable in advance.',
     items: [
-      'Eligibility Assessment (AUD $110, GST inclusive): a review of your income, residency position and entitlements, identifying the deductions, offsets and exemptions available to you and estimating your likely refund. This fee is charged for the professional time spent on that review. It is not a charge for lodgment, which is a separate service.',
-      'No entitlement, no fee: if the Eligibility Assessment concludes that you are not entitled to a refund, the $110 fee is waived in full and nothing is payable by you.',
-      'Full service (AUD $220, GST inclusive): if the Eligibility Assessment identifies an entitlement and you instruct us to prepare and lodge your return, the total fee for the engagement is $220. The $110 Eligibility Assessment fee is credited in full towards that amount, so the total payable never exceeds $220.',
-      'If you choose to lodge independently or through another provider: where the Eligibility Assessment has been completed and identifies an entitlement, the $110 Eligibility Assessment fee remains payable for the work already performed. No further amount is payable and you remain free to lodge your return however you choose.',
-      'Return prepared and awaiting your approval: if you have instructed us to proceed to preparation and we have completed your Tax Return and made it available to you for review, approval or signature, the full engagement fee of $220 is payable, whether or not you subsequently authorise us to lodge it. At that point the work has been performed and delivered; only lodgment, which is an administrative step, remains outstanding. This does not apply where you withdraw because we have failed to provide the Service with due care and skill, or otherwise failed to meet the consumer guarantees under the Australian Consumer Law.',
-      'Where the full engagement fee becomes payable under the paragraph above, no additional charge applies and the prepared Tax Return remains available to you.',
-      'Work outside the scope of a standard individual return (for example prior-year returns, business or ABN schedules, or amendments to a previously lodged return) will be separately quoted and agreed in writing before that work begins.',
-      'Invoices are payable within 7 days of issue.',
+      'Tax return, TFN income only (AUD $220, GST inclusive): the full engagement, covering the Review of your circumstances and the preparation and lodgment of your Tax Return.',
+      'Tax return, TFN and ABN income (AUD $385, GST inclusive): as above, where you also received income under an Australian Business Number, which requires your business income and expenses to be reconciled and your GST position considered.',
+      'Refund shortfall guarantee: if the Refund you receive is less than the fee you paid, we refund the difference, so you are never out of pocket for our service. Where no Refund is payable to you at all, the fee is refunded in full.',
+      'The fee is charged for the professional work performed. It is a fixed amount and is never calculated as a percentage of your Refund.',
+      'Return prepared and awaiting your approval: if we have completed your Tax Return and made it available to you for review, approval or signature, the fee is payable in full, whether or not you subsequently authorise us to lodge it. At that point the work has been performed and delivered; only lodgment, which is an administrative step, remains outstanding. This does not apply where you withdraw because we have failed to provide the Service with due care and skill, or otherwise failed to meet the consumer guarantees under the Australian Consumer Law.',
+      'Work outside the scope of a standard individual return (for example prior-year returns, additional business schedules, or amendments to a previously lodged return) will be separately quoted and agreed in writing before that work begins.',
       'Nothing in this clause limits, excludes or modifies any right or remedy you may have under the Australian Consumer Law.',
     ],
   },
   {
     title: '7. Payment Terms',
-    body: 'Payment is required upon lodgment of your Tax Return, or, where clause 6 provides that a fee becomes payable before lodgment, upon the completion of the relevant stage of work. Payment does not affect or guarantee your refund or ATO outcome.',
+    body: 'The fee is payable in advance. Once payment has been received we send you the full questionnaire and begin work. Payment does not affect or guarantee your Refund or ATO outcome, and is subject to the refund shortfall guarantee in clause 6.',
   },
   {
     title: '8. Limitation of Liability',
@@ -187,7 +185,7 @@ const sections: Section[] = [
     body: 'Your Refund is paid by the ATO, not by the Provider. You should be aware that:',
     items: [
       'The ATO may reduce or withhold your Refund to offset an existing debt, including a tax debt, a Higher Education Loan Program (HELP) debt, a Child Support liability, or a debt owed to another government agency.',
-      'An offset of this kind does not change the fees payable under clause 6, because those fees are charged for the professional work performed, not for the size of the Refund you ultimately receive.',
+      'An offset of this kind does not change the fee payable under clause 6, and does not trigger the refund shortfall guarantee, because the amount offset has been applied to a debt you owed rather than lost. The fee is charged for the professional work performed, not for the size of the Refund you ultimately receive.',
       'The Refund is paid directly into the bank account you nominate. The Provider does not receive, hold or deduct fees from your Refund.',
       'You are responsible for the accuracy of the bank account details you provide. The Provider is not liable for a Refund paid to an incorrect account where those details were supplied by you.',
       'Where you nominate an overseas account, payment timing and any bank charges are determined by the ATO and the financial institutions involved.',
@@ -197,8 +195,8 @@ const sections: Section[] = [
     title: '23. Cancellation and Cooling-off',
     body: 'You may cancel this Agreement at any time by notifying us in writing. The consequences are as follows:',
     items: [
-      'Before the Eligibility Assessment begins, no fee is payable.',
-      'After the Eligibility Assessment has been completed, clause 6 determines what is payable.',
+      'Before we begin work on your Tax Return, the fee is refunded to you in full.',
+      'Once we have begun work, clause 6 determines what is payable.',
       'If this Agreement is an unsolicited consumer agreement under the Australian Consumer Law (for example, where we first approached you), you have a statutory cooling-off period of 10 business days during which you may terminate the Agreement, and we will not supply chargeable services or accept payment during that period unless you ask us to and the law permits it.',
       'Nothing in this clause limits your statutory rights to a remedy where the Service is not supplied with due care and skill.',
     ],
@@ -228,7 +226,7 @@ export default function ClientAgreementPage() {
         kicker="Legal"
         title="Client Agreement"
         titleEm=""
-        sub="Last updated: July 2026. By using our services you agree to these terms."
+        sub="Last updated: August 2026. By using our services you agree to these terms."
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Client Agreement' }]}
       />
 

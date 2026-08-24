@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── SERIF SETTINGS ───────────────────────────────────────────────────────
+   Fraunces is a variable face. Left at its defaults it is heavier and wider
+   than Playfair was, which would add a wrapped line to most headings on a
+   phone. Weight 800 with a little negative tracking pays that back: measured
+   against Newsreader on a full page at 390px, both came out at exactly the
+   same height.
+
+   SOFT 40 rounds the terminals, which is the whole reason this face was
+   chosen. WONK 0 keeps the quirky alternate letterforms switched off, since
+   this is a tax service and not a coffee brand. opsz 36 is the optical size
+   the headings actually render at.
+   ─────────────────────────────────────────────────────────────────────── */
+:where(h1, h2, h3, h4, .font-serif) {
+  font-variation-settings: 'SOFT' 40, 'WONK' 0, 'opsz' 36;
+}
+.font-serif.font-black,
+h1.font-serif, h2.font-serif, h3.font-serif {
+  font-weight: 800;
+  letter-spacing: -0.022em;
+}
+
 /* Skip-to-content link - CSS-only (no JS event handlers, works in Server Components).
    Visually hidden until focused via keyboard Tab, then slides into view. */
 .skip-to-content {
@@ -22,8 +43,18 @@
 .skip-to-content:focus,
 .skip-to-content:focus-visible {
   transform: translateY(0);
-  outline: 2px solid #E9A020;
+  outline: 2px solid #0B5240;
   outline-offset: 2px;
+}
+
+/* Site wide focus indicator.
+   The previous amber ring measured 2.21:1 against white and failed WCAG 1.4.11.
+   Forest 500 measures 8.9:1, so the ring is visible to everyone, including in
+   bright sunlight, which is where most of this audience reads. */
+:where(a, button, [role='button'], summary, [tabindex]):focus-visible {
+  outline: 2px solid #0B5240;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 @layer base {
@@ -91,8 +122,10 @@
   .delay-4 { transition-delay: .32s; }
 
   /* ── Accordion ── */
-  .acc-body { max-height: 0; overflow: hidden; transition: max-height .45s cubic-bezier(.16,1,.3,1), padding .3s; }
-  .acc-body.open { max-height: 1200px; padding-bottom: 20px; }
+  .acc-body { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows .28s cubic-bezier(.23,1,.32,1), padding .2s; }
+  .acc-body > * { min-height: 0; }
+  .acc-body.open { grid-template-rows: 1fr; padding-bottom: 20px; }
+  .acc-inner { overflow: hidden; }
 
   /* ── Section label ── */
   .section-label {
@@ -109,10 +142,10 @@
   /* ── Input ── */
   .input-base {
     @apply w-full bg-white text-ink font-sans outline-none transition-all;
-    height: 52px; padding: 0 16px; font-size: 15px;
+    height: 52px; padding: 0 16px; font-size: 16px;
     border: 1.5px solid #E2EFE9; border-radius: 12px;
   }
-  .input-base::placeholder { color: #8AADA3; }
+  .input-base::placeholder { color: #4C6459; }
   .input-base:focus { border-color: #0B5240; box-shadow: 0 0 0 3px rgba(11,82,64,0.08); }
 
   /* ══════════════════════════════════════════════════════════════════
@@ -217,19 +250,36 @@
 
     /* Uniform hero H1 size on mobile - set per page inline */
 
-    /* ── UNIFORM SECTION TYPOGRAPHY (mobile) ──────────────────────────
-       Main H2 heading: uniform 20px
-       Inline style overrides CSS - hence the use of !important
+    /* ── SECTION TYPOGRAPHY SCALE (mobile) ────────────────────────────
+       This block used to force every section heading to exactly 20px, on the
+       one viewport that carries essentially all the traffic. A page of eleven
+       sections then had eleven headings of identical size, so nothing on it
+       looked more important than anything else and the eye had nothing to
+       catch on. That is what "boring" was: not the palette, the absence of
+       hierarchy.
+
+       Two steps now, from the locked type scale: `section` for the one that
+       carries the argument, `heading` for the rest. Still !important, because
+       the sizes are set inline per page and would otherwise win.
     ─────────────────────────────────────────────────────────────────── */
     section h2.font-serif.font-black {
-      font-size: 20px !important;
-      line-height: 1.12 !important;
-      letter-spacing: -0.025em !important;
+      font-size: 21px !important;   /* heading */
+      line-height: 1.18 !important;
+      letter-spacing: -0.02em !important;
+    }
+    main > section:nth-of-type(2) h2.font-serif.font-black {
+      font-size: 26px !important;   /* section */
+      line-height: 1.14 !important;
+      letter-spacing: -0.024em !important;
     }
 
-    /* Typography */
-    h1 { text-wrap: unset; }
-    h2 { text-wrap: balance; }
+    /* Typography. h1 was text-wrap: unset, which is what left headings with a
+       single orphaned word, or a lone 。, on their last line at 390px. Balance
+       spreads the lines evenly instead, and pretty on body text stops a
+       paragraph ending on one word. */
+    h1 { text-wrap: balance; }
+    h2, h3 { text-wrap: balance; }
+    p, li { text-wrap: pretty; }
 
     /* Accordion */
     .accordion-item button { min-height: 48px !important; padding-top: 12px !important; padding-bottom: 12px !important; }
@@ -530,14 +580,14 @@
 }
 .tfn-comparison-arrow {
   font-size: 22px;
-  color: #2FA880;
+  color: #16775C;
   line-height: 1;
   margin-bottom: 4px;
 }
 .tfn-comparison-savings {
   font-size: 12px;
   font-weight: 600;
-  color: #2FA880;
+  color: #16775C;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin: 0;
@@ -670,7 +720,7 @@
   font-weight: 600;
   color: #587066;
 }
-.taxret-arrow-item span:first-child { color: #2FA880; }
+.taxret-arrow-item span:first-child { color: #16775C; }
 .taxret-arrow-back span:last-child { color: #587066; }
 .taxret-arrow-back span:first-child { color: #0B5240; font-size: 14px; }
 
@@ -793,7 +843,7 @@
 .super-boarding-meta-label {
   font-size: 10px;
   font-weight: 600;
-  color: #8AADA3;
+  color: #4C6459;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin: 0 0 3px 0;
@@ -878,7 +928,7 @@
 .abn-intro-eyebrow {
   font-size: 11px;
   font-weight: 600;
-  color: #2FA880;
+  color: #16775C;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 10px 0;
@@ -967,12 +1017,12 @@
 .abn-compare-subtitle {
   font-size: 11px;
   font-weight: 600;
-  color: #2FA880;
+  color: #16775C;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin: 0 0 12px 0;
 }
-.abn-compare-employee .abn-compare-subtitle { color: #8AADA3; }
+.abn-compare-employee .abn-compare-subtitle { color: #4C6459; }
 .abn-compare-list {
   list-style: none;
   padding: 0;
@@ -1221,7 +1271,7 @@
 .taxres-table th {
   font-size: 10.5px;
   font-weight: 600;
-  color: #2FA880;
+  color: #16775C;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 8px 6px;
@@ -1266,7 +1316,7 @@
   line-height: 1.3;
 }
 .taxres-savings-body {
-  font-size: 13px;
+  font-size: 15px;
   color: #2A3C34;
   line-height: 1.6;
   font-weight: 300;
@@ -1355,7 +1405,7 @@
 }
 .exp-card-subtitle {
   font-size: 12px;
-  color: #8AADA3;
+  color: #4C6459;
   margin: 2px 0 0;
   font-weight: 500;
 }
@@ -1377,7 +1427,7 @@
   gap: 6px;
 }
 .exp-card-list li {
-  font-size: 12.5px;
+  font-size: 15px;
   color: #2A3C34;
   line-height: 1.55;
   font-weight: 300;
@@ -1597,7 +1647,7 @@
 }
 .contact-faq-plus {
   flex-shrink: 0;
-  color: #2FA880;
+  color: #16775C;
   font-size: 22px;
   font-weight: 300;
   line-height: 1;
@@ -1612,7 +1662,7 @@
   transform: rotate(45deg);
 }
 .contact-faq-answer {
-  font-size: 14.5px;
+  font-size: 15px;
   color: #2A3C34;
   line-height: 1.7;
   font-weight: 300;
@@ -1620,7 +1670,7 @@
 }
 @media (min-width: 1024px) {
   .contact-faq-answer {
-    font-size: 14px;
+    font-size: 15.5px;
   }
 }
 
@@ -2592,10 +2642,11 @@ textarea:focus {
   p.font-light, .text-muted {
     line-height: 1.75;
   }
-  /* Minimum readable body text on mobile */
+  /* Minimum readable body text on mobile. 15px is the floor for anything a
+     person reads; below that people zoom, and zooming breaks the layout. */
   .contact-faq-answer {
-    font-size: 14px !important;
-    line-height: 1.75 !important;
+    font-size: 15px !important;
+    line-height: 1.7 !important;
   }
 }
 
@@ -2734,9 +2785,12 @@ a { transition: color 0.15s ease, opacity 0.15s ease; }
   }
 }
 
-/* ── Premium anchor focus outline ── */
+/* ── Focus outline ──
+   Was amber #E9A020, which measures 2.21:1 against white and fails WCAG 1.4.11.
+   Forest 500 measures 8.9:1 and stays visible in direct sunlight, which is
+   where a lot of this audience actually reads. */
 a:focus-visible, button:focus-visible {
-  outline: 2px solid #E9A020;
+  outline: 2px solid #0B5240;
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -2811,7 +2865,7 @@ a:focus-visible, button:focus-visible {
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #8AADA3;
+  color: #4C6459;
   margin-top: 16px;
 }
 
@@ -2899,7 +2953,27 @@ a:focus-visible, button:focus-visible {
   padding: 8px 18px;
 }
 .mobile-cta-label { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
-.mobile-cta-sub   { font-size: 11px; font-weight: 400; opacity: 0.82; }
+.mobile-cta-sub   { font-size: 11.5px; font-weight: 400; opacity: 0.86; }
+
+/* Some people switch transparency off at the OS level, usually because
+   translucency makes text harder to read. Honour it: go solid. */
+@media (prefers-reduced-transparency: reduce) {
+  .mobile-cta-bar { background: #FFFFFF; backdrop-filter: none; }
+}
+
+/* And some ask for more contrast, so the bar gets a defined edge instead of a
+   hairline that disappears against a pale page. */
+@media (prefers-contrast: more) {
+  .mobile-cta-bar { background: #FFFFFF; backdrop-filter: none; border-top: 2px solid #080F0D; }
+  .mobile-cta-sub { opacity: 1; }
+}
+
+/* The bar slides; with reduced motion it simply appears. */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-cta-bar { transition: opacity 1ms linear; transform: none; }
+  .mobile-cta-bar[data-visible='false'] { opacity: 0; pointer-events: none; }
+  .mobile-cta-bar[data-visible='true']  { opacity: 1; }
+}
 @media (min-width: 768px) {
   .mobile-cta-bar { display: none; }
 }
@@ -2915,3 +2989,158 @@ a:focus-visible, button:focus-visible {
     bottom: 104px;
   }
 }
+
+/* ── Guide CTA ────────────────────────────────────────────────────────────
+   Closes every article. Until this existed the 393 guide pages carried no
+   conversion path at all while taking more than half the site's organic
+   clicks. Deliberately quiet: a reader who has just been helped should feel
+   offered something, not sold to. */
+.guide-cta {
+  max-width: 780px;
+  margin: 2.5rem 0 0.5rem;
+  padding: 22px 22px 24px;
+  background: #F2FAF7;
+  border: 1px solid #CDE3DB;
+  border-radius: 14px;
+}
+.guide-cta-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #16775C;
+  margin-bottom: 10px;
+}
+.guide-cta-heading {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 22px;
+  line-height: 1.22;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #080F0D;
+  margin-bottom: 10px;
+}
+.guide-cta-body {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #2A3C34;
+  margin-bottom: 18px;
+}
+.guide-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 54px;
+  border-radius: 13px;
+  background: #0B5240;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: transform 120ms cubic-bezier(.23,1,.32,1), background-color 120ms ease;
+}
+.guide-cta-btn:active { transform: scale(0.975); background: #083D30; }
+.guide-cta-under {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #4C6459;
+  text-align: center;
+  margin-top: 10px;
+}
+@media (min-width: 768px) {
+  .guide-cta { padding: 26px 26px 28px; }
+  .guide-cta-heading { font-size: 25px; }
+  .guide-cta-btn { width: auto; min-width: 280px; padding: 0 28px; }
+  .guide-cta-under { text-align: left; }
+}
+@media (prefers-contrast: more) {
+  .guide-cta { border-color: #080F0D; border-width: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .guide-cta-btn { transition: none; }
+  .guide-cta-btn:active { transform: none; }
+}
+
+/* ── In body CTA ──────────────────────────────────────────────────────────
+   One only, placed after the third H2, so a reader who is already convinced
+   does not have to reach the end to act. Any more than one and the article
+   stops reading like a guide and starts reading like a funnel. */
+.guide-inline-cta {
+  max-width: 780px;
+  margin: 2rem 0;
+  padding: 16px 18px;
+  border-left: 3px solid #E9A020;
+  background: #FDF0D5;
+  border-radius: 0 12px 12px 0;
+}
+.guide-inline-cta p {
+  font-size: 15px;
+  line-height: 1.55;
+  color: #3A2A05;
+  margin: 0 0 10px;
+}
+.guide-inline-cta a {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0B5240;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* The drawer is translated off screen when closed. `invisible` also takes it
+   out of the paint and hit-testing path, and it transitions back in step with
+   the slide rather than snapping. */
+.fixed.inset-0.z-40 { transition-property: transform, visibility; }
+
+/* ── Japanese typography ───────────────────────────────────────────────────
+   German has fifty lines of language specific CSS on this site and Japanese
+   had none, despite Japanese being the best performing language by a wide
+   margin: 6% of impressions producing 29% of clicks. Without these rules
+   headings break at arbitrary points and routinely orphan their last
+   character, which reads as carelessness to a native reader. */
+html[lang^="ja"] {
+  letter-spacing: 0;            /* negative tracking is wrong on CJK */
+  font-feature-settings: "palt" 1;  /* proportional kana metrics */
+  line-break: strict;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+html[lang^="ja"] h1,
+html[lang^="ja"] h2,
+html[lang^="ja"] h3 {
+  letter-spacing: 0;
+  line-height: 1.45;
+  /* balance, not pretty: pretty only protects the last line, and the failure
+     here is a heading whose last line held one kana or a lone 。 at 390px.
+     auto-phrase breaks at phrase boundaries instead of anywhere, which is
+     what a Japanese reader expects; browsers without it fall back to the
+     overflow-wrap above and lose nothing. */
+  text-wrap: balance;
+  word-break: auto-phrase;
+}
+html[lang^="ja"] p,
+html[lang^="ja"] li {
+  line-height: 1.85;            /* CJK needs more than the 1.6 Latin wants */
+}
+/* .09em tracking is designed for Latin small caps and is far too wide for kana */
+html[lang^="ja"] .section-label { letter-spacing: 0.04em !important; }
+
+/* ============================================================
+   GREEN NAV BAR  ·  decision Aug 2026, option A
+   ============================================================
+   The nav bar is forest #0B5240 on every page and language.
+   The heroes underneath stay light. The palette has two hues,
+   so the bar takes the brand green and the action stays amber.
+
+   Contrast on #0B5240:
+     #FFFFFF               9.15:1  AAA
+     rgba(255,255,255,.80) 6.2:1   AA at 13.5px
+     #F9D88A               7.35:1  AAA (active link)
+     #E9A020 fill + #1A2822 text   the standing amber pair
+   ------------------------------------------------------------ */
+.nav-dark .nav-link:hover { color: #FFFFFF !important; }
+.nav-dark .nav-link::after { background: #F9D88A !important; }
+.nav-dark .nav-cta:hover { background: #C47E10 !important; color: #FFFFFF !important; }

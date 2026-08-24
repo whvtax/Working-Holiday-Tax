@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { WA_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
   title: 'Page Not Found',
@@ -22,7 +22,7 @@ export default function NotFound() {
           <Link href="/" className="btn-primary" style={{ height: '46px', padding: '0 24px', fontSize: '13.5px' }}>
             Back to home →
           </Link>
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-ghost-dark" style={{ height: '46px', padding: '0 20px', fontSize: '13.5px' }}>
+          <a href={waUrl({ topic: 'general', lang: 'en' })} target="_blank" rel="noopener noreferrer" className="btn-ghost-dark" style={{ height: '46px', padding: '0 20px', fontSize: '13.5px' }}>
             Contact us
           </a>
         </div>

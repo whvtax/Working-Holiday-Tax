@@ -1,495 +1,547 @@
 import type { Metadata } from 'next'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
-import { GoogleRating } from '@/components/ui/GoogleRating'
+import type { CSSProperties } from 'react'
 import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
-import { NextStep } from '@/components/ui/NextStep'
-import { Accordion } from '@/components/ui/Accordion'
+import { GoogleRating } from '@/components/ui/GoogleRating'
+import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { NextStep } from '@/components/ui/NextStep'
+import { SITE_URL } from '@/lib/constants'
+import { waUrl } from '@/lib/wa'
+import { WaLink } from '@/app/HomeWa'
 
+// ─── METADATA ───────────────────────────────────────────────────────────
+// このページが扱うのは「収入の切り分け」です。ABNがタックスリターンの
+// 中身をどう変えるか。料金は記載せず、当社自身が登録税理士であるとも
+// 書きません。
 export const metadata: Metadata = {
-  title: "ABN登録代行｜417・462ビザ（デリバリー・ライドシェア・ファーム）",
-  description: "デリバリー、ライドシェア、ファーム請負にABNが必要ですか。実際の業務に合わせて正しく登録を代行し、発生する税金をわかりやすく説明。ワーホリが陥りがちな落とし穴も日本語で回避できます。",
+  // ルートレイアウトが " | Working Holiday Tax" を付与するため、
+  // タイトルはモバイルの検索結果に収まる長さにしています。
+  title: 'ABN登録｜ワーホリの税金が変わる点',
+  description:
+    'ABNはタックスリターンの中身を変えます。源泉徴収なしの請求収入、必要経費、GSTの扱い、そして「本当に個人事業主だったのか」という問い。',
   keywords: [
     'ABN 登録 オーストラリア',
-    'ABN ワーキングホリデー',
     'ABN ワーホリ',
-    'Australian Business Number 取得',
+    'ABN ワーキングホリデー',
     'ABN 申請 オーストラリア',
-    'ABN 申請 ワーホリ',
     'ワーホリ 個人事業主 オーストラリア',
-    'ABN フリーランス',
     'ABN 417ビザ',
     'ABN 462ビザ',
-    'ABN オンライン 登録',
-    'ABN 必要 ワーホリ',
     'ABN タックスリターン',
     'ABN TFN 違い',
-    'ABN Uber DoorDash',
-    'ABN タックスリターン 還付金',
+    'ABN 必要 ワーホリ',
+    'ABN 経費 ワーホリ',
+    'GST 75000ドル ABN',
+    'Uber ABN GST 登録',
+    '雇用 個人事業主 違い オーストラリア',
   ],
   alternates: {
     canonical: `${SITE_URL}/ja/abn`,
     languages: {
       'en-AU': `${SITE_URL}/abn`,
-      'de': `${SITE_URL}/de/abn`,
-      'ja': `${SITE_URL}/ja/abn`,
+      de: `${SITE_URL}/de/abn`,
+      ja: `${SITE_URL}/ja/abn`,
       'x-default': `${SITE_URL}/abn`,
     },
   },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'ワーキングホリデーのABN登録' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/abn`,
     siteName: 'Working Holiday Tax',
-    title: "ABN登録代行｜417・462ビザ（デリバリー・ライドシェア・ファーム）",
-    description: '個人事業主として正しくABNを登録。ワーホリ専門チームがサポートします。',
+    title: 'ABNで何が変わるか｜ワーホリのタックスリターン',
+    description:
+      'ABNは仕事を変えません。変えるのはタックスリターンです。請求収入、必要経費、GST、そして雇用か個人事業主かという問い。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: "ABN登録代行｜417・462ビザ（デリバリー・ライドシェア・ファーム）",
-    description: '個人事業主として正しくABNを登録。ワーホリ専門チームがサポートします。',
+    title: 'ABNで何が変わるか｜ワーホリのタックスリターン',
+    description: 'ABNは仕事を変えません。変えるのはタックスリターンです。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
-const faqs = [
+// ─── ICONS ──────────────────────────────────────────────────────────────
+const IconWhatsApp = () => (
+  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
+  </svg>
+)
+
+// ─── COPY ───────────────────────────────────────────────────────────────
+
+const THE_SPLIT = [
   {
-    question: 'ABN登録は無料です。何に対する費用ですか。',
-    answer: '登録自体は無料です。費用は、実際の業務内容に合った正しい登録、税務上いくら準備が必要かの説明、そして雇用主がスーパーや最低賃金の支払いを避けるためにABNを勧めている場合の警告に対するものです。',
+    n: '01',
+    title: '源泉徴収がないので、税金はあとから残ります',
+    body: '給与は税金が引かれた状態で振り込まれますが、請求書はそうではありません。ABNで受け取った金額はそのまま全額があなたに届き、その分の税金は年度末のタックスリターンで一度に精算します。半年を給与、半年を請求書で働いた方が最も驚くのはここです。給与の半分は還付に見えるのに、請求書の半分は静かにその逆になっているからです。',
+  },
+  {
+    n: '02',
+    title: '控除は「必要経費」に変わり、ルールも変わります',
+    body: '被雇用者としては仕事に関連する支出を控除します。個人事業主としては事業を営むための費用を差し引きます。範囲は広くなりますが、求められる記録は厳しくなります。走行距離の記録、工具、私用と業務で按分した携帯電話と通信費、保険料、そして入金前にプラットフォームが差し引いた手数料。走行距離を一度も記録しなかった配達員と、記録していた配達員では、年度末の結果は同じになりません。',
+  },
+  {
+    n: '03',
+    title: 'GSTは手続きではなく、選んだ立場です',
+    body: '売上が75,000ドルに達すると登録義務が生じます。ほとんどのワーキングホリデーメーカーはそこに届かないため、本来は登録しないほうが自然です。例外として多くの方が引っかかるのがライドシェアです。タクシーや配車サービスを提供する場合は、売上額にかかわらず最初の1ドルから登録が必要です。自転車でのフードデリバリーにこのルールは適用されず、75,000ドルの基準が使われます。必要ないのに登録するとBAS（事業活動報告）の義務が生じ、必要なのに登録していない場合はさらに深刻です。',
+  },
+  {
+    n: '04',
+    title: 'そもそも個人事業主だったのかどうか',
+    body: 'この問いが他の3つを決めます。本当に請負だったかどうかは書類上の名目ではなく指揮命令で決まり、実態は雇用なのにABNで働くことが、ワーホリの申告をやり直す最も多い原因です。この点はこのページの下のほうで詳しく扱います。',
+  },
+]
+
+const WHAT_WE_DO = [
+  {
+    title: '取得前に、そもそも必要かを確認します',
+    body: '本来は雇用だった仕事のためにABNを登録している方が少なくありません。これはフォームではなく、会話で決めることです。',
+  },
+  {
+    title: '実際の業務内容に合わせて登録します',
+    body: '登録した事業内容は、GST、控除、申告まで付いて回ります。最初に一度、正しくしておく価値があります。',
+  },
+  {
+    title: '取り分けておく金額をお伝えします',
+    body: '請求収入に対して年度末にいくらかかるかの目安です。10月に請求書を見て驚かないために。',
+  },
+  {
+    title: '残しておくべき記録をお伝えします',
+    body: 'あなたの仕事で控除を実際に裏づける記録はどれか、逆にもう集めなくていい領収書はどれか。',
+  },
+  {
+    title: 'GSTの立場は意識的に決めます',
+    body: 'ルールが求めるから登録する、求めないから登録しない。なんとなく、にはしません。',
+  },
+  {
+    title: '両方の収入を1つの申告にまとめます',
+    body: '請求収入にかかる税金と、給与から引かれすぎていた分は、同じ申告の中で差し引きされます。',
+  },
+]
+
+const FAQS = [
+  {
+    question: 'myGovで自分でやってはいけないのですか。',
+    answer:
+      'ご自身でできますし、1年間がすべて給与だけだったのなら簡単です。ABNが入った時点で簡単ではなくなります。申告は給与と請求収入の間にどんな境界線を引いても受け付け、それを疑うことはありません。どの雇用主があなたをどう扱っていたかを、フォームは知りようがないからです。どの費用が請求収入から差し引けるのか、その裏づけに何が必要なのかの案内もありません。GSTの登録が必要だったかどうかも教えてくれません。これらはいずれも入力欄ではなく、あなたの1年についての判断であり、境界線の引き方を誤ることが申告のやり直しになる最も多い原因です。ご依頼いただく場合は、どの仕事をどちらの形で受けていたかを伺うところから始めます。',
+  },
+  {
+    question: 'ABNがあると、タックスリターンはどう変わりますか。',
+    answer:
+      '申告に書くべき内容と、その裏側の作業量が変わります。給与は税金が引かれた状態で支払われ、雇用主がインカムステートメントをATOに提出するため、この部分はおおむね自動的に整合します。ABNで請求した収入は税引き前で入金され、事業収入として申告し、それを得るためにかかった費用で圧縮しますが、その費用は証拠を示せる必要があります。さらにGSTの扱いと、ATOが詳しく見た場合には「本当に請負だったのか」という問いも重なります。ABNを使ったワーキングホリデーメーカーの多くは同じ年度に両方の収入があり、その両方が1つの申告に載ります。',
   },
   {
     question: '普通のシフト勤務なのに雇用主からABNを求められました。正しいですか。',
-    answer: 'たいていは正しくありません。勤務時間を指定され、指示を受け、道具も支給されるなら、それは雇用です。ABNだと源泉徴収もスーパーも労災もありません。登録前に求人の詳細をお送りいただければ、どちらに当たるか率直にお伝えします。',
+    answer:
+      'たいていは正しくありません。登録する前に確認する価値があります。シフトを組まれ、作業方法を指示され、道具を支給され、早く帰らされることがあるなら、実態としては被雇用者として扱われており、書類上の名目は関係ありません。ABNに切り替えることでコストはあなたに移ります。源泉徴収なし、スーパーアニュエーションなし、労災保険なし、最低賃金や割増賃金の保護もなしです。何かを承諾する前に求人の詳細をお送りください。どちらに当たるか率直にお伝えします。',
   },
-  { question: 'TFNとABNの両方を持つことはできますか？', answer: 'はい、両方持つことができます。多くのワーキングホリデーメーカーが両方を保有しています。TFNは雇用契約（給与所得）用、ABNは個人事業主としての請負業務用に使い分けます。同じ年度内に両方の収入があっても、1つのタックスリターンで一緒に申告できます。' },
-  { question: 'TFNなしでABNを取得できますか？', answer: 'いいえ、ABNを申請する前に、まずTFN（タックスファイルナンバー）を取得する必要があります。TFNがあなたの本人確認の基礎となるからです。当社では、必要に応じてTFNとABNを同時に申請することも可能です。' },
-  { question: 'GST（消費税）の登録は必要ですか？', answer: '年間売上（収入）が75,000ドルを超える場合のみGST登録が義務付けられています。ほとんどのワーキングホリデーメーカーはこの基準を超えないため、GST登録は不要です。ただし、Uber・DiDiなどの配車サービスドライバーは収入額に関わらずGST登録が必須です（フードデリバリーは75,000ドル基準が適用）。' },
-  { question: 'オーストラリアを離れる時、ABNはどうなりますか？', answer: 'オーストラリアでの業務を終了する際は、ABNを取り消す必要があります。当社にご依頼いただければ、最終的なタックスリターン・スーパー受取（DASP）と合わせてABN取消も代行いたします。' },
-  { question: 'ワーホリでABNは必要ですか？', answer: 'ABNが必要なのは、個人事業主や請負業者として働く場合のみです。例えば、Uberやフードデリバリー、フリーランス業務、PAYG雇用ではなくクライアントから直接支払いを受ける場合などです。通常の従業員として働くだけなら、TFNだけで十分です。' },
-  { question: 'ABN収入はワーホリのタックスリターン還付金にどう影響しますか？', answer: 'ABN収入はPAYG給与とは扱いが異なります。源泉徴収が行われないため、税金分を自分で取り置く必要があります。タックスリターン提出時にはABN収入を別途申告し、関連する業務経費を控除として申請できます。' }
+  {
+    question: 'ワーキングホリデービザでGSTの登録は必要ですか。',
+    answer:
+      '年間売上が75,000ドルに達する場合、またはライドシェアを運転する場合だけです。ほとんどのワーキングホリデーメーカーはこの金額に届きません。UberやDiDiなどタクシー・配車サービスを提供する方は、どれだけ少額であっても最初の1回の乗車からGST登録が必要です。フードデリバリーや宅配の配達員にこのルールは適用されず、他の業種と同じく75,000ドルの基準になります。登録すると四半期ごとのBAS（事業活動報告）の提出義務が付いてくるため、軽い気持ちで選ぶものではありません。',
+  },
+  {
+    question: 'TFNとABNの両方を持つことはできますか。',
+    answer:
+      'できますし、請負で働くワーキングホリデーメーカーの多くは最終的に両方を持っています。タックスファイルナンバーは被雇用者としてのあなたを、ABNは個人事業主としてのあなたをカバーします。同じ年度に両方で稼いでも何も問題ありません。ただし申告が2つになるわけではありません。1つの申告が1つの年度をカバーし、その中で両方を報告します。だからこそ切り分けが重要になります。ABNの申請はTFNと照合されるため、TFNが先に必要です。',
+  },
+  {
+    question: 'ABNの必要経費として何が控除できますか。',
+    answer:
+      'その収入を得るためにかかった費用です。私用と兼用のものは正直に按分します。配達員であれば、きちんと記録した走行距離、自転車や車の維持費、携帯電話と通信費、保険、装備、そして入金前にプラットフォームが差し引いた手数料が中心になります。建設現場の下請けであれば、工具、保護具、現場間の移動といった形になります。含まれないのは、オーストラリアへの渡航費、自宅から1か所の職場への通常の通勤、そして記録を示せないものすべてです。初日から走行距離を記録しておくことが最も報われるのが、この部分です。',
+  },
+  {
+    question: 'オーストラリアを離れるとき、ABNはどうなりますか。',
+    answer:
+      '事業をやめた時点で取り消します。開いたままにせず取り消すべきです。ABNが有効なままだと、ATOから見て事業を続けており、義務も続いている状態に見えるためです。取り消しても、働いた年度の申告義務がなくなるわけではなく、同じ期間の雇用収入から生じるスーパーアニュエーションの受け取りにも影響しません。帰国が近い場合は早めにお知らせください。取り消し、申告、スーパー申請の順番が重要になります。',
+  },
 ]
 
-const STEPS = [
-  { n: '1', title: 'お仕事内容のヒアリング', body: '業務の種類とビザの詳細をお知らせください。ABNが本当に必要かを含めてご案内します。' },
-  { n: '2', title: '書類のご送付',           body: 'TFN番号とパスポート情報のみ。所要時間は数分です。' },
-  { n: '3', title: 'ABRへ代理登録',          body: '当社が正しい業種コードでABRに代理申請を行います。' },
-  { n: '4', title: 'ABN取得・業務開始',      body: 'ABNは通常即日〜24時間で発行され、すぐに請求書発行や業務を開始できます。' },
+const GUIDES = [
+  {
+    href: '/ja/blog/employee-vs-contractor-australia',
+    title: '雇用か、個人事業主か',
+    desc: 'ATOが実際に使う判断基準と、間違った側にいる代償。',
+  },
+  {
+    href: '/ja/blog/abn-deductions-business-expenses',
+    title: 'ABNの必要経費',
+    desc: '個人事業主が仕事の種類ごとに何を控除できるか、必要な記録まで。',
+  },
+  {
+    href: '/ja/blog/gst-and-abn-for-working-holiday-makers',
+    title: 'GSTとABN',
+    desc: '75,000ドルの基準、ライドシェアの例外、登録すると何が生じるか。',
+  },
 ]
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  inLanguage: 'ja',
-  mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })),
-}
+/**
+ * 誰もが抱えたまま来る反論を、ABNの切り分けに即して答える。
+ *
+ * トップページは一般論。このページでは、給与と請求収入が混ざった年度で必ず起きる
+ * 一点に絞る必要がある。フォームは入力された切り分けをそのまま受け入れ、疑わない。
+ * myGovが悪いとは一行も書いていない。数字を受け取るのが役割で、その数字を決めるのが仕事である。
+ */
+const MYGOV = [
+  {
+    mygov: '給与と請求収入の切り分けは、入力したとおりに受け付けられます。',
+    us: '入力の前に、雇用主ごとに境界が実際どこにあるのかを判断します。',
+  },
+  {
+    mygov: 'そもそも請負だったのか、雇用主が負担を移しただけの被雇用者だったのかは問われません。',
+    us: 'この問いが申告全体を決めるため、最初にお聞きします。',
+  },
+  {
+    mygov: '事業経費も他と同じ空欄に入るだけで、何をそこに入れるべきかの案内はありません。',
+    us: '請求収入から差し引ける費用と、その裏づけとして何が必要かを把握しています。',
+  },
+  {
+    mygov: 'GSTは入力欄です。登録が必要だったかどうかは、そこには書かれていません。',
+    us: '基準を超えていたのか、そしてそれが年度に何をもたらすのかは、意図をもって決める判断です。',
+  },
+]
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-    { '@type': 'ListItem', position: 2, name: 'ABN登録', item: `${SITE_URL}/ja/abn` },
-  ],
-}
+const WA_ABN = waUrl({ topic: 'abn', lang: 'ja' })
 
-
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  '@id': `${SITE_URL}/ja/abn#service`,
-  name: 'ABN登録代行サービス',
-  serviceType: 'Australian Business Number登録',
-  description: 'オーストラリアのワーキングホリデーメーカー向けABN登録代行。個人事業主として正しい業種コードで登録します。',
-  provider: { '@id': `${SITE_URL}/#business` },
-  areaServed: { '@type': 'Country', name: 'Australia' },
-  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462), Sole Trader' },
-  inLanguage: 'ja',
-}
+// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
+const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
+const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.85 }
+const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.9 }
 
 export default function ABNPageJA() {
+  const webPageLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/ja/abn#webpage`,
+    url: `${SITE_URL}/ja/abn`,
+    name: 'ABNで何が変わるか（ワーキングホリデー）',
+    description:
+      'ABNがワーキングホリデーのタックスリターンをどう変えるか。源泉徴収なしの請求収入、必要経費、GSTの立場、そして雇用か個人事業主かという判断。',
+    inLanguage: 'ja',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    about: { '@id': `${SITE_URL}/#business` },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+  }
+
+  const serviceLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE_URL}/ja/abn#service`,
+    name: 'ワーキングホリデー向けABN登録代行',
+    serviceType: 'オーストラリアビジネスナンバー登録',
+    description:
+      '実態として請負で働く417・462ビザ保持者向けのABN登録。GSTの扱い、必要な記録、税務上の影響を登録前に整理します。',
+    provider: { '@id': `${SITE_URL}/#business` },
+    areaServed: { '@type': 'Country', name: 'オーストラリア' },
+    audience: { '@type': 'Audience', audienceType: '個人事業主として働くワーキングホリデーメーカー（サブクラス417・462）' },
+    availableLanguage: ['ja', 'en', 'de'],
+    inLanguage: 'ja',
+  }
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'ja',
+    mainEntity: FAQS.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  }
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
+      { '@type': 'ListItem', position: 2, name: 'ABN登録', item: `${SITE_URL}/ja/abn` },
+    ],
+  }
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
+      {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="パンくずリスト" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
-            <Link href="/ja" className="transition-colors hover:text-forest-500">ホーム</Link>
-            <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+            <Link href="/ja" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>ホーム</Link>
+            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
             <span aria-current="page">ABN登録</span>
           </nav>
 
-          <div className="max-w-[560px] lg:max-w-[700px]">
+          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
+            ワーキングホリデービザ 417・462
+          </p>
 
-            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-              <span className="font-medium uppercase"
-                style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                ABN登録
-              </span>
-            </div>
+          <h1 className="font-serif font-black text-ink hero-animate"
+            style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
+            <span style={{ display: 'block' }}>ABNは仕事を変えません。</span>
+            <span style={{ display: 'block', color: '#0B5240' }}>変えるのはタックスリターンです。</span>
+          </h1>
 
-            <h1 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '10px' }}>
-              <span style={{ display: 'block' }}>仕事にABNが必要ですか。</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>正しく登録を代行します。</span>
-            </h1>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '40ch', marginBottom: '26px' }}>
+            源泉徴収のない収入、記録の要る必要経費、選んで取るGSTの立場。その3つの下にもう1つ、あなたは本当に個人事業主だったのか、それともコストを押しつけられた被雇用者だったのかという問いがあります。
+          </p>
 
-            <p className="font-semibold text-ink"
-              style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.5 }}>
-              ABN登録を最初から正しく代行。通常24時間以内に発行されます。
+          <div className="hero-animate-delay-2">
+            <WaLink href={WA_ABN} position="hero" topic="abn" lang="ja"
+              className="btn-primary inline-flex items-center justify-center gap-2"
+              style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
+              <IconWhatsApp />
+              WhatsAppで相談する
+            </WaLink>
+            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+              約1時間で返信します。まず質問だけでも大丈夫です。
             </p>
+          </div>
 
-            <p className="font-light"
-              style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.75, color: 'rgba(10,15,13,0.58)', maxWidth: '48ch', marginBottom: '0' }}>
-              Uber・DoorDash・ファーム請負・コンテンツ制作など、個人事業主として働くなら必須の番号です。
-            </p>
-
-            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
-              style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center"
-                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
-                ABNを登録する →
-              </a>
-              <a href="#how-to-register"
-                className="inline-flex btn-ghost-dark justify-center"
-                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
-                登録手順を見る →
-              </a>
-            </div>
-
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['信頼と実績のサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '世界中のワーホリに対応', '1時間以内に返信'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                  style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
-                </span>
-              ))}
-            </div>
+          <div className="flex" style={{ marginTop: '20px' }}>
+            <GoogleRating variant="pill" lang="ja" />
           </div>
         </div>
       </section>
 
-      {/* ── WHAT IS AN ABN? ──────────────────────────────────────────────── */}
-      <section className="abn-intro-section">
-        <div className="abn-intro-container reveal">
-          <div className="abn-intro-grid">
+      {/* ── 1b. myGovとの比較、切り分けに即して ──────────────────────────── */}
+      <section className="py-11 lg:py-14 bg-white">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-            <div className="abn-intro-content">
-              <p className="abn-intro-eyebrow">個人事業主・請負業務・フリーランス向け</p>
-              <h2 className="abn-intro-heading">
-                ABNとは？
-              </h2>
-              <p className="abn-intro-body">
-                <strong>ABN（Australian Business Number）</strong>は、オーストラリア政府のABR（Australian Business Register）が発行する11桁の事業者番号です。給与をもらう従業員ではなく、自分の事業として働く方に必要です。
-              </p>
-              <p className="abn-intro-body">
-                ABNがあれば、<strong>クライアントに直接請求書を発行</strong>でき、個人事業主（Sole Trader）として合法的に活動できます。ワーホリでよくあるABN業務：Uber Eats・フードデリバリー、Uber・DiDi配車サービス、ファーム請負作業（ピッキング・パッキング）、ヘアサロン・ネイル業務委託、コンテンツ制作、清掃業など。
-              </p>
-              <p className="abn-intro-body">
-                ABNはTFNの代わりではなく、それぞれ役割が異なります。多くのワーホリが両方を保有し、TFNは雇用契約、ABNは請負業務と使い分けています。
-              </p>
-            </div>
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>自分でやる場合</p>
 
-            <div className="abn-intro-visual">
-              <div className="abn-compare-grid">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.5vw, 29px)', lineHeight: 1.45, letterSpacing: '-0.01em', marginBottom: '14px' }}>
+            <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>どの収入をどちら側に置くのか。</span>
+            <span style={{ display: 'block' }}>myGovはそこを判断しません。</span>
+          </h2>
 
-                <div className="abn-compare-card abn-compare-employee">
-                  <div className="abn-compare-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <circle cx="12" cy="7" r="4" stroke="#587066" strokeWidth="1.6"/>
-                      <path d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1" stroke="#587066" strokeWidth="1.6" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <p className="abn-compare-title">従業員（雇用契約）</p>
-                  <p className="abn-compare-subtitle">TFNを使用</p>
-                  <ul className="abn-compare-list">
-                    <li>雇用主が給与計算</li>
-                    <li>税金は自動で源泉徴収</li>
-                    <li>スーパー（年金）支給あり</li>
-                  </ul>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '42ch', marginBottom: '22px' }}>
+            給与と請求の境目は、入力したとおりに通ります。本来どこにあるべきだったのかは、最後まで聞かれません。
+          </p>
+
+          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            {MYGOV.map((row, i) => (
+              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
+                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>myGovの場合</p>
+                  <p style={{ ...BODY, color: '#2A3C34', overflowWrap: 'break-word' }}>{row.mygov}</p>
                 </div>
-
-                <div className="abn-compare-card abn-compare-contractor">
-                  <div className="abn-compare-badge">あなた</div>
-                  <div className="abn-compare-icon abn-compare-icon-active">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M3 9l9-6 9 6v11a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke="#0B5240" strokeWidth="1.6" strokeLinejoin="round"/>
-                      <path d="M9 21V12h6v9" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <p className="abn-compare-title">個人事業主（請負）</p>
-                  <p className="abn-compare-subtitle">ABNを使用</p>
-                  <ul className="abn-compare-list">
-                    <li>自分で請求書を発行</li>
-                    <li>税金は自己管理</li>
-                    <li>原則スーパーなし</li>
-                  </ul>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-          <div className="service-cta-strip">
-            <div className="service-cta-text">
-              <h3 className="service-cta-heading">ABN登録を当社が代行いたします</h3>
-              <p className="service-cta-sub">今すぐ受給資格をチェック。業務内容に合わせた正しい業種コードで登録。GSTやBASなどの税務義務もわかりやすくご説明します。</p>
-            </div>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
-              ABNを登録する →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW WE HELP ──────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">当社のサービス</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px' }}>
-                ABNを最初から正しく設定します
-            </h2>
-            <p className="font-light text-muted"
-              style={{ fontSize: '13.5px', lineHeight: 1.75, maxWidth: '34ch', margin: '0 auto', color: 'rgba(10,15,13,0.5)' }}>
-              登録だけでなく、請求書の発行方法や税金分の取り分けまで日本語でアドバイス。
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
-            {[
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'ABNが本当に必要か判断', body:'不要なのにABNを登録する人は少なくありません。まず業務内容を確認し、正直にお伝えします。' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'業務に合った内容で登録', body:'ライドシェア、配達、フリーランス、請負など、実際の働き方に合わせてABNを正しく登録します。' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'GSTは必要な場合だけ', body:'年間売上75,000ドルのGST基準が当てはまるかをお伝えし、不要な登録を避けます。' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'初日から請求書発行OK', body:'ABRに準拠したABNをすぐに有効化。受け取り後すぐに請求書発行・業務を開始できます。' },
-            ].map((item,i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-4"
-                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
-                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
-                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
-                  {item.icon}
-                </div>
-                <div style={{ paddingTop:'2px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
+                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
+                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>当社の場合</p>
+                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, overflowWrap: 'break-word' }}>{row.us}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="text-center mt-6 lg:mt-8">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100%' }}>
-              ABNを登録する →
-            </a>
-            <p style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(10,15,13,0.4)' }}>
-              オーストラリア政府(ABR)準拠
+          <p className="font-serif" style={{ fontSize: '17px', lineHeight: 1.75, color: '#0B5240', marginTop: '22px', maxWidth: '36ch', fontWeight: 700 }}>
+            myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
+          </p>
+        </div>
+      </section>
+
+      {/* ── 2. 収入の切り分け ────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>収入の切り分け</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '14px' }}>
+            ABNを持つと、申告の何が変わりますか。
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '30px' }}>
+            変わるのは4つで、しかも互いに影響し合います。半分が給与明細、半分が請求書だった年は、単純な2つの半分ではありません。その両方を突き合わせる1つの申告です。
+          </p>
+
+          <ol className="flex flex-col" style={{ gap: '22px' }}>
+            {THE_SPLIT.map((s) => (
+              <li key={s.n} className="flex gap-4">
+                <span className="font-serif font-black flex-shrink-0"
+                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '4px' }}
+                  aria-hidden="true">{s.n}</span>
+                <div>
+                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{s.title}</h3>
+                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── 3. 注意 ──────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '28ch', marginBottom: '14px' }}>
+            雇用主に言われたという理由でABNを登録すべきですか。
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '16px' }}>
+            誰かが仕事の中身を見るまでは、登録すべきではありません。実態は雇用なのにABNにすると、スーパーアニュエーションが積み立てられず、税金も源泉徴収されず、労災保険の対象から外れ、最低賃金や割増賃金の枠組みの外に出ます。そのすべてがあなたの負担になります。ファーム、飲食、清掃、建設現場ではよくあることで、「ここではこうするものだ」という形で提示されます。
+          </p>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '22px' }}>
+            判断の基準は書類ではなく指揮命令です。働く時間を誰が決めるか、進め方を誰が指示するか、道具を誰が用意するか、代わりの人を送れるか、うまくいかなかったときのリスクを誰が負うか。答えが相手を指しているなら、ABNは適切な手段ではなく、1シーズン続けば実際の金額として損をします。
+          </p>
+
+          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
+              <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
+              <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
+              <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <p style={{ ...BODY, color: '#2A3C34' }}>
+              <strong style={{ color: '#080F0D' }}>登録する前に、その仕事の内容をお送りください。</strong>
+              作業の中身、誰が何を用意するか、どう支払われると言われているか。どちらに当たるかをお伝えします。当社が不要だという結論であっても、そのままお伝えします。
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── SOCIAL PROOF ── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="text-center mb-7 lg:mb-10">
-            <span className="section-label center">お客様の声</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'34ch' }}>
-              当社でABNを登録したワーホの皆さん
-            </h2>
+      {/* ── 4. 当社が行うこと ────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>当社の作業</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '14px' }}>
+            当社が行うこと
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '26px' }}>
+            登録そのものは無料で、数分で終わります。それがいくらの負担になるかを決めるのは、その前と後にあることです。
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {WHAT_WE_DO.map((c) => (
+              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F5F9F7', border: '1px solid #E2EFE9' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{c.title}</h3>
+                <p style={{ ...BODY, color: '#2A3C34' }}>{c.body}</p>
+              </div>
+            ))}
           </div>
+
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '44ch' }}>
+            ABNもTFNもまだお持ちでない場合は{' '}
+            <Link href="/ja/tfn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>TFNが先</Link>
+            です。ABNの申請はTFNと照合されます。
+          </p>
+        </div>
+      </section>
+
+      {/* ── 5. 保証 ──────────────────────────────────────────────────────── */}
+      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
+          <p className="font-serif font-black text-white mx-auto"
+            style={{ fontSize: 'clamp(21px, 2.8vw, 28px)', lineHeight: 1.6, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
+            還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。
+          </p>
+          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
+            料金は定額制で、還付額に対する歩合ではありません。作業を始める前にWhatsAppで金額を確認しますので、あとから金額で驚くことはありません。
+          </p>
+        </div>
+      </section>
+
+      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '14px' }}>
+            その仕事の内容を教えてください
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '42ch', marginBottom: '24px' }}>
+            誰に請求書を出すことになるのか、何をするのか、道具は誰が用意するのか。それだけあれば、そもそもABNが必要な話かどうかをお伝えできます。
+          </p>
+          <WaLink href={waUrl({ topic: 'abn', lang: 'ja', tier: 'tfn-abn' })} position="section" topic="abn" lang="ja" tier="tfn-abn"
+            className="btn-primary inline-flex items-center justify-center gap-2"
+            style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
+            <IconWhatsApp />
+            WhatsAppで相談する
+          </WaLink>
+          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            約1時間で返信します。まず質問だけでも大丈夫です。
+          </p>
+        </div>
+      </section>
+
+      {/* ── 7. 信頼 ──────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            ワーキングホリデーの税金だけを扱っています。
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
+            だからこそ、同じABNの形を何度も見ています。ファームの請負契約、配達プラットフォーム、全員を下請け扱いにする建設現場。タックスリターンは当社のチームが作成し、登録税理士が確認・承認したうえでATOに提出します。
+          </p>
           <GoogleReviews lang="ja" />
         </div>
       </section>
 
-      {/* ── COMPARISON ── */}
-      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">かんたんな方法</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              ABN登録には、もっと簡単な方法があります
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
-            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
-              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                自分でABNを登録すると、高くつくミスにつながりがちです
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-                {['本来は従業員なのにABNを登録してしまう','誤った業種で登録してしまう','収入記録や税金の取り分けの仕組みがない','タックスリターンでABN収入の申告を忘れる'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
-                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
-              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
-                当社のサポート付きABNサービス
-              </p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
-                {['ABNが本当に必要かをまず確認','正しい業種コードで登録','記録の取り方と税金の取り分けを明確にご案内','タックスリターンまで一貫してサポート'].map((item,i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
-                ABNを登録する →
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── 8. よくある質問 ──────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8">
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
+            相談前によく聞かれるABNの質問
+          </h2>
 
-      {/* ── HOW TO REGISTER ──────────────────────────────────────────────── */}
-      <section id="how-to-register" className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
-            <span className="section-label center">ご利用の流れ</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px' }}>
-              4ステップでABNを取得
-            </h2>
-            <p className="font-light text-muted"
-              style={{ fontSize: '13.5px', lineHeight: 1.75 }}>
-              ご相談から発行まで、日本語ですべて対応します
-            </p>
-          </div>
-
-          {/* Desktop */}
-          <div className="hidden lg:block" style={{ marginBottom: '48px' }}>
-            <div className="relative flex items-start">
-              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-5 h-[2px]"
-                style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 20%, #0B5240 80%, #C8EAE0 100%)' }}
-                aria-hidden="true" />
-              {STEPS.map((s, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
-                  <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0' }}>
-                    {s.n}
-                  </div>
-                  <p className="font-semibold text-ink text-center"
-                    style={{ fontSize: '14px', marginBottom: '7px', letterSpacing: '-0.01em', lineHeight: 1.35 }}>{s.title}</p>
-                  <p className="font-light text-muted text-center"
-                    style={{ fontSize: '12.5px', lineHeight: 1.75 }}>{s.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile */}
-          <div className="lg:hidden flex flex-col" style={{ marginBottom: '28px', gap: '0' }}>
-            {STEPS.map((s, i) => (
-              <div key={i} className="flex gap-3.5" style={{ paddingBottom: i < STEPS.length - 1 ? '18px' : '0' }}>
-                <div className="flex flex-col items-center flex-shrink-0">
-                  <div className="rounded-full flex items-center justify-center font-bold text-white"
-                    style={{ width: '28px', height: '28px', background: '#0B5240', fontSize: '12px', flexShrink: 0 }}>
-                    {s.n}
-                  </div>
-                  {i < STEPS.length - 1 && (
-                    <div className="flex-1 mt-1.5"
-                      style={{ width: '1px', minHeight: '18px', background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }}
-                      aria-hidden="true" />
-                  )}
-                </div>
-                <div style={{ paddingTop: '3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '3px', letterSpacing: '-0.01em', lineHeight: 1.35 }}>{s.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.75 }}>{s.body}</p>
-                </div>
-              </div>
+          <div className="flex flex-col" style={{ gap: '4px' }}>
+            {FAQS.map((f, i) => (
+              <details key={i} name="abn-faq-ja" className="contact-faq-item">
+                <summary className="contact-faq-summary">
+                  <span style={{ flex: 1 }}>{f.question}</span>
+                  <span className="contact-faq-plus" aria-hidden="true">+</span>
+                </summary>
+                <p className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{f.answer}</p>
+              </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── WHAT TO HAVE READY ── */}
+      {/* ── 9. ガイド ────────────────────────────────────────────────────── */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>ガイド</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            先に全部読みたい方へ
+          </h2>
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '24px' }}>
+            相談させるために情報を伏せることはしません。ガイドで解決するなら、それがいちばん良い結果です。
+          </p>
 
-      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
-      <section className="py-10 lg:py-14">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="text-center mb-6">
-            <span className="section-label center">関連記事</span>
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              ABNに関するガイド
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
-            {[
-              { href: '/ja/blog/what-is-an-abn', label: 'ABNとは？ワーホリでABNが必要なケースを徹底解説' },
-              { href: '/ja/blog/how-to-register-for-an-abn', label: 'ABN登録方法：オーストラリアで個人事業主になるステップ' },
-              { href: '/ja/blog/employee-vs-contractor-australia', label: '従業員と請負業者（コントラクター）の違いとは？' },
-              { href: '/ja/blog/gst-and-abn-for-working-holiday-makers', label: 'GST（消費税）登録は必要？ABN保持者の判断基準' },
-              { href: '/ja/blog/sole-trader-vs-company-australia-working-holiday', label: '個人事業主（Sole Trader）と法人（Company）の違い' },
-              { href: '/ja/blog/uber-doordash-rideshare-abn-working-holiday', label: 'Uber・DoorDash・配車サービスで働く：ABNと税金のルール' },
-            ].map((g) => (
-              <Link
-                key={g.href}
-                href={g.href}
-                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
-              >
-                {g.label}
+          <div className="grid gap-3 sm:grid-cols-3">
+            {GUIDES.map((g) => (
+              <Link key={g.href} href={g.href}
+                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
+                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px', lineHeight: 1.6 }}>{g.title}</h3>
+                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#4C6459' }}>{g.desc}</p>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
-
-            <div className="text-center">
-              <span className="section-label center">よくあるご質問</span>
-              <h2 className="font-serif font-black text-ink"
-                style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px', marginBottom: '12px' }}>
-                ABNに関するご質問
-              </h2>
-              <p className="font-light text-muted"
-                style={{ fontSize: '13.5px', lineHeight: 1.75, marginBottom: '24px' }}>
-                掲載されていないご質問もお気軽にお問い合わせください。
-              </p>
-            </div>
-
-            <div className="max-w-[700px]">
-              <Accordion items={faqs} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── NEXT STEP ────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="次のステップ"
-        heading="次はタックスリターンです"
-        body="会計年度末には、タックスリターンを提出してABN収入を申告する必要があります。"
-        cta="タックスリターンを依頼する →"
+        heading="どちらの収入も1つの申告に載ります"
+        body="給与所得と請求収入は、同じ年度の同じタックスリターンに載せます。切り分けがきちんと行われるかどうかは、そこで決まります。"
+        cta="タックスリターンの流れ →"
         href="/ja/tax-return"
       />
-      <MobileCta href={WA_URL} lang="ja" />
+
+      <MobileCta href={WA_ABN} lang="ja" topic="abn" />
     </>
   )
 }
