@@ -119,39 +119,39 @@ const WHAT_WE_DO = [
 
 const FAQS = [
   {
-    question: 'Kann ich das nicht einfach selbst über myGov machen?',
+    question: 'Kann ich die TFN einfach selbst beantragen?',
     answer:
-      'Kannst du, und der TFN-Antrag ist ein kurzes Formular. Was das Formular nicht macht, ist dir irgendetwas über das Geld drumherum zu sagen. Es erwähnt nicht, dass du ab Jobbeginn 28 Tage hast, um deinem Arbeitgeber die Nummer zu geben. Es erwähnt nicht, dass jede Abrechnung davor mit 45 % statt mit dem Working-Holiday-Satz von 15 % einbehalten wird. Und es erwähnt nicht, dass der Überschuss nur über eine Steuererklärung zurückkommt, die eingereicht und gegen jeden einzelnen Arbeitgeber abgeglichen wurde. Es prüft auch nicht, ob dein Name und deine Postadresse zum Einreisedatensatz passen, und genau das schickt Anträge in die manuelle Prüfung oder direkt zurück. Das ist die Arbeit, und das Einreichen ist der einfache Teil davon. Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches Formular welches ist. Wir regeln das direkt mit dem ATO.',
+      'Kannst du, der Antrag ist ein kurzes und kostenloses Formular. Bezahlt wird die Arbeit drumherum: deine Daten an den Einreisedatensatz anpassen, eine Adresse wählen, die in vier Wochen noch Post annimmt, deinem Arbeitgeber die Referenznummer geben, damit die ersten Abrechnungen nicht mit 45 % laufen, beim ATO anrufen, wenn nichts ankommt, und über die Steuererklärung zurückholen, was schon zum Höchstsatz einbehalten wurde.',
   },
   {
     question: 'Der TFN-Antrag ist beim ATO kostenlos. Wofür zahle ich dann?',
     answer:
-      'Die Nummer selbst ist kostenlos, und das sagen wir immer offen. Bezahlt wird, dass der Antrag beim ersten Mal durchgeht, und dass sich jemand kümmert, wenn er es nicht tut. Dazu gehört, deine Pass- und Namensdaten exakt an den Einreisedatensatz anzupassen, eine Adresse zu wählen, die in vier Wochen noch Post annimmt, deinem Arbeitgeber die Referenznummer zu geben, damit die ersten Abrechnungen nicht zum Höchstsatz laufen, und beim ATO nachzufassen, wenn nach 28 Tagen nichts angekommen ist. Wenn du das alles lieber selbst machst, steht es vollständig in unseren Ratgebern.',
+      'Die Nummer selbst ist kostenlos, und das sagen wir immer offen. Geld kostet die Lücke: Jede Abrechnung, bevor dein Arbeitgeber die Nummer hat, wird mit 45 % statt mit 15 % einbehalten. Bezahlt wird, dass diese Lücke beim ersten Mal geschlossen wird, und dass zurückkommt, was schon weg ist.',
   },
   {
     question: 'Was passiert, wenn ich ohne TFN anfange zu arbeiten?',
     answer:
-      'Dein Arbeitgeber muss zum Höchstsatz von 45 % einbehalten statt zu den 15 %, die für Working Holiday Maker auf die ersten 45.000 $ gelten, solange du ihm keine Steuernummer gegeben hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Bei einem Job mit 25 $ pro Stunde sind das rund 7,50 $ pro Stunde, die ans ATO gehen statt an dich, für jede Stunde in diesem Zeitfenster. Das Geld ist nicht weg, kommt aber auch nicht von selbst zurück: Es kommt nur über eine Steuererklärung zurück, die nach dem 30. Juni eingereicht und korrekt aufgestellt wird.',
+      'Dein Arbeitgeber muss zum Höchstsatz von 45 % einbehalten statt zu den 15 %, die für Working Holiday Maker auf die ersten 45.000 $ gelten, solange du ihm keine Steuernummer gegeben hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Bei einem Job mit 25 $ pro Stunde sind das rund 7,50 $ pro Stunde, die ans ATO gehen statt an dich. Das Geld ist nicht weg, es kommt aber nur über eine Steuererklärung zurück, die nach dem 30. Juni eingereicht und korrekt aufgestellt wird.',
   },
   {
     question: 'Ich arbeite schon seit Wochen ohne TFN. Ist es zu spät?',
     answer:
-      'Nein. Hier läuft keine Frist gegen dich. Beantrage die Nummer jetzt, damit der Höchstsatz für die nächsten Abrechnungen wegfällt, und der zu viel einbehaltene Teil kommt mit der Steuererklärung für dieses Steuerjahr zurück. Meistens können wir den Antrag noch am selben Tag fertig machen, an dem du schreibst. Wenn du schon mehrere Wochen mit 45 % gearbeitet hast, sag uns das dazu, denn das ändert, was deine Erklärung später sagen muss.',
+      'Nein. Hier läuft keine Frist gegen dich. Beantrage die Nummer jetzt, damit der Höchstsatz für die nächsten Abrechnungen wegfällt, und der zu viel einbehaltene Teil kommt mit der Steuererklärung für dieses Steuerjahr zurück. Meistens können wir den Antrag noch am selben Tag fertig machen, an dem du schreibst. Sag uns dazu, wie viele Wochen schon mit 45 % abgerechnet wurden, denn das ändert, was deine Erklärung später sagen muss.',
   },
   {
     question: 'Wie lange dauert es, bis die TFN ankommt?',
     answer:
-      'Das ATO gibt an, TFN-Anträge innerhalb von 28 Tagen zu bearbeiten, in der Praxis haben die meisten Working Holiday Maker ihre Nummer nach zwei bis vier Wochen. Sie kommt als Brief an die australische Adresse aus dem Antrag, weshalb diese Adresse wichtiger ist, als die meisten denken. Während der Wartezeit kannst du weiterarbeiten, wenn du deinem Arbeitgeber die Referenznummer des Antrags gibst. Genau das verhindert, dass die 28 Tage gegen dich ablaufen.',
+      'Das ATO gibt an, TFN-Anträge innerhalb von 28 Tagen zu bearbeiten, und die meisten Working Holiday Maker haben ihre Nummer nach zwei bis vier Wochen. Sie kommt als Brief an die australische Adresse aus dem Antrag, weshalb diese Adresse wichtiger ist, als die meisten denken. Während der Wartezeit braucht dein Arbeitgeber die Referenznummer des Antrags.',
   },
   {
     question: 'Kann ich die TFN schon vor der Ankunft in Australien beantragen?',
     answer:
-      'Mit einem Working Holiday Visum nicht. Du beantragst sie, sobald du mit aktiviertem 417- oder 462-Visum in Australien bist, weil der Antrag mit deinen Einreise- und Visumsdaten abgeglichen wird. Außerdem brauchst du eine australische Postadresse für den Brief, und dieses Problem löst man besser vor der Landung als danach. Vor der Ankunft eingereichte Anträge sind die, die am häufigsten verschwinden, ohne dass jemand erklärt, warum.',
+      'Mit einem Working Holiday Visum nicht. Du beantragst sie, sobald du mit aktiviertem 417- oder 462-Visum in Australien bist, weil der Antrag mit deinen Einreise- und Visumsdaten abgeglichen wird. Außerdem brauchst du eine australische Postadresse für den Brief. Vor der Ankunft eingereichte Anträge sind die, die am häufigsten verschwinden, ohne dass jemand erklärt, warum.',
   },
   {
     question: 'Brauche ich für das zweite Working-Holiday-Visum eine neue TFN?',
     answer:
-      'Nein. Eine Steuernummer wird dir einmal zugeteilt und bleibt dein Leben lang gültig, auch über ein zweites oder drittes Working-Holiday-Visum hinweg, über einen Visumswechsel und über eine Zeit, in der du Australien komplett verlassen hast. Wenn du die Nummer nur verloren hast und nicht neu brauchst, ist das ein anderes und deutlich schnelleres Problem. Sag uns also, welcher der beiden Fälle es ist.',
+      'Nein. Eine Steuernummer wird dir einmal zugeteilt und bleibt dein Leben lang gültig, auch über ein zweites oder drittes Working-Holiday-Visum hinweg, über einen Visumswechsel und über eine Zeit, in der du Australien komplett verlassen hast. Wenn du die Nummer nur verloren hast und nicht neu brauchst, ist das ein anderes und deutlich schnelleres Problem, sag uns also, welcher der beiden Fälle es ist.',
   },
 ]
 
@@ -173,31 +173,10 @@ const GUIDES = [
   },
 ]
 
-/**
- * Der Einwand, mit dem jeder Lead ankommt: "Das mache ich doch selbst."
- *
- * Auf der Startseite wird er allgemein beantwortet. Hier muss er konkret um die
- * TFN gehen, sonst liest es sich wie Füllmaterial und dupliziert die Startseite.
- * Keine Zeile behauptet, myGov sei schlecht. Es macht eine andere Arbeit.
- */
-const MYGOV = [
-  {
-    mygov: 'Das Formular nimmt den Namen und die Postadresse, die du einträgst.',
-    us: 'Wir prüfen beides vorher: den Namen gegen den Einreisedatensatz, die Adresse gegen den Ort, an dem du in vier Wochen wirklich Post bekommst.',
-  },
-  {
-    mygov: 'Nichts auf dem Bildschirm erwähnt die 28 Tage, die du ab Jobbeginn hast, um deinem Arbeitgeber die Nummer zu geben.',
-    us: 'Wir geben dir die Referenznummer des Antrags weiter, und genau die hält die ersten Abrechnungen vom Höchstsatz fern.',
-  },
-  {
-    mygov: 'Nichts sagt dir, dass die Wochen davor mit 45 % statt 15 % einbehalten wurden.',
-    us: 'Wir rechnen aus, was diese Lücke wert ist, und holen sie über die Steuererklärung zurück. Von allein kommt sie nicht.',
-  },
-  {
-    mygov: 'Wenn der Antrag hängen bleibt, sagt dir kein Bildschirm Bescheid.',
-    us: 'Nach 28 Tagen muss jemand beim ATO anrufen, und das wirst nicht du aus einem Hostel in Cairns sein.',
-  },
-]
+// Die myGov-Vergleichstabelle, die hier stand, ist entfernt: Jede ihrer Zeilen
+// stand schon in den WHAT_WE_DO-Karten weiter unten. Der eine Satz, der es wert
+// war zu bleiben, das "Du wirst dich nie bei myGov einloggen"-Versprechen, ist
+// an das Ende dieses Abschnitts gerückt.
 
 const WA_TFN = waUrl({ topic: 'tfn', lang: 'de' })
 
@@ -305,46 +284,6 @@ export default function TFNPageDE() {
         </div>
       </section>
 
-      {/* ── 1b. MYGOV, KONKRET ZUR TFN ───────────────────────────────────── */}
-      <section className="py-11 lg:py-14 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Der einfache Teil</p>
-
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
-            <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Im Antrag steht kein Wort{' '}</span>
-            <span style={{ display: 'block' }}>darüber, was das Warten kostet.{' '}</span>
-          </h2>
-
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '22px' }}>
-            Das Formular ist kurz, und myGov nimmt es an. Was darin fehlt, ist das Geld, in allen vier Punkten hier
-            drunter.
-          </p>
-
-          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
-            {MYGOV.map((row, i) => (
-              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>Auf myGov</p>
-                  <p style={{ ...BODY, color: '#2A3C34', overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
-                </div>
-                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>Mit uns</p>
-                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
-            Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
-            Formular welches ist. Wir regeln das direkt mit dem ATO.
-          </p>
-        </div>
-      </section>
-
       {/* ── 2. WAS DIE LÜCKE KOSTET ──────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
@@ -428,7 +367,12 @@ export default function TFNPageDE() {
             ))}
           </div>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '60ch' }}>
+          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
+            Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
+            Formular welches ist. Wir regeln das direkt mit dem ATO.
+          </p>
+
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '60ch' }}>
             Du hast die Nummer schon und willst die Wochen mit 45 % zurück?{' '}
             <Link href="/de/tax-return" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Das ist die Steuererklärung</Link>.
           </p>
@@ -516,10 +460,10 @@ export default function TFNPageDE() {
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-            Lies erst die ganze Antwort, wenn dir das lieber ist
+            Mehr zur TFN und den Wochen mit 45 %
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            Wir halten nichts zurück, damit du dich melden musst. Wenn der Ratgeber es beantwortet, ist das gut so.
+            Drei längere Texte zum Einbehalt, zur Wartezeit und zur Referenznummer.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3">

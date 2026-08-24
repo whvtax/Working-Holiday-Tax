@@ -58,7 +58,7 @@ const WA = waUrl({ topic: 'contact', lang: 'de' })
 const blockers: { q: string; a: string; link?: { href: string; label: string } }[] = [
   {
     q: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
-    a: 'Ja, und ein großer Teil unserer Arbeit ist genau das. Eine Steuererklärung für ein bereits abgeschlossenes Jahr lässt sich von überall auf der Welt einreichen, und Superannuation kannst du überhaupt erst beantragen, nachdem du ausgereist und dein Visum abgelaufen ist. Nach der Ausreise ist also oft mehr zu tun, nicht weniger. Alles läuft aus der Ferne, und die Rückerstattung kann auf ein australisches oder ein deutsches Konto gehen.',
+    a: 'Ja, und ein großer Teil unserer Arbeit ist genau das. Eine Erklärung für ein bereits abgeschlossenes Jahr lässt sich von überall einreichen, und Superannuation kannst du überhaupt erst beantragen, nachdem du ausgereist und dein Visum abgelaufen ist. Nach der Ausreise ist also oft mehr zu tun, nicht weniger. Eins solltest du früh wissen: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Bankkonto zahlen, deine Super dagegen auch ins Ausland. Sag uns also Bescheid, wenn dein australisches Konto schon zu ist.',
   },
   {
     q: 'Brauche ich ein myGov-Konto?',
@@ -66,7 +66,8 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'Brauche ich meine Payslips?',
-    a: 'Nein. Was deine Arbeitgeber einbehalten und gemeldet haben, sehen wir über das ATO. Wir fangen also mit diesen Daten an, statt dich Papiere aus einem Job suchen zu lassen, den du vor acht Monaten verlassen hast. Schick uns, was du zufällig noch hast, und wenn du gar nichts mehr hast, schreib uns trotzdem.',
+    a: 'Nein, und du musst vor der Nachricht nichts zusammensuchen. Was deine Arbeitgeber einbehalten und gemeldet haben, sehen wir über das ATO, wenn du also gar nichts mehr hast, schreib uns trotzdem.',
+    link: { href: '/de/about', label: 'Warum wir bei den ATO-Daten anfangen' },
   },
   {
     q: 'Ist das hier seriös?',
@@ -78,7 +79,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns gleich am nächsten Werktagmorgen. Wenn deine Frage erst geprüft werden muss, bevor wir sie sauber beantworten können, sagen wir dir das sofort, statt dich warten zu lassen.',
+    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns gleich am nächsten Werktagmorgen. Wenn deine Frage erst geprüft werden muss, sagen wir dir das sofort, statt dich warten zu lassen.',
   },
   {
     question: 'Kostet es etwas, eine Frage zu stellen?',
@@ -90,7 +91,7 @@ const FAQS = [
   },
   {
     question: 'Muss ich sofort Unterlagen schicken?',
-    answer: 'Nein. Schick erst mal nur die Frage und sonst nichts. Falls wir Unterlagen brauchen, sagen wir dir genau, welche und wie du sie sicher schickst, und das passiert erst, wenn du dich entschieden hast weiterzumachen.',
+    answer: 'Nein. Schick erst mal nur die Frage und sonst nichts. Wir beantworten sie, und wenn sich Arbeit lohnt, sagen wir dir vorher, welche und was sie kostet. Unterlagen kommen später, wenn du dich entschieden hast weiterzumachen, und dann sagen wir dir genau, welche und wie du sie sicher schickst.',
   },
   {
     question: 'Was ist, wenn ich keine Rückerstattung bekomme?',
@@ -98,7 +99,7 @@ const FAQS = [
   },
   {
     question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',
-    answer: 'Ja, und von dort schreiben uns die meisten unserer deutschsprachigen Kunden, sobald sie wieder zu Hause sind. Eine australische Steuererklärung, ein Superannuation-Antrag und alles, was beim ATO noch offen ist, lässt sich aus einem anderen Land erledigen, vollständig online, mit Auszahlung auf ein Konto vor Ort.',
+    answer: 'Ja, und von dort schreiben uns die meisten unserer deutschsprachigen Kunden, sobald sie wieder zu Hause sind. Eine australische Steuererklärung, ein Superannuation-Antrag und alles, was beim ATO noch offen ist, lässt sich aus einem anderen Land erledigen, vollständig online.',
   },
 ]
 
@@ -195,7 +196,7 @@ export default function GermanContactPage() {
 
             <p className="contact-lead mx-auto"
               style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.6, color: '#2A3C34', maxWidth: '44ch', marginBottom: '22px' }}>
-              Ein echter Mensch liest deine Nachricht und antwortet, während der Geschäftszeiten meist in etwa einer Stunde. Du kannst es bei einer einzigen Frage belassen, das verpflichtet dich zu nichts.
+              Ein echter Mensch liest deine Nachricht und antwortet, während der Geschäftszeiten meist in etwa einer Stunde.
             </p>
 
             <WaLink href={WA} position="hero" topic="contact" lang="de"
@@ -205,7 +206,7 @@ export default function GermanContactPage() {
             </WaLink>
 
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              Montag bis Freitag, 9 bis 18 Uhr AEST/AEDT. Außerhalb dieser Zeiten am nächsten Morgen.
+              Montag bis Freitag, 9 bis 18 Uhr
             </p>
           </div>
         </div>
@@ -295,7 +296,7 @@ export default function GermanContactPage() {
                 Geschäftszeiten
               </p>
               <p className="contact-hours-detail" style={{ fontSize: '14px', color: '#4C6459' }}>
-                Montag bis Freitag, 9 bis 18 Uhr AEST/AEDT.
+                Montag bis Freitag, 9 bis 18 Uhr
               </p>
             </div>
           </div>
@@ -304,7 +305,8 @@ export default function GermanContactPage() {
 
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '48px', paddingBottom: '48px' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px] mx-auto">
           <div className="text-center mb-7">
             <span className="section-label center">Häufige Fragen</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginTop: '10px' }}>
@@ -323,6 +325,7 @@ export default function GermanContactPage() {
               </details>
             ))}
           </div>
+        </div>
         </div>
       </section>
 

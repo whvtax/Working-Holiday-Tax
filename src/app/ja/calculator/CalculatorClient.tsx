@@ -227,7 +227,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   </svg>
                 </div>
                 <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
-                  ビザの名称からワーキングホリデーメーカーを選ぶ方がほとんどです。どちらが本当に当てはまるかは、設定ではなく判断です。
+                  ビザの名称からワーキングホリデーメーカーを選ぶ方がほとんどです。
                 </p>
               </div>
 
@@ -246,7 +246,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   />
                 </div>
                 <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px', lineHeight: 1.7 }}>
-                  スーパーファンドの残高証明に記載されています。417・462ビザを一度でも保持した場合、残高全額に65%のDASP税率が適用されます。
+                  417・462ビザを一度でも保持した場合、残高全額に65%のDASP税率が適用されます。
                 </p>
               </div>
 
@@ -262,7 +262,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                       ABNでの請求もありました
                     </span>
                     <span style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.7 }}>
-                      デリバリー、業務委託など請求書を出した仕事です。源泉徴収がないため、この計算ツールには反映されません。
+                      デリバリー、業務委託など請求書を出した仕事です。
                     </span>
                   </span>
                 </label>
@@ -309,7 +309,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
 
                 <div style={{ padding: '0 20px 18px' }}>
                   <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#2A3C34', marginBottom: '14px' }}>
-                    あくまで目安の数字です。実際の金額は、このページでは決められない3つの点で変わります。どちらの居住区分が本当に当てはまるか、メディケア税の免除が使えるか、そしてあなたの職種で何を控除できるか。この3つを詰めるのが当社の確認作業です。
+                    あくまで目安の数字です。実際の金額は、このページでは決められない3つの点で変わります。どちらの居住区分が当てはまるか、メディケア税の免除が使えるか、そしてあなたの職種で何を控除できるか。それを詰めるのが確認作業です。
                   </p>
                   <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
                     className="btn-primary w-full flex items-center justify-center"
@@ -360,7 +360,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             )}
 
             <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '16px', lineHeight: 1.7 }}>
-              この計算ツールが使うのは2025-26年度の税率と、入力された数字だけです。居住区分、メディケアの状況、控除までは見えないため、最終的な金額にはなりません。
+              この計算ツールが使うのは2025-26年度の税率と、入力された数字だけです。最終的な金額にはなりません。
             </p>
           </div>
         </div>
@@ -422,7 +422,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
               実際の金額がこの数字と変わる理由は。
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
-              3つあり、どれもこのページには入っていません。1つ目は居住区分です。判断ひとつで1年全体の税率が変わることがあり、ほとんどの人が見落とす細部で決まります。状況を踏まえた判断であり、他のどの要素よりも金額への影響が大きい部分です。
+              3つあり、どれもこのページには入っていません。1つ目は居住区分です。判断ひとつで1年全体の税率が変わることがあります。ご本人の状況によって決まる判断であり、他のどの要素よりも金額への影響が大きい部分です。
             </p>
             <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
               2つ目はメディケア税です。課税所得の2%が既定で差し引かれますが、417・462ビザの多くはそもそも支払う義務がありません。外すにはほとんど誰も申請しない証明書が必要です。3つ目は控除で、myGovではただの空欄です。ファーム、カフェ、ホスピタリティで、申告できる項目はそれぞれ違います。
@@ -483,7 +483,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             試算した数字をお送りください。あなたの1年で何が効くのかをお伝えします。還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: '22px', maxWidth: '34ch' }}>
-            ATOへ提出する前に、登録税理士が確認して承認します。
+            申告書は、ATOへ提出する前に登録税理士が確認して承認します。
           </p>
           <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
             className="btn-primary w-full sm:w-auto"

@@ -34,11 +34,19 @@ export function Accordion({ items }: { items: AccItem[] }) {
                 </svg>
               </span>
             </button>
+            {/* A closed panel is clamped to zero height by grid-template-rows
+                and clipped, but it is still in the accessibility tree, so a
+                screen reader read every answer on the page whether or not its
+                question had been opened, and aria-expanded said otherwise.
+                `inert` hides the closed panel from assistive tech and from the
+                tab order without touching the height transition, which
+                display:none or the hidden attribute would break. */}
             <div
               id={contentId}
               role="region"
               aria-labelledby={triggerId}
               className={`acc-body ${isOpen ? 'open' : ''}`}
+              {...(!isOpen ? ({ inert: '' } as Record<string, string>) : {})}
             >
               {/* The inner element is required: grid-template-rows: 0fr cannot
                   clamp a bare text node, so without it the panel never closes. */}

@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Construction and site
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "Refund smaller than our fee? We refund the difference, so you are never out of pocket.",
-  "guaranteeBody": "Site returns, ticket renewals and the ute argument are a weekly job here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before anything reaches the ATO.",
+  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket.",
+  "guaranteeBody": "Site returns, ticket renewals and the ute argument are a weekly job here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "What can a construction worker claim on tax?",
     "paras": [
       "A construction worker can claim tools and equipment bought out of their own pocket, protective clothing and PPE, sun protection for outdoor site work, renewals of a White Card or operating ticket they already hold, the work related share of a phone plan, and self education that relates to the trade they are already working in. Anything the employer supplied or reimbursed is off the list.",
-      "The list is long because the job creates specific costs. Steel caps protect you from a dropped brick, a hard hat from something above you, sunscreen from six hours on an unshaded slab. That is exactly the connection the deduction test is looking for, which is why site work usually produces the largest deduction total of any occupation on this site."
+      "The list is long because the job creates specific costs. Steel caps protect you from a dropped brick, a hard hat from something above you, sunscreen from six hours on an unshaded slab. That is the connection the deduction test looks for, and why site work produces the largest deduction total of any occupation on this site."
     ]
   },
   {
@@ -159,8 +159,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What has to sit behind a tool claim?",
     "paras": [
-      "Every claim has to clear three tests. You paid for it, nobody reimbursed you, and it was spent earning the income you are declaring. On site that is the receipt for the drill, the boots and the ticket renewal, kept rather than left in a glovebox.",
-      "The record can be a receipt, an invoice or a bank statement, as long as it carries the amount, the date, the supplier and the item. A phone photo does the job. Hold it for five years. Where every work claim for the year totals $300 or less, no written evidence is required at all, though the figure still has to be one you can account for. Do not confuse that with the $300 deciding whether a saw is written off at once or across its life."
+      "Every claim has to clear three tests. You paid for it, nobody reimbursed you, and it was spent earning the income you are declaring. On site that is the receipt for the drill, the boots and the ticket renewal.",
+      "The record can be a receipt, an invoice, a bank statement or a phone photo, as long as it carries the amount, the date, the supplier and the item, and it has to last five years. Where every work claim for the year totals $300 or less, no written evidence is required. That is a different $300 from the one deciding whether a saw is written off at once or across its life."
     ]
   },
   {
@@ -177,7 +177,7 @@ const SECTIONS: Section[] = [
   {
     "kind": "traps",
     "h2": "What do construction workers get wrong?",
-    "intro": "The wrongly claimed items on a site return are usually about clothing and the ute. The missed ones are usually about receipts nobody kept for things that were plainly deductible.",
+    "intro": "The wrongly claimed items on a site return are usually about clothing and the ute. The missed ones are receipts nobody kept for things that were plainly deductible.",
     "wrong": [
       {
         "t": "Ordinary clothes wrecked on site",
@@ -197,7 +197,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "A course to get into a different trade",
-        "d": "Study that would move you into a new occupation is not deductible, however clearly it is construction related, because it is building a new earning capacity rather than maintaining the one you have."
+        "d": "Study that would move you into a new occupation is not deductible, however clearly it is construction related."
       }
     ],
     "missed": [
@@ -228,8 +228,7 @@ const SECTIONS: Section[] = [
     "h2": "Which parts come down to your own facts?",
     "paras": [
       "The bulky tools exception, first. What you carry, what the site offers for storage, and whether the tools were essential that day settle it. Two labourers on the same crew can land differently, and it is a claim that gets looked at.",
-      "A course works the same way. Maintaining the skills you are paid for today, or building toward a new occupation, is decided by the role you are in now rather than by the brochure.",
-      "Residency is worth more than every tool on the list. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. Site work often means a longer stay at one address, which is the pattern where the question becomes live."
+      "Residency is worth more than every tool on the list. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
 ]

@@ -65,7 +65,7 @@ const WA = waUrl({ topic: 'contact', lang: 'en' })
 const blockers: { q: string; a: string; link?: { href: string; label: string } }[] = [
   {
     q: 'Can you help me if I have already left Australia?',
-    a: 'Yes, and a lot of our work is exactly that. A tax return for a year that has already ended can be lodged from anywhere in the world, and superannuation can only be claimed once you have left and your visa has lapsed, so leaving is often the point at which there is more to do rather than less. Everything is handled remotely. A tax refund can only be paid into an Australian bank account, while super can be paid overseas, so tell us early if you have already closed yours.',
+    a: 'Yes, and a lot of our work is exactly that. A return for a year that has already ended can be lodged from anywhere, and superannuation can only be claimed once you have left and your visa has lapsed, so leaving is often the point at which there is more to do rather than less. One thing to know early: the ATO can only pay a tax refund into an Australian bank account, while super can be paid overseas, so tell us if you have already closed yours.',
   },
   {
     q: 'Do I need a myGov account?',
@@ -73,7 +73,8 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'Do I need my payslips?',
-    a: 'No. What your employers withheld and reported is visible to us through the ATO, so we start from that record rather than asking you to dig out paperwork from a job you left eight months ago. Send us what you happen to have, and if you have nothing at all, message us anyway.',
+    a: 'No, and there is nothing to gather before you message. What your employers withheld and reported is visible to us through the ATO, so if you have nothing at all, write anyway.',
+    link: { href: '/about', label: 'Why we start from the ATO record' },
   },
   {
     q: 'Is this legitimate?',
@@ -85,11 +86,11 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'How quickly will you reply?',
-    answer: 'During business hours, Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within about an hour. Outside those hours we get back to you first thing the next working morning. If your question needs checking before we can answer it properly, we tell you that straight away rather than leaving you waiting.',
+    answer: 'During business hours, Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within about an hour. Outside those hours we get back to you first thing the next working morning. If your question needs checking first, we say so straight away rather than leaving you waiting.',
   },
   {
     question: 'Is there a fee just to ask a question?',
-    answer: 'Asking is free, and you can ask as much as you like before deciding anything. The service itself is a flat fee, never a percentage of your refund, and we confirm it with you on WhatsApp before any work begins. If your refund is less than our fee, we refund the difference, so you are never out of pocket.',
+    answer: 'Asking is free, and you can ask as much as you like before deciding anything. The service itself is a flat fee, never a percentage of your refund, and we confirm it with you on WhatsApp before any work begins.',
   },
   {
     question: 'What language will you reply in?',
@@ -97,7 +98,7 @@ const FAQS = [
   },
   {
     question: 'Do I need to send documents straight away?',
-    answer: 'No. Send the question first and nothing else. If we need documents we will tell you exactly which ones and how to send them securely, and that only happens once you have decided to go ahead. Nothing about sending a message commits you to anything.',
+    answer: 'No. Send the question first and nothing else. We answer it, and if there is work worth doing we tell you what it is and what it costs before anything starts. Documents come later, once you have decided to go ahead, and we tell you exactly which ones and how to send them securely.',
   },
   {
     question: 'What if I do not get a refund?',
@@ -105,7 +106,7 @@ const FAQS = [
   },
   {
     question: 'Can you help me from the UK, Germany or Japan?',
-    answer: 'Yes, and those are the three places most of our clients message us from once they are home. An Australian tax return, a superannuation claim and anything still open with the ATO can all be handled from another country, entirely online, with the refund paid into a local account.',
+    answer: 'Yes, and those are the three places most of our clients message us from once they are home. An Australian tax return, a superannuation claim and anything still open with the ATO can all be handled from another country, entirely online.',
   },
 ]
 
@@ -202,7 +203,7 @@ export default function ContactPage() {
 
             <p className="contact-lead mx-auto"
               style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.6, color: '#2A3C34', maxWidth: '44ch', marginBottom: '22px' }}>
-              A real person reads it and replies, usually within about an hour during business hours. Ask one question and leave it there if you want. Nothing about messaging us commits you to anything.
+              A real person reads it and replies, usually within about an hour during business hours.
             </p>
 
             <WaLink href={WA} position="hero" topic="contact" lang="en"
@@ -212,7 +213,7 @@ export default function ContactPage() {
             </WaLink>
 
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              Monday to Friday, 9am to 6pm AEST/AEDT. Outside those hours, first thing the next morning.
+              Monday to Friday, 9am to 6pm
             </p>
           </div>
         </div>
@@ -307,7 +308,7 @@ export default function ContactPage() {
                 Business hours
               </p>
               <p className="contact-hours-detail" style={{ fontSize: '14px', color: '#4C6459' }}>
-                Monday to Friday, 9am to 6pm AEST/AEDT.
+                Monday to Friday, 9am to 6pm
               </p>
             </div>
           </div>
@@ -316,7 +317,8 @@ export default function ContactPage() {
 
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '48px', paddingBottom: '48px' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px] mx-auto">
           <div className="text-center mb-7">
             <span className="section-label center">Common questions</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(22px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginTop: '10px' }}>
@@ -335,6 +337,7 @@ export default function ContactPage() {
               </details>
             ))}
           </div>
+        </div>
         </div>
       </section>
 

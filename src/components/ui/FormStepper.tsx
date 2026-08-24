@@ -76,7 +76,9 @@ const styles = `
   .stepper-circle { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; transition: background .25s, color .25s, border-color .25s; }
   .stepper-circle.is-done { background: #0B5240; color: #fff; }
   .stepper-circle.is-now  { background: #fff; color: #0B5240; border: 2px solid #0B5240; }
-  .stepper-circle.is-todo { background: #EAF6F1; color: #9DB5AC; }
+  /* #9DB5AC on #EAF6F1 is 1.97:1. The step number is visible text, so it has
+     to meet AA whatever the circle is doing; subtle #587066 is 4.78:1 here. */
+  .stepper-circle.is-todo { background: #EAF6F1; color: #587066; }
   .stepper-line { width: 34px; height: 2px; background: #EAF6F1; transition: background .25s; }
   .stepper-line.is-done { background: #0B5240; }
   .stepper-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

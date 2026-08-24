@@ -18,7 +18,7 @@ The work that decides the outcome happens before lodgement: establishing the res
 
 ## Our guarantee
 
-If you do not receive a tax refund, we refund our fee.
+If your refund is less than our fee, we refund the difference, so you are never out of pocket. Where no refund is payable to you at all, the fee is refunded in full.
 
 ## How our content is prepared
 
@@ -88,7 +88,7 @@ The full index is at https://workingholidaytax.com.au/blog. Grouped by category:
 ### TFN (18) - https://workingholidaytax.com.au/blog/category/tfn
 
 - [What Is a TFN? Nine Digits, Two Rates](https://workingholidaytax.com.au/blog/what-is-a-tfn)
-- [How to Apply for a TFN, Free in 10 Minutes](https://workingholidaytax.com.au/blog/how-to-apply-for-a-tfn)
+- [How to Apply for a TFN, and What Goes Wrong](https://workingholidaytax.com.au/blog/how-to-apply-for-a-tfn)
 - [How Long Does a TFN Take? 2 to 4 Weeks](https://workingholidaytax.com.au/blog/how-long-does-it-take-to-get-a-tfn)
 - [Work Without a TFN? Yes, You Have 28 Days](https://workingholidaytax.com.au/blog/can-you-start-work-without-a-tfn)
 - [No TFN on File? 45% Withheld, Not Lost](https://workingholidaytax.com.au/blog/what-happens-without-your-tfn)
@@ -109,7 +109,7 @@ The full index is at https://workingholidaytax.com.au/blog. Grouped by category:
 ### ABN (14) - https://workingholidaytax.com.au/blog/category/abn
 
 - [What Is an ABN, and Do You Need One?](https://workingholidaytax.com.au/blog/what-is-an-abn)
-- [How to Register an ABN, Free on the ABR](https://workingholidaytax.com.au/blog/how-to-register-for-an-abn)
+- [How to Register an ABN, and When Not To](https://workingholidaytax.com.au/blog/how-to-register-for-an-abn)
 - [Farm Work on an ABN: Legit or Wage Theft?](https://workingholidaytax.com.au/blog/farm-work-and-abns)
 - [Employee or Contractor? What Decides It](https://workingholidaytax.com.au/blog/employee-vs-contractor-australia)
 - [TFN and ABN Together? Yes, Here Is How](https://workingholidaytax.com.au/blog/can-you-have-tfn-and-abn)

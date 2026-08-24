@@ -60,7 +60,14 @@ export default function ReadingProgress({ readTime, locale = 'en' }: { readTime:
     // nav already tells a reader how far through they are, on every scroll
     // frame, without taking any of the screen. So on mobile it goes, and the
     // bottom of the article belongs to the one control that converts.
-    <div className={`reading-progress-badge hidden md:block ${visible ? 'visible' : ''}`} aria-live="polite" style={{ fontSize: '13px' }}>
+    // aria-hidden, and no aria-live.
+    //
+    // aria-live="polite" on a value that changes on every scroll frame turns
+    // a screen reader into a metronome: "14 min left", "13 min left", read
+    // over whatever the reader is actually listening to. The badge is a
+    // glanceable convenience for sighted readers and duplicates the progress
+    // bar under the nav, so it says nothing to assistive tech.
+    <div className={`reading-progress-badge hidden md:block ${visible ? 'visible' : ''}`} aria-hidden="true" style={{ fontSize: '13px' }}>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10" />

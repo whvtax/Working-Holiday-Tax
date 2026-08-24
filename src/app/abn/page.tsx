@@ -126,39 +126,39 @@ const WHAT_WE_DO = [
 
 const FAQS = [
   {
-    question: 'Can I not just do this myself on myGov?',
+    question: 'Can I just do this myself?',
     answer:
-      'You can, and if your whole year was payslips it is straightforward. An ABN is what makes it stop being straightforward. The return will accept any boundary you type between wages and invoiced income, and it will never question it, because the form has no way of knowing which employer treated you as what. It does not ask whether you were really a contractor or an employee whose employer moved the cost onto you, it gives no prompt about which of your costs are deductible against invoiced income or what evidence has to sit behind them, and it does not tell you whether you were required to register for GST. Every one of those is a judgement about your year rather than a field to fill in, and getting the boundary wrong is the most common reason a backpacker return has to be done again. You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.',
+      'You can, and if your whole year was payslips it is straightforward. An ABN is what makes it stop being straightforward: where the line falls between wages and invoiced income, whether you were a contractor at all, which of your costs come off the invoiced side and what has to sit behind them, and whether you were required to register for GST. Those are judgements about your year rather than fields to fill in, and getting them wrong is the most common reason a backpacker return has to be done again.',
   },
   {
     question: 'How does an ABN change my working holiday tax return?',
     answer:
-      'It changes what the return has to say and how much work sits behind it. Wages come to you with tax already withheld and an income statement your employer files with the ATO, so that half of the year largely reconciles itself. Income invoiced under an ABN arrives untaxed, is declared as business income, and is reduced by the expenses of earning it, which you have to be able to evidence. On top of that sits a GST position and, if the ATO ever looks closely, the question of whether the arrangement was really contracting. Most working holiday makers who used an ABN have both kinds of income in the same year, and both have to land on one return.',
+      'Wages reach you with tax already withheld and an income statement your employer files with the ATO, so that half of the year largely reconciles itself. Income invoiced under an ABN arrives untaxed, is declared as business income, and is reduced only by expenses you can evidence. Add the GST position and the question of whether the arrangement was really contracting, and both halves still have to land on one return.',
   },
   {
     question: 'My employer says I need an ABN for a normal shift job. Is that right?',
     answer:
-      'Usually not, and it is worth pushing back before you register. If they set your roster, tell you how the work is done, provide the tools and can send you home early, you are being treated as an employee, and the label on the paperwork does not change that. Putting you on an ABN moves the cost onto you: no tax withheld, no superannuation contributions, no workers compensation cover, and no minimum wage or penalty rates. Send us the job details before you agree to anything and we will tell you honestly which of the two it looks like.',
+      'Usually not, and it is worth pushing back before you register. If they set your roster, tell you how the work is done, provide the tools and can send you home early, you are being treated as an employee, whatever the paperwork says. Putting you on an ABN moves the cost onto you: no tax withheld, no superannuation contributions, no workers compensation cover, and no minimum wage or penalty rates. Send us the job details before you agree to anything.',
   },
   {
     question: 'Do I need to register for GST on a working holiday visa?',
     answer:
-      'Only if your turnover reaches $75,000 in a year, which most working holiday makers do not come close to, or if you drive rideshare. Anyone providing taxi travel or ride sourcing, which includes Uber and its competitors, must register for GST from the very first fare regardless of how little they earn. Food delivery riders and couriers are not caught by that rule and fall back on the $75,000 threshold like everybody else. Being registered brings quarterly business activity statements with it, so it is not something to opt into casually.',
+      'Only if your turnover reaches $75,000 in a year, which most working holiday makers do not come close to, or if you drive rideshare. Anyone providing taxi travel or ride sourcing, which includes Uber and its competitors, must register for GST from the very first fare regardless of how little they earn. Food delivery riders and couriers are not caught by that rule and fall back on the $75,000 threshold. Registration brings quarterly business activity statements with it, so it is not something to opt into casually.',
   },
   {
     question: 'Can I have both a TFN and an ABN?',
     answer:
-      'Yes, and most working holiday makers who contract end up with both. The tax file number covers you as an employee and the ABN covers you as a sole trader, and there is nothing irregular about earning under each in the same year. They do not go on separate returns: one return covers the financial year and reports both, which is exactly where the split matters. You need the tax file number first, because an ABN application is matched against it.',
+      'Yes, and most working holiday makers who contract end up with both. The tax file number covers you as an employee and the ABN covers you as a sole trader, and there is nothing irregular about earning under each in the same year. They do not go on separate returns: one return covers the financial year and reports both. You need the tax file number first, because an ABN application is matched against it.',
   },
   {
     question: 'What can I claim as business expenses under an ABN?',
     answer:
-      'The costs of earning the income, apportioned honestly where something is used privately as well. For a delivery rider that usually means kilometres recorded properly, bike or vehicle running costs, phone and data, insurance, equipment and the commission a platform took before paying you. For a subcontractor on a site it looks more like tools, protective gear and travel between jobs. What it never includes is the trip to Australia, ordinary commuting from home to one workplace, or anything you cannot show a record for. This is the part of the year that rewards keeping a logbook from day one.',
+      'The costs of earning the income, apportioned honestly where something is used privately as well. For a delivery rider that usually means kilometres recorded properly, bike or vehicle running costs, phone and data, insurance, equipment and the commission a platform took before paying you. For a subcontractor on a site it is tools, protective gear and travel between jobs. It never includes the trip to Australia, ordinary commuting from home to one workplace, or anything you cannot show a record for.',
   },
   {
     question: 'What happens to my ABN when I leave Australia?',
     answer:
-      'You cancel it once you have stopped trading, and it is worth doing rather than leaving it open, because an active ABN suggests to the ATO that you are still running a business and may still have obligations. Cancelling does not affect the return for the year you did work, which still has to be lodged, and it does not affect your ability to claim superannuation from any employment income in the same period. If you are leaving soon, tell us early, because the order of cancelling, lodging and claiming super matters.',
+      'You cancel it once you have stopped trading, because an active ABN suggests to the ATO that you are still running a business and may still have obligations. Cancelling does not affect the return for the year you did work, which still has to be lodged, and it does not affect your ability to claim superannuation from employment income in the same period. If you are leaving soon, tell us early, because the order of cancelling, lodging and claiming super matters.',
   },
 ]
 
@@ -180,32 +180,10 @@ const GUIDES = [
   },
 ]
 
-/**
- * The objection every lead arrives holding, answered about the ABN split.
- *
- * The homepage answers it in general. On this page the argument has to be about
- * the one thing that goes wrong on a mixed year: the form accepts whatever
- * boundary you type between wages and invoices, and never questions it. No row
- * here says myGov is bad. It takes numbers. Deciding the numbers is the work.
- */
-const MYGOV = [
-  {
-    mygov: 'The return accepts whatever split you type between wages and invoiced income.',
-    us: 'We work out where the line actually falls, employer by employer, before anything is entered.',
-  },
-  {
-    mygov: 'Nothing asks whether you were a contractor at all, or an employee whose employer moved the cost onto you.',
-    us: 'That question decides the whole return, so it is the first one we ask you.',
-  },
-  {
-    mygov: 'Business expenses go into the same blank box as everything else, with no prompt about what belongs there.',
-    us: 'We know which of your costs come off invoiced income, and what has to sit behind each one.',
-  },
-  {
-    mygov: 'GST is a box. Nothing on it tells you whether you were required to register.',
-    us: 'Whether you crossed the threshold, and what that does to the year, is a position taken on purpose.',
-  },
-]
+// The myGov comparison table that used to sit here was removed: its four rows
+// were the four items of THE_SPLIT and of WHAT_WE_DO again, and the contractor
+// row has a whole section of its own. The "you will never log into myGov"
+// promise moved to the end of the WHAT_WE_DO section.
 
 const WA_ABN = waUrl({ topic: 'abn', lang: 'en' })
 
@@ -314,45 +292,6 @@ export default function ABNPage() {
         </div>
       </section>
 
-      {/* ── 1b. MYGOV, ABOUT THE SPLIT SPECIFICALLY ──────────────────────── */}
-      <section className="py-11 lg:py-14 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Doing it yourself</p>
-
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
-            <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Which income belongs on which side?{' '}</span>
-            <span style={{ display: 'block' }}>myGov has no opinion about that.{' '}</span>
-          </h2>
-
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '22px' }}>
-            The form takes whatever boundary you type between wages and invoices, and never asks where it should have
-            been.
-          </p>
-
-          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
-            {MYGOV.map((row, i) => (
-              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>On myGov</p>
-                  <p style={{ ...BODY, color: '#2A3C34', overflowWrap: 'break-word' }}>{row.mygov}</p>
-                </div>
-                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>With us</p>
-                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, overflowWrap: 'break-word' }}>{row.us}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
-            You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
-          </p>
-        </div>
-      </section>
-
       {/* ── 2. THE SPLIT ─────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
@@ -394,8 +333,8 @@ export default function ABNPage() {
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
             Not before somebody has looked at the job. An ABN over work that is really employment stops your
             superannuation, stops your tax being withheld, drops workers compensation cover and puts you outside minimum
-            wage and penalty rates. All of that becomes your cost. It is common in farm work, hospitality, cleaning and
-            on building sites, and it is presented as the way things are done here.
+            wage and penalty rates, and all of it becomes your cost. It is common in farm work, hospitality, cleaning
+            and on building sites, and it is presented as the way things are done here.
           </p>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '22px' }}>
             The test is control, not paperwork. Who decides when you work, who directs how it is done, who supplies the
@@ -442,7 +381,11 @@ export default function ABNPage() {
             ))}
           </div>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '60ch' }}>
+          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
+            You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
+          </p>
+
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '60ch' }}>
             No ABN yet and no tax file number either? The{' '}
             <Link href="/tfn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>TFN comes first</Link>, because an
             ABN application is matched against it.
@@ -530,10 +473,10 @@ export default function ABNPage() {
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Guides</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-            Read the whole answer first, if you would rather
+            More on contracting, expenses and GST
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            Nothing is held back to make you get in touch. If the guide answers it, that is a good outcome.
+            The contractor test in full, what a sole trader can deduct, and where GST starts.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3">

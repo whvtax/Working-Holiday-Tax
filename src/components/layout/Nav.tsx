@@ -381,7 +381,13 @@ export function Nav() {
             {/* Mobile: language switcher + menu button */}
             <div className="flex items-center gap-2 lg:hidden">
               <LanguageSwitcher variant="desktop" />
-              <button type="button" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}
+              <button type="button" onClick={() => setOpen(!open)}
+                aria-label={
+                  open
+                    ? (locale === 'de' ? 'Menü schließen' : locale === 'ja' ? 'メニューを閉じる' : 'Close menu')
+                    : (locale === 'de' ? 'Menü öffnen' : locale === 'ja' ? 'メニューを開く' : 'Open menu')
+                }
+                aria-expanded={open}
                 className="flex flex-col justify-center gap-[5px] w-10 h-10 bg-transparent border-none p-2">
                 <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-300 w-5 ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
                 <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-200 w-5 ${open ? 'opacity-0' : ''}`} />
@@ -444,9 +450,17 @@ export function Nav() {
               <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
             </svg>
           </a>
+          {/* `title` was the only label here, and a tooltip never appears on a
+              touch device, which is the only place this drawer renders. The
+              badge was therefore an unlabelled icon for every user who saw it. */}
           <div className="flex items-center justify-center rounded-full"
             style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}
-            title="Secure & encrypted">
+            role="img"
+            aria-label={
+              locale === 'de' ? 'Sicher und verschlüsselt'
+                : locale === 'ja' ? '安全な暗号化通信'
+                : 'Secure and encrypted'
+            }>
             <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
               <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>

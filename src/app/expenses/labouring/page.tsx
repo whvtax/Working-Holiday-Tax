@@ -68,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Labour hire and wareh
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "If the fee ends up above the refund, the difference comes back to you.",
+  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket.",
   "guaranteeBody": "Pulling four agencies and a forgotten single shift into one return is ordinary work here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "What can a labourer placed by an agency claim on tax?",
     "paras": [
       "A labour hire worker can claim protective gear required by the host role, renewals of an operating ticket they already hold, tools bought out of their own pocket, the travel between two worksites in the same day, and the work related share of a phone. What is claimable follows the job you were actually doing that day, not the job title on the agency contract.",
-      "That last point is what makes labour hire different. A week in a chilled warehouse, a week on a landscaping crew and a weekend on an event bump out create three different sets of costs, and the deduction follows the actual work rather than a single occupation label."
+      "A week in a chilled warehouse, a week on a landscaping crew and a weekend on an event bump out create three different sets of costs, and the deduction follows the actual work rather than a single occupation label."
     ]
   },
   {
@@ -156,7 +156,7 @@ const SECTIONS: Section[] = [
     "h2": "What do you need to keep across placements?",
     "paras": [
       "One claim, three tests: you paid, nobody reimbursed you, and it was spent earning the income you are declaring. Across placements that means receipts for the boots and gloves you bought yourself, the ticket renewal, and a note of dates, sites and distances behind the travel.",
-      "The record can be a receipt, an invoice, a bank statement or a phone photo, as long as it shows the amount, the date, the supplier and the item, and you hold it for five years. Work claims of $300 or less for the whole year need no written evidence, though you still have to explain how you got to the total. The $300 there is not the $300 that decides whether a piece of gear is written off at once or over its life."
+      "The record can be a receipt, an invoice, a bank statement or a phone photo, as long as it shows the amount, the date, the supplier and the item, and it has to last five years. Work claims of $300 or less for the whole year need no written evidence. That is a different $300 from the one deciding whether a piece of gear is written off at once or over its life."
     ]
   },
   {
@@ -212,9 +212,9 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Which parts turn on how your year ran?",
     "paras": [
-      "How itinerant the work was decides how much travel is deductible, and it is a question of fact rather than a rule. How often the site changed, whether one base kept pulling you back, whether the agency required the movement, and how the week was structured all feed in. Two people at the same agency can end up with very different travel claims, and a note of dates, sites and distances is what makes the stronger case provable.",
-      "Every agency is a separate employer with its own Tax File Number Declaration, its own withholding relationship and its own income statement. As a working holiday maker the tax free threshold answer is no at every one of them, so claiming a threshold twice rarely bites. A rate applied wrongly, or an employer missing from the return, does.",
-      "Residency sits under all of it. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision, worth more than every deduction on this page. One city and local agencies for a long stretch is the pattern that makes it a live question."
+      "How itinerant the work was decides how much travel is deductible, and it is a question of fact rather than a rule. How often the site changed, whether one base kept pulling you back, whether the agency required the movement, and how the week was structured all feed in. Two people at the same agency can end up with very different travel claims.",
+      "Every agency is a separate employer with its own Tax File Number Declaration, its own withholding relationship and its own income statement. Working holiday makers do not get a tax free threshold from any of them, so the risk is not a threshold claimed twice. It is a rate applied wrongly, or an employer missing from the return.",
+      "Residency sits under all of it. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision, worth more than every deduction on this page. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
 ]
@@ -222,7 +222,7 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "I am registered with three agencies. Does that change my tax?",
-    "answer": "Each agency is legally a separate employer, so you complete a separate Tax File Number Declaration with each and receive a separate income statement from each at the end of the year. All of them go into one return. As a working holiday maker your wages are taxed at the working holiday maker rate rather than against a tax free threshold, so the real risk with several agencies is not the rate, it is one of them being left out."
+    "answer": "Each agency is legally a separate employer, with its own Tax File Number Declaration, its own withholding and its own income statement at the end of the year. All of them go into one return. As a working holiday maker your wages are taxed at the working holiday maker rate rather than against a tax free threshold, so the real risk with several agencies is not the rate, it is one of them being left out."
   },
   {
     "question": "Can I claim travel between different job sites?",

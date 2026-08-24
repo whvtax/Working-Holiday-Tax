@@ -211,7 +211,7 @@ const SECTIONS: Section[] = [
     "h2": "What do you have to be able to show?",
     "paras": [
       "A receipt, an invoice or a bank statement, showing the amount, the date, the supplier and what the item was. A photo on your phone counts, and you need to be able to produce it for five years.",
-      "There is one concession. If your total work related claims for the year come to $300 or less, you do not need written evidence for them, but you still have to be able to explain how you arrived at the figure. That concession is separate from the $300 rule for individual assets, which is about how a single item is written off rather than whether you need a receipt for it."
+      "There is one concession. If your total work related claims for the year come to $300 or less, you do not need written evidence for them. That concession is separate from the $300 rule for individual assets, which is about how a single item is written off rather than whether you need a receipt for it."
     ]
   },
   {
@@ -268,12 +268,12 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Past about 5,000 work kilometres a year the logbook usually produces the bigger deduction, because it picks up fuel, insurance, registration, servicing, depreciation and the interest on a car loan rather than a flat rate. It costs you twelve weeks of record keeping and a receipt for everything. Which one is worth it depends on how much you drive and what your car actually costs to run."
+    "note": "Past about 5,000 work kilometres a year the logbook usually produces the bigger deduction, because it picks up fuel, insurance, registration, servicing, depreciation and the interest on a car loan rather than a flat rate."
   },
   {
     "kind": "traps",
     "h2": "What do people get wrong, whatever job they did?",
-    "intro": "These come up whatever the job. The first list is what turns a refund into an amended assessment. The second, the money nobody asks for, is more common and costs more.",
+    "intro": "The first list is what turns a refund into an amended assessment. The second, the money nobody asks for, is more common and costs more.",
     "wrong": [
       {
         "t": "Plain clothing that a dress code requires",
@@ -331,8 +331,8 @@ const SECTIONS: Section[] = [
 
 const FAQS = [
   {
-    "question": "Can I not just do this myself on myGov?",
-    "answer": "You can, and lodging really is the easy part. The difficulty with deductions is that the box is blank and stays blank. Nothing on the screen suggests what your trade is allowed to claim, nothing distinguishes a fruit picker from a delivery rider from a chippy, and nothing warns you that rent, groceries and getting yourself to work look claimable and are not. It will also accept any figure you type, including one you could not evidence if the ATO asked, which is the version that has to be undone later. Working out which costs came from earning your income, which of them need a receipt and which a bank statement will carry, is a judgement about the year you actually had rather than a field to fill in. You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly."
+    "question": "Can I just claim deductions myself?",
+    "answer": "You can, and lodging really is the easy part. The difficulty is that the deductions box is blank, suggests nothing about your trade, and accepts any figure you type, including one that has to be undone later. Working out which costs came from earning your income, and what has to sit behind each of them, is a judgement about the year you actually had rather than a field to fill in."
   },
   {
     "question": "Do working holiday makers get fewer deductions than Australians?",

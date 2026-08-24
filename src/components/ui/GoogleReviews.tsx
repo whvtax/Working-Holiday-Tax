@@ -66,10 +66,13 @@ function GoogleG({ size = 18 }: { size?: number }) {
 }
 
 function Stars({ rating, size = 15 }: { rating: number; size?: number }) {
+  // role="img" is what makes the aria-label count. On a bare <span> with no
+  // role the label is ignored by most screen readers, so the rating was read
+  // out as five black star characters instead of "4.9 out of 5".
   return (
-    <span style={{ letterSpacing: '1px', fontSize: size, lineHeight: 1 }} aria-label={`${rating} / 5`}>
+    <span role="img" style={{ letterSpacing: '1px', fontSize: size, lineHeight: 1 }} aria-label={`${rating} out of 5`}>
       {[0, 1, 2, 3, 4].map((i) => (
-        <span key={i} style={{ color: i < Math.round(rating) ? STAR_GOLD : '#DADCE0' }}>★</span>
+        <span key={i} aria-hidden="true" style={{ color: i < Math.round(rating) ? STAR_GOLD : '#DADCE0' }}>★</span>
       ))}
     </span>
   )
@@ -136,7 +139,10 @@ function Carousel({ data, lang }: { data: GoogleData; lang: Lang }) {
 @keyframes grMarquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
 .gr-wrap { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
 .gr-track { display: flex; gap: 16px; width: max-content; animation: grMarquee ${duration} linear infinite; }
-.gr-wrap:hover .gr-track { animation-play-state: paused; }
+/* focus-within as well as hover: the "Read more" buttons inside the cards are
+   reachable by keyboard, and a target that keeps sliding out from under the
+   focus ring cannot be used. */
+.gr-wrap:hover .gr-track, .gr-wrap:focus-within .gr-track { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .gr-track { animation: none; } }
 `,
         }}

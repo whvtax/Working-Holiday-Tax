@@ -11,6 +11,24 @@ const DISALLOWED_PATHS = [
   '/tfn-form',
   '/abn-form',
   '/super-form',
+  // The German and Japanese forms are the same intake at a different URL. They
+  // already carry noindex in their layouts; the disallow rules only covered the
+  // English ones, so two thirds of the intake was still being crawled.
+  '/de/tax-form',
+  '/de/tfn-form',
+  '/de/abn-form',
+  '/de/super-form',
+  '/ja/tax-form',
+  '/ja/tfn-form',
+  '/ja/abn-form',
+  '/ja/super-form',
+  // The residency assessment is a step of the tax form. It already carries
+  // noindex, but noindex only stops a page being listed: the crawler still
+  // reads it. The questions on it are the assessment method, so the AI
+  // crawlers enumerated below are kept out of the content as well as the index.
+  '/tax-residency',
+  '/de/tax-residency',
+  '/ja/tax-residency',
 ]
 
 // Major AI crawlers (OpenAI, Anthropic, Perplexity, Google, Microsoft, Meta, Apple, ByteDance).

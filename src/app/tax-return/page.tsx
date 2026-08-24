@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   // short enough that the whole thing still fits a mobile SERP.
   title: 'Lodge Your Working Holiday Tax Return',
   description:
-    'Passport and an Australian bank account, no payslips. We pull your ATO record, lodge the return, and the refund arrives in about 14 business days.',
+    'Passport and an Australian bank account, no payslips. We pull your ATO record, lodge the return, and the refund usually arrives about 14 business days later.',
   keywords: [
     'lodge tax return Australia backpacker',
     'working holiday tax return service',
@@ -55,13 +55,13 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Lodge Your Working Holiday Tax Return (417 & 462)',
     description:
-      'Your details and where to deposit your refund. We read the ATO record, prepare the return, you sign it, it is lodged, and the refund lands in about 14 business days.',
+      'Your details and where to deposit your refund. We read the ATO record, prepare the return, you sign it, it is lodged, and the refund usually lands about 14 business days later.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Lodge Your Working Holiday Tax Return (417 & 462)',
-    description: 'Passport, bank details, no payslips. Signed by you, lodged by us, refund in about 14 business days.',
+    description: 'Passport, bank details, no payslips. Signed by you, lodged by us, refund usually about 14 business days later.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -96,7 +96,7 @@ const SEQUENCE = [
   {
     n: '01',
     title: 'You message us',
-    body: 'WhatsApp, in English, German or Japanese. You tell us roughly what the year looked like, we tell you where you stand, and the fee is agreed before any work begins. Most messages are answered inside an hour during business hours.',
+    body: 'WhatsApp, in English, German or Japanese. You tell us roughly what the year looked like, we tell you where you stand, and the fee is agreed before any work begins.',
   },
   {
     n: '02',
@@ -146,32 +146,32 @@ const FAQS = [
   {
     question: 'How long does a working holiday tax return take?',
     answer:
-      'From the day your questionnaire is in, a straightforward year takes a few days to prepare and check. Once it is lodged, the ATO usually pays the refund in about 14 business days. A year with five employers, income invoiced under an ABN, or a residency position that has to be argued takes longer at our end, and we tell you which of those yours is rather than leaving you to guess.',
+      'From the day your questionnaire is in, a straightforward year takes a few days to prepare and check, and the ATO usually pays the refund about 14 business days after lodgement. Five employers, income invoiced under an ABN, or a residency position that has to be argued takes longer at our end, and we tell you which of those yours is rather than leaving you to guess.',
   },
   {
     question: 'Do you need my payslips?',
     answer:
-      'No, and this is the thing people are most surprised by. Every employer who paid you through a payroll reported an income statement to the ATO, and that record is what a return is built from. Lost payslips, a job you cannot name and an employer who has since shut down are all normal starting points. The only paperwork worth digging out is receipts for work expenses, and if you do not have those either, describe the work and we will tell you what is claimable without them.',
+      'No. Every employer who paid you through a payroll reported an income statement to the ATO, and that record is what a return is built from, so lost payslips and an employer who has since shut down are normal starting points. The only paperwork worth digging out is receipts for work expenses, and if you do not have those either, describe the work and we will tell you what is claimable without them.',
   },
   {
     question: 'What do I actually have to do?',
     answer:
-      'Three things. Answer the questionnaire once, read the return we send back, and sign it. That is your entire side of it. There is no government account to set up, no Australian identity check to pass and no ATO form for you to interpret, because the lodgement happens through us.',
+      'Three things. Answer the questionnaire once, read the return we send back, and sign it. There is no government account to set up, no Australian identity check to pass and no ATO form for you to interpret, because the lodgement happens through us.',
   },
   {
     question: 'Can you lodge for me after I have already left Australia?',
     answer:
-      'Yes, and a large share of the returns we lodge belong to people who are already home in the UK, Germany or Japan. The questionnaire, the signature and the lodgement are all online. The one thing that does not travel is the refund itself: the ATO can only pay it into an Australian bank account, while superannuation (DASP) can be paid overseas. If your Australian account is already closed, tell us in the first message.',
+      'Yes, and a large share of the returns we lodge belong to people already home in the UK, Germany or Japan. The questionnaire, the signature and the lodgement are all online. The one thing that does not travel is the refund itself: the ATO can only pay it into an Australian bank account, while superannuation (DASP) can be paid overseas. If your Australian account is already closed, tell us in the first message.',
   },
   {
     question: 'What if I never lodged for an earlier year?',
     answer:
-      'It can still be lodged now. Each financial year stands on its own, with its own return and its own refund, and we can see from the ATO record which years are still open. We work through them oldest first. A late return is not treated as a problem by the ATO as long as it arrives, and in most working holiday years the balance is owed to you rather than by you.',
+      'It can still be lodged now. Each financial year stands on its own, with its own return and its own refund, and we can see from the ATO record which years are still open. A late return is generally straightforward once it arrives, and in most working holiday years the balance is owed to you rather than by you.',
   },
   {
     question: 'What happens if the return says I owe money instead?',
     answer:
-      'Occasionally it does, most often where income was invoiced under an ABN and nothing was withheld from it along the way. You see that figure before anything is lodged, with an explanation of where it came from and what the ATO payment options are. Nothing is sent in without your signature, so there is no version of this where you find out afterwards.',
+      'Occasionally it does, most often where income was invoiced under an ABN and nothing was withheld from it along the way. You see that figure before anything is lodged, with an explanation of where it came from and what the ATO payment options are. Nothing is sent in without your signature, so you will not find out afterwards.',
   },
 ]
 
@@ -298,8 +298,8 @@ export default function TaxReturnPage() {
           </h1>
 
           <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '52ch', marginBottom: '26px' }}>
-            No payslips, no myGov account, no form to decipher. One questionnaire, one signature, and the refund follows
-            about 14 business days after lodgement.
+            No payslips, no myGov account, no form to decipher. One questionnaire, one signature, and the refund usually
+            follows about 14 business days after lodgement.
           </p>
 
           <div className="hero-animate-delay-2">
@@ -441,7 +441,7 @@ export default function TaxReturnPage() {
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
             Send the towns you worked in, roughly which months, and whether you ever invoiced under an ABN. That is
             enough for us to say which years are open and what your side of the work looks like. Two years since you flew
-            home makes no difference to any of it.
+            home makes no difference.
           </p>
           <WaLink href={WA_TR} position="section" topic="tax-return" lang="en"
             className="btn-primary inline-flex items-center justify-center gap-2"

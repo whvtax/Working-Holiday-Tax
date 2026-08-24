@@ -246,8 +246,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   </svg>
                 </div>
                 <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
-                  Most people pick working holiday maker because that is the visa. Which one is true for you
-                  is a judgement, not a setting.
+                  Most people pick working holiday maker because that is the visa.
                 </p>
               </div>
 
@@ -267,8 +266,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   />
                 </div>
                 <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px', lineHeight: 1.6 }}>
-                  From your super fund statement. If you have ever held a 417 or 462 visa, the 65% DASP
-                  rate applies to the whole balance.
+                  If you have ever held a 417 or 462 visa, the 65% DASP rate applies to the whole balance.
                 </p>
               </div>
 
@@ -285,8 +283,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                       I also invoiced under an ABN
                     </span>
                     <span style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.6 }}>
-                      Delivery riding, subcontracting, anything you invoiced for. Nothing was withheld on
-                      that income, so this calculator cannot see it.
+                      Delivery riding, subcontracting, anything you invoiced for.
                     </span>
                   </span>
                 </label>
@@ -335,9 +332,9 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 <div style={{ padding: '0 20px 18px' }}>
                   <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '14px' }}>
                     Treat this as indicative. The real number moves on three things this page cannot
-                    settle: which residency position is actually true for you, whether the Medicare levy
-                    exemption applies, and what your line of work can deduct. Working those three out is
-                    exactly what the review does.
+                    settle: which residency position is true for you, whether the Medicare levy
+                    exemption applies, and what your line of work can deduct. That is what the review
+                    works out.
                   </p>
                   <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
                     className="btn-primary w-full flex items-center justify-center"
@@ -389,8 +386,8 @@ export function CalculatorClient({ faqs = [] }: Props) {
             )}
 
             <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '16px', lineHeight: 1.6 }}>
-              The calculator uses the 2025-26 rates and only the figures you type in. It cannot see your
-              residency position, your Medicare status or your deductions, so it is not your final number.
+              The calculator uses the 2025-26 rates and only the figures you type in, so it is not your
+              final number.
             </p>
           </div>
         </div>
@@ -453,9 +450,8 @@ export function CalculatorClient({ faqs = [] }: Props) {
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               Three things, and none of them are on this page. The first is your residency position. Read
-              correctly, it can change which rates apply to your whole year, and it turns on details most
-              people never think to check. It is a judgement about your circumstances, and it is worth more
-              than everything else combined.
+              correctly, it can change which rates apply to your whole year. It is a judgement about your
+              circumstances, and it is worth more than everything else combined.
             </p>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               The second is the Medicare levy. It is 2% of taxable income, it comes off by default, and

@@ -147,10 +147,12 @@ export function MobileLanguageBanner() {
         aria-label={cfg.closeLabel}
         style={{
           position: 'absolute',
-          top: '8px',
-          right: '8px',
-          width: '32px',
-          height: '32px',
+          top: '2px',
+          right: '2px',
+          // 44, not 32. This is the control that gets the banner off the
+          // screen, and it sits in the corner a thumb is least accurate in.
+          width: '44px',
+          height: '44px',
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
@@ -165,7 +167,7 @@ export function MobileLanguageBanner() {
         </svg>
       </button>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', paddingRight: '28px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', paddingRight: '40px' }}>
         <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <circle cx="10" cy="10" r="8" stroke="#0B5240" strokeWidth="1.4"/>
           <ellipse cx="10" cy="10" rx="3.5" ry="8" stroke="#0B5240" strokeWidth="1.4"/>
@@ -197,7 +199,7 @@ export function MobileLanguageBanner() {
           onClick={() => dismiss(true)}
           style={{
             flex: 1,
-            height: '40px',
+            height: '44px',
             background: '#fff',
             border: '1px solid #E2EFE9',
             borderRadius: '100px',
@@ -226,7 +228,7 @@ export function MobileLanguageBanner() {
           onClick={() => dismiss(true)}
           style={{
             flex: 1,
-            height: '40px',
+            height: '44px',
             background: '#0B5240',
             border: '1px solid #0B5240',
             borderRadius: '100px',

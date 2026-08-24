@@ -41,14 +41,14 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
-    question: 'Ich habe jetzt die Zahl. Kann ich das nicht einfach selbst über myGov einreichen?',
+    question: 'Ich habe die Zahl. Kann ich sie nicht einfach selbst einreichen?',
     answer:
-      'Kannst du, und das Einreichen ist wirklich der einfache Teil. Eine Schätzung kann die Zahl nicht verändern, sie rechnet nur mit dem, was du ohnehin schon weißt, und myGov nimmt danach genau das an, was du hineinschreibst. Bewegen lässt sich das Ergebnis nur über die drei Beurteilungen zu deinem Jahr: dein Residentenstatus, dein Anspruch auf die Medicare-Befreiung und die Kosten, die zu deiner Art von Arbeit gehören. Keine davon ist ein Feld zum Ausfüllen, und keine davon schlägt dir der Ablauf von selbst vor. Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches Formular welches ist. Wir regeln das direkt mit dem ATO.',
+      'Kannst du, und das Einreichen ist wirklich der einfache Teil. Eine Schätzung kann die Zahl nicht verändern, sie rechnet nur mit dem, was du ohnehin schon weißt. Bewegen lässt sich das Ergebnis über drei Beurteilungen, und keine davon ist ein Feld auf dieser Seite: welcher Residentenstatus für dich gilt, ob die Medicare Levy dir überhaupt hätte berechnet werden dürfen und was deine Art von Arbeit absetzen darf.',
   },
   {
     question: 'Wie genau ist dieser Steuerrechner?',
     answer:
-      'Er rechnet genau mit den Zahlen, die du eingibst, und mehr nicht. Er wendet die Sätze für Working Holiday Maker und australische Steuerresidenten für 2025-26 auf dein Einkommen und die einbehaltene Steuer an. Er kennt weder deinen Residentenstatus noch, ob die Medicare Levy Befreiung für dich gilt, noch was du in deinem Job absetzen kannst, und alle drei verändern das Ergebnis. Nimm die Zahl als Ausgangspunkt für ein Gespräch, nicht als Endergebnis.',
+      'Er rechnet genau mit den Zahlen, die du eingibst, und mehr nicht. Er wendet die Sätze für Working Holiday Maker und australische Steuerresidenten für 2025-26 auf dein Einkommen und die einbehaltene Steuer an. Nimm die Zahl als Ausgangspunkt für ein Gespräch, nicht als Endergebnis.',
   },
   {
     question: 'Welche Steuersätze nutzt der Rechner?',

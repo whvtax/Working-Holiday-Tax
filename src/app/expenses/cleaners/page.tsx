@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Cleaning work" })
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "If your refund is less than our fee, we refund the difference. You are never out of pocket.",
-  "guaranteeBody": "Cleaning returns land on our desk every week, and every one of them belongs to somebody on a 417 or 462 visa. Reviewed and signed off by a registered tax agent before it goes to the ATO.",
+  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket.",
+  "guaranteeBody": "Cleaning returns land on our desk every week, and every one of them belongs to somebody on a 417 or 462 visa. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "What can a cleaner claim on tax?",
     "paras": [
       "A cleaner can claim equipment and cleaning products bought out of their own pocket, protective gear such as gloves, an apron, safety glasses or steel caps, the laundering of a compulsory uniform or protective clothing, and the travel between one cleaning job and the next in the same day. Anything a client or employer supplies or reimburses is excluded.",
-      "Cleaning is unusual because the work moves. Three houses in a day means two deductible legs of travel, and over a year that is normally the largest single figure on the return, larger than every mop, cloth and bottle of chemical put together."
+      "Cleaning is unusual because the work moves. Three houses in a day means two deductible legs of travel, and over a year that is normally the largest single figure on the return."
     ]
   },
   {
@@ -155,8 +155,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What does a cleaner have to keep?",
     "paras": [
-      "Three tests behind every claim: you paid for it, nobody paid you back, and it went to earning the income you are declaring. For a cleaner that means receipts for the chemicals and the gear, and a running note of the dates, the addresses and the kilometres for the driving.",
-      "A receipt, an invoice or a bank statement showing the amount, the date, the supplier and the item will do, a phone photo included, and you need it for five years. Under $300 of work claims for the whole year you need no written evidence, though you still have to explain the figure. That is a different $300 from the one deciding how a single vacuum is written off."
+      "Three tests behind every claim: you paid for it, nobody paid you back, and it went to earning the income you are declaring. For a cleaner that means the receipts for chemicals and gear, and a record of the dates, addresses and kilometres behind the driving.",
+      "A receipt, an invoice, a bank statement or a phone photo showing the amount, the date, the supplier and the item all count, and they have to last five years. Under $300 of work claims for the whole year, no written evidence is needed. That is a different $300 from the one deciding how a single vacuum is written off."
     ]
   },
   {
@@ -207,7 +207,7 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Three or four addresses a day clears 5,000 kilometres faster than most cleaners expect, and past that point the logbook usually wins, because it picks up fuel, insurance, registration, servicing, depreciation and the interest on a car loan instead of a flat rate. The price is twelve weeks of records and a receipt for everything."
+    "note": "Three or four addresses a day clears 5,000 kilometres faster than most cleaners expect, and past that point the logbook usually wins, because it picks up fuel, insurance, registration, servicing, depreciation and the interest on a car loan instead of a flat rate."
   },
   {
     "kind": "traps",
@@ -246,7 +246,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Laundry, at a published rate",
-        "d": "Washing protective clothing and a compulsory uniform is deductible at $1 or 50 cents a load. Almost nobody claims it and almost nobody knows the rate exists."
+        "d": "Washing protective clothing and a compulsory uniform is deductible at $1 or 50 cents a load, and almost nobody knows the rate exists."
       },
       {
         "t": "Gear bought while setting yourself up",

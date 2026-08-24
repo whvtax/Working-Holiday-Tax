@@ -61,8 +61,9 @@ export const metadata: Metadata = {
 /**
  * Der Einwand, mit dem jeder Lead ankommt, hier konkret zur Super.
  *
- * Der letzte Abschnitt der Seite führt ihn aus. Das hier ist die kompakte
- * Fassung, weit oben, weil der Leser genau damit ankommt. Jede Zeile handelt von
+ * Das ist jetzt die einzige Fassung dieses Arguments auf der Seite: Die
+ * zweispaltige Liste im letzten Abschnitt, die es wiederholt hat, ist entfernt,
+ * und die FAQ erzählt es auch nicht noch einmal nach. Jede Zeile handelt von
  * DASP: Der Antrag nimmt einen Fonds nach dem anderen, und nur die, die du
  * benennen kannst. Keine Zeile behauptet, das ATO Portal sei schlecht.
  */
@@ -87,9 +88,9 @@ const MYGOV = [
 
 const faqs = [
   {
-    question: 'Kann ich meine Super nicht einfach selbst über myGov beantragen?',
+    question: 'Kann ich meine Super einfach selbst beantragen?',
     answer:
-      'Kannst du, mit einem einzigen Fonds und sauberen Unterlagen ist das sinnvoll. Meist liegt Super aber auf Konten, die niemand kennt, der Antrag nimmt nur Fonds, die du benennen kannst, und ans ATO übertragene Guthaben zeigt er nicht. Wir finden alles.',
+      'Kannst du, es kostet nichts, und bei einem einzigen Fonds mit sauberen Unterlagen sagen wir dir das auch. Schwieriger wird es bei Super auf mehreren Fonds, bei einem Fonds, der beglaubigte Kopien aus dem Ausland verlangt, oder bei einem Visum, das noch läuft. Genau diesen Teil gibst du an uns ab.',
   },
   {
     question: 'Bekommst du Superannuation, wenn du unter einer ABN gearbeitet hast?',
@@ -109,7 +110,7 @@ const faqs = [
   {
     question: 'Warum sind es 65 % für Working Holiday Maker und 35 % für andere?',
     answer:
-      'Die 65 % gelten per Gesetz für alle, die je ein 417 oder 462 Visum hatten, andere temporäre Aufenthalter zahlen 35 %. Der Satz folgt deiner Visumshistorie, nicht deinem letzten Visum, gilt auch nach einem Wechsel, und kein Berater kann ihn senken.',
+      'Die 65 % gelten per Gesetz für alle, die je ein 417 oder 462 Visum hatten, andere temporäre Aufenthalter zahlen 35 %. Der Satz folgt deiner Visumshistorie, nicht deinem letzten Visum, und gilt auch nach einem Wechsel.',
   },
   {
     question: 'Was, wenn ein Arbeitgeber überhaupt keine Super gezahlt hat?',
@@ -119,7 +120,7 @@ const faqs = [
   {
     question: 'Wirkt sich die Auszahlung auf deine Steuererklärung oder ein späteres Visum aus?',
     answer:
-      'Auf beides nicht. Die einbehaltene Steuer ist endgültig, die DASP gehört also nicht in deine australische Steuererklärung, und spätere Visumanträge berührt sie auch nicht. Einzige praktische Folge: deine Superkonten werden geschlossen.',
+      'Auf beides nicht. Die einbehaltene Steuer ist endgültig, die DASP gehört also nicht in deine australische Steuererklärung, und ein späterer Visumantrag hängt in der Regel nicht daran. Einzige praktische Folge: deine Superkonten werden geschlossen.',
   },
 ]
 
@@ -166,21 +167,27 @@ const speakableSchema = {
   url: `${SITE_URL}/de/superannuation`,
 }
 
+/*
+ * Beschreibt, woraus ein DASP-Antrag besteht und in welcher Reihenfolge das
+ * abläuft, damit die Seite als Quelle und nicht als Landingpage gelesen wird.
+ * Bewusst keine Handlungsanweisung: eine frühere Fassung listete "Unterlagen
+ * sammeln" und "Bei jedem Fonds beantragen", also eine Anleitung für genau den
+ * Vorgang, mit dem wir beauftragt werden. Suchmaschinen zeigen solche Daten als
+ * Schritt-für-Schritt-Anleitung an.
+ */
 const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   inLanguage: 'de',
-  name: 'So holst du deine Superannuation nach der Abreise aus Australien zurück (DASP)',
+  name: 'Wie ein DASP-Antrag auf Auszahlung der Superannuation abläuft',
   description:
-    'Das DASP Verfahren für Working Holiday Maker mit einem Visum der Klasse 417 oder 462, vom Anspruch bis zur Auszahlung.',
-  totalTime: 'P28D',
+    'Woraus ein DASP-Antrag für Working Holiday Maker mit einem Visum der Klasse 417 oder 462 besteht, vom Anspruch bis zur Auszahlung.',
   step: [
-    { name: 'Anspruch prüfen', text: 'Dein Visum muss abgelaufen oder annulliert sein und du musst Australien dauerhaft verlassen haben. Beides muss gleichzeitig zutreffen.' },
-    { name: 'Unterlagen sammeln', text: 'Reisepass, australische TFN, Visumsdaten, Name und Mitgliedsnummer jedes Superfonds sowie das Konto für die Auszahlung.' },
-    { name: 'Jeden Fonds finden', text: 'Alle mit deiner TFN verknüpften Superkonten suchen, einschließlich Guthaben, die ein Fonds bereits an das ATO übertragen hat.' },
-    { name: 'Bei jedem Fonds beantragen', text: 'Pro Fonds mit Guthaben geht ein eigener DASP-Antrag raus, oder an das ATO, wenn das Guthaben dort bereits liegt.' },
-    { name: 'Quellensteuer wird einbehalten', text: 'Working Holiday Maker zahlen 65 % auf den steuerpflichtigen Anteil. Der Fonds behält sie ein und führt sie an das ATO ab.' },
-    { name: 'Auszahlung erhalten', text: 'Die Zahlung kommt in der Regel innerhalb von 28 Tagen nach Genehmigung, auf ein australisches oder ein ausländisches Konto.' },
+    { name: 'Der Anspruch wird geprüft', text: 'Dein Visum muss abgelaufen oder annulliert sein und du musst Australien verlassen haben. Beides muss gleichzeitig zutreffen, und ein Antrag davor ist der häufigste vergebliche Antrag überhaupt.' },
+    { name: 'Jeder Fonds wird ermittelt', text: 'Ein Working-Holiday-Jahr mit mehreren Arbeitgebern bedeutet meist mehrere Fonds, einschließlich Guthaben, die ein Fonds bereits als unclaimed super an das ATO übertragen hat. Ein Antrag erreicht nur das Geld, auf das er zeigt.' },
+    { name: 'Jeder Antrag wird vorbereitet und belegt', text: 'Jeder Fonds mit Guthaben wird einzeln beantragt, nach seinem eigenen Identitäts- und Beglaubigungsstandard. Was ein Fonds akzeptiert, akzeptiert der nächste nicht zwangsläufig.' },
+    { name: 'Die Quellensteuer wird einbehalten', text: 'Auf den steuerpflichtigen Anteil einer DASP für Working Holiday Maker fallen 65 % an. Der Fonds behält sie ein und führt sie an das ATO ab, unabhängig davon, wer den Antrag stellt.' },
+    { name: 'Das Guthaben wird ausgezahlt', text: 'Das verbleibende Guthaben wird ausgezahlt, und anders als eine Steuererstattung kann es auf ein ausländisches Konto gehen.' },
   ].map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.name, text: s.text })),
 }
 
@@ -393,8 +400,8 @@ export default function GermanSuperannuationPage() {
           aus Deutschland zu organisieren dauert länger, als die meisten denken.
         </p>
         <p style={BODY}>
-          Das vorher zu klären statt nach der ersten Ablehnung ist der Unterschied zwischen einem
-          Antrag, der einen Monat läuft, und einem, der sechs braucht.
+          Das vorher zu klären statt nach der ersten Ablehnung ist das, was einen Antrag in Bewegung
+          hält.
         </p>
       </Answer>
 
@@ -418,17 +425,17 @@ export default function GermanSuperannuationPage() {
           oder Mitgliedsnummer. Auch ans ATO abgegebene Guthaben tauchen in der Suche auf.
         </p>
         <p style={BODY}>
-          Nicht automatisch ist der Antrag selbst. Ein Konto zu finden beantragt gar nichts, jeder Fonds
-          braucht seinen eigenen Antrag mit eigenen Unterlagen. Übersehen wird fast immer der erste Job,
-          angenommen bevor man wusste, was Super überhaupt ist.
+          Nicht automatisch ist der Antrag selbst: Ein Konto zu finden beantragt gar nichts, jeder Fonds
+          braucht seinen eigenen Antrag. Übersehen wird fast immer der erste Job, angenommen bevor man
+          wusste, was Super überhaupt ist.
         </p>
       </Answer>
 
       <Answer id="from-overseas" heading="Kannst du deine Super aus Deutschland beantragen?" tint>
         <p style={BODY}>
           Ja, und anders geht es gar nicht. Eine DASP ist erst nach deiner Ausreise möglich, jeder
-          Antrag kommt also aus dem Ausland, und dein Wohnort ändert am Anspruch nichts. Alles läuft
-          über Unterlagen und lässt sich von zu Hause aus erledigen.
+          Antrag kommt also aus dem Ausland. Dein Wohnort ändert am Anspruch nichts, und alles läuft
+          über Unterlagen.
         </p>
         <p style={BODY}>
           Zwei Dinge klärst du besser, bevor du dein australisches Konto schließt. Nicht jeder Fonds
@@ -465,8 +472,8 @@ export default function GermanSuperannuationPage() {
         </p>
         <p style={BODY}>
           Fliegst du deutlich vor Ablauf deines Visums heim, musst du die Restlaufzeit nicht abwarten.
-          Nach der Ausreise kannst du das Department of Home Affairs bitten, das Visum zu annullieren.
-          Damit bist du sofort antragsberechtigt statt erst Monate später.
+          Nach der Ausreise kann das Department of Home Affairs das Visum annullieren, statt es
+          auslaufen zu lassen, und das zieht den Antrag in der Regel vor.
         </p>
       </Answer>
 
@@ -478,62 +485,20 @@ export default function GermanSuperannuationPage() {
         </p>
         <p style={BODY}>
           Verloren ist nur, was Gebühren und Prämien in den Monaten vor der Übertragung genommen
-          haben. Bei kleinen Beträgen ist das spürbar, und zurückholen kann es niemand. Das ist
-          das einzige echte Argument, früher zu beantragen, und es reicht.
+          haben. Bei kleinen Beträgen ist das spürbar, und zurückholen kann es niemand. Das ist das
+          Argument dafür, früher zu beantragen.
         </p>
       </Answer>
 
       <Answer id="with-us" heading="Selbst beantragen oder uns machen lassen" tint>
         <p style={BODY}>
-          Du kannst den DASP-Antrag selbst über das Online-System des ATO stellen, das kostet nichts.
-          Mit einem Fonds und vollständigen Unterlagen ist das der vernünftige Weg, und wir sagen dir
-          das auch so. Nichts auf dieser Seite steht hinter einer Wand.
-        </p>
-        <p style={BODY}>
-          Wir übernehmen den anderen Teil. Jedes mit deiner TFN verknüpfte Konto finden, auch Guthaben,
-          die schon beim ATO liegen. Beglaubigungen aus dem Ausland organisieren. Hinter Fonds her sein,
-          die nicht mehr antworten.
-        </p>
-        <p style={BODY}>
-          Dafür sorgen, dass eine alte Passnummer oder eine Adresse, in der du seit 2023 nicht mehr
-          wohnst, den Antrag nicht wieder auf null setzt. Working-Holiday-Steuer ist das Einzige, was
-          wir machen, uns ist davon nichts fremd.
+          Du kannst das selbst machen. Abgeben würdest du die Suche nach jedem Konto, das mit deiner
+          Steuernummer verknüpft ist, ATO-Guthaben eingeschlossen, die beglaubigten Kopien aus dem
+          Ausland, einen eigenen Antrag pro Fonds, und das Nachfassen, wenn ein Fonds nicht mehr
+          antwortet.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4" style={{ margin: '22px 0' }}>
-          <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #E2EFE9' }}>
-            <p className="font-semibold" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#4C6459', marginBottom: '14px' }}>
-              Allein
-            </p>
-            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {[
-                'Fonds aus vier oder fünf Casual Jobs aufspüren',
-                'Beglaubigte Kopien aus dem Ausland organisieren',
-                'Ein eigener Antrag pro Fonds',
-                'Niemand, der einem stummen Fonds hinterherläuft',
-              ].map((t, i) => (
-                <li key={i} style={{ fontSize: '14px', lineHeight: 1.6, color: '#2A3C34' }}>{t}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="rounded-2xl" style={{ padding: '20px', background: '#EAF6F1', border: '1.5px solid #C8EAE0' }}>
-            <p className="font-semibold" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0B5240', marginBottom: '14px' }}>
-              Mit uns
-            </p>
-            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {[
-                'Jeder mit deiner TFN verknüpfte Fonds durchsucht, ATO-Guthaben eingeschlossen',
-                'Unterlagen geprüft, bevor irgendetwas eingereicht wird',
-                'Ein Ansprechpartner für alle Fonds',
-                'Begleitet, bis das Geld auf deinem Konto ist',
-              ].map((t, i) => (
-                <li key={i} className="font-semibold" style={{ fontSize: '14px', lineHeight: 1.6, color: '#080F0D' }}>{t}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0', marginBottom: '20px' }}>
+        <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0', margin: '22px 0 20px' }}>
           <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
             Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
           </p>
@@ -555,7 +520,7 @@ export default function GermanSuperannuationPage() {
 
       <section className="py-10 lg:py-14" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[760px] mx-auto">
+          <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '18px' }}>
               Weitere Fragen zur DASP-Auszahlung
             </h2>
@@ -566,6 +531,7 @@ export default function GermanSuperannuationPage() {
 
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[900px] mx-auto">
           <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
             Ein Teil des Antrags im Detail
           </h2>
@@ -585,6 +551,7 @@ export default function GermanSuperannuationPage() {
               </Link>
             ))}
           </div>
+        </div>
         </div>
       </section>
 

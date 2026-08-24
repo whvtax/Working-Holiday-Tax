@@ -51,14 +51,14 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
-    question: 'I have the figure now. Can I not just lodge it myself on myGov?',
+    question: 'I have the figure. Can I just lodge it myself?',
     answer:
-      'You can, and lodging really is the easy part. What an estimate cannot do is change the figure, because it is only arithmetic on the numbers you already have. Three judgements decide the real result, and not one of them is a field on this page or on myGov: which residency position is true for you, whether the Medicare levy should ever have been charged to you, and what your particular line of work is entitled to deduct. Each one is a call about your year rather than a box to fill in, and together they move the number far more than the arithmetic does. You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.',
+      'You can, and lodging really is the easy part. What an estimate cannot do is change the figure, because it is only arithmetic on the numbers you already have. Three judgements decide the real result, and not one of them is a field on this page: which residency position is true for you, whether the Medicare levy should ever have been charged to you, and what your line of work is entitled to deduct.',
   },
   {
     question: 'How accurate is this tax calculator?',
     answer:
-      'It is accurate arithmetic on the figures you type, and nothing more than that. It applies the 2025-26 working holiday maker and Australian resident rates to the income and withholding you enter. It cannot see your residency position, whether the Medicare levy exemption applies to you, or what your line of work is entitled to deduct, and all three of those change the result. Treat the number as a starting point for a conversation rather than a final answer.',
+      'It is accurate arithmetic on the figures you type, and nothing more than that. It applies the 2025-26 working holiday maker and Australian resident rates to the income and withholding you enter. Treat the number as a starting point for a conversation rather than a final answer.',
   },
   {
     question: 'What tax rates does the calculator use?',

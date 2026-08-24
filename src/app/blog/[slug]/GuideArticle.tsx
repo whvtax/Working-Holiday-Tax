@@ -460,7 +460,7 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
           breadcrumbs, and the breadcrumbs start at 71px so the two no longer
           share the same three pixels at all. The fill is forest rather than
           amber: amber on #E2EFE9 measures 1.87:1 and is effectively invisible. */}
-      <div style={{
+      <div aria-hidden="true" style={{
         position: 'fixed', top: '68px', left: 0, right: 0, height: '3px',
         background: '#E2EFE9', zIndex: 45,
       }}>
@@ -479,11 +479,20 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
 
       <div ref={articleRef} className={`article-layout ${showToc ? 'with-toc' : ''}`}>
 
-        {/* Main article column */}
-        <div style={{ minWidth: 0 }}>
+        {/* Main article column.
+            The measure is capped in ch rather than px. Uncapped, the text ran
+            the full width of the grid cell, which on a desktop without the TOC
+            sidebar is over 1,000px, or roughly 130 characters a line. 70ch
+            keeps it inside the 60 to 75 the eye can track without losing its
+            place on the return sweep, and the share row and back link line up
+            with the text rather than running past it. */}
+        <div style={{ minWidth: 0, maxWidth: '70ch' }}>
 
-          {/* Body */}
-          <div className="guide-body" style={{ marginBottom: '2.5rem' }}>
+          {/* overflowWrap catches the long unbroken strings that turn up in
+              tax writing, ABNs, reference numbers and the occasional URL,
+              which would otherwise push the column sideways on a 360px
+              screen. */}
+          <div className="guide-body" style={{ marginBottom: '2.5rem', overflowWrap: 'break-word' }}>
             {parseBody(guide.body, locale, <InlineGuideCta guide={guide} locale={locale} />)}
           </div>
 

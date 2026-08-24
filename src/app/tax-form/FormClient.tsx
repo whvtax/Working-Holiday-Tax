@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useId, isValidElement, cloneElement } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { WA_URL, WA_NUMBER, AGENT_TPB } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
@@ -15,15 +15,51 @@ type UploadState = { file: File | null; preview: string | null }
 type MultiUploadState = { files: File[]; previews: (string | null)[] }
 
 /* ── Field wrapper ── */
+/**
+ * A labelled form field.
+ *
+ * The <label> used to carry no `htmlFor` and the control arrived as a sibling
+ * through `children`, so nothing connected the two: a screen reader announced
+ * every input on this form as unlabelled, and neither the hint nor the error
+ * text was announced. The control is cloned with a generated id here, the label
+ * points at it, and the hint and error are wired up through aria-describedby.
+ *
+ * Radio and checkbox groups arrive as a wrapping <div> rather than one control,
+ * so those are labelled as a group instead of having an id forced onto a
+ * container.
+ */
 function Field({ label, required, children, error, hint }: { label: string; required?: boolean; children: React.ReactNode; error?: string; hint?: string }) {
+  const uid = useId()
+  const labelId = `${uid}-label`
+  const hintId = `${uid}-hint`
+  const errorId = `${uid}-error`
+  const el = isValidElement(children) ? (children as React.ReactElement<Record<string, unknown>>) : null
+  const isControl = !!el && typeof el.type === 'string' && ['input', 'select', 'textarea'].includes(el.type)
+  const controlId = (el?.props?.id as string | undefined) ?? `${uid}-input`
+  const describedBy = [hint ? hintId : null, error ? errorId : null].filter(Boolean).join(' ') || undefined
+
+  const control = isControl && el
+    ? cloneElement(el, {
+        id: controlId,
+        'aria-required': required || undefined,
+        'aria-invalid': error ? true : undefined,
+        'aria-describedby': describedBy,
+      })
+    : (
+      <div role="group" aria-labelledby={labelId} aria-describedby={describedBy}>
+        {children}
+      </div>
+    )
+
   return (
     <div style={{marginBottom:'14px'}}>
-      <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'6px'}}>
+      <label id={labelId} htmlFor={isControl ? controlId : undefined}
+        style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'6px'}}>
         {label}
       </label>
-      {hint && <div style={{fontSize:'12px',color:'#5A7B70',marginBottom:'6px',lineHeight:1.4}}>{hint}</div>}
-      {children}
-      {error && <span className="err-msg">{error}</span>}
+      {hint && <div id={hintId} style={{fontSize:'12px',color:'#5A7B70',marginBottom:'6px',lineHeight:1.4}}>{hint}</div>}
+      {control}
+      {error && <span id={errorId} className="err-msg" role="alert">{error}</span>}
     </div>
   )
 }
@@ -51,8 +87,19 @@ function FileUpload({
   }
 
   return (
-    <div className="file-zone" onClick={() => !value.file && inputRef.current?.click()}>
-      <input ref={inputRef} id={id} type="file" accept={accept} className="hidden" onChange={handleChange} />
+    // The drop zone is the control here: the file input itself is display:none,
+    // so it can neither be tabbed to nor announced. The zone therefore carries
+    // the button role, the name and the keyboard handling.
+    <div className="file-zone"
+      role={value.file ? undefined : 'button'}
+      tabIndex={value.file ? undefined : 0}
+      aria-label={value.file ? undefined : label}
+      onKeyDown={e => {
+        if (value.file) return
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click() }
+      }}
+      onClick={() => !value.file && inputRef.current?.click()}>
+      <input ref={inputRef} id={id} type="file" accept={accept} className="hidden" tabIndex={-1} aria-hidden="true" onChange={handleChange} />
       {value.file ? (
         <div className="file-selected">
           {value.preview
@@ -140,8 +187,11 @@ function MultiFileUpload({
         </div>
       ))}
       {canAdd && (
-        <div className="file-zone" onClick={() => inputRef.current?.click()} style={{cursor:'pointer'}}>
-          <input ref={inputRef} id={id} type="file" accept={accept} multiple className="hidden" onChange={handleChange} />
+        <div className="file-zone"
+          role="button" tabIndex={0} aria-label={label}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click() } }}
+          onClick={() => inputRef.current?.click()} style={{cursor:'pointer'}}>
+          <input ref={inputRef} id={id} type="file" accept={accept} multiple className="hidden" tabIndex={-1} aria-hidden="true" onChange={handleChange} />
           <div className="file-empty">
             <div className="file-upload-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">

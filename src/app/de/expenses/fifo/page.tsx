@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "FIFO und Camp-Arbeit"
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Deckt die Rückerstattung unser Honorar nicht, erstatten wir dir den Rest. Du zahlst nie drauf.",
-  "guaranteeBody": "417 und 462 sind die einzigen Visa, für die wir Steuerarbeit annehmen, deshalb werden Zone Offset, Wohnsitzfrage und die Super in drei Fonds zusammen angesehen. Von einem registrierten Steuerberater geprüft und freigegeben, vor der Einreichung.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.",
+  "guaranteeBody": "417 und 462 sind die einzigen Visa, für die wir Steuerarbeit annehmen, deshalb werden Zone Offset, Wohnsitzfrage und die Super in drei Fonds zusammen angesehen. Von einem registrierten Steuerberater geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können FIFO-Beschäftigte absetzen?",
     "paras": [
       "Absetzbar sind selbst gekaufte Schutzausrüstung und das Waschen davon, Werkzeug und Geräte, die Verlängerung eines Tickets oder einer Lizenz, die du bereits hast, vom Arbeitgeber verlangte Medicals sowie Drogen- und Alkoholtests, die du selbst bezahlt hast, der arbeitsbezogene Anteil an Handy und Internet und Weiterbildung, die zu deiner jetzigen Arbeit gehört.",
-      "Nicht auf dieser Liste steht alles, was FIFO teuer wirken lässt. Dein Zimmer im Camp und dein Essen in der Mess werden von der Firma gebucht und bezahlt, und der Flug zum Standort meistens auch. Ein Abzug gibt nur Geld zurück, das aus deiner Tasche geflossen ist, also bringt ein teures Camp nichts in deine Erklärung."
+      "Nicht auf dieser Liste steht alles, was FIFO teuer wirken lässt. Dein Zimmer im Camp und dein Essen in der Mess werden von der Firma gebucht und bezahlt, und der Flug zum Standort meistens auch. Ein Abzug gibt nur Geld zurück, das aus deiner Tasche geflossen ist."
     ]
   },
   {
@@ -162,7 +162,7 @@ const SECTIONS: Section[] = [
     "h2": "Was muss hinter einem FIFO-Abzug stehen?",
     "paras": [
       "Ein Abzug übersteht drei Fragen. Hast du bezahlt? Hat dir jemand das Geld zurückgegeben? Diente es dazu, das Einkommen zu verdienen, das du angibst? Auf dem Roster heißt das der Beleg für die Stiefel, die das Lager nicht ausgegeben hat, die Rechnung für das Medical und die Rechnung hinter deinem Handyanteil.",
-      "Nachweis heißt Betrag, Datum, Anbieter und Gegenstand, auf einem Beleg, einer Rechnung, einem Kontoauszug oder einem Foto an der Kasse. Er muss fünf Jahre halten. Bei 300 Dollar Abzügen oder weniger im Jahr ist kein schriftlicher Nachweis nötig, du musst aber sagen können, woher die Zahl kommt. Das ist eine andere Regel als die 300 Dollar, die entscheiden, ob ein Werkzeug sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Nachweis heißt Betrag, Datum, Anbieter und Gegenstand, auf einem Beleg, einer Rechnung, einem Kontoauszug oder einem Foto an der Kasse, und er muss fünf Jahre halten. Bei 300 Dollar Abzügen oder weniger im Jahr ist kein schriftlicher Nachweis nötig. Das sind nicht die 300 Dollar, die entscheiden, ob ein Werkzeug sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
@@ -218,9 +218,9 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was bleibt auf einer FIFO-Akte offen?",
     "paras": [
-      "Der Zone Tax Offset ist meistens falsch, nicht unmöglich. Lag deine Basis während der Working Holiday in einer ausgewiesenen Zone, etwa eine Wohnung in einem abgelegenen Ort statt in einer Großstadt, ist die Frage offen. Wo du normal gewohnt hast, wie lange und was du dort hattest, entscheidet sie.",
+      "Der Zone Tax Offset ist meistens falsch, nicht unmöglich. Lag deine Basis während der Working Holiday in einer ausgewiesenen Zone, etwa eine Wohnung in einem abgelegenen Ort statt in einer Großstadt, ist die Frage offen.",
       "Die Ausnahme für sperriges Werkzeug zählt eher für Handwerker, die mit eigenem Werkzeugsatz einfliegen, als für Camp-Service-Rollen. Entschieden wird sie davon, was du transportiert hast und was der Standort an Lagerung bot, und geprüft wird sie auch, also solltest du die Fakten beschreiben können.",
-      "Der steuerliche Wohnsitz ist bei FIFO die größte Frage, weil die Beträge größer sind. Lange Swings, eine feste Basis dazwischen und ein Aufenthalt über Jahre sind das Profil, bei dem die Addy-Entscheidung am ehesten greift, sofern ein britischer, deutscher oder japanischer Passinhaber steuerlich in Australien ansässig war. Eine Beurteilung deines Jahres, und eine, auf die jemand richtig schauen sollte."
+      "Der steuerliche Wohnsitz ist bei FIFO die größte Frage, weil die Beträge größer sind. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
 ]

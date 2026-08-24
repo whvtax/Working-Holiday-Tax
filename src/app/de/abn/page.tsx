@@ -124,39 +124,39 @@ const WHAT_WE_DO = [
 
 const FAQS = [
   {
-    question: 'Kann ich das nicht einfach selbst über myGov machen?',
+    question: 'Kann ich das einfach selbst machen?',
     answer:
-      'Kannst du, und wenn dein ganzes Jahr über die Lohnabrechnung lief, ist es unkompliziert. Genau damit macht eine ABN Schluss. Die Erklärung nimmt jede Grenze an, die du zwischen Lohn und Rechnungseinkommen einträgst, und stellt sie nie infrage, weil das Formular nicht wissen kann, wie dich welcher Arbeitgeber behandelt hat. Es fragt nicht, ob du wirklich selbstständig warst oder Angestellter, dem der Arbeitgeber die Kosten übertragen hat. Es gibt keinen Hinweis darauf, welche deiner Kosten vom Rechnungseinkommen abgehen und welche Belege dahinterstehen müssen. Und es sagt dir nicht, ob du dich für GST registrieren musstest. Das sind Beurteilungen zu deinem Jahr und keine Felder zum Ausfüllen, und eine falsch gezogene Grenze ist der häufigste Grund, warum eine Erklärung noch einmal gemacht werden muss. Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches Formular welches ist. Wir regeln das direkt mit dem ATO.',
+      'Kannst du, und wenn dein ganzes Jahr über die Lohnabrechnung lief, ist es unkompliziert. Genau damit macht eine ABN Schluss: wo die Grenze zwischen Lohn und Rechnungseinkommen verläuft, ob du überhaupt selbstständig warst, welche deiner Kosten vom Rechnungseinkommen abgehen und welche Belege dahinterstehen müssen, und ob du dich für GST registrieren musstest. Das sind Beurteilungen zu deinem Jahr und keine Felder zum Ausfüllen, und eine falsch gezogene Grenze ist der häufigste Grund, warum eine Erklärung noch einmal gemacht werden muss.',
   },
   {
     question: 'Wie verändert eine ABN meine Steuererklärung?',
     answer:
-      'Sie verändert, was die Erklärung sagen muss und wie viel Arbeit dahintersteckt. Lohn erreicht dich mit bereits einbehaltener Steuer und einem Income Statement, das dein Arbeitgeber ans ATO meldet, deshalb gleicht sich diese Hälfte weitgehend von selbst ab. Einkommen, das du über eine ABN in Rechnung stellst, kommt unversteuert an, wird als Betriebseinnahme erklärt und um die Kosten der Erzielung gemindert, die du belegen können musst. Dazu kommen die GST-Frage und, falls das ATO genauer hinsieht, die Frage, ob das wirklich Selbstständigkeit war. Die meisten Working Holiday Maker mit ABN haben beide Einkommensarten im selben Jahr, und beide landen in einer Erklärung.',
+      'Lohn erreicht dich mit bereits einbehaltener Steuer und einem Income Statement, das dein Arbeitgeber ans ATO meldet, deshalb gleicht sich diese Hälfte weitgehend von selbst ab. Einkommen, das du über eine ABN in Rechnung stellst, kommt unversteuert an, wird als Betriebseinnahme erklärt und nur um Kosten gemindert, die du belegen kannst. Dazu kommen die GST-Frage und die Frage, ob das wirklich Selbstständigkeit war, und beide Hälften landen trotzdem in einer Erklärung.',
   },
   {
     question: 'Mein Arbeitgeber verlangt eine ABN für einen normalen Schichtjob. Ist das korrekt?',
     answer:
-      'Meistens nicht, und es lohnt sich, das vor der Registrierung anzusprechen. Wenn er deinen Dienstplan macht, dir sagt, wie die Arbeit abläuft, das Werkzeug stellt und dich früher nach Hause schicken kann, wirst du wie ein Angestellter behandelt, und das Etikett auf dem Papier ändert daran nichts. Dich auf eine ABN zu setzen verschiebt die Kosten auf dich: kein Steuerabzug, keine Superannuation, kein Unfallversicherungsschutz, kein Mindestlohn und keine Zuschläge. Schick uns die Jobdetails, bevor du irgendetwas zusagst, und wir sagen dir ehrlich, wonach es aussieht.',
+      'Meistens nicht, und es lohnt sich, das vor der Registrierung anzusprechen. Wenn er deinen Dienstplan macht, dir sagt, wie die Arbeit abläuft, das Werkzeug stellt und dich früher nach Hause schicken kann, wirst du wie ein Angestellter behandelt, egal was auf dem Papier steht. Dich auf eine ABN zu setzen verschiebt die Kosten auf dich: kein Steuerabzug, keine Superannuation, kein Unfallversicherungsschutz, kein Mindestlohn und keine Zuschläge. Schick uns die Jobdetails, bevor du irgendetwas zusagst.',
   },
   {
     question: 'Muss ich mich mit Working Holiday Visum für GST registrieren?',
     answer:
-      'Nur wenn dein Umsatz 75.000 $ im Jahr erreicht, was die meisten Working Holiday Maker nicht annähernd tun, oder wenn du Rideshare fährst. Wer Taxi- oder Fahrdienstleistungen anbietet, wozu Uber und die Wettbewerber gehören, muss sich ab der allerersten Fahrt für GST registrieren, egal wie wenig dabei verdient wird. Für Essenslieferungen und Kurierfahrten gilt diese Regel nicht, dort greift wie bei allen anderen die Grenze von 75.000 $. Mit der Registrierung kommen vierteljährliche Business Activity Statements, das macht man also nicht nebenbei.',
+      'Nur wenn dein Umsatz 75.000 $ im Jahr erreicht, was die meisten Working Holiday Maker nicht annähernd tun, oder wenn du Rideshare fährst. Wer Taxi- oder Fahrdienstleistungen anbietet, wozu Uber und die Wettbewerber gehören, muss sich ab der allerersten Fahrt für GST registrieren, egal wie wenig dabei verdient wird. Für Essenslieferungen und Kurierfahrten gilt diese Regel nicht, dort greift die Grenze von 75.000 $. Mit der Registrierung kommen vierteljährliche Business Activity Statements, das macht man also nicht nebenbei.',
   },
   {
     question: 'Kann ich sowohl eine TFN als auch eine ABN haben?',
     answer:
-      'Ja, und die meisten Working Holiday Maker, die selbstständig arbeiten, haben am Ende beides. Die Steuernummer deckt dich als Angestellten ab, die ABN als Selbstständigen, und es ist völlig normal, im selben Jahr unter beiden zu verdienen. Es sind aber nicht zwei Erklärungen: Eine Erklärung deckt das Steuerjahr ab und meldet beides, und genau dort wird die Aufteilung wichtig. Die Steuernummer brauchst du zuerst, weil der ABN-Antrag damit abgeglichen wird.',
+      'Ja, und die meisten Working Holiday Maker, die selbstständig arbeiten, haben am Ende beides. Die Steuernummer deckt dich als Angestellten ab, die ABN als Selbstständigen, und es ist völlig normal, im selben Jahr unter beiden zu verdienen. Es sind aber nicht zwei Erklärungen: Eine Erklärung deckt das Steuerjahr ab und meldet beides. Die Steuernummer brauchst du zuerst, weil der ABN-Antrag damit abgeglichen wird.',
   },
   {
     question: 'Was kann ich mit einer ABN als Betriebsausgabe absetzen?',
     answer:
-      'Die Kosten der Einkommenserzielung, ehrlich aufgeteilt, wenn etwas auch privat genutzt wird. Bei einem Lieferfahrer sind das meist ordentlich erfasste Kilometer, die laufenden Kosten für Rad oder Auto, Handy und Daten, Versicherung, Ausrüstung und die Provision, die eine Plattform vor der Auszahlung einbehalten hat. Bei einem Subunternehmer auf dem Bau sieht es eher nach Werkzeug, Schutzausrüstung und Fahrten zwischen Einsatzorten aus. Nie dazu gehören der Flug nach Australien, der normale Weg von zu Hause zu einem Arbeitsort und alles, wofür du keinen Nachweis hast. Das ist der Teil des Jahres, der ein Fahrtenbuch ab Tag eins belohnt.',
+      'Die Kosten der Einkommenserzielung, ehrlich aufgeteilt, wenn etwas auch privat genutzt wird. Bei einem Lieferfahrer sind das meist ordentlich erfasste Kilometer, die laufenden Kosten für Rad oder Auto, Handy und Daten, Versicherung, Ausrüstung und die Provision, die eine Plattform vor der Auszahlung einbehalten hat. Bei einem Subunternehmer auf dem Bau sind es Werkzeug, Schutzausrüstung und Fahrten zwischen Einsatzorten. Nie dazu gehören der Flug nach Australien, der normale Weg von zu Hause zu einem Arbeitsort und alles, wofür du keinen Nachweis hast.',
   },
   {
     question: 'Was passiert mit meiner ABN, wenn ich Australien verlasse?',
     answer:
-      'Du meldest sie ab, sobald du nicht mehr tätig bist, und das solltest du auch tun, statt sie offen zu lassen. Eine aktive ABN sagt dem ATO, dass du weiterhin ein Gewerbe betreibst und möglicherweise weiter Pflichten hast. Die Abmeldung ändert nichts an der Erklärung für das Jahr, in dem du gearbeitet hast, die trotzdem eingereicht werden muss, und sie ändert auch nichts an deinem Anspruch auf Superannuation aus Anstellungen im selben Zeitraum. Wenn dein Abflug bald ansteht, sag früh Bescheid, denn die Reihenfolge aus Abmelden, Einreichen und Super beantragen ist wichtig.',
+      'Du meldest sie ab, sobald du nicht mehr tätig bist, denn eine aktive ABN sagt dem ATO, dass du weiterhin ein Gewerbe betreibst und möglicherweise weiter Pflichten hast. Die Abmeldung ändert nichts an der Erklärung für das Jahr, in dem du gearbeitet hast, die trotzdem eingereicht werden muss, und sie ändert auch nichts an deinem Anspruch auf Superannuation aus Anstellungen im selben Zeitraum. Wenn dein Abflug bald ansteht, sag früh Bescheid, denn die Reihenfolge aus Abmelden, Einreichen und Super beantragen ist wichtig.',
   },
 ]
 
@@ -178,33 +178,10 @@ const GUIDES = [
   },
 ]
 
-/**
- * Der Einwand, mit dem jeder Lead ankommt, hier konkret zur ABN.
- *
- * Die Startseite beantwortet ihn allgemein. Auf dieser Seite muss es um das eine
- * gehen, was in einem gemischten Jahr schiefgeht: Das Formular nimmt jede
- * Aufteilung an, die du eintippst, und stellt sie nie infrage. Keine Zeile hier
- * behauptet, myGov sei schlecht. Es nimmt Zahlen an. Die Zahlen zu bestimmen ist
- * die eigentliche Arbeit.
- */
-const MYGOV = [
-  {
-    mygov: 'Die Erklärung nimmt jede Aufteilung an, die du zwischen Lohn und Rechnungseinkommen einträgst.',
-    us: 'Wir bestimmen zuerst, wo die Grenze wirklich verläuft, Arbeitgeber für Arbeitgeber.',
-  },
-  {
-    mygov: 'Nichts fragt, ob du überhaupt selbstständig warst oder Angestellter, dem der Arbeitgeber die Kosten übertragen hat.',
-    us: 'Diese Frage entscheidet die ganze Erklärung, deshalb stellen wir sie dir als erste.',
-  },
-  {
-    mygov: 'Betriebsausgaben kommen in dasselbe leere Feld wie alles andere, ohne jeden Hinweis, was dort hineingehört.',
-    us: 'Wir wissen, welche deiner Kosten vom Rechnungseinkommen abgehen und welcher Beleg hinter jeder einzelnen stehen muss.',
-  },
-  {
-    mygov: 'GST ist ein Feld. Ob du dich registrieren musstest, steht dort nicht.',
-    us: 'Ob du die Grenze überschritten hast und was das für das Jahr bedeutet, ist eine bewusst getroffene Entscheidung.',
-  },
-]
+// Die myGov-Vergleichstabelle, die hier stand, ist entfernt: Ihre vier Zeilen
+// waren noch einmal die vier Punkte von THE_SPLIT und von WHAT_WE_DO, und die
+// Zeile zur Selbstständigkeit hat einen eigenen Abschnitt. Das "Du wirst dich
+// nie bei myGov einloggen"-Versprechen ist ans Ende von WHAT_WE_DO gerückt.
 
 const WA_ABN = waUrl({ topic: 'abn', lang: 'de' })
 
@@ -313,46 +290,6 @@ export default function ABNPageDE() {
         </div>
       </section>
 
-      {/* ── 1b. MYGOV, KONKRET ZUR AUFTEILUNG ────────────────────────────── */}
-      <section className="py-11 lg:py-14 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Selbst machen</p>
-
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
-            <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Welches Einkommen gehört auf welche Seite?{' '}</span>
-            <span style={{ display: 'block' }}>myGov hat dazu keine Meinung.{' '}</span>
-          </h2>
-
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '22px' }}>
-            Das Formular nimmt jede Grenze an, die du zwischen Lohn und Rechnungen ziehst, und fragt nie, wo sie hätte
-            liegen sollen.
-          </p>
-
-          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
-            {MYGOV.map((row, i) => (
-              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>Auf myGov</p>
-                  <p style={{ ...BODY, color: '#2A3C34', overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
-                </div>
-                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>Mit uns</p>
-                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
-            Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
-            Formular welches ist. Wir regeln das direkt mit dem ATO.
-          </p>
-        </div>
-      </section>
-
       {/* ── 2. DIE AUFTEILUNG ────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
@@ -394,7 +331,7 @@ export default function ABNPageDE() {
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
             Nicht, bevor jemand den Job angesehen hat. Eine ABN über Arbeit, die in Wahrheit Anstellung ist, beendet
             deine Superannuation, beendet den Steuerabzug, streicht den Unfallversicherungsschutz und stellt dich
-            außerhalb von Mindestlohn und Zuschlägen. All das wird zu deinen Kosten. Häufig ist das in der Farmarbeit,
+            außerhalb von Mindestlohn und Zuschlägen, und all das wird zu deinen Kosten. Häufig ist das in der Farmarbeit,
             in der Gastronomie, in der Reinigung und auf dem Bau, und es wird als normales Vorgehen dargestellt.
           </p>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '22px' }}>
@@ -442,7 +379,12 @@ export default function ABNPageDE() {
             ))}
           </div>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '60ch' }}>
+          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
+            Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
+            Formular welches ist. Wir regeln das direkt mit dem ATO.
+          </p>
+
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '60ch' }}>
             Noch keine ABN und auch keine Steuernummer? Die{' '}
             <Link href="/de/tfn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>TFN kommt zuerst</Link>, weil der
             ABN-Antrag damit abgeglichen wird.
@@ -530,10 +472,10 @@ export default function ABNPageDE() {
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-            Lies erst die ganze Antwort, wenn dir das lieber ist
+            Mehr zu Selbstständigkeit, Betriebsausgaben und GST
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            Wir halten nichts zurück, damit du dich melden musst. Wenn der Ratgeber es beantwortet, ist das gut so.
+            Der Test auf Selbstständigkeit im Detail, was ein Selbstständiger absetzen kann, und wo GST anfängt.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3">

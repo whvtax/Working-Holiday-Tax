@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Reinigungsarbeit" })
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Ist deine Rückerstattung kleiner als unser Honorar, erstatten wir die Differenz. Du zahlst nie drauf.",
-  "guaranteeBody": "Reinigungserklärungen landen hier jede Woche auf dem Tisch, und jede gehört jemandem mit 417- oder 462-Visum. Von einem registrierten Steuerberater geprüft und freigegeben, bevor etwas zum ATO geht.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.",
+  "guaranteeBody": "Reinigungserklärungen landen hier jede Woche auf dem Tisch, und jede gehört jemandem mit 417- oder 462-Visum. Von einem registrierten Steuerberater geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Reinigungskräfte absetzen?",
     "paras": [
       "Absetzbar sind selbst gekaufte Ausrüstung und Reinigungsmittel, Schutzausrüstung wie Handschuhe, Schürze, Schutzbrille oder Sicherheitsschuhe, das Waschen einer Pflichtuniform oder von Schutzkleidung und die Fahrt von einem Reinigungsjob zum nächsten am selben Tag. Was Kunde oder Arbeitgeber stellt oder erstattet, fällt raus.",
-      "Reinigung ist besonders, weil die Arbeit sich bewegt. Drei Häuser an einem Tag bedeuten zwei absetzbare Fahrten, und über ein Jahr ist das normalerweise die größte einzelne Zahl der Erklärung, größer als jeder Mopp, jedes Tuch und jede Flasche Reiniger zusammen."
+      "Reinigung ist besonders, weil die Arbeit sich bewegt. Drei Häuser an einem Tag bedeuten zwei absetzbare Fahrten, und über ein Jahr ist das normalerweise die größte einzelne Zahl der Erklärung."
     ]
   },
   {
@@ -155,8 +155,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was muss eine Reinigungskraft aufheben?",
     "paras": [
-      "Drei Tests hinter jedem Abzug: du hast bezahlt, dir hat es niemand erstattet, und die Ausgabe diente dazu, das Einkommen zu verdienen, das du angibst. Bei einer Reinigungskraft heißt das Belege für Mittel und Ausrüstung und eine laufende Notiz zu Daten, Adressen und Kilometern für die Fahrten.",
-      "Als Nachweis reicht ein Beleg, eine Rechnung oder ein Kontoauszug mit Betrag, Datum, Anbieter und Gegenstand, ein Handyfoto eingeschlossen, und du brauchst ihn fünf Jahre lang. Unter 300 Dollar Abzügen im ganzen Jahr brauchst du gar keinen schriftlichen Nachweis, musst die Summe aber erklären können. Das ist nicht die 300-Dollar-Grenze, die entscheidet, wie ein einzelner Staubsauger abgeschrieben wird."
+      "Drei Tests hinter jedem Abzug: du hast bezahlt, dir hat es niemand erstattet, und die Ausgabe diente dazu, das Einkommen zu verdienen, das du angibst. Bei einer Reinigungskraft heißt das Belege für Mittel und Ausrüstung und eine Aufzeichnung der Daten, Adressen und Kilometer hinter den Fahrten.",
+      "Ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto mit Betrag, Datum, Anbieter und Gegenstand zählt jeweils, und alles davon muss fünf Jahre halten. Unter 300 Dollar Abzügen im ganzen Jahr brauchst du gar keinen schriftlichen Nachweis. Das ist nicht die 300-Dollar-Grenze, die entscheidet, wie ein einzelner Staubsauger abgeschrieben wird."
     ]
   },
   {
@@ -207,7 +207,7 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Drei oder vier Adressen am Tag knacken die 5.000 Kilometer schneller, als die meisten Reinigungskräfte erwarten, und darüber gewinnt normalerweise das Fahrtenbuch, weil es Benzin, Versicherung, Zulassung, Wartung, Abschreibung und die Zinsen eines Autokredits erfasst statt einer Pauschale. Der Preis sind zwölf Wochen Aufzeichnungen und ein Beleg für alles."
+    "note": "Drei oder vier Adressen am Tag knacken die 5.000 Kilometer schneller, als die meisten Reinigungskräfte erwarten, und darüber gewinnt normalerweise das Fahrtenbuch, weil es Benzin, Versicherung, Zulassung, Wartung, Abschreibung und die Zinsen eines Autokredits erfasst statt einer Pauschale."
   },
   {
     "kind": "traps",
@@ -246,7 +246,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Wäsche, zu einem veröffentlichten Satz",
-        "d": "Das Waschen von Schutzkleidung und Pflichtuniform ist mit 1 Dollar oder 50 Cent pro Waschgang absetzbar. Fast niemand setzt es an und fast niemand weiß, dass es diesen Satz gibt."
+        "d": "Das Waschen von Schutzkleidung und Pflichtuniform ist mit 1 Dollar oder 50 Cent pro Waschgang absetzbar, und fast niemand weiß, dass es diesen Satz gibt."
       },
       {
         "t": "Ausrüstung aus der Aufbauphase",

@@ -211,7 +211,7 @@ const SECTIONS: Section[] = [
     "h2": "Was musst du belegen können?",
     "paras": [
       "Ein Beleg, eine Rechnung oder ein Kontoauszug mit Betrag, Datum, Anbieter und der Angabe, worum es ging. Ein Foto auf dem Handy zählt, und du musst es fünf Jahre lang vorlegen können.",
-      "Es gibt eine Ausnahme. Wenn deine gesamten arbeitsbezogenen Abzüge im Jahr bei 300 Dollar oder weniger liegen, brauchst du dafür keine schriftlichen Nachweise, musst aber trotzdem erklären können, wie du auf die Summe kommst. Das ist etwas anderes als die 300-Dollar-Regel für einzelne Anschaffungen, bei der es darum geht, wie ein einzelner Gegenstand abgeschrieben wird."
+      "Es gibt eine Ausnahme. Wenn deine gesamten arbeitsbezogenen Abzüge im Jahr bei 300 Dollar oder weniger liegen, brauchst du dafür keine schriftlichen Nachweise. Das ist etwas anderes als die 300-Dollar-Regel für einzelne Anschaffungen, bei der es darum geht, wie ein einzelner Gegenstand abgeschrieben wird."
     ]
   },
   {
@@ -268,12 +268,12 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Ab etwa 5.000 Arbeitskilometern im Jahr bringt das Fahrtenbuch normalerweise den größeren Abzug, weil es Benzin, Versicherung, Zulassung, Wartung, Abschreibung und die Zinsen eines Autokredits erfasst statt einer Pauschale. Es kostet dich zwölf Wochen Aufzeichnungen und einen Beleg für alles. Was sich lohnt, hängt davon ab, wie viel du fährst und was dein Auto im Unterhalt kostet."
+    "note": "Ab etwa 5.000 Arbeitskilometern im Jahr bringt das Fahrtenbuch normalerweise den größeren Abzug, weil es Benzin, Versicherung, Zulassung, Wartung, Abschreibung und die Zinsen eines Autokredits erfasst statt einer Pauschale."
   },
   {
     "kind": "traps",
     "h2": "Was machen Backpacker in jedem Job falsch?",
-    "intro": "Das kommt in jedem Beruf vor. Die erste Liste macht aus einer Rückerstattung eine korrigierte Veranlagung. Die zweite, das Geld, das niemand anfordert, ist häufiger und teurer.",
+    "intro": "Die erste Liste macht aus einer Rückerstattung eine korrigierte Veranlagung. Die zweite, das Geld, das niemand anfordert, ist häufiger und teurer.",
     "wrong": [
       {
         "t": "Normale Kleidung, die ein Dresscode vorschreibt",
@@ -331,8 +331,8 @@ const SECTIONS: Section[] = [
 
 const FAQS = [
   {
-    "question": "Kann ich das nicht einfach selbst über myGov machen?",
-    "answer": "Kannst du, und das Einreichen ist wirklich der einfache Teil. Das Schwierige an Abzügen ist, dass das Feld leer ist und leer bleibt. Nichts auf dem Bildschirm schlägt vor, was dein Job absetzen darf, nichts unterscheidet einen Fruit Picker von einem Lieferfahrer von einem Bauhelfer, und nichts warnt dich davor, dass Miete, Lebensmittel und der Weg zur Arbeit absetzbar aussehen und es nicht sind. Es nimmt außerdem jede Zahl an, auch eine, die du dem ATO im Zweifel nicht belegen könntest, und genau die muss später rückabgewickelt werden. Herauszufinden, welche Kosten aus deiner Arbeit entstanden sind, wofür du eine Quittung brauchst und wo ein Kontoauszug reicht, ist eine Beurteilung zu deinem konkreten Jahr und kein Feld zum Ausfüllen. Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches Formular welches ist. Wir regeln das direkt mit dem ATO."
+    "question": "Kann ich die Abzüge einfach selbst machen?",
+    "answer": "Kannst du, und das Einreichen ist wirklich der einfache Teil. Das Schwierige ist, dass das Feld für Abzüge leer bleibt, nichts zu deinem Job vorschlägt und jede Zahl annimmt, auch eine, die später rückabgewickelt werden muss. Herauszufinden, welche Kosten aus deiner Arbeit entstanden sind und was hinter jedem einzelnen Posten stehen muss, ist eine Beurteilung zu deinem konkreten Jahr und kein Feld zum Ausfüllen."
   },
   {
     "question": "Haben Working Holiday Maker weniger Abzüge als Australier?",

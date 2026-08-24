@@ -6,9 +6,9 @@
  * refund) before they submit as "Working Holiday Maker" out of habit. The tax
  * form treats this combination as a hard stop so these cases get assessed
  * properly instead of being lodged on the wrong basis. It is NOT a legal
- * determination of residency status (the other conditions - 183 days,
- * ordinary residence, intention to live in Australia - still need to be
- * assessed separately).
+ * determination of residency status: that depends on the person's own
+ * circumstances and is assessed separately, through the residency step of
+ * the tax form. This file deliberately does not restate the criteria.
  *
  * The "Home Country" field in the tax form is free text, not a dropdown, so
  * this matches common real-world spellings/aliases people actually type -

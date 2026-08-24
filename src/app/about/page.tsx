@@ -63,17 +63,17 @@ const chapters = [
   {
     stage: 'Week one',
     title: 'You arrived with a plan that covered about a fortnight',
-    body: 'A hostel, a SIM, a bank account and a job as soon as possible. A tax file number was somewhere on that list, so you applied for it and then got on with the rest, which is what everybody does. Nothing about the Australian tax year was explained to you at any point, and there was no reason it would be.',
+    body: 'A hostel, a SIM, a bank account and a job as soon as possible. A tax file number was somewhere on that list, so you applied for it and got on with the rest. Nothing about the Australian tax year was explained to you, and there was no reason it would be.',
   },
   {
     stage: 'Your first payslips',
     title: 'The first job started before the number came through',
-    body: 'Without a tax file number on file, an employer is required to withhold at the top rate rather than the fifteen percent a working holiday maker normally pays, so those first weeks are missing close to half. Nobody at that job explained it, because explaining it was not their job. That money does not come back by itself at the end of the year. Somebody has to claim it.',
+    body: 'Without a tax file number on file, an employer is required to withhold at the top rate rather than the fifteen percent a working holiday maker normally pays, so those first weeks are missing close to half. Nobody at that job explained it, because explaining it was not their job. That money does not come back by itself. Somebody has to claim it.',
   },
   {
     stage: 'By Christmas',
     title: 'Four employers, half of them casual, none of them explaining anything',
-    body: 'A hostel job, a cafe, a warehouse for three weeks, something you left without ever getting a final payslip. The Australian tax year ends in June rather than December, which nobody mentioned either. You have quietly assumed that losing those payslips matters. It does not: everything your employers reported is visible to us through the ATO, so we start from the record rather than from your inbox.',
+    body: 'A hostel job, a cafe, a warehouse for three weeks, something you left without ever getting a final payslip. The Australian tax year ends in June rather than December, which nobody mentioned either. Losing those payslips does not matter: everything your employers reported is visible to us through the ATO, so we start from the record rather than from your inbox.',
   },
   {
     stage: 'The 88 days',
@@ -94,23 +94,15 @@ const faqs = [
   },
   {
     question: 'Can you help me if I have already left Australia?',
-    answer: 'Yes, and a large share of our work is exactly that. Superannuation can only be claimed after you have left and your visa has lapsed, and a tax return for a year you have already finished can be lodged from anywhere. Everything is handled remotely. One thing to know early: the ATO can only pay a tax refund into an Australian bank account, while your super can be paid overseas. If you have already closed your Australian account, tell us in the first message.',
+    answer: 'Yes, and a large share of our work is exactly that. Superannuation can only be claimed after you have left and your visa has lapsed, and a tax return for a year you have already finished can be lodged from anywhere, so everything is handled remotely.',
   },
   {
     question: 'Do I need my payslips?',
-    answer: 'No. What your employers withheld and reported is visible to us through the ATO, so we work from that record rather than asking you to find paperwork from a job you left eight months ago. If something you tell us does not match what an employer reported, we deal with the difference, which is one of the reasons the record is where we start.',
-  },
-  {
-    question: 'Do I need a myGov account?',
-    answer: 'No. You will never have to log into myGov, link an Australian ID or work out which form is which. We deal with the ATO directly. If you have already tried and got stuck at the identity check, which is where most people get stuck, that changes nothing about whether we can help you.',
-  },
-  {
-    question: 'What language will you get a reply in?',
-    answer: 'The one you write to us in. Write in English, German, Japanese or whatever you are most comfortable explaining your situation in, and that is what comes back. Most of this job is explaining Australian tax to somebody meeting it for the first time, and that is hard enough in a first language.',
+    answer: 'No. What your employers withheld and reported is visible to us through the ATO, so we work from that record rather than asking you to find paperwork from a job you left eight months ago. If something you tell us does not match what an employer reported, we deal with the difference.',
   },
   {
     question: 'What happens if there is no refund at the end of it?',
-    answer: 'If your refund is less than our fee, we refund the difference, so you are never out of pocket. Not every working holiday year produces one, and we would rather tell you that early than take the work on and hope. Ask before you commit to anything: the questions are free and a real person answers them.',
+    answer: 'If your refund is less than our fee, we refund the difference, so you are never out of pocket. Not every working holiday year produces one, and we would rather tell you that early than take the work on and hope.',
   },
 ]
 
@@ -259,7 +251,7 @@ export default function AboutPage() {
               Because it is the only year we work on. Every client we have is on a 417 or a 462, which means the things that decide your refund are not unusual cases we have to go and read about. They are what we do all day.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              A general accountant meets a backpacker a few times a year, in July, between two hundred ordinary returns. The 417 and 462 rate schedule, the residency position that turns on far more than a day count, the Medicare levy exemption that depends on which passport you hold, a superannuation claim filed from a bedroom in Manchester or Munich or Osaka eleven months after you left: for us that is a Tuesday.
+              A general accountant meets a backpacker a few times a year, in July, between two hundred ordinary returns. The 417 and 462 rate schedule, the residency position that has to be properly reviewed rather than assumed, the Medicare levy exemption that depends on which passport you hold, a superannuation claim filed from a bedroom in Manchester or Munich or Osaka eleven months after you left: for us that is a Tuesday.
             </p>
             <p style={bodyStyle}>
               Anyone can press submit. The work happens before that: going through your year, working out what is true about it rather than what is quickest to tick, and then lodging it.
@@ -299,7 +291,9 @@ export default function AboutPage() {
               WhatsApp. Not a bot, not a ticket number, not a form that promises five to seven business days. You can ask a single question and leave it there; nothing about messaging us commits you to anything.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '22px' }}>
-              Write in whatever language you would rather explain this in, and that is the language the answer comes back in. You do not need a myGov account, an Australian ID or your payslips to start the conversation, and it makes no difference whether you are still in Australia or have been home for two years.
+              You need no myGov account, no Australian ID and no payslips to start, and it makes no difference whether you are still in Australia or have been home for two years. The{' '}
+              <Link href="/contact" style={{ color: '#0B5240', textDecoration: 'underline' }}>contact page</Link>{' '}
+              covers what language the answer comes back in and what happens next.
             </p>
 
             <WaLink href={WA} position="section" topic="general" lang="en"

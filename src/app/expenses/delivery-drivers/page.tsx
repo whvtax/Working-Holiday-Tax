@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Delivery driving and 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "Come out with a refund smaller than our fee and we refund the difference.",
-  "guaranteeBody": "Platform riders on 417 and 462 visas are a large part of what we do, which is why the logbook question and the GST line get settled before the return is written. Reviewed and signed off by a registered tax agent before it is lodged.",
+  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket.",
+  "guaranteeBody": "Platform riders on 417 and 462 visas are a large part of what we do, which is why the logbook question and the GST line get settled before the return is written. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "What can a delivery driver or rider claim on tax?",
     "paras": [
       "A delivery driver can claim the work related portion of running a car, bike or scooter, the work related share of a phone and data plan, parking paid while working, cleaning to keep a vehicle fit to carry food, and gear bought for the job such as a thermal bag, a phone mount, a helmet or hi vis. The private share of everything is excluded.",
-      "Almost all of the value sits in the vehicle. A rider doing steady hours puts up kilometres that no other backpacker job produces, and the difference between the two calculation methods, over a year, is frequently larger than every other deduction on the return combined."
+      "Almost all of the value sits in the vehicle. A rider doing steady hours puts up kilometres no other backpacker job produces, and over a year the difference between the two calculation methods is frequently larger than every other deduction combined."
     ]
   },
   {
@@ -199,14 +199,14 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "A steady rider passes 5,000 kilometres in a few months, and beyond that the logbook is normally the bigger claim: fuel, insurance, registration, servicing, depreciation and loan interest at your work percentage rather than a flat rate. It costs twelve weeks of records and a receipt for every expense. Which one wins depends on your kilometres and what the car costs to run."
+    "note": "A steady rider passes 5,000 kilometres in a few months, and beyond that the logbook is normally the bigger claim: fuel, insurance, registration, servicing, depreciation and loan interest at your work percentage rather than a flat rate."
   },
   {
     "kind": "answer",
     "h2": "What does a rider need to be able to produce?",
     "paras": [
-      "Every claim rests on three things: you paid, nobody paid you back, and the money went to earning the income you are declaring. For a rider that is a logbook or a kilometre record, the phone bill sitting behind your work percentage, and receipts for the bag, the mount and the rest of the gear.",
-      "A record shows the amount, the date, the supplier and the item, and a receipt, an invoice, a bank statement or a phone photo all qualify. Keep them for five years. Work claims totalling $300 or less across the year need no written evidence, though the figure still has to be explainable. Different rule from the $300 that decides whether an item is written off at once or over its life."
+      "Every claim rests on three things: you paid, nobody paid you back, and the money went to earning the income you are declaring. For a rider that is a logbook or a kilometre record, the phone bill sitting behind your work percentage, and receipts for the bag, the mount and the gear.",
+      "A receipt, an invoice, a bank statement or a phone photo showing the amount, the date, the supplier and the item all qualify, and they have to last five years. Work claims totalling $300 or less across the year need no written evidence. That is a different $300 from the one deciding whether an item is written off at once or over its life."
     ]
   },
   {
@@ -270,7 +270,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Uber Eats, DoorDash, Menulog and Amazon Flex engage riders as contractors: an ABN, nothing withheld, no super. A roster at one pizza shop that hands you a payslip is employment under a TFN. A single shop that sets your shifts, supervises your work and supplies the bike, then asks you to register an ABN, may be an employer in disguise. Check before you register anything.",
       "Where the deductible driving starts follows from that. An employee's trip to the shop is private, and only shop to drop off counts. Under an ABN the driving is the work rather than the way you reach it, so the line sits somewhere else, decided by how you run.",
-      "Residency decides how the profit is taxed at all. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision, and a year of riding in one city is the pattern that deserves a proper look."
+      "Residency decides how the profit is taxed at all. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
 ]
@@ -282,7 +282,7 @@ const FAQS = [
   },
   {
     "question": "Which car expense method should I use?",
-    "answer": "It depends on how far you drive and what your car costs to run. Cents per kilometre is simpler and needs no receipts, but it caps at 5,000 work kilometres a year and everything beyond that is lost. A logbook has no cap and picks up fuel, insurance, registration, servicing, depreciation and loan interest at your work use percentage, at the cost of twelve continuous weeks of records and a receipt for every expense."
+    "answer": "It depends on how far you drive and what the car costs to run. Cents per kilometre needs no receipts but caps at 5,000 work kilometres a year, and everything beyond that is lost. A logbook has no cap and picks up fuel, insurance, registration, servicing, depreciation and loan interest at your work use percentage, in exchange for twelve continuous weeks of records and a receipt for every expense."
   },
   {
     "question": "Can I claim my phone bill?",

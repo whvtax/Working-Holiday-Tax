@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState, useRef, useId, isValidElement, cloneElement } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { isValidEmail, isPlausibleDob } from '@/lib/validate'
@@ -8,12 +8,47 @@ import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
 type UploadState = { file: File | null; preview: string | null }
 
+/**
+ * A labelled form field.
+ *
+ * The <label> used to carry no `htmlFor` and the control arrived as a sibling
+ * through `children`, so nothing connected the two: a screen reader announced
+ * every text input on these forms as unlabelled, and the visible error text was
+ * never announced at all. The control is cloned with a generated id here, the
+ * label points at it, and the error is wired up through aria-describedby.
+ *
+ * Radio and checkbox groups arrive as a wrapping <div> rather than one control
+ * (each option already sits inside its own <label>), so those are labelled as a
+ * group instead of having an id forced onto a container.
+ */
 function Field({ label, required, children, error }: { label: string; required?: boolean; children: React.ReactNode; error?: string }) {
+  const uid = useId()
+  const labelId = `${uid}-label`
+  const errorId = `${uid}-error`
+  const el = isValidElement(children) ? (children as React.ReactElement<Record<string, unknown>>) : null
+  const isControl = !!el && typeof el.type === 'string' && ['input', 'select', 'textarea'].includes(el.type)
+  const controlId = (el?.props?.id as string | undefined) ?? `${uid}-input`
+  const describedBy = error ? errorId : undefined
+
+  const control = isControl && el
+    ? cloneElement(el, {
+        id: controlId,
+        'aria-invalid': error ? true : undefined,
+        'aria-describedby': describedBy,
+      })
+    : (
+      <div role="group" aria-labelledby={labelId} aria-describedby={describedBy}>
+        {children}
+      </div>
+    )
+
   return (
     <div className="field-group">
-      <label className="field-label">{label}{required && <span className="req-dot">*</span>}</label>
-      {children}
-      {error && <span className="field-error">{error}</span>}
+      <label id={labelId} className="field-label" htmlFor={isControl ? controlId : undefined}>
+        {label}{required && <span className="req-dot">*</span>}
+      </label>
+      {control}
+      {error && <span id={errorId} className="field-error" role="alert">{error}</span>}
     </div>
   )
 }
@@ -32,8 +67,19 @@ function FileUpload({ id, label, accept, value, onChange, lang }: { id: string; 
     if (inputRef.current) inputRef.current.value = ''
   }
   return (
-    <div className="file-zone" onClick={() => !value.file && inputRef.current?.click()}>
-      <input ref={inputRef} id={id} type="file" accept={accept} className="hidden" onChange={handleChange} />
+    // The drop zone is the control here: the file input itself is display:none,
+    // so it can neither be tabbed to nor announced. The zone therefore carries
+    // the button role, the name and the keyboard handling.
+    <div className="file-zone"
+      role={value.file ? undefined : 'button'}
+      tabIndex={value.file ? undefined : 0}
+      aria-label={value.file ? undefined : label}
+      onKeyDown={e => {
+        if (value.file) return
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click() }
+      }}
+      onClick={() => !value.file && inputRef.current?.click()}>
+      <input ref={inputRef} id={id} type="file" accept={accept} className="hidden" tabIndex={-1} aria-hidden="true" onChange={handleChange} />
       {value.file ? (
         <div className="file-selected">
           {value.preview ? <img src={value.preview} alt="preview" loading="lazy" decoding="async" className="file-img-preview" /> : <div className="file-icon-box">📄</div>}

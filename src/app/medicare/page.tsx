@@ -89,49 +89,44 @@ const MYGOV = [
   },
   {
     mygov: 'Taking the levy off needs an exemption certificate, applied for separately and not through the return at all.',
-    us: 'We apply for the certificate, wait on it, and lodge so the exemption is actually claimed for the right year.',
+    us: 'We help you apply for the certificate, wait for it, and ensure the exemption is claimed for the correct year.',
   },
   {
     mygov: 'The exemption box is there whether you hold the certificate or not.',
-    us: 'We only claim it with the evidence behind it, which is what makes the claim stand up later.',
+    us: 'We only claim it with the evidence behind it, which is what the claim has to rest on if it is ever queried.',
   },
 ]
 
 const faqs = [
   {
-    question: 'Can I not just do this myself on myGov?',
-    answer:
-      'You can lodge the return yourself, and lodging is the easy part. The difficulty with the Medicare levy is that nothing in the lodgement flow tells you the levy may not have been yours to pay. What decides whether you owed it is not your visa but whether your passport country has a reciprocal health care agreement with Australia, and removing it is not a tick box either: it needs a Medicare Entitlement Statement, which is applied for separately from Services Australia and takes time to come back. Claiming the exemption without that statement behind it is the version that gets queried. You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.',
-  },
-  {
     question: 'How much is the Medicare levy exemption actually worth?',
     answer:
-      'The levy is 2% of taxable income, so it is about $500 on $25,000 earned and about $1,000 on $50,000. It is settled when your return is assessed rather than taken out of your wages week by week, so the exemption claimed in the return is what puts the money back, and it is the same money whether you noticed losing it or not.',
+      'The levy is 2% of taxable income, so about $500 on $25,000 earned and about $1,000 on $50,000. It is settled when your return is assessed rather than taken out of your wages week by week, so the exemption claimed in the return is what puts the money back.',
   },
   {
     question: 'Does every 417 or 462 visa holder get the exemption?',
     answer:
-      'Most do, but not all, and the deciding factor is your passport rather than your visa. Eleven countries hold a reciprocal health care agreement with Australia, the United Kingdom, Ireland and Italy among them, and a national of one of those is generally entitled to Medicare here. Entitlement is what removes the exemption, whether or not you ever enrolled or used it. Germany and Japan hold no agreement, so the exemption is normally available to working holiday makers from either.',
+      'Most do, but not all. The deciding factor is your passport rather than your visa: a national of one of the eleven reciprocal health care agreement countries, the United Kingdom, Ireland and Italy among them, is generally entitled to Medicare here, and entitlement is what removes the exemption. Germany and Japan hold no agreement, so the exemption is normally available to working holiday makers from either.',
   },
   {
     question: 'What is a Medicare Entitlement Statement and do you need one?',
     answer:
-      'A Medicare Entitlement Statement is a document from Services Australia confirming that you were not entitled to Medicare for a stated period. It is the evidence behind the exemption, and the ATO can ask to see it, so an exemption claimed without one is a claim you cannot support. Applying for it is a separate process from lodging your tax return and it takes time to come back, which is the main reason people skip the exemption entirely.',
+      'A Medicare Entitlement Statement is a document from Services Australia confirming that you were not entitled to Medicare for a stated period. It is the evidence behind the exemption and the ATO can ask to see it, so we deal with it as part of your return rather than claiming the exemption bare.',
   },
   {
     question: 'Can you claim the exemption for only part of the year?',
     answer:
-      'Yes, and for a lot of working holiday makers that is the correct answer rather than a full year exemption. The exemption is worked out in days, so if you arrived in November, or if your circumstances changed partway through, only the days you were not entitled to Medicare are exempt. Claiming a full year when only part of it applies is the kind of error that gets a return amended later.',
+      'Yes, and for a lot of working holiday makers that is the right answer rather than a full year exemption. It is worked out in days, so if you arrived in November, only the days you were not entitled to Medicare are exempt. Claiming a full year when part of it applies is the kind of error that gets a return amended later.',
   },
   {
     question: 'Does travel insurance or private health cover change any of this?',
     answer:
-      'No. Travel insurance and private hospital cover are separate from Medicare and have no bearing on the levy or the exemption. The levy is a tax question about entitlement to the public system, not a question about whether you are insured. Private hospital cover matters for a different charge, the Medicare levy surcharge, which applies at high incomes and is rarely relevant on a working holiday.',
+      'No. The levy is a tax question about entitlement to the public system, not about whether you are insured, so travel insurance and private hospital cover have no bearing on it. Private cover matters for a different charge, the Medicare levy surcharge, which applies at high incomes and is rarely relevant on a working holiday.',
   },
   {
     question: 'What happens if the levy was already taken during the year?',
     answer:
-      'Nothing is lost. The levy is calculated when your tax return is assessed, not when you are paid, so what came out of your wages during the year was tax withheld generally rather than the levy specifically. Claiming a valid exemption removes the levy from the assessment, which increases your refund or reduces what you owe. If a previous year was lodged without the exemption and you were entitled to it, that return can usually be amended.',
+      'Nothing is lost. The levy is calculated when your return is assessed, not when you are paid, so what came out of your wages during the year was tax withheld generally rather than the levy specifically. A valid exemption takes it out of the assessment. If an earlier year was lodged without the exemption and you were entitled to it, that return can usually be amended.',
   },
 ]
 
@@ -306,18 +301,16 @@ export default function MedicarePage() {
               Why is the levy on your assessment at all?
             </h2>
             <p style={BODY}>
-              Because it is the default. The Medicare levy is applied to your taxable income when the ATO
-              assesses your return, and it comes off unless an exemption is claimed. Nothing in the process
-              asks whether you were entitled to Medicare, and nothing prompts you at the point where it
-              matters, so the commonest outcome is that a working holiday maker pays 2% of a year's income
-              towards a system they were never able to use.
+              Because it is the default. The levy is applied to your taxable income when the ATO assesses
+              your return, and it comes off unless an exemption is claimed. Nothing in the process asks
+              whether you were entitled to Medicare, so the common outcome is 2% of a year's income paid
+              towards a system you were never able to use.
             </p>
             <p style={BODY}>
-              The second commonest outcome is worse in a quiet way: the exemption is ticked without the
-              statement that backs it. The exemption is evidenced by a Medicare Entitlement Statement from
-              Services Australia, which is a separate application to a separate agency, and it takes time
-              to come back. Claiming without it leaves a return that cannot be supported if the ATO asks,
-              which is the kind of thing that surfaces a year later when you are no longer in the country.
+              The quieter mistake is the opposite one: the exemption ticked without the statement that
+              backs it. That evidence is a Medicare Entitlement Statement from Services Australia, a
+              separate agency to the ATO, and a claim made without it is one you cannot support if it is
+              queried a year later when you are no longer in the country.
             </p>
           </div>
         </div>
@@ -334,9 +327,9 @@ export default function MedicarePage() {
               You are generally exempt if you were not entitled to Medicare, and on a working holiday visa
               that comes down to your passport. Australia has reciprocal health care agreements with eleven
               countries. A national of one of those is generally entitled to Medicare while here, which
-              removes the exemption even if you never enrolled and never used it, because the test is
-              entitlement rather than use. Everybody else, Germany and Japan included, is normally not
-              entitled and can claim the exemption for the days that applies.
+              removes the exemption even if you never enrolled and never used it: the test is entitlement,
+              not use. Everybody else, Germany and Japan included, is normally not entitled and can claim
+              the exemption for the days that applies.
             </p>
           </div>
 
@@ -378,14 +371,7 @@ export default function MedicarePage() {
             </h2>
             <p style={BODY}>
               We work out whether you were entitled to Medicare and for which part of the year, which is a
-              question about your nationality, your visa and your dates rather than a box to tick. Where
-              you were not entitled, we apply for the Medicare Entitlement Statement on your behalf, and we
-              claim the exemption in your return for the correct number of days, so the figure holds up if
-              it is ever looked at.
-            </p>
-            <p style={BODY}>
-              It is part of the return rather than a separate job, worked out alongside your residency
-              position and what your line of work can deduct.
+              question about your nationality, your visa and your dates rather than a box to tick.
             </p>
 
             <div className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1.5px solid #C8EAE0', margin: '20px 0' }}>
@@ -448,7 +434,7 @@ export default function MedicarePage() {
       {/* ── FAQ ────────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[760px] mx-auto">
+          <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '18px' }}>
               Common questions about the levy and the exemption
             </h2>
@@ -460,6 +446,7 @@ export default function MedicarePage() {
       {/* ── RELATED GUIDES ─────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[900px] mx-auto">
           <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
             Go deeper on Medicare and health cover
           </h2>
@@ -479,6 +466,7 @@ export default function MedicarePage() {
               </Link>
             ))}
           </div>
+        </div>
         </div>
       </section>
 

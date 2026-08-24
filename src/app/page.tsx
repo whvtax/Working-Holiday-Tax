@@ -134,7 +134,9 @@ const ANALYSIS = [
   {
     n: '05',
     title: 'Then it is lodged',
-    body: 'Reviewed and signed off by a registered tax agent before it reaches the ATO. That part takes minutes. The four steps above decide the number.',
+    // "before it reaches the ATO" was a near miss of the approved sentence.
+    // Normalised onto the exact wording, which is the form used everywhere else.
+    body: 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO. That part takes minutes. The four steps above decide the number.',
   },
 ]
 
@@ -164,11 +166,11 @@ const GUIDES = [
 const FAQS = [
   {
     question: 'What decides how much I get back from an Australian working holiday tax return?',
-    answer: 'Four things do most of the work: your tax residency position for the year, whether any of your pay was withheld at 45% before your tax file number reached your employer, whether the 2% Medicare levy came off when you were not entitled to Medicare, and the deductions that belong to the work you did. Two people who earned exactly the same amount in Australia can end up with very different refunds because of those four. That is why the analysis matters more than the lodgement, and it is what we work through before a single figure is entered on a return.',
+    answer: 'Four things do most of the work: your tax residency position for the year, whether any of your pay was withheld at 45% before your tax file number reached your employer, whether the 2% Medicare levy came off when you were not entitled to Medicare, and the deductions that belong to the work you did. Two people who earned exactly the same amount can end up with very different refunds because of those four, which is why the analysis matters more than the lodgement.',
   },
   {
-    question: 'Can I not just lodge my own tax return on myGov?',
-    answer: 'You can, and lodging really is the easy part. myGov will accept whatever you type into it, but it will not tell you whether you were a resident for tax purposes, whether an employer withheld at the wrong rate, whether you qualify for a Medicare levy exemption certificate, or what your line of work is allowed to claim. Those are judgements about your particular year, and they are what decides the number, so the risk in doing it yourself is not the filing, it is what goes into it.',
+    question: 'Can I just lodge my own tax return on myGov?',
+    answer: 'You can, and lodging really is the easy part. What the screen will not tell you is your residency position for the year, whether an employer withheld at the wrong rate, whether the Medicare levy should have come off at all, or what your line of work is allowed to claim. Those four are judgements about your particular year, and they are what decides the number.',
   },
   {
     question: 'How much do your services cost?',
@@ -180,15 +182,15 @@ const FAQS = [
   },
   {
     question: 'Can you help me claim my tax refund after I have already left Australia?',
-    answer: 'Yes. We work with people from the UK, Germany, Japan and many other countries who lodge their Australian tax return and claim their super (DASP) long after they have flown home, and it is all handled online. One rule to know before you close your account: the ATO can only pay a tax refund into an Australian bank account, while a super refund (DASP) can be paid overseas. If your Australian account is already closed, tell us early, because it changes the order we do things in.',
+    answer: 'Yes. We work with people from the UK, Germany, Japan and elsewhere who lodge their Australian tax return and claim their super (DASP) long after flying home, all of it online. One rule to know before you close your account: the ATO can only pay a tax refund into an Australian bank account, while a super refund (DASP) can be paid overseas. If your Australian account is already closed, tell us early, because it changes the order we do things in.',
   },
   {
     question: 'How quickly will you reply?',
-    answer: 'During business hours, Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within an hour. Outside those hours we come back to you first thing the next morning. You can ask a question first without committing to anything, and we reply in your own language.',
+    answer: 'During business hours, Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within an hour. Outside those hours we come back to you the next morning. You can ask a question first without committing to anything, and we reply in your own language.',
   },
   {
     question: 'Do you only handle tax returns?',
-    answer: 'No. We also handle TFN applications, ABN registrations, super withdrawal (DASP) and Medicare levy exemption certificates, which covers what a working holiday maker on a 417 or 462 visa normally needs. Working holiday tax is the only thing we do, so all of it is handled by the same people rather than passed around a general practice.',
+    answer: 'No. We also handle TFN applications, ABN registrations, super withdrawal (DASP) and Medicare levy exemption certificates, which covers what a working holiday maker on a 417 or 462 visa normally needs. Working holiday tax is the only thing we do, so the same people handle all of it.',
   },
 ]
 
@@ -334,9 +336,13 @@ export default async function HomePage() {
             <span style={{ display: 'block', color: '#0B5240' }}>The work happens before that.{' '}</span>
           </h1>
 
+          {/* This read "Five things decide your refund", which contradicted the
+              section two screens below asking what decides the size of a refund
+              and answering "three things". The count is not the point, and the
+              three figures block is approved copy, so the count comes out here. */}
           <p className="mx-auto hero-animate-delay"
             style={{ ...LEDE, color: '#4C6459', maxWidth: '72ch', marginBottom: '26px' }}>
-            Five things decide your refund. None of them are applied automatically.
+            Your refund is decided before anything is submitted, and none of it happens automatically.
           </p>
 
           <div className="hero-animate-delay-2">

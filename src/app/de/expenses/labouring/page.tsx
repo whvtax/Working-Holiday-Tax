@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Zeitarbeit und Lagera
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Liegt unser Honorar am Ende über der Rückerstattung, kommt die Differenz zu dir zurück.",
-  "guaranteeBody": "Vier Agenturen und eine vergessene Einzelschicht in eine Erklärung zu ziehen ist hier normale Arbeit, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steuerberater geprüft und freigegeben, bevor beim ATO eingereicht wird.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.",
+  "guaranteeBody": "Vier Agenturen und eine vergessene Einzelschicht in eine Erklärung zu ziehen ist hier normale Arbeit, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steuerberater geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Hilfskräfte über eine Agentur absetzen?",
     "paras": [
       "Absetzbar sind Schutzausrüstung, die der Einsatzort verlangt, die Verlängerung eines Tickets, das du bereits hast, selbst gekauftes Werkzeug, die Fahrt zwischen zwei Einsatzorten am selben Tag und der arbeitsbezogene Anteil deines Handys. Was absetzbar ist, folgt der Arbeit, die du an diesem Tag wirklich gemacht hast, nicht der Jobbezeichnung im Agenturvertrag.",
-      "Genau das macht Zeitarbeit anders. Eine Woche im Kühllager, eine Woche in einer Gartenkolonne und ein Wochenende beim Event-Abbau erzeugen drei verschiedene Kostenbilder, und der Abzug folgt der tatsächlichen Arbeit statt einem einzigen Berufslabel."
+      "Eine Woche im Kühllager, eine Woche in einer Gartenkolonne und ein Wochenende beim Event-Abbau erzeugen drei verschiedene Kostenbilder, und der Abzug folgt der tatsächlichen Arbeit statt einem einzigen Berufslabel."
     ]
   },
   {
@@ -156,7 +156,7 @@ const SECTIONS: Section[] = [
     "h2": "Was musst du über alle Einsätze hinweg aufheben?",
     "paras": [
       "Ein Abzug, drei Tests: du hast bezahlt, dir hat es niemand erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Über mehrere Einsätze heißt das Belege für selbst gekaufte Stiefel und Handschuhe, für die Ticketverlängerung und eine Notiz zu Daten, Orten und Entfernungen hinter den Fahrten.",
-      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, solange Betrag, Datum, Anbieter und Gegenstand daraus hervorgehen, und du hebst ihn fünf Jahre auf. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen keinen schriftlichen Nachweis, du musst die Summe aber erklären können. Diese 300 Dollar sind nicht die, die entscheiden, ob ein Ausrüstungsteil sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, solange Betrag, Datum, Anbieter und Gegenstand daraus hervorgehen, und er muss fünf Jahre halten. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen keinen schriftlichen Nachweis. Das sind nicht die 300 Dollar, die entscheiden, ob ein Ausrüstungsteil sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
@@ -212,9 +212,9 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Welche Teile hängen daran, wie dein Jahr lief?",
     "paras": [
-      "Wie wechselnd die Arbeit war, entscheidet, wie viel deiner Fahrten absetzbar ist, und das ist eine Tatsachenfrage, keine Regel. Wie oft der Ort wechselte, ob es eine Basis gab, zu der du immer zurückkehrtest, ob die Agentur die Bewegung verlangt hat und wie die Woche aufgebaut war, fließt alles ein. Zwei Leute derselben Agentur können sehr unterschiedliche Fahrtabzüge haben, und eine Notiz zu Daten, Orten und Entfernungen macht den stärkeren Fall belegbar.",
-      "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehaltsverhältnis und eigenem Income Statement. Als Working Holiday Maker lautet die Antwort auf die Freibetragsfrage überall Nein, der doppelt beanspruchte Freibetrag ist also selten das Problem. Ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt, schon.",
-      "Darunter liegt der steuerliche Wohnsitz. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen, mehr wert als alle Abzüge auf dieser Seite. Eine Stadt und lokale Agenturen über längere Zeit ist das Muster, das die Frage offen macht."
+      "Wie wechselnd die Arbeit war, entscheidet, wie viel deiner Fahrten absetzbar ist, und das ist eine Tatsachenfrage, keine Regel. Wie oft der Ort wechselte, ob es eine Basis gab, zu der du immer zurückkehrtest, ob die Agentur die Bewegung verlangt hat und wie die Woche aufgebaut war, fließt alles ein. Zwei Leute derselben Agentur können sehr unterschiedliche Fahrtabzüge haben.",
+      "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehaltsverhältnis und eigenem Income Statement. Working Holiday Maker bekommen von keiner davon einen Steuerfreibetrag, das Risiko ist also nicht ein doppelt beanspruchter Freibetrag. Es ist ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt.",
+      "Darunter liegt der steuerliche Wohnsitz. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen, mehr wert als alle Abzüge auf dieser Seite. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
 ]
@@ -222,7 +222,7 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Ich bin bei drei Agenturen registriert. Ändert das meine Steuer?",
-    "answer": "Jede Agentur ist rechtlich ein eigener Arbeitgeber, du füllst also bei jeder eine eigene Tax File Number Declaration aus und bekommst am Jahresende von jeder ein eigenes Income Statement. Alles kommt in eine Erklärung. Als Working Holiday Maker wird dein Lohn zum Working-Holiday-Maker-Satz besteuert statt gegen einen Steuerfreibetrag, das eigentliche Risiko bei mehreren Agenturen ist also nicht der Satz, sondern dass eine davon fehlt."
+    "answer": "Jede Agentur ist rechtlich ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement am Jahresende. Alles kommt in eine Erklärung. Als Working Holiday Maker wird dein Lohn zum Working-Holiday-Maker-Satz besteuert statt gegen einen Steuerfreibetrag, das eigentliche Risiko bei mehreren Agenturen ist also nicht der Satz, sondern dass eine davon fehlt."
   },
   {
     "question": "Kann ich Fahrten zwischen verschiedenen Einsatzorten absetzen?",

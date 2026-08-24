@@ -60,17 +60,17 @@ const chapters = [
   {
     stage: 'Die erste Woche',
     title: 'Du bist mit einem Plan angekommen, der ungefähr zwei Wochen weit reichte',
-    body: 'Hostel, SIM-Karte, Bankkonto und so schnell wie möglich ein Job. Die Tax File Number stand irgendwo auf der Liste, du hast sie beantragt und dich dann um den Rest gekümmert, so wie alle. Das australische Steuerjahr hat dir zu keinem Zeitpunkt jemand erklärt, und es gab auch keinen Grund, warum jemand das getan hätte.',
+    body: 'Hostel, SIM-Karte, Bankkonto und so schnell wie möglich ein Job. Die Tax File Number stand irgendwo auf der Liste, du hast sie beantragt und dich dann um den Rest gekümmert. Das australische Steuerjahr hat dir niemand erklärt, und es gab auch keinen Grund dafür.',
   },
   {
     stage: 'Die ersten Payslips',
     title: 'Der erste Job fing an, bevor die Nummer da war',
-    body: 'Ohne hinterlegte Tax File Number muss ein Arbeitgeber den höchsten Satz einbehalten statt der fünfzehn Prozent, die ein Working Holiday Maker normalerweise zahlt. In den ersten Wochen fehlt deshalb fast die Hälfte. Erklärt hat es dir dort niemand, weil das nicht die Aufgabe deines Arbeitgebers war. Dieses Geld kommt am Jahresende nicht von allein zurück. Jemand muss es zurückholen.',
+    body: 'Ohne hinterlegte Tax File Number muss ein Arbeitgeber den höchsten Satz einbehalten statt der fünfzehn Prozent, die ein Working Holiday Maker normalerweise zahlt. In den ersten Wochen fehlt deshalb fast die Hälfte. Erklärt hat es dir dort niemand, weil das nicht die Aufgabe deines Arbeitgebers war. Dieses Geld kommt nicht von allein zurück. Jemand muss es zurückholen.',
   },
   {
     stage: 'Bis Weihnachten',
     title: 'Vier Arbeitgeber, die Hälfte davon casual, keiner davon erklärt dir etwas',
-    body: 'Ein Job im Hostel, ein Café, drei Wochen Lager, und einer, den du ohne letzten Payslip verlassen hast. Dass das australische Steuerjahr im Juni endet und nicht im Dezember, hat auch keiner erwähnt. Insgeheim gehst du davon aus, dass die verlorenen Payslips jetzt ein Problem sind. Sind sie nicht.',
+    body: 'Ein Job im Hostel, ein Café, drei Wochen Lager, und einer, den du ohne letzten Payslip verlassen hast. Dass das australische Steuerjahr im Juni endet und nicht im Dezember, hat auch keiner erwähnt. Die verlorenen Payslips sind kein Problem: Was deine Arbeitgeber gemeldet haben, sehen wir über das ATO, wir starten also bei diesen Daten und nicht bei deinem Postfach.',
   },
   {
     stage: 'Die 88 Tage',
@@ -91,23 +91,15 @@ const faqs = [
   },
   {
     question: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
-    answer: 'Ja, und ein großer Teil unserer Arbeit ist genau das. Superannuation kannst du überhaupt erst beantragen, nachdem du ausgereist bist und dein Visum abgelaufen ist, und eine Steuererklärung für ein bereits abgeschlossenes Jahr lässt sich von überall einreichen. Alles läuft aus der Ferne. Eins solltest du früh wissen: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Konto zahlen, deine Super dagegen auch ins Ausland. Wenn dein australisches Konto schon zu ist, sag uns das in der ersten Nachricht.',
+    answer: 'Ja, und ein großer Teil unserer Arbeit ist genau das. Superannuation kannst du überhaupt erst beantragen, nachdem du ausgereist bist und dein Visum abgelaufen ist, und eine Steuererklärung für ein bereits abgeschlossenes Jahr lässt sich von überall einreichen, alles läuft also aus der Ferne.',
   },
   {
     question: 'Brauche ich meine Payslips?',
     answer: 'Nein. Was deine Arbeitgeber einbehalten und gemeldet haben, sehen wir über das ATO. Wir arbeiten also mit diesen Daten, statt dich Papiere aus einem Job suchen zu lassen, den du vor acht Monaten verlassen hast. Wenn etwas, das du uns erzählst, nicht zu dem passt, was ein Arbeitgeber gemeldet hat, kümmern wir uns um die Differenz.',
   },
   {
-    question: 'Brauche ich ein myGov-Konto?',
-    answer: 'Nein. Du musst dich nie bei myGov einloggen, keinen australischen Ausweis verknüpfen und nicht herausfinden, welches Formular welches ist. Wir haben direkt mit dem ATO zu tun. Wenn du es schon versucht hast und bei der Identitätsprüfung hängen geblieben bist, und genau da bleiben die meisten hängen, ändert das nichts daran, ob wir dir helfen können.',
-  },
-  {
-    question: 'In welcher Sprache bekomme ich eine Antwort?',
-    answer: 'In der, in der du uns schreibst. Schreib auf Deutsch, auf Englisch oder in der Sprache, in der du deine Situation am besten erklären kannst, und genau so kommt die Antwort zurück. Der größte Teil dieser Arbeit besteht darin, australische Steuern jemandem zu erklären, der ihnen zum ersten Mal begegnet, und das ist schon in der Muttersprache anstrengend genug.',
-  },
-  {
     question: 'Was ist, wenn am Ende keine Rückerstattung herauskommt?',
-    answer: 'Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wir sagen dir das lieber vorher, als den Auftrag anzunehmen und zu hoffen. Frag einfach, bevor du dich zu irgendetwas entscheidest: Fragen kosten nichts, und es antwortet ein echter Mensch.',
+    answer: 'Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wir sagen dir das lieber vorher, als den Auftrag anzunehmen und zu hoffen.',
   },
 ]
 
@@ -257,7 +249,7 @@ export default function GermanAboutPage() {
               Weil es das einzige Jahr ist, an dem wir arbeiten. Jeder unserer Kunden ist auf einem 417 oder 462, also sind die Dinge, die über deine Rückerstattung entscheiden, für uns keine Sonderfälle zum Nachschlagen. Sie sind unser Tagesgeschäft.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              Ein allgemeiner Steuerberater sieht ein paar Mal im Jahr einen Backpacker, im Juli, zwischen zweihundert normalen Erklärungen. Der 417/462-Steuersatz, die Frage nach dem steuerlichen Wohnsitz, die an weit mehr hängt als an gezählten Tagen, die Medicare-Befreiung, die davon abhängt, welchen Pass du hast, ein Superannuation-Antrag aus einem Zimmer in Hamburg oder München, elf Monate nach der Ausreise: für uns ist das ein ganz normaler Dienstag.
+              Ein allgemeiner Steuerberater sieht ein paar Mal im Jahr einen Backpacker, im Juli, zwischen zweihundert normalen Erklärungen. Der 417/462-Steuersatz, die Frage nach dem steuerlichen Wohnsitz, die ordentlich geprüft und nicht angenommen werden muss, die Medicare-Befreiung, die davon abhängt, welchen Pass du hast, ein Superannuation-Antrag aus einem Zimmer in Hamburg oder München, elf Monate nach der Ausreise: für uns ist das ein ganz normaler Dienstag.
             </p>
             <p style={bodyStyle}>
               Auf Absenden drücken kann jeder. Die Arbeit passiert davor: dein Jahr durchgehen, herausfinden, was daran stimmt, statt anzukreuzen, was am schnellsten geht, und dann einreichen.
@@ -296,7 +288,9 @@ export default function GermanAboutPage() {
               Über WhatsApp. Kein Bot, keine Ticketnummer, kein Formular, das dir fünf bis sieben Werktage verspricht. Du kannst eine einzige Frage stellen und es dabei belassen. Uns zu schreiben verpflichtet dich zu nichts.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '22px' }}>
-              Schreib in der Sprache, in der du das lieber erklärst, und in genau der Sprache kommt die Antwort zurück. Für den Anfang brauchst du kein myGov-Konto, keinen australischen Ausweis und keine Payslips. Und es macht keinen Unterschied, ob du noch in Australien bist oder seit zwei Jahren wieder zu Hause.
+              Für den Anfang brauchst du kein myGov-Konto, keinen australischen Ausweis und keine Payslips, und es macht keinen Unterschied, ob du noch in Australien bist oder seit zwei Jahren wieder zu Hause. Die{' '}
+              <Link href="/de/contact" style={{ color: '#0B5240', textDecoration: 'underline' }}>Kontaktseite</Link>{' '}
+              erklärt, in welcher Sprache die Antwort zurückkommt und wie es danach weitergeht.
             </p>
 
             <WaLink href={WA} position="section" topic="general" lang="de"

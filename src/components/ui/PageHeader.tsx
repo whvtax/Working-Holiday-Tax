@@ -18,10 +18,13 @@ export function PageHeader({ kicker = 'Service guide', title, titleEm, sub, brea
     <section className="relative overflow-hidden pt-[68px] bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-9 lg:py-12 relative z-10">
         {breadcrumbs && (
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
+          // rgba(10,15,13,0.35) on white measures about 2.3:1 and fails WCAG
+          // AA. #4C6459 is the palette's caption colour, 6.41:1, and keeps the
+          // same quiet grey green.
+          <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-[12px] mb-8" style={{ color: '#4C6459' }}>
             {breadcrumbs.map((b, i) => (
               <span key={i} className="flex items-center gap-2">
-                {i > 0 && <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>}
+                {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
                 {b.href
                   ? <Link href={b.href} className="transition-colors hover:text-forest-500">{b.label}</Link>
                   : <span aria-current="page">{b.label}</span>
@@ -39,7 +42,9 @@ export function PageHeader({ kicker = 'Service guide', title, titleEm, sub, brea
             {title}
             {titleEm && <><br /><span style={{ color: '#0B5240' }}>{titleEm}</span></>}
           </h1>
-          <p className="font-light leading-[1.7] mb-7" style={{ fontSize: '14px', color: 'rgba(10,15,13,0.55)', maxWidth: '480px' }}>{sub}</p>
+          {/* rgba(10,15,13,0.55) on white is 4.48:1, just under the 4.5 AA
+              minimum for 14px text. #4C6459 clears it at 6.41:1. */}
+          <p className="font-light leading-[1.7] mb-7" style={{ fontSize: '14px', color: '#4C6459', maxWidth: '480px' }}>{sub}</p>
           {cta && (
             <a
               href={cta.href ?? WA_URL}

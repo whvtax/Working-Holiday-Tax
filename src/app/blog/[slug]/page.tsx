@@ -656,7 +656,11 @@ export default function GuidePage({ params }: Props) {
         {/* Hero - uses category color for the background */}
         <div style={{ background: categoryColors.bg }}>
           <div style={{ padding: '12px 0' }}>
-            <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '10px', alignItems: 'center', fontSize: '13px', color: '#4C6459', flexWrap: 'wrap' }}>
+            {/* This trail was a bare div. The sticky bar further down and the
+                blog index both announce themselves as breadcrumbs; this one
+                did not, and its last crumb was not marked as the current
+                page. */}
+            <nav aria-label="Breadcrumb" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '10px', alignItems: 'center', fontSize: '13px', color: '#4C6459', flexWrap: 'wrap' }}>
               <Link href="/" style={{ color: '#587066', textDecoration: 'none', padding: '8px 0' }}>Home</Link>
               <span aria-hidden="true">/</span>
               <Link href="/blog" style={{ color: '#587066', textDecoration: 'none', padding: '8px 0' }}>Blog</Link>
@@ -669,8 +673,8 @@ export default function GuidePage({ params }: Props) {
                   <span aria-hidden="true">/</span>
                 </>
               )}
-              <span style={{ color: '#4C6459', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50%' }}>{guide.title}</span>
-            </div>
+              <span aria-current="page" style={{ color: '#4C6459', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0, maxWidth: '100%' }}>{guide.title}</span>
+            </nav>
           </div>
 
           <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '1.5rem 20px 3rem' }}>
@@ -764,9 +768,12 @@ export default function GuidePage({ params }: Props) {
             <p id="about-this-guide" style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 8px' }}>
               About this guide
             </p>
+            {/* This block carried its opening sentence twice, once in each of
+                two drafts that were both left in. One sentence now, keeping
+                the two claims that matter: who wrote it, and what it is
+                checked against. */}
             <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
-              Written by the Working Holiday Tax team, who work with 417 and 462 visa holders and nothing else.
-              Written by the Working Holiday Tax team and checked against current ATO and Fair Work guidance. General information, not personal tax advice.
+              Written by the Working Holiday Tax team, who work with 417 and 462 visa holders and nothing else, and checked against current ATO and Fair Work guidance. General information, not personal tax advice.
             </p>
             <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.65, margin: '10px 0 0', fontWeight: 400 }}>
               Tax returns are reviewed and signed off by a registered tax agent before they are lodged with the ATO.

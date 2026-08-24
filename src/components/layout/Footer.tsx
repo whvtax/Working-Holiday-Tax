@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { GoogleRating } from '@/components/ui/GoogleRating'
 import { usePathname } from 'next/navigation'
 import { EMAIL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
@@ -32,8 +33,13 @@ export function Footer() {
           { label: 'Medicare',               href: '/de/medicare' },
         ],
         learn: 'Lernen',
+        // Ausgaben und Rechner standen in keiner Fußzeile, obwohl beides
+        // eigene Seiten mit Suchwert sind. Jetzt sind sie von jeder Seite
+        // aus verlinkt.
         learnLinks: [
           { label: 'Blog',                       href: '/de/blog' },
+          { label: 'Absetzbare Ausgaben',        href: '/de/expenses' },
+          { label: 'Rückerstattung schätzen',    href: '/de/calculator' },
           { label: 'TFN-Artikel',                href: '/de/blog/category/tfn' },
           { label: 'Steuererklärungs-Artikel',    href: '/de/blog/category/tax-return' },
           { label: 'Super-Artikel',              href: '/de/blog/category/super' },
@@ -51,7 +57,6 @@ export function Footer() {
         about: 'Über uns',
         clientAgreement: 'Mandantenvereinbarung',
         privacyPolicy: 'Datenschutzerklärung',
-        secure: 'Sicher & verschlüsselt',
       }
     : locale === 'ja'
     ? {
@@ -69,6 +74,8 @@ export function Footer() {
         learn: '記事・ガイド',
         learnLinks: [
           { label: 'ブログ',                   href: '/ja/blog' },
+          { label: '経費・控除',               href: '/ja/expenses' },
+          { label: '還付額の目安',             href: '/ja/calculator' },
           { label: 'TFNの記事',                href: '/ja/blog/category/tfn' },
           { label: 'タックスリターンの記事',   href: '/ja/blog/category/tax-return' },
           { label: 'スーパー受取の記事',       href: '/ja/blog/category/super' },
@@ -87,7 +94,6 @@ export function Footer() {
         about: '当社について',
         clientAgreement: 'クライアント規約',
         privacyPolicy: 'プライバシーポリシー',
-        secure: '安全・暗号化通信',
       }
     : {
         tagline: 'Australian tax, sorted.',
@@ -104,6 +110,8 @@ export function Footer() {
         learn: 'Learn',
         learnLinks: [
           { label: 'Blog',                       href: '/blog' },
+          { label: 'Deductions by job',          href: '/expenses' },
+          { label: 'Refund calculator',          href: '/calculator' },
           { label: 'TFN Articles',               href: '/blog/category/tfn' },
           { label: 'Tax Return Articles',        href: '/blog/category/tax-return' },
           { label: 'Super Articles',             href: '/blog/category/super' },
@@ -121,7 +129,6 @@ export function Footer() {
         about: 'About Us',
         clientAgreement: 'Client Agreement',
         privacyPolicy: 'Privacy Policy',
-        secure: 'Secure & encrypted',
       }
 
   return (
@@ -129,13 +136,13 @@ export function Footer() {
 
       {/* ─── Main footer section ─ light grey background ──────────────────── */}
       <div style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-12">
+        <div className="max-w-[1080px] mx-auto px-5 md:px-8 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-12">
 
           {/* Main grid - 4 columns */}
           {/* The three link columns hug their content and the brand column absorbs
               the slack, so the last column finishes at the container edge and the
               footer reads as centered on wide screens instead of left weighted. */}
-          <div className="grid grid-cols-1 md:grid-cols-[1.6fr_auto_auto_auto] gap-6 md:gap-16 lg:gap-20 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-6 md:gap-10 mb-10">
 
             {/* Brand column */}
             <div className="footer-brand-col col-span-2 md:col-span-1">
@@ -165,25 +172,25 @@ export function Footer() {
                 <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
 
-              <div className="flex items-center gap-2.5 mt-6">
-                <a href="https://www.xero.com" target="_blank" rel="noopener noreferrer"
-                  aria-label="Xero partner"
-                  className="footer-social-icon flex items-center justify-center rounded-full"
-                  style={{ width: '38px', height: '38px', border: '1.5px solid #C8EAE0', background: '#fff' }}>
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    {/* evenodd, or the cross subpath fills as well and the whole
-                        mark renders as a solid blue dot. */}
-                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
-                  </svg>
-                </a>
-                <div className="flex items-center justify-center rounded-full"
-                  style={{ width: '38px', height: '38px', border: '1.5px solid #C8EAE0', background: '#fff' }}
-                  title={t.secure}>
-                  <svg width="17" height="19" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
-                    <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
+              {/* Jo, Aug 2026: the two icon badges are replaced by the same two
+                  trust signals the top of the site opens with, scaled down: the
+                  live Google rating and the registered agent line. */}
+              <div className="mt-6 flex flex-col items-start gap-2">
+                <span className="inline-flex items-center gap-1.5"
+                  style={{ fontSize: '12.5px', color: '#2A3C34', background: '#fff', border: '1px solid #CDE3DB', borderRadius: '100px', padding: '6px 12px' }}>
+                  <svg width="13" height="13" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.1-2 13.7-5.3l-6.3-5.3C29.3 35.1 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.6 5.1C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.3 5.3C40.8 35.6 44 30.3 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+                  <GoogleRating variant="pill" lang={locale} />
+                </span>
+                {/* Jo's rule: the about page carries no tax agent mention at all. */}
+                {!isAbout && (
+                <span style={{ fontSize: '12px', lineHeight: 1.5, color: '#587066' }}>
+                  {locale === 'de'
+                    ? 'Geprüft und freigegeben von einem registrierten Steueragenten.'
+                    : locale === 'ja'
+                      ? '登録タックスエージェントが確認・承認します。'
+                      : 'Reviewed and signed off by a registered tax agent.'}
+                </span>
+                )}
               </div>
             </div>
 

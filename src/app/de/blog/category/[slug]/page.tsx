@@ -89,7 +89,7 @@ interface CategoryIntro {
 const CATEGORY_INTRO: Record<string, CategoryIntro> = {
   'tfn': {
     paragraphs: [
-      'Die Tax File Number ist die Nummer, mit der die australische Steuerbehörde ATO dich identifiziert. Der Antrag ist kostenlos, dauert etwa zehn Minuten, und du brauchst niemanden dafür. Diese Ratgeber behandeln den Antrag selbst, das Arbeiten in der Wartezeit, Verzögerungen über die 28 Tage hinaus, verlorene Nummern, Ausweisdokumente und die Frage, ob ein zweites Visum eine neue Nummer braucht.',
+      'Die Tax File Number ist die Nummer, mit der die australische Steuerbehörde ATO dich identifiziert. Für die Nummer selbst fällt keine Behördengebühr an. Teuer sind die Wochen ohne sie, in denen 45 % statt 15 % einbehalten werden. Diese Ratgeber behandeln den Antrag selbst, das Arbeiten in der Wartezeit, Verzögerungen über die 28 Tage hinaus, verlorene Nummern, Ausweisdokumente und die Frage, ob ein zweites Visum eine neue Nummer braucht.',
       'Sie sind für jemanden geschrieben, der gerade angekommen ist, oder der einen Job angefangen hat und feststellt, dass 45 Prozent statt 15 Prozent vom Lohn abgehen. An der TFN selbst wird fast nie Geld gewonnen oder verloren. Entscheidend sind das Tax File Number Declaration Formular, das dir dein Arbeitgeber in der ersten Woche gibt, das 28 Tage Fenster, das mit deiner ersten Schicht beginnt und nicht mit dem Antrag, und ob dieser Arbeitgeber beim ATO als Working Holiday Maker Arbeitgeber registriert ist. Um diese drei Dinge geht es hier immer wieder.',
     ],
     service: { path: '/de/tfn', label: 'Was wir bei TFN und Erklärungsformular übernehmen' },

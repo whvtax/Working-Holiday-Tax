@@ -99,5 +99,8 @@ const styles = `
   .whmns-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 54px; border-radius: 100px; font-size: 14.5px; font-weight: 600; font-family: inherit; border: none; cursor: pointer; text-decoration: none; }
   .whmns-wa { background: #0B5240; color: #fff; margin-bottom: 10px; }
   .whmns-again { background: #fff; color: #0B5240; border: 1.5px solid #D4EAE2; }
-  .whmns-note { font-size: 11.5px; color: #9DB5AC; margin-top: 14px; }
+  /* "Nothing has been submitted" is the reassurance this screen exists to
+     give. At #9DB5AC it measured 2.18:1 on white and was the least legible
+     line on the page. #4C6459 is 6.41:1. */
+  .whmns-note { font-size: 12px; color: #4C6459; margin-top: 14px; }
 `

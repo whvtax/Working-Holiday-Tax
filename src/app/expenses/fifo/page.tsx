@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "FIFO and camp work" }
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "A refund smaller than our fee means we refund the difference. You are never out of pocket.",
-  "guaranteeBody": "417 and 462 visas are the only tax work we take, so the zone offset, the residency position and the super sitting in three funds all get looked at together. Reviewed and signed off by a registered tax agent before lodgement.",
+  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket.",
+  "guaranteeBody": "417 and 462 visas are the only tax work we take, so the zone offset, the residency position and the super sitting in three funds all get looked at together. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "What can a FIFO worker claim on tax?",
     "paras": [
       "A FIFO worker can claim PPE and protective clothing bought out of their own pocket and the laundering of it, tools and equipment, renewals of a ticket or licence they already hold, employer required medicals and drug and alcohol testing they paid for themselves, the work related share of a phone and internet, and training that relates to the job they already do.",
-      "What is not on that list is everything that makes FIFO feel expensive. Your room in camp and your meals in the mess are booked and paid for by the company, and the flight to site usually is too. A deduction only ever gives back money that left your own pocket, so the fact that camp is costly does not put anything on your return."
+      "What is not on that list is everything that makes FIFO feel expensive. Your room in camp and your meals in the mess are booked and paid for by the company, and the flight to site usually is too. A deduction only ever gives back money that left your own pocket."
     ]
   },
   {
@@ -162,7 +162,7 @@ const SECTIONS: Section[] = [
     "h2": "What has to sit behind a FIFO claim?",
     "paras": [
       "A claim survives three questions. Did you pay for it? Were you paid back? Was it spent earning the income you are declaring? On a roster that is the receipt for the boots stores did not issue, the invoice for the medical, and the bill sitting behind your phone percentage.",
-      "Proof means the amount, the date, the supplier and the item, on a receipt, an invoice, a bank statement or a photo taken at the counter. It has to last five years. Come in at $300 or less of work claims for the year and no written evidence is required, but you still have to be able to say where the number came from. A separate rule from the $300 that decides whether a tool is written off at once or across its life."
+      "Proof means the amount, the date, the supplier and the item, on a receipt, an invoice, a bank statement or a photo taken at the counter, and it has to last five years. At $300 or less of work claims for the year, no written evidence is required. That is a different $300 from the one deciding whether a tool is written off at once or across its life."
     ]
   },
   {
@@ -218,9 +218,9 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What is left open on a FIFO file?",
     "paras": [
-      "The Zone Tax Offset is usually wrong rather than impossible. If your home base during the working holiday sat inside a specified zone, a rental in a remote town rather than a capital city, the question is live. Where you normally lived, for how long, and what you kept there decide it.",
+      "The Zone Tax Offset is usually wrong rather than impossible. If your home base during the working holiday sat inside a specified zone, a rental in a remote town rather than a capital city, the question is live.",
       "The bulky tools exception matters more to a tradesperson flying in with a personal kit than to a camp services role. What you carried and what the site offered for storage settle it, and it is a claim that gets tested, so be able to describe the facts.",
-      "Residency is the largest question on a FIFO file, because the sums are larger. Long swings, a fixed base between them and a stay measured in years is the profile where the Addy decision most often applies to a British, German or Japanese passport holder who was a resident of Australia for tax purposes. A judgement about your year, and one to have somebody look at properly."
+      "Residency is the largest question on a FIFO file, because the sums are larger. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
 ]

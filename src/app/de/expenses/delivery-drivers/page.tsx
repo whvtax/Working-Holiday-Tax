@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Lieferdienst und Ride
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Kommt am Ende weniger Rückerstattung heraus als unser Honorar, erstatten wir die Differenz.",
-  "guaranteeBody": "Fahrer auf Lieferplattformen mit 417- und 462-Visum sind ein großer Teil unserer Arbeit, deshalb sind die Fahrtenbuchfrage und die GST-Zeile geklärt, bevor die Erklärung geschrieben wird. Von einem registrierten Steuerberater geprüft und freigegeben.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.",
+  "guaranteeBody": "Fahrer auf Lieferplattformen mit 417- und 462-Visum sind ein großer Teil unserer Arbeit, deshalb sind die Fahrtenbuchfrage und die GST-Zeile geklärt, bevor die Erklärung geschrieben wird. Von einem registrierten Steuerberater geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Lieferfahrer und Radkuriere absetzen?",
     "paras": [
       "Absetzbar sind der arbeitsbezogene Anteil an Auto, Fahrrad oder Roller, der arbeitsbezogene Anteil an Handy und Datenvolumen, Parkgebühren während der Arbeit, die Reinigung eines Fahrzeugs, das Essen transportiert, und Ausrüstung für den Job wie Thermotasche, Handyhalter, Helm oder Warnweste. Der private Anteil bleibt außen vor.",
-      "Fast der gesamte Wert steckt im Fahrzeug. Wer regelmäßig fährt, sammelt Kilometer, die kein anderer Backpacker-Job erzeugt, und der Unterschied zwischen den beiden Berechnungsmethoden ist über ein Jahr häufig größer als alle übrigen Abzüge zusammen."
+      "Fast der gesamte Wert steckt im Fahrzeug. Wer regelmäßig fährt, sammelt Kilometer, die kein anderer Backpacker-Job erzeugt, und über ein Jahr ist der Unterschied zwischen den beiden Berechnungsmethoden häufig größer als alle übrigen Abzüge zusammen."
     ]
   },
   {
@@ -199,14 +199,14 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Wer regelmäßig fährt, ist nach ein paar Monaten über 5.000 Kilometer, und darüber ist das Fahrtenbuch normalerweise der größere Abzug: Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil statt einer Pauschale. Es kostet zwölf Wochen Aufzeichnungen und einen Beleg für jede Ausgabe. Was gewinnt, hängt an deinen Kilometern und daran, was dein Auto im Unterhalt kostet."
+    "note": "Wer regelmäßig fährt, ist nach ein paar Monaten über 5.000 Kilometer, und darüber ist das Fahrtenbuch normalerweise der größere Abzug: Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil statt einer Pauschale."
   },
   {
     "kind": "answer",
     "h2": "Was muss ein Fahrer vorlegen können?",
     "paras": [
-      "Jeder Abzug steht auf drei Punkten: du hast bezahlt, dir hat es niemand erstattet, und das Geld ging in das Einkommen, das du angibst. Bei einem Fahrer heißt das ein Fahrtenbuch oder eine Kilometeraufstellung, die Handyrechnung hinter deinem Arbeitsanteil und Belege für Tasche, Halterung und den Rest der Ausrüstung.",
-      "Aus dem Nachweis müssen Betrag, Datum, Anbieter und Gegenstand hervorgehen, und ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto tun es alle. Fünf Jahre aufheben. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen gar keinen schriftlichen Nachweis, die Summe musst du trotzdem erklären können. Das ist eine andere Regel als die 300 Dollar, die entscheiden, ob ein Gegenstand sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Jeder Abzug steht auf drei Punkten: du hast bezahlt, dir hat es niemand erstattet, und das Geld ging in das Einkommen, das du angibst. Bei einem Fahrer heißt das ein Fahrtenbuch oder eine Kilometeraufstellung, die Handyrechnung hinter deinem Arbeitsanteil und Belege für Tasche, Halterung und Ausrüstung.",
+      "Ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto mit Betrag, Datum, Anbieter und Gegenstand zählt jeweils, und alles davon muss fünf Jahre halten. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen gar keinen schriftlichen Nachweis. Das ist nicht die 300-Dollar-Grenze, die entscheidet, ob ein Gegenstand sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
@@ -270,7 +270,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Uber Eats, DoorDash, Menulog und Amazon Flex beauftragen dich als Selbstständigen: ABN, kein Einbehalt, keine Superannuation. Wer für eine einzelne Pizzeria im Dienstplan fährt und einen Payslip bekommt, ist angestellt, mit TFN. Ein einzelner Laden, der deine Schichten festlegt, deine Arbeit beaufsichtigt, das Rad stellt und dann eine ABN verlangt, kann ein Arbeitgeber in Verkleidung sein. Prüf das, bevor du irgendetwas registrierst.",
       "Wo die absetzbaren Fahrten beginnen, folgt daraus. Bei Angestellten ist der Weg zum Laden privat, nur Laden bis Übergabepunkt zählt. Mit ABN sind die Fahrten die Arbeit und nicht der Weg dorthin, die Grenze liegt also woanders und richtet sich danach, wie du arbeitest.",
-      "Der steuerliche Wohnsitz entscheidet, wie der Gewinn überhaupt besteuert wird. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen, und ein Jahr Liefern in einer Stadt ist genau das Muster, das einen genauen Blick verdient."
+      "Der steuerliche Wohnsitz entscheidet, wie der Gewinn überhaupt besteuert wird. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
 ]
@@ -282,7 +282,7 @@ const FAQS = [
   },
   {
     "question": "Welche Methode für Autokosten soll ich nehmen?",
-    "answer": "Das hängt davon ab, wie weit du fährst und was dein Auto im Unterhalt kostet. Die Kilometerpauschale ist einfacher und braucht keine Belege, ist aber bei 5.000 Arbeitskilometern im Jahr gedeckelt, und alles darüber ist verloren. Ein Fahrtenbuch hat keine Grenze und erfasst Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil, kostet dich aber zwölf zusammenhängende Wochen Aufzeichnungen und einen Beleg für jede Ausgabe."
+    "answer": "Das hängt davon ab, wie weit du fährst und was das Auto im Unterhalt kostet. Die Kilometerpauschale braucht keine Belege, ist aber bei 5.000 Arbeitskilometern im Jahr gedeckelt, und alles darüber ist verloren. Ein Fahrtenbuch hat keine Grenze und erfasst Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil, im Gegenzug für zwölf zusammenhängende Wochen Aufzeichnungen und einen Beleg für jede Ausgabe."
   },
   {
     "question": "Kann ich meine Handyrechnung absetzen?",

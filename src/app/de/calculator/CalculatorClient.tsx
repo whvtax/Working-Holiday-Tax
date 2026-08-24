@@ -230,8 +230,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   </svg>
                 </div>
                 <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
-                  Die meisten wählen Working Holiday Maker, weil das auf dem Visum steht. Was für dich
-                  zutrifft, ist eine Beurteilung, keine Einstellung.
+                  Die meisten wählen Working Holiday Maker, weil das auf dem Visum steht.
                 </p>
               </div>
 
@@ -250,8 +249,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   />
                 </div>
                 <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px', lineHeight: 1.6 }}>
-                  Steht auf der Abrechnung deines Superfonds. Wer jemals ein 417 oder 462 Visum hatte,
-                  zahlt auf das gesamte Guthaben den DASP-Satz von 65 %.
+                  Wer jemals ein 417 oder 462 Visum hatte, zahlt auf das gesamte Guthaben den DASP-Satz von 65 %.
                 </p>
               </div>
 
@@ -267,8 +265,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                       Ich habe zusätzlich über eine ABN abgerechnet
                     </span>
                     <span style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.6 }}>
-                      Lieferdienst, Subunternehmer, alles, wofür du Rechnungen gestellt hast. Davon wurde
-                      nichts einbehalten, dieser Rechner sieht es also nicht.
+                      Lieferdienst, Subunternehmer, alles, wofür du Rechnungen gestellt hast.
                     </span>
                   </span>
                 </label>
@@ -316,9 +313,9 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 <div style={{ padding: '0 20px 18px' }}>
                   <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '14px' }}>
                     Nimm das als groben Anhaltspunkt. Die echte Zahl hängt an drei Dingen, die diese Seite
-                    nicht klären kann: welcher Residentenstatus für dich tatsächlich gilt, ob die Medicare
-                    Levy Befreiung greift und was du in deinem Job absetzen kannst. Genau das arbeiten wir
-                    bei der Prüfung heraus.
+                    nicht klären kann: welcher Residentenstatus für dich gilt, ob die Medicare Levy
+                    Befreiung greift und was du in deinem Job absetzen kannst. Das arbeitet die Prüfung
+                    heraus.
                   </p>
                   <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
                     className="btn-primary w-full flex items-center justify-center"
@@ -435,9 +432,8 @@ export function CalculatorClient({ faqs = [] }: Props) {
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               Drei Dinge, und keins davon steht auf dieser Seite. Erstens dein Residentenstatus. Richtig
-              eingeordnet, kann er die Sätze für dein ganzes Jahr ändern, und er hängt an Details, an die
-              die meisten nie denken. Es ist eine Beurteilung deiner Umstände, und sie ist mehr wert als
-              alles andere zusammen.
+              eingeordnet, kann er die Sätze für dein ganzes Jahr ändern. Es ist eine Beurteilung deiner
+              Umstände, und sie ist mehr wert als alles andere zusammen.
             </p>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               Zweitens die Medicare Levy. Sie beträgt 2 % des zu versteuernden Einkommens, wird

@@ -4,7 +4,7 @@ import { SITE_URL } from '@/lib/constants'
 import { FormClient } from './FormClient'
 
 export const metadata: Metadata = {
-  title: 'Submit Your Tax Return | Working Holiday Tax',
+  title: 'Submit Your Tax Return',
   description: 'Submit your details and documents to lodge your Australian tax return. We prepare everything and maximise your refund.',
   keywords: ['tax return form Australia', 'submit tax return WHV', 'lodge tax return working holiday', 'tax return application'],
   alternates: {

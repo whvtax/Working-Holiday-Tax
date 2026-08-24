@@ -95,7 +95,7 @@ interface CategoryIntro {
 const CATEGORY_INTRO: Record<string, CategoryIntro> = {
   'tfn': {
     paragraphs: [
-      'A Tax File Number is the number the Australian Taxation Office uses to identify you. Applying for one is free, takes about ten minutes, and you do not need anybody to do it for you. These guides cover the application itself, working while you wait for it, delays past the 28 day mark, lost numbers, identity documents and whether a second visa needs a new one.',
+      'A Tax File Number is the number the Australian Taxation Office uses to identify you. There is no government fee for one. What it costs to be without one is the weeks of pay withheld at 45% instead of 15%. These guides cover the application itself, working while you wait for it, delays past the 28 day mark, lost numbers, identity documents and whether a second visa needs a new one.',
       'They are written for somebody who has just landed, or who has started a job and found 45 per cent coming off their pay instead of 15. The TFN itself is almost never where money is won or lost. What decides your pay is the Tax File Number Declaration your employer hands you in the first week, the 28 day window that starts on your first shift rather than on the day you applied, and whether that employer is registered with the ATO as a working holiday maker employer. Those three things are what these guides keep returning to.',
     ],
     service: { path: '/tfn', label: 'What we do about the TFN and the declaration form' },
@@ -110,7 +110,12 @@ const CATEGORY_INTRO: Record<string, CategoryIntro> = {
   'tax-return': {
     paragraphs: [
       'The Australian financial year runs from 1 July to 30 June, and anyone who earned income inside it lodges a return. These guides cover deadlines and penalties, deductions and what needs a receipt, tax residency, amendments to a year already lodged, lodging after you have flown home, and what actually decides the size of a refund.',
-      'This is the category for somebody deciding whether to lodge it themselves or hand it over, so the facts that move the number are all here. Your tax residency, which is a judgement about your year rather than something a visa or a day count settles. What that judgement turns out to be worth in your particular case, which varies more than most people expect. The weeks withheld at 45 per cent before a TFN reached payroll. The Medicare position. And the deductions that belong to the work you genuinely did. None of those can be looked up in a table. Every one of them has to be worked out against your own year.',
+      // Residency is named as a factor and nothing more. The earlier wording
+      // said it was not settled by "a visa or a day count", which points at
+      // what the test does turn on. That belongs only in the residency
+      // assessment, so the sentence now says what the brief allows: it depends
+      // on the person, and it has to be reviewed properly.
+      'This is the category for somebody deciding whether to lodge it themselves or hand it over, so the facts that move the number are all here. Your tax residency, which depends on your own circumstances and has to be properly reviewed. The weeks withheld at 45 per cent before a TFN reached payroll. The Medicare position. And the deductions that belong to the work you genuinely did. None of those can be looked up in a table.',
     ],
     service: { path: '/tax-return', label: 'What we go through on every tax return' },
   },
@@ -206,7 +211,14 @@ export default function CategoryPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
-      {/* All blog styles are in globals.css */}
+      {/* All blog styles are in globals.css, except these two, which have no
+          rule there at all. `list-style: none` on a <summary> is ignored by
+          Safari and iOS, so every question on this page carried a native
+          disclosure triangle next to the "+" that is meant to be the only
+          indicator. And the "+" never became a "−": once a question was open
+          the control still read as "expand". Same rotate the contact page FAQ
+          already uses. */}
+      <style dangerouslySetInnerHTML={{ __html: `.faq-item > summary::-webkit-details-marker{display:none}.faq-item > summary::marker{content:""}.faq-plus{transition:transform .25s ease}.faq-item[open] .faq-plus{transform:rotate(45deg)}@media (prefers-reduced-motion: reduce){.faq-plus{transition:none}}` }} />
 
       <main style={{ background: '#fff', minHeight: '100vh', paddingTop: '68px' }}>
 
@@ -214,10 +226,10 @@ export default function CategoryPage({ params }: Props) {
         <section style={{ background: colors.bg }}>
           <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 20px 48px' }}>
 
-            <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#4C6459', marginBottom: '16px' }}>
-              <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
+            <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#4C6459', marginBottom: '16px', flexWrap: 'wrap' }}>
+              <Link href="/" style={{ color: 'inherit', textDecoration: 'none', padding: '8px 0' }}>Home</Link>
               <span aria-hidden="true">/</span>
-              <Link href="/blog" style={{ color: 'inherit', textDecoration: 'none' }}>Blog</Link>
+              <Link href="/blog" style={{ color: 'inherit', textDecoration: 'none', padding: '8px 0' }}>Blog</Link>
               <span aria-hidden="true">/</span>
               <span aria-current="page" style={{ color: colors.text }}>{meta.category}</span>
             </nav>
@@ -256,8 +268,11 @@ export default function CategoryPage({ params }: Props) {
             <h2 className="font-serif" style={{ fontSize: 'clamp(21px, 2.4vw, 26px)', fontWeight: 700, color: '#0B5240', letterSpacing: '-0.022em', lineHeight: 1.25, marginBottom: '14px' }}>
               What {meta.category} covers, and who it is for
             </h2>
+            {/* 68ch keeps these two long paragraphs inside a readable measure.
+                At the section's full 740px they ran to about 95 characters a
+                line, which is where the eye starts losing the return sweep. */}
             {intro.paragraphs.map((p, i) => (
-              <p key={i} style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.8, fontWeight: 400, marginBottom: '1rem' }}>
+              <p key={i} style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.8, fontWeight: 400, marginBottom: '1rem', maxWidth: '68ch' }}>
                 {p}
               </p>
             ))}
@@ -308,7 +323,7 @@ export default function CategoryPage({ params }: Props) {
                     }}>
                       {article.category}
                     </span>
-                    <span style={{ color: '#CDE3DB' }}>·</span>
+                    <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
                     <span style={{ fontSize: '13px', color: '#4C6459' }}>{article.readTime} min read</span>
                   </div>
                   <h3 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}>
@@ -339,10 +354,10 @@ export default function CategoryPage({ params }: Props) {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {meta.faq.map((f, i) => (
-              <details key={i} className="faq-item" style={{ borderBottom: '1px solid #E2EFE9', padding: '16px 0', cursor: 'pointer' }}>
-                <summary className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', letterSpacing: '-0.015em', listStyle: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
-                  <span style={{ flex: 1 }}>{f.question}</span>
-                  <span style={{ flexShrink: 0, color: colors.text, fontSize: '20px', fontWeight: 300, lineHeight: 1 }}>+</span>
+              <details key={i} className="faq-item" style={{ borderBottom: '1px solid #E2EFE9', padding: '16px 0' }}>
+                <summary className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', letterSpacing: '-0.015em', listStyle: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', cursor: 'pointer', minHeight: '28px' }}>
+                  <span style={{ flex: 1, minWidth: 0 }}>{f.question}</span>
+                  <span className="faq-plus" aria-hidden="true" style={{ flexShrink: 0, color: colors.text, fontSize: '20px', fontWeight: 300, lineHeight: 1 }}>+</span>
                 </summary>
                 <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.75, fontWeight: 400, marginTop: '12px', marginBottom: 0 }}>
                   {f.answer}
@@ -354,7 +369,10 @@ export default function CategoryPage({ params }: Props) {
 
         {/* Other categories */}
         <section style={{ maxWidth: '780px', margin: '0 auto', padding: '0 20px 80px' }}>
-          <h2 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', marginBottom: '16px', letterSpacing: '-0.015em' }}>
+          {/* 20px, matching "All X articles". At 16px this section heading was
+              the same size as the article card titles below it, which flattened
+              the hierarchy on the one page that has four H2s. */}
+          <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#080F0D', marginBottom: '16px', letterSpacing: '-0.02em' }}>
             Other categories
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>

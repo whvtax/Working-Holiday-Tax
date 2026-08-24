@@ -3,7 +3,7 @@ import { SITE_URL } from '@/lib/constants'
 import { FormClient } from './FormClient'
 
 export const metadata: Metadata = {
-  title: 'Submit Your Super Claim | Working Holiday Tax',
+  title: 'Submit Your Super Claim',
   description: 'Submit your details to claim your Australian superannuation (DASP). We handle the entire process when you leave Australia.',
   keywords: ['DASP form', 'super claim form Australia', 'superannuation withdrawal form', 'claim super working holiday'],
   alternates: {

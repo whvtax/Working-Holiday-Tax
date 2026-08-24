@@ -17,8 +17,6 @@ export type BlogUIStrings = {
   description: string
   statsArticles: string
   statsCategories: string
-  statsCountries: string
-  statsBackpackers: string
   searchPlaceholder: string
   clearSearch: string
   allArticles: string
@@ -42,11 +40,9 @@ const enUI: BlogUIStrings = {
   blogLabel: 'Blog',
   h1Line1: 'Working holiday tax guides:',
   h1Line2: 'TFN, tax returns, super and ABN',
-  description: 'Get your tax refund, claim your superannuation, and set up your TFN or ABN - practical guides written for 417 and 462 visa backpackers, explained simply.',
+  description: 'Get your tax refund, claim your superannuation, set up your TFN or ABN. Practical guides for 417 and 462 visa backpackers.',
   statsArticles: 'Articles',
   statsCategories: 'Categories',
-  statsCountries: 'Countries',
-  statsBackpackers: 'backpackers helped',
   searchPlaceholder: 'Search articles...',
   clearSearch: 'Clear search',
   allArticles: 'All articles',
@@ -66,16 +62,29 @@ const enUI: BlogUIStrings = {
 
 const PER_PAGE = 9
 
+// Icon-only prev/next controls need a name of their own, and the surrounding
+// nav needs one too. These are the only three strings Pagination adds, so they
+// live here rather than being pushed into BlogUIStrings, which is shared with
+// the German and Japanese blogs and typed against their own data files.
+const PAGINATION_UI: Record<'en' | 'de' | 'ja', { nav: string; prev: string; next: string; page: (n: number) => string }> = {
+  en: { nav: 'Pagination', prev: 'Previous page', next: 'Next page', page: (n) => `Page ${n}` },
+  de: { nav: 'Seitennavigation', prev: 'Vorherige Seite', next: 'Nächste Seite', page: (n) => `Seite ${n}` },
+  ja: { nav: 'ページ送り', prev: '前のページ', next: '次のページ', page: (n) => `${n}ページ目` },
+}
+
 function Pagination({
   total,
   page,
   onPage,
+  lang = 'en',
 }: {
   total: number
   page: number
   onPage: (p: number) => void
+  lang?: 'en' | 'de' | 'ja'
 }) {
   const totalPages = Math.ceil(total / PER_PAGE)
+  const t = PAGINATION_UI[lang] ?? PAGINATION_UI.en
   if (totalPages <= 1) return null
 
   const getPages = () => {
@@ -94,9 +103,11 @@ function Pagination({
     return pages
   }
 
+  // 44px, not 40. Anything smaller is under the minimum comfortable tap target
+  // on a phone, and these sit close enough together to mis-hit.
   const btnBase: React.CSSProperties = {
-    minWidth: '40px',
-    height: '40px',
+    minWidth: '44px',
+    height: '44px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -112,22 +123,25 @@ function Pagination({
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '48px', flexWrap: 'wrap' }}>
+    <nav aria-label={t.nav} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '48px', flexWrap: 'wrap' }}>
       <button
         onClick={() => onPage(page - 1)}
         disabled={page === 1}
+        aria-label={t.prev}
         style={{ ...btnBase, opacity: page === 1 ? 0.3 : 1 }}
         className="pagination-btn"
       >
-        ‹
+        <span aria-hidden="true">‹</span>
       </button>
       {getPages().map((p, i) =>
         p === '...' ? (
-          <span key={`dot-${i}`} style={{ ...btnBase, border: 'none', cursor: 'default', color: '#4C6459' }}>…</span>
+          <span key={`dot-${i}`} aria-hidden="true" style={{ ...btnBase, border: 'none', cursor: 'default', color: '#4C6459' }}>…</span>
         ) : (
           <button
             key={p}
             onClick={() => onPage(p as number)}
+            aria-label={t.page(p as number)}
+            aria-current={page === p ? 'page' : undefined}
             style={{
               ...btnBase,
               background: page === p ? '#0B5240' : 'transparent',
@@ -143,13 +157,14 @@ function Pagination({
       )}
       <button
         onClick={() => onPage(page + 1)}
-        disabled={page === Math.ceil(total / PER_PAGE)}
-        style={{ ...btnBase, opacity: page === Math.ceil(total / PER_PAGE) ? 0.3 : 1 }}
+        disabled={page === totalPages}
+        aria-label={t.next}
+        style={{ ...btnBase, opacity: page === totalPages ? 0.3 : 1 }}
         className="pagination-btn"
       >
-        ›
+        <span aria-hidden="true">›</span>
       </button>
-    </div>
+    </nav>
   )
 }
 
@@ -241,10 +256,13 @@ export default function BlogClient({
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-12">
 
+          {/* rgba(10,15,13,0.35) over this near white hero measures about
+              2.3:1 and fails WCAG AA. #4C6459 is the palette's caption colour
+              at 6.41:1 and reads as the same quiet grey green. */}
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
-            <a href={homePath} className="transition-colors hover:text-forest-500" style={{ color: 'inherit', textDecoration: 'none' }}>{ui.breadcrumbHome}</a>
-            <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
+            style={{ fontSize: '12px', color: '#4C6459' }}>
+            <a href={homePath} className="transition-colors hover:text-forest-500" style={{ color: 'inherit', textDecoration: 'none', padding: '6px 0' }}>{ui.breadcrumbHome}</a>
+            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
             <span aria-current="page">{ui.breadcrumbBlog}</span>
           </nav>
 
@@ -265,7 +283,7 @@ export default function BlogClient({
             </h1>
 
             <p className="font-light"
-              style={{ fontSize: 'clamp(13px,1.2vw,16px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '52ch', marginBottom: '24px' }}>
+              style={{ fontSize: 'clamp(14px,1.2vw,16px)', lineHeight: 1.65, color: '#4C6459', maxWidth: '52ch', marginBottom: '24px' }}>
               {ui.description}
             </p>
 
@@ -307,7 +325,7 @@ export default function BlogClient({
               style={{
                 width: '100%',
                 padding: '12px 16px 12px 44px',
-                paddingRight: searchQuery ? '40px' : '16px',
+                paddingRight: searchQuery ? '52px' : '16px',
                 borderRadius: '12px',
                 border: '1px solid #E2EFE9',
                 background: '#fff',
@@ -324,7 +342,9 @@ export default function BlogClient({
               <button
                 onClick={() => handleSearchChange('')}
                 className="clear-search-btn"
-                style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: '#4C6459', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                // 44x44, not a 4px pad around a 16px icon. The old target was
+                // 24px square and sat inside the input's rounded corner.
+                style={{ position: 'absolute', right: '4px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: '#4C6459', width: '44px', height: '44px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 aria-label={ui.clearSearch}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -466,8 +486,8 @@ export default function BlogClient({
                       }}>
                         {article.category}
                       </span>
-                      <span style={{ color: '#CDE3DB' }}>·</span>
-                      <span style={{ fontSize: '11.5px', color: '#4C6459' }}>{article.readTime} {ui.minRead}</span>
+                      <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
+                      <span style={{ fontSize: '12px', color: '#4C6459' }}>{article.readTime} {ui.minRead}</span>
                     </div>
 
                     {/* Title */}
@@ -479,7 +499,10 @@ export default function BlogClient({
                     </h2>
 
                     {/* Description */}
-                    <p style={{ fontSize: '13px', color: '#587066', lineHeight: 1.65, margin: 0, fontWeight: 300, flex: 1 }}>
+                    {/* Weight 400, not 300. A 300 weight at 13px is thin
+                        enough to break up on a phone screen in daylight, which
+                        is where this listing is read. */}
+                    <p style={{ fontSize: '13.5px', color: '#4C6459', lineHeight: 1.65, margin: 0, fontWeight: 400, flex: 1 }}>
                       {article.description}
                     </p>
 
@@ -498,6 +521,7 @@ export default function BlogClient({
         <Pagination
           total={filtered.length}
           page={page}
+          lang={lang}
           onPage={(p) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
         />
 

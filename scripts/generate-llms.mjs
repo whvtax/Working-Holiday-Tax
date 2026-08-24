@@ -177,7 +177,15 @@ const SUPERVISION =
   'Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged with the ATO.'
 
 // The guarantee, exact wording. Do not reword.
-const GUARANTEE = 'If you do not receive a tax refund, we refund our fee.'
+//
+// This used to read "If you do not receive a tax refund, we refund our fee.",
+// which is only the second half of the policy. Every page of the site states
+// the shortfall half, and clause 6 of the client agreement states both. Stating
+// one half here and the other half on the site is a conflicting account of a
+// policy, so both sentences are carried, taken verbatim from the site and from
+// the client agreement.
+const GUARANTEE =
+  'If your refund is less than our fee, we refund the difference, so you are never out of pocket. Where no refund is payable to you at all, the fee is refunded in full.'
 
 const SPECIALISM = 'Working holiday tax is the only thing we do.'
 

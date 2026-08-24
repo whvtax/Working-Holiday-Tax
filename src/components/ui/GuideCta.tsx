@@ -62,7 +62,9 @@ const EN: Record<Category, Copy> = {
   'Medicare & Other': {
     eyebrow: 'Worth checking',
     heading: 'The levy comes off by default.',
-    body: 'Whether you ever owed it depends on your passport rather than your visa. Some nationalities are entitled to Medicare and do pay it; others are not entitled and can be exempted, which needs a statement you have to apply for. People assume wrong in both directions, and it is worth checking rather than guessing.',
+    // The closing sentence said twice over what the button already says, so
+    // it is gone. Nothing else in this block changed.
+    body: 'Whether you ever owed it depends on your passport rather than your visa. Some nationalities are entitled to Medicare and do pay it; others are not entitled and can be exempted, which needs a statement you have to apply for. People assume wrong in both directions.',
     cta: 'Check whether it applies to you',
     under: 'Replies in about an hour.',
   },

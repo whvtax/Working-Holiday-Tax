@@ -124,39 +124,39 @@ const WHAT_WE_DO = [
 
 const FAQS = [
   {
-    question: 'Can I not just do this myself on myGov?',
+    question: 'Can I just apply for a TFN myself?',
     answer:
-      'You can, and applying for a tax file number really is a short form. What the form does not do is tell you anything about the money around it. It does not mention that you have 28 days from starting a job to give your employer the number, that every pay run before then is withheld at 45% instead of the 15% working holiday maker rate, or that the excess only comes back through a tax return that has been lodged and reconciled against every employer you had. It also does not check your name and postal address against the record immigration holds, which is what sends applications into manual review or straight back to you. That is the work, and lodging is the easy part of it. You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.',
+      'You can, and the application is a short free form. What we charge for is the work around it: matching your details to the record immigration holds, picking an address that will still be receiving post in four weeks, giving your employer the application reference number so the first pay runs are not withheld at 45%, ringing the ATO when nothing arrives, and claiming back through your return anything already taken at the top rate.',
   },
   {
     question: 'The TFN application is free on the ATO website. What am I paying for?',
     answer:
-      'The number itself is free and we will always say so plainly. What we charge for is getting the application through first time and dealing with what happens if it does not. That means matching your passport and name exactly to the record immigration holds, choosing an address that will still be receiving your post in four weeks, quoting the application reference number to your employer so the first pay runs are not withheld at the top rate, and chasing the ATO if nothing has arrived after 28 days. If you would rather do all of that yourself, our guides walk through it in full and hold nothing back.',
+      'The number itself is free and we will always say so plainly. What costs money is the gap: every pay run before your employer has the number is withheld at 45% instead of 15%. We charge for closing that gap first time, and for getting back what has already gone.',
   },
   {
     question: 'What actually happens if I start work without a TFN?',
     answer:
-      'Your employer is required to withhold tax at the top rate of 45% instead of the 15% working holiday maker rate until you give them a tax file number, and you have 28 days from starting the job to do that. On a $25 an hour job that is roughly $7.50 an hour going to the ATO rather than to you, for every hour worked in that window. The money is not lost, but it does not come back automatically either: it only returns through a tax return that is lodged, and lodged correctly, after the financial year ends.',
+      'Your employer must withhold at the top rate of 45% instead of the 15% working holiday maker rate until you give them a tax file number, and you have 28 days from starting the job to do that. On a $25 an hour job that is roughly $7.50 an hour going to the ATO rather than to you. The money is not lost, but it only comes back through a tax return lodged, and lodged correctly, after the financial year ends.',
   },
   {
     question: 'I have already been working for weeks without a TFN. Is it too late?',
     answer:
-      'No. There is no deadline that closes on you here. Apply now so the top rate stops applying to future pay, and the excess already withheld comes back when your tax return is lodged for that financial year. We can usually have an application ready to lodge the same day you message us, and if you have already worked several weeks at 45% that is worth telling us about, because it changes what your return needs to say.',
+      'No. There is no deadline that closes on you here. Apply now so the top rate stops applying to future pay, and the excess already withheld comes back when your tax return is lodged for that financial year. We can usually have an application ready to lodge the same day you message us, so tell us how many weeks have already been paid at 45%, because it changes what your return needs to say.',
   },
   {
     question: 'How long does a TFN take to arrive?',
     answer:
-      'The ATO states it processes TFN applications within 28 days, and in practice most working holiday makers have theirs inside two to four weeks. It arrives as a letter posted to the Australian address on the application, which is why that address matters more than people expect. You can keep working during the wait by giving your employer the application reference number, which is what stops the 28 day clock running out on you.',
+      'The ATO states it processes TFN applications within 28 days, and most working holiday makers have theirs inside two to four weeks. It arrives as a letter posted to the Australian address on the application, which is why that address matters more than people expect. While you wait, the application reference number is what your employer needs.',
   },
   {
     question: 'Can I apply for a TFN before I arrive in Australia?',
     answer:
-      'Not on a working holiday visa. You apply once you are in Australia with your 417 or 462 visa activated, because the application is matched against your arrival and visa record. You also need an Australian postal address for the letter, which is a problem worth solving before you land rather than after. Applications lodged before arrival are the ones that most often disappear without anyone being told why.',
+      'Not on a working holiday visa. You apply once you are in Australia with your 417 or 462 visa activated, because the application is matched against your arrival and visa record. You also need an Australian postal address for the letter. Applications lodged before arrival are the ones that most often disappear without anyone being told why.',
   },
   {
     question: 'Do I need a new TFN for a second year visa?',
     answer:
-      'No. A tax file number is issued to you once and stays with you for life, including across a second or third working holiday visa, a change of visa class, and any gap where you left Australia entirely. If you have lost the number rather than never had one, that is a different and much faster problem to fix, so tell us which of the two it is.',
+      'No. A tax file number is issued to you once and stays with you for life, including across a second or third working holiday visa, a change of visa class, and any gap where you left Australia entirely. If you have lost the number rather than never had one, that is a different and much faster problem, so tell us which of the two it is.',
   },
 ]
 
@@ -178,32 +178,9 @@ const GUIDES = [
   },
 ]
 
-/**
- * The objection every lead arrives holding: "I can just do this myself."
- *
- * It is answered on the homepage in general terms. Here it has to be answered
- * about a TFN specifically, or it reads as filler and duplicates the homepage
- * for no benefit. Every row below is about the application and the weeks around
- * it. Nothing here says myGov is bad, because it is not. It does a different job.
- */
-const MYGOV = [
-  {
-    mygov: 'The form takes the name and the postal address you type in.',
-    us: 'We check both first: the name against the record immigration holds, the address against where your post will actually be in four weeks.',
-  },
-  {
-    mygov: 'Nothing on the screen mentions the 28 days you have from starting a job to give your employer the number.',
-    us: 'We give you the application reference number to hand over, which is what keeps the first pay runs off the top rate.',
-  },
-  {
-    mygov: 'Nothing tells you the weeks before your employer had the number were withheld at 45% instead of 15%.',
-    us: 'We work out what that gap is worth and claim it back through the return, because it does not come back on its own.',
-  },
-  {
-    mygov: 'If the application stalls, there is no screen that tells you so.',
-    us: 'Past 28 days somebody has to ring the ATO, and it is not going to be you from a hostel in Cairns.',
-  },
-]
+// The myGov comparison table that used to sit here was removed: every row of it
+// was already made by the WHAT_WE_DO cards below. The one line worth keeping,
+// the "you will never log into myGov" promise, moved to the end of that section.
 
 const WA_TFN = waUrl({ topic: 'tfn', lang: 'en' })
 
@@ -311,44 +288,6 @@ export default function TFNPage() {
         </div>
       </section>
 
-      {/* ── 1b. MYGOV, ABOUT THE TFN SPECIFICALLY ────────────────────────── */}
-      <section className="py-11 lg:py-14 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>The easy part</p>
-
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
-            <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Nowhere in the application{' '}</span>
-            <span style={{ display: 'block' }}>does anyone mention what the wait costs.{' '}</span>
-          </h2>
-
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '22px' }}>
-            The form is short and myGov will take it. What that form leaves out is the money, on all four counts below.
-          </p>
-
-          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
-            {MYGOV.map((row, i) => (
-              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>On myGov</p>
-                  <p style={{ ...BODY, color: '#2A3C34', overflowWrap: 'break-word' }}>{row.mygov}</p>
-                </div>
-                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>With us</p>
-                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, overflowWrap: 'break-word' }}>{row.us}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
-            You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
-          </p>
-        </div>
-      </section>
-
       {/* ── 2. WHAT THE GAP COSTS ────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
@@ -431,7 +370,11 @@ export default function TFNPage() {
             ))}
           </div>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '60ch' }}>
+          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
+            You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
+          </p>
+
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '60ch' }}>
             Already have the number and want the weeks at 45% back?{' '}
             <Link href="/tax-return" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>That is the tax return</Link>.
           </p>
@@ -519,10 +462,10 @@ export default function TFNPage() {
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Guides</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-            Read the whole answer first, if you would rather
+            More on the TFN and the 45% weeks
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            Nothing is held back to make you get in touch. If the guide answers it, that is a good outcome.
+            Three longer reads on the withholding, the wait and the reference number.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3">

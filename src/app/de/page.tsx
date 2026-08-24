@@ -162,11 +162,11 @@ const GUIDES = [
 const FAQS = [
   {
     question: 'Wovon hängt ab, wie viel Steuern ich aus Australien zurückbekomme?',
-    answer: 'Vier Dinge machen den größten Teil aus: dein steuerlicher Wohnsitz für das Jahr, ob ein Teil deines Lohns mit 45 % einbehalten wurde, bevor deine TFN beim Arbeitgeber ankam, ob die 2 % Medicare Levy abgezogen wurden, obwohl du keinen Anspruch auf Medicare hattest, und die Abzüge, die zu deiner Arbeit gehören. Zwei Leute mit exakt demselben Einkommen in Australien können deshalb sehr unterschiedliche Rückerstattungen bekommen. Genau deshalb zählt die Analyse mehr als das Einreichen, und genau das gehen wir durch, bevor eine einzige Zahl in der Erklärung steht.',
+    answer: 'Vier Dinge machen den größten Teil aus: dein steuerlicher Wohnsitz für das Jahr, ob ein Teil deines Lohns mit 45 % einbehalten wurde, bevor deine TFN beim Arbeitgeber ankam, ob die 2 % Medicare Levy abgezogen wurden, obwohl du keinen Anspruch auf Medicare hattest, und die Abzüge, die zu deiner Arbeit gehören. Zwei Leute mit exakt demselben Einkommen können deshalb sehr unterschiedliche Rückerstattungen bekommen, und genau deshalb zählt die Analyse mehr als das Einreichen.',
   },
   {
-    question: 'Kann ich meine Steuererklärung nicht einfach selbst über myGov machen?',
-    answer: 'Kannst du, und das Einreichen ist wirklich der einfache Teil. myGov nimmt an, was du hineinschreibst, sagt dir aber nicht, ob du steuerlich ansässig warst, ob ein Arbeitgeber zum falschen Satz einbehalten hat, ob du eine Medicare-Befreiungsbescheinigung bekommst oder was deine Art von Arbeit absetzen darf. Das sind Beurteilungen zu deinem konkreten Jahr, und sie entscheiden über den Betrag. Das Risiko beim Selbermachen liegt also nicht im Einreichen, sondern in dem, was hineingeschrieben wird.',
+    question: 'Kann ich meine Steuererklärung einfach selbst über myGov einreichen?',
+    answer: 'Kannst du, und das Einreichen ist wirklich der einfache Teil. Was dir der Bildschirm nicht sagt: dein steuerlicher Wohnsitz für das Jahr, ob ein Arbeitgeber zum falschen Satz einbehalten hat, ob die Medicare Levy überhaupt hätte abgehen dürfen, und was deine Art von Arbeit absetzen darf. Diese vier sind Beurteilungen zu deinem konkreten Jahr, und sie entscheiden über den Betrag.',
   },
   {
     question: 'Was kosten eure Leistungen?',
@@ -182,11 +182,11 @@ const FAQS = [
   },
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meistens innerhalb einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Morgen als Erstes. Du kannst erst einmal nur eine Frage stellen, ohne dich zu irgendetwas zu verpflichten, und wir antworten in deiner eigenen Sprache.',
+    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meistens innerhalb einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Morgen. Du kannst erst einmal nur eine Frage stellen, ohne dich zu irgendetwas zu verpflichten, und wir antworten in deiner eigenen Sprache.',
   },
   {
     question: 'Macht ihr nur Steuererklärungen?',
-    answer: 'Nein. Wir übernehmen auch TFN-Anträge, ABN-Registrierungen, die Superauszahlung (DASP) und Medicare-Levy-Befreiungen, also das, was man mit einem 417 oder 462 Visum normalerweise braucht. Working-Holiday-Steuer ist das Einzige, was wir machen, deshalb liegt alles davon bei denselben Leuten und wird nicht durch eine allgemeine Kanzlei gereicht.',
+    answer: 'Nein. Wir übernehmen auch TFN-Anträge, ABN-Registrierungen, die Superauszahlung (DASP) und Medicare-Levy-Befreiungen, also das, was man mit einem 417 oder 462 Visum normalerweise braucht. Working-Holiday-Steuer ist das Einzige, was wir machen, deshalb liegt alles davon bei denselben Leuten.',
   },
 ]
 
@@ -320,9 +320,14 @@ export default async function GermanHomePage() {
             <span style={{ display: 'block', color: '#0B5240' }}>Die Arbeit passiert davor.{' '}</span>
           </h1>
 
+          {/* Hier stand "Fünf Dinge entscheiden über deine Rückerstattung", was
+              dem Abschnitt zwei Bildschirme weiter unten widersprach: Der fragt,
+              wovon die Höhe der Rückerstattung abhängt, und antwortet "drei
+              Dinge". Die Zahl ist nicht der Punkt, und die drei Zahlen sind
+              freigegebene Copy, also fällt die Zahl hier weg. */}
           <p className="mx-auto hero-animate-delay"
             style={{ ...LEDE, color: '#4C6459', maxWidth: '72ch', marginBottom: '26px' }}>
-            Fünf Dinge entscheiden über deine Rückerstattung. Keins davon passiert automatisch.
+            Deine Rückerstattung entscheidet sich, bevor irgendetwas eingereicht wird, und nichts davon passiert automatisch.
           </p>
 
           <div className="hero-animate-delay-2">

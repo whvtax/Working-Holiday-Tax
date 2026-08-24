@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Hospitality, bar and 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "We pay back the difference whenever the fee comes to more than the refund.",
-  "guaranteeBody": "Four venues, four income statements and super in four funds is the usual hospitality year here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before it reaches the ATO.",
+  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket.",
+  "guaranteeBody": "Four venues, four income statements and super in four funds is the usual hospitality year here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "What can a bar, cafe or kitchen worker claim on tax?",
     "paras": [
       "Hospitality staff can claim protective non slip footwear, occupation specific clothing such as chef whites and checked chef trousers, the laundering of a compulsory uniform that carries an employer logo, renewals of an RSA or Food Safety Supervisor certificate, and kitchen tools bought out of their own pocket. Everything else in the wardrobe is ordinary clothing.",
-      "The reason the list is short is that hospitality gives you very little that is unique to the job. You are indoors, your employer supplies the equipment, and the clothing a venue asks for is usually clothing anybody could wear anywhere. The value on a hospitality return is more often in the income side, in the withholding across several employers, than in the deductions."
+      "Hospitality gives you very little that is unique to the job. You are indoors, your employer supplies the equipment, and the clothing a venue asks for is usually clothing anybody could wear anywhere. The value on a hospitality return is more often on the income side, in the withholding across several employers, than in the deductions."
     ]
   },
   {
@@ -156,13 +156,13 @@ const SECTIONS: Section[] = [
     "h2": "What has to sit behind a hospitality claim?",
     "paras": [
       "The same three tests as everywhere: the money was yours, nobody paid it back, and it went to earning the income you are declaring. In a venue that means the receipt for the shoes and the knife roll, the written uniform policy, and a laundry diary once the loads add up.",
-      "Any record showing the amount, the date, the supplier and the item does the job, whether a receipt, an invoice, a bank statement or a photo on your phone, and it has to survive five years. A year of claims totalling $300 or less needs no written evidence at all, but the number still has to be one you can justify. Different $300 from the one deciding whether a knife set is written off at once or over its life."
+      "Any record showing the amount, the date, the supplier and the item does the job, whether a receipt, an invoice, a bank statement or a photo on your phone, and it has to survive five years. A year of claims totalling $300 or less needs no written evidence. That is a different $300 from the one deciding whether a knife set is written off at once or over its life."
     ]
   },
   {
     "kind": "traps",
     "h2": "What do hospitality workers get wrong?",
-    "intro": "The clothing rule is the one that catches everybody, and it catches them because it feels unfair. The missed claims are quieter and are usually about pay rather than expenses.",
+    "intro": "The clothing rule catches everybody, because it feels unfair. The missed claims are quieter and usually about pay rather than expenses.",
     "wrong": [
       {
         "t": "The all black outfit the venue requires",
@@ -170,7 +170,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Your first RSA",
-        "d": "The certificate you paid for before you had the job is what made you eligible to be hired, and that is a private cost. Once you are working and it needs renewing to keep working, the renewal is deductible. Same certificate, different answer, depending on which side of your first shift it sits."
+        "d": "The certificate you paid for before you had the job is what made you eligible to be hired, and that is a private cost. Once you are working and it needs renewing to keep working, the renewal is deductible."
       },
       {
         "t": "Haircuts, grooming and makeup for a front of house standard",
@@ -213,7 +213,7 @@ const SECTIONS: Section[] = [
     "h2": "What has to be judged rather than looked up?",
     "paras": [
       "The clothing question, first. Whether an item is a compulsory uniform turns on how distinctive it is and whether the employer requires it. Whether footwear is protective turns on the hazard in your venue. A written uniform policy and a photograph of the item usually settle it either way.",
-      "The income side is where a professional view pays. Working holiday makers do not get the tax free threshold, so the answer to that question on every Tax File Number Declaration, at every venue, is no. That flips if the Addy decision applies to you, which it can for British, German and Japanese passport holders who were Australian residents for tax purposes. Three casual jobs, a mid year arrival and a settled address make it a live question."
+      "The income side is where a professional view pays. Working holiday makers do not get the tax free threshold, so a venue that withholds as though you do will under withhold and leave a bill behind. That changes if the Addy decision applies to you, which it can for British, German and Japanese passport holders who were Australian residents for tax purposes. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
 ]
@@ -232,8 +232,8 @@ const FAQS = [
     "answer": "Yes, all of them. Tips and service charges paid out through payroll, including a pooled or tronc arrangement, are part of your wages, already taxed, and already on your income statement. Cash handed to you directly is just as taxable but nobody is tracking it for you, so you need to keep a simple running note and declare the total yourself."
   },
   {
-    "question": "I work at three venues. What do I put on each TFN declaration?",
-    "answer": "Each employer needs its own Tax File Number Declaration, because your TFN does not carry across when you start somewhere new. On each one you select working holiday maker as your residency status and answer no to the tax free threshold question, at every venue including the one paying you most. Working holiday makers do not get a tax free threshold from any employer, so answering yes anywhere causes that venue to under withhold and turns into a bill later."
+    "question": "I work at three venues. Does that change my tax?",
+    "answer": "Each venue is a separate employer with its own Tax File Number Declaration, its own withholding and its own income statement, and every one of them belongs on the same return. Working holiday makers do not get a tax free threshold from any employer, so a venue that withholds as though you do leaves a bill behind rather than a refund. Bringing every venue together at the right rate is the part we do."
   },
   {
     "question": "Do I get super on a casual hospitality job?",

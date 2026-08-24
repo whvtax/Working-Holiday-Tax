@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Farmarbeit und Fruit 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Fällt die Rückerstattung kleiner aus als unser Honorar, geht die Differenz an dich zurück.",
-  "guaranteeBody": "Eine Saison aus kurzen Farmjobs, mehreren Contractors und einer Erklärung entwirren wir jede Woche, für Leute auf 417 und 462 und sonst niemanden. Von einem registrierten Steuerberater geprüft und freigegeben, bevor beim ATO eingereicht wird.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.",
+  "guaranteeBody": "Eine Saison aus kurzen Farmjobs, mehreren Contractors und einer Erklärung entwirren wir jede Woche, für Leute auf 417 und 462 und sonst niemanden. Von einem registrierten Steuerberater geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
@@ -117,13 +117,13 @@ const SECTIONS: Section[] = [
     "h2": "Was können Fruit Picker und Farmarbeiter absetzen?",
     "paras": [
       "Absetzbar sind Sonnenschutz für Arbeit im Freien, Schutzhandschuhe und Schutzschuhe, selbst gekaufte Pflückausrüstung und die Fahrt zwischen zwei Farmen oder Blöcken am selben Arbeitstag. Für alles gilt: du hast selbst bezahlt, nichts erstattet bekommen und kannst es belegen.",
-      "Farmarbeit verdient sich diese Abzüge durch das, was die Arbeit körperlich ist. Sonnencreme ist für fast jeden in Australien privat. Bei dir ist sie absetzbar, weil dich der Job Tag für Tag stundenlang in die direkte Sonne stellt, und das ATO sieht darin eine arbeitsbedingte Belastung und keine Lifestyle-Entscheidung."
+      "Sonnencreme ist für fast jeden in Australien privat. Bei dir ist sie absetzbar, weil dich der Job stundenlang in die direkte Sonne stellt, und das ATO sieht darin eine arbeitsbedingte Belastung und keine Lifestyle-Entscheidung."
     ]
   },
   {
     "kind": "items",
     "h2": "Die Abzüge, die zu dieser Arbeit gehören",
-    "intro": "An jedem hängt eine Bedingung. Die Bedingung ist keine Deko, sie ist das, was den Abzug bei einer Rückfrage überstehen lässt.",
+    "intro": "An jedem hängt eine Bedingung, und die Bedingung ist das, was den Abzug bei einer Rückfrage überstehen lässt.",
     "items": [
       {
         "t": "Sonnenschutz: Sonnencreme, Hut mit breiter Krempe, Sonnenbrille",
@@ -156,7 +156,7 @@ const SECTIONS: Section[] = [
     "h2": "Was musst du aus einer Saison aufheben?",
     "paras": [
       "Nichts ist absetzbar, solange nicht drei Dinge stimmen: das Geld war deins, niemand hat es dir zurückgegeben, und es diente dazu, das Einkommen zu verdienen, das in der Erklärung steht. In einer Saison sind das der Roadhouse-Beleg für die Sonnencreme, der Kassenzettel für Handschuhe und Schere und eine Notiz zu Daten und Kilometern, wann immer ein Contractor dich zwischen Blöcken bewegt hat.",
-      "Ein Beleg, eine Rechnung oder ein Kontoauszug mit Betrag, Datum, Anbieter und Gegenstand zählt, und ein Handyfoto reicht. Fünf Jahre aufheben. Liegen deine Abzüge im ganzen Jahr bei 300 Dollar oder weniger, brauchst du keinen schriftlichen Nachweis, musst aber zeigen können, wie du auf die Zahl kommst. Nicht dieselben 300 Dollar, die entscheiden, ob ein einzelner Gegenstand sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto mit Betrag, Datum, Anbieter und Gegenstand zählt jeweils, und alles davon muss fünf Jahre halten. Liegen deine Abzüge im ganzen Jahr bei 300 Dollar oder weniger, brauchst du keinen schriftlichen Nachweis. Das sind nicht dieselben 300 Dollar, die entscheiden, ob ein einzelner Gegenstand sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {

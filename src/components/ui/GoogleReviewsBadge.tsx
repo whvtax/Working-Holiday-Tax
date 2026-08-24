@@ -33,7 +33,10 @@ function Star() {
 
 export function GoogleReviewsBadge({ lang = 'en' }: { lang?: 'en' | 'de' | 'ja' }) {
   return (
-    <div className="gbadge" aria-label={`${RATING} ${LABEL[lang]}`}>
+    // role="img" so the aria-label is honoured. Without a role the label on a
+    // plain div is dropped and the badge is announced as the loose characters
+    // "Google Reviews 5.0 ★★★★★".
+    <div className="gbadge" role="img" aria-label={`${RATING} ${LABEL[lang]}`}>
       <style>{styles}</style>
 
       <div className="gbadge-top">

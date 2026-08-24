@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Bau und Baustelle" })
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Rückerstattung kleiner als unser Honorar? Dann erstatten wir die Differenz, du zahlst nie drauf.",
-  "guaranteeBody": "Baustellenerklärungen, Ticketverlängerungen und der Streit um den Ute sind hier Wochengeschäft, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steuerberater geprüft und freigegeben, bevor etwas beim ATO ankommt.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.",
+  "guaranteeBody": "Baustellenerklärungen, Ticketverlängerungen und der Streit um den Ute sind hier Wochengeschäft, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steuerberater geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Bauarbeiter absetzen?",
     "paras": [
       "Absetzbar sind selbst gekauftes Werkzeug und Ausrüstung, Schutzkleidung und Schutzausrüstung, Sonnenschutz für Arbeit im Freien, die Verlängerung einer White Card oder eines Tickets, das du bereits hast, der arbeitsbezogene Anteil deines Handyvertrags und Weiterbildung, die zu dem Gewerk gehört, in dem du bereits arbeitest. Alles, was der Arbeitgeber gestellt oder erstattet hat, fällt raus.",
-      "Die Liste ist lang, weil der Job konkrete Kosten erzeugt. Stahlkappen schützen dich vor einem fallenden Stein, der Helm vor etwas von oben, Sonnencreme vor sechs Stunden auf einer unbeschatteten Platte. Genau diese Verbindung sucht der Abzugstest, und deshalb bringt Baustellenarbeit meist die höchste Abzugssumme aller Berufe auf dieser Website."
+      "Die Liste ist lang, weil der Job konkrete Kosten erzeugt. Stahlkappen schützen dich vor einem fallenden Stein, der Helm vor etwas von oben, Sonnencreme vor sechs Stunden auf einer unbeschatteten Platte. Diese Verbindung sucht der Abzugstest, und deshalb bringt Baustellenarbeit meist die höchste Abzugssumme aller Berufe auf dieser Website."
     ]
   },
   {
@@ -159,8 +159,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was muss hinter einem Werkzeugabzug stehen?",
     "paras": [
-      "Jeder Abzug muss drei Tests bestehen. Du hast selbst bezahlt, dir wurde nichts erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Auf der Baustelle heißt das: der Beleg für die Bohrmaschine, die Stiefel und die Ticketverlängerung, aufgehoben statt im Handschuhfach vergessen.",
-      "Der Nachweis kann ein Beleg, eine Rechnung oder ein Kontoauszug sein, solange Betrag, Datum, Anbieter und Gegenstand daraus hervorgehen. Ein Handyfoto reicht. Heb ihn fünf Jahre auf. Liegen alle Abzüge des Jahres bei 300 Dollar oder weniger, brauchst du gar keinen schriftlichen Nachweis, musst die Summe aber erklären können. Verwechsle das nicht mit den 300 Dollar, die entscheiden, ob eine Säge sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Jeder Abzug muss drei Tests bestehen. Du hast selbst bezahlt, dir wurde nichts erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Auf der Baustelle heißt das: der Beleg für die Bohrmaschine, die Stiefel und die Ticketverlängerung.",
+      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, solange Betrag, Datum, Anbieter und Gegenstand daraus hervorgehen, und er muss fünf Jahre halten. Liegen alle Abzüge des Jahres bei 300 Dollar oder weniger, brauchst du gar keinen schriftlichen Nachweis. Das ist nicht die 300-Dollar-Grenze, die entscheidet, ob eine Säge sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
@@ -177,7 +177,7 @@ const SECTIONS: Section[] = [
   {
     "kind": "traps",
     "h2": "Was machen Bauarbeiter falsch?",
-    "intro": "Die zu Unrecht angesetzten Posten drehen sich meist um Kleidung und den Ute. Die übersehenen um Belege, die niemand aufgehoben hat, für Dinge, die klar absetzbar waren.",
+    "intro": "Die zu Unrecht angesetzten Posten drehen sich meist um Kleidung und den Ute. Die übersehenen sind Belege, die niemand aufgehoben hat, für Dinge, die klar absetzbar waren.",
     "wrong": [
       {
         "t": "Normale Kleidung, die die Baustelle zerlegt",
@@ -197,7 +197,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Ein Kurs für ein anderes Gewerk",
-        "d": "Eine Ausbildung, die dich in einen neuen Beruf bringen würde, ist nicht absetzbar, so eindeutig sie auch mit Bau zu tun hat, weil sie eine neue Erwerbsfähigkeit aufbaut statt die bestehende zu erhalten."
+        "d": "Eine Ausbildung, die dich in einen neuen Beruf bringen würde, ist nicht absetzbar, so eindeutig sie auch mit Bau zu tun hat."
       }
     ],
     "missed": [
@@ -228,8 +228,7 @@ const SECTIONS: Section[] = [
     "h2": "Welche Teile hängen an deinen eigenen Fakten?",
     "paras": [
       "Zuerst die Ausnahme für sperriges Werkzeug. Was du transportierst, was die Baustelle an Stauraum bietet und ob das Werkzeug an diesem Tag nötig war, gibt den Ausschlag. Zwei Helfer derselben Crew können unterschiedlich dastehen, und dieser Abzug wird angeschaut.",
-      "Ein Kurs funktioniert genauso. Ob er die Fähigkeiten erhält, für die du heute bezahlt wirst, oder auf einen neuen Beruf hinarbeitet, entscheidet deine jetzige Rolle und nicht der Kursprospekt.",
-      "Der steuerliche Wohnsitz ist mehr wert als alles Werkzeug auf der Liste. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Baustellenarbeit bedeutet oft einen längeren Aufenthalt an einer festen Adresse, und genau dort wird die Frage relevant."
+      "Der steuerliche Wohnsitz ist mehr wert als alles Werkzeug auf der Liste. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
 ]

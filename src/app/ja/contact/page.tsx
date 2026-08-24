@@ -57,7 +57,7 @@ const WA = waUrl({ topic: 'contact', lang: 'ja' })
 const blockers: { q: string; a: string; link?: { href: string; label: string } }[] = [
   {
     q: 'すでにオーストラリアを出国していても対応できますか？',
-    a: 'はい。むしろ業務の大きな部分がそれです。すでに終わった年度のタックスリターンは世界のどこからでも提出できますし、スーパーアニュエーションは出国してビザが失効した後でなければ請求できません。つまり出国後のほうが、やれることは減るどころか増えることが多いのです。すべてオンラインで完結し、還付金はオーストラリアの口座にも日本の口座にも受け取れます。',
+    a: 'はい。むしろ業務の大きな部分がそれです。すでに終わった年度のタックスリターンは世界のどこからでも提出できますし、スーパーアニュエーションは出国してビザが失効した後でなければ請求できません。つまり出国後のほうが、やれることは減るどころか増えることが多いのです。1点だけ先に。ATOはタックスリターンの還付金をオーストラリアの銀行口座にしか支払えませんが、スーパー（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、その旨をお知らせください。',
   },
   {
     q: 'myGovのアカウントは必要ですか？',
@@ -65,11 +65,12 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: '給与明細（ペイスリップ）は必要ですか？',
-    a: 'いりません。雇用主が源泉徴収して報告した内容はATOを通じて私たちに見えるので、8か月前に辞めた職場の書類を探していただく必要はありません。手元に残っているものがあれば送ってください。まったく残っていなくても、そのままご連絡いただいて大丈夫です。',
+    a: 'いりません。ご連絡の前に用意していただくものは何もありません。雇用主が源泉徴収して報告した内容はATOを通じて私たちに見えるので、手元に何も残っていなくても、そのままご連絡ください。',
+    link: { href: '/ja/about', label: 'ATOの記録から始める理由' },
   },
   {
     q: 'この会社は信用できますか？',
-    a: 'ウェブサイトに対して当然の質問だと思います。タックスリターンは、ATOに提出される前に登録税理士（registered tax agent）が確認して承認します。ご同意いただく契約条件はクライアント規約にすべて掲載していますし、Googleのレビューは実際にお手伝いしたワーホリの方々によるものです。',
+    a: 'ウェブサイトに対して当然の質問だと思います。申告書は、ATOへ提出する前に登録税理士（registered tax agent）が確認して承認します。ご同意いただく契約条件はクライアント規約にすべて掲載していますし、Googleのレビューは実際にお手伝いしたワーホリの方々によるものです。',
     link: { href: '/ja/client-agreement', label: 'クライアント規約を読む' },
   },
 ]
@@ -77,7 +78,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: '返信はどのくらいで来ますか？',
-    answer: '営業時間内、月曜から金曜の9時から18時（AEST/AEDT）であれば、だいたい1時間以内にご返信します。営業時間外にいただいたご連絡には、翌営業日の朝一番でお返事します。きちんとお答えするために確認が必要な内容の場合は、お待たせせずにその旨をすぐお伝えします。',
+    answer: '営業時間内、月曜から金曜の9時から18時（AEST/AEDT）であれば、だいたい1時間以内にご返信します。営業時間外にいただいたご連絡には、翌営業日の朝一番でお返事します。確認が必要な内容であれば、お待たせせずにその旨をすぐお伝えします。',
   },
   {
     question: '質問するだけで料金はかかりますか？',
@@ -89,7 +90,7 @@ const FAQS = [
   },
   {
     question: 'すぐに書類を送る必要がありますか？',
-    answer: 'ありません。まずはご質問だけをお送りください。書類が必要な場合は、何をどのように安全に送ればよいかを具体的にご案内しますが、それは進めると決めていただいた後の話です。パスポートや銀行口座の情報を最初のメッセージに入れる必要はありません。',
+    answer: 'ありません。まずはご質問だけをお送りください。こちらでお答えし、進める価値のある作業があれば、その内容と料金を着手前にお伝えします。書類はその後、進めると決めていただいてからで、何をどのように安全に送ればよいかを具体的にご案内します。パスポートや銀行口座の情報を最初のメッセージに入れる必要はありません。',
   },
   {
     question: '還付がなかった場合はどうなりますか？',
@@ -97,7 +98,7 @@ const FAQS = [
   },
   {
     question: '日本に帰国した後でも対応してもらえますか？',
-    answer: 'はい。日本に帰国された後にご連絡いただくお客様が最も多いくらいです。オーストラリアのタックスリターン、スーパーアニュエーションの請求、ATOに残っている手続きは、いずれも日本から完全オンラインで進められます。還付金は日本の口座でも受け取れます。',
+    answer: 'はい。日本に帰国された後にご連絡いただくお客様が最も多いくらいです。オーストラリアのタックスリターン、スーパーアニュエーションの請求、ATOに残っている手続きは、いずれも日本から完全オンラインで進められます。',
   },
 ]
 
@@ -194,7 +195,7 @@ export default function JapaneseContactPage() {
 
             <p className="contact-lead mx-auto"
               style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.8, color: '#2A3C34', maxWidth: '34em', marginBottom: '22px' }}>
-              メッセージを読んで返信するのは実在のスタッフです。営業時間内なら、だいたい1時間以内にお返事します。質問ひとつだけ送って、それで終わりにしても構いません。メッセージを送ったからといって、何かが決まるわけではありません。
+              メッセージを読んで返信するのは実在のスタッフです。営業時間内なら、だいたい1時間以内にお返事します。
             </p>
 
             <WaLink href={WA} position="hero" topic="contact" lang="ja"
@@ -204,7 +205,7 @@ export default function JapaneseContactPage() {
             </WaLink>
 
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              月曜から金曜、9時から18時（AEST/AEDT）。時間外のご連絡には翌朝一番でお返事します。
+              月曜から金曜、9時から18時
             </p>
           </div>
         </div>
@@ -294,7 +295,7 @@ export default function JapaneseContactPage() {
                 営業時間
               </p>
               <p className="contact-hours-detail" style={{ fontSize: '14px', color: '#4C6459', lineHeight: 1.8 }}>
-                月曜から金曜、9時から18時（AEST/AEDT）。
+                月曜から金曜、9時から18時
               </p>
             </div>
           </div>
@@ -303,7 +304,8 @@ export default function JapaneseContactPage() {
 
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '48px', paddingBottom: '48px' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[680px] mx-auto">
           <div className="text-center mb-7">
             <span className="section-label center">よくあるご質問</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,29px)', lineHeight: 1.4, letterSpacing: '-0.02em', marginTop: '10px' }}>
@@ -322,6 +324,7 @@ export default function JapaneseContactPage() {
               </details>
             ))}
           </div>
+        </div>
         </div>
       </section>
 

@@ -43,9 +43,13 @@ export function SecurityNotice() {
   const lang = isGerman ? 'de' : isJapanese ? 'ja' : 'en'
 
   return (
+    // role="status", not role="alert". role="alert" is implicitly assertive
+    // and interrupts whatever a screen reader is in the middle of; pairing it
+    // with aria-live="polite" set the two against each other and the result
+    // was undefined. This is a standing safety note, not an emergency, so it
+    // is announced politely and once.
     <div
-      role="alert"
-      aria-live="polite"
+      role="status"
       className="security-notice"
       data-visible={visible}
       lang={lang}
@@ -69,6 +73,12 @@ export function SecurityNotice() {
           type="button"
           onClick={handleClose}
           className="security-notice-close"
+          // The stylesheet sizes this at 28px square. The toast dismisses
+          // itself after four seconds, so the reader has four seconds to hit
+          // it; 28px is not a target you hit in four seconds on a phone. The
+          // negative margins spend the toast's own padding rather than making
+          // the toast bigger.
+          style={{ width: '44px', height: '44px', margin: '-8px -8px -8px 0' }}
           aria-label={isGerman ? 'Hinweis schließen' : isJapanese ? '通知を閉じる' : 'Dismiss notice'}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">

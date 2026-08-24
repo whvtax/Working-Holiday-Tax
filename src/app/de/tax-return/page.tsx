@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   // hier kurz genug, dass das Ganze in ein mobiles Suchergebnis passt.
   title: 'Steuererklärung Australien ohne myGov',
   description:
-    'Pass und australisches Bankkonto, keine Payslips. Wir holen deine ATO-Daten, bereiten die Erklärung vor und reichen ein. Rückerstattung in 14 Werktagen.',
+    'Pass und australisches Bankkonto, keine Payslips. Wir holen deine ATO-Daten, bereiten die Erklärung vor und reichen ein. Rückerstattung meist nach etwa 14 Werktagen.',
   keywords: [
     'Steuererklärung Australien machen lassen',
     'Steuererklärung Australien einreichen',
@@ -55,13 +55,13 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Steuererklärung Australien ohne myGov (417 & 462)',
     description:
-      'Deine Daten und wohin die Erstattung gehen soll. Wir lesen die ATO-Daten, bereiten die Erklärung vor, du unterschreibst, wir reichen ein. Rückerstattung in 14 Werktagen.',
+      'Deine Daten und wohin die Erstattung gehen soll. Wir lesen die ATO-Daten, bereiten die Erklärung vor, du unterschreibst, wir reichen ein. Rückerstattung meist nach etwa 14 Werktagen.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Steuererklärung Australien ohne myGov (417 & 462)',
-    description: 'Pass, Bankdaten, keine Payslips. Du unterschreibst, wir reichen ein, Rückerstattung in etwa 14 Werktagen.',
+    description: 'Pass, Bankdaten, keine Payslips. Du unterschreibst, wir reichen ein, Rückerstattung meist nach etwa 14 Werktagen.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -96,7 +96,7 @@ const SEQUENCE = [
   {
     n: '01',
     title: 'Du schreibst uns',
-    body: 'WhatsApp, auf Deutsch, Englisch oder Japanisch. Du erzählst grob, wie das Jahr aussah, wir sagen dir, wo du stehst, und das Honorar wird vereinbart, bevor irgendetwas beginnt. Während der Geschäftszeiten antworten wir meist innerhalb einer Stunde.',
+    body: 'WhatsApp, auf Deutsch, Englisch oder Japanisch. Du erzählst grob, wie das Jahr aussah, wir sagen dir, wo du stehst, und das Honorar wird vereinbart, bevor irgendetwas beginnt.',
   },
   {
     n: '02',
@@ -146,32 +146,32 @@ const FAQS = [
   {
     question: 'Wie lange dauert eine Steuererklärung für Working Holiday Maker?',
     answer:
-      'Ab dem Tag, an dem dein Fragebogen da ist, brauchen Vorbereitung und Prüfung bei einem unkomplizierten Jahr wenige Tage. Nach der Einreichung zahlt das ATO die Rückerstattung meist in etwa 14 Werktagen aus. Ein Jahr mit fünf Arbeitgebern, mit über eine ABN abgerechnetem Einkommen oder mit einem Wohnsitz, der begründet werden muss, dauert bei uns länger. Wir sagen dir, welcher Fall deiner ist, statt dich raten zu lassen.',
+      'Ab dem Tag, an dem dein Fragebogen da ist, brauchen Vorbereitung und Prüfung bei einem unkomplizierten Jahr wenige Tage, und das ATO zahlt die Rückerstattung meist etwa 14 Werktage nach der Einreichung aus. Fünf Arbeitgeber, über eine ABN abgerechnetes Einkommen oder ein Wohnsitz, der begründet werden muss, dauern bei uns länger. Wir sagen dir, welcher Fall deiner ist, statt dich raten zu lassen.',
   },
   {
     question: 'Braucht ihr meine Payslips?',
     answer:
-      'Nein, und das überrascht die meisten am meisten. Jeder Arbeitgeber, der dich über eine Lohnabrechnung bezahlt hat, hat dem ATO ein Income Statement gemeldet, und daraus entsteht die Erklärung. Verlorene Abrechnungen, ein Job, dessen Namen du nicht mehr weißt, und ein Arbeitgeber, den es nicht mehr gibt, sind normale Ausgangspunkte. Das Einzige, wonach sich Suchen lohnt, sind Belege für berufliche Ausgaben. Gibt es die nicht, beschreib uns die Arbeit, und wir sagen dir, was auch ohne Belege absetzbar ist.',
+      'Nein. Jeder Arbeitgeber, der dich über eine Lohnabrechnung bezahlt hat, hat dem ATO ein Income Statement gemeldet, und daraus entsteht die Erklärung. Verlorene Abrechnungen und ein Arbeitgeber, den es nicht mehr gibt, sind normale Ausgangspunkte. Das Einzige, wonach sich Suchen lohnt, sind Belege für berufliche Ausgaben. Gibt es die nicht, beschreib uns die Arbeit, und wir sagen dir, was auch ohne Belege absetzbar ist.',
   },
   {
     question: 'Was muss ich selbst tun?',
     answer:
-      'Drei Dinge. Den Fragebogen einmal ausfüllen, die fertige Erklärung lesen und sie unterschreiben. Das ist dein kompletter Teil. Du legst kein Behördenkonto an, bestehst keine australische Identitätsprüfung und musst kein ATO-Formular deuten, weil die Einreichung über uns läuft.',
+      'Drei Dinge. Den Fragebogen einmal ausfüllen, die fertige Erklärung lesen und sie unterschreiben. Du legst kein Behördenkonto an, bestehst keine australische Identitätsprüfung und musst kein ATO-Formular deuten, weil die Einreichung über uns läuft.',
   },
   {
     question: 'Geht das auch, wenn ich Australien schon verlassen habe?',
     answer:
-      'Ja, und ein großer Teil der Erklärungen, die wir einreichen, gehört Leuten, die längst wieder in Deutschland, Österreich oder der Schweiz sind. Fragebogen, Unterschrift und Einreichung laufen komplett online. Das Einzige, was nicht mitreist, ist die Rückerstattung selbst: Das ATO kann sie nur auf ein australisches Bankkonto auszahlen, die Super-Rückerstattung (DASP) dagegen auch ins Ausland. Wenn dein australisches Konto schon geschlossen ist, schreib es uns in der ersten Nachricht.',
+      'Ja, und ein großer Teil der Erklärungen, die wir einreichen, gehört Leuten, die schon wieder in Deutschland, Österreich oder der Schweiz sind. Fragebogen, Unterschrift und Einreichung laufen komplett online. Das Einzige, was nicht mitreist, ist die Rückerstattung selbst: Das ATO kann sie nur auf ein australisches Bankkonto auszahlen, die Super-Rückerstattung (DASP) dagegen auch ins Ausland. Wenn dein australisches Konto schon geschlossen ist, schreib es uns in der ersten Nachricht.',
   },
   {
     question: 'Was ist, wenn ich für ein früheres Jahr nie eingereicht habe?',
     answer:
-      'Das lässt sich jetzt noch nachholen. Jedes Steuerjahr steht für sich, mit eigener Erklärung und eigener Rückerstattung, und an den ATO-Daten sehen wir, welche Jahre noch offen sind. Wir arbeiten sie vom ältesten an ab. Eine späte Erklärung ist für das ATO kein Problem, solange sie kommt, und in den meisten Working-Holiday-Jahren steht am Ende Geld für dich und nicht gegen dich.',
+      'Das lässt sich jetzt noch nachholen. Jedes Steuerjahr steht für sich, mit eigener Erklärung und eigener Rückerstattung, und an den ATO-Daten sehen wir, welche Jahre noch offen sind. Eine späte Erklärung ist in der Regel unproblematisch, sobald sie eingereicht ist, und in den meisten Working-Holiday-Jahren steht am Ende Geld für dich und nicht gegen dich.',
   },
   {
     question: 'Was passiert, wenn am Ende eine Nachzahlung steht?',
     answer:
-      'Das kommt vor, meistens dann, wenn Einkommen über eine ABN abgerechnet wurde und unterwegs nichts einbehalten worden ist. Du siehst diesen Betrag, bevor irgendetwas eingereicht wird, zusammen mit der Erklärung, wo er herkommt und welche Zahlungswege das ATO anbietet. Ohne deine Unterschrift geht nichts raus, es gibt also keine Variante, in der du es erst hinterher erfährst.',
+      'Das kommt vor, meistens dann, wenn Einkommen über eine ABN abgerechnet wurde und unterwegs nichts einbehalten worden ist. Du siehst diesen Betrag, bevor irgendetwas eingereicht wird, zusammen mit der Erklärung, wo er herkommt und welche Zahlungswege das ATO anbietet. Ohne deine Unterschrift geht nichts raus, du erfährst es also nicht erst hinterher.',
   },
 ]
 
@@ -299,7 +299,7 @@ export default function TaxReturnPageDE() {
 
           <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '52ch', marginBottom: '26px' }}>
             Keine Payslips, kein myGov-Konto, kein Formular zum Entziffern. Ein Fragebogen, eine Unterschrift,
-            und die Rückerstattung kommt etwa 14 Werktage nach der Einreichung.
+            und die Rückerstattung kommt meist etwa 14 Werktage nach der Einreichung.
           </p>
 
           <div className="hero-animate-delay-2">
@@ -441,7 +441,7 @@ export default function TaxReturnPageDE() {
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
             Schick uns die Orte, in denen du gearbeitet hast, ungefähr welche Monate, und ob du je über eine ABN
             abgerechnet hast. Daraus sagen wir dir, welche Jahre noch offen sind und wie dein Teil der Arbeit aussieht.
-            Ob du vor zwei Jahren heimgeflogen bist, spielt dabei keine Rolle.
+            Ob du vor zwei Jahren heimgeflogen bist, spielt keine Rolle.
           </p>
           <WaLink href={WA_TR} position="section" topic="tax-return" lang="de"
             className="btn-primary inline-flex items-center justify-center gap-2"

@@ -1701,9 +1701,15 @@ h1.font-serif, h2.font-serif, h3.font-serif {
    FOOTER STYLES
    ============================================ */
 
+/* The 10px gap between footer links used to be margin, which is dead space:
+   the tappable area was the 19px line box only, with a 10px miss zone between
+   every pair of links. Turning the margin into padding makes the rows
+   contiguous and lifts each target to ~29px at identical visual spacing, so
+   nothing moves. Reaching the full 44px would mean a noticeably taller footer,
+   which is a design call rather than a defect fix. */
 .footer-link {
   display: block;
-  margin-bottom: 10px;
+  padding: 5px 0;
   transition: color 0.2s ease;
   font-size: 12.5px;
   color: #587066;
@@ -1714,6 +1720,8 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 
 /* Dark variant - used in the dark green bottom bar */
 .footer-link-dark {
+  display: inline-block;
+  padding: 6px 0;
   transition: color 0.2s ease;
   color: rgba(255, 255, 255, 0.7);
 }
@@ -3150,12 +3158,14 @@ html[lang^="ja"] .section-label { letter-spacing: 0.04em !important; }
    the BUTTON, in every language, everywhere. The button and the
    line become one shrink wrapped column, so this holds in left
    aligned sections as well as centered heroes. */
-div:has(> .btn-primary + p) {
+/* Only blocks that BEGIN with the button (a CTA cluster), never a whole
+   content column that happens to contain a button further down. */
+div:has(> .btn-primary:first-child + p) {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   max-width: 100%;
 }
-div:has(> .btn-primary + p) > p {
+div:has(> .btn-primary:first-child + p) > p {
   text-align: center;
 }

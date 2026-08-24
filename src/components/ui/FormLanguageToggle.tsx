@@ -42,7 +42,10 @@ export function FormLanguageToggle({ lang, onChange }: { lang: FormLang; onChang
 const styles = `
   .flang { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
   /* Padding keeps a ~40px tap target even though the text is small. */
-  .flang-btn { padding: 9px 10px; font-size: 12px; font-weight: 600; font-family: inherit; letter-spacing: .04em; color: #9DB5AC; background: none; border: none; border-bottom: 2px solid transparent; border-radius: 0; cursor: pointer; transition: color .15s, border-color .15s; }
-  .flang-btn:hover { color: #587066; }
+  /* #9DB5AC is 2.18:1 on white and was retired from the palette for exactly
+     this reason. The inactive languages are the control's only affordance, so
+     they read at subtle #587066, 5.35:1, and the active one stays forest. */
+  .flang-btn { padding: 9px 10px; font-size: 12px; font-weight: 600; font-family: inherit; letter-spacing: .04em; color: #587066; background: none; border: none; border-bottom: 2px solid transparent; border-radius: 0; cursor: pointer; transition: color .15s, border-color .15s; }
+  .flang-btn:hover { color: #0B5240; }
   .flang-btn.is-active { color: #0B5240; border-bottom-color: #0B5240; }
 `

@@ -68,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Farm work and fruit p
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "If the refund comes to less than our fee, the difference goes back to you.",
+  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket.",
   "guaranteeBody": "A season of short farm jobs, several contractors and one return is a thing we untangle every week, for people on 417 and 462 visas and nobody else. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
@@ -117,13 +117,13 @@ const SECTIONS: Section[] = [
     "h2": "What can a fruit picker or farm hand claim on tax?",
     "paras": [
       "A farm worker can claim sun protection used for outdoor work, protective gloves and boots, picking tools and equipment bought out of their own pocket, and the travel between two farms or blocks in the same working day. Everything on that list has to have been paid for by you, not reimbursed, and backed by a record.",
-      "Farm work earns those claims because of what the work physically is. Sunscreen is a private expense for almost everyone in Australia. It is deductible for you because the job puts you under direct sun for hours at a time, day after day, and the ATO recognises that as a work related exposure rather than a lifestyle choice."
+      "Sunscreen is a private expense for almost everyone in Australia. It is deductible for you because the job puts you under direct sun for hours at a time, and the ATO recognises that as a work related exposure rather than a lifestyle choice."
     ]
   },
   {
     "kind": "items",
     "h2": "The claims that belong to this work specifically",
-    "intro": "Each of these has a condition attached. The condition is not decoration, it is what makes the claim survive a question about it.",
+    "intro": "Each of these has a condition attached, and the condition is what makes the claim survive a question about it.",
     "items": [
       {
         "t": "Sun protection: sunscreen, a wide brim hat, sunglasses",
@@ -156,7 +156,7 @@ const SECTIONS: Section[] = [
     "h2": "What do you have to keep from a season?",
     "paras": [
       "Nothing is deductible unless three things hold: the money was yours, nobody gave it back, and it was spent earning the income on the return. In a season that is the roadhouse receipt for the sunscreen, the docket for the gloves and the secateurs, and a note of dates and kilometres whenever a contractor moved you between blocks.",
-      "A receipt, an invoice or a bank statement carrying the amount, the date, the supplier and the item all count, and a phone photo is enough. Keep it for five years. If your work claims for the whole year add up to $300 or less, no written evidence is needed, though you still have to show how you reached the number. Not the same $300 that decides whether a single item is written off at once or over its life."
+      "A receipt, an invoice, a bank statement or a phone photo carrying the amount, the date, the supplier and the item all count, and they have to last five years. If your work claims for the whole year add up to $300 or less, no written evidence is needed. That is a different $300 from the one deciding whether a single item is written off at once or over its life."
     ]
   },
   {

@@ -79,49 +79,44 @@ const MYGOV = [
   },
   {
     mygov: 'Weg geht die Levy nur mit einem Medicare Entitlement Statement, und das beantragst du woanders, nicht über die Erklärung.',
-    us: 'Wir beantragen die Bescheinigung, warten sie ab und reichen so ein, dass die Befreiung im richtigen Jahr ankommt.',
+    us: 'Wir helfen dir beim Antrag auf die Bescheinigung, warten sie ab und sorgen dafür, dass die Befreiung im richtigen Jahr ankommt.',
   },
   {
     mygov: 'Das Feld für die Befreiung ist da, ob du die Bescheinigung hast oder nicht.',
-    us: 'Wir beantragen sie nur mit dem Nachweis dahinter, und genau das hält später stand.',
+    us: 'Wir beantragen sie nur mit dem Nachweis dahinter, denn darauf muss die Angabe sich stützen, wenn später jemand nachfragt.',
   },
 ]
 
 const faqs = [
   {
-    question: 'Kann ich das nicht einfach selbst über myGov machen?',
-    answer:
-      'Die Erklärung kannst du selbst einreichen, und das Einreichen ist der einfache Teil. Das Schwierige an der Medicare Levy ist, dass dir im Ablauf niemand sagt, dass sie vielleicht gar nicht deine war. Entscheidend ist nicht dein Visum, sondern ob dein Pass aus einem Land mit Sozialversicherungsabkommen kommt. Deutschland hat keines, deutsche Working Holiday Maker können die Befreiung also normalerweise beantragen. Ein Häkchen reicht dafür aber nicht: Es braucht ein Medicare Entitlement Statement, das separat bei Services Australia beantragt wird und Zeit braucht. Die Befreiung ohne diese Bescheinigung zu beantragen ist die Variante, die nachgefragt wird. Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches Formular welches ist. Wir regeln das direkt mit dem ATO.',
-  },
-  {
     question: 'Wie viel ist die Medicare Levy Befreiung wert?',
     answer:
-      'Die Levy beträgt 2 % des zu versteuernden Einkommens, also rund 500 $ bei 25.000 $ Verdienst und rund 1.000 $ bei 50.000 $. Abgerechnet wird sie über die Steuererklärung, dort die Befreiung zu beantragen holt das Geld also zurück. Es ist dasselbe Geld, ob du es bemerkst oder nicht.',
+      'Die Levy beträgt 2 % des zu versteuernden Einkommens, also rund 500 $ bei 25.000 $ Verdienst und rund 1.000 $ bei 50.000 $. Abgerechnet wird sie bei der Veranlagung deiner Erklärung und nicht Woche für Woche vom Lohn, dort die Befreiung zu beantragen holt das Geld also zurück.',
   },
   {
     question: 'Bekommt jeder mit 417 oder 462 Visum die Befreiung?',
     answer:
-      'Die meisten ja, aber nicht alle, und entscheidend ist dein Pass, nicht dein Visum. Kommt deine Staatsangehörigkeit aus einem der elf Länder mit Sozialversicherungsabkommen, bist du in Australien in der Regel anspruchsberechtigt, und damit fällt die Befreiung weg. Deutschland, Österreich und die Schweiz gehören nicht dazu.',
+      'Die meisten ja, aber nicht alle. Entscheidend ist dein Pass, nicht dein Visum: Kommt deine Staatsangehörigkeit aus einem der elf Länder mit Sozialversicherungsabkommen, bist du in Australien in der Regel anspruchsberechtigt, und der Anspruch ist es, der die Befreiung wegnimmt. Deutschland, Österreich und die Schweiz gehören nicht dazu.',
   },
   {
     question: 'Was ist ein Medicare Entitlement Statement und brauchst du eines?',
     answer:
-      'Das Medicare Entitlement Statement ist ein Dokument von Services Australia, das bestätigt, dass du für einen bestimmten Zeitraum keinen Anspruch auf Medicare hattest. Es ist der Nachweis hinter der Befreiung, und das ATO kann es sehen wollen. Eine Befreiung ohne dieses Dokument ist also eine Angabe, die du nicht belegen kannst. Der Antrag läuft getrennt von der Steuererklärung bei einer anderen Behörde und dauert, und genau deshalb lassen viele die Befreiung ganz weg.',
+      'Das Medicare Entitlement Statement ist ein Dokument von Services Australia, das bestätigt, dass du für einen bestimmten Zeitraum keinen Anspruch auf Medicare hattest. Es ist der Nachweis hinter der Befreiung, und das ATO kann es sehen wollen, deshalb erledigen wir es als Teil deiner Erklärung, statt die Befreiung blank zu beantragen.',
   },
   {
     question: 'Kann die Befreiung auch nur für einen Teil des Jahres gelten?',
     answer:
-      'Ja, und für viele Working Holiday Maker ist genau das die richtige Antwort statt einer Befreiung fürs ganze Jahr. Gerechnet wird in Tagen. Wenn du im November angekommen bist oder sich deine Situation mitten im Jahr geändert hat, sind nur die Tage befreit, an denen du keinen Anspruch auf Medicare hattest. Ein volles Jahr zu beantragen, wenn nur ein Teil zutrifft, ist genau der Fehler, der später zu einer Korrektur der Steuererklärung führt.',
+      'Ja, und für viele Working Holiday Maker ist genau das die richtige Antwort statt einer Befreiung fürs ganze Jahr. Gerechnet wird in Tagen, wenn du also im November angekommen bist, sind nur die Tage befreit, an denen du keinen Anspruch auf Medicare hattest. Ein volles Jahr zu beantragen, wenn nur ein Teil zutrifft, ist genau der Fehler, der später zu einer Korrektur der Erklärung führt.',
   },
   {
     question: 'Ändern Reiseversicherung oder private Krankenversicherung etwas daran?',
     answer:
-      'Nein. Reiseversicherung und private Krankenversicherung sind von Medicare getrennt und haben weder auf die Levy noch auf die Befreiung Einfluss. Bei der Levy geht es steuerlich um den Anspruch auf das öffentliche System, nicht darum, ob du versichert bist. Private Krankenhausversicherung spielt nur für eine andere Abgabe eine Rolle, den Medicare Levy Surcharge, der erst bei hohen Einkommen greift und auf einem Working Holiday selten relevant ist.',
+      'Nein. Bei der Levy geht es steuerlich um den Anspruch auf das öffentliche System und nicht darum, ob du versichert bist, deshalb haben Reiseversicherung und private Krankenversicherung darauf keinen Einfluss. Private Krankenhausversicherung spielt nur für eine andere Abgabe eine Rolle, den Medicare Levy Surcharge, der erst bei hohen Einkommen greift und auf einem Working Holiday selten relevant ist.',
   },
   {
     question: 'Was ist, wenn die Levy im Laufe des Jahres schon abgezogen wurde?',
     answer:
-      'Nichts geht verloren. Die Levy wird bei der Veranlagung deiner Steuererklärung berechnet, nicht bei der Lohnzahlung. Was während des Jahres abgezogen wurde, war allgemein einbehaltene Steuer und nicht speziell die Levy. Eine berechtigte Befreiung nimmt die Levy aus der Veranlagung heraus, was deine Rückerstattung erhöht oder eine Nachzahlung senkt. Wurde ein früheres Jahr ohne Befreiung eingereicht, obwohl sie dir zustand, lässt sich diese Erklärung meist korrigieren.',
+      'Nichts geht verloren. Die Levy wird bei der Veranlagung deiner Erklärung berechnet, nicht bei der Lohnzahlung, was während des Jahres abgezogen wurde, war also allgemein einbehaltene Steuer und nicht speziell die Levy. Eine berechtigte Befreiung nimmt sie aus der Veranlagung heraus. Wurde ein früheres Jahr ohne Befreiung eingereicht, obwohl sie dir zustand, lässt sich diese Erklärung meist korrigieren.',
   },
 ]
 
@@ -299,19 +294,17 @@ export default function GermanMedicarePage() {
               Warum steht die Levy überhaupt auf deiner Veranlagung?
             </h2>
             <p style={BODY}>
-              Weil sie der Standard ist. Die Medicare Levy wird auf dein zu versteuerndes Einkommen
-              angesetzt, wenn das ATO deine Erklärung veranlagt, und sie bleibt drin, solange keine
-              Befreiung beantragt wird. Nichts im Ablauf fragt, ob du überhaupt Anspruch auf Medicare
-              hattest, und an der entscheidenden Stelle weist dich nichts darauf hin. Das häufigste Ergebnis
-              ist deshalb, dass ein Working Holiday Maker 2 % eines Jahreseinkommens in ein System zahlt,
-              das er nie nutzen konnte.
+              Weil sie der Standard ist. Die Levy wird auf dein zu versteuerndes Einkommen angesetzt, wenn
+              das ATO deine Erklärung veranlagt, und sie bleibt drin, solange keine Befreiung beantragt
+              wird. Nichts im Ablauf fragt, ob du überhaupt Anspruch auf Medicare hattest, das häufigste
+              Ergebnis sind also 2 % eines Jahreseinkommens, gezahlt in ein System, das du nie nutzen
+              konntest.
             </p>
             <p style={BODY}>
-              Das zweithäufigste Ergebnis ist auf eine stille Art schlimmer: die Befreiung wird angekreuzt,
-              ohne den Nachweis dahinter. Belegt wird sie durch ein Medicare Entitlement Statement von
-              Services Australia, ein eigener Antrag bei einer anderen Behörde, der Zeit braucht. Ohne ihn
-              bleibt eine Erklärung stehen, die du auf Nachfrage des ATO nicht belegen kannst, und das
-              kommt typischerweise ein Jahr später hoch, wenn du längst nicht mehr im Land bist.
+              Der stillere Fehler ist der umgekehrte: die Befreiung angekreuzt, ohne den Nachweis dahinter.
+              Dieser Nachweis ist ein Medicare Entitlement Statement von Services Australia, einer anderen
+              Behörde als dem ATO, und eine Angabe ohne ihn ist eine, die du nicht belegen kannst, wenn ein
+              Jahr später jemand nachfragt und du längst nicht mehr im Land bist.
             </p>
           </div>
         </div>
@@ -329,7 +322,7 @@ export default function GermanMedicarePage() {
               Holiday Visum hängt das an deinem Pass. Australien hat mit elf Ländern ein
               Sozialversicherungsabkommen. Wer die Staatsangehörigkeit eines dieser Länder hat, ist hier in
               der Regel anspruchsberechtigt, und das schließt die Befreiung aus, selbst wenn du dich nie
-              angemeldet und nie etwas genutzt hast. Maßgeblich ist der Anspruch, nicht die Nutzung. Alle
+              angemeldet und nie etwas genutzt hast: Maßgeblich ist der Anspruch, nicht die Nutzung. Alle
               anderen, Deutschland eingeschlossen, haben normalerweise keinen Anspruch und können die
               Befreiung für die entsprechenden Tage beantragen.
             </p>
@@ -374,14 +367,7 @@ export default function GermanMedicarePage() {
             </h2>
             <p style={BODY}>
               Wir klären, ob und für welchen Teil des Jahres du Anspruch auf Medicare hattest. Das ist eine
-              Frage nach Staatsangehörigkeit, Visum und Daten, kein Kästchen zum Anklicken. Wo kein Anspruch
-              bestand, beantragen wir das Medicare Entitlement Statement für dich und setzen die Befreiung
-              in deiner Steuererklärung für die richtige Zahl von Tagen an, damit die Zahl auch dann hält,
-              wenn jemand hinschaut.
-            </p>
-            <p style={BODY}>
-              Das ist Teil der Steuererklärung, kein Extraauftrag, ausgearbeitet zusammen mit deinem
-              Residentenstatus und dem, was du in deinem Job absetzen kannst.
+              Frage nach Staatsangehörigkeit, Visum und Daten, kein Kästchen zum Anklicken.
             </p>
 
             <div className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1.5px solid #C8EAE0', margin: '20px 0' }}>
@@ -444,7 +430,7 @@ export default function GermanMedicarePage() {
       {/* ── FAQ ────────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[760px] mx-auto">
+          <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '18px' }}>
               Häufige Fragen zur Levy und zur Befreiung
             </h2>
@@ -456,6 +442,7 @@ export default function GermanMedicarePage() {
       {/* ── RATGEBER ───────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[900px] mx-auto">
           <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
             Mehr zu Medicare und Krankenversicherung
           </h2>
@@ -475,6 +462,7 @@ export default function GermanMedicarePage() {
               </Link>
             ))}
           </div>
+        </div>
         </div>
       </section>
 

@@ -3,7 +3,7 @@ import { SITE_URL } from '@/lib/constants'
 import { FormClient } from './FormClient'
 
 export const metadata: Metadata = {
-  title: 'Submit Your TFN Application | Working Holiday Tax',
+  title: 'Submit Your TFN Application',
   description: 'Submit your details to apply for a Tax File Number. We process your application correctly the first time - usually within 28 days.',
   keywords: ['TFN application form', 'apply TFN online', 'TFN form working holiday', 'submit TFN application'],
   alternates: {

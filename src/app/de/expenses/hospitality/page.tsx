@@ -68,8 +68,8 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Gastronomie, Bar und 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Reicht die Rückerstattung nicht bis an unser Honorar, bekommst du die Differenz zurück.",
-  "guaranteeBody": "Vier Betriebe, vier Income Statements und Super in vier Fonds ist hier das übliche Gastro-Jahr, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steuerberater geprüft und freigegeben, bevor es zum ATO geht.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.",
+  "guaranteeBody": "Vier Betriebe, vier Income Statements und Super in vier Fonds ist hier das übliche Gastro-Jahr, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steuerberater geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Bar-, Cafe- und Küchenkräfte absetzen?",
     "paras": [
       "Absetzbar sind rutschfeste Schutzschuhe, berufsspezifische Kleidung wie Kochjacke und Karohose, das Waschen einer Pflichtuniform mit Arbeitgeberlogo, die Verlängerung eines RSA- oder Food-Safety-Supervisor-Zertifikats und selbst gekauftes Küchenwerkzeug. Alles andere im Schrank ist normale Kleidung.",
-      "Die Liste ist kurz, weil dir die Gastronomie sehr wenig gibt, das nur zu diesem Job gehört. Du bist drinnen, dein Arbeitgeber stellt die Ausrüstung, und die Kleidung, die ein Betrieb verlangt, könnte meist jeder überall tragen. Der Wert einer Gastro-Steuererklärung steckt öfter auf der Einnahmenseite, im Einbehalt über mehrere Arbeitgeber, als in den Abzügen."
+      "Die Gastronomie gibt dir sehr wenig, das nur zu diesem Job gehört. Du bist drinnen, dein Arbeitgeber stellt die Ausrüstung, und die Kleidung, die ein Betrieb verlangt, könnte meist jeder überall tragen. Der Wert einer Gastro-Steuererklärung steckt öfter auf der Einnahmenseite, im Einbehalt über mehrere Arbeitgeber, als in den Abzügen."
     ]
   },
   {
@@ -156,13 +156,13 @@ const SECTIONS: Section[] = [
     "h2": "Was muss hinter einem Abzug in der Gastronomie stehen?",
     "paras": [
       "Dieselben drei Tests wie überall: das Geld war deins, niemand hat es dir erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Im Betrieb heißt das der Beleg für die Schuhe und die Messerrolle, die schriftliche Uniformregel und ein Wäschetagebuch, sobald sich die Waschgänge summieren.",
-      "Jeder Nachweis mit Betrag, Datum, Anbieter und Gegenstand tut es, ob Beleg, Rechnung, Kontoauszug oder Foto auf dem Handy, und er muss fünf Jahre überstehen. Ein Jahr mit Abzügen von zusammen 300 Dollar oder weniger braucht gar keinen schriftlichen Nachweis, die Zahl musst du trotzdem begründen können. Andere 300 Dollar als die, die entscheiden, ob ein Messerset sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Jeder Nachweis mit Betrag, Datum, Anbieter und Gegenstand tut es, ob Beleg, Rechnung, Kontoauszug oder Foto auf dem Handy, und er muss fünf Jahre überstehen. Ein Jahr mit Abzügen von zusammen 300 Dollar oder weniger braucht gar keinen schriftlichen Nachweis. Das sind nicht die 300 Dollar, die entscheiden, ob ein Messerset sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
     "kind": "traps",
     "h2": "Was macht Gastro-Personal falsch?",
-    "intro": "Die Kleidungsregel erwischt alle, und sie erwischt sie, weil sie sich unfair anfühlt. Die übersehenen Abzüge sind leiser und drehen sich meist um die Bezahlung statt um Ausgaben.",
+    "intro": "Die Kleidungsregel erwischt alle, weil sie sich unfair anfühlt. Die übersehenen Abzüge sind leiser und drehen sich meist um die Bezahlung statt um Ausgaben.",
     "wrong": [
       {
         "t": "Das komplett schwarze Outfit, das der Betrieb verlangt",
@@ -170,7 +170,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Deine erste RSA",
-        "d": "Das Zertifikat, das du vor dem Job bezahlt hast, hat dich einstellbar gemacht, und das ist eine private Kost. Sobald du arbeitest und es zum Weiterarbeiten verlängert werden muss, ist die Verlängerung absetzbar. Dasselbe Zertifikat, andere Antwort, je nachdem auf welcher Seite deiner ersten Schicht es liegt."
+        "d": "Das Zertifikat, das du vor dem Job bezahlt hast, hat dich einstellbar gemacht, und das ist eine private Kost. Sobald du arbeitest und es zum Weiterarbeiten verlängert werden muss, ist die Verlängerung absetzbar."
       },
       {
         "t": "Friseur, Pflege und Make-up für den Standard im Service",
@@ -213,7 +213,7 @@ const SECTIONS: Section[] = [
     "h2": "Was muss beurteilt statt nachgeschlagen werden?",
     "paras": [
       "Zuerst die Kleidungsfrage. Ob ein Teil eine Pflichtuniform ist, hängt daran, wie unverwechselbar es ist und ob der Arbeitgeber es verlangt. Ob Schuhe Schutzschuhe sind, hängt an der Gefahr in deinem Betrieb. Eine schriftliche Uniformregel und ein Foto des Teils klären das meistens.",
-      "Auf der Einnahmenseite zahlt sich ein fachlicher Blick aus. Working Holiday Maker bekommen keinen Steuerfreibetrag, also lautet die Antwort auf diese Frage in jeder Tax File Number Declaration, bei jedem Betrieb, Nein. Das kippt, wenn die Addy-Entscheidung für dich gilt, was bei britischen, deutschen und japanischen Pässen möglich ist, sofern du steuerlich in Australien ansässig warst. Drei Casual-Jobs, eine Ankunft mitten im Jahr und eine feste Adresse machen daraus eine offene Frage."
+      "Auf der Einnahmenseite zahlt sich ein fachlicher Blick aus. Working Holiday Maker bekommen keinen Steuerfreibetrag, ein Betrieb, der so einbehält, als hättest du einen, behält also zu wenig ein und hinterlässt eine Nachzahlung. Das kippt, wenn die Addy-Entscheidung für dich gilt, was bei britischen, deutschen und japanischen Pässen möglich ist, sofern du steuerlich in Australien ansässig warst. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
 ]
@@ -232,8 +232,8 @@ const FAQS = [
     "answer": "Ja, alles davon. Trinkgeld und Servicezuschläge, die über die Lohnabrechnung ausgezahlt werden, auch aus einem Pool oder Tronc, sind Teil deines Lohns, schon versteuert und schon im Income Statement. Bargeld, das dir direkt gegeben wird, ist genauso steuerpflichtig, wird aber von niemandem erfasst. Du führst eine einfache laufende Notiz und gibst die Summe selbst an."
   },
   {
-    "question": "Ich arbeite in drei Betrieben. Was schreibe ich in jede TFN Declaration?",
-    "answer": "Jeder Arbeitgeber braucht eine eigene Tax File Number Declaration, weil deine TFN bei einem neuen Job nicht automatisch mitkommt. Auf jeder wählst du Working Holiday Maker als Status und beantwortest die Frage nach dem Steuerfreibetrag mit Nein, bei jedem Betrieb, auch bei dem, der am besten zahlt. Working Holiday Maker bekommen von keinem Arbeitgeber einen Steuerfreibetrag, und ein Ja irgendwo führt zu zu wenig Einbehalt und später zu einer Nachzahlung."
+    "question": "Ich arbeite in drei Betrieben. Ändert das etwas an meiner Steuer?",
+    "answer": "Jeder Betrieb ist ein eigener Arbeitgeber mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement, und jeder davon gehört in dieselbe Erklärung. Working Holiday Maker bekommen von keinem Arbeitgeber einen Steuerfreibetrag, ein Betrieb, der so einbehält, als hättest du einen, hinterlässt also eine Nachzahlung statt einer Rückerstattung. Alle Betriebe zum richtigen Satz zusammenzuführen ist der Teil, den wir machen."
   },
   {
     "question": "Bekomme ich Superannuation in einem Casual-Job?",

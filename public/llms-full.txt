@@ -16,7 +16,7 @@ Prepared by our team, reviewed and signed off by a registered tax agent before i
 
 ## Guarantee
 
-If you do not receive a tax refund, we refund our fee.
+If your refund is less than our fee, we refund the difference, so you are never out of pocket. Where no refund is payable to you at all, the fee is refunded in full.
 
 # ============================================================
 # English (en)
@@ -31,11 +31,11 @@ Category: TFN
 Published: 1 July 2024
 Summary: A Tax File Number is your permanent identity with the ATO. Without one on file your employer must withhold 45% of your pay instead of 15%.
 
-### How to Apply for a TFN, Free in 10 Minutes
+### How to Apply for a TFN, and What Goes Wrong
 URL: https://workingholidaytax.com.au/blog/how-to-apply-for-a-tfn
 Category: TFN
 Published: 7 July 2024
-Summary: Apply for your Tax File Number free on the ATO website once you are in Australia. The exact steps, documents needed, and mistakes that delay the letter.
+Summary: A Tax File Number costs nothing. What an application depends on, why the address and the passport match decide the timing, the 28 day window, and the 45% rate.
 
 ### How Long Does a TFN Take? 2 to 4 Weeks
 URL: https://workingholidaytax.com.au/blog/how-long-does-it-take-to-get-a-tfn
@@ -142,11 +142,11 @@ Category: ABN
 Published: 16 September 2024
 Summary: An Australian Business Number makes you a contractor, not an employee: no tax withheld, no super paid for you. When that is legitimate and when it is not.
 
-### How to Register an ABN, Free on the ABR
+### How to Register an ABN, and When Not To
 URL: https://workingholidaytax.com.au/blog/how-to-register-for-an-abn
 Category: ABN
 Published: 22 September 2024
-Summary: Registering an ABN on the ABR website is free, and paid ABN sites are middlemen. The steps, the questions that confuse people, and when not to register.
+Summary: Registration itself is free. Who is entitled to an ABN, why sham contracting is the real risk, the $75,000 GST threshold, the 47% withholding rule, and when to cancel.
 
 ### Farm Work on an ABN: Legit or Wage Theft?
 URL: https://workingholidaytax.com.au/blog/farm-work-and-abns
@@ -170,7 +170,7 @@ Summary: Working holiday makers can hold both. The TFN covers employment, the AB
 URL: https://workingholidaytax.com.au/blog/how-to-cancel-your-abn
 Category: ABN
 Published: 9 October 2024
-Summary: Cancel your ABN free via the ABR before you leave - or risk ATO letters and lodgment demands later. The steps, and what to file for your final year.
+Summary: An ABN left open after you fly home keeps generating ATO lodgement expectations. When cancellation should take effect, what to settle first, and what still has to be lodged.
 
 ### GST With an ABN: Only Past $75,000
 URL: https://workingholidaytax.com.au/blog/gst-and-abn-for-working-holiday-makers
@@ -383,7 +383,7 @@ Summary: Any work item costing $300 or less is deductible in full in the year yo
 URL: https://workingholidaytax.com.au/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary: The threshold for immediately deducting work items jumps from $300 to $1,000 - covering laptops, tools and gear. Who benefits and how to claim it.
+Summary: The threshold for immediately deducting work items jumps from $300 to $1,000, covering laptops, tools and gear. Who benefits, and when actual costs are worth more.
 
 ### Bike, Scooter or Car: What Riders Can Claim
 URL: https://workingholidaytax.com.au/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -407,7 +407,7 @@ Summary: Unpaid tax grows through the General Interest Charge plus penalties. Ho
 URL: https://workingholidaytax.com.au/blog/tax-back-australia-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: How working holiday makers claim tax back in Australia: what you can claim, average refund sizes, deadlines, and how to lodge - including from overseas.
+Summary: How working holiday makers claim tax back in Australia: what decides the size of a refund, what can be claimed, the deadlines, and how it works from overseas.
 
 ### How Much Tax Refund Do Backpackers Get?
 URL: https://workingholidaytax.com.au/blog/average-tax-refund-working-holiday
@@ -425,7 +425,7 @@ Summary: The complete working holiday maker tax guide: the 15% rate on the first
 URL: https://workingholidaytax.com.au/blog/diy-tax-return-vs-tax-agent-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: Lodging yourself through myTax is free. A registered agent catches the residency, exemption and deduction items backpackers miss. When each makes sense.
+Summary: Lodging your own return is free. What actually makes a working holiday year hard to get right, the five places refunds are lost, and what a review involves.
 
 ## Category: Super (14)
 Index: https://workingholidaytax.com.au/blog/category/super
@@ -755,7 +755,7 @@ Summary: Delivery riding is contracting, so you need an ABN and nothing is withh
 URL: https://workingholidaytax.com.au/blog/uber-driver-working-holiday-australia
 Category: Work Rights
 Published: 15 May 2026
-Summary: Rideshare requires an ABN and GST registration regardless of income - unlike delivery. Setup steps, quarterly BAS, car deductions and visa rules.
+Summary: Rideshare requires an ABN and GST registration regardless of income, unlike delivery. What you need to drive, quarterly BAS, car deductions and visa rules.
 
 ### Ski Season Jobs in VIC and NSW
 URL: https://workingholidaytax.com.au/blog/ski-resort-jobs-working-holiday-australia
@@ -899,11 +899,11 @@ Category: TFN
 Published: 1 July 2024
 Summary: Eine Tax File Number ist das Erste, was du zum Arbeiten in Australien brauchst. Ohne TFN behält dein Arbeitgeber fast die Hälfte deines Lohns ein.
 
-### TFN beantragen: Ablauf, Dauer und Kosten
+### TFN beantragen: was dabei schiefgeht
 URL: https://workingholidaytax.com.au/de/blog/how-to-apply-for-a-tfn
 Category: TFN
 Published: 7 July 2024
-Summary: Der TFN-Antrag ist kostenlos und dauert rund 10 Minuten. Du brauchst Reisepass, Visum und eine australische Postadresse.
+Summary: Eine Tax File Number kostet nichts. Woran ein Antrag hängt, warum Adresse und Passdaten über das Timing entscheiden, das 28-Tage-Fenster und der Satz von 45 %.
 
 ### Wie lange dauert die TFN? 10 bis 28 Tage
 URL: https://workingholidaytax.com.au/de/blog/how-long-does-it-take-to-get-a-tfn
@@ -951,7 +951,7 @@ Summary: Die TFN gilt lebenslang, beim zweiten oder dritten Visum brauchst du al
 URL: https://workingholidaytax.com.au/de/blog/how-to-find-lost-tfn
 Category: TFN
 Published: 29 July 2026
-Summary: Deine TFN steht in myGov, auf alten Payslips und im Income Statement. Findest du sie nirgends, gibt das ATO sie nach Identitätsprüfung telefonisch heraus.
+Summary: Eine TFN ist dauerhaft, eine verlorene ist also eine Wiederbeschaffung und kein neuer Antrag. Sie steht längst auf Payslips, Fondsauszügen und alten Bescheiden.
 
 ### ATO-Adresse ändern: drei Wege, fünf Minuten
 URL: https://workingholidaytax.com.au/de/blog/how-to-update-address-with-ato
@@ -1010,11 +1010,11 @@ Category: ABN
 Published: 16 September 2024
 Summary: Eine ABN brauchst du nur, wenn du auf Rechnung arbeitest, also als Contractor oder Selbstständiger. In normaler Anstellung reicht deine TFN völlig aus.
 
-### ABN registrieren: Ablauf und Bedingungen
+### ABN registrieren, und wann besser nicht
 URL: https://workingholidaytax.com.au/de/blog/how-to-register-for-an-abn
 Category: ABN
 Published: 22 September 2024
-Summary: Die ABN-Registrierung beim ABR ist kostenlos und dauert nur 10-15 Minuten. Komplette Schritt-für-Schritt-Anleitung für Working Holiday Maker.
+Summary: Die Registrierung selbst ist kostenlos. Wer zu einer ABN berechtigt ist, warum Sham Contracting das eigentliche Risiko ist, die GST-Grenze von 75.000 $, die 47-%-Einbehaltsregel und wann du sie beendest.
 
 ### Farmarbeit mit ABN: warum das riskant ist
 URL: https://workingholidaytax.com.au/de/blog/farm-work-and-abns
@@ -1034,11 +1034,11 @@ Category: ABN
 Published: 20 July 2026
 Summary: Working Holiday Maker können TFN und ABN parallel nutzen. Wann welche Nummer gilt, wie sich die Steuer unterscheidet und welche Fallen es gibt.
 
-### ABN kündigen vor der Abreise: die Schritte
+### ABN kündigen, bevor du zurückfliegst
 URL: https://workingholidaytax.com.au/de/blog/how-to-cancel-your-abn
 Category: ABN
 Published: 9 October 2024
-Summary: Wenn du Australien permanent verlässt, solltest du deine ABN kündigen, um spätere Steuerprobleme zu vermeiden. Vollständige Anleitung in drei Schritten.
+Summary: Eine nach dem Rückflug offen gelassene ABN erzeugt weiter Abgabeerwartungen des ATO. Wann die Kündigung wirken sollte, was vorher zu klären ist und was trotzdem noch eingereicht werden muss.
 
 ### GST und ABN: ab wann musst du dich melden?
 URL: https://workingholidaytax.com.au/de/blog/gst-and-abn-for-working-holiday-makers
@@ -1113,7 +1113,7 @@ Summary: Du brauchst TFN, Income Statements aller Arbeitgeber und eine Bankverbi
 URL: https://workingholidaytax.com.au/de/blog/what-is-payg-payment-summary
 Category: Tax Return
 Published: 29 July 2026
-Summary: Das PAYG Payment Summary heißt heute Income Statement und zeigt Bruttolohn, einbehaltene Steuer und Super. Ab Mitte Juli steht es in myGov.
+Summary: Das PAYG Payment Summary heißt heute Income Statement und liegt in den ATO-Systemen statt beim Arbeitgeber. Warum die Finalisierung entscheidet, wann eingereicht wird.
 
 ### Was kannst du als Backpacker absetzen?
 URL: https://workingholidaytax.com.au/de/blog/tax-deductions-working-holiday-makers
@@ -1197,7 +1197,7 @@ Summary: Gegen einen Bescheid kannst du innerhalb der Frist Einspruch einlegen. 
 URL: https://workingholidaytax.com.au/de/blog/amending-tax-return-australia
 Category: Tax Return
 Published: 22 September 2025
-Summary: Eine eingereichte Erklärung kannst du beim ATO ändern, in der Regel innerhalb von zwei Jahren. Die Korrektur läuft über myGov oder deinen Steuerberater.
+Summary: Eine eingereichte Erklärung lässt sich innerhalb von zwei Jahren nach dem Bescheid ändern, zu deinen Gunsten wie zu deinen Ungunsten. Für das ATO läuft dieselbe Zweijahresuhr.
 
 ### Steuerschuld beim ATO: Zahlplan vereinbaren
 URL: https://workingholidaytax.com.au/de/blog/ato-payment-plan-tax-debt-australia
@@ -1251,7 +1251,7 @@ Summary: Arbeitswerkzeuge unter 300 $ kannst du als Working Holiday Maker komple
 URL: https://workingholidaytax.com.au/de/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary: Ab 1. Juli 2026 können Working Holiday Maker eine Sofortabschreibung von 1.000 $ für arbeitsbezogene Ausgaben ohne Belege geltend machen.
+Summary: Ab 1. Juli 2026 können Working Holiday Maker eine Sofortabschreibung von 1.000 $ für arbeitsbezogene Ausgaben ohne Belege geltend machen. Wer profitiert, und wann die tatsächlichen Kosten mehr wert sind.
 
 ### Fahrrad, Roller oder Van: Kosten absetzen
 URL: https://workingholidaytax.com.au/de/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -1293,7 +1293,7 @@ Summary: Der komplette Steuerguide für Working Holiday Maker: 15 % auf die erst
 URL: https://workingholidaytax.com.au/de/blog/diy-tax-return-vs-tax-agent-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: Die Abgabe über myTax ist kostenlos; ein Steuerberater findet Wohnsitz, Befreiungen und Abzüge, die Backpacker übersehen.
+Summary: Die eigene Erklärung einzureichen ist kostenlos. Was ein Working-Holiday-Jahr schwer richtig zu erwischen macht, die fünf Stellen, an denen Erstattungen verloren gehen, und was eine Prüfung umfasst.
 
 ## Category: Super (14)
 Index: https://workingholidaytax.com.au/de/blog/category/super
@@ -1302,7 +1302,7 @@ Index: https://workingholidaytax.com.au/de/blog/category/super
 URL: https://workingholidaytax.com.au/de/blog/how-much-super-should-employer-pay
 Category: Super
 Published: 2 December 2024
-Summary: Dein Arbeitgeber zahlt 12 % deines Bruttolohns zusätzlich in einen Superfonds. Auf dem Payslip und in myGov prüfst du, ob der Betrag wirklich ankommt.
+Summary: Dein Arbeitgeber zahlt 12 % deines gewöhnlichen Verdienstes zusätzlich in einen Superfonds, mindestens quartalsweise. Woran du siehst, ob der Betrag angekommen ist, und was gilt, wenn nicht.
 
 ### Wie lange dauert deine DASP-Auszahlung?
 URL: https://workingholidaytax.com.au/de/blog/how-long-does-dasp-take
@@ -1326,7 +1326,7 @@ Summary: Nach sechs Monaten geht nicht beantragte Super ans ATO über. Verloren 
 URL: https://workingholidaytax.com.au/de/blog/how-to-find-lost-superannuation
 Category: Super
 Published: 29 December 2024
-Summary: Vergessene Super von einem alten Job? Über myGov und das ATO-Superregister findest du jeden Cent. So holst du dir verlorene Beiträge zurück.
+Summary: Verlorene Superannuation vor der Abreise finden, über jeden Fonds, der an deiner TFN hängt. Mehrere Konten, nicht beanspruchte Super und der DASP-Antrag.
 
 ### Superfonds wählen: worauf du achten musst
 URL: https://workingholidaytax.com.au/de/blog/how-to-choose-super-fund
@@ -1340,17 +1340,17 @@ Category: Super
 Published: 9 June 2025
 Summary: Alle Arbeitnehmer in Australien haben Anspruch auf Super, egal ob Casual, Teilzeit oder Vollzeit. Aktuelle Sätze, Grenzen und was dich erwartet.
 
-### Superguthaben prüfen: myGov, ATO und Fonds
+### Superguthaben prüfen: wo es wirklich liegt
 URL: https://workingholidaytax.com.au/de/blog/how-to-check-super-balance-working-holiday
 Category: Super
 Published: 16 October 2025
-Summary: Super-Guthaben prüfen mit myGov, ATO-Online-Services oder direkt beim Fonds. So findest du heraus, wie viel dir Arbeitgeber wirklich eingezahlt haben.
+Summary: Deine Super liegt bei einem Fonds und nicht beim Arbeitgeber. Beiträge werden quartalsweise gezahlt, ein Guthaben kann also Monate nach der Arbeit noch leer aussehen.
 
 ### DASP-Antrag: welche Dokumente du brauchst
 URL: https://workingholidaytax.com.au/de/blog/dasp-documents-required
 Category: Super
 Published: 28 November 2025
-Summary: Für den DASP-Antrag brauchst du Reisepass, TFN, Visumdetails und die Daten deines Superfonds. Die komplette Liste, Stück für Stück.
+Summary: Identität, Nachweis über das beendete Visum und Nachweis der Ausreise, für jeden Fonds getrennt. An beglaubigten Kopien bleiben die meisten Anträge aus dem Ausland hängen.
 
 ### DASP-Steuer: warum die 65 % fällig werden
 URL: https://workingholidaytax.com.au/de/blog/dasp-tax-rate-65-percent-explained
@@ -1362,19 +1362,19 @@ Summary: Für Working Holiday Maker wird der steuerpflichtige Teil des DASP mit 
 URL: https://workingholidaytax.com.au/de/blog/super-multiple-funds-consolidation
 Category: Super
 Published: 21 December 2025
-Summary: Mehrere Jobs bedeuten oft mehrere Superkonten, jedes mit eigenen Gebühren. Über myGov findest du alle und führst sie vor dem DASP-Antrag zusammen.
+Summary: Mehrere Fonds bedeuten mehrere DASP-Anträge, oder vorher eine Zusammenführung. Was schneller ist, was sich an Gebühren ändert und was mit der Versicherung passiert.
 
 ### DASP abgelehnt? Die Gründe und die Lösung
 URL: https://workingholidaytax.com.au/de/blog/dasp-rejected-what-to-do
 Category: Super
 Published: 22 December 2025
-Summary: DASP-Antrag abgelehnt? Häufigste Gründe: Visastatus, Identitätsprobleme, fehlende Abreisedaten. So reichst du neu ein.
+Summary: Ein abgelehnter DASP-Antrag ist kein verlorenes Geld. Fast immer steckt ein noch nicht aktualisierter Visumsdatensatz, eine Namensabweichung oder ein Fonds ohne dein Guthaben dahinter.
 
 ### Arbeitgeber zahlt keine Super? Was tun
 URL: https://workingholidaytax.com.au/de/blog/super-employer-not-paying-what-to-do
 Category: Super
 Published: 29 December 2025
-Summary: Super muss mindestens vierteljährlich mit 12 % eingezahlt werden. Fehlt sie, prüfst du myGov, sprichst den Arbeitgeber an und meldest es dem ATO.
+Summary: Super muss mindestens vierteljährlich mit 12 % eingezahlt werden. Was gilt, wenn sie fehlt, wie die Meldung beim ATO läuft und welche Fristen realistisch sind.
 
 ### DASP beantragen oder Super liegen lassen?
 URL: https://workingholidaytax.com.au/de/blog/dasp-vs-leaving-super-in-australia-pros-cons
@@ -1767,11 +1767,11 @@ Category: TFN
 Published: 1 July 2024
 Summary: タックスファイルナンバー（TFN）は、オーストラリアで働き始める前に最初に必要な番号です。TFNがないと給料の約半分が源泉徴収されてしまいます。
 
-### ワーキングホリデーのTFN申請方法【ステップ別解説】
+### ワーホリのTFN申請と、うまくいかない理由
 URL: https://workingholidaytax.com.au/ja/blog/how-to-apply-for-a-tfn
 Category: TFN
 Published: 7 July 2024
-Summary: オーストラリアでのTFN申請は無料でシンプル。ワーキングホリデービザ保持者が知っておくべき申請手順をわかりやすく解説します。
+Summary: TFNの取得自体に費用はかかりません。申請の可否が何で決まるのか、住所とパスポートの一致がなぜ期間を左右するのか、28日の期間と45%の税率を解説します。
 
 ### TFNはどのくらいで届く？通常10〜28日（2026年版）
 URL: https://workingholidaytax.com.au/ja/blog/how-long-does-it-take-to-get-a-tfn
@@ -1819,13 +1819,13 @@ Summary: TFNは一生有効。2回目・3回目のビザでも再申請は不要
 URL: https://workingholidaytax.com.au/ja/blog/how-to-find-lost-tfn
 Category: TFN
 Published: 29 July 2026
-Summary: TFNを紛失してもATOへ連絡する前に確認できる方法があります。給与明細、myGov、銀行記録など、見つかる場所をまとめました。
+Summary: TFNを紛失してもATOへ連絡する前に確認できる方法があります。給与明細、スーパーファンドの通知、査定通知など、見つかる場所をまとめました。
 
 ### ATOの住所変更を5分で完了する方法（2026年版）
 URL: https://workingholidaytax.com.au/ja/blog/how-to-update-address-with-ato
 Category: TFN
 Published: 20 July 2026
-Summary: myGov・電話・税理士経由の3つの方法。TFNレターや還付金が行方不明になる前に住所を更新しましょう。
+Summary: オンライン・電話・税理士経由の3つの方法。TFNレターや還付金が行方不明になる前に住所を更新しましょう。
 
 ### TFN参照番号（リファレンスナンバー）とは？届く前に働くには
 URL: https://workingholidaytax.com.au/ja/blog/tfn-reference-number-before-tfn-arrives
@@ -1878,11 +1878,11 @@ Category: ABN
 Published: 16 September 2024
 Summary: ABNはオーストラリアで請負業者として働く場合に必要な事業者番号です。ワーキングホリデーで必要かどうかの判断ポイントを解説します。
 
-### ABN登録方法：オーストラリアで個人事業主になるステップ
+### ABN登録：資格があるのは誰か、そして登録すべきでないとき
 URL: https://workingholidaytax.com.au/ja/blog/how-to-register-for-an-abn
 Category: ABN
 Published: 22 September 2024
-Summary: ABNの登録は無料、オンラインで15分ほど。ワーキングホリデーバックパッカー向けに、申請手順をわかりやすく解説します。
+Summary: ABN登録自体に費用はかかりません。取得資格があるのは誰か、偽装請負という本当のリスク、75,000ドルのGSTしきい値、47%の源泉徴収ルール、そしてキャンセルの時期を解説します。
 
 ### ファーム仕事でABNが必要？知っておくべきこと
 URL: https://workingholidaytax.com.au/ja/blog/farm-work-and-abns
@@ -1906,7 +1906,7 @@ Summary: ワーホリでもTFNとABNの併用は可能。それぞれの使い�
 URL: https://workingholidaytax.com.au/ja/blog/how-to-cancel-your-abn
 Category: ABN
 Published: 9 October 2024
-Summary: オーストラリアを離れる際、ABNを使わなくなるなら必ずキャンセルしましょう。簡単なオンライン手続きを解説します。
+Summary: 帰国後もABNを開いたままにすると、ATOからの申告の督促が届き続けます。いつ付けでキャンセルすべきか、先に片づけておくこと、それでも提出が必要なものを解説します。
 
 ### GST（消費税）登録は必要？ABN保持者の判断基準
 URL: https://workingholidaytax.com.au/ja/blog/gst-and-abn-for-working-holiday-makers
@@ -1999,7 +1999,7 @@ Summary: ワーホリでオーストラリア勤務が数週間でも、タッ�
 URL: https://workingholidaytax.com.au/ja/blog/how-to-lodge-tax-return-from-overseas
 Category: Tax Return
 Published: 12 November 2024
-Summary: 日本に帰国後でも申請可能、過去数年分の還付も請求できます。myGovの問題、税理士経由の申請、海外口座への受け取り方。
+Summary: 日本に帰国後でも申請可能で、未提出の過去年度もさかのぼれます。本人確認の壁、税理士経由の申請、還付金の受け取り方を解説します。
 
 ### タックスリターン代行はワーホリの味方！税理士の選び方
 URL: https://workingholidaytax.com.au/ja/blog/what-is-a-tax-agent
@@ -2029,7 +2029,7 @@ Summary: 現金で給料を受け取っても税金の義務はなくなりま�
 URL: https://workingholidaytax.com.au/ja/blog/tax-residency-working-holiday-makers
 Category: Tax Return
 Published: 24 May 2025
-Summary: 税務上の居住区分はビザでも日数でも決まらない総合判断で、1年全体の税額を変え得ます。よくある誤解と、提出前に確認すべき理由を解説します。
+Summary: 税務上の居住区分はビザでは決まらず、ご本人の事情によって決まります。1年全体の税額を変え得る判断で、よくある誤解と、提出前に確認すべき理由を解説します。
 
 ### タックスリファンド（還付金）とは？もらえるか確認する方法
 URL: https://workingholidaytax.com.au/ja/blog/what-is-a-tax-refund-australia
@@ -2119,7 +2119,7 @@ Summary: $300未満の作業用工具や備品は、購入年度に全額即時�
 URL: https://workingholidaytax.com.au/ja/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary: 2026年7月1日から、ワーホリも$1,000の業務経費を即時控除できるようになります。新ルールの内容と適用方法を解説します。
+Summary: 2026年7月1日から、業務用品の即時控除の基準が$300から$1,000に上がります。誰に有利で、実費のほうが大きくなるのはどんなときかを解説します。
 
 ### 自転車・バイクの経費控除：車以外の移動手段も対象
 URL: https://workingholidaytax.com.au/ja/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -2161,7 +2161,7 @@ Summary: ワーホリ税制のすべて：45,000ドルまで15%、それ以上�
 URL: https://workingholidaytax.com.au/ja/blog/diy-tax-return-vs-tax-agent-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: myTaxでの自己申告は無料。税理士は有料だが居住性・免除・控除の見落としを防ぐ。どちらが自分に合うか判断基準を解説。
+Summary: 自分で提出すること自体は無料です。ワーホリの1年が正しく処理しにくい理由、還付金が失われる5つの場所、そして1年を確認する作業の中身を解説します。
 
 ## Category: Super (14)
 Index: https://workingholidaytax.com.au/ja/blog/category/super
@@ -2190,7 +2190,7 @@ Category: Super
 Published: 22 December 2024
 Summary: 申請しないスーパーは消滅せず、ATOへ移管されます。何年経っても返金申請できる仕組みを詳しく解説します。
 
-### なくしたスーパーを探す方法：ATO・myGovで簡単検索
+### なくしたスーパーを探す方法：帰国前に全口座を把握する
 URL: https://workingholidaytax.com.au/ja/blog/how-to-find-lost-superannuation
 Category: Super
 Published: 29 December 2024
@@ -2212,7 +2212,7 @@ Summary: はい、カジュアル・パートタイマーも雇用形態にか�
 URL: https://workingholidaytax.com.au/ja/blog/how-to-check-super-balance-working-holiday
 Category: Super
 Published: 16 October 2025
-Summary: いくらスーパーが積み立てられているか把握しておきましょう。myGov、ファンドのアプリ、ATOでの確認方法を解説します。
+Summary: スーパーは雇用主ではなくファンドの側にあります。拠出は四半期ごとなので、働いた数か月後まで残高が空に見えることがあります。
 
 ### DASP申請に必要な書類リスト【完全版】
 URL: https://workingholidaytax.com.au/ja/blog/dasp-documents-required
@@ -2544,11 +2544,11 @@ Category: Medicare & Other
 Published: 20 July 2026
 Summary: 最初の45,000ドルまでは15%が正解。給与明細の読み方、引かれすぎのチェック方法、取り戻し方を解説。
 
-### インカムステートメントとは？myGovで確認する方法
+### インカムステートメントとは？いつ確定するのか
 URL: https://workingholidaytax.com.au/ja/blog/what-is-an-income-statement
 Category: Medicare & Other
 Published: 20 April 2025
-Summary: インカムステートメントは年間の給与・源泉徴収税額を示す書類。タックスリターンに必須です。myGovでの確認方法を解説します。
+Summary: インカムステートメントは紙のペイメントサマリーに代わる書類です。雇用主が給与システムを通して提出し、Tax readyと表示されるまでは確定しません。
 
 ### ATOとは？ワーホリが関わるオーストラリア税務署の基本
 URL: https://workingholidaytax.com.au/ja/blog/what-is-the-ato

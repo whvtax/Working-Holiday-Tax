@@ -115,7 +115,10 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
           // The switcher only ever sits in the nav, and the nav is forest
           // green, so the pill is drawn light instead of dark.
           background: open ? 'rgba(255,255,255,0.16)' : 'transparent',
-          border: '1px solid rgba(255,255,255,0.34)',
+          // The border is the only thing that makes this read as a control.
+          // At 0.34 alpha over the forest nav it measured 2.4:1 and failed
+          // WCAG 1.4.11, which asks 3:1 of a component boundary. 0.5 is 3.5:1.
+          border: '1px solid rgba(255,255,255,0.5)',
           borderRadius: '100px',
           fontSize: '12px',
           fontWeight: 500,
