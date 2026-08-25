@@ -869,7 +869,6 @@ export default function Dashboard() {
             <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink2)', margin: '10px 0 8px', letterSpacing: '.02em' }}>
               ✎ Awaiting your approval ({pendingDrafts.length})
             </div>
-            {pendingDrafts.length === 0 && <div className="sysline" style={{ margin: '6px 0 14px' }}>Nothing waiting for approval 🎉</div>}
             {pendingDrafts.map((m) => {
               const c = custById(m.customerId);
               return (
@@ -894,7 +893,6 @@ export default function Dashboard() {
                 ⚠ Needs a decision ({openTasks.length})
               </div>
             )}
-            {openTasks.length === 0 && pendingDrafts.length === 0 && <div className="sysline" style={{ margin: '18px 0' }}>Nothing waiting. {ASSISTANT_NAME} has everything under control 🎉</div>}
             {openTasks.map((t) => {
               const col = t.severity === 'URGENT' ? 'var(--crit)' : 'var(--warn)';
               // No icon: the severity chip already carries the colour and the
@@ -1059,7 +1057,8 @@ export default function Dashboard() {
                   {upcoming.slice(0, 5).map((j) => {
                     const c = data.customers.find((x) => x.id === j.customerId);
                     const secs = Math.max(0, Math.round((new Date(j.runAt).getTime() - Date.now()) / 1000));
-                    return <div key={j.id} className="costrow"><span>{c?.flag} {c ? phoneOf(c.waId) : '?'} · {j.kind === 'AUTO_CLOSE' ? 'auto-close' : j.payload.templateKey}</span><b>in {secs < 90 ? secs + 's' : Math.round(secs / 60) + 'm'}</b></div>;
+                    const label = secs < 90 ? secs + 's' : secs < 5400 ? Math.round(secs / 60) + 'm' : Math.round(secs / 3600) + 'h';
+                    return <div key={j.id} className="costrow"><span>{c?.flag} {c ? phoneOf(c.waId) : '?'} · {j.kind === 'AUTO_CLOSE' ? 'auto-close' : j.payload.templateKey}</span><b>in {label}</b></div>;
                   })}
                 </div>
                 <button className="genbtn" onClick={() => { setReport(null); say('Report refreshed'); }}>↻ Regenerate Report</button>
@@ -1070,11 +1069,9 @@ export default function Dashboard() {
                 <div className="psub">Live from the system</div>
                 <div className="costrow"><span>Brain ({ASSISTANT_NAME})</span><b>{health?.usingMock ? 'mock (no API key)' : 'Claude API'}</b></div>
                 <div className="costrow"><span>Customers</span><b>{data.customers.length}</b></div>
-                <div className="costrow"><span>Auto-resolved by {ASSISTANT_NAME}</span><b>{(() => { const t = data.tasks.length, done = data.tasks.filter((x) => x.status === 'RESOLVED').length; const total = data.customers.length; return total ? Math.round(((total - openTasks.length) / total) * 100) + '%' : '100%'; })()}</b></div>
+                <div className="costrow"><span>Auto-resolved by {ASSISTANT_NAME}</span><b>{(() => { const total = data.customers.length; if (!total) return '—'; const escalatedIds = new Set(data.tasks.filter((t) => t.customerId).map((t) => t.customerId)); const never = total - escalatedIds.size; return Math.round((never / total) * 100) + '%'; })()}</b></div>
                 <div className="costrow"><span>Open tasks</span><b>{openTasks.length}</b></div>
                 <div className="costrow"><span>Messages in library</span><b>{data.templates.length}</b></div>
-                <div className="costrow"><span>Policy Guard</span><b style={{ color: health?.checks?.guard?.ok ? 'var(--good)' : 'var(--crit)' }}>{health?.checks?.guard?.ok ? '✓ passing' : 'check'}</b></div>
-                <div className="costrow"><span>Nightly checks</span><b style={{ color: 'var(--good)' }}>✓ scheduled</b></div>
               </div>
             </div>
           </section>
