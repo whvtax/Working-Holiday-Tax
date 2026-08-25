@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Hilfskräfte über eine Agentur absetzen?",
     "paras": [
       "Absetzbar sind Schutzausrüstung, die der Einsatzort verlangt, die Verlängerung eines Tickets, das du bereits hast, selbst gekauftes Werkzeug, die Fahrt zwischen zwei Einsatzorten am selben Tag und der arbeitsbezogene Anteil deines Handys. Was absetzbar ist, folgt der Arbeit, die du an diesem Tag wirklich gemacht hast, nicht der Jobbezeichnung im Agenturvertrag.",
-      "Eine Woche im Kühllager, eine Woche in einer Gartenkolonne und ein Wochenende beim Event-Abbau erzeugen drei verschiedene Kostenbilder, und der Abzug folgt der tatsächlichen Arbeit statt einem einzigen Berufslabel."
+      "Eine Woche im Kühllager, eine Woche in einer Gartenkolonne und ein Wochenende beim Event-Abbau erzeugen drei verschiedene Kostenbilder."
     ]
   },
   {
@@ -127,7 +127,7 @@ const SECTIONS: Section[] = [
     "items": [
       {
         "t": "Fahrten zwischen zwei Einsatzorten am selben Tag",
-        "d": "Vormittags ein Lager, nachmittags ein anderer Ort ist Fahrt zwischen Arbeitsplätzen und absetzbar. Je wechselnder das Muster ist, ohne feste Basis und mit wechselnden Orten in der Woche, desto mehr davon lässt sich ansetzen. Die erste Fahrt von zu Hause bleibt der Arbeitsweg."
+        "d": "Vormittags ein Lager, nachmittags ein anderer Ort ist Fahrt zwischen Arbeitsplätzen und absetzbar. Die erste Fahrt von zu Hause bleibt der Arbeitsweg."
       },
       {
         "t": "Schutzausrüstung, die der Einsatzort verlangt hat",
@@ -135,15 +135,15 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Verlängerung von Stapler-, Hubarbeitsbühnen- oder anderen Tickets",
-        "d": "Die Verlängerung eines Tickets, das du hast und für die Arbeit nutzt, ist absetzbar. Das gilt für Stapler, Hubarbeitsbühne und White Card gleichermaßen, und immer nur für die Verlängerung."
+        "d": "Die Verlängerung eines Tickets, das du hast und für die Arbeit nutzt, ist absetzbar, das erste nicht. Das gilt für Stapler, Hubarbeitsbühne und White Card gleichermaßen."
       },
       {
         "t": "Selbst gekauftes Werkzeug",
-        "d": "Manche Einsätze erwarten eigenes Basiswerkzeug. Alles, was du gekauft und nicht erstattet bekommen hast, ist absetzbar: bis 300 Dollar voll im Kaufjahr, darüber verteilt über die Nutzungsdauer."
+        "d": "Alles, was du gekauft und nicht erstattet bekommen hast, ist absetzbar: bis 300 Dollar voll im Kaufjahr, darüber verteilt über die Nutzungsdauer."
       },
       {
         "t": "Schutzkleidung für Kälte und Wetter",
-        "d": "Eine Kühlhausjacke für Arbeit im Kühl- oder Tiefkühllager, Regenkleidung für Gartenarbeit draußen. Das gilt als Schutzkleidung und nicht als Alltagskleidung, weil es dich vor einer Bedingung schützt, in die die Arbeit dich bringt."
+        "d": "Eine Kühlhausjacke für Arbeit im Kühl- oder Tiefkühllager, Regenkleidung für Gartenarbeit draußen. Das ist Schutzkleidung und keine Alltagskleidung, weil es dich vor einer Bedingung schützt, in die die Arbeit dich bringt."
       },
       {
         "t": "Arbeitsanteil deines Handys",
@@ -156,7 +156,7 @@ const SECTIONS: Section[] = [
     "h2": "Was musst du über alle Einsätze hinweg aufheben?",
     "paras": [
       "Ein Abzug, drei Tests: du hast bezahlt, dir hat es niemand erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Über mehrere Einsätze heißt das Belege für selbst gekaufte Stiefel und Handschuhe, für die Ticketverlängerung und eine Notiz zu Daten, Orten und Entfernungen hinter den Fahrten.",
-      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, solange Betrag, Datum, Anbieter und Gegenstand daraus hervorgehen, und er muss fünf Jahre halten. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen keinen schriftlichen Nachweis. Das sind nicht die 300 Dollar, die entscheiden, ob ein Ausrüstungsteil sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, mit Betrag, Datum, Anbieter und Gegenstand, fünf Jahre aufbewahrt. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen keinen schriftlichen Nachweis. Das sind nicht die 300 Dollar, die entscheiden, ob ein Ausrüstungsteil sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
@@ -166,11 +166,11 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Arbeitshose und Boots ohne Schutzfunktion",
-        "d": "Schlichte Arbeitshose, T-Shirt, gewöhnliche Boots, die nur robust sind. Alltagskleidung bleibt privat, so schwer die Arbeit auch ist und so schnell sie verschleißt."
+        "d": "Schlichte Arbeitshose, T-Shirt, gewöhnliche Boots. Alltagskleidung bleibt privat, so schwer die Arbeit auch ist und so schnell sie verschleißt."
       },
       {
         "t": "Der Weg zu einem festen Einsatzort",
-        "d": "Wenn eine Agentur dich zwei Monate lang in dasselbe Lager schickt, ist die Fahrt dorthin normaler Arbeitsweg und keine wechselnde Einsatztätigkeit. Absetzbar wird die Fahrt durch den Wechsel zwischen Arbeitsplätzen, nicht dadurch, dass eine Agentur dich geschickt hat."
+        "d": "Wenn eine Agentur dich zwei Monate lang in dasselbe Lager schickt, ist die Fahrt dorthin normaler Arbeitsweg. Absetzbar wird sie durch den Wechsel zwischen Arbeitsplätzen, nicht dadurch, dass eine Agentur dich geschickt hat."
       },
       {
         "t": "Ausrüstung, die die Agentur ausgegeben hat",
@@ -188,15 +188,15 @@ const SECTIONS: Section[] = [
     "missed": [
       {
         "t": "Ein Income Statement einer vergessenen Agentur",
-        "d": "Der klassische Zeitarbeitsfehler. Drei Wochen bei einer Agentur im März, eine Schicht in einem anderen Bundesstaat im Juni, und die Erklärung geht ohne sie raus. Das ist schlimmer als ein vergessener Abzug, weil es später eine Korrektur bedeutet."
+        "d": "Drei Wochen bei einer Agentur im März, eine Schicht in einem anderen Bundesstaat im Juni, und die Erklärung geht ohne sie raus. Schlimmer als ein vergessener Abzug, weil es später eine Korrektur bedeutet."
       },
       {
         "t": "Fahrten zwischen zwei Einsatzorten an einem Tag",
-        "d": "Bei Agenturen, die eine Crew verschieben, sehr üblich, und fast nie abgesetzt, weil die Bewegung von jemand anderem entschieden wurde. Es bleibt absetzbare Fahrt zwischen Arbeitsplätzen."
+        "d": "Bei Agenturen, die eine Crew verschieben, sehr üblich, und fast nie abgesetzt, weil die Bewegung von jemand anderem entschieden wurde. Absetzbar ist sie trotzdem."
       },
       {
         "t": "Selbst gekaufte Boots und Handschuhe zwischen zwei Einsätzen",
-        "d": "Ausrüstung, die du gekauft hast, um den nächsten Job annehmen zu können, wird in Eile bezahlt und nie belegt. Jeder Gegenstand unter 300 Dollar ist ein voller Abzug im Kaufjahr."
+        "d": "Ausrüstung, die du für den nächsten Job gekauft hast, wird in Eile bezahlt und nie belegt. Jeder Gegenstand unter 300 Dollar ist ein voller Abzug im Kaufjahr."
       },
       {
         "t": "Eine bar bezahlte Ticketverlängerung",
@@ -204,7 +204,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Wochen mit falschem Einbehalt",
-        "d": "Eine neue Agentur, die deine Tax File Number Declaration noch nicht verarbeitet hat oder nicht als Arbeitgeber von Working Holiday Makern registriert ist, behält deutlich mehr als 15 Prozent ein. Das kommt mit der Erklärung zurück, die alle Agenturen zusammenführt, und nur dort."
+        "d": "Eine neue Agentur, die deine Tax File Number Declaration noch nicht verarbeitet hat oder nicht als Arbeitgeber von Working Holiday Makern registriert ist, behält deutlich mehr als 15 Prozent ein. Das kommt nur mit der Erklärung zurück, die alle Agenturen zusammenführt."
       }
     ]
   },
@@ -212,8 +212,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Welche Teile hängen daran, wie dein Jahr lief?",
     "paras": [
-      "Wie wechselnd die Arbeit war, entscheidet, wie viel deiner Fahrten absetzbar ist, und das ist eine Tatsachenfrage, keine Regel. Wie oft der Ort wechselte, ob es eine Basis gab, zu der du immer zurückkehrtest, ob die Agentur die Bewegung verlangt hat und wie die Woche aufgebaut war, fließt alles ein. Zwei Leute derselben Agentur können sehr unterschiedliche Fahrtabzüge haben.",
-      "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehaltsverhältnis und eigenem Income Statement. Working Holiday Maker bekommen von keiner davon einen Steuerfreibetrag, das Risiko ist also nicht ein doppelt beanspruchter Freibetrag. Es ist ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt.",
+      "Wie wechselnd die Arbeit war, entscheidet, wie viel deiner Fahrten absetzbar ist, und das ist eine Tatsachenfrage, keine Regel. Wie oft der Ort wechselte, ob es eine Basis gab, zu der du immer zurückkehrtest, und ob die Agentur die Bewegung verlangt hat, fließt alles ein. Zwei Leute derselben Agentur können sehr unterschiedliche Fahrtabzüge haben.",
+      "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehaltsverhältnis und eigenem Income Statement. Working Holiday Maker bekommen von keiner davon einen Steuerfreibetrag, das Risiko ist also ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt.",
       "Darunter liegt der steuerliche Wohnsitz. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen, mehr wert als alle Abzüge auf dieser Seite. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
@@ -222,23 +222,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Ich bin bei drei Agenturen registriert. Ändert das meine Steuer?",
-    "answer": "Jede Agentur ist rechtlich ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement am Jahresende. Alles kommt in eine Erklärung. Als Working Holiday Maker wird dein Lohn zum Working-Holiday-Maker-Satz besteuert statt gegen einen Steuerfreibetrag, das eigentliche Risiko bei mehreren Agenturen ist also nicht der Satz, sondern dass eine davon fehlt."
+    "answer": "Jede Agentur ist rechtlich ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement am Jahresende. Alles kommt in eine Erklärung.\n\nDein Lohn wird zum Working-Holiday-Maker-Satz besteuert statt gegen einen Steuerfreibetrag, das eigentliche Risiko bei mehreren Agenturen ist also, dass eine davon fehlt."
   },
   {
     "question": "Kann ich Fahrten zwischen verschiedenen Einsatzorten absetzen?",
-    "answer": "Meistens ja. Fahrten zwischen zwei oder mehr getrennten Arbeitsorten, etwa vormittags ein Lager und nachmittags ein anderer Ort, sind absetzbar, anders als dein normaler Weg von zu Hause zu einem festen Arbeitsplatz. Wie viel davon zählt, hängt davon ab, wie wechselnd das Muster ist, also notiere Daten, Orte und Entfernungen."
+    "answer": "Meistens ja. Fahrten zwischen zwei getrennten Arbeitsorten, etwa vormittags ein Lager und nachmittags ein anderer Ort, sind absetzbar, anders als dein Weg von zu Hause zu einem festen Arbeitsplatz.\n\nWie viel davon zählt, hängt davon ab, wie wechselnd das Muster ist, also notiere Daten, Orte und Entfernungen."
   },
   {
     "question": "Was ist steuerlich der Unterschied zwischen Zeitarbeit und Bau?",
-    "answer": "Die Tests sind identisch, die Posten nicht. Baustellenarbeit verlangt meist eine White Card und typische Baustellen-Schutzausrüstung, während allgemeine Zeitarbeit Lager, Umzüge, Garten, Produktionslinien und Events abdeckt, wo die nötige Ausrüstung dem Einsatzort folgt und eine White Card oft gar nicht gebraucht wird. Wenn deine Einsätze speziell auf Baustellen sind, geht die Bau-Seite tiefer auf White-Card-Kosten und Baustellenausrüstung ein."
+    "answer": "Die Tests sind identisch, die Posten nicht. Baustellenarbeit verlangt meist eine White Card und typische Baustellen-Schutzausrüstung. Allgemeine Zeitarbeit deckt Lager, Umzüge, Garten, Produktionslinien und Events ab, wo die Ausrüstung dem Einsatzort folgt und eine White Card oft nicht gebraucht wird.\n\nWenn deine Einsätze auf Baustellen sind, geht die Bau-Seite tiefer."
   },
   {
     "question": "Kann ich einen Staplerschein absetzen?",
-    "answer": "Die Verlängerung ja, den ersten Erwerb nein. Nutzt du den Schein bereits im Einsatz, ist seine Verlängerung eine Kost der Arbeit. Der erste Schein lag davor und hat dich überhaupt erst vermittelbar gemacht, und das behandelt das ATO als privat. Für Hubarbeitsbühne, White Card und Führerschein zieht sie dieselbe Grenze."
+    "answer": "Die Verlängerung ja, den ersten Erwerb nein. Nutzt du den Schein bereits im Einsatz, ist seine Verlängerung eine Kost der Arbeit. Der erste Schein hat dich erst vermittelbar gemacht, und das behandelt das ATO als privat.\n\nFür Hubarbeitsbühne, White Card und Führerschein gilt dieselbe Grenze."
   },
   {
     "question": "Ich hatte nur ein paar Schichten. Lohnt sich das überhaupt?",
-    "answer": "Meistens ja, sofern du die Sachen selbst bezahlt und nichts erstattet bekommen hast. Auch wenige Schichten bringen Boots, Handschuhe, eine Ticketverlängerung oder Fahrten zwischen Einsatzorten mit sich, und jeder Dollar Abzug senkt das Einkommen, auf das die Steuer berechnet wird. Der Test ändert sich mit der Zahl der Schichten nicht: arbeitsbezogen, nicht erstattet und belegbar."
+    "answer": "Meistens ja, sofern du die Sachen selbst bezahlt und nichts erstattet bekommen hast. Auch wenige Schichten bringen Boots, Handschuhe, eine Ticketverlängerung oder Fahrten zwischen Einsatzorten mit sich, und jeder Dollar Abzug senkt das Einkommen, auf das die Steuer berechnet wird.\n\nDer Test ändert sich mit der Zahl der Schichten nicht."
   }
 ]
 
@@ -332,7 +332,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -547,7 +547,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -557,7 +559,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -597,7 +599,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Am Absatzumbruch geteilt, damit eine lange Antwort als zwei
+                    kurze Absätze liest. faqSchema nutzt weiter den Rohtext. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

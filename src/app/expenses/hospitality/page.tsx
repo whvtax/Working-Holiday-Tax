@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Elsewhere on the site",
   "wrongLabel": "Claimed, and it should not have been",
   "missedLabel": "Not claimed, and it should have been",
-  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line.",
   "hubHref": "/expenses"
 }
 
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "What can a bar, cafe or kitchen worker claim on tax?",
     "paras": [
       "Hospitality staff can claim protective non slip footwear, occupation specific clothing such as chef whites and checked chef trousers, the laundering of a compulsory uniform that carries an employer logo, renewals of an RSA or Food Safety Supervisor certificate, and kitchen tools bought out of their own pocket. Everything else in the wardrobe is ordinary clothing.",
-      "Hospitality gives you very little that is unique to the job. You are indoors, your employer supplies the equipment, and the clothing a venue asks for is usually clothing anybody could wear anywhere. The value on a hospitality return is more often on the income side, in the withholding across several employers, than in the deductions."
+      "Hospitality gives you little that is unique to the job. You are indoors, your employer supplies the equipment, and the clothing a venue asks for is usually clothing anybody could wear anywhere."
     ]
   },
   {
@@ -127,27 +127,27 @@ const SECTIONS: Section[] = [
     "items": [
       {
         "t": "Non slip, enclosed protective footwear",
-        "d": "Deductible where you need it: a wet floor behind a bar, spills around a coffee machine, hot plates carried across a kitchen pass. These count as protective footwear rather than ordinary shoes because they do a specific safety job, and that stays true whatever colour they are."
+        "d": "Deductible where you need it: a wet floor behind a bar, spills around a coffee machine, hot plates across a kitchen pass. They count as protective footwear rather than ordinary shoes because they do a specific safety job, whatever colour they are."
       },
       {
         "t": "Chef whites and checked chef trousers",
-        "d": "Occupation specific clothing, meaning clothing that identifies you as a member of a particular trade and would look absurd anywhere else. That is a recognised category in its own right, separate from a branded uniform, and it is why a chef gets a clothing deduction and a waiter usually does not."
+        "d": "Occupation specific clothing: it identifies you as a member of a particular trade and would look absurd anywhere else. That is a recognised category, separate from a branded uniform, and it is why a chef gets a clothing deduction and a waiter usually does not."
       },
       {
         "t": "Laundering a compulsory uniform with a logo",
-        "d": "If your employer requires a uniform that carries their logo or a genuinely distinctive design, washing it is deductible at $1 a load where the load is only work items, or 50 cents a load washed in with everything else. Past $150 of laundry claims for the year you need a simple diary rather than an estimate."
+        "d": "If your employer requires a uniform carrying their logo or a genuinely distinctive design, washing it is deductible at $1 a load of work items only, or 50 cents a load washed in with everything else. Past $150 of laundry claims for the year you need a diary rather than an estimate."
       },
       {
         "t": "Renewing an RSA or Food Safety Supervisor certificate",
-        "d": "Renewing a certificate you already hold, while you are already working in the role that needs it, is deductible. Your first one is not, on the same distinction the ATO applies to a first drivers licence."
+        "d": "Renewing a certificate you already hold, while working in the role that needs it, is deductible. Your first one is not, on the same distinction the ATO applies to a first drivers licence."
       },
       {
         "t": "Knives and kitchen tools you bought yourself",
-        "d": "A knife roll, your own chef knives, a thermometer, a mandoline. Each item costing $300 or less is claimed in full in the year you bought it. A set bought together for $300 or more is treated as one asset and written off across its effective life, even if each piece would have been under $300 on its own."
+        "d": "A knife roll, your own chef knives, a thermometer, a mandoline. Each item costing $300 or less is claimed in full in the year you bought it. A set bought together for $300 or more is one asset, written off across its effective life, even if each piece would have been under $300 alone."
       },
       {
         "t": "Aprons, gloves and protective gear you paid for",
-        "d": "Heat resistant gloves, cut resistant gloves, a protective apron. Deductible where they protect you from a hazard of the job and your employer did not supply them or pay you back for them."
+        "d": "Heat resistant gloves, cut resistant gloves, a protective apron. Deductible where they protect you from a hazard of the job and your employer did not supply them or pay you back."
       }
     ]
   },
@@ -155,56 +155,56 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What has to sit behind a hospitality claim?",
     "paras": [
-      "The same three tests as everywhere: the money was yours, nobody paid it back, and it went to earning the income you are declaring. In a venue that means the receipt for the shoes and the knife roll, the written uniform policy, and a laundry diary once the loads add up.",
-      "Any record showing the amount, the date, the supplier and the item does the job, whether a receipt, an invoice, a bank statement or a photo on your phone, and it has to survive five years. A year of claims totalling $300 or less needs no written evidence. That is a different $300 from the one deciding whether a knife set is written off at once or over its life."
+      "The same three tests as everywhere: the money was yours, nobody paid it back, and it went to earning the income you are declaring. In a venue that is the receipt for the shoes and the knife roll, the written uniform policy, and a laundry diary once the loads add up.",
+      "Any record showing the amount, the date, the supplier and the item does the job, and it has to survive five years. A year of claims totalling $300 or less needs no written evidence. That is a different $300 from the one deciding whether a knife set is written off at once or over its life."
     ]
   },
   {
     "kind": "traps",
     "h2": "What do hospitality workers get wrong?",
-    "intro": "The clothing rule catches everybody, because it feels unfair. The missed claims are quieter and usually about pay rather than expenses.",
+    "intro": "The clothing rule catches everybody, because it feels unfair. The missed claims are quieter and usually about pay.",
     "wrong": [
       {
         "t": "The all black outfit the venue requires",
-        "d": "Plain black trousers, a plain black shirt, plain black shoes with no logo. You only own them for work, you would not have chosen them, and your manager sends you home without them. None of that matters. The ATO looks at what the item is, and conventional clothing anyone could wear anywhere is private, whatever the dress code says."
+        "d": "Plain black trousers, a plain black shirt, plain black shoes with no logo. The ATO looks at what the item is, and conventional clothing is private whatever the dress code says."
       },
       {
         "t": "Your first RSA",
-        "d": "The certificate you paid for before you had the job is what made you eligible to be hired, and that is a private cost. Once you are working and it needs renewing to keep working, the renewal is deductible."
+        "d": "The certificate you paid for before you had the job made you eligible to be hired, which is a private cost. Once you are working and it needs renewing, the renewal is deductible."
       },
       {
         "t": "Haircuts, grooming and makeup for a front of house standard",
-        "d": "Personal grooming stays private even where a venue has a written standard for it. There is no version of a haircut that is a work expense in hospitality."
+        "d": "Personal grooming stays private even where a venue has a written standard for it."
       },
       {
         "t": "A meal on shift, or a drink after close",
-        "d": "Staff meals and knock off drinks are private, whether you paid for them, got them at a discount, or were given them. Being at work when you eat does not make eating deductible."
+        "d": "Staff meals and knock off drinks are private, whether you paid, got a discount, or were given them."
       },
       {
         "t": "Cash tips left off the return",
-        "d": "This one runs the other way. Tips handed to you directly are taxable income even though nobody tracks them. Pooled tips and service charges paid through payroll are already in your income statement, but cash is yours to declare, and it is not optional."
+        "d": "This one runs the other way. Tips handed to you directly are taxable income even though nobody tracks them. Pooled tips and service charges paid through payroll are already in your income statement, but cash is yours to declare."
       }
     ],
     "missed": [
       {
         "t": "Laundering a logo uniform, all year",
-        "d": "A few dollars a week that almost nobody claims, because it never occurred to them that washing a shirt was a tax matter. Over a year of shifts it is a real figure, and the ATO publishes the rate so there is no estimating involved."
+        "d": "A few dollars a week that almost nobody claims, because washing a shirt does not feel like a tax matter. The ATO publishes the rate, so there is no estimating involved."
       },
       {
         "t": "The non slip shoes, because \"you cannot claim clothes\"",
-        "d": "People read that hospitality clothing is not deductible, correctly, and then apply it to protective footwear, incorrectly. Protective shoes are a different category and they are claimable."
+        "d": "People read that hospitality clothing is not deductible, correctly, then apply it to protective footwear, incorrectly. Protective shoes are a different category and are claimable."
       },
       {
         "t": "A second or third employer withholding at the wrong rate",
-        "d": "If a venue never got your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, it withholds far more than 15 per cent. None of it is lost, but it only comes back when a return is lodged that brings every employer together."
+        "d": "If a venue never got your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, it withholds far more than 15 per cent. None of it is lost, but it only comes back on a return that brings every employer together."
       },
       {
         "t": "Super sitting in three different funds",
-        "d": "Every venue pays 12 per cent super on top of your wages from the first dollar, with no minimum monthly earnings. Work four casual jobs and you can finish the year with four accounts, each charging fees, and most people only ever find one of them."
+        "d": "Every venue pays 12 per cent super on top of your wages from the first dollar, with no minimum monthly earnings. Four casual jobs can leave four accounts, each charging fees, and most people only ever find one."
       },
       {
         "t": "A venue that unlawfully charged you for the uniform",
-        "d": "Not a deduction. Deductions from your wages for uniforms, laundry, breakages or till shortages are almost always unlawful under the Fair Work Act, and that is money back rather than a tax claim."
+        "d": "Not a deduction. Deductions from your wages for uniforms, laundry, breakages or till shortages are almost always unlawful under the Fair Work Act, so that is money back rather than a tax claim."
       }
     ]
   },
@@ -212,8 +212,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What has to be judged rather than looked up?",
     "paras": [
-      "The clothing question, first. Whether an item is a compulsory uniform turns on how distinctive it is and whether the employer requires it. Whether footwear is protective turns on the hazard in your venue. A written uniform policy and a photograph of the item usually settle it either way.",
-      "The income side is where a professional view pays. Working holiday makers do not get the tax free threshold, so a venue that withholds as though you do will under withhold and leave a bill behind. That changes if the Addy decision applies to you, which it can for British, German and Japanese passport holders who were Australian residents for tax purposes. It depends on your own circumstances and has to be reviewed properly."
+      "The clothing question, first. Whether an item is a compulsory uniform turns on how distinctive it is and whether the employer requires it. Whether footwear is protective turns on the hazard in your venue. A written uniform policy and a photograph usually settle it.",
+      "The income side is where a professional view pays. Working holiday makers do not get the tax free threshold, so a venue that withholds as though you do leaves a bill behind. That changes if the Addy decision applies to you, which it can for British, German and Japanese passport holders who were Australian residents for tax purposes. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
 ]
@@ -221,23 +221,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Can I claim my black work shoes and trousers?",
-    "answer": "Plain black clothing with no logo is not deductible, even where the venue dress code requires it, because the ATO treats it as ordinary clothing rather than a uniform. Non slip enclosed shoes are a separate matter. If you need them for a wet bar floor or a busy kitchen pass they count as protective footwear and are deductible whatever colour they are."
+    "answer": "Plain black clothing with no logo is not deductible, even where the dress code requires it, because the ATO treats it as ordinary clothing rather than a uniform.\n\nNon slip enclosed shoes are different. If you need them for a wet bar floor or a busy kitchen pass they are protective footwear and deductible whatever colour they are."
   },
   {
     "question": "Can I claim my RSA certificate?",
-    "answer": "You can claim the cost of renewing an RSA you already hold while you are working in a role that requires it. The first one is not deductible, because the ATO treats getting yourself qualified for work as a private cost, the same way it treats a first drivers licence. A Food Safety Supervisor certificate follows the identical rule."
+    "answer": "You can claim renewing an RSA you already hold while working in a role that requires it. The first one is not, because the ATO treats getting yourself qualified as a private cost, like a first drivers licence.\n\nA Food Safety Supervisor certificate follows the same rule."
   },
   {
     "question": "Are my tips taxable?",
-    "answer": "Yes, all of them. Tips and service charges paid out through payroll, including a pooled or tronc arrangement, are part of your wages, already taxed, and already on your income statement. Cash handed to you directly is just as taxable but nobody is tracking it for you, so you need to keep a simple running note and declare the total yourself."
+    "answer": "Yes, all of them. Tips and service charges paid through payroll, including a pooled or tronc arrangement, are part of your wages, already taxed and on your income statement.\n\nCash handed to you directly is just as taxable but nobody tracks it, so keep a running note and declare the total."
   },
   {
     "question": "I work at three venues. Does that change my tax?",
-    "answer": "Each venue is a separate employer with its own Tax File Number Declaration, its own withholding and its own income statement, and every one of them belongs on the same return. Working holiday makers do not get a tax free threshold from any employer, so a venue that withholds as though you do leaves a bill behind rather than a refund. Bringing every venue together at the right rate is the part we do."
+    "answer": "Each venue is a separate employer with its own Tax File Number Declaration, withholding and income statement, and every one belongs on the same return.\n\nWorking holiday makers do not get a tax free threshold from any employer, so a venue that withholds as though you do leaves a bill behind."
   },
   {
     "question": "Do I get super on a casual hospitality job?",
-    "answer": "Yes. Your employer pays 12 per cent super on top of your wages for casual work from your first dollar, with no minimum monthly earnings threshold. Each venue pays independently, so working several jobs usually means contributions spread across more than one fund, and those are worth tracking down before you leave Australia."
+    "answer": "Yes. Your employer pays 12 per cent super on top of your wages for casual work from your first dollar, with no minimum monthly earnings threshold.\n\nEach venue pays independently, so several jobs usually means more than one fund, worth tracking down before you leave Australia."
   }
 ]
 
@@ -331,7 +331,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -546,7 +546,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -556,7 +558,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -596,7 +598,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqSchema still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

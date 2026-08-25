@@ -49,9 +49,17 @@ export function Accordion({ items }: { items: AccItem[] }) {
               {...(!isOpen ? ({ inert: '' } as Record<string, string>) : {})}
             >
               {/* The inner element is required: grid-template-rows: 0fr cannot
-                  clamp a bare text node, so without it the panel never closes. */}
+                  clamp a bare text node, so without it the panel never closes.
+
+                  An answer used to render as one text node, so a ninety word
+                  answer arrived as an unbroken wall on a phone. A blank line in
+                  the answer now becomes a paragraph break. Pages that build
+                  FAQPage structured data still pass the raw string to it, so the
+                  schema is unchanged. */}
               <div className="acc-inner text-[15px] text-body leading-[1.65]">
-                {item.answer}
+                {item.answer.split('\n\n').map((para, j) => (
+                  <p key={j} style={j > 0 ? { marginTop: '12px' } : undefined}>{para}</p>
+                ))}
               </div>
             </div>
           </div>

@@ -114,29 +114,29 @@ const ANALYSIS = [
   {
     n: '01',
     title: 'Your residency position',
-    body: 'Most people tick a box here and move on. Residency is a judgement, the one the High Court ruled on in the Addy case, and it is the largest single number on this page.',
+    body: 'Most people tick a box and move on. Residency is a judgement, the one the High Court ruled on in the Addy case, and the largest number on this page.',
   },
   {
     n: '02',
     title: 'Every employer, and every week',
-    body: 'A working holiday year is messy: several employers, late pay, a job forgotten by March. We rebuild it against your official ATO record, not against memory.',
+    body: 'A working holiday year is messy: several employers, late pay, a job forgotten by March. We rebuild it against your ATO record, not memory.',
   },
   {
     n: '03',
     title: 'Medicare, if it applies to you',
-    body: 'Two percent comes off by default, whether you owed it or not. Knowing the years it was never yours, and getting it removed, is our job.',
+    body: 'Two percent comes off by default, whether you owed it or not. Knowing when it was never yours, and getting it removed, is our job.',
   },
   {
     n: '04',
     title: 'Deductions for the work you actually did',
-    body: 'A fruit picker, a barista and a delivery rider do not claim the same things. We ask what your work involved, then claim exactly what belongs to it.',
+    body: 'A fruit picker, a barista and a delivery rider do not claim the same things. We ask what your work involved, then claim what belongs to it.',
   },
   {
     n: '05',
     title: 'Then it is lodged',
     // "before it reaches the ATO" was a near miss of the approved sentence.
     // Normalised onto the exact wording, which is the form used everywhere else.
-    body: 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO. That part takes minutes. The four steps above decide the number.',
+    body: 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO. The four steps above decide the number.',
   },
 ]
 
@@ -157,8 +157,8 @@ const SERVICES = [
 ]
 
 const GUIDES = [
-  { href: '/blog/diy-tax-return-vs-tax-agent-working-holiday', title: 'Doing it yourself or using an agent', desc: 'What each one actually costs you, written straight.' },
-  { href: '/blog/tax-residency-working-holiday-makers',        title: 'Are you a resident for tax purposes',  desc: 'The question that moves the most money on a backpacker return.' },
+  { href: '/blog/diy-tax-return-vs-tax-agent-working-holiday', title: 'Doing it yourself or using an agent', desc: 'What each one actually costs you.' },
+  { href: '/blog/tax-residency-working-holiday-makers',        title: 'Are you a resident for tax purposes',  desc: 'The question that moves the most money on a return.' },
   { href: '/blog/medicare-levy-working-holiday-makers',        title: 'The Medicare levy exemption',          desc: 'Who owes the two percent, who does not, and how it comes off.' },
   { href: '/blog/tax-deductions-working-holiday-makers',       title: 'What you can claim',                   desc: 'Deductions by the kind of work, not a generic list.' },
 ]
@@ -166,31 +166,31 @@ const GUIDES = [
 const FAQS = [
   {
     question: 'What decides how much I get back from an Australian working holiday tax return?',
-    answer: 'Four things do most of the work: your tax residency position for the year, whether any of your pay was withheld at 45% before your tax file number reached your employer, whether the 2% Medicare levy came off when you were not entitled to Medicare, and the deductions that belong to the work you did. Two people who earned exactly the same amount can end up with very different refunds because of those four, which is why the analysis matters more than the lodgement.',
+    answer: 'Four things: your tax residency position for the year, whether any pay was withheld at 45% before your employer had your tax file number, whether the 2% Medicare levy came off when you were not entitled to it, and the deductions that belong to the work you did.\n\nTwo people who earned the same amount can end up with very different refunds because of those four.',
   },
   {
     question: 'Can I just lodge my own tax return on myGov?',
-    answer: 'You can, and lodging really is the easy part. What the screen will not tell you is your residency position for the year, whether an employer withheld at the wrong rate, whether the Medicare levy should have come off at all, or what your line of work is allowed to claim. Those four are judgements about your particular year, and they are what decides the number.',
+    answer: 'You can. Lodging is the easy part. What the screen will not tell you is your residency position, whether an employer withheld at the wrong rate, whether the Medicare levy should have come off at all, or what your line of work can claim. Those four judgements decide the number.',
   },
   {
     question: 'How much do your services cost?',
-    answer: 'Our fees are flat and never a percentage of your refund. We confirm the fee with you on WhatsApp before anything begins, and it is paid up front. After that we send you the full questionnaire and start the work. If your refund is less than our fee, we refund the difference, so you are never out of pocket.',
+    answer: 'Our fees are flat and never a percentage of your refund.\n\nWe confirm the fee on WhatsApp before anything begins, and it is paid up front. Then we send the full questionnaire and start work. If your refund is less than our fee, we refund the difference, so you are never out of pocket.',
   },
   {
     question: 'What tax rate do working holiday makers pay in Australia?',
-    answer: 'Working holiday makers are taxed at a flat 15% on the first $45,000, then 30% up to $135,000, 37% up to $190,000, and 45% above that. If you never gave your employer a tax file number, they are required to withhold at the top rate instead, which is one of the most common reasons a backpacker ends up owed money.',
+    answer: 'Working holiday makers are taxed at a flat 15% on the first $45,000, then 30% up to $135,000, 37% up to $190,000, and 45% above that.\n\nIf you never gave your employer a tax file number, they must withhold at the top rate instead, one of the most common reasons a backpacker ends up owed money.',
   },
   {
     question: 'Can you help me claim my tax refund after I have already left Australia?',
-    answer: 'Yes. We work with people from the UK, Germany, Japan and elsewhere who lodge their Australian tax return and claim their super (DASP) long after flying home, all of it online. One rule to know before you close your account: the ATO can only pay a tax refund into an Australian bank account, while a super refund (DASP) can be paid overseas. If your Australian account is already closed, tell us early, because it changes the order we do things in.',
+    answer: 'Yes. People from the UK, Germany, Japan and elsewhere lodge their Australian tax return and claim their super (DASP) long after flying home, all of it online.\n\nOne rule before you close your account: the ATO can only pay a tax refund into an Australian bank account, while a super refund (DASP) can be paid overseas. If yours is already closed, tell us early, because it changes the order we work in.',
   },
   {
     question: 'How quickly will you reply?',
-    answer: 'During business hours, Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within an hour. Outside those hours we come back to you the next morning. You can ask a question first without committing to anything, and we reply in your own language.',
+    answer: 'Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within an hour. Outside those hours, the next morning. Ask a question first without committing to anything, and we reply in your own language.',
   },
   {
     question: 'Do you only handle tax returns?',
-    answer: 'No. We also handle TFN applications, ABN registrations, super withdrawal (DASP) and Medicare levy exemption certificates, which covers what a working holiday maker on a 417 or 462 visa normally needs. Working holiday tax is the only thing we do, so the same people handle all of it.',
+    answer: 'No. We also handle TFN applications, ABN registrations, super withdrawal (DASP) and Medicare levy exemption certificates, which covers what a 417 or 462 visa holder normally needs.',
   },
 ]
 
@@ -331,7 +331,7 @@ export default async function HomePage() {
           </p>
 
           <h1 className="font-serif font-black text-ink hero-animate"
-            style={{ fontSize: 'clamp(31px, 5.4vw, 46px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
+            style={{ fontSize: 'clamp(31px, 5.4vw, 46px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '18px' }}>
             <span style={{ display: 'block' }}>Anyone can press submit.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>The work happens before that.{' '}</span>
           </h1>
@@ -342,7 +342,7 @@ export default async function HomePage() {
               three figures block is approved copy, so the count comes out here. */}
           <p className="mx-auto hero-animate-delay"
             style={{ ...LEDE, color: '#4C6459', maxWidth: '72ch', marginBottom: '26px' }}>
-            Your refund is decided before anything is submitted, and none of it happens automatically.
+            Your refund is decided before anything is submitted, and none of it is automatic.
           </p>
 
           <div className="hero-animate-delay-2">
@@ -379,19 +379,25 @@ export default async function HomePage() {
 
           <p style={{ ...LEDE, color: '#4C6459', maxWidth: '54ch', marginBottom: '26px' }}>
             Nothing on the screen checks whether you were a resident, whether the levy was yours, or what your line of
-            work can claim. You are the only one looking.
+            work can claim.
           </p>
 
+          {/* The two labels used to print on all eight cells, which on a phone
+              is the same two words repeated eight times down the screen and was
+              most of what made this block feel crowded. They print once, on the
+              first row, where they read as column headings on desktop and as the
+              key on mobile. The alternating ground and the heavier weight carry
+              the distinction from there. The copy itself is unchanged. */}
           <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
             {COMPARISON.map((row, i) => (
               <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>On myGov</p>
+                <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
+                  {i === 0 && <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>On myGov</p>}
                   <p style={{ ...BODY, color: '#2A3C34' }}>{row.mygov}</p>
                 </div>
                 <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>With us</p>
+                  style={{ padding: '13px 16px', background: '#F2FAF7' }}>
+                  {i === 0 && <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>With us</p>}
                   <p style={{ ...BODY, color: '#080F0D', fontWeight: 500 }}>{row.us}</p>
                 </div>
               </div>
@@ -423,8 +429,8 @@ export default async function HomePage() {
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '12px' }}>
             What decides the size of a working holiday tax refund?
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            Three things, most of the time, and they are the three below.
+          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '32px' }}>
+            Three things, most of the time.
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -461,11 +467,11 @@ export default async function HomePage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>The work</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             What we go through on every return
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            The same five steps apply whether you had one job or six. Four of them happen before anything is entered into your tax return.
+            Four of the five happen before anything is entered into the return.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -490,12 +496,11 @@ export default async function HomePage() {
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Which of these two was your year?
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
-            It changes what your return has to say, so it is the one thing worth telling us before we talk. Pick the one
-            that matches and it travels with your message.
+            It changes what your return has to say. Pick the one that matches.
           </p>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -503,7 +508,7 @@ export default async function HomePage() {
               style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFN only</h3>
               <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
-                Every job paid you through a payroll, and tax came off each payslip.
+                Every job paid you through a payroll, with tax off each payslip.
               </p>
               <WaLink href={waUrl({ topic: 'tax-return', lang: 'en', tier: 'tfn' })} position="inline" topic="tax-return" lang="en" tier="tfn"
                 className="btn-primary inline-flex items-center justify-center gap-2"
@@ -517,7 +522,7 @@ export default async function HomePage() {
               style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFN and ABN</h3>
               <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
-                Part of your income was invoiced against an ABN, and nothing was withheld from it.
+                Part of your income was invoiced against an ABN, with nothing withheld.
               </p>
               <WaLink href={waUrl({ topic: 'abn', lang: 'en', tier: 'tfn-abn' })} position="inline" topic="abn" lang="en" tier="tfn-abn"
                 className="btn-primary inline-flex items-center justify-center gap-2"
@@ -549,11 +554,16 @@ export default async function HomePage() {
             From your first payslip to the money that follows you home
           </h2>
 
-          <div className="services-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
-            {SERVICES.map((s) => (
+          {/* Two columns on a phone. As a single column these five cards were
+              five near identical blocks stacked to about a thousand pixels, which
+              is most of a phone screen of the same thing repeating. Paired up they
+              read as a menu you scan rather than a list you scroll. */}
+          <div className="services-grid grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+            {SERVICES.map((s, i) => (
               <Link key={s.href} href={s.href}
-                className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
-                style={{ padding: '18px', minHeight: '44px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+                className={`group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg${
+                  i === SERVICES.length - 1 ? ' col-span-2 lg:col-span-1' : ''}`}
+                style={{ padding: '15px 14px', minHeight: '44px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
                 <span className="text-muted" style={{ ...KICKER, marginBottom: '10px' }}>{s.n}</span>
                 <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
                   style={{ marginBottom: '10px' }}>{s.icon}</span>
@@ -576,8 +586,7 @@ export default async function HomePage() {
                   UK passport holders
                 </h3>
                 <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>
-                  Three years instead of one, Medicare access other backpackers do not get, and the Addy ruling. The
-                  British rules are not the same.
+                  Three years instead of one, Medicare access other backpackers do not get, and the Addy ruling.
                 </p>
               </div>
               <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3 flex-shrink-0" style={{ fontSize: '13px' }}>
@@ -593,11 +602,11 @@ export default async function HomePage() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working holiday tax is the only thing we do.
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
-            Every return we prepare is for someone on a 417 or 462 visa and is reviewed and signed off by a registered tax
+            Every return we prepare is for someone on a 417 or 462 visa, reviewed and signed off by a registered tax
             agent before being lodged with the ATO.
           </p>
 
@@ -633,7 +642,12 @@ export default async function HomePage() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer">{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two or three
+                    short paragraphs rather than one block. faqLd above still uses
+                    the raw string, so the structured data is unchanged. */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer">{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -651,15 +665,14 @@ export default async function HomePage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Guides</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Read the whole answer first, if you would rather
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            We write these for the same four questions that decide a return. Nothing is held back to make you get in
-            touch.
+            Nothing is held back to make you get in touch.
           </p>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 grid-cols-2">
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
@@ -687,8 +700,8 @@ export default async function HomePage() {
             Tell us about your year
           </h2>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '50ch', marginBottom: '24px' }}>
-            Where you worked, roughly when, and whether you ever invoiced under an ABN. That is enough for us to tell you
-            where you stand.
+            Where you worked, roughly when, and whether you ever invoiced under an ABN. That is enough to tell you where
+            you stand.
           </p>
           <WaLink href={waUrl({ topic: 'tax-return', lang: 'en' })} position="footer" topic="tax-return" lang="en"
             className="btn-primary inline-flex items-center justify-center gap-2"

@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Elsewhere on the site",
   "wrongLabel": "Claimed, and it should not have been",
   "missedLabel": "Not claimed, and it should have been",
-  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line.",
   "hubHref": "/expenses"
 }
 
@@ -116,8 +116,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What can a labourer placed by an agency claim on tax?",
     "paras": [
-      "A labour hire worker can claim protective gear required by the host role, renewals of an operating ticket they already hold, tools bought out of their own pocket, the travel between two worksites in the same day, and the work related share of a phone. What is claimable follows the job you were actually doing that day, not the job title on the agency contract.",
-      "A week in a chilled warehouse, a week on a landscaping crew and a weekend on an event bump out create three different sets of costs, and the deduction follows the actual work rather than a single occupation label."
+      "A labour hire worker can claim protective gear required by the host role, renewals of an operating ticket they already hold, tools bought out of their own pocket, travel between two worksites in the same day, and the work related share of a phone. What is claimable follows the job you were doing that day, not the title on the agency contract.",
+      "A week in a chilled warehouse, a week on a landscaping crew and a weekend on an event bump out create three different sets of costs."
     ]
   },
   {
@@ -127,27 +127,27 @@ const SECTIONS: Section[] = [
     "items": [
       {
         "t": "Travel between two sites in the same day",
-        "d": "One warehouse in the morning and a different site in the afternoon is travel between workplaces and is deductible. The more itinerant the pattern, with no fixed base and the site changing through the week, the stronger the case for claiming more of it. The first trip from home is still a commute."
+        "d": "One warehouse in the morning and a different site in the afternoon is travel between workplaces, and deductible. The first trip from home is still a commute."
       },
       {
         "t": "Protective gear the host site required",
-        "d": "Steel capped boots, gloves, hi vis, safety glasses, hearing protection, a cut resistant sleeve. Deductible where the item protects you from an identifiable risk on that particular job and you paid for it yourself."
+        "d": "Steel capped boots, gloves, hi vis, safety glasses, hearing protection, a cut resistant sleeve. Deductible where the item protects you from an identifiable risk on that job and you paid for it yourself."
       },
       {
         "t": "Renewing a forklift, EWP or other operating ticket",
-        "d": "Renewing a ticket you already hold and use for the work is deductible. The first one is not, on the same principle that keeps a first drivers licence or a first White Card private."
+        "d": "Renewing a ticket you already hold and use for the work is deductible. The first one is not, on the same principle that keeps a first White Card private."
       },
       {
         "t": "Tools and equipment you bought yourself",
-        "d": "Some placements expect you to bring your own basics. Anything you bought and were not reimbursed for is deductible: $300 or less claimed in full in the year of purchase, more than that claimed across the effective life of the item."
+        "d": "Anything you bought and were not reimbursed for is deductible: $300 or less claimed in full in the year of purchase, more than that claimed across the effective life of the item."
       },
       {
         "t": "Cold storage and weather specific protective clothing",
-        "d": "A freezer jacket for chilled or frozen warehouse work, wet weather gear for outdoor landscaping. These qualify as protective rather than conventional clothing because they exist to protect you from a condition the work puts you in."
+        "d": "A freezer jacket for chilled or frozen warehouse work, wet weather gear for outdoor landscaping. These are protective rather than conventional clothing because they exist to protect you from a condition the work puts you in."
       },
       {
         "t": "The work share of your phone",
-        "d": "Agencies run on messages: shift offers at six in the morning, site addresses, timesheets. The work related percentage of your plan is a genuine deduction where you use your own phone for it."
+        "d": "Agencies run on messages: shift offers at six in the morning, site addresses, timesheets. The work related percentage of your plan is deductible where you use your own phone for it."
       }
     ]
   },
@@ -155,22 +155,22 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What do you need to keep across placements?",
     "paras": [
-      "One claim, three tests: you paid, nobody reimbursed you, and it was spent earning the income you are declaring. Across placements that means receipts for the boots and gloves you bought yourself, the ticket renewal, and a note of dates, sites and distances behind the travel.",
-      "The record can be a receipt, an invoice, a bank statement or a phone photo, as long as it shows the amount, the date, the supplier and the item, and it has to last five years. Work claims of $300 or less for the whole year need no written evidence. That is a different $300 from the one deciding whether a piece of gear is written off at once or over its life."
+      "One claim, three tests: you paid, nobody reimbursed you, and it was spent earning the income you are declaring. Across placements that is receipts for the boots and gloves you bought, the ticket renewal, and a note of dates, sites and distances behind the travel.",
+      "The record can be a receipt, an invoice, a bank statement or a phone photo showing the amount, the date, the supplier and the item, kept five years. Work claims of $300 or less for the whole year need no written evidence. That is a different $300 from the one deciding whether a piece of gear is written off at once or over its life."
     ]
   },
   {
     "kind": "traps",
     "h2": "What do labour hire workers get wrong?",
-    "intro": "The wrong claims are mostly clothing and commuting. The missed ones are almost all about the number of employers, which is where labour hire quietly loses people money.",
+    "intro": "The wrong claims are mostly clothing and commuting. The missed ones are almost all about the number of employers, which is where labour hire loses people money.",
     "wrong": [
       {
         "t": "Work pants and boots with no protective feature",
-        "d": "Plain work trousers, a t-shirt, ordinary boots that are simply sturdy. Conventional clothing is private however heavy the work is and however fast it wears out."
+        "d": "Plain work trousers, a t-shirt, ordinary boots that are simply sturdy. Conventional clothing is private however heavy the work and however fast it wears out."
       },
       {
         "t": "The commute to a single regular site",
-        "d": "If an agency places you at the same warehouse for two months, the drive there is ordinary commuting, not itinerant travel. What makes travel deductible is moving between workplaces, not the fact that an agency sent you."
+        "d": "If an agency places you at the same warehouse for two months, the drive there is ordinary commuting, not itinerant travel. What makes travel deductible is moving between workplaces, not that an agency sent you."
       },
       {
         "t": "Gear the agency issued",
@@ -182,21 +182,21 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Assuming the agency has dealt with your tax",
-        "d": "An agency withholds tax and reports your wages. It does not lodge your return, it does not claim your deductions, and it does not check whether the other two agencies got your details right."
+        "d": "An agency withholds tax and reports your wages. It does not lodge your return, claim your deductions, or check whether the other two agencies got your details right."
       }
     ],
     "missed": [
       {
         "t": "An income statement from a forgotten agency",
-        "d": "The classic labour hire mistake. Three weeks with an agency in March, one shift in a different state in June, and the return goes in without them. This is worse than a missed deduction, because it means an amendment later."
+        "d": "Three weeks with an agency in March, one shift in a different state in June, and the return goes in without them. Worse than a missed deduction, because it means an amendment later."
       },
       {
         "t": "Travel between two sites in one day",
-        "d": "Very common with agencies moving a crew, and almost never claimed because the movement was a decision somebody else made. It is still deductible travel between workplaces."
+        "d": "Common with agencies moving a crew, and almost never claimed because somebody else decided the movement. It is still deductible travel between workplaces."
       },
       {
         "t": "Boots and gloves bought yourself between placements",
-        "d": "Gear bought so you could take the next job tends to be paid for in a hurry and never receipted. Each item under $300 is a full deduction in the year you bought it."
+        "d": "Gear bought so you could take the next job is paid for in a hurry and never receipted. Each item under $300 is a full deduction in the year you bought it."
       },
       {
         "t": "A ticket renewal paid in cash",
@@ -204,7 +204,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Weeks withheld at the wrong rate",
-        "d": "A new agency that has not processed your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, withholds well above 15 per cent. It comes back on the return that brings every agency together, and only there."
+        "d": "A new agency that has not processed your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, withholds well above 15 per cent. It comes back on the return that brings every agency together."
       }
     ]
   },
@@ -212,8 +212,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Which parts turn on how your year ran?",
     "paras": [
-      "How itinerant the work was decides how much travel is deductible, and it is a question of fact rather than a rule. How often the site changed, whether one base kept pulling you back, whether the agency required the movement, and how the week was structured all feed in. Two people at the same agency can end up with very different travel claims.",
-      "Every agency is a separate employer with its own Tax File Number Declaration, its own withholding relationship and its own income statement. Working holiday makers do not get a tax free threshold from any of them, so the risk is not a threshold claimed twice. It is a rate applied wrongly, or an employer missing from the return.",
+      "How itinerant the work was decides how much travel is deductible, and it is a question of fact rather than a rule. How often the site changed, whether one base kept pulling you back and whether the agency required the movement all feed in. Two people at the same agency can end up with very different travel claims.",
+      "Every agency is a separate employer with its own Tax File Number Declaration, withholding relationship and income statement. Working holiday makers do not get a tax free threshold from any of them, so the risk is a rate applied wrongly, or an employer missing from the return.",
       "Residency sits under all of it. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision, worth more than every deduction on this page. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
@@ -222,23 +222,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "I am registered with three agencies. Does that change my tax?",
-    "answer": "Each agency is legally a separate employer, with its own Tax File Number Declaration, its own withholding and its own income statement at the end of the year. All of them go into one return. As a working holiday maker your wages are taxed at the working holiday maker rate rather than against a tax free threshold, so the real risk with several agencies is not the rate, it is one of them being left out."
+    "answer": "Each agency is legally a separate employer, with its own Tax File Number Declaration, withholding and income statement. All of them go into one return.\n\nYour wages are taxed at the working holiday maker rate rather than against a tax free threshold, so the real risk is one agency being left out."
   },
   {
     "question": "Can I claim travel between different job sites?",
-    "answer": "Usually yes. Travel between two or more separate work locations, for example a warehouse in the morning and a different site in the afternoon, is deductible in a way your ordinary trip from home to a single regular workplace is not. How much of your travel qualifies depends on how itinerant the pattern is, so keep a note of the dates, the sites and the distances."
+    "answer": "Usually yes. Travel between two separate work locations, a warehouse in the morning and a different site in the afternoon, is deductible in a way your trip from home to one regular workplace is not.\n\nHow much qualifies depends on how itinerant the pattern is, so note the dates, the sites and the distances."
   },
   {
     "question": "How is labouring different from construction for tax?",
-    "answer": "The tests are identical, the items are not. Building site work usually requires a White Card and standard site PPE, while general labour hire covers warehouses, removals, landscaping, production lines and events, where the required gear follows the host role and a White Card is often not needed at all. If your placements are specifically on building sites, the construction page goes further into White Card costs and site gear."
+    "answer": "The tests are identical, the items are not. Building site work usually requires a White Card and standard site PPE. General labour hire covers warehouses, removals, landscaping, production lines and events, where the gear follows the host role and a White Card is often not needed.\n\nIf your placements are on building sites, the construction page goes further."
   },
   {
     "question": "Can I claim a forklift licence?",
-    "answer": "You can claim renewing one you already hold and use for the work. Getting the ticket in the first place is not deductible, because the ATO treats qualifying for work as a private cost rather than a cost of the work itself. An EWP ticket, a White Card and a drivers licence all fall the same way."
+    "answer": "You can claim renewing one you already hold and use for the work. Getting the ticket in the first place is not deductible, because the ATO treats qualifying for work as a private cost.\n\nAn EWP ticket, a White Card and a drivers licence all fall the same way."
   },
   {
     "question": "I only did a handful of shifts. Is it worth claiming anything?",
-    "answer": "Usually yes, provided you paid for the things yourself and were not reimbursed. Even a few shifts can involve boots, gloves, a ticket renewal or travel between sites, and every dollar of deduction reduces the income the tax is calculated on. The test does not change with the number of shifts: work related, unreimbursed, and something you can show a record for."
+    "answer": "Usually yes, provided you paid for the things yourself and were not reimbursed. Even a few shifts can involve boots, gloves, a ticket renewal or travel between sites, and every dollar of deduction reduces the income the tax is calculated on.\n\nThe test does not change with the number of shifts."
   }
 ]
 
@@ -332,7 +332,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -547,7 +547,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -557,7 +559,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -597,7 +599,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqSchema still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Elsewhere on the site",
   "wrongLabel": "Claimed, and it should not have been",
   "missedLabel": "Not claimed, and it should have been",
-  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line.",
   "hubHref": "/expenses"
 }
 
@@ -99,7 +99,7 @@ const HERO = {
   "kicker": "Farm work, orchards and packing sheds",
   "h1lead": "Sunscreen is a deduction.",
   "h1accent": "Your jeans never were.",
-  "lede": "The claim list for picking, pruning and packing runs to about six items. Getting every short job of the season onto one return matters more than any of them."
+  "lede": "The claim list for picking, pruning and packing runs to about six items. Getting every short job of the season onto one return matters more."
 }
 
 type Section =
@@ -117,37 +117,37 @@ const SECTIONS: Section[] = [
     "h2": "What can a fruit picker or farm hand claim on tax?",
     "paras": [
       "A farm worker can claim sun protection used for outdoor work, protective gloves and boots, picking tools and equipment bought out of their own pocket, and the travel between two farms or blocks in the same working day. Everything on that list has to have been paid for by you, not reimbursed, and backed by a record.",
-      "Sunscreen is a private expense for almost everyone in Australia. It is deductible for you because the job puts you under direct sun for hours at a time, and the ATO recognises that as a work related exposure rather than a lifestyle choice."
+      "Sunscreen is a private expense for almost everyone in Australia. It is deductible for you because the job puts you under direct sun for hours, which the ATO treats as a work related exposure."
     ]
   },
   {
     "kind": "items",
     "h2": "The claims that belong to this work specifically",
-    "intro": "Each of these has a condition attached, and the condition is what makes the claim survive a question about it.",
+    "intro": "Each has a condition attached, and the condition is what makes the claim survive.",
     "items": [
       {
         "t": "Sun protection: sunscreen, a wide brim hat, sunglasses",
-        "d": "Deductible where the work exposes you to the sun, which covers picking, pruning, thinning, and packing in an open sided shed. It is the outdoor exposure that earns it. Buying sunscreen for a weekend at the beach is not part of the claim, and you should only claim the share you used for work."
+        "d": "Deductible where the work exposes you to the sun, which covers picking, pruning, thinning, and packing in an open sided shed. Claim only the share you used for work."
       },
       {
         "t": "Protective gloves, gumboots and safety boots",
-        "d": "Picking gloves, wet weather boots, steel caps for shed work. These qualify because they protect you from a specific hazard the job creates: thorns, sap, chemicals, mud, dropped crates, uneven ground. Ordinary boots that simply happen to be sturdy do not qualify."
+        "d": "Picking gloves, wet weather boots, steel caps for shed work. These qualify because they protect you from a specific hazard the job creates: thorns, sap, chemicals, dropped crates. Ordinary sturdy boots do not."
       },
       {
         "t": "Picking tools and equipment you bought yourself",
-        "d": "Secateurs, snips, a picking bag or bucket harness, a head torch for early starts, knee pads. Each item costing $300 or less is claimed in full in the year you bought it. Above $300 you still claim it, but across the effective life of the item rather than in one go."
+        "d": "Secateurs, snips, a picking bag or bucket harness, a head torch, knee pads. Each item costing $300 or less is claimed in full in the year you bought it. Above $300 you still claim it, across the effective life of the item."
       },
       {
         "t": "Travel between farms or blocks on the same day",
-        "d": "Moving from one property, block or shed to another once your working day has started is deductible travel, because farm work often has no single fixed workplace. It is worked out with the cents per kilometre method or a logbook. The first trip of the day, from wherever you are staying to the first farm, is not part of it."
+        "d": "Moving from one property, block or shed to another once your working day has started is deductible travel, worked out with the cents per kilometre method or a logbook. The first trip of the day is not part of it."
       },
       {
         "t": "Protective clothing with a genuine function",
-        "d": "Wet weather gear for working in rain, chemical resistant overalls for spraying, a dust mask in a packing shed. The test is whether the item protects you from something the work does to you. A flannel shirt that keeps you warm does not pass it."
+        "d": "Wet weather gear for rain, chemical resistant overalls for spraying, a dust mask in a packing shed. The test is whether the item protects you from something the work does to you. A flannel that keeps you warm does not."
       },
       {
         "t": "The work share of your phone",
-        "d": "Small, but real if you use your own phone for the job, for example to receive shift times from a contractor or to log bins picked in an app. You claim the work related percentage on a fair basis, not the whole bill."
+        "d": "Small, but real if you use your own phone for the job, taking shift times from a contractor. You claim the work related percentage on a fair basis, not the whole bill."
       }
     ]
   },
@@ -155,40 +155,40 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What do you have to keep from a season?",
     "paras": [
-      "Nothing is deductible unless three things hold: the money was yours, nobody gave it back, and it was spent earning the income on the return. In a season that is the roadhouse receipt for the sunscreen, the docket for the gloves and the secateurs, and a note of dates and kilometres whenever a contractor moved you between blocks.",
-      "A receipt, an invoice, a bank statement or a phone photo carrying the amount, the date, the supplier and the item all count, and they have to last five years. If your work claims for the whole year add up to $300 or less, no written evidence is needed. That is a different $300 from the one deciding whether a single item is written off at once or over its life."
+      "Nothing is deductible unless three things hold: the money was yours, nobody gave it back, and it was spent earning the income on the return. In a season that is the roadhouse receipt for the sunscreen, the docket for the gloves, and a note of dates and kilometres whenever a contractor moved you between blocks.",
+      "A receipt, an invoice, a bank statement or a phone photo carrying the amount, the date, the supplier and the item, kept five years. If your work claims for the whole year add up to $300 or less, no written evidence is needed. That is a different $300 from the one deciding whether a single item is written off at once or over its life."
     ]
   },
   {
     "kind": "traps",
     "h2": "What do farm workers get wrong?",
-    "intro": "First, claims seasonal workers make every year and cannot support. Then money left on the table because nobody said it was there.",
+    "intro": "First, claims seasonal workers make every year and cannot support. Then the money nobody told them was there.",
     "wrong": [
       {
         "t": "Ordinary clothes destroyed by the job",
-        "d": "Jeans, t-shirts, a flannel, a jumper for a five in the morning start. It feels unreasonable, because the work ruins them and you would not have bought them otherwise. The ATO tests the item, not the intention, and normal clothing is private however quickly the fruit stains kill it."
+        "d": "Jeans, t-shirts, a flannel, a jumper for a five in the morning start. The ATO tests the item, not the intention, and normal clothing is private however fast the fruit stains kill it."
       },
       {
         "t": "Hostel rent and the working hostel bond",
-        "d": "Where you slept during the season is a living expense, not a work expense, even when the hostel is the only accommodation for fifty kilometres and even when the farm arranged it. Living somewhere is not a cost of earning income."
+        "d": "Where you slept during the season is a living expense, not a work expense, even when the hostel is the only accommodation for fifty kilometres and the farm arranged it."
       },
       {
         "t": "Food and drink during the day",
-        "d": "Lunch on a farm is the same as lunch anywhere else. Meals only become deductible in the narrow case of travel your employer requires that keeps you away from home overnight, and picking season does not usually meet that."
+        "d": "Lunch on a farm is the same as lunch anywhere else. Meals only become deductible where travel your employer requires keeps you away from home overnight, which picking season does not usually meet."
       },
       {
         "t": "The drive from the hostel to the farm",
-        "d": "That is a commute, and it stays a commute whether you drive fifty kilometres of dirt road or walk. Only the movement between work sites once the day has started is claimable."
+        "d": "That is a commute, whether you drive fifty kilometres of dirt road or walk. Only movement between work sites once the day has started is claimable."
       },
       {
         "t": "Getting yourself to the region in the first place",
-        "d": "The flight or drive to Bundaberg, Mildura or Tully to look for work is the cost of putting yourself where the job is, which is not the same as a cost of earning income from it."
+        "d": "The flight or drive to Bundaberg, Mildura or Tully to look for work puts you where the job is, which is not a cost of earning income from it."
       }
     ],
     "missed": [
       {
         "t": "The sunscreen, the hat and the sunglasses",
-        "d": "This is the single most commonly missed claim in farm work, and the one people are most clearly entitled to. Almost nobody keeps a receipt for a $19 bottle of sunscreen bought at a roadhouse, and across a season it is not a small number."
+        "d": "The most commonly missed claim in farm work. Almost nobody keeps a receipt for a $19 bottle of sunscreen bought at a roadhouse, and across a season it is not a small number."
       },
       {
         "t": "Every pair of gloves, one at a time",
@@ -196,11 +196,11 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Travel between blocks in the same day",
-        "d": "Very common on larger properties and with contractors who move a crew around, and almost never claimed because it does not feel like a trip. Note the date and the kilometres as you go and it is a straightforward claim."
+        "d": "Common on larger properties and with contractors who move a crew around, and almost never claimed because it does not feel like a trip. Note the date and the kilometres as you go."
       },
       {
         "t": "A three week farm job that was forgotten entirely",
-        "d": "The most expensive mistake on this page is not a deduction at all. A short stint, paid in a hurry, sometimes by a labour hire contractor, is easy to leave off a return, and leaving income off is worse than missing a deduction."
+        "d": "A short stint, paid in a hurry by a labour hire contractor, is easy to leave off a return, and leaving income off is worse than missing a deduction."
       },
       {
         "t": "Tax withheld above 15 per cent by an unregistered employer",
@@ -212,9 +212,9 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What turns on how your season was structured?",
     "paras": [
-      "Itinerant work or commuting is a question of fact, and it is worth real money. Sent between three properties by a contractor with no single base is a different position from driving to the same orchard for eleven weeks. How often the site changed, whether the job required the travel, and whether you had a fixed workplace at all decide it.",
-      "Residency is bigger. It is a judgement, not a formula, the ATO sees it argued wrongly in both directions, and the Addy case in the High Court shows how much can hang on it. It is worth more than every receipt on this page, and we take a position on it only after going through your year.",
-      "Farm work also feeds a further visa, and that part is immigration rather than tax. Which industries, postcodes and dates count is set by the Department of Home Affairs and has changed more than once, so check the current official guidance or a registered migration agent before you rely on a job counting. Either way the income still has to be reported correctly."
+      "Itinerant work or commuting is a question of fact. Sent between three properties by a contractor with no single base is a different position from driving to the same orchard for eleven weeks. How often the site changed, whether the job required the travel, and whether you had a fixed workplace decide it.",
+      "Residency is bigger. It is a judgement, not a formula, and the Addy case in the High Court shows how much can hang on it. We take a position on it only after going through your year.",
+      "Farm work also feeds a further visa, and that part is immigration rather than tax. Which industries, postcodes and dates count is set by the Department of Home Affairs and has changed more than once, so check the current official guidance or a registered migration agent before you rely on a job counting."
     ]
   }
 ]
@@ -222,23 +222,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Can I really claim sunscreen and a hat?",
-    "answer": "Yes, where the work puts you in the sun, and farm work usually does. The ATO accepts sun protection as a work expense for outdoor workers because the exposure comes from the job rather than from your own choices. Keep the receipts, claim only the portion you used for work, and be ready to say what the work was."
+    "answer": "Yes, where the work puts you in the sun, and farm work usually does. The ATO accepts sun protection as a work expense for outdoor workers because the exposure comes from the job.\n\nKeep the receipts and claim only the portion you used for work."
   },
   {
     "question": "I worked on three farms this year. Is that three tax returns?",
-    "answer": "No. One return covers the whole financial year from 1 July to 30 June, no matter how many farms, contractors or labour hire companies paid you. Every employer reports your wages and the tax they withheld to the ATO separately and it all lands in the one return. The risk with a season of short jobs is a forgotten one, which is worth checking before anything is lodged."
+    "answer": "No. One return covers the whole financial year from 1 July to 30 June, no matter how many farms, contractors or labour hire companies paid you. Every employer reports your wages and the tax withheld to the ATO, and it all lands in one return.\n\nThe risk with a season of short jobs is a forgotten one."
   },
   {
     "question": "Does being paid per bin change my tax?",
-    "answer": "No. Piece rate pay is wages, whether it is worked out per bin, per bucket, per tray or per kilo. Your employer reports the total and withholds tax on it the same way as an hourly rate, and it goes into your income like any other pay. What piece rate work does change is your record keeping, because pay that swings day to day is harder to check against an income statement later."
+    "answer": "No. Piece rate pay is wages, whether worked out per bin, per bucket, per tray or per kilo. Your employer reports the total and withholds tax the same way as an hourly rate.\n\nWhat it does change is your record keeping, because pay that swings day to day is harder to check against an income statement later."
   },
   {
     "question": "Can I claim the fuel driving to the farm every morning?",
-    "answer": "No. The first trip of the day, from wherever you are living to the first farm you work at, is ordinary commuting and is not deductible, however far it is. What is deductible is travel between farms, blocks or sheds once your working day has already started, worked out with the cents per kilometre method or a logbook."
+    "answer": "No. The first trip of the day, from wherever you are living to the first farm, is ordinary commuting and is not deductible, however far it is.\n\nTravel between farms, blocks or sheds once your working day has started is deductible, worked out with the cents per kilometre method or a logbook."
   },
   {
     "question": "What if the farm never gave me payslips?",
-    "answer": "Usually not a problem. Most employers report your pay to the ATO through Single Touch Payroll, so it appears as an income statement whether or not you ever received a payslip. It still helps to keep your own note of which farm, which dates and roughly what you were paid, particularly across a season with several short jobs, so there is something to check the official figures against."
+    "answer": "Usually not a problem. Most employers report your pay to the ATO through Single Touch Payroll, so it appears as an income statement whether or not you received a payslip.\n\nIt still helps to note which farm, which dates and roughly what you were paid."
   }
 ]
 
@@ -332,7 +332,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -547,7 +547,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -557,7 +559,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -597,7 +599,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqSchema still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

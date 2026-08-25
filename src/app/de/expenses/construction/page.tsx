@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -99,7 +99,7 @@ const HERO = {
   "kicker": "Baustellen, Hilfsarbeit und Handwerk",
   "h1lead": "Dein Werkzeug ist absetzbar.",
   "h1accent": "Deine erste White Card nicht.",
-  "lede": "Der Bau hat die längste Abzugsliste aller Backpacker-Jobs. Der Ute ist der eine Posten darauf, der meistens nicht dir gehört."
+  "lede": "Der Bau hat die längste Abzugsliste aller Backpacker-Jobs. Der Ute steht meistens nicht darauf."
 }
 
 type Section =
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Bauarbeiter absetzen?",
     "paras": [
       "Absetzbar sind selbst gekauftes Werkzeug und Ausrüstung, Schutzkleidung und Schutzausrüstung, Sonnenschutz für Arbeit im Freien, die Verlängerung einer White Card oder eines Tickets, das du bereits hast, der arbeitsbezogene Anteil deines Handyvertrags und Weiterbildung, die zu dem Gewerk gehört, in dem du bereits arbeitest. Alles, was der Arbeitgeber gestellt oder erstattet hat, fällt raus.",
-      "Die Liste ist lang, weil der Job konkrete Kosten erzeugt. Stahlkappen schützen dich vor einem fallenden Stein, der Helm vor etwas von oben, Sonnencreme vor sechs Stunden auf einer unbeschatteten Platte. Diese Verbindung sucht der Abzugstest, und deshalb bringt Baustellenarbeit meist die höchste Abzugssumme aller Berufe auf dieser Website."
+      "Die Liste ist lang, weil der Job konkrete Kosten erzeugt. Stahlkappen schützen dich vor einem fallenden Stein, der Helm vor etwas von oben, Sonnencreme vor sechs Stunden auf einer unbeschatteten Platte. Diese Verbindung sucht der Abzugstest."
     ]
   },
   {
@@ -131,15 +131,15 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Werkzeug und Ausrüstung ab 300 Dollar",
-        "d": "Weiterhin absetzbar, nur über die Nutzungsdauer verteilt statt auf einmal. Ein Betonmischer oder eine ordentliche Kappsäge gehört hierher. Die Falle ist, mehrere Werkzeuge zusammen als Set ab 300 Dollar zu kaufen, denn dann gilt das Set als ein Gegenstand, auch wenn jedes Teil einzeln darunter gelegen hätte."
+        "d": "Weiterhin absetzbar, über die Nutzungsdauer verteilt. Ein Betonmischer oder eine ordentliche Kappsäge gehört hierher. Die Falle ist, mehrere Werkzeuge zusammen als Set ab 300 Dollar zu kaufen, denn dann gilt das Set als ein Gegenstand, auch wenn jedes Teil einzeln darunter gelegen hätte."
       },
       {
         "t": "Schutzausrüstung und Schutzkleidung",
-        "d": "Warnschutzhemden und -westen, Sicherheitsschuhe mit Stahlkappe, Schutzbrille, Helm, Gehörschutz, Arbeitshandschuhe, Staubmaske. Das ATO fragt nicht, ob etwas auf der Baustelle nützlich ist, sondern ob es eine Eigenschaft hat, die dich vor einer konkreten Verletzungsgefahr schützt."
+        "d": "Warnschutzhemden und -westen, Sicherheitsschuhe mit Stahlkappe, Schutzbrille, Helm, Gehörschutz, Arbeitshandschuhe, Staubmaske. Das ATO fragt nicht, ob etwas auf der Baustelle nützlich ist, sondern ob es dich vor einer konkreten Verletzungsgefahr schützt."
       },
       {
         "t": "Sonnenschutz für Arbeit im Freien",
-        "d": "Sonnencreme, Hut mit breiter Krempe und Sonnenbrille sind absetzbar, wenn die Arbeit draußen stattfindet, auf derselben Grundlage wie bei jedem anderen Außenberuf. Auf einer Sommerplatte ist das eine echte, wiederkehrende Ausgabe, für die kaum jemand einen Beleg aufhebt."
+        "d": "Sonnencreme, Hut mit breiter Krempe und Sonnenbrille sind absetzbar, wenn die Arbeit draußen stattfindet. Auf einer Sommerplatte ist das eine echte, wiederkehrende Ausgabe, für die kaum jemand einen Beleg aufhebt."
       },
       {
         "t": "Verlängerung von White Card oder Ticket",
@@ -147,7 +147,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Arbeitsanteil an Handy und Internet",
-        "d": "Wenn du mit deinem eigenen Handy den Vorarbeiter anrufst, Pläne prüfst oder Schichtnachrichten bekommst, ist der arbeitsbezogene Prozentsatz absetzbar. Halte eine nachvollziehbare, ehrliche Grundlage für den Prozentsatz fest. Die ganze Rechnung bei einem Handy, auf dem auch dein Leben stattfindet, hält nicht stand."
+        "d": "Wenn du mit deinem eigenen Handy den Vorarbeiter anrufst, Pläne prüfst oder Schichtnachrichten bekommst, ist der arbeitsbezogene Prozentsatz absetzbar. Die ganze Rechnung bei einem Handy, auf dem auch dein Leben stattfindet, hält nicht stand."
       },
       {
         "t": "Weiterbildung im Gewerk, in dem du schon arbeitest",
@@ -160,7 +160,7 @@ const SECTIONS: Section[] = [
     "h2": "Was muss hinter einem Werkzeugabzug stehen?",
     "paras": [
       "Jeder Abzug muss drei Tests bestehen. Du hast selbst bezahlt, dir wurde nichts erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Auf der Baustelle heißt das: der Beleg für die Bohrmaschine, die Stiefel und die Ticketverlängerung.",
-      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, solange Betrag, Datum, Anbieter und Gegenstand daraus hervorgehen, und er muss fünf Jahre halten. Liegen alle Abzüge des Jahres bei 300 Dollar oder weniger, brauchst du gar keinen schriftlichen Nachweis. Das ist nicht die 300-Dollar-Grenze, die entscheidet, ob eine Säge sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, mit Betrag, Datum, Anbieter und Gegenstand, fünf Jahre aufbewahrt. Liegen alle Abzüge des Jahres bei 300 Dollar oder weniger, brauchst du gar keinen schriftlichen Nachweis. Das ist nicht die 300-Dollar-Grenze, die entscheidet, ob eine Säge sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
@@ -181,19 +181,19 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Normale Kleidung, die die Baustelle zerlegt",
-        "d": "Jeans, T-Shirt, Flanellhemd, Hoodie. Die Arbeit zerstört sie und sie wurde für die Arbeit gekauft, und beides zählt nicht. Normaler Verschleiß an Alltagskleidung ist eine private Ausgabe. Das Teil muss dich schützen, vor Schnitten, Sonne, Lärm, Staub oder Aufprall, nicht bloß den Tag überstehen."
+        "d": "Jeans, T-Shirt, Flanellhemd, Hoodie. Normaler Verschleiß an Alltagskleidung ist eine private Ausgabe. Das Teil muss dich schützen, nicht bloß den Tag überstehen."
       },
       {
         "t": "Deine erste White Card",
-        "d": "Die Karte, die du bezahlt hast, bevor dich jemand einstellen wollte, ist die Kost, für den Beruf überhaupt in Frage zu kommen, und das behandelt das ATO wie den ersten Führerschein. Die Verlängerung, während du arbeitest, ist etwas anderes und absetzbar."
+        "d": "Die Karte, die du bezahlt hast, bevor dich jemand einstellen wollte, sind die Kosten dafür, für den Beruf überhaupt in Frage zu kommen, und die behandelt das ATO wie den ersten Führerschein. Die Verlängerung, während du arbeitest, ist absetzbar."
       },
       {
         "t": "Den Ute pauschal",
-        "d": "Einen Ute zu besitzen und damit zur Baustelle zu fahren ist kein Abzug. Alle drei Bedingungen für sperriges Werkzeug müssen erfüllt sein, und auf den meisten Baustellen sind sie es nicht, weil es dort abschließbaren Stauraum gibt. Das ist der am häufigsten überzogene Abzug im Gewerk."
+        "d": "Einen Ute zu besitzen und damit zur Baustelle zu fahren ist kein Abzug. Alle drei Bedingungen für sperriges Werkzeug müssen erfüllt sein, und auf den meisten Baustellen sind sie es nicht, weil es dort abschließbaren Stauraum gibt."
       },
       {
         "t": "Werkzeug, das der Arbeitgeber gestellt oder bezahlt hat",
-        "d": "Kam es vom Lkw, aus dem Baucontainer, oder wurde es dir erstattet, sind dir keine Kosten geblieben. Wer ein Werkzeug benutzt, ist nicht automatisch wer es bezahlt hat."
+        "d": "Kam es vom Lkw, aus dem Baucontainer, oder wurde es dir erstattet, sind dir keine Kosten geblieben."
       },
       {
         "t": "Ein Kurs für ein anderes Gewerk",
@@ -227,7 +227,7 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Welche Teile hängen an deinen eigenen Fakten?",
     "paras": [
-      "Zuerst die Ausnahme für sperriges Werkzeug. Was du transportierst, was die Baustelle an Stauraum bietet und ob das Werkzeug an diesem Tag nötig war, gibt den Ausschlag. Zwei Helfer derselben Crew können unterschiedlich dastehen, und dieser Abzug wird angeschaut.",
+      "Zuerst die Ausnahme für sperriges Werkzeug. Was du transportierst, was die Baustelle an Stauraum bietet und ob das Werkzeug an diesem Tag nötig war, gibt den Ausschlag. Zwei Helfer derselben Crew können unterschiedlich dastehen.",
       "Der steuerliche Wohnsitz ist mehr wert als alles Werkzeug auf der Liste. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
@@ -236,23 +236,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Kann ich meine erste White Card absetzen?",
-    "answer": "Nein. Das ATO behandelt die erste White Card wie den ersten Führerschein, als Kosten dafür, für die Arbeit überhaupt in Frage zu kommen, und nicht als Kosten der Arbeit. Sobald du auf der Baustelle arbeitest und die Karte zum Weiterarbeiten verlängert werden muss, ist die Verlängerung absetzbar. Dasselbe gilt für ein erstes Staplerticket oder eine Fahrerlaubnis für schwere Fahrzeuge."
+    "answer": "Nein. Das ATO behandelt die erste White Card wie den ersten Führerschein, als Kosten dafür, für die Arbeit überhaupt in Frage zu kommen, und nicht als Kosten der Arbeit.\n\nSobald du auf der Baustelle arbeitest und die Karte zum Weiterarbeiten verlängert werden muss, ist die Verlängerung absetzbar. Dasselbe gilt für ein erstes Staplerticket oder eine Fahrerlaubnis für schwere Fahrzeuge."
   },
   {
     "question": "Welches Werkzeug kann ich als Bauarbeiter absetzen?",
-    "answer": "Jedes Werkzeug und jede Ausrüstung, die du selbst für die Baustelle gekauft hast, sofern dein Arbeitgeber sie weder gestellt noch erstattet hat. Gegenstände bis 300 Dollar pro Stück werden im Kaufjahr voll abgesetzt. Ab 300 Dollar setzt du sie ebenfalls ab, aber über die Nutzungsdauer verteilt. Kaufst du mehrere Werkzeuge zusammen als Set ab 300 Dollar, gilt das ganze Set als ein Gegenstand."
+    "answer": "Jedes Werkzeug und jede Ausrüstung, die du selbst für die Baustelle gekauft hast, sofern dein Arbeitgeber sie weder gestellt noch erstattet hat.\n\nGegenstände bis 300 Dollar pro Stück werden im Kaufjahr voll abgesetzt. Ab 300 Dollar setzt du sie ebenfalls ab, aber über die Nutzungsdauer verteilt. Kaufst du mehrere Werkzeuge zusammen als Set ab 300 Dollar, gilt das ganze Set als ein Gegenstand."
   },
   {
     "question": "Kann ich meinen Ute für die Fahrt zur Baustelle absetzen?",
-    "answer": "Nur in einem engen Fall. Die Fahrt von zu Hause zu einem festen Arbeitsplatz ist privat, und daran ändert sich nichts, weil der Arbeitsplatz eine Baustelle ist. Die Fahrt wird nur absetzbar, wenn das Werkzeug an diesem Tag nötig, wirklich sperrig und auf der Baustelle nicht sicher zu lagern ist. Da die meisten Utes und Kastenwagen eine Tonne oder mehr tragen, ist die Kilometerpauschale für sie ausgeschlossen und nur das Fahrtenbuch bleibt."
+    "answer": "Nur in einem engen Fall. Die Fahrt von zu Hause zu einem festen Arbeitsplatz ist privat, und daran ändert sich nichts, weil der Arbeitsplatz eine Baustelle ist.\n\nDie Fahrt wird nur absetzbar, wenn das Werkzeug an diesem Tag nötig, wirklich sperrig und auf der Baustelle nicht sicher zu lagern ist. Da die meisten Utes und Kastenwagen eine Tonne oder mehr tragen, ist die Kilometerpauschale für sie ausgeschlossen und nur das Fahrtenbuch bleibt."
   },
   {
     "question": "Sind Stahlkappen und Warnschutzkleidung absetzbar?",
-    "answer": "Ja. Schutzartikel wie Sicherheitsschuhe mit Stahlkappe, Warnschutzhemden und -westen, Schutzbrillen, Helme, Gehörschutz und Arbeitshandschuhe sind absetzbar, weil sie dich vor einer konkreten Verletzungsgefahr auf der Baustelle schützen, und genau das prüft das ATO. Sonnenschutz für Außenarbeit gilt auf derselben Grundlage, und das Waschen der Schutzkleidung ebenfalls."
+    "answer": "Ja. Schutzartikel wie Sicherheitsschuhe mit Stahlkappe, Warnschutzhemden und -westen, Schutzbrillen, Helme, Gehörschutz und Arbeitshandschuhe sind absetzbar, weil sie dich vor einer konkreten Verletzungsgefahr schützen, und genau das prüft das ATO.\n\nSonnenschutz für Außenarbeit gilt auf derselben Grundlage, und das Waschen der Schutzkleidung ebenfalls."
   },
   {
     "question": "Meine Klamotten gehen auf der Baustelle kaputt. Warum kann ich sie nicht absetzen?",
-    "answer": "Weil das ATO den Gegenstand prüft und nicht, was mit ihm passiert ist. Jeans, T-Shirt oder Flanellhemd sind Alltagskleidung, die jeder überall tragen könnte, und normaler Verschleiß daran ist privat, so schnell die Arbeit sie auch ruiniert. Absetzbar wird ein Teil erst mit einer echten Schutzfunktion, wie die Schutzausrüstung oben, oder als vorgeschriebene Uniform mit Logo."
+    "answer": "Weil das ATO den Gegenstand prüft und nicht, was mit ihm passiert ist. Jeans, T-Shirt oder Flanellhemd sind Alltagskleidung, und normaler Verschleiß daran ist privat, so schnell die Arbeit sie auch ruiniert.\n\nAbsetzbar wird ein Teil erst mit einer echten Schutzfunktion, wie die Schutzausrüstung oben, oder als vorgeschriebene Uniform mit Logo."
   }
 ]
 
@@ -346,7 +346,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -561,7 +561,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -571,7 +573,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -611,7 +613,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Am Absatzumbruch geteilt, damit eine lange Antwort als zwei
+                    kurze Absätze liest. faqSchema nutzt weiter den Rohtext. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

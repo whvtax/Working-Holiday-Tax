@@ -79,7 +79,7 @@ const IconWhatsApp = () => (
 const NEEDED = [
   {
     label: 'Dein Pass und dein Visum',
-    body: 'Welcher Pass und welcher Subclass. Davon hängt alles Weitere ab, deshalb fragen wir zuerst.',
+    body: 'Welcher Pass und welcher Subclass.',
   },
   {
     label: 'Ein australisches Bankkonto',
@@ -96,17 +96,17 @@ const SEQUENCE = [
   {
     n: '01',
     title: 'Du schreibst uns',
-    body: 'WhatsApp, auf Deutsch, Englisch oder Japanisch. Du erzählst grob, wie das Jahr aussah, wir sagen dir, wo du stehst, und das Honorar wird vereinbart, bevor irgendetwas beginnt.',
+    body: 'WhatsApp, auf Deutsch, Englisch oder Japanisch. Du erzählst grob, wie das Jahr aussah, wir sagen dir, wo du stehst, und das Honorar wird vereinbart, bevor die Arbeit beginnt.',
   },
   {
     n: '02',
     title: 'Ein Fragebogen, etwa zehn Minuten',
-    body: 'Pass- und Visumsdaten, Bankdaten, die Orte und die Art der Arbeit. Es ist das einzige Formular, das du ausfüllst, und du füllst es genau einmal aus. Was auf dein Jahr nicht passt, lässt du offen, dann fragen wir nach.',
+    body: 'Pass- und Visumsdaten, Bankdaten, die Orte und die Art der Arbeit. Es ist das einzige Formular, das du ausfüllst. Was nicht passt, lässt du offen, dann fragen wir nach.',
   },
   {
     n: '03',
     title: 'Wir öffnen deine ATO-Daten',
-    body: 'Jeder Arbeitgeber, der dich gemeldet hat, jedes Income Statement, jeder einbehaltene Dollar und jedes frühere Jahr, das noch offen liegt. Vergessene Jobs und Wochen zum Höchstsatz tauchen fast immer hier auf und nicht in der Erinnerung.',
+    body: 'Jeder Arbeitgeber, der dich gemeldet hat, jedes Income Statement, jeder einbehaltene Dollar und jedes frühere Jahr, das noch offen liegt. Vergessene Jobs und Wochen zum Höchstsatz tauchen hier auf, nicht in der Erinnerung.',
   },
   {
     n: '04',
@@ -116,17 +116,17 @@ const SEQUENCE = [
   {
     n: '05',
     title: 'Du liest und unterschreibst',
-    body: 'Du bekommst die fertige Erklärung, jede Zahl in normaler Sprache erklärt, und nichts geht ans ATO, bevor du gelesen und die Erklärung unterschrieben hast. Unterschrieben wird elektronisch, das funktioniert auch vom Handy auf der anderen Erdhalbkugel.',
+    body: 'Du bekommst die fertige Erklärung, jede Zahl erklärt, und nichts geht ans ATO, bevor du gelesen und unterschrieben hast. Unterschrieben wird elektronisch, das geht auch vom Handy auf der anderen Erdhalbkugel.',
   },
   {
     n: '06',
     title: 'Es wird eingereicht',
-    body: 'Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten, und du musst dafür nicht wach sein.',
+    body: 'Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten.',
   },
   {
     n: '07',
     title: 'Das ATO zahlt aus',
-    body: 'Rückerstattungen kommen meist etwa 14 Werktage nach der Einreichung an, direkt auf das australische Konto, das du uns genannt hast. Fragt das ATO vorher nach, beantworten wir das und sagen dir, worum es ging. Du hörst so oder so von uns.',
+    body: 'Rückerstattungen kommen meist etwa 14 Werktage nach der Einreichung an, auf das australische Konto, das du uns genannt hast. Fragt das ATO nach, beantworten wir das und sagen dir, worum es ging.',
   },
 ]
 
@@ -134,44 +134,47 @@ const SEQUENCE = [
 const RULES = [
   {
     label: 'Die Rückerstattung geht nur auf ein australisches Konto',
-    body: 'Die Super-Auszahlung (DASP) kann auf ein Konto im Ausland gehen. Eine Steuerrückerstattung nicht. Wenn du dein australisches Konto schließen willst, warte, bis die Rückerstattung da ist, oder sag uns vorher Bescheid.',
+    body: 'Die Super-Auszahlung (DASP) kann auf ein Konto im Ausland gehen. Eine Steuerrückerstattung nicht. Willst du dein australisches Konto schließen, warte, bis die Rückerstattung da ist, oder sag uns vorher Bescheid.',
   },
   {
     label: 'Frühere Jahre kannst du dir noch holen',
-    body: 'Ein Steuerjahr, für das du nie eingereicht hast, verschwindet nicht von allein. Jedes Jahr ist eine eigene Erklärung und eine eigene Rückerstattung, und wir arbeiten sie vom ältesten an ab, damit nichts halb fertig liegen bleibt.',
+    body: 'Ein Steuerjahr, für das du nie eingereicht hast, verschwindet nicht von allein. Jedes Jahr ist eine eigene Erklärung und eine eigene Rückerstattung, und wir arbeiten sie vom ältesten an ab.',
   },
 ]
 
+// Antworten über etwa 55 Wörtern tragen eine Leerzeile, und die FAQ unten
+// rendert einen <p> pro Absatz. faqLd nutzt weiter den Rohtext, das Schema
+// bleibt also unverändert.
 const FAQS = [
   {
     question: 'Wie lange dauert eine Steuererklärung für Working Holiday Maker?',
     answer:
-      'Ab dem Tag, an dem dein Fragebogen da ist, brauchen Vorbereitung und Prüfung bei einem unkomplizierten Jahr wenige Tage, und das ATO zahlt die Rückerstattung meist etwa 14 Werktage nach der Einreichung aus. Fünf Arbeitgeber, über eine ABN abgerechnetes Einkommen oder ein Wohnsitz, der begründet werden muss, dauern bei uns länger. Wir sagen dir, welcher Fall deiner ist, statt dich raten zu lassen.',
+      'Ab dem Tag, an dem dein Fragebogen da ist, brauchen Vorbereitung und Prüfung bei einem unkomplizierten Jahr wenige Tage, und das ATO zahlt die Rückerstattung meist etwa 14 Werktage nach der Einreichung aus.\n\nFünf Arbeitgeber, über eine ABN abgerechnetes Einkommen oder ein Wohnsitz, der begründet werden muss, dauern bei uns länger. Wir sagen dir, welcher Fall deiner ist.',
   },
   {
     question: 'Braucht ihr meine Payslips?',
     answer:
-      'Nein. Jeder Arbeitgeber, der dich über eine Lohnabrechnung bezahlt hat, hat dem ATO ein Income Statement gemeldet, und daraus entsteht die Erklärung. Verlorene Abrechnungen und ein Arbeitgeber, den es nicht mehr gibt, sind normale Ausgangspunkte. Das Einzige, wonach sich Suchen lohnt, sind Belege für berufliche Ausgaben. Gibt es die nicht, beschreib uns die Arbeit, und wir sagen dir, was auch ohne Belege absetzbar ist.',
+      'Nein. Jeder Arbeitgeber, der dich über eine Lohnabrechnung bezahlt hat, hat dem ATO ein Income Statement gemeldet, und daraus entsteht die Erklärung. Verlorene Abrechnungen und ein Arbeitgeber, den es nicht mehr gibt, sind normale Ausgangspunkte.\n\nSuchen lohnt sich nur nach Belegen für berufliche Ausgaben. Gibt es die nicht, beschreib uns die Arbeit, und wir sagen dir, was auch ohne Belege absetzbar ist.',
   },
   {
     question: 'Was muss ich selbst tun?',
     answer:
-      'Drei Dinge. Den Fragebogen einmal ausfüllen, die fertige Erklärung lesen und sie unterschreiben. Du legst kein Behördenkonto an, bestehst keine australische Identitätsprüfung und musst kein ATO-Formular deuten, weil die Einreichung über uns läuft.',
+      'Drei Dinge. Den Fragebogen einmal ausfüllen, die fertige Erklärung lesen und sie unterschreiben. Du legst kein Behördenkonto an und musst kein ATO-Formular deuten, weil die Einreichung über uns läuft.',
   },
   {
     question: 'Geht das auch, wenn ich Australien schon verlassen habe?',
     answer:
-      'Ja, und ein großer Teil der Erklärungen, die wir einreichen, gehört Leuten, die schon wieder in Deutschland, Österreich oder der Schweiz sind. Fragebogen, Unterschrift und Einreichung laufen komplett online. Das Einzige, was nicht mitreist, ist die Rückerstattung selbst: Das ATO kann sie nur auf ein australisches Bankkonto auszahlen, die Super-Rückerstattung (DASP) dagegen auch ins Ausland. Wenn dein australisches Konto schon geschlossen ist, schreib es uns in der ersten Nachricht.',
+      'Ja, und viele der Erklärungen, die wir einreichen, gehören Leuten, die schon wieder in Deutschland, Österreich oder der Schweiz sind. Fragebogen, Unterschrift und Einreichung laufen online.\n\nNur die Rückerstattung reist nicht mit: Das ATO kann sie nur auf ein australisches Bankkonto auszahlen, die Super-Rückerstattung (DASP) dagegen auch ins Ausland. Ist dein australisches Konto schon geschlossen, schreib es uns in der ersten Nachricht.',
   },
   {
     question: 'Was ist, wenn ich für ein früheres Jahr nie eingereicht habe?',
     answer:
-      'Das lässt sich jetzt noch nachholen. Jedes Steuerjahr steht für sich, mit eigener Erklärung und eigener Rückerstattung, und an den ATO-Daten sehen wir, welche Jahre noch offen sind. Eine späte Erklärung ist in der Regel unproblematisch, sobald sie eingereicht ist, und in den meisten Working-Holiday-Jahren steht am Ende Geld für dich und nicht gegen dich.',
+      'Das lässt sich jetzt noch nachholen. Jedes Steuerjahr steht für sich, mit eigener Erklärung und eigener Rückerstattung, und an den ATO-Daten sehen wir, welche Jahre noch offen sind.\n\nIn den meisten Working-Holiday-Jahren steht am Ende Geld für dich und nicht gegen dich.',
   },
   {
     question: 'Was passiert, wenn am Ende eine Nachzahlung steht?',
     answer:
-      'Das kommt vor, meistens dann, wenn Einkommen über eine ABN abgerechnet wurde und unterwegs nichts einbehalten worden ist. Du siehst diesen Betrag, bevor irgendetwas eingereicht wird, zusammen mit der Erklärung, wo er herkommt und welche Zahlungswege das ATO anbietet. Ohne deine Unterschrift geht nichts raus, du erfährst es also nicht erst hinterher.',
+      'Das kommt vor, meistens dann, wenn Einkommen über eine ABN abgerechnet wurde und unterwegs nichts einbehalten worden ist.\n\nDu siehst diesen Betrag, bevor irgendetwas eingereicht wird, zusammen mit der Erklärung, wo er herkommt und welche Zahlungswege das ATO anbietet. Ohne deine Unterschrift geht nichts raus.',
   },
 ]
 
@@ -326,12 +329,11 @@ export default function TaxReturnPageDE() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Dein Teil</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
             Was wir von dir brauchen
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            Drei Dinge, und das ist die ganze Liste. Die meisten erwarten, erst einen Ordner zusammenstellen zu müssen.
-            Der Ordner war nie das, was hier gefehlt hat.
+            Drei Dinge, und das ist die ganze Liste.
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -349,10 +351,8 @@ export default function TaxReturnPageDE() {
             </p>
             <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch' }}>
               Jeder Arbeitgeber, der dich auf eine Lohnabrechnung gesetzt hat, hat längst ein Income Statement zu deiner
-              TFN gemeldet, und daraus entsteht die Erklärung. Über das ATO ist das für uns alles sichtbar. Ein
-              Schuhkarton voller Papier, ein verlorenes Handy, ein Hosteljob, dessen Namen du nie richtig gelernt hast:
-              nichts davon hält irgendetwas auf. Belege für berufliche Ausgaben sind das Einzige, wonach sich Suchen
-              lohnt, und wenn es keine gibt, beschreib uns stattdessen die Arbeit.
+              TFN gemeldet, und daraus entsteht die Erklärung. Belege für berufliche Ausgaben sind das Einzige, wonach
+              sich Suchen lohnt, und wenn es keine gibt, beschreib uns stattdessen die Arbeit.
             </p>
           </div>
         </div>
@@ -364,12 +364,11 @@ export default function TaxReturnPageDE() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Von Anfang bis Ende</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             In welcher Reihenfolge das läuft
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            Sieben Schritte. Du kommst in zweien davon vor, am Anfang und noch einmal zum Unterschreiben. Alles
-            dazwischen ist unsere Sache, und du kannst in der Zwischenzeit wieder deinem Leben nachgehen.
+            Sieben Schritte. Du kommst in zweien davon vor, am Anfang und noch einmal zum Unterschreiben.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -398,14 +397,13 @@ export default function TaxReturnPageDE() {
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
             Zwei Regeln ändern die Reihenfolge
           </h2>
-          <p style={{ ...LEDE, color: '#4C6459', maxWidth: '54ch', marginBottom: '26px' }}>
-            Beide sind am Anfang leichter zu lösen als auf halber Strecke.
-          </p>
+          {/* Die Lede sagte die Überschrift noch einmal. Das Detail steht in
+              den beiden Karten. */}
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2" style={{ marginTop: '22px' }}>
             {RULES.map((r) => (
               <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
@@ -426,7 +424,7 @@ export default function TaxReturnPageDE() {
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Von dem, was das ATO überweist, wird nie etwas abgezogen. Der Betrag wird vor Schritt 01 auf WhatsApp mit dir
-            geklärt, sodass es beim Fragebogen nichts mehr zu verhandeln gibt.
+            geklärt.
           </p>
         </div>
       </section>
@@ -435,13 +433,13 @@ export default function TaxReturnPageDE() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Fang mit einer Nachricht an, nicht mit einem Formular
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
             Schick uns die Orte, in denen du gearbeitet hast, ungefähr welche Monate, und ob du je über eine ABN
-            abgerechnet hast. Daraus sagen wir dir, welche Jahre noch offen sind und wie dein Teil der Arbeit aussieht.
-            Ob du vor zwei Jahren heimgeflogen bist, spielt keine Rolle.
+            abgerechnet hast. Daraus sagen wir dir, welche Jahre noch offen sind und wie dein Teil aussieht. Ob du vor
+            zwei Jahren heimgeflogen bist, spielt keine Rolle.
           </p>
           <WaLink href={WA_TR} position="section" topic="tax-return" lang="de"
             className="btn-primary inline-flex items-center justify-center gap-2"
@@ -459,12 +457,11 @@ export default function TaxReturnPageDE() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
-            Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Deshalb
-            wird dir so wenig abverlangt, und deshalb sind die unangenehmen Fälle für uns keine Überraschung. Vorbereitet
+            Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Vorbereitet
             von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO
             eingereicht wird.
           </p>
@@ -479,8 +476,8 @@ export default function TaxReturnPageDE() {
             </svg>
             <p style={{ ...BODY, color: '#2A3C34' }}>
               <strong style={{ color: '#080F0D' }}>Niemand Seriöses fragt dich nach deinem myGov-Passwort.</strong>{' '}
-              Wir fragen in keinem Schritt danach, weil der Weg oben es nicht braucht. Wenn dich eine Nachricht danach
-              fragt, kommt sie nicht von uns.
+              Wir fragen nie danach, weil der Weg oben es nicht braucht. Fragt dich eine Nachricht danach, kommt sie
+              nicht von uns.
             </p>
           </div>
         </div>
@@ -501,7 +498,12 @@ export default function TaxReturnPageDE() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+                {/* An einer Leerzeile getrennt, damit eine lange Antwort als
+                    zwei kurze Absätze ankommt. faqLd oben nutzt weiter den
+                    Rohtext. */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -513,12 +515,11 @@ export default function TaxReturnPageDE() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             Die lange Fassung der schwierigen Schritte
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            Wenn du die Begründung lieber siehst, bevor du etwas aus der Hand gibst, steht sie vollständig da.
-          </p>
+          {/* Die Lede sagte die Überschrift noch einmal. Die drei Karten sagen,
+              um welche Schritte es geht. */}
 
           <div className="grid gap-3 sm:grid-cols-3">
             {GUIDES.map((g) => (
@@ -536,7 +537,7 @@ export default function TaxReturnPageDE() {
       <NextStep
         eyebrow="Was kommt als Nächstes"
         heading="Lass deine Super nicht liegen"
-        body="Dein Arbeitgeber hat zusätzlich zum Lohn Superannuation für dich eingezahlt. Wenn du Australien endgültig verlässt, kannst du sie beantragen, und das ist ein eigener Vorgang neben der Erklärung."
+        body="Dein Arbeitgeber hat zusätzlich zum Lohn Superannuation für dich eingezahlt. Wenn du Australien endgültig verlässt, kannst du sie beantragen, getrennt von der Erklärung."
         cta="Wie der Super-Antrag läuft →"
         href="/de/superannuation"
       />

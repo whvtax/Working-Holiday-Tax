@@ -81,11 +81,11 @@ const RHCA = [
 const MYGOV = [
   {
     mygov: 'The levy is added when the return is assessed, so the first sign of it is a refund that came back smaller.',
-    us: 'We settle that question before the return goes in, rather than after the assessment lands.',
+    us: 'We settle that question before the return goes in, not after the assessment lands.',
   },
   {
     mygov: 'Nothing on the screen mentions that your passport country, not your visa, is what decides it.',
-    us: 'Whether Australia has a reciprocal health care agreement with your country is the whole question, and it is the first one we ask.',
+    us: 'Whether Australia has a reciprocal health care agreement with your country is the whole question, and the first one we ask.',
   },
   {
     mygov: 'Taking the levy off needs an exemption certificate, applied for separately and not through the return at all.',
@@ -93,40 +93,43 @@ const MYGOV = [
   },
   {
     mygov: 'The exemption box is there whether you hold the certificate or not.',
-    us: 'We only claim it with the evidence behind it, which is what the claim has to rest on if it is ever queried.',
+    us: 'We only claim it with the evidence behind it, which is what the claim rests on if it is queried.',
   },
 ]
 
+// Answers past about 55 words carry a blank line, and the FAQ below renders one
+// <p> per paragraph. faqSchema still uses the raw string, so the structured data
+// is unchanged.
 const faqs = [
   {
     question: 'How much is the Medicare levy exemption actually worth?',
     answer:
-      'The levy is 2% of taxable income, so about $500 on $25,000 earned and about $1,000 on $50,000. It is settled when your return is assessed rather than taken out of your wages week by week, so the exemption claimed in the return is what puts the money back.',
+      'The levy is 2% of taxable income, so about $500 on $25,000 earned and about $1,000 on $50,000. It is settled when your return is assessed, not taken out of your wages week by week, so the exemption claimed in the return is what puts the money back.',
   },
   {
     question: 'Does every 417 or 462 visa holder get the exemption?',
     answer:
-      'Most do, but not all. The deciding factor is your passport rather than your visa: a national of one of the eleven reciprocal health care agreement countries, the United Kingdom, Ireland and Italy among them, is generally entitled to Medicare here, and entitlement is what removes the exemption. Germany and Japan hold no agreement, so the exemption is normally available to working holiday makers from either.',
+      'Most do, but not all. The deciding factor is your passport, not your visa: a national of one of the eleven reciprocal health care agreement countries, the United Kingdom, Ireland and Italy among them, is generally entitled to Medicare here, and entitlement removes the exemption.\n\nGermany and Japan hold no agreement, so the exemption is normally available to working holiday makers from either.',
   },
   {
     question: 'What is a Medicare Entitlement Statement and do you need one?',
     answer:
-      'A Medicare Entitlement Statement is a document from Services Australia confirming that you were not entitled to Medicare for a stated period. It is the evidence behind the exemption and the ATO can ask to see it, so we deal with it as part of your return rather than claiming the exemption bare.',
+      'A Medicare Entitlement Statement is a document from Services Australia confirming you were not entitled to Medicare for a stated period. It is the evidence behind the exemption and the ATO can ask to see it, so we deal with it as part of your return.',
   },
   {
     question: 'Can you claim the exemption for only part of the year?',
     answer:
-      'Yes, and for a lot of working holiday makers that is the right answer rather than a full year exemption. It is worked out in days, so if you arrived in November, only the days you were not entitled to Medicare are exempt. Claiming a full year when part of it applies is the kind of error that gets a return amended later.',
+      'Yes, and for a lot of working holiday makers that is the right answer. It is worked out in days, so if you arrived in November, only the days you were not entitled to Medicare are exempt.\n\nClaiming a full year when part of it applies is the kind of error that gets a return amended later.',
   },
   {
     question: 'Does travel insurance or private health cover change any of this?',
     answer:
-      'No. The levy is a tax question about entitlement to the public system, not about whether you are insured, so travel insurance and private hospital cover have no bearing on it. Private cover matters for a different charge, the Medicare levy surcharge, which applies at high incomes and is rarely relevant on a working holiday.',
+      'No. The levy is a question about entitlement to the public system, not about whether you are insured, so travel insurance and private hospital cover have no bearing on it.\n\nPrivate cover matters for a different charge, the Medicare levy surcharge, which applies at high incomes and is rarely relevant on a working holiday.',
   },
   {
     question: 'What happens if the levy was already taken during the year?',
     answer:
-      'Nothing is lost. The levy is calculated when your return is assessed, not when you are paid, so what came out of your wages during the year was tax withheld generally rather than the levy specifically. A valid exemption takes it out of the assessment. If an earlier year was lodged without the exemption and you were entitled to it, that return can usually be amended.',
+      'Nothing is lost. The levy is calculated when your return is assessed, not when you are paid, so what came out of your wages was tax withheld generally, not the levy specifically. A valid exemption takes it out of the assessment.\n\nIf an earlier year was lodged without the exemption and you were entitled to it, that return can usually be amended.',
   },
 ]
 
@@ -176,7 +179,9 @@ const H2: React.CSSProperties = {
   fontSize: 'clamp(21px,2.6vw,30px)',
   lineHeight: 1.16,
   letterSpacing: '-0.025em',
-  marginBottom: '12px',
+  // 12px under a 21 to 30px serif heading is tight. Every H2 on the page runs
+  // through this object, so the air goes in once.
+  marginBottom: '16px',
   scrollMarginTop: '84px',
 }
 const BODY: React.CSSProperties = {
@@ -262,24 +267,33 @@ export default function MedicarePage() {
             </h2>
 
             <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
-              It is 2% of taxable income, about $500 on a $25,000 year. It never appears on a payslip, which is why
-              almost nobody notices paying it.
+              It is 2% of taxable income, about $500 on a $25,000 year. It never appears on a payslip.
             </p>
 
+            {/* The two labels used to print on all eight cells, which on a phone
+                is the same two words repeated eight times down the screen. They
+                print once, on the first row, where they read as column headings
+                on desktop and as the key on mobile. The alternating ground and
+                the heavier weight carry the distinction from there. Copy is
+                unchanged. */}
             <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                  <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
-                      On myGov
-                    </p>
+                  <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                        On myGov
+                      </p>
+                    )}
                     <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
                   <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                    style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
-                      With us
-                    </p>
+                    style={{ padding: '13px 16px', background: '#F2FAF7' }}>
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
+                        With us
+                      </p>
+                    )}
                     <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word' }}>{row.us}</p>
                   </div>
                 </div>
@@ -300,17 +314,17 @@ export default function MedicarePage() {
             <h2 className="font-serif font-black text-ink" style={H2}>
               Why is the levy on your assessment at all?
             </h2>
+            {/* "The levy is applied when the ATO assesses your return" is the
+                first row of the table directly above this. */}
             <p style={BODY}>
-              Because it is the default. The levy is applied to your taxable income when the ATO assesses
-              your return, and it comes off unless an exemption is claimed. Nothing in the process asks
+              Because it is the default. It comes off unless an exemption is claimed, and nothing asks
               whether you were entitled to Medicare, so the common outcome is 2% of a year's income paid
-              towards a system you were never able to use.
+              towards a system you could never use.
             </p>
             <p style={BODY}>
-              The quieter mistake is the opposite one: the exemption ticked without the statement that
-              backs it. That evidence is a Medicare Entitlement Statement from Services Australia, a
-              separate agency to the ATO, and a claim made without it is one you cannot support if it is
-              queried a year later when you are no longer in the country.
+              The quieter mistake is the opposite: the exemption ticked without the statement that backs
+              it. That evidence is a Medicare Entitlement Statement from Services Australia, a separate
+              agency to the ATO, and a claim made without it cannot be supported if it is queried.
             </p>
           </div>
         </div>
@@ -323,13 +337,18 @@ export default function MedicarePage() {
             <h2 className="font-serif font-black text-ink" style={H2}>
               Who is exempt from the Medicare levy?
             </h2>
+            {/* Five sentences was a wall on a 390px screen. Split on the turn in
+                the argument: what decides it, then who each side of it is. */}
             <p style={BODY}>
               You are generally exempt if you were not entitled to Medicare, and on a working holiday visa
               that comes down to your passport. Australia has reciprocal health care agreements with eleven
-              countries. A national of one of those is generally entitled to Medicare while here, which
-              removes the exemption even if you never enrolled and never used it: the test is entitlement,
-              not use. Everybody else, Germany and Japan included, is normally not entitled and can claim
-              the exemption for the days that applies.
+              countries.
+            </p>
+            <p style={BODY}>
+              A national of one of those is generally entitled to Medicare while here, which removes the
+              exemption even if you never enrolled: the test is entitlement, not use. Everybody else,
+              Germany and Japan included, is normally not entitled and can claim the exemption for the days
+              that applies.
             </p>
           </div>
 
@@ -340,7 +359,7 @@ export default function MedicarePage() {
               </p>
               <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '12px' }}>
                 Generally entitled to Medicare, so generally not exempt. We make sure the levy is applied
-                correctly rather than twice, and check whether any part of the year was different.
+                correctly, and check whether any part of the year was different.
               </p>
               <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#4C6459' }}>
                 {RHCA.join(' · ')}
@@ -352,7 +371,7 @@ export default function MedicarePage() {
               </p>
               <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '12px' }}>
                 Normally not entitled to Medicare, so normally exempt. Germany and Japan are both in this
-                group, and together they are a large share of the people reading this page.
+                group.
               </p>
               <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#4C6459' }}>
                 The exemption is counted in days, not as a single yes or no for the year.
@@ -370,8 +389,7 @@ export default function MedicarePage() {
               What do we do about it?
             </h2>
             <p style={BODY}>
-              We work out whether you were entitled to Medicare and for which part of the year, which is a
-              question about your nationality, your visa and your dates rather than a box to tick.
+              We work out whether you were entitled to Medicare and for which part of the year.
             </p>
 
             <div className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1.5px solid #C8EAE0', margin: '20px 0' }}>
@@ -438,6 +456,14 @@ export default function MedicarePage() {
             <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '18px' }}>
               Common questions about the levy and the exemption
             </h2>
+
+            {/* Four of these six answers run past 55 words and every sentence in
+                them carries a rate, a country or a rule, so none can be cut to
+                one short paragraph. The blank lines in them are turned into
+                paragraph breaks by the shared Accordion, which keeps this page,
+                /superannuation and the German and Japanese versions on the same
+                component. faqSchema above is built from the raw string, so the
+                structured data is unchanged. */}
             <Accordion items={faqs} />
           </div>
         </div>

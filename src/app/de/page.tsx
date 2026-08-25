@@ -118,22 +118,22 @@ const ANALYSIS = [
   {
     n: '02',
     title: 'Jeder Arbeitgeber, jede Woche',
-    body: 'Ein Working-Holiday-Jahr ist unordentlich: mehrere Arbeitgeber, späte Zahlungen, vergessene Jobs. Wir rechnen das ganze Jahr gegen deinen offiziellen ATO-Datensatz ab, nicht gegen dein Gedächtnis.',
+    body: 'Ein Working-Holiday-Jahr ist unordentlich: mehrere Arbeitgeber, späte Zahlungen, vergessene Jobs. Wir rechnen es gegen deinen ATO-Datensatz ab, nicht gegen dein Gedächtnis.',
   },
   {
     n: '03',
     title: 'Medicare, falls es dich betrifft',
-    body: 'Zwei Prozent gehen standardmäßig ab, ob du sie geschuldet hast oder nicht. Zu erkennen, in welchen Jahren sie nie deine war, und sie entfernen zu lassen, ist unser Job.',
+    body: 'Zwei Prozent gehen standardmäßig ab, ob du sie geschuldet hast oder nicht. Zu erkennen, wann sie nie deine war, und sie entfernen zu lassen, ist unser Job.',
   },
   {
     n: '04',
     title: 'Abzüge für die Arbeit, die du wirklich gemacht hast',
-    body: 'Ein Fruit Picker, ein Barista und ein Fahrer setzen nicht dasselbe ab. Wir fragen, woraus deine Arbeit bestand, und machen genau das geltend, was dazugehört.',
+    body: 'Ein Fruit Picker, ein Barista und ein Fahrer setzen nicht dasselbe ab. Wir fragen, woraus deine Arbeit bestand, und machen geltend, was dazugehört.',
   },
   {
     n: '05',
     title: 'Dann wird eingereicht',
-    body: 'Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie zum ATO geht. Dieser Teil dauert Minuten. Die vier Schritte davor entscheiden die Zahl.',
+    body: 'Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie zum ATO geht. Die vier Schritte davor entscheiden die Zahl.',
   },
 ]
 
@@ -153,7 +153,7 @@ const SERVICES = [
 ]
 
 const GUIDES = [
-  { href: '/de/blog/diy-tax-return-vs-tax-agent-working-holiday', title: 'Selbst machen oder Steuerberater',        desc: 'Was dich beides wirklich kostet, ehrlich aufgeschrieben.' },
+  { href: '/de/blog/diy-tax-return-vs-tax-agent-working-holiday', title: 'Selbst machen oder Steuerberater',        desc: 'Was dich beides wirklich kostet.' },
   { href: '/de/blog/tax-residency-working-holiday-makers',        title: 'Bist du steuerlich ansässig',         desc: 'Die Frage, die auf einer Backpacker-Erklärung das meiste Geld bewegt.' },
   { href: '/de/blog/medicare-levy-working-holiday-makers',        title: 'Die Medicare-Levy-Befreiung',         desc: 'Wer die zwei Prozent schuldet, wer nicht, und wie sie wegfallen.' },
   { href: '/de/blog/tax-deductions-working-holiday-makers',       title: 'Was du absetzen kannst',              desc: 'Abzüge nach Art der Arbeit, statt einer allgemeinen Liste.' },
@@ -162,31 +162,31 @@ const GUIDES = [
 const FAQS = [
   {
     question: 'Wovon hängt ab, wie viel Steuern ich aus Australien zurückbekomme?',
-    answer: 'Vier Dinge machen den größten Teil aus: dein steuerlicher Wohnsitz für das Jahr, ob ein Teil deines Lohns mit 45 % einbehalten wurde, bevor deine TFN beim Arbeitgeber ankam, ob die 2 % Medicare Levy abgezogen wurden, obwohl du keinen Anspruch auf Medicare hattest, und die Abzüge, die zu deiner Arbeit gehören. Zwei Leute mit exakt demselben Einkommen können deshalb sehr unterschiedliche Rückerstattungen bekommen, und genau deshalb zählt die Analyse mehr als das Einreichen.',
+    answer: 'Vier Dinge: dein steuerlicher Wohnsitz für das Jahr, ob ein Teil deines Lohns mit 45 % einbehalten wurde, bevor deine TFN beim Arbeitgeber ankam, ob die 2 % Medicare Levy abgezogen wurden, obwohl du keinen Anspruch auf Medicare hattest, und die Abzüge, die zu deiner Arbeit gehören.\n\nZwei Leute mit demselben Einkommen können deshalb sehr unterschiedliche Rückerstattungen bekommen.',
   },
   {
     question: 'Kann ich meine Steuererklärung einfach selbst über myGov einreichen?',
-    answer: 'Kannst du, und das Einreichen ist wirklich der einfache Teil. Was dir der Bildschirm nicht sagt: dein steuerlicher Wohnsitz für das Jahr, ob ein Arbeitgeber zum falschen Satz einbehalten hat, ob die Medicare Levy überhaupt hätte abgehen dürfen, und was deine Art von Arbeit absetzen darf. Diese vier sind Beurteilungen zu deinem konkreten Jahr, und sie entscheiden über den Betrag.',
+    answer: 'Kannst du. Das Einreichen ist der einfache Teil. Was dir der Bildschirm nicht sagt: dein steuerlicher Wohnsitz für das Jahr, ob ein Arbeitgeber zum falschen Satz einbehalten hat, ob die Medicare Levy überhaupt hätte abgehen dürfen, und was deine Art von Arbeit absetzen darf. Diese vier Beurteilungen entscheiden den Betrag.',
   },
   {
     question: 'Was kosten eure Leistungen?',
-    answer: 'Unsere Gebühren sind pauschal und niemals ein Prozentsatz deiner Rückerstattung. Wir bestätigen die Gebühr per WhatsApp, bevor irgendetwas beginnt, und sie wird im Voraus bezahlt. Danach schicken wir dir den vollständigen Fragebogen und starten die Arbeit. Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.',
+    answer: 'Unsere Gebühren sind pauschal und niemals ein Prozentsatz deiner Rückerstattung.\n\nWir bestätigen die Gebühr per WhatsApp, bevor irgendetwas beginnt, und sie wird im Voraus bezahlt. Danach schicken wir dir den vollständigen Fragebogen und starten die Arbeit. Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.',
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker in Australien?',
-    answer: 'Working Holiday Maker zahlen pauschal 15 % auf die ersten 45.000 $, dann 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber. Wenn du deinem Arbeitgeber keine TFN gegeben hast, muss er stattdessen zum Höchstsatz einbehalten, und das ist einer der häufigsten Gründe, warum Backpacker am Ende Geld zurückbekommen.',
+    answer: 'Working Holiday Maker zahlen pauschal 15 % auf die ersten 45.000 $, dann 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber.\n\nWenn du deinem Arbeitgeber keine TFN gegeben hast, muss er stattdessen zum Höchstsatz einbehalten, einer der häufigsten Gründe, warum Backpacker am Ende Geld zurückbekommen.',
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
-    answer: 'Ja. Wir arbeiten mit Leuten aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern, die ihre australische Steuererklärung einreichen und ihre Super (DASP) beantragen, oft Jahre nach dem Rückflug, und alles läuft online. Eine Regel solltest du vorher kennen: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Bankkonto auszahlen, die Super-Rückerstattung (DASP) dagegen auch ins Ausland. Wenn dein australisches Konto schon geschlossen ist, sag uns früh Bescheid, weil sich dadurch die Reihenfolge ändert.',
+    answer: 'Ja. Leute aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern reichen ihre australische Steuererklärung ein und beantragen ihre Super (DASP), oft Jahre nach dem Rückflug, alles online.\n\nEine Regel vorweg: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Bankkonto auszahlen, die Super-Rückerstattung (DASP) dagegen auch ins Ausland. Ist dein australisches Konto schon geschlossen, sag uns früh Bescheid, weil sich dadurch die Reihenfolge ändert.',
   },
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meistens innerhalb einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Morgen. Du kannst erst einmal nur eine Frage stellen, ohne dich zu irgendetwas zu verpflichten, und wir antworten in deiner eigenen Sprache.',
+    answer: 'Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT antworten wir meistens innerhalb einer Stunde. Außerhalb dieser Zeiten am nächsten Morgen. Du kannst erst einmal nur eine Frage stellen, ohne dich zu verpflichten, und wir antworten in deiner eigenen Sprache.',
   },
   {
     question: 'Macht ihr nur Steuererklärungen?',
-    answer: 'Nein. Wir übernehmen auch TFN-Anträge, ABN-Registrierungen, die Superauszahlung (DASP) und Medicare-Levy-Befreiungen, also das, was man mit einem 417 oder 462 Visum normalerweise braucht. Working-Holiday-Steuer ist das Einzige, was wir machen, deshalb liegt alles davon bei denselben Leuten.',
+    answer: 'Nein. Wir übernehmen auch TFN-Anträge, ABN-Registrierungen, die Superauszahlung (DASP) und Medicare-Levy-Befreiungen, also das, was man mit einem 417 oder 462 Visum normalerweise braucht.',
   },
 ]
 
@@ -363,20 +363,26 @@ export default async function GermanHomePage() {
           </h2>
 
           <p style={{ ...LEDE, color: '#4C6459', maxWidth: '54ch', marginBottom: '26px' }}>
-            Nichts auf dem Bildschirm prüft deinen Wohnsitz, die Levy oder das, was deine Arbeit absetzen darf. Du bist
-            der Einzige, der hinschaut.
+            Nichts auf dem Bildschirm prüft deinen Wohnsitz, die Levy oder das, was deine Arbeit absetzen darf.
           </p>
 
+          {/* Die beiden Beschriftungen standen auf allen acht Zellen, auf dem
+              Handy also achtmal dieselben zwei Wörter untereinander. Das war der
+              größte Einzelgrund für das gedrängte Gefühl. Sie stehen jetzt nur
+              noch in der ersten Zeile: auf dem Desktop als Spaltenüberschrift,
+              auf dem Handy als Legende. Den Rest tragen der Wechsel im
+              Hintergrund und das schwerere Gewicht auf der "Mit uns"-Seite.
+              Die Copy selbst ist unverändert. */}
           <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
             {COMPARISON.map((row, i) => (
               <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>Auf myGov</p>
+                <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
+                  {i === 0 && <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>Auf myGov</p>}
                   <p style={{ ...BODY, color: '#2A3C34' }}>{row.mygov}</p>
                 </div>
                 <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>Mit uns</p>
+                  style={{ padding: '13px 16px', background: '#F2FAF7' }}>
+                  {i === 0 && <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>Mit uns</p>}
                   <p style={{ ...BODY, color: '#080F0D', fontWeight: 500 }}>{row.us}</p>
                 </div>
               </div>
@@ -410,7 +416,7 @@ export default async function GermanHomePage() {
             Wovon hängt die Höhe deiner Steuerrückerstattung ab?
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            Meistens von drei Dingen, und die drei stehen hier drunter.
+            Meistens von drei Dingen.
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -447,11 +453,11 @@ export default async function GermanHomePage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Arbeit</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Was wir bei jeder Steuererklärung durchgehen
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            Dieselben fünf Schritte gelten, ob du einen Job hattest oder sechs. Vier davon passieren, bevor überhaupt etwas in deine Steuererklärung eingetragen wird.
+            Vier der fünf passieren, bevor überhaupt etwas in deine Steuererklärung eingetragen wird.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -476,12 +482,11 @@ export default async function GermanHomePage() {
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Welches der beiden war dein Jahr?
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
-            Beides landet in derselben Erklärung, aber nicht auf denselben Zeilen. Wähl das, was passt, und es geht mit
-            deiner Nachricht mit.
+            Beides landet in derselben Erklärung, aber nicht auf denselben Zeilen. Wähl das, was passt.
           </p>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -535,11 +540,16 @@ export default async function GermanHomePage() {
             Von der ersten Abrechnung bis zu dem Geld, das dir nach Hause folgt
           </h2>
 
-          <div className="services-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
-            {SERVICES.map((s) => (
+          {/* Zwei Spalten auf dem Handy. Einspaltig waren das fünf fast gleiche
+              Blöcke, gestapelt auf rund tausend Pixel, also fast ein ganzer
+              Handybildschirm derselben Sache. Nebeneinander liest sich das wie
+              ein Menü zum Überfliegen statt wie eine Liste zum Scrollen. */}
+          <div className="services-grid grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+            {SERVICES.map((s, i) => (
               <Link key={s.href} href={s.href}
-                className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
-                style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+                className={`group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg${
+                  i === SERVICES.length - 1 ? ' col-span-2 lg:col-span-1' : ''}`}
+                style={{ padding: '15px 14px', minHeight: '44px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
                 <span className="text-muted" style={{ ...KICKER, marginBottom: '10px' }}>{s.n}</span>
                 <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
                   style={{ marginBottom: '10px' }}>{s.icon}</span>
@@ -559,7 +569,7 @@ export default async function GermanHomePage() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
@@ -599,7 +609,13 @@ export default async function GermanHomePage() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer">{f.answer}</p>
+                {/* An einer Leerzeile getrennt, damit eine lange Antwort als
+                    zwei kurze Absätze ankommt statt als ein Block. faqLd oben
+                    nutzt weiter den Rohtext, die strukturierten Daten ändern
+                    sich also nicht. */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer">{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -617,15 +633,14 @@ export default async function GermanHomePage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Lieber erst die ganze Antwort lesen?
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            Wir schreiben sie zu denselben vier Fragen, die über eine Erklärung entscheiden. Nichts davon wird
-            zurückgehalten, damit du dich melden musst.
+            Nichts davon wird zurückgehalten, damit du dich melden musst.
           </p>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 grid-cols-2">
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"

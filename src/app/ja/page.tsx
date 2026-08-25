@@ -134,7 +134,7 @@ const ANALYSIS = [
   {
     n: '02',
     title: 'すべての雇用主と、すべての週',
-    body: 'ワーホリの1年は複雑です。複数の雇用主、遅れた支払い、忘れていた仕事。記憶ではなくATOの公式記録と照らして、1年をまるごと組み立て直します。',
+    body: 'ワーホリの1年は複雑です。複数の雇用主、遅れた支払い、忘れていた仕事。記憶ではなくATOの記録と照らして組み立て直します。',
   },
   {
     n: '03',
@@ -149,7 +149,7 @@ const ANALYSIS = [
   {
     n: '05',
     title: 'そして提出',
-    body: '登録タックスエージェントが確認・承認したうえでATOに提出します。この部分は数分。金額を決めるのはその前の4つです。',
+    body: '登録タックスエージェントが確認・承認したうえでATOに提出します。金額を決めるのは、その前の4つです。',
   },
 ]
 
@@ -178,23 +178,23 @@ const GUIDES = [
 const FAQS = [
   {
     question: 'オーストラリアのタックスリターンの還付額は何で決まりますか？',
-    answer: '大きく4つで決まります。その年の税務上の居住区分、TFNが雇用主に届く前に45%で源泉徴収された期間があるかどうか、メディケアの対象外なのに2%のメディケア税が引かれていたかどうか、そして実際にした仕事に対応する控除です。まったく同じ金額を稼いだ2人でも、この4つによって還付額は大きく変わります。だからこそ、提出そのものより確認作業のほうが重要です。',
+    answer: '大きく4つで決まります。その年の税務上の居住区分、TFNが雇用主に届く前に45%で源泉徴収された期間があるかどうか、メディケアの対象外なのに2%のメディケア税が引かれていたかどうか、そして実際にした仕事に対応する控除です。\n\nまったく同じ金額を稼いだ2人でも、この4つによって還付額は大きく変わります。',
   },
   {
     question: 'myGovで自分で申告することはできますか？',
-    answer: '自分で申告することはできますし、提出自体は簡単な部分です。ただし画面は、あなたがその年に税務上の居住者だったのか、雇用主が誤った税率で源泉徴収していたのか、メディケア税の免除証明書の対象になるのか、あなたの仕事で何が控除できるのかまでは教えてくれません。この4つはあなた個人の1年についての判断であり、金額を決めるのはここです。',
+    answer: 'できます。提出自体は簡単な部分です。ただし画面は、あなたがその年に税務上の居住者だったのか、雇用主が誤った税率で源泉徴収していたのか、メディケア税の免除証明書の対象になるのか、あなたの仕事で何が控除できるのかまでは教えてくれません。\n\n金額を決めるのは、この4つの判断です。',
   },
   {
     question: 'サービスの料金はいくらですか？',
-    answer: '料金は定額制で、還付金に対する歩合ではありません。作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。',
+    answer: '料金は定額制で、還付金に対する歩合ではありません。\n\n作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。',
   },
   {
     question: 'ワーキングホリデーメーカーの税率はいくらですか？',
-    answer: 'ワーキングホリデーメーカーは、45,000ドルまで一律15%、135,000ドルまで30%、190,000ドルまで37%、それを超える部分は45%で課税されます。雇用主にTFNを提出していない場合は最高税率で源泉徴収されるため、これがワーホリ参加者に還付が生じる最も多い理由の一つです。',
+    answer: 'ワーキングホリデーメーカーは、45,000ドルまで一律15%、135,000ドルまで30%、190,000ドルまで37%、それを超える部分は45%で課税されます。\n\n雇用主にTFNを提出していない場合は最高税率で源泉徴収されるため、これがワーホリ参加者に還付が生じる最も多い理由の一つです。',
   },
   {
     question: '帰国後でもタックスリターンの申請はできますか？',
-    answer: 'はい。日本をはじめ多くの国から、帰国して何年も経ってからタックスリターンを提出し、スーパーアニュエーション（DASP）を申請している方と日常的にお仕事をしています。手続きはすべてオンラインです。1点だけ先に知っておいてください。ATOはタックスリターンの還付金をオーストラリアの銀行口座にしか支払えませんが、スーパー（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、進める順番が変わるので早めにお知らせください。',
+    answer: 'はい。日本をはじめ多くの国から、帰国して何年も経ってからタックスリターンとスーパーアニュエーション（DASP）を申請する方に対応しています。手続きはすべてオンラインです。\n\n1点だけ先に知っておいてください。ATOはタックスリターンの還付金をオーストラリアの銀行口座にしか支払えませんが、スーパー（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、進める順番が変わるので早めにお知らせください。',
   },
   {
     question: 'どのくらいで返信がありますか？',
@@ -202,7 +202,7 @@ const FAQS = [
   },
   {
     question: 'タックスリターンだけのサービスですか？',
-    answer: 'いいえ。TFN申請、ABN登録、スーパーアニュエーション（DASP）の申請、メディケア税の免除証明書も扱っており、417・462ビザで必要になる手続きはひととおりカバーしています。ワーキングホリデーの税金だけを扱っているため、そのすべてを同じ担当が対応します。',
+    answer: 'いいえ。TFN申請、ABN登録、スーパーアニュエーション（DASP）の申請、メディケア税の免除証明書も扱っており、417・462ビザで必要になる手続きはひととおりカバーしています。',
   },
 ]
 
@@ -379,16 +379,22 @@ export default async function JapaneseHomePage() {
             居住者だったのか、メディケア税があなたの負担だったのか、その職種で何が控除できるのか。画面上でそれを確かめる人は誰もいません。
           </p>
 
+          {/* 2つのラベルは以前8つのセルすべてに出ていた。スマートフォンでは行が
+              縦に積まれるため、同じ言葉が画面を8回下りてくることになり、この
+              ブロックが窮屈に見える最大の原因だった。ラベルは最初の行にだけ出す。
+              デスクトップでは列見出しとして、スマートフォンでは凡例として読める。
+              以降は背景色の違いと「当社の場合」側の太さが区別を担う。表の文言自体は
+              変えていない。 */}
           <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
             {COMPARISON.map((row, i) => (
               <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                  <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>myGovの場合</p>
+                <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
+                  {i === 0 && <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>myGovの場合</p>}
                   <p style={{ ...BODY, color: '#2A3C34' }}>{row.mygov}</p>
                 </div>
                 <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                  style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                  <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>当社の場合</p>
+                  style={{ padding: '13px 16px', background: '#F2FAF7' }}>
+                  {i === 0 && <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>当社の場合</p>}
                   <p style={{ ...BODY, color: '#080F0D', fontWeight: 500 }}>{row.us}</p>
                 </div>
               </div>
@@ -458,11 +464,14 @@ export default async function JapaneseHomePage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>実際の作業</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             すべてのタックスリターンで確認していること
           </h2>
+          {/* 見出しが「すべてのタックスリターンで確認していること」と言い切って
+              いるので、「仕事が1つでも6つでも、同じ5つのステップを確認します」は
+              同じことの繰り返しだった。残るのは事実を足している後半だけ。 */}
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '30px' }}>
-            仕事が1つでも6つでも、同じ5つのステップを確認します。そのうち4つは、タックスリターンに何かを入力する前に終わっています。
+            5つのうち4つは、タックスリターンに何かを入力する前に終わっています。
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -487,11 +496,11 @@ export default async function JapaneseHomePage() {
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             あなたの1年はどちらでしたか？
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '26px' }}>
-            申告の中身が変わるので、話す前に知らせてほしい唯一の点です。当てはまる方を選ぶと、その内容がメッセージに入ります。
+            申告の中身が変わります。当てはまる方をお選びください。
           </p>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -545,11 +554,16 @@ export default async function JapaneseHomePage() {
             最初の給与明細から、帰国後についてくるお金まで
           </h2>
 
-          <div className="services-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
-            {SERVICES.map((s) => (
+          {/* スマートフォンでは2列。1列だと、ほぼ同じ形のカードが5枚、
+              1000ピクセル近く積み上がる。ほぼ画面1つ分が同じものの繰り返しに
+              なっていた。2列にすると、スクロールする一覧ではなく目で追える
+              メニューとして読める。5枚目だけは2列分を使って収まりを取る。 */}
+          <div className="services-grid grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+            {SERVICES.map((s, i) => (
               <Link key={s.href} href={s.href}
-                className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
-                style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+                className={`group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg${
+                  i === SERVICES.length - 1 ? ' col-span-2 lg:col-span-1' : ''}`}
+                style={{ padding: '15px 14px', minHeight: '44px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
                 <span className="text-muted" style={{ ...KICKER, marginBottom: '10px' }}>{s.n}</span>
                 <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
                   style={{ marginBottom: '10px' }}>{s.icon}</span>
@@ -569,7 +583,7 @@ export default async function JapaneseHomePage() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '46ch', marginBottom: '28px' }}>
@@ -608,7 +622,12 @@ export default async function JapaneseHomePage() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer">{f.answer}</p>
+                {/* 空行で区切って、長い回答が1つの塊ではなく短い段落2つ3つとして
+                    読めるようにする。上のfaqLdは元の文字列をそのまま使うので、
+                    構造化データは変わらない。 */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer">{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -627,14 +646,17 @@ export default async function JapaneseHomePage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>ガイド</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             先に全部読んでおきたい方へ
           </h2>
+          {/* 「申告の結果を決める同じ4つの問いについて書いています」は、この
+              セクションが4本のガイドを並べている以上、見出しとカードの言い直しに
+              なっていた。事実を足している一文だけを残す。 */}
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '24px' }}>
-            申告の結果を決める同じ4つの問いについて書いています。連絡させるために内容を出し惜しみすることはありません。
+            連絡させるために内容を出し惜しみすることはありません。
           </p>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 grid-cols-2">
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"

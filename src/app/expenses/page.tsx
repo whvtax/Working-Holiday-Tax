@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Elsewhere on the site",
   "wrongLabel": "Claimed, and it should not have been",
   "missedLabel": "Not claimed, and it should have been",
-  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line.",
   "hubHref": "/expenses"
 }
 
@@ -95,7 +95,7 @@ const HERO = {
   "kicker": "Working holiday visas 417 and 462",
   "h1lead": "Deductions are not one list.",
   "h1accent": "They are your list.",
-  "lede": "Seven trades, each with its own claims, its own records, and its own things that get knocked back."
+  "lede": "Seven trades, each with its own claims, records, and things that get knocked back."
 }
 
 /**
@@ -110,7 +110,7 @@ const MYGOV_UI = {
   "kicker": "Doing it yourself",
   "h2lead": "myGov has one deductions box",
   "h2accent": "and no idea what your trade puts in it.",
-  "lede": "What belongs in that box, and what has to sit behind each claim, are both settled before anything is typed.",
+  "lede": "What belongs in that box, and what sits behind each claim, are settled before anything is typed.",
   "colLeft": "On myGov",
   "colRight": "With us",
   "close": "You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly."
@@ -118,20 +118,20 @@ const MYGOV_UI = {
 
 const MYGOV = [
   {
-    "mygov": "The deduction box is blank and stays blank. Nothing suggests what your trade is allowed to claim.",
-    "us": "We start from the work you actually did, and go down the list that belongs to it."
+    "mygov": "The deduction box is blank. Nothing suggests what your trade can claim.",
+    "us": "We start from the work you did, and go down the list that belongs to it."
   },
   {
-    "mygov": "It accepts any figure you type, including one you could not evidence if you were asked to.",
-    "us": "We tell you which claims need a receipt, which a bank statement will carry, and which will not survive a look."
+    "mygov": "It accepts any figure you type, including one you could not evidence.",
+    "us": "We tell you which claims need a receipt, which a bank statement will carry, and which will not hold."
   },
   {
     "mygov": "Nothing tells you that a fruit picker, a barista and a chippy do not claim the same things.",
-    "us": "Seven lines of work, each with its own list and its own substantiation rule."
+    "us": "Seven lines of work, each with its own list and substantiation rule."
   },
   {
     "mygov": "Rent, food and getting yourself to work look claimable and are not.",
-    "us": "We keep the claims that hold and leave out the ones that do not, so nothing on the return has to be undone later."
+    "us": "We keep the claims that hold, so nothing has to be undone later."
   }
 ]
 
@@ -149,14 +149,14 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What can a working holiday maker claim on an Australian tax return?",
     "paras": [
-      "You can claim what you spent in order to earn the income you are declaring, as long as you paid for it yourself and were not reimbursed. Working holiday makers get the same deductions as anyone else. Nothing about a 417 or 462 visa restricts the list.",
-      "What changes the list is the job. Sun protection is deductible for someone picking fruit in an open orchard and not for someone behind a bar. A phone plan is a real deduction for a delivery rider and almost nothing for a kitchen hand. This is the part generic advice cannot do, because it does not know what you did."
+      "You can claim what you spent to earn the income you are declaring, as long as you paid for it yourself and were not reimbursed. Nothing about a 417 or 462 visa restricts the list.",
+      "What changes the list is the job. Sun protection is deductible for someone picking fruit in an open orchard and not for someone behind a bar."
     ]
   },
   {
     "kind": "occupations",
     "h2": "Which job did you actually do?",
-    "intro": "Seven pages, each written around what that particular trade claims, what it wrongly claims, and what it leaves behind.",
+    "intro": "Seven pages, each on what that trade claims and wrongly claims.",
     "jobs": [
       {
         "href": "/expenses/farm-work",
@@ -181,7 +181,7 @@ const SECTIONS: Section[] = [
       {
         "href": "/expenses/cleaners",
         "title": "Cleaning",
-        "line": "Equipment and chemicals, laundry rates, and the drive between houses that most cleaners never claim."
+        "line": "Equipment and chemicals, laundry rates, and the drive between houses."
       },
       {
         "href": "/expenses/labouring",
@@ -191,39 +191,39 @@ const SECTIONS: Section[] = [
       {
         "href": "/expenses/fifo",
         "title": "FIFO and camp work",
-        "line": "Ticket renewals, PPE, and the Zone Tax Offset almost nobody on a roster actually qualifies for."
+        "line": "Ticket renewals, PPE, and the Zone Tax Offset almost nobody on a roster qualifies for."
       }
     ]
   },
   {
     "kind": "numbered",
     "h2": "What has to be true before anything is deductible?",
-    "intro": "Three tests, applied to every claim on every page here. Fail one and the claim fails completely, however work related it feels.",
+    "intro": "Three tests, applied to every claim on every page here. Fail one and the claim fails, however work related it feels.",
     "steps": [
-      "You spent the money yourself, and your employer or client did not reimburse you for it.",
-      "The expense was incurred in earning your income, not in getting yourself into a position to earn it, and it is not private or domestic.",
+      "You paid for it yourself, and no employer or client reimbursed you.",
+      "The expense was incurred in earning your income, not in getting yourself into a position to earn it, and is not private or domestic.",
       "You have a record that shows what you bought, when, from whom, and for how much."
     ],
-    "note": "The second test is the one that does the damage. It is why your first White Card is not deductible but your renewal is, and why the drive to work is not deductible but the drive between two jobs on the same day is."
+    "note": "The second test does the damage. It is why your first White Card is not deductible but your renewal is."
   },
   {
     "kind": "answer",
     "h2": "What do you have to be able to show?",
     "paras": [
-      "A receipt, an invoice or a bank statement, showing the amount, the date, the supplier and what the item was. A photo on your phone counts, and you need to be able to produce it for five years.",
-      "There is one concession. If your total work related claims for the year come to $300 or less, you do not need written evidence for them. That concession is separate from the $300 rule for individual assets, which is about how a single item is written off rather than whether you need a receipt for it."
+      "A receipt, an invoice or a bank statement showing the amount, the date, the supplier and what the item was. A photo on your phone counts, and you must be able to produce it for five years.",
+      "If your total work related claims for the year come to $300 or less, you do not need written evidence for them. That concession is separate from the $300 rule for individual assets, which is about how a single item is written off."
     ]
   },
   {
     "kind": "note",
     "label": "Changing from 1 July 2026",
     "title": "A flat $1,000, or your actual costs. Not both.",
-    "body": "From 1 July 2026 you can claim a flat $1,000 of work related expenses with no receipts at all, or claim your actual costs with full records. It is one or the other for the whole year, so if your real expenses come to $1,400 and you take the flat amount, you have given up $400. The choice first applies to the 2026-27 return, lodged from July 2027. The return most people are lodging right now, for 2025-26, still runs on the old rules."
+    "body": "From 1 July 2026 you can claim a flat $1,000 of work related expenses with no receipts, or your actual costs with full records. It is one or the other for the whole year: if your real expenses come to $1,400 and you take the flat amount, you have given up $400.\n\nThe choice first applies to the 2026-27 return, lodged from July 2027. The 2025-26 return most people are lodging now still runs on the old rules."
   },
   {
     "kind": "tables",
     "h2": "How are car expenses worked out?",
-    "intro": "There are two methods, and you can only use one per car per year. Only work related driving counts either way, never your ordinary trip from home to a single regular workplace.",
+    "intro": "Two methods, one per car per year. Only work related driving counts either way, never the ordinary trip from home to one regular workplace.",
     "tables": [
       {
         "label": "Cents per kilometre",
@@ -268,28 +268,28 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Past about 5,000 work kilometres a year the logbook usually produces the bigger deduction, because it picks up fuel, insurance, registration, servicing, depreciation and the interest on a car loan rather than a flat rate."
+    "note": "Past about 5,000 work kilometres a year the logbook usually produces the bigger deduction, because it picks up fuel, insurance, registration, servicing, depreciation and loan interest."
   },
   {
     "kind": "traps",
     "h2": "What do people get wrong, whatever job they did?",
-    "intro": "The first list is what turns a refund into an amended assessment. The second, the money nobody asks for, is more common and costs more.",
+    "intro": "The first list turns a refund into an amended assessment. The second, the money nobody asks for, is more common and costs more.",
     "wrong": [
       {
         "t": "Plain clothing that a dress code requires",
-        "d": "Black trousers, a plain polo, ordinary boots, jeans. The ATO looks at what the item is, not at why you bought it. Conventional clothing that anyone could wear anywhere does not become a uniform because a manager insists on it."
+        "d": "Black trousers, a plain polo, ordinary boots, jeans. Conventional clothing does not become a uniform because a manager insists on it."
       },
       {
         "t": "The first licence, ticket or certificate",
-        "d": "A first White Card, a first RSA, a first forklift ticket. That cost is what made you eligible for the job in the first place, which is not the same as a cost of doing the job. Renewals of the same ticket, once you are working, are deductible."
+        "d": "A first White Card, a first RSA, a first forklift ticket. That cost made you eligible for the job, which is not a cost of doing it. Renewals, once you are working, are deductible."
       },
       {
         "t": "The drive from home to work",
-        "d": "Ordinary commuting is private travel however far it is, however early the start, and however heavy the traffic. Travel between two workplaces in the same day is a different thing entirely, and that one is usually claimable."
+        "d": "Ordinary commuting is private travel however far it is and however early the start. Travel between two workplaces in the same day is usually claimable."
       },
       {
         "t": "Anything you were paid back for",
-        "d": "If an employer, an agency or a platform reimbursed you, or supplied the item outright, there is no cost sitting with you to deduct. Claiming it anyway is claiming the same dollar twice."
+        "d": "If an employer, agency or platform reimbursed you, or supplied the item, there is no cost sitting with you to deduct."
       },
       {
         "t": "Fines",
@@ -299,7 +299,7 @@ const SECTIONS: Section[] = [
     "missed": [
       {
         "t": "Every item under $300, claimed in full",
-        "d": "Boots, gloves, a hat, a knife roll, a head torch, a phone mount. Each item is tested on its own, so a year of small purchases adds up to a real deduction. Most people throw the receipts away."
+        "d": "Boots, gloves, a hat, a head torch, a phone mount. Each item is tested on its own, so a year of small purchases adds up. Most people throw the receipts away."
       },
       {
         "t": "Items over $300, which are still deductible",
@@ -307,15 +307,15 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Laundering compulsory or protective work clothing",
-        "d": "The ATO allows $1 per load where the load is only work items, or 50 cents per load washed in with everything else. Once your laundry claims pass $150 for the year you need a simple diary rather than an estimate."
+        "d": "The ATO allows $1 per load of work items only, or 50 cents per load washed in with everything else. Past $150 of laundry claims for the year you need a diary rather than an estimate."
       },
       {
         "t": "Travel between two jobs on the same day",
-        "d": "Two farms, two houses, two warehouses, two venues. That leg is work travel, not commuting, and for anyone working across sites it is often the largest single deduction on the return."
+        "d": "Two farms, two houses, two warehouses, two venues. That leg is work travel, not commuting, and for anyone working across sites it is often the largest deduction on the return."
       },
       {
         "t": "Weeks taxed at 45 per cent before the TFN landed",
-        "d": "Not a deduction, but the same money. If an employer withheld at the top rate while your Tax File Number Declaration was still in a drawer, that comes back on the return. It does not come back on its own."
+        "d": "Not a deduction, but the same money. If an employer withheld at the top rate while your Tax File Number Declaration sat in a drawer, that comes back on the return. It does not come back on its own."
       }
     ]
   },
@@ -323,8 +323,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Where does it depend on your own situation?",
     "paras": [
-      "Some of this is settled and some of it is a judgement about your own facts. Whether your travel counts as itinerant work rather than commuting depends on how your week was structured: how often the site changed, whether there was one base you returned to, and whether your employer required the movement. Two people on the same job title can land on different answers.",
-      "Your residency for tax purposes is the other one, and it is worth more than every deduction on this page put together. It is a judgement that turns on details most people never think to check, the same question the High Court ruled on in the Addy case, and it is easy to get wrong in both directions. We take a position on it only after going through your year."
+      "Whether your travel counts as itinerant work rather than commuting depends on how your week was structured: how often the site changed, whether there was one base, and whether your employer required the movement.",
+      "Your residency for tax purposes is the other one, and it is worth more than every deduction on this page put together. It is a judgement, the same question the High Court ruled on in the Addy case. We take a position on it only after going through your year."
     ]
   }
 ]
@@ -332,27 +332,27 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Can I just claim deductions myself?",
-    "answer": "You can, and lodging really is the easy part. The difficulty is that the deductions box is blank, suggests nothing about your trade, and accepts any figure you type, including one that has to be undone later. Working out which costs came from earning your income, and what has to sit behind each of them, is a judgement about the year you actually had rather than a field to fill in."
+    "answer": "You can, and lodging really is the easy part. The deductions box is blank and accepts any figure you type.\n\nWhich costs came from earning your income, and what sits behind each of them, is a judgement about the year you had, not a field to fill in."
   },
   {
     "question": "Do working holiday makers get fewer deductions than Australians?",
-    "answer": "No. The deduction rules are the same for a 417 or 462 visa holder as they are for anyone else earning Australian income. The difference is on the income side, not the expense side: working holiday maker income is taxed at 15 per cent up to $45,000 rather than getting a tax free threshold, unless your residency position changes that. Your deductions are worked out exactly the way an Australian resident doing the same job would work them out."
+    "answer": "No. The deduction rules are the same for a 417 or 462 visa holder as for anyone else earning Australian income.\n\nThe difference is on the income side: working holiday maker income is taxed at 15 per cent up to $45,000 rather than getting a tax free threshold, unless your residency position changes that."
   },
   {
     "question": "I did four different jobs in one year. Do I claim four separate lists?",
-    "answer": "You lodge one return for the financial year and it carries every deduction from every job in it. What matters is that each expense is tied to work you were actually doing at the time. Boots bought for a warehouse job in September and sunscreen bought for a farm job in January both belong on the same return, and the fact that the employers were different does not split anything."
+    "answer": "You lodge one return for the financial year and it carries every deduction from every job. What matters is that each expense is tied to work you were doing at the time.\n\nBoots bought for a warehouse job in September and sunscreen bought for a farm job in January belong on the same return. Different employers do not split anything."
   },
   {
     "question": "What if I have lost the receipts?",
-    "answer": "A bank or credit card statement showing the amount, the date and the supplier is usually accepted where a receipt is gone, and for many purchases that is all that ever existed. Under $300 of claims across the whole year, no written record is needed at all, only a sound basis for the figure. What you cannot do is invent a number and hope."
+    "answer": "A bank or credit card statement showing the amount, the date and the supplier is usually accepted where a receipt is gone.\n\nUnder $300 of claims across the whole year, no written record is needed, only a sound basis for the figure. What you cannot do is invent a number and hope."
   },
   {
     "question": "Can I claim rent, food or travel while I was in Australia?",
-    "answer": "No. Accommodation, groceries and the cost of getting around are private living expenses, and that stays true even when you moved to a regional town specifically to take a job. The narrow exception is travel your employer requires you to take that keeps you away from home overnight, which is a different rule and a different set of records."
+    "answer": "No. Accommodation, groceries and the cost of getting around are private living expenses, even when you moved to a regional town for a job.\n\nThe narrow exception is travel your employer requires that keeps you away from home overnight, which runs on a different rule and different records."
   },
   {
     "question": "Is it worth claiming deductions if I only worked a few months?",
-    "answer": "Usually yes. A short stint still involves real costs, and every dollar of deduction reduces the income the tax is calculated on. The bigger prize in a short year is often not the deductions at all, but the weeks taxed at 45 per cent before your Tax File Number reached the employer, and whether your residency position was reported correctly. Those two are worth more than a pair of boots."
+    "answer": "Usually yes. A short stint still involves real costs, and every dollar of deduction reduces the income the tax is calculated on.\n\nThe bigger prize in a short year is often not the deductions but the weeks taxed at 45 per cent before your Tax File Number reached the employer, and whether your residency position was reported correctly."
   }
 ]
 
@@ -446,7 +446,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -577,16 +577,24 @@ export default function Page() {
             <div style={{ background: '#fff', border: '1px solid #CDE3DB', borderRadius: '14px', overflow: 'hidden' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : `1px solid ${HAIR}` }}>
-                  <div style={{ padding: '15px 18px' }}>
-                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: MUTED, margin: '0 0 5px' }}>
-                      {MYGOV_UI.colLeft}
-                    </p>
+                  <div style={{ padding: '13px 16px' }}>
+                    {/* Both labels used to print on all eight cells. On a phone
+                        the rows stack, so that was the same two words marching
+                        down the screen eight times. They print once, on the first
+                        row: column headings on desktop, the key on mobile. */}
+                    {i === 0 && (
+                      <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: MUTED, margin: '0 0 5px' }}>
+                        {MYGOV_UI.colLeft}
+                      </p>
+                    )}
                     <p style={{ ...ps, margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l" style={{ padding: '15px 18px', background: '#F2FAF7', borderColor: HAIR }}>
-                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: FOREST, margin: '0 0 5px' }}>
-                      {MYGOV_UI.colRight}
-                    </p>
+                  <div className="border-t md:border-t-0 md:border-l" style={{ padding: '13px 16px', background: '#F2FAF7', borderColor: HAIR }}>
+                    {i === 0 && (
+                      <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: FOREST, margin: '0 0 5px' }}>
+                        {MYGOV_UI.colRight}
+                      </p>
+                    )}
                     <p style={{ ...ps, margin: 0, color: INK, fontWeight: 500, overflowWrap: 'break-word' }}>{row.us}</p>
                   </div>
                 </div>
@@ -696,7 +704,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -706,7 +716,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -746,7 +756,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqSchema still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

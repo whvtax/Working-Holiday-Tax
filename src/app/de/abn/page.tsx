@@ -76,22 +76,22 @@ const THE_SPLIT = [
   {
     n: '01',
     title: 'Es wurde nichts einbehalten, die Steuer bleibt trotzdem offen',
-    body: 'Lohn kommt bei dir an, nachdem die Steuer schon abgezogen wurde. Rechnungen nicht. Jeder ABN-Dollar erreicht dich vollständig, und die Steuer darauf wird am Jahresende fällig. Die Lohnhälfte eines gemischten Jahres sieht nach Rückerstattung aus, die Rechnungshälfte ist still das Gegenteil.',
+    body: 'Lohn kommt bei dir an, nachdem die Steuer schon abgezogen wurde. Rechnungen nicht, und die Steuer darauf wird einmal am Jahresende fällig. In einem gemischten Jahr sieht die Lohnhälfte nach Rückerstattung aus, die Rechnungshälfte nicht.',
   },
   {
     n: '02',
     title: 'Aus Werbungskosten werden Betriebsausgaben, mit anderen Regeln',
-    body: 'Als Angestellter setzt du beruflich veranlasste Kosten ab. Als Selbstständiger ziehst du die Kosten des Betriebs ab, eine breitere Kategorie mit strengeren Nachweisen. Der Fahrer, der nie einen Kilometer aufgeschrieben hat, und der, der es getan hat, landen nicht an derselben Stelle.',
+    body: 'Als Angestellter setzt du beruflich veranlasste Kosten ab. Als Selbstständiger ziehst du die Kosten des Betriebs ab, eine breitere Kategorie mit strengeren Nachweisen.',
   },
   {
     n: '03',
     title: 'GST ist eine Entscheidung, keine Formalie',
-    body: 'Die meisten Working Holiday Maker erreichen die 75.000-$-Umsatzgrenze nie, also sollten die meisten nicht registriert sein. Rideshare ist die Ausnahme, die viele erwischt, und eine falsche Position bedeutet BAS-Pflichten, die du nicht gebraucht hättest, oder schlimmer, welche, die fehlen.',
+    body: 'Die meisten Working Holiday Maker erreichen die 75.000-$-Umsatzgrenze nie, also sollten die meisten nicht registriert sein. Rideshare ist die Ausnahme. Eine falsche Position bedeutet BAS-Pflichten, die du nicht gebraucht hättest, oder welche, die fehlen.',
   },
   {
     n: '04',
     title: 'Ob du überhaupt selbstständig warst',
-    body: 'Diese Frage entscheidet über die anderen drei. Ob du wirklich selbstständig warst, hängt an der Kontrolle und nicht am Papier, und eine ABN über Arbeit, die immer Anstellung war, ist der häufigste Grund, warum eine Backpacker-Erklärung noch einmal gemacht werden muss. Weiter unten auf dieser Seite steht mehr dazu.',
+    body: 'Diese Frage entscheidet über die anderen drei. Ob du wirklich selbstständig warst, hängt an der Kontrolle, nicht am Papier. Eine ABN über Arbeit, die immer Anstellung war, ist der häufigste Grund, warum eine Backpacker-Erklärung neu gemacht werden muss.',
   },
 ]
 
@@ -102,7 +102,7 @@ const WHAT_WE_DO = [
   },
   {
     title: 'Wir registrieren sie passend zu deiner Tätigkeit',
-    body: 'Die angegebene Tätigkeit begleitet dich durch GST, Abzüge und die Erklärung. Es lohnt sich, das einmal richtig zu machen.',
+    body: 'Die angegebene Tätigkeit begleitet dich durch GST, Abzüge und die Erklärung.',
   },
   {
     title: 'Wir sagen dir, was du zurücklegen solltest',
@@ -110,7 +110,7 @@ const WHAT_WE_DO = [
   },
   {
     title: 'Wir sagen dir, was du aufheben musst',
-    body: 'Welche Nachweise für deine Art von Arbeit einen Abzug tatsächlich tragen, und welche Belege du nicht mehr sammeln musst.',
+    body: 'Welche Nachweise für deine Art von Arbeit einen Abzug tragen, und welche Belege du nicht mehr sammeln musst.',
   },
   {
     title: 'Wir treffen die GST-Entscheidung bewusst',
@@ -118,45 +118,48 @@ const WHAT_WE_DO = [
   },
   {
     title: 'Wir bringen beide Hälften in eine Erklärung',
-    body: 'Lohneinkommen und Rechnungseinkommen gehören in dieselbe Erklärung für dasselbe Jahr.',
+    body: 'Lohneinkommen und Rechnungseinkommen gehören in eine Erklärung für dasselbe Jahr.',
   },
 ]
 
+// Antworten über etwa 55 Wörtern tragen eine Leerzeile, und die FAQ unten
+// rendert einen <p> pro Absatz. faqLd nutzt weiter den Rohtext, das Schema
+// bleibt also unverändert.
 const FAQS = [
   {
     question: 'Kann ich das einfach selbst machen?',
     answer:
-      'Kannst du, und wenn dein ganzes Jahr über die Lohnabrechnung lief, ist es unkompliziert. Genau damit macht eine ABN Schluss: wo die Grenze zwischen Lohn und Rechnungseinkommen verläuft, ob du überhaupt selbstständig warst, welche deiner Kosten vom Rechnungseinkommen abgehen und welche Belege dahinterstehen müssen, und ob du dich für GST registrieren musstest. Das sind Beurteilungen zu deinem Jahr und keine Felder zum Ausfüllen, und eine falsch gezogene Grenze ist der häufigste Grund, warum eine Erklärung noch einmal gemacht werden muss.',
+      'Kannst du, und wenn dein ganzes Jahr über die Lohnabrechnung lief, ist es unkompliziert.\n\nGenau damit macht eine ABN Schluss: wo die Grenze zwischen Lohn und Rechnungseinkommen verläuft, ob du überhaupt selbstständig warst, welche Kosten vom Rechnungseinkommen abgehen, und ob du dich für GST registrieren musstest. Das sind Beurteilungen zu deinem Jahr, keine Felder zum Ausfüllen.',
   },
   {
     question: 'Wie verändert eine ABN meine Steuererklärung?',
     answer:
-      'Lohn erreicht dich mit bereits einbehaltener Steuer und einem Income Statement, das dein Arbeitgeber ans ATO meldet, deshalb gleicht sich diese Hälfte weitgehend von selbst ab. Einkommen, das du über eine ABN in Rechnung stellst, kommt unversteuert an, wird als Betriebseinnahme erklärt und nur um Kosten gemindert, die du belegen kannst. Dazu kommen die GST-Frage und die Frage, ob das wirklich Selbstständigkeit war, und beide Hälften landen trotzdem in einer Erklärung.',
+      'Lohn erreicht dich mit bereits einbehaltener Steuer und einem Income Statement, das dein Arbeitgeber ans ATO meldet, deshalb gleicht sich diese Hälfte weitgehend von selbst ab.\n\nEinkommen, das du über eine ABN in Rechnung stellst, kommt unversteuert an, wird als Betriebseinnahme erklärt und nur um Kosten gemindert, die du belegen kannst. Dazu kommen die GST-Frage und die Frage, ob das wirklich Selbstständigkeit war. Beide Hälften landen in einer Erklärung.',
   },
   {
     question: 'Mein Arbeitgeber verlangt eine ABN für einen normalen Schichtjob. Ist das korrekt?',
     answer:
-      'Meistens nicht, und es lohnt sich, das vor der Registrierung anzusprechen. Wenn er deinen Dienstplan macht, dir sagt, wie die Arbeit abläuft, das Werkzeug stellt und dich früher nach Hause schicken kann, wirst du wie ein Angestellter behandelt, egal was auf dem Papier steht. Dich auf eine ABN zu setzen verschiebt die Kosten auf dich: kein Steuerabzug, keine Superannuation, kein Unfallversicherungsschutz, kein Mindestlohn und keine Zuschläge. Schick uns die Jobdetails, bevor du irgendetwas zusagst.',
+      'Meistens nicht, und es lohnt sich, das vor der Registrierung anzusprechen. Wenn er deinen Dienstplan macht, dir sagt, wie die Arbeit abläuft, das Werkzeug stellt und dich früher nach Hause schicken kann, wirst du wie ein Angestellter behandelt, egal was auf dem Papier steht.\n\nEine ABN verschiebt die Kosten auf dich: kein Steuerabzug, keine Superannuation, kein Unfallversicherungsschutz, kein Mindestlohn und keine Zuschläge. Schick uns die Jobdetails, bevor du etwas zusagst.',
   },
   {
     question: 'Muss ich mich mit Working Holiday Visum für GST registrieren?',
     answer:
-      'Nur wenn dein Umsatz 75.000 $ im Jahr erreicht, was die meisten Working Holiday Maker nicht annähernd tun, oder wenn du Rideshare fährst. Wer Taxi- oder Fahrdienstleistungen anbietet, wozu Uber und die Wettbewerber gehören, muss sich ab der allerersten Fahrt für GST registrieren, egal wie wenig dabei verdient wird. Für Essenslieferungen und Kurierfahrten gilt diese Regel nicht, dort greift die Grenze von 75.000 $. Mit der Registrierung kommen vierteljährliche Business Activity Statements, das macht man also nicht nebenbei.',
+      'Nur wenn dein Umsatz 75.000 $ im Jahr erreicht, was die meisten Working Holiday Maker nicht annähernd tun, oder wenn du Rideshare fährst. Wer Taxi- oder Fahrdienstleistungen anbietet, Uber eingeschlossen, muss sich ab der ersten Fahrt für GST registrieren, egal wie wenig dabei verdient wird.\n\nFür Essenslieferungen und Kurierfahrten gilt diese Regel nicht, dort greift die Grenze von 75.000 $. Mit der Registrierung kommen vierteljährliche Business Activity Statements.',
   },
   {
     question: 'Kann ich sowohl eine TFN als auch eine ABN haben?',
     answer:
-      'Ja, und die meisten Working Holiday Maker, die selbstständig arbeiten, haben am Ende beides. Die Steuernummer deckt dich als Angestellten ab, die ABN als Selbstständigen, und es ist völlig normal, im selben Jahr unter beiden zu verdienen. Es sind aber nicht zwei Erklärungen: Eine Erklärung deckt das Steuerjahr ab und meldet beides. Die Steuernummer brauchst du zuerst, weil der ABN-Antrag damit abgeglichen wird.',
+      'Ja, und die meisten Working Holiday Maker, die selbstständig arbeiten, haben am Ende beides. Die Steuernummer deckt dich als Angestellten ab, die ABN als Selbstständigen.\n\nEs sind aber nicht zwei Erklärungen: Eine Erklärung deckt das Steuerjahr ab und meldet beides. Die Steuernummer brauchst du zuerst, weil der ABN-Antrag damit abgeglichen wird.',
   },
   {
     question: 'Was kann ich mit einer ABN als Betriebsausgabe absetzen?',
     answer:
-      'Die Kosten der Einkommenserzielung, ehrlich aufgeteilt, wenn etwas auch privat genutzt wird. Bei einem Lieferfahrer sind das meist ordentlich erfasste Kilometer, die laufenden Kosten für Rad oder Auto, Handy und Daten, Versicherung, Ausrüstung und die Provision, die eine Plattform vor der Auszahlung einbehalten hat. Bei einem Subunternehmer auf dem Bau sind es Werkzeug, Schutzausrüstung und Fahrten zwischen Einsatzorten. Nie dazu gehören der Flug nach Australien, der normale Weg von zu Hause zu einem Arbeitsort und alles, wofür du keinen Nachweis hast.',
+      'Die Kosten der Einkommenserzielung, ehrlich aufgeteilt, wenn etwas auch privat genutzt wird.\n\nBei einem Lieferfahrer sind das meist ordentlich erfasste Kilometer, die laufenden Kosten für Rad oder Auto, Handy und Daten, Versicherung, Ausrüstung und die Provision, die eine Plattform einbehalten hat. Bei einem Subunternehmer auf dem Bau sind es Werkzeug, Schutzausrüstung und Fahrten zwischen Einsatzorten.\n\nNie dazu gehören der Flug nach Australien, der normale Weg von zu Hause zu einem Arbeitsort und alles, wofür du keinen Nachweis hast.',
   },
   {
     question: 'Was passiert mit meiner ABN, wenn ich Australien verlasse?',
     answer:
-      'Du meldest sie ab, sobald du nicht mehr tätig bist, denn eine aktive ABN sagt dem ATO, dass du weiterhin ein Gewerbe betreibst und möglicherweise weiter Pflichten hast. Die Abmeldung ändert nichts an der Erklärung für das Jahr, in dem du gearbeitet hast, die trotzdem eingereicht werden muss, und sie ändert auch nichts an deinem Anspruch auf Superannuation aus Anstellungen im selben Zeitraum. Wenn dein Abflug bald ansteht, sag früh Bescheid, denn die Reihenfolge aus Abmelden, Einreichen und Super beantragen ist wichtig.',
+      'Du meldest sie ab, sobald du nicht mehr tätig bist, denn eine aktive ABN sagt dem ATO, dass du weiter ein Gewerbe betreibst und möglicherweise weiter Pflichten hast.\n\nDie Abmeldung ändert nichts an der Erklärung für das Jahr, in dem du gearbeitet hast, die trotzdem eingereicht werden muss, und nichts an deinem Anspruch auf Superannuation aus Anstellungen im selben Zeitraum. Steht dein Abflug bald an, sag früh Bescheid, denn die Reihenfolge aus Abmelden, Einreichen und Super beantragen ist wichtig.',
   },
 ]
 
@@ -269,7 +272,7 @@ export default function ABNPageDE() {
 
           <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '50ch', marginBottom: '26px' }}>
             Unversteuertes Einkommen, Betriebsausgaben, eine GST-Entscheidung, und unter allen dreien eine Frage: warst
-            du überhaupt selbstständig, oder Angestellter, dem der Arbeitgeber die Kosten übertragen hat.
+            du überhaupt selbstständig.
           </p>
 
           <div className="hero-animate-delay-2">
@@ -296,12 +299,13 @@ export default function ABNPageDE() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Aufteilung</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
             Was ändert sich mit einer ABN an deiner Erklärung?
           </h2>
+          {/* "Eine Erklärung muss beide Hälften abgleichen" sagt die letzte
+              Karte im Abschnitt darunter und noch einmal der NextStep am Fuß. */}
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
-            Vier Dinge, und sie verstärken sich gegenseitig. Halb Lohnabrechnung und halb Rechnungen sind nicht zwei
-            einfache Hälften, sondern eine Erklärung, die beides abgleichen muss.
+            Vier Dinge, und sie verstärken sich gegenseitig.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -325,20 +329,19 @@ export default function ABNPageDE() {
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '26ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '26ch', marginBottom: '16px' }}>
             Solltest du eine ABN anmelden, weil ein Arbeitgeber danach fragt?
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
             Nicht, bevor jemand den Job angesehen hat. Eine ABN über Arbeit, die in Wahrheit Anstellung ist, beendet
-            deine Superannuation, beendet den Steuerabzug, streicht den Unfallversicherungsschutz und stellt dich
-            außerhalb von Mindestlohn und Zuschlägen, und all das wird zu deinen Kosten. Häufig ist das in der Farmarbeit,
-            in der Gastronomie, in der Reinigung und auf dem Bau, und es wird als normales Vorgehen dargestellt.
+            deine Superannuation und den Steuerabzug, streicht den Unfallversicherungsschutz und stellt dich außerhalb
+            von Mindestlohn und Zuschlägen. All das wird zu deinen Kosten. Häufig ist das in der Farmarbeit, der
+            Gastronomie, der Reinigung und auf dem Bau.
           </p>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '22px' }}>
             Entscheidend ist die Kontrolle, nicht das Papier. Wer bestimmt, wann du arbeitest, wer sagt, wie es gemacht
-            wird, wer die Ausrüstung stellt, ob du jemand anderen schicken könntest, und wer das Risiko trägt, wenn es
-            schiefgeht. Zeigen die Antworten auf ihn statt auf dich, ist eine ABN das falsche Mittel, und über eine
-            Saison kostet dich das echtes Geld.
+            wird, wer die Ausrüstung stellt, und wer das Risiko trägt, wenn es schiefgeht. Zeigen die Antworten auf ihn,
+            ist eine ABN das falsche Mittel.
           </p>
 
           <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
@@ -349,8 +352,7 @@ export default function ABNPageDE() {
             </svg>
             <p style={{ ...BODY, color: '#2A3C34' }}>
               <strong style={{ color: '#080F0D' }}>Schick uns den Job, bevor du dich registrierst.</strong>{' '}
-              Was die Arbeit umfasst, wer was stellt, und wie du bezahlt werden sollst. Wir sagen dir, was davon es ist,
-              auch wenn die Antwort lautet, dass du uns nicht brauchst.
+              Was die Arbeit umfasst, wer was stellt, und wie du bezahlt werden sollst. Wir sagen dir, was davon es ist.
             </p>
           </div>
         </div>
@@ -362,7 +364,7 @@ export default function ABNPageDE() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Arbeit</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Was wir dabei machen
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
@@ -410,7 +412,7 @@ export default function ABNPageDE() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Beschreib uns die Arbeit
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
@@ -433,7 +435,7 @@ export default function ABNPageDE() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
@@ -459,7 +461,12 @@ export default function ABNPageDE() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+                {/* An einer Leerzeile getrennt, damit eine lange Antwort als
+                    zwei kurze Absätze ankommt. faqLd oben nutzt weiter den
+                    Rohtext. */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -471,12 +478,10 @@ export default function ABNPageDE() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             Mehr zu Selbstständigkeit, Betriebsausgaben und GST
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            Der Test auf Selbstständigkeit im Detail, was ein Selbstständiger absetzen kann, und wo GST anfängt.
-          </p>
+          {/* Die Lede nannte die drei Karten darunter. Das machen die Karten. */}
 
           <div className="grid gap-3 sm:grid-cols-3">
             {GUIDES.map((g) => (
@@ -494,7 +499,7 @@ export default function ABNPageDE() {
       <NextStep
         eyebrow="Was kommt als Nächstes"
         heading="Beide Hälften landen in einer Erklärung"
-        body="Lohneinkommen und Rechnungseinkommen gehören in dieselbe Steuererklärung für dasselbe Jahr. Dort wird die Aufteilung entweder sauber gemacht oder eben nicht."
+        body="Lohneinkommen und Rechnungseinkommen gehören in dieselbe Steuererklärung für dasselbe Jahr."
         cta="Wie die Erklärung läuft →"
         href="/de/tax-return"
       />

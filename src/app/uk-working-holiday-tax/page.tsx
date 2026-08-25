@@ -65,7 +65,7 @@ const RATE_ROWS = [
 const DIFFERENCES = [
   {
     t: 'Three years, not one',
-    d: 'For applications lodged on or after 1 July 2024, UK passport holders can apply up to and including age 35, and can be granted up to three working holiday visas without completing any specified regional work. Nobody else gets that, and three years usually means three or four Australian tax years.',
+    d: 'For applications lodged on or after 1 July 2024, UK passport holders can apply up to and including age 35, and can be granted up to three working holiday visas without completing any specified regional work. Three years usually means three or four Australian tax years.',
   },
   {
     t: 'The Addy decision is yours',
@@ -73,7 +73,7 @@ const DIFFERENCES = [
   },
   {
     t: 'Medicare runs the other way round',
-    d: 'Every guide tells working holiday makers they are exempt from the 2 per cent Medicare levy. For a British traveller that is often the opposite of the truth, because the UK has a Reciprocal Health Care Agreement with Australia.',
+    d: 'Every guide tells working holiday makers they are exempt from the 2 per cent Medicare levy. For a British traveller that is often the opposite of the truth, because of the Reciprocal Health Care Agreement between the UK and Australia.',
   },
   {
     t: 'Two tax years that never line up',
@@ -82,10 +82,10 @@ const DIFFERENCES = [
 ]
 
 const WHAT_WE_DO = [
-  'Work out which Australian tax years you actually have open, including the ones you left behind when you flew home.',
-  'Take a position on your residency for tax purposes for each of those years, and apply the Addy decision where it applies to you.',
+  'Work out which Australian tax years you have open, including the ones you left behind when you flew home.',
+  'Take a position on your residency for tax purposes for each of those years, and apply the Addy decision where it applies.',
   'Check the Medicare levy against your real position rather than copying the exemption other backpackers claim.',
-  'Chase down every employer income statement, including the employers you have forgotten, and check what each one withheld.',
+  'Chase down every employer income statement, including the ones you have forgotten, and check what each withheld.',
   'Find superannuation left in funds you no longer have the logins for, and claim it as a Departing Australia Superannuation Payment once your visa has ceased.',
 ]
 
@@ -108,7 +108,7 @@ const MYGOV = [
   },
   {
     mygov: 'The Medicare levy is applied by default, and for Brits the health care agreement works the opposite way round.',
-    us: 'We work out which side of it you fall on before the return goes in, rather than after the assessment lands.',
+    us: 'We work out which side of it you fall on before the return goes in.',
   },
   {
     mygov: 'The years you left open do not appear as a prompt anywhere.',
@@ -120,27 +120,27 @@ const FAQS = [
   {
     question: 'Do UK citizens pay the Medicare levy in Australia?',
     answer:
-      'Often yes, and this is where British travellers differ from most other backpackers. The UK has a Reciprocal Health Care Agreement with Australia, so a UK passport holder can enrol in Medicare, and being entitled to Medicare is exactly what removes the 2 per cent exemption other working holiday makers claim. The levy only applies to residents for tax purposes in the first place, so the answer depends on your residency position as well as your passport, and it is checked case by case rather than assumed.',
+      'Often yes. The UK has a Reciprocal Health Care Agreement with Australia, so a UK passport holder can enrol in Medicare, and that entitlement is what removes the 2 per cent exemption other working holiday makers claim. The levy only applies to residents for tax purposes, so the answer depends on your residency position as well as your passport, and it is checked case by case.',
   },
   {
     question: 'I stayed three years. Do I need to lodge three tax returns?',
     answer:
-      'Yes. The Australian tax year runs 1 July to 30 June, so a three year stay usually spans three or four separate tax years and each one needs its own return. The most common pattern we see is somebody who lodged in their first year and then stopped, and those later years are usually the ones with the most money in them because that is when the earnings were highest.',
+      'Yes. The Australian tax year runs 1 July to 30 June, so a three year stay usually spans three or four separate tax years, each needing its own return. The most common pattern we see is somebody who lodged in their first year and then stopped, and those later years usually hold the most money because the earnings were highest.',
   },
   {
     question: 'How much superannuation will be waiting for me?',
     answer:
-      'Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages, and over a long stay across several jobs that is usually spread across more than one fund. Once you have left and your visa has ceased it is claimed as a Departing Australia Superannuation Payment, with 65 per cent withheld on a working holiday maker claim, so roughly a third of the balance reaches you.',
+      'Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages, usually spread across more than one fund over a long stay. Once you have left and your visa has ceased it is claimed as a Departing Australia Superannuation Payment, with 65 per cent withheld, so roughly a third of the balance reaches you.',
   },
   {
     question: 'Is there a deadline, and am I already late?',
     answer:
-      'A year past its deadline is late rather than lost. Late returns are still lodged and still refunded, and being late does not reduce what the year is worth, which is the reason old years are worth going back for at all.',
+      'A year past its deadline is late rather than lost. Late returns are still lodged and still refunded, and being late does not reduce what the year is worth.',
   },
   {
     question: 'Do I have to tell HMRC about my Australian income?',
     answer:
-      'It depends on your UK residence position for the years involved, which is a separate question from your Australian one and has its own rules. We deal with the Australian side and we will say plainly where something belongs to a UK adviser rather than guessing at it.',
+      'It depends on your UK residence position for the years involved, which is a separate question with its own rules. We deal with the Australian side and will say plainly where something belongs to a UK adviser.',
   },
 ]
 
@@ -222,7 +222,8 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  // 16px, not 14. Under a 23 to 30px serif heading the old value read tight.
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = { fontSize: '16px', lineHeight: 1.35, fontWeight: 700, color: INK, margin: '0 0 6px' }
 const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
@@ -335,19 +336,29 @@ export default function UKWorkingHolidayTaxPage() {
               Four things on a British file are settled somewhere other than the form.
             </p>
 
+            {/* The two labels used to print on all eight cells. On a phone the
+                rows stack, so that is the same two words marching down the
+                screen eight times. They print on the first row only, where they
+                read as column headings on desktop and as the key on mobile; the
+                alternating ground and the heavier weight carry the distinction
+                from there. Copy unchanged, padding tightened to 13px 16px. */}
             <div style={{ background: '#fff', border: '1px solid #CDE3DB', borderRadius: '14px', overflow: 'hidden' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : `1px solid ${HAIR}` }}>
-                  <div style={{ padding: '15px 18px' }}>
-                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: MUTED, margin: '0 0 5px' }}>
-                      On myGov
-                    </p>
+                  <div style={{ padding: '13px 16px' }}>
+                    {i === 0 && (
+                      <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: MUTED, margin: '0 0 5px' }}>
+                        On myGov
+                      </p>
+                    )}
                     <p style={{ ...ps, margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l" style={{ padding: '15px 18px', background: '#F2FAF7', borderColor: HAIR }}>
-                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: FOREST, margin: '0 0 5px' }}>
-                      With us
-                    </p>
+                  <div className="border-t md:border-t-0 md:border-l" style={{ padding: '13px 16px', background: '#F2FAF7', borderColor: HAIR }}>
+                    {i === 0 && (
+                      <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: FOREST, margin: '0 0 5px' }}>
+                        With us
+                      </p>
+                    )}
                     <p style={{ ...ps, margin: 0, color: INK, fontWeight: 500, overflowWrap: 'break-word' }}>{row.us}</p>
                   </div>
                 </div>
@@ -365,9 +376,9 @@ export default function UKWorkingHolidayTaxPage() {
           <div style={wrap}>
             <h2 style={h2s}>Can you still claim Australian tax back from the UK?</h2>
             <p style={{ ...ps, marginBottom: 0 }}>
-              Yes. An Australian tax return can be prepared and lodged from anywhere in the world, and leaving the country does not
-              close a year or reduce what you are owed. The superannuation half can only be claimed after you have left and your visa
-              has ceased, so being home is a requirement rather than an obstacle.
+              Yes. An Australian tax return can be prepared and lodged from anywhere, and leaving does not close a year or reduce
+              what you are owed. The superannuation half can only be claimed after you have left and your visa has ceased, so being
+              home is a requirement rather than an obstacle.
             </p>
           </div>
         </section>
@@ -376,8 +387,10 @@ export default function UKWorkingHolidayTaxPage() {
         <section style={secSunk}>
           <div style={wrap}>
             <h2 style={h2s}>What is different about a British passport?</h2>
+            {/* Move 2: "Most guides treat every working holiday maker as the
+                same person" was setup the heading already carries. */}
             <p style={ps}>
-              Most guides treat every working holiday maker as the same person. Four things about a UK passport change the answer.
+              Four things about a UK passport change the answer.
             </p>
             {DIFFERENCES.map((c, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
@@ -394,17 +407,20 @@ export default function UKWorkingHolidayTaxPage() {
         <section style={secLight}>
           <div style={wrap}>
             <h2 style={h2s}>Do UK citizens pay the Medicare levy in Australia?</h2>
+            {/* Move 3: one four line block became two, split on the turn from
+                what the agreement is to what it costs you. */}
             <p style={ps}>
-              Often yes, and this is the one place where copying the standard backpacker advice can cost a British traveller rather
-              than save them. The UK is one of the countries with a Reciprocal Health Care Agreement with Australia, so a British
-              visitor can enrol in Medicare and is treated in a public hospital. Being entitled to Medicare is exactly what removes the
-              2 per cent exemption that other working holiday makers claim, and claiming an exemption you are not entitled to is not a
-              small paperwork error.
+              Often yes, and this is the one place where copying standard backpacker advice costs a British traveller rather than
+              saves them. The UK has a Reciprocal Health Care Agreement with Australia, so a British visitor can enrol in Medicare
+              and is treated in a public hospital.
+            </p>
+            <p style={ps}>
+              Being entitled to Medicare is what removes the 2 per cent exemption other working holiday makers claim, and claiming an
+              exemption you are not entitled to is not a small paperwork error.
             </p>
             <p style={{ ...ps, marginBottom: 0 }}>
-              What decides it is residency again, because the levy only applies to residents for tax purposes in the
-              first place. Two British travellers with the same passport can land on opposite answers, which is why we settle it on
-              your file rather than assume it. More on how the levy works on our{' '}
+              What decides it is residency, because the levy only applies to residents for tax purposes. More on how the levy works
+              on our{' '}
               <Link href="/medicare" style={linkS}>Medicare page</Link>.
             </p>
           </div>
@@ -414,9 +430,11 @@ export default function UKWorkingHolidayTaxPage() {
         <section style={secSunk}>
           <div style={wrap}>
             <h2 style={h2s}>What tax rate applies to a working holiday maker?</h2>
+            {/* The table below is captioned "Working holiday maker rates
+                2025-26", so the lede said the year twice. */}
             <p style={ps}>
-              Working holiday maker rates apply to your Australian wages whether or not you are a resident for tax purposes, unless the
-              Addy position above changes that for you. The rates below are for 2025-26.
+              Working holiday maker rates apply to your Australian wages whether or not you are a resident for tax purposes, unless
+              the Addy position above changes that.
             </p>
             <div style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
               <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>
@@ -435,10 +453,13 @@ export default function UKWorkingHolidayTaxPage() {
                 </table>
               </div>
             </div>
-            <p style={{ ...ps, marginTop: '16px', marginBottom: 0 }}>
+            <p style={{ ...ps, marginTop: '16px' }}>
               Your employer had to be registered with the ATO as an employer of working holiday makers for the 15 per cent rate to
-              apply. If they were not registered they had to withhold at the foreign resident rate, which starts at 30 cents in the
-              dollar from your first dollar. That money is not gone, but it only comes back on a lodged return. Full breakdown on our{' '}
+              apply. If not, they had to withhold at the foreign resident rate, which starts at 30 cents in the dollar from your
+              first dollar.
+            </p>
+            <p style={{ ...ps, marginBottom: 0 }}>
+              That money is not gone, but it only comes back on a lodged return. Full breakdown on our{' '}
               <Link href="/tax-return" style={linkS}>tax return page</Link>.
             </p>
           </div>
@@ -451,15 +472,13 @@ export default function UKWorkingHolidayTaxPage() {
             <p style={ps}>
               It sits there. Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages,
               never out of them, from your first dollar and with no minimum monthly amount. Since 1 July 2026 it also has to be paid
-              with every pay run and reach the fund within seven business days, so an employer skipping it now shows up in weeks rather
+              with every pay run and reach the fund within seven business days, so an employer skipping it shows up in weeks rather
               than after a quarter.
             </p>
             <p style={ps}>
-              After a long stay and several jobs you will usually have more than one fund account, each charging its own fees against a
+              After a long stay and several jobs you will usually have more than one fund account, each charging fees against a
               balance you are not watching. Once you have left and your visa has ceased it is claimed as a Departing Australia
-              Superannuation Payment. 65 per cent is withheld from a working holiday maker claim, so roughly a third of the balance
-              reaches your account, and plenty of people never claim at all because they heard that figure and assumed there was
-              nothing left.
+              Superannuation Payment, with 65 per cent withheld, so roughly a third of the balance reaches your account.
             </p>
             <p style={{ ...ps, marginBottom: 0 }}>
               There is no deadline on the claim, and the five year limit you may have read about does not exist. More on our{' '}
@@ -473,9 +492,9 @@ export default function UKWorkingHolidayTaxPage() {
           <div style={wrap}>
             <h2 style={h2s}>Are you late, and does it matter?</h2>
             <p style={{ ...ps, marginBottom: 0 }}>
-              Australian returns can be lodged from 1 July. The deadline for a return lodged without an agent is 31 October, and going
-              through a tax agent usually extends that to 15 May the following year. If you are past both of those, the year is late
-              rather than lost. Late returns are still lodged and still refunded, and none of it requires you to be in the country.
+              Australian returns can be lodged from 1 July. The deadline without an agent is 31 October, and going through a tax
+              agent usually extends that to 15 May the following year. Past both, the year is late rather than lost, and late returns
+              are still lodged and still refunded.
             </p>
           </div>
         </section>
@@ -485,8 +504,8 @@ export default function UKWorkingHolidayTaxPage() {
           <div style={wrap}>
             <h2 style={h2s}>What we do with a British file</h2>
             <p style={ps}>
-              Anyone can press submit. The work happens before that, and on a British file it is mostly the two questions nobody else
-              asks: which years are open, and which residency position is true for each of them.
+              Anyone can press submit. The work happens before that, and on a British file it is the two questions nobody else asks:
+              which years are open, and which residency position is true for each.
             </p>
             <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {WHAT_WE_DO.map((t, i) => (
@@ -525,8 +544,7 @@ export default function UKWorkingHolidayTaxPage() {
               ))}
             </ol>
             <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
-              None of that asks anything of you beyond the years you worked and what you can still lay hands on. The
-              correspondence with the ATO runs through us from here.
+              None of that asks anything of you beyond the years you worked and what you can still lay hands on.
             </p>
           </div>
         </section>
@@ -616,7 +634,7 @@ export default function UKWorkingHolidayTaxPage() {
             <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>
               This is general information, not personal tax advice, and nothing here is advice on your UK tax position. Residency for
               Australian tax purposes depends on your own circumstances in each year, which is why British files are looked at
-              individually rather than run through a template.
+              individually.
             </p>
           </div>
         </section>

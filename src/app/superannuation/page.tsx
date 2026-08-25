@@ -89,10 +89,10 @@ export const metadata: Metadata = {
 const MYGOV = [
   {
     mygov: 'The claim handles one fund at a time, and only the ones you already know about.',
-    us: 'We search every account linked to your tax file number, including the ones an employer opened for you without asking.',
+    us: 'We search every account linked to your tax file number, including ones an employer opened without asking.',
   },
   {
-    mygov: 'Nothing tells you a balance has already left the fund and been transferred to the ATO as unclaimed super.',
+    mygov: 'Nothing tells you a balance has already left the fund and gone to the ATO as unclaimed super.',
     us: 'About six months after your visa expires that is where it goes, so we look there as well.',
   },
   {
@@ -101,7 +101,7 @@ const MYGOV = [
   },
   {
     mygov: 'Super is one claim and your tax return is a separate one. Nothing connects them for you.',
-    us: 'The return side is usually where most of the money is, so we do both and neither gets left behind.',
+    us: 'The return side is usually where most of the money is, so we do both.',
   },
 ]
 
@@ -109,12 +109,12 @@ const faqs = [
   {
     question: 'Can I just claim my super myself?',
     answer:
-      'You can, it is free, and with one fund and clean documents we will say so. It gets harder with super spread across several funds, a fund that wants certified copies from overseas, or a visa that has not ceased. That part is what you are handing to us.',
+      'You can, it is free, and with one fund and clean documents we will say so. It gets harder with super spread across several funds, a fund that wants certified copies from overseas, or a visa that has not ceased.',
   },
   {
     question: 'Do you get superannuation if you worked under an ABN?',
     answer:
-      'Generally no. Super guarantee contributions attach to PAYG employment, so gig, rideshare and freelance work invoiced under an ABN usually does not generate super. The exception is a contractor who really worked like an employee; super may still be owed there.',
+      'Generally no. Super guarantee contributions attach to PAYG employment, so gig, rideshare and freelance work invoiced under an ABN usually does not generate super. The exception is a contractor who really worked like an employee, where super may still be owed.',
   },
   {
     question: 'Is a DASP the same thing as a tax refund?',
@@ -217,7 +217,9 @@ const H2: React.CSSProperties = {
   fontSize: 'clamp(21px,2.6vw,30px)',
   lineHeight: 1.16,
   letterSpacing: '-0.025em',
-  marginBottom: '12px',
+  // 12px under a 21 to 30px serif heading is tight. Every H2 on the page runs
+  // through this object, so the air goes in once.
+  marginBottom: '16px',
   scrollMarginTop: '84px',
 }
 const BODY: React.CSSProperties = {
@@ -320,24 +322,32 @@ export default function SuperannuationPage() {
             </h2>
 
             <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
-              Two of those accounts were opened for you without you choosing anything, and nothing on the portal
-              mentions them.
+              Two of those accounts were opened without you choosing anything.
             </p>
 
+            {/* The two labels used to print on all eight cells, which on a phone
+                is the same words repeated eight times down the screen. They print
+                once, on the first row, where they read as column headings on
+                desktop and as the key on mobile. The alternating ground and the
+                heavier weight carry the distinction from there. Copy unchanged. */}
             <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                  <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
-                      On the ATO portal
-                    </p>
+                  <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                        On the ATO portal
+                      </p>
+                    )}
                     <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
                   <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                    style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
-                      With us
-                    </p>
+                    style={{ padding: '13px 16px', background: '#F2FAF7' }}>
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
+                        With us
+                      </p>
+                    )}
                     <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word' }}>{row.us}</p>
                   </div>
                 </div>
@@ -345,7 +355,7 @@ export default function SuperannuationPage() {
             </div>
 
             <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
-              You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
+              You will never log into myGov or work out which form is which. We deal with the ATO directly.
             </p>
           </div>
         </div>
@@ -359,9 +369,8 @@ export default function SuperannuationPage() {
           Australian and New Zealand citizens and permanent residents cannot claim.
         </p>
         <p style={BODY}>
-          Your visa status is checked against Department of Home Affairs records when the claim is lodged,
-          so there is nothing separate to prove. Holding a bridging visa, or still being onshore on any
-          valid visa, blocks the claim until that changes.
+          Your visa status is checked against Department of Home Affairs records, so there is nothing
+          separate to prove. A bridging visa, or still being onshore on any valid visa, blocks the claim.
         </p>
       </Answer>
 
@@ -395,23 +404,23 @@ export default function SuperannuationPage() {
         </div>
 
         <p style={{ ...BODY, fontSize: '13px', color: '#4C6459' }}>
-          Figures are after the 65% DASP withholding set by the ATO, on a balance made up entirely of
-          taxed contributions. A small untaxed element, which some funds hold, is withheld at a higher
-          rate, so treat these as illustrations rather than a quote.
+          Figures are after the 65% DASP withholding, on a balance made up entirely of taxed contributions.
+          An untaxed element, which some funds hold, is withheld at a higher rate, so treat these as
+          illustrations rather than a quote.
         </p>
       </Answer>
 
       {/* ── 3 ──────────────────────────────────────────────────────────────── */}
       <Answer id="documents" heading="What documents do you need for a DASP claim?">
         <p style={BODY}>
-          You need your passport, tax file number, visa details, each fund's name and, ideally, member
-          number, plus bank details for the payment, Australian or overseas. A missing member number is
-          rarely fatal; a fund can match you from your TFN and date of birth.
+          You need your passport, tax file number, visa details, each fund's name and ideally its member
+          number, plus bank details, Australian or overseas. A missing member number is rarely fatal: a
+          fund can match you from your TFN and date of birth.
         </p>
         <p style={BODY}>
           The step that stalls claims is certification. Where a single fund holds $5,000 or more it will
-          usually want certified copies of your passport and visa, and arranging that from overseas takes
-          longer than people expect. Sorting it out first is what keeps a claim moving.
+          usually want certified copies of your passport and visa, which takes longer from overseas than
+          people expect.
         </p>
       </Answer>
 
@@ -419,13 +428,12 @@ export default function SuperannuationPage() {
       <Answer id="how-long" heading="How long does a DASP payment take?" tint>
         <p style={BODY}>
           Payment typically arrives within 28 days of approval. The clock starts when the fund or the ATO
-          has everything it needs, not when you first apply, so a claim missing a certified document can
-          sit for weeks before those 28 days even begin.
+          has everything it needs, not when you apply, so a claim missing a certified document can sit for
+          weeks before those 28 days begin.
         </p>
         <p style={BODY}>
-          If your money is spread across several funds, the claim is only as fast as the slowest of them,
-          because each fund assesses and pays separately. Balances already transferred to the ATO are
-          claimed from the ATO instead, to the same service standard.
+          If your money is spread across several funds, the claim is only as fast as the slowest of them.
+          Balances already transferred to the ATO are claimed from the ATO, to the same standard.
         </p>
       </Answer>
 
@@ -433,13 +441,12 @@ export default function SuperannuationPage() {
       <Answer id="find-your-fund" heading="What if you do not know which super fund you were in?">
         <p style={BODY}>
           This is the normal situation. Every fund an employer paid into is linked to your tax file
-          number, so the accounts can be traced from the TFN without you remembering a single fund name.
+          number, so the accounts can be traced from it without you remembering a single fund name.
           Balances a fund has already handed to the ATO appear in the same search.
         </p>
         <p style={BODY}>
-          What is not automatic is the claim itself: finding an account lodges nothing, and each fund still
-          needs its own application. The account people miss is almost always the first job, taken before
-          they understood what super was.
+          The claim is not automatic: finding an account lodges nothing, and each fund still needs its own
+          application. The account people miss is almost always the first job.
         </p>
       </Answer>
 
@@ -447,13 +454,12 @@ export default function SuperannuationPage() {
       <Answer id="from-overseas" heading="Can you claim your super from the UK, Germany or Japan?" tint>
         <p style={BODY}>
           Yes, and you have to. A DASP can only be made once you have left Australia, so every claim is
-          made from overseas by definition. Where you are living now has no bearing on it, and the whole
-          thing runs on documents.
+          made from overseas. Where you are living now has no bearing on it.
         </p>
         <p style={BODY}>
-          One thing to settle before you close your Australian bank account: not every fund will transfer
-          to an overseas account, and some issue a cheque instead, which is slow to bank. Whether your own
-          country taxes the payment is a question for an adviser there.
+          One thing to settle before you close your Australian bank account: not every fund transfers to
+          an overseas account, and some issue a cheque, which is slow to bank. Whether your own country
+          taxes the payment is a question for an adviser there.
         </p>
       </Answer>
 
@@ -461,12 +467,12 @@ export default function SuperannuationPage() {
       <Answer id="dasp-vs-leaving" heading="Is it better to claim your super or leave it in Australia?">
         <p style={BODY}>
           For almost every working holiday maker, claiming is better. A balance left behind receives no
-          contributions but keeps paying admin fees and, often, insurance premiums you cannot use from
+          contributions but keeps paying admin fees and often insurance premiums you cannot use from
           overseas. Whatever survives eventually lands with the ATO, uninvested.
         </p>
         <p style={BODY}>
           The argument for leaving it only holds if you intend to return to Australia to live and work
-          permanently. Waiting does not reduce the 65%, and it does not grow the balance either.{' '}
+          permanently. Waiting does not reduce the 65%.{' '}
           <Link href="/blog/dasp-vs-leaving-super-in-australia-pros-cons" className="font-semibold"
             style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
             The full comparison is here
@@ -477,14 +483,12 @@ export default function SuperannuationPage() {
       {/* ── 8 ──────────────────────────────────────────────────────────────── */}
       <Answer id="while-in-australia" heading="Can you claim your super while you are still in Australia?" tint>
         <p style={BODY}>
-          No. Super is preserved while you hold a valid visa and while you are in the country, with no
-          early release on a working holiday visa for leaving a job or for hardship. You have to have
-          departed, and the visa you worked on has to have expired or been cancelled.
+          No. Super is preserved while you hold a valid visa and are in the country, with no early release
+          on a working holiday visa for leaving a job or for hardship.
         </p>
         <p style={BODY}>
-          If you are flying home well before your visa runs out, you do not have to wait it out. Once you
-          have left, the Department of Home Affairs can cancel the remaining visa rather than leave it to
-          expire, which usually brings the claim forward.
+          If you are flying home well before your visa runs out, the Department of Home Affairs can cancel
+          the remaining visa once you have left, which usually brings the claim forward.
         </p>
       </Answer>
 
@@ -492,22 +496,21 @@ export default function SuperannuationPage() {
       <Answer id="never-claimed" heading="What happens to your super if you never claim it?">
         <p style={BODY}>
           It is not lost. About six months after your visa expires and you have left, a fund must transfer
-          an unclaimed balance to the ATO, where it sits in your name, fee free and still claimable. A
-          claim made years later is still a claim, at the same 65% rate.
+          an unclaimed balance to the ATO, where it sits in your name, fee free. A claim years later is
+          still a claim, at the same 65% rate.
         </p>
         <p style={BODY}>
           What is lost is whatever fees and insurance premiums took out of the balance before it
-          transferred. On a small balance that can be a meaningful share, and no one can recover it
-          afterwards. That is the argument for claiming sooner.
+          transferred. On a small balance that can be a meaningful share.
         </p>
       </Answer>
 
       {/* ── 10. The sales section, deliberately last. ──────────────────────── */}
       <Answer id="with-us" heading="Claim it yourself, or have us do it" tint>
         <p style={BODY}>
-          You can do it yourself. What you would be handing over is the search across
-          every account linked to your tax file number, ATO held super included, the certified copies
-          arranged from overseas, a separate application to each fund, and the chasing when one goes quiet.
+          You can do it yourself. What you would be handing over is the search across every account linked
+          to your tax file number, ATO held super included, certified copies arranged from overseas, a
+          separate application to each fund, and the chasing when one goes quiet.
         </p>
 
         <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0', margin: '22px 0 20px' }}>

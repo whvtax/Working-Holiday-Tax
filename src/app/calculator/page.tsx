@@ -53,37 +53,37 @@ const faqs = [
   {
     question: 'I have the figure. Can I just lodge it myself?',
     answer:
-      'You can, and lodging really is the easy part. What an estimate cannot do is change the figure, because it is only arithmetic on the numbers you already have. Three judgements decide the real result, and not one of them is a field on this page: which residency position is true for you, whether the Medicare levy should ever have been charged to you, and what your line of work is entitled to deduct.',
+      'You can, and lodging really is the easy part. What an estimate cannot do is change the figure, because it is arithmetic on the numbers you already have.\n\nThree judgements decide the real result, and none is a field on this page: which residency position is true for you, whether the Medicare levy should ever have been charged, and what your line of work is entitled to deduct.',
   },
   {
     question: 'How accurate is this tax calculator?',
     answer:
-      'It is accurate arithmetic on the figures you type, and nothing more than that. It applies the 2025-26 working holiday maker and Australian resident rates to the income and withholding you enter. Treat the number as a starting point for a conversation rather than a final answer.',
+      'It is accurate arithmetic on the figures you type, and nothing more. It applies the 2025-26 working holiday maker and Australian resident rates to the income and withholding you enter. Treat the number as a starting point rather than a final answer.',
   },
   {
     question: 'What tax rates does the calculator use?',
     answer:
-      'For working holiday makers on a 417 or 462 visa it applies 15% on the first $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000 and 45% above $190,000, with no tax free threshold. For Australian tax residents it applies the tax free threshold up to $18,200, then 16% up to $45,000, 30% up to $135,000, 37% up to $190,000 and 45% above that. Which of the two applies to you is a judgement about your circumstances, not a setting.',
+      'For working holiday makers on a 417 or 462 visa it applies 15% on the first $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000 and 45% above $190,000, with no tax free threshold.\n\nFor Australian tax residents it applies the tax free threshold up to $18,200, then 16% up to $45,000, 30% up to $135,000, 37% up to $190,000 and 45% above that. Which applies to you is a judgement about your circumstances, not a setting.',
   },
   {
     question: 'Why does the calculator not include the Medicare levy?',
     answer:
-      'Because for most of the people using it the levy should not be there at all. The Medicare levy is a separate 2% of taxable income, and most working holiday makers from countries without a reciprocal health care agreement are entitled to have it removed through an exemption certificate. Including it by default would understate the refund for the majority and overstate it for the minority, so it is handled in the review instead, where your entitlement can actually be checked.',
+      'Because for most people using it the levy should not be there at all. The Medicare levy is a separate 2% of taxable income, and most working holiday makers from countries without a reciprocal health care agreement are entitled to have it removed through an exemption certificate.\n\nIncluding it by default would understate the refund for the majority, so it is handled in the review instead, where your entitlement can be checked.',
   },
   {
     question: 'The calculator says I owe tax. Is that the end of it?',
     answer:
-      'Usually not. A figure showing tax owing almost always means the calculator is working with income that had little or no tax withheld against it, such as ABN work, or it is missing deductions entirely because there is nowhere to enter them. Deductions reduce taxable income and can turn an amount owing into a refund. It is worth getting the position checked rather than assuming the number is final.',
+      'Usually not. A figure showing tax owing almost always means income that had little or no tax withheld against it, such as ABN work, or missing deductions, because there is nowhere to enter them.\n\nDeductions reduce taxable income and can turn an amount owing into a refund, so it is worth getting the position checked rather than assuming the number is final.',
   },
   {
     question: 'Can you use this calculator after you have gone home to the UK, Germany or Japan?',
     answer:
-      'Yes. Your Australian tax position is decided by the income you earned in Australia and the visa you held while you earned it, not by where you are living now. The calculator works the same from London, Berlin or Tokyo, and a tax return can be lodged from anywhere. The only thing that changes when you have left is that your super also becomes claimable through DASP.',
+      'Yes. Your Australian tax position is decided by the income you earned in Australia and the visa you held while you earned it, not by where you live now.\n\nThe calculator works the same from London, Berlin or Tokyo, and a tax return can be lodged from anywhere. What changes once you have left is that your super also becomes claimable through DASP.',
   },
   {
     question: 'What does the calculator do with the superannuation figure?',
     answer:
-      'It applies the DASP withholding rate to the balance you enter and shows what would reach your account. For anyone who has ever held a 417 or 462 visa that rate is 65% on the taxable component, so a $10,000 balance pays out about $3,500. Super is a separate claim from your tax return and can only be paid once you have left Australia and your visa has expired or been cancelled.',
+      'It applies the DASP withholding rate to the balance you enter and shows what would reach your account. For anyone who has ever held a 417 or 462 visa that rate is 65% on the taxable component, so a $10,000 balance pays out about $3,500.\n\nSuper is a separate claim from your tax return, payable only once you have left Australia and your visa has expired or been cancelled.',
   },
 ]
 

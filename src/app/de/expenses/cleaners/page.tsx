@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -99,7 +99,7 @@ const HERO = {
   "kicker": "Häuser, Büros, Endreinigung und App-Jobs",
   "h1lead": "Die Fahrt zwischen den Häusern ist der Abzug.",
   "h1accent": "Fast niemand macht ihn.",
-  "lede": "Mittel, Handschuhe und Uniformwäsche zum ATO-Satz stehen auch auf der Liste, und die Ausrüstung summiert sich schneller, als die meisten denken."
+  "lede": "Mittel, Handschuhe und Uniformwäsche zum ATO-Satz stehen auch auf der Liste."
 }
 
 type Section =
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Reinigungskräfte absetzen?",
     "paras": [
       "Absetzbar sind selbst gekaufte Ausrüstung und Reinigungsmittel, Schutzausrüstung wie Handschuhe, Schürze, Schutzbrille oder Sicherheitsschuhe, das Waschen einer Pflichtuniform oder von Schutzkleidung und die Fahrt von einem Reinigungsjob zum nächsten am selben Tag. Was Kunde oder Arbeitgeber stellt oder erstattet, fällt raus.",
-      "Reinigung ist besonders, weil die Arbeit sich bewegt. Drei Häuser an einem Tag bedeuten zwei absetzbare Fahrten, und über ein Jahr ist das normalerweise die größte einzelne Zahl der Erklärung."
+      "Drei Häuser an einem Tag bedeuten zwei absetzbare Fahrten, und über ein Jahr ist das normalerweise die größte einzelne Zahl der Erklärung."
     ]
   },
   {
@@ -127,11 +127,11 @@ const SECTIONS: Section[] = [
     "items": [
       {
         "t": "Fahrten zwischen Reinigungsjobs",
-        "d": "Die Fahrt von einem Haus oder Büro zum nächsten, nachdem dein Tag begonnen hat, ist Fahrt zwischen Arbeitsplätzen und nicht der Arbeitsweg, also absetzbar. Berechnet wird sie mit der Kilometerpauschale oder einem Fahrtenbuch. Die erste Fahrt des Tages und die letzte nach Hause bleiben privat."
+        "d": "Die Fahrt von einem Haus oder Büro zum nächsten, nachdem dein Tag begonnen hat, ist Fahrt zwischen Arbeitsplätzen und nicht der Arbeitsweg, also absetzbar. Berechnet wird sie mit der Kilometerpauschale oder einem Fahrtenbuch."
       },
       {
         "t": "Ausrüstung und Reinigungsmittel",
-        "d": "Mopps, Eimer, Auswringer, Schaber, Klingen, Tücher, Chemikalien und Verbrauchsmaterial, das du selbst kaufst. Jeder Gegenstand bis 300 Dollar wird im Kaufjahr voll abgesetzt. Ein zusammen gekauftes Starterset ab 300 Dollar gilt als ein Gegenstand und wird über die Nutzungsdauer verteilt, auch wenn jedes Teil einzeln darunter gelegen hätte."
+        "d": "Mopps, Eimer, Schaber, Tücher, Chemikalien und Verbrauchsmaterial, das du selbst kaufst. Jeder Gegenstand bis 300 Dollar wird im Kaufjahr voll abgesetzt. Ein zusammen gekauftes Starterset ab 300 Dollar gilt als ein Gegenstand und wird über die Nutzungsdauer verteilt, auch wenn jedes Teil einzeln darunter gelegen hätte."
       },
       {
         "t": "Größere Geräte ab 300 Dollar",
@@ -139,7 +139,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Schutzausrüstung",
-        "d": "Handschuhe, Schürze, Schutzbrille oder Gesichtsschutz bei starken Chemikalien und Staub, Stahlkappen für Baustellen- und Gewerbereinigung. Sie zählen, weil sie dich vor einer Gefahr des Jobs schützen, nicht weil du sie zufällig bei der Arbeit trägst."
+        "d": "Handschuhe, Schürze, Schutzbrille oder Gesichtsschutz bei starken Chemikalien und Staub, Stahlkappen für Baustellen- und Gewerbereinigung. Sie zählen, weil sie dich vor einer Gefahr des Jobs schützen."
       },
       {
         "t": "Waschen absetzbarer Arbeitskleidung",
@@ -207,7 +207,7 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Drei oder vier Adressen am Tag knacken die 5.000 Kilometer schneller, als die meisten Reinigungskräfte erwarten, und darüber gewinnt normalerweise das Fahrtenbuch, weil es Benzin, Versicherung, Zulassung, Wartung, Abschreibung und die Zinsen eines Autokredits erfasst statt einer Pauschale."
+    "note": "Drei oder vier Adressen am Tag knacken die 5.000 Kilometer schneller, als die meisten Reinigungskräfte erwarten, und darüber gewinnt normalerweise das Fahrtenbuch, weil es Benzin, Versicherung, Zulassung, Wartung, Abschreibung und die Zinsen eines Autokredits erfasst."
   },
   {
     "kind": "traps",
@@ -216,11 +216,11 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Schlichte schwarze Hose und schlichtes Polo",
-        "d": "Auch wenn Kunde oder Agentur auf einer Farbe besteht, bleibt Alltagskleidung privat. Sie wird keine Uniform, weil jemand sie verlangt, und nicht absetzbar, weil Bleiche sie ruiniert hat."
+        "d": "Auch wenn Kunde oder Agentur auf einer Farbe besteht, bleibt Alltagskleidung privat. Sie wird nicht absetzbar, weil Bleiche sie ruiniert hat."
       },
       {
         "t": "Die erste und die letzte Fahrt des Tages",
-        "d": "Von zu Hause zum ersten Job und vom letzten Job nach Hause ist der normale Arbeitsweg. Nur die Strecken dazwischen sind absetzbar, es sei denn, du erfüllst die Ausnahme für sperrige Ausrüstung, die zwingend nötig, wirklich sperrig und an keinem der Arbeitsorte sicher zu lagern sein muss."
+        "d": "Von zu Hause zum ersten Job und vom letzten Job nach Hause ist der normale Arbeitsweg. Nur die Strecken dazwischen sind absetzbar, es sei denn, du erfüllst die Ausnahme für sperrige Ausrüstung."
       },
       {
         "t": "Mittel und Geräte, die der Kunde stellt",
@@ -228,21 +228,21 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Eine ABN als Freibrief für alles",
-        "d": "Eine ABN macht aus privaten Ausgaben keine Betriebsausgaben. Handy, Auto und Kleidung werden weiterhin aufgeteilt, und der private Anteil fällt weiterhin raus."
+        "d": "Eine ABN macht aus privaten Ausgaben keine Betriebsausgaben. Handy, Auto und Kleidung werden weiterhin aufgeteilt."
       },
       {
         "t": "Anzunehmen, Barzahlungen müsse man nicht angeben",
-        "d": "Reinigungseinkommen ist Einkommen, ob es per Überweisung, App-Auszahlung oder im Umschlag kommt. Es wegzulassen macht es nicht unsichtbar, es macht die Erklärung falsch."
+        "d": "Reinigungseinkommen ist Einkommen, ob es per Überweisung, App-Auszahlung oder im Umschlag kommt."
       }
     ],
     "missed": [
       {
         "t": "Die Fahrten zwischen den Jobs",
-        "d": "Reinigungskräfte arbeiten an drei oder vier Adressen am Tag und setzen keine davon ab, weil es sich nicht nach Arbeitsfahrt anfühlt. Notiere Datum, Adressen und Kilometer laufend, dann wird daraus der größte Abzug der Erklärung."
+        "d": "Reinigungskräfte arbeiten an drei oder vier Adressen am Tag und setzen keine davon ab, weil es sich nicht nach Arbeitsfahrt anfühlt. Notiere Datum, Adressen und Kilometer laufend."
       },
       {
         "t": "Jede Flasche und jedes Tuch einzeln",
-        "d": "Verbrauchsmaterial wird ständig gekauft und fast nie belegt. Ein laufendes Fotoalbum der Belege auf dem Handy reicht, und über ein Jahr ist das eine echte Summe."
+        "d": "Verbrauchsmaterial wird ständig gekauft und fast nie belegt. Ein laufendes Fotoalbum der Belege auf dem Handy reicht."
       },
       {
         "t": "Wäsche, zu einem veröffentlichten Satz",
@@ -262,9 +262,11 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was ändert sich je nachdem, für wen du putzt?",
     "paras": [
-      "Einzelunternehmer oder Angestellter ist die erste Weiche, und danach richtet sich alles weitere. Private Hausreinigungen, Endreinigungen und App-Jobs über etwas wie Airtasker sind ABN-Einkommen: du setzt den Preis, du stellst Rechnung, nichts wird einbehalten, es gibt keine Superannuation. Von einer Reinigungsfirma auf Objekte und Schichten eingeteilt zu werden ist Anstellung mit TFN, mit Einbehalt und Super obendrauf. Beides in einem Jahr ist normal, und beides gehört in eine Erklärung.",
-      "Eine Firma, die deinen Dienstplan macht, deine Arbeit beaufsichtigt und die Mittel stellt und dann eine ABN von dir verlangt, kann ein Arbeitgeber im Kostüm der Selbstständigkeit sein. Das prüft man besser, bevor man das Papier unterschreibt.",
-      "Für Einzelunternehmer wird die GST erst ab 75.000 Dollar Reinigungsumsatz im Jahr Pflicht, und dahin kommt Teilzeitreinigung selten. Unter allem liegt der steuerliche Wohnsitz, mehr wert als die ganze Abzugsliste: britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen."
+      "Einzelunternehmer oder Angestellter ist die erste Weiche. Private Hausreinigungen, Endreinigungen und App-Jobs über etwas wie Airtasker sind ABN-Einkommen: du setzt den Preis, du stellst Rechnung, nichts wird einbehalten, es gibt keine Superannuation.",
+      "Von einer Reinigungsfirma auf Objekte und Schichten eingeteilt zu werden ist Anstellung mit TFN, mit Einbehalt und Super obendrauf.",
+      "Eine Firma, die deinen Dienstplan macht, deine Arbeit beaufsichtigt und die Mittel stellt und dann eine ABN von dir verlangt, kann ein Arbeitgeber im Kostüm der Selbstständigkeit sein.",
+      "Für Einzelunternehmer wird die GST erst ab 75.000 Dollar Reinigungsumsatz im Jahr Pflicht, und dahin kommt Teilzeitreinigung selten.",
+      "Unter allem liegt der steuerliche Wohnsitz, mehr wert als die ganze Abzugsliste: britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen."
     ]
   }
 ]
@@ -272,15 +274,15 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Kann ich die Fahrt zwischen zwei Reinigungsjobs absetzen?",
-    "answer": "Ja. Die Fahrt von einem Reinigungsjob zum nächsten am selben Tag ist eine Fahrt zwischen Arbeitsplätzen und kein Arbeitsweg, also absetzbar über die Kilometerpauschale oder ein Fahrtenbuch. Nicht absetzbar sind die erste Fahrt von zu Hause zum ersten Job und die letzte nach Hause, es sei denn, du transportierst wirklich sperrige Ausrüstung, die für die Arbeit nötig ist und an keinem der Orte sicher gelagert werden kann."
+    "answer": "Ja. Die Fahrt von einem Reinigungsjob zum nächsten am selben Tag ist eine Fahrt zwischen Arbeitsplätzen und kein Arbeitsweg, also absetzbar über die Kilometerpauschale oder ein Fahrtenbuch.\n\nNicht absetzbar sind die erste Fahrt von zu Hause zum ersten Job und die letzte nach Hause, es sei denn, du transportierst sperrige Ausrüstung, die an keinem der Orte sicher gelagert werden kann."
   },
   {
     "question": "Welche Ausrüstung und welche Mittel kann ich absetzen?",
-    "answer": "Alles, was du selbst gekauft hast und nicht erstattet bekommen hast: Mopps, Eimer, Auswringer, Schaber, Klingen, Tücher, Chemikalien und Verbrauchsmaterial. Gegenstände bis 300 Dollar pro Stück werden im Kaufjahr voll abgesetzt. Größere Geräte wie ein Industriestaubsauger oder eine Einscheibenmaschine sind ebenfalls absetzbar, verteilt über die Nutzungsdauer statt auf einmal."
+    "answer": "Alles, was du selbst gekauft hast und nicht erstattet bekommen hast: Mopps, Eimer, Schaber, Tücher, Chemikalien und Verbrauchsmaterial.\n\nGegenstände bis 300 Dollar pro Stück werden im Kaufjahr voll abgesetzt. Größere Geräte wie ein Industriestaubsauger oder eine Einscheibenmaschine sind ebenfalls absetzbar, verteilt über die Nutzungsdauer."
   },
   {
     "question": "Kann ich Uniform und Waschen absetzen?",
-    "answer": "Du kannst eine vorgeschriebene Uniform absetzen, die Arbeitgeber oder Kunde nicht stellt, und Schutzausrüstung mit echter Sicherheitsfunktion wie Handschuhe, Schürze, Schutzbrille oder Stahlkappen. Nicht absetzbar sind schlichte schwarze Hosen oder ein schlichtes Polo, auch wenn du sie nur wegen der Reinigung besitzt. Das Waschen absetzbarer Arbeitskleidung geht mit 1 Dollar pro reinem Arbeitswaschgang oder 50 Cent gemischt, mit einfachem Tagebuch ab 150 Dollar im Jahr."
+    "answer": "Du kannst eine vorgeschriebene Uniform absetzen, die Arbeitgeber oder Kunde nicht stellt, und Schutzausrüstung mit echter Sicherheitsfunktion wie Handschuhe, Schürze, Schutzbrille oder Stahlkappen. Nicht absetzbar sind schlichte schwarze Hosen oder ein schlichtes Polo.\n\nDas Waschen absetzbarer Arbeitskleidung geht mit 1 Dollar pro reinem Arbeitswaschgang oder 50 Cent gemischt, mit einfachem Tagebuch ab 150 Dollar im Jahr."
   },
   {
     "question": "Muss ich mich als Reinigungskraft mit ABN für die GST registrieren?",
@@ -288,7 +290,7 @@ const FAQS = [
   },
   {
     "question": "Bin ich Einzelunternehmer oder Angestellter?",
-    "answer": "Es entscheidet, wer die Arbeit verteilt. Kunden, die du selbst gefunden hast, Endreinigungen und App-Buchungen laufen fast immer als Einzelunternehmer über eine ABN. Teilt dir eine Reinigungsfirma Objekte und Schichten zu, bist du fast immer angestellt. Der Vertrag entscheidet es nicht, die tatsächlichen Umstände entscheiden es, und wenn du beides gemacht hast, gehört beides in dieselbe Erklärung."
+    "answer": "Es entscheidet, wer die Arbeit verteilt. Kunden, die du selbst gefunden hast, Endreinigungen und App-Buchungen laufen fast immer als Einzelunternehmer über eine ABN.\n\nTeilt dir eine Reinigungsfirma Objekte und Schichten zu, bist du fast immer angestellt.\n\nDer Vertrag entscheidet es nicht, die tatsächlichen Umstände entscheiden es, und wenn du beides gemacht hast, gehört beides in dieselbe Erklärung."
   }
 ]
 
@@ -382,7 +384,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -597,7 +599,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -607,7 +611,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -647,7 +651,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Am Absatzumbruch geteilt, damit eine lange Antwort als zwei
+                    kurze Absätze liest. faqSchema nutzt weiter den Rohtext. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

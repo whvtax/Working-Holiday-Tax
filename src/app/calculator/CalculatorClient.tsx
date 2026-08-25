@@ -330,11 +330,12 @@ export function CalculatorClient({ faqs = [] }: Props) {
 
                 {/* What the figure cannot know, then the handoff. */}
                 <div style={{ padding: '0 20px 18px' }}>
+                  {/* "That is what the review works out." was a closing line
+                      that added no fact to the three already named. */}
                   <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '14px' }}>
                     Treat this as indicative. The real number moves on three things this page cannot
                     settle: which residency position is true for you, whether the Medicare levy
-                    exemption applies, and what your line of work can deduct. That is what the review
-                    works out.
+                    exemption applies, and what your line of work can deduct.
                   </p>
                   <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
                     className="btn-primary w-full flex items-center justify-center"
@@ -404,29 +405,39 @@ export function CalculatorClient({ faqs = [] }: Props) {
             </p>
 
             <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '12px' }}>
+              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
               <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Type a low number into myGov{' '}</span>
               <span style={{ display: 'block' }}>and a low number is what gets lodged.{' '}</span>
             </h2>
 
+            {/* Was "...and four things are missing from what you typed", which
+                said "what you typed" twice in one line. */}
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
-              An estimate is only as good as what you typed, and four things are missing from what you typed.
+              An estimate is only as good as what you typed, and four things are missing from it.
             </p>
 
             <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                  <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
-                      On myGov
-                    </p>
+                  <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
+                    {/* Printed on the first row only. On a phone the rows stack,
+                        so repeating both labels eight times was the same two
+                        words marching down the screen. Column headings on
+                        desktop, the key on mobile. */}
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                        On myGov
+                      </p>
+                    )}
                     <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
                   <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                    style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
-                      With us
-                    </p>
+                    style={{ padding: '13px 16px', background: '#F2FAF7' }}>
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
+                        With us
+                      </p>
+                    )}
                     <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#080F0D', fontWeight: 500, margin: 0, overflowWrap: 'break-word' }}>{row.us}</p>
                   </div>
                 </div>
@@ -445,19 +456,25 @@ export function CalculatorClient({ faqs = [] }: Props) {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px]">
             <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '12px' }}>
+              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
               What makes the real number different from this one?
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
-              Three things, and none of them are on this page. The first is your residency position. Read
-              correctly, it can change which rates apply to your whole year. It is a judgement about your
-              circumstances, and it is worth more than everything else combined.
+              Three things, none of them on this page. The first is your residency position. Read correctly,
+              it can change which rates apply to your whole year. It is a judgement about your circumstances,
+              worth more than everything else combined.
             </p>
+            {/* Was one five sentence block carrying both the second and the
+                third thing. Split at the turn, where the levy ends and the
+                deductions begin. */}
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               The second is the Medicare levy. It is 2% of taxable income, it comes off by default, and
               most 417 and 462 holders never owed it. Removing it needs a certificate almost nobody applies
-              for. The third is deductions, which on myGov are a blank box. What a farm hand, a barista and
-              a hospitality worker can each claim is not the same list.
+              for.
+            </p>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
+              The third is deductions, a blank box on myGov. What a farm hand, a barista and a hospitality
+              worker can each claim is not the same list.
             </p>
             <div className="flex flex-wrap gap-3" style={{ marginTop: '18px' }}>
               <Link href="/medicare"
@@ -496,7 +513,12 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     <span style={{ flex: 1 }}>{f.question}</span>
                     <span className="contact-faq-plus" aria-hidden="true">+</span>
                   </summary>
-                  <p className="contact-faq-answer">{f.answer}</p>
+                  {/* One <p> per paragraph. The FAQPage schema in page.tsx
+                      still uses the raw string, so the structured data is
+                      unchanged. */}
+                  {f.answer.split('\n\n').map((para, j) => (
+                    <p key={j} className="contact-faq-answer">{para}</p>
+                  ))}
                 </details>
               ))}
             </div>

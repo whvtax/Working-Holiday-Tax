@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -135,15 +135,15 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Verlängerung von Tickets und Lizenzen",
-        "d": "High Risk Work Licence, Working-at-Heights-Ticket, Staplerschein. Verlängerungen sind absetzbar, sobald du bereits in der Rolle arbeitest. Das erste nicht, auf derselben Grundlage wie die erste White Card oder der erste Führerschein."
+        "d": "High Risk Work Licence, Working-at-Heights-Ticket, Staplerschein. Verlängerungen sind absetzbar, sobald du bereits in der Rolle arbeitest. Das erste nicht, auf derselben Grundlage wie die erste White Card."
       },
       {
         "t": "Vom Arbeitgeber verlangte Medicals und Tests",
-        "d": "Viele Standorte verlangen ein Medical und Drogen- und Alkoholtests als Voraussetzung. Verlangt dein Arbeitgeber das für eine Rolle, die du bereits hast, und hast du selbst bezahlt, sind die Kosten absetzbar."
+        "d": "Viele Standorte verlangen ein Medical und Drogen- und Alkoholtests. Verlangt dein Arbeitgeber das für eine Rolle, die du bereits hast, und hast du selbst bezahlt, sind die Kosten absetzbar."
       },
       {
         "t": "Arbeitsanteil an Handy und Internet",
-        "d": "Roster prüfen, Stundenzettel einreichen, verpflichtende Online-Einweisungen und Auffrischungen erledigen. Setze den arbeitsbezogenen Prozentsatz auf fairer, ehrlicher Grundlage an, nicht die ganze Rechnung."
+        "d": "Roster prüfen, Stundenzettel einreichen, verpflichtende Online-Einweisungen und Auffrischungen erledigen. Setze den arbeitsbezogenen Prozentsatz auf fairer Grundlage an, nicht die ganze Rechnung."
       },
       {
         "t": "Weiterbildung zu deiner jetzigen Arbeit",
@@ -155,7 +155,7 @@ const SECTIONS: Section[] = [
     "kind": "note",
     "label": "Der größte FIFO-Irrtum",
     "title": "In einer Zone zu arbeiten ist nicht dasselbe wie dort zu wohnen.",
-    "body": "Seit einer Gesetzesänderung 2015 hängt der Zone Tax Offset davon ab, wo dein normaler Wohnsitz ist, und nicht davon, wohin dich der Roster bringt. Dein normaler Wohnsitz muss selbst mehr als 183 Tage im Einkommensjahr in einer ausgewiesenen abgelegenen Zone liegen. In eine Zone einzufliegen, während du zwischen den Swings in Perth, Brisbane oder Darwin wohnst, erfüllt diesen Test nicht, auch wenn du den größten Teil des Jahres körperlich am Standort bist. Das Camp ist nicht dein normaler Wohnsitz, weil es vorübergehend und an den Roster gebunden ist. Für die meisten Working Holiday Maker im FIFO-Roster gilt der Offset nicht, und das weiß man besser vorher, als wenn es schon in der Erklärung steht."
+    "body": "Seit einer Gesetzesänderung 2015 hängt der Zone Tax Offset davon ab, wo dein normaler Wohnsitz ist, und nicht davon, wohin dich der Roster bringt. Dein normaler Wohnsitz muss selbst mehr als 183 Tage im Einkommensjahr in einer ausgewiesenen abgelegenen Zone liegen.\n\nIn eine Zone einzufliegen, während du zwischen den Swings in Perth, Brisbane oder Darwin wohnst, erfüllt diesen Test nicht. Das Camp ist nicht dein normaler Wohnsitz, weil es vorübergehend und an den Roster gebunden ist.\n\nFür die meisten Working Holiday Maker im FIFO-Roster gilt der Offset nicht."
   },
   {
     "kind": "answer",
@@ -168,15 +168,15 @@ const SECTIONS: Section[] = [
   {
     "kind": "traps",
     "h2": "Was machen FIFO-Beschäftigte falsch?",
-    "intro": "Nirgends sonst auf dieser Website kursieren so viele selbstbewusst wiederholte Falschinformationen. Die folgenden Abzüge werden jedes Jahr angesetzt und halten nicht.",
+    "intro": "Nirgends sonst auf dieser Website kursieren so viele selbstbewusst wiederholte Falschinformationen.",
     "wrong": [
       {
         "t": "Der Zone Tax Offset",
-        "d": "Das mit Abstand am häufigsten angesetzte, worauf FIFO-Beschäftigte keinen Anspruch haben. Es kommt darauf an, wo du normal wohnst, nicht wohin du fliegst, und das Camp zählt nicht als Wohnen."
+        "d": "Das mit Abstand am häufigsten angesetzte, worauf FIFO-Beschäftigte keinen Anspruch haben. Es kommt darauf an, wo du normal wohnst, nicht wohin du fliegst, und das Camp zählt nicht."
       },
       {
         "t": "Camp-Unterkunft und Verpflegung",
-        "d": "Dein Arbeitgeber bucht und bezahlt Zimmer und Mess, und an wirklich abgelegenen Standorten ist das für ihn meist ein steuerbefreiter Sachbezug statt Einkommen für dich. So oder so hast du nie bezahlt, also gibt es nichts abzusetzen."
+        "d": "Dein Arbeitgeber bucht und bezahlt Zimmer und Mess, und an wirklich abgelegenen Standorten ist das für ihn meist ein steuerbefreiter Sachbezug statt Einkommen für dich. So oder so hast du nie bezahlt."
       },
       {
         "t": "Die Fahrt zum Flughafen vor dem Swing",
@@ -184,7 +184,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Der Umzug nach Perth oder Brisbane für die Arbeit",
-        "d": "Flüge, Fracht und vorübergehende Unterkunft für einen Umzug, den du gemacht hast, um FIFO-Arbeit aufzunehmen, sind private Umzugskosten. Sich in die Lage zu bringen, Einkommen zu verdienen, ist nicht dasselbe wie es zu verdienen."
+        "d": "Flüge, Fracht und vorübergehende Unterkunft für einen Umzug, um FIFO-Arbeit aufzunehmen, sind private Umzugskosten. Sich in die Lage zu bringen, Einkommen zu verdienen, ist nicht dasselbe wie es zu verdienen."
       },
       {
         "t": "Eine erste High Risk Work Licence",
@@ -198,11 +198,11 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Selbst bezahlte Medicals und Drogen- und Alkoholtests",
-        "d": "Wirklich absetzbar, wenn der Arbeitgeber sie für eine Rolle verlangt, die du bereits hast, und fast nie angesetzt, weil es sich nach Hürde statt nach Ausgabe anfühlt."
+        "d": "Absetzbar, wenn der Arbeitgeber sie für eine Rolle verlangt, die du bereits hast, und fast nie angesetzt, weil es sich nach Hürde statt nach Ausgabe anfühlt."
       },
       {
         "t": "Arbeitsanteil an Handy und Internet im Swing",
-        "d": "Roster, Stundenzettel und Pflichteinweisungen laufen alle über ein privates Gerät. Ein überschaubarer, aber vollkommen berechtigter Abzug."
+        "d": "Roster, Stundenzettel und Pflichteinweisungen laufen alle über ein privates Gerät."
       },
       {
         "t": "Ticketverlängerungen über ein langes Roster-Jahr",
@@ -219,7 +219,7 @@ const SECTIONS: Section[] = [
     "h2": "Was bleibt auf einer FIFO-Akte offen?",
     "paras": [
       "Der Zone Tax Offset ist meistens falsch, nicht unmöglich. Lag deine Basis während der Working Holiday in einer ausgewiesenen Zone, etwa eine Wohnung in einem abgelegenen Ort statt in einer Großstadt, ist die Frage offen.",
-      "Die Ausnahme für sperriges Werkzeug zählt eher für Handwerker, die mit eigenem Werkzeugsatz einfliegen, als für Camp-Service-Rollen. Entschieden wird sie davon, was du transportiert hast und was der Standort an Lagerung bot, und geprüft wird sie auch, also solltest du die Fakten beschreiben können.",
+      "Die Ausnahme für sperriges Werkzeug zählt eher für Handwerker, die mit eigenem Werkzeugsatz einfliegen, als für Camp-Service-Rollen. Entschieden wird sie davon, was du transportiert hast und was der Standort an Lagerung bot.",
       "Der steuerliche Wohnsitz ist bei FIFO die größte Frage, weil die Beträge größer sind. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
@@ -228,23 +228,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Bekommen FIFO-Beschäftigte den Zone Tax Offset?",
-    "answer": "Meistens nicht, und das ist der größte Irrtum bei FIFO-Steuern. Seit einer Gesetzesänderung 2015 hängt der Anspruch davon ab, dass dein normaler Wohnsitz mehr als 183 Tage im Jahr in einer ausgewiesenen abgelegenen Zone liegt, und nicht davon, wo du körperlich arbeitest. In eine Zone einzufliegen, während du zwischen den Swings in einer Großstadt wohnst, erfüllt diesen Test nicht, und Camp-Unterkunft gilt nicht als normaler Wohnsitz, weil sie vorübergehend und an den Roster gebunden ist."
+    "answer": "Meistens nicht, und das ist der größte Irrtum bei FIFO-Steuern. Seit einer Gesetzesänderung 2015 hängt der Anspruch davon ab, dass dein normaler Wohnsitz mehr als 183 Tage im Jahr in einer ausgewiesenen abgelegenen Zone liegt, und nicht davon, wo du körperlich arbeitest.\n\nIn eine Zone einzufliegen, während du zwischen den Swings in einer Großstadt wohnst, erfüllt diesen Test nicht, und das Camp ist nicht dein normaler Wohnsitz."
   },
   {
     "question": "Kann ich Camp-Unterkunft oder Verpflegung absetzen?",
-    "answer": "Nein. Zimmer und Essen am Standort organisiert und bezahlt dein Arbeitgeber, und an wirklich abgelegenen Standorten gilt das für ihn meist als steuerbefreiter Sachbezug. Weil du nie selbst für Zimmer oder Essen bezahlt hast, gibt es keine Ausgabe von dir abzusetzen. Ein Abzug kann nur Geld zurückgeben, das aus deiner Tasche geflossen ist."
+    "answer": "Nein. Zimmer und Essen am Standort organisiert und bezahlt dein Arbeitgeber, und an wirklich abgelegenen Standorten gilt das für ihn meist als steuerbefreiter Sachbezug.\n\nWeil du nie selbst für Zimmer oder Essen bezahlt hast, gibt es keine Ausgabe von dir abzusetzen."
   },
   {
     "question": "Kann ich die Fahrt zum Flughafen vor dem Swing absetzen?",
-    "answer": "In fast allen Fällen nein. Die Fahrt von zu Hause zum Flughafen, von dem du abfliegst, ist normaler privater Arbeitsweg, genau wie bei allen anderen, egal wie früh der Flug ist. Es gibt eine enge Ausnahme, wenn du wirklich sperriges und notwendiges Werkzeug transportieren musst und es bei der Arbeit nicht sicher gelagert werden kann, aber das greift bei Camp-Service-Rollen selten."
+    "answer": "In fast allen Fällen nein. Die Fahrt von zu Hause zum Flughafen ist normaler privater Arbeitsweg, egal wie früh der Flug ist.\n\nEs gibt eine enge Ausnahme für wirklich sperriges und notwendiges Werkzeug ohne sicheren Lagerplatz am Standort, aber die greift bei Camp-Service-Rollen selten."
   },
   {
     "question": "Kann ich meine High Risk Work Licence absetzen?",
-    "answer": "Du kannst die Verlängerung einer Lizenz absetzen, die du bereits hast. Den ersten Erwerb nicht, weil diese Kosten dich für die Rolle qualifiziert haben und nicht zum Ausüben eines Jobs gehörten, den du schon hattest. Es ist dieselbe Unterscheidung zwischen erstem Erwerb und Verlängerung, die das ATO bei der White Card und beim Führerschein anwendet."
+    "answer": "Du kannst die Verlängerung einer Lizenz absetzen, die du bereits hast. Den ersten Erwerb nicht, weil diese Kosten dich erst für die Rolle qualifiziert haben.\n\nEs ist dieselbe Unterscheidung zwischen erstem Erwerb und Verlängerung, die das ATO bei der White Card anwendet."
   },
   {
     "question": "Was kann ich im Roster für Handy und Internet absetzen?",
-    "answer": "Den arbeitsbezogenen Anteil. Wenn du dein eigenes Handy oder Internet für den Job nutzt, um den Roster zu prüfen, Stundenzettel einzureichen oder verpflichtende Online-Einweisungen zu machen, ist dieser Anteil der Rechnung absetzbar. Du brauchst eine faire und ehrliche Schätzung des Prozentsatzes, denn die volle Rechnung eines Geräts, das du auch sonst nutzt, hält nicht stand."
+    "answer": "Den arbeitsbezogenen Anteil. Wenn du dein eigenes Handy oder Internet für den Job nutzt, um den Roster zu prüfen, Stundenzettel einzureichen oder verpflichtende Online-Einweisungen zu machen, ist dieser Anteil der Rechnung absetzbar.\n\nDu brauchst eine faire Schätzung des Prozentsatzes, denn die volle Rechnung eines Geräts, das du auch sonst nutzt, hält nicht stand."
   }
 ]
 
@@ -338,7 +338,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -553,7 +553,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -563,7 +565,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -603,7 +605,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Am Absatzumbruch geteilt, damit eine lange Antwort als zwei
+                    kurze Absätze liest. faqSchema nutzt weiter den Rohtext. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

@@ -63,46 +63,47 @@ const chapters = [
   {
     stage: 'Week one',
     title: 'You arrived with a plan that covered about a fortnight',
-    body: 'A hostel, a SIM, a bank account and a job as soon as possible. A tax file number was somewhere on that list, so you applied for it and got on with the rest. Nothing about the Australian tax year was explained to you, and there was no reason it would be.',
+    body: 'A hostel, a SIM, a bank account and a job as soon as possible. A tax file number was somewhere on that list. Nobody explained the Australian tax year.',
   },
   {
     stage: 'Your first payslips',
     title: 'The first job started before the number came through',
-    body: 'Without a tax file number on file, an employer is required to withhold at the top rate rather than the fifteen percent a working holiday maker normally pays, so those first weeks are missing close to half. Nobody at that job explained it, because explaining it was not their job. That money does not come back by itself. Somebody has to claim it.',
+    // Blank line splits the chapter into two paragraphs at the render below.
+    body: 'Without a tax file number on file, an employer must withhold at the top rate rather than the fifteen percent a working holiday maker normally pays, so those first weeks are missing close to half.\n\nThat money does not come back by itself.',
   },
   {
     stage: 'By Christmas',
     title: 'Four employers, half of them casual, none of them explaining anything',
-    body: 'A hostel job, a cafe, a warehouse for three weeks, something you left without ever getting a final payslip. The Australian tax year ends in June rather than December, which nobody mentioned either. Losing those payslips does not matter: everything your employers reported is visible to us through the ATO, so we start from the record rather than from your inbox.',
+    body: 'A hostel job, a cafe, a warehouse for three weeks, something you left without a final payslip. The Australian tax year ends in June, not December.\n\nLosing the payslips does not matter: everything your employers reported is visible to us through the ATO.',
   },
   {
     stage: 'The 88 days',
     title: 'If you did them, you drove a long way to do them',
-    body: 'Somewhere west, or north, or three hours past a town you had never heard of. Accommodation came out of your wages before you ever saw them, the pay slips looked different from the city ones, and the whole stretch is the part of the year people are least confident about. It is also the part that most often needs a proper look rather than a box ticked.',
+    body: 'Somewhere west, or north, or three hours past a town you had never heard of.\n\nAccommodation came out of your wages before you saw them, the pay slips looked different from the city ones, and it is the part of the year people are least confident about.',
   },
   {
     stage: 'The flight home',
     title: 'You left, and the money stayed',
-    body: 'Superannuation can only be claimed once you have left Australia and the visa has lapsed, so yours is still sitting with a fund you may not remember choosing. The over withheld tax from those first weeks is still sitting with the ATO. Neither of them is mentioned at the airport, in the exit lane, or by anyone you worked for.',
+    body: 'Superannuation can only be claimed once you have left Australia and the visa has lapsed, so yours is still sitting with a fund you may not remember choosing. The over withheld tax from those first weeks is still sitting with the ATO.',
   },
 ]
 
 const faqs = [
   {
     question: 'Who do you actually work with?',
-    answer: 'Working holiday makers, and nobody else. Every client we have is in Australia on a 417 or a 462 visa, or was on one and has since gone home. We do not take on Australian residents, students, sponsored workers or businesses, so the working holiday year is not a case we occasionally see. It is the only case we see.',
+    answer: 'Working holiday makers, and nobody else. Every client we have is in Australia on a 417 or a 462 visa, or was and has since gone home. We do not take on Australian residents, students, sponsored workers or businesses.',
   },
   {
     question: 'Can you help me if I have already left Australia?',
-    answer: 'Yes, and a large share of our work is exactly that. Superannuation can only be claimed after you have left and your visa has lapsed, and a tax return for a year you have already finished can be lodged from anywhere, so everything is handled remotely.',
+    answer: 'Yes, and a large share of our work is exactly that. Superannuation can only be claimed after you have left and your visa has lapsed, and a finished year can be lodged from anywhere, so everything is handled remotely.',
   },
   {
     question: 'Do I need my payslips?',
-    answer: 'No. What your employers withheld and reported is visible to us through the ATO, so we work from that record rather than asking you to find paperwork from a job you left eight months ago. If something you tell us does not match what an employer reported, we deal with the difference.',
+    answer: 'No. What your employers withheld and reported is visible to us through the ATO, so we work from that record rather than paperwork from a job you left eight months ago. If something you tell us does not match what an employer reported, we deal with the difference.',
   },
   {
     question: 'What happens if there is no refund at the end of it?',
-    answer: 'If your refund is less than our fee, we refund the difference, so you are never out of pocket. Not every working holiday year produces one, and we would rather tell you that early than take the work on and hope.',
+    answer: 'If your refund is less than our fee, we refund the difference, so you are never out of pocket. Not every working holiday year produces one, and we would rather tell you early than take the work on and hope.',
   },
 ]
 
@@ -208,8 +209,9 @@ export default function AboutPage() {
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(23px,2.6vw,32px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 16px' }}>
               What does a working holiday year look like to us?
             </h2>
+            {/* "It looks like this" only restated the heading. */}
             <p style={{ ...bodyStyle, marginBottom: '30px' }}>
-              It looks like this, with the names and the towns changed. Five things happen to almost everybody on a 417 or a 462, in roughly this order, and four of them cost money that can usually be recovered afterwards.
+              Five things happen to almost everybody on a 417 or a 462, and four of them cost money that can usually be recovered afterwards.
             </p>
 
             <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
@@ -231,7 +233,12 @@ export default function AboutPage() {
                   <h3 className="font-serif font-bold text-ink" style={{ fontSize: 'clamp(17px,1.7vw,20px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '8px' }}>
                     {c.title}
                   </h3>
-                  <p style={bodyStyle}>{c.body}</p>
+                  {/* One <p> per paragraph. A chapter of four sentences is a
+                      wall on a 390px screen; the blank line falls on the turn
+                      in the story, not in the middle of it. */}
+                  {c.body.split('\n\n').map((para, j, all) => (
+                    <p key={j} style={{ ...bodyStyle, marginBottom: j === all.length - 1 ? 0 : '10px' }}>{para}</p>
+                  ))}
                 </li>
               ))}
             </ol>
@@ -247,11 +254,18 @@ export default function AboutPage() {
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(23px,2.6vw,32px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 16px' }}>
               Why do we only work with working holiday makers?
             </h2>
+            {/* "Because it is the only year we work on" was the question asked
+                back as an answer. */}
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              Because it is the only year we work on. Every client we have is on a 417 or a 462, which means the things that decide your refund are not unusual cases we have to go and read about. They are what we do all day.
+              Every client we have is on a 417 or a 462, so the things that decide your refund are not unusual cases we have to go and read about. They are what we do all day.
+            </p>
+            {/* Move 3: the accountant sentence and the list of what that year
+                contains were one paragraph running eight lines on a phone. */}
+            <p style={{ ...bodyStyle, marginBottom: '14px' }}>
+              A general accountant meets a backpacker a few times a year, in July, between two hundred ordinary returns.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              A general accountant meets a backpacker a few times a year, in July, between two hundred ordinary returns. The 417 and 462 rate schedule, the residency position that has to be properly reviewed rather than assumed, the Medicare levy exemption that depends on which passport you hold, a superannuation claim filed from a bedroom in Manchester or Munich or Osaka eleven months after you left: for us that is a Tuesday.
+              The 417 and 462 rate schedule, the residency position that has to be properly reviewed rather than assumed, the Medicare levy exemption that depends on which passport you hold, a superannuation claim filed from a bedroom in Manchester or Osaka eleven months after you left: for us that is a Tuesday.
             </p>
             <p style={bodyStyle}>
               Anyone can press submit. The work happens before that: going through your year, working out what is true about it rather than what is quickest to tick, and then lodging it.
@@ -272,7 +286,7 @@ export default function AboutPage() {
                 If your refund is less than our fee, we refund the difference, so you are never out of pocket.
               </p>
               <p style={{ ...bodyStyle, fontSize: '15px' }}>
-                Not every working holiday year produces a refund, and we will tell you if yours is unlikely to. Ask first. Questions cost nothing and a real person answers them.
+                Not every working holiday year produces a refund, and we will tell you if yours is unlikely to.
               </p>
             </div>
           </div>
@@ -288,10 +302,10 @@ export default function AboutPage() {
               How do you get hold of us?
             </h2>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              WhatsApp. Not a bot, not a ticket number, not a form that promises five to seven business days. You can ask a single question and leave it there; nothing about messaging us commits you to anything.
+              WhatsApp. Not a bot, not a ticket number, not a form that promises five to seven business days. You can ask a single question and leave it there.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '22px' }}>
-              You need no myGov account, no Australian ID and no payslips to start, and it makes no difference whether you are still in Australia or have been home for two years. The{' '}
+              You need no myGov account, no Australian ID and no payslips to start, whether you are still in Australia or have been home for two years. The{' '}
               <Link href="/contact" style={{ color: '#0B5240', textDecoration: 'underline' }}>contact page</Link>{' '}
               covers what language the answer comes back in and what happens next.
             </p>
@@ -328,7 +342,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-start">
             <div>
               <span className="section-label">FAQs</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.04vw,26px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px' }}>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.04vw,26px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '16px' }}>
                 Questions people ask before they message
               </h2>
               <p style={{ ...bodyStyle, marginBottom: '22px' }}>

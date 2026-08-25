@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Bar-, Cafe- und Küchenkräfte absetzen?",
     "paras": [
       "Absetzbar sind rutschfeste Schutzschuhe, berufsspezifische Kleidung wie Kochjacke und Karohose, das Waschen einer Pflichtuniform mit Arbeitgeberlogo, die Verlängerung eines RSA- oder Food-Safety-Supervisor-Zertifikats und selbst gekauftes Küchenwerkzeug. Alles andere im Schrank ist normale Kleidung.",
-      "Die Gastronomie gibt dir sehr wenig, das nur zu diesem Job gehört. Du bist drinnen, dein Arbeitgeber stellt die Ausrüstung, und die Kleidung, die ein Betrieb verlangt, könnte meist jeder überall tragen. Der Wert einer Gastro-Steuererklärung steckt öfter auf der Einnahmenseite, im Einbehalt über mehrere Arbeitgeber, als in den Abzügen."
+      "Die Gastronomie gibt dir sehr wenig, das nur zu diesem Job gehört. Du bist drinnen, dein Arbeitgeber stellt die Ausrüstung, und die Kleidung, die ein Betrieb verlangt, könnte meist jeder überall tragen."
     ]
   },
   {
@@ -127,7 +127,7 @@ const SECTIONS: Section[] = [
     "items": [
       {
         "t": "Rutschfeste, geschlossene Schutzschuhe",
-        "d": "Absetzbar, wenn du sie brauchst: nasser Boden hinter der Bar, Spritzer an der Kaffeemaschine, heiße Teller quer durch den Pass. Sie gelten als Schutzschuhe und nicht als normale Schuhe, weil sie eine konkrete Sicherheitsaufgabe erfüllen, und das bleibt so, welche Farbe sie auch haben."
+        "d": "Absetzbar, wenn du sie brauchst: nasser Boden hinter der Bar, Spritzer an der Kaffeemaschine, heiße Teller quer durch den Pass. Sie gelten als Schutzschuhe und nicht als normale Schuhe, weil sie eine konkrete Sicherheitsaufgabe erfüllen, welche Farbe sie auch haben."
       },
       {
         "t": "Kochjacke und karierte Kochhose",
@@ -139,7 +139,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Verlängerung von RSA oder Food Safety Supervisor",
-        "d": "Die Verlängerung eines Zertifikats, das du schon hast, während du bereits in der Rolle arbeitest, ist absetzbar. Das gilt für RSA und Food Safety Supervisor gleichermaßen, und immer nur für die Verlängerung."
+        "d": "Die Verlängerung eines Zertifikats, das du schon hast, ist absetzbar, das erste nicht. Das gilt für RSA und Food Safety Supervisor gleichermaßen."
       },
       {
         "t": "Selbst gekaufte Messer und Küchenwerkzeuge",
@@ -156,7 +156,7 @@ const SECTIONS: Section[] = [
     "h2": "Was muss hinter einem Abzug in der Gastronomie stehen?",
     "paras": [
       "Dieselben drei Tests wie überall: das Geld war deins, niemand hat es dir erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Im Betrieb heißt das der Beleg für die Schuhe und die Messerrolle, die schriftliche Uniformregel und ein Wäschetagebuch, sobald sich die Waschgänge summieren.",
-      "Jeder Nachweis mit Betrag, Datum, Anbieter und Gegenstand tut es, ob Beleg, Rechnung, Kontoauszug oder Foto auf dem Handy, und er muss fünf Jahre überstehen. Ein Jahr mit Abzügen von zusammen 300 Dollar oder weniger braucht gar keinen schriftlichen Nachweis. Das sind nicht die 300 Dollar, die entscheiden, ob ein Messerset sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Jeder Nachweis mit Betrag, Datum, Anbieter und Gegenstand tut es, und er muss fünf Jahre überstehen. Ein Jahr mit Abzügen von zusammen 300 Dollar oder weniger braucht gar keinen schriftlichen Nachweis. Das sind nicht die 300 Dollar, die entscheiden, ob ein Messerset sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
@@ -166,29 +166,29 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Das komplett schwarze Outfit, das der Betrieb verlangt",
-        "d": "Schlichte schwarze Hose, schlichtes schwarzes Hemd, schlichte schwarze Schuhe ohne Logo. Du besitzt sie nur wegen der Arbeit, hättest sie nie gewählt, und ohne sie schickt dich der Chef heim. Nichts davon zählt. Das ATO schaut auf den Gegenstand, und Alltagskleidung, die jeder überall tragen könnte, ist privat, was der Dresscode auch sagt."
+        "d": "Schlichte schwarze Hose, schlichtes schwarzes Hemd, schlichte schwarze Schuhe ohne Logo. Das ATO schaut auf den Gegenstand, und Alltagskleidung, die jeder überall tragen könnte, ist privat, was der Dresscode auch sagt."
       },
       {
         "t": "Deine erste RSA",
-        "d": "Das Zertifikat, das du vor dem Job bezahlt hast, hat dich einstellbar gemacht, und das ist eine private Kost. Sobald du arbeitest und es zum Weiterarbeiten verlängert werden muss, ist die Verlängerung absetzbar."
+        "d": "Das Zertifikat, das du vor dem Job bezahlt hast, hat dich einstellbar gemacht, und das ist eine private Kost. Sobald du arbeitest, ist die Verlängerung absetzbar."
       },
       {
         "t": "Friseur, Pflege und Make-up für den Standard im Service",
-        "d": "Körperpflege bleibt privat, auch wenn ein Betrieb dafür schriftliche Vorgaben hat. Es gibt keine Version eines Haarschnitts, die in der Gastronomie eine Arbeitskost wäre."
+        "d": "Körperpflege bleibt privat, auch wenn ein Betrieb dafür schriftliche Vorgaben hat."
       },
       {
         "t": "Das Essen in der Schicht oder das Feierabendbier",
-        "d": "Personalessen und Getränke danach sind privat, ob du bezahlt hast, Rabatt bekommen hast oder es geschenkt bekommen hast. Bei der Arbeit zu sein, während du isst, macht Essen nicht absetzbar."
+        "d": "Personalessen und Getränke danach sind privat, ob du bezahlt hast, Rabatt bekommen hast oder es geschenkt bekommen hast."
       },
       {
         "t": "Bar-Trinkgeld, das nicht in der Erklärung steht",
-        "d": "Das läuft in die andere Richtung. Trinkgeld, das dir direkt in die Hand gegeben wird, ist steuerpflichtiges Einkommen, auch wenn es niemand erfasst. Gepooltes Trinkgeld und Servicezuschläge über die Lohnabrechnung stehen schon im Income Statement, aber Bargeld musst du selbst angeben, und das ist keine Option."
+        "d": "Das läuft in die andere Richtung. Trinkgeld, das dir direkt in die Hand gegeben wird, ist steuerpflichtiges Einkommen, auch wenn es niemand erfasst. Gepooltes Trinkgeld und Servicezuschläge über die Lohnabrechnung stehen schon im Income Statement, aber Bargeld musst du selbst angeben."
       }
     ],
     "missed": [
       {
         "t": "Uniformwäsche, das ganze Jahr",
-        "d": "Ein paar Dollar pro Woche, die fast niemand ansetzt, weil niemand auf die Idee kommt, dass ein gewaschenes Hemd eine Steuersache ist. Über ein Jahr Schichten ist das eine echte Zahl, und das ATO veröffentlicht den Satz, da muss nichts geschätzt werden."
+        "d": "Ein paar Dollar pro Woche, die fast niemand ansetzt, weil ein gewaschenes Hemd nicht nach Steuersache klingt. Das ATO veröffentlicht den Satz, da muss nichts geschätzt werden."
       },
       {
         "t": "Die rutschfesten Schuhe, weil \"Kleidung geht ja nicht\"",
@@ -196,7 +196,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Ein zweiter oder dritter Arbeitgeber mit falschem Einbehalt",
-        "d": "Hat ein Betrieb deine Tax File Number Declaration nie bekommen oder ist er nicht als Arbeitgeber von Working Holiday Makern registriert, behält er weit mehr als 15 Prozent ein. Nichts davon ist verloren, aber es kommt erst mit einer Erklärung zurück, die alle Arbeitgeber zusammenführt."
+        "d": "Hat ein Betrieb deine Tax File Number Declaration nie bekommen oder ist er nicht als Arbeitgeber von Working Holiday Makern registriert, behält er weit mehr als 15 Prozent ein. Nichts davon ist verloren, aber es kommt nur mit einer Erklärung zurück, die alle Arbeitgeber zusammenführt."
       },
       {
         "t": "Superannuation in drei verschiedenen Fonds",
@@ -212,7 +212,7 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was muss beurteilt statt nachgeschlagen werden?",
     "paras": [
-      "Zuerst die Kleidungsfrage. Ob ein Teil eine Pflichtuniform ist, hängt daran, wie unverwechselbar es ist und ob der Arbeitgeber es verlangt. Ob Schuhe Schutzschuhe sind, hängt an der Gefahr in deinem Betrieb. Eine schriftliche Uniformregel und ein Foto des Teils klären das meistens.",
+      "Zuerst die Kleidungsfrage. Ob ein Teil eine Pflichtuniform ist, hängt daran, wie unverwechselbar es ist und ob der Arbeitgeber es verlangt. Ob Schuhe Schutzschuhe sind, hängt an der Gefahr in deinem Betrieb. Eine schriftliche Uniformregel und ein Foto klären das meistens.",
       "Auf der Einnahmenseite zahlt sich ein fachlicher Blick aus. Working Holiday Maker bekommen keinen Steuerfreibetrag, ein Betrieb, der so einbehält, als hättest du einen, behält also zu wenig ein und hinterlässt eine Nachzahlung. Das kippt, wenn die Addy-Entscheidung für dich gilt, was bei britischen, deutschen und japanischen Pässen möglich ist, sofern du steuerlich in Australien ansässig warst. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
@@ -221,23 +221,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Kann ich meine schwarzen Arbeitsschuhe und die Hose absetzen?",
-    "answer": "Schlichte schwarze Kleidung ohne Logo ist nicht absetzbar, auch wenn der Dresscode des Betriebs sie vorschreibt, weil das ATO sie als gewöhnliche Kleidung und nicht als Uniform behandelt. Rutschfeste geschlossene Schuhe sind etwas anderes: Wenn du sie für einen nassen Boden hinter der Bar oder einen vollen Küchenpass brauchst, gelten sie als Schutzschuhe und sind unabhängig von der Farbe absetzbar."
+    "answer": "Schlichte schwarze Kleidung ohne Logo ist nicht absetzbar, auch wenn der Dresscode des Betriebs sie vorschreibt, weil das ATO sie als gewöhnliche Kleidung und nicht als Uniform behandelt.\n\nRutschfeste geschlossene Schuhe sind etwas anderes: Wenn du sie für einen nassen Boden hinter der Bar oder einen vollen Küchenpass brauchst, gelten sie als Schutzschuhe und sind unabhängig von der Farbe absetzbar."
   },
   {
     "question": "Kann ich mein RSA-Zertifikat absetzen?",
-    "answer": "Die Verlängerung ja, das erste Zertifikat nein. Sobald du in einer Rolle arbeitest, die eine RSA verlangt, ist ihre Verlängerung eine Kost der Arbeit. Das erste Zertifikat lag davor und hat dich überhaupt erst für die Stelle qualifiziert, und das behandelt das ATO als privat. Für den Food Safety Supervisor und den ersten Führerschein zieht sie dieselbe Grenze."
+    "answer": "Die Verlängerung ja, das erste Zertifikat nein. Sobald du in einer Rolle arbeitest, die eine RSA verlangt, ist ihre Verlängerung eine Kost der Arbeit. Das erste Zertifikat hat dich erst für die Stelle qualifiziert, und das behandelt das ATO als privat.\n\nFür den Food Safety Supervisor gilt dieselbe Grenze."
   },
   {
     "question": "Ist mein Trinkgeld steuerpflichtig?",
-    "answer": "Ja, alles davon. Trinkgeld und Servicezuschläge, die über die Lohnabrechnung ausgezahlt werden, auch aus einem Pool oder Tronc, sind Teil deines Lohns, schon versteuert und schon im Income Statement. Bargeld, das dir direkt gegeben wird, ist genauso steuerpflichtig, wird aber von niemandem erfasst. Du führst eine einfache laufende Notiz und gibst die Summe selbst an."
+    "answer": "Ja, alles davon. Trinkgeld und Servicezuschläge, die über die Lohnabrechnung ausgezahlt werden, auch aus einem Pool oder Tronc, sind Teil deines Lohns, schon versteuert und schon im Income Statement.\n\nBargeld, das dir direkt gegeben wird, ist genauso steuerpflichtig, wird aber von niemandem erfasst. Führ eine laufende Notiz und gib die Summe an."
   },
   {
     "question": "Ich arbeite in drei Betrieben. Ändert das etwas an meiner Steuer?",
-    "answer": "Jeder Betrieb ist ein eigener Arbeitgeber mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement, und jeder davon gehört in dieselbe Erklärung. Working Holiday Maker bekommen von keinem Arbeitgeber einen Steuerfreibetrag, ein Betrieb, der so einbehält, als hättest du einen, hinterlässt also eine Nachzahlung statt einer Rückerstattung. Alle Betriebe zum richtigen Satz zusammenzuführen ist der Teil, den wir machen."
+    "answer": "Jeder Betrieb ist ein eigener Arbeitgeber mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement, und jeder davon gehört in dieselbe Erklärung.\n\nWorking Holiday Maker bekommen von keinem Arbeitgeber einen Steuerfreibetrag, ein Betrieb, der so einbehält, als hättest du einen, hinterlässt also eine Nachzahlung."
   },
   {
     "question": "Bekomme ich Superannuation in einem Casual-Job?",
-    "answer": "Ja. Dein Arbeitgeber zahlt für Casual-Arbeit ab dem ersten Dollar 12 Prozent Super zusätzlich zum Lohn, ohne monatliche Mindestverdienstgrenze. Jeder Betrieb zahlt unabhängig, bei mehreren Jobs verteilt sich das also meist auf mehrere Fonds, und die solltest du aufspüren, bevor du Australien verlässt."
+    "answer": "Ja. Dein Arbeitgeber zahlt für Casual-Arbeit ab dem ersten Dollar 12 Prozent Super zusätzlich zum Lohn, ohne monatliche Mindestverdienstgrenze.\n\nJeder Betrieb zahlt unabhängig, bei mehreren Jobs verteilt sich das also meist auf mehrere Fonds, die du vor der Abreise aufspüren solltest."
   }
 ]
 
@@ -331,7 +331,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -546,7 +546,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -556,7 +558,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -596,7 +598,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Am Absatzumbruch geteilt, damit eine lange Antwort als zwei
+                    kurze Absätze liest. faqSchema nutzt weiter den Rohtext. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Elsewhere on the site",
   "wrongLabel": "Claimed, and it should not have been",
   "missedLabel": "Not claimed, and it should have been",
-  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line.",
   "hubHref": "/expenses"
 }
 
@@ -99,7 +99,7 @@ const HERO = {
   "kicker": "Houses, offices, end of lease and app work",
   "h1lead": "The drive between houses is the claim.",
   "h1accent": "Almost nobody makes it.",
-  "lede": "Chemicals, gloves and uniform laundry at the ATO rate are all on the list too, and the gear adds up faster than people expect."
+  "lede": "Chemicals, gloves and uniform laundry at the ATO rate are all on the list too."
 }
 
 type Section =
@@ -116,38 +116,38 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What can a cleaner claim on tax?",
     "paras": [
-      "A cleaner can claim equipment and cleaning products bought out of their own pocket, protective gear such as gloves, an apron, safety glasses or steel caps, the laundering of a compulsory uniform or protective clothing, and the travel between one cleaning job and the next in the same day. Anything a client or employer supplies or reimburses is excluded.",
-      "Cleaning is unusual because the work moves. Three houses in a day means two deductible legs of travel, and over a year that is normally the largest single figure on the return."
+      "A cleaner can claim equipment and cleaning products bought out of their own pocket, protective gear such as gloves, an apron or steel caps, the laundering of a compulsory uniform or protective clothing, and travel between one cleaning job and the next in the same day. Anything a client or employer supplies or reimburses is excluded.",
+      "Three houses in a day means two deductible legs of travel, and over a year that is normally the largest figure on the return."
     ]
   },
   {
     "kind": "items",
     "h2": "The claims that belong to this work specifically",
-    "intro": "Most cleaning gear sits well under $300, which means it is claimed in full in the year you buy it rather than written off slowly.",
+    "intro": "Most cleaning gear sits under $300, so it is claimed in full in the year you buy it rather than written off slowly.",
     "items": [
       {
         "t": "Travel between cleaning jobs",
-        "d": "The drive from one house or office to the next once your day has started is travel between workplaces, not a commute, and it is deductible. It is worked out with the cents per kilometre method or a logbook. The first trip of the day, and the last one home, stay private."
+        "d": "The drive from one house or office to the next once your day has started is travel between workplaces, not a commute, and it is deductible. Use the cents per kilometre method or a logbook."
       },
       {
         "t": "Equipment and cleaning products",
-        "d": "Mops, buckets, wringers, scrapers, blades, cloths, chemicals and consumables you buy yourself. Each item of $300 or less is claimed in full in the year of purchase. A starter kit bought together for $300 or more is treated as one asset and written off across its life, even where each piece alone would have been under the threshold."
+        "d": "Mops, buckets, scrapers, cloths, chemicals and consumables you buy yourself. Each item of $300 or less is claimed in full in the year of purchase. A starter kit bought together for $300 or more is one asset, written off across its life, even where each piece alone would have been under the threshold."
       },
       {
         "t": "Larger equipment of $300 or more",
-        "d": "A commercial vacuum, a floor buffer, a pressure washer. Still deductible, spread across the effective life of the item rather than claimed at once."
+        "d": "A commercial vacuum, a floor buffer, a pressure washer. Still deductible, spread across the effective life of the item."
       },
       {
         "t": "Protective gear",
-        "d": "Gloves, an apron, safety glasses or a face shield for jobs with strong chemicals or dust, steel caps for site and commercial work. These qualify because they protect you from a hazard of the job rather than because you happen to wear them at work."
+        "d": "Gloves, an apron, safety glasses or a face shield for jobs with strong chemicals or dust, steel caps for site and commercial work. They qualify because they protect you from a hazard of the job."
       },
       {
         "t": "Laundering deductible work clothing",
-        "d": "Washing a compulsory uniform or genuine protective clothing is claimable at the ATO rate: $1 a load where the load is only work items, or 50 cents a load washed in with everything else. Past $150 of laundry claims for the year, keep a simple diary rather than an estimate."
+        "d": "Washing a compulsory uniform or genuine protective clothing is claimable at the ATO rate: $1 a load of work items only, or 50 cents a load washed in with everything else. Past $150 of laundry claims for the year, keep a diary rather than an estimate."
       },
       {
         "t": "The work share of your phone",
-        "d": "Real for anyone taking bookings, running an app or messaging clients about access and keys. Claim the work related percentage on a fair basis, not the whole plan."
+        "d": "Real for anyone taking bookings, running an app or messaging clients about keys and access. Claim the work related percentage on a fair basis, not the whole plan."
       }
     ]
   },
@@ -156,7 +156,7 @@ const SECTIONS: Section[] = [
     "h2": "What does a cleaner have to keep?",
     "paras": [
       "Three tests behind every claim: you paid for it, nobody paid you back, and it went to earning the income you are declaring. For a cleaner that means the receipts for chemicals and gear, and a record of the dates, addresses and kilometres behind the driving.",
-      "A receipt, an invoice, a bank statement or a phone photo showing the amount, the date, the supplier and the item all count, and they have to last five years. Under $300 of work claims for the whole year, no written evidence is needed. That is a different $300 from the one deciding how a single vacuum is written off."
+      "A receipt, an invoice, a bank statement or a phone photo showing the amount, the date, the supplier and the item, kept five years. Under $300 of work claims for the whole year, no written evidence is needed. That is a different $300 from the one deciding how a single vacuum is written off."
     ]
   },
   {
@@ -207,7 +207,7 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Three or four addresses a day clears 5,000 kilometres faster than most cleaners expect, and past that point the logbook usually wins, because it picks up fuel, insurance, registration, servicing, depreciation and the interest on a car loan instead of a flat rate."
+    "note": "Three or four addresses a day clears 5,000 kilometres faster than most cleaners expect, and past that the logbook usually wins, because it picks up fuel, insurance, registration, servicing, depreciation and loan interest."
   },
   {
     "kind": "traps",
@@ -216,33 +216,33 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Plain black trousers and a plain polo",
-        "d": "Even where a client or agency insists on a colour, conventional clothing is private. It does not become a uniform because somebody requires it, and it does not become deductible because bleach ruined it."
+        "d": "Even where a client or agency insists on a colour, conventional clothing is private. Bleach ruining it does not make it deductible."
       },
       {
         "t": "The first and last trip of the day",
-        "d": "Home to the first job, and the last job home, are ordinary commuting. Only the legs in between are claimable, unless you meet the bulky equipment exception, which needs the gear to be essential, genuinely bulky, and impossible to store securely at any of the workplaces."
+        "d": "Home to the first job, and the last job home, are ordinary commuting. Only the legs in between are claimable, unless you meet the bulky equipment exception."
       },
       {
         "t": "Products and equipment the client supplies",
-        "d": "If the house you clean keeps the chemicals under the sink, or the company issues the gear, there is no cost with you to deduct. The same applies to anything you were reimbursed for."
+        "d": "If the house keeps the chemicals under the sink, or the company issues the gear, there is no cost with you to deduct. The same applies to anything you were reimbursed for."
       },
       {
         "t": "Treating an ABN as a licence to claim everything",
-        "d": "Having an ABN does not turn private spending into a business expense. Your phone, your car and your clothes are still apportioned, and the personal share still comes out."
+        "d": "Having an ABN does not turn private spending into a business expense. Your phone, your car and your clothes are still apportioned."
       },
       {
         "t": "Assuming cash jobs do not need declaring",
-        "d": "Cleaning income is income whether it arrives by bank transfer, an app payout or an envelope. Leaving it off does not make it invisible, it makes the return wrong."
+        "d": "Cleaning income is income whether it arrives by bank transfer, an app payout or an envelope."
       }
     ],
     "missed": [
       {
         "t": "The travel between jobs",
-        "d": "Cleaners work three or four addresses a day and claim none of the driving, because it does not feel like a work trip. Note the date, the addresses and the kilometres as you go, and it becomes the biggest deduction on the return."
+        "d": "Cleaners work three or four addresses a day and claim none of the driving, because it does not feel like a work trip. Note the date, the addresses and the kilometres as you go."
       },
       {
         "t": "Every bottle and cloth, one purchase at a time",
-        "d": "Consumables are bought constantly and receipted almost never. A running photo of the receipt in a phone album is enough, and over a year it is a real figure."
+        "d": "Consumables are bought constantly and receipted almost never. A running photo of the receipt in a phone album is enough."
       },
       {
         "t": "Laundry, at a published rate",
@@ -250,7 +250,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Gear bought while setting yourself up",
-        "d": "Equipment and chemicals bought around the time you registered an ABN and began looking for clients are generally claimable, even though the first invoice came later. A long gap between the purchase and the first job weakens that, so keep the dates."
+        "d": "Equipment and chemicals bought around the time you registered an ABN and began looking for clients are generally claimable, even though the first invoice came later. A long gap between purchase and first job weakens that, so keep the dates."
       },
       {
         "t": "Weeks withheld at the wrong rate by a cleaning company",
@@ -262,9 +262,11 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What changes depending on who you clean for?",
     "paras": [
-      "Sole trader or employee is the first fork, and it decides everything after it. Private houses, end of lease jobs and app bookings through something like Airtasker are ABN income: you set the price, you invoice, nothing is withheld, no super is paid. Rostered onto sites and shifts by a cleaning company is employment under a TFN, tax withheld and super on top. Both in one year is normal, and both go on one return.",
-      "A company that set your roster, supervised your work and supplied the products, then asked you to get an ABN, may be an employer wearing a contractor label. Worth checking before you accept the paperwork.",
-      "For a sole trader GST only becomes compulsory once cleaning turnover passes $75,000 in a year, which part time cleaning rarely approaches. Residency sits under all of it and is worth more than the whole deduction list: British, German and Japanese passport holders who were Australian residents for tax purposes can carry the full tax free threshold under the Addy decision."
+      "Sole trader or employee is the first fork. Private houses, end of lease jobs and app bookings through something like Airtasker are ABN income: you set the price, you invoice, nothing is withheld, no super is paid.",
+      "Rostered onto sites and shifts by a cleaning company is employment under a TFN, tax withheld and super on top.",
+      "A company that set your roster, supervised your work and supplied the products, then asked you to get an ABN, may be an employer wearing a contractor label.",
+      "For a sole trader GST only becomes compulsory once cleaning turnover passes $75,000 in a year, which part time cleaning rarely approaches.",
+      "Residency sits under all of it and is worth more than the whole deduction list: British, German and Japanese passport holders who were Australian residents for tax purposes can carry the full tax free threshold under the Addy decision."
     ]
   }
 ]
@@ -272,23 +274,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Can I claim the drive between cleaning jobs?",
-    "answer": "Yes. Travelling from one cleaning job to the next in the same day is travel between workplaces rather than commuting, and it is deductible using the cents per kilometre method or a logbook. What is not deductible is the first trip from home to your first job and the last trip home, unless you are carrying genuinely bulky equipment that is essential to the work and cannot be stored securely at any of the sites."
+    "answer": "Yes. Travelling from one cleaning job to the next in the same day is travel between workplaces, not commuting, and it is deductible on the cents per kilometre method or a logbook.\n\nThe first trip from home and the last trip home are not, unless you carry bulky equipment that cannot be stored securely at the sites."
   },
   {
     "question": "What cleaning equipment and products can I claim?",
-    "answer": "Anything you bought yourself and were not reimbursed for: mops, buckets, wringers, scrapers, blades, cloths, chemicals and consumables. Items costing $300 or less each are claimed in full in the year you buy them. Larger items such as a commercial vacuum or a floor buffer are still deductible, spread across the effective life of the item instead of claimed at once."
+    "answer": "Anything you bought yourself and were not reimbursed for: mops, buckets, scrapers, cloths, chemicals and consumables.\n\nItems of $300 or less each are claimed in full in the year you buy them. A commercial vacuum or floor buffer over $300 is deductible across its effective life."
   },
   {
     "question": "Can I claim my uniform and the cost of washing it?",
-    "answer": "You can claim a required uniform your employer or client does not supply, and protective gear with a genuine safety function such as gloves, an apron, safety glasses or steel caps. You cannot claim plain black trousers or a plain polo, even where cleaning is the only reason you own them. Washing deductible work clothing is claimable at $1 a load for work only loads, or 50 cents a load when mixed with everyday clothing, with a simple diary once claims pass $150 for the year."
+    "answer": "You can claim a required uniform your employer or client does not supply, and protective gear with a genuine safety function such as gloves, an apron or steel caps. Plain black trousers and a plain polo are not.\n\nWashing deductible work clothing is claimable at $1 a load for work only loads, or 50 cents a load mixed with everyday clothing, with a diary once claims pass $150 for the year."
   },
   {
     "question": "Do I need to register for GST as a cleaner with an ABN?",
-    "answer": "Only once your turnover from cleaning work passes $75,000 in a year. That is the general threshold for any sole trader rather than a cleaning specific rule, and most people cleaning part time, privately or through an app never come near it. Below the threshold you simply invoice without a GST line."
+    "answer": "Only once your turnover from cleaning work passes $75,000 in a year. That is the general sole trader threshold, not a cleaning rule, and part time cleaning rarely comes near it. Below it you invoice without a GST line."
   },
   {
     "question": "Am I a sole trader or an employee?",
-    "answer": "Look at who controls the work, not at what the paperwork calls you. If you set your own price, choose which jobs to take and could send somebody else in your place, that is sole trader work under an ABN. If another business sets your roster, supervises you and supplies the products, that is employment however the contract is labelled, and tax and super should be coming with it. Plenty of cleaners are both across one year, and both belong on the same return."
+    "answer": "Look at who controls the work, not what the paperwork calls you. If you set your price, choose which jobs to take and could send somebody else, that is sole trader work under an ABN.\n\nIf another business sets your roster, supervises you and supplies the products, that is employment however the contract is labelled, with tax and super due.\n\nPlenty of cleaners are both in one year."
   }
 ]
 
@@ -382,7 +384,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -597,7 +599,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -607,7 +611,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -647,7 +651,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqSchema still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

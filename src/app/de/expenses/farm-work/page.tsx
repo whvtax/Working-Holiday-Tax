@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -117,21 +117,21 @@ const SECTIONS: Section[] = [
     "h2": "Was können Fruit Picker und Farmarbeiter absetzen?",
     "paras": [
       "Absetzbar sind Sonnenschutz für Arbeit im Freien, Schutzhandschuhe und Schutzschuhe, selbst gekaufte Pflückausrüstung und die Fahrt zwischen zwei Farmen oder Blöcken am selben Arbeitstag. Für alles gilt: du hast selbst bezahlt, nichts erstattet bekommen und kannst es belegen.",
-      "Sonnencreme ist für fast jeden in Australien privat. Bei dir ist sie absetzbar, weil dich der Job stundenlang in die direkte Sonne stellt, und das ATO sieht darin eine arbeitsbedingte Belastung und keine Lifestyle-Entscheidung."
+      "Sonnencreme ist für fast jeden in Australien privat. Bei dir ist sie absetzbar, weil dich der Job stundenlang in die direkte Sonne stellt, und das ATO sieht darin eine arbeitsbedingte Belastung."
     ]
   },
   {
     "kind": "items",
     "h2": "Die Abzüge, die zu dieser Arbeit gehören",
-    "intro": "An jedem hängt eine Bedingung, und die Bedingung ist das, was den Abzug bei einer Rückfrage überstehen lässt.",
+    "intro": "An jedem hängt eine Bedingung, und die Bedingung ist das, was den Abzug überstehen lässt.",
     "items": [
       {
         "t": "Sonnenschutz: Sonnencreme, Hut mit breiter Krempe, Sonnenbrille",
-        "d": "Absetzbar, wenn dich die Arbeit der Sonne aussetzt, also beim Pflücken, Schneiden, Ausdünnen und beim Packen in einer offenen Halle. Die Belastung im Freien macht den Abzug. Sonnencreme für ein Wochenende am Strand gehört nicht dazu, und du setzt nur den Anteil ab, den du für die Arbeit verbraucht hast."
+        "d": "Absetzbar, wenn dich die Arbeit der Sonne aussetzt, also beim Pflücken, Schneiden, Ausdünnen und beim Packen in einer offenen Halle. Du setzt nur den Anteil ab, den du für die Arbeit verbraucht hast."
       },
       {
         "t": "Schutzhandschuhe, Gummistiefel und Sicherheitsschuhe",
-        "d": "Pflückhandschuhe, Regenstiefel, Stahlkappen für die Halle. Sie zählen, weil sie dich vor einer konkreten Gefahr der Arbeit schützen: Dornen, Harz, Chemikalien, Schlamm, herunterfallende Kisten, unebener Boden. Normale Schuhe, die einfach nur robust sind, zählen nicht."
+        "d": "Pflückhandschuhe, Regenstiefel, Stahlkappen für die Halle. Sie zählen, weil sie dich vor einer konkreten Gefahr der Arbeit schützen: Dornen, Harz, Chemikalien, herunterfallende Kisten. Normale robuste Schuhe zählen nicht."
       },
       {
         "t": "Selbst gekaufte Pflückausrüstung",
@@ -139,15 +139,15 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Fahrten zwischen Farmen oder Blöcken am selben Tag",
-        "d": "Der Wechsel von einem Grundstück, Block oder Schuppen zum nächsten, nachdem dein Arbeitstag begonnen hat, ist absetzbare Fahrt, weil Farmarbeit oft keinen festen Arbeitsplatz hat. Berechnet wird sie mit der Kilometerpauschale oder einem Fahrtenbuch. Die erste Fahrt des Tages, von deiner Unterkunft zur ersten Farm, gehört nicht dazu."
+        "d": "Der Wechsel von einem Grundstück, Block oder Schuppen zum nächsten, nachdem dein Arbeitstag begonnen hat, ist absetzbare Fahrt. Berechnet wird sie mit der Kilometerpauschale oder einem Fahrtenbuch. Die erste Fahrt des Tages gehört nicht dazu."
       },
       {
         "t": "Schutzkleidung mit echter Funktion",
-        "d": "Regenkleidung für Arbeit bei Nässe, chemikalienbeständige Overalls beim Spritzen, eine Staubmaske in der Packhalle. Der Test ist, ob das Teil dich vor etwas schützt, das die Arbeit dir antut. Ein Flanellhemd, das warm hält, besteht ihn nicht."
+        "d": "Regenkleidung für Arbeit bei Nässe, chemikalienbeständige Overalls beim Spritzen, eine Staubmaske in der Packhalle. Der Test ist, ob das Teil dich vor etwas schützt, das die Arbeit dir antut. Ein Flanellhemd, das warm hält, nicht."
       },
       {
         "t": "Der Arbeitsanteil deines Handys",
-        "d": "Klein, aber real, wenn du dein eigenes Handy für den Job nutzt, etwa um Schichtzeiten vom Contractor zu bekommen oder gepflückte Bins in einer App zu erfassen. Du setzt den arbeitsbezogenen Prozentsatz auf einer nachvollziehbaren Grundlage ab, nicht die ganze Rechnung."
+        "d": "Klein, aber real, wenn du dein eigenes Handy für den Job nutzt, etwa um Schichtzeiten vom Contractor zu bekommen. Du setzt den arbeitsbezogenen Prozentsatz auf einer nachvollziehbaren Grundlage ab, nicht die ganze Rechnung."
       }
     ]
   },
@@ -166,15 +166,15 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Normale Kleidung, die der Job zerstört",
-        "d": "Jeans, T-Shirts, Flanellhemd, Pulli für den Start um fünf. Es fühlt sich unfair an, weil die Arbeit sie ruiniert und du sie sonst nicht gekauft hättest. Das ATO prüft den Gegenstand, nicht die Absicht, und Alltagskleidung bleibt privat, egal wie schnell die Fruchtflecken sie erledigen."
+        "d": "Jeans, T-Shirts, Flanellhemd, Pulli für den Start um fünf. Das ATO prüft den Gegenstand, nicht die Absicht, und Alltagskleidung bleibt privat, egal wie schnell die Fruchtflecken sie erledigen."
       },
       {
         "t": "Hostelmiete und Kaution im Working Hostel",
-        "d": "Wo du in der Saison geschlafen hast, ist eine Lebenshaltungskost, keine Arbeitskost, auch wenn das Hostel die einzige Unterkunft im Umkreis von fünfzig Kilometern war und die Farm sie organisiert hat. Irgendwo zu wohnen ist keine Kost des Einkommenserwerbs."
+        "d": "Wo du in der Saison geschlafen hast, ist eine Lebenshaltungskost, keine Arbeitskost, auch wenn das Hostel die einzige Unterkunft weit und breit war und die Farm sie organisiert hat."
       },
       {
         "t": "Essen und Trinken tagsüber",
-        "d": "Mittagessen auf der Farm ist dasselbe wie Mittagessen woanders. Mahlzeiten werden nur in dem engen Fall absetzbar, dass dein Arbeitgeber eine Reise verlangt, bei der du über Nacht von zu Hause weg bist, und die Erntesaison erfüllt das normalerweise nicht."
+        "d": "Mittagessen auf der Farm ist dasselbe wie Mittagessen woanders. Mahlzeiten werden nur absetzbar, wenn dein Arbeitgeber eine Reise verlangt, bei der du über Nacht von zu Hause weg bist, und die Erntesaison erfüllt das normalerweise nicht."
       },
       {
         "t": "Die Fahrt vom Hostel zur Farm",
@@ -182,13 +182,13 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Die Anreise in die Region",
-        "d": "Der Flug oder die Fahrt nach Bundaberg, Mildura oder Tully, um dort Arbeit zu suchen, bringt dich erst dorthin, wo der Job ist. Das ist nicht dasselbe wie Kosten des Verdienens."
+        "d": "Der Flug oder die Fahrt nach Bundaberg, Mildura oder Tully, um dort Arbeit zu suchen, bringt dich erst dorthin, wo der Job ist, und ist keine Kost des Verdienens."
       }
     ],
     "missed": [
       {
         "t": "Sonnencreme, Hut und Sonnenbrille",
-        "d": "Der am häufigsten übersehene Abzug in der Farmarbeit und der, auf den der Anspruch am klarsten ist. Kaum jemand hebt den Beleg für eine 19-Dollar-Flasche Sonnencreme von der Tankstelle auf, und über eine Saison ist das keine kleine Summe."
+        "d": "Der am häufigsten übersehene Abzug in der Farmarbeit. Kaum jemand hebt den Beleg für eine 19-Dollar-Flasche Sonnencreme von der Tankstelle auf, und über eine Saison ist das keine kleine Summe."
       },
       {
         "t": "Jedes Paar Handschuhe einzeln",
@@ -196,11 +196,11 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Fahrten zwischen Blöcken am selben Tag",
-        "d": "Auf größeren Betrieben und bei Contractors, die eine Crew herumschicken, sehr üblich, und fast nie abgesetzt, weil es sich nicht wie eine Fahrt anfühlt. Notiere Datum und Kilometer laufend, dann ist es ein glatter Abzug."
+        "d": "Auf größeren Betrieben und bei Contractors, die eine Crew herumschicken, sehr üblich, und fast nie abgesetzt, weil es sich nicht wie eine Fahrt anfühlt. Notiere Datum und Kilometer laufend."
       },
       {
         "t": "Ein Farmjob über drei Wochen, den niemand mehr auf dem Schirm hatte",
-        "d": "Der teuerste Fehler dieser Seite ist gar kein Abzug. Ein kurzer Einsatz, hastig ausgezahlt, manchmal über einen Contractor, fehlt schnell in der Steuererklärung, und fehlendes Einkommen ist schlimmer als ein vergessener Abzug."
+        "d": "Ein kurzer Einsatz, hastig über einen Contractor ausgezahlt, fehlt schnell in der Erklärung, und fehlendes Einkommen ist schlimmer als ein vergessener Abzug."
       },
       {
         "t": "Einbehalt über 15 Prozent bei einem nicht registrierten Arbeitgeber",
@@ -212,9 +212,9 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was hängt daran, wie deine Saison aufgebaut war?",
     "paras": [
-      "Ob deine Fahrten als wechselnde Einsatzorte statt als Arbeitsweg gelten, ist eine Tatsachenfrage, und es geht um echtes Geld. Wer von einem Contractor ohne feste Basis zwischen drei Betrieben geschickt wird, steht anders da als jemand, der elf Wochen zur selben Plantage gefahren ist. Wie oft der Ort wechselte, ob der Job das Reisen verlangte und ob es überhaupt einen festen Arbeitsplatz gab, entscheidet die Frage.",
-      "Der steuerliche Wohnsitz ist größer. Er ist eine Beurteilung, keine Formel, das ATO sieht ihn in beide Richtungen falsch angesetzt, und der Fall Addy vor dem High Court zeigt, wie viel daran hängen kann. Er ist mehr wert als jeder Beleg auf dieser Seite, und wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind.",
-      "Farmarbeit zahlt außerdem auf ein weiteres Visum ein, und dieser Teil ist Einwanderungsrecht, kein Steuerrecht. Welche Branchen, Postleitzahlen und Zeiträume zählen, legt das Department of Home Affairs fest, und die Regeln haben sich mehr als einmal geändert. Prüf die aktuellen offiziellen Angaben oder frag einen registrierten Migration Agent, bevor du dich darauf verlässt, dass ein Job zählt. So oder so muss das Einkommen korrekt gemeldet werden."
+      "Ob deine Fahrten als wechselnde Einsatzorte statt als Arbeitsweg gelten, ist eine Tatsachenfrage. Wer von einem Contractor ohne feste Basis zwischen drei Betrieben geschickt wird, steht anders da als jemand, der elf Wochen zur selben Plantage gefahren ist. Wie oft der Ort wechselte, ob der Job das Reisen verlangte und ob es einen festen Arbeitsplatz gab, entscheidet das.",
+      "Der steuerliche Wohnsitz ist größer. Er ist eine Beurteilung, keine Formel, und der Fall Addy vor dem High Court zeigt, wie viel daran hängen kann. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind.",
+      "Farmarbeit zahlt außerdem auf ein weiteres Visum ein, und dieser Teil ist Einwanderungsrecht, kein Steuerrecht. Welche Branchen, Postleitzahlen und Zeiträume zählen, legt das Department of Home Affairs fest, und die Regeln haben sich mehr als einmal geändert. Prüf die aktuellen offiziellen Angaben oder frag einen registrierten Migration Agent, bevor du dich darauf verlässt, dass ein Job zählt."
     ]
   }
 ]
@@ -222,23 +222,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Kann ich Sonnencreme und einen Hut absetzen?",
-    "answer": "Ja, wenn dich die Arbeit in die Sonne stellt, und Farmarbeit tut das normalerweise. Das ATO akzeptiert Sonnenschutz als Arbeitskost für Menschen, die im Freien arbeiten, weil die Belastung aus dem Job kommt und nicht aus deinen eigenen Entscheidungen. Belege aufheben, nur den beruflichen Anteil ansetzen und sagen können, worin die Arbeit bestand."
+    "answer": "Ja, wenn dich die Arbeit in die Sonne stellt, und Farmarbeit tut das normalerweise. Das ATO akzeptiert Sonnenschutz als Arbeitskost für Menschen, die im Freien arbeiten, weil die Belastung aus dem Job kommt.\n\nBelege aufheben und nur den beruflichen Anteil ansetzen."
   },
   {
     "question": "Ich war auf drei Farmen. Sind das drei Steuererklärungen?",
-    "answer": "Nein. Eine Erklärung deckt das ganze Steuerjahr vom 1. Juli bis 30. Juni ab, egal wie viele Farmen, Contractors oder Zeitarbeitsfirmen dich bezahlt haben. Jeder Arbeitgeber meldet Lohn und einbehaltene Steuer getrennt an das ATO, und alles landet in derselben Erklärung. Das Risiko einer Saison mit kurzen Jobs ist ein vergessener Arbeitgeber, und das prüft man besser vor der Abgabe."
+    "answer": "Nein. Eine Erklärung deckt das ganze Steuerjahr vom 1. Juli bis 30. Juni ab, egal wie viele Farmen, Contractors oder Zeitarbeitsfirmen dich bezahlt haben. Jeder Arbeitgeber meldet Lohn und einbehaltene Steuer getrennt an das ATO, und alles landet in derselben Erklärung.\n\nDas Risiko einer Saison mit kurzen Jobs ist ein vergessener Arbeitgeber."
   },
   {
     "question": "Ändert Bezahlung pro Bin etwas an meiner Steuer?",
-    "answer": "Nein. Akkordlohn ist Lohn, ob pro Bin, pro Eimer, pro Tray oder pro Kilo abgerechnet wird. Dein Arbeitgeber meldet die Summe und behält Steuer ein wie bei einem Stundenlohn, und sie geht in dein Einkommen ein wie jede andere Bezahlung. Was Akkordarbeit ändert, ist die Aufzeichnung, weil stark schwankende Bezahlung sich später schwerer mit dem Income Statement abgleichen lässt."
+    "answer": "Nein. Akkordlohn ist Lohn, ob pro Bin, pro Eimer, pro Tray oder pro Kilo abgerechnet wird. Dein Arbeitgeber meldet die Summe und behält Steuer ein wie bei einem Stundenlohn.\n\nWas Akkordarbeit ändert, ist die Aufzeichnung, weil stark schwankende Bezahlung sich später schwerer mit dem Income Statement abgleichen lässt."
   },
   {
     "question": "Kann ich das Benzin für die tägliche Fahrt zur Farm absetzen?",
-    "answer": "Nein. Die erste Fahrt des Tages, von deiner Unterkunft zur ersten Farm, ist der normale Arbeitsweg und nicht absetzbar, egal wie weit er ist. Absetzbar sind Fahrten zwischen Farmen, Blöcken oder Hallen, nachdem dein Arbeitstag begonnen hat, berechnet mit der Kilometerpauschale oder einem Fahrtenbuch."
+    "answer": "Nein. Die erste Fahrt des Tages, von deiner Unterkunft zur ersten Farm, ist der normale Arbeitsweg und nicht absetzbar, egal wie weit er ist.\n\nAbsetzbar sind Fahrten zwischen Farmen, Blöcken oder Hallen, nachdem dein Arbeitstag begonnen hat, berechnet mit der Kilometerpauschale oder einem Fahrtenbuch."
   },
   {
     "question": "Was, wenn die Farm mir nie Payslips gegeben hat?",
-    "answer": "Meistens kein Problem. Die meisten Arbeitgeber melden deine Bezahlung über Single Touch Payroll an das ATO, also erscheint sie als Income Statement, auch wenn du nie einen Payslip bekommen hast. Trotzdem hilft eine eigene Notiz, welche Farm, welche Daten und ungefähr welcher Betrag, gerade bei einer Saison mit mehreren kurzen Jobs, damit du die offiziellen Zahlen gegenprüfen kannst."
+    "answer": "Meistens kein Problem. Die meisten Arbeitgeber melden deine Bezahlung über Single Touch Payroll an das ATO, also erscheint sie als Income Statement, auch wenn du nie einen Payslip bekommen hast.\n\nTrotzdem hilft eine eigene Notiz, welche Farm, welche Daten und ungefähr welcher Betrag."
   }
 ]
 
@@ -332,7 +332,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -547,7 +547,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -557,7 +559,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -597,7 +599,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Am Absatzumbruch geteilt, damit eine lange Antwort als zwei
+                    kurze Absätze liest. faqSchema nutzt weiter den Rohtext. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

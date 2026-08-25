@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Elsewhere on the site",
   "wrongLabel": "Claimed, and it should not have been",
   "missedLabel": "Not claimed, and it should have been",
-  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line.",
   "hubHref": "/expenses"
 }
 
@@ -99,7 +99,7 @@ const HERO = {
   "kicker": "Sites, labouring and trades",
   "h1lead": "Your tools are deductible.",
   "h1accent": "Your first White Card is not.",
-  "lede": "Site work carries the longest deduction list of any backpacker job. The ute is the one thing on it that is usually not yours to claim."
+  "lede": "Site work carries the longest deduction list of any backpacker job. The ute is usually not on it."
 }
 
 type Section =
@@ -116,8 +116,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What can a construction worker claim on tax?",
     "paras": [
-      "A construction worker can claim tools and equipment bought out of their own pocket, protective clothing and PPE, sun protection for outdoor site work, renewals of a White Card or operating ticket they already hold, the work related share of a phone plan, and self education that relates to the trade they are already working in. Anything the employer supplied or reimbursed is off the list.",
-      "The list is long because the job creates specific costs. Steel caps protect you from a dropped brick, a hard hat from something above you, sunscreen from six hours on an unshaded slab. That is the connection the deduction test looks for, and why site work produces the largest deduction total of any occupation on this site."
+      "A construction worker can claim tools and equipment bought out of their own pocket, protective clothing and PPE, sun protection for outdoor site work, renewals of a White Card or operating ticket they already hold, the work related share of a phone plan, and self education related to the trade they already work in. Anything the employer supplied or reimbursed is off the list.",
+      "The list is long because the job creates specific costs. Steel caps protect you from a dropped brick, sunscreen from six hours on an unshaded slab. That is the connection the deduction test looks for."
     ]
   },
   {
@@ -127,31 +127,31 @@ const SECTIONS: Section[] = [
     "items": [
       {
         "t": "Tools and equipment under $300 each",
-        "d": "A drill, a grinder, a nail gun, a level, a tool belt, a set of chisels. Each item costing $300 or less is deducted in full in the year you buy it. The test is per item, so a year of small purchases builds a substantial claim from receipts most people bin at the counter."
+        "d": "A drill, a grinder, a nail gun, a level, a tool belt. Each item costing $300 or less is deducted in full in the year you buy it. The test is per item, so a year of small purchases builds a real claim from receipts most people bin."
       },
       {
         "t": "Tools and equipment of $300 or more",
-        "d": "Still deductible, just spread across the effective life of the item rather than claimed at once. A concrete mixer or a decent compound saw sits here. The trap is buying several tools together as a set costing $300 or more in total, because the set is treated as one asset even where each piece alone would have been under the threshold."
+        "d": "Still deductible, spread across the effective life of the item rather than claimed at once. A concrete mixer or a compound saw sits here. The trap is buying several tools together as a set costing $300 or more, because the set is one asset even where each piece alone would have been under the threshold."
       },
       {
         "t": "PPE and protective clothing",
-        "d": "Hi vis shirts and vests, steel capped boots, safety glasses, a helmet, earmuffs, work gloves, a dust mask. The test the ATO applies is not whether the item is useful on site, it is whether the item has a feature that protects you from a specific risk of injury."
+        "d": "Hi vis shirts and vests, steel capped boots, safety glasses, a helmet, earmuffs, work gloves, a dust mask. The ATO test is not whether the item is useful on site, but whether it protects you from a specific risk of injury."
       },
       {
         "t": "Sun protection for outdoor work",
-        "d": "Sunscreen, a wide brim hat and sunglasses are deductible where the site work is outdoors, on the same basis as any other outdoor occupation. On a summer slab this is a genuine and recurring cost that almost nobody keeps a receipt for."
+        "d": "Sunscreen, a wide brim hat and sunglasses are deductible where the site work is outdoors. On a summer slab this is a recurring cost almost nobody keeps a receipt for."
       },
       {
         "t": "Renewing a White Card or an operating ticket",
-        "d": "Renewing a card or ticket you already hold, while you are already on site, is deductible. Your very first White Card is not, because that cost is what made you eligible for construction work at all. The same split applies to a first forklift ticket, EWP ticket or heavy vehicle permit."
+        "d": "Renewing a card or ticket you already hold is deductible. Your first White Card is not, because that cost made you eligible for construction work at all. The same split applies to a first forklift ticket, EWP ticket or heavy vehicle permit."
       },
       {
         "t": "The work share of your phone and internet",
-        "d": "If you use your own phone to call a supervisor, check plans, or take shift messages, the work related percentage of the plan is deductible. Keep a fair, honest basis for the percentage. Claiming the whole bill on a phone you also live on will not stand up."
+        "d": "If you use your own phone to call a supervisor, check plans, or take shift messages, the work related percentage of the plan is deductible. Claiming the whole bill on a phone you also live on will not stand up."
       },
       {
         "t": "Training that relates to the trade you already work in",
-        "d": "A course that upgrades a skill or a ticket you use now is deductible. A course aimed at moving you into a different occupation is not, even when it is construction related, because it builds a new qualification rather than maintaining the one earning your income today."
+        "d": "A course that upgrades a skill or ticket you use now is deductible. A course aimed at a different occupation is not, even when it is construction related, because it builds a new qualification rather than maintaining the one earning your income."
       }
     ]
   },
@@ -160,40 +160,40 @@ const SECTIONS: Section[] = [
     "h2": "What has to sit behind a tool claim?",
     "paras": [
       "Every claim has to clear three tests. You paid for it, nobody reimbursed you, and it was spent earning the income you are declaring. On site that is the receipt for the drill, the boots and the ticket renewal.",
-      "The record can be a receipt, an invoice, a bank statement or a phone photo, as long as it carries the amount, the date, the supplier and the item, and it has to last five years. Where every work claim for the year totals $300 or less, no written evidence is required. That is a different $300 from the one deciding whether a saw is written off at once or across its life."
+      "The record can be a receipt, an invoice, a bank statement or a phone photo carrying the amount, the date, the supplier and the item, kept five years. Where every work claim for the year totals $300 or less, no written evidence is required. That is a different $300 from the one deciding whether a saw is written off at once or across its life."
     ]
   },
   {
     "kind": "numbered",
     "h2": "When does the drive to site count?",
-    "intro": "Home to a regular workplace is private travel, and a site is a workplace. One narrow exception exists, for bulky tools, and all three of these have to be true at once.",
+    "intro": "Home to a regular workplace is private travel, and a site is a workplace. One narrow exception exists, for bulky tools, and all three of these have to be true.",
     "steps": [
       "The tools are essential for the work you are doing that day.",
-      "They are genuinely bulky, meaning their size or weight is the actual reason a vehicle is needed to move them, not simple convenience.",
+      "They are genuinely bulky: their size or weight is the reason a vehicle is needed, not convenience.",
       "There is nowhere secure to leave them at the site, so they have to travel home with you."
     ],
-    "note": "If the site has a lockable shed, container or cage, or what you carry would fit in a normal bag, the trip stays an ordinary commute. And if you do qualify, note that utes and panel vans with a carrying capacity of one tonne or more cannot use the cents per kilometre method at all, so a logbook is the only route for most tradesmen who drive one."
+    "note": "If the site has a lockable shed, container or cage, or what you carry would fit in a normal bag, the trip stays an ordinary commute. If you do qualify, utes and panel vans with a carrying capacity of one tonne or more cannot use the cents per kilometre method, so a logbook is the only route for most who drive one."
   },
   {
     "kind": "traps",
     "h2": "What do construction workers get wrong?",
-    "intro": "The wrongly claimed items on a site return are usually about clothing and the ute. The missed ones are receipts nobody kept for things that were plainly deductible.",
+    "intro": "The wrong claims on a site return are usually clothing and the ute. The missed ones are receipts nobody kept for things that were plainly deductible.",
     "wrong": [
       {
         "t": "Ordinary clothes wrecked on site",
-        "d": "Jeans, a t-shirt, a flannel, a hoodie. Site work destroys them and they were bought for work, and neither fact matters. Normal wear and tear on conventional clothing is a private expense. The item has to protect you, from cuts, sun, noise, dust or impact, rather than merely survive the day."
+        "d": "Jeans, a t-shirt, a flannel, a hoodie. Normal wear and tear on conventional clothing is a private expense. The item has to protect you rather than merely survive the day."
       },
       {
         "t": "Your first White Card",
-        "d": "The card you paid for before anyone would hire you is the cost of becoming eligible for the occupation, which the ATO treats the same way as a first drivers licence. Renewing it once you are working is a different thing and is deductible."
+        "d": "The card you paid for before anyone would hire you is the cost of becoming eligible, which the ATO treats like a first drivers licence. Renewing it once you are working is deductible."
       },
       {
         "t": "The ute, as a matter of course",
-        "d": "Owning a ute and driving it to site is not a deduction. All three bulky tool conditions above have to hold, and on most sites they do not, because the site has somewhere to lock things up. This is the most commonly overstated claim in the trade."
+        "d": "Owning a ute and driving it to site is not a deduction. All three bulky tool conditions above have to hold, and on most sites they do not, because there is somewhere to lock things up."
       },
       {
         "t": "Tools the employer supplied or paid for",
-        "d": "If it came off the truck, out of the site container, or you were reimbursed for it, there is no cost left with you to claim. Being the person who uses a tool is not the same as being the person who paid for it."
+        "d": "If it came off the truck, out of the site container, or you were reimbursed for it, there is no cost left with you to claim."
       },
       {
         "t": "A course to get into a different trade",
@@ -207,7 +207,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Anything over $300, written off entirely",
-        "d": "A surprising number of people hear \"over $300\" and conclude the tool is not claimable. It is claimable, across the effective life of the item. Dropping it loses the whole deduction rather than delaying part of it."
+        "d": "People hear \"over $300\" and conclude the tool is not claimable. It is, across the effective life of the item. Dropping it loses the whole deduction rather than delaying part of it."
       },
       {
         "t": "Sunscreen and a hat on an outdoor site",
@@ -219,7 +219,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Ticket renewals paid for out of pocket",
-        "d": "A White Card, a forklift ticket or an EWP renewal is easy to forget by July, especially when it was paid for in cash on a Saturday morning course."
+        "d": "A White Card, a forklift ticket or an EWP renewal is easy to forget by July, especially when it was paid in cash on a Saturday course."
       }
     ]
   },
@@ -227,7 +227,7 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Which parts come down to your own facts?",
     "paras": [
-      "The bulky tools exception, first. What you carry, what the site offers for storage, and whether the tools were essential that day settle it. Two labourers on the same crew can land differently, and it is a claim that gets looked at.",
+      "The bulky tools exception, first. What you carry, what the site offers for storage, and whether the tools were essential that day settle it. Two labourers on the same crew can land differently.",
       "Residency is worth more than every tool on the list. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
@@ -236,23 +236,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Can I claim my first White Card?",
-    "answer": "No. The ATO treats a first White Card the way it treats a first drivers licence, as the cost of becoming eligible for the work rather than a cost of doing it. Once you are already working on site and the card needs renewing to keep working, the renewal is deductible. The same logic applies to a first forklift ticket or heavy vehicle permit."
+    "answer": "No. The ATO treats a first White Card like a first drivers licence, as the cost of becoming eligible for the work rather than a cost of doing it.\n\nOnce you are working and the card needs renewing, the renewal is deductible. The same applies to a first forklift ticket or heavy vehicle permit."
   },
   {
     "question": "What tools can I claim as a construction worker?",
-    "answer": "Any tool or piece of equipment you bought yourself for site work, as long as your employer did not supply it or pay you back. Items costing $300 or less each are claimed in full in the year you buy them. Items of $300 or more are still claimed, but across the effective life of the item. Buying several tools together as a set costing $300 or more makes the whole set one asset."
+    "answer": "Any tool or equipment you bought yourself for site work, as long as your employer did not supply it or pay you back.\n\nItems of $300 or less each are claimed in full in the year you buy them, items above that across the effective life of the item. Several tools bought together as a set costing $300 or more make one asset."
   },
   {
     "question": "Can I claim my ute for driving to site?",
-    "answer": "Only in a narrow case. Driving from home to a regular workplace is private travel, and that does not change because the workplace is a building site. The trip becomes deductible only where the tools you carry are essential that day, genuinely bulky, and cannot be stored securely on site. Because most utes and panel vans carry a tonne or more they are excluded from the cents per kilometre method, so a logbook is the only way to claim them."
+    "answer": "Only in a narrow case. Driving from home to a regular workplace is private travel, and a building site is a workplace.\n\nThe trip is deductible only where the tools you carry are essential that day, genuinely bulky, and cannot be stored securely on site. Utes and panel vans carrying a tonne or more are excluded from the cents per kilometre method, so a logbook is the only way to claim them."
   },
   {
     "question": "Are steel caps and hi vis deductible?",
-    "answer": "Yes. Protective items such as steel capped boots, hi vis shirts and vests, safety glasses, helmets, earmuffs and work gloves are deductible because they protect you from a specific risk of injury on site, which is the test the ATO applies. Sun protection for outdoor site work is claimable on the same basis, and so is laundering the protective gear."
+    "answer": "Yes. Steel capped boots, hi vis, safety glasses, helmets, earmuffs and work gloves are deductible because they protect you from a specific risk of injury, which is the test the ATO applies.\n\nSun protection for outdoor site work is claimable on the same basis, and so is laundering the protective gear."
   },
   {
     "question": "My clothes get destroyed on site. Why can I not claim them?",
-    "answer": "Because the ATO tests the item rather than what happened to it. Jeans, a t-shirt or a flannel are conventional clothing that anyone could wear anywhere, and normal wear and tear on them is a private cost however fast the job ruins them. To be deductible the item needs a genuine protective function, like the PPE above, or has to be a compulsory branded uniform."
+    "answer": "Because the ATO tests the item rather than what happened to it. Jeans, a t-shirt or a flannel are conventional clothing, and wear and tear on them is private however fast the job ruins them.\n\nTo be deductible the item needs a genuine protective function, or has to be a compulsory branded uniform."
   }
 ]
 
@@ -346,7 +346,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -561,7 +561,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -571,7 +573,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -611,7 +613,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqSchema still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

@@ -74,7 +74,7 @@ const MYGOV = [
   },
   {
     mygov: 'Nichts sagt dir, dass ein Guthaben den Fonds längst verlassen hat und als nicht abgeholte Super beim ATO liegt.',
-    us: 'Etwa ein halbes Jahr nach Ablauf deines Visums landet es genau dort, deshalb sehen wir auch dort nach.',
+    us: 'Etwa ein halbes Jahr nach Ablauf deines Visums landet es dort, deshalb sehen wir dort nach.',
   },
   {
     mygov: 'Der Antrag wird gegen deinen Visastatus geprüft, und ein Visum, das noch läuft, stoppt ihn sofort.',
@@ -82,7 +82,7 @@ const MYGOV = [
   },
   {
     mygov: 'Super ist ein Antrag, deine Steuererklärung ein zweiter. Verbunden wird das für dich nicht.',
-    us: 'Auf der Steuerseite liegt meist der größere Teil des Geldes, deshalb machen wir beides und nichts bleibt liegen.',
+    us: 'Auf der Steuerseite liegt meist der größere Teil des Geldes, deshalb machen wir beides.',
   },
 ]
 
@@ -90,12 +90,12 @@ const faqs = [
   {
     question: 'Kann ich meine Super einfach selbst beantragen?',
     answer:
-      'Kannst du, es kostet nichts, und bei einem einzigen Fonds mit sauberen Unterlagen sagen wir dir das auch. Schwieriger wird es bei Super auf mehreren Fonds, bei einem Fonds, der beglaubigte Kopien aus dem Ausland verlangt, oder bei einem Visum, das noch läuft. Genau diesen Teil gibst du an uns ab.',
+      'Kannst du, es kostet nichts, und bei einem einzigen Fonds mit sauberen Unterlagen sagen wir dir das auch. Schwieriger wird es bei Super auf mehreren Fonds, bei einem Fonds, der beglaubigte Kopien aus dem Ausland verlangt, oder bei einem Visum, das noch läuft.',
   },
   {
     question: 'Bekommst du Superannuation, wenn du unter einer ABN gearbeitet hast?',
     answer:
-      'In der Regel nicht. Super ist eine Arbeitgeberpflicht bei PAYG Anstellung, Arbeit auf Rechnung über eine ABN erzeugt meist keine. Ausnahme: du warst auf dem Papier Auftragnehmer, hast aber faktisch wie angestellt gearbeitet. Das lohnt sich zu prüfen.',
+      'In der Regel nicht. Super ist eine Arbeitgeberpflicht bei PAYG Anstellung, Arbeit auf Rechnung über eine ABN erzeugt meist keine. Ausnahme: du warst auf dem Papier Auftragnehmer, hast aber faktisch wie angestellt gearbeitet.',
   },
   {
     question: 'Ist eine DASP-Auszahlung dasselbe wie eine Steuerrückerstattung?',
@@ -195,7 +195,9 @@ const H2: React.CSSProperties = {
   fontSize: 'clamp(21px,2.6vw,30px)',
   lineHeight: 1.16,
   letterSpacing: '-0.025em',
-  marginBottom: '12px',
+  // 12px unter einer Serif-Überschrift von 21 bis 30px ist eng. Jede H2 der
+  // Seite läuft durch dieses Objekt, die Luft kommt also einmal rein.
+  marginBottom: '16px',
   scrollMarginTop: '84px',
 }
 const BODY: React.CSSProperties = {
@@ -298,24 +300,33 @@ export default function GermanSuperannuationPage() {
             </h2>
 
             <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
-              Zwei davon wurden für dich eröffnet, ohne dass du etwas ausgesucht hast, und im Portal steht davon
-              nichts.
+              Zwei davon wurden für dich eröffnet, ohne dass du etwas ausgesucht hast.
             </p>
 
+            {/* Die beiden Beschriftungen standen auf allen acht Zellen, auf dem
+                Handy also achtmal dieselben Wörter untereinander. Sie stehen
+                jetzt nur noch in der ersten Zeile: auf dem Desktop als
+                Spaltenüberschrift, auf dem Handy als Legende. Den Rest tragen
+                der Wechsel im Hintergrund und das schwerere Gewicht. Copy
+                unverändert. */}
             <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                  <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
-                      Im ATO Portal
-                    </p>
+                  <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                        Im ATO Portal
+                      </p>
+                    )}
                     <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
                   </div>
                   <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                    style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
-                      Mit uns
-                    </p>
+                    style={{ padding: '13px 16px', background: '#F2FAF7' }}>
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
+                        Mit uns
+                      </p>
+                    )}
                     <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
                   </div>
                 </div>
@@ -333,30 +344,22 @@ export default function GermanSuperannuationPage() {
         <p style={BODY}>
           Du kannst eine Departing Australia Superannuation Payment beantragen, wenn du mit einem
           temporären Visum gearbeitet hast, das Visum abgelaufen oder annulliert ist und du das Land
-          endgültig verlassen hast. Alle drei müssen gleichzeitig zutreffen.
-        </p>
-        <p style={BODY}>
-          Mit einem 417 oder 462 Visum hast du Anspruch, wie die meisten anderen temporären
-          Visuminhaber, etwa Studierende. Australische und neuseeländische Staatsbürger und Permanent
-          Residents können nicht beantragen, ihre Super bleibt bis zur Rente gesperrt.
+          endgültig verlassen hast. Alle drei müssen gleichzeitig zutreffen. Australische und
+          neuseeländische Staatsbürger und Permanent Residents können nicht beantragen.
         </p>
         <p style={BODY}>
           Dein Visastatus wird beim Antrag direkt mit dem Department of Home Affairs abgeglichen, du
           musst nichts extra nachweisen. Ein Bridging Visum oder ein noch gültiges Visum, mit dem du im
-          Land bist, blockiert den Antrag, bis sich das ändert.
+          Land bist, blockiert den Antrag.
         </p>
       </Answer>
 
       <Answer id="how-much" heading="Wie viel Super bekommst du wirklich zurück?" tint>
         <p style={BODY}>
           Bei Working Holiday Makern werden 65 % Quellensteuer auf den steuerpflichtigen Anteil der DASP
-          einbehalten, bei dir kommen also rund 35 Cent pro Dollar an. Aus einem Guthaben von 10.000 $
-          werden etwa 3.500 $.
-        </p>
-        <p style={BODY}>
-          Der Satz steht im Gesetz, gilt für jeden, der irgendwann ein 417 oder 462 Visum hatte, und
-          lässt sich weder durch Berater noch durch Warten senken. Was deinen Betrag verändert:
-          vergessene Konten finden, bevor Gebühren und Prämien sie aufzehren.
+          einbehalten, bei dir kommen also rund 35 Cent pro Dollar an. Der Satz steht im Gesetz, gilt für
+          jeden, der irgendwann ein 417 oder 462 Visum hatte, und lässt sich weder durch Berater noch
+          durch Warten senken.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ margin: '20px 0 14px' }}>
@@ -396,55 +399,45 @@ export default function GermanSuperannuationPage() {
         </p>
         <p style={BODY}>
           Woran Anträge hängen bleiben, ist die Beglaubigung. Ab 5.000 $ bei einem Fonds
-          verlangt er in der Regel beglaubigte Kopien von Reisepass und Visum statt eines Fotos, und das
-          aus Deutschland zu organisieren dauert länger, als die meisten denken.
-        </p>
-        <p style={BODY}>
-          Das vorher zu klären statt nach der ersten Ablehnung ist das, was einen Antrag in Bewegung
-          hält.
+          verlangt er in der Regel beglaubigte Kopien von Reisepass und Visum, und das aus Deutschland zu
+          organisieren dauert länger, als die meisten denken.
         </p>
       </Answer>
 
       <Answer id="how-long" heading="Wie lange dauert eine DASP-Auszahlung?" tint>
         <p style={BODY}>
           Die Auszahlung kommt meist innerhalb von 28 Tagen nach Genehmigung. Die Frist startet
-          erst, wenn der Fonds oder das ATO alles hat. Ein Antrag ohne beglaubigtes Dokument oder mit
-          einer Adresse, die nicht zum Fonds passt, liegt vorher wochenlang.
+          erst, wenn der Fonds oder das ATO alles hat. Ein Antrag ohne beglaubigtes Dokument liegt
+          vorher wochenlang.
         </p>
         <p style={BODY}>
-          Verteilt sich dein Geld auf mehrere Fonds, ist der Antrag so schnell wie der langsamste davon,
-          jeder Fonds prüft und zahlt für sich. Guthaben, die schon beim ATO liegen, beantragst du dort,
+          Verteilt sich dein Geld auf mehrere Fonds, ist der Antrag so schnell wie der langsamste
+          davon. Guthaben, die schon beim ATO liegen, beantragst du dort,
           im selben Zeitrahmen.
         </p>
       </Answer>
 
       <Answer id="find-your-fund" heading="Was ist, wenn du deinen Superfonds nicht kennst?">
         <p style={BODY}>
-          Das ist der Normalfall, kein Sonderfall. Jeder Fonds, in den ein Arbeitgeber eingezahlt hat,
+          Das ist der Normalfall. Jeder Fonds, in den ein Arbeitgeber eingezahlt hat,
           ist mit deiner TFN verknüpft und lässt sich darüber finden, ohne Fondsnamen
           oder Mitgliedsnummer. Auch ans ATO abgegebene Guthaben tauchen in der Suche auf.
         </p>
         <p style={BODY}>
           Nicht automatisch ist der Antrag selbst: Ein Konto zu finden beantragt gar nichts, jeder Fonds
-          braucht seinen eigenen Antrag. Übersehen wird fast immer der erste Job, angenommen bevor man
-          wusste, was Super überhaupt ist.
+          braucht seinen eigenen Antrag. Übersehen wird fast immer der erste Job.
         </p>
       </Answer>
 
       <Answer id="from-overseas" heading="Kannst du deine Super aus Deutschland beantragen?" tint>
         <p style={BODY}>
           Ja, und anders geht es gar nicht. Eine DASP ist erst nach deiner Ausreise möglich, jeder
-          Antrag kommt also aus dem Ausland. Dein Wohnort ändert am Anspruch nichts, und alles läuft
-          über Unterlagen.
+          Antrag kommt also aus dem Ausland. Dein Wohnort ändert am Anspruch nichts.
         </p>
         <p style={BODY}>
-          Zwei Dinge klärst du besser, bevor du dein australisches Konto schließt. Nicht jeder Fonds
-          überweist elektronisch ins Ausland, manche schicken stattdessen einen Scheck, und der ist
-          langsam und mühsam einzulösen.
-        </p>
-        <p style={BODY}>
-          Und ob Deutschland die Zahlung besteuert, richtet sich nach deutschem Recht, nicht nach
-          australischem. Das ist eine Frage für einen Berater bei dir vor Ort.
+          Eines klärst du besser, bevor du dein australisches Konto schließt: Nicht jeder Fonds
+          überweist elektronisch ins Ausland, manche schicken einen Scheck, der langsam einzulösen ist.
+          Ob Deutschland die Zahlung besteuert, ist eine Frage für einen Berater bei dir vor Ort.
         </p>
       </Answer>
 
@@ -452,11 +445,11 @@ export default function GermanSuperannuationPage() {
         <p style={BODY}>
           Für fast jeden Working Holiday Maker ist Zurückholen die bessere Wahl. Ein liegen
           gelassenes Guthaben bekommt keine Beiträge mehr, zahlt aber weiter Gebühren und oft
-          Versicherungsprämien, die dir nichts nützen. So schrumpft es Monat für Monat.
+          Versicherungsprämien, die dir nichts nützen.
         </p>
         <p style={BODY}>
-          Das Gegenargument ist schmal. Es trägt nur, wenn du dauerhaft zum Leben und Arbeiten
-          zurückkehren willst, weil das Konto dann wieder Beiträge bekäme. Warten senkt die 65 % nicht.{' '}
+          Das Gegenargument trägt nur, wenn du dauerhaft zum Leben und Arbeiten zurückkehren willst.
+          Warten senkt die 65 % nicht.{' '}
           <Link href="/de/blog/dasp-vs-leaving-super-in-australia-pros-cons" className="font-semibold"
             style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
             Der ausführliche Vergleich steht hier
@@ -467,13 +460,11 @@ export default function GermanSuperannuationPage() {
       <Answer id="while-in-australia" heading="Kannst du deine Super beantragen, solange du noch in Australien bist?" tint>
         <p style={BODY}>
           Nein. Super ist gesperrt, solange du ein gültiges Visum hast und im Land bist. Auf einem Working
-          Holiday Visum gibt es keine vorzeitige Auszahlung, auch nicht bei Geldnot. Du musst
-          ausgereist und dein Visum muss abgelaufen oder annulliert sein.
+          Holiday Visum gibt es keine vorzeitige Auszahlung, auch nicht bei Geldnot.
         </p>
         <p style={BODY}>
-          Fliegst du deutlich vor Ablauf deines Visums heim, musst du die Restlaufzeit nicht abwarten.
-          Nach der Ausreise kann das Department of Home Affairs das Visum annullieren, statt es
-          auslaufen zu lassen, und das zieht den Antrag in der Regel vor.
+          Fliegst du deutlich vor Ablauf deines Visums heim, kann das Department of Home Affairs das
+          Visum nach deiner Ausreise annullieren, und das zieht den Antrag in der Regel vor.
         </p>
       </Answer>
 
@@ -485,8 +476,7 @@ export default function GermanSuperannuationPage() {
         </p>
         <p style={BODY}>
           Verloren ist nur, was Gebühren und Prämien in den Monaten vor der Übertragung genommen
-          haben. Bei kleinen Beträgen ist das spürbar, und zurückholen kann es niemand. Das ist das
-          Argument dafür, früher zu beantragen.
+          haben. Bei kleinen Beträgen ist das spürbar.
         </p>
       </Answer>
 

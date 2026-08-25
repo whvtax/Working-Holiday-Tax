@@ -76,7 +76,7 @@ const IconWhatsApp = () => (
 const NEEDED = [
   {
     label: 'パスポートとビザの情報',
-    body: 'どの国のパスポートで、どのサブクラスだったか。ここからすべてが決まるので、最初に伺います。',
+    body: 'どの国のパスポートで、どのサブクラスだったか。',
   },
   {
     label: 'オーストラリアの銀行口座',
@@ -93,17 +93,17 @@ const SEQUENCE = [
   {
     n: '01',
     title: 'ご相談',
-    body: 'WhatsAppで、説明しやすい言語で書いてください。その言語のままお返事します。1年の様子をざっと教えていただければ、いまどういう状況かをお伝えします。作業を始める前に料金も確定します。',
+    body: 'WhatsAppで、説明しやすい言語で書いてください。1年の様子をざっと教えていただければ、いまどういう状況かをお伝えします。作業を始める前に料金も確定します。',
   },
   {
     n: '02',
     title: '質問票、10分ほど',
-    body: 'パスポートとビザの情報、銀行口座、働いた町と仕事の種類。あなたが記入する書類はこれだけで、記入は1回きりです。その年に当てはまらない項目は空欄のままで構いません。必要ならこちらから確認します。',
+    body: 'パスポートとビザの情報、銀行口座、働いた町と仕事の種類。あなたが記入する書類はこれだけです。当てはまらない項目は空欄のままで構いません。必要ならこちらから確認します。',
   },
   {
     n: '03',
     title: 'ATOの記録を開きます',
-    body: 'あなたを報告したすべての雇用主、すべてのインカムステートメント、源泉徴収された金額、そして未提出のまま残っている過去の年度。忘れていた仕事や最高税率で引かれていた期間は、記憶の中ではなく、ほぼ必ずここで見つかります。',
+    body: 'あなたを報告したすべての雇用主、すべてのインカムステートメント、源泉徴収された金額、そして未提出のまま残っている過去の年度。忘れていた仕事や最高税率で引かれていた期間は、記憶の中ではなくここで見つかります。',
   },
   {
     n: '04',
@@ -113,17 +113,17 @@ const SEQUENCE = [
   {
     n: '05',
     title: '内容を確認して署名',
-    body: 'できあがった申告書を、数字ごとに普通の言葉で説明したうえでお送りします。読んで署名いただくまで、ATOには何も送りません。署名は電子的に行うので、地球の反対側からスマートフォンだけでも完結します。',
+    body: 'できあがった申告書を、数字ごとに説明したうえでお送りします。読んで署名いただくまで、ATOには何も送りません。署名は電子的に行うので、地球の反対側からスマートフォンだけでも完結します。',
   },
   {
     n: '06',
     title: '提出',
-    body: '登録税理士が確認・承認したうえでATOに提出します。提出そのものは数分で終わり、そのときにあなたが起きている必要はありません。',
+    body: '登録税理士が確認・承認したうえでATOに提出します。提出そのものは数分で終わります。',
   },
   {
     n: '07',
     title: 'ATOから入金',
-    body: '還付金は提出からおおむね14営業日で、ご指定のオーストラリアの口座に入金されます。先にATOから確認が入った場合は当社が対応し、何を聞かれたのかもお伝えします。どちらの場合も必ずご連絡します。',
+    body: '還付金は提出からおおむね14営業日で、ご指定のオーストラリアの口座に入金されます。先にATOから確認が入った場合は当社が対応し、何を聞かれたのかもお伝えします。',
   },
 ]
 
@@ -135,40 +135,42 @@ const RULES = [
   },
   {
     label: '過去の年度もまだ請求できます',
-    body: '提出しないままの年度が、黙って消えるわけではありません。年度ごとに別の申告であり、別の還付です。古い年度から順に進めるので、途中で止まったままの年度は残りません。',
+    body: '提出しないままの年度が、黙って消えるわけではありません。年度ごとに別の申告であり、別の還付です。古い年度から順に進めます。',
   },
 ]
 
+// 55語を超える回答には空行を入れ、下のFAQは段落ごとに<p>を出す。faqLdは
+// 元の文字列をそのまま使うので、構造化データは変わらない。
 const FAQS = [
   {
     question: 'タックスリターンはどれくらい時間がかかりますか。',
     answer:
-      '質問票をいただいた日から、複雑でない1年であれば作成と確認に数日で、提出後はATOがおおむね14営業日で還付金を支払います。雇用主が5社ある年、ABNで請求した収入がある年、居住区分を根拠づける必要がある年は、当社側の作業が長くなります。どれに当たるのかは、想像させずにこちらからお伝えします。',
+      '質問票をいただいた日から、複雑でない1年であれば作成と確認に数日で、提出後はATOがおおむね14営業日で還付金を支払います。\n\n雇用主が5社ある年、ABNで請求した収入がある年、居住区分を根拠づける必要がある年は、当社側の作業が長くなります。どれに当たるのかは、こちらからお伝えします。',
   },
   {
     question: '給与明細は必要ですか。',
     answer:
-      '必要ありません。給与として支払った雇用主は、インカムステートメントをATOに報告しており、申告書はその記録から組み立てます。明細をなくした、仕事の名前を思い出せない、その会社がもう存在しない。どれもよくある出発点です。',
+      '必要ありません。給与として支払った雇用主は、インカムステートメントをATOに報告しており、申告書はその記録から組み立てます。明細をなくした、その会社がもう存在しない。どれもよくある出発点です。',
   },
   {
     question: '自分がやることは何ですか。',
     answer:
-      '3つです。質問票に1回答えること、お送りする申告書を読むこと、そして署名すること。政府のアカウントを作る必要も、オーストラリアの本人確認を通す必要も、ATOの書式を読み解く必要もありません。提出は当社を通して行うためです。',
+      '3つです。質問票に1回答えること、お送りする申告書を読むこと、そして署名すること。政府のアカウントを作る必要も、ATOの書式を読み解く必要もありません。提出は当社を通して行うためです。',
   },
   {
     question: '帰国後でも依頼できますか。',
     answer:
-      'はい。当社が提出する申告のかなりの部分は、すでに日本に戻られた方のものです。質問票も署名も提出もすべてオンラインで完結します。唯一持ち帰れないのが還付金そのもので、ATOはオーストラリアの銀行口座にしか支払えません。スーパーアニュエーション（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、最初のメッセージで教えてください。',
+      'はい。当社が提出する申告のかなりの部分は、すでに日本に戻られた方のものです。質問票も署名も提出もすべてオンラインで完結します。\n\n唯一持ち帰れないのが還付金そのもので、ATOはオーストラリアの銀行口座にしか支払えません。スーパーアニュエーション（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、最初のメッセージで教えてください。',
   },
   {
     question: '過去の年度を提出していない場合はどうなりますか。',
     answer:
-      'いまからでも提出できます。年度ごとに独立した申告であり、独立した還付です。どの年度が未提出かはATOの記録で確認できます。遅れて出した申告も、提出されればそのまま処理されるのが通常で、ワーキングホリデーの年度であれば、最終的に受け取る側になることがほとんどです。',
+      'いまからでも提出できます。年度ごとに独立した申告であり、独立した還付です。どの年度が未提出かはATOの記録で確認できます。\n\nワーキングホリデーの年度であれば、最終的に受け取る側になることがほとんどです。',
   },
   {
     question: '還付ではなく納税になった場合はどうなりますか。',
     answer:
-      'まれにあります。多いのは、ABNで請求した収入があり、その分が源泉徴収されていなかった場合です。提出前にその金額をお見せし、どこから生じたのか、ATOにどんな支払い方法があるのかもあわせて説明します。あなたの署名なしに提出することはないので、後から知らされるという事態は起きません。',
+      'まれにあります。多いのは、ABNで請求した収入があり、その分が源泉徴収されていなかった場合です。\n\n提出前にその金額をお見せし、どこから生じたのか、ATOにどんな支払い方法があるのかもあわせて説明します。あなたの署名なしに提出することはありません。',
   },
 ]
 
@@ -322,11 +324,11 @@ export default function TaxReturnPageJA() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>あなたの側</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '16px' }}>
             ご用意いただくもの
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '30px' }}>
-            3つだけで、これが全部です。書類一式を揃えなければと構えて来られる方が多いのですが、手続きを止めていたのは書類ではありません。
+            3つだけで、これが全部です。
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -342,8 +344,13 @@ export default function TaxReturnPageJA() {
             <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.75, color: '#0B5240', fontWeight: 700, marginBottom: '10px', maxWidth: '28ch' }}>
               給与明細は必要ありません。
             </p>
+            {/* 1つの塊だと日本語では壁になるので、論の切れ目で2段落に割った。
+                「ATOを通して、当社にはすべて見えています」は直前の言い直し。 */}
+            <p style={{ ...BODY, color: '#2A3C34', maxWidth: '46ch', marginBottom: '12px' }}>
+              給与として支払った雇用主は、あなたのTFNに紐づくインカムステートメントをすでにATOへ報告しています。申告書はそこから組み立てます。
+            </p>
             <p style={{ ...BODY, color: '#2A3C34', maxWidth: '46ch' }}>
-              給与として支払った雇用主は、あなたのTFNに紐づくインカムステートメントをすでにATOへ報告しています。申告書はそこから組み立てます。ATOを通して、当社にはすべて見えています。書類の山も、なくした携帯も、名前をきちんと覚えていないホステルの仕事も、何ひとつ手続きを止めません。探す価値があるのは仕事に関する支出の領収書だけで、それも無い場合は、どんな仕事だったかを教えていただければ、領収書なしで何が控除できるかをお伝えします。
+              探す価値があるのは仕事に関する支出の領収書だけで、それも無い場合は、どんな仕事だったかを教えてください。
             </p>
           </div>
         </div>
@@ -355,11 +362,11 @@ export default function TaxReturnPageJA() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>最初から最後まで</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             どんな順序で進むのか
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '30px' }}>
-            手順は7つ。あなたが登場するのは、最初と、署名のときの2回だけです。その間はこちらの仕事なので、進んでいる間は普段どおりの生活で構いません。
+            手順は7つ。あなたが登場するのは、最初と、署名のときの2回だけです。
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -389,14 +396,12 @@ export default function TaxReturnPageJA() {
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '16px' }}>
             2つのルールが、進める順番を変えます
           </h2>
-          <p style={{ ...LEDE, color: '#4C6459', maxWidth: '42ch', marginBottom: '26px' }}>
-            どちらも途中で気づくより、最初に片づけたほうが簡単です。
-          </p>
+          {/* リード文は見出しをもう一度言っているだけだった。中身は2枚のカードが持つ。 */}
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2" style={{ marginTop: '22px' }}>
             {RULES.map((r) => (
               <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.6, marginBottom: '8px' }}>{r.label}</h3>
@@ -425,7 +430,7 @@ export default function TaxReturnPageJA() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             フォームではなく、メッセージから始めてください
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '42ch', marginBottom: '24px' }}>
@@ -447,11 +452,11 @@ export default function TaxReturnPageJA() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
-            質問票も、確認する項目も、上の順序も、たった1種類のビザの1年のために組み立てたものです。だからあなたにお願いすることが少なく、面倒な事例も当社にとっては想定内です。
+            質問票も、確認する項目も、上の順序も、たった1種類のビザの1年のために組み立てたものです。
           </p>
 
           <GoogleReviews lang="ja" />
@@ -485,7 +490,11 @@ export default function TaxReturnPageJA() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{f.answer}</p>
+                {/* 空行で区切り、長い回答を短い段落として出す。上のfaqLdは
+                    元の文字列をそのまま使っている。 */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -497,12 +506,10 @@ export default function TaxReturnPageJA() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>ガイド</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
             難しい手順の詳しい版
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '24px' }}>
-            何かを預ける前に理屈のほうを確認したい方のために、全部書いてあります。
-          </p>
+          {/* リード文は見出しの言い直しだった。どの手順かは3枚のカードが示す。 */}
 
           <div className="grid gap-3 sm:grid-cols-3">
             {GUIDES.map((g) => (

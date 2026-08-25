@@ -57,11 +57,11 @@ const WA = waUrl({ topic: 'contact', lang: 'ja' })
 const blockers: { q: string; a: string; link?: { href: string; label: string } }[] = [
   {
     q: 'すでにオーストラリアを出国していても対応できますか？',
-    a: 'はい。むしろ業務の大きな部分がそれです。すでに終わった年度のタックスリターンは世界のどこからでも提出できますし、スーパーアニュエーションは出国してビザが失効した後でなければ請求できません。つまり出国後のほうが、やれることは減るどころか増えることが多いのです。1点だけ先に。ATOはタックスリターンの還付金をオーストラリアの銀行口座にしか支払えませんが、スーパー（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、その旨をお知らせください。',
+    a: 'はい。むしろ業務の大きな部分がそれです。すでに終わった年度のタックスリターンは世界のどこからでも提出できますし、スーパーアニュエーションは出国してビザが失効した後でなければ請求できません。\n\n1点だけ先に。ATOはタックスリターンの還付金をオーストラリアの銀行口座にしか支払えませんが、スーパー（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、その旨をお知らせください。',
   },
   {
     q: 'myGovのアカウントは必要ですか？',
-    a: 'いりません。myGovにログインしたり、オーストラリアのIDを連携したり、どの書類がどれなのかを調べたりする必要は一切ありません。ATOとのやり取りはこちらで行います。すでに試して本人確認のところで止まってしまった方も多いのですが、それによって私たちがお手伝いできるかどうかが変わることはありません。',
+    a: 'いりません。myGovにログインしたり、オーストラリアのIDを連携したり、どの書類がどれなのかを調べたりする必要は一切ありません。ATOとのやり取りはこちらで行います。\n\nすでに試して本人確認のところで止まってしまった方も、それで変わることはありません。',
   },
   {
     q: '給与明細（ペイスリップ）は必要ですか？',
@@ -70,7 +70,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'この会社は信用できますか？',
-    a: 'ウェブサイトに対して当然の質問だと思います。申告書は、ATOへ提出する前に登録税理士（registered tax agent）が確認して承認します。ご同意いただく契約条件はクライアント規約にすべて掲載していますし、Googleのレビューは実際にお手伝いしたワーホリの方々によるものです。',
+    a: '申告書は、ATOへ提出する前に登録税理士（registered tax agent）が確認して承認します。ご同意いただく契約条件はクライアント規約にすべて掲載していますし、Googleのレビューは実際にお手伝いしたワーホリの方々によるものです。',
     link: { href: '/ja/client-agreement', label: 'クライアント規約を読む' },
   },
 ]
@@ -78,7 +78,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: '返信はどのくらいで来ますか？',
-    answer: '営業時間内、月曜から金曜の9時から18時（AEST/AEDT）であれば、だいたい1時間以内にご返信します。営業時間外にいただいたご連絡には、翌営業日の朝一番でお返事します。確認が必要な内容であれば、お待たせせずにその旨をすぐお伝えします。',
+    answer: '営業時間内、月曜から金曜の9時から18時（AEST/AEDT）であれば、だいたい1時間以内にご返信します。営業時間外にいただいたご連絡には、翌営業日の朝一番でお返事します。確認が必要な内容であれば、その旨をすぐお伝えします。',
   },
   {
     question: '質問するだけで料金はかかりますか？',
@@ -86,11 +86,11 @@ const FAQS = [
   },
   {
     question: '返信は何語で来ますか？',
-    answer: 'あなたが書いた言語で返ってきます。日本語でも英語でも、ご自分の状況を一番説明しやすい言語でお書きください。その言語でお返事します。この仕事の大半は、オーストラリアの税金に初めて触れる方に分かるように説明することです。母語でも十分ややこしい話ですから。',
+    answer: 'あなたが書いた言語で返ってきます。日本語でも英語でも、ご自分の状況を一番説明しやすい言語でお書きください。',
   },
   {
     question: 'すぐに書類を送る必要がありますか？',
-    answer: 'ありません。まずはご質問だけをお送りください。こちらでお答えし、進める価値のある作業があれば、その内容と料金を着手前にお伝えします。書類はその後、進めると決めていただいてからで、何をどのように安全に送ればよいかを具体的にご案内します。パスポートや銀行口座の情報を最初のメッセージに入れる必要はありません。',
+    answer: 'ありません。まずはご質問だけをお送りください。こちらでお答えし、進める価値のある作業があれば、その内容と料金を着手前にお伝えします。\n\n書類はその後、進めると決めていただいてからで、何をどのように安全に送ればよいかを具体的にご案内します。',
   },
   {
     question: '還付がなかった場合はどうなりますか？',
@@ -226,7 +226,11 @@ export default function JapaneseContactPage() {
                   <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '8px' }}>
                     {b.q}
                   </h3>
-                  <p style={answerStyle}>{b.a}</p>
+                  {/* 段落ごとに1つの<p>。1ブロックのままだとスマホでは壁になる。
+                      ここは送る前に読まれる回答なので、なおさら効く。 */}
+                  {b.a.split('\n\n').map((para, j, all) => (
+                    <p key={j} style={{ ...answerStyle, marginBottom: j === all.length - 1 ? 0 : '10px' }}>{para}</p>
+                  ))}
                   {b.link && (
                     <Link href={b.link.href}
                       style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', fontSize: '14.5px', fontWeight: 500, color: '#0B5240', textDecoration: 'underline' }}>
@@ -245,11 +249,11 @@ export default function JapaneseContactPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[560px] mx-auto">
             <span className="section-label">その他の方法</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,29px)', lineHeight: 1.4, letterSpacing: '-0.02em', margin: '10px 0 10px' }}>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,29px)', lineHeight: 1.4, letterSpacing: '-0.02em', margin: '10px 0 16px' }}>
               WhatsAppが使いにくい場合は
             </h2>
             <p style={{ ...answerStyle, marginBottom: '20px' }}>
-              メールでもSNSでもご連絡いただけます。ただ、どちらも返信は遅くなります。日中スタッフが見ているのはWhatsAppです。
+              メールでもSNSでもご連絡いただけます。ただ、どちらも返信は遅くなります。
             </p>
 
             <address style={{ fontStyle: 'normal' }}>
@@ -320,7 +324,11 @@ export default function JapaneseContactPage() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{f.answer}</p>
+                {/* トップページのFAQと同じ分割。上の faqLd は元の f.answer を
+                    使うため、構造化データは変わらない。 */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>

@@ -308,8 +308,10 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 </div>
 
                 <div style={{ padding: '0 20px 18px' }}>
+                  {/* 「それを詰めるのが確認作業です。」は、直前で挙げた3点に
+                      事実を足さない締めの一文だったので落とした。 */}
                   <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#2A3C34', marginBottom: '14px' }}>
-                    あくまで目安の数字です。実際の金額は、このページでは決められない3つの点で変わります。どちらの居住区分が当てはまるか、メディケア税の免除が使えるか、そしてあなたの職種で何を控除できるか。それを詰めるのが確認作業です。
+                    あくまで目安の数字です。実際の金額は、このページでは決められない3つの点で変わります。どちらの居住区分が当てはまるか、メディケア税の免除が使えるか、そしてあなたの職種で何を控除できるか。
                   </p>
                   <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
                     className="btn-primary w-full flex items-center justify-center"
@@ -377,7 +379,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             </p>
 
             <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '12px' }}>
+              style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '16px' }}>
               <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>少ない金額を入力すれば、</span>
               <span style={{ display: 'block' }}>myGovはその金額のまま提出します。</span>
             </h2>
@@ -389,17 +391,24 @@ export function CalculatorClient({ faqs = [] }: Props) {
             <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                  <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
-                      myGovの場合
-                    </p>
+                  <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
+                    {/* 見出しは1行目だけ。スマホでは行が縦に積まれるため、両方の
+                        見出しを8回繰り返すと同じ2語が画面を下っていくだけになる。
+                        デスクトップでは列見出し、スマホでは凡例として機能する。 */}
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                        myGovの場合
+                      </p>
+                    )}
                     <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
                   <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                    style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
-                      当社の場合
-                    </p>
+                    style={{ padding: '13px 16px', background: '#F2FAF7' }}>
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
+                        当社の場合
+                      </p>
+                    )}
                     <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#080F0D', fontWeight: 500, margin: 0, overflowWrap: 'break-word' }}>{row.us}</p>
                   </div>
                 </div>
@@ -418,14 +427,19 @@ export function CalculatorClient({ faqs = [] }: Props) {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px]">
             <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '12px' }}>
+              style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '16px' }}>
               実際の金額がこの数字と変わる理由は。
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
               3つあり、どれもこのページには入っていません。1つ目は居住区分です。判断ひとつで1年全体の税率が変わることがあります。ご本人の状況によって決まる判断であり、他のどの要素よりも金額への影響が大きい部分です。
             </p>
+            {/* 1段落に2つ目と3つ目が同居して5文の塊になっていた。メディケア税が
+                終わり控除が始まる転換点で切っている。 */}
             <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
-              2つ目はメディケア税です。課税所得の2%が既定で差し引かれますが、417・462ビザの多くはそもそも支払う義務がありません。外すにはほとんど誰も申請しない証明書が必要です。3つ目は控除で、myGovではただの空欄です。ファーム、カフェ、ホスピタリティで、申告できる項目はそれぞれ違います。
+              2つ目はメディケア税です。課税所得の2%が既定で差し引かれますが、417・462ビザの多くはそもそも支払う義務がありません。外すにはほとんど誰も申請しない証明書が必要です。
+            </p>
+            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
+              3つ目は控除で、myGovではただの空欄です。ファーム、カフェ、ホスピタリティで、申告できる項目はそれぞれ違います。
             </p>
             <div className="flex flex-wrap gap-3" style={{ marginTop: '18px' }}>
               <Link href="/ja/medicare"
@@ -464,7 +478,11 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     <span style={{ flex: 1 }}>{f.question}</span>
                     <span className="contact-faq-plus" aria-hidden="true">+</span>
                   </summary>
-                  <p className="contact-faq-answer">{f.answer}</p>
+                  {/* 段落ごとに1つの<p>。page.tsx の FAQPage スキーマは元の
+                      文字列を使うため、構造化データは変わらない。 */}
+                  {f.answer.split("\n\n").map((para, j) => (
+                    <p key={j} className="contact-faq-answer">{para}</p>
+                  ))}
                 </details>
               ))}
             </div>

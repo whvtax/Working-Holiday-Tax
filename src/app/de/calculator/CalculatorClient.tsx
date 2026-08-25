@@ -82,7 +82,7 @@ const MYGOV = [
   },
   {
     mygov: 'Werbungskosten sind ein leeres Feld, und keine Schätzung füllt es für dich.',
-    us: 'Wir wissen, was deine Art von Arbeit absetzen darf und welcher Nachweis hinter jedem Posten stehen muss.',
+    us: 'Wir wissen, was deine Art von Arbeit absetzen darf und welcher Nachweis dahinter stehen muss.',
   },
   {
     mygov: 'Niemand prüft die Wochen, bevor deine Steuernummer beim Arbeitgeber war, einbehalten mit 45 %.',
@@ -169,8 +169,8 @@ export function CalculatorClient({ faqs = [] }: Props) {
 
             <p className="hero-sub mx-auto"
               style={{ fontSize: '16.5px', lineHeight: 1.62, color: '#2A3C34', maxWidth: '46ch' }}>
-              Trag ein, was du verdient hast und was einbehalten wurde. Die grobe Zahl kommt in ein paar
-              Sekunden zurück.
+              Trag ein, was du verdient hast und was einbehalten wurde. Die grobe Zahl kommt in Sekunden
+              zurück.
             </p>
           </div>
         </div>
@@ -314,8 +314,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '14px' }}>
                     Nimm das als groben Anhaltspunkt. Die echte Zahl hängt an drei Dingen, die diese Seite
                     nicht klären kann: welcher Residentenstatus für dich gilt, ob die Medicare Levy
-                    Befreiung greift und was du in deinem Job absetzen kannst. Das arbeitet die Prüfung
-                    heraus.
+                    Befreiung greift und was du in deinem Job absetzen kannst.
                   </p>
                   <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
                     className="btn-primary w-full flex items-center justify-center"
@@ -385,7 +384,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             </p>
 
             <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '12px' }}>
+              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
               <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Tipp bei myGov eine zu niedrige Zahl ein{' '}</span>
               <span style={{ display: 'block' }}>und genau die wird eingereicht.{' '}</span>
             </h2>
@@ -397,17 +396,25 @@ export function CalculatorClient({ faqs = [] }: Props) {
             <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
-                  <div style={{ padding: '15px 18px', background: '#FFFFFF' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
-                      Auf myGov
-                    </p>
+                  <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
+                    {/* Nur in der ersten Zeile ausgegeben. Auf dem Handy stapeln
+                        sich die Zeilen, beide Labels acht Mal zu wiederholen
+                        waren also dieselben zwei Wörter untereinander. Auf dem
+                        Desktop Spaltenköpfe, auf dem Handy die Legende. */}
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                        Auf myGov
+                      </p>
+                    )}
                     <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', margin: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
                   </div>
                   <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
-                    style={{ padding: '15px 18px', background: '#F2FAF7' }}>
-                    <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
-                      Mit uns
-                    </p>
+                    style={{ padding: '13px 16px', background: '#F2FAF7' }}>
+                    {i === 0 && (
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
+                        Mit uns
+                      </p>
+                    )}
                     <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#080F0D', fontWeight: 500, margin: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
                   </div>
                 </div>
@@ -427,20 +434,22 @@ export function CalculatorClient({ faqs = [] }: Props) {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px]">
             <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '12px' }}>
+              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
               Was macht die echte Zahl anders als diese?
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               Drei Dinge, und keins davon steht auf dieser Seite. Erstens dein Residentenstatus. Richtig
               eingeordnet, kann er die Sätze für dein ganzes Jahr ändern. Es ist eine Beurteilung deiner
-              Umstände, und sie ist mehr wert als alles andere zusammen.
+              Umstände und mehr wert als alles andere zusammen.
             </p>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               Zweitens die Medicare Levy. Sie beträgt 2 % des zu versteuernden Einkommens, wird
               standardmäßig abgezogen, und die meisten mit 417 oder 462 Visum schuldeten sie nie.
-              Weggenommen wird sie mit einer Bescheinigung, die kaum jemand beantragt. Drittens die
-              absetzbaren Kosten, bei myGov ein leeres Feld. Was eine Erntehelferin, ein Barista und
-              jemand im Hospitality jeweils absetzen kann, ist nicht dieselbe Liste.
+              Weggenommen wird sie mit einer Bescheinigung, die kaum jemand beantragt.
+            </p>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
+              Drittens die absetzbaren Kosten, bei myGov ein leeres Feld. Was eine Erntehelferin, ein
+              Barista und jemand im Hospitality jeweils absetzen kann, ist nicht dieselbe Liste.
             </p>
             <div className="flex flex-wrap gap-3" style={{ marginTop: '18px' }}>
               <Link href="/de/medicare"
@@ -479,7 +488,9 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     <span style={{ flex: 1 }}>{f.question}</span>
                     <span className="contact-faq-plus" aria-hidden="true">+</span>
                   </summary>
-                  <p className="contact-faq-answer">{f.answer}</p>
+                  {f.answer.split('\n\n').map((para, j) => (
+                    <p key={j} className="contact-faq-answer">{para}</p>
+                  ))}
                 </details>
               ))}
             </div>

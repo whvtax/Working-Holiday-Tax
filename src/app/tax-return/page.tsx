@@ -79,7 +79,7 @@ const IconWhatsApp = () => (
 const NEEDED = [
   {
     label: 'Your passport and visa',
-    body: 'Which passport you hold and which subclass you were on. It shapes everything, so we ask first.',
+    body: 'Which passport you hold and which subclass you were on.',
   },
   {
     label: 'An Australian bank account',
@@ -96,37 +96,37 @@ const SEQUENCE = [
   {
     n: '01',
     title: 'You message us',
-    body: 'WhatsApp, in English, German or Japanese. You tell us roughly what the year looked like, we tell you where you stand, and the fee is agreed before any work begins.',
+    body: 'WhatsApp, in English, German or Japanese. You tell us what the year looked like, we tell you where you stand, and the fee is agreed before any work begins.',
   },
   {
     n: '02',
     title: 'One questionnaire, about ten minutes',
-    body: 'Passport and visa details, bank details, the towns and the kind of work. It is the only form you fill in, and you fill it in once. If something in it does not apply to your year, leave it and we will ask.',
+    body: 'Passport and visa details, bank details, the towns and the kind of work. It is the only form you fill in. Leave anything that does not apply and we will ask.',
   },
   {
     n: '03',
     title: 'We open your ATO record',
-    body: 'Every employer who reported you, every income statement, every dollar withheld, and any earlier year still sitting open. Forgotten jobs and weeks taxed at the top rate almost always surface here rather than in anything you remember.',
+    body: 'Every employer who reported you, every income statement, every dollar withheld, and any earlier year still open. Forgotten jobs and weeks taxed at the top rate surface here, not in what you remember.',
   },
   {
     n: '04',
     title: 'The judgements that move the number',
-    body: 'Residency for the year, the weeks withheld before your tax file number arrived, whether the Medicare levy was ever yours to pay, and what your line of work is allowed to claim. This is the slow part, and it is the part you are paying for.',
+    body: 'Residency for the year, the weeks withheld before your tax file number arrived, whether the Medicare levy was ever yours to pay, and what your line of work can claim. This is the slow part, and the part you are paying for.',
   },
   {
     n: '05',
     title: 'You read it and sign',
-    body: 'We send you the finished return with each figure explained in ordinary language, and nothing goes to the ATO until you have read it and signed the declaration. Signing is electronic, so it works from a phone in another hemisphere.',
+    body: 'We send you the finished return with each figure explained, and nothing goes to the ATO until you have read it and signed the declaration. Signing is electronic, so it works from a phone in another hemisphere.',
   },
   {
     n: '06',
     title: 'It is lodged',
-    body: 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO. Lodgement itself takes minutes and you do not have to be awake for it.',
+    body: 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO. Lodgement itself takes minutes.',
   },
   {
     n: '07',
     title: 'The ATO pays',
-    body: 'Refunds usually land about 14 business days after lodgement, straight into the Australian account you gave us. If the ATO queries something first, we answer it and tell you what was asked. Either way you hear from us.',
+    body: 'Refunds usually land about 14 business days after lodgement, into the Australian account you gave us. If the ATO queries something, we answer it and tell you what was asked.',
   },
 ]
 
@@ -134,44 +134,46 @@ const SEQUENCE = [
 const RULES = [
   {
     label: 'The refund can only go to an Australian account',
-    body: 'Superannuation (DASP) can be paid to an overseas account. A tax refund cannot. If you are about to close your Australian bank account, wait until the refund has landed, or tell us before you do.',
+    body: 'Superannuation (DASP) can be paid to an overseas account. A tax refund cannot. If you are about to close your Australian bank account, wait until the refund has landed, or tell us first.',
   },
   {
     label: 'Earlier years are still claimable',
-    body: 'A financial year you never lodged for does not expire quietly. Each year is its own return and its own refund, and we work through them oldest first so nothing is left half finished.',
+    body: 'A financial year you never lodged for does not expire quietly. Each year is its own return and its own refund, and we work through them oldest first.',
   },
 ]
 
+// Answers past about 55 words carry a blank line, and the FAQ below renders one
+// <p> per paragraph. faqLd still uses the raw string, so the schema is unchanged.
 const FAQS = [
   {
     question: 'How long does a working holiday tax return take?',
     answer:
-      'From the day your questionnaire is in, a straightforward year takes a few days to prepare and check, and the ATO usually pays the refund about 14 business days after lodgement. Five employers, income invoiced under an ABN, or a residency position that has to be argued takes longer at our end, and we tell you which of those yours is rather than leaving you to guess.',
+      'From the day your questionnaire is in, a straightforward year takes a few days to prepare and check, and the ATO usually pays the refund about 14 business days after lodgement.\n\nFive employers, income invoiced under an ABN, or a residency position that has to be argued takes longer at our end, and we tell you which yours is.',
   },
   {
     question: 'Do you need my payslips?',
     answer:
-      'No. Every employer who paid you through a payroll reported an income statement to the ATO, and that record is what a return is built from, so lost payslips and an employer who has since shut down are normal starting points. The only paperwork worth digging out is receipts for work expenses, and if you do not have those either, describe the work and we will tell you what is claimable without them.',
+      'No. Every employer who paid you through a payroll reported an income statement to the ATO, and that record is what a return is built from. Lost payslips and an employer who has shut down are normal starting points.\n\nThe only paperwork worth digging out is receipts for work expenses. If you do not have those, describe the work and we will tell you what is claimable without them.',
   },
   {
     question: 'What do I actually have to do?',
     answer:
-      'Three things. Answer the questionnaire once, read the return we send back, and sign it. There is no government account to set up, no Australian identity check to pass and no ATO form for you to interpret, because the lodgement happens through us.',
+      'Three things. Answer the questionnaire once, read the return we send back, and sign it. There is no government account to set up and no ATO form to interpret, because the lodgement happens through us.',
   },
   {
     question: 'Can you lodge for me after I have already left Australia?',
     answer:
-      'Yes, and a large share of the returns we lodge belong to people already home in the UK, Germany or Japan. The questionnaire, the signature and the lodgement are all online. The one thing that does not travel is the refund itself: the ATO can only pay it into an Australian bank account, while superannuation (DASP) can be paid overseas. If your Australian account is already closed, tell us in the first message.',
+      'Yes, and many of the returns we lodge belong to people already home in the UK, Germany or Japan. The questionnaire, the signature and the lodgement are all online.\n\nThe refund itself does not travel: the ATO can only pay it into an Australian bank account, while superannuation (DASP) can be paid overseas. If your Australian account is already closed, tell us in the first message.',
   },
   {
     question: 'What if I never lodged for an earlier year?',
     answer:
-      'It can still be lodged now. Each financial year stands on its own, with its own return and its own refund, and we can see from the ATO record which years are still open. A late return is generally straightforward once it arrives, and in most working holiday years the balance is owed to you rather than by you.',
+      'It can still be lodged now. Each financial year stands on its own, with its own return and its own refund, and the ATO record shows which years are still open.\n\nIn most working holiday years the balance is owed to you rather than by you.',
   },
   {
     question: 'What happens if the return says I owe money instead?',
     answer:
-      'Occasionally it does, most often where income was invoiced under an ABN and nothing was withheld from it along the way. You see that figure before anything is lodged, with an explanation of where it came from and what the ATO payment options are. Nothing is sent in without your signature, so you will not find out afterwards.',
+      'Occasionally it does, most often where income was invoiced under an ABN and nothing was withheld.\n\nYou see that figure before anything is lodged, with an explanation of where it came from and what the ATO payment options are. Nothing is sent without your signature.',
   },
 ]
 
@@ -326,12 +328,11 @@ export default function TaxReturnPage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Your side of it</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '16px' }}>
             What we need from you
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            Three things, and that is the list. People arrive expecting to assemble a folder, and the folder was never
-            what was holding this up.
+            Three things, and that is the list.
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -349,10 +350,8 @@ export default function TaxReturnPage() {
             </p>
             <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch' }}>
               Every employer who put you on a payroll has already reported an income statement against your tax file
-              number, and that is what a return is built from. It is all visible to us through the ATO. A shoebox of
-              paper, a lost phone, a hostel job whose name you never quite learned: none of it stops anything. Receipts
-              for work expenses are the one thing worth looking for, and if there are none, tell us what the work
-              involved instead.
+              number, and that is what a return is built from. Receipts for work expenses are the one thing worth
+              looking for, and if there are none, tell us what the work involved instead.
             </p>
           </div>
         </div>
@@ -364,12 +363,11 @@ export default function TaxReturnPage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Start to finish</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             The order it happens in
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            Seven steps. You appear in two of them, at the start and again to sign. Everything between those two is
-            ours, and you can go back to your life while it runs.
+            Seven steps. You appear in two of them, at the start and again to sign.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -398,14 +396,12 @@ export default function TaxReturnPage() {
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
             Two rules change the order you do this in
           </h2>
-          <p style={{ ...LEDE, color: '#4C6459', maxWidth: '54ch', marginBottom: '26px' }}>
-            Both are easier to deal with at the beginning than halfway through.
-          </p>
+          {/* The lede said the heading again. The two cards carry the detail. */}
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2" style={{ marginTop: '22px' }}>
             {RULES.map((r) => (
               <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
@@ -426,7 +422,7 @@ export default function TaxReturnPage() {
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Nothing is ever taken out of what the ATO sends you. The amount is settled with you on WhatsApp before step
-            01, so by the time the questionnaire arrives there is nothing left to negotiate.
+            01.
           </p>
         </div>
       </section>
@@ -435,13 +431,13 @@ export default function TaxReturnPage() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Start with a message, not a form
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
             Send the towns you worked in, roughly which months, and whether you ever invoiced under an ABN. That is
-            enough for us to say which years are open and what your side of the work looks like. Two years since you flew
-            home makes no difference.
+            enough to say which years are open and what your side looks like. Two years since you flew home makes no
+            difference.
           </p>
           <WaLink href={WA_TR} position="section" topic="tax-return" lang="en"
             className="btn-primary inline-flex items-center justify-center gap-2"
@@ -459,13 +455,12 @@ export default function TaxReturnPage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working holiday tax is the only thing we do.
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
-            The questionnaire, the checks and the order above were built around one visa year and nothing else, which is
-            why so little is asked of you and why the awkward cases are not surprises. Reviewed and
-            signed off by a registered tax agent before it is lodged with the ATO.
+            The questionnaire, the checks and the order above were built around one visa year and nothing else.
+            Reviewed and signed off by a registered tax agent before it is lodged with the ATO.
           </p>
 
           <GoogleReviews lang="en" />
@@ -478,8 +473,8 @@ export default function TaxReturnPage() {
             </svg>
             <p style={{ ...BODY, color: '#2A3C34' }}>
               <strong style={{ color: '#080F0D' }}>Nobody legitimate will ask you for your myGov password.</strong>{' '}
-              We never ask for it, at any step, because the lodgement route above does not use it. If a message asks you
-              for those details, it did not come from us.
+              We never ask for it, because the lodgement route above does not use it. If a message asks for those
+              details, it did not come from us.
             </p>
           </div>
         </div>
@@ -500,7 +495,11 @@ export default function TaxReturnPage() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqLd above still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -512,12 +511,10 @@ export default function TaxReturnPage() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Guides</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             The longer version of the hard steps
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            If you would rather see the reasoning before you hand anything over, it is all written out.
-          </p>
+          {/* The lede restated the heading. The three cards say which steps. */}
 
           <div className="grid gap-3 sm:grid-cols-3">
             {GUIDES.map((g) => (
@@ -535,7 +532,7 @@ export default function TaxReturnPage() {
       <NextStep
         eyebrow="What is next"
         heading="Do not leave your super behind"
-        body="Your employer paid superannuation on top of your wages while you worked here. When you leave Australia for good, it can be claimed, and it is a separate job from the return."
+        body="Your employer paid superannuation on top of your wages while you worked here. When you leave Australia for good it can be claimed, separately from the return."
         cta="How the super claim works →"
         href="/superannuation"
       />

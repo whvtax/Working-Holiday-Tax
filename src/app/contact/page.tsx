@@ -65,11 +65,13 @@ const WA = waUrl({ topic: 'contact', lang: 'en' })
 const blockers: { q: string; a: string; link?: { href: string; label: string } }[] = [
   {
     q: 'Can you help me if I have already left Australia?',
-    a: 'Yes, and a lot of our work is exactly that. A return for a year that has already ended can be lodged from anywhere, and superannuation can only be claimed once you have left and your visa has lapsed, so leaving is often the point at which there is more to do rather than less. One thing to know early: the ATO can only pay a tax refund into an Australian bank account, while super can be paid overseas, so tell us if you have already closed yours.',
+    // Blank lines split the answer into paragraphs at the render below. The
+    // JSON-LD still uses the raw string, so the structured data is unchanged.
+    a: 'Yes, and a lot of our work is exactly that. A return for a year that has already ended can be lodged from anywhere, and superannuation can only be claimed once you have left and your visa has lapsed.\n\nOne thing to know early: the ATO can only pay a tax refund into an Australian bank account, while super can be paid overseas. Tell us if you have already closed yours.',
   },
   {
     q: 'Do I need a myGov account?',
-    a: 'No. You will never log into myGov, link an Australian ID or work out which form is which. We deal with the ATO directly. If you already tried and got stuck at the identity check, which is where most people get stuck, it changes nothing about whether we can help you.',
+    a: 'No. You will never log into myGov, link an Australian ID or work out which form is which. We deal with the ATO directly.\n\nIf you already tried and got stuck at the identity check, that changes nothing.',
   },
   {
     q: 'Do I need my payslips?',
@@ -78,7 +80,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'Is this legitimate?',
-    a: 'It is a fair question to ask a website. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. The terms you would be agreeing to are published in full on our client agreement, and the reviews on our Google listing are from working holiday makers we have actually worked with.',
+    a: 'Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. The terms you would be agreeing to are published in full on our client agreement, and the reviews on our Google listing are from working holiday makers we have worked with.',
     link: { href: '/client-agreement', label: 'Read the client agreement' },
   },
 ]
@@ -86,23 +88,23 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'How quickly will you reply?',
-    answer: 'During business hours, Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within about an hour. Outside those hours we get back to you first thing the next working morning. If your question needs checking first, we say so straight away rather than leaving you waiting.',
+    answer: 'During business hours, Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within about an hour. Outside those hours we get back to you first thing the next working morning. If your question needs checking first, we say so straight away.',
   },
   {
     question: 'Is there a fee just to ask a question?',
-    answer: 'Asking is free, and you can ask as much as you like before deciding anything. The service itself is a flat fee, never a percentage of your refund, and we confirm it with you on WhatsApp before any work begins.',
+    answer: 'Asking is free, and you can ask as much as you like before deciding anything. The service is a flat fee, never a percentage of your refund, confirmed with you on WhatsApp before any work begins.',
   },
   {
     question: 'What language will you reply in?',
-    answer: 'The one you write to us in. Write in English, German, Japanese or whatever language you would rather explain your situation in, and that is what comes back. Most of this job is explaining Australian tax to somebody meeting it for the first time, which is hard enough in a first language.',
+    answer: 'The one you write to us in. English, German, Japanese or whatever language you would rather explain your situation in, and that is what comes back.',
   },
   {
     question: 'Do I need to send documents straight away?',
-    answer: 'No. Send the question first and nothing else. We answer it, and if there is work worth doing we tell you what it is and what it costs before anything starts. Documents come later, once you have decided to go ahead, and we tell you exactly which ones and how to send them securely.',
+    answer: 'No. Send the question first and nothing else. We answer it, and if there is work worth doing we tell you what it is and what it costs before anything starts.\n\nDocuments come later, once you have decided to go ahead, and we tell you which ones and how to send them securely.',
   },
   {
     question: 'What if I do not get a refund?',
-    answer: 'If your refund is less than our fee, we refund the difference, so you are never out of pocket. Not every working holiday year produces a refund, and where yours looks unlikely to we would rather say so early than take the work on and hope.',
+    answer: 'If your refund is less than our fee, we refund the difference, so you are never out of pocket. Not every working holiday year produces a refund, and where yours looks unlikely we would rather say so early than take the work on and hope.',
   },
   {
     question: 'Can you help me from the UK, Germany or Japan?',
@@ -239,7 +241,12 @@ export default function ContactPage() {
                   <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.35, letterSpacing: '-0.015em', marginBottom: '8px' }}>
                     {b.q}
                   </h3>
-                  <p style={answerStyle}>{b.a}</p>
+                  {/* One <p> per paragraph. Past about 55 words a single block
+                      is a wall on a phone, and these are the answers people read
+                      before they decide to message. */}
+                  {b.a.split('\n\n').map((para, j, all) => (
+                    <p key={j} style={{ ...answerStyle, marginBottom: j === all.length - 1 ? 0 : '10px' }}>{para}</p>
+                  ))}
                   {b.link && (
                     <Link href={b.link.href}
                       style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', fontSize: '14.5px', fontWeight: 500, color: '#0B5240', textDecoration: 'underline' }}>
@@ -258,11 +265,11 @@ export default function ContactPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[560px] mx-auto">
             <span className="section-label">Other ways</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(22px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 10px' }}>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(22px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 16px' }}>
               If WhatsApp does not suit you
             </h2>
             <p style={{ ...answerStyle, marginBottom: '20px' }}>
-              Email works and so do the social accounts, they are just slower. WhatsApp is where somebody is watching during the day.
+              Email works and so do the social accounts, they are just slower.
             </p>
 
             <address style={{ fontStyle: 'normal' }}>
@@ -333,7 +340,11 @@ export default function ContactPage() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+                {/* Same split as the home page FAQ. faqLd above still uses the
+                    raw f.answer string, so the structured data is unchanged. */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>

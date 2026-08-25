@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -127,19 +127,19 @@ const SECTIONS: Section[] = [
     "items": [
       {
         "t": "Betriebskosten des Autos",
-        "d": "Berechnet über die Kilometerpauschale oder ein Fahrtenbuch, unten verglichen. Mit Fahrtenbuch erfasst der Abzug Benzin, Versicherung, Zulassung, Wartung und Reparaturen, Abschreibung und die Zinsen eines Autokredits, jeweils zu deinem Arbeitsanteil. Bei der Kilometerpauschale ist all das im Satz enthalten."
+        "d": "Berechnet über die Kilometerpauschale oder ein Fahrtenbuch, unten verglichen. Das Fahrtenbuch rechnet mit deinen echten Betriebskosten zum Arbeitsanteil, die Kilometerpauschale mit einem festen Satz."
       },
       {
         "t": "Kosten für Fahrrad, E-Bike und Roller",
-        "d": "Auf zwei Rädern gilt dieselbe Logik. Betriebs-, Reparatur- und Wartungskosten sind zum Arbeitsanteil absetzbar, dazu Helm, Warnkleidung und Licht. Fahrräder und Roller sind steuerlich keine Autos, also gilt die Kilometerpauschale für sie nicht und du setzt anteilige tatsächliche Kosten an."
+        "d": "Betriebs-, Reparatur- und Wartungskosten sind zum Arbeitsanteil absetzbar, dazu Helm, Warnkleidung und Licht. Fahrräder und Roller sind steuerlich keine Autos, also gilt die Kilometerpauschale für sie nicht und du setzt anteilige tatsächliche Kosten an."
       },
       {
         "t": "Arbeitsanteil an Handy und Daten",
-        "d": "Der ganze Job läuft über eine App, also ist der berufliche Prozentsatz deines Vertrags ein echter Abzug: Fahrer-App, Navigation, Nachrichten zu Bestellungen. Ermittle den Prozentsatz ehrlich über einen repräsentativen Zeitraum. Die volle Rechnung bei einem Handy, auf dem auch dein Leben stattfindet, ist der schnellste Weg, dass der Rest der Erklärung angeschaut wird."
+        "d": "Der ganze Job läuft über eine App, also ist der berufliche Prozentsatz deines Vertrags ein echter Abzug: Fahrer-App, Navigation, Nachrichten zu Bestellungen. Ermittle den Prozentsatz ehrlich über einen repräsentativen Zeitraum."
       },
       {
         "t": "Parkgebühren während der Arbeit",
-        "d": "Die fünf Dollar im Einkaufszentrum, während eine Bestellung gepackt wird, sind absetzbar. Bußgelder nie, egal wie sie entstanden sind."
+        "d": "Die fünf Dollar im Einkaufszentrum, während eine Bestellung gepackt wird, sind absetzbar. Bußgelder nie."
       },
       {
         "t": "Ausrüstung für den Job",
@@ -147,7 +147,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Reinigung des Fahrzeugs für die Arbeit",
-        "d": "Ein Auto in einem Zustand zu halten, in dem es Essen transportieren kann, oder ein Fahrrad fahrbereit zu halten, ist zum Arbeitsanteil absetzbar. Dasselbe Prinzip gilt für Rideshare-Fahrer mit Fahrgästen."
+        "d": "Ein Auto in einem Zustand zu halten, in dem es Essen transportieren kann, oder ein Fahrrad fahrbereit zu halten, ist zum Arbeitsanteil absetzbar."
       }
     ]
   },
@@ -199,7 +199,7 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Wer regelmäßig fährt, ist nach ein paar Monaten über 5.000 Kilometer, und darüber ist das Fahrtenbuch normalerweise der größere Abzug: Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil statt einer Pauschale."
+    "note": "Wer regelmäßig fährt, ist nach ein paar Monaten über 5.000 Kilometer, und darüber ist das Fahrtenbuch normalerweise der größere Abzug: Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil."
   },
   {
     "kind": "answer",
@@ -213,7 +213,7 @@ const SECTIONS: Section[] = [
     "kind": "note",
     "label": "Der Punkt, der überrascht",
     "title": "Essen liefern und Fahrgäste fahren ist bei der GST nicht dasselbe.",
-    "body": "Wenn du nur Essen und Pakete lieferst, wird die GST-Registrierung erst ab 75.000 Dollar Umsatz im Jahr Pflicht, und dahin kommen die wenigsten. In dem Moment, in dem du einen zahlenden Fahrgast mitnimmst, fällt diese Grenze weg. Ride Sourcing verlangt die GST-Registrierung ab der allerersten Fahrt, unabhängig vom Umsatz, und damit auch Business Activity Statements. Wer unter der Woche Uber Eats fährt und freitagabends Fahrgäste mitnimmt, hat diese Linie stillschweigend überschritten."
+    "body": "Wenn du nur Essen und Pakete lieferst, wird die GST-Registrierung erst ab 75.000 Dollar Umsatz im Jahr Pflicht, und dahin kommen die wenigsten. In dem Moment, in dem du einen zahlenden Fahrgast mitnimmst, fällt diese Grenze weg.\n\nRide Sourcing verlangt die GST-Registrierung ab der allerersten Fahrt, unabhängig vom Umsatz, und damit auch Business Activity Statements. Wer unter der Woche Uber Eats fährt und freitagabends Fahrgäste mitnimmt, hat diese Linie stillschweigend überschritten."
   },
   {
     "kind": "traps",
@@ -222,7 +222,7 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Die ganze Handyrechnung",
-        "d": "Fast niemand nutzt ein Handy ausschließlich zum Liefern. Hundert Prozent eines Vertrags anzusetzen, den du auch sonst nutzt, hält nicht stand, und es ist ein Punkt, den das ATO mit dem Rest der Erklärung abgleichen kann."
+        "d": "Hundert Prozent eines Vertrags anzusetzen, den du auch sonst nutzt, hält nicht stand, und es ist ein Punkt, den das ATO mit dem Rest der Erklärung abgleichen kann."
       },
       {
         "t": "Bußgelder",
@@ -230,7 +230,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Essen während der Arbeit",
-        "d": "Dein eigenes Abendessen zwischen zwei Lieferungen ist privat, auch wenn du gerade von Leuten umgeben bist, die ihres geliefert bekommen."
+        "d": "Dein eigenes Abendessen zwischen zwei Lieferungen ist privat."
       },
       {
         "t": "Jeder Kilometer mit offener App",
@@ -238,7 +238,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Kleine Plattformeinnahmen ganz weglassen",
-        "d": "Uber, DoorDash und die anderen melden Fahrereinnahmen im Rahmen des Sharing-Economy-Meldesystems an das ATO. Deine Einnahmen sind ohnehin sichtbar, ein paar hundert Dollar Wochenendarbeit wegzulassen spart also nichts, es erzeugt eine Abweichung."
+        "d": "Uber, DoorDash und die anderen melden Fahrereinnahmen im Rahmen des Sharing-Economy-Meldesystems an das ATO. Deine Einnahmen sind ohnehin sichtbar, ein paar hundert Dollar Wochenendarbeit wegzulassen erzeugt also nur eine Abweichung."
       }
     ],
     "missed": [
@@ -256,11 +256,11 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Kosten vor der ersten Lieferung",
-        "d": "Ausrüstung, die du beim Aufbau gekauft hast, ungefähr zu der Zeit, als du die ABN registriert und dich bei der Plattform angemeldet hast, ist in der Regel absetzbar. Der Abstand zwischen Kauf und Start zählt, also heb die Daten auf."
+        "d": "Ausrüstung, die du gekauft hast, als du die ABN registriert und dich bei der Plattform angemeldet hast, ist in der Regel absetzbar. Der Abstand zwischen Kauf und Start zählt, also heb die Daten auf."
       },
       {
         "t": "Die ganze Erklärung, weil ABN-Fahrer nur mit Nachzahlung rechnen",
-        "d": "Von Plattformauszahlungen wird nichts einbehalten, das Geld kommt also vollständig an und viele stellen sich auf eine Rechnung ein. Genau die Abzüge gegen dieses Einkommen verkleinern sie, und genau die bleiben am häufigsten weg."
+        "d": "Von Plattformauszahlungen wird nichts einbehalten, das Geld kommt also vollständig an und viele stellen sich auf eine Rechnung ein. Abzüge gegen dieses Einkommen verkleinern sie, und genau die bleiben am häufigsten weg."
       }
     ]
   },
@@ -268,8 +268,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was hängt daran, wie du fährst, statt an der Regel?",
     "paras": [
-      "Uber Eats, DoorDash, Menulog und Amazon Flex beauftragen dich als Selbstständigen: ABN, kein Einbehalt, keine Superannuation. Wer für eine einzelne Pizzeria im Dienstplan fährt und einen Payslip bekommt, ist angestellt, mit TFN. Ein einzelner Laden, der deine Schichten festlegt, deine Arbeit beaufsichtigt, das Rad stellt und dann eine ABN verlangt, kann ein Arbeitgeber in Verkleidung sein. Prüf das, bevor du irgendetwas registrierst.",
-      "Wo die absetzbaren Fahrten beginnen, folgt daraus. Bei Angestellten ist der Weg zum Laden privat, nur Laden bis Übergabepunkt zählt. Mit ABN sind die Fahrten die Arbeit und nicht der Weg dorthin, die Grenze liegt also woanders und richtet sich danach, wie du arbeitest.",
+      "Uber Eats, DoorDash, Menulog und Amazon Flex beauftragen dich als Selbstständigen: ABN, kein Einbehalt, keine Superannuation. Wer für eine einzelne Pizzeria im Dienstplan fährt und einen Payslip bekommt, ist angestellt, mit TFN. Ein einzelner Laden, der deine Schichten festlegt, deine Arbeit beaufsichtigt, das Rad stellt und dann eine ABN verlangt, kann ein Arbeitgeber in Verkleidung sein.",
+      "Wo die absetzbaren Fahrten beginnen, folgt daraus. Bei Angestellten ist der Weg zum Laden privat, nur Laden bis Übergabepunkt zählt. Mit ABN sind die Fahrten die Arbeit.",
       "Der steuerliche Wohnsitz entscheidet, wie der Gewinn überhaupt besteuert wird. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
     ]
   }
@@ -278,23 +278,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Brauche ich eine ABN für Uber Eats oder DoorDash?",
-    "answer": "Ja. Diese Plattformen beauftragen Fahrer und Radkuriere als Selbstständige und nicht als Angestellte, also brauchst du eine ABN, bevor du bezahlt werden kannst. Sie ersetzt keine TFN, die brauchst du weiterhin. Von deinen Auszahlungen wird nichts einbehalten, das Einkommen kommt also vollständig an und die Steuer darauf wird mit der Erklärung geregelt."
+    "answer": "Ja. Diese Plattformen beauftragen Fahrer und Radkuriere als Selbstständige und nicht als Angestellte, also brauchst du eine ABN, bevor du bezahlt werden kannst.\n\nSie ersetzt keine TFN, die brauchst du weiterhin. Von deinen Auszahlungen wird nichts einbehalten, das Einkommen kommt also vollständig an und die Steuer darauf wird mit der Erklärung geregelt."
   },
   {
     "question": "Welche Methode für Autokosten soll ich nehmen?",
-    "answer": "Das hängt davon ab, wie weit du fährst und was das Auto im Unterhalt kostet. Die Kilometerpauschale braucht keine Belege, ist aber bei 5.000 Arbeitskilometern im Jahr gedeckelt, und alles darüber ist verloren. Ein Fahrtenbuch hat keine Grenze und erfasst Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil, im Gegenzug für zwölf zusammenhängende Wochen Aufzeichnungen und einen Beleg für jede Ausgabe."
+    "answer": "Das hängt davon ab, wie weit du fährst und was das Auto im Unterhalt kostet. Die Kilometerpauschale braucht keine Belege, ist aber bei 5.000 Arbeitskilometern im Jahr gedeckelt, und alles darüber ist verloren.\n\nEin Fahrtenbuch hat keine Grenze und erfasst Benzin, Versicherung, Zulassung, Wartung, Abschreibung und Kreditzinsen zu deinem Arbeitsanteil, im Gegenzug für zwölf zusammenhängende Wochen Aufzeichnungen und einen Beleg für jede Ausgabe."
   },
   {
     "question": "Kann ich meine Handyrechnung absetzen?",
-    "answer": "Du kannst den arbeitsbezogenen Prozentsatz deines Handy- und Datenvertrags absetzen, also den Anteil, den du für die Fahrer-App, Navigation und Nachrichten zu Aufträgen nutzt. Die ganze Rechnung geht nicht, wenn du das Handy auch privat nutzt, was praktisch alle tun. Du brauchst also eine faire und ehrliche Grundlage für den Prozentsatz und etwas, das sie stützt."
+    "answer": "Du kannst den arbeitsbezogenen Prozentsatz deines Handy- und Datenvertrags absetzen, also den Anteil, den du für die Fahrer-App, Navigation und Nachrichten zu Aufträgen nutzt.\n\nDie ganze Rechnung geht nicht, wenn du das Handy auch privat nutzt, was praktisch alle tun. Du brauchst also eine faire und ehrliche Grundlage für den Prozentsatz und etwas, das sie stützt."
   },
   {
     "question": "Muss ich mich für die GST registrieren?",
-    "answer": "Bei reiner Essens- und Paketlieferung wird die GST-Registrierung erst ab 75.000 Dollar Umsatz im Jahr Pflicht, und die meisten Teilzeitfahrer kommen nicht in die Nähe. Ride Sourcing ist anders: Wer zahlende Fahrgäste befördert, muss sich ab dem ersten Dollar registrieren, unabhängig vom Umsatz. Wer beides macht, wird über die Fahrgastseite hineingezogen."
+    "answer": "Bei reiner Essens- und Paketlieferung wird die GST-Registrierung erst ab 75.000 Dollar Umsatz im Jahr Pflicht, und die meisten Teilzeitfahrer kommen nicht in die Nähe.\n\nRide Sourcing ist anders: Wer zahlende Fahrgäste befördert, muss sich ab dem ersten Dollar registrieren, unabhängig vom Umsatz."
   },
   {
     "question": "Ich fahre Fahrrad statt Auto. Kann ich trotzdem etwas absetzen?",
-    "answer": "Ja. Ein Fahrrad oder E-Scooter ist steuerlich kein Auto, die Kilometerpauschale gilt also nicht, aber du kannst den arbeitsbezogenen Anteil an Betriebs-, Reparatur- und Wartungskosten absetzen, dazu Sicherheitsausrüstung wie Helm, Licht und Warnkleidung. Teile fair zwischen Lieferfahrten und privater Nutzung auf und heb die Belege auf."
+    "answer": "Ja. Ein Fahrrad oder E-Scooter ist steuerlich kein Auto, die Kilometerpauschale gilt also nicht, aber du kannst den arbeitsbezogenen Anteil an Betriebs-, Reparatur- und Wartungskosten absetzen, dazu Sicherheitsausrüstung wie Helm, Licht und Warnkleidung.\n\nTeile fair zwischen Lieferfahrten und privater Nutzung auf."
   }
 ]
 
@@ -388,7 +388,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -603,7 +603,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -613,7 +615,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -653,7 +655,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Am Absatzumbruch geteilt, damit eine lange Antwort als zwei
+                    kurze Absätze liest. faqSchema nutzt weiter den Rohtext. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

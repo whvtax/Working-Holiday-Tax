@@ -80,17 +80,17 @@ const FAILURE_POINTS = [
   {
     n: '01',
     title: 'The name on the form is not the name immigration holds',
-    body: 'The ATO matches your application against your visa record. A missing middle name, a renewed passport or names in a different order can send it into manual checking or straight back.',
+    body: 'The ATO matches your application against your visa record. A missing middle name, a renewed passport or names in a different order can send it back.',
   },
   {
     n: '02',
     title: 'The address will not be holding your post in four weeks',
-    body: 'Your TFN arrives as a letter to an Australian address, and issuing can take up to 28 days. If you have moved on by then, the letter sits there and nobody forwards it.',
+    body: 'Your TFN arrives as a letter to an Australian address, and issuing can take up to 28 days. If you have moved on, nobody forwards it.',
   },
   {
     n: '03',
     title: 'It was lodged before the visa was active',
-    body: 'You apply once you are in Australia on an activated visa, not before you fly. Applications lodged too early quietly go nowhere, and you find out weeks later at 45%.',
+    body: 'You apply once you are in Australia on an activated visa, not before you fly. Applications lodged too early go nowhere, and you find out weeks later at 45%.',
   },
 ]
 
@@ -102,19 +102,19 @@ const WHAT_WE_DO = [
   },
   {
     title: 'We match your details to your immigration record',
-    body: 'Passport, name order, date of birth and visa grant, checked against each other before anything is lodged.',
+    body: 'Passport, name order, date of birth and visa grant, checked against each other before lodging.',
   },
   {
     title: 'We work out the address problem with you',
-    body: 'Where you will actually be in four weeks, and what to do if the answer is a farm or a van.',
+    body: 'Where you will be in four weeks, and what to do if the answer is a farm or a van.',
   },
   {
     title: 'We chase it if it stalls',
-    body: 'The ATO has 28 days. Past that, someone has to ring them, and it is not going to be you from a hostel in Cairns.',
+    body: 'The ATO has 28 days. Past that, someone has to ring them, and it will not be you.',
   },
   {
     title: 'We tell your employer what to do in the meantime',
-    body: 'A TFN application reference number, quoted correctly, is what keeps the first pay runs off the top rate while you wait.',
+    body: 'A TFN application reference number, quoted correctly, keeps the first pay runs off the top rate.',
   },
   {
     title: 'We claim the gap back at the end of the year',
@@ -122,41 +122,43 @@ const WHAT_WE_DO = [
   },
 ]
 
+// Answers past about 55 words carry a blank line, and the FAQ below renders one
+// <p> per paragraph. faqLd still uses the raw string, so the schema is unchanged.
 const FAQS = [
   {
     question: 'Can I just apply for a TFN myself?',
     answer:
-      'You can, and the application is a short free form. What we charge for is the work around it: matching your details to the record immigration holds, picking an address that will still be receiving post in four weeks, giving your employer the application reference number so the first pay runs are not withheld at 45%, ringing the ATO when nothing arrives, and claiming back through your return anything already taken at the top rate.',
+      'You can, and the application is a short free form.\n\nWhat we charge for is the work around it: matching your details to the record immigration holds, picking an address still receiving post in four weeks, and giving your employer the reference number so the first pay runs are not withheld at 45%.',
   },
   {
     question: 'The TFN application is free on the ATO website. What am I paying for?',
     answer:
-      'The number itself is free and we will always say so plainly. What costs money is the gap: every pay run before your employer has the number is withheld at 45% instead of 15%. We charge for closing that gap first time, and for getting back what has already gone.',
+      'The number itself is free. What costs money is the gap: every pay run before your employer has the number is withheld at 45% instead of 15%. We charge for closing that gap, and for getting back what has already gone.',
   },
   {
     question: 'What actually happens if I start work without a TFN?',
     answer:
-      'Your employer must withhold at the top rate of 45% instead of the 15% working holiday maker rate until you give them a tax file number, and you have 28 days from starting the job to do that. On a $25 an hour job that is roughly $7.50 an hour going to the ATO rather than to you. The money is not lost, but it only comes back through a tax return lodged, and lodged correctly, after the financial year ends.',
+      'Your employer must withhold at 45% instead of the 15% working holiday maker rate until you give them a tax file number, and you have 28 days from starting the job. On a $25 an hour job that is roughly $7.50 an hour going to the ATO instead of you.\n\nThe money is not lost, but it only comes back through a tax return lodged correctly after the financial year ends.',
   },
   {
     question: 'I have already been working for weeks without a TFN. Is it too late?',
     answer:
-      'No. There is no deadline that closes on you here. Apply now so the top rate stops applying to future pay, and the excess already withheld comes back when your tax return is lodged for that financial year. We can usually have an application ready to lodge the same day you message us, so tell us how many weeks have already been paid at 45%, because it changes what your return needs to say.',
+      'No. Apply now so the top rate stops applying to future pay. The excess already withheld comes back when your tax return is lodged for that financial year.\n\nWe can usually have an application ready the same day you message us. Tell us how many weeks have already been paid at 45%, because it changes what your return needs to say.',
   },
   {
     question: 'How long does a TFN take to arrive?',
     answer:
-      'The ATO states it processes TFN applications within 28 days, and most working holiday makers have theirs inside two to four weeks. It arrives as a letter posted to the Australian address on the application, which is why that address matters more than people expect. While you wait, the application reference number is what your employer needs.',
+      'The ATO states it processes TFN applications within 28 days, and most working holiday makers have theirs inside two to four weeks. It arrives as a letter to the Australian address on the application. While you wait, your employer needs the application reference number.',
   },
   {
     question: 'Can I apply for a TFN before I arrive in Australia?',
     answer:
-      'Not on a working holiday visa. You apply once you are in Australia with your 417 or 462 visa activated, because the application is matched against your arrival and visa record. You also need an Australian postal address for the letter. Applications lodged before arrival are the ones that most often disappear without anyone being told why.',
+      'Not on a working holiday visa. You apply once you are in Australia with your 417 or 462 visa activated, because the application is matched against your arrival and visa record. You also need an Australian postal address for the letter.',
   },
   {
     question: 'Do I need a new TFN for a second year visa?',
     answer:
-      'No. A tax file number is issued to you once and stays with you for life, including across a second or third working holiday visa, a change of visa class, and any gap where you left Australia entirely. If you have lost the number rather than never had one, that is a different and much faster problem, so tell us which of the two it is.',
+      'No. A tax file number is issued once and stays with you for life, across a second or third working holiday visa, a change of visa class, and any gap where you left Australia.\n\nIf you have lost the number rather than never had one, that is a different and faster problem, so tell us which it is.',
   },
 ]
 
@@ -169,7 +171,7 @@ const GUIDES = [
   {
     href: '/blog/tfn-reference-number-before-tfn-arrives',
     title: 'The application reference number',
-    desc: 'What to give your employer while you are still waiting on the letter.',
+    desc: 'What to give your employer while you wait on the letter.',
   },
   {
     href: '/blog/how-long-does-it-take-to-get-a-tfn',
@@ -293,12 +295,12 @@ export default function TFNPage() {
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
             What does it cost to start work before your TFN arrives?
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '28px' }}>
             If your employer does not have your TFN within 28 days, they must withhold 45% instead of the 15% Working
-            Holiday Maker rate. The extra tax is not lost and may be refunded when you lodge your tax return after 30 June.
+            Holiday Maker rate. The extra tax is not lost and may come back when you lodge your tax return after 30 June.
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -324,12 +326,13 @@ export default function TFNPage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Doing it yourself</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Why do working holiday TFN applications fail?
           </h2>
+          {/* The lede said "one of three issues" and then the list said the same
+              thing three times over. What it keeps is the cost of each failure. */}
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
-            The form is short and usually straightforward. When something goes wrong, it is almost always one of three
-            issues, and each can mean another month taxed at 45% while you wait for a letter that never arrives.
+            The form is short. Each of the three ways it goes wrong can mean another month taxed at 45%.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -354,7 +357,7 @@ export default function TFNPage() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>The work</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             What we do about it
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
@@ -399,12 +402,12 @@ export default function TFNPage() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '16px' }}>
             Tell us where you are up to
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
-            Whether you have landed yet, whether you have started a job, and whether anything has already been paid at
-            45%. Three answers is enough for us to tell you what to do next.
+            Whether you have landed, whether you have started a job, and whether anything has already been paid at
+            45%. Three answers and we can tell you what to do next.
           </p>
           <WaLink href={WA_TFN} position="section" topic="tfn" lang="en"
             className="btn-primary inline-flex items-center justify-center gap-2"
@@ -422,13 +425,12 @@ export default function TFNPage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working holiday tax is the only thing we do.
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
-            Every TFN application we lodge belongs to somebody on a 417 or 462 visa, which is why the same three things
-            go wrong on all of them. Returns are reviewed and signed off by a registered tax agent
-            before they are lodged with the ATO.
+            Every TFN application we lodge belongs to somebody on a 417 or 462 visa. Returns are reviewed and signed
+            off by a registered tax agent before they are lodged with the ATO.
           </p>
           <GoogleReviews lang="en" />
         </div>
@@ -449,7 +451,11 @@ export default function TFNPage() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqLd above still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -461,12 +467,10 @@ export default function TFNPage() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Guides</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             More on the TFN and the 45% weeks
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            Three longer reads on the withholding, the wait and the reference number.
-          </p>
+          {/* The lede listed the three cards that follow it. The cards do that. */}
 
           <div className="grid gap-3 sm:grid-cols-3">
             {GUIDES.map((g) => (

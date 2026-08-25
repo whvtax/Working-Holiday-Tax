@@ -76,17 +76,17 @@ const FAILURE_POINTS = [
   {
     n: '01',
     title: 'Der Name im Antrag passt nicht zu den Einreisedaten',
-    body: 'Das ATO gleicht deinen Antrag mit deinem Visumsdatensatz ab. Ein fehlender zweiter Vorname, ein neuer Pass oder eine andere Namensreihenfolge schickt ihn in die manuelle Prüfung oder direkt zurück.',
+    body: 'Das ATO gleicht deinen Antrag mit deinem Visumsdatensatz ab. Ein fehlender zweiter Vorname, ein neuer Pass oder eine andere Namensreihenfolge schickt ihn zurück.',
   },
   {
     n: '02',
     title: 'Die Adresse nimmt in vier Wochen keine Post mehr an',
-    body: 'Deine TFN kommt als Brief an eine australische Adresse, und die Ausstellung kann bis zu 28 Tage dauern. Bist du bis dahin weitergezogen, bleibt der Brief liegen und niemand leitet ihn nach.',
+    body: 'Deine TFN kommt als Brief an eine australische Adresse, und die Ausstellung kann bis zu 28 Tage dauern. Bist du bis dahin weitergezogen, leitet ihn niemand nach.',
   },
   {
     n: '03',
     title: 'Der Antrag lief, bevor das Visum aktiv war',
-    body: 'Beantragt wird in Australien mit aktiviertem Visum, nicht vor dem Abflug. Zu frühe Anträge versanden leise, und du merkst es erst Wochen später, bei 45 %.',
+    body: 'Beantragt wird in Australien mit aktiviertem Visum, nicht vor dem Abflug. Zu frühe Anträge versanden, und du merkst es erst Wochen später, bei 45 %.',
   },
 ]
 
@@ -97,19 +97,19 @@ const WHAT_WE_DO = [
   },
   {
     title: 'Wir gleichen deine Daten mit deinem Einreisedatensatz ab',
-    body: 'Pass, Namensreihenfolge, Geburtsdatum und Visumserteilung, alles gegeneinander geprüft, bevor etwas eingereicht wird.',
+    body: 'Pass, Namensreihenfolge, Geburtsdatum und Visumserteilung, gegeneinander geprüft vor dem Einreichen.',
   },
   {
     title: 'Wir lösen die Adressfrage mit dir',
-    body: 'Wo du in vier Wochen tatsächlich bist, und was gilt, wenn die Antwort eine Farm oder ein Van ist.',
+    body: 'Wo du in vier Wochen bist, und was gilt, wenn die Antwort eine Farm oder ein Van ist.',
   },
   {
     title: 'Wir haken nach, wenn es hängt',
-    body: 'Das ATO hat 28 Tage. Danach muss jemand dort anrufen, und das wirst nicht du aus einem Hostel in Cairns sein.',
+    body: 'Das ATO hat 28 Tage. Danach muss jemand dort anrufen, und das wirst nicht du sein.',
   },
   {
     title: 'Wir sagen deinem Arbeitgeber, was in der Zwischenzeit gilt',
-    body: 'Die Referenznummer des Antrags, korrekt angegeben, hält die ersten Abrechnungen vom Höchstsatz fern, während du wartest.',
+    body: 'Die Referenznummer des Antrags, korrekt angegeben, hält die ersten Abrechnungen vom Höchstsatz fern.',
   },
   {
     title: 'Wir holen die Lücke am Jahresende zurück',
@@ -117,41 +117,44 @@ const WHAT_WE_DO = [
   },
 ]
 
+// Antworten über etwa 55 Wörtern tragen eine Leerzeile, und die FAQ unten
+// rendert einen <p> pro Absatz. faqLd nutzt weiter den Rohtext, das Schema
+// bleibt also unverändert.
 const FAQS = [
   {
     question: 'Kann ich die TFN einfach selbst beantragen?',
     answer:
-      'Kannst du, der Antrag ist ein kurzes und kostenloses Formular. Bezahlt wird die Arbeit drumherum: deine Daten an den Einreisedatensatz anpassen, eine Adresse wählen, die in vier Wochen noch Post annimmt, deinem Arbeitgeber die Referenznummer geben, damit die ersten Abrechnungen nicht mit 45 % laufen, beim ATO anrufen, wenn nichts ankommt, und über die Steuererklärung zurückholen, was schon zum Höchstsatz einbehalten wurde.',
+      'Kannst du, der Antrag ist ein kurzes und kostenloses Formular.\n\nBezahlt wird die Arbeit drumherum: deine Daten an den Einreisedatensatz anpassen, eine Adresse wählen, die in vier Wochen noch Post annimmt, und deinem Arbeitgeber die Referenznummer geben, damit die ersten Abrechnungen nicht mit 45 % laufen.',
   },
   {
     question: 'Der TFN-Antrag ist beim ATO kostenlos. Wofür zahle ich dann?',
     answer:
-      'Die Nummer selbst ist kostenlos, und das sagen wir immer offen. Geld kostet die Lücke: Jede Abrechnung, bevor dein Arbeitgeber die Nummer hat, wird mit 45 % statt mit 15 % einbehalten. Bezahlt wird, dass diese Lücke beim ersten Mal geschlossen wird, und dass zurückkommt, was schon weg ist.',
+      'Die Nummer selbst ist kostenlos. Geld kostet die Lücke: Jede Abrechnung, bevor dein Arbeitgeber die Nummer hat, wird mit 45 % statt mit 15 % einbehalten. Bezahlt wird, dass diese Lücke geschlossen wird und dass zurückkommt, was schon weg ist.',
   },
   {
     question: 'Was passiert, wenn ich ohne TFN anfange zu arbeiten?',
     answer:
-      'Dein Arbeitgeber muss zum Höchstsatz von 45 % einbehalten statt zu den 15 %, die für Working Holiday Maker auf die ersten 45.000 $ gelten, solange du ihm keine Steuernummer gegeben hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Bei einem Job mit 25 $ pro Stunde sind das rund 7,50 $ pro Stunde, die ans ATO gehen statt an dich. Das Geld ist nicht weg, es kommt aber nur über eine Steuererklärung zurück, die nach dem 30. Juni eingereicht und korrekt aufgestellt wird.',
+      'Dein Arbeitgeber muss 45 % einbehalten statt der 15 %, die für Working Holiday Maker auf die ersten 45.000 $ gelten, solange du ihm keine Steuernummer gegeben hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Bei 25 $ pro Stunde sind das rund 7,50 $ pro Stunde, die ans ATO gehen statt an dich.\n\nDas Geld ist nicht weg, es kommt aber nur über eine Steuererklärung zurück, die nach dem 30. Juni korrekt eingereicht wird.',
   },
   {
     question: 'Ich arbeite schon seit Wochen ohne TFN. Ist es zu spät?',
     answer:
-      'Nein. Hier läuft keine Frist gegen dich. Beantrage die Nummer jetzt, damit der Höchstsatz für die nächsten Abrechnungen wegfällt, und der zu viel einbehaltene Teil kommt mit der Steuererklärung für dieses Steuerjahr zurück. Meistens können wir den Antrag noch am selben Tag fertig machen, an dem du schreibst. Sag uns dazu, wie viele Wochen schon mit 45 % abgerechnet wurden, denn das ändert, was deine Erklärung später sagen muss.',
+      'Nein. Beantrage die Nummer jetzt, damit der Höchstsatz für die nächsten Abrechnungen wegfällt. Der zu viel einbehaltene Teil kommt mit der Steuererklärung für dieses Steuerjahr zurück.\n\nMeistens können wir den Antrag am selben Tag fertig machen. Sag uns, wie viele Wochen schon mit 45 % abgerechnet wurden, denn das ändert, was deine Erklärung sagen muss.',
   },
   {
     question: 'Wie lange dauert es, bis die TFN ankommt?',
     answer:
-      'Das ATO gibt an, TFN-Anträge innerhalb von 28 Tagen zu bearbeiten, und die meisten Working Holiday Maker haben ihre Nummer nach zwei bis vier Wochen. Sie kommt als Brief an die australische Adresse aus dem Antrag, weshalb diese Adresse wichtiger ist, als die meisten denken. Während der Wartezeit braucht dein Arbeitgeber die Referenznummer des Antrags.',
+      'Das ATO gibt an, TFN-Anträge innerhalb von 28 Tagen zu bearbeiten, und die meisten Working Holiday Maker haben ihre Nummer nach zwei bis vier Wochen. Sie kommt als Brief an die australische Adresse aus dem Antrag. Solange du wartest, braucht dein Arbeitgeber die Referenznummer.',
   },
   {
     question: 'Kann ich die TFN schon vor der Ankunft in Australien beantragen?',
     answer:
-      'Mit einem Working Holiday Visum nicht. Du beantragst sie, sobald du mit aktiviertem 417- oder 462-Visum in Australien bist, weil der Antrag mit deinen Einreise- und Visumsdaten abgeglichen wird. Außerdem brauchst du eine australische Postadresse für den Brief. Vor der Ankunft eingereichte Anträge sind die, die am häufigsten verschwinden, ohne dass jemand erklärt, warum.',
+      'Mit einem Working Holiday Visum nicht. Du beantragst sie, sobald du mit aktiviertem 417- oder 462-Visum in Australien bist, weil der Antrag mit deinen Einreise- und Visumsdaten abgeglichen wird. Außerdem brauchst du eine australische Postadresse für den Brief.',
   },
   {
     question: 'Brauche ich für das zweite Working-Holiday-Visum eine neue TFN?',
     answer:
-      'Nein. Eine Steuernummer wird dir einmal zugeteilt und bleibt dein Leben lang gültig, auch über ein zweites oder drittes Working-Holiday-Visum hinweg, über einen Visumswechsel und über eine Zeit, in der du Australien komplett verlassen hast. Wenn du die Nummer nur verloren hast und nicht neu brauchst, ist das ein anderes und deutlich schnelleres Problem, sag uns also, welcher der beiden Fälle es ist.',
+      'Nein. Eine Steuernummer wird dir einmal zugeteilt und bleibt dein Leben lang gültig, auch über ein zweites oder drittes Working-Holiday-Visum, einen Visumswechsel und eine Zeit außerhalb Australiens hinweg.\n\nWenn du die Nummer nur verloren hast, ist das ein anderes und schnelleres Problem, sag uns also, welcher Fall es ist.',
   },
 ]
 
@@ -289,7 +292,7 @@ export default function TFNPageDE() {
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
             Was kostet es, ohne TFN anzufangen?
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '28px' }}>
@@ -321,12 +324,14 @@ export default function TFNPageDE() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Selbst machen</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Warum scheitern TFN-Anträge von Backpackern?
           </h2>
+          {/* Die Lede sagte "einer von drei Punkten" und die Liste darunter
+              sagte dasselbe dann dreimal. Was bleibt, sind die Kosten. */}
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
-            Das Formular ist kurz und meist unkompliziert. Wenn etwas schiefgeht, liegt es fast immer an einem von drei
-            Punkten, und jeder kann einen weiteren Monat mit 45 % bedeuten, während du auf einen Brief wartest, der nie kommt.
+            Das Formular ist kurz. Jeder der drei Punkte, an denen es schiefgeht, kann einen weiteren Monat mit 45 %
+            bedeuten.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -351,7 +356,7 @@ export default function TFNPageDE() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Arbeit</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Was wir dagegen tun
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
@@ -397,12 +402,12 @@ export default function TFNPageDE() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
             Sag uns, wo du gerade stehst
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
-            Ob du schon gelandet bist, ob du schon einen Job angefangen hast, und ob schon etwas mit 45 % ausgezahlt
-            wurde. Drei Antworten reichen, damit wir dir sagen können, was als Nächstes kommt.
+            Ob du schon gelandet bist, ob du einen Job angefangen hast, und ob schon etwas mit 45 % ausgezahlt
+            wurde. Drei Antworten, und wir sagen dir, was als Nächstes kommt.
           </p>
           <WaLink href={WA_TFN} position="section" topic="tfn" lang="de"
             className="btn-primary inline-flex items-center justify-center gap-2"
@@ -420,12 +425,11 @@ export default function TFNPageDE() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
-            Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Deshalb gehen bei allen
-            dieselben drei Dinge schief. Steuererklärungen werden von einem
+            Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Steuererklärungen werden von einem
             registrierten Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
           </p>
           <GoogleReviews lang="de" />
@@ -447,7 +451,12 @@ export default function TFNPageDE() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+                {/* An einer Leerzeile getrennt, damit eine lange Antwort als
+                    zwei kurze Absätze ankommt. faqLd oben nutzt weiter den
+                    Rohtext. */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -459,12 +468,10 @@ export default function TFNPageDE() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             Mehr zur TFN und den Wochen mit 45 %
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
-            Drei längere Texte zum Einbehalt, zur Wartezeit und zur Referenznummer.
-          </p>
+          {/* Die Lede zählte die drei Karten darunter auf. Das machen die Karten. */}
 
           <div className="grid gap-3 sm:grid-cols-3">
             {GUIDES.map((g) => (

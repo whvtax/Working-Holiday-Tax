@@ -75,12 +75,12 @@ const FAILURE_POINTS = [
   {
     n: '01',
     title: '申請書の氏名が入国記録と一致していない',
-    body: 'ATOは申請内容をビザの記録と照合します。ミドルネームの省略、更新したパスポート、姓名の順序の違いだけで、手作業の審査行きか差し戻しになります。',
+    body: 'ATOは申請内容をビザの記録と照合します。ミドルネームの省略、更新したパスポート、姓名の順序の違いだけで差し戻しになります。',
   },
   {
     n: '02',
     title: '4週間後にその住所で郵便を受け取れない',
-    body: 'TFNは国内住所宛ての手紙で届き、発行まで最大28日かかります。その間に移動してしまうと、手紙は置き去りになり、誰も転送してくれません。',
+    body: 'TFNは国内住所宛ての手紙で届き、発行まで最大28日かかります。その間に移動してしまうと、誰も転送してくれません。',
   },
   {
     n: '03',
@@ -104,7 +104,7 @@ const WHAT_WE_DO = [
   },
   {
     title: '止まっていれば当社が催促します',
-    body: 'ATOの目安は28日です。過ぎても通知は届かないため、当社から状況を確認し、結果をお知らせします。',
+    body: 'ATOの目安は28日です。過ぎても通知は届かないため、当社から状況を確認します。',
   },
   {
     title: '待っている間の対応を雇用主に伝えます',
@@ -116,41 +116,43 @@ const WHAT_WE_DO = [
   },
 ]
 
+// 55語を超える回答には空行を入れ、下のFAQは段落ごとに<p>を出す。faqLdは
+// 元の文字列をそのまま使うので、構造化データは変わらない。
 const FAQS = [
   {
     question: 'TFNの申請は自分でできますか。',
     answer:
-      'ご自身でできますし、申請自体は無料の短いフォームです。費用をいただくのはその周りの作業です。申請内容を入国記録と突き合わせること、4週間後にも郵便を受け取れる住所を選ぶこと、最初の給与が45%にならないよう申請の受付番号を雇用主にお伝えすること、届かないときにATOへ照会すること、そしてすでに最高税率で引かれた分をタックスリターンで取り戻すことです。',
+      'ご自身でできますし、申請自体は無料の短いフォームです。\n\n費用をいただくのはその周りの作業です。申請内容を入国記録と突き合わせること、4週間後にも郵便を受け取れる住所を選ぶこと、最初の給与が45%にならないよう申請の受付番号を雇用主にお伝えすることです。',
   },
   {
     question: 'TFNの申請はATOのサイトで無料です。何に対する費用ですか。',
     answer:
-      '番号の取得自体は無料です。その点は必ず正直にお伝えします。お金がかかるのは空白期間のほうです。雇用主が番号を受け取るまでの給与は、15%ではなく45%で源泉徴収されます。費用は、その期間を一度で終わらせること、そしてすでに引かれた分を取り戻すことに対するものです。',
+      '番号の取得自体は無料です。お金がかかるのは空白期間のほうで、雇用主が番号を受け取るまでの給与は、15%ではなく45%で源泉徴収されます。\n\n費用は、その期間を一度で終わらせること、そしてすでに引かれた分を取り戻すことに対するものです。',
   },
   {
     question: 'TFNなしで働き始めると実際にどうなりますか。',
     answer:
-      '雇用主は、タックスファイルナンバーを受け取るまで、ワーキングホリデーメーカーの15%（45,000ドルまで）ではなく最高税率の45%で源泉徴収する義務があります。番号を渡す期限は就労開始から28日です。時給25ドルの仕事なら、その期間の1時間ごとに約7.50ドルが、あなたではなくATOに渡っている計算になります。この金額は消えるわけではありませんが、戻る経路は年度後のタックスリターンだけで、しかも申告内容が正しく整理されている場合に限られます。',
+      '雇用主は、タックスファイルナンバーを受け取るまで、ワーキングホリデーメーカーの15%（45,000ドルまで）ではなく最高税率の45%で源泉徴収する義務があります。番号を渡す期限は就労開始から28日です。時給25ドルの仕事なら、1時間あたり約7.50ドルが、あなたではなくATOに渡ります。\n\nこの金額は消えるわけではありませんが、戻る経路は年度後に正しく提出したタックスリターンだけです。',
   },
   {
     question: 'すでに数週間TFNなしで働いています。もう手遅れですか。',
     answer:
-      'いいえ。ここで締め切られる期限はありません。今すぐ申請すれば、これ以降の給与に最高税率が適用されなくなります。すでに引かれすぎた分は、その年度のタックスリターンを提出したときに戻ります。ご連絡いただいた当日に申請の準備が整うことがほとんどですので、45%で働いた週数も併せてお知らせください。申告内容が変わります。',
+      'いいえ。今すぐ申請すれば、これ以降の給与に最高税率が適用されなくなります。すでに引かれすぎた分は、その年度のタックスリターンを提出したときに戻ります。\n\nご連絡いただいた当日に申請の準備が整うことがほとんどですので、45%で働いた週数も併せてお知らせください。申告内容が変わります。',
   },
   {
     question: 'TFNが届くまでどのくらいかかりますか。',
     answer:
-      'ATOはTFN申請を28日以内に処理すると案内しており、実際には多くのワーキングホリデーメーカーが2週間から4週間で受け取っています。申請書に記載したオーストラリアの住所宛ての手紙で届くため、この住所は多くの方が思うよりずっと重要です。待っている間に雇用主が必要とするのは、申請の受付番号です。',
+      'ATOはTFN申請を28日以内に処理すると案内しており、実際には多くのワーキングホリデーメーカーが2週間から4週間で受け取っています。申請書に記載したオーストラリアの住所宛ての手紙で届きます。待っている間に雇用主が必要とするのは、申請の受付番号です。',
   },
   {
     question: 'オーストラリアに着く前にTFNを申請できますか。',
     answer:
-      'ワーキングホリデービザではできません。417・462ビザが有効な状態でオーストラリアに入国してから申請します。申請内容が入国とビザの記録と照合されるためです。さらに、手紙を受け取るためのオーストラリア国内の住所も必要になります。到着前に出された申請は、理由の説明もないまま止まってしまうことが最も多いパターンです。',
+      'ワーキングホリデービザではできません。417・462ビザが有効な状態でオーストラリアに入国してから申請します。申請内容が入国とビザの記録と照合されるためです。さらに、手紙を受け取るためのオーストラリア国内の住所も必要になります。',
   },
   {
     question: 'セカンドビザのときにTFNを取り直す必要はありますか。',
     answer:
-      'いいえ。タックスファイルナンバーは一度だけ発行され、生涯同じ番号を使います。セカンド・サードのワーキングホリデービザをまたいでも、ビザの種類が変わっても、一度オーストラリアを完全に離れても変わりません。番号を持っていないのではなく忘れてしまっただけであれば、それははるかに早く解決できる別の問題ですので、どちらに当たるかをお知らせください。',
+      'いいえ。タックスファイルナンバーは一度だけ発行され、生涯同じ番号を使います。セカンド・サードのワーキングホリデービザをまたいでも、ビザの種類が変わっても、一度オーストラリアを完全に離れても変わりません。\n\n番号を忘れてしまっただけであれば、もっと早く解決できる別の問題です。どちらに当たるかお知らせください。',
   },
 ]
 
@@ -288,7 +290,7 @@ export default function TFNPageJA() {
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '16px' }}>
             TFNが届く前に働き始めると、いくら失いますか。
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
@@ -318,11 +320,13 @@ export default function TFNPageJA() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>自分でやる場合</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             ワーホリのTFN申請はなぜ通らないのですか。
           </h2>
+          {/* 「問題が起きる場合はほぼ次の3つのどれかで」は、下のリストが3つ並んで
+              いる時点で言い直しだった。残すのは、それぞれの代償のほう。 */}
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '30px' }}>
-            フォームは短く、たいていはそのまま通ります。問題が起きる場合はほぼ次の3つのどれかで、いずれも届かない手紙を待つ間、もう1か月45%で課税され続けることになりかねません。
+            フォームは短いものです。つまずき方は3つあり、どれも45%の課税がもう1か月延びることにつながります。
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -347,7 +351,7 @@ export default function TFNPageJA() {
 
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>当社の作業</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             当社が行うこと
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '26px' }}>
@@ -393,7 +397,7 @@ export default function TFNPageJA() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '16px' }}>
             いまどの段階かをお知らせください
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '42ch', marginBottom: '24px' }}>
@@ -415,11 +419,13 @@ export default function TFNPageJA() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
+          {/* 「だからこそ、つまずく箇所はいつも同じ3つです」は上のセクションを
+              言い直しているだけだったので外した。 */}
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
-            提出するTFN申請は、すべて417・462ビザの方のものです。だからこそ、つまずく箇所はいつも同じ3つです。タックスリターンは登録税理士が確認・承認したうえでATOに提出します。
+            提出するTFN申請は、すべて417・462ビザの方のものです。タックスリターンは登録税理士が確認・承認したうえでATOに提出します。
           </p>
           <GoogleReviews lang="ja" />
         </div>
@@ -440,7 +446,11 @@ export default function TFNPageJA() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{f.answer}</p>
+                {/* 空行で区切り、長い回答を短い段落2つとして出す。上のfaqLdは
+                    元の文字列をそのまま使っている。 */}
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>
@@ -452,12 +462,10 @@ export default function TFNPageJA() {
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>ガイド</p>
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
             TFNと45%の期間をさらに詳しく
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '24px' }}>
-            源泉徴収、待ち時間、受付番号について書いた3本のガイドです。
-          </p>
+          {/* リード文は下に並ぶ3枚のカードを列挙していただけ。カードが担う。 */}
 
           <div className="grid gap-3 sm:grid-cols-3">
             {GUIDES.map((g) => (

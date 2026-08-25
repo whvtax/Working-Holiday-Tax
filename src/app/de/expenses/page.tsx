@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch, damit du alles absetzt, was dir zusteht, und nichts, was dir nicht zusteht.",
+  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -131,7 +131,7 @@ const MYGOV = [
   },
   {
     "mygov": "Miete, Essen und der Weg zur Arbeit sehen absetzbar aus und sind es nicht.",
-    "us": "Wir behalten die Abzüge, die halten, und lassen die anderen weg, damit später nichts rückabgewickelt werden muss."
+    "us": "Wir behalten die Abzüge, die halten, damit später nichts rückabgewickelt werden muss."
   }
 ]
 
@@ -149,14 +149,14 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was können Working Holiday Maker in Australien steuerlich absetzen?",
     "paras": [
-      "Du kannst absetzen, was du ausgegeben hast, um das Einkommen zu verdienen, das du angibst, solange du selbst bezahlt und nichts erstattet bekommen hast. Working Holiday Maker haben dieselben Abzugsmöglichkeiten wie alle anderen. Am 417- oder 462-Visum liegt es nicht.",
-      "Was die Liste verändert, ist der Job. Sonnenschutz ist absetzbar, wenn du in einer offenen Plantage pflückst, und nicht, wenn du hinter der Bar stehst. Ein Handyvertrag ist für einen Lieferfahrer ein echter Abzug und für einen Küchenhelfer fast nichts. Genau das kann ein allgemeiner Ratgeber nicht leisten, weil er nicht weiß, was du gemacht hast."
+      "Du kannst absetzen, was du ausgegeben hast, um das Einkommen zu verdienen, das du angibst, solange du selbst bezahlt und nichts erstattet bekommen hast. Am 417- oder 462-Visum liegt es nicht.",
+      "Was die Liste verändert, ist der Job. Sonnenschutz ist absetzbar, wenn du in einer offenen Plantage pflückst, und nicht, wenn du hinter der Bar stehst."
     ]
   },
   {
     "kind": "occupations",
     "h2": "Welchen Job hast du tatsächlich gemacht?",
-    "intro": "Sieben Seiten, jede rund um das geschrieben, was dieser Beruf absetzt, was er fälschlich absetzt und was er liegen lässt.",
+    "intro": "Sieben Seiten, jede dazu, was dieser Beruf absetzt und was er fälschlich absetzt.",
     "jobs": [
       {
         "href": "/de/expenses/farm-work",
@@ -181,7 +181,7 @@ const SECTIONS: Section[] = [
       {
         "href": "/de/expenses/cleaners",
         "title": "Reinigung",
-        "line": "Ausrüstung und Mittel, Wäschepauschale, und die Fahrt zwischen den Häusern, die kaum jemand absetzt."
+        "line": "Ausrüstung und Mittel, Wäschepauschale, und die Fahrt zwischen den Häusern."
       },
       {
         "href": "/de/expenses/labouring",
@@ -204,26 +204,26 @@ const SECTIONS: Section[] = [
       "Die Ausgabe ist beim Verdienen deines Einkommens entstanden, nicht dabei, dich erst in die Lage zu bringen, es zu verdienen, und sie ist nicht privat.",
       "Du hast einen Nachweis, aus dem hervorgeht, was du wann bei wem für wie viel gekauft hast."
     ],
-    "note": "Der zweite Test richtet den Schaden an. Deshalb ist deine erste White Card nicht absetzbar und die Verlängerung schon, und deshalb ist der Weg zur Arbeit nicht absetzbar, die Fahrt zwischen zwei Jobs am selben Tag aber sehr wohl."
+    "note": "Der zweite Test richtet den Schaden an. Deshalb ist deine erste White Card nicht absetzbar und die Verlängerung schon."
   },
   {
     "kind": "answer",
     "h2": "Was musst du belegen können?",
     "paras": [
       "Ein Beleg, eine Rechnung oder ein Kontoauszug mit Betrag, Datum, Anbieter und der Angabe, worum es ging. Ein Foto auf dem Handy zählt, und du musst es fünf Jahre lang vorlegen können.",
-      "Es gibt eine Ausnahme. Wenn deine gesamten arbeitsbezogenen Abzüge im Jahr bei 300 Dollar oder weniger liegen, brauchst du dafür keine schriftlichen Nachweise. Das ist etwas anderes als die 300-Dollar-Regel für einzelne Anschaffungen, bei der es darum geht, wie ein einzelner Gegenstand abgeschrieben wird."
+      "Wenn deine gesamten arbeitsbezogenen Abzüge im Jahr bei 300 Dollar oder weniger liegen, brauchst du dafür keine schriftlichen Nachweise. Das ist etwas anderes als die 300-Dollar-Regel für einzelne Anschaffungen, bei der es darum geht, wie ein einzelner Gegenstand abgeschrieben wird."
     ]
   },
   {
     "kind": "note",
     "label": "Neu ab 1. Juli 2026",
     "title": "Pauschal 1.000 Dollar oder deine echten Kosten. Nicht beides.",
-    "body": "Ab dem 1. Juli 2026 kannst du pauschal 1.000 Dollar an arbeitsbezogenen Kosten ganz ohne Belege absetzen, oder deine tatsächlichen Kosten mit vollständigen Nachweisen. Es gilt für das ganze Jahr entweder das eine oder das andere. Liegen deine echten Kosten bei 1.400 Dollar und du nimmst die Pauschale, verschenkst du 400 Dollar. Die Wahl gilt erstmals für die Steuererklärung 2026-27, die ab Juli 2027 eingereicht wird. Für die Erklärung 2025-26, die gerade eingereicht wird, gelten noch die alten Regeln."
+    "body": "Ab dem 1. Juli 2026 kannst du pauschal 1.000 Dollar an arbeitsbezogenen Kosten ganz ohne Belege absetzen, oder deine tatsächlichen Kosten mit vollständigen Nachweisen. Es gilt für das ganze Jahr entweder das eine oder das andere. Liegen deine echten Kosten bei 1.400 Dollar und du nimmst die Pauschale, verschenkst du 400 Dollar.\n\nDie Wahl gilt erstmals für die Steuererklärung 2026-27, die ab Juli 2027 eingereicht wird. Für die Erklärung 2025-26, die gerade eingereicht wird, gelten noch die alten Regeln."
   },
   {
     "kind": "tables",
     "h2": "Wie werden Autokosten berechnet?",
-    "intro": "Es gibt zwei Methoden, und du kannst pro Auto und Jahr nur eine davon nutzen. In beiden Fällen zählen nur arbeitsbezogene Fahrten, nie dein normaler Arbeitsweg von zu Hause zu einem festen Arbeitsplatz.",
+    "intro": "Zwei Methoden, und pro Auto und Jahr nur eine davon. In beiden Fällen zählen nur arbeitsbezogene Fahrten, nie dein normaler Arbeitsweg von zu Hause zu einem festen Arbeitsplatz.",
     "tables": [
       {
         "label": "Kilometerpauschale",
@@ -268,7 +268,7 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "Ab etwa 5.000 Arbeitskilometern im Jahr bringt das Fahrtenbuch normalerweise den größeren Abzug, weil es Benzin, Versicherung, Zulassung, Wartung, Abschreibung und die Zinsen eines Autokredits erfasst statt einer Pauschale."
+    "note": "Ab etwa 5.000 Arbeitskilometern im Jahr bringt das Fahrtenbuch normalerweise den größeren Abzug, weil es Benzin, Versicherung, Zulassung, Wartung, Abschreibung und die Zinsen eines Autokredits erfasst."
   },
   {
     "kind": "traps",
@@ -277,19 +277,19 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Normale Kleidung, die ein Dresscode vorschreibt",
-        "d": "Schwarze Hose, schlichtes Polo, gewöhnliche Boots, Jeans. Das ATO schaut darauf, was der Gegenstand ist, nicht warum du ihn gekauft hast. Alltagskleidung, die jeder überall tragen könnte, wird keine Uniform, weil ein Chef darauf besteht."
+        "d": "Schwarze Hose, schlichtes Polo, gewöhnliche Boots, Jeans. Alltagskleidung wird keine Uniform, weil ein Chef darauf besteht."
       },
       {
         "t": "Die erste Lizenz, das erste Ticket, das erste Zertifikat",
-        "d": "Erste White Card, erste RSA, erstes Staplerticket. Diese Kosten haben dich überhaupt erst für den Job qualifiziert, und das ist etwas anderes als Kosten der Arbeit selbst. Verlängerungen desselben Tickets sind absetzbar, sobald du arbeitest."
+        "d": "Erste White Card, erste RSA, erstes Staplerticket. Diese Kosten haben dich erst für den Job qualifiziert, was etwas anderes ist als Kosten der Arbeit selbst. Verlängerungen sind absetzbar, sobald du arbeitest."
       },
       {
         "t": "Der Weg von zu Hause zur Arbeit",
-        "d": "Der normale Arbeitsweg ist privat, egal wie weit, wie früh oder wie zäh der Verkehr. Die Fahrt zwischen zwei Arbeitsplätzen am selben Tag ist etwas völlig anderes und meistens absetzbar."
+        "d": "Der normale Arbeitsweg ist privat, egal wie weit und wie früh. Die Fahrt zwischen zwei Arbeitsplätzen am selben Tag ist meistens absetzbar."
       },
       {
         "t": "Alles, was dir erstattet wurde",
-        "d": "Wenn ein Arbeitgeber, eine Agentur oder eine Plattform dir das Geld zurückgegeben oder den Gegenstand gestellt hat, sind dir keine Kosten geblieben. Es trotzdem abzusetzen heißt, denselben Dollar zweimal zu holen."
+        "d": "Wenn ein Arbeitgeber, eine Agentur oder eine Plattform dir das Geld zurückgegeben oder den Gegenstand gestellt hat, sind dir keine Kosten geblieben, die du absetzen könntest."
       },
       {
         "t": "Bußgelder",
@@ -299,11 +299,11 @@ const SECTIONS: Section[] = [
     "missed": [
       {
         "t": "Jeder Gegenstand unter 300 Dollar, komplett im Kaufjahr",
-        "d": "Boots, Handschuhe, Hut, Messerrolle, Stirnlampe, Handyhalter. Jeder Gegenstand wird einzeln geprüft, also summiert sich ein Jahr kleiner Käufe zu einem echten Abzug. Die meisten werfen die Belege weg."
+        "d": "Boots, Handschuhe, Hut, Messerrolle, Stirnlampe, Handyhalter. Jeder Gegenstand wird einzeln geprüft, also summiert sich ein Jahr kleiner Käufe. Die meisten werfen die Belege weg."
       },
       {
         "t": "Gegenstände über 300 Dollar, die trotzdem absetzbar sind",
-        "d": "Über 300 Dollar verschwindet der Abzug nicht, nur der Zeitpunkt ändert sich. Die Kosten werden über die Nutzungsdauer verteilt statt sofort abgezogen. Viele hören \"über 300\" und hören auf."
+        "d": "Über 300 Dollar verschwindet der Abzug nicht, nur der Zeitpunkt ändert sich. Die Kosten werden über die Nutzungsdauer verteilt. Viele hören \"über 300\" und hören auf."
       },
       {
         "t": "Das Waschen von Pflicht- oder Schutzkleidung",
@@ -323,8 +323,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Wo hängt es von deiner eigenen Situation ab?",
     "paras": [
-      "Manches davon ist eindeutig, anderes ist eine Beurteilung deiner konkreten Lage. Ob deine Fahrten als wechselnde Einsatzorte gelten statt als Arbeitsweg, hängt davon ab, wie deine Woche aufgebaut war: wie oft der Einsatzort wechselte, ob es eine feste Basis gab und ob dein Arbeitgeber die Bewegung verlangt hat. Zwei Leute mit derselben Jobbezeichnung können unterschiedlich dastehen.",
-      "Dein steuerlicher Wohnsitz ist die zweite Frage, und sie ist mehr wert als alle Abzüge auf dieser Seite zusammen. Es ist eine Beurteilung, die an Details hängt, an die die meisten nie denken, dieselbe Frage, über die der High Court im Fall Addy entschieden hat, und in beide Richtungen leicht falsch zu beantworten. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind."
+      "Ob deine Fahrten als wechselnde Einsatzorte gelten statt als Arbeitsweg, hängt davon ab, wie deine Woche aufgebaut war: wie oft der Einsatzort wechselte, ob es eine feste Basis gab und ob dein Arbeitgeber die Bewegung verlangt hat.",
+      "Dein steuerlicher Wohnsitz ist die zweite Frage, und sie ist mehr wert als alle Abzüge auf dieser Seite zusammen. Es ist eine Beurteilung, dieselbe Frage, über die der High Court im Fall Addy entschieden hat. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind."
     ]
   }
 ]
@@ -332,27 +332,27 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Kann ich die Abzüge einfach selbst machen?",
-    "answer": "Kannst du, und das Einreichen ist wirklich der einfache Teil. Das Schwierige ist, dass das Feld für Abzüge leer bleibt, nichts zu deinem Job vorschlägt und jede Zahl annimmt, auch eine, die später rückabgewickelt werden muss. Herauszufinden, welche Kosten aus deiner Arbeit entstanden sind und was hinter jedem einzelnen Posten stehen muss, ist eine Beurteilung zu deinem konkreten Jahr und kein Feld zum Ausfüllen."
+    "answer": "Kannst du, und das Einreichen ist der einfache Teil. Das Feld für Abzüge bleibt leer und nimmt jede Zahl an.\n\nWelche Kosten aus deiner Arbeit entstanden sind und was hinter jedem Posten steht, ist eine Beurteilung zu deinem Jahr, kein Feld zum Ausfüllen."
   },
   {
     "question": "Haben Working Holiday Maker weniger Abzüge als Australier?",
-    "answer": "Nein. Die Abzugsregeln sind für Inhaber eines 417- oder 462-Visums dieselben wie für alle anderen, die in Australien Einkommen verdienen. Der Unterschied liegt bei den Einnahmen, nicht bei den Ausgaben: Einkommen von Working Holiday Makern wird bis 45.000 Dollar mit 15 Prozent besteuert, statt dass ein Steuerfreibetrag gilt, sofern dein steuerlicher Wohnsitz daran nichts ändert. Deine Abzüge werden genauso berechnet wie bei einem australischen Steueransässigen im selben Job."
+    "answer": "Nein. Die Abzugsregeln sind für Inhaber eines 417- oder 462-Visums dieselben wie für alle anderen, die in Australien Einkommen verdienen.\n\nDer Unterschied liegt bei den Einnahmen, nicht bei den Ausgaben: Einkommen von Working Holiday Makern wird bis 45.000 Dollar mit 15 Prozent besteuert, statt dass ein Steuerfreibetrag gilt, sofern dein steuerlicher Wohnsitz daran nichts ändert."
   },
   {
     "question": "Ich hatte vier verschiedene Jobs in einem Jahr. Sind das vier Listen?",
-    "answer": "Du gibst eine Steuererklärung für das Steuerjahr ab, und darin steckt jeder Abzug aus jedem Job. Wichtig ist nur, dass jede Ausgabe zu Arbeit gehört, die du damals tatsächlich gemacht hast. Boots für einen Lagerjob im September und Sonnencreme für einen Farmjob im Januar gehören in dieselbe Erklärung, und dass die Arbeitgeber unterschiedlich waren, ändert daran nichts."
+    "answer": "Du gibst eine Steuererklärung für das Steuerjahr ab, und darin steckt jeder Abzug aus jedem Job. Wichtig ist nur, dass jede Ausgabe zu Arbeit gehört, die du damals tatsächlich gemacht hast.\n\nBoots für einen Lagerjob im September und Sonnencreme für einen Farmjob im Januar gehören in dieselbe Erklärung, und dass die Arbeitgeber unterschiedlich waren, ändert daran nichts."
   },
   {
     "question": "Was ist, wenn ich die Belege verloren habe?",
-    "answer": "Ein Kontoauszug mit Betrag, Datum und Anbieter wird meistens akzeptiert, wenn der Beleg weg ist, und bei vielen Käufen hat es nie mehr gegeben. Bleiben deine arbeitsbezogenen Abzüge im ganzen Jahr bei höchstens 300 Dollar, brauchst du den Beleg ohnehin nicht, nur eine Erklärung, wie die Summe zustande kommt. Was nicht geht: eine Zahl erfinden und hoffen."
+    "answer": "Ein Kontoauszug mit Betrag, Datum und Anbieter wird meistens akzeptiert, wenn der Beleg weg ist.\n\nBleiben deine arbeitsbezogenen Abzüge im ganzen Jahr bei höchstens 300 Dollar, brauchst du den Beleg ohnehin nicht, nur eine Erklärung, wie die Summe zustande kommt. Was nicht geht: eine Zahl erfinden und hoffen."
   },
   {
     "question": "Kann ich Miete, Essen oder Reisen in Australien absetzen?",
-    "answer": "Nein. Unterkunft, Lebensmittel und die Kosten, dich fortzubewegen, sind private Lebenshaltungskosten, und daran ändert sich nichts, wenn du extra für einen Job in eine ländliche Region gezogen bist. Die enge Ausnahme sind vom Arbeitgeber verlangte Reisen, bei denen du über Nacht von zu Hause weg bist. Dafür gelten andere Regeln und andere Nachweise."
+    "answer": "Nein. Unterkunft, Lebensmittel und die Kosten, dich fortzubewegen, sind private Lebenshaltungskosten, und daran ändert sich nichts, wenn du extra für einen Job in eine ländliche Region gezogen bist.\n\nDie enge Ausnahme sind vom Arbeitgeber verlangte Reisen, bei denen du über Nacht von zu Hause weg bist. Dafür gelten andere Regeln und andere Nachweise."
   },
   {
     "question": "Lohnt sich das überhaupt, wenn ich nur ein paar Monate gearbeitet habe?",
-    "answer": "Meistens ja. Auch ein kurzer Aufenthalt verursacht echte Kosten, und jeder Dollar Abzug senkt das Einkommen, auf das die Steuer berechnet wird. Bei einem kurzen Jahr steckt der größere Betrag aber oft gar nicht in den Abzügen, sondern in den Wochen mit 45 Prozent Einbehalt, bevor deine Tax File Number beim Arbeitgeber war, und in der Frage, ob dein steuerlicher Wohnsitz richtig angegeben wurde."
+    "answer": "Meistens ja. Auch ein kurzer Aufenthalt verursacht echte Kosten, und jeder Dollar Abzug senkt das Einkommen, auf das die Steuer berechnet wird.\n\nBei einem kurzen Jahr steckt der größere Betrag aber oft gar nicht in den Abzügen, sondern in den Wochen mit 45 Prozent Einbehalt, bevor deine Tax File Number beim Arbeitgeber war, und in der Frage, ob dein steuerlicher Wohnsitz richtig angegeben wurde."
   }
 ]
 
@@ -446,7 +446,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -577,16 +577,25 @@ export default function Page() {
             <div style={{ background: '#fff', border: '1px solid #CDE3DB', borderRadius: '14px', overflow: 'hidden' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : `1px solid ${HAIR}` }}>
-                  <div style={{ padding: '15px 18px' }}>
-                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: MUTED, margin: '0 0 5px' }}>
-                      {MYGOV_UI.colLeft}
-                    </p>
+                  <div style={{ padding: '13px 16px' }}>
+                    {/* Beide Labels standen vorher auf allen acht Zellen. Auf dem
+                        Handy stapeln sich die Zeilen, das waren also dieselben
+                        zwei Wörter acht Mal untereinander. Sie stehen jetzt nur
+                        in der ersten Zeile: auf dem Desktop Spaltenköpfe, auf dem
+                        Handy die Legende. */}
+                    {i === 0 && (
+                      <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: MUTED, margin: '0 0 5px' }}>
+                        {MYGOV_UI.colLeft}
+                      </p>
+                    )}
                     <p style={{ ...ps, margin: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l" style={{ padding: '15px 18px', background: '#F2FAF7', borderColor: HAIR }}>
-                    <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: FOREST, margin: '0 0 5px' }}>
-                      {MYGOV_UI.colRight}
-                    </p>
+                  <div className="border-t md:border-t-0 md:border-l" style={{ padding: '13px 16px', background: '#F2FAF7', borderColor: HAIR }}>
+                    {i === 0 && (
+                      <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: FOREST, margin: '0 0 5px' }}>
+                        {MYGOV_UI.colRight}
+                      </p>
+                    )}
                     <p style={{ ...ps, margin: 0, color: INK, fontWeight: 500, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
                   </div>
                 </div>
@@ -696,7 +705,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -706,7 +717,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -746,7 +757,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Am Absatzumbruch geteilt, damit eine lange Antwort als zwei
+                    kurze Absätze liest. faqSchema nutzt weiter den Rohtext. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

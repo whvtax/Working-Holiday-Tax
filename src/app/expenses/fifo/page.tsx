@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Elsewhere on the site",
   "wrongLabel": "Claimed, and it should not have been",
   "missedLabel": "Not claimed, and it should have been",
-  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line.",
   "hubHref": "/expenses"
 }
 
@@ -117,37 +117,37 @@ const SECTIONS: Section[] = [
     "h2": "What can a FIFO worker claim on tax?",
     "paras": [
       "A FIFO worker can claim PPE and protective clothing bought out of their own pocket and the laundering of it, tools and equipment, renewals of a ticket or licence they already hold, employer required medicals and drug and alcohol testing they paid for themselves, the work related share of a phone and internet, and training that relates to the job they already do.",
-      "What is not on that list is everything that makes FIFO feel expensive. Your room in camp and your meals in the mess are booked and paid for by the company, and the flight to site usually is too. A deduction only ever gives back money that left your own pocket."
+      "What is not on that list is everything that makes FIFO feel expensive. Your room in camp and your meals in the mess are booked and paid for by the company, and usually the flight to site too. A deduction only gives back money that left your own pocket."
     ]
   },
   {
     "kind": "items",
     "h2": "The claims that belong to this work specifically",
-    "intro": "Everything here has the same condition attached: you paid for it, and stores did not issue it.",
+    "intro": "Everything here has the same condition: you paid for it, and stores did not issue it.",
     "items": [
       {
         "t": "PPE you bought yourself, and washing it",
-        "d": "Overalls, coveralls, steel capped boots, gloves, safety goggles, hearing protection, masks. Deductible because they protect you from a specific risk on site. Laundering deductible protective clothing is claimable at the ATO rate, $1 a load for work only loads or 50 cents mixed with everything else."
+        "d": "Overalls, steel capped boots, gloves, safety goggles, hearing protection, masks. Deductible because they protect you from a specific risk on site. Laundering them is claimable at the ATO rate, $1 a load for work only loads or 50 cents mixed with everything else."
       },
       {
         "t": "Tools and equipment",
-        "d": "Anything you bought for the job that stores did not issue. Each item costing $300 or less is claimed in full in the year of purchase, and anything above that is claimed across the effective life of the item. A tool kit bought as a set for $300 or more is one asset."
+        "d": "Anything you bought for the job that stores did not issue. Each item of $300 or less is claimed in full in the year of purchase, anything above that across the effective life of the item. A tool kit bought as a set for $300 or more is one asset."
       },
       {
         "t": "Renewing a ticket or licence you hold",
-        "d": "A High Risk Work Licence, a Working at Heights ticket, a forklift ticket. Renewals are deductible once you are already working in the role. The first one is not, on the same basis as a first White Card or a first drivers licence."
+        "d": "A High Risk Work Licence, a Working at Heights ticket, a forklift ticket. Renewals are deductible once you are working in the role. The first one is not, on the same basis as a first White Card."
       },
       {
         "t": "Employer required medicals and testing",
-        "d": "Many sites require a pre start medical and drug and alcohol testing as a condition of working. Where your employer requires it for a role you already hold and you paid for it yourself, the cost is deductible."
+        "d": "Many sites require a pre start medical and drug and alcohol testing as a condition of working. Where your employer requires it for a role you already hold and you paid yourself, it is deductible."
       },
       {
         "t": "The work share of your phone and internet",
-        "d": "Checking a roster, submitting timesheets, completing mandatory online inductions and refresher modules. Claim the work related percentage on a fair, honest basis rather than the whole bill."
+        "d": "Checking a roster, submitting timesheets, completing mandatory online inductions. Claim the work related percentage on a fair basis, not the whole bill."
       },
       {
         "t": "Training that relates to the work you already do",
-        "d": "A short course or unit that keeps a current skill or ticket alive is deductible, and so is the travel and accommodation where your employer requires you to attend away from your base. A first entry level certificate taken to become eligible for a role is not."
+        "d": "A short course that keeps a current skill or ticket alive is deductible, and so is travel and accommodation where your employer requires you to attend away from your base. A first entry level certificate taken to become eligible for a role is not."
       }
     ]
   },
@@ -155,36 +155,36 @@ const SECTIONS: Section[] = [
     "kind": "note",
     "label": "The biggest FIFO tax myth",
     "title": "Working in a zone is not the same as living in one.",
-    "body": "Since a change in the law in 2015, the Zone Tax Offset depends on where your normal residence is, not on where your roster takes you. Your normal residence has to itself be inside a specified remote zone for more than 183 days of the income year. Flying in to work inside a zone while you live in Perth, Brisbane or Darwin between swings does not meet that test, even if you spend most of the year physically on site. Camp is not your normal residence, because it is temporary and tied to the roster. For most working holiday makers on a FIFO roster the offset does not apply, and better to know that before it lands on a return."
+    "body": "Since a change in the law in 2015, the Zone Tax Offset depends on where your normal residence is, not on where your roster takes you. That residence has to be inside a specified remote zone for more than 183 days of the income year.\n\nFlying in to work inside a zone while you live in Perth, Brisbane or Darwin between swings does not meet it. Camp is not your normal residence, because it is temporary and tied to the roster.\n\nFor most working holiday makers on a FIFO roster the offset does not apply."
   },
   {
     "kind": "answer",
     "h2": "What has to sit behind a FIFO claim?",
     "paras": [
-      "A claim survives three questions. Did you pay for it? Were you paid back? Was it spent earning the income you are declaring? On a roster that is the receipt for the boots stores did not issue, the invoice for the medical, and the bill sitting behind your phone percentage.",
-      "Proof means the amount, the date, the supplier and the item, on a receipt, an invoice, a bank statement or a photo taken at the counter, and it has to last five years. At $300 or less of work claims for the year, no written evidence is required. That is a different $300 from the one deciding whether a tool is written off at once or across its life."
+      "A claim survives three questions. Did you pay for it? Were you paid back? Was it spent earning the income you are declaring? On a roster that is the receipt for the boots stores did not issue, the invoice for the medical, and the bill behind your phone percentage.",
+      "Proof means the amount, the date, the supplier and the item, on a receipt, an invoice, a bank statement or a photo, kept five years. At $300 or less of work claims for the year, no written evidence is required. That is a different $300 from the one deciding whether a tool is written off at once or across its life."
     ]
   },
   {
     "kind": "traps",
     "h2": "What do FIFO workers get wrong?",
-    "intro": "This trade has more confidently repeated misinformation than any other on the site. The claims below get made every year and do not hold.",
+    "intro": "This trade has more confidently repeated misinformation than any other on the site.",
     "wrong": [
       {
         "t": "The Zone Tax Offset",
-        "d": "The single most commonly claimed thing a FIFO worker is not entitled to. It turns on where you normally live, not where you fly to, and camp does not count as living there."
+        "d": "The most commonly claimed thing a FIFO worker is not entitled to. It turns on where you normally live, not where you fly to, and camp does not count."
       },
       {
         "t": "Camp accommodation and meals",
-        "d": "Your employer books and pays for the room and the mess, and at genuinely remote sites that is usually an exempt fringe benefit to them rather than income to you. Either way you never paid, so there is nothing to deduct."
+        "d": "Your employer books and pays for the room and the mess, and at genuinely remote sites that is usually an exempt fringe benefit to them rather than income to you. Either way you never paid."
       },
       {
         "t": "The drive to the airport before a swing",
-        "d": "That is ordinary commuting, however early the flight and however far you live from the terminal. The narrow bulky tools exception exists but rarely applies to a camp services role, where there is either nothing bulky or somewhere secure to leave it."
+        "d": "That is ordinary commuting, however early the flight and however far you live from the terminal. The narrow bulky tools exception rarely applies to a camp services role, where there is either nothing bulky or somewhere secure to leave it."
       },
       {
         "t": "Relocating to Perth or Brisbane for the work",
-        "d": "Flights, freight and temporary accommodation for a move you made in order to take up FIFO work are private relocation costs. Moving yourself into a position to earn income is not the same as earning it."
+        "d": "Flights, freight and temporary accommodation for a move you made to take up FIFO work are private relocation costs. Moving yourself into a position to earn income is not earning it."
       },
       {
         "t": "A first High Risk Work Licence",
@@ -194,15 +194,15 @@ const SECTIONS: Section[] = [
     "missed": [
       {
         "t": "PPE bought out of pocket, and the laundry on it",
-        "d": "Plenty of workers buy their own boots or gloves rather than wait for stores, then never claim either the gear or the cost of washing it at the published rate."
+        "d": "Plenty of workers buy their own boots or gloves rather than wait for stores, then claim neither the gear nor the washing at the published rate."
       },
       {
         "t": "Medicals and drug and alcohol testing you paid for",
-        "d": "Deductible where the employer requires it for a role you already hold, and almost never claimed, because it feels like a hurdle rather than an expense."
+        "d": "Deductible where the employer requires it for a role you already hold, and almost never claimed, because it feels like a hurdle rather than a cost."
       },
       {
         "t": "The work share of phone and internet on swing",
-        "d": "Rosters, timesheets and mandatory inductions all run through a personal device. It is a modest claim and a completely legitimate one."
+        "d": "Rosters, timesheets and mandatory inductions all run through a personal device."
       },
       {
         "t": "Ticket renewals across a long roster year",
@@ -210,7 +210,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Superannuation left behind in several funds",
-        "d": "FIFO pays well, which means the super balance is larger than in most backpacker work. It sits there when you leave and it has to be claimed as a Departing Australia Superannuation Payment once your visa has ceased."
+        "d": "FIFO pays well, so the super balance is larger than in most backpacker work. It sits there when you leave and has to be claimed as a Departing Australia Superannuation Payment once your visa has ceased."
       }
     ]
   },
@@ -219,7 +219,7 @@ const SECTIONS: Section[] = [
     "h2": "What is left open on a FIFO file?",
     "paras": [
       "The Zone Tax Offset is usually wrong rather than impossible. If your home base during the working holiday sat inside a specified zone, a rental in a remote town rather than a capital city, the question is live.",
-      "The bulky tools exception matters more to a tradesperson flying in with a personal kit than to a camp services role. What you carried and what the site offered for storage settle it, and it is a claim that gets tested, so be able to describe the facts.",
+      "The bulky tools exception matters more to a tradesperson flying in with a personal kit than to a camp services role. What you carried and what the site offered for storage settle it.",
       "Residency is the largest question on a FIFO file, because the sums are larger. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
@@ -228,23 +228,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Do FIFO workers get the Zone Tax Offset?",
-    "answer": "Usually not, and this is the biggest misconception in FIFO tax. Since a 2015 change in the law, qualifying depends on your normal residence being located inside a specified remote zone for more than 183 days of the year, not on where you physically work. Flying in to a site inside a zone while living in a capital city between swings does not meet that test, and camp accommodation is not treated as your normal residence because it is temporary and tied to the roster."
+    "answer": "Usually not, and this is the biggest misconception in FIFO tax. Since a 2015 change in the law, qualifying depends on your normal residence being inside a specified remote zone for more than 183 days of the year, not on where you work.\n\nLiving in a capital city between swings does not meet that test, and camp is not your normal residence."
   },
   {
     "question": "Can I claim my camp accommodation or meals?",
-    "answer": "No. Your room and your meals on site are arranged and paid for by your employer, and at genuinely remote sites that is usually treated as an exempt fringe benefit to them. Because you never personally paid for the room or the food, there is no expense of yours to deduct. A deduction can only give back money that left your own pocket."
+    "answer": "No. Your room and meals on site are arranged and paid for by your employer, and at genuinely remote sites that is usually treated as an exempt fringe benefit to them.\n\nBecause you never paid for the room or the food, there is no expense of yours to deduct."
   },
   {
     "question": "Can I claim the drive to the airport before my swing?",
-    "answer": "No, in almost every case. The trip from home to the airport you fly out of is ordinary private commuting, the same as anyone else driving to work, however early the flight is. There is a narrow exception where you must carry genuinely bulky and essential tools with nowhere secure to store them at work, but that rarely applies to a camp services role."
+    "answer": "No, in almost every case. The trip from home to the airport you fly out of is ordinary private commuting, however early the flight.\n\nThe narrow exception, where you must carry genuinely bulky and essential tools with nowhere secure to store them at work, rarely applies to a camp services role."
   },
   {
     "question": "Can I claim my High Risk Work Licence?",
-    "answer": "You can claim renewing one you already hold. You cannot claim getting it for the first time, because that cost is what made you eligible for the role rather than a cost of doing a job you already had. It is the same first versus renewal distinction the ATO applies to a construction White Card and to a first drivers licence."
+    "answer": "You can claim renewing one you already hold. You cannot claim getting it for the first time, because that cost made you eligible for the role rather than doing a job you already had.\n\nIt is the same first versus renewal distinction the ATO applies to a construction White Card."
   },
   {
     "question": "What can I claim on phone and internet while on roster?",
-    "answer": "The work related portion. If you use your own phone or internet for the job, checking your roster, submitting timesheets, or completing mandatory online inductions and training, that share of the bill is deductible. You need a fair and honest estimate of the percentage, because claiming a full bill on a device you also use for everything else will not stand up."
+    "answer": "The work related portion. If you use your own phone or internet to check your roster, submit timesheets or complete mandatory online inductions, that share of the bill is deductible.\n\nYou need a fair estimate of the percentage: a full bill on a device you also use for everything else will not stand up."
   }
 ]
 
@@ -338,7 +338,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -553,7 +553,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -563,7 +565,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -603,7 +605,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqSchema still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

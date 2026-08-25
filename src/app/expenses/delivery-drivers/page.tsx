@@ -76,7 +76,7 @@ const UI = {
   "servicesLabel": "Elsewhere on the site",
   "wrongLabel": "Claimed, and it should not have been",
   "missedLabel": "Not claimed, and it should have been",
-  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line, so you claim everything you are entitled to and nothing you are not.",
+  "disclaimer": "This is general information, not personal tax advice. What you can claim depends on your own employers, your own records, and how you actually worked. When you lodge with us we go through your situation line by line.",
   "hubHref": "/expenses"
 }
 
@@ -99,7 +99,7 @@ const HERO = {
   "kicker": "Uber Eats, DoorDash, Menulog, Amazon Flex",
   "h1lead": "Your kilometres are the deduction.",
   "h1accent": "Almost everything else is small.",
-  "lede": "Cents per kilometre or a logbook, and you pick one per car per year. Choosing the wrong one is the most expensive mistake in the trade."
+  "lede": "Cents per kilometre or a logbook, one per car per year. Choosing the wrong one is the most expensive mistake in the trade."
 }
 
 type Section =
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     "h2": "What can a delivery driver or rider claim on tax?",
     "paras": [
       "A delivery driver can claim the work related portion of running a car, bike or scooter, the work related share of a phone and data plan, parking paid while working, cleaning to keep a vehicle fit to carry food, and gear bought for the job such as a thermal bag, a phone mount, a helmet or hi vis. The private share of everything is excluded.",
-      "Almost all of the value sits in the vehicle. A rider doing steady hours puts up kilometres no other backpacker job produces, and over a year the difference between the two calculation methods is frequently larger than every other deduction combined."
+      "Almost all of the value sits in the vehicle. A rider doing steady hours puts up kilometres no other backpacker job produces, and over a year the difference between the two methods is often larger than every other deduction combined."
     ]
   },
   {
@@ -127,19 +127,19 @@ const SECTIONS: Section[] = [
     "items": [
       {
         "t": "Car running costs",
-        "d": "Claimed through the cents per kilometre method or a logbook, compared below. Under a logbook the claim picks up fuel, insurance, registration, servicing and repairs, depreciation, and the interest on a car loan, at your work use percentage. Under cents per kilometre it is a flat rate covering all of it."
+        "d": "Claimed through the cents per kilometre method or a logbook, compared below. The logbook works on your real running costs at a work use percentage, cents per kilometre on a flat rate."
       },
       {
         "t": "Bike, e-bike and scooter costs",
-        "d": "The same logic applies on two wheels. Running, repair and maintenance costs are claimable at the work related share, along with a helmet, hi vis and lights. Bikes and scooters are not cars for tax purposes, so the cents per kilometre method does not apply to them and you claim actual costs apportioned instead."
+        "d": "Running, repair and maintenance costs are claimable at the work related share, along with a helmet, hi vis and lights. Bikes and scooters are not cars for tax purposes, so the cents per kilometre method does not apply and you claim actual costs apportioned instead."
       },
       {
         "t": "The work share of your phone and data",
-        "d": "The whole job runs through an app, so the working percentage of your plan is a genuine deduction: the driver app, navigation, messages about orders. Work out the percentage honestly over a representative period. Claiming the full bill on a phone you also live on is the fastest way to have the rest of your return looked at."
+        "d": "The whole job runs through an app, so the working percentage of your plan is a genuine deduction. Work out that percentage honestly over a representative period."
       },
       {
         "t": "Parking paid while working",
-        "d": "The five dollars at a shopping centre while an order is being bagged is deductible. Fines never are, however you got them."
+        "d": "The five dollars at a shopping centre while an order is bagged is deductible. Fines never are."
       },
       {
         "t": "Gear bought for the job",
@@ -147,7 +147,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Cleaning the vehicle for the work",
-        "d": "Keeping a car in a state fit to carry food, or a bike serviceable, is claimable at the work related share. This is the same principle that applies to a rideshare driver carrying passengers."
+        "d": "Keeping a car in a state fit to carry food, or a bike serviceable, is claimable at the work related share."
       }
     ]
   },
@@ -199,68 +199,68 @@ const SECTIONS: Section[] = [
         ]
       }
     ],
-    "note": "A steady rider passes 5,000 kilometres in a few months, and beyond that the logbook is normally the bigger claim: fuel, insurance, registration, servicing, depreciation and loan interest at your work percentage rather than a flat rate."
+    "note": "A steady rider passes 5,000 kilometres in a few months, and beyond that the logbook is normally the bigger claim: fuel, insurance, registration, servicing, depreciation and loan interest at your work percentage."
   },
   {
     "kind": "answer",
     "h2": "What does a rider need to be able to produce?",
     "paras": [
-      "Every claim rests on three things: you paid, nobody paid you back, and the money went to earning the income you are declaring. For a rider that is a logbook or a kilometre record, the phone bill sitting behind your work percentage, and receipts for the bag, the mount and the gear.",
-      "A receipt, an invoice, a bank statement or a phone photo showing the amount, the date, the supplier and the item all qualify, and they have to last five years. Work claims totalling $300 or less across the year need no written evidence. That is a different $300 from the one deciding whether an item is written off at once or over its life."
+      "Every claim rests on three things: you paid, nobody paid you back, and the money went to earning the income you are declaring. For a rider that is a logbook or kilometre record, the phone bill behind your work percentage, and receipts for the bag, the mount and the gear.",
+      "A receipt, an invoice, a bank statement or a phone photo showing the amount, the date, the supplier and the item all qualify, kept five years. Work claims totalling $300 or less across the year need no written evidence. That is a different $300 from the one deciding whether an item is written off at once or over its life."
     ]
   },
   {
     "kind": "note",
     "label": "The one that surprises people",
     "title": "Food delivery and passengers are not the same for GST.",
-    "body": "If you only deliver food and parcels, GST registration is compulsory once your turnover passes $75,000 a year, which most riders never approach. The moment you carry a paying passenger, that threshold disappears. Ride sourcing requires GST registration from the very first fare, whatever you earn, and that means business activity statements as well. Anyone who drives Uber Eats during the week and takes passenger trips on a Friday night has quietly stepped over that line."
+    "body": "If you only deliver food and parcels, GST registration is compulsory once your turnover passes $75,000 a year, which most riders never approach. The moment you carry a paying passenger, that threshold disappears.\n\nRide sourcing requires GST registration from the first fare, whatever you earn, and business activity statements with it. Anyone driving Uber Eats during the week and taking passenger trips on a Friday night has stepped over that line."
   },
   {
     "kind": "traps",
     "h2": "What do delivery drivers get wrong?",
-    "intro": "The overstated claims here are bigger than in any other occupation, because the numbers are bigger. So are the missed ones.",
+    "intro": "The overstated claims here are bigger than in any other occupation, because the numbers are. So are the missed ones.",
     "wrong": [
       {
         "t": "The whole phone bill",
-        "d": "Almost nobody uses a phone only for delivering. Claiming one hundred per cent of a plan you also use for everything else is not defensible, and it is a claim the ATO can test against how the rest of the return looks."
+        "d": "Claiming one hundred per cent of a plan you also use for everything else is not defensible, and the ATO can test it against how the rest of the return looks."
       },
       {
         "t": "Fines",
-        "d": "A parking ticket picked up while running an order up three flights of stairs is still not deductible. Neither is a speeding fine, however tight the drop off window was."
+        "d": "A parking ticket picked up while running an order upstairs is still not deductible. Neither is a speeding fine, however tight the drop off window was."
       },
       {
         "t": "Food bought while working",
-        "d": "Your own dinner between drops is private, even when you are surrounded by other people getting theirs delivered."
+        "d": "Your own dinner between drops is private."
       },
       {
         "t": "Every kilometre driven with the app open",
-        "d": "The private leg of a trip does not become work travel because the app was running. An errand on the way to a drop off comes out of the claim, and for an employed driver on a roster the ordinary commute to the shop is out as well."
+        "d": "The private leg of a trip does not become work travel because the app was running. An errand on the way to a drop off comes out of the claim, and for an employed driver the commute to the shop is out as well."
       },
       {
         "t": "Leaving small platform income off entirely",
-        "d": "Uber, DoorDash and the rest report driver income to the ATO under the sharing economy reporting regime. Your earnings are already visible, so a few hundred dollars of weekend work left off a return is not a saving, it is a mismatch."
+        "d": "Uber, DoorDash and the rest report driver income to the ATO under the sharing economy reporting regime. Your earnings are already visible, so a few hundred dollars of weekend work left off a return is a mismatch, not a saving."
       }
     ],
     "missed": [
       {
         "t": "The logbook, when the logbook was clearly better",
-        "d": "The cents per kilometre method caps out at 5,000 kilometres. A steady rider clears that easily, and everything past it is simply lost. Twelve weeks of logbook, kept once, is valid for five years."
+        "d": "The cents per kilometre method caps out at 5,000 kilometres. A steady rider clears that easily, and everything past it is lost. Twelve weeks of logbook, kept once, is valid for five years."
       },
       {
         "t": "Interest, insurance, rego and depreciation",
-        "d": "These are only available through the logbook method, and they are usually the reason it wins. People choose cents per kilometre because it is easier and never find out what the alternative would have paid."
+        "d": "These are only available through the logbook method, and they are usually the reason it wins. People choose cents per kilometre because it is easier and never find out what the alternative paid."
       },
       {
         "t": "The thermal bag and the phone mount",
-        "d": "Small, obvious, entirely deductible, and thrown out with the receipt. The same goes for a helmet, lights and wet weather gear on a bike."
+        "d": "Small, obvious, entirely deductible, and thrown out with the receipt. The same goes for a helmet, lights and wet weather gear."
       },
       {
         "t": "Costs incurred before the first delivery",
-        "d": "Gear bought while you were setting yourself up to start, around the time you registered the ABN and signed up to the platform, is generally claimable. The gap between buying and starting matters, so keep the dates."
+        "d": "Gear bought while you were setting up, around the time you registered the ABN and signed up to the platform, is generally claimable. The gap between buying and starting matters, so keep the dates."
       },
       {
         "t": "The whole return, by ABN riders who assume they owe rather than claim",
-        "d": "No tax is withheld from platform payouts, so the money lands whole and people brace for a bill. Deductions against that income are exactly what shrinks it, and they are the thing most often left out."
+        "d": "No tax is withheld from platform payouts, so the money lands whole and people brace for a bill. Deductions against that income are what shrinks it, and they are most often left out."
       }
     ]
   },
@@ -268,8 +268,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "What depends on how you ride, not on the rules?",
     "paras": [
-      "Uber Eats, DoorDash, Menulog and Amazon Flex engage riders as contractors: an ABN, nothing withheld, no super. A roster at one pizza shop that hands you a payslip is employment under a TFN. A single shop that sets your shifts, supervises your work and supplies the bike, then asks you to register an ABN, may be an employer in disguise. Check before you register anything.",
-      "Where the deductible driving starts follows from that. An employee's trip to the shop is private, and only shop to drop off counts. Under an ABN the driving is the work rather than the way you reach it, so the line sits somewhere else, decided by how you run.",
+      "Uber Eats, DoorDash, Menulog and Amazon Flex engage riders as contractors: an ABN, nothing withheld, no super. A roster at one pizza shop that hands you a payslip is employment under a TFN. A shop that sets your shifts, supervises your work and supplies the bike, then asks you to register an ABN, may be an employer in disguise.",
+      "Where the deductible driving starts follows from that. An employee's trip to the shop is private, and only shop to drop off counts. Under an ABN the driving is the work.",
       "Residency decides how the profit is taxed at all. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. It depends on your own circumstances and has to be reviewed properly."
     ]
   }
@@ -278,23 +278,23 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Do I need an ABN to deliver for Uber Eats or DoorDash?",
-    "answer": "Yes. Those platforms engage riders and drivers as contractors rather than employees, so an ABN is required before you can be paid. It does not replace a TFN, which you still need. Nothing is withheld from your payouts, so the income arrives whole and the tax on it is settled when the return is lodged."
+    "answer": "Yes. Those platforms engage riders and drivers as contractors rather than employees, so an ABN is required before you can be paid.\n\nIt does not replace a TFN. Nothing is withheld from your payouts, so the income arrives whole and the tax is settled when the return is lodged."
   },
   {
     "question": "Which car expense method should I use?",
-    "answer": "It depends on how far you drive and what the car costs to run. Cents per kilometre needs no receipts but caps at 5,000 work kilometres a year, and everything beyond that is lost. A logbook has no cap and picks up fuel, insurance, registration, servicing, depreciation and loan interest at your work use percentage, in exchange for twelve continuous weeks of records and a receipt for every expense."
+    "answer": "It depends on how far you drive and what the car costs to run. Cents per kilometre needs no receipts but caps at 5,000 work kilometres a year, and everything beyond that is lost.\n\nA logbook has no cap and picks up actual running costs at your work use percentage, for twelve continuous weeks of records and a receipt for every expense."
   },
   {
     "question": "Can I claim my phone bill?",
-    "answer": "You can claim the work related percentage of your phone and data plan, being the share used for the driver app, navigation and job messages. You cannot claim the whole bill if you also use the phone for ordinary life, which nearly everyone does, so you need a fair and honest basis for the percentage and something to support it."
+    "answer": "You can claim the work related percentage of your phone and data plan: the share used for the driver app, navigation and job messages.\n\nYou cannot claim the whole bill if you also use the phone for ordinary life, so you need a fair basis for the percentage and something to support it."
   },
   {
     "question": "Do I need to register for GST?",
-    "answer": "For food and parcel delivery only, GST registration becomes compulsory once turnover passes $75,000 a year, and most part time riders never get close. Ride sourcing is different: carrying paying passengers requires GST registration from the first dollar regardless of turnover. If you do both, the passenger side pulls you over the line."
+    "answer": "For food and parcel delivery only, GST registration becomes compulsory once turnover passes $75,000 a year, and most part time riders never get close.\n\nCarrying paying passengers is different: that requires GST registration from the first dollar, whatever the turnover."
   },
   {
     "question": "I ride a bike, not a car. Can I claim anything?",
-    "answer": "Yes. A bicycle or e-scooter is not a car for tax purposes, so the cents per kilometre method does not apply, but you can still claim the work related share of running, repair and maintenance costs, plus safety gear such as a helmet, lights and hi vis. Apportion between delivery riding and personal use on a fair basis and keep the receipts."
+    "answer": "Yes. A bicycle or e-scooter is not a car for tax purposes, so the cents per kilometre method does not apply, but you can claim the work related share of running, repair and maintenance costs, plus a helmet, lights and hi vis.\n\nApportion between delivery riding and personal use on a fair basis."
   }
 ]
 
@@ -388,7 +388,7 @@ const h2s: React.CSSProperties = {
   letterSpacing: '-0.02em',
   fontWeight: 700,
   color: INK,
-  margin: '0 0 14px',
+  margin: '0 0 16px',
 }
 const h3s: React.CSSProperties = {
   fontSize: '16px',
@@ -603,7 +603,9 @@ export default function Page() {
                 <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
-                  <p style={{ ...ps, margin: 0 }}>{s.body}</p>
+                  {s.body.split('\n\n').map((para, j, arr) => (
+                    <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -613,7 +615,7 @@ export default function Page() {
         {/* GUARANTEE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>{UI.guaranteeHeading}</h2>
+            <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{UI.guaranteeHeading}</h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               {UI.guaranteeBody}
             </p>
@@ -653,7 +655,11 @@ export default function Page() {
             {FAQS.map((f, i) => (
               <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
                 <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
+                {/* Split on a blank line so a long answer reads as two short
+                    paragraphs. faqSchema still uses the raw string. */}
+                {f.answer.split('\n\n').map((para, j, arr) => (
+                  <p key={j} style={{ ...ps, margin: j === arr.length - 1 ? 0 : ps.margin }}>{para}</p>
+                ))}
               </div>
             ))}
           </div>

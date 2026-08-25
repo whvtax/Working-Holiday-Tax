@@ -58,11 +58,11 @@ const WA = waUrl({ topic: 'contact', lang: 'de' })
 const blockers: { q: string; a: string; link?: { href: string; label: string } }[] = [
   {
     q: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
-    a: 'Ja, und ein großer Teil unserer Arbeit ist genau das. Eine Erklärung für ein bereits abgeschlossenes Jahr lässt sich von überall einreichen, und Superannuation kannst du überhaupt erst beantragen, nachdem du ausgereist und dein Visum abgelaufen ist. Nach der Ausreise ist also oft mehr zu tun, nicht weniger. Eins solltest du früh wissen: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Bankkonto zahlen, deine Super dagegen auch ins Ausland. Sag uns also Bescheid, wenn dein australisches Konto schon zu ist.',
+    a: 'Ja, und ein großer Teil unserer Arbeit ist genau das. Eine Erklärung für ein abgeschlossenes Jahr lässt sich von überall einreichen, und Superannuation kannst du erst beantragen, nachdem du ausgereist und dein Visum abgelaufen ist.\n\nEins vorweg: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Bankkonto zahlen, deine Super dagegen auch ins Ausland. Sag uns also Bescheid, wenn dein australisches Konto schon zu ist.',
   },
   {
     q: 'Brauche ich ein myGov-Konto?',
-    a: 'Nein. Du musst dich nie bei myGov einloggen, keinen australischen Ausweis verknüpfen und nicht herausfinden, welches Formular welches ist. Wir haben direkt mit dem ATO zu tun. Wenn du es schon versucht hast und bei der Identitätsprüfung hängen geblieben bist, und genau da bleiben die meisten hängen, ändert das nichts daran, ob wir dir helfen können.',
+    a: 'Nein. Du musst dich nie bei myGov einloggen, keinen australischen Ausweis verknüpfen und nicht herausfinden, welches Formular welches ist. Wir haben direkt mit dem ATO zu tun.\n\nWenn du es schon versucht hast und bei der Identitätsprüfung hängen geblieben bist, ändert das nichts.',
   },
   {
     q: 'Brauche ich meine Payslips?',
@@ -71,7 +71,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'Ist das hier seriös?',
-    a: 'Eine berechtigte Frage an eine Website. Deine Steuererklärung wird von unserem Team erstellt und anschließend von einem registrierten Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Die Bedingungen, denen du zustimmen würdest, stehen vollständig in unserer Mandantenvereinbarung, und die Bewertungen in unserem Google-Profil stammen von Working Holiday Makern, mit denen wir tatsächlich gearbeitet haben.',
+    a: 'Deine Steuererklärung wird von einem registrierten Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Die Bedingungen, denen du zustimmen würdest, stehen vollständig in unserer Mandantenvereinbarung, und die Bewertungen in unserem Google-Profil stammen von Working Holiday Makern, mit denen wir tatsächlich gearbeitet haben.',
     link: { href: '/de/client-agreement', label: 'Mandantenvereinbarung lesen' },
   },
 ]
@@ -79,27 +79,27 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns gleich am nächsten Werktagmorgen. Wenn deine Frage erst geprüft werden muss, sagen wir dir das sofort, statt dich warten zu lassen.',
+    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Werktagmorgen. Muss deine Frage erst geprüft werden, sagen wir dir das sofort.',
   },
   {
     question: 'Kostet es etwas, eine Frage zu stellen?',
-    answer: 'Fragen kostet nichts, und du kannst so viel fragen wie du willst, bevor du dich entscheidest. Der Service selbst hat ein pauschales Honorar, niemals einen Prozentsatz deiner Rückerstattung, und wir bestätigen es per WhatsApp mit dir, bevor irgendetwas beginnt.',
+    answer: 'Fragen kostet nichts, und du kannst so viel fragen wie du willst, bevor du dich entscheidest. Der Service hat ein pauschales Honorar, niemals einen Prozentsatz deiner Rückerstattung, bestätigt per WhatsApp, bevor die Arbeit beginnt.',
   },
   {
     question: 'In welcher Sprache bekomme ich eine Antwort?',
-    answer: 'In der, in der du uns schreibst. Schreib auf Deutsch, auf Englisch oder in der Sprache, in der du deine Situation am besten erklären kannst, und genau so kommt die Antwort zurück. Der größte Teil dieser Arbeit besteht darin, australische Steuern jemandem zu erklären, der ihnen zum ersten Mal begegnet, und das ist schon in der Muttersprache anstrengend genug.',
+    answer: 'In der, in der du uns schreibst. Deutsch, Englisch oder die Sprache, in der du deine Situation am besten erklären kannst, und genau so kommt die Antwort zurück.',
   },
   {
     question: 'Muss ich sofort Unterlagen schicken?',
-    answer: 'Nein. Schick erst mal nur die Frage und sonst nichts. Wir beantworten sie, und wenn sich Arbeit lohnt, sagen wir dir vorher, welche und was sie kostet. Unterlagen kommen später, wenn du dich entschieden hast weiterzumachen, und dann sagen wir dir genau, welche und wie du sie sicher schickst.',
+    answer: 'Nein. Schick erst mal nur die Frage und sonst nichts. Wir beantworten sie, und wenn sich Arbeit lohnt, sagen wir dir vorher, welche und was sie kostet.\n\nUnterlagen kommen später, und dann sagen wir dir genau, welche und wie du sie sicher schickst.',
   },
   {
     question: 'Was ist, wenn ich keine Rückerstattung bekomme?',
-    answer: 'Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das lieber früh, als den Auftrag anzunehmen und zu hoffen.',
+    answer: 'Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das früh, statt den Auftrag anzunehmen und zu hoffen.',
   },
   {
     question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',
-    answer: 'Ja, und von dort schreiben uns die meisten unserer deutschsprachigen Kunden, sobald sie wieder zu Hause sind. Eine australische Steuererklärung, ein Superannuation-Antrag und alles, was beim ATO noch offen ist, lässt sich aus einem anderen Land erledigen, vollständig online.',
+    answer: 'Ja, und von dort schreiben uns die meisten deutschsprachigen Kunden, sobald sie wieder zu Hause sind. Eine australische Steuererklärung, ein Superannuation-Antrag und alles, was beim ATO noch offen ist, lässt sich aus einem anderen Land erledigen, vollständig online.',
   },
 ]
 
@@ -227,7 +227,9 @@ export default function GermanContactPage() {
                   <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.35, letterSpacing: '-0.015em', marginBottom: '8px' }}>
                     {b.q}
                   </h3>
-                  <p style={answerStyle}>{b.a}</p>
+                  {b.a.split('\n\n').map((para, j, all) => (
+                    <p key={j} style={{ ...answerStyle, marginBottom: j === all.length - 1 ? 0 : '10px' }}>{para}</p>
+                  ))}
                   {b.link && (
                     <Link href={b.link.href}
                       style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', fontSize: '14.5px', fontWeight: 500, color: '#0B5240', textDecoration: 'underline' }}>
@@ -246,11 +248,11 @@ export default function GermanContactPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[560px] mx-auto">
             <span className="section-label">Andere Wege</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 10px' }}>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 16px' }}>
               Falls WhatsApp für dich nicht passt
             </h2>
             <p style={{ ...answerStyle, marginBottom: '20px' }}>
-              E-Mail geht auch, die Social-Media-Kanäle ebenfalls, beides ist nur langsamer. Auf WhatsApp schaut tagsüber jemand drauf.
+              E-Mail geht auch, die Social-Media-Kanäle ebenfalls, beides ist nur langsamer.
             </p>
 
             <address style={{ fontStyle: 'normal' }}>
@@ -321,7 +323,9 @@ export default function GermanContactPage() {
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span className="contact-faq-plus" aria-hidden="true">+</span>
                 </summary>
-                <p className="contact-faq-answer" style={{ fontSize: '15px' }}>{f.answer}</p>
+                {f.answer.split('\n\n').map((para, j) => (
+                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
+                ))}
               </details>
             ))}
           </div>

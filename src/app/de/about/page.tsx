@@ -60,34 +60,34 @@ const chapters = [
   {
     stage: 'Die erste Woche',
     title: 'Du bist mit einem Plan angekommen, der ungefähr zwei Wochen weit reichte',
-    body: 'Hostel, SIM-Karte, Bankkonto und so schnell wie möglich ein Job. Die Tax File Number stand irgendwo auf der Liste, du hast sie beantragt und dich dann um den Rest gekümmert. Das australische Steuerjahr hat dir niemand erklärt, und es gab auch keinen Grund dafür.',
+    body: 'Hostel, SIM-Karte, Bankkonto und so schnell wie möglich ein Job. Die Tax File Number stand irgendwo auf der Liste. Das australische Steuerjahr hat dir niemand erklärt.',
   },
   {
     stage: 'Die ersten Payslips',
     title: 'Der erste Job fing an, bevor die Nummer da war',
-    body: 'Ohne hinterlegte Tax File Number muss ein Arbeitgeber den höchsten Satz einbehalten statt der fünfzehn Prozent, die ein Working Holiday Maker normalerweise zahlt. In den ersten Wochen fehlt deshalb fast die Hälfte. Erklärt hat es dir dort niemand, weil das nicht die Aufgabe deines Arbeitgebers war. Dieses Geld kommt nicht von allein zurück. Jemand muss es zurückholen.',
+    body: 'Ohne hinterlegte Tax File Number muss ein Arbeitgeber den höchsten Satz einbehalten statt der fünfzehn Prozent, die ein Working Holiday Maker normalerweise zahlt. In den ersten Wochen fehlt deshalb fast die Hälfte.\n\nDieses Geld kommt nicht von allein zurück.',
   },
   {
     stage: 'Bis Weihnachten',
     title: 'Vier Arbeitgeber, die Hälfte davon casual, keiner davon erklärt dir etwas',
-    body: 'Ein Job im Hostel, ein Café, drei Wochen Lager, und einer, den du ohne letzten Payslip verlassen hast. Dass das australische Steuerjahr im Juni endet und nicht im Dezember, hat auch keiner erwähnt. Die verlorenen Payslips sind kein Problem: Was deine Arbeitgeber gemeldet haben, sehen wir über das ATO, wir starten also bei diesen Daten und nicht bei deinem Postfach.',
+    body: 'Ein Hosteljob, ein Café, drei Wochen Lager, und einer, den du ohne letzten Payslip verlassen hast. Das australische Steuerjahr endet im Juni und nicht im Dezember.\n\nDie verlorenen Payslips sind kein Problem: Was deine Arbeitgeber gemeldet haben, sehen wir über das ATO.',
   },
   {
     stage: 'Die 88 Tage',
     title: 'Wenn du sie gemacht hast, bist du weit dafür gefahren',
-    body: 'Irgendwohin nach Westen, nach Norden, drei Stunden hinter einen Ort, von dem du nie gehört hattest. Die Unterkunft wurde direkt vom Lohn abgezogen, bevor du ihn überhaupt gesehen hast, die Payslips sahen anders aus als die aus der Stadt, und bei diesem Abschnitt sind sich die meisten am unsichersten. Genau dieser Teil braucht meistens einen richtigen Blick statt eines gesetzten Häkchens.',
+    body: 'Irgendwohin nach Westen, nach Norden, drei Stunden hinter einen Ort, von dem du nie gehört hattest.\n\nDie Unterkunft wurde direkt vom Lohn abgezogen, bevor du ihn überhaupt gesehen hast, die Payslips sahen anders aus als die aus der Stadt, und bei diesem Abschnitt sind sich die meisten am unsichersten.',
   },
   {
     stage: 'Der Rückflug',
     title: 'Du bist geflogen, das Geld ist geblieben',
-    body: 'Superannuation kannst du erst zurückholen, wenn du Australien verlassen hast und das Visum abgelaufen ist. Deine liegt also noch bei einem Fonds, den du dir vermutlich nicht bewusst ausgesucht hast. Die zu viel einbehaltene Steuer aus den ersten Wochen liegt weiter beim ATO. Beides erwähnt am Flughafen niemand, und keiner deiner Arbeitgeber tut es auch.',
+    body: 'Superannuation kannst du erst zurückholen, wenn du Australien verlassen hast und das Visum abgelaufen ist. Deine liegt also noch bei einem Fonds, den du dir vermutlich nicht ausgesucht hast. Die zu viel einbehaltene Steuer aus den ersten Wochen liegt weiter beim ATO.',
   },
 ]
 
 const faqs = [
   {
     question: 'Mit wem arbeitet ihr?',
-    answer: 'Mit Working Holiday Makern, und mit sonst niemandem. Jeder unserer Kunden ist mit einem 417- oder 462-Visum in Australien oder war es und ist inzwischen wieder zu Hause. Wir nehmen keine australischen Steuerresidenten, keine Studierenden, keine gesponserten Arbeitskräfte und keine Unternehmen an. Das Working-Holiday-Jahr ist für uns also kein Fall, den wir gelegentlich sehen. Es ist der einzige Fall, den wir sehen.',
+    answer: 'Mit Working Holiday Makern, und mit sonst niemandem. Jeder unserer Kunden ist mit einem 417- oder 462-Visum in Australien oder war es und ist inzwischen wieder zu Hause. Wir nehmen keine australischen Steuerresidenten, keine Studierenden, keine gesponserten Arbeitskräfte und keine Unternehmen an.',
   },
   {
     question: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
@@ -207,7 +207,7 @@ export default function GermanAboutPage() {
               Wie sieht ein Working-Holiday-Jahr für uns aus?
             </h2>
             <p style={{ ...bodyStyle, marginBottom: '30px' }}>
-              So, nur mit anderen Namen und anderen Orten. Fünf Dinge passieren fast jedem auf einem 417 oder 462, ungefähr in dieser Reihenfolge, und vier davon kosten Geld, das sich hinterher meistens zurückholen lässt.
+              Fünf Dinge passieren fast jedem auf einem 417 oder 462, und vier davon kosten Geld, das sich hinterher meistens zurückholen lässt.
             </p>
 
             <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
@@ -229,7 +229,9 @@ export default function GermanAboutPage() {
                   <h3 className="font-serif font-bold text-ink" style={{ fontSize: 'clamp(17px,1.7vw,20px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '8px' }}>
                     {c.title}
                   </h3>
-                  <p style={bodyStyle}>{c.body}</p>
+                  {c.body.split('\n\n').map((para, j, all) => (
+                    <p key={j} style={{ ...bodyStyle, marginBottom: j === all.length - 1 ? 0 : '10px' }}>{para}</p>
+                  ))}
                 </li>
               ))}
             </ol>
@@ -246,10 +248,13 @@ export default function GermanAboutPage() {
               Warum arbeiten wir nur mit Working Holiday Makern?
             </h2>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              Weil es das einzige Jahr ist, an dem wir arbeiten. Jeder unserer Kunden ist auf einem 417 oder 462, also sind die Dinge, die über deine Rückerstattung entscheiden, für uns keine Sonderfälle zum Nachschlagen. Sie sind unser Tagesgeschäft.
+              Jeder unserer Kunden ist auf einem 417 oder 462, also sind die Dinge, die über deine Rückerstattung entscheiden, für uns keine Sonderfälle zum Nachschlagen. Sie sind unser Tagesgeschäft.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              Ein allgemeiner Steuerberater sieht ein paar Mal im Jahr einen Backpacker, im Juli, zwischen zweihundert normalen Erklärungen. Der 417/462-Steuersatz, die Frage nach dem steuerlichen Wohnsitz, die ordentlich geprüft und nicht angenommen werden muss, die Medicare-Befreiung, die davon abhängt, welchen Pass du hast, ein Superannuation-Antrag aus einem Zimmer in Hamburg oder München, elf Monate nach der Ausreise: für uns ist das ein ganz normaler Dienstag.
+              Ein allgemeiner Steuerberater sieht ein paar Mal im Jahr einen Backpacker, im Juli, zwischen zweihundert normalen Erklärungen.
+            </p>
+            <p style={{ ...bodyStyle, marginBottom: '14px' }}>
+              Der 417/462-Steuersatz, die Frage nach dem steuerlichen Wohnsitz, die ordentlich geprüft und nicht angenommen werden muss, die Medicare-Befreiung, die davon abhängt, welchen Pass du hast, ein Superannuation-Antrag aus einem Zimmer in Hamburg oder München, elf Monate nach der Ausreise: für uns ist das ein ganz normaler Dienstag.
             </p>
             <p style={bodyStyle}>
               Auf Absenden drücken kann jeder. Die Arbeit passiert davor: dein Jahr durchgehen, herausfinden, was daran stimmt, statt anzukreuzen, was am schnellsten geht, und dann einreichen.
@@ -269,7 +274,7 @@ export default function GermanAboutPage() {
                 Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
               </p>
               <p style={{ ...bodyStyle, fontSize: '15px' }}>
-                Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das. Frag vorher. Fragen kosten nichts, und es antwortet ein echter Mensch.
+                Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das.
               </p>
             </div>
           </div>
@@ -285,7 +290,7 @@ export default function GermanAboutPage() {
               Wie erreichst du uns?
             </h2>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              Über WhatsApp. Kein Bot, keine Ticketnummer, kein Formular, das dir fünf bis sieben Werktage verspricht. Du kannst eine einzige Frage stellen und es dabei belassen. Uns zu schreiben verpflichtet dich zu nichts.
+              Über WhatsApp. Kein Bot, keine Ticketnummer, kein Formular, das dir fünf bis sieben Werktage verspricht. Du kannst eine einzige Frage stellen und es dabei belassen.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '22px' }}>
               Für den Anfang brauchst du kein myGov-Konto, keinen australischen Ausweis und keine Payslips, und es macht keinen Unterschied, ob du noch in Australien bist oder seit zwei Jahren wieder zu Hause. Die{' '}
@@ -325,7 +330,7 @@ export default function GermanAboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-start">
             <div>
               <span className="section-label">FAQ</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.04vw,26px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px' }}>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.04vw,26px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '16px' }}>
                 Fragen, die vor der ersten Nachricht kommen
               </h2>
               <p style={{ ...bodyStyle, marginBottom: '22px' }}>
