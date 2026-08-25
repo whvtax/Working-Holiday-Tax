@@ -44,7 +44,37 @@ const objectionsBlock = Object.entries(APPROVED.objections)
   .map(([k, v]) => `[${k}]\n${v}`)
   .join('\n\n');
 
-export function buildSystemPrompt(ctx: CustomerContext): string {
+// The library's editable copy of these blocks lives in the `templates` DB
+// table (see seed.ts), keyed by a short id like 'obj_1' or 'price_tfn'. This
+// maps each of THOSE keys to where its text sits in APPROVED, so an edit made
+// in the Library actually reaches the live prompt instead of only affecting
+// the manual "Send Template" button. Fixed field names on the left; the
+// `objections` keys on the right must match approved-messages.ts exactly.
+const FIELD_TEMPLATE_KEYS: Record<'opening' | 'price_tfn' | 'price_tfn_abn' | 'payment_received' | 'legitimacy' | 'medicare_exemption', string> = {
+  opening: 'opening', price_tfn: 'price_tfn', price_tfn_abn: 'price_tfn_abn',
+  payment_received: 'payment_received', legitimacy: 'legitimacy', medicare_exemption: 'medicare',
+};
+const OBJECTION_TEMPLATE_KEYS: Record<keyof typeof APPROVED.objections, string> = {
+  o1_refund_before_pay: 'obj_1', o2_why_pay_first: 'obj_2', o3_thought_free: 'obj_3',
+  o4_mygov: 'obj_4', o5_too_expensive: 'obj_5', o6_pay_after_refund: 'obj_6',
+  o7_professional_question: 'obj_7', o8_simple_return: 'obj_8', o9_no_refund: 'obj_9',
+  o10a_why_not_accountant: 'obj_10a', o10b_found_cheaper: 'obj_10b', o11_think_about_it: 'obj_11',
+  o12_ask_partner: 'obj_12', o13_one_question: 'obj_13', o14_check_eligible_first: 'obj_14',
+};
+
+/** Current Library edits, keyed by template `key` (from store.listTemplates()).
+ *  Optional: absent or missing entries fall back to the hardcoded APPROVED
+ *  copy below, so a DB outage never breaks the live prompt. */
+export type LiveTemplates = Record<string, string>;
+
+export function buildSystemPrompt(ctx: CustomerContext, live?: LiveTemplates): string {
+  const field = (k: keyof typeof FIELD_TEMPLATE_KEYS, fallback: string) =>
+    live?.[FIELD_TEMPLATE_KEYS[k]] ?? fallback;
+  const objectionsBlockLive = live
+    ? Object.entries(APPROVED.objections)
+        .map(([k, v]) => `[${k}]\n${live[OBJECTION_TEMPLATE_KEYS[k as keyof typeof APPROVED.objections]] ?? v}`)
+        .join('\n\n')
+    : objectionsBlock;
   return `You are a team member at Working Holiday Tax, an Australian tax service for Working Holiday Makers (backpackers), handling the WhatsApp conversations. You handle routine communication; every professional decision stays with the human team.
 
 # MASTER RULE (overrides everything)
@@ -90,17 +120,17 @@ Team-approved refund estimate: ${ctx.estimatedRefundCents != null ? formatAUD(ct
 </customer_data>
 
 # APPROVED MESSAGES (use these; small natural adjustments to fit the customer's last message are fine, but price, guarantee meaning, policy meaning and tax boundaries never change)
-[opening]\n${APPROVED.opening}
-[price_tfn]\n${APPROVED.price_tfn}
-[price_tfn_abn]\n${APPROVED.price_tfn_abn}
-[payment_received]\n${APPROVED.payment_received}
-[legitimacy]\n${APPROVED.legitimacy}
-[medicare_exemption]\n${APPROVED.medicare_exemption}
+[opening]\n${field('opening', APPROVED.opening)}
+[price_tfn]\n${field('price_tfn', APPROVED.price_tfn)}
+[price_tfn_abn]\n${field('price_tfn_abn', APPROVED.price_tfn_abn)}
+[payment_received]\n${field('payment_received', APPROVED.payment_received)}
+[legitimacy]\n${field('legitimacy', APPROVED.legitimacy)}
+[medicare_exemption]\n${field('medicare_exemption', APPROVED.medicare_exemption)}
 
 # OBJECTION & FAQ MATCHING
 Customers phrase the same question in endless ways and languages. Understand the INTENT of the message, then pick the single approved response whose intent matches, and adapt its opening naturally to what they actually wrote. Never send several objection responses at once, never invent a new one. If no approved response matches the intent, or you are unsure which applies: human_task with a suggested_reply draft.
 
-${objectionsBlock}
+${objectionsBlockLive}
 
 # OPERATING RULES
 1. Answer what the customer actually asked first, then guide to the next step of the flow.

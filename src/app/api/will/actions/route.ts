@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'retry_blocked' | 'send_followup';
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'retry_blocked' | 'send_followup' | 'delete_customer';
   id?: string;
   customerId?: string;
   body?: string;
@@ -311,6 +311,20 @@ export async function POST(req: Request) {
       if (!b.id) return bad('id required');
       await store.markCustomerRead(b.id);
       return NextResponse.json({ ok: true });
+
+    case 'delete_customer': {
+      // Permanently remove a chat/customer and everything tied to it (messages,
+      // tasks, state history, scheduled jobs) — for test/simulator leftovers or
+      // any chat that should never have counted as a real lead. This does not
+      // touch anything on WhatsApp; it only clears our own records.
+      if (!b.customerId) return bad('customerId required');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      await store.cancelJobsFor(customer.id);
+      await store.deleteCustomerByWaId(customer.waId);
+      await store.audit('owner', 'customer_deleted', { customerId: b.customerId, waId: customer.waId });
+      return NextResponse.json({ ok: true });
+    }
 
     case 'toggle_ai': {
       if (!b.id) return bad('id required');

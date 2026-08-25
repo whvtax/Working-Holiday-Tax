@@ -4,9 +4,10 @@
 // ("never an error to the customer"), strict output validation.
 // Falls back to a deterministic mock when no ANTHROPIC_API_KEY.
 // ============================================================
-import { buildSystemPrompt, CustomerContext } from './playbook';
+import { buildSystemPrompt, CustomerContext, LiveTemplates } from './playbook';
 import { APPROVED } from './approved-messages';
 import { CustomerState } from './state-machine';
+import { getStore } from './store';
 
 export interface Turn { role: 'customer' | 'assistant'; text: string }
 
@@ -99,10 +100,20 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return mockDecide(ctx, history);
 
+  // Pull the owner's current Library edits so a change made there reaches the
+  // live model, not just the manual "Send Template" button. Best-effort: a
+  // failed/slow DB read must never block a customer reply, so on any error
+  // this falls back to the hardcoded APPROVED copy exactly as before.
+  let liveTemplates: LiveTemplates | undefined;
+  try {
+    const templates = await getStore().listTemplates();
+    liveTemplates = Object.fromEntries(templates.map((t) => [t.key, t.body]));
+  } catch { /* fall back to APPROVED below */ }
+
   const body = JSON.stringify({
     model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
     max_tokens: 1024,
-    system: buildSystemPrompt(ctx),
+    system: buildSystemPrompt(ctx, liveTemplates),
     tools: [DECIDE_TOOL],
     tool_choice: { type: 'tool', name: 'decide' },
     messages: apiMessages(history),

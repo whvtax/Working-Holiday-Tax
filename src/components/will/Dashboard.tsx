@@ -169,6 +169,11 @@ export default function Dashboard() {
   const loadKnowledge = useCallback(async () => {
     try { const r = await fetch('/api/will/knowledge').then((x) => x.json()); if (r.ok) setKnowledge({ drafts: r.drafts ?? [], active: r.active ?? [] }); } catch { /* */ }
   }, []);
+  // Editing a learned Knowledge Base answer from the Library (same modal shape
+  // as `tpl`/`tplText`, but this is a SEPARATE store — knowledge, not templates
+  // — so it needs its own selection + draft text and its own save action.
+  const [know, setKnow] = useState<Knw | null>(null);
+  const [knowText, setKnowText] = useState('');
   type Audit = { id: string; actor: string; action: string; detail: unknown; at: string };
   const [activity, setActivity] = useState<Audit[]>([]);
   const loadActivity = useCallback(async () => {
@@ -245,7 +250,8 @@ export default function Dashboard() {
   useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); }, [view, chatSelId, loadChat]);
   useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); /* eslint-disable-next-line */ }, [data]);
   useEffect(() => { if ((view === 'insights' || view === 'learning') && !report) fetch('/api/will/report').then((r) => r.json()).then((rp) => { setReport(rp); if (rp.goal != null) setGoalInput(String(rp.goal)); }).catch(() => {}); }, [view, report]);
-  useEffect(() => { if (view === 'learning') { loadKnowledge(); loadActivity(); } }, [view, loadKnowledge, loadActivity]);
+  useEffect(() => { if (view === 'learning' || view === 'library') { loadKnowledge(); } }, [view, loadKnowledge]);
+  useEffect(() => { if (view === 'learning') { loadActivity(); } }, [view, loadActivity]);
 
   // Update-on-change: instead of refetching everything on a fixed timer, poll a
   // tiny change-token and only pull the heavy /state + /suggestions payloads when
@@ -606,6 +612,24 @@ export default function Dashboard() {
                     {c.unreadCount > 0
                       ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
                       : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{STATE_LABELS[c.state]}</span>}
+                    {/* Remove a chat entirely — test/simulator leftovers, or any
+                        chat that never should have counted as a real lead. Stops
+                        the click from also opening the chat, and confirms first
+                        since this is permanent (messages, tasks, history — gone). */}
+                    <button
+                      type="button"
+                      className="tdismiss"
+                      title="Delete this chat"
+                      style={{ marginLeft: 6 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!confirm(`Delete this chat with ${phoneOf(c.waId)}? This removes it and its history for good.`)) return;
+                        act({ action: 'delete_customer', customerId: c.id }).then((r) => {
+                          if (r?.ok) { if (chatSelId === c.id) setChatSelId(null); say('Chat deleted'); refresh(); }
+                          else say(`❌ ${r?.error ?? 'could not delete'}`);
+                        });
+                      }}
+                    >✕</button>
                   </div>
                 ))}
               </div>
@@ -690,6 +714,22 @@ export default function Dashboard() {
                         <span className="lbl">{chatSel.aiPaused ? `${ASSISTANT_NAME} Paused` : `${ASSISTANT_NAME} Active`}</span>
                         <div className="switch" />
                       </div>
+                      {/* Same delete action as the ✕ in the chat list, but reachable
+                          from inside an open chat too — on mobile the list is hidden
+                          once a chat is open, so that button is otherwise unreachable. */}
+                      <button
+                        type="button"
+                        className="tdismiss"
+                        title="Delete this chat"
+                        style={{ marginLeft: 8 }}
+                        onClick={() => {
+                          if (!confirm(`Delete this chat with ${phoneOf(chatSel.waId)}? This removes it and its history for good.`)) return;
+                          act({ action: 'delete_customer', customerId: chatSel.id }).then((r) => {
+                            if (r?.ok) { setChatSelId(null); say('Chat deleted'); refresh(); }
+                            else say(`❌ ${r?.error ?? 'could not delete'}`);
+                          });
+                        }}
+                      >✕</button>
                     </div>
                     {/* Quick send: numbered buttons instead of long labels, so the
                         row never overflows and needs no sideways scroll. Hover a
@@ -936,6 +976,35 @@ export default function Dashboard() {
                 </div>
               </div>
             ))}
+
+            {/* Learned Answers: everything Will has picked up from real
+                conversations and approved into the Knowledge Base. This used to
+                live ONLY on the Learning tab, invisible from here even though it
+                is exactly as "automated message" as anything above — Will reads
+                from it live, the same as the approved templates. Every entry
+                shown here, active or still a draft, is editable in place. */}
+            <div className="libcat">Learned Answers<span className="n">{knowledge.active.length + knowledge.drafts.length}</span></div>
+            {knowledge.active.length === 0 && knowledge.drafts.length === 0 && (
+              <div className="sysline" style={{ margin: '6px 0 14px' }}>Nothing learned yet. Answers Will picks up from real conversations will show up here.</div>
+            )}
+            <div className="libgrid">
+              {knowledge.active.map((k) => (
+                <div key={k.id} className="tpl" onClick={() => { setKnow(k); setKnowText(k.answer); }}>
+                  <span className="pencil">✎</span>
+                  <div className="tn">{k.intent || k.question}</div>
+                  <div className="tv">{k.answer}</div>
+                  <div className="tf"><span className="edited">● live</span><span>{k.source === 'manual' ? 'added by you' : 'learned'}</span></div>
+                </div>
+              ))}
+              {knowledge.drafts.map((k) => (
+                <div key={k.id} className="tpl" onClick={() => { setKnow(k); setKnowText(k.answer); }}>
+                  <span className="pencil">✎</span>
+                  <div className="tn">{k.intent || k.question}</div>
+                  <div className="tv">{k.answer}</div>
+                  <div className="tf"><span className="edited" style={{ background: 'var(--warn)' }}>● pending approval</span></div>
+                </div>
+              ))}
+            </div>
           </section>
         )}
 
@@ -1219,6 +1288,43 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+
+      {/* Editing a Learned Answer from the Library. Separate store from
+          templates (Knowledge Base, not the templates table), so it calls
+          /api/will/knowledge directly rather than the `act` template actions. */}
+      <div className={`overlay ${know ? 'open' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) setKnow(null); }}>
+        {know && (
+          <div className="modal">
+            <div className="mh"><b>{know.intent || know.question}</b><button className="x" onClick={() => setKnow(null)}>✕</button></div>
+            <div className="mlabel">Customer question</div>
+            <div className="wapreview"><div className="msg in" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{know.question}</div></div>
+            <div className="mlabel">Answer text</div>
+            <textarea className="edit" value={knowText} onChange={(e) => setKnowText(e.target.value)} />
+            <div className="mlabel">Live preview: how the customer sees it</div>
+            <div className="wapreview"><div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{knowText}</div></div>
+            <div className="mfoot">
+              <span className="vhist" style={{ cursor: 'pointer', color: 'var(--crit)' }} onClick={async () => {
+                if (!confirm('Delete this learned answer?')) return;
+                await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'delete', id: know.id }) });
+                say('Learned answer deleted'); setKnow(null); loadKnowledge(); refresh();
+              }}>🗑 Delete</span>
+              <button className="btn ghost" onClick={() => setKnow(null)}>Cancel</button>
+              {knowledge.drafts.some((d) => d.id === know.id) && (
+                <button className="btn approve" onClick={async () => {
+                  if (knowText !== know.answer) await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: know.id, answer: knowText }) });
+                  await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'approve', id: know.id }) });
+                  say('Learned ✓'); setKnow(null); loadKnowledge(); refresh();
+                }}>✓ Approve & Go Live</button>
+              )}
+              <button className="btn save" onClick={async () => {
+                await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: know.id, answer: knowText }) });
+                say('Saved, live for all new conversations ✓'); setKnow(null); loadKnowledge(); refresh();
+              }}>Save & Go Live</button>
+            </div>
+          </div>
+        )}
+      </div>
+
 
       <div className={`overlay ${newTpl ? 'open' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) setNewTpl(null); }}>
         {newTpl && (
