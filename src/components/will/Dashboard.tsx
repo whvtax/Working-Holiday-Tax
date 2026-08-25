@@ -197,9 +197,6 @@ export default function Dashboard() {
   const [chatFilter, setChatFilter] = useState('all');
   // Whether the chat-header stage badge dropdown (manual stage move) is open.
   const [stageMenuOpen, setStageMenuOpen] = useState(false);
-  // The stage menu offers the legal next steps only. `stageMenuAll` opens the
-  // full list for the rare case that needs an out-of-order correction.
-  const [stageMenuAll, setStageMenuAll] = useState(false);
   const [, setClock] = useState(0);
   const msgsRef = useRef<HTMLDivElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -635,22 +632,19 @@ export default function Dashboard() {
                             </button>
                             {stageMenuOpen && (
                               <>
-                                <div className="stagemenu-backdrop" onClick={() => { setStageMenuOpen(false); setStageMenuAll(false); }} />
-                                {/* Jo, 25 Aug: this offers the SAME eight options as
-                                    the pipeline strip at the top of the dashboard,
-                                    not the eighteen internal states behind them.
-                                    Will works out the stage from the conversation
-                                    on its own; this menu is for the occasional
-                                    correction, and for that the buckets a person
-                                    actually thinks in are the right granularity.
-                                    The exact internal state is still reachable
-                                    under "Move anywhere", for the rare case where
-                                    it matters. */}
+                                <div className="stagemenu-backdrop" onClick={() => setStageMenuOpen(false)} />
+                                {/* This offers ONLY the same eight options as the
+                                    pipeline strip at the top of the dashboard — same
+                                    names, same order, nothing more. The eighteen
+                                    internal states behind them are not exposed here
+                                    at all (there used to be a "Move anywhere…" escape
+                                    hatch into that list; it broke the promise that
+                                    this menu is exactly the pipeline, so it's gone). */}
                                 <div className="stagemenu">
                                   {(() => {
                                     const nextStates = TRANSITIONS[chatSel.state] ?? [];
                                     const move = async (s: CustomerState) => {
-                                      setStageMenuOpen(false); setStageMenuAll(false);
+                                      setStageMenuOpen(false);
                                       if (s === chatSel.state) return;
                                       // Only an out-of-order correction forces.
                                       const force = !nextStates.includes(s);
@@ -658,49 +652,26 @@ export default function Dashboard() {
                                       say(r?.ok ? `Moved to ${STATE_LABELS[s]}` : `❌ ${r?.error ?? 'could not move'}`);
                                       loadChat(chatSel.id); refresh();
                                     };
-                                    if (stageMenuAll) {
-                                      const all = STAGE_GROUPS.flatMap((g) =>
-                                        (g.states as readonly CustomerState[]).map((s) => ({ s, color: g.color })));
-                                      return all.map(({ s, color }) => (
+                                    return STAGE_GROUPS.map((g) => {
+                                      const states = g.states as readonly CustomerState[];
+                                      const isHere = states.includes(chatSel.state);
+                                      // Landing on a group means its first state,
+                                      // unless we are already inside the group, in
+                                      // which case the row is just a marker.
+                                      const target = states[0];
+                                      return (
                                         <button
-                                          key={s}
+                                          key={g.id}
                                           type="button"
-                                          className={`stagemenu-item${s === chatSel.state ? ' is-current' : ''}`}
-                                          onClick={() => move(s)}
+                                          className={`stagemenu-item${isHere ? ' is-current' : ''}`}
+                                          onClick={() => { if (!isHere) move(target); else setStageMenuOpen(false); }}
                                         >
-                                          <span className="stagemenu-dot" style={{ background: color }} />
-                                          <span className="stagemenu-lbl">{STATE_LABELS[s]}</span>
-                                          {s === chatSel.state && <span className="stagemenu-check">✓</span>}
+                                          <span className="stagemenu-dot" style={{ background: g.color }} />
+                                          <span className="stagemenu-lbl">{g.label}</span>
+                                          {isHere && <span className="stagemenu-check">✓</span>}
                                         </button>
-                                      ));
-                                    }
-                                    return (
-                                      <>
-                                        {STAGE_GROUPS.map((g) => {
-                                          const states = g.states as readonly CustomerState[];
-                                          const isHere = states.includes(chatSel.state);
-                                          // Landing on a group means its first state,
-                                          // unless we are already inside the group, in
-                                          // which case the row is just a marker.
-                                          const target = states[0];
-                                          return (
-                                            <button
-                                              key={g.id}
-                                              type="button"
-                                              className={`stagemenu-item${isHere ? ' is-current' : ''}`}
-                                              onClick={() => { if (!isHere) move(target); else setStageMenuOpen(false); }}
-                                            >
-                                              <span className="stagemenu-dot" style={{ background: g.color }} />
-                                              <span className="stagemenu-lbl">{g.label}</span>
-                                              {isHere && <span className="stagemenu-check">✓</span>}
-                                            </button>
-                                          );
-                                        })}
-                                        <button type="button" className="stagemenu-item" onClick={() => setStageMenuAll(true)}>
-                                          <span className="stagemenu-lbl" style={{ color: 'var(--ink3)' }}>Move anywhere…</span>
-                                        </button>
-                                      </>
-                                    );
+                                      );
+                                    });
                                   })()}
                                 </div>
                               </>

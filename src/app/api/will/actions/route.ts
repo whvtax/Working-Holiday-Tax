@@ -272,6 +272,14 @@ export async function POST(req: Request) {
       const out = await deliverOut(customer, send.body!, 'HUMAN');
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
       await store.updateCustomer(customer.id, { aiPaused: true });
+      // Answering from the chat is the same signal as answering via the Tasks
+      // screen: the customer has a reply now. Without this, a task only ever
+      // closed if you used "Send Reply" on the Tasks card itself — replying
+      // in the chat left it sitting open ("Needs a decision") even though it
+      // was already handled, so it had to be dismissed by hand.
+      const openTasksForCustomer = (await store.listTasks())
+        .filter((t) => t.customerId === customer.id && t.status === 'OPEN');
+      await Promise.all(openTasksForCustomer.map((t) => store.resolveTask(t.id)));
       await store.audit('owner', 'manual_reply', { customerId: customer.id });
       return NextResponse.json({ ok: true, aiPaused: true });
     }
