@@ -7,13 +7,15 @@
 import { getStore, CustomerRow } from './store';
 import { schedulerConfig, withinQuietHours, deferToMorning } from './config';
 import { policyGuard } from './policy-guard';
-import { CustomerState } from './state-machine';
+import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
+// Re-exported so existing importers of the scheduler keep working.
+export { FLOW_TEMPLATES, flowForState };
+export type { Flow };
 import { formReceivedMessage } from './i18n';
 import { deliverOut } from './channel';
 import { requiresApproval } from './mode';
 import { maybeSendMonthlyDigest } from './digest';
 
-type Flow = 'prePayment' | 'form' | 'signature';
 
 /**
  * Approval mode means approval for EVERYTHING.
@@ -32,29 +34,11 @@ async function inApprovalMode(): Promise<boolean> {
 
 /** The name used in a template's {{1}}. Meta rejects an empty parameter, so a
  *  customer with no WhatsApp profile name still needs something natural. */
-function greetingName(customer: CustomerRow): string {
+export function greetingName(customer: CustomerRow): string {
   const first = (customer.name ?? '').trim().split(/\s+/)[0] ?? '';
   return first.length >= 2 ? first : 'there';
 }
 
-const FLOW_TEMPLATES: Record<Flow, string[]> = {
-  prePayment: ['fu_pre_24h', 'fu_pre_3d', 'fu_pre_7d'],
-  form: ['fu_form_6h', 'fu_form_3d', 'fu_form_7d'],
-  signature: ['fu_sig_24h', 'fu_sig_3d', 'fu_sig_7d'],
-};
-
-const FLOW_ELIGIBLE_STATES: Record<Flow, CustomerState[]> = {
-  prePayment: ['PRICE_SENT', 'PAYMENT_PENDING'],
-  form: ['FORM_PENDING'],
-  signature: ['SIGNATURE_PENDING'],
-};
-
-export function flowForState(state: CustomerState): Flow | null {
-  if (FLOW_ELIGIBLE_STATES.prePayment.includes(state)) return 'prePayment';
-  if (FLOW_ELIGIBLE_STATES.form.includes(state)) return 'form';
-  if (FLOW_ELIGIBLE_STATES.signature.includes(state)) return 'signature';
-  return null;
-}
 
 export async function scheduleFollowUp(customerId: string, flow: Flow, seq: number): Promise<void> {
   const store = getStore();
@@ -230,12 +214,11 @@ async function doProcess(): Promise<TickResult> {
         continue;
       }
 
-      // A/B: pick variant, record which was sent (conversion tracked when they advance).
-      let body = template.body, variant: 'A' | 'B' = 'A';
-      if (template.variantB && template.variantB.trim()) {
-        variant = (customer.id.charCodeAt(0) + seq) % 2 === 0 ? 'A' : 'B';
-        if (variant === 'B') body = template.variantB;
-      }
+      // A/B testing is off. Every customer gets the message as written in the
+      // Library. The variantB column and the sent/conv counters are still in
+      // the store so past results are not thrown away, but nothing reads them
+      // to decide what to send, and no new counts are recorded.
+      let body = template.body;
       // Every follow-up lands OUTSIDE Meta's 24h window by definition: we are
       // messaging someone precisely because they went quiet. Free-form text is
       // rejected there, so it goes as a pre-approved template. `body` is that
@@ -253,10 +236,7 @@ async function doProcess(): Promise<TickResult> {
       // than spamming the customer with duplicates.
       await store.setJobStatus(job.id, 'DONE');
 
-      const meta = {
-        ...(template.variantB ? { templateId: template.id, variant } : {}),
-        waTemplate,
-      };
+      const meta = { waTemplate };
 
       if (await inApprovalMode()) {
         // Approval mode means approval for EVERYTHING. A scheduled follow-up
@@ -275,8 +255,7 @@ async function doProcess(): Promise<TickResult> {
       }
 
       await deliverOut(customer, body, 'AI', meta, waTemplate);
-      if (template.variantB) await store.bumpVariant(template.id, variant, 'sent');
-      await store.audit('scheduler', 'follow_up_sent', { customerId: customer.id, template: template.key, seq, variant });
+      await store.audit('scheduler', 'follow_up_sent', { customerId: customer.id, template: template.key, seq });
       result.sent.push(`${customer.name ?? customer.waId} · ${template.title}`);
       await scheduleFollowUp(customer.id, flow, seq + 1);
     } catch {

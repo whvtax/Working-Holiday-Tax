@@ -3,13 +3,13 @@
 // checks, quick replies everywhere, suggested answers on every task,
 // one-click service templates, deep report.
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { STAGE_GROUPS, STATE_LABELS, CustomerState } from '@/lib/will/state-machine';
+import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import Simulator from './Simulator';
 
-type View = 'pipeline' | 'chats' | 'outbox' | 'tasks' | 'library' | 'insights' | 'learning' | 'simulator';
+type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'insights' | 'learning' | 'simulator';
 
 interface StateData {
   customers: CustomerRow[];
@@ -51,7 +51,6 @@ const ICONS: Record<View, React.ReactNode> = {
   insights: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>,
   simulator: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>,
   learning: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
-  outbox: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>,
 };
 const BELL = <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>;
 // WhatsApp-style default avatar. Meta's Cloud API does not expose a customer's
@@ -110,6 +109,48 @@ async function act(body: Record<string, unknown>) {
 
 const QUICK_TEMPLATES = ['req_abn', 'req_expenses', 'req_doc', 'medicare', 'payment_received'];
 
+/** What the customer actually sent, shown inside the message bubble.
+ *
+ *  The bytes come from /api/will/media/[id], which holds the WhatsApp token
+ *  server-side. Meta deletes attachments after 30 days, so a failure here is
+ *  expected on old chats and falls back to a plain line rather than a broken
+ *  image. Everything that is not a picture or a video is offered as a download,
+ *  which covers payment screenshots sent as PDFs, payslips, and voice notes. */
+function Attachment({ media }: { media: NonNullable<MessageRow['meta']>['media'] }) {
+  const [failed, setFailed] = useState(false);
+  if (!media) return null;
+  const src = `/api/will/media/${encodeURIComponent(media.id)}`;
+  const isImage = media.kind === 'image' || media.kind === 'sticker' || (media.mime ?? '').startsWith('image/');
+  const isVideo = media.kind === 'video' || (media.mime ?? '').startsWith('video/');
+  const isAudio = media.kind === 'audio' || media.kind === 'voice' || (media.mime ?? '').startsWith('audio/');
+  const label = media.filename || (media.kind === 'document' ? 'Document' : 'File');
+
+  if (failed) {
+    return <div className="attach-gone">Attachment no longer available (WhatsApp keeps files for 30 days)</div>;
+  }
+  return (
+    <div className="attach">
+      {isImage ? (
+        // Opens full size in a new tab — the common case is a payment
+        // screenshot that has to be read, not glanced at.
+        <a href={src} target="_blank" rel="noreferrer">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt={media.caption || 'Photo from customer'} onError={() => setFailed(true)} />
+        </a>
+      ) : isVideo ? (
+        <video src={src} controls preload="metadata" onError={() => setFailed(true)} />
+      ) : isAudio ? (
+        <audio src={src} controls preload="metadata" onError={() => setFailed(true)} />
+      ) : (
+        <a className="attach-doc" href={src} target="_blank" rel="noreferrer" download={media.filename || undefined}>
+          <span aria-hidden>📄</span> {label}
+        </a>
+      )}
+      {media.caption && <div className="attach-cap">{media.caption}</div>}
+    </div>
+  );
+}
+
 export default function Dashboard() {
   const [view, setView] = useState<View>('pipeline');
   const [notifOpen, setNotifOpen] = useState(false);
@@ -134,7 +175,6 @@ export default function Dashboard() {
   }, []);
   const [sugDrafts, setSugDrafts] = useState<Record<string, string>>({});
   const [knwDrafts, setKnwDrafts] = useState<Record<string, string>>({});
-  const [variantB, setVariantB] = useState<string>('');
   const [goalInput, setGoalInput] = useState<string>('50');
   const [tplText, setTplText] = useState('');
   const [toast, setToast] = useState('');
@@ -156,6 +196,9 @@ export default function Dashboard() {
   const [chatFilter, setChatFilter] = useState('all');
   // Whether the chat-header stage badge dropdown (manual stage move) is open.
   const [stageMenuOpen, setStageMenuOpen] = useState(false);
+  // The stage menu offers the legal next steps only. `stageMenuAll` opens the
+  // full list for the rare case that needs an out-of-order correction.
+  const [stageMenuAll, setStageMenuAll] = useState(false);
   const [, setClock] = useState(0);
   const msgsRef = useRef<HTMLDivElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -278,14 +321,15 @@ export default function Dashboard() {
   const g = STAGE_GROUPS.find((x) => x.id === group)!;
   const countFor = (states: readonly CustomerState[]) => data.customers.filter((c) => states.includes(c.state)).length;
   const openTasks = data.tasks.filter((t) => t.status === 'OPEN');
-  // ── Outbox: everything that has NOT gone to the customer and is waiting on you.
+  // ── Drafts Will has written and not sent, waiting on your approval.
+  //    They are listed at the top of Tasks, which is now the only inbox.
   // One place instead of hunting through every chat. Three kinds:
   //   1. drafts awaiting your approval (Will's proposals)
   //   2. messages that could not be sent (WhatsApp/Meta rejected them)
   //   3. drafts the guard blocked before they could go out
   const pendingDrafts = data.pending;
-  const notSentTasks = openTasks.filter((t) => /send failed|blocked reply|invalid before approval|is stale|draft is stale|policy guard/i.test(t.reason));
-  const outboxCount = pendingDrafts.length + notSentTasks.length;
+  // notSentTasks and outboxCount belonged to the Outbox tab, which is gone:
+  // blocked and failed sends are ordinary tasks and are listed with the rest.
   const custById = (id: string | null) => data.customers.find((c) => c.id === id) ?? null;
   // Notifications, most urgent first (URGENT > CONFLICT > REVIEW), then newest.
   const SEV_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
@@ -361,12 +405,11 @@ export default function Dashboard() {
     <>
       <aside className="side">
         <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
-        {(['pipeline', 'chats', 'outbox', 'tasks', 'library', 'insights', 'learning', 'simulator'] as View[]).map((v) => (
+        {(['pipeline', 'chats', 'tasks', 'library', 'insights', 'learning', 'simulator'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
             <span className="nl">{v[0].toUpperCase() + v.slice(1)}</span>
-            {v === 'outbox' && outboxCount > 0 && <span className="nbadge" style={{ background: 'var(--warn)' }}>{outboxCount}</span>}
-            {v === 'tasks' && openTasks.length > 0 && <span className="nbadge">{openTasks.length}</span>}
+            {v === 'tasks' && (openTasks.length + pendingDrafts.length) > 0 && <span className="nbadge">{openTasks.length + pendingDrafts.length}</span>}
             {v === 'learning' && suggestions.length > 0 && <span className="nbadge" style={{ background: 'var(--brand2)' }}>{suggestions.length}</span>}
           </button>
         ))}
@@ -591,26 +634,52 @@ export default function Dashboard() {
                             </button>
                             {stageMenuOpen && (
                               <>
-                                <div className="stagemenu-backdrop" onClick={() => setStageMenuOpen(false)} />
+                                <div className="stagemenu-backdrop" onClick={() => { setStageMenuOpen(false); setStageMenuAll(false); }} />
+                                {/* This listed all eighteen stages and forced every
+                                    move. The state machine already says which few
+                                    are reachable from here, so that is what the menu
+                                    offers: from New Lead it is five, not eighteen.
+                                    Anything out of order is still possible behind
+                                    "Move anywhere", which is the only path that
+                                    forces. Will sets the stage itself from the
+                                    conversation; this is for correcting it. */}
                                 <div className="stagemenu">
-                                  {STAGE_GROUPS.flatMap((g) => (g.states as readonly CustomerState[]).map((s) => ({ s, color: g.color }))).map(({ s, color }) => (
-                                    <button
-                                      key={s}
-                                      type="button"
-                                      className={`stagemenu-item${s === chatSel.state ? ' is-current' : ''}`}
-                                      onClick={async () => {
-                                        setStageMenuOpen(false);
-                                        if (s === chatSel.state) return;
-                                        const r = await act({ action: 'set_state', customerId: chatSel.id, state: s, force: true });
-                                        say(r?.ok ? `Moved to ${STATE_LABELS[s]}` : `❌ ${r?.error ?? 'could not move'}`);
-                                        loadChat(chatSel.id); refresh();
-                                      }}
-                                    >
-                                      <span className="stagemenu-dot" style={{ background: color }} />
-                                      <span className="stagemenu-lbl">{STATE_LABELS[s]}</span>
-                                      {s === chatSel.state && <span className="stagemenu-check">✓</span>}
-                                    </button>
-                                  ))}
+                                  {(() => {
+                                    const nextStates = TRANSITIONS[chatSel.state] ?? [];
+                                    const shown = stageMenuAll
+                                      ? STAGE_GROUPS.flatMap((g) => (g.states as readonly CustomerState[]).map((s) => ({ s, color: g.color })))
+                                      : STAGE_GROUPS.flatMap((g) => (g.states as readonly CustomerState[]).map((s) => ({ s, color: g.color })))
+                                          .filter(({ s }) => s === chatSel.state || nextStates.includes(s));
+                                    return (
+                                      <>
+                                        {shown.map(({ s, color }) => (
+                                          <button
+                                            key={s}
+                                            type="button"
+                                            className={`stagemenu-item${s === chatSel.state ? ' is-current' : ''}`}
+                                            onClick={async () => {
+                                              setStageMenuOpen(false); setStageMenuAll(false);
+                                              if (s === chatSel.state) return;
+                                              // Only an out-of-order correction forces.
+                                              const force = !nextStates.includes(s);
+                                              const r = await act({ action: 'set_state', customerId: chatSel.id, state: s, force });
+                                              say(r?.ok ? `Moved to ${STATE_LABELS[s]}` : `❌ ${r?.error ?? 'could not move'}`);
+                                              loadChat(chatSel.id); refresh();
+                                            }}
+                                          >
+                                            <span className="stagemenu-dot" style={{ background: color }} />
+                                            <span className="stagemenu-lbl">{STATE_LABELS[s]}</span>
+                                            {s === chatSel.state && <span className="stagemenu-check">✓</span>}
+                                          </button>
+                                        ))}
+                                        {!stageMenuAll && (
+                                          <button type="button" className="stagemenu-item" onClick={() => setStageMenuAll(true)}>
+                                            <span className="stagemenu-lbl" style={{ color: 'var(--ink3)' }}>Move anywhere…</span>
+                                          </button>
+                                        )}
+                                      </>
+                                    );
+                                  })()}
                                 </div>
                               </>
                             )}
@@ -643,6 +712,43 @@ export default function Dashboard() {
                         return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label} — edit and send`); }}>{i + 1}</button>;
                       })}
                     </div>
+                    {/* The nudges for this customer's stage, so a follow-up can be
+                        sent after reading the conversation rather than only on the
+                        scheduler's timer. Which three appear is decided by the
+                        stage, so there is nothing to choose wrongly. Unlike Quick
+                        fill these cannot go through the composer: the customer has
+                        been quiet, so the message is outside Meta's 24h window and
+                        has to leave as the approved template, word for word. */}
+                    {(() => {
+                      const flow = flowForState(chatSel.state);
+                      if (!flow) return null;
+                      const keys = FLOW_TEMPLATES[flow];
+                      return (
+                        <div className="tplchips">
+                          <span className="tplchips-label">Follow-up:</span>
+                          {keys.map((key) => {
+                            const t = data.templates.find((x) => x.key === key);
+                            if (!t) return null;
+                            const short = t.title.split('·').pop()?.trim() ?? t.title;
+                            const preview = t.body.replace(/\{\{1\}\}/g, chatSel.name?.split(/\s+/)[0] || 'there');
+                            return (
+                              <button
+                                key={key}
+                                className="chipbtn"
+                                title={preview}
+                                disabled={acted.has(key + chatSel.id)}
+                                onClick={() => once(key + chatSel.id, async () => {
+                                  if (!confirm(`Send this to ${chatSel.name ?? phoneOf(chatSel.waId)} now?\n\n${preview}`)) return;
+                                  const r = await act({ action: 'send_followup', customerId: chatSel.id, id: key });
+                                  say(r?.ok ? 'Follow-up sent ✓' : `❌ ${r?.error ?? (r?.blocked?.length ? r.blocked.join(', ') : 'not sent')}`);
+                                  loadChat(chatSel.id); refresh();
+                                })}
+                              >{short}</button>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
                     <div className="msgs" ref={msgsRef}>
                       {[...chatMsgs].filter((m) => m.status !== 'DISCARDED' && m.status !== 'BLOCKED')
                         // A draft awaiting approval always renders at the BOTTOM,
@@ -658,15 +764,31 @@ export default function Dashboard() {
                               {m.body}
                               <div className="mt"><span className="ai">✎ awaiting your approval</span></div>
                               <div className="abtns" style={{ marginTop: 8 }}>
-                                <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : 'Draft blocked: situation changed')); loadChat(chatSel.id); refresh(); })}>✓ Approve</button>
+                                <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${r.blocked.join(', ')}` : 'Draft blocked: situation changed')); loadChat(chatSel.id); refresh(); })}>✓ Approve</button>
                                 <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { await act({ action: 'discard_message', id: m.id }); say('Draft discarded'); loadChat(chatSel.id); refresh(); })}>✕ Discard</button>
                               </div>
                             </div>
                           );
                         }
+                        // A reaction is not a message — it is a heart or a
+                        // thumbs up on one of ours. Shown as a quiet line so the
+                        // thread reads the way it does in WhatsApp.
+                        if (m.meta?.reaction) {
+                          return (
+                            <div key={m.id} className="sysline" style={{ fontSize: 15 }}>
+                              {m.meta.reaction.emoji
+                                ? `${m.meta.reaction.emoji}  reacted to your message`
+                                : 'removed their reaction'}
+                            </div>
+                          );
+                        }
                         return (
                           <div key={m.id} className={`msg ${m.direction === 'IN' ? 'in' : 'out'}`}>
-                            {m.body}
+                            {m.meta?.media && <Attachment media={m.meta.media} />}
+                            {/* With the attachment itself on screen, the stored
+                                "📷 [Photo]" placeholder is noise — the caption
+                                rides along with the attachment. */}
+                            {m.meta?.media ? null : m.body}
                             <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
                           </div>
                         );
@@ -700,11 +822,17 @@ export default function Dashboard() {
           </section>
         )}
 
-        {view === 'outbox' && (
-          <section className="view active">
-            <h2 className="vt">Outbox</h2>
-            <div className="vsub">Everything that has NOT gone to the customer and is waiting on you.</div>
 
+        {view === 'tasks' && (
+          <section className="view active">
+            <h2 className="vt">Tasks</h2>
+            <div className="vsub">Everything waiting on you, in one place. {ASSISTANT_NAME} drafted a suggested answer for each one.</div>
+
+            {/* This was a separate Outbox tab. It counted the drafts awaiting
+                approval PLUS the subset of these same tasks whose reason was a
+                blocked or failed send, so those items were listed twice with two
+                badges and there was no single answer to "what is left for me".
+                The drafts moved here; the blocked ones were already here. */}
             <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink2)', margin: '10px 0 8px', letterSpacing: '.02em' }}>
               ✎ Awaiting your approval ({pendingDrafts.length})
             </div>
@@ -720,7 +848,7 @@ export default function Dashboard() {
                   </div>
                   <div className="obbody">{m.body}</div>
                   <div className="obbtns">
-                    <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : 'Draft blocked: situation changed')); refresh(); })}>✓ Approve & send</button>
+                    <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${r.blocked.join(', ')}` : 'Draft blocked: situation changed')); refresh(); })}>✓ Approve & send</button>
                     <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { await act({ action: 'discard_message', id: m.id }); say('Draft discarded'); refresh(); })}>✕ Discard</button>
                     <button className="btn ghost" onClick={() => { setView('chats'); openChat(m.customerId); }}>Open chat →</button>
                   </div>
@@ -728,36 +856,12 @@ export default function Dashboard() {
               );
             })}
 
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink2)', margin: '18px 0 8px', letterSpacing: '.02em' }}>
-              ⚠ Didn&apos;t send ({notSentTasks.length})
-            </div>
-            {notSentTasks.length === 0 && <div className="sysline" style={{ margin: '6px 0' }}>Nothing failed or blocked 🎉</div>}
-            {notSentTasks.map((t) => {
-              const c = custById(t.customerId);
-              return (
-                <div key={t.id} className="obcard" style={{ ['--tc' as string]: 'var(--crit)' }}>
-                  <div className="obhead">
-                    <span className="obwho">{c ? phoneOf(c.waId) : (t.customerName ?? 'Customer')}</span>
-                    <span className="tsev" style={{ color: 'var(--crit)' }}>{t.severity}</span>
-                    <span className="obtime">{timeAgo(t.createdAt)} ago</span>
-                  </div>
-                  <div style={{ fontSize: 12, color: 'var(--crit)', margin: '2px 0 6px', fontWeight: 600 }}>{t.reason}</div>
-                  {t.suggestedReply && <div className="obbody">{t.suggestedReply}</div>}
-                  <div className="obbtns">
-                    {t.customerId && <button className="btn ghost" onClick={() => { setView('chats'); openChat(t.customerId!); }}>Open chat →</button>}
-                    <button className="btn ghost" onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Marked done'); refresh(); }}>Mark done</button>
-                  </div>
-                </div>
-              );
-            })}
-          </section>
-        )}
-
-        {view === 'tasks' && (
-          <section className="view active">
-            <h2 className="vt">Human Tasks</h2>
-            <div className="vsub">{ASSISTANT_NAME} drafted a suggested answer for each one.</div>
-            {openTasks.length === 0 && <div className="sysline" style={{ margin: '18px 0' }}>No open tasks. {ASSISTANT_NAME} has everything under control 🎉</div>}
+            {openTasks.length > 0 && pendingDrafts.length > 0 && (
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink2)', margin: '18px 0 8px', letterSpacing: '.02em' }}>
+                ⚠ Needs a decision ({openTasks.length})
+              </div>
+            )}
+            {openTasks.length === 0 && pendingDrafts.length === 0 && <div className="sysline" style={{ margin: '18px 0' }}>Nothing waiting. {ASSISTANT_NAME} has everything under control 🎉</div>}
             {openTasks.map((t) => {
               const col = t.severity === 'URGENT' ? 'var(--crit)' : 'var(--warn)';
               // No icon: the severity chip already carries the colour and the
@@ -829,7 +933,7 @@ export default function Dashboard() {
                 <div className="libcat">{cat}<span className="n">{items.length}</span></div>
                 <div className="libgrid">
                   {items.map((t) => (
-                    <div key={t.id} className="tpl" onClick={() => { setTpl(t); setTplText(t.body); setVariantB(t.variantB ?? ''); }}>
+                    <div key={t.id} className="tpl" onClick={() => { setTpl(t); setTplText(t.body); }}>
                       <span className="pencil">✎</span>
                       <div className="tn">{t.title}{t.requiresMeta && <span className="chip" style={{ fontSize: 9 }} title="Requires Meta template approval">META ✓</span>}</div>
                       <div className="tv">{t.body}</div>
@@ -855,7 +959,7 @@ export default function Dashboard() {
                   return <div key={f.label} className="frow"><span className="fl">{f.label}</span><div className="fbar"><div className="fill" style={{ ['--fc' as string]: ['#86b6ef', '#5598e7', '#3987e5', '#2a78d6', '#1c5cab'][i], width: `${(f.n / max) * 100}%` }} /></div><span className="fv">{f.n}</span></div>;
                 })}
                 {report && report.closed.total > 0 && <div className="mini">Biggest risk point: <b style={{ color: 'var(--warn)' }}>{report.closed.coldAfterPrice} went cold after the price message</b></div>}
-                <div className="sugg"><b>Suggested fix</b>Lead with the guarantee before the number, and A/B the day-3 follow-up wording in the Library.</div>
+                <div className="sugg"><b>Suggested fix</b>Lead with the guarantee before the number, and rework the day-3 follow-up wording in the Library.</div>
               </div>
 
               <div className="panel">
@@ -907,7 +1011,6 @@ export default function Dashboard() {
                 <div className="costrow"><span>Auto-resolved by {ASSISTANT_NAME}</span><b>{(() => { const t = data.tasks.length, done = data.tasks.filter((x) => x.status === 'RESOLVED').length; const total = data.customers.length; return total ? Math.round(((total - openTasks.length) / total) * 100) + '%' : '100%'; })()}</b></div>
                 <div className="costrow"><span>Open tasks</span><b>{openTasks.length}</b></div>
                 <div className="costrow"><span>Messages in library</span><b>{data.templates.length}</b></div>
-                <div className="costrow"><span>A/B tests running</span><b>{data.templates.filter((t) => t.variantB).length}</b></div>
                 <div className="costrow"><span>Policy Guard</span><b style={{ color: health?.checks?.guard?.ok ? 'var(--good)' : 'var(--crit)' }}>{health?.checks?.guard?.ok ? '✓ passing' : 'check'}</b></div>
                 <div className="costrow"><span>Nightly checks</span><b style={{ color: 'var(--good)' }}>✓ scheduled</b></div>
               </div>
@@ -919,6 +1022,18 @@ export default function Dashboard() {
           <section className="view active">
             <h2 className="vt">Learning</h2>
             <div className="vsub">{ASSISTANT_NAME} improves from every conversation. Approve what works, and watch it get better over time.</div>
+
+            {/* Everything said so far, in one readable file. Drafts that were
+                blocked or discarded are marked rather than dropped: they are
+                often the most interesting lines in a conversation. */}
+            <div className="panel" style={{ marginBottom: 12 }}>
+              <h3>Download every conversation</h3>
+              <div className="psub">All {ASSISTANT_NAME} chats, oldest to newest, in one file. Use it to see which questions keep coming up and what belongs in the Library.</div>
+              <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                <a className="btn ghost" href="/api/will/export" download>⬇ Transcript (.txt)</a>
+                <a className="btn ghost" href="/api/will/export?format=json" download>⬇ Raw data (.json)</a>
+              </div>
+            </div>
 
             <div className="panel" style={{ marginBottom: 12 }}>
               <h3>Your Goal: the best version of {ASSISTANT_NAME}</h3>
@@ -1024,19 +1139,6 @@ export default function Dashboard() {
                 })}
               </div>
 
-              <div className="panel">
-                <h3>A/B Tests Running</h3>
-                <div className="psub">{ASSISTANT_NAME} sends A or B at random and measures which converts. Edit variants in the Library.</div>
-                {(!report || report.variantTests.length === 0) && <div className="mini">No tests running. Open any message in the Library and add a Variant B to start one.</div>}
-                {report?.variantTests.map((v, i) => (
-                  <div key={i} style={{ marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid var(--line)' }}>
-                    <div style={{ fontSize: 12.5, fontWeight: 600 }}>{v.title}</div>
-                    <div className="frow"><span className="fl">A</span><div className="fbar"><div className="fill" style={{ ['--fc' as string]: '#3987e5', width: `${(v.a.rate ?? 0) * 100}%` }} /></div><span className="fv">{v.a.rate != null ? Math.round(v.a.rate * 100) + '%' : '·'}</span></div>
-                    <div className="frow"><span className="fl">B</span><div className="fbar"><div className="fill" style={{ ['--fc' as string]: '#eb6834', width: `${(v.b.rate ?? 0) * 100}%` }} /></div><span className="fv">{v.b.rate != null ? Math.round(v.b.rate * 100) + '%' : '·'}</span></div>
-                    <div className="mini">{v.a.sent + v.b.sent} sent · {v.enoughData ? (v.winner === 'tie' ? 'tied' : v.winner + ' is winning') : 'gathering data (needs 20+ each)'}</div>
-                  </div>
-                ))}
-              </div>
 
               <div className="panel">
                 <h3>Problems → Solutions</h3>
@@ -1113,22 +1215,6 @@ export default function Dashboard() {
             <textarea className="edit" value={tplText} onChange={(e) => setTplText(e.target.value)} />
             <div className="mlabel">Live preview: how the customer sees it</div>
             <div className="wapreview"><div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{tplText}</div></div>
-            <div className="abtest">
-              <div className="mlabel" style={{ marginTop: 14 }}>A/B test (optional)</div>
-              <div className="psub" style={{ marginBottom: 6 }}>{ASSISTANT_NAME} sends A or B at random and tracks which converts better. Leave empty for no test.</div>
-              {(() => {
-                const sA = tpl.sentA ?? 0, cA = tpl.convA ?? 0, sB = tpl.sentB ?? 0, cB = tpl.convB ?? 0;
-                const rA = sA ? Math.round((cA / sA) * 100) : null, rB = sB ? Math.round((cB / sB) * 100) : null;
-                return (
-                  <div className="abstats">
-                    <span>A: {sA} sent{rA !== null ? ` · ${rA}% advanced` : ''}</span>
-                    {tpl.variantB && <span>B: {sB} sent{rB !== null ? ` · ${rB}% advanced` : ''}{rA !== null && rB !== null ? (rB > rA ? ' · B winning' : rA > rB ? ' · A winning' : '') : ''}</span>}
-                  </div>
-                );
-              })()}
-              <textarea className="edit" style={{ minHeight: 70, marginTop: 6 }} value={variantB} onChange={(e) => setVariantB(e.target.value)} placeholder="Variant B wording to test against the main message…" />
-              <button className="btn ghost" style={{ marginTop: 6 }} onClick={async () => { await act({ action: 'set_variant_b', id: tpl.id, body: variantB }); say(variantB.trim() ? 'A/B test running ✓' : 'A/B test stopped'); refresh(); }}>{variantB.trim() ? 'Save & Run A/B' : 'Stop A/B test'}</button>
-            </div>
             <div className="mfoot">
               <span className="vhist" style={{ cursor: 'pointer', color: 'var(--crit)' }} onClick={async () => { if (confirm('Delete this message?')) { await act({ action: 'delete_template', id: tpl.id }); say('Message deleted'); setTpl(null); refresh(); } }}>🗑 Delete</span>
               <button className="btn ghost" onClick={() => setTpl(null)}>Cancel</button>

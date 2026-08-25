@@ -5,6 +5,8 @@ import { useEffect, useState, useRef } from 'react'
 import { waUrl } from '@/lib/wa'
 import { trackWhatsApp } from '@/lib/analytics'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
+import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
+import { AGENT_TPB } from '@/lib/constants'
 
 const Logo = ({ locale }: { locale: 'en' | 'de' | 'ja' }) => {
   const href = locale === 'de' ? '/de' : locale === 'ja' ? '/ja' : '/'
@@ -440,32 +442,25 @@ export function Nav() {
           </a>
         </div>
 
-        {/* Trust badges */}
-        <div className="flex items-center justify-center gap-3 mt-5 pb-2">
-          <a href="https://www.xero.com" target="_blank" rel="noopener noreferrer"
-            aria-label="Xero"
-            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70"
-            style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}>
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
-            </svg>
-          </a>
-          {/* `title` was the only label here, and a tooltip never appears on a
-              touch device, which is the only place this drawer renders. The
-              badge was therefore an unlabelled icon for every user who saw it. */}
-          <div className="flex items-center justify-center rounded-full"
-            style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}
-            role="img"
-            aria-label={
-              locale === 'de' ? 'Sicher und verschlüsselt'
-                : locale === 'ja' ? '安全な暗号化通信'
-                : 'Secure and encrypted'
-            }>
-            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
-              <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
+        {/* Trust marks.
+            Xero used to sit here as an unexplained blue circle: a logo of a
+            product the reader has no relationship with, linking off the site,
+            saying nothing about who does the work. Replaced by the two marks
+            that DO answer "can I trust these people" — the same pair, in the
+            same order, as the header of the tax refund form: the Google rating
+            and the registered tax agent seal. */}
+        <div className="flex flex-col items-center gap-3 mt-5 pb-2">
+          <GoogleReviewsBadge lang={locale} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/tpb-registered.png"
+            alt={`${locale === 'de' ? 'Registrierter Steueragent' : locale === 'ja' ? '登録税理士' : 'Registered Tax Agent'} ${AGENT_TPB}`}
+            width={509}
+            height={319}
+            loading="lazy"
+            decoding="async"
+            style={{ display: 'block', width: '132px', height: 'auto' }}
+          />
         </div>
       </div>
     </>

@@ -267,3 +267,44 @@ export async function deliverOut(
   }
   return { ok: res.ok, error: res.error };
 }
+
+/** Fetch one WhatsApp attachment from Meta.
+ *
+ *  Two hops, because Meta never gives out a public URL: the media id resolves to
+ *  a short-lived, token-protected download URL, and only then can the bytes be
+ *  read — with the access token attached to BOTH requests. Meta keeps the file
+ *  for 30 days; after that this returns not-found, which is why the dashboard
+ *  falls back to the placeholder line rather than an empty frame.
+ *
+ *  Returns the raw bytes so the caller can stream them behind the CRM session.
+ *  The token never reaches the browser. */
+export async function fetchWaMedia(
+  mediaId: string,
+): Promise<{ ok: true; body: ArrayBuffer; mime: string } | { ok: false; status: number; error: string }> {
+  const { token } = await resolveWaCreds();
+  if (!token) return { ok: false, status: 503, error: 'channel not configured' };
+  const auth = { Authorization: `Bearer ${token}` };
+  try {
+    const metaRes = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(mediaId)}`, {
+      headers: auth, cache: 'no-store',
+    });
+    if (!metaRes.ok) {
+      return { ok: false, status: metaRes.status === 404 ? 404 : 502, error: `lookup failed (${metaRes.status})` };
+    }
+    const info = (await metaRes.json()) as { url?: string; mime_type?: string };
+    if (!info.url) return { ok: false, status: 404, error: 'media expired or unavailable' };
+    // The download host also requires the bearer token, and rejects the request
+    // outright without a browser-like user agent.
+    const fileRes = await fetch(info.url, {
+      headers: { ...auth, 'User-Agent': 'WorkingHolidayTax-CRM/1.0' }, cache: 'no-store',
+    });
+    if (!fileRes.ok) return { ok: false, status: 502, error: `download failed (${fileRes.status})` };
+    return {
+      ok: true,
+      body: await fileRes.arrayBuffer(),
+      mime: info.mime_type || fileRes.headers.get('content-type') || 'application/octet-stream',
+    };
+  } catch (e) {
+    return { ok: false, status: 502, error: e instanceof Error ? e.message : 'network error' };
+  }
+}

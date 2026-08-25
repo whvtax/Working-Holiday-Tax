@@ -72,6 +72,31 @@ export const TRANSITIONS: Partial<Record<CustomerState, CustomerState[]>> = {
   LODGED:              ['COMPLETED'],
 };
 
+/** The three follow-up flows and the nudges each one sends, in order.
+ *  These live here rather than in the scheduler because the dashboard needs
+ *  them too, and the scheduler pulls in the store (and `fs`), which cannot be
+ *  bundled for the browser. */
+export type Flow = 'prePayment' | 'form' | 'signature';
+
+export const FLOW_TEMPLATES: Record<Flow, string[]> = {
+  prePayment: ['fu_pre_24h', 'fu_pre_3d', 'fu_pre_7d'],
+  form: ['fu_form_6h', 'fu_form_3d', 'fu_form_7d'],
+  signature: ['fu_sig_24h', 'fu_sig_3d', 'fu_sig_7d'],
+};
+
+export const FLOW_ELIGIBLE_STATES: Record<Flow, CustomerState[]> = {
+  prePayment: ['PRICE_SENT', 'PAYMENT_PENDING'],
+  form: ['FORM_PENDING'],
+  signature: ['SIGNATURE_PENDING'],
+};
+
+export function flowForState(state: CustomerState): Flow | null {
+  if (FLOW_ELIGIBLE_STATES.prePayment.includes(state)) return 'prePayment';
+  if (FLOW_ELIGIBLE_STATES.form.includes(state)) return 'form';
+  if (FLOW_ELIGIBLE_STATES.signature.includes(state)) return 'signature';
+  return null;
+}
+
 export function canTransition(from: CustomerState, to: CustomerState): boolean {
   return (TRANSITIONS[from] ?? []).includes(to);
 }

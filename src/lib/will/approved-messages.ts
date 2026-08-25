@@ -8,27 +8,40 @@
 // ============================================================
 
 export const APPROVED = {
-  opening: `Hey! 😊 Of course, happy to help.
-We'll review your situation, including your tax residency, Medicare, and any deductions you may be able to claim, to make sure everything's done correctly.
-Did you work only under a TFN, or did you also have ABN income?`,
+  // Reworded by Jo, 24 Aug. Still one emoji and still ends on the TFN or ABN
+  // question, which is what the state machine keys off.
+  opening: `Hey! 😊 Of course, we'd be happy to help.
+We'll review your tax residency, Medicare situation and any deductions you can claim.
+Did you only work on a TFN, or did you also earn income through an ABN?`,
 
-  price_tfn: `Perfect 😊
-Our team will support you from start to finish and help maximise your tax refund.
-The total fee is $220. If your refund is less than $220, we'll refund the difference, so you're never out of pocket for our service.
-Payment details:
+  // Reworded by Jo, 24 Aug, and already live in the Message Library. The source
+  // is updated to match so a fresh seed or a new environment does not put the
+  // old wording back. Both messages are now spaced into blocks, "for our
+  // service" is dropped from the guarantee to match the wording used on every
+  // page of the website, and the account line reads "Account Number".
+  price_tfn: `Perfect!
+
+Our team will handle everything from start to finish and help maximise your tax refund.
+
+The total fee is $220. If your refund is less than $220, we'll refund the difference, so you're never out of pocket.
+
 Account Name: Simple Tax Services
 BSB: 062692
-Account: 81049952
-Once paid, just send us a quick screenshot and we'll get started.`,
+Account Number: 81049952
 
-  price_tfn_abn: `Perfect 😊
-Our team will support you from start to finish and help maximise your tax refund.
-The total fee is $385. If your refund is less than $385, we'll refund the difference, so you're never out of pocket for our service.
-Payment details:
+Once paid, send us a screenshot and we'll get started.`,
+
+  price_tfn_abn: `Perfect!
+
+Our team will handle everything from start to finish and help maximise your tax refund.
+
+The total fee is $385. If your refund is less than $385, we'll refund the difference, so you're never out of pocket.
+
 Account Name: Simple Tax Services
 BSB: 062692
-Account: 81049952
-Once paid, just send us a quick screenshot and we'll get started.`,
+Account Number: 81049952
+
+Once paid, send us a screenshot and we'll get started.`,
 
   objections: {
     o1_refund_before_pay: `Absolutely 😊 Working out your expected refund is part of the review. We need to go through your full situation first before we can give you an accurate estimate, which is why we start the review once payment is made. And if your refund ends up being less than our fee, we'll refund the difference, so you're never out of pocket for our service.`,
@@ -43,7 +56,7 @@ Once paid, just send us a quick screenshot and we'll get started.`,
     o10a_why_not_accountant: `Of course, you can use an accountant. The difference is that we focus specifically on Working Holiday Makers and deal with situations like yours every day. Our team knows the common issues backpackers run into, things like tax residency, Medicare, ABN income, and work-related expenses, so the whole service is built around people in your situation.`,
     o10b_found_cheaper: `No worries, I completely understand. Just make sure you're comparing the same level of service. With us, you're not just paying to submit a tax return. Your situation is properly reviewed and you get personal guidance throughout the process. If you've found someone cheaper, just make sure you know exactly what's included before you decide.`,
     o11_think_about_it: `Of course, no problem. Before you go, is there anything you're unsure about or anything you'd like me to clarify for you? Happy to answer any questions before you decide.`,
-    o12_ask_partner: `Of course, no problem. If there's anything you or your partner are unsure about, just let me know and I'm happy to clarify it before you decide. I'll leave everything here for you in the meantime.`,
+    o12_ask_partner: `Of course, no problem. If there's anything you or your partner are unsure about, just let me know and I'm happy to clarify it before you decide.`,
     o13_one_question: `Of course, if it's a general question, I'm happy to help. It depends on your individual situation, we'd need to review your details properly before giving you an accurate answer, and that's included as part of the service. What would you like to know?`,
     o14_check_eligible_first: `Yes, that's exactly what we'll check as part of your review. Eligibility can depend on your individual situation, so we need to go through your details properly before giving you an answer. That's why the review starts once payment is made, and if your refund is less than our fee, we'll refund the difference so you're never out of pocket.`,
   },

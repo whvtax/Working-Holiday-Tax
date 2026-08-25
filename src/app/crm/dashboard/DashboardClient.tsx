@@ -278,6 +278,10 @@ export default function DashboardClient() {
   const [clients, setClients]     = useState<Client[]>([])
   const [activeTask, setActiveTask] = useState<Task|null>(null)
   const [activeClient, setActiveClient] = useState<Client|null>(null)
+  // The Internal notes panel was removed from the client view. This state and
+  // the auto-save below are left in place and are now inert: taskNotes is only
+  // ever loaded from the stored value, so it never differs and never saves.
+  // Kept rather than deleted so the panel can be restored in one edit.
   const [taskNotes, setTaskNotes] = useState('')
   const [notesSaved, setNotesSaved] = useState(false)
   const [clientNotes, setClientNotes] = useState('')
@@ -2140,138 +2144,10 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                   })}
                 </div>
               </div>
-              {/* Declaration + Notes side by side */}
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
-                {/* Declaration card - per form type */}
-                <div style={{...S.card,minWidth:0,overflow:'hidden'}}>
-                  {(()=>{
-                    const parts = (activeTask.notes||'').split(' | ')
-
-                    // TAX RETURN: Tax Residency + 2 Declarations
-                    if (activeTask.taskType === 'tax-return') {
-                      const normaliseTaxStatus = (v: string) => {
-                        if (!v || v === '-') return v
-                        if (v === 'resident') return 'Australian resident for tax purposes'
-                        if (v === 'whm') return 'Working holiday maker for tax purposes'
-                        return v.replace('→ ','')
-                      }
-                      const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '-'
-                      const taxStatusValue = normaliseTaxStatus(rawTaxVal)
-                      const declaredPart = parts.find((p:string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))
-                      void taxStatusValue;
-                      return <>
-                        <div style={S.secHead}><span>Declaration</span></div>
-                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
-                          {declaredPart
-                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{declaredPart.replace('→ ✓ ','')}</span></>
-                            : <span style={{fontSize:12,color:'#aabab2'}}>-</span>
-                          }
-                        </div>
-                      </>
-                    }
-
-                    // SUPER: Client Agreement only
-                    if (activeTask.taskType === 'super') {
-                      const declVal = parts.find((p:string)=>p.startsWith('→')) || '-'
-                      return <>
-                        <div style={S.secHead}><span>Declaration</span></div>
-                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
-                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
-                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
-                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          </div>
-                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
-                        </div>
-                      </>
-                    }
-
-                    // TFN: Personal declaration + Client Agreement
-                    if (activeTask.taskType === 'tfn') {
-                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm I am')) || parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '-'
-                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '-'
-                      return <>
-                        <div style={S.secHead}><span>Personal Declaration</span></div>
-                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.</div>
-                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
-                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
-                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          </div>
-                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
-                        </div>
-                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
-                        <div style={S.secHead}><span>Client Agreement</span></div>
-                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
-                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
-                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
-                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          </div>
-                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
-                        </div>
-                      </>
-                    }
-
-                    // ABN: Business declaration + Client Agreement
-                    if (activeTask.taskType === 'abn') {
-                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '-'
-                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '-'
-                      return <>
-                        <div style={S.secHead}><span>Business Declaration</span></div>
-                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
-                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
-                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          </div>
-                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
-                        </div>
-                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
-                        <div style={S.secHead}><span>Client Agreement</span></div>
-                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
-                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
-                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
-                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          </div>
-                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
-                        </div>
-                      </>
-                    }
-
-                    return <div style={{padding:'14px',fontSize:12,color:'#aabab2'}}>No declaration data</div>
-                  })()}
-                </div>
-
-                {/* Notes */}
-                <div style={{...S.card,display:'flex',flexDirection:'column' as const,minWidth:0}}>
-                  <div style={S.secHead}><span>Internal notes</span></div>
-
-                  <div style={{display:'flex',gap:4,padding:'6px 10px 0',flexWrap:'wrap' as const}}>
-                    {[
-                      '📞 Called - left voicemail',
-                      '✉️ Emailed - awaiting reply',
-                      '⏳ Waiting for documents',
-                      '⚠️ Missing payslip',
-                      '✅ Submitted to ATO',
-                      '💰 Refund received',
-                    ].map(template => (
-                      <button key={template} onClick={()=>{
-                        const newNotes = taskNotes ? `${taskNotes}\n${template} (${new Date().toLocaleDateString('en-AU')})` : `${template} (${new Date().toLocaleDateString('en-AU')})`
-                        setTaskNotes(newNotes)
-                      }} style={{padding:'3px 8px',border:'1px solid #e4ede8',borderRadius:6,fontSize:10,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>
-                        + {template}
-                      </button>
-                    ))}
-                  </div>
-
-                  <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const,marginTop:8}}
-                    placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>
-                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6,padding:'0 2px'}}>
-                    {notesSaved
-                      ? <span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Auto-saved</span>
-                      : taskNotes !== extractUserNotes(activeTask.notes)
-                        ? <span style={{fontSize:11,color:'#aabab2'}}>Saving in 1.5s...</span>
-                        : <span/>}
-                    <button style={{padding:'5px 13px',border:'none',borderRadius:7,background:'#0E5C42',color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:taskNotes===extractUserNotes(activeTask.notes)?0.4:1}} disabled={taskNotes===extractUserNotes(activeTask.notes)} onClick={saveTaskNotes}>Save now</button>
-                  </div>
-                </div>
-              </div>
+              {/* The Declaration and Internal notes panels used to sit here.
+                  Removed at the owner's request: the declarations are already
+                  captured on the submission itself and the notes were unused.
+                  Nothing was dropped from the data, only from this view. */}
 
               {/* Actions */}
               <div style={{display:'flex',gap:8,marginBottom:8}}>

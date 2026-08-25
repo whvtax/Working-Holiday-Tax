@@ -49,6 +49,14 @@ export interface MessageRow {
      *  quiet for a day or more and free text is rejected outside the 24h
      *  window. Absent on ordinary conversation replies, which go as text. */
     waTemplate?: { name: string; params: string[]; lang?: string | null };
+    /** An attachment the customer sent. Meta keeps the file for 30 days behind
+     *  an authenticated endpoint, so only the id is stored; the dashboard asks
+     *  /api/will/media/[id] for the bytes when it renders the thread. `meta` is
+     *  a jsonb column, so this needs no migration. */
+    media?: { id: string; kind: string; mime?: string; filename?: string; caption?: string };
+    /** A heart or thumbs up the customer put on one of our messages. Shown as a
+     *  small note in the thread rather than a message bubble. */
+    reaction?: { emoji: string | null; to?: string };
   };
   createdAt: string;
 }

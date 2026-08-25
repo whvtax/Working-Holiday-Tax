@@ -99,12 +99,20 @@ function verifySignature(rawBody: string, header: string | null): boolean {
   }
 }
 
+interface WaMedia { id?: string; mime_type?: string; caption?: string; filename?: string; sha256?: string }
+
 interface WaMessage {
   id: string; from: string; type: string; timestamp?: string;
   text?: { body: string };
-  image?: { caption?: string }; video?: { caption?: string };
-  document?: { caption?: string; filename?: string };
-  audio?: unknown; voice?: unknown; sticker?: unknown; location?: unknown; contacts?: unknown;
+  // Meta sends a media `id` on every attachment. It was being dropped, so a
+  // photo became the text "[Photo]" and the picture itself was unreachable.
+  image?: WaMedia; video?: WaMedia;
+  document?: WaMedia;
+  audio?: WaMedia; voice?: WaMedia; sticker?: WaMedia;
+  /** A heart or thumbs up on one of our messages. This fell through to the
+   *  generic "open WhatsApp to view" placeholder, which read as unreadable. */
+  reaction?: { message_id?: string; emoji?: string };
+  location?: unknown; contacts?: unknown;
   // Present on type:'unsupported' — the reason Meta could not render the message.
   errors?: { code?: number; title?: string; message?: string }[];
 }
@@ -113,7 +121,20 @@ interface WaMessage {
  *  means run the AI engine on `body`; false means the message carried no text we
  *  can read (a photo, a voice note, or a Coexistence `unsupported` with no body),
  *  so it is stored and handed to a human instead of the model. */
-interface InboundItem { msg: WaMessage; name?: string; body: string; isText: boolean; kind: string; }
+interface InboundItem {
+  msg: WaMessage; name?: string; body: string; isText: boolean; kind: string;
+  media?: { id: string; kind: string; mime?: string; filename?: string; caption?: string };
+  reaction?: { emoji: string | null; to?: string };
+}
+
+/** The attachment on a message, in the shape the dashboard needs to show it.
+ *  Meta keeps media for 30 days behind an authenticated endpoint, so only the
+ *  id is stored and /api/will/media/[id] streams the bytes on demand. */
+function mediaOf(m: WaMessage): { id: string; kind: string; mime?: string; filename?: string; caption?: string } | undefined {
+  const slot: WaMedia | undefined = m.image ?? m.video ?? m.document ?? m.audio ?? m.voice ?? m.sticker;
+  if (!slot?.id) return undefined;
+  return { id: slot.id, kind: m.type, mime: slot.mime_type, filename: slot.filename, caption: slot.caption };
+}
 
 /** A human-readable stand-in for a message that carries no text body, so a photo
  *  or voice note still shows in the thread instead of vanishing. */
@@ -121,6 +142,7 @@ function placeholderFor(m: WaMessage): string {
   const caption = m.image?.caption || m.video?.caption || m.document?.caption || '';
   let note: string;
   switch (m.type) {
+    case 'reaction': return m.reaction?.emoji ? `${m.reaction.emoji}  reacted to your message` : 'removed their reaction';
     case 'image': note = '📷 [Photo]'; break;
     case 'video': note = '🎥 [Video]'; break;
     case 'audio': case 'voice': note = '🎤 [Voice message]'; break;
@@ -254,7 +276,15 @@ function extract(payload: unknown, ourPhoneId?: string): InboundItem[] {
           // No readable text: keep the customer visible with a placeholder and a
           // human task rather than dropping them. Media and bodiless `unsupported`
           // both land here.
-          out.push({ msg: m, name, body: placeholderFor(m), isText: false, kind: m.type || 'unknown' });
+          out.push({
+            msg: m, name, body: placeholderFor(m), isText: false, kind: m.type || 'unknown',
+            // Carry the attachment id and the reaction through, so the chat can
+            // show the picture and the heart rather than a placeholder line.
+            media: mediaOf(m),
+            reaction: m.type === 'reaction'
+              ? { emoji: m.reaction?.emoji ?? null, to: m.reaction?.message_id }
+              : undefined,
+          });
         }
       }
     }
@@ -449,7 +479,7 @@ export async function POST(req: Request) {
   // reply — but the customer must never disappear. Store the placeholder in the
   // thread and raise ONE task so a human opens WhatsApp and answers. Best-effort:
   // never blocks the ack, never asks Meta to retry (there is nothing to re-run).
-  for (const { msg, name, body, kind } of noteItems) {
+  for (const { msg, name, body, kind, media, reaction } of noteItems) {
     try {
       if (!(await store.claimInbound(msg.id))) continue; // dedupe on the Meta id
       // For a bodiless `unsupported`, record exactly what Meta sent (no PII), so
@@ -459,8 +489,8 @@ export async function POST(req: Request) {
       if (kind === 'unsupported' || kind === 'unknown') {
         try { await store.audit('channel', 'inbound_unsupported', { id: msg.id, from: maskWa(msg.from), ...describeUndecoded(msg) }); } catch { /* */ }
       }
-      await handleInboundNote(msg.from, body, { name });
-      await store.audit('channel', 'inbound_note_stored', { id: msg.id, kind, from: maskWa(msg.from) });
+      await handleInboundNote(msg.from, body, { name, media, reaction });
+      await store.audit('channel', 'inbound_note_stored', { id: msg.id, kind, hasMedia: !!media, from: maskWa(msg.from) });
     } catch { /* best effort: the placeholder is a courtesy, not the lead itself */ }
   }
 

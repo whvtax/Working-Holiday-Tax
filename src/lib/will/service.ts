@@ -291,7 +291,17 @@ async function handleIncomingInner(
 export async function handleInboundNote(
   waId: string,
   body: string,
-  meta?: { name?: string },
+  meta?: {
+    name?: string;
+    /** The attachment, when the message carried one. Stored on the message so
+     *  the dashboard can show the actual photo or document instead of only the
+     *  "[Photo]" placeholder. */
+    media?: { id: string; kind: string; mime?: string; filename?: string; caption?: string };
+    /** Set when the message is a reaction to one of ours. A reaction is not
+     *  something a human needs to answer, so it is recorded in the thread and
+     *  raises no task. */
+    reaction?: { emoji: string | null; to?: string };
+  },
 ): Promise<CustomerRow> {
   const store = getStore();
   let customer = await store.getCustomerByWaId(waId);
@@ -310,10 +320,21 @@ export async function handleInboundNote(
   }
   await store.addMessage({
     customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,
+    meta: (meta?.media || meta?.reaction)
+      ? { ...(meta.media ? { media: meta.media } : {}), ...(meta.reaction ? { reaction: meta.reaction } : {}) }
+      : undefined,
   });
+  // A reaction needs no reply, so it does not open a task — it is shown in the
+  // thread and that is the whole of it. Raising one here was what buried the
+  // real "cannot read this" tasks under a pile of thumbs-ups.
+  if (meta?.reaction) return (await store.getCustomerByWaId(waId)) ?? customer;
   await store.addTask({
     customerId: customer.id, customerName: customer.name ?? meta?.name ?? waId,
-    reason: 'Customer sent a message Will cannot read (photo, voice note, or unsupported type). Open WhatsApp to read it and reply.',
+    // The attachment is now visible in the chat, so the instruction is to open
+    // the conversation here, not to go and find it in WhatsApp.
+    reason: meta?.media
+      ? 'Customer sent an attachment Will cannot read. Open the chat to view it and reply.'
+      : 'Customer sent a message Will cannot read (voice note or unsupported type). Open WhatsApp to read it and reply.',
     severity: 'REVIEW', context: body, suggestedReply: null,
   });
   const fresh = await store.getCustomerByWaId(waId);

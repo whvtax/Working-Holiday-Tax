@@ -7,7 +7,7 @@ import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank } from '@/lib/will/service';
-import { reconcileSchedule } from '@/lib/will/scheduler';
+import { reconcileSchedule, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
@@ -18,7 +18,7 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'reset_simulator' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate';
+  | 'update_template' | 'reset_simulator' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'retry_blocked' | 'send_followup';
   id?: string;
   customerId?: string;
   body?: string;
@@ -81,11 +81,23 @@ export async function POST(req: Request) {
       // Re-run the guard against the customer's CURRENT reality (audit finding:
       // the world may have changed since the draft was written).
       const killSwitch = (await store.getSetting('kill_switch')) === true;
+      // A draft queued by the scheduler carries the approved WhatsApp template
+      // it will be transmitted as, and the send below picks its transport from
+      // exactly this field. The guard has to be told the same thing, or it
+      // judges a template as if it were free-form text.
+      //
+      // This was hardcoded false, which made every scheduled follow-up
+      // impossible to approve. A follow-up is sent precisely because the
+      // customer has been quiet for 24 hours or more, so it is always outside
+      // Meta's customer-service window: the guard raised
+      // OUTSIDE_24H_WINDOW_NEEDS_TEMPLATE every time, marked the draft BLOCKED
+      // and opened a task, so the nudge could never be sent.
+      const isApprovedTemplate = !!(msg.meta?.waTemplate as { name?: string } | undefined)?.name;
       const verdict = policyGuard(msg.body, {
         state: customer.state, paid: customer.paid, aiPaused: false, killSwitch,
         optedOut: customer.optedOut, isLegacy: customer.isLegacy,
         lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
-        isApprovedTemplate: false, estimateFromTeam: customer.estimatedRefundCents,
+        isApprovedTemplate, estimateFromTeam: customer.estimatedRefundCents,
       });
       if (!verdict.allowed) {
         await store.setMessageStatus(msg.id, 'BLOCKED');
@@ -144,6 +156,69 @@ export async function POST(req: Request) {
       if (fresh) await reconcileSchedule(fresh);
       await store.audit('owner', 'draft_approved', { id: b.id });
       return NextResponse.json({ ok: true });
+    }
+
+    case 'send_followup': {
+      // Send one of the scheduled nudges by hand, from inside the chat, after
+      // reading the conversation. The scheduler sends these on a timer; this is
+      // the same message on the owner's judgement instead.
+      //
+      // It cannot go through the normal manual-send path: a follow-up exists
+      // because the customer has been quiet, so it is always outside Meta's 24h
+      // window and free-form text is refused there. It goes as the approved
+      // WhatsApp template, exactly as the scheduler sends it.
+      if (!b.customerId || !b.id) return bad('customerId and template key required');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+
+      const flow = flowForState(customer.state);
+      const allowed = flow ? FLOW_TEMPLATES[flow] : [];
+      if (!allowed.includes(b.id)) return bad('that follow-up does not belong to this stage');
+
+      const template = (await store.listTemplates()).find((t) => t.key === b.id);
+      if (!template) return bad('template not found', 404);
+
+      if (customer.optedOut) return bad('customer opted out');
+      if ((await store.getSetting('kill_switch')) === true) return bad('kill switch is on');
+
+      const firstName = greetingName(customer);
+      const body = template.body.replace(/\{\{1\}\}/g, firstName);
+
+      const verdict = policyGuard(body, {
+        state: customer.state, paid: customer.paid, aiPaused: false, killSwitch: false,
+        optedOut: customer.optedOut, isLegacy: customer.isLegacy,
+        lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
+        isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
+      });
+      if (!verdict.allowed) return NextResponse.json({ ok: false, blocked: verdict.violations }, { status: 422 });
+
+      const waTemplate = { name: template.key, params: [firstName], lang: customer.lang };
+      const out = await deliverOut(customer, body, 'HUMAN', { waTemplate }, waTemplate);
+      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      await store.audit('owner', 'followup_sent_manually', { customerId: customer.id, template: template.key });
+      return NextResponse.json({ ok: true });
+    }
+
+    case 'retry_blocked': {
+      // Put a BLOCKED draft back in the approval queue.
+      //
+      // Needed because of the bug above: scheduled follow-ups were judged as
+      // free-form text at approval time, so they were marked BLOCKED and the
+      // draft was consumed. The scheduler had already advanced the sequence, so
+      // nothing re-queued them and there was no route left to send them at all.
+      //
+      // This does not bypass anything. The draft goes back to PENDING_APPROVAL
+      // and has to pass the guard again on approval, exactly like any other.
+      if (!b.customerId) return bad('customerId required');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      const blocked = (await store.listMessages(customer.id))
+        .filter((m) => m.direction === 'OUT' && m.status === 'BLOCKED')
+        .sort((a, c) => new Date(c.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      if (!blocked) return bad('no blocked draft for this customer', 404);
+      await store.setMessageStatus(blocked.id, 'PENDING_APPROVAL');
+      await store.audit('owner', 'blocked_draft_requeued', { id: blocked.id, customerId: customer.id });
+      return NextResponse.json({ ok: true, id: blocked.id });
     }
 
     case 'discard_message': {

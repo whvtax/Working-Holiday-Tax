@@ -536,8 +536,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                   className="form-trust-seal"
                   src="/assets/tpb-registered.png"
                   alt={`${T('registeredAgentNo')} ${AGENT_TPB}`}
-                  width={260}
-                  height={164}
+                  width={509}
+                  height={319}
                   loading="lazy"
                   decoding="async"
                 />

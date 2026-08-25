@@ -1,4 +1,5 @@
 import { stripBankBlock } from '../engine';
+import { APPROVED } from '../approved-messages';
 
 describe('stripBankBlock (never repeat the bank details)', () => {
   const bankMessage = [
@@ -35,5 +36,28 @@ describe('stripBankBlock (never repeat the bank details)', () => {
   test('a message with no bank details is unchanged in substance', () => {
     const plain = 'Great, let me know if you have any questions about the process.';
     expect(stripBankBlock(plain)).toBe(plain);
+  });
+
+  // The cases above are hand-built. These run against the real approved
+  // messages, so a reformat of them cannot quietly stop the stripper working.
+  // This caught nothing when the messages were reworded on 24 Aug, but only
+  // because "Once paid" and the account number happened to still match; the
+  // "Account:" and "quick screenshot" patterns no longer do.
+  describe.each([
+    ['price_tfn', APPROVED.price_tfn],
+    ['price_tfn_abn', APPROVED.price_tfn_abn],
+  ])('the live %s message', (_name, msg) => {
+    const out = stripBankBlock(msg);
+    test('loses every bank line', () => {
+      expect(out).not.toMatch(/062\s?692/);
+      expect(out).not.toContain('81049952');
+      expect(out).not.toMatch(/account name/i);
+      expect(out).not.toMatch(/account number/i);
+      expect(out).not.toMatch(/screenshot/i);
+    });
+    test('keeps the fee and the guarantee', () => {
+      expect(out).toMatch(/The total fee is \$\d+/);
+      expect(out).toContain('never out of pocket');
+    });
   });
 });
