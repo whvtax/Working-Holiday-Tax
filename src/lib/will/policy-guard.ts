@@ -83,7 +83,13 @@ const isApprovedSentence = (sentence: string) => APPROVED_SENTENCES.has(norm(sen
 const MAX_IMPROVISED_CHARS = 450;
 
 // ---------- money (currency-symbol / currency-word agnostic across languages) ----------
-const FIXED_PRICES_CENTS = [22000, 38500];
+// The only prices that may leave the building: $220 (TFN), $385 (TFN + ABN) and
+// $110 for a phone consultation. $110 was added on Jo's approval, 25 Aug, after
+// the export showed the team quoting it to a customer who asked for a call —
+// without it here the guard blocked the sentence and the answer could never be
+// sent. Post-payment nothing is allowed at all (see `allowedCents` below), so a
+// consultation price can only ever appear before the customer has paid.
+const FIXED_PRICES_CENTS = [22000, 38500, 11000];
 // Currency words in the languages backpackers actually use.
 const CURRENCY_WORDS = 'dollars?|bucks?|aud|usd|dólares?|dolares?|euros?|eur|pounds?|libras?|sterline|quid|yen|jpy|francs?|kroner?|kronor?|reais?|pesos?|shekels?|rupees?|won';
 const CURRENCY_SYMBOLS = '\\$|€|£|¥|₪|₩|₺|₹|R\\$';

@@ -7,9 +7,11 @@ import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, 
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
-import Simulator from './Simulator';
 
-type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'insights' | 'learning' | 'simulator';
+// The Simulator was removed on Jo's instruction, 25 Aug: with real WhatsApp
+// traffic flowing it had no use left, and a fake customer sitting in the
+// pipeline next to the real ones was a hazard rather than a help.
+type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'insights' | 'learning';
 
 interface StateData {
   customers: CustomerRow[];
@@ -49,7 +51,6 @@ const ICONS: Record<View, React.ReactNode> = {
   tasks: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
   library: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>,
   insights: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>,
-  simulator: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>,
   learning: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
 };
 const BELL = <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>;
@@ -405,7 +406,7 @@ export default function Dashboard() {
     <>
       <aside className="side">
         <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
-        {(['pipeline', 'chats', 'tasks', 'library', 'insights', 'learning', 'simulator'] as View[]).map((v) => (
+        {(['pipeline', 'chats', 'tasks', 'library', 'insights', 'learning'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
             <span className="nl">{v[0].toUpperCase() + v.slice(1)}</span>
@@ -635,48 +636,69 @@ export default function Dashboard() {
                             {stageMenuOpen && (
                               <>
                                 <div className="stagemenu-backdrop" onClick={() => { setStageMenuOpen(false); setStageMenuAll(false); }} />
-                                {/* This listed all eighteen stages and forced every
-                                    move. The state machine already says which few
-                                    are reachable from here, so that is what the menu
-                                    offers: from New Lead it is five, not eighteen.
-                                    Anything out of order is still possible behind
-                                    "Move anywhere", which is the only path that
-                                    forces. Will sets the stage itself from the
-                                    conversation; this is for correcting it. */}
+                                {/* Jo, 25 Aug: this offers the SAME eight options as
+                                    the pipeline strip at the top of the dashboard,
+                                    not the eighteen internal states behind them.
+                                    Will works out the stage from the conversation
+                                    on its own; this menu is for the occasional
+                                    correction, and for that the buckets a person
+                                    actually thinks in are the right granularity.
+                                    The exact internal state is still reachable
+                                    under "Move anywhere", for the rare case where
+                                    it matters. */}
                                 <div className="stagemenu">
                                   {(() => {
                                     const nextStates = TRANSITIONS[chatSel.state] ?? [];
-                                    const shown = stageMenuAll
-                                      ? STAGE_GROUPS.flatMap((g) => (g.states as readonly CustomerState[]).map((s) => ({ s, color: g.color })))
-                                      : STAGE_GROUPS.flatMap((g) => (g.states as readonly CustomerState[]).map((s) => ({ s, color: g.color })))
-                                          .filter(({ s }) => s === chatSel.state || nextStates.includes(s));
+                                    const move = async (s: CustomerState) => {
+                                      setStageMenuOpen(false); setStageMenuAll(false);
+                                      if (s === chatSel.state) return;
+                                      // Only an out-of-order correction forces.
+                                      const force = !nextStates.includes(s);
+                                      const r = await act({ action: 'set_state', customerId: chatSel.id, state: s, force });
+                                      say(r?.ok ? `Moved to ${STATE_LABELS[s]}` : `❌ ${r?.error ?? 'could not move'}`);
+                                      loadChat(chatSel.id); refresh();
+                                    };
+                                    if (stageMenuAll) {
+                                      const all = STAGE_GROUPS.flatMap((g) =>
+                                        (g.states as readonly CustomerState[]).map((s) => ({ s, color: g.color })));
+                                      return all.map(({ s, color }) => (
+                                        <button
+                                          key={s}
+                                          type="button"
+                                          className={`stagemenu-item${s === chatSel.state ? ' is-current' : ''}`}
+                                          onClick={() => move(s)}
+                                        >
+                                          <span className="stagemenu-dot" style={{ background: color }} />
+                                          <span className="stagemenu-lbl">{STATE_LABELS[s]}</span>
+                                          {s === chatSel.state && <span className="stagemenu-check">✓</span>}
+                                        </button>
+                                      ));
+                                    }
                                     return (
                                       <>
-                                        {shown.map(({ s, color }) => (
-                                          <button
-                                            key={s}
-                                            type="button"
-                                            className={`stagemenu-item${s === chatSel.state ? ' is-current' : ''}`}
-                                            onClick={async () => {
-                                              setStageMenuOpen(false); setStageMenuAll(false);
-                                              if (s === chatSel.state) return;
-                                              // Only an out-of-order correction forces.
-                                              const force = !nextStates.includes(s);
-                                              const r = await act({ action: 'set_state', customerId: chatSel.id, state: s, force });
-                                              say(r?.ok ? `Moved to ${STATE_LABELS[s]}` : `❌ ${r?.error ?? 'could not move'}`);
-                                              loadChat(chatSel.id); refresh();
-                                            }}
-                                          >
-                                            <span className="stagemenu-dot" style={{ background: color }} />
-                                            <span className="stagemenu-lbl">{STATE_LABELS[s]}</span>
-                                            {s === chatSel.state && <span className="stagemenu-check">✓</span>}
-                                          </button>
-                                        ))}
-                                        {!stageMenuAll && (
-                                          <button type="button" className="stagemenu-item" onClick={() => setStageMenuAll(true)}>
-                                            <span className="stagemenu-lbl" style={{ color: 'var(--ink3)' }}>Move anywhere…</span>
-                                          </button>
-                                        )}
+                                        {STAGE_GROUPS.map((g) => {
+                                          const states = g.states as readonly CustomerState[];
+                                          const isHere = states.includes(chatSel.state);
+                                          // Landing on a group means its first state,
+                                          // unless we are already inside the group, in
+                                          // which case the row is just a marker.
+                                          const target = states[0];
+                                          return (
+                                            <button
+                                              key={g.id}
+                                              type="button"
+                                              className={`stagemenu-item${isHere ? ' is-current' : ''}`}
+                                              onClick={() => { if (!isHere) move(target); else setStageMenuOpen(false); }}
+                                            >
+                                              <span className="stagemenu-dot" style={{ background: g.color }} />
+                                              <span className="stagemenu-lbl">{g.label}</span>
+                                              {isHere && <span className="stagemenu-check">✓</span>}
+                                            </button>
+                                          );
+                                        })}
+                                        <button type="button" className="stagemenu-item" onClick={() => setStageMenuAll(true)}>
+                                          <span className="stagemenu-lbl" style={{ color: 'var(--ink3)' }}>Move anywhere…</span>
+                                        </button>
                                       </>
                                     );
                                   })()}
@@ -1119,7 +1141,7 @@ export default function Dashboard() {
                 {activity.map((a) => {
                   const d = (a.detail ?? {}) as { action?: string; knowledgeUsed?: string[]; guard?: { blocked?: boolean; violations?: string[] }; preview?: string | null; newState?: string | null };
                   const label = a.action === 'decision'
-                    ? (d.action === 'sent' ? 'Sent a reply' : d.action === 'pending_approval' ? 'Drafted for approval' : d.action === 'human_task' ? 'Handed to you' : d.action || 'Decision')
+                    ? (d.action === 'sent' ? 'Sent a reply' : d.action === 'queued' ? 'Reply queued to send' : d.action === 'pending_approval' ? 'Drafted for approval' : d.action === 'human_task' ? 'Handed to you' : d.action || 'Decision')
                     : a.action.replace(/_/g, ' ');
                   const blocked = d.guard?.blocked;
                   return (
@@ -1154,7 +1176,6 @@ export default function Dashboard() {
           </section>
         )}
 
-        {view === 'simulator' && <Simulator mode={mode} say={say} onDataChange={refresh} />}
       </main>
 
       <div className={`drawer ${drawer ? 'open' : ''}`}>

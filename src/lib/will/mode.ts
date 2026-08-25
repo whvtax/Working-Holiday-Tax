@@ -4,7 +4,7 @@
  * WHY THIS FILE EXISTS
  *   `ai_mode` used to be read in two places that disagreed with each other:
  *
- *     engine.ts     kind: mode === 'SUPERVISED' ? 'pending_approval' : 'sent'
+ *     engine.ts     kind: mode === 'SUPERVISED' ? 'pending_approval' : 'queued'
  *     scheduler.ts  return mode !== 'FULL_AUTO'
  *
  *   The first one fails OPEN. Any value that was not the exact string

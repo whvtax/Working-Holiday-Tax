@@ -83,7 +83,7 @@ export async function GET() {
     insights.push({
       problem: 'No recurring problems detected yet',
       evidence: 'Not enough conversation volume',
-      solution: 'Keep running the simulator or connect real traffic; patterns need data.',
+      solution: 'More conversations are needed before patterns show up; this fills in as real traffic arrives.',
     });
   }
 

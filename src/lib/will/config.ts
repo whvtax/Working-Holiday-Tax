@@ -51,6 +51,20 @@ export function humanDelaySeconds(text: string): number {
   return Math.round(base + Math.random() * base * 0.8);
 }
 
+/** How long Autopilot waits before a reply actually leaves, in seconds.
+ *
+ *  Set to 4 minutes on Jo's instruction, 25 Aug. Until now Autopilot answered
+ *  the instant the webhook landed, which reads as a machine: nobody types a
+ *  considered answer about someone's tax in two seconds.
+ *
+ *  The reply is written immediately and parked as QUEUED, so it is visible in
+ *  the chat and can still be discarded; the scheduler transmits it once this
+ *  delay has passed. The tick runs every 5 minutes (vercel.json), so the real
+ *  gap lands between 4 and 9 minutes — which is the human range anyway.
+ *
+ *  Approval mode is unaffected: there the owner's click is the delay. */
+export const AUTOPILOT_REPLY_DELAY_SECONDS = 240;
+
 export function withinQuietHours(now = new Date()): boolean {
   const cfg = schedulerConfig();
   if (!cfg.enforceQuietHours) return true;

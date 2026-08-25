@@ -25,7 +25,10 @@ export interface EngineInput {
 }
 
 export interface EngineOutcome {
-  kind: 'sent' | 'pending_approval' | 'human_task' | 'silent';
+  /** 'queued' is Autopilot: the reply is final, but it waits
+   *  AUTOPILOT_REPLY_DELAY_SECONDS before it is transmitted. 'sent' is kept for
+   *  paths that must go out immediately. */
+  kind: 'sent' | 'queued' | 'pending_approval' | 'human_task' | 'silent';
   replyText?: string;
   newState?: CustomerState;
   stateChanged?: boolean;
@@ -229,7 +232,9 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // row would have put live replies on autopilot silently, while the follow-up
   // queue kept looking gated. See lib/will/mode.ts.
   return {
-    kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'sent' : 'pending_approval',
+    // Autopilot no longer answers instantly: 'queued' parks the finished reply
+    // and the scheduler sends it a few minutes later (Jo, 25 Aug).
+    kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
     replyText: text,
     newState,
     stateChanged: !!newState,

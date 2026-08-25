@@ -102,8 +102,12 @@ export interface SuggestionRow {
 export interface JobRow {
   id: string;
   customerId: string | null;
-  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED';
-  payload: { templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string };
+  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY';
+  payload: {
+    templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
+    /** AUTO_REPLY only: the QUEUED message this job will transmit. */
+    messageId?: string;
+  };
   runAt: string;
   status: 'SCHEDULED' | 'CLAIMED' | 'DONE' | 'CANCELLED' | 'FAILED';
   claimedAt?: string;   // lease timestamp for CLAIMED jobs (H6: reclaim if stale)

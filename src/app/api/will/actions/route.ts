@@ -13,12 +13,13 @@ import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
 import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/channel';
 import { resolveAiMode } from '@/lib/will/mode';
+import { suggestReply } from '@/lib/will/suggest';
 
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'reset_simulator' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'retry_blocked' | 'send_followup';
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'retry_blocked' | 'send_followup';
   id?: string;
   customerId?: string;
   body?: string;
@@ -104,7 +105,11 @@ export async function POST(req: Request) {
         await store.addTask({
           customerId: customer.id, customerName: customer.name ?? customer.waId,
           reason: `Draft became invalid before approval: ${verdict.violations.join(', ')}`,
-          severity: 'REVIEW', context: msg.body.slice(0, 200), suggestedReply: null,
+          severity: 'REVIEW', context: msg.body.slice(0, 200),
+          // The blocked text itself is the most useful thing to show: the fix is
+          // usually one sentence, and editing it beats writing a reply from
+          // nothing. It is only a draft — sending it runs the guard again.
+          suggestedReply: await suggestReply('', customer, 'draft_invalid', msg.body),
         });
         return NextResponse.json({ ok: false, blocked: verdict.violations });
       }
@@ -453,11 +458,6 @@ export async function POST(req: Request) {
       await store.audit('owner', 'goal_set', { goal: g });
       return NextResponse.json({ ok: true, goal: g });
     }
-
-    case 'reset_simulator':
-      await store.deleteCustomerByWaId('simulator');
-      await store.audit('owner', 'simulator_reset');
-      return NextResponse.json({ ok: true });
 
     case 'update_template': {
       if (!b.id || typeof b.body !== 'string') return bad('id and body required');

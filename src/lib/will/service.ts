@@ -11,8 +11,10 @@ import { reconcileSchedule } from './scheduler';
 import { detectLanguage } from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut } from './channel';
+import { AUTOPILOT_REPLY_DELAY_SECONDS } from './config';
 import { isIdentityQuestion } from './identity-question';
 import { firstNameOf } from './text-normalize';
+import { suggestReply } from './suggest';
 
 export interface HandleResult {
   outcome: EngineOutcome;
@@ -132,7 +134,8 @@ async function handleIncomingInner(
       await store.addTask({
         customerId: customer.id, customerName: customer.name ?? waId,
         reason: isClosed ? 'A previous customer messaged again, needs a human' : 'An existing chat sent a message, needs a human',
-        severity: 'REVIEW', context: text, suggestedReply: null,
+        severity: 'REVIEW', context: text,
+        suggestedReply: await suggestReply(text, customer, 'returning_customer'),
       });
       await store.audit('system', 'routed_to_human_existing_chat', { customerId: customer.id });
     }
@@ -155,6 +158,11 @@ async function handleIncomingInner(
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? waId,
       reason: 'Customer asked whether they are talking to a bot, needs a human reply',
+      // THE ONE TASK WITH NO SUGGESTED REPLY, and deliberately so. Every other
+      // handoff now arrives with a draft (Jo, 25 Aug), but the older owner rule
+      // is narrower and stricter: no answer to "am I talking to a bot" may ever
+      // exist, not even as a draft, because a draft is one click from being
+      // sent. This answer has to be a person's own words.
       severity: 'REVIEW', context: text.slice(0, 200), suggestedReply: null,
     });
     await store.audit('policy_guard', 'identity_question_handoff', { customerId: customer.id });
@@ -176,7 +184,8 @@ async function handleIncomingInner(
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? waId,
       reason: 'Daily AI limit reached, please reply to this customer manually',
-      severity: 'REVIEW', context: text.slice(0, 200), suggestedReply: null,
+      severity: 'REVIEW', context: text.slice(0, 200),
+      suggestedReply: await suggestReply(text, customer, 'budget'),
     });
     await store.audit('policy_guard', 'ai_budget_exhausted', { customerId: customer.id });
     const c2 = await store.getCustomerByWaId(waId);
@@ -228,6 +237,27 @@ async function handleIncomingInner(
     const inc = inferIncome(outcome.replyText);
     if (inc) await store.updateCustomer(customer.id, { income: inc });
     await deliverOut(customer, outcome.replyText, 'AI');
+  } else if (outcome.kind === 'queued' && outcome.replyText) {
+    // Autopilot with a human pause. The reply is finished and correct now, but
+    // it does not leave for AUTOPILOT_REPLY_DELAY_SECONDS: an instant answer
+    // reads as a machine. It is parked as QUEUED so it is visible in the chat
+    // and can be discarded, and the scheduler transmits it when the time comes.
+    //
+    // Nothing about the customer changes yet. The state and income the reply
+    // presupposes are recorded on the message and applied at the moment it is
+    // actually sent, exactly as the approval path does, so a reply that never
+    // goes out cannot leave the pipeline advanced.
+    const inc = inferIncome(outcome.replyText);
+    const m = await store.addMessage({
+      customerId: customer.id, direction: 'OUT', author: 'AI', status: 'QUEUED',
+      body: outcome.replyText,
+      meta: { proposedState: outcome.newState, income: inc ?? undefined },
+    });
+    await store.addJob({
+      customerId: customer.id, kind: 'AUTO_REPLY', payload: { messageId: m.id },
+      runAt: new Date(Date.now() + AUTOPILOT_REPLY_DELAY_SECONDS * 1000).toISOString(),
+    });
+    pendingMessageId = m.id;
   } else if (outcome.kind === 'pending_approval' && outcome.replyText) {
     // This new draft was written against the FULL conversation (every message the
     // customer has sent so far). Any earlier draft still awaiting approval saw
@@ -335,7 +365,11 @@ export async function handleInboundNote(
     reason: meta?.media
       ? 'Customer sent an attachment Will cannot read. Open the chat to view it and reply.'
       : 'Customer sent a message Will cannot read (voice note or unsupported type). Open WhatsApp to read it and reply.',
-    severity: 'REVIEW', context: body, suggestedReply: null,
+    severity: 'REVIEW', context: body,
+    // Even here there is something worth proposing: an acknowledgement that the
+    // attachment arrived, so the customer is not left on read while the owner
+    // opens it.
+    suggestedReply: await suggestReply('', customer, meta?.media ? 'attachment' : 'unreadable'),
   });
   const fresh = await store.getCustomerByWaId(waId);
   return fresh ?? customer;

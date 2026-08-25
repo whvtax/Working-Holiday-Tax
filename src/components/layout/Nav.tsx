@@ -449,7 +449,7 @@ export function Nav() {
             that DO answer "can I trust these people" — the same pair, in the
             same order, as the header of the tax refund form: the Google rating
             and the registered tax agent seal. */}
-        <div className="flex flex-col items-center gap-3 mt-5 pb-2">
+        <div className="flex flex-row flex-wrap items-center justify-center gap-4 mt-5 pb-2">
           <GoogleReviewsBadge lang={locale} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -459,7 +459,7 @@ export function Nav() {
             height={319}
             loading="lazy"
             decoding="async"
-            style={{ display: 'block', width: '132px', height: 'auto' }}
+            style={{ display: 'block', width: '116px', height: 'auto' }}
           />
         </div>
       </div>

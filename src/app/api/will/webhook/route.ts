@@ -10,6 +10,7 @@
 // ============================================================
 import { createHmac, timingSafeEqual } from 'crypto';
 import { handleIncoming, handleInboundNote } from '@/lib/will/service';
+import { suggestReply } from '@/lib/will/suggest';
 import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
 import { isRateLimited, getRedis } from '@/lib/rate-limit';
@@ -467,7 +468,9 @@ export async function POST(req: Request) {
             reason: `A WhatsApp message could not be processed after ${MAX_INBOUND_ATTEMPTS} attempts and needs a manual reply. Error: ${error}`,
             severity: 'URGENT',
             context: body,
-            suggestedReply: null,
+            // A send that failed three times still needs an answer written for
+            // it; the owner should never have to start from a blank box.
+            suggestedReply: await suggestReply(body, customer ?? null, 'send_failed'),
           });
         } catch { /* the store is the thing that is broken; the audit line stands */ }
       }

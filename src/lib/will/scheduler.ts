@@ -8,11 +8,12 @@ import { getStore, CustomerRow } from './store';
 import { schedulerConfig, withinQuietHours, deferToMorning } from './config';
 import { policyGuard } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
+import { suggestReply } from './suggest';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
 import { formReceivedMessage } from './i18n';
-import { deliverOut } from './channel';
+import { deliverOut, sendWhatsAppText } from './channel';
 import { requiresApproval } from './mode';
 import { maybeSendMonthlyDigest } from './digest';
 
@@ -175,6 +176,70 @@ async function doProcess(): Promise<TickResult> {
         continue;
       }
 
+      // AUTO_REPLY: an Autopilot answer that was written when the customer's
+      // message arrived and deliberately held back for a few minutes, so the
+      // reply does not land the same second the question did.
+      if (job.kind === 'AUTO_REPLY') {
+        const msg = job.payload.messageId ? await store.getMessageById(job.payload.messageId) : null;
+        // Gone, or already dealt with by a human (discarded, sent, blocked).
+        if (!msg || msg.status !== 'QUEUED') { await store.setJobStatus(job.id, 'DONE'); continue; }
+
+        // The conversation moved while the reply waited. Anything the customer
+        // said after this was drafted produced its own, better-informed reply,
+        // so sending this one now would be answering a question that has been
+        // overtaken. Drop it rather than talk past them.
+        const stale = customer.lastCustomerMsgAt != null
+          && new Date(customer.lastCustomerMsgAt).getTime() > new Date(msg.createdAt).getTime();
+        // (The kill switch is handled above: it returns before any job runs.)
+        if (stale || customer.optedOut || customer.aiPaused) {
+          await store.setMessageStatus(msg.id, 'DISCARDED');
+          await store.setJobStatus(job.id, 'CANCELLED');
+          continue;
+        }
+
+        // Re-run the guard against the customer as they are NOW, not as they
+        // were when the reply was written. Four minutes is long enough for a
+        // payment to land and for a sales line to become the wrong thing to say.
+        const verdict = policyGuard(msg.body, {
+          state: customer.state, paid: customer.paid, aiPaused: customer.aiPaused, killSwitch: false,
+          optedOut: customer.optedOut, isLegacy: customer.isLegacy,
+          lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
+          isApprovedTemplate: false, estimateFromTeam: customer.estimatedRefundCents,
+        });
+        if (!verdict.allowed) {
+          await store.setMessageStatus(msg.id, 'BLOCKED');
+          await store.addTask({
+            customerId: customer.id, customerName: customer.name ?? customer.waId,
+            reason: `Autopilot reply blocked before sending: ${verdict.violations.join(', ')}`,
+            severity: 'REVIEW', context: msg.body.slice(0, 200),
+            suggestedReply: await suggestReply('', customer, 'guard_blocked', msg.body),
+          });
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
+
+        const res = await sendWhatsAppText(customer.waId, msg.body);
+        await store.setMessageStatus(msg.id, res.ok ? 'SENT' : 'FAILED', { restamp: true });
+        if (res.ok) {
+          // Only now does the world move: the state and income this reply
+          // presupposed are applied at the moment it actually reaches them.
+          if (msg.meta?.proposedState && msg.meta.proposedState !== customer.state) {
+            await store.setState(customer.id, msg.meta.proposedState, 'AI');
+          }
+          if (msg.meta?.income) await store.updateCustomer(customer.id, { income: msg.meta.income });
+          result.sent.push(`${customer.name ?? customer.waId} · autopilot reply`);
+        } else {
+          await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });
+          await store.addTask({
+            customerId: customer.id, customerName: customer.name ?? customer.waId,
+            reason: `WhatsApp send failed: ${res.error ?? 'unknown error'}`,
+            severity: 'REVIEW', context: msg.body.slice(0, 200), suggestedReply: msg.body,
+          });
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
       // FOLLOW_UP
       const flow = job.payload.flow as Flow;
       const seq = job.payload.seq ?? 0;
@@ -208,7 +273,10 @@ async function doProcess(): Promise<TickResult> {
         await store.addTask({
           customerId: customer.id, customerName: customer.name ?? customer.waId,
           reason: `Follow-up blocked by Policy Guard: ${verdict.violations.join(', ')}`,
-          severity: 'REVIEW', context: template.title, suggestedReply: null,
+          severity: 'REVIEW', context: template.title,
+          // Show the follow-up that was refused, so it can be corrected and sent
+          // rather than rewritten from scratch.
+          suggestedReply: await suggestReply('', customer, 'guard_blocked', template.body),
         });
         await scheduleFollowUp(customer.id, flow, seq + 1);
         continue;
