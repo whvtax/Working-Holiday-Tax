@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import {
-  Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, SuggestionRow, KnowledgeRow, AuditRow,
+  Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
 } from './store';
 import { CustomerState } from './state-machine';
 import { seedCustomers, seedTemplates } from './seed';
@@ -16,7 +16,6 @@ interface Db {
   templates: TemplateRow[];
   history: StateHistoryRow[];
   jobs: JobRow[];
-  suggestions: SuggestionRow[];
   knowledge: KnowledgeRow[];
   settings: Record<string, unknown>;
   audit: { id?: string; actor: string; action: string; detail: unknown; at: string }[];
@@ -46,7 +45,6 @@ async function load(): Promise<Db> {
       throw parseErr;
     }
     cache.jobs ??= [];
-    cache.suggestions ??= [];
     cache.knowledge ??= [];
     cache.settings ??= {};
     cache.processed ??= [];
@@ -60,7 +58,6 @@ async function load(): Promise<Db> {
       templates: seedTemplates(),
       history: [],
       jobs: [],
-      suggestions: [],
       knowledge: [],
       settings: {},
       audit: [],
@@ -216,6 +213,20 @@ export class FileStore implements Store {
       }));
   }
 
+  async listMessagesBetween(startIso: string, endIso: string, limit = 10000) {
+    const db = await load();
+    const byId = new Map(db.customers.map((c) => [c.id, c]));
+    return db.messages
+      .filter((m) => m.createdAt >= startIso && m.createdAt < endIso)
+      .sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1))
+      .slice(0, limit)
+      .map((m) => ({
+        ...m,
+        customerName: byId.get(m.customerId)?.name ?? null,
+        waId: byId.get(m.customerId)?.waId,
+      }));
+  }
+
   async claimMessageForSend(id: string): Promise<boolean> {
     const db = await load();
     const m = db.messages.find((x) => x.id === id);
@@ -230,6 +241,12 @@ export class FileStore implements Store {
     const m = db.messages.find((x) => x.id === id);
     if (m) { m.status = status; if (opts?.restamp) m.createdAt = now(); }
     await persist();
+  }
+
+  async attachProviderId(id: string, providerId: string) {
+    const db = await load();
+    const m = db.messages.find((x) => x.id === id);
+    if (m) { m.meta = { ...(m.meta ?? {}), providerId }; await persist(); }
   }
 
   async discardByProviderId(providerId: string) {
@@ -304,27 +321,6 @@ export class FileStore implements Store {
     db.tasks = db.tasks.filter((x) => x.customerId !== c.id);
     db.history = db.history.filter((x) => x.customerId !== c.id);
     db.jobs = db.jobs.filter((x) => x.customerId !== c.id); // L4: no orphaned jobs
-    await persist();
-  }
-
-  async listSuggestions() { return (await load()).suggestions; }
-
-  async upsertSuggestion(s: Omit<SuggestionRow, 'id' | 'createdAt' | 'status'> & { dedupeKey: string }) {
-    const db = await load();
-    const existing = db.suggestions.find((x) => x.detail === s.dedupeKey && x.status === 'PENDING');
-    if (existing) { existing.occurrences = s.occurrences; existing.proposedBody = s.proposedBody; }
-    else db.suggestions.push({
-      id: randomUUID(), kind: s.kind, title: s.title, detail: s.detail,
-      proposedBody: s.proposedBody, targetTemplateId: s.targetTemplateId,
-      occurrences: s.occurrences, status: 'PENDING', createdAt: now(),
-    });
-    await persist();
-  }
-
-  async setSuggestionStatus(id: string, status: SuggestionRow['status']) {
-    const db = await load();
-    const s = db.suggestions.find((x) => x.id === id);
-    if (s) s.status = status;
     await persist();
   }
 

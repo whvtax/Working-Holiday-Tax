@@ -257,6 +257,16 @@ export async function deliverOut(
     ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, template.lang ?? customer.lang)
     : await sendWhatsAppText(customer.waId, body);
   await store.setMessageStatus(rec.id, res.ok ? 'SENT' : 'FAILED');
+  // So a reaction to this message later (which only carries Meta's id) can
+  // be matched back to this exact bubble instead of showing as a floating
+  // unattached line.
+  if (res.ok && res.providerId) await store.attachProviderId(rec.id, res.providerId);
+  // WhatsApp-real behaviour: the owner personally sending something to this
+  // customer IS them engaging with the conversation, exactly like replying
+  // on your phone clears the unread marker on your end. Only for a HUMAN
+  // send — an AI auto-reply doesn't mean the owner has actually looked at
+  // the chat, so it must not silently clear the bold/badge for them.
+  if (res.ok && author === 'HUMAN') await store.markCustomerRead(customer.id);
   if (!res.ok) {
     await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });
     await store.addTask({

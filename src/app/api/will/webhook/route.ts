@@ -9,7 +9,7 @@
 //        outbound message as an OUT record.
 // ============================================================
 import { createHmac, timingSafeEqual } from 'crypto';
-import { handleIncoming, handleInboundNote } from '@/lib/will/service';
+import { handleIncoming, handleInboundNote, handlePaymentProofMedia } from '@/lib/will/service';
 import { suggestReply } from '@/lib/will/suggest';
 import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
@@ -113,6 +113,14 @@ interface WaMessage {
   /** A heart or thumbs up on one of our messages. This fell through to the
    *  generic "open WhatsApp to view" placeholder, which read as unreadable. */
   reaction?: { message_id?: string; emoji?: string };
+  /** A tap on one of our buttons/list options. WhatsApp gives a readable
+   *  title here — recovering it means a button tap shows as real text
+   *  instead of the generic "open WhatsApp to view" placeholder. */
+  interactive?: {
+    type?: string;
+    button_reply?: { id?: string; title?: string };
+    list_reply?: { id?: string; title?: string; description?: string };
+  };
   location?: unknown; contacts?: unknown;
   // Present on type:'unsupported' — the reason Meta could not render the message.
   errors?: { code?: number; title?: string; message?: string }[];
@@ -272,6 +280,14 @@ function extract(payload: unknown, ourPhoneId?: string): InboundItem[] {
           // strict `type === 'text'` check dropped it silently, losing the lead.
           if (m.text?.body) {
             out.push({ msg: m, name, body: m.text.body, isText: true, kind: 'text' });
+            continue;
+          }
+          // A tap on a button/list reply has real, readable text — recover
+          // it the same way, rather than falling through to the generic
+          // "open WhatsApp to view" placeholder below.
+          const interactiveTitle = m.interactive?.button_reply?.title || m.interactive?.list_reply?.title;
+          if (interactiveTitle) {
+            out.push({ msg: m, name, body: interactiveTitle, isText: true, kind: 'text' });
             continue;
           }
           // No readable text: keep the customer visible with a placeholder and a
@@ -492,8 +508,18 @@ export async function POST(req: Request) {
       if (kind === 'unsupported' || kind === 'unknown') {
         try { await store.audit('channel', 'inbound_unsupported', { id: msg.id, from: maskWa(msg.from), ...describeUndecoded(msg) }); } catch { /* */ }
       }
-      await handleInboundNote(msg.from, body, { name, media, reaction });
-      await store.audit('channel', 'inbound_note_stored', { id: msg.id, kind, hasMedia: !!media, from: maskWa(msg.from) });
+      // Owner's rule: we trust the customer. A photo or document arriving
+      // while a price is outstanding is proof of payment, same as them
+      // typing "paid" — move them to Paid automatically instead of parking
+      // it as a "cannot read this" task. handlePaymentProofMedia returns
+      // null when it doesn't qualify (wrong stage, already paid, unknown
+      // contact), and the normal note/task path runs as before.
+      const isProofCandidate = (media?.kind === 'image' || media?.kind === 'document');
+      const autoPaid = isProofCandidate ? await handlePaymentProofMedia(msg.from, body, { name, media: media! }) : null;
+      if (!autoPaid) {
+        await handleInboundNote(msg.from, body, { name, media, reaction });
+      }
+      await store.audit('channel', 'inbound_note_stored', { id: msg.id, kind, hasMedia: !!media, from: maskWa(msg.from), autoPaid: !!autoPaid });
     } catch { /* best effort: the placeholder is a courtesy, not the lead itself */ }
   }
 

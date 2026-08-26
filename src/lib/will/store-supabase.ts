@@ -7,7 +7,7 @@
 import { randomUUID } from 'crypto';
 import { getSupabase } from '@/lib/supabase';
 import {
-  Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, SuggestionRow, KnowledgeRow, AuditRow,
+  Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
 } from './store';
 import { CustomerState } from './state-machine';
 import { seedTemplates } from './seed';
@@ -93,19 +93,6 @@ function toTemplate(r: Record<string, unknown>): TemplateRow {
     sentB: (r.sent_b as number) ?? 0,
     convA: (r.conv_a as number) ?? 0,
     convB: (r.conv_b as number) ?? 0,
-  };
-}
-function toSuggestion(r: Record<string, unknown>): SuggestionRow {
-  return {
-    id: r.id as string,
-    kind: r.kind as SuggestionRow['kind'],
-    title: (r.title as string) ?? '',
-    detail: (r.detail as string) ?? '',
-    proposedBody: (r.proposed_body as string) ?? '',
-    targetTemplateId: (r.target_template_id as string) ?? undefined,
-    occurrences: (r.occurrences as number) ?? 1,
-    status: r.status as SuggestionRow['status'],
-    createdAt: (r.created_at as string) ?? now(),
   };
 }
 function toJob(r: Record<string, unknown>): JobRow {
@@ -357,6 +344,25 @@ export class SupabaseStore implements Store {
     });
   }
 
+  async listMessagesBetween(
+    startIso: string,
+    endIso: string,
+    limit = 10000,
+  ): Promise<(MessageRow & { customerName?: string | null; waId?: string })[]> {
+    // Same shape as listInboundBetween but both directions — the daily digest
+    // needs the outbound reply that followed each inbound question.
+    const { data } = await this.sb().from('will_messages')
+      .select('*, will_customers(name, wa_id)')
+      .gte('created_at', startIso)
+      .lt('created_at', endIso)
+      .order('created_at', { ascending: true })
+      .limit(limit);
+    return (data ?? []).map((row) => {
+      const joined = (row as { will_customers?: { name?: string | null; wa_id?: string } | null }).will_customers;
+      return { ...toMessage(row), customerName: joined?.name ?? null, waId: joined?.wa_id };
+    });
+  }
+
   async claimMessageForSend(id: string): Promise<boolean> {
     // Atomic: only succeeds if the row is still PENDING_APPROVAL, so two
     // concurrent approvals cannot both transmit.
@@ -369,6 +375,12 @@ export class SupabaseStore implements Store {
     const patch: Record<string, unknown> = { status };
     if (opts?.restamp) patch.created_at = now();
     await this.sb().from('will_messages').update(patch).eq('id', id);
+  }
+
+  async attachProviderId(id: string, providerId: string): Promise<void> {
+    const { data } = await this.sb().from('will_messages').select('meta').eq('id', id).maybeSingle();
+    const meta = { ...((data?.meta as Record<string, unknown>) ?? {}), providerId };
+    await this.sb().from('will_messages').update({ meta }).eq('id', id);
   }
 
   async discardByProviderId(providerId: string): Promise<boolean> {
@@ -451,31 +463,6 @@ export class SupabaseStore implements Store {
       this.sb().from('will_jobs').delete().eq('customer_id', id),
     ]);
     await this.sb().from('will_customers').delete().eq('id', id);
-  }
-
-  async listSuggestions(): Promise<SuggestionRow[]> {
-    const { data } = await this.sb().from('will_suggestions').select('*').order('created_at', { ascending: false });
-    return (data ?? []).map(toSuggestion);
-  }
-
-  async upsertSuggestion(s: Omit<SuggestionRow, 'id' | 'createdAt' | 'status'> & { dedupeKey: string }): Promise<void> {
-    const { data: existing } = await this.sb().from('will_suggestions').select('id')
-      .eq('dedupe_key', s.dedupeKey).eq('status', 'PENDING').maybeSingle();
-    if (existing) {
-      await this.sb().from('will_suggestions').update({
-        occurrences: s.occurrences, proposed_body: s.proposedBody,
-      }).eq('id', existing.id);
-    } else {
-      await this.sb().from('will_suggestions').insert({
-        id: randomUUID(), kind: s.kind, title: s.title, detail: s.detail,
-        proposed_body: s.proposedBody, target_template_id: s.targetTemplateId ?? null,
-        occurrences: s.occurrences, status: 'PENDING', dedupe_key: s.dedupeKey, created_at: now(),
-      });
-    }
-  }
-
-  async setSuggestionStatus(id: string, status: SuggestionRow['status']): Promise<void> {
-    await this.sb().from('will_suggestions').update({ status }).eq('id', id);
   }
 
   async bumpVariant(templateId: string, variant: 'A' | 'B', field: 'sent' | 'conv'): Promise<void> {

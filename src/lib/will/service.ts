@@ -10,11 +10,13 @@ import { Turn } from './claude';
 import { reconcileSchedule } from './scheduler';
 import { detectLanguage } from './i18n';
 import { retrieveKnowledge } from './knowledge';
-import { deliverOut } from './channel';
+import { deliverOut, fetchWaMedia } from './channel';
 import { AUTOPILOT_REPLY_DELAY_SECONDS } from './config';
 import { isIdentityQuestion } from './identity-question';
 import { firstNameOf } from './text-normalize';
 import { suggestReply } from './suggest';
+import { APPROVED } from './approved-messages';
+import { assessPaymentProofImage } from './claude';
 
 export interface HandleResult {
   outcome: EngineOutcome;
@@ -128,6 +130,17 @@ async function handleIncomingInner(
   const isClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state);
   const existingChat = !brandNew && !customer.botOwned; // pre-existing / legacy / imported
   if (existingChat || isClosed) {
+    // Owner's rule: a closed customer (Went Cold / Not Interested / Not
+    // Relevant) who messages again — whenever, whatever they say, however
+    // long it's been — is no longer closed. The pipeline stage moves them
+    // straight back to Lead, full stop; the human-handoff below is a
+    // separate, deliberate policy (the assistant never auto-replies to a
+    // returning chat) and stays exactly as it was.
+    if (isClosed) {
+      await store.setState(customer.id, 'NEW_LEAD', 'SYSTEM');
+      await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, trigger: 'inbound_message' });
+      customer = (await store.getCustomerByWaId(waId)) ?? customer;
+    }
     if (!customer.aiPaused) {
       await store.updateCustomer(customer.id, { aiPaused: true });
       await store.cancelJobsFor(customer.id);
@@ -348,6 +361,17 @@ export async function handleInboundNote(
       if (!customer) throw new Error('customer create raced and re-fetch failed');
     }
   }
+  // Same rule as the text path (handleIncoming): a closed customer (Went
+  // Cold / Not Interested / Not Relevant) who sends anything at all — a
+  // photo, a voice note, a document — is no longer closed and moves straight
+  // back to Lead. A bare reaction (👍 on an old message) is too small a
+  // signal to count as "messaged again", so it is excluded.
+  const wasClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state);
+  if (wasClosed && !meta?.reaction) {
+    await store.setState(customer.id, 'NEW_LEAD', 'SYSTEM');
+    await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, trigger: 'inbound_media' });
+    customer = (await store.getCustomerByWaId(waId)) ?? customer;
+  }
   await store.addMessage({
     customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,
     meta: (meta?.media || meta?.reaction)
@@ -380,6 +404,68 @@ export async function autoAdvanceToForm(customerId: string, _bank: { bsb: string
   const store = getStore();
   const c = await store.getCustomerById(customerId);
   if (c && c.state === 'PAID') await store.setState(customerId, 'FORM_PENDING', 'SYSTEM');
+}
+
+/** States in which a payment is actually outstanding — matches the text-based
+ *  "I paid" detection in claude.ts (`looksLikePayment` + `PAYABLE_STATES`).
+ *  Kept separate rather than imported because claude.ts's copy is a mock-model
+ *  implementation detail, not something the webhook layer should depend on. */
+const PAYABLE_STATES: CustomerState[] = ['PRICE_SENT', 'PAYMENT_PENDING'];
+
+/** Owner's rule: we trust the customer — but only once the attachment is
+ *  actually confirmed to show a payment. A photo or document sent while a
+ *  price is outstanding is looked at by Claude's vision (assessPaymentProofImage)
+ *  before anything moves: only a clear payment confirmation (bank transfer,
+ *  PayID, card success screen) is trusted, exactly like the customer typing
+ *  "paid" would be, and moves them straight from Lead to Paid with no manual
+ *  review gate (payment_received reply, then on to FORM_PENDING). Anything
+ *  else the customer sends — a question, an unrelated document, a photo of a
+ *  problem, an unclear image — is NOT proof, and falls through to the normal
+ *  "cannot read this" handoff task instead.
+ *
+ *  Returns null when the attachment does not qualify: no existing customer,
+ *  already paid, not currently in a state where a price is outstanding, the
+ *  file could not be downloaded from Meta, or the vision check did not
+ *  confirm it as a payment. */
+export async function handlePaymentProofMedia(
+  waId: string,
+  body: string,
+  meta: { name?: string; media: { id: string; kind: string; mime?: string; filename?: string; caption?: string } },
+): Promise<CustomerRow | null> {
+  const store = getStore();
+  const customer = await store.getCustomerByWaId(waId);
+  if (!customer || customer.paid || !PAYABLE_STATES.includes(customer.state)) return null;
+
+  const fetched = await fetchWaMedia(meta.media.id);
+  if (!fetched.ok) {
+    await store.audit('system', 'payment_proof_check_skipped', { customerId: customer.id, reason: fetched.error });
+    return null;
+  }
+  const check = await assessPaymentProofImage(fetched.body, fetched.mime || meta.media.mime || '');
+  await store.audit('system', 'payment_proof_checked', { customerId: customer.id, isProof: check.isProof, reason: check.reason ?? null });
+  if (!check.isProof) return null; // not confirmed as payment — falls through to the manual task
+
+  await store.addMessage({
+    customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,
+    meta: { media: meta.media },
+  });
+
+  await store.setState(customer.id, 'PAID', 'SYSTEM'); // also flips customer.paid = true
+  const bank = await getBank();
+  await autoAdvanceToForm(customer.id, bank);
+  await deliverOut(customer, APPROVED.payment_received, 'AI');
+
+  // A heads-up, not a to-do: the stage already moved itself. This exists so
+  // the owner can glance at the photo and catch a wrong/fake one, not because
+  // anything is waiting on them.
+  await store.addTask({
+    customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
+    reason: `Customer sent proof of payment${check.reason ? ` (${check.reason})` : ''}. Moved to Paid automatically — worth a glance to confirm it looks right.`,
+    severity: 'REVIEW', context: body, suggestedReply: null,
+  });
+
+  await store.audit('system', 'auto_paid_from_media', { customerId: customer.id, mediaKind: meta.media.kind });
+  return (await store.getCustomerByWaId(waId)) ?? customer;
 }
 
 export { SALES_STATES };

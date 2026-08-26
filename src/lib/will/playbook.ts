@@ -50,8 +50,9 @@ const objectionsBlock = Object.entries(APPROVED.objections)
 // in the Library actually reaches the live prompt instead of only affecting
 // the manual "Send Template" button. Fixed field names on the left; the
 // `objections` keys on the right must match approved-messages.ts exactly.
-const FIELD_TEMPLATE_KEYS: Record<'opening' | 'price_tfn' | 'price_tfn_abn' | 'payment_received' | 'legitimacy' | 'medicare_exemption', string> = {
+const FIELD_TEMPLATE_KEYS: Record<'opening' | 'price_tfn' | 'price_tfn_abn' | 'price_tfn_review' | 'price_tfn_abn_review' | 'payment_received' | 'legitimacy' | 'medicare_exemption', string> = {
   opening: 'opening', price_tfn: 'price_tfn', price_tfn_abn: 'price_tfn_abn',
+  price_tfn_review: 'price_tfn_review', price_tfn_abn_review: 'price_tfn_abn_review',
   payment_received: 'payment_received', legitimacy: 'legitimacy', medicare_exemption: 'medicare',
 };
 const OBJECTION_TEMPLATE_KEYS: Record<keyof typeof APPROVED.objections, string> = {
@@ -88,6 +89,9 @@ If you are not completely confident about what to say or do: do not guess, assum
 # BUSINESS MODEL
 The customer pays FIRST for a professional review and personal guidance. Fixed prices: $220 (TFN only) / $385 (TFN + ABN). Guarantee: if the refund is less than the fee, the difference is refunded. Payment is a manual bank transfer (details are inserted by the system). The customer's own message confirming payment ("paid", "done", "sent it", any wording) is the trigger to treat payment as made and move on. Never negotiate or invent prices.
 
+# REVIEW OF A RETURN ALREADY LODGED (different service, not a decline)
+If the customer says they already lodged/filed/submitted their return themselves (or through someone else, e.g. an accountant, a friend, myGov directly) and wants it checked, reviewed, corrected, or amended: this is NOT a decline and must never be treated as one, even though it contains words like "already lodged" that elsewhere signal someone walking away. It is a genuine, different service — a review of an existing return, not a fresh one — so use [price_tfn_review] or [price_tfn_abn_review] instead of the normal price message, matched to whether they mention ABN income, and set new_state to PRICE_SENT exactly as the normal price flow does. These messages deliberately do NOT include the refund guarantee (there is no fresh refund calculation for a guarantee to apply to) and say plainly that the fee is non-refundable — never soften or drop that line, and never send the normal [price_tfn]/[price_tfn_abn] wording (with the guarantee) to this customer instead.
+
 # QUALIFYING QUESTION (one question that saves a dead deal)
 The ATO pays refunds ONLY into an Australian bank account, so a customer whose account is closed cannot use the service at all. Added on the owner's instruction, 25 Aug, after a lead went through the whole conversation before this surfaced.
 - Right after the customer answers the TFN/ABN question, and BEFORE any price message, ask in their language, naturally: "And do you still have an active Australian bank account?"
@@ -123,6 +127,8 @@ Team-approved refund estimate: ${ctx.estimatedRefundCents != null ? formatAUD(ct
 [opening]\n${field('opening', APPROVED.opening)}
 [price_tfn]\n${field('price_tfn', APPROVED.price_tfn)}
 [price_tfn_abn]\n${field('price_tfn_abn', APPROVED.price_tfn_abn)}
+[price_tfn_review]\n${field('price_tfn_review', APPROVED.price_tfn_review)}
+[price_tfn_abn_review]\n${field('price_tfn_abn_review', APPROVED.price_tfn_abn_review)}
 [payment_received]\n${field('payment_received', APPROVED.payment_received)}
 [legitimacy]\n${field('legitimacy', APPROVED.legitimacy)}
 [medicare_exemption]\n${field('medicare_exemption', APPROVED.medicare_exemption)}

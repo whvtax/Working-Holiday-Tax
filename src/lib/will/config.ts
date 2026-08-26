@@ -35,6 +35,27 @@ export function schedulerConfig() {
   return DEMO;
 }
 
+/** UTC-offset minutes for a timezone at a given instant (handles DST). Used
+ *  to convert a Melbourne calendar date/time into the UTC instant it
+ *  actually is, without pulling in a date library for one calculation. */
+function tzOffsetMinutes(tz: string, atUtcMs: number): number {
+  const part = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' })
+    .formatToParts(new Date(atUtcMs)).find((p) => p.type === 'timeZoneName')?.value ?? 'GMT+10';
+  const m = /GMT([+-])(\d+)(?::(\d+))?/.exec(part);
+  if (!m) return 600; // AEST fallback
+  const sign = m[1] === '-' ? -1 : 1;
+  return sign * (Number(m[2]) * 60 + Number(m[3] ?? 0));
+}
+
+/** The UTC instant of local midnight for the given calendar date in `tz`
+ *  (year/month are 1-based, day may overflow — e.g. day 32 rolls into next
+ *  month — same as the Date constructor). */
+export function localMidnightUtc(tz: string, year: number, month: number, day: number): Date {
+  const roughUtc = Date.UTC(year, month - 1, day, 0, 0, 0);
+  const offsetMin = tzOffsetMinutes(tz, roughUtc);
+  return new Date(roughUtc - offsetMin * 60 * 1000);
+}
+
 /** One canonical money formatter shared by playbook and guard so the
  *  team-approved estimate is always expressed identically. */
 export function formatAUD(cents: number): string {
@@ -90,3 +111,4 @@ export function deferToMorning(now = new Date()): Date {
   d.setHours(d.getHours() + hoursToAdd, 0, 0, 0);
   return d;
 }
+

@@ -72,6 +72,18 @@ const timeAgo = (iso: string | null) => {
   if (s < 86400) return `${Math.round(s / 3600)}h`;
   return `${Math.round(s / 86400)}d`;
 };
+// WhatsApp-style date dividers in an open chat: "Today" / "Yesterday" / the
+// full date, all read in the business's own timezone so a message sent late
+// at night doesn't land on the wrong side of the divider.
+const MEL_TZ = 'Australia/Melbourne';
+const melDayKey = (iso: string) =>
+  new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: MEL_TZ }).format(new Date(iso));
+const melDayLabel = (iso: string) => {
+  const key = melDayKey(iso);
+  if (key === melDayKey(new Date().toISOString())) return 'Today';
+  if (key === melDayKey(new Date(Date.now() - 86400e3).toISOString())) return 'Yesterday';
+  return new Date(iso).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: MEL_TZ });
+};
 /** One short line for a list row. You scan this list to see WHO is waiting, not
  *  to read the message, so anything past the first line is noise. */
 const previewLine = (s: string) => {
@@ -163,7 +175,6 @@ export default function Dashboard() {
   const [drawerId, setDrawerId] = useState<string | null>(null);
   const [tpl, setTpl] = useState<TemplateRow | null>(null);
   const [newTpl, setNewTpl] = useState<{ title: string; category: string; body: string } | null>(null);
-  const [suggestions, setSuggestions] = useState<Array<{ id: string; title: string; detail: string; proposedBody: string; occurrences: number }>>([]);
   type Knw = { id: string; intent: string; question: string; answer: string; source: string };
   const [knowledge, setKnowledge] = useState<{ drafts: Knw[]; active: Knw[] }>({ drafts: [], active: [] });
   const loadKnowledge = useCallback(async () => {
@@ -174,14 +185,18 @@ export default function Dashboard() {
   // — so it needs its own selection + draft text and its own save action.
   const [know, setKnow] = useState<Knw | null>(null);
   const [knowText, setKnowText] = useState('');
+  // Review-stage chat button: type the refund estimate + paste the invoice
+  // link, one Send composes and delivers the message and moves the customer
+  // on to Estimate. `estimateFor` holds which customer the modal is open for.
+  const [estimateFor, setEstimateFor] = useState<CustomerRow | null>(null);
+  const [estimateAmt, setEstimateAmt] = useState('');
+  const [estimateLink, setEstimateLink] = useState('');
   type Audit = { id: string; actor: string; action: string; detail: unknown; at: string };
   const [activity, setActivity] = useState<Audit[]>([]);
   const loadActivity = useCallback(async () => {
     try { const r = await fetch('/api/will/audit?limit=60').then((x) => x.json()); if (r.ok) setActivity(r.rows ?? []); } catch { /* */ }
   }, []);
-  const [sugDrafts, setSugDrafts] = useState<Record<string, string>>({});
   const [knwDrafts, setKnwDrafts] = useState<Record<string, string>>({});
-  const [goalInput, setGoalInput] = useState<string>('50');
   const [tplText, setTplText] = useState('');
   const [toast, setToast] = useState('');
   // NOT local state any more. This used to be a useState that the two mode
@@ -248,27 +263,35 @@ export default function Dashboard() {
     return () => clearTimeout(tmr);
   }, [view, focusTaskId, data]);
   useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); }, [view, chatSelId, loadChat]);
-  useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); /* eslint-disable-next-line */ }, [data]);
-  useEffect(() => { if ((view === 'insights' || view === 'learning') && !report) fetch('/api/will/report').then((r) => r.json()).then((rp) => { setReport(rp); if (rp.goal != null) setGoalInput(String(rp.goal)); }).catch(() => {}); }, [view, report]);
+  useEffect(() => {
+    if (view !== 'chats' || !chatSelId) return;
+    loadChat(chatSelId);
+    // WhatsApp-real behaviour: a message that arrives while this chat is the
+    // one you're actively looking at is implicitly read — it must never go
+    // bold behind your own open conversation. Self-limiting: once cleared,
+    // unreadCount is 0 and this is a no-op on the next poll.
+    const openCustomer = data.customers.find((c) => c.id === chatSelId);
+    if (openCustomer && openCustomer.unreadCount > 0) {
+      act({ action: 'mark_read', id: chatSelId }).then(() => refresh());
+    }
+    /* eslint-disable-next-line */
+  }, [data]);
+  useEffect(() => { if ((view === 'insights' || view === 'learning') && !report) fetch('/api/will/report').then((r) => r.json()).then((rp) => setReport(rp)).catch(() => {}); }, [view, report]);
   useEffect(() => { if (view === 'learning' || view === 'library') { loadKnowledge(); } }, [view, loadKnowledge]);
   useEffect(() => { if (view === 'learning') { loadActivity(); } }, [view, loadActivity]);
 
   // Update-on-change: instead of refetching everything on a fixed timer, poll a
-  // tiny change-token and only pull the heavy /state + /suggestions payloads when
-  // something actually changed. Cuts server load to near-zero while idle.
+  // tiny change-token and only pull the heavy /state payload when something
+  // actually changed. Cuts server load to near-zero while idle.
   useEffect(() => {
     let stop = false;
     let lastToken = '';
     const hidden = () => typeof document !== 'undefined' && document.hidden;
 
     const refetchHeavy = async () => {
-      const [h, sug] = await Promise.all([
-        fetch('/api/will/health').then((r) => r.json()).catch(() => null),
-        fetch('/api/will/suggestions').then((r) => r.json()).catch(() => null),
-      ]);
+      const h = await fetch('/api/will/health').then((r) => r.json()).catch(() => null);
       if (stop) return;
       if (h) setHealth(h);
-      if (sug) setSuggestions(sug.suggestions ?? []);
       await refresh();
     };
 
@@ -373,12 +396,31 @@ export default function Dashboard() {
     })
     // WhatsApp-style: most recent conversation first, bumped by ANY message
     // (incoming or the owner's own reply), falling back to inbound time.
-    .sort((a, b) => ((b.lastMessageAt ?? b.lastCustomerMsgAt) ?? '').localeCompare((a.lastMessageAt ?? a.lastCustomerMsgAt) ?? ''))
-    .slice(0, 30);
+    // No cap here any more — a chat with a real conversation must never
+    // silently drop off the list once there are more than N others, exactly
+    // like the WhatsApp app on a phone never hides an old conversation, it
+    // just scrolls further down.
+    .sort((a, b) => ((b.lastMessageAt ?? b.lastCustomerMsgAt) ?? '').localeCompare((a.lastMessageAt ?? a.lastCustomerMsgAt) ?? ''));
 
   const stageColorOf = (s: CustomerState) => STAGE_GROUPS.find((sg) => (sg.states as readonly CustomerState[]).includes(s))?.color ?? '#7a8494';
-  const journey: CustomerState[] = ['NEW_LEAD', 'PRICE_SENT', 'PAID', 'FORM_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'SIGNATURE_PENDING', 'LODGED', 'COMPLETED'];
-  const journeyIdx: Partial<Record<CustomerState, number>> = { NEW_LEAD: 0, QUALIFIED: 0, PRICE_SENT: 1, PAYMENT_PENDING: 1, PAID: 2, FORM_PENDING: 2, FORM_COMPLETE: 3, DOCUMENTS_COMPLETE: 3, UNDER_REVIEW: 4, ESTIMATE_READY: 5, FINAL_REVIEW: 5, SIGNATURE_PENDING: 6, SIGNED: 6, LODGED: 7, COMPLETED: 8 };
+  // Every status shown to the owner — in chat, in the pipeline strip, in the
+  // move-stage dropdown, in toasts — must be one of the eight pipeline stage
+  // names (Sales, Paid, Review, Ready, Estimate, Signature, Completed,
+  // Closed) and nothing else. The eighteen granular CustomerState values
+  // (New Lead, Qualified, Price Sent, Form Complete, …) are internal
+  // plumbing for the state machine; they are never surfaced in the UI.
+  const stageLabelOf = (s: CustomerState) => STAGE_GROUPS.find((sg) => (sg.states as readonly CustomerState[]).includes(s))?.label ?? STATE_LABELS[s];
+  // "Journey" timeline in the customer drawer: same eight pipeline stages,
+  // in pipeline order, minus "Closed" (a closed customer is shown via the
+  // separate closedState banner rather than as a forward step).
+  const journeyGroups = STAGE_GROUPS.filter((sg) => sg.id !== 'closed');
+  const journey: CustomerState[] = journeyGroups.map((sg) => sg.states[0] as CustomerState);
+  const journeyIdx: Partial<Record<CustomerState, number>> = {};
+  STAGE_GROUPS.forEach((sg) => {
+    const idx = journeyGroups.findIndex((jg) => jg.id === sg.id);
+    if (idx === -1) return; // 'closed' states aren't on the forward journey
+    (sg.states as readonly CustomerState[]).forEach((st) => { journeyIdx[st] = idx; });
+  });
 
   const grouped = data.templates.reduce<Record<string, TemplateRow[]>>((acc, t) => {
     (acc[t.category] ??= []).push(t);
@@ -414,7 +456,6 @@ export default function Dashboard() {
             <span className="ic">{ICONS[v]}</span>
             <span className="nl">{v[0].toUpperCase() + v.slice(1)}</span>
             {v === 'tasks' && (openTasks.length + pendingDrafts.length) > 0 && <span className="nbadge">{openTasks.length + pendingDrafts.length}</span>}
-            {v === 'learning' && suggestions.length > 0 && <span className="nbadge" style={{ background: 'var(--brand2)' }}>{suggestions.length}</span>}
           </button>
         ))}
         <div className="sfoot">
@@ -573,7 +614,7 @@ export default function Dashboard() {
                     {c.aiPaused && <span className="chip">✋ manual</span>}
                     {isStuck(c) && <span className="chip stuck">⚠ stuck</span>}
                     {feeOf(c.income) && <span className="chip price">{feeOf(c.income)}</span>}
-                    <span className="stagepill" style={{ ['--pc' as string]: g.color }}>{STATE_LABELS[c.state]}</span>
+                    <span className="stagepill" style={{ ['--pc' as string]: g.color }}>{stageLabelOf(c.state)}</span>
                     {/* When the last message actually arrived, not when the
                         pipeline stage last changed: "2h" should mean 2h since
                         anyone spoke, which is what you scan this list for. */}
@@ -594,24 +635,32 @@ export default function Dashboard() {
                 <div className="search"><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
                 {/* Filter chips (owner's choice): just the four that matter, so
                     they fit with no sideways scroll — All (default), Unread, and
-                    the two action stages Estimate and Signature. */}
+                    the two action stages Review and Signature. ("Estimate" was
+                    folded into Review when the owner removed it and Ready as
+                    separate pipeline stops.) */}
                 <div className="chatfilter">
                   <button className={`cfchip ${chatFilter === 'all' ? 'on' : ''}`} onClick={() => setChatFilter('all')}>All</button>
                   <button className={`cfchip ${chatFilter === 'unread' ? 'on' : ''}`} onClick={() => setChatFilter('unread')}>Unread</button>
-                  {STAGE_GROUPS.filter((sg) => sg.id === 'estimate' || sg.id === 'sig').map((sg) => (
+                  {STAGE_GROUPS.filter((sg) => sg.id === 'rev' || sg.id === 'sig').map((sg) => (
                     <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(sg.id)}>{sg.label}</button>
                   ))}
                 </div>
-                {chatList.map((c) => (
-                  <div key={c.id} className={`citem ${chatSelId === c.id ? 'sel' : ''} ${c.unreadCount > 0 ? 'hasunread' : ''}`} onClick={() => openChat(c.id)}>
+                {chatList.map((c) => {
+                  // WhatsApp-real: the chat you're currently looking at is
+                  // never shown as unread, even for the instant before the
+                  // mark-read round-trip above lands.
+                  const isOpen = chatSelId === c.id;
+                  const showUnread = c.unreadCount > 0 && !isOpen;
+                  return (
+                  <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''}`} onClick={() => openChat(c.id)}>
                     <div className="cav">{AVATAR}</div>
                     <div className="cinfo">
                       <div className="cn"><b>{phoneOf(c.waId)}</b><time>{timeAgo(c.lastCustomerMsgAt)}</time></div>
                       <div className="cm">{c.lastMessagePreview}</div>
                     </div>
-                    {c.unreadCount > 0
+                    {showUnread
                       ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
-                      : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{STATE_LABELS[c.state]}</span>}
+                      : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
                     {/* Remove a chat entirely — test/simulator leftovers, or any
                         chat that never should have counted as a real lead. Stops
                         the click from also opening the chat, and confirms first
@@ -631,7 +680,8 @@ export default function Dashboard() {
                       }}
                     >✕</button>
                   </div>
-                ))}
+                  );
+                })}
               </div>
               <div className="chatpane">
                 {chatSel ? (
@@ -652,7 +702,7 @@ export default function Dashboard() {
                               onClick={() => setStageMenuOpen((o) => !o)}
                               title="Move stage"
                             >
-                              {STATE_LABELS[chatSel.state]} <span className="cstate-caret">▾</span>
+                              {stageLabelOf(chatSel.state)} <span className="cstate-caret">▾</span>
                             </button>
                             {stageMenuOpen && (
                               <>
@@ -673,7 +723,7 @@ export default function Dashboard() {
                                       // Only an out-of-order correction forces.
                                       const force = !nextStates.includes(s);
                                       const r = await act({ action: 'set_state', customerId: chatSel.id, state: s, force });
-                                      say(r?.ok ? `Moved to ${STATE_LABELS[s]}` : `❌ ${r?.error ?? 'could not move'}`);
+                                      say(r?.ok ? `Moved to ${stageLabelOf(s)}` : `❌ ${r?.error ?? 'could not move'}`);
                                       loadChat(chatSel.id); refresh();
                                     };
                                     return STAGE_GROUPS.map((g) => {
@@ -731,6 +781,63 @@ export default function Dashboard() {
                         }}
                       >✕</button>
                     </div>
+                    {/* Review-stage action: send the refund estimate + invoice
+                        in one step. Only shown while the customer is in
+                        Review — nothing to estimate before the form has come
+                        back. */}
+                    {chatSel.state === 'FORM_COMPLETE' && (
+                      <div className="tplchips" style={{ paddingTop: 0 }}>
+                        <button
+                          type="button"
+                          className="btn save"
+                          style={{ padding: '6px 14px', fontSize: 12.5 }}
+                          onClick={() => { setEstimateFor(chatSel); setEstimateAmt(''); setEstimateLink(''); }}
+                        >
+                          💰 Send Estimate + Invoice
+                        </button>
+                      </div>
+                    )}
+                    {/* Estimate-stage action: once the return has actually
+                        been sent to the customer to sign, one click sends the
+                        "ready for signature" confirmation and moves them on
+                        to Signature. Only shown during Estimate. */}
+                    {(chatSel.state === 'ESTIMATE_READY' || chatSel.state === 'FINAL_REVIEW') && (
+                      <div className="tplchips" style={{ paddingTop: 0 }}>
+                        <button
+                          type="button"
+                          className="btn save"
+                          style={{ padding: '6px 14px', fontSize: 12.5 }}
+                          onClick={async () => {
+                            if (!confirm(`Send the "ready for signature" message to ${phoneOf(chatSel.waId)} and move them to Signature?`)) return;
+                            const r = await act({ action: 'send_signature', customerId: chatSel.id });
+                            if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
+                            say('Sent — moved to Signature ✓'); loadChat(chatSel.id); refresh();
+                          }}
+                        >
+                          ✍️ Send for Signature
+                        </button>
+                      </div>
+                    )}
+                    {/* Signature-stage action: once they've signed, one click
+                        sends the lodged + review-request message and moves
+                        them on to Completed. Only shown during Signature. */}
+                    {chatSel.state === 'SIGNATURE_PENDING' && (
+                      <div className="tplchips" style={{ paddingTop: 0 }}>
+                        <button
+                          type="button"
+                          className="btn save"
+                          style={{ padding: '6px 14px', fontSize: 12.5 }}
+                          onClick={async () => {
+                            if (!confirm(`Send the "lodged successfully" message to ${phoneOf(chatSel.waId)} and move them to Completed?`)) return;
+                            const r = await act({ action: 'send_lodged', customerId: chatSel.id });
+                            if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
+                            say('Sent — moved to Completed ✓'); loadChat(chatSel.id); refresh();
+                          }}
+                        >
+                          ✅ Mark Lodged
+                        </button>
+                      </div>
+                    )}
                     {/* Quick send: numbered buttons instead of long labels, so the
                         row never overflows and needs no sideways scroll. Hover a
                         number to see the full text (native tooltip). Clicking a
@@ -783,49 +890,85 @@ export default function Dashboard() {
                       );
                     })()}
                     <div className="msgs" ref={msgsRef}>
-                      {[...chatMsgs].filter((m) => m.status !== 'DISCARDED' && m.status !== 'BLOCKED')
-                        // A draft awaiting approval always renders at the BOTTOM,
-                        // after every real message, so it can never appear stranded
-                        // in the middle of the thread when the customer sent more
-                        // messages after it was drafted. Stable sort keeps normal
-                        // messages in their time order.
-                        .sort((a, b) => (a.status === 'PENDING_APPROVAL' ? 1 : 0) - (b.status === 'PENDING_APPROVAL' ? 1 : 0))
-                        .map((m) => {
-                        if (m.status === 'PENDING_APPROVAL') {
-                          return (
-                            <div key={m.id} className="msg out" style={{ opacity: 0.85, border: '1px dashed rgba(122,99,232,.6)' }}>
-                              {m.body}
-                              <div className="mt"><span className="ai">✎ awaiting your approval</span></div>
-                              <div className="abtns" style={{ marginTop: 8 }}>
-                                <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${r.blocked.join(', ')}` : 'Draft blocked: situation changed')); loadChat(chatSel.id); refresh(); })}>✓ Approve</button>
-                                <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { await act({ action: 'discard_message', id: m.id }); say('Draft discarded'); loadChat(chatSel.id); refresh(); })}>✕ Discard</button>
-                              </div>
-                            </div>
+                      {(() => {
+                        const visible = [...chatMsgs].filter((m) => m.status !== 'DISCARDED' && m.status !== 'BLOCKED')
+                          // A draft awaiting approval always renders at the BOTTOM,
+                          // after every real message, so it can never appear stranded
+                          // in the middle of the thread when the customer sent more
+                          // messages after it was drafted. Stable sort keeps normal
+                          // messages in their time order.
+                          .sort((a, b) => (a.status === 'PENDING_APPROVAL' ? 1 : 0) - (b.status === 'PENDING_APPROVAL' ? 1 : 0));
+
+                        // WhatsApp-real: a reaction is a heart/thumbs-up ON another
+                        // message, not a message of its own. Match it to the bubble
+                        // it landed on via Meta's provider id, so it renders as a
+                        // small badge on that exact bubble instead of a floating
+                        // line unattached to anything.
+                        const reactionByTargetProviderId = new Map<string, MessageRow>();
+                        for (const m of visible) {
+                          const to = m.meta?.reaction?.to;
+                          if (to) reactionByTargetProviderId.set(to, m);
+                        }
+                        const matchedReactionIds = new Set<string>();
+                        for (const m of visible) {
+                          const pid = m.meta?.providerId;
+                          const r = pid ? reactionByTargetProviderId.get(pid) : undefined;
+                          if (r) matchedReactionIds.add(r.id);
+                        }
+
+                        const out: JSX.Element[] = [];
+                        let lastDay = '';
+                        for (const m of visible) {
+                          const dayKey = melDayKey(m.createdAt);
+                          if (dayKey !== lastDay) {
+                            lastDay = dayKey;
+                            out.push(<div key={`day-${dayKey}`} className="daysep"><span>{melDayLabel(m.createdAt)}</span></div>);
+                          }
+
+                          if (m.status === 'PENDING_APPROVAL') {
+                            out.push(
+                              <div key={m.id} className="msg out" style={{ opacity: 0.85, border: '1px dashed rgba(122,99,232,.6)' }}>
+                                {m.body}
+                                <div className="mt"><span className="ai">✎ awaiting your approval</span></div>
+                                <div className="abtns" style={{ marginTop: 8 }}>
+                                  <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${r.blocked.join(', ')}` : 'Draft blocked: situation changed')); loadChat(chatSel.id); refresh(); })}>✓ Approve</button>
+                                  <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { await act({ action: 'discard_message', id: m.id }); say('Draft discarded'); loadChat(chatSel.id); refresh(); })}>✕ Discard</button>
+                                </div>
+                              </div>,
+                            );
+                            continue;
+                          }
+                          if (m.meta?.reaction) {
+                            // Attached to its target bubble below — skip the
+                            // standalone line. Only an orphaned reaction (no
+                            // matching provider id, e.g. older data from before
+                            // provider ids were recorded) still falls back to a
+                            // quiet line so nothing silently disappears.
+                            if (matchedReactionIds.has(m.id)) continue;
+                            out.push(
+                              <div key={m.id} className="sysline" style={{ fontSize: 15 }}>
+                                {m.meta.reaction.emoji ? `${m.meta.reaction.emoji}  reacted to your message` : 'removed their reaction'}
+                              </div>,
+                            );
+                            continue;
+                          }
+                          const reactionHere = m.meta?.providerId ? reactionByTargetProviderId.get(m.meta.providerId) : undefined;
+                          out.push(
+                            <div key={m.id} className={`msg ${m.direction === 'IN' ? 'in' : 'out'}`}>
+                              {reactionHere?.meta?.reaction?.emoji && (
+                                <span className="msgreact" title="Reacted to this message">{reactionHere.meta.reaction.emoji}</span>
+                              )}
+                              {m.meta?.media && <Attachment media={m.meta.media} />}
+                              {/* With the attachment itself on screen, the stored
+                                  "📷 [Photo]" placeholder is noise — the caption
+                                  rides along with the attachment. */}
+                              {m.meta?.media ? null : m.body}
+                              <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
+                            </div>,
                           );
                         }
-                        // A reaction is not a message — it is a heart or a
-                        // thumbs up on one of ours. Shown as a quiet line so the
-                        // thread reads the way it does in WhatsApp.
-                        if (m.meta?.reaction) {
-                          return (
-                            <div key={m.id} className="sysline" style={{ fontSize: 15 }}>
-                              {m.meta.reaction.emoji
-                                ? `${m.meta.reaction.emoji}  reacted to your message`
-                                : 'removed their reaction'}
-                            </div>
-                          );
-                        }
-                        return (
-                          <div key={m.id} className={`msg ${m.direction === 'IN' ? 'in' : 'out'}`}>
-                            {m.meta?.media && <Attachment media={m.meta.media} />}
-                            {/* With the attachment itself on screen, the stored
-                                "📷 [Photo]" placeholder is noise — the caption
-                                rides along with the attachment. */}
-                            {m.meta?.media ? null : m.body}
-                            <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
-                          </div>
-                        );
-                      })}
+                        return out;
+                      })()}
                       {chatMsgs.length === 0 && <div className="sysline">No messages stored for this customer yet</div>}
                     </div>
                     <div className="composer">
@@ -875,7 +1018,7 @@ export default function Dashboard() {
                 <div key={m.id} className="obcard">
                   <div className="obhead">
                     <span className="obwho">{c ? phoneOf(c.waId) : (m.customerName ?? 'Customer')}</span>
-                    {c && <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{STATE_LABELS[c.state]}</span>}
+                    {c && <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
                     <span className="obtime">{timeAgo(m.createdAt)} ago</span>
                   </div>
                   <div className="obbody">{m.body}</div>
@@ -943,22 +1086,13 @@ export default function Dashboard() {
               </div>
               <button className="btn save" onClick={() => setNewTpl({ title: '', category: 'Custom', body: '' })}>+ New Message</button>
             </div>
-            {suggestions.length > 0 && (
-              <div className="sugbox">
-                <div className="sugbox-h">💡 {ASSISTANT_NAME} noticed {suggestions.length} recurring question{suggestions.length > 1 ? 's' : ''} with no answer yet</div>
-                {suggestions.map((s) => (
-                  <div key={s.id} className="sugcard">
-                    <div className="sugq">Customers keep asking (×{s.occurrences}): “{s.detail}”</div>
-                    <div className="mlabel" style={{ margin: '6px 0 4px' }}>{ASSISTANT_NAME}&apos;s proposed answer, edit then approve</div>
-                    <textarea className="edit" style={{ minHeight: 60 }} value={sugDrafts[s.id] ?? s.proposedBody} onChange={(e) => setSugDrafts((d2) => ({ ...d2, [s.id]: e.target.value }))} />
-                    <div className="tbtns">
-                      <button className="btn approve" onClick={async () => { const r = await act({ action: 'approve_suggestion', id: s.id, body: sugDrafts[s.id] ?? s.proposedBody }); if (r.blocked) { say('Blocked: ' + r.blocked.join(', ')); return; } say('Added to library ✓'); refresh(); }}>✓ Approve & Add</button>
-                      <button className="btn ghost" onClick={async () => { await act({ action: 'dismiss_suggestion', id: s.id }); say('Dismissed'); refresh(); }}>✕ Dismiss</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* The old crude "recurring unanswered question" suggestions box
+                was removed: the daily Library-suggestions digest (8am
+                Melbourne) does this properly now — it checks the actual
+                Library on every customer message answered, not just repeated
+                escalations, and produces a real polished draft via the
+                mining model instead of a bracketed placeholder. Its output
+                lands directly below as ordinary Learned Answer drafts. */}
             {Object.entries(grouped).map(([cat, items]) => (
               <div key={cat}>
                 <div className="libcat">{cat}<span className="n">{items.length}</span></div>
@@ -1012,17 +1146,6 @@ export default function Dashboard() {
             <div className="vsub">Every conversation is raw material: what converts, what loses customers, what to fix. Each problem comes with a suggested fix.</div>
             <div className="igrid">
               <div className="panel">
-                <h3>Sales Funnel</h3>
-                <div className="psub">Where customers are, and where they drop</div>
-                {(report?.funnel ?? []).map((f, i, arr) => {
-                  const max = Math.max(1, arr[0]?.n ?? 1);
-                  return <div key={f.label} className="frow"><span className="fl">{f.label}</span><div className="fbar"><div className="fill" style={{ ['--fc' as string]: ['#86b6ef', '#5598e7', '#3987e5', '#2a78d6', '#1c5cab'][i], width: `${(f.n / max) * 100}%` }} /></div><span className="fv">{f.n}</span></div>;
-                })}
-                {report && report.closed.total > 0 && <div className="mini">Biggest risk point: <b style={{ color: 'var(--warn)' }}>{report.closed.coldAfterPrice} went cold after the price message</b></div>}
-                <div className="sugg"><b>Suggested fix</b>Lead with the guarantee before the number, and rework the day-3 follow-up wording in the Library.</div>
-              </div>
-
-              <div className="panel">
                 <h3>What {ASSISTANT_NAME} Escalated <span className="cstate" style={{ ['--sc' as string]: 'var(--warn)' }}>LIVE</span></h3>
                 <div className="psub">Recurring reasons, each one is a template you could add</div>
                 {(report?.tasks.topReasons ?? []).map(([r, n]) => (
@@ -1030,18 +1153,6 @@ export default function Dashboard() {
                 ))}
                 {(!report || report.tasks.topReasons.length === 0) && <div className="mini">Nothing escalated yet</div>}
                 <div className="sugg"><b>Suggested fix</b>Any reason appearing twice or more deserves an approved answer in the Library, then {ASSISTANT_NAME} resolves it alone.</div>
-              </div>
-
-              <div className="panel">
-                <h3>Problems → Solutions</h3>
-                <div className="psub">Auto-detected from the full communication history</div>
-                {(report?.insights ?? []).map((ins, i) => (
-                  <div key={i} style={{ marginBottom: 10 }}>
-                    <div style={{ fontSize: 12, fontWeight: 600 }}>{ins.problem}</div>
-                    <div className="mini" style={{ marginTop: 2 }}>{ins.evidence}</div>
-                    <div className="sugg" style={{ marginTop: 5 }}><b>Suggested fix</b>{ins.solution}</div>
-                  </div>
-                ))}
               </div>
 
               <div className="panel">
@@ -1082,77 +1193,45 @@ export default function Dashboard() {
             <h2 className="vt">Learning</h2>
             <div className="vsub">{ASSISTANT_NAME} improves from every conversation. Approve what works, and watch it get better over time.</div>
 
-            {/* Everything said so far, in one readable file. Drafts that were
-                blocked or discarded are marked rather than dropped: they are
-                often the most interesting lines in a conversation. */}
-            <div className="panel" style={{ marginBottom: 12 }}>
-              <h3>Download every conversation</h3>
-              <div className="psub">All {ASSISTANT_NAME} chats, oldest to newest, in one file. Use it to see which questions keep coming up and what belongs in the Library.</div>
-              <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-                <a className="btn ghost" href="/api/will/export" download>⬇ Transcript (.txt)</a>
-                <a className="btn ghost" href="/api/will/export?format=json" download>⬇ Raw data (.json)</a>
-              </div>
-            </div>
+            {/* "Download every conversation" (transcript/JSON export) and the
+                monthly "what customers wrote" email were removed per the
+                owner's request — replaced by the daily Library-suggestions
+                digest (scheduler.ts's DAILY_DIGEST job), which already does
+                the analysis automatically instead of a manual download. */}
 
             <div className="panel" style={{ marginBottom: 12 }}>
               <h3>Your Goal: the best version of {ASSISTANT_NAME}</h3>
-              <div className="psub">Set the lead-to-paid conversion you are aiming for. {ASSISTANT_NAME} keeps testing and improving until it holds there.</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 8 }}>
-                <div>
+              <div className="psub">{ASSISTANT_NAME} keeps testing and improving until every lead converts. The target is fixed at 100% — that's the whole point, it's never negotiated down.</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 10 }}>
+                <div style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: 30, fontWeight: 700 }}>{report?.leadToPaid ?? 0}%</div>
-                  <div className="mini">current lead → paid</div>
+                  <div className="mini">lead → paid</div>
                 </div>
                 <div style={{ fontSize: 22, color: 'var(--ink3)' }}>→</div>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <input type="number" className="edit" style={{ minHeight: 0, padding: '6px 8px', width: 70, fontSize: 20, fontWeight: 700 }}
-                      value={goalInput} onChange={(e) => setGoalInput(e.target.value)} />
-                    <span style={{ fontSize: 20, fontWeight: 700 }}>%</span>
-                    <button className="btn save" onClick={async () => { await act({ action: 'set_goal', goal: Number(goalInput) }); say('Goal set ✓'); setReport(null); }}>Set</button>
-                  </div>
-                  <div className="mini">your target</div>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: 30, fontWeight: 700 }}>100%</div>
+                  <div className="mini">your target · fixed</div>
                 </div>
                 <div style={{ flex: 1 }} />
-                {report?.goal != null && (
-                  <div style={{ textAlign: 'right' }}>
-                    {report.leadToPaid >= report.goal
-                      ? <div style={{ color: 'var(--good)', fontWeight: 700, fontSize: 15 }}>🎉 Goal reached. This is {ASSISTANT_NAME}&apos;s best version so far.</div>
-                      : <div className="mini">{report.goal - report.leadToPaid} points to go. {ASSISTANT_NAME} is still learning.</div>}
-                  </div>
-                )}
+                <div style={{ textAlign: 'right' }}>
+                  {(report?.leadToPaid ?? 0) >= 100
+                    ? <div style={{ color: 'var(--good)', fontWeight: 700, fontSize: 15 }}>🎉 Goal reached. This is {ASSISTANT_NAME}&apos;s best version so far.</div>
+                    : <div className="mini">{100 - (report?.leadToPaid ?? 0)} points to go. {ASSISTANT_NAME} is still learning.</div>}
+                </div>
               </div>
             </div>
 
             <div className="igrid">
-              <div className="panel">
-                <h3>Suggestions to Approve {suggestions.length > 0 && <span className="cstate" style={{ ['--sc' as string]: 'var(--brand2)' }}>{suggestions.length}</span>}</h3>
-                <div className="psub">Recurring questions {ASSISTANT_NAME} could not answer. Approve to teach it.</div>
-                {suggestions.length === 0 && <div className="mini">Nothing pending. {ASSISTANT_NAME} is handling everything it has seen.</div>}
-                {suggestions.map((s) => (
-                  <div key={s.id} className="sugcard" style={{ marginTop: 8 }}>
-                    <div className="sugq">×{s.occurrences} · “{s.detail}”</div>
-                    <textarea className="edit" style={{ minHeight: 54, marginTop: 6 }} value={sugDrafts[s.id] ?? s.proposedBody} onChange={(e) => setSugDrafts((d2) => ({ ...d2, [s.id]: e.target.value }))} />
-                    <div className="tbtns">
-                      <button className="btn approve" onClick={async () => { const r = await act({ action: 'approve_suggestion', id: s.id, body: sugDrafts[s.id] ?? s.proposedBody }); if (r.blocked) { say('Blocked'); return; } say('Learned ✓'); refresh(); }}>✓ Approve</button>
-                      <button className="btn ghost" onClick={async () => { await act({ action: 'dismiss_suggestion', id: s.id }); refresh(); }}>Dismiss</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
+              {/* The old "Suggestions to Approve" panel (recurring-escalation
+                  scan) was removed here too — same reason as the Library tab:
+                  the daily digest + Knowledge Base panel below now cover this
+                  properly, on every answered message rather than only
+                  repeated escalations. */}
               <div className="panel">
                 <h3>Knowledge Base {knowledge.drafts.length > 0 && <span className="cstate" style={{ ['--sc' as string]: 'var(--brand2)' }}>{knowledge.drafts.length} to review</span>}</h3>
                 <div className="psub">What {ASSISTANT_NAME} has learned from your real conversations. Approve a draft and {ASSISTANT_NAME} starts using it. Active answers: {knowledge.active.length}.</div>
-                <div style={{ marginTop: 8 }}>
-                  <button className="btn ghost" onClick={async () => {
-                    const r = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'import_starter' }) }).then((x) => x.json()).catch(() => null);
-                    if (r?.ok) say(`Starter pack loaded: ${r.imported} added${r.skipped ? `, ${r.skipped} already there` : ''} ✓`);
-                    else say('Could not load the starter pack');
-                    loadKnowledge();
-                  }}>Load starter pack (31 answers)</button>
-                </div>
                 {knowledge.drafts.length === 0 && knowledge.active.length === 0 && (
-                  <div className="mini">Nothing yet. Load the starter pack above, or send your real conversations to teach {ASSISTANT_NAME} how your best answers sound.</div>
+                  <div className="mini" style={{ marginTop: 8 }}>Nothing yet. Send your real conversations to teach {ASSISTANT_NAME} how your best answers sound — new drafts also arrive automatically from the daily digest.</div>
                 )}
                 {knowledge.drafts.map((k) => (
                   <div key={k.id} className="sugcard" style={{ marginTop: 8 }}>
@@ -1199,16 +1278,6 @@ export default function Dashboard() {
               </div>
 
 
-              <div className="panel">
-                <h3>Problems → Solutions</h3>
-                <div className="psub">Auto-detected from the full communication history</div>
-                {(report?.insights ?? []).map((ins, i) => (
-                  <div key={i} style={{ marginBottom: 10 }}>
-                    <div style={{ fontSize: 12, fontWeight: 600 }}>{ins.problem}</div>
-                    <div className="sugg" style={{ marginTop: 5 }}><b>Suggested fix</b>{ins.solution}</div>
-                  </div>
-                ))}
-              </div>
             </div>
           </section>
         )}
@@ -1227,7 +1296,7 @@ export default function Dashboard() {
                 <div className="cav">{AVATAR}</div>
                 <div style={{ flex: 1 }}>
                   <b style={{ fontSize: 15 }}>{phoneOf(drawer.waId)}</b>
-                  <div style={{ marginTop: 3 }}><span className="cstate" style={{ ['--sc' as string]: stageColorOf(drawer.state) }}>{STATE_LABELS[drawer.state]}</span></div>
+                  <div style={{ marginTop: 3 }}><span className="cstate" style={{ ['--sc' as string]: stageColorOf(drawer.state) }}>{stageLabelOf(drawer.state)}</span></div>
                 </div>
                 <button className="x" onClick={() => setDrawerId(null)}>✕</button>
               </div>
@@ -1251,7 +1320,7 @@ export default function Dashboard() {
                   {journey.map((s, i) => (
                     <div key={s} className={`tl ${now >= 0 && i < now ? 'done' : now >= 0 && i === now ? 'now' : ''}`}>
                       <div className="tdot" />
-                      <div className="tinfo"><b>{STATE_LABELS[s]}</b><span>{now < 0 ? 'closed' : i < now ? '✓ done' : i === now ? 'current stage' : 'upcoming'}</span></div>
+                      <div className="tinfo"><b>{stageLabelOf(s)}</b><span>{now < 0 ? 'closed' : i < now ? '✓ done' : i === now ? 'current stage' : 'upcoming'}</span></div>
                     </div>
                   ))}
                 </div>
@@ -1346,6 +1415,48 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+      </div>
+
+      <div className={`overlay ${estimateFor ? 'open' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) setEstimateFor(null); }}>
+        {estimateFor && (() => {
+          const parsed = parseFloat(estimateAmt.replace(/[^0-9.]/g, ''));
+          const amountValid = Number.isFinite(parsed) && parsed > 0;
+          let linkValid = false;
+          try { const u = new URL(estimateLink.trim()); linkValid = u.protocol === 'http:' || u.protocol === 'https:'; } catch { /* invalid */ }
+          const preview = amountValid
+            ? `Your estimated tax refund is $${parsed.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}.\nI'll send it for final review, then to you for signature.\nHere is your invoice: ${estimateLink.trim() || '…'}`
+            : '';
+          return (
+            <div className="modal">
+              <div className="mh"><b>Send Estimate + Invoice — {phoneOf(estimateFor.waId)}</b><button className="x" onClick={() => setEstimateFor(null)}>✕</button></div>
+              <div className="mlabel">Estimated refund (AUD)</div>
+              <input className="edit" style={{ minHeight: 0, padding: 10 }} inputMode="decimal" value={estimateAmt}
+                onChange={(e) => setEstimateAmt(e.target.value)} placeholder="e.g. 3004" />
+              <div className="mlabel">Invoice link</div>
+              <input className="edit" style={{ minHeight: 0, padding: 10 }} value={estimateLink}
+                onChange={(e) => setEstimateLink(e.target.value)} placeholder="https://…" />
+              {preview && (
+                <>
+                  <div className="mlabel">Live preview: how the customer sees it</div>
+                  <div className="wapreview"><div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{preview}</div></div>
+                </>
+              )}
+              <div className="mfoot">
+                <button className="btn ghost" onClick={() => setEstimateFor(null)}>Cancel</button>
+                <button
+                  className="btn save"
+                  disabled={!amountValid || !linkValid}
+                  onClick={async () => {
+                    const r = await act({ action: 'send_estimate', customerId: estimateFor.id, amountCents: Math.round(parsed * 100), invoiceLink: estimateLink.trim() });
+                    if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
+                    say('Estimate sent ✓'); setEstimateFor(null);
+                    loadChat(estimateFor.id); refresh();
+                  }}
+                >Send</button>
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>

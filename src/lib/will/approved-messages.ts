@@ -43,6 +43,33 @@ Account Number: 81049952
 
 Once paid, send us a screenshot and we'll get started.`,
 
+  // For a customer who already lodged their return themselves (or through
+  // someone else) and wants it checked/reviewed — a genuinely different
+  // service from a fresh return, not a decline. Since there's no return
+  // being freshly prepared, the refund guarantee doesn't apply, and that is
+  // stated plainly rather than silently dropped, so the customer isn't
+  // caught out later. Same bank details, same fee amounts as the normal
+  // service, matched to what they mention (TFN only vs TFN + ABN).
+  price_tfn_review: `No problem, we can review a return you've already lodged.
+
+Since it's already been lodged, this is a review rather than a fresh tax return, so the refund guarantee doesn't apply here. The fee is $220 and is non-refundable.
+
+Account Name: Simple Tax Services
+BSB: 062692
+Account Number: 81049952
+
+Once paid, send us a screenshot and we'll get started.`,
+
+  price_tfn_abn_review: `No problem, we can review a return you've already lodged.
+
+Since it's already been lodged, this is a review rather than a fresh tax return, so the refund guarantee doesn't apply here. The fee is $385 and is non-refundable.
+
+Account Name: Simple Tax Services
+BSB: 062692
+Account Number: 81049952
+
+Once paid, send us a screenshot and we'll get started.`,
+
   objections: {
     o1_refund_before_pay: `Absolutely 😊 Working out your expected refund is part of the review. We need to go through your full situation first before we can give you an accurate estimate, which is why we start the review once payment is made. And if your refund ends up being less than our fee, we'll refund the difference, so you're never out of pocket for our service.`,
     o2_why_pay_first: `I completely understand. The reason payment comes first is that reviewing your situation and working out what you're entitled to is the main part of the service. There's no risk of paying more than you get back. If your refund is less than our fee, we'll refund the difference, so you're never out of pocket for our service.`,

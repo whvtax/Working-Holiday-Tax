@@ -151,6 +151,79 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // ============================================================
+// Payment-proof verification: a customer sends a photo or document while a
+// price is outstanding. Before that is ever trusted as "paid", the actual
+// image is looked at — this is what stops a random photo (a question, an
+// unrelated document, a screenshot of something else) from silently moving
+// someone to Paid. Kind/stage alone are never enough on their own.
+// ============================================================
+export interface PaymentProofCheck { isProof: boolean; reason?: string }
+
+const PROOF_TOOL = {
+  name: 'assess',
+  description: 'Your assessment of whether this attachment is genuine proof of payment.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      is_payment_proof: {
+        type: 'boolean',
+        description: 'true ONLY if this clearly shows a completed bank transfer / PayID / card payment confirmation with an amount and either a reference, a bank name, or a "successful/completed" status. false for anything else, including a photo of a problem, a document, an ID, a receipt for something unrelated, or an image too unclear to tell.',
+      },
+      reason: { type: 'string', description: 'One short factual sentence on what the attachment actually shows.' },
+    },
+    required: ['is_payment_proof'],
+  },
+} as const;
+
+const PROOF_SYSTEM = `You are checking a single attachment a customer sent on WhatsApp to a tax-return business, to decide whether it is genuine proof they made a payment (a bank transfer confirmation, PayID receipt, or card payment success screen showing an amount was sent) — as opposed to any other photo or document (a question about something, an unrelated receipt, a form, an ID, a screenshot of an error, or anything unclear). Be conservative: if it is not clearly a completed payment confirmation, say false. Answer only by calling the assess tool.`;
+
+/** Returns { isProof: false } on any failure (no key, network error, bad
+ *  response, unreadable format) — never assume proof when uncertain; the
+ *  caller falls back to a human looking at it. */
+export async function assessPaymentProofImage(bytes: ArrayBuffer, mime: string): Promise<PaymentProofCheck> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return { isProof: false, reason: 'no API key configured' };
+
+  const base64 = Buffer.from(bytes).toString('base64');
+  const normalizedMime = (mime || '').split(';')[0].trim().toLowerCase();
+  const isImage = normalizedMime.startsWith('image/');
+  const isPdf = normalizedMime === 'application/pdf';
+  if (!isImage && !isPdf) return { isProof: false, reason: `unsupported file type for verification (${normalizedMime || 'unknown'})` };
+
+  const content = isImage
+    ? [{ type: 'image', source: { type: 'base64', media_type: normalizedMime, data: base64 } }]
+    : [{ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }];
+
+  const body = JSON.stringify({
+    model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
+    max_tokens: 300,
+    system: PROOF_SYSTEM,
+    tools: [PROOF_TOOL],
+    tool_choice: { type: 'tool', name: 'assess' },
+    messages: [{ role: 'user', content: [...content, { type: 'text', text: 'Is this proof of payment?' }] }],
+  });
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      signal: AbortSignal.timeout(20_000),
+      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body,
+    });
+    if (!res.ok) return { isProof: false, reason: `vision check failed (${res.status})` };
+    const data = await res.json();
+    const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
+      ?.find((bl) => bl.type === 'tool_use' && bl.name === 'assess');
+    const input = tool?.input as { is_payment_proof?: unknown; reason?: unknown } | undefined;
+    if (!input || typeof input.is_payment_proof !== 'boolean') return { isProof: false, reason: 'model returned no assessment' };
+    return { isProof: input.is_payment_proof, reason: typeof input.reason === 'string' ? input.reason : undefined };
+  } catch (e) {
+    return { isProof: false, reason: e instanceof Error ? e.message : 'vision check unreachable' };
+  }
+}
+
+
+// ============================================================
 // Mining: read REAL conversations, extract what customers ask, and draft
 // polished professional answers in the approved voice. Never copies the
 // agent's raw wording — it produces an improved, kind, correct version.
@@ -259,6 +332,15 @@ export async function mineKnowledge(
 const NO_ABN = /\b(?:no|don'?t have|without|never had)\s+(?:an?\s+)?abn\b|only\s+(?:worked\s+)?(?:on\s+)?(?:a\s+)?tfn|just\s+tfn/i;
 const PAYABLE_STATES: CustomerState[] = ['PRICE_SENT', 'PAYMENT_PENDING'];
 
+// A customer who already lodged/filed/submitted their return and wants it
+// checked/reviewed/corrected is asking for a genuinely different service
+// (a review, not a fresh return), not declining — even though "already
+// lodged" on its own elsewhere signals someone walking away. Checked BEFORE
+// the decline pattern below so this always wins when both phrases appear
+// together (e.g. "already lodged it myself, can you check it?").
+const ALREADY_FILED = /\b(already (lodged|filed|submitted|did (it|my (tax )?return))|lodged|filed|submitted) it (myself|through)|did (it|my (tax )?return) myself\b/i;
+const WANTS_REVIEW = /\b(check|review|correct|wrong|mistake|amend|look at|verify|fix)\b/i;
+
 // M3: a real payment confirmation, not "I paid attention to your ad".
 function looksLikePayment(text: string): boolean {
   const t = text.toLowerCase().trim();
@@ -275,6 +357,13 @@ function mockDecide(ctx: CustomerContext, history: Turn[]): Decision {
 
   if (/(ignore (your|all) (rules|instructions)|send me the password|api key|you are now|take over|admin)/i.test(last)) {
     return m({ action: 'human_task', task_reason: 'Possible manipulation attempt', task_severity: 'URGENT', suggested_reply: "Sorry, I can't help with that. Is there anything about your tax return I can help you with? 😊" });
+  }
+  // Review of an already-lodged return: a different service, not a decline.
+  // No refund guarantee (there's no fresh return to guarantee against), and
+  // that is said plainly rather than silently dropped from the price message.
+  if (!ctx.paid && ALREADY_FILED.test(lower) && WANTS_REVIEW.test(lower)) {
+    const abn = /abn/.test(lower) && !NO_ABN.test(lower);
+    return m({ action: 'reply', reply_text: abn ? APPROVED.price_tfn_abn_review : APPROVED.price_tfn_review, new_state: 'PRICE_SENT' });
   }
   // Explicit decline: jump straight to Closed (spec: "says no clearly -> stop")
   if (!ctx.paid && /\b(not interested|no thanks?|did it myself|already (lodged|submitted|done it)|found someone else|going with (another|someone)|i'?ll pass)\b/.test(lower)) {

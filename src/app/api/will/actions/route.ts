@@ -14,12 +14,13 @@ import { readJson } from '@/lib/will/http';
 import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/channel';
 import { resolveAiMode } from '@/lib/will/mode';
 import { suggestReply } from '@/lib/will/suggest';
+import { APPROVED } from '@/lib/will/approved-messages';
 
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'retry_blocked' | 'send_followup' | 'delete_customer';
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer';
   id?: string;
   customerId?: string;
   body?: string;
@@ -32,6 +33,8 @@ interface ActionBody {
   proposedBody?: string;
   goal?: number;
   amountCents?: number;
+  /** send_estimate only. */
+  invoiceLink?: string;
   /** set_state only: owner manual override — move to any stage, bypassing the
    *  one-step-at-a-time guardrails. */
   force?: boolean;
@@ -412,6 +415,95 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: true });
     }
 
+    case 'send_estimate': {
+      // The "Send Estimate + Invoice" button on a Review chat: one step
+      // instead of set_estimate + compose + send + move-stage separately.
+      // Composes the fixed message, sends it, records the estimate, and
+      // advances the customer to Estimate — unless they are already at
+      // Estimate/Final Review, in which case this is a correction resend and
+      // the stage is left where it is.
+      if (!b.customerId || typeof b.amountCents !== 'number' || !Number.isFinite(b.amountCents) || b.amountCents < 0) {
+        return bad('customerId and a valid amountCents required');
+      }
+      if (typeof b.invoiceLink !== 'string' || !b.invoiceLink.trim()) return bad('invoiceLink required');
+      let invoiceUrl: URL;
+      try { invoiceUrl = new URL(b.invoiceLink.trim()); } catch { return bad('invoiceLink must be a valid URL'); }
+      if (invoiceUrl.protocol !== 'http:' && invoiceUrl.protocol !== 'https:') return bad('invoiceLink must be a valid URL');
+
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      if (!['FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW'].includes(customer.state)) {
+        return bad('the estimate can only be sent during review');
+      }
+
+      const amountCents = Math.round(b.amountCents);
+      // Always two decimals, e.g. "$3,004.00" — formatAUD drops them for a
+      // whole-dollar amount, which does not match the approved wording here.
+      const amountStr = '$' + (amountCents / 100).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const body = `Your estimated tax refund is ${amountStr}.\nI'll send it for final review, then to you for signature.\nHere is your invoice: ${invoiceUrl.toString()}`;
+
+      const send = await humanSend(customer, body);
+      if (send.error) return bad(send.error);
+      const out = await deliverOut(customer, send.body!, 'HUMAN');
+      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+
+      await store.updateCustomer(customer.id, { estimatedRefundCents: amountCents, aiPaused: true });
+      if (customer.state !== 'ESTIMATE_READY' && customer.state !== 'FINAL_REVIEW') {
+        await store.setState(customer.id, 'ESTIMATE_READY', 'HUMAN');
+        const fresh = await store.getCustomerById(customer.id);
+        if (fresh) await reconcileSchedule(fresh);
+      }
+      await store.audit('owner', 'estimate_sent', { customerId: customer.id, amountCents, invoiceLink: invoiceUrl.toString() });
+      return NextResponse.json({ ok: true });
+    }
+
+    case 'send_signature': {
+      // "Send for Signature" button (Estimate stage): once the final review
+      // is done and the actual return has been sent to the customer (by
+      // email, per the approved wording) for them to sign, one click sends
+      // the confirmation message and moves them straight to Signature.
+      if (!b.customerId) return bad('customerId required');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      if (!['ESTIMATE_READY', 'FINAL_REVIEW'].includes(customer.state)) {
+        return bad('signature can only be sent once the estimate stage is reached');
+      }
+      const send = await humanSend(customer, APPROVED.signature_ready);
+      if (send.error) return bad(send.error);
+      const out = await deliverOut(customer, send.body!, 'HUMAN');
+      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      await store.updateCustomer(customer.id, { aiPaused: true });
+      await store.setState(customer.id, 'SIGNATURE_PENDING', 'HUMAN');
+      const fresh = await store.getCustomerById(customer.id);
+      if (fresh) await reconcileSchedule(fresh);
+      await store.audit('owner', 'signature_sent', { customerId: customer.id });
+      return NextResponse.json({ ok: true });
+    }
+
+    case 'send_lodged': {
+      // "Mark Lodged" button (Signature stage): one click sends the lodged +
+      // review-request confirmation, exactly as the owner worded it, and
+      // moves the customer on to Completed. SIGNED is also accepted (already
+      // marked signed some other way) so this stays idempotent either way.
+      if (!b.customerId) return bad('customerId required');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      if (!['SIGNATURE_PENDING', 'SIGNED'].includes(customer.state)) {
+        return bad('this can only be sent once the customer has signed');
+      }
+      const body = `Your tax return has been lodged successfully! ✅\nYour refund should arrive in your bank account within 14 business days.\nIf you have a moment, we'd really appreciate a Google review 🙏\nhttps://maps.app.goo.gl/UnFaHWjv1dTvqrKz8?g_st=ic`;
+      const send = await humanSend(customer, body);
+      if (send.error) return bad(send.error);
+      const out = await deliverOut(customer, send.body!, 'HUMAN');
+      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      await store.updateCustomer(customer.id, { aiPaused: true });
+      await store.setState(customer.id, 'LODGED', 'HUMAN');
+      const fresh = await store.getCustomerById(customer.id);
+      if (fresh) await reconcileSchedule(fresh);
+      await store.audit('owner', 'lodged_sent', { customerId: customer.id });
+      return NextResponse.json({ ok: true });
+    }
+
     case 'add_template': {
       if (typeof b.body !== 'string' || !b.body.trim()) return bad('body required');
       if (b.body.length > 5000) return bad('too long');
@@ -432,27 +524,6 @@ export async function POST(req: Request) {
       await store.audit('owner', 'template_deleted', { id: b.id });
       return NextResponse.json({ ok: true });
 
-    case 'approve_suggestion': {
-      if (!b.id) return bad('id required');
-      const sug = (await store.listSuggestions()).find((s) => s.id === b.id);
-      if (!sug) return bad('suggestion not found', 404);
-      const body = (typeof b.body === 'string' && b.body.trim()) ? b.body : sug.proposedBody;
-      const verdict = policyGuard(body, {
-        state: 'PRICE_SENT', paid: false, aiPaused: false, killSwitch: false,
-        optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(),
-        isApprovedTemplate: false, estimateFromTeam: null,
-      });
-      const cv = verdict.violations.filter((v) => !v.startsWith('OUTSIDE_24H'));
-      if (cv.length) return NextResponse.json({ ok: false, blocked: cv }, { status: 422 });
-      await store.addTemplate({ category: 'FAQ · Operational', title: sug.title.slice(0, 60), body });
-      await store.setSuggestionStatus(sug.id, 'APPROVED');
-      await store.audit('owner', 'suggestion_approved', { id: sug.id });
-      return NextResponse.json({ ok: true });
-    }
-    case 'dismiss_suggestion':
-      if (!b.id) return bad('id required');
-      await store.setSuggestionStatus(b.id, 'DISMISSED');
-      return NextResponse.json({ ok: true });
     case 'set_variant_b': {
       if (!b.id) return bad('id required');
       const variant = typeof b.body === 'string' && b.body.trim() ? b.body : null;
@@ -473,13 +544,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: true });
     }
 
-    case 'set_goal': {
-      // L1: validate the goal is a sane percentage.
-      const g = typeof b.goal === 'number' && Number.isFinite(b.goal) ? Math.min(100, Math.max(0, Math.round(b.goal))) : null;
-      await store.setSetting('conversion_goal', g);
-      await store.audit('owner', 'goal_set', { goal: g });
-      return NextResponse.json({ ok: true, goal: g });
-    }
+    case 'set_goal':
+      // The lead→paid target is fixed at 100% (owner decision) — it is never
+      // negotiated down, in the UI or here. Kept as an explicit rejection
+      // rather than a silent no-op, and as a distinct action from the old
+      // "set any percentage" version so a stale client request fails loudly.
+      return bad('the goal is fixed at 100% and cannot be changed', 403);
 
     case 'update_template': {
       if (!b.id || typeof b.body !== 'string') return bad('id and body required');

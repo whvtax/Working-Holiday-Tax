@@ -13,9 +13,15 @@ import { createHmac } from 'crypto';
 
 const handleIncoming = jest.fn().mockResolvedValue({});
 const handleInboundNote = jest.fn().mockResolvedValue({});
+// Payment-proof auto-detection (a separate feature, tested on its own in
+// payment-proof.test.ts): default to "not eligible/not verified" here so
+// every image/document in these tests falls through to the ordinary
+// handleInboundNote path exactly as before that feature existed.
+const handlePaymentProofMedia = jest.fn().mockResolvedValue(null);
 jest.mock('@/lib/will/service', () => ({
   handleIncoming: (...a: unknown[]) => handleIncoming(...a),
   handleInboundNote: (...a: unknown[]) => handleInboundNote(...a),
+  handlePaymentProofMedia: (...a: unknown[]) => handlePaymentProofMedia(...a),
 }));
 
 const claimInbound = jest.fn().mockResolvedValue(true);
@@ -57,7 +63,7 @@ const metaArg = () => handleInboundNote.mock.calls[0][2] as {
 };
 
 beforeAll(() => { process.env.META_APP_SECRET = SECRET; });
-beforeEach(() => { handleInboundNote.mockClear(); claimInbound.mockClear(); });
+beforeEach(() => { handleInboundNote.mockClear(); handlePaymentProofMedia.mockClear(); claimInbound.mockClear(); });
 
 describe('attachments reach the chat', () => {
   it('carries a photo id, mime and caption through to the store', async () => {

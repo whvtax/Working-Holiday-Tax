@@ -21,11 +21,17 @@ export const ALL_STATES: CustomerState[] = [
 ];
 
 export const STAGE_GROUPS = [
-  { id: 'sales',     label: 'Sales',      color: '#c69337', states: ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'] },
+  { id: 'sales',     label: 'Lead',       color: '#c69337', states: ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'] },
   { id: 'onb',       label: 'Paid', color: '#5a92d8', states: ['PAID', 'FORM_PENDING'] },
-  { id: 'rev',       label: 'Review',     color: '#8a7cd0', states: ['FORM_COMPLETE'] },
-  { id: 'ready',     label: 'Ready',      color: '#c06d9d', states: ['DOCUMENTS_COMPLETE', 'UNDER_REVIEW'] },
-  { id: 'estimate',  label: 'Estimate',   color: '#4aa3c9', states: ['ESTIMATE_READY', 'FINAL_REVIEW'] },
+  // "Ready" and "Estimate" used to be their own pipeline stops (Docs
+  // Complete/Under Review, then Estimate Ready/Final Review). The owner
+  // found them redundant as separate stages, so their states now live inside
+  // Review — everything from the form coming back to the moment the return
+  // actually goes out for signature is just "Review". The granular
+  // CustomerState values themselves are unchanged (the state machine and the
+  // Send Estimate / Send for Signature buttons still key off them); only the
+  // pipeline grouping and display collapsed.
+  { id: 'rev',       label: 'Review',     color: '#8a7cd0', states: ['FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW'] },
   { id: 'sig',       label: 'Signature',  color: '#3aa89b', states: ['SIGNATURE_PENDING'] },
   { id: 'done',      label: 'Completed',  color: '#4aa872', states: ['SIGNED', 'LODGED', 'COMPLETED'] },
   { id: 'closed',    label: 'Closed',     color: '#7a8494', states: ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'] },

@@ -87,22 +87,10 @@ export interface TemplateRow {
   convA?: number; convB?: number;
 }
 
-export interface SuggestionRow {
-  id: string;
-  kind: 'NEW_TEMPLATE' | 'REWORD';
-  title: string;
-  detail: string;
-  proposedBody: string;
-  targetTemplateId?: string;
-  occurrences: number;
-  status: 'PENDING' | 'APPROVED' | 'DISMISSED';
-  createdAt: string;
-}
-
 export interface JobRow {
   id: string;
   customerId: string | null;
-  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY';
+  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST';
   payload: {
     templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
     /** AUTO_REPLY only: the QUEUED message this job will transmit. */
@@ -168,15 +156,27 @@ export interface Store {
    *  draft is actually sent, so its shown time is the SEND time, not the (older)
    *  time it was drafted, and it sorts to the bottom of the thread. */
   setMessageStatus(id: string, status: MessageRow['status'], opts?: { restamp?: boolean }): Promise<void>;
+  /** Record the WhatsApp message id Meta assigned once a send succeeds. This
+   *  is what lets a reaction (which only carries Meta's id) be matched back
+   *  to the specific message it landed on, instead of showing as a floating
+   *  unattached line. */
+  attachProviderId(id: string, providerId: string): Promise<void>;
   /** Hide the message whose Meta id (meta.providerId) matches — used when the
    *  staff member deletes ("revokes") a message from the WhatsApp Business app,
    *  so it disappears from Will too. Returns true if a message was found. */
   discardByProviderId(providerId: string): Promise<boolean>;
   /** Inbound messages in [startIso, endIso), newest last, with the sender's name
-   *  and number joined on. Used by the monthly customer-words digest. Bounded by
-   *  `limit` so one very busy month cannot pull an unbounded result set into a
-   *  serverless function. */
+   *  and number joined on. Bounded by `limit` so a busy window cannot pull an
+   *  unbounded result set into a serverless function. */
   listInboundBetween(
+    startIso: string,
+    endIso: string,
+    limit?: number,
+  ): Promise<(MessageRow & { customerName?: string | null; waId?: string })[]>;
+  /** Both directions in [startIso, endIso), oldest first, with the sender's
+   *  name and number joined on. Used by the daily Library-suggestions digest
+   *  to pair a customer's question with whatever reply followed it. */
+  listMessagesBetween(
     startIso: string,
     endIso: string,
     limit?: number,
@@ -216,9 +216,6 @@ export interface Store {
 
   deleteCustomerByWaId(waId: string): Promise<void>;
 
-  listSuggestions(): Promise<SuggestionRow[]>;
-  upsertSuggestion(s: Omit<SuggestionRow, 'id' | 'createdAt' | 'status'> & { dedupeKey: string }): Promise<void>;
-  setSuggestionStatus(id: string, status: SuggestionRow['status']): Promise<void>;
   bumpVariant(templateId: string, variant: 'A' | 'B', field: 'sent' | 'conv'): Promise<void>;
   setVariantB(templateId: string, body: string | null): Promise<void>;
 

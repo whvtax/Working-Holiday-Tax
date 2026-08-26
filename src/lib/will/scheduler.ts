@@ -5,7 +5,7 @@
 // seq resume (no restart-forever), kill switch, quiet hours.
 // ============================================================
 import { getStore, CustomerRow } from './store';
-import { schedulerConfig, withinQuietHours, deferToMorning } from './config';
+import { schedulerConfig, withinQuietHours, deferToMorning, localMidnightUtc } from './config';
 import { policyGuard } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
@@ -15,7 +15,7 @@ export type { Flow };
 import { formReceivedMessage } from './i18n';
 import { deliverOut, sendWhatsAppText } from './channel';
 import { requiresApproval } from './mode';
-import { maybeSendMonthlyDigest } from './digest';
+import { runDailyDigest } from './daily-digest';
 
 
 /**
@@ -93,6 +93,31 @@ export async function ensureNightly(): Promise<void> {
   await store.addJob({ customerId: null, kind: 'NIGHTLY', payload: {}, runAt: next.toISOString() });
 }
 
+/** Ensure exactly one daily-digest job is queued (idempotent), for the next
+ *  8:00am in Melbourne — today if that has not passed yet local time, else
+ *  tomorrow. Separate from NIGHTLY so a fixed 8am delivery time never drifts
+ *  with whatever hour nightly maintenance happens to run at. */
+export async function ensureDailyDigest(): Promise<void> {
+  const store = getStore();
+  const jobs = await store.listJobs();
+  if (jobs.some((j) => j.kind === 'DAILY_DIGEST' && j.status === 'SCHEDULED')) return;
+
+  const now = new Date();
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+    hour12: false, timeZone: 'Australia/Melbourne',
+  }).formatToParts(now);
+  const y = Number(parts.find((p) => p.type === 'year')?.value);
+  const mo = Number(parts.find((p) => p.type === 'month')?.value);
+  const da = Number(parts.find((p) => p.type === 'day')?.value);
+  const hh = Number(parts.find((p) => p.type === 'hour')?.value);
+  const pastEightToday = hh >= 8; // at/after 8am local: today's slot has passed (or is passing right now)
+  const targetDay = pastEightToday ? da + 1 : da; // Date.UTC below normalises any overflow
+
+  const runAt = new Date(localMidnightUtc('Australia/Melbourne', y, mo, targetDay).getTime() + 8 * 60 * 60 * 1000);
+  await store.addJob({ customerId: null, kind: 'DAILY_DIGEST', payload: {}, runAt: runAt.toISOString() });
+}
+
 export interface TickResult { processed: number; sent: string[]; closed: string[]; deferred: number }
 
 // Single-flight lock: overlapping ticks (multiple tabs / external cron)
@@ -126,6 +151,15 @@ async function doProcess(): Promise<TickResult> {
         await runNightly();
         await store.setJobStatus(job.id, 'DONE');
         await ensureNightly();
+        continue;
+      }
+      if (job.kind === 'DAILY_DIGEST') {
+        // Best-effort, like the old monthly digest: a failed send is not
+        // recorded as sent, so the job requeues and the next run retries.
+        try { await runDailyDigest(Date.now()); }
+        catch (e) { await store.audit('nightly', 'daily_digest_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {}); }
+        await store.setJobStatus(job.id, 'DONE');
+        await ensureDailyDigest();
         continue;
       }
       if (!job.customerId) { await store.setJobStatus(job.id, 'CANCELLED'); continue; }
@@ -347,6 +381,11 @@ export async function runNightly(): Promise<void> {
       issues.push(`${c.name ?? c.waId}: in ${c.state} but not marked paid`);
     }
   }
+  // Went-cold reactivation now happens the moment a closed customer messages
+  // again (service.ts, handleIncoming) — event-triggered, not time-based, per
+  // the owner's rule: "whenever, whatever they say, however long it's been."
+  // Nothing to do here on a timer.
+
   const jobs = await store.listJobs();
   // PERF-01: O(jobs) with a Set instead of O(jobs x customers) via .some().
   const customerIds = new Set(customers.map((c) => c.id));
@@ -373,18 +412,10 @@ export async function runNightly(): Promise<void> {
       severity: 'REVIEW', context: issues.join(' | '), suggestedReply: null,
     });
   }
-  // Once a calendar month, email the owner everything customers actually typed
-  // last month, so their wording can be turned into knowledge-library entries.
-  // Guarded by a stored month key, not by the schedule, so a missed night simply
-  // sends it the following night and it can never send twice. Never allowed to
-  // break maintenance: a failed digest is retried tomorrow.
-  let digest: string;
-  try {
-    digest = await maybeSendMonthlyDigest(Date.now());
-  } catch (e) {
-    digest = 'failed';
-    await store.audit('nightly', 'digest_failed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
-  }
+  // The monthly "what customers wrote" email is gone — replaced by the
+  // DAILY_DIGEST job (daily-digest.ts), scheduled separately for 8am
+  // Melbourne so its delivery time doesn't depend on when this nightly run
+  // happens to fire.
 
-  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged, auditPurged, digest });
+  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged, auditPurged });
 }
