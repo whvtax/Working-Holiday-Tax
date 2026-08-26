@@ -330,6 +330,15 @@ main{padding:14px 16px 36px;max-width:none;margin-left:245px;
 .will-scope .task:hover .tdismiss{opacity:1}
 .will-scope .tdismiss:hover{background:var(--surface3);color:var(--ink2)}
 .will-scope .tdismiss:focus-visible{opacity:1}
+/* The chat-list delete button lived inside .citem, but the hover rule above
+   only ever targeted .task (the Tasks list), so it sat at opacity:0
+   permanently — not hidden until hover, just invisible outright — while
+   still reserving its 22px+margin of space. That blank strip on the right
+   of every chat row was the bug. Faint by default (so it doesn't compete
+   with the stage badge) and clear on hover, and — since hover doesn't exist
+   on a touch screen — visible enough to find without one. */
+.will-scope .citem .tdismiss{opacity:.32}
+.will-scope .citem:hover .tdismiss{opacity:1}
 /* Standalone delete button in the open-chat header: not part of a hover-reveal
    list row, and hover doesn't exist on touch anyway, so this one stays visible
    all the time instead of relying on :hover to reveal it. */

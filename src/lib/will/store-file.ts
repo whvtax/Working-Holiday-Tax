@@ -280,6 +280,18 @@ export class FileStore implements Store {
     await persist();
   }
 
+  async findOpenTaskForCustomer(customerId: string): Promise<TaskRow | null> {
+    const db = await load();
+    return db.tasks.find((x) => x.customerId === customerId && x.status === 'OPEN') ?? null;
+  }
+
+  async updateTask(id: string, patch: Partial<Pick<TaskRow, 'reason' | 'context' | 'suggestedReply' | 'severity'>>): Promise<void> {
+    const db = await load();
+    const t = db.tasks.find((x) => x.id === id);
+    if (t) Object.assign(t, patch);
+    await persist();
+  }
+
   async listTemplates() { return (await load()).templates; }
 
   async addTemplate(t: { category: string; title: string; body: string }): Promise<TemplateRow> {

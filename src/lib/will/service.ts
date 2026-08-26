@@ -17,6 +17,7 @@ import { firstNameOf } from './text-normalize';
 import { suggestReply } from './suggest';
 import { APPROVED } from './approved-messages';
 import { assessPaymentProofImage } from './claude';
+import { resolveAiMode, requiresApproval } from './mode';
 
 export interface HandleResult {
   outcome: EngineOutcome;
@@ -26,6 +27,35 @@ export interface HandleResult {
 
 const OPT_OUT = /\b(stop|unsubscribe|opt ?out|stop messaging me|leave me alone|remove me)\b/i;
 const SALES_STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
+
+// Owner's rule: a burst of messages (or attachments) from the same customer
+// must fold into ONE open task, not one per message — sending 3-4 messages
+// in a row used to open 3-4 tasks, and 20 invoice photos opened 20. If a
+// task is already open for this customer, its context grows with what just
+// arrived (capped, so it never grows without bound) and its suggested reply
+// is regenerated against everything sent so far rather than only the latest
+// message. Only opens a new task when none is open yet.
+const MAX_TASK_CONTEXT = 2000;
+async function raiseOrUpdateTask(
+  store: ReturnType<typeof getStore>,
+  customer: Pick<CustomerRow, 'id' | 'name' | 'waId'>,
+  opts: { reason: string; severity: string; newContext: string; suggestedReply: string | null },
+): Promise<void> {
+  const existing = await store.findOpenTaskForCustomer(customer.id);
+  if (existing) {
+    const merged = existing.context ? `${existing.context}\n---\n${opts.newContext}` : opts.newContext;
+    await store.updateTask(existing.id, {
+      reason: opts.reason, severity: opts.severity,
+      context: merged.length > MAX_TASK_CONTEXT ? merged.slice(merged.length - MAX_TASK_CONTEXT) : merged,
+      suggestedReply: opts.suggestedReply,
+    });
+    return;
+  }
+  await store.addTask({
+    customerId: customer.id, customerName: customer.name ?? customer.waId,
+    reason: opts.reason, severity: opts.severity, context: opts.newContext, suggestedReply: opts.suggestedReply,
+  });
+}
 
 export async function getBank(): Promise<{ bsb: string; account: string }> {
   const store = getStore();
@@ -144,14 +174,15 @@ async function handleIncomingInner(
     if (!customer.aiPaused) {
       await store.updateCustomer(customer.id, { aiPaused: true });
       await store.cancelJobsFor(customer.id);
-      await store.addTask({
-        customerId: customer.id, customerName: customer.name ?? waId,
-        reason: isClosed ? 'A previous customer messaged again, needs a human' : 'An existing chat sent a message, needs a human',
-        severity: 'REVIEW', context: text,
-        suggestedReply: await suggestReply(text, customer, 'returning_customer'),
-      });
       await store.audit('system', 'routed_to_human_existing_chat', { customerId: customer.id });
     }
+    // Whether this is the first message that paused the AI or another one in
+    // the same burst, fold it into the one open task instead of a new one.
+    await raiseOrUpdateTask(store, customer, {
+      reason: isClosed ? 'A previous customer messaged again, needs a human' : 'An existing chat sent a message, needs a human',
+      severity: 'REVIEW', newContext: text,
+      suggestedReply: await suggestReply(text, customer, 'returning_customer'),
+    });
     const c2 = await store.getCustomerByWaId(waId);
     return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 ?? customer };
   }
@@ -194,10 +225,9 @@ async function handleIncomingInner(
   // COST-01: daily global cap on paid AI decisions. When the budget is spent,
   // hand the conversation to a human instead of calling the model.
   if (await aiBudgetExhausted()) {
-    await store.addTask({
-      customerId: customer.id, customerName: customer.name ?? waId,
+    await raiseOrUpdateTask(store, customer, {
       reason: 'Daily AI limit reached, please reply to this customer manually',
-      severity: 'REVIEW', context: text.slice(0, 200),
+      severity: 'REVIEW', newContext: text.slice(0, 200),
       suggestedReply: await suggestReply(text, customer, 'budget'),
     });
     await store.audit('policy_guard', 'ai_budget_exhausted', { customerId: customer.id });
@@ -294,10 +324,9 @@ async function handleIncomingInner(
     });
     pendingMessageId = m.id;
   } else if (outcome.kind === 'human_task' && outcome.task) {
-    await store.addTask({
-      customerId: customer.id, customerName: customer.name ?? waId,
+    await raiseOrUpdateTask(store, customer, {
       reason: outcome.task.reason, severity: outcome.task.severity,
-      context: text, suggestedReply: outcome.task.suggestedReply ?? null,
+      newContext: text, suggestedReply: outcome.task.suggestedReply ?? null,
     });
     await store.audit('assistant', 'human_task_created', { reason: outcome.task.reason });
   }
@@ -382,14 +411,14 @@ export async function handleInboundNote(
   // thread and that is the whole of it. Raising one here was what buried the
   // real "cannot read this" tasks under a pile of thumbs-ups.
   if (meta?.reaction) return (await store.getCustomerByWaId(waId)) ?? customer;
-  await store.addTask({
-    customerId: customer.id, customerName: customer.name ?? meta?.name ?? waId,
-    // The attachment is now visible in the chat, so the instruction is to open
-    // the conversation here, not to go and find it in WhatsApp.
+  // Owner's rule: 20 invoice photos in a row is ONE task to open, not 20 —
+  // raiseOrUpdateTask folds this into whatever task is already open for this
+  // customer instead of creating a fresh one per attachment.
+  await raiseOrUpdateTask(store, customer, {
     reason: meta?.media
       ? 'Customer sent an attachment Will cannot read. Open the chat to view it and reply.'
       : 'Customer sent a message Will cannot read (voice note or unsupported type). Open WhatsApp to read it and reply.',
-    severity: 'REVIEW', context: body,
+    severity: 'REVIEW', newContext: body,
     // Even here there is something worth proposing: an acknowledgement that the
     // attachment arrived, so the customer is not left on read while the owner
     // opens it.
@@ -449,6 +478,32 @@ export async function handlePaymentProofMedia(
     customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,
     meta: { media: meta.media },
   });
+
+  // Same rule as every other AI-authored reply: SUPERVISED means nothing
+  // reaches the customer, and nothing about the pipeline moves, until the
+  // owner approves it — a confirmed payment photo is not an exception to
+  // that just because it arrived automatically. Previously this always sent
+  // immediately and moved the stage regardless of ai_mode, which was
+  // effectively treating it as pre-approved before the owner ever saw it.
+  const mode = resolveAiMode(await store.getSetting('ai_mode'));
+  if (requiresApproval(mode)) {
+    const draft = await store.addMessage({
+      customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL',
+      body: APPROVED.payment_received,
+      // proposedState: 'PAID' is exactly what approve_message already knows
+      // how to apply — same guard re-check, same PAID -> FORM_PENDING
+      // cascade via autoAdvanceToForm, same reconcileSchedule — as any other
+      // deferred-state draft. No new approval machinery needed here.
+      meta: { proposedState: 'PAID' },
+    });
+    await store.addTask({
+      customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
+      reason: `Customer sent proof of payment${check.reason ? ` (${check.reason})` : ''}. A "payment received" reply is drafted and waiting for your approval — nothing has been sent or moved yet.`,
+      severity: 'REVIEW', context: body, suggestedReply: null,
+    });
+    await store.audit('system', 'payment_proof_drafted', { customerId: customer.id, mediaKind: meta.media.kind, messageId: draft.id });
+    return (await store.getCustomerByWaId(waId)) ?? customer;
+  }
 
   await store.setState(customer.id, 'PAID', 'SYSTEM'); // also flips customer.paid = true
   const bank = await getBank();

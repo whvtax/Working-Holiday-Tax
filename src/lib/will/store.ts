@@ -195,6 +195,12 @@ export interface Store {
   addTask(t: Omit<TaskRow, 'id' | 'createdAt' | 'status'>): Promise<TaskRow>;
   listTasks(): Promise<TaskRow[]>;
   resolveTask(id: string): Promise<void>;
+  /** The single OPEN task for this customer, if one exists — used to fold a
+   *  burst of messages/attachments into ONE task instead of one per message. */
+  findOpenTaskForCustomer(customerId: string): Promise<TaskRow | null>;
+  /** Patch an existing task in place (reason/context/suggestedReply/severity)
+   *  rather than creating a new one — how a burst of messages consolidates. */
+  updateTask(id: string, patch: Partial<Pick<TaskRow, 'reason' | 'context' | 'suggestedReply' | 'severity'>>): Promise<void>;
 
   listTemplates(): Promise<TemplateRow[]>;
   addTemplate(t: { category: string; title: string; body: string }): Promise<TemplateRow>;

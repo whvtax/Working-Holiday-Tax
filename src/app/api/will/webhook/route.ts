@@ -501,11 +501,14 @@ export async function POST(req: Request) {
   for (const { msg, name, body, kind, media, reaction } of noteItems) {
     try {
       if (!(await store.claimInbound(msg.id))) continue; // dedupe on the Meta id
-      // For a bodiless `unsupported`, record exactly what Meta sent (no PII), so
-      // we can confirm whether the text was ever recoverable and which error code
-      // Coexistence attached. This is the line that turns "why is it unsupported"
-      // into a definite answer on the next message.
-      if (kind === 'unsupported' || kind === 'unknown') {
+      // For anything that fell through to the placeholder — no text, no
+      // media, whatever WhatsApp's declared `type` happened to be — record
+      // exactly what Meta sent (no PII), so "why is this one unreadable" has
+      // a definite answer on the next occurrence instead of a guess. Kept
+      // broad (not just kind === 'unsupported'/'unknown') because a message
+      // can land here under almost any type string — 'button', 'order',
+      // 'system', a future type Meta adds — not only those two.
+      if (!media && !reaction) {
         try { await store.audit('channel', 'inbound_unsupported', { id: msg.id, from: maskWa(msg.from), ...describeUndecoded(msg) }); } catch { /* */ }
       }
       // Owner's rule: we trust the customer. A photo or document arriving
@@ -541,6 +544,12 @@ export async function POST(req: Request) {
         customerId: customer.id, direction: 'OUT', author: 'HUMAN', status: 'SENT',
         body: echo.body, meta: { providerId: echo.id, channel: 'app' },
       });
+      // Same rule as sending through the CRM: typing to this customer on the
+      // phone/desktop WhatsApp app IS engaging with the conversation, so it
+      // clears the unread marker too — this path bypasses deliverOut (Meta is
+      // telling us what was typed elsewhere, not us transmitting it), so it
+      // needs its own call rather than inheriting deliverOut's.
+      await store.markCustomerRead(customer.id);
       await store.audit('channel', 'app_echo_synced', { id: echo.id, from: maskWa(echo.to) });
     } catch { /* best effort */ }
   }

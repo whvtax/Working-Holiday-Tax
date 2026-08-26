@@ -424,6 +424,23 @@ export class SupabaseStore implements Store {
     await this.sb().from('will_tasks').update({ status: 'RESOLVED' }).eq('id', id);
   }
 
+  async findOpenTaskForCustomer(customerId: string): Promise<TaskRow | null> {
+    const { data } = await this.sb().from('will_tasks').select('*')
+      .eq('customer_id', customerId).eq('status', 'OPEN')
+      .order('created_at', { ascending: false }).limit(1).maybeSingle();
+    return data ? toTask(data) : null;
+  }
+
+  async updateTask(id: string, patch: Partial<Pick<TaskRow, 'reason' | 'context' | 'suggestedReply' | 'severity'>>): Promise<void> {
+    const row: Record<string, unknown> = {};
+    if (patch.reason !== undefined) row.reason = patch.reason;
+    if (patch.context !== undefined) row.context = patch.context;
+    if (patch.suggestedReply !== undefined) row.suggested_reply = patch.suggestedReply;
+    if (patch.severity !== undefined) row.severity = patch.severity;
+    if (Object.keys(row).length === 0) return;
+    await this.sb().from('will_tasks').update(row).eq('id', id);
+  }
+
   async listTemplates(): Promise<TemplateRow[]> {
     await this.ensureSeeded();
     const { data } = await this.sb().from('will_templates').select('*').order('updated_at', { ascending: false });

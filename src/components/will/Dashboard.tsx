@@ -120,7 +120,12 @@ async function act(body: Record<string, unknown>) {
   return res.json().catch(() => ({}));
 }
 
-const QUICK_TEMPLATES = ['req_abn', 'req_expenses', 'req_doc', 'medicare', 'payment_received'];
+// "Quick fill" #5 used to be payment_received — redundant now that payment
+// confirmation has dedicated features (auto-detection from a photo, and the
+// Send Estimate/Signature/Lodged buttons that already send the right
+// confirmation for their stage), so it was removed rather than left as a
+// second, manual way to do the same thing.
+const QUICK_TEMPLATES = ['req_abn', 'req_expenses', 'req_doc', 'medicare'];
 
 /** What the customer actually sent, shown inside the message bubble.
  *
@@ -369,9 +374,16 @@ export default function Dashboard() {
   const awaiting = data.customers.filter((c) => ['PRICE_SENT', 'PAYMENT_PENDING'].includes(c.state));
   const awaitingPotential = awaiting.reduce((s, c) => s + (c.income === 'TFN_ABN' ? 385 : c.income === 'TFN' ? 220 : 0), 0);
   // We sent the last message, they went quiet, but never explicitly declined:
-  // worth a personal nudge in a few weeks.
+  // worth a personal nudge in a few weeks. "We spoke last" was being counted
+  // the instant our reply went out, with no time passed at all — a lead who
+  // messaged 5 minutes ago and got an instant answer counted as "gone quiet"
+  // just as much as someone silent for a month, which is why 60 of 84 showed
+  // up here. Requires at least 24h of actual silence since our side spoke,
+  // the same bar the "stuck" flag and the follow-up cadence already use.
+  const QUIET_THRESHOLD_MS = 24 * 3600e3;
   const quietLeads = data.customers.filter((c) =>
     c.lastMessageDirection === 'OUT' && !c.optedOut &&
+    c.lastMessageAt != null && Date.now() - new Date(c.lastMessageAt).getTime() > QUIET_THRESHOLD_MS &&
     ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'WENT_COLD'].includes(c.state));
   const isStuck = (c: CustomerRow) => Date.now() - new Date(c.stateChangedAt).getTime() > 24 * 3600e3 &&
     !['COMPLETED', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'UNDER_REVIEW', 'FINAL_REVIEW'].includes(c.state);
@@ -575,7 +587,7 @@ export default function Dashboard() {
             <div className="kpis">
               <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Customers</div><div className="kv">{data.customers.length}</div><div className="kd">in the system</div></div>
               <div className="kpi clickable" title="We sent the last message and they went quiet, but never said no. Worth a personal follow-up later." onClick={() => { setView('pipeline'); setGroup('closed'); }}>
-                <div className="kl">Worth a Nudge</div><div className="kv">{quietLeads.length}</div><div className="kd">we spoke last, no reply, never said no</div>
+                <div className="kl">Worth a Nudge</div><div className="kv">{quietLeads.length}</div><div className="kd">we spoke last, 24h+ of silence, never said no</div>
               </div>
               <div className="kpi clickable" title="See completed customers" onClick={() => { setView('pipeline'); setGroup('done'); }}><div className="kl">Completed</div><div className="kv">{countFor(['COMPLETED'])}</div><div className="kd up">all-time</div></div>
             </div>
@@ -613,7 +625,6 @@ export default function Dashboard() {
                   <div className="rc-side">
                     {c.aiPaused && <span className="chip">✋ manual</span>}
                     {isStuck(c) && <span className="chip stuck">⚠ stuck</span>}
-                    {feeOf(c.income) && <span className="chip price">{feeOf(c.income)}</span>}
                     <span className="stagepill" style={{ ['--pc' as string]: g.color }}>{stageLabelOf(c.state)}</span>
                     {/* When the last message actually arrived, not when the
                         pipeline stage last changed: "2h" should mean 2h since
@@ -751,9 +762,6 @@ export default function Dashboard() {
                               </>
                             )}
                           </div>
-                          {[feeOf(chatSel.income), chatSel.paid ? 'paid ✓' : null].filter(Boolean).length > 0 && (
-                            <span style={{ fontSize: 10.5, color: 'var(--ink3)' }}>{[feeOf(chatSel.income), chatSel.paid ? 'paid ✓' : null].filter(Boolean).join(' · ')}</span>
-                          )}
                         </div>
                       </div>
                       <div className={`aitoggle ${chatSel.aiPaused ? 'off' : ''}`} onClick={async () => {
@@ -781,32 +789,33 @@ export default function Dashboard() {
                         }}
                       >✕</button>
                     </div>
-                    {/* Review-stage action: send the refund estimate + invoice
-                        in one step. Only shown while the customer is in
-                        Review — nothing to estimate before the form has come
-                        back. */}
-                    {chatSel.state === 'FORM_COMPLETE' && (
-                      <div className="tplchips" style={{ paddingTop: 0 }}>
+                    {/* One combined row: the stage action button (if any), Quick
+                        fill numbers, and Follow-up nudges all inline together,
+                        rather than three stacked rows. Scrolls sideways if it
+                        doesn't fit rather than wrapping, same as Quick fill
+                        always did. */}
+                    <div className="tplchips">
+                      {/* Review-stage action: send the refund estimate + invoice
+                          in one step. Only shown while the customer is in Review. */}
+                      {chatSel.state === 'FORM_COMPLETE' && (
                         <button
                           type="button"
                           className="btn save"
-                          style={{ padding: '6px 14px', fontSize: 12.5 }}
+                          style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
                           onClick={() => { setEstimateFor(chatSel); setEstimateAmt(''); setEstimateLink(''); }}
                         >
                           💰 Send Estimate + Invoice
                         </button>
-                      </div>
-                    )}
-                    {/* Estimate-stage action: once the return has actually
-                        been sent to the customer to sign, one click sends the
-                        "ready for signature" confirmation and moves them on
-                        to Signature. Only shown during Estimate. */}
-                    {(chatSel.state === 'ESTIMATE_READY' || chatSel.state === 'FINAL_REVIEW') && (
-                      <div className="tplchips" style={{ paddingTop: 0 }}>
+                      )}
+                      {/* Estimate-stage action: once the return has actually been
+                          sent to the customer to sign, one click sends the "ready
+                          for signature" confirmation and moves them on to
+                          Signature. Only shown during Estimate. */}
+                      {(chatSel.state === 'ESTIMATE_READY' || chatSel.state === 'FINAL_REVIEW') && (
                         <button
                           type="button"
                           className="btn save"
-                          style={{ padding: '6px 14px', fontSize: 12.5 }}
+                          style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
                           onClick={async () => {
                             if (!confirm(`Send the "ready for signature" message to ${phoneOf(chatSel.waId)} and move them to Signature?`)) return;
                             const r = await act({ action: 'send_signature', customerId: chatSel.id });
@@ -816,17 +825,15 @@ export default function Dashboard() {
                         >
                           ✍️ Send for Signature
                         </button>
-                      </div>
-                    )}
-                    {/* Signature-stage action: once they've signed, one click
-                        sends the lodged + review-request message and moves
-                        them on to Completed. Only shown during Signature. */}
-                    {chatSel.state === 'SIGNATURE_PENDING' && (
-                      <div className="tplchips" style={{ paddingTop: 0 }}>
+                      )}
+                      {/* Signature-stage action: once they've signed, one click
+                          sends the lodged + review-request message and moves them
+                          on to Completed. Only shown during Signature. */}
+                      {chatSel.state === 'SIGNATURE_PENDING' && (
                         <button
                           type="button"
                           className="btn save"
-                          style={{ padding: '6px 14px', fontSize: 12.5 }}
+                          style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
                           onClick={async () => {
                             if (!confirm(`Send the "lodged successfully" message to ${phoneOf(chatSel.waId)} and move them to Completed?`)) return;
                             const r = await act({ action: 'send_lodged', customerId: chatSel.id });
@@ -836,14 +843,12 @@ export default function Dashboard() {
                         >
                           ✅ Mark Lodged
                         </button>
-                      </div>
-                    )}
-                    {/* Quick send: numbered buttons instead of long labels, so the
-                        row never overflows and needs no sideways scroll. Hover a
-                        number to see the full text (native tooltip). Clicking a
-                        number does NOT send — it drops the text into the compose
-                        box so you can read it, edit it, and send it yourself. */}
-                    <div className="tplchips">
+                      )}
+                      {/* Quick send: numbered buttons instead of long labels, so the
+                          row never overflows and needs no sideways scroll. Hover a
+                          number to see the full text (native tooltip). Clicking a
+                          number does NOT send — it drops the text into the compose
+                          box so you can read it, edit it, and send it yourself. */}
                       <span className="tplchips-label">Quick fill:</span>
                       {QUICK_TEMPLATES.map((key, i) => {
                         const t = data.templates.find((x) => x.key === key);
@@ -851,44 +856,44 @@ export default function Dashboard() {
                         const label = t.title.replace(/ \(.*\)/, '');
                         return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label} — edit and send`); }}>{i + 1}</button>;
                       })}
+                      {/* The nudges for this customer's stage, so a follow-up can be
+                          sent after reading the conversation rather than only on the
+                          scheduler's timer. Which three appear is decided by the
+                          stage, so there is nothing to choose wrongly. Unlike Quick
+                          fill these cannot go through the composer: the customer has
+                          been quiet, so the message is outside Meta's 24h window and
+                          has to leave as the approved template, word for word. */}
+                      {(() => {
+                        const flow = flowForState(chatSel.state);
+                        if (!flow) return null;
+                        const keys = FLOW_TEMPLATES[flow];
+                        return (
+                          <>
+                            <span className="tplchips-label" style={{ marginLeft: 4 }}>Follow-up:</span>
+                            {keys.map((key) => {
+                              const t = data.templates.find((x) => x.key === key);
+                              if (!t) return null;
+                              const short = t.title.split('·').pop()?.trim() ?? t.title;
+                              const preview = t.body.replace(/\{\{1\}\}/g, chatSel.name?.split(/\s+/)[0] || 'there');
+                              return (
+                                <button
+                                  key={key}
+                                  className="chipbtn"
+                                  title={preview}
+                                  disabled={acted.has(key + chatSel.id)}
+                                  onClick={() => once(key + chatSel.id, async () => {
+                                    if (!confirm(`Send this to ${chatSel.name ?? phoneOf(chatSel.waId)} now?\n\n${preview}`)) return;
+                                    const r = await act({ action: 'send_followup', customerId: chatSel.id, id: key });
+                                    say(r?.ok ? 'Follow-up sent ✓' : `❌ ${r?.error ?? (r?.blocked?.length ? r.blocked.join(', ') : 'not sent')}`);
+                                    loadChat(chatSel.id); refresh();
+                                  })}
+                                >{short}</button>
+                              );
+                            })}
+                          </>
+                        );
+                      })()}
                     </div>
-                    {/* The nudges for this customer's stage, so a follow-up can be
-                        sent after reading the conversation rather than only on the
-                        scheduler's timer. Which three appear is decided by the
-                        stage, so there is nothing to choose wrongly. Unlike Quick
-                        fill these cannot go through the composer: the customer has
-                        been quiet, so the message is outside Meta's 24h window and
-                        has to leave as the approved template, word for word. */}
-                    {(() => {
-                      const flow = flowForState(chatSel.state);
-                      if (!flow) return null;
-                      const keys = FLOW_TEMPLATES[flow];
-                      return (
-                        <div className="tplchips">
-                          <span className="tplchips-label">Follow-up:</span>
-                          {keys.map((key) => {
-                            const t = data.templates.find((x) => x.key === key);
-                            if (!t) return null;
-                            const short = t.title.split('·').pop()?.trim() ?? t.title;
-                            const preview = t.body.replace(/\{\{1\}\}/g, chatSel.name?.split(/\s+/)[0] || 'there');
-                            return (
-                              <button
-                                key={key}
-                                className="chipbtn"
-                                title={preview}
-                                disabled={acted.has(key + chatSel.id)}
-                                onClick={() => once(key + chatSel.id, async () => {
-                                  if (!confirm(`Send this to ${chatSel.name ?? phoneOf(chatSel.waId)} now?\n\n${preview}`)) return;
-                                  const r = await act({ action: 'send_followup', customerId: chatSel.id, id: key });
-                                  say(r?.ok ? 'Follow-up sent ✓' : `❌ ${r?.error ?? (r?.blocked?.length ? r.blocked.join(', ') : 'not sent')}`);
-                                  loadChat(chatSel.id); refresh();
-                                })}
-                              >{short}</button>
-                            );
-                          })}
-                        </div>
-                      );
-                    })()}
                     <div className="msgs" ref={msgsRef}>
                       {(() => {
                         const visible = [...chatMsgs].filter((m) => m.status !== 'DISCARDED' && m.status !== 'BLOCKED')
