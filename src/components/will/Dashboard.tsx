@@ -639,40 +639,44 @@ export default function Dashboard() {
           <section className="view active chats-view">
             <div className="chatwrap">
               <div className="chatlist">
-                <div className="search"><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
-                {/* Filter chips (owner's choice): just the four that matter, so
-                    they fit with no sideways scroll — All (default), Unread, and
-                    the two action stages Review and Signature. ("Estimate" was
-                    folded into Review when the owner removed it and Ready as
-                    separate pipeline stops.) */}
-                {/* Filter chips (owner's choice): All, then the three stage
-                    stops that matter for a quick filter — Paid, Review,
-                    Signature. */}
-                <div className="chatfilter">
-                  <button className={`cfchip ${chatFilter === 'all' ? 'on' : ''}`} onClick={() => setChatFilter('all')}>All</button>
-                  {STAGE_GROUPS.filter((sg) => sg.id === 'onb' || sg.id === 'rev' || sg.id === 'sig').map((sg) => (
-                    <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(sg.id)}>{sg.label}</button>
-                  ))}
-                </div>
-                {chatList.map((c) => {
-                  // WhatsApp-real: the chat you're currently looking at is
-                  // never shown as unread, even for the instant before the
-                  // mark-read round-trip above lands.
-                  const isOpen = chatSelId === c.id;
-                  const showUnread = c.unreadCount > 0 && !isOpen;
-                  return (
-                  <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''}`} onClick={() => openChat(c.id)}>
-                    <div className="cav">{AVATAR}</div>
-                    <div className="cinfo">
-                      <div className="cn"><b>{phoneOf(c.waId)}</b><time>{timeAgo(c.lastCustomerMsgAt)}</time></div>
-                      <div className="cm">{c.lastMessagePreview}</div>
-                    </div>
-                    {showUnread
-                      ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
-                      : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
+                <div className="chatlist-head">
+                  <div className="search"><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
+                  {/* Filter chips (owner's choice): All, then the three stage
+                      stops that matter for a quick filter — Paid, Review,
+                      Signature. */}
+                  <div className="chatfilter">
+                    <button className={`cfchip ${chatFilter === 'all' ? 'on' : ''}`} onClick={() => setChatFilter('all')}>All</button>
+                    {STAGE_GROUPS.filter((sg) => sg.id === 'onb' || sg.id === 'rev' || sg.id === 'sig').map((sg) => (
+                      <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(sg.id)}>{sg.label}</button>
+                    ))}
                   </div>
-                  );
-                })}
+                </div>
+                {/* WhatsApp-real: the scrollbar belongs to the chat list only —
+                    search and the filter chips are outside the scrolling area
+                    entirely (not just visually pinned via sticky), so the
+                    scrollbar track starts right where the first chat does,
+                    never running up alongside the search box. */}
+                <div className="chatlist-items">
+                  {chatList.map((c) => {
+                    // WhatsApp-real: the chat you're currently looking at is
+                    // never shown as unread, even for the instant before the
+                    // mark-read round-trip above lands.
+                    const isOpen = chatSelId === c.id;
+                    const showUnread = c.unreadCount > 0 && !isOpen;
+                    return (
+                    <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''}`} onClick={() => openChat(c.id)}>
+                      <div className="cav">{AVATAR}</div>
+                      <div className="cinfo">
+                        <div className="cn"><b>{phoneOf(c.waId)}</b><time>{timeAgo(c.lastCustomerMsgAt)}</time></div>
+                        <div className="cm">{c.lastMessagePreview}</div>
+                      </div>
+                      {showUnread
+                        ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
+                        : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
+                    </div>
+                    );
+                  })}
+                </div>
               </div>
               <div className="chatpane">
                 {chatSel ? (
