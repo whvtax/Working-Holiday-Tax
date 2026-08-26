@@ -1424,15 +1424,15 @@ export default function DashboardClient() {
     sb:{width:260,background:'#ffffff',display:'flex',flexDirection:'column',flexShrink:0,position:'fixed',top:0,left:0,height:CRM_H,borderRight:'1px solid #e4ede8',overflowY:'auto',zIndex:50},
     sbLogo:{display:'flex',alignItems:'center',gap:12,padding:'22px 16px 16px'},
     sbIcon:{width:40,height:40,borderRadius:11,background:'#0E5C42',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,color:'#fff'},
-    sbTitle:{fontSize:14,fontWeight:700,color:'#0a1410',letterSpacing:'-0.2px'},
-    sbSub:{fontSize:11,color:'#7a8a82',marginTop:2,letterSpacing:'0.04em'},
+    sbTitle:{fontSize:13.5,fontWeight:650,color:'#0a1410',lineHeight:1.2},
+    sbSub:{fontSize:9,fontWeight:500,color:'#7a8a82',marginTop:2,letterSpacing:'0.6px'},
     sbDiv:{height:1,background:'#edf3ef',margin:'4px 16px 10px'},
     sbNav:{display:'flex',flexDirection:'column',gap:4,padding:'0 10px'},
     sbBtn:{display:'flex',alignItems:'center',gap:11,padding:'11px 13px',borderRadius:9,fontSize:13,fontWeight:500,color:'#587066',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'transform 150ms cubic-bezier(0.23,1,0.32,1), box-shadow 160ms cubic-bezier(0.23,1,0.32,1), background-color 150ms cubic-bezier(0.23,1,0.32,1), color 150ms cubic-bezier(0.23,1,0.32,1), border-color 150ms cubic-bezier(0.23,1,0.32,1)'},
     sbBtnOn:{background:'#0E5C42',color:'#fff',fontWeight:600},
     sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'2px 7px',fontSize:10,fontWeight:700},
     sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'#7a8a82',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
-    main:{flex:1,background:'#f0f4f1',marginLeft:260,display:'flex',flexDirection:'column',height:CRM_H,overflow:'hidden'},
+    main:{flex:1,background:'#f7f8fa',marginLeft:260,display:'flex',flexDirection:'column',height:CRM_H,overflow:'hidden'},
     page:{padding:'26px 26px 32px',flex:1,overflowY:'auto',minHeight:0},
     pgTitle:{fontSize:16,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.3px'},
     pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
@@ -1504,7 +1504,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
   [data-task-card] { padding: 13px 15px !important; min-height: 56px !important; }
   button, a[role="button"] { min-height: 40px !important; }
 }`}</style>
-      <style>{`*{box-sizing:border-box;margin:0;padding:0;} html,body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;overflow:hidden;height:100%;}`}</style>
+      <style>{`*{box-sizing:border-box;margin:0;padding:0;} html,body{background:#f7f8fa;font-family:'DM Sans',system-ui,sans-serif;overflow:hidden;height:100%;}`}</style>
 
       <div style={S.shell}>
         {/* Sidebar */}
@@ -1593,7 +1593,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div style={{padding:'26px 26px 8px',background:'#f0f4f1',flexShrink:0}}>
+              <div style={{padding:'26px 26px 8px',background:'#f7f8fa',flexShrink:0}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:14,flexShrink:0}}>
                 <div style={{flexShrink:0}}>
                   <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
@@ -1901,7 +1901,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
           {/* ── TASK DETAIL ── */}
           {view==='tasks' && taskView==='detail' && activeTask && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div style={{padding:'26px 26px 0',background:'#f0f4f1',flexShrink:0}}>
+              <div style={{padding:'26px 26px 0',background:'#f7f8fa',flexShrink:0}}>
               <button style={S.backBtn} onClick={()=>setTaskView('list')}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 Back to Tasks
@@ -2373,7 +2373,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
-                        {['Name','WhatsApp','Email','Country','Source','Last refund',''].map(h=>(
+                        {['Name','WhatsApp','Email','Country','Source','Last refund'].map(h=>(
                           <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
                         ))}
                       </tr>
@@ -2389,8 +2389,8 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                                 <div style={{fontSize:12,fontWeight:500,color:'#0a1410',whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
                               </div>
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
-                              <div style={{display:'flex',alignItems:'center',gap:6}}>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr',whiteSpace:'nowrap' as const}}>
+                              <div style={{display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap' as const}}>
                                 {cl.whatsapp && (
                                   <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer"
                                     onClick={e=>e.stopPropagation()}
@@ -2398,7 +2398,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
                                   </a>
                                 )}
-                                <span>{formatPhoneNumber(cl.whatsapp)||"-"}</span>
+                                <span style={{whiteSpace:'nowrap' as const}}>{formatPhoneNumber(cl.whatsapp)||"-"}</span>
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
@@ -2432,14 +2432,6 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                                 )
                               })()}
                             </td>
-                            <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
-                              <div style={{display:'flex',gap:4}}>
-                                <button style={{padding:'4px 10px',background:'#f0f4f1',border:'1px solid #d8e4dc',borderRadius:7,fontSize:11,fontWeight:600,color:'#333',cursor:'pointer',fontFamily:'inherit'}} onClick={e=>{e.stopPropagation();setActiveClient(cl);setClientNotes(cl.notes||'')}}>View →</button>
-                                <button style={{padding:'4px 8px',background:'#fff',border:'1px solid #e4ede8',borderRadius:7,fontSize:11,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'}} title="Move to Archive" onClick={()=>setConfirmArchive(cl.id)}>
-                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                                </button>
-                              </div>
-                            </td>
                           </tr>
                         )
                       })}
@@ -2465,7 +2457,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
           {/* ── ARCHIVE ── */}
           {view==='archive' && (
-            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden',background:'#f0f4f1'}}>
+            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden',background:'#f7f8fa'}}>
               <div style={{padding:'26px 26px 8px',flexShrink:0}}>
               {/* Header */}
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
@@ -2978,7 +2970,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 <button onClick={()=>setPreviewUrl(null)} style={{background:'none',border:'none',fontSize:17,cursor:'pointer',color:'#7a8a82',padding:'0 4px',lineHeight:1}}>✕</button>
               </div>
             </div>
-            <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f0f4f1',minHeight:200}}>
+            <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f7f8fa',minHeight:200}}>
               {(()=>{
                 // Detect file type from the original Supabase URL (before the proxy wrapper)
                 const origUrl = previewUrl.startsWith('/api/crm/file?url=')

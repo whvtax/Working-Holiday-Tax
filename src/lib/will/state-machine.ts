@@ -32,7 +32,7 @@ export const STAGE_GROUPS = [
   // Send Estimate / Send for Signature buttons still key off them); only the
   // pipeline grouping and display collapsed.
   { id: 'rev',       label: 'Review',     color: '#8a7cd0', states: ['FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW'] },
-  { id: 'sig',       label: 'Signature',  color: '#3aa89b', states: ['SIGNATURE_PENDING'] },
+  { id: 'sig',       label: 'Signature',  color: '#c2568f', states: ['SIGNATURE_PENDING'] },
   { id: 'done',      label: 'Completed',  color: '#4aa872', states: ['SIGNED', 'LODGED', 'COMPLETED'] },
   { id: 'closed',    label: 'Closed',     color: '#7a8494', states: ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'] },
 ] as const;

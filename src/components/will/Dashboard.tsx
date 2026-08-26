@@ -851,7 +851,6 @@ export default function Dashboard() {
                         const keys = FLOW_TEMPLATES[flow];
                         return (
                           <>
-                            <span className="tplchips-label" style={{ marginLeft: 4 }}>Follow-up:</span>
                             {keys.map((key) => {
                               const t = data.templates.find((x) => x.key === key);
                               if (!t) return null;
