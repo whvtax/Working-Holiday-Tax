@@ -55,8 +55,8 @@ const ICONS: Record<View, React.ReactNode> = {
 };
 const BELL = <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>;
 // WhatsApp-style default avatar. Meta's Cloud API does not expose a customer's
-// profile photo (privacy), so every contact gets this neutral silhouette —
-// exactly like a WhatsApp chat with no picture set.
+// profile photo (privacy), so a contact with no name on file gets this neutral
+// silhouette — exactly like a WhatsApp chat with no picture and no saved name.
 const AVATAR = (
   <svg viewBox="0 0 40 40" width="100%" height="100%" aria-hidden="true">
     <circle cx="20" cy="20" r="20" fill="#d7dbe0" />
@@ -64,6 +64,25 @@ const AVATAR = (
     <path d="M7 35c1.5-7 6.8-10 13-10s11.5 3 13 10z" fill="#fff" />
   </svg>
 );
+// WhatsApp-style coloured initial: once a name IS known for a contact (saved
+// in WhatsApp, or captured from the conversation), real WhatsApp shows a
+// coloured circle with their initial instead of the blank silhouette. Same
+// idea as the CRM's own avatar palette, so the two apps read as one product.
+const AVATAR_COLORS: [string, string][] = [
+  ['#e8f5f0', '#0E5C42'], ['#eaf1fb', '#1d4ed8'], ['#fef3e8', '#c2410c'],
+  ['#f0fdf4', '#16a34a'], ['#fdf2f8', '#be185d'], ['#f5f3ff', '#6d28d9'],
+];
+function avatarFor(name: string | null | undefined) {
+  const clean = (name ?? '').trim();
+  if (!clean) return AVATAR;
+  const letter = clean[0]?.toUpperCase() ?? '?';
+  const [bg, fg] = AVATAR_COLORS[clean.charCodeAt(0) % AVATAR_COLORS.length];
+  return (
+    <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: bg, color: fg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '42%' }}>
+      {letter}
+    </div>
+  );
+}
 
 const timeAgo = (iso: string | null) => {
   if (!iso) return '·';
@@ -83,6 +102,22 @@ const melDayLabel = (iso: string) => {
   if (key === melDayKey(new Date().toISOString())) return 'Today';
   if (key === melDayKey(new Date(Date.now() - 86400e3).toISOString())) return 'Yesterday';
   return new Date(iso).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: MEL_TZ });
+};
+// WhatsApp-real chat-list timestamp: a clock time for today, "Yesterday",
+// the weekday name for the rest of this week, then a short date — never a
+// relative duration like "5m"/"4d" (that's what timeAgo elsewhere is for;
+// this is specifically the chat list's own top-right timestamp).
+const chatListTime = (iso: string | null) => {
+  if (!iso) return '·';
+  const d = new Date(iso);
+  const key = melDayKey(iso);
+  const todayKey = melDayKey(new Date().toISOString());
+  const yesterdayKey = melDayKey(new Date(Date.now() - 86400e3).toISOString());
+  if (key === todayKey) return d.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: MEL_TZ });
+  if (key === yesterdayKey) return 'Yesterday';
+  const daysAgo = Math.round((new Date(`${todayKey}T00:00:00Z`).getTime() - new Date(`${key}T00:00:00Z`).getTime()) / 86400000);
+  if (daysAgo < 7) return d.toLocaleDateString('en-AU', { weekday: 'long', timeZone: MEL_TZ });
+  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'numeric', year: '2-digit', timeZone: MEL_TZ });
 };
 /** One short line for a list row. You scan this list to see WHO is waiting, not
  *  to read the message, so anything past the first line is noise. */
@@ -640,7 +675,7 @@ export default function Dashboard() {
             <div className="chatwrap">
               <div className="chatlist">
                 <div className="chatlist-head">
-                  <div className="search"><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
+                  <div className="search"><span className="search-ic">🔍</span><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
                   {/* Filter chips (owner's choice): All, then the three stage
                       stops that matter for a quick filter — Paid, Review,
                       Signature. */}
@@ -665,9 +700,9 @@ export default function Dashboard() {
                     const showUnread = c.unreadCount > 0 && !isOpen;
                     return (
                     <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''}`} onClick={() => openChat(c.id)}>
-                      <div className="cav">{AVATAR}</div>
+                      <div className="cav">{avatarFor(c.name)}</div>
                       <div className="cinfo">
-                        <div className="cn"><b>{phoneOf(c.waId)}</b><time>{timeAgo(c.lastCustomerMsgAt)}</time></div>
+                        <div className="cn"><b>{phoneOf(c.waId)}</b><time>{chatListTime(c.lastCustomerMsgAt)}</time></div>
                         <div className="cm">{c.lastMessagePreview}</div>
                       </div>
                       {showUnread
@@ -682,7 +717,7 @@ export default function Dashboard() {
                 {chatSel ? (
                   <>
                     <div className="chathead">
-                      <div className="cav">{AVATAR}</div>
+                      <div className="cav">{avatarFor(chatSel.name)}</div>
                       <div className="chtitle">
                         {/* Normal weight, like WhatsApp shows a contact. */}
                         <span className="chnum">{phoneOf(chatSel.waId)}</span>
@@ -1283,7 +1318,7 @@ export default function Dashboard() {
           return (
             <>
               <div className="dh">
-                <div className="cav">{AVATAR}</div>
+                <div className="cav">{avatarFor(drawer.name)}</div>
                 <div style={{ flex: 1 }}>
                   <b style={{ fontSize: 15 }}>{phoneOf(drawer.waId)}</b>
                   <div style={{ marginTop: 3 }}><span className="cstate" style={{ ['--sc' as string]: stageColorOf(drawer.state) }}>{stageLabelOf(drawer.state)}</span></div>

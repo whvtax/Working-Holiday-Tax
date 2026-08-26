@@ -1,9 +1,9 @@
 'use client'
 import React from 'react'
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { LeadsTab } from '@/components/crm/LeadsTab'
+import { CrmSide, crmNav, NavIcons } from '@/components/crm/Shell'
 import { canonicalCountry, canonicalSource, groupByCanonical } from '@/lib/normalise-labels'
 
 // 'lead' is retained ONLY so records created by the old two-stage intake still
@@ -44,8 +44,12 @@ const TAX_YEARS = Array.from({length:11},(_,i)=>{
 const TASK_LABELS: Record<TaskType,string> = {
   'tax-return':'Tax Return','super':'Super Refund','tfn':'TFN Application','abn':'ABN Application','lead':'Lead'
 }
+// Design-system tokens, not raw colours: each value is handed to `--tc` on a
+// .tsev badge, which mixes its own tint and text colour out of that one value.
+// 'abn' keeps a distinct amber (--sales) so it does not collapse into 'lead'
+// (--warn); they used to be two slightly different oranges.
 const TASK_COLORS: Record<TaskType,string> = {
-  'tax-return':'#0E5C42','super':'#0E5C42','tfn':'#0E5C42','abn':'#c2410c','lead':'#b45309'
+  'tax-return':'var(--brand1)','super':'var(--brand1)','tfn':'var(--brand1)','abn':'var(--sales)','lead':'var(--warn)'
 }
 
 // Robust copy that works even where navigator.clipboard is missing, blocked, or
@@ -91,7 +95,7 @@ function CopyBtn({ text }: { text: string }) {
       }}
       style={{
         background: 'none', border: 'none', cursor: 'pointer',
-        color: copied ? '#059669' : '#c8d8d0', padding: '2px 3px',
+        color: copied ? 'var(--good)' : 'var(--ink3)', padding: '2px 3px',
         borderRadius: 4, display: 'flex', alignItems: 'center',
         flexShrink: 0, lineHeight: 1, transition: 'color 0.2s',
       }}
@@ -152,9 +156,9 @@ function setClientStatusInNotes(notes: string, status: ClientStatus): string {
 }
 
 const STATUS_META: Record<ClientStatus, { label: string; bg: string; fg: string; border: string; emoji: string }> = {
-  'active':      { label: 'Active',      bg: '#f7fbf9', fg: '#0E5C42', border: '#d8e4dc', emoji: '🔵' },
-  'filed':       { label: 'Filed',       bg: '#ecfdf5', fg: '#059669', border: '#a7f3d0', emoji: '🟢' },
-  'needs-super': { label: 'Needs Super', bg: '#fef3c7', fg: '#92400e', border: '#fcd34d', emoji: '🟡' },
+  'active':      { label: 'Active',      bg: 'var(--surface2)', fg: 'var(--brand1)', border: 'var(--line2)', emoji: '🔵' },
+  'filed':       { label: 'Filed',       bg: 'color-mix(in srgb, var(--good) 10%, transparent)', fg: 'var(--good)', border: 'color-mix(in srgb, var(--good) 35%, transparent)', emoji: '🟢' },
+  'needs-super': { label: 'Needs Super', bg: 'color-mix(in srgb, var(--warn) 12%, transparent)', fg: 'var(--warn)', border: 'color-mix(in srgb, var(--warn) 35%, transparent)', emoji: '🟡' },
 }
 
 
@@ -176,7 +180,10 @@ function WhatsAppQuick({ name, whatsapp }: { name: string; whatsapp: string }) {
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <button
         onClick={(e) => { e.stopPropagation(); setOpen(!open) }}
-        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 12px', background: '#25D366', color: '#fff', border: 'none', borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'opacity 0.15s' }}
+        className="btn"
+        // #25D366 is WhatsApp's own brand green and stays literal: this button
+        // opens wa.me, so it is that product's colour, not ours.
+        style={{ background: '#25D366', color: '#fff' }}
         title="Send WhatsApp message"
         aria-label={`Send WhatsApp message to ${name || 'client'}`}
       >
@@ -186,27 +193,25 @@ function WhatsAppQuick({ name, whatsapp }: { name: string; whatsapp: string }) {
       {open && (
         <>
           <div onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 100 }}/>
-          <div style={{ position: 'absolute', top: 'calc(100% + 6px)', right: 0, zIndex: 101, background: '#fff', border: '1px solid #e4ede8', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,0.15)', minWidth: 260, padding: 6, animation: 'fadeIn 0.15s ease' }}>
-            <div style={{ padding: '8px 10px', borderBottom: '1px solid #f0f4f1', marginBottom: 4 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#7a8a82', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Quick Templates</div>
-            </div>
+          <div className="card fadein" style={{ position: 'absolute', top: 'calc(100% + 6px)', right: 0, zIndex: 101, minWidth: 260, padding: 6 }}>
+            <div className="mlabel" style={{ margin: '4px 10px 6px' }}>Quick Templates</div>
             {WA_TEMPLATES.map(t => (
               <a key={t.id}
                 href={`https://wa.me/${sanitized}?text=${encodeURIComponent(t.text(firstName))}`}
                 target="_blank" rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 7, textDecoration: 'none', color: '#0a1410', fontSize: 12, transition: 'background 0.1s' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#f7fbf9'}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 7, textDecoration: 'none', color: 'var(--ink)', fontSize: 12, transition: 'background 0.1s' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--surface2)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
                 <span style={{ fontSize: 14 }}>{t.icon}</span>
                 <span style={{ fontWeight: 500 }}>{t.label}</span>
               </a>
             ))}
-            <div style={{ borderTop: '1px solid #f0f4f1', marginTop: 4, paddingTop: 4 }}>
+            <div style={{ borderTop: '1px solid var(--line)', marginTop: 4, paddingTop: 4 }}>
               <a href={`https://wa.me/${sanitized}`} target="_blank" rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 7, textDecoration: 'none', color: '#0E5C42', fontSize: 12, fontWeight: 600 }}>
+                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 7, textDecoration: 'none', color: 'var(--brand1)', fontSize: 12, fontWeight: 600 }}>
                 ✏️ Open empty chat
               </a>
             </div>
@@ -223,7 +228,7 @@ function CopyFieldBtn({ text }: { text: string }) {
   return (
     <button
       onClick={async () => { const ok = await copyText(text); if (ok) { setCopied(true); setTimeout(() => setCopied(false), 1500) } }}
-      style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px', background: copied ? '#EAF6F1' : '#f7fbf9', border: `1.5px solid ${copied ? '#6EE7B7' : '#D4EAE2'}`, borderRadius: 8, cursor: 'pointer', color: copied ? '#059669' : '#587066', fontSize: 11, fontWeight: 600, fontFamily: 'inherit', flexShrink: 0, transition: 'all 0.15s', whiteSpace: 'nowrap' as const }}
+      className={`btn ${copied ? 'flash' : 'quiet'}`}
       title={`Copy ${text}`}
     >
       {copied
@@ -235,22 +240,56 @@ function CopyFieldBtn({ text }: { text: string }) {
   )
 }
 
-
-function SbButton({label, icon, badge, style, badgeStyle, onClick}: {
-  label: string; icon: React.ReactNode; badge?: number
-  style: React.CSSProperties; badgeStyle: React.CSSProperties; onClick: () => void
+/**
+ * One checkbox row inside a DropBtn filter menu.
+ *
+ * The same six lines of markup were spelled out six times over (tax year, how
+ * heard and country, once for Clients and again for Archive). There is no class
+ * for this shape in crm-design.css, so the geometry stays inline — but now in
+ * one place instead of six.
+ */
+function FilterOpt({ label, count, checked, onToggle }: {
+  label: string; count: number; checked: boolean; onToggle: () => void
 }) {
   return (
-    <button style={style} onClick={onClick}>
-      {icon}{label}
-      {badge != null && badge > 0 && <span style={badgeStyle}>{badge}</span>}
-    </button>
+    <label style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+      <input type="checkbox" checked={checked} onChange={onToggle} style={{width:14,height:14,accentColor:'var(--brand1)'}}/>
+      <span style={{fontSize:13,flex:1}}>{label}</span>
+      <span style={{fontSize:11,color:'var(--ink3)'}}>{count}</span>
+    </label>
   )
+}
+
+/**
+ * A KPI tile with a money figure on the left and a client count on the right:
+ * the three tiles in the Clients summary bar were the same twelve lines three
+ * times over. Green on the numbers is deliberate — it is the one place money is
+ * the subject, so it keeps --brand1 rather than the default ink of .kv.
+ */
+function MoneyTile({ label, value, sub, count }: {
+  label: string; value: string; sub: string; count: number
+}) {
+  return (
+    <div className="kpi" style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+      <div>
+        <div className="kl">{label}</div>
+        <div className="kv" style={{color:'var(--brand1)'}}>{value}</div>
+      </div>
+      <div style={{textAlign:'right' as const}}>
+        <div className="kd">{sub}</div>
+        <div className="kv" style={{fontSize:14,color:'var(--brand1)'}}>{count}<span className="kd" style={{marginLeft:3}}>clients</span></div>
+      </div>
+    </div>
+  )
+}
+
+/** "No data yet" placeholder inside a DropBtn filter menu. */
+function FilterEmpty() {
+  return <div style={{fontSize:12,color:'var(--ink3)',padding:'4px 2px'}}>No data yet</div>
 }
 
 
 export default function DashboardClient() {
-  const router = useRouter()
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
   const [referralPartners, setReferralPartners] = useState<{id:string;name:string}[]>([])
@@ -884,6 +923,13 @@ export default function DashboardClient() {
     return userParts.join(' | ').trim()
   }
 
+  // The only place in this file that still writes literal colours, on purpose.
+  // What follows is not CRM interface: it builds a complete standalone HTML
+  // document, hands it to the browser as a Blob download, and that file is
+  // opened and printed OUTSIDE the app — where .crm-scope, and therefore every
+  // design token, does not exist. `var(--brand1)` there resolves to nothing and
+  // the printout comes out colourless, so this document carries its own palette.
+  // Nothing below styles anything the admin sees on screen.
   const downloadTaskPdf = (task: Task) => {
     const G = '#0B5240'
     const GL = '#EAF6F1'
@@ -1251,7 +1297,17 @@ export default function DashboardClient() {
     const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
     return hasPlus ? `+${groups}` : groups
   }
-  const avatarColors = [['#e8f5f0','#0E5C42'],['#e8f5f0','#0E5C42'],['#fef3e8','#c2410c'],['#f7fbf9','#0E5C42'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
+  // Six [background, foreground] token pairs. The count matters: avColor picks
+  // by `name.charCodeAt(0) % avatarColors.length`, so keeping six entries keeps
+  // every existing client on exactly the colour they had before.
+  const avatarColors = [
+    ['color-mix(in srgb, var(--brand1) 12%, transparent)','var(--brand1)'],
+    ['color-mix(in srgb, var(--brand1) 12%, transparent)','var(--brand1)'],
+    ['color-mix(in srgb, var(--sales) 14%, transparent)','var(--sales)'],
+    ['var(--surface2)','var(--brand1)'],
+    ['color-mix(in srgb, var(--crit) 12%, transparent)','var(--crit)'],
+    ['color-mix(in srgb, var(--good) 12%, transparent)','var(--good)'],
+  ]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
   // Restore the task list's scroll position after returning from a task's detail view.
@@ -1333,7 +1389,7 @@ export default function DashboardClient() {
       <div style={{flexShrink:0,position:'relative'}}>
         <button
           onClick={()=>setOpenDropdown(isOpen?null:id)}
-          style={{height:'38px',padding:'0 12px',border:`1.5px solid ${active?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:active?'#e8f5f0':'#fff',color:active?'#0E5C42':'#4a5568',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap' as const,fontWeight:active?600:400}}>
+          className={`ptab${active?' active':''}`}>
           {icon}
           {label}
 
@@ -1341,10 +1397,10 @@ export default function DashboardClient() {
         </button>
         {isOpen && <>
           <div style={{position:'fixed',inset:0,zIndex:98}} onClick={()=>setOpenDropdown(null)}/>
-          <div style={{position:'absolute',top:'calc(100% + 6px)',left:0,zIndex:99,background:'#fff',border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',minWidth:200,boxShadow:'0 8px 24px rgba(0,0,0,0.1)',display:'flex',flexDirection:'column' as const,maxHeight:'min(380px, 60vh)'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,paddingBottom:6,borderBottom:'1px solid #f0f4f1',flexShrink:0}}>
-              <span style={{fontSize:11,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{label}</span>
-              {active && <button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={e=>{e.stopPropagation();onClear()}}>Clear</button>}
+          <div className="card" style={{position:'absolute',top:'calc(100% + 6px)',left:0,zIndex:99,padding:'10px 12px',minWidth:200,display:'flex',flexDirection:'column' as const,maxHeight:'min(380px, 60vh)',overflow:'visible'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,paddingBottom:6,borderBottom:'1px solid var(--line)',flexShrink:0}}>
+              <span className="mlabel" style={{margin:0}}>{label}</span>
+              {active && <button className="btn sm quiet" onClick={e=>{e.stopPropagation();onClear()}}>Clear</button>}
             </div>
             {/* Only the options scroll: the title and Clear stay reachable
                 however long the list gets. Without the cap a long country list
@@ -1410,207 +1466,57 @@ export default function DashboardClient() {
   })
   }, [archivedClients, archiveSearchResults, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
 
-  // Same zoom as the Will dashboard so BODY text and controls (rows, buttons,
-  // checkboxes) are the same comfortable size in both — 1.25 x 0.9375 = 1.171875.
-  // Shrinking the whole CRM by zoom to match Will's smaller HEADINGS (tried
-  // 0.766) was wrong: it also shrank the tiny controls until they were hard to
-  // click. Instead the oversized headings and stat numbers are toned down
-  // individually below (pgTitle, stat number, page H1), so the big text matches
-  // Will while everything you actually click stays a normal size.
-  const CRM_ZOOM = 1.25 * 0.9375; // 1.171875 — same as Will
-  const CRM_H = `calc(100vh / ${CRM_ZOOM})`;
-  const S: Record<string,React.CSSProperties> = {
-    shell:{display:'flex',height:CRM_H,overflow:'hidden',fontFamily:'"DM Sans",system-ui,sans-serif',zoom:CRM_ZOOM},
-    sb:{width:260,background:'#ffffff',display:'flex',flexDirection:'column',flexShrink:0,position:'fixed',top:0,left:0,height:CRM_H,borderRight:'1px solid #e4ede8',overflowY:'auto',zIndex:50},
-    sbLogo:{display:'flex',alignItems:'center',gap:12,padding:'22px 16px 16px'},
-    sbIcon:{width:40,height:40,borderRadius:11,background:'#0E5C42',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,color:'#fff'},
-    sbTitle:{fontSize:13.5,fontWeight:650,color:'#0a1410',lineHeight:1.2},
-    sbSub:{fontSize:9,fontWeight:500,color:'#7a8a82',marginTop:2,letterSpacing:'0.6px'},
-    sbDiv:{height:1,background:'#edf3ef',margin:'4px 16px 10px'},
-    sbNav:{display:'flex',flexDirection:'column',gap:4,padding:'0 10px'},
-    sbBtn:{display:'flex',alignItems:'center',gap:11,padding:'11px 13px',borderRadius:9,fontSize:13,fontWeight:500,color:'#587066',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'transform 150ms cubic-bezier(0.23,1,0.32,1), box-shadow 160ms cubic-bezier(0.23,1,0.32,1), background-color 150ms cubic-bezier(0.23,1,0.32,1), color 150ms cubic-bezier(0.23,1,0.32,1), border-color 150ms cubic-bezier(0.23,1,0.32,1)'},
-    sbBtnOn:{background:'#0E5C42',color:'#fff',fontWeight:600},
-    sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'2px 7px',fontSize:10,fontWeight:700},
-    sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'#7a8a82',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
-    main:{flex:1,background:'#f7f8fa',marginLeft:260,display:'flex',flexDirection:'column',height:CRM_H,overflow:'hidden'},
-    page:{padding:'26px 26px 32px',flex:1,overflowY:'auto',minHeight:0},
-    pgTitle:{fontSize:16,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.3px'},
-    pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
-    card:{background:'#fff',borderRadius:14,border:'1px solid #e4ede8',boxShadow:'0 1px 3px rgba(11,82,64,0.04)'},
-    secHead:{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'11px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef',borderRadius:'14px 14px 0 0',display:'flex',alignItems:'center',justifyContent:'space-between',letterSpacing:'0.02em'},
-    row:{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10,alignItems:'center'},
-    lbl:{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0},
-    val:{fontSize:12,color:'#0a1410',flex:1},
-    taskCard:{background:'#fff',borderRadius:11,padding:'13px 16px',border:'1px solid #e4ede8',display:'flex',alignItems:'center',gap:12,cursor:'pointer',transition:'transform 150ms cubic-bezier(0.23,1,0.32,1), box-shadow 160ms cubic-bezier(0.23,1,0.32,1), background-color 150ms cubic-bezier(0.23,1,0.32,1), color 150ms cubic-bezier(0.23,1,0.32,1), border-color 150ms cubic-bezier(0.23,1,0.32,1)',marginBottom:7,boxShadow:'0 1px 2px rgba(11,82,64,0.03)'},
-    returnRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 13px',background:'#f7fbf9',borderRadius:9,marginBottom:6,border:'1px solid #e4ede8'},
-    totalRow:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 13px',background:'#e8f5f0',borderRadius:9,border:'1px solid #b0d8c8'},
-    addForm:{background:'#f7fbf9',borderRadius:10,padding:'12px',border:'1px solid #e4ede8',marginTop:8,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const},
-    addBtn:{display:'flex',alignItems:'center',gap:5,padding:'5px 12px',background:'#0E5C42',border:'none',borderRadius:8,fontSize:11,fontWeight:600,color:'#fff',cursor:'pointer',fontFamily:'inherit',transition:'transform 140ms cubic-bezier(0.23,1,0.32,1), background-color 150ms cubic-bezier(0.23,1,0.32,1)'},
-    backBtn:{display:'flex',alignItems:'center',gap:6,background:'none',border:'none',fontSize:12,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',fontWeight:500,marginBottom:18,padding:0},
-    checkRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px'},
-    checkbox:{width:20,height:20,borderRadius:6,border:'2px solid',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0},
-    overlay:{position:'fixed' as const,inset:0,background:'rgba(0,0,0,0.4)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:999},
-    modal:{background:'#fff',borderRadius:20,padding:'28px',width:'100%',maxWidth:400},
-    mTitle:{fontSize:17,fontWeight:600,color:'#0a1410',marginBottom:5},
-    mSub:{fontSize:13,color:'#7a8a82',marginBottom:18},
-    mInput:{border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',fontSize:13,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',width:'100%',boxSizing:'border-box' as const},
-    mFooter:{display:'flex',gap:8,marginTop:12},
-    mCancel:{flex:1,padding:10,border:'1px solid #e4ede8',borderRadius:10,fontSize:13,cursor:'pointer',background:'#fff',fontFamily:'inherit',color:'#333'},
-    mSave:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#0E5C42',color:'#fff',fontFamily:'inherit'},
-    mDel:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#c0392b',color:'#fff',fontFamily:'inherit'},
-  }
 
   return (
-    <>
-      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes donePulse{0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,0.55)}60%{box-shadow:0 0 0 6px rgba(5,150,105,0)}} @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}} .grain{display:none!important} [data-task-card]:hover{border-color:#0E5C42!important;box-shadow:0 4px 14px rgba(11,82,64,0.08)!important;transform:translateY(-1px)}
-.tasks-scroll::-webkit-scrollbar { width: 10px; }
-.tasks-scroll::-webkit-scrollbar-track { background: #e4ede8; border-radius: 5px; }
-.tasks-scroll::-webkit-scrollbar-thumb { background: #0E5C42; border-radius: 5px; border: 2px solid #e4ede8; }
-.tasks-scroll::-webkit-scrollbar-thumb:hover { background: #0a4a35; }
-.tasks-scroll { scrollbar-width: thin; scrollbar-color: #0E5C42 #e4ede8; }
-button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-  outline: 2px solid #0E5C42 !important;
-  outline-offset: 2px !important;
-}
-/* --- Craft pass (apple-design + emil-design-eng): motion + press feedback --- */
-:root{--ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1)}
-button, [role="button"], [data-task-card], [data-nav-btn]{
-  transition: transform 140ms var(--ease-out), box-shadow 160ms var(--ease-out), background-color 150ms var(--ease-out), color 150ms var(--ease-out), border-color 150ms var(--ease-out);
-}
-/* Instant, tactile press feedback on every pressable (scale from the current value). */
-button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ transform: scale(0.97); }
-[data-task-card]{ transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out), border-color 160ms var(--ease-out); }
-/* Cards lift a touch on hover only on real pointers (avoid sticky hover on touch). */
-@media (hover: hover) and (pointer: fine){
-  [data-card-hover]:hover{ transform: translateY(-1px); box-shadow: 0 6px 20px rgba(11,82,64,0.08); }
-}
-@media (prefers-reduced-motion: reduce){
-  *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  button:active, [role="button"]:active, [data-task-card]:active{ transform: none; }
-}
-@media (max-width: 768px) {
-  [data-sidebar] { display: none !important; }
-  [data-mobile-nav] { display: flex !important; }
-  [data-main] { padding-top: 56px !important; margin-left: 0 !important; }
-  [data-page] { padding: 16px !important; }
-  [data-stats-grid] { grid-template-columns: 1fr 1fr !important; }
-  [data-detail-grid] { grid-template-columns: 1fr !important; }
-  [data-table-wrap] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
-  [data-clients-table] { font-size: 11px !important; min-width: 600px !important; }
-  [data-filters-row] { flex-wrap: wrap !important; gap: 6px !important; }
-  [data-filters-row] > * { flex: 1 1 auto !important; min-width: 100px !important; }
-  [data-actions-row] { flex-wrap: wrap !important; }
-  [data-actions-row] > button { flex: 1 1 100% !important; min-height: 44px !important; }
-  [data-task-card] { padding: 13px 15px !important; min-height: 56px !important; }
-  button, a[role="button"] { min-height: 40px !important; }
-}`}</style>
-      <style>{`*{box-sizing:border-box;margin:0;padding:0;} html,body{background:#f7f8fa;font-family:'DM Sans',system-ui,sans-serif;overflow:hidden;height:100%;}`}</style>
+    // .crm-scope owns the font, the background, the height and the --crm-fit
+    // zoom for the whole admin. Nothing here sets any of those: that is the
+    // point — the CRM and Will now read one stylesheet, so they cannot drift.
+    <div className="crm-scope">
+      <CrmSide
+        items={crmNav({
+          badges: { tasks: pendingTasks.length, clients: newClientsCount, archive: newArchiveCount },
+          on: {
+            tasks:   ()=>{ setView('tasks');setTaskView('list');setActiveTask(null);setActiveClient(null) },
+            clients: ()=>{ setView('clients');setTaskView('list');setActiveTask(null);setActiveClient(null);setNewClientsCount(0) },
+            archive: openArchive,
+            leads:   ()=>{ setView('leads');setTaskView('list');setActiveTask(null);setActiveClient(null) },
+          },
+        })}
+        activeKey={view}
+        onLock={lockAndExit}
+      />
 
-      <div style={S.shell}>
-        {/* Sidebar */}
-        <aside data-sidebar style={S.sb}>
-          <div>
-            <div style={S.sbLogo}>
-              <div style={{width:34,height:34,borderRadius:9,flexShrink:0,overflow:'hidden'}}><svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="100" cy="100" r="100" fill="#0B5240"/>
-                <g transform="translate(100,100) scale(3.57) translate(-17,-17)">
-                  <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" strokeWidth="2" fill="none"/>
-                  <rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>
-                  <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.4" strokeLinecap="round"/>
-                  <circle cx="2" cy="2" r="1.8" fill="#E9A020"/>
-                  <path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" strokeWidth="1.3" strokeLinejoin="round"/>
-                  <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                </g>
-              </svg></div>
-              <div><div style={S.sbTitle}>Working Holiday Tax</div><div style={S.sbSub}>Admin</div></div>
-            </div>
-            <div style={S.sbDiv}/>
-
-
-            <nav style={S.sbNav}>
-              <SbButton label="Tasks" badge={pendingTasks.length}
-                style={view==='tasks' ? {...S.sbBtn,...S.sbBtnOn} : S.sbBtn} badgeStyle={S.sbBadge}
-                onClick={()=>{ setView('tasks');setTaskView('list');setActiveTask(null);setActiveClient(null) }}
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/></svg>}/>
-              <SbButton label="Clients" badge={newClientsCount||undefined}
-                style={view==='clients' ? {...S.sbBtn,...S.sbBtnOn} : S.sbBtn} badgeStyle={S.sbBadge}
-                onClick={()=>{ setView('clients');setTaskView('list');setActiveTask(null);setActiveClient(null);setNewClientsCount(0) }}
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
-              <SbButton label="Archive" badge={newArchiveCount||undefined}
-                style={view==='archive' ? {...S.sbBtn,...S.sbBtnOn} : S.sbBtn} badgeStyle={S.sbBadge}
-                onClick={openArchive}
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
-              <SbButton label="Leads"
-                style={view==='leads' ? {...S.sbBtn,...S.sbBtnOn} : S.sbBtn} badgeStyle={S.sbBadge}
-                onClick={()=>{ setView('leads');setTaskView('list');setActiveTask(null);setActiveClient(null) }}
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
-              <SbButton label="Partners"
-                style={S.sbBtn} badgeStyle={S.sbBadge}
-                onClick={()=>{ router.push('/crm/partners') }}
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
-              <SbButton label="Will"
-                style={S.sbBtn} badgeStyle={S.sbBadge}
-                onClick={()=>{ router.push('/crm/whatsapp') }}
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.7 13.6L3 21l4.5-1.2A9 9 0 1012 3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M8.5 8.8c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.6 1.4c.1.2 0 .4-.1.5l-.4.5c-.1.1-.2.3 0 .5.3.6.9 1.2 1.6 1.6.2.1.4.1.5 0l.5-.5c.1-.2.3-.2.5-.1l1.4.7c.3.1.4.3.4.5s0 .8-.3 1.1c-.3.3-.9.6-1.4.6-1 0-2.6-.6-3.8-1.9-1.3-1.2-1.9-2.8-1.9-3.8 0-.4.1-.8.3-1.1z" fill="currentColor"/></svg>}/>
-            </nav>
-          </div>
-          <div style={{padding:'54px 16px 20px',marginTop:'auto',paddingBottom:'20px'}}>
-            <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:44,background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,cursor:'pointer',color:'#587066',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background-color 0.15s, border-color 0.15s'}} onClick={lockAndExit}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-              Lock & Exit
-            </button>
-          </div>
-        </aside>
-
-        <main data-main style={S.main}>
-
-          {/* Mobile top nav - hidden on desktop */}
-          <div data-mobile-nav style={{display:'none',position:'fixed',top:0,left:0,right:0,zIndex:90,background:'#0E5C42',height:56,alignItems:'center',padding:'0 14px',boxShadow:'0 2px 8px rgba(0,0,0,0.1)'}}>
-            <div style={{display:'flex',alignItems:'center',gap:8,flex:1}}>
-              <div style={{width:30,height:30,borderRadius:8,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:14}}>🏢</div>
-              <div style={{color:'#fff',fontSize:13,fontWeight:700}}>WHV Tax</div>
-            </div>
-            <div style={{display:'flex',gap:4}}>
-              {([
-                ['tasks','📋',pendingTasks.length],
-                ['clients','👥',newClientsCount],
-                ['archive','📦',newArchiveCount],
-                ['leads','✉️',0]
-              ] as const).map(([v,icon,badge])=>(
-                <button key={v} onClick={()=>{ if(v==='archive') openArchive(); else { setView(v as View);setTaskView('list');setActiveTask(null);setActiveClient(null); if(v==='clients') setNewClientsCount(0) } }}
-                  style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:view===v?'rgba(255,255,255,0.18)':'transparent',color:'#fff',cursor:'pointer',fontSize:17,display:'flex',alignItems:'center',justifyContent:'center'}}>
-                  {icon}
-                  {badge > 0 && <span style={{position:'absolute',top:2,right:2,minWidth:16,height:16,borderRadius:8,background:'#f59e0b',color:'#78350f',fontSize:9,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 4px'}}>{badge}</span>}
-                </button>
-              ))}
-              <button key="whatsapp" onClick={()=>{ router.push('/crm/whatsapp') }}
-                style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:'transparent',color:'#fff',cursor:'pointer',fontSize:17,display:'flex',alignItems:'center',justifyContent:'center'}}>
-                💬
-              </button>
-            </div>
-          </div>
+      <main>
 
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
-            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div style={{padding:'26px 26px 8px',background:'#f7f8fa',flexShrink:0}}>
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:14,flexShrink:0}}>
-                <div style={{flexShrink:0}}>
-                  <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
-                </div>
-
+            <div className="view" style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
+              <div className="phead">
+              <div className="hrow">
+                <h1 className="vt">Tasks</h1>
+                <div className="hspacer" />
                 <button
+                  className="btn quiet"
                   onClick={async()=>{setRefreshing(true);await Promise.all([loadTasks(),loadClients(),loadStats({force:true})]);setRefreshing(false)}}
-                  style={{display:'flex',alignItems:'center',gap:6,height:34,padding:'0 14px',background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:100,cursor:refreshing?'default':'pointer',color:'#587066',fontSize:12,fontWeight:600,fontFamily:'inherit',flexShrink:0}}
+                  style={{cursor:refreshing?'default':'pointer'}}
                 >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{animation:refreshing?'spin 0.7s linear infinite':'none',display:'block'}}>
-                    <path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  {/* The icon turns while the fetch is in flight — the only
+                      signal that Refresh did anything on an already-fresh list. */}
+                  <span className={refreshing ? 'ic spinning' : 'ic'}>{NavIcons.refresh}</span>
                   Refresh
                 </button>
-
               </div>
+              {/* Title and actions only. The tiles, the birthday panel and the
+                  search box used to live up here too, which made the header
+                  four times the height of Will's; they scroll with the content
+                  now, which is where Will keeps its equivalents. */}
+              </div>
+
+              <div
+                className="pbody"
+                ref={tasksScrollRef}
+                onScroll={e=>{ tasksScrollPosRef.current = (e.target as HTMLDivElement).scrollTop }}
+              >
 
               {/* Season stats */}
               {(()=>{
@@ -1629,7 +1535,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 // Always show stats - even if no tasks yet (provides motivation + overview)
                 const totalClients = Math.max(stats?.totalActiveClients ?? 0, allClients.length)
                 return (<>
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:10}}>
+                  <div className="kpis" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
                     {[
                       {key:'ready',label:'Ready to go',value:readyToGoCount,onClick:()=>{ setView('tasks'); setTaskView('list'); setTaskTileFilter(f=>f==='ready'?'all':'ready') }},
                       {key:'clients',label:'Clients',value:totalClients,onClick:()=>{ setView('clients') }},
@@ -1637,9 +1543,9 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     ].map(stat=>{
                       const active = (stat.key==='ready'&&taskTileFilter==='ready')||(stat.key==='done'&&taskTileFilter==='done')
                       return (
-                      <div key={stat.label} data-card-hover onClick={stat.onClick} role="button" style={{background:'#fff',border:`1px solid ${active?'#0E5C42':'#e4ede8'}`,borderRadius:12,padding:'14px 16px',boxShadow:active?'0 0 0 1px #0E5C42 inset':'0 1px 2px rgba(11,82,64,0.03)',cursor:'pointer'}}>
-                        <div style={{fontSize:10.5,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:6}}>{stat.label}</div>
-                        <div style={{fontSize:17,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
+                      <div key={stat.label} className={`kpi clickable${active?' on':''}`} onClick={stat.onClick} role="button">
+                        <div className="kl">{stat.label}</div>
+                        <div className="kv">{stat.value}</div>
                       </div>
                     )})}
                   </div>
@@ -1678,27 +1584,28 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 if (upcoming.length === 0) return null
                 const fmtDays = (d:number) => d===0 ? 'today! 🎉' : d===1 ? 'tomorrow' : d===-1 ? 'yesterday' : `in ${d} days`
                 return (
-                  <div style={{background:'linear-gradient(135deg,#f7fbf9,#e8f5f0)',border:'1px solid #d8e4dc',borderRadius:12,padding:'14px 16px',marginBottom:16,display:'flex',alignItems:'flex-start',gap:12}}>
+                  <div className="panel" style={{marginBottom:12,display:'flex',alignItems:'flex-start',gap:12}}>
                     <div style={{fontSize:21,flexShrink:0}}>🎂</div>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:700,color:'#9d174d',marginBottom:6}}>{upcoming.length} birthday{upcoming.length!==1?'s':''} this week</div>
-                      <div style={{display:'flex',flexDirection:'column' as const,gap:6}}>
+                      <h3>{upcoming.length} birthday{upcoming.length!==1?'s':''} this week</h3>
+                      <div style={{display:'flex',flexDirection:'column' as const,gap:6,marginTop:8}}>
                         {upcoming.map(({client:c,days,bkey})=>{
                           const sanitized = (c.whatsapp||'').replace(/[^0-9+]/g,'')
                           const firstName = c.fullName.split(' ')[0] || 'there'
                           const msg = `Happy birthday ${firstName}! 🎉🎂 Wishing you an amazing year ahead - Working Holiday Tax`
                           return (
-                            <div key={c.id} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(255,255,255,0.5)',padding:'6px 10px',borderRadius:8}}>
-                              <span style={{fontSize:11,fontWeight:600,color:'#831843',flex:1,minWidth:0,overflow:'hidden',textOverflow:'ellipsis' as const,whiteSpace:'nowrap' as const}}>{displayName(c.fullName)}</span>
-                              <span style={{fontSize:10,color:'#9d174d',whiteSpace:'nowrap' as const}}>{fmtDays(days)}</span>
+                            <div key={c.id} style={{display:'flex',alignItems:'center',gap:8,background:'var(--surface2)',padding:'6px 10px',borderRadius:8}}>
+                              <span className="cname" style={{flex:1,minWidth:0,overflow:'hidden',textOverflow:'ellipsis' as const,whiteSpace:'nowrap' as const}}>{displayName(c.fullName)}</span>
+                              <span className="chip">{fmtDays(days)}</span>
                               {sanitized && (
-                                <a href={`https://wa.me/${sanitized}?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener noreferrer"
-                                  style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:600,padding:'3px 8px',background:'#25D366',color:'#fff',borderRadius:6,textDecoration:'none',whiteSpace:'nowrap' as const}}>
+                                <a className="btn sm" href={`https://wa.me/${sanitized}?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener noreferrer"
+                                  // #25D366 is WhatsApp's own brand green and stays literal:
+                                  // this link opens wa.me, so it wears that product's colour.
+                                  style={{background:'#25D366',color:'#fff',textDecoration:'none'}}>
                                   🎁 Send wish
                                 </a>
                               )}
-                              <button type="button" onClick={()=>dismissBday(bkey)} title="Mark as done - dismiss this reminder"
-                                style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:600,padding:'3px 8px',background:'#fff',color:'#9d174d',border:'1px solid #d8e4dc',borderRadius:6,cursor:'pointer',whiteSpace:'nowrap' as const}}>
+                              <button type="button" className="btn quiet sm" onClick={()=>dismissBday(bkey)} title="Mark as done - dismiss this reminder">
                                 ✓ Done
                               </button>
                             </div>
@@ -1711,32 +1618,23 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
               })()}
 
               {/* Name search */}
-              <div style={{position:'relative',maxWidth:'35%',marginTop:8,flexShrink:0}}>
-                <svg style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#7a8a82" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#7a8a82" strokeWidth="1.8" strokeLinecap="round"/></svg>
+              <div className="search" style={{maxWidth:'35%',marginBottom:12}}>
+                <span className="search-ic">{NavIcons.search}</span>
                 <input
-                  style={{width:'100%',padding:'9px 12px 9px 36px',background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
                   placeholder="Search by name, email, or WhatsApp…"
                   value={taskSearch}
                   onChange={e=>setTaskSearch(e.target.value)}
                 />
                 {taskSearch && (
-                  <button onClick={()=>setTaskSearch('')} style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',color:'#7a8a82',fontSize:16,padding:'4px 8px',fontFamily:'inherit'}}>×</button>
+                  <button onClick={()=>setTaskSearch('')} style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',color:'var(--ink3)',fontSize:16,padding:'4px 8px'}}>×</button>
                 )}
               </div>
 
-              </div>{/* end fixed header */}
-
-              <div
-                className="tasks-scroll"
-                ref={tasksScrollRef}
-                onScroll={e=>{ tasksScrollPosRef.current = (e.target as HTMLDivElement).scrollTop }}
-                style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 16px'}}
-              >
 
               {taskTileFilter!=='all' && (
-                <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
-                  <span style={{fontSize:12,color:'#587066',fontWeight:600}}>Showing: {taskTileFilter==='ready'?'Ready to go':'Done'}</span>
-                  <button onClick={()=>setTaskTileFilter('all')} style={{fontSize:11,color:'#0E5C42',background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:20,padding:'3px 10px',cursor:'pointer',fontFamily:'inherit',fontWeight:600}}>Show all ×</button>
+                <div className="hrow" style={{marginBottom:10}}>
+                  <span style={{fontSize:12,color:'var(--ink2)',fontWeight:600}}>Showing: {taskTileFilter==='ready'?'Ready to go':'Done'}</span>
+                  <button className="btn quiet sm" onClick={()=>setTaskTileFilter('all')}>Show all ×</button>
                 </div>
               )}
               {taskTileFilter!=='done' && (() => {
@@ -1751,46 +1649,46 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                   const inProgress = isTaskInProgress(t.notes)
                   const wasLastViewed = t.id === lastViewedTaskId
                   return (
-                  <div key={t.id} data-task-card data-task-id={t.id} style={{...S.taskCard, ...(inProgress?{background:'#f7fbf9'}:{}), ...(wasLastViewed?{outline:'2px solid #a7f3d0',outlineOffset:-2}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
+                  <div key={t.id} className="task" style={{alignItems:'center',cursor:'pointer', ...(inProgress?{background:'var(--surface2)'}:{}), ...(wasLastViewed?{outline:'2px solid color-mix(in srgb, var(--good) 45%, transparent)',outlineOffset:-2}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
                     <button
                       onClick={e=>{e.stopPropagation();toggleInProgress(t)}}
                       title={inProgress ? 'Remove "In Progress" mark' : 'Mark "In Progress" - moves to the bottom of the queue'}
                       aria-label={inProgress ? 'Unmark in progress' : 'Mark in progress'}
-                      style={{width:16,height:16,borderRadius:5,border:`1.5px solid ${inProgress?'#059669':'#d8e4dc'}`,background:inProgress?'#059669':'#fff',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',padding:0}}
+                      style={{width:16,height:16,borderRadius:5,border:`1.5px solid ${inProgress?'var(--good)':'var(--line2)'}`,background:inProgress?'var(--good)':'var(--surface)',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',padding:0}}
                     >
-                      {inProgress && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                      {inProgress && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{color:'var(--surface)'}}><polyline points="20 6 9 17 4 12"/></svg>}
                     </button>
-                    <div style={{width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0}}/>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:4,flexWrap:'wrap'}}>
-                        <span>{displayName(t.clientName)}</span>
+                    <div style={{width:9,height:9,borderRadius:'50%',background:'var(--warn)',flexShrink:0}}/>
+                    <div className="tbody">
+                      <div className="trow" style={{flexWrap:'wrap',gap:4}}>
+                        <span className="ttitle">{displayName(t.clientName)}</span>
                         <CopyBtn text={displayName(t.clientName)}/>
                         {isReturning && (
-                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#ECFDF5',color:'#047857',border:'1px solid #A7F3D0'}} title="This client has been with you before">
+                          <span className="chip good" title="This client has been with you before">
                             🔄 Returning
                           </span>
                         )}
                         {inProgress && (
-                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0'}} title="In progress - waiting on the client">
+                          <span className="chip good" title="In progress - waiting on the client">
                             🔶 In Progress
                           </span>
                         )}
                       </div>
                       {t.whatsapp && (
-                        <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
+                        <div className="rc-sub" style={{color:'var(--ink2)',direction:'ltr' as const,justifyContent:'flex-start',gap:3}}>
                           <span>{formatPhoneNumber(t.whatsapp)}</span>
                           <CopyBtn text={t.whatsapp}/>
                         </div>
                       )}
-                      <div style={{fontSize:11,color:'#7a8a82',display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
-                        <span>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></span>
+                      <div className="rc-sub">
+                        <span>{t.country} · <span className="tsev" style={{['--tc' as string]:TASK_COLORS[t.taskType]}}>{TASK_LABELS[t.taskType]}</span></span>
                         {isWhv && (
-                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FEF3C7',color:'#92400E',border:'1px solid #FDE68A'}} title="Client filled as Working Holiday Visa - verify residency status">
+                          <span className="chip warn" title="Client filled as Working Holiday Visa - verify residency status">
                             ⚠️ WHV - Verify Residency
                           </span>
                         )}
                         {isMarried && (
-                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FCE7F3',color:'#9D174D',border:'1px solid #F9A8D4'}} title="Client marked as Married - may affect tax processing">
+                          <span className="chip" style={{color:'var(--brand2)',background:'color-mix(in srgb, var(--brand2) 10%, transparent)'}} title="Client marked as Married - may affect tax processing">
                             💑 Married - Verify
                           </span>
                         )}
@@ -1807,13 +1705,14 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                             if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
                             if (e.key === 'Escape') setEditingNoteId(null)
                           }}
-                          style={{width:'100%',fontSize:11.5,padding:'5px 9px',border:'1.5px solid #a7f3d0',borderRadius:7,outline:'none',fontFamily:'inherit',background:'#fff',boxSizing:'border-box' as const}}
+                          style={{fontSize:11.5,padding:'5px 9px',borderRadius:7}}
                         />
                       ) : t.reviewerNote ? (
                         <button
                           onClick={()=>setEditingNoteId(t.id)}
                           title="Click to edit note"
-                          style={{width:'100%',textAlign:'left',fontSize:11.5,padding:'5px 9px',border:'1px solid #fde68a',borderRadius:7,background:'#fffbeb',color:'#92400e',cursor:'pointer',fontFamily:'inherit',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}
+                          className="btn quiet sm"
+                          style={{width:'100%',display:'block',textAlign:'left',color:'var(--warn)',borderColor:'color-mix(in srgb, var(--warn) 35%, transparent)',background:'color-mix(in srgb, var(--warn) 8%, var(--surface))',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}
                         >
                           📝 {t.reviewerNote}
                         </button>
@@ -1821,74 +1720,75 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                         <button
                           onClick={()=>setEditingNoteId(t.id)}
                           title="Add a note (only visible while this lead is pending)"
-                          style={{fontSize:11,padding:'5px 9px',border:'1px dashed #d8e4dc',borderRadius:7,background:'transparent',color:'#aabab2',cursor:'pointer',fontFamily:'inherit'}}
+                          className="btn quiet sm"
+                          style={{borderStyle:'dashed',background:'transparent',color:'var(--ink3)'}}
                         >
                           + Note
                         </button>
                       )}
                     </div>
-                    <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
-                      <div style={{fontSize:11,color:'#aabab2',whiteSpace:'nowrap'}}>{fmtDate(t.submittedAt)}</div>
-                      <button onClick={e=>{e.stopPropagation();setConfirmPermDelete(t.id)}} style={{padding:'4px 8px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} title="Delete lead permanently" aria-label={`Delete lead for ${t.clientName}`}>🗑️</button>
+                    <div className="rc-side">
+                      <div className="rc-time" style={{whiteSpace:'nowrap',minWidth:0}}>{fmtDate(t.submittedAt)}</div>
+                      <button onClick={e=>{e.stopPropagation();setConfirmPermDelete(t.id)}} className="btn quiet danger sm" title="Delete lead permanently" aria-label={`Delete lead for ${t.clientName}`}>🗑️</button>
                     </div>
                   </div>
                 )})}
               </>})()}
 
               {taskTileFilter!=='ready' && doneTasks.length>0 && <>
-                <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',margin:'14px 0 8px',display:'flex',alignItems:'center',gap:6}}>
-                  <span style={{color:'#059669',fontSize:8}}>●</span> Done - {doneTasks.length}
+                <div className="mlabel" style={{display:'flex',alignItems:'center',gap:6}}>
+                  <span style={{color:'var(--good)',fontSize:8}}>●</span> Done - {doneTasks.length}
                 </div>
                 {doneTasks.map(t=>{
                   const isWhv = t.taskType === 'tax-return' && (t.notes||'').includes('Working holiday maker')
                   const isMarried = (t.marital||'').toLowerCase() === 'married'
                   return (
-                  <div key={t.id} style={{...S.taskCard,opacity:0.82,cursor:'default'}}>
-                    <div style={{width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0,animation:'donePulse 2s ease-in-out infinite'}}/>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:4}}>
-                        <span>{displayName(t.clientName)}</span>
+                  <div key={t.id} className="task" style={{alignItems:'center',opacity:0.82,cursor:'default'}}>
+                    <div className="pulsing" style={{width:9,height:9,borderRadius:'50%',background:'var(--good)',flexShrink:0}}/>
+                    <div className="tbody">
+                      <div className="trow" style={{gap:4}}>
+                        <span className="ttitle">{displayName(t.clientName)}</span>
                         <CopyBtn text={displayName(t.clientName)}/>
                       </div>
                       {t.whatsapp && (
-                        <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
+                        <div className="rc-sub" style={{color:'var(--ink2)',direction:'ltr' as const,justifyContent:'flex-start',gap:3}}>
                           <span>{formatPhoneNumber(t.whatsapp)}</span>
                           <CopyBtn text={t.whatsapp}/>
                         </div>
                       )}
-                      <div style={{fontSize:11,color:'#7a8a82',display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
-                        <span>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></span>
+                      <div className="rc-sub">
+                        <span>{t.country} · <span className="tsev" style={{['--tc' as string]:TASK_COLORS[t.taskType]}}>{TASK_LABELS[t.taskType]}</span></span>
                         {isWhv && (
-                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FEF3C7',color:'#92400E',border:'1px solid #FDE68A'}} title="Client filled as Working Holiday Visa">
+                          <span className="chip warn" title="Client filled as Working Holiday Visa">
                             ⚠️ WHV
                           </span>
                         )}
                         {isMarried && (
-                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FCE7F3',color:'#9D174D',border:'1px solid #F9A8D4'}} title="Client marked as Married">
+                          <span className="chip" style={{color:'var(--brand2)',background:'color-mix(in srgb, var(--brand2) 10%, transparent)'}} title="Client marked as Married">
                             💑 Married
                           </span>
                         )}
                       </div>
                     </div>
-                    <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
-                      <div style={{fontSize:11,color:'#aabab2',whiteSpace:'nowrap'}}>{fmtDate(t.submittedAt)}</div>
+                    <div className="rc-side">
+                      <div className="rc-time" style={{whiteSpace:'nowrap',minWidth:0}}>{fmtDate(t.submittedAt)}</div>
                     </div>
-                    <div style={{display:'flex',gap:6}}>
-                      <button onClick={e=>{e.stopPropagation();transferToClients(t)}} style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}}>👤 Clients</button>
-                      <button onClick={e=>{e.stopPropagation();setConfirmPermDelete(t.id)}} style={{padding:'4px 10px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}>🗑️ Delete</button>
+                    <div className="tbtns" style={{marginTop:0,gap:6}}>
+                      <button onClick={e=>{e.stopPropagation();transferToClients(t)}} className="btn quiet sm">👤 Clients</button>
+                      <button onClick={e=>{e.stopPropagation();setConfirmPermDelete(t.id)}} className="btn quiet danger sm">🗑️ Delete</button>
                     </div>
                   </div>
                 )})}
               </>}
 
-              {tasks.length===0 && <div style={{background:'#fff',borderRadius:13,padding:48,textAlign:'center',color:'#aabab2',fontSize:14,border:'1px solid #e4ede8'}}>No tasks yet.</div>}
+              {tasks.length===0 && <div className="card"><div className="empty">No tasks yet.</div></div>}
 
               {tasks.length < tasksTotal && (
                 <div style={{textAlign:'center',padding:'16px 0'}}>
                   <button
                     onClick={loadMoreTasks}
                     disabled={tasksLoadingMore}
-                    style={{background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:99,padding:'8px 28px',fontSize:13,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}}
+                    className="btn quiet lg"
                   >
                     {tasksLoadingMore ? 'Loading…' : `Load more (${tasks.length} of ${tasksTotal})`}
                   </button>
@@ -1900,40 +1800,40 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
           {/* ── TASK DETAIL ── */}
           {view==='tasks' && taskView==='detail' && activeTask && (
-            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div style={{padding:'26px 26px 0',background:'#f7f8fa',flexShrink:0}}>
-              <button style={S.backBtn} onClick={()=>setTaskView('list')}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+            <div className="view" style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
+              <div className="phead">
+              <button className="btn ghost sm" onClick={()=>setTaskView('list')}>
+                {NavIcons.back}
                 Back to Tasks
               </button>
               </div>
 
-              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'0 26px 24px'}}>
+              <div className="pbody">
 
               {/* ── DONE: locked view - only name + 2 actions ── */}
               {activeTask.done && (
-                <div style={{...S.card,padding:'32px 28px',textAlign:'center' as const}}>
-                  <div style={{width:64,height:64,borderRadius:18,background:'linear-gradient(135deg,#ecfdf5,#a7f3d0)',border:'2px solid #a7f3d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:21,margin:'0 auto 16px',color:'#059669'}}>✓</div>
-                  <div style={{fontSize:17,fontWeight:700,color:'#0a1410',marginBottom:6,letterSpacing:'-0.3px'}}>{displayName(activeTask.clientName)}</div>
-                  <div style={{fontSize:13,color:'#7a8a82',marginBottom:10}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
-                  <span style={{display:'inline-block',background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'5px 16px',fontSize:12,fontWeight:600,marginBottom:24}}>✓ Completed - sensitive data cleared</span>
-                  <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:10,padding:'10px 14px',marginBottom:20,fontSize:11,color:'#7a8a82',textAlign:'left'}}>
-                    <div style={{fontWeight:600,color:'#0E5C42',marginBottom:4}}>📋 What you have:</div>
+                <div className="card" style={{padding:'32px 28px',textAlign:'center' as const}}>
+                  <div className="avatar lg" style={{width:64,height:64,borderRadius:18,fontSize:21,margin:'0 auto 16px',background:'color-mix(in srgb, var(--good) 15%, transparent)',border:'2px solid color-mix(in srgb, var(--good) 40%, transparent)',color:'var(--good)'}}>✓</div>
+                  <h2 className="vt">{displayName(activeTask.clientName)}</h2>
+                  <div className="vsub" style={{marginBottom:10}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
+                  <div style={{marginBottom:24}}><span className="chip good">✓ Completed - sensitive data cleared</span></div>
+                  <div className="panel" style={{marginBottom:20,textAlign:'left',fontSize:11,color:'var(--ink3)'}}>
+                    <div style={{fontWeight:600,color:'var(--brand1)',marginBottom:4}}>📋 What you have:</div>
                     <div>• Name, DOB, Email, WhatsApp, Country</div>
                     <div>• Submission timestamp</div>
-                    <div style={{fontWeight:600,color:'#c0392b',marginTop:6,marginBottom:4}}>🔒 What was wiped:</div>
+                    <div style={{fontWeight:600,color:'var(--crit)',marginTop:6,marginBottom:4}}>🔒 What was wiped:</div>
                     <div>• TFN, Bank details, Address</div>
                     <div>• Passport, Job info, Uploaded files</div>
                   </div>
                   <div style={{display:'flex',gap:10}}>
-                    <button style={{flex:1,padding:'13px',border:'none',borderRadius:11,fontSize:14,fontWeight:600,background:'#0E5C42',color:'#fff',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>transferToClients(activeTask)}>
+                    <button className="btn take lg" style={{flex:1,justifyContent:'center'}} onClick={()=>transferToClients(activeTask)}>
                       👤 Move to Clients
                     </button>
-                    <button style={{flex:1,padding:'13px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmPermDelete(activeTask.id)}>
+                    <button className="btn quiet danger lg" style={{flex:1,justifyContent:'center'}} onClick={()=>setConfirmPermDelete(activeTask.id)}>
                       🗑️ Delete forever
                     </button>
                   </div>
-                  <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:12}}>Move creates a client card for tracking. Delete removes everything permanently.</div>
+                  <div style={{fontSize:11,color:'var(--ink3)',textAlign:'center',marginTop:12}}>Move creates a client card for tracking. Delete removes everything permanently.</div>
                 </div>
               )}
 
@@ -1944,23 +1844,23 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 const isWhv = activeTask.taskType === 'tax-return' && (activeTask.notes||'').includes('Working holiday maker')
                 if (!isWhv) return null
                 return (
-                  <div style={{background:'#fffbeb',border:'1.5px solid #fde68a',borderLeft:'4px solid #d97706',borderRadius:10,padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8}}>
+                  <div className="panel" style={{borderLeft:'4px solid var(--warn)',padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8,background:'color-mix(in srgb, var(--warn) 8%, var(--surface))'}}>
                     <span style={{fontSize:14,flexShrink:0}}>⚠️</span>
-                    <span style={{fontSize:13,fontWeight:600,color:'#92400e'}}>WHV - Verify Tax Residency</span>
+                    <span style={{fontSize:13,fontWeight:600,color:'var(--warn)'}}>WHV - Verify Tax Residency</span>
                   </div>
                 )
               })()}
               {/* Married Alert Banner */}
               {(activeTask.marital||'').toLowerCase() === 'married' && (
-                <div style={{background:'#f7fbf9',border:'1.5px solid #d8e4dc',borderLeft:'4px solid #db2777',borderRadius:10,padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8}}>
+                <div className="panel" style={{borderLeft:'4px solid var(--brand2)',padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8,background:'color-mix(in srgb, var(--brand2) 7%, var(--surface))'}}>
                   <span style={{fontSize:14,flexShrink:0}}>💑</span>
-                  <span style={{fontSize:13,fontWeight:600,color:'#9d174d'}}>Married - Verify Status</span>
+                  <span style={{fontSize:13,fontWeight:600,color:'var(--brand2)'}}>Married - Verify Status</span>
                 </div>
               )}
-              <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14,background:'#fff'}}>
-                <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
+              <div className="card" style={{padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14}}>
+                <div className="avatar lg" style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'var(--surface)',fontSize:16,fontWeight:700}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:17,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{displayName(activeTask.clientName)}</div>
+                  <h2 className="vt">{displayName(activeTask.clientName)}</h2>
                   {(()=>{
                     const existing = clients.find(c=>c.id===activeTask.clientId)
                     if (!existing || existing.taxReturns.length===0) return null
@@ -1969,9 +1869,9 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       ? [...existing.superReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]
                       : null
                     return (
-                      <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'#fef3e8',border:'1px solid #fed7aa',borderRadius:8,padding:'4px 10px',marginTop:4}}>
-                        <span style={{fontSize:11}}>⚠️</span>
-                        <span style={{fontSize:11,fontWeight:600,color:'#c2410c'}}>
+                      <div style={{marginTop:4}}>
+                        <span className="chip warn">
+                          <span>⚠️</span>
                           Returning client - last: {lastTax.year}
                           {lastTax.refundAmount>0 ? ` · ${fmtCur(lastTax.refundAmount)} refund` : ''}
                           {lastSuper ? ` · Super ${lastSuper.year}` : ''}
@@ -1979,21 +1879,21 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       </div>
                     )
                   })()}
-                  <div style={{fontSize:12,color:'#7a8a82',marginTop:3,display:'flex',alignItems:'center',gap:8,flexWrap:'wrap' as const}}>
+                  <div className="rc-sub" style={{gap:8}}>
                     <span>{activeTask.country}</span>
-                    <span style={{background:TASK_COLORS[activeTask.taskType]+'22',color:TASK_COLORS[activeTask.taskType],borderRadius:5,padding:'1px 8px',fontSize:11,fontWeight:700}}>{TASK_LABELS[activeTask.taskType]}</span>
+                    <span className="tsev" style={{['--tc' as string]:TASK_COLORS[activeTask.taskType]}}>{TASK_LABELS[activeTask.taskType]}</span>
                     <span>{activeTask.taxYear}</span>
                     <span>· Submitted {fmtDate(activeTask.submittedAt)}</span>
                     {(activeTask.notes||'').includes('🔄 Returning client') && (
-                      <span style={{background:'#f7fbf9',color:'#0E5C42',border:'1px solid #d8e4dc',borderRadius:5,padding:'1px 8px',fontSize:11,fontWeight:700}}>🔄 Returning client</span>
+                      <span className="cstate">🔄 Returning client</span>
                     )}
                   </div>
                 </div>
                 <div style={{display:'flex',alignItems:'center',gap:8}}>
                   <WhatsAppQuick name={activeTask.clientName} whatsapp={activeTask.whatsapp}/>
                   {activeTask.done
-                    ? <span style={{background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✓ Done</span>
-                    : <span style={{background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending</span>
+                    ? <span className="chip good">✓ Done</span>
+                    : <span className="chip warn">⏳ Pending</span>
                   }
                 </div>
               </div>
@@ -2004,8 +1904,8 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
 
                 {/* ── Panel 1: Personal details ── */}
-                <div style={S.card}>
-                  <div style={S.secHead}><span>Personal details</span></div>
+                <div className="card">
+                  <div className="sechead"><span>Personal details</span></div>
                   {(()=>{
                     const notes = activeTask.notes||''
                     const nameParts = activeTask.clientName.trim().split(' ')
@@ -2031,13 +1931,13 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     }
                     return [...base,['Country',activeTask.country],['Marital',activeTask.marital]] as [string,string][]
                   })().map(([l,v])=>(
-                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={S.val}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                    <div key={l} className="frow"><span className="fk">{l}</span><span className="fv">{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                   ))}
                 </div>
 
                 {/* ── Panel 2: Contact details ── */}
-                <div style={S.card}>
-                  <div style={S.secHead}><span>Contact details</span></div>
+                <div className="card">
+                  <div className="sechead"><span>Contact details</span></div>
                   {(()=>{
                     const rows:[string,string][] = [['WhatsApp',activeTask.whatsapp],['AU Phone',activeTask.auPhone],['Email',activeTask.email],['Address',activeTask.address]]
                     if (activeTask.taskType==='super') {
@@ -2046,40 +1946,40 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     }
                     return rows
                   })().map(([l,v])=>(
-                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{(l==='WhatsApp'||l==='AU Phone') ? formatPhoneNumber(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                    <div key={l} className="frow"><span className="fk">{l}</span><span className="fv" style={{direction:'ltr',textAlign:'right'}}>{(l==='WhatsApp'||l==='AU Phone') ? formatPhoneNumber(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                   ))}
                 </div>
 
                 {/* ── Panel 3: Form-specific details ── */}
-                <div style={S.card}>
+                <div className="card">
                   {/* Leads carry the same fields, just partly filled: gating this on
                       'tax-return' alone hid the TFN, Medicare and expenses that form 1
                       already collected. */}
                   {(activeTask.taskType==='tax-return' || activeTask.taskType==='lead') && <>
-                    <div style={S.secHead}><span>Tax & employment</span></div>
+                    <div className="sechead"><span>Tax &amp; employment</span></div>
                     {([['TFN 🔒',activeTask.tfn],['Employer',activeTask.primaryJob],['Tax status',activeTask.taxStatus]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} className="frow"><span className="fk">{l}</span><span className={`fv${l.startsWith('TFN')?' mono':''}`} style={{direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                     {(()=>{
                       const medicareVal = (activeTask.notes||'').match(/Medicare: ([^|]+)/)?.[1]?.trim()||''
                       if (!medicareVal) return null
                       return (
-                        <div style={S.row}><span style={S.lbl}>Medicare</span><span style={{...S.val,color:medicareVal==='Yes'?'#0E5C42':'#c0392b',fontWeight:600,textAlign:'right'}}>{medicareVal==='Yes'?'Yes ✓':'No'}</span></div>
+                        <div className="frow"><span className="fk">Medicare</span><span className="fv" style={{color:medicareVal==='Yes'?'var(--brand1)':'var(--crit)',fontWeight:600,textAlign:'right'}}>{medicareVal==='Yes'?'Yes ✓':'No'}</span></div>
                       )
                     })()}
                     {(()=>{
                       const expVal = (activeTask.notes||'').match(/Expenses: ([^|]+)/)?.[1]?.trim()||''
                       if (!expVal) return null
                       return (
-                        <div style={{...S.row,background: expVal==='Yes'?'#fffbeb':'#f7fbf9',borderTop:'1px solid #e4ede8'}}>
-                          <span style={{...S.lbl,fontWeight:700}}>📎 Work expenses</span>
-                          <span style={{...S.val,color:expVal==='Yes'?'#b45309':'#0E5C42',fontWeight:600}}>{expVal==='Yes'?'Yes - needs receipts':'No'}</span>
+                        <div className="frow" style={{background: expVal==='Yes'?'color-mix(in srgb, var(--warn) 8%, transparent)':'var(--surface2)',borderTop:'1px solid var(--line)'}}>
+                          <span className="fk" style={{fontWeight:700}}>📎 Work expenses</span>
+                          <span className="fv" style={{color:expVal==='Yes'?'var(--warn)':'var(--brand1)',fontWeight:600}}>{expVal==='Yes'?'Yes - needs receipts':'No'}</span>
                         </div>
                       )
                     })()}
                   </>}
                   {activeTask.taskType==='super' && <>
-                    <div style={S.secHead}><span>Super details</span></div>
+                    <div className="sechead"><span>Super details</span></div>
                     {(()=>{
                       const notes = activeTask.notes||''
                       const sfName = notes.match(/Super Fund Name: ([^|]+)/)?.[1]?.trim()
@@ -2093,26 +1993,26 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                         ['Account opening date',sfDate],
                       ] as [string,string][])
                     })().map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} className="frow"><span className="fk">{l}</span><span className={`fv${l.startsWith('TFN')?' mono':''}`} style={{direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                   </>}
                   {activeTask.taskType==='tfn' && <>
-                    <div style={S.secHead}><span>Tax details</span></div>
+                    <div className="sechead"><span>Tax details</span></div>
                     {([['TFN (if existing) 🔒',activeTask.tfn],['How heard',activeTask.howHeard]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} className="frow"><span className="fk">{l}</span><span className={`fv${l.startsWith('TFN')?' mono':''}`} style={{direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                   </>}
                   {activeTask.taskType==='abn' && <>
-                    <div style={S.secHead}><span>Business details</span></div>
+                    <div className="sechead"><span>Business details</span></div>
                     {([['TFN 🔒',activeTask.tfn],['Business activity',activeTask.primaryJob],['How heard',activeTask.howHeard]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} className="frow"><span className="fk">{l}</span><span className={`fv${l.startsWith('TFN')?' mono':''}`} style={{direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                   </>}
                 </div>
-                <div style={S.card}>
-                  <div style={S.secHead}><span>Documents uploaded {(activeTask.fileUrls ?? []).length > 0 ? `(${(activeTask.fileUrls ?? []).length})` : ''}</span></div>
+                <div className="card">
+                  <div className="sechead"><span>Documents uploaded {(activeTask.fileUrls ?? []).length > 0 ? `(${(activeTask.fileUrls ?? []).length})` : ''}</span></div>
                   {(activeTask.fileUrls ?? []).length === 0 ? (
-                    <div style={{fontSize:12,color:'#aabab2',padding:'8px 0'}}>No files uploaded</div>
+                    <div className="empty" style={{padding:'14px 0'}}>No files uploaded</div>
                   ) : (activeTask.fileUrls ?? []).map((url, i) => {
                     const rawName = url.split('/').pop() ?? `file-${i+1}`
                     let name = rawName
@@ -2121,10 +2021,10 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     const isPdf = url.toLowerCase().endsWith('.pdf')
                     const proxyUrl = `/api/crm/file?url=${encodeURIComponent(url)}`
                     return (
-                      <div key={url} style={{...S.row,justifyContent:'space-between',alignItems:'center'}}>
-                        <span style={{fontSize:12,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'60%'}}>{isPdf ? '📄' : '🖼️'} {name}</span>
+                      <div key={url} className="frow" style={{justifyContent:'space-between'}}>
+                        <span style={{fontSize:12,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'60%'}}>{isPdf ? '📄' : '🖼️'} {name}</span>
                         <div style={{display:'flex',gap:6}}>
-                          <button onClick={()=>setPreviewUrl(proxyUrl)} style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>View</button>
+                          <button onClick={()=>setPreviewUrl(proxyUrl)} className="btn quiet sm">View</button>
                           <button onClick={async()=>{
                             try {
                               const res = await fetch(proxyUrl)
@@ -2137,7 +2037,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                               const href = a.href
                               setTimeout(() => URL.revokeObjectURL(href), 5000)
                             } catch { window.open(proxyUrl,'_blank') }
-                          }} style={{fontSize:11,color:'#fff',background:'#0E5C42',border:'1px solid #0B5240',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>Download ↓</button>
+                          }} className="btn take sm">Download ↓</button>
                         </div>
                       </div>
                     )
@@ -2151,13 +2051,13 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
               {/* Actions */}
               <div style={{display:'flex',gap:8,marginBottom:8}}>
-                <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:13,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
+                <button className="btn quiet lg" style={{flex:1,justifyContent:'center'}} onClick={()=>downloadTaskPdf(activeTask)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                   Download PDF
                 </button>
-                <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:13,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>
+                <button className="btn ghost lg" style={{flex:1,justifyContent:'center'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>
                 <button
-                  style={{padding:'12px 16px',border:'1px solid #fca5a5',borderRadius:11,fontSize:13,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}
+                  className="btn quiet danger lg"
                   onClick={()=>setConfirmPermDelete(activeTask.id)}
                   title="Delete this lead - useful if client filled the form incorrectly (e.g. marked as WHV when actually a Resident). You can then send them a new link manually.">
                   🗑️ Delete lead
@@ -2174,12 +2074,11 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
           {/* ── CLIENTS LIST ── */}
 
           {view==='clients' && !activeClient && (
-            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div style={{padding:'26px 26px 8px',flexShrink:0}}>
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
-                <div style={{display:'flex',alignItems:'center',gap:10}}>
-                  <h1 style={S.pgTitle as React.CSSProperties}>Clients</h1>
-                  <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{visibleClients.length}{clients.length!==visibleClients.length?` of ${clients.length}`:''} total</span>
+            <div className="view" style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
+              <div className="phead">
+              <div className="hrow">
+                  <h1 className="vt">Clients</h1>
+                  <span className="chip">{visibleClients.length}{clients.length!==visibleClients.length?` of ${clients.length}`:''} total</span>
                   {(()=>{
                     const tot = visibleClients.reduce((sum,c)=>{
                       const tr = yearFilter.size===0?c.taxReturns:c.taxReturns.filter(r=>yearFilter.has(r.year))
@@ -2189,30 +2088,29 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                         - tr.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + sr.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    return <span style={{background:'#f7fbf9',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} returned</span>
+                    return <span className="chip">{fmtCur(tot)} returned</span>
                   })()}
-                </div>
-                <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                <div className="hspacer" />
                   {noReturnFilter==='didnt-return' && (
-                    <button onClick={()=>setNoReturnFilter('all')} style={{display:'flex',alignItems:'center',gap:6,background:'#fef3c7',border:'1px solid #fcd34d',borderRadius:9,padding:'5px 10px',cursor:'pointer',fontFamily:'inherit'}}>
-                      <span style={{fontSize:11,color:'#92400e',fontWeight:600}}>🔁 Didn&apos;t return filter</span>
-                      <span style={{fontSize:14,color:'#92400e',fontWeight:700,lineHeight:1}}>×</span>
+                    <button className="btn quiet sm" onClick={()=>setNoReturnFilter('all')} style={{color:'var(--warn)',borderColor:'color-mix(in srgb, var(--warn) 35%, transparent)'}}>
+                      <span>🔁 Didn&apos;t return filter</span>
+                      <span style={{fontWeight:700,lineHeight:1}}>×</span>
                     </button>
                   )}
                   {superFilter==='no-super' && (
-                    <button onClick={()=>setSuperFilter('all')} style={{display:'flex',alignItems:'center',gap:6,background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:9,padding:'5px 10px',cursor:'pointer',fontFamily:'inherit'}}>
-                      <span style={{fontSize:11,color:'#0E5C42',fontWeight:600}}>💼 No Super filter</span>
-                      <span style={{fontSize:14,color:'#0E5C42',fontWeight:700,lineHeight:1}}>×</span>
+                    <button className="btn quiet sm" onClick={()=>setSuperFilter('all')} style={{color:'var(--brand1)',borderColor:'color-mix(in srgb, var(--brand1) 35%, transparent)'}}>
+                      <span>💼 No Super filter</span>
+                      <span style={{fontWeight:700,lineHeight:1}}>×</span>
                     </button>
                   )}
-                  <div style={{display:'flex',alignItems:'center',gap:6,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:9,padding:'5px 10px'}}>
-                    <span style={{fontSize:11,color:'#7a8a82',fontWeight:500}}>✓ Year:</span>
-                    <select value={checkinYear} onChange={e=>setCheckinYear(e.target.value)} style={{border:'none',background:'none',fontSize:12,fontWeight:600,color:'#0E5C42',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
+                  <div className="hrow" style={{gap:6}}>
+                    <span style={{fontSize:11,color:'var(--ink3)',fontWeight:500}}>✓ Year:</span>
+                    <select value={checkinYear} onChange={e=>setCheckinYear(e.target.value)} style={{width:'auto'}}>
                       {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
                     </select>
                   </div>
                   <button
-                    style={{padding:'8px 14px',fontSize:13,background:'#fff',color:'#0E5C42',border:'1.5px solid #d4eae2',borderRadius:9,fontWeight:600,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:6}}
+                    className="btn quiet"
                     onClick={()=>{
                       const headers = ['Name','DOB','Country','WhatsApp','Email','Source','Created','Last Tax Year','Total Refunds','Total Super','TFN','ABN','Notes']
                       const rows = visibleClients.map(c=>{
@@ -2242,27 +2140,27 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                     Export CSV
                   </button>
-                  <button style={{...S.addBtn,padding:'8px 14px',fontSize:13}} onClick={()=>setShowAddModal(true)}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
+                  <button className="btn take" onClick={()=>setShowAddModal(true)}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                     Add Client
                   </button>
-                </div>
               </div>
 
-              {/* Filters row - same layout as Archive */}
-              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap' as const,alignItems:'center'}}>
-                <div style={{position:'relative',flex:3,minWidth:200}}>
-                  <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                  <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box' as const}} placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
+              {/* Filters row. This stays in .phead rather than moving into
+                  .pbody with the rest of the content: each DropBtn opens an
+                  absolutely-positioned menu, and .pbody is a scroll container
+                  (overflow-y:auto), which would clip the menu and scroll it
+                  away from its button. Two rows — identity then controls — is
+                  also exactly the shape of Will's header. */}
+              <div className="hrow" style={{gap:8,marginTop:8}}>
+                <div className="search" style={{flex:3,minWidth:200}}>
+                  <span className="search-ic">{NavIcons.search}</span>
+                  <input placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
                 </div>
                 <DropBtn id="cl-year" label={yearFilter.size===0?'All tax years':`${yearFilter.size} year${yearFilter.size>1?'s':''}`} active={yearFilter.size>0} onClear={()=>setYearFilter(new Set())}
                   icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                   {TAX_YEARS.slice().reverse().map(y=>{const checked=yearFilter.has(y);const cnt=clients.filter(c=>c.taxReturns.some(r=>r.year===y)||c.superReturns.some(r=>r.year===y)).length;return(
-                    <label key={y} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                      <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(yearFilter);checked?s.delete(y):s.add(y);setYearFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                      <span style={{fontSize:13,color:'#0a1410',flex:1}}>{y}</span>
-                      <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
-                    </label>
+                    <FilterOpt key={y} label={y} count={cnt} checked={checked} onToggle={()=>{const s=new Set(yearFilter);checked?s.delete(y):s.add(y);setYearFilter(s)}}/>
                   )})}
                 </DropBtn>
                 {<DropBtn id="cl-hh" label="How heard" active={howHeardFilter.size>0} onClear={()=>setHowHeardFilter(new Set())}
@@ -2270,34 +2168,26 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     {/* Grouped by canonical label: eighteen spellings of ChatGPT
                         become one entry. See lib/normalise-labels.ts. */}
                     {groupByCanonical(clients.map(c=>c.howHeard), canonicalSource).map(({label,count})=>{const checked=howHeardFilter.has(label);return(
-                      <label key={label} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(howHeardFilter);checked?s.delete(label):s.add(label);setHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{label}</span>
-                        <span style={{fontSize:11,color:'#aabab2'}}>{count}</span>
-                      </label>
+                      <FilterOpt key={label} label={label} count={count} checked={checked} onToggle={()=>{const s=new Set(howHeardFilter);checked?s.delete(label):s.add(label);setHowHeardFilter(s)}}/>
                     )})}
-                    {groupByCanonical(clients.map(c=>c.howHeard), canonicalSource).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
+                    {groupByCanonical(clients.map(c=>c.howHeard), canonicalSource).length===0 && <FilterEmpty/>}
                   </DropBtn>}
                 {<DropBtn id="cl-country" label="Country" active={countryFilter.size>0} onClear={()=>setCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {groupByCanonical(clients.map(c=>c.country), canonicalCountry).map(({label,count})=>{const checked=countryFilter.has(label);return(
-                      <label key={label} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter);checked?s.delete(label):s.add(label);setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{label}</span>
-                        <span style={{fontSize:11,color:'#aabab2'}}>{count}</span>
-                      </label>
+                      <FilterOpt key={label} label={label} count={count} checked={checked} onToggle={()=>{const s=new Set(countryFilter);checked?s.delete(label):s.add(label);setCountryFilter(s)}}/>
                     )})}
-                    {groupByCanonical(clients.map(c=>c.country), canonicalCountry).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
+                    {groupByCanonical(clients.map(c=>c.country), canonicalCountry).length===0 && <FilterEmpty/>}
                   </DropBtn>}
 
                 {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search||statusFilter.size>0) && (
-                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('');setStatusFilter(new Set())}}>
+                  <button className="btn quiet danger" onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('');setStatusFilter(new Set())}}>
                     ✕ Clear
                   </button>
                 )}
               </div>
               </div>{/* end fixed header */}
-              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 24px'}}>
+              <div className="pbody">
               {/* ── Refund summary bar (reactive to all filters) ── */}
               {visibleClients.length>0 && (()=>{
                 const totalTaxRefund = visibleClients.reduce((sum,c)=>{
@@ -2324,42 +2214,15 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 if (totalTaxRefund===0 && totalSuper===0) return null
                 const yearLabel = yearFilter.size===0 ? '' : ` · ${Array.from(yearFilter).sort().join(', ')}`
                 return (
-                  <div style={{display:'flex',gap:10,marginBottom:12,flexWrap:'wrap' as const}}>
+                  <div className="kpis" style={{gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:10}}>
                     {totalTaxRefund!==0 && (
-                      <div style={{flex:1,minWidth:160,background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
-                        <div>
-                          <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>💰 Tax Refunds{yearLabel}</div>
-                          <div style={{fontSize:17,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalTaxRefund)}</div>
-                        </div>
-                        <div style={{textAlign:'right' as const}}>
-                          <div style={{fontSize:10,color:'#587066',marginBottom:2}}>across</div>
-                          <div style={{fontSize:14,fontWeight:700,color:'#0E5C42'}}>{clientsWithRefund}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
-                        </div>
-                      </div>
+                      <MoneyTile label={`💰 Tax Refunds${yearLabel}`} value={fmtCur(totalTaxRefund)} sub="across" count={clientsWithRefund}/>
                     )}
                     {totalSuper>0 && (
-                      <div style={{flex:1,minWidth:160,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
-                        <div>
-                          <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>🏦 Super Refunded{yearLabel}</div>
-                          <div style={{fontSize:17,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalSuper)}</div>
-                        </div>
-                        <div style={{textAlign:'right' as const}}>
-                          <div style={{fontSize:10,color:'#587066',marginBottom:2}}>across</div>
-                          <div style={{fontSize:14,fontWeight:700,color:'#0E5C42'}}>{clientsWithSuper}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
-                        </div>
-                      </div>
+                      <MoneyTile label={`🏦 Super Refunded${yearLabel}`} value={fmtCur(totalSuper)} sub="across" count={clientsWithSuper}/>
                     )}
                     {totalTaxRefund!==0 && totalSuper>0 && (
-                      <div style={{flex:1,minWidth:160,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
-                        <div>
-                          <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>✨ Combined{yearLabel}</div>
-                          <div style={{fontSize:17,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalTaxRefund+totalSuper)}</div>
-                        </div>
-                        <div style={{textAlign:'right' as const}}>
-                          <div style={{fontSize:10,color:'#587066',marginBottom:2}}>showing</div>
-                          <div style={{fontSize:14,fontWeight:700,color:'#0E5C42'}}>{visibleClients.length}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
-                        </div>
-                      </div>
+                      <MoneyTile label={`✨ Combined${yearLabel}`} value={fmtCur(totalTaxRefund+totalSuper)} sub="showing" count={visibleClients.length}/>
                     )}
                   </div>
                 )
@@ -2367,14 +2230,15 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
               {/* Table */}
               {visibleClients.length===0 ? (
-                <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>No clients yet.</div>
+                <div className="card"><div className="empty">No clients yet.</div></div>
               ) : (
-                <div style={S.card}>
-                  <table style={{width:'100%',borderCollapse:'collapse'}}>
+                <div className="card">
+                  <div className="tblwrap">
+                  <table className="tbl">
                     <thead>
                       <tr>
                         {['Name','WhatsApp','Email','Country','Source','Last refund'].map(h=>(
-                          <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
+                          <th key={h}>{h}</th>
                         ))}
                       </tr>
                     </thead>
@@ -2382,18 +2246,20 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       {visibleClients.map(cl=>{
                         const [bg,fg]=avColor(cl.fullName)
                         return (
-                          <tr key={cl.id} style={{cursor:'pointer'}} onClick={()=>{setActiveClient(cl);setClientNotes(cl.notes||'');setView('clients')}}>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
+                          <tr key={cl.id} className="clickable" onClick={()=>{setActiveClient(cl);setClientNotes(cl.notes||'');setView('clients')}}>
+                            <td>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
-                                <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
-                                <div style={{fontSize:12,fontWeight:500,color:'#0a1410',whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
+                                <div className="avatar" style={{width:32,height:32,borderRadius:9,background:bg,color:fg,fontSize:11,fontWeight:700}}>{initials(cl.fullName)}</div>
+                                <div style={{fontWeight:500,whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
                               </div>
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr',whiteSpace:'nowrap' as const}}>
+                            <td className="num" style={{direction:'ltr',whiteSpace:'nowrap' as const}}>
                               <div style={{display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap' as const}}>
                                 {cl.whatsapp && (
                                   <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer"
                                     onClick={e=>e.stopPropagation()}
+                                    // #25D366 is WhatsApp's own brand green and stays
+                                    // literal: this link opens wa.me.
                                     style={{flexShrink:0,color:'#25D366',display:'flex',alignItems:'center'}} title="Open WhatsApp">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
                                   </a>
@@ -2401,33 +2267,33 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                                 <span style={{whiteSpace:'nowrap' as const}}>{formatPhoneNumber(cl.whatsapp)||"-"}</span>
                               </div>
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333',whiteSpace:'nowrap' as const}}>{cl.country||'-'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11}}>
+                            <td className="muted">{cl.email||'-'}</td>
+                            <td style={{whiteSpace:'nowrap' as const}}>{cl.country||'-'}</td>
+                            <td className="muted">
                               {(()=>{
                                 const src = (cl.howHeard||'').trim()
-                                if (!src) return <span style={{color:'#aabab2'}}>-</span>
+                                if (!src) return <span style={{color:'var(--ink3)'}}>-</span>
                                 const lower = src.toLowerCase()
                                 const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(lower)
                                 const isReferral = !isSocial && src.length > 1
                                 return (
                                   <div style={{display:'flex',alignItems:'center',gap:5}}>
                                     {isReferral && <span style={{fontSize:10}} title="Referral - someone referred this client">👤</span>}
-                                    <span style={{color:isReferral?'#9333ea':'#555',fontWeight:isReferral?600:400}}>{src}</span>
+                                    <span style={{color:isReferral?'var(--brand2)':'var(--ink3)',fontWeight:isReferral?600:400}}>{src}</span>
                                   </div>
                                 )
                               })()}
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
+                            <td className="num">
                               {(()=>{
                                 const lastTax = cl.taxReturns?.length
                                   ? [...cl.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]
                                   : null
-                                if (!lastTax) return <span style={{color:'#aabab2'}}>-</span>
+                                if (!lastTax) return <span style={{color:'var(--ink3)'}}>-</span>
                                 return (
                                   <div>
-                                    <div style={{fontWeight:600,color:'#0E5C42',fontSize:12,whiteSpace:'nowrap' as const}}>{lastTax.year}</div>
-                                    <div style={{fontSize:11,color:'#555'}}>{fmtCur(lastTax.refundAmount)}</div>
+                                    <div style={{fontWeight:600,color:'var(--brand1)',whiteSpace:'nowrap' as const}}>{lastTax.year}</div>
+                                    <div style={{fontSize:11,color:'var(--ink3)'}}>{fmtCur(lastTax.refundAmount)}</div>
                                   </div>
                                 )
                               })()}
@@ -2437,6 +2303,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       })}
                     </tbody>
                   </table>
+                  </div>
                 </div>
               )}
 
@@ -2445,7 +2312,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                   <button
                     onClick={loadMoreClients}
                     disabled={clientsLoadingMore}
-                    style={{background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:99,padding:'8px 28px',fontSize:13,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}}
+                    className="btn quiet lg"
                   >
                     {clientsLoadingMore ? 'Loading…' : `Load more (${clients.length} of ${clientsTotal})`}
                   </button>
@@ -2457,13 +2324,12 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
           {/* ── ARCHIVE ── */}
           {view==='archive' && (
-            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden',background:'#f7f8fa'}}>
-              <div style={{padding:'26px 26px 8px',flexShrink:0}}>
+            <div className="view" style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
+              <div className="phead">
               {/* Header */}
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
-                <div style={{display:'flex',alignItems:'center',gap:10}}>
-                  <h1 style={{...S.pgTitle as React.CSSProperties, color:'#0E5C42'}}>📦 Archive</h1>
-                  <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
+              <div className="hrow">
+                  <h1 className="vt">📦 Archive</h1>
+                  <span className="chip">
                     {visibleArchived.length}{archivedClients.length!==visibleArchived.length?` of ${archivedClients.length}`:''} clients
                   </span>
                   {(()=>{
@@ -2473,65 +2339,54 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                         - c.taxReturns.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + c.superReturns.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    return <span style={{background:'#fff',color:'#0E5C42',border:'1px solid #d8e4dc',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} historical</span>
+                    return <span className="chip">{fmtCur(tot)} historical</span>
                   })()}
-                </div>
               </div>
-              {/* Filters row */}
-              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
-                <div style={{position:'relative',flex:3,minWidth:200}}>
-                  <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                  <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}} placeholder="Search by name, WhatsApp or email…" value={archiveSearch} onChange={e=>setArchiveSearch(e.target.value)}/>
+              {/* Filters row — kept in .phead for the same reason as Clients:
+                  the DropBtn menus are absolutely positioned and .pbody clips. */}
+              <div className="hrow" style={{gap:8,marginTop:8}}>
+                <div className="search" style={{flex:3,minWidth:200}}>
+                  <span className="search-ic">{NavIcons.search}</span>
+                  <input placeholder="Search by name, WhatsApp or email…" value={archiveSearch} onChange={e=>setArchiveSearch(e.target.value)}/>
                 </div>
                 <DropBtn id="ar-year" label={archiveYearFilter.size===0?'All tax years':`${archiveYearFilter.size} year${archiveYearFilter.size>1?'s':''}`} active={archiveYearFilter.size>0} onClear={()=>setArchiveYearFilter(new Set())}
                   icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                   {TAX_YEARS.slice().reverse().map(y=>{const checked=archiveYearFilter.has(y);const cnt=archivedClients.filter(c=>c.taxReturns?.some(r=>r.year===y)||c.superReturns?.some(r=>r.year===y)).length;return(
-                    <label key={y} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                      <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveYearFilter);checked?s.delete(y):s.add(y);setArchiveYearFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                      <span style={{fontSize:13,color:'#0a1410',flex:1}}>{y}</span>
-                      <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
-                    </label>
+                    <FilterOpt key={y} label={y} count={cnt} checked={checked} onToggle={()=>{const s=new Set(archiveYearFilter);checked?s.delete(y):s.add(y);setArchiveYearFilter(s)}}/>
                   )})}
                 </DropBtn>
                 {<DropBtn id="ar-hh" label="How heard" active={archiveHowHeardFilter.size>0} onClear={()=>setArchiveHowHeardFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Object.keys(archiveHowHeardStats).sort().map(src=>{const checked=archiveHowHeardFilter.has(src);return(
-                      <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveHowHeardFilter);checked?s.delete(src):s.add(src);setArchiveHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
-                        <span style={{fontSize:11,color:'#aabab2'}}>{archiveHowHeardStats[src]}</span>
-                      </label>
+                      <FilterOpt key={src} label={src} count={archiveHowHeardStats[src]} checked={checked} onToggle={()=>{const s=new Set(archiveHowHeardFilter);checked?s.delete(src):s.add(src);setArchiveHowHeardFilter(s)}}/>
                     )})}
-                    {Object.keys(archiveHowHeardStats).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
+                    {Object.keys(archiveHowHeardStats).length===0 && <FilterEmpty/>}
                   </DropBtn>}
                 {<DropBtn id="ar-country" label="Country" active={archiveCountryFilter.size>0} onClear={()=>setArchiveCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).sort().map(ctry=>{const checked=archiveCountryFilter.has(ctry);const cnt=archivedClients.filter(cl=>cl.country===ctry).length;return(
-                      <label key={ctry} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(ctry):s.add(ctry);setArchiveCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{ctry}</span>
-                        <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
-                      </label>
+                      <FilterOpt key={ctry} label={ctry} count={cnt} checked={checked} onToggle={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(ctry):s.add(ctry);setArchiveCountryFilter(s)}}/>
                     )})}
-                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
+                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).length===0 && <FilterEmpty/>}
                   </DropBtn>}
                 {(archiveHowHeardFilter.size>0||archiveCountryFilter.size>0||archiveYearFilter.size>0||archiveSearch) && (
-                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setArchiveHowHeardFilter(new Set());setArchiveCountryFilter(new Set());setArchiveYearFilter(new Set());setArchiveSearch('')}}>
+                  <button className="btn quiet danger" onClick={()=>{setArchiveHowHeardFilter(new Set());setArchiveCountryFilter(new Set());setArchiveYearFilter(new Set());setArchiveSearch('')}}>
                     ✕ Clear
                   </button>
                 )}
               </div>
               </div>{/* end fixed header */}
-              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 24px'}}>
+              <div className="pbody">
               {/* Table */}
               {visibleArchived.length===0?(
-                <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>{archivedClients.length===0?'No archived clients yet.':'No clients match the current filters.'}</div>
+                <div className="card"><div className="empty">{archivedClients.length===0?'No archived clients yet.':'No clients match the current filters.'}</div></div>
               ):(
-                <div style={S.card}>
-                  <table style={{width:'100%',borderCollapse:'collapse'}}>
+                <div className="card">
+                  <div className="tblwrap">
+                  <table className="tbl">
                     <thead><tr>
                       {['Name','WhatsApp','Email','Country','Last refund',''].map(h=>(
-                        <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px'}}>{h}</th>
+                        <th key={h}>{h}</th>
                       ))}
                     </tr></thead>
                     <tbody>
@@ -2540,28 +2395,28 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                         const lastTax = cl.taxReturns?.length ? [...cl.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0] : null
                         return(
                           <tr key={cl.id}>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
+                            <td>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
-                                <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
-                                <div style={{fontSize:12,fontWeight:500,color:'#7a8a82',whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
+                                <div className="avatar" style={{width:32,height:32,borderRadius:9,background:bg,color:fg,fontSize:11,fontWeight:700}}>{initials(cl.fullName)}</div>
+                                <div style={{fontWeight:500,color:'var(--ink3)',whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
                               </div>
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr',whiteSpace:'nowrap'}}>
+                            <td className="num" style={{direction:'ltr',whiteSpace:'nowrap'}}>
                               {cl.whatsapp
-                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0E5C42',textDecoration:'none',whiteSpace:'nowrap'}}>{formatPhoneNumber(cl.whatsapp)}</a>
+                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'var(--brand1)',textDecoration:'none',whiteSpace:'nowrap'}}>{formatPhoneNumber(cl.whatsapp)}</a>
                                 : '-'}
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555',whiteSpace:'nowrap' as const}}>{cl.country||'-'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
+                            <td className="muted">{cl.email||'-'}</td>
+                            <td className="muted" style={{whiteSpace:'nowrap' as const}}>{cl.country||'-'}</td>
+                            <td className="num">
                               {lastTax
-                                ? <div><div style={{fontWeight:600,color:'#0E5C42',fontSize:12}}>{lastTax.year}</div><div style={{fontSize:11,color:'#555'}}>{fmtCur(lastTax.refundAmount)}</div></div>
-                                : <span style={{color:'#aabab2'}}>-</span>}
+                                ? <div><div style={{fontWeight:600,color:'var(--brand1)'}}>{lastTax.year}</div><div style={{fontSize:11,color:'var(--ink3)'}}>{fmtCur(lastTax.refundAmount)}</div></div>
+                                : <span style={{color:'var(--ink3)'}}>-</span>}
                             </td>
-                            <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}}>
+                            <td>
                               <div style={{display:'flex',gap:6,alignItems:'center'}}>
-                                <button style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #c8eadf',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>unarchiveClient(cl.id)}>↩ Restore</button>
-                                <button style={{padding:'4px 8px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} title="Delete permanently" onClick={()=>setConfirmDeleteClient(cl.id)}>
+                                <button className="btn quiet sm" onClick={()=>unarchiveClient(cl.id)}>↩ Restore</button>
+                                <button className="btn quiet danger sm" title="Delete permanently" onClick={()=>setConfirmDeleteClient(cl.id)}>
                                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                                 </button>
                               </div>
@@ -2571,6 +2426,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       })}
                     </tbody>
                   </table>
+                  </div>
                 </div>
               )}
               </div>{/* end scroll */}
@@ -2579,35 +2435,39 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
           {/* ── CLIENT DETAIL ── */}
           {view==='clients' && activeClient && (
-            <div style={S.page}>
-              <button style={S.backBtn} onClick={()=>setActiveClient(null)}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+            <div className="view" style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
+              <div className="phead">
+              <button className="btn ghost sm" onClick={()=>setActiveClient(null)}>
+                {NavIcons.back}
                 Back to Clients
               </button>
+              </div>
+
+              <div className="pbody">
 
               {/* Profile */}
-              <div style={{...S.card,padding:'20px 22px',marginBottom:14}}>
+              <div className="card" style={{padding:'20px 22px',marginBottom:14}}>
                 <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:16}}>
-                  <div style={{width:56,height:56,borderRadius:16,background:'linear-gradient(135deg,#0E5C42,#1a9a6a)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:700,flexShrink:0,boxShadow:'0 4px 12px rgba(14,92,66,0.18)'}}>{initials(activeClient.fullName)}</div>
+                  <div className="avatar lg" style={{width:56,height:56,borderRadius:16,background:'var(--brand1)',color:'var(--surface)',fontSize:17,fontWeight:700}}>{initials(activeClient.fullName)}</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap' as const}}>
-                      <div style={{fontSize:17,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px'}}>{displayName(activeClient.fullName)}</div>
+                      <h2 className="vt">{displayName(activeClient.fullName)}</h2>
                     </div>
-                    <div style={{fontSize:12,color:'#7a8a82',marginTop:4}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
+                    <div className="vsub" style={{marginTop:4,marginBottom:0}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
                   </div>
                   <WhatsAppQuick name={activeClient.fullName} whatsapp={activeClient.whatsapp}/>
                 </div>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',columnGap:24,rowGap:0}}>
                   {[['Date of birth',fmtDob(activeClient.dob)],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
-                    <div key={l} style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
-                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110}}>{l}</span>
-                      <span style={{fontSize:12,color:'#0a1410',flex:1}}>{l==='WhatsApp' ? formatPhoneNumber(v)||'-' : (v||'-')}</span>
+                    <div key={l} className="frow" style={{padding:'8px 0'}}>
+                      <span className="fk">{l}</span>
+                      <span className="fv">{l==='WhatsApp' ? formatPhoneNumber(v)||'-' : (v||'-')}</span>
                       {v && v!=='-' && <CopyBtn text={v}/>}
                     </div>
                   ))}
                   {/* Referred by - optional partner assignment */}
-                  <div style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
-                    <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110}}>🔗 Referred by</span>
+                  <div className="frow" style={{padding:'8px 0'}}>
+                    <span className="fk">🔗 Referred by</span>
                     <select
                       value={activeClient.referred_by ?? ''}
                       onChange={async e => {
@@ -2619,7 +2479,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                           body: JSON.stringify({ partnerId: val })
                         })
                       }}
-                      style={{flex:1,border:'1px solid #e4ede8',borderRadius:8,padding:'5px 8px',fontSize:12,color:'#0a1410',background:'#f7fbf9',fontFamily:'inherit',cursor:'pointer',outline:'none'}}
+                      style={{flex:1,padding:'5px 8px',fontSize:12,cursor:'pointer'}}
                     >
                       <option value="">- None -</option>
                       {referralPartners.map(p => (
@@ -2640,78 +2500,78 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 const abnDone = activeClient.abnService?.done
                 if (totalReturns===0 && totalSuper===0 && !tfnDone && !abnDone) return null
                 return (
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:12}}>
-                    <div style={{background:'linear-gradient(135deg,#ecfdf5,#d1fae5)',border:'1px solid #a7f3d0',borderRadius:11,padding:'12px 14px'}}>
-                      <div style={{fontSize:9.5,fontWeight:700,color:'#059669',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>💵 Total Refunds</div>
-                      <div style={{fontSize:17,fontWeight:700,color:'#059669',letterSpacing:'-0.5px'}}>{fmtCur(totalTaxRefunds)}</div>
-                      <div style={{fontSize:10,color:'#059669',opacity:0.7,marginTop:2}}>{totalReturns} return{totalReturns!==1?'s':''}</div>
+                  <div className="kpis" style={{gridTemplateColumns:'repeat(4,1fr)'}}>
+                    <div className="kpi">
+                      <div className="kl">💵 Total Refunds</div>
+                      <div className="kv" style={{color:'var(--good)'}}>{fmtCur(totalTaxRefunds)}</div>
+                      <div className="kd">{totalReturns} return{totalReturns!==1?'s':''}</div>
                     </div>
-                    <div style={{background:'linear-gradient(135deg,#f7fbf9,#e8f5f0)',border:'1px solid #d8e4dc',borderRadius:11,padding:'12px 14px'}}>
-                      <div style={{fontSize:9.5,fontWeight:700,color:'#0E5C42',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>💰 Super Total</div>
-                      <div style={{fontSize:17,fontWeight:700,color:'#0E5C42',letterSpacing:'-0.5px'}}>{fmtCur(totalSuperRefunds)}</div>
-                      <div style={{fontSize:10,color:'#0E5C42',opacity:0.7,marginTop:2}}>{totalSuper} withdrawal{totalSuper!==1?'s':''}</div>
+                    <div className="kpi">
+                      <div className="kl">💰 Super Total</div>
+                      <div className="kv" style={{color:'var(--brand1)'}}>{fmtCur(totalSuperRefunds)}</div>
+                      <div className="kd">{totalSuper} withdrawal{totalSuper!==1?'s':''}</div>
                     </div>
-                    <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,padding:'12px 14px'}}>
-                      <div style={{fontSize:9.5,fontWeight:700,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>🆔 TFN</div>
-                      <div style={{fontSize:14,fontWeight:600,color:tfnDone?'#059669':'#aabab2',marginTop:6}}>{tfnDone?'✓ Done':'-'}</div>
+                    <div className="kpi">
+                      <div className="kl">🆔 TFN</div>
+                      <div className="kv" style={{color:tfnDone?'var(--good)':'var(--ink3)'}}>{tfnDone?'✓ Done':'-'}</div>
                     </div>
-                    <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,padding:'12px 14px'}}>
-                      <div style={{fontSize:9.5,fontWeight:700,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>🏢 ABN</div>
-                      <div style={{fontSize:14,fontWeight:600,color:abnDone?'#059669':'#aabab2',marginTop:6}}>{abnDone?'✓ Done':'-'}</div>
+                    <div className="kpi">
+                      <div className="kl">🏢 ABN</div>
+                      <div className="kv" style={{color:abnDone?'var(--good)':'var(--ink3)'}}>{abnDone?'✓ Done':'-'}</div>
                     </div>
                   </div>
                 )
               })()}
 
               {/* 1+2. Unified Year Timeline */}
-              <div style={{...S.card,marginBottom:12}}>
-                <div style={S.secHead}>
+              <div className="card" style={{marginBottom:12}}>
+                <div className="sechead">
                   <span>📅 History by Year</span>
                   <div style={{display:'flex',gap:6}}>
-                    <button style={S.addBtn} onClick={()=>setShowAddTax(v=>!v)}>+ Tax Return</button>
-                    <button style={{...S.addBtn,background:'#0E5C42'}} onClick={()=>setShowAddSuper(v=>!v)}>+ Super</button>
+                    <button className="btn take sm" onClick={()=>setShowAddTax(v=>!v)}>+ Tax Return</button>
+                    <button className="btn take sm" onClick={()=>setShowAddSuper(v=>!v)}>+ Super</button>
                   </div>
                 </div>
                 <div style={{padding:'12px 14px'}}>
                   {showAddTax && (
-                    <div style={{...S.addForm,marginBottom:10}}>
+                    <div className="panel" style={{marginBottom:10,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const}}>
                       <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
-                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Tax year</label>
-                        <select style={{...S.mInput,padding:'7px 10px',cursor:'pointer'}} value={newTaxYear} onChange={e=>setNewTaxYear(e.target.value)}>
+                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Tax year</label>
+                        <select style={{padding:'7px 10px',cursor:'pointer'}} value={newTaxYear} onChange={e=>setNewTaxYear(e.target.value)}>
                           <option value="">Select year…</option>
                           {TAX_YEARS.slice().reverse().map(y=><option key={y} value={y}>{y}</option>)}
                         </select>
                       </div>
                       <div style={{display:'flex',flexDirection:'column',gap:4,minWidth:130}}>
-                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Type</label>
-                        <div style={{display:'flex',border:'1.5px solid #e4ede8',borderRadius:8,overflow:'hidden',background:'#fff'}}>
-                          <button onClick={()=>setNewTaxType('refund')} style={{flex:1,padding:'7px 8px',border:'none',background:newTaxType==='refund'?'#0E5C42':'#fff',color:newTaxType==='refund'?'#fff':'#555',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Refund</button>
-                          <button onClick={()=>setNewTaxType('owed')} style={{flex:1,padding:'7px 8px',border:'none',background:newTaxType==='owed'?'#c0392b':'#fff',color:newTaxType==='owed'?'#fff':'#555',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Tax owed</button>
+                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Type</label>
+                        <div style={{display:'flex',gap:4}}>
+                          <button onClick={()=>setNewTaxType('refund')} className={`btn sm ${newTaxType==='refund'?'take':'quiet'}`} style={{flex:1,justifyContent:'center'}}>Refund</button>
+                          <button onClick={()=>setNewTaxType('owed')} className={`btn sm ${newTaxType==='owed'?'danger':'quiet'}`} style={{flex:1,justifyContent:'center'}}>Tax owed</button>
                         </div>
                       </div>
                       <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:110}}>
-                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Amount (AUD)</label>
-                        <input style={{...S.mInput,padding:'7px 10px'}} type="number" placeholder="e.g. 2500" value={newTaxAmt} onChange={e=>setNewTaxAmt(e.target.value)}/>
+                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Amount (AUD)</label>
+                        <input style={{padding:'7px 10px'}} type="number" placeholder="e.g. 2500" value={newTaxAmt} onChange={e=>setNewTaxAmt(e.target.value)}/>
                       </div>
-                      <button style={{...S.addBtn,padding:'7px 13px'}} onClick={addTaxReturn}>Save</button>
-                      <button style={{padding:'7px 10px',border:'1px solid #e4ede8',borderRadius:8,background:'#fff',color:'#333',fontSize:12,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setShowAddTax(false)}>✕</button>
+                      <button className="btn take sm" onClick={addTaxReturn}>Save</button>
+                      <button className="btn quiet sm" onClick={()=>setShowAddTax(false)}>✕</button>
                     </div>
                   )}
                   {showAddSuper && (
-                    <div style={{...S.addForm,marginBottom:10}}>
+                    <div className="panel" style={{marginBottom:10,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const}}>
                       <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
-                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Tax year</label>
-                        <select style={{...S.mInput,padding:'7px 10px',cursor:'pointer'}} value={newSuperYear} onChange={e=>setNewSuperYear(e.target.value)}>
+                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Tax year</label>
+                        <select style={{padding:'7px 10px',cursor:'pointer'}} value={newSuperYear} onChange={e=>setNewSuperYear(e.target.value)}>
                           <option value="">Select year…</option>
                           {TAX_YEARS.slice().reverse().map(y=><option key={y} value={y}>{y}</option>)}
                         </select>
                       </div>
                       <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:110}}>
-                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Amount received (AUD)</label>
-                        <input style={{...S.mInput,padding:'7px 10px'}} type="number" placeholder="e.g. 4200" value={newSuperAmt} onChange={e=>setNewSuperAmt(e.target.value)}/>
+                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Amount received (AUD)</label>
+                        <input style={{padding:'7px 10px'}} type="number" placeholder="e.g. 4200" value={newSuperAmt} onChange={e=>setNewSuperAmt(e.target.value)}/>
                       </div>
-                      <button style={{...S.addBtn,padding:'7px 13px',background:'#0E5C42'}} onClick={addSuperReturn}>Save</button>
-                      <button style={{padding:'7px 10px',border:'1px solid #e4ede8',borderRadius:8,background:'#fff',color:'#333',fontSize:12,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setShowAddSuper(false)}>✕</button>
+                      <button className="btn take sm" onClick={addSuperReturn}>Save</button>
+                      <button className="btn quiet sm" onClick={()=>setShowAddSuper(false)}>✕</button>
                     </div>
                   )}
                   {(()=>{
@@ -2729,33 +2589,33 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       const hasSuper = !!sup && sup.amount > 0
                       return hasTax || hasSuper
                     })
-                    if (relevantYears.length===0) return <div style={{fontSize:13,color:'#aabab2',textAlign:'center',padding:'16px 0'}}>No history yet.</div>
+                    if (relevantYears.length===0) return <div className="empty" style={{padding:'16px 0'}}>No history yet.</div>
                     return relevantYears.map((year:string)=>{
                       const tax = activeClient.taxReturns.find((r:TaxReturn)=>r.year===year)
                       const sup = activeClient.superReturns.find((r:SuperReturn)=>r.year===year)
                       const hasAny = tax || sup
                       return (
-                        <div key={year} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'10px 0',borderBottom:'1px solid #f0f4f1'}}>
+                        <div key={year} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'10px 0',borderBottom:'1px solid var(--line)'}}>
                           <div style={{minWidth:64,paddingTop:2}}>
-                            <div style={{fontSize:12,fontWeight:700,color:hasAny?'#0a1410':'#aabab2'}}>{year}</div>
+                            <div style={{fontSize:12,fontWeight:700,color:hasAny?'var(--ink)':'var(--ink3)'}}>{year}</div>
                           </div>
                           <div style={{flex:1,display:'flex',flexWrap:'wrap' as const,gap:6}}>
                             {tax ? (
-                              <div style={{display:'flex',alignItems:'center',gap:6,background:tax.type==='owed'?'#fff8f7':'#e8f5f0',border:`1px solid ${tax.type==='owed'?'#fca5a5':'#b0d8c8'}`,borderRadius:8,padding:'4px 10px'}}>
-                                <span style={{fontSize:11,fontWeight:700,color:tax.type==='owed'?'#c0392b':'#0E5C42'}}>💰 Tax {tax.type==='owed'?'owed':'refund'}</span>
-                                <span style={{fontSize:12,fontWeight:600,color:tax.type==='owed'?'#c0392b':'#0a1410'}}>{tax.type==='owed'?'-':''}{fmtCur(tax.refundAmount)}</span>
-                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeTaxReturn(year)}>×</button>
+                              <div style={{display:'flex',alignItems:'center',gap:6,borderRadius:8,padding:'4px 10px',background:tax.type==='owed'?'color-mix(in srgb, var(--crit) 8%, transparent)':'color-mix(in srgb, var(--brand1) 8%, transparent)',border:`1px solid ${tax.type==='owed'?'color-mix(in srgb, var(--crit) 35%, transparent)':'color-mix(in srgb, var(--brand1) 30%, transparent)'}`}}>
+                                <span style={{fontSize:11,fontWeight:700,color:tax.type==='owed'?'var(--crit)':'var(--brand1)'}}>💰 Tax {tax.type==='owed'?'owed':'refund'}</span>
+                                <span style={{fontSize:12,fontWeight:600,color:tax.type==='owed'?'var(--crit)':'var(--ink)'}}>{tax.type==='owed'?'-':''}{fmtCur(tax.refundAmount)}</span>
+                                <button style={{background:'none',border:'none',color:'var(--crit)',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeTaxReturn(year)}>×</button>
                               </div>
                             ) : (
-                              <div style={{display:'flex',alignItems:'center',gap:4,background:'#f7fbf9',border:'1px dashed #d8e4dc',borderRadius:8,padding:'4px 10px'}}>
-                                <span style={{fontSize:11,color:'#aabab2'}}>💰 No tax return</span>
+                              <div style={{display:'flex',alignItems:'center',gap:4,background:'var(--surface2)',border:'1px dashed var(--line2)',borderRadius:8,padding:'4px 10px'}}>
+                                <span style={{fontSize:11,color:'var(--ink3)'}}>💰 No tax return</span>
                               </div>
                             )}
                             {sup && (
-                              <div style={{display:'flex',alignItems:'center',gap:6,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:8,padding:'4px 10px'}}>
-                                <span style={{fontSize:11,fontWeight:700,color:'#0E5C42'}}>🏦 Super</span>
-                                <span style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{fmtCur(sup.amount)}</span>
-                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeSuperReturn(year)}>×</button>
+                              <div style={{display:'flex',alignItems:'center',gap:6,background:'var(--surface2)',border:'1px solid var(--line2)',borderRadius:8,padding:'4px 10px'}}>
+                                <span style={{fontSize:11,fontWeight:700,color:'var(--brand1)'}}>🏦 Super</span>
+                                <span style={{fontSize:12,fontWeight:600,color:'var(--ink)'}}>{fmtCur(sup.amount)}</span>
+                                <button style={{background:'none',border:'none',color:'var(--crit)',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeSuperReturn(year)}>×</button>
                               </div>
                             )}
                           </div>
@@ -2764,17 +2624,17 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     })
                   })()}
                   {(activeClient.taxReturns.length>0||activeClient.superReturns.length>0) && (
-                    <div style={{display:'flex',gap:12,marginTop:10,paddingTop:8,borderTop:'1.5px solid #e8f0eb'}}>
+                    <div style={{display:'flex',gap:12,marginTop:10,paddingTop:8,borderTop:'1px solid var(--line2)'}}>
                       {activeClient.taxReturns.length>0 && (
-                        <div style={{flex:1,background:'#e8f5f0',borderRadius:8,padding:'8px 12px',textAlign:'center' as const}}>
-                          <div style={{fontSize:10,color:'#0E5C42',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'}}>Total tax refunds</div>
-                          <div style={{fontSize:15,fontWeight:700,color:'#0E5C42'}}>{fmtCur(activeClient.taxReturns.reduce((s:number,r:TaxReturn)=>s+(r.type==='owed'?-r.refundAmount:r.refundAmount),0))}</div>
+                        <div className="kpi" style={{flex:1,textAlign:'center' as const}}>
+                          <div className="kl">Total tax refunds</div>
+                          <div className="kv" style={{color:'var(--brand1)'}}>{fmtCur(activeClient.taxReturns.reduce((s:number,r:TaxReturn)=>s+(r.type==='owed'?-r.refundAmount:r.refundAmount),0))}</div>
                         </div>
                       )}
                       {activeClient.superReturns.length>0 && (
-                        <div style={{flex:1,background:'#f7fbf9',borderRadius:8,padding:'8px 12px',textAlign:'center' as const}}>
-                          <div style={{fontSize:10,color:'#0E5C42',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'}}>Total super refunded</div>
-                          <div style={{fontSize:15,fontWeight:700,color:'#0E5C42'}}>{fmtCur(activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0))}</div>
+                        <div className="kpi" style={{flex:1,textAlign:'center' as const}}>
+                          <div className="kl">Total super refunded</div>
+                          <div className="kv" style={{color:'var(--brand1)'}}>{fmtCur(activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0))}</div>
                         </div>
                       )}
                     </div>
@@ -2783,46 +2643,46 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
               </div>
 
               {/* Move to archive */}
-              <div style={{background:'linear-gradient(135deg,#f7fbf9,#e8f5f0)',borderRadius:14,padding:'18px 20px',border:'1px solid #d4eae2'}}>
+              <div className="panel">
                 <div style={{display:'flex',alignItems:'flex-start',gap:14}}>
-                  <div style={{width:36,height:36,borderRadius:10,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,flexShrink:0,border:'1px solid #d4eae2'}}>📦</div>
+                  <div className="avatar" style={{width:36,height:36,borderRadius:10,background:'var(--surface)',border:'1px solid var(--line2)',fontSize:17}}>📦</div>
                   <div style={{flex:1}}>
-                    <div style={{fontSize:13,fontWeight:700,color:'#0E5C42',marginBottom:3}}>Client left Australia?</div>
-                    <div style={{fontSize:12,color:'#587066',marginBottom:12,lineHeight:1.5}}>Move them to Archive when they have completed all services (Tax Returns, Super Refund). You can always restore them later.</div>
-                    <button style={{padding:'8px 16px',border:'none',borderRadius:9,background:'#0E5C42',color:'#fff',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:6}} onClick={()=>setConfirmArchive(activeClient.id)}>
+                    <h3>Client left Australia?</h3>
+                    <div className="psub">Move them to Archive when they have completed all services (Tax Returns, Super Refund). You can always restore them later.</div>
+                    <button className="btn take" onClick={()=>setConfirmArchive(activeClient.id)}>
                       📦 Move to Archive
                     </button>
                   </div>
                 </div>
               </div>
+              </div>{/* end scroll */}
             </div>
           )}
 
         </main>
-      </div>
 
       {/* Add Client Modal */}
       {showAddModal && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setShowAddModal(false)}}>
-          <div style={S.modal}>
-            <div style={S.mTitle}>Add new client task</div>
-            <div style={S.mSub}>Creates a new task in the Tasks tab</div>
+        <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setShowAddModal(false)}}>
+          <div className="modal">
+            <div className="mh"><b>Add new client task</b></div>
+            <div className="msub">Creates a new task in the Tasks tab</div>
             <form onSubmit={addClient}>
               {[['Full name *','text','e.g. John Smith','fullName'],['WhatsApp','text','+61412345678','whatsapp'],['Email','email','john@email.com','email'],['Country','text','e.g. Australia','country'],['Date of birth','date','','dob']].map(([l,t,p,k])=>(
                 <div key={k} style={{marginBottom:10}}>
-                  <label style={{fontSize:12,fontWeight:500,color:'#555',display:'block',marginBottom:4}}>{l}</label>
-                  <input type={t} style={S.mInput} placeholder={p} value={(newClient as Record<string,string>)[k]} onChange={e=>setNewClient({...newClient,[k]:e.target.value})} required={k==='fullName'}/>
+                  <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>{l}</label>
+                  <input type={t} placeholder={p} value={(newClient as Record<string,string>)[k]} onChange={e=>setNewClient({...newClient,[k]:e.target.value})} required={k==='fullName'}/>
                 </div>
               ))}
               <div style={{marginBottom:10}}>
-                <label style={{fontSize:12,fontWeight:500,color:'#555',display:'block',marginBottom:4}}>Tax year</label>
-                <select style={S.mInput} value={newClient.taxYear} onChange={e=>setNewClient({...newClient,taxYear:e.target.value})}>
+                <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Tax year</label>
+                <select value={newClient.taxYear} onChange={e=>setNewClient({...newClient,taxYear:e.target.value})}>
                   {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
                 </select>
               </div>
-              <div style={S.mFooter}>
-                <button type="button" style={S.mCancel} onClick={()=>setShowAddModal(false)}>Cancel</button>
-                <button type="submit" style={S.mSave}>Add client</button>
+              <div className="mfoot">
+                <button type="button" className="btn quiet lg" onClick={()=>setShowAddModal(false)}>Cancel</button>
+                <button type="submit" className="btn take lg">Add client</button>
               </div>
             </form>
           </div>
@@ -2834,43 +2694,41 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
 
       {captureRefund && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget){setCaptureRefund(null)}}}>
-          <div style={{...S.modal,maxWidth:420}}>
+        <div className="overlay" onClick={e=>{if(e.target===e.currentTarget){setCaptureRefund(null)}}}>
+          <div className="modal">
             <div style={{fontSize:21,marginBottom:8,textAlign:'center'}}>💰</div>
-            <div style={{...S.mTitle,textAlign:'center'}}>Record refund before archiving</div>
-            <div style={{fontSize:12,color:'#7a8a82',textAlign:'center',marginBottom:20,lineHeight:1.5}}>
-              Add the amounts to this client's history.<br/>You can skip fields if not applicable.
+            <div className="mh"><b>Record refund before archiving</b></div>
+            <div className="msub" style={{textAlign:'center'}}>
+              Add the amounts to this client&apos;s history.<br/>You can skip fields if not applicable.
             </div>
             {(captureRefund.taskType==='tax-return' || captureRefund.taskType==='super' || true) && (
               <div style={{marginBottom:14}}>
-                <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8}}>
+                <div className="mlabel" style={{margin:'0 0 8px'}}>
                   💰 Tax Return {captureRefund.taxYear && `(${captureRefund.taxYear})`}
                 </div>
                 <div style={{display:'flex',gap:8,marginBottom:6}}>
-                  <button onClick={()=>setCaptureRefundType('refund')} style={{flex:1,padding:'7px',border:`1.5px solid ${captureRefundType==='refund'?'#0E5C42':'#e4ede8'}`,borderRadius:8,background:captureRefundType==='refund'?'#e8f5f0':'#fff',color:captureRefundType==='refund'?'#0E5C42':'#555',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Refund</button>
-                  <button onClick={()=>setCaptureRefundType('owed')} style={{flex:1,padding:'7px',border:`1.5px solid ${captureRefundType==='owed'?'#c0392b':'#e4ede8'}`,borderRadius:8,background:captureRefundType==='owed'?'#fff8f7':'#fff',color:captureRefundType==='owed'?'#c0392b':'#555',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Tax owed</button>
+                  <button onClick={()=>setCaptureRefundType('refund')} className={`btn ${captureRefundType==='refund'?'take':'quiet'}`} style={{flex:1,justifyContent:'center'}}>Refund</button>
+                  <button onClick={()=>setCaptureRefundType('owed')} className={`btn ${captureRefundType==='owed'?'danger':'quiet'}`} style={{flex:1,justifyContent:'center'}}>Tax owed</button>
                 </div>
                 <input
                   type="number" placeholder="Amount in AUD (leave blank if none)"
                   value={captureRefundAmt} onChange={e=>setCaptureRefundAmt(e.target.value)}
-                  style={{width:'100%',padding:'9px 12px',border:'1.5px solid #d8e4dc',borderRadius:9,fontSize:13,outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
                 />
               </div>
             )}
             <div style={{marginBottom:20}}>
-              <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8}}>🏦 Super refund (if applicable)</div>
+              <div className="mlabel" style={{margin:'0 0 8px'}}>🏦 Super refund (if applicable)</div>
               <input
                 type="number" placeholder="Super amount in AUD (leave blank if none)"
                 value={captureSuperAmt} onChange={e=>setCaptureSuperAmt(e.target.value)}
-                style={{width:'100%',padding:'9px 12px',border:'1.5px solid #d8e4dc',borderRadius:9,fontSize:13,outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
               />
             </div>
-            <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginBottom:16}}>
+            <div style={{fontSize:11,color:'var(--ink3)',textAlign:'center',marginBottom:16}}>
               After saving, all sensitive data (TFN, bank, address) will be deleted.
             </div>
-            <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>setCaptureRefund(null)}>Cancel</button>
-              <button style={{...S.mDel,background:'#0E5C42',borderColor:'#0E5C42',color:'#fff'}}
+            <div className="mfoot">
+              <button className="btn quiet lg" onClick={()=>setCaptureRefund(null)}>Cancel</button>
+              <button className="btn take lg"
                 onClick={()=>deleteTask(captureRefund.taskId,{
                   amount: parseFloat(captureRefundAmt)||0,
                   type: captureRefundType,
@@ -2885,14 +2743,14 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
         </div>
       )}
       {confirmDelete && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmDelete(null)}}>
-          <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
+        <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setConfirmDelete(null)}}>
+          <div className="modal" style={{maxWidth:360,textAlign:'center'}}>
             <div style={{fontSize:21,marginBottom:10}}>🗑️</div>
-            <div style={S.mTitle}>Delete &amp; archive?</div>
-            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>All sensitive data (TFN, bank, address, documents) will be deleted.<br/>The client will be moved to the Clients tab with basic info only.</div>
-            <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>setConfirmDelete(null)}>Cancel</button>
-              <button style={S.mDel} onClick={()=>deleteTask(confirmDelete)}>Yes, delete &amp; archive</button>
+            <div className="mh"><b>Delete &amp; archive?</b></div>
+            <div className="msub">All sensitive data (TFN, bank, address, documents) will be deleted.<br/>The client will be moved to the Clients tab with basic info only.</div>
+            <div className="mfoot">
+              <button className="btn quiet lg" onClick={()=>setConfirmDelete(null)}>Cancel</button>
+              <button className="btn danger lg" onClick={()=>deleteTask(confirmDelete)}>Yes, delete &amp; archive</button>
             </div>
           </div>
         </div>
@@ -2903,25 +2761,26 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
       {/* Confirm permanent delete */}
       {confirmPermDelete && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget){setConfirmPermDelete(null);setPermDeleteText('')}}}>
-          <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
+        <div className="overlay" onClick={e=>{if(e.target===e.currentTarget){setConfirmPermDelete(null);setPermDeleteText('')}}}>
+          <div className="modal" style={{maxWidth:360,textAlign:'center'}}>
             <div style={{fontSize:21,marginBottom:10}}>⚠️</div>
-            <div style={S.mTitle}>Delete permanently?</div>
-            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:14}}>
+            <div className="mh"><b>Delete permanently?</b></div>
+            <div className="msub">
               All data will be deleted with <strong>no client card created</strong>. This cannot be undone.
             </div>
-            <div style={{fontSize:12,color:'#7a8a82',marginBottom:6,textAlign:'left'}}>Type <strong>DELETE</strong> to confirm:</div>
+            <div style={{fontSize:12,color:'var(--ink3)',marginBottom:6,textAlign:'left'}}>Type <strong>DELETE</strong> to confirm:</div>
             <input
               autoFocus
               value={permDeleteText}
               onChange={e=>setPermDeleteText(e.target.value)}
               placeholder="DELETE"
-              style={{width:'100%',padding:'9px 12px',border:'1.5px solid #e4ede8',borderRadius:9,fontSize:14,marginBottom:18,fontFamily:'inherit',outline:'none',boxSizing:'border-box'}}
+              style={{marginBottom:18}}
             />
-            <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>{setConfirmPermDelete(null);setPermDeleteText('')}}>Cancel</button>
+            <div className="mfoot">
+              <button className="btn quiet lg" onClick={()=>{setConfirmPermDelete(null);setPermDeleteText('')}}>Cancel</button>
               <button
-                style={{...S.mDel, opacity: permDeleteText.trim().toUpperCase()==='DELETE'?1:0.4, cursor: permDeleteText.trim().toUpperCase()==='DELETE'?'pointer':'not-allowed'}}
+                className="btn danger lg"
+                style={{cursor: permDeleteText.trim().toUpperCase()==='DELETE'?'pointer':'not-allowed'}}
                 disabled={permDeleteText.trim().toUpperCase()!=='DELETE'}
                 onClick={()=>{deleteTaskPermanently(confirmPermDelete);setPermDeleteText('')}}>Yes, delete permanently</button>
             </div>
@@ -2931,14 +2790,14 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
       {/* Confirm archive client */}
       {confirmArchive && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmArchive(null)}}>
-          <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
+        <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setConfirmArchive(null)}}>
+          <div className="modal" style={{maxWidth:360,textAlign:'center'}}>
             <div style={{fontSize:21,marginBottom:10}}>📦</div>
-            <div style={S.mTitle}>Client removed from ATO portal?</div>
-            <div style={{fontSize:13,color:'#7a8a82',marginBottom:18}}>The client will move to Archive. You can restore them anytime.</div>
-            <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>setConfirmArchive(null)}>Cancel</button>
-              <button style={{...S.mDel,background:'#0E5C42',border:'1px solid #0B5240'}} onClick={()=>archiveClient(confirmArchive)}>Yes, archive</button>
+            <div className="mh"><b>Client removed from ATO portal?</b></div>
+            <div className="msub">The client will move to Archive. You can restore them anytime.</div>
+            <div className="mfoot">
+              <button className="btn quiet lg" onClick={()=>setConfirmArchive(null)}>Cancel</button>
+              <button className="btn take lg" onClick={()=>archiveClient(confirmArchive)}>Yes, archive</button>
             </div>
           </div>
         </div>
@@ -2946,14 +2805,14 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
       {/* Confirm delete client */}
       {confirmDeleteClient && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmDeleteClient(null)}}>
-          <div style={{...S.modal,maxWidth:340,textAlign:'center'}}>
+        <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setConfirmDeleteClient(null)}}>
+          <div className="modal" style={{maxWidth:340,textAlign:'center'}}>
             <div style={{fontSize:21,marginBottom:10}}>🗑️</div>
-            <div style={S.mTitle}>Delete client?</div>
-            <div style={{fontSize:13,color:'#7a8a82',marginBottom:18}}>This permanently removes the client and all their history.</div>
-            <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>setConfirmDeleteClient(null)}>Cancel</button>
-              <button style={S.mDel} onClick={()=>deleteClient(confirmDeleteClient)}>Yes, delete</button>
+            <div className="mh"><b>Delete client?</b></div>
+            <div className="msub">This permanently removes the client and all their history.</div>
+            <div className="mfoot">
+              <button className="btn quiet lg" onClick={()=>setConfirmDeleteClient(null)}>Cancel</button>
+              <button className="btn danger lg" onClick={()=>deleteClient(confirmDeleteClient)}>Yes, delete</button>
             </div>
           </div>
         </div>
@@ -2961,16 +2820,16 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
       {/* ── File preview modal ── */}
       {previewUrl && (
-        <div onClick={()=>setPreviewUrl(null)} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.6)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1000,padding:24}}>
-          <div onClick={e=>e.stopPropagation()} style={{background:'#fff',borderRadius:16,overflow:'hidden',width:'50vw',maxWidth:700,maxHeight:'70vh',display:'flex',flexDirection:'column',boxShadow:'0 20px 60px rgba(0,0,0,0.3)'}}>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px',borderBottom:'1px solid #e4ede8',background:'#f7fbf9'}}>
-              <span style={{fontSize:12,fontWeight:600,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'80%'}}>{previewUrl.split('/').pop()?.replace(/^\d+_/,'') ?? 'File'}</span>
+        <div className="overlay" onClick={()=>setPreviewUrl(null)} style={{padding:24}}>
+          <div className="modal wide" onClick={e=>e.stopPropagation()} style={{padding:0,width:'50vw',maxHeight:'70vh',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+            <div className="sechead">
+              <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'80%',textTransform:'none',fontSize:12,letterSpacing:0,color:'var(--ink)'}}>{previewUrl.split('/').pop()?.replace(/^\d+_/,'') ?? 'File'}</span>
               <div style={{display:'flex',gap:8,flexShrink:0}}>
-                <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'3px 10px',textDecoration:'none',fontWeight:600}}>Open ↗</a>
-                <button onClick={()=>setPreviewUrl(null)} style={{background:'none',border:'none',fontSize:17,cursor:'pointer',color:'#7a8a82',padding:'0 4px',lineHeight:1}}>✕</button>
+                <a href={previewUrl} target="_blank" rel="noopener noreferrer" className="btn quiet sm" style={{textDecoration:'none'}}>Open ↗</a>
+                <button onClick={()=>setPreviewUrl(null)} className="btn ghost sm">✕</button>
               </div>
             </div>
-            <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f7f8fa',minHeight:200}}>
+            <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'var(--bg)',minHeight:200}}>
               {(()=>{
                 // Detect file type from the original Supabase URL (before the proxy wrapper)
                 const origUrl = previewUrl.startsWith('/api/crm/file?url=')
@@ -2979,14 +2838,14 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 const isPdf = origUrl.toLowerCase().includes('.pdf')
 
                 if (previewLoading) {
-                  return <div style={{padding:32,textAlign:'center',color:'#7a8a82',fontSize:13}}>Loading preview…</div>
+                  return <div className="empty">Loading preview…</div>
                 }
                 if (previewError || !previewBlobUrl) {
                   return (
-                    <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
+                    <div className="empty">
                       <div style={{fontSize:21,marginBottom:12}}>⚠️</div>
-                      <div style={{fontSize:13,marginBottom:10}}>Couldn&apos;t load this file.</div>
-                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
+                      <div className="eh">Couldn&apos;t load this file.</div>
+                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'var(--brand1)',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
                     </div>
                   )
                 }
@@ -3000,6 +2859,6 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }

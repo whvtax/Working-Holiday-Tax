@@ -1,5 +1,9 @@
 'use client'
 import { useEffect } from 'react'
+// One design language for the whole admin. Imported here, at the /crm root, so
+// every screen under it — Will included — reads the same tokens and the same
+// --crm-fit scale knob. See the file's own header for what lives where.
+import './crm-design.css'
 
 // Auto-logout after 30 minutes of inactivity (no mouse/keyboard/touch).
 const IDLE_MS = 30 * 60 * 1000

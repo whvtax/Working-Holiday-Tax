@@ -1,6 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { CrmLogoMark, NavIcons } from '@/components/crm/Shell'
+
+// The idle-logout redirect in the CRM layout lands here as /crm?timeout=1.
+// It is not an error the user made, so it is toned as a warning, not a failure.
+const TIMEOUT_MSG = 'You were logged out after 30 minutes of inactivity. Please log in again.'
 
 export default function CrmLoginPage() {
   const [step, setStep]         = useState<'password'|'otp'>('password')
@@ -11,7 +16,7 @@ export default function CrmLoginPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('timeout') === '1') {
-      setError('You were logged out after 30 minutes of inactivity. Please log in again.')
+      setError(TIMEOUT_MSG)
     }
   }, [])
 
@@ -61,86 +66,104 @@ export default function CrmLoginPage() {
     }
   }
 
+  // Presentation only — the state itself is untouched.
+  const tone = error === TIMEOUT_MSG ? 'var(--warn)' : 'var(--crit)'
+
   return (
-    <>
-      <style>{`
-        *{box-sizing:border-box;margin:0;padding:0;}
-        body{background:#0E5C42;font-family:'DM Sans',system-ui,sans-serif;}
-        .wrap{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px;}
-        .card{background:#fff;border-radius:24px;padding:36px 32px;width:100%;max-width:360px;text-align:center;}
-        .icon{width:56px;height:56px;border-radius:16px;background:#e8f5f0;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
-        .title{font-size:22px;font-weight:700;color:#0a1410;margin-bottom:6px;letter-spacing:-0.3px;}
-        .subtitle{font-size:13px;color:#7a8a82;line-height:1.6;margin-bottom:24px;}
-        .email-hint{font-size:13px;font-weight:600;color:#0E5C42;}
-        .inp{display:block;width:100%;padding:13px 14px;font-size:15px;font-family:inherit;color:#0a1410;background:#f7fbf9;border:1.5px solid #e4ede8;border-radius:12px;outline:none;text-align:center;letter-spacing:0.05em;transition:border-color .15s;margin-bottom:16px;}
-        .inp:focus{border-color:#0E5C42;background:#fff;}
-        .inp-otp{font-size:28px;font-weight:700;letter-spacing:0.25em;}
-        .btn{display:flex;align-items:center;justify-content:center;width:100%;height:50px;background:#0E5C42;color:#fff;font-size:15px;font-weight:600;font-family:inherit;border:none;border-radius:12px;cursor:pointer;transition:opacity .15s;}
-        .btn:disabled{opacity:0.6;cursor:not-allowed;}
-        .err{background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:10px 14px;font-size:13px;color:#c0392b;margin-top:14px;}
-        .back{background:none;border:none;font-size:12px;color:#7a8a82;cursor:pointer;margin-top:14px;font-family:inherit;}
-        .back:hover{color:#0E5C42;}
-      `}</style>
-      <div className="wrap">
-        <div className="card">
-          <div className="icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <rect x="5" y="11" width="14" height="11" rx="2.5" stroke="#0E5C42" strokeWidth="1.8"/>
-              <path d="M8 11V7.5a4 4 0 018 0V11" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/>
-            </svg>
-          </div>
-
-          {step === 'password' ? (
-            <>
-              <div className="title">WHV Tax CRM</div>
-              <div className="subtitle">Enter your password to continue</div>
-              <form onSubmit={handlePassword}>
-                <input
-                  className="inp"
-                  type="password"
-                  placeholder="••••••••••"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  autoFocus
-                  required
-                />
-                <button className="btn" type="submit" disabled={loading || !password}>
-                  {loading ? 'Checking…' : 'Continue →'}
-                </button>
-              </form>
-            </>
-          ) : (
-            <>
-              <div className="title">Check your email</div>
-              <div className="subtitle">
-                We sent an 8-digit code to<br/>
-                <span className="email-hint">info@workingholidaytax.com.au</span>
-              </div>
-              <form onSubmit={handleOtp}>
-                <input
-                  className="inp inp-otp"
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="00000000"
-                  maxLength={8}
-                  value={otp}
-                  onChange={e => setOtp(e.target.value.replace(/\D/g, ''))}
-                  autoFocus
-                  required
-                />
-                <button className="btn" type="submit" disabled={loading || otp.length < 8}>
-                  {loading ? 'Verifying…' : 'Sign in →'}
-                </button>
-              </form>
-              <button className="back" onClick={() => { setStep('password'); setError(''); setOtp('') }}>
-                ← Back
-              </button>
-            </>
-          )}
-
-          {error && <div className="err">{error}</div>}
+    // The .crm-scope default is the flex row that carries the side rail; this
+    // screen has no rail, so the one screen that is a single centred card
+    // overrides the layout here rather than in the shared stylesheet.
+    <div className="crm-scope" style={{ display: 'grid', placeItems: 'center', padding: 20 }}>
+      <div className="modal" style={{ maxWidth: 340, textAlign: 'center' }}>
+        <div className="slogo" style={{ justifyContent: 'center', padding: '2px 0 14px' }}>
+          <CrmLogoMark />
         </div>
+
+        {step === 'password' ? (
+          <>
+            <h1 className="vt">WHV Tax CRM</h1>
+            <div className="vsub">Enter your password to continue</div>
+            <form onSubmit={handlePassword}>
+              {/* type="password" is outside the shared input selector list, so
+                  it asks for .inp by name. */}
+              <input
+                className="inp"
+                type="password"
+                placeholder="••••••••••"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                autoFocus
+                required
+                style={{ textAlign: 'center', marginBottom: 12 }}
+              />
+              <button
+                className="btn take lg"
+                type="submit"
+                disabled={loading || !password}
+                style={{ width: '100%', justifyContent: 'center' }}
+              >
+                {loading ? 'Checking…' : 'Continue →'}
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <h1 className="vt">Check your email</h1>
+            <div className="vsub">
+              We sent an 8-digit code to<br/>
+              <span style={{ fontWeight: 600, color: 'var(--brand1)' }}>info@workingholidaytax.com.au</span>
+            </div>
+            <form onSubmit={handleOtp}>
+              <input
+                className="inp code"
+                type="text"
+                inputMode="numeric"
+                placeholder="00000000"
+                maxLength={8}
+                value={otp}
+                onChange={e => setOtp(e.target.value.replace(/\D/g, ''))}
+                autoFocus
+                required
+                style={{ marginBottom: 12 }}
+              />
+              <button
+                className="btn take lg"
+                type="submit"
+                disabled={loading || otp.length < 8}
+                style={{ width: '100%', justifyContent: 'center' }}
+              >
+                {loading ? 'Verifying…' : 'Sign in →'}
+              </button>
+            </form>
+            <button
+              type="button"
+              className="btn quiet sm"
+              onClick={() => { setStep('password'); setError(''); setOtp('') }}
+              style={{ marginTop: 12 }}
+            >
+              <span className="ic">{NavIcons.back}</span>Back
+            </button>
+          </>
+        )}
+
+        {error && (
+          <div
+            style={{
+              marginTop: 13,
+              padding: '8px 11px',
+              borderRadius: 9,
+              fontSize: 11.5,
+              lineHeight: 1.5,
+              textAlign: 'left',
+              color: tone,
+              background: `color-mix(in srgb, ${tone} 9%, transparent)`,
+              border: `1px solid color-mix(in srgb, ${tone} 28%, transparent)`,
+            }}
+          >
+            {error}
+          </div>
+        )}
       </div>
-    </>
+    </div>
   )
 }
