@@ -101,7 +101,7 @@ export default function ClientPageClient({ id }: { id: string }) {
       <main>
         <div className="phead">
           <div className="hrow">
-            <button className="btn ghost" onClick={()=>router.push('/crm/dashboard')}>
+            <button className="btn quiet" onClick={()=>router.push('/crm/dashboard')}>
               <span className="ic">{NavIcons.back}</span>Back
             </button>
             <div className="ticon" style={{width:34,height:34,fontSize:12,fontWeight:700}}>{initials}</div>

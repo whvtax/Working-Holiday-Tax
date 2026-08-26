@@ -127,3 +127,161 @@ Learning) and swaps the whole rail when you enter it. The rail now *looks*
 identical, but its contents still change. Merging both sets into one rail, or
 nesting Will's sections under a "Will" group, is a separate decision about
 navigation rather than about styling.
+
+---
+
+# Follow-up pass — 26 August 2026
+
+## Typography, verified rather than asserted
+
+The first pass claimed the two halves matched. That was measured properly this
+time: DM Sans installed locally, both halves rendered in Chromium, and the
+**computed** styles read off every element.
+
+Result: one font stack across all 92 CRM elements and all 87 Will elements, and
+0 differences on every comparable component (rail row active and inactive, logo,
+page title, KPI value and label). Two real mismatches turned up and were fixed:
+
+1. **Headings were running on another font's axes.** `globals.css` carries
+   `:where(h1,h2,h3,h4){font-variation-settings:'SOFT' 40,'WONK' 0,'opsz' 36}`
+   for the marketing site, where headings are Fraunces. A declaration on an
+   element beats an inherited one regardless of specificity, so every admin
+   heading inherited it. DM Sans has no SOFT or WONK — but it does have `opsz`,
+   and 36 is the *display* optical size, rendering a 14.5px heading with the
+   strokes and spacing of something four times the size. Reset for both scopes.
+
+2. **KPI tile labels were uppercased in the CRM and sentence case in Will.**
+   "READY TO GO" beside Will's "Worth a Nudge" was the last place the two halves
+   still read as different products. The `text-transform` is gone; labels render
+   as written.
+
+## The conversation now reads in WhatsApp's own typeface
+
+A deliberate line was drawn: anything that **is a message** — the bubbles, the
+composer, a draft awaiting approval, a customer's line quoted onto a task card,
+the chat-list previews — is set in WhatsApp's stack. Everything else stays in
+the admin's DM Sans, because it is Jo's software, not the conversation.
+
+`--wa-font` is
+`"Segoe UI","Helvetica Neue",Helvetica,"Lucida Grande",Arial,Ubuntu,Cantarell,"Fira Sans",sans-serif`
+— WhatsApp Web's own system stack, which resolves to Segoe UI on Windows,
+Helvetica Neue on macOS and Ubuntu/Cantarell/Fira Sans on Linux. Deliberately
+**not** prefixed with `-apple-system`: that would give SF Pro on a Mac and
+diverge from WhatsApp, which lands on Helvetica Neue there.
+
+"WhatsApp Sans" is a real font, but it is Meta's proprietary brand face, used on
+whatsapp.com and in the apps' chrome. It is not licensed for third-party use and
+it is **not** what message text is set in on WhatsApp Web. The stack above is
+both the accurate match and the only lawful one.
+
+## Interface fixes
+
+| Fix | What was wrong |
+|---|---|
+| Search icon | The colour emoji 🔍 rendered as a blue-and-pink magnifier. Replaced with WhatsApp's thin grey line-art glyph as inline SVG on `currentColor`, and the field is now a fully rounded pill on quiet grey with no outline until focus — WhatsApp's own treatment. |
+| Stage dropdown underline | `.cstate-btn` is `inline-flex`, so "Review" and the ▾ were separate flex items. `text-decoration:underline` on the container made each draw its **own** underline at its own font-size and baseline — a 12px line under the word and a 16px line under the caret, at different heights. That was the "two different lines". The underline now goes on the label alone; the caret is smaller and never underlined. |
+| Back buttons | `btn ghost` (grey fill) → `btn quiet` (white with a hairline). |
+| Task detail scrolling | The finishing actions sat at the end of a long scroll. `.frow` tightened from 9px to 7px, and the action row is now a pinned `.pfoot` — the mirror of `.phead` — so Download PDF / Mark as done / Delete are on screen no matter how much detail a record carries. |
+| Task row highlight | A permanent green ring marked the row you last opened, competing with the row the mouse was on and never going away. It is now a soft tint (`.task.seen`), and the **border follows the pointer** — hover only, and only on real pointers, so a tap does not leave a row framed. |
+| Tile order | Tasks tiles swapped to Ready to go / Done / Clients, so the two task counts sit together and Clients — which jumps to another view — is on the end. |
+| Estimate button | 💰 removed. |
+
+## Verified
+
+`npx tsc --noEmit` clean · `npx jest` 498/498 · all four screens render with no
+new console errors · `package.json`, `package-lock.json`, `layout.tsx` and
+`.data/store.json` byte-identical to the originals.
+
+---
+
+# Typography pass — the admin gets its own font
+
+Scope: **the internal systems only** — the CRM and Will's interface. The public
+site is untouched, and Will's conversation stays in WhatsApp's typeface.
+
+## 1. The secondary grey was below the accessibility floor
+
+`--ink3` was `#8f97a3`: **2.95:1** on white, **2.77:1** on the app ground, against
+the 4.5:1 WCAG AA asks of normal text. That token is not decoration — it carries
+every field label, KPI caption, date, message preview, table sub-column, mono
+value and empty state in the admin, at 9.5–11px. It is precisely the text the
+eye works hardest on.
+
+Now `#6a7381` — same hue (216°), same saturation, darker:
+
+| token | on white | AA 4.5 |
+|---|---|---|
+| `--ink` `#1f2328` | 15.80 | pass |
+| `--ink2` `#5c6572` | 5.90 | pass |
+| `--ink3` `#6a7381` *(was 2.95)* | **4.79** | **pass** |
+
+Three distinct steps survive, so secondary text still reads as secondary.
+One token, shared — it fixed the CRM and Will at once.
+
+## 2. The admin is set in Inter; the site keeps DM Sans
+
+Not a matter of taste. Two things were measured off the font binaries with
+fontTools before deciding:
+
+| | DM Sans | Inter |
+|---|---|---|
+| x-height | 0.504 em | **0.546 em** (+8%) |
+| x/cap ratio | 0.720 | 0.750 |
+| tabular figures (`tnum`) | **absent** | **present** |
+
+**DM Sans has no tabular-figures feature at all.** The admin's CSS asks for
+`font-variant-numeric: tabular-nums` on every KPI value and numeric table
+column — and on DM Sans that request did nothing. Measured in the browser, the
+strings "111" and "000" rendered **31.5px apart** at 40px. Columns of TFNs,
+phone numbers, refund amounts and counts never actually lined up.
+
+With Inter, the same measurement is **0.00px**. The columns align for the first
+time. In a product that is almost entirely numbers, that was the argument.
+
+An earlier claim in conversation — that Inter disambiguates `1`/`l`/`I` and
+`0`/`O` by default — was **wrong and was withdrawn**. Those are opt-in character
+variants (`cv05`, `zero`) and are not in this build. Inter's default `l` is a
+plain stem, exactly like DM Sans'.
+
+### How it is wired
+
+- `Inter` is loaded in the root layout as `--font-ui`, with **`preload: false`**
+  and **no `weight` array**.
+  - `preload:false` because only `.crm-scope` and `.will-scope` reference it;
+    a browser fetches a webfont only when something renders in it, so a visitor
+    to the marketing site never downloads Inter.
+  - no `weight` array so the **variable** font loads. The stylesheet asks for
+    450 and 650 in thirteen places; static instances exist only at the hundreds,
+    so those weights would have snapped or been synthesised and the type
+    hierarchy would have flattened by a step.
+- `--ui-font` is a token in `crm-design.css`, with the fallback **inside**
+  `var()` so an undefined variable degrades to Inter rather than invalidating
+  the declaration and silently inheriting the site's font.
+- `--wa-font` is untouched: the chat bubbles, composer, drafts, quoted customer
+  text and chat-list previews stay on WhatsApp's stack.
+
+### Verified in the browser
+
+| | result |
+|---|---|
+| Admin title / rail / KPI | Inter, weight 650 honoured (variable font live) |
+| `--ink3` computed | `rgb(106,115,129)` = `#6a7381` |
+| Tabular digits | proportional 31.5px apart → tabular **0.00px** |
+| Will's rail | Inter |
+| Will's chat preview / composer / name | **Segoe UI** — WhatsApp stack held |
+| Public site body / h1 | **DM Sans / Fraunces** — untouched |
+
+`npx tsc --noEmit` clean · `npx jest` 498/498.
+
+## On copying Söhne or Styrene
+
+ChatGPT is set in **Söhne** (Klim Type Foundry) and Claude in **Styrene** and
+**Tiempos** — all commercially licensed, all paid for by the companies using
+them. The files are downloadable from any page that serves them, but a font file
+is copyrighted software and a web licence is per-domain and per-traffic-tier.
+Serving one unlicensed from workingholidaytax.com.au would be plain
+infringement, trivially detectable, and a poor look for a firm whose business is
+compliance. Buying a licence is a legitimate option and cheap at this traffic
+level. Inter was chosen instead because for a dense numeric admin it is not a
+compromise — it is the better tool, and Söhne's strength is brand presence on a
+marketing site, which is out of scope here.

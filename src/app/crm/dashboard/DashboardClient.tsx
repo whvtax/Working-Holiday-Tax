@@ -1538,8 +1538,8 @@ export default function DashboardClient() {
                   <div className="kpis" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
                     {[
                       {key:'ready',label:'Ready to go',value:readyToGoCount,onClick:()=>{ setView('tasks'); setTaskView('list'); setTaskTileFilter(f=>f==='ready'?'all':'ready') }},
-                      {key:'clients',label:'Clients',value:totalClients,onClick:()=>{ setView('clients') }},
                       {key:'done',label:'Done',value:doneCount,onClick:()=>{ setView('tasks'); setTaskView('list'); setTaskTileFilter(f=>f==='done'?'all':'done') }},
+                      {key:'clients',label:'Clients',value:totalClients,onClick:()=>{ setView('clients') }},
                     ].map(stat=>{
                       const active = (stat.key==='ready'&&taskTileFilter==='ready')||(stat.key==='done'&&taskTileFilter==='done')
                       return (
@@ -1648,8 +1648,13 @@ export default function DashboardClient() {
                   const isReturning = (t.notes||'').includes('🔄 Returning client')
                   const inProgress = isTaskInProgress(t.notes)
                   const wasLastViewed = t.id === lastViewedTaskId
+                  // `wasLastViewed` no longer draws a border. A permanent ring
+                  // around the row you happened to open last competes with the
+                  // row the mouse is actually on, and it never goes away. It
+                  // shows as a soft tint instead, and the BORDER follows the
+                  // pointer — see .task:hover in crm-design.css.
                   return (
-                  <div key={t.id} className="task" style={{alignItems:'center',cursor:'pointer', ...(inProgress?{background:'var(--surface2)'}:{}), ...(wasLastViewed?{outline:'2px solid color-mix(in srgb, var(--good) 45%, transparent)',outlineOffset:-2}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
+                  <div key={t.id} className={`task${wasLastViewed?' seen':''}`} style={{alignItems:'center',cursor:'pointer', ...(inProgress?{background:'var(--surface2)'}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
                     <button
                       onClick={e=>{e.stopPropagation();toggleInProgress(t)}}
                       title={inProgress ? 'Remove "In Progress" mark' : 'Mark "In Progress" - moves to the bottom of the queue'}
@@ -1802,7 +1807,7 @@ export default function DashboardClient() {
           {view==='tasks' && taskView==='detail' && activeTask && (
             <div className="view" style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
               <div className="phead">
-              <button className="btn ghost sm" onClick={()=>setTaskView('list')}>
+              <button className="btn quiet sm" onClick={()=>setTaskView('list')}>
                 {NavIcons.back}
                 Back to Tasks
               </button>
@@ -2049,8 +2054,14 @@ export default function DashboardClient() {
                   captured on the submission itself and the notes were unused.
                   Nothing was dropped from the data, only from this view. */}
 
-              {/* Actions */}
-              <div style={{display:'flex',gap:8,marginBottom:8}}>
+              </>) /* end !activeTask.done */}
+              </div>{/* end scrollable body */}
+
+              {/* Actions — see .pfoot: this row is pinned to the bottom of the
+                  column rather than sitting at the end of the scroll, so
+                  finishing a task never costs a scroll first. */}
+              {!activeTask.done && (
+              <div className="pfoot">
                 <button className="btn quiet lg" style={{flex:1,justifyContent:'center'}} onClick={()=>downloadTaskPdf(activeTask)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                   Download PDF
@@ -2063,8 +2074,7 @@ export default function DashboardClient() {
                   🗑️ Delete lead
                 </button>
               </div>
-              </>) /* end !activeTask.done */}
-              </div>{/* end scrollable body */}
+              )}
             </div>
           )}
 
@@ -2437,7 +2447,7 @@ export default function DashboardClient() {
           {view==='clients' && activeClient && (
             <div className="view" style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
               <div className="phead">
-              <button className="btn ghost sm" onClick={()=>setActiveClient(null)}>
+              <button className="btn quiet sm" onClick={()=>setActiveClient(null)}>
                 {NavIcons.back}
                 Back to Clients
               </button>

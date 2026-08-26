@@ -18,7 +18,7 @@
 }
 .will-scope *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 .will-scope{
-  font-family:var(--font-sans,"DM Sans"),"DM Sans",-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-family:var(--ui-font);
   font-optical-sizing:auto;
   -webkit-font-smoothing:antialiased;
   background:var(--bg);
@@ -171,8 +171,13 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .chatlist-head{flex:none}
 .will-scope .chatlist-items{flex:1;min-height:0;overflow-y:auto}
 .will-scope .search{background:var(--surface);padding:10px;border-bottom:1px solid var(--line);position:relative}
-.will-scope .search-ic{position:absolute;left:22px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.55;pointer-events:none}
-.will-scope .search input{width:100%;background:var(--surface2);border:1px solid var(--line2);color:var(--ink);border-radius:9px;padding:8px 12px 8px 34px;font-size:13px;outline:none}
+/* line-art glyph, not an emoji: `line-height:0` so the svg does not carry a
+ * text baseline that pushes it off centre, and currentColor so it takes the
+ * muted ink below rather than an emoji's own colours. */
+.will-scope .search-ic{position:absolute;left:23px;top:50%;transform:translateY(-50%);line-height:0;color:var(--ink3);pointer-events:none}
+/* WhatsApp's search field is a fully rounded pill on a quiet grey ground with
+ * no outline until you focus it — not a 9px-radius bordered input. */
+.will-scope .search input{width:100%;background:var(--surface2);border:1px solid transparent;color:var(--ink);border-radius:999px;padding:8px 14px 8px 40px;font-size:13px;outline:none}
 .will-scope .search input:focus{border-color:var(--brand1)}
 /* Filter chips under the search. Sticky beneath it, and scroll SIDEWAYS when
    the stage chips do not all fit, with a visible thin scrollbar. */
@@ -200,8 +205,15 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
  * specifically; the list-row and task-card badges keep the pill treatment,
  * where a scannable label matters more than looking like a status line. */
 .will-scope .chtitle .cstate-btn{background:none;padding:0;border-radius:0;font-size:12px;font-weight:500;letter-spacing:normal;text-transform:none}
-.will-scope .chtitle .cstate-btn:hover{background:none;text-decoration:underline}
-.will-scope .cstate-caret{font-size:16px;opacity:.8}
+/* The underline goes on the LABEL only, never on the button.
+ * .cstate-btn is display:inline-flex, so "Review" and the ▾ are two separate
+ * flex items. text-decoration on the container makes each item draw its OWN
+ * underline, at its own font-size and baseline — a 12px line under the word
+ * and a 16px line under the caret, sitting at different heights. That is what
+ * read as two mismatched lines. One line, under the word, is the fix. */
+.will-scope .chtitle .cstate-btn:hover{background:none;text-decoration:none}
+.will-scope .chtitle .cstate-btn:hover .cstate-label{text-decoration:underline;text-underline-offset:2px}
+.will-scope .cstate-caret{font-size:11px;line-height:1;opacity:.7;text-decoration:none;transform:translateY(1px)}
 .will-scope .stagemenu-backdrop{position:fixed;inset:0;z-index:40}
 .will-scope .stagemenu{position:absolute;top:calc(100% + 4px);left:0;z-index:41;min-width:190px;max-height:320px;overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 28px rgba(20,22,30,.18);padding:5px}
 .will-scope .stagemenu-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:none;background:none;font-family:inherit;font-size:12px;color:var(--ink);padding:7px 9px;border-radius:7px;cursor:pointer}
@@ -544,3 +556,40 @@ aside.side{
 
 /* Quick-send as compact numbered buttons (hover shows the full label). */
 .will-scope .chipbtn.qsnum{min-width:26px;height:26px;padding:0 6px;border-radius:8px;font-weight:700;font-size:12.5px;text-align:center;flex:none}
+
+/* ── The conversation is set in WhatsApp's typeface, the app around it is not ──
+ *
+ * A deliberate line: anything that IS a message — the bubbles, what Jo is
+ * typing, a draft awaiting approval, a customer's line quoted onto a task
+ * card, the previews in the chat list — reads in the same face it reads in on
+ * the customer's phone. Everything else (rail, tiles, tasks, tables) stays in
+ * the admin's DM Sans, because it is Jo's software, not the conversation.
+ *
+ * --wa-font is defined in ../crm-design.css. See the comment there for why the
+ * stack starts with Segoe UI / Helvetica Neue and why it is a system stack
+ * rather than a webfont.
+ *
+ * line-height 1.4 is what WhatsApp gives a message; a bubble is read in one
+ * pass, so it wants tighter leading than the 1.5 the admin uses for its lists. */
+.will-scope .msg,
+.will-scope .msg .mt,
+.will-scope .attach-cap,
+.will-scope .composer input,
+.will-scope .composer textarea,
+.will-scope .approval .atext,
+.will-scope .obbody,
+.will-scope .tctx,
+.will-scope .cn b,
+.will-scope .cm,
+.will-scope .chtitle .chnum,
+.will-scope .daysep,
+.will-scope .sysline,
+.will-scope .wapreview .msg{
+  font-family:var(--wa-font);
+}
+.will-scope .msg,
+.will-scope .approval .atext,
+.will-scope .obbody,
+.will-scope .composer textarea{
+  line-height:1.4;
+}

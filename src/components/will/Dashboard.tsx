@@ -675,7 +675,20 @@ export default function Dashboard() {
             <div className="chatwrap">
               <div className="chatlist">
                 <div className="chatlist-head">
-                  <div className="search"><span className="search-ic">🔍</span><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
+                  {/* WhatsApp's own search glyph: thin grey line-art, not the
+                      colour emoji. The emoji rendered as a blue-and-pink
+                      magnifier, which is the one thing in this panel that did
+                      not look like WhatsApp. currentColor so it inherits the
+                      muted ink the rest of the field uses. */}
+                  <div className="search">
+                    <span className="search-ic" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6"/>
+                        <path d="M16.2 16.2 L21 21" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+                      </svg>
+                    </span>
+                    <input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} />
+                  </div>
                   {/* Filter chips (owner's choice): All, then the three stage
                       stops that matter for a quick filter — Paid, Review,
                       Signature. */}
@@ -732,7 +745,10 @@ export default function Dashboard() {
                               onClick={() => setStageMenuOpen((o) => !o)}
                               title="Move stage"
                             >
-                              {stageLabelOf(chatSel.state)} <span className="cstate-caret">▾</span>
+                              {/* The label is its own span so the hover underline
+                                  lands on the word alone — see .cstate-label. */}
+                              <span className="cstate-label">{stageLabelOf(chatSel.state)}</span>
+                              <span className="cstate-caret">▾</span>
                             </button>
                             {stageMenuOpen && (
                               <>
@@ -837,7 +853,7 @@ export default function Dashboard() {
                           style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
                           onClick={() => { setEstimateFor(chatSel); setEstimateAmt(''); setEstimateLink(''); }}
                         >
-                          💰 Send Estimate + Invoice
+                          Send Estimate + Invoice
                         </button>
                       )}
                       {/* Estimate-stage action: once the return has actually been

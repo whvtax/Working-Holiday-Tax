@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, DM_Sans } from 'next/font/google'
+import { Fraunces, DM_Sans, Inter } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
@@ -32,6 +32,39 @@ const dmSans = DM_Sans({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-sans',
   display: 'swap',
+})
+
+// The admin's interface font — the CRM and Will only. It is NOT the site's font:
+// the public pages keep DM Sans, which is the brand.
+//
+// Why a different face for the admin: DM Sans is a geometric sans, drawn for
+// headings and marketing copy. The admin is a dense reference tool read at
+// 12.5px for hours, and it is almost entirely numbers — TFNs, ABNs, phone
+// numbers, refund amounts, counts. Two measured reasons Inter suits it better:
+//
+//   1. DM Sans has NO tabular-figures feature. The admin's CSS asks for
+//      `font-variant-numeric: tabular-nums` on every KPI value and numeric
+//      table column, and on DM Sans that request does nothing — the digits are
+//      proportional, so columns of amounts never actually line up. Inter has
+//      real `tnum`, so those columns align for the first time.
+//   2. Inter's x-height is 0.546em against DM Sans' 0.504em — 8% more
+//      lowercase at the same size, which is where small-size legibility lives.
+//
+// preload:false on purpose: this is declared in the root layout so the token is
+// available everywhere, but only `.crm-scope` and `.will-scope` ever reference
+// it. Browsers fetch a webfont only when something actually renders in it, so a
+// visitor to the public site never downloads Inter. Preloading would defeat
+// that and cost every marketing page a font it will not use.
+// No `weight` array on purpose: omitting it loads Inter's VARIABLE font, and
+// the admin's stylesheet asks for 450 and 650 in thirteen places (nav rows,
+// tile values, section headings, chat names). Static instances only exist at
+// the hundreds, so those weights would snap to 400/600/700 or be synthesised,
+// and the whole type hierarchy would flatten by a step.
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-ui',
+  display: 'swap',
+  preload: false,
 })
 
 export const metadata: Metadata = {
@@ -302,7 +335,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   //               relying on 'strict-dynamic'. Verify in a preview deployment
   //               before enabling it in production.
   return (
-    <html lang="en-AU" className={`${fraunces.variable} ${dmSans.variable}`}>
+    <html lang="en-AU" className={`${fraunces.variable} ${dmSans.variable} ${inter.variable}`}>
       <head>
         {/* Fonts are self-hosted by next/font/google at build time, so no
             runtime connection to Google Font origins is needed. */}
