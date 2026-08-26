@@ -31,6 +31,7 @@ export type HandoffReason =
   | 'returning_customer' // a previous / pre-existing chat wrote in
   | 'budget'             // the daily AI limit was reached
   | 'send_failed'        // WhatsApp rejected the send
+  | 'many_questions'     // more than 3 messages before payment, needs a person
   | 'generic';
 
 /** The last thing to fall back on: warm, true, commits to nothing, and is safe
@@ -45,6 +46,7 @@ const BY_REASON: Record<HandoffReason, string> = {
   returning_customer: `Hey, good to hear from you again 😊 What can I help you with?`,
   budget: HOLDING,
   send_failed: HOLDING,
+  many_questions: `Thanks for all the questions 😊 Let me jump in personally and go through everything with you properly.`,
   generic: HOLDING,
 };
 

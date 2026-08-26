@@ -173,7 +173,7 @@ export default function PartnerDetailClient({ partnerId }: { partnerId: string }
             <>
               <div style={{...S.card,padding:'20px 22px',marginBottom:16,display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap' as const,gap:14}}>
                 <div>
-                  <h1 style={{fontSize:22,fontWeight:700,color:'#0a1410',marginBottom:4,letterSpacing:'-0.5px'}}>{partner.name}</h1>
+                  <h1 style={{fontSize:21,fontWeight:700,color:'#0a1410',marginBottom:4,letterSpacing:'-0.5px'}}>{partner.name}</h1>
                   <div style={{fontSize:12,color:'#7a8a82',display:'flex',gap:14,flexWrap:'wrap' as const}}>
                     {partner.email && <span>✉️ {partner.email}</span>}
                     <span>Code: <span style={{fontFamily:'monospace',color:'#0a1410'}}>{partner.code}</span></span>
@@ -228,7 +228,7 @@ export default function PartnerDetailClient({ partnerId }: { partnerId: string }
                       <div style={{fontSize:11,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
                       <div style={{fontSize:14,opacity:0.65}}>{stat.icon}</div>
                     </div>
-                    <div style={{fontSize:24,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
+                    <div style={{fontSize:21,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
                   </div>
                 ))}
               </div>

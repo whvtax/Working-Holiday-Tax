@@ -20,7 +20,7 @@ const S = {
   sbBtnOn: { background:'#0E5C42', color:'#fff', fontWeight:600 },
   main: { flex:1, background:'#f0f4f1', marginLeft:260, height:'100vh', overflowY:'auto' as const },
   page: { padding:'26px 26px 40px' },
-  pgTitle: { fontSize:22, fontWeight:700, color:'#0a1410', marginBottom:2, letterSpacing:'-0.5px' },
+  pgTitle: { fontSize:21, fontWeight:700, color:'#0a1410', marginBottom:2, letterSpacing:'-0.5px' },
   card: { background:'#fff', borderRadius:14, border:'1px solid #e4ede8' },
 }
 
@@ -208,7 +208,7 @@ export default function PartnersClient() {
                   <div style={{fontSize:10.5,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em'}}>{stat.label}</div>
                   <div style={{fontSize:13,opacity:0.4}}>{stat.icon}</div>
                 </div>
-                <div style={{fontSize:26,fontWeight:700,color:'#0a1410',letterSpacing:'-0.5px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
+                <div style={{fontSize:21,fontWeight:700,color:'#0a1410',letterSpacing:'-0.5px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
               </div>
             ))}
           </div>

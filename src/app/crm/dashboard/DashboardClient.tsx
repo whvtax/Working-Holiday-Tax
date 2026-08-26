@@ -1578,13 +1578,13 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 ['leads','✉️',0]
               ] as const).map(([v,icon,badge])=>(
                 <button key={v} onClick={()=>{ if(v==='archive') openArchive(); else { setView(v as View);setTaskView('list');setActiveTask(null);setActiveClient(null); if(v==='clients') setNewClientsCount(0) } }}
-                  style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:view===v?'rgba(255,255,255,0.18)':'transparent',color:'#fff',cursor:'pointer',fontSize:18,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:view===v?'rgba(255,255,255,0.18)':'transparent',color:'#fff',cursor:'pointer',fontSize:17,display:'flex',alignItems:'center',justifyContent:'center'}}>
                   {icon}
                   {badge > 0 && <span style={{position:'absolute',top:2,right:2,minWidth:16,height:16,borderRadius:8,background:'#f59e0b',color:'#78350f',fontSize:9,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 4px'}}>{badge}</span>}
                 </button>
               ))}
               <button key="whatsapp" onClick={()=>{ router.push('/crm/whatsapp') }}
-                style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:'transparent',color:'#fff',cursor:'pointer',fontSize:18,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:'transparent',color:'#fff',cursor:'pointer',fontSize:17,display:'flex',alignItems:'center',justifyContent:'center'}}>
                 💬
               </button>
             </div>
@@ -1639,7 +1639,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       return (
                       <div key={stat.label} data-card-hover onClick={stat.onClick} role="button" style={{background:'#fff',border:`1px solid ${active?'#0E5C42':'#e4ede8'}`,borderRadius:12,padding:'14px 16px',boxShadow:active?'0 0 0 1px #0E5C42 inset':'0 1px 2px rgba(11,82,64,0.03)',cursor:'pointer'}}>
                         <div style={{fontSize:10.5,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:6}}>{stat.label}</div>
-                        <div style={{fontSize:19,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
+                        <div style={{fontSize:17,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
                       </div>
                     )})}
                   </div>
@@ -1679,7 +1679,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 const fmtDays = (d:number) => d===0 ? 'today! 🎉' : d===1 ? 'tomorrow' : d===-1 ? 'yesterday' : `in ${d} days`
                 return (
                   <div style={{background:'linear-gradient(135deg,#f7fbf9,#e8f5f0)',border:'1px solid #d8e4dc',borderRadius:12,padding:'14px 16px',marginBottom:16,display:'flex',alignItems:'flex-start',gap:12}}>
-                    <div style={{fontSize:22,flexShrink:0}}>🎂</div>
+                    <div style={{fontSize:21,flexShrink:0}}>🎂</div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:700,color:'#9d174d',marginBottom:6}}>{upcoming.length} birthday{upcoming.length!==1?'s':''} this week</div>
                       <div style={{display:'flex',flexDirection:'column' as const,gap:6}}>
@@ -1913,8 +1913,8 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
               {/* ── DONE: locked view - only name + 2 actions ── */}
               {activeTask.done && (
                 <div style={{...S.card,padding:'32px 28px',textAlign:'center' as const}}>
-                  <div style={{width:64,height:64,borderRadius:18,background:'linear-gradient(135deg,#ecfdf5,#a7f3d0)',border:'2px solid #a7f3d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,margin:'0 auto 16px',color:'#059669'}}>✓</div>
-                  <div style={{fontSize:20,fontWeight:700,color:'#0a1410',marginBottom:6,letterSpacing:'-0.3px'}}>{displayName(activeTask.clientName)}</div>
+                  <div style={{width:64,height:64,borderRadius:18,background:'linear-gradient(135deg,#ecfdf5,#a7f3d0)',border:'2px solid #a7f3d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:21,margin:'0 auto 16px',color:'#059669'}}>✓</div>
+                  <div style={{fontSize:17,fontWeight:700,color:'#0a1410',marginBottom:6,letterSpacing:'-0.3px'}}>{displayName(activeTask.clientName)}</div>
                   <div style={{fontSize:13,color:'#7a8a82',marginBottom:10}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
                   <span style={{display:'inline-block',background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'5px 16px',fontSize:12,fontWeight:600,marginBottom:24}}>✓ Completed - sensitive data cleared</span>
                   <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:10,padding:'10px 14px',marginBottom:20,fontSize:11,color:'#7a8a82',textAlign:'left'}}>
@@ -1960,7 +1960,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
               <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14,background:'#fff'}}>
                 <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{displayName(activeTask.clientName)}</div>
+                  <div style={{fontSize:17,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{displayName(activeTask.clientName)}</div>
                   {(()=>{
                     const existing = clients.find(c=>c.id===activeTask.clientId)
                     if (!existing || existing.taxReturns.length===0) return null
@@ -2329,7 +2329,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       <div style={{flex:1,minWidth:160,background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
                         <div>
                           <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>💰 Tax Refunds{yearLabel}</div>
-                          <div style={{fontSize:20,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalTaxRefund)}</div>
+                          <div style={{fontSize:17,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalTaxRefund)}</div>
                         </div>
                         <div style={{textAlign:'right' as const}}>
                           <div style={{fontSize:10,color:'#587066',marginBottom:2}}>across</div>
@@ -2341,7 +2341,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       <div style={{flex:1,minWidth:160,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
                         <div>
                           <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>🏦 Super Refunded{yearLabel}</div>
-                          <div style={{fontSize:20,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalSuper)}</div>
+                          <div style={{fontSize:17,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalSuper)}</div>
                         </div>
                         <div style={{textAlign:'right' as const}}>
                           <div style={{fontSize:10,color:'#587066',marginBottom:2}}>across</div>
@@ -2353,7 +2353,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       <div style={{flex:1,minWidth:160,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
                         <div>
                           <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>✨ Combined{yearLabel}</div>
-                          <div style={{fontSize:20,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalTaxRefund+totalSuper)}</div>
+                          <div style={{fontSize:17,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalTaxRefund+totalSuper)}</div>
                         </div>
                         <div style={{textAlign:'right' as const}}>
                           <div style={{fontSize:10,color:'#587066',marginBottom:2}}>showing</div>
@@ -2373,7 +2373,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
-                        {['Name','Status','WhatsApp','Email','Country','Source','Last refund',''].map(h=>(
+                        {['Name','WhatsApp','Email','Country','Source','Last refund',''].map(h=>(
                           <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
                         ))}
                       </tr>
@@ -2388,19 +2388,6 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
                                 <div style={{fontSize:12,fontWeight:500,color:'#0a1410',whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
                               </div>
-                            </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
-                              {(()=>{
-                                const cur = getClientStatus(cl.notes || '')
-                                return (
-                                  <select value={cur} onChange={e=>updateClientStatus(cl.id, e.target.value as ClientStatus)}
-                                    style={{padding:'3px 6px',border:`1px solid ${STATUS_META[cur].border}`,borderRadius:100,background:STATUS_META[cur].bg,color:STATUS_META[cur].fg,fontSize:10,fontWeight:600,cursor:'pointer',fontFamily:'inherit',outline:'none'}}>
-                                    <option value="active">🔵 Active</option>
-                                    <option value="filed">🟢 Filed</option>
-                                    <option value="needs-super">🟡 Needs Super</option>
-                                  </select>
-                                )
-                              })()}
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
                               <div style={{display:'flex',alignItems:'center',gap:6}}>
@@ -2609,10 +2596,10 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
               {/* Profile */}
               <div style={{...S.card,padding:'20px 22px',marginBottom:14}}>
                 <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:16}}>
-                  <div style={{width:56,height:56,borderRadius:16,background:'linear-gradient(135deg,#0E5C42,#1a9a6a)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:19,fontWeight:700,flexShrink:0,boxShadow:'0 4px 12px rgba(14,92,66,0.18)'}}>{initials(activeClient.fullName)}</div>
+                  <div style={{width:56,height:56,borderRadius:16,background:'linear-gradient(135deg,#0E5C42,#1a9a6a)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:700,flexShrink:0,boxShadow:'0 4px 12px rgba(14,92,66,0.18)'}}>{initials(activeClient.fullName)}</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap' as const}}>
-                      <div style={{fontSize:20,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px'}}>{displayName(activeClient.fullName)}</div>
+                      <div style={{fontSize:17,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px'}}>{displayName(activeClient.fullName)}</div>
                     </div>
                     <div style={{fontSize:12,color:'#7a8a82',marginTop:4}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
                   </div>
@@ -2664,12 +2651,12 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                   <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:12}}>
                     <div style={{background:'linear-gradient(135deg,#ecfdf5,#d1fae5)',border:'1px solid #a7f3d0',borderRadius:11,padding:'12px 14px'}}>
                       <div style={{fontSize:9.5,fontWeight:700,color:'#059669',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>💵 Total Refunds</div>
-                      <div style={{fontSize:18,fontWeight:700,color:'#059669',letterSpacing:'-0.5px'}}>{fmtCur(totalTaxRefunds)}</div>
+                      <div style={{fontSize:17,fontWeight:700,color:'#059669',letterSpacing:'-0.5px'}}>{fmtCur(totalTaxRefunds)}</div>
                       <div style={{fontSize:10,color:'#059669',opacity:0.7,marginTop:2}}>{totalReturns} return{totalReturns!==1?'s':''}</div>
                     </div>
                     <div style={{background:'linear-gradient(135deg,#f7fbf9,#e8f5f0)',border:'1px solid #d8e4dc',borderRadius:11,padding:'12px 14px'}}>
                       <div style={{fontSize:9.5,fontWeight:700,color:'#0E5C42',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>💰 Super Total</div>
-                      <div style={{fontSize:18,fontWeight:700,color:'#0E5C42',letterSpacing:'-0.5px'}}>{fmtCur(totalSuperRefunds)}</div>
+                      <div style={{fontSize:17,fontWeight:700,color:'#0E5C42',letterSpacing:'-0.5px'}}>{fmtCur(totalSuperRefunds)}</div>
                       <div style={{fontSize:10,color:'#0E5C42',opacity:0.7,marginTop:2}}>{totalSuper} withdrawal{totalSuper!==1?'s':''}</div>
                     </div>
                     <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,padding:'12px 14px'}}>
@@ -2806,7 +2793,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
               {/* Move to archive */}
               <div style={{background:'linear-gradient(135deg,#f7fbf9,#e8f5f0)',borderRadius:14,padding:'18px 20px',border:'1px solid #d4eae2'}}>
                 <div style={{display:'flex',alignItems:'flex-start',gap:14}}>
-                  <div style={{width:36,height:36,borderRadius:10,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0,border:'1px solid #d4eae2'}}>📦</div>
+                  <div style={{width:36,height:36,borderRadius:10,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,flexShrink:0,border:'1px solid #d4eae2'}}>📦</div>
                   <div style={{flex:1}}>
                     <div style={{fontSize:13,fontWeight:700,color:'#0E5C42',marginBottom:3}}>Client left Australia?</div>
                     <div style={{fontSize:12,color:'#587066',marginBottom:12,lineHeight:1.5}}>Move them to Archive when they have completed all services (Tax Returns, Super Refund). You can always restore them later.</div>
@@ -2857,7 +2844,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
       {captureRefund && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget){setCaptureRefund(null)}}}>
           <div style={{...S.modal,maxWidth:420}}>
-            <div style={{fontSize:28,marginBottom:8,textAlign:'center'}}>💰</div>
+            <div style={{fontSize:21,marginBottom:8,textAlign:'center'}}>💰</div>
             <div style={{...S.mTitle,textAlign:'center'}}>Record refund before archiving</div>
             <div style={{fontSize:12,color:'#7a8a82',textAlign:'center',marginBottom:20,lineHeight:1.5}}>
               Add the amounts to this client's history.<br/>You can skip fields if not applicable.
@@ -2908,7 +2895,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
       {confirmDelete && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmDelete(null)}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
-            <div style={{fontSize:34,marginBottom:10}}>🗑️</div>
+            <div style={{fontSize:21,marginBottom:10}}>🗑️</div>
             <div style={S.mTitle}>Delete &amp; archive?</div>
             <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>All sensitive data (TFN, bank, address, documents) will be deleted.<br/>The client will be moved to the Clients tab with basic info only.</div>
             <div style={S.mFooter}>
@@ -2926,7 +2913,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
       {confirmPermDelete && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget){setConfirmPermDelete(null);setPermDeleteText('')}}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
-            <div style={{fontSize:34,marginBottom:10}}>⚠️</div>
+            <div style={{fontSize:21,marginBottom:10}}>⚠️</div>
             <div style={S.mTitle}>Delete permanently?</div>
             <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:14}}>
               All data will be deleted with <strong>no client card created</strong>. This cannot be undone.
@@ -2954,7 +2941,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
       {confirmArchive && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmArchive(null)}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
-            <div style={{fontSize:34,marginBottom:10}}>📦</div>
+            <div style={{fontSize:21,marginBottom:10}}>📦</div>
             <div style={S.mTitle}>Client removed from ATO portal?</div>
             <div style={{fontSize:13,color:'#7a8a82',marginBottom:18}}>The client will move to Archive. You can restore them anytime.</div>
             <div style={S.mFooter}>
@@ -2969,7 +2956,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
       {confirmDeleteClient && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmDeleteClient(null)}}>
           <div style={{...S.modal,maxWidth:340,textAlign:'center'}}>
-            <div style={{fontSize:34,marginBottom:10}}>🗑️</div>
+            <div style={{fontSize:21,marginBottom:10}}>🗑️</div>
             <div style={S.mTitle}>Delete client?</div>
             <div style={{fontSize:13,color:'#7a8a82',marginBottom:18}}>This permanently removes the client and all their history.</div>
             <div style={S.mFooter}>
@@ -2988,7 +2975,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
               <span style={{fontSize:12,fontWeight:600,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'80%'}}>{previewUrl.split('/').pop()?.replace(/^\d+_/,'') ?? 'File'}</span>
               <div style={{display:'flex',gap:8,flexShrink:0}}>
                 <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'3px 10px',textDecoration:'none',fontWeight:600}}>Open ↗</a>
-                <button onClick={()=>setPreviewUrl(null)} style={{background:'none',border:'none',fontSize:18,cursor:'pointer',color:'#7a8a82',padding:'0 4px',lineHeight:1}}>✕</button>
+                <button onClick={()=>setPreviewUrl(null)} style={{background:'none',border:'none',fontSize:17,cursor:'pointer',color:'#7a8a82',padding:'0 4px',lineHeight:1}}>✕</button>
               </div>
             </div>
             <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f0f4f1',minHeight:200}}>
@@ -3005,7 +2992,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 if (previewError || !previewBlobUrl) {
                   return (
                     <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
-                      <div style={{fontSize:32,marginBottom:12}}>⚠️</div>
+                      <div style={{fontSize:21,marginBottom:12}}>⚠️</div>
                       <div style={{fontSize:13,marginBottom:10}}>Couldn&apos;t load this file.</div>
                       <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
                     </div>

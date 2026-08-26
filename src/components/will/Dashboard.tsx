@@ -385,8 +385,6 @@ export default function Dashboard() {
     c.lastMessageDirection === 'OUT' && !c.optedOut &&
     c.lastMessageAt != null && Date.now() - new Date(c.lastMessageAt).getTime() > QUIET_THRESHOLD_MS &&
     ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'WENT_COLD'].includes(c.state));
-  const isStuck = (c: CustomerRow) => Date.now() - new Date(c.stateChangedAt).getTime() > 24 * 3600e3 &&
-    !['COMPLETED', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'UNDER_REVIEW', 'FINAL_REVIEW'].includes(c.state);
   const killSwitch = health?.killSwitch ?? false;
 
   const chatSel = data.customers.find((c) => c.id === chatSelId) ?? null;
@@ -589,7 +587,7 @@ export default function Dashboard() {
               <div className="kpi clickable" title="We sent the last message and they went quiet, but never said no. Worth a personal follow-up later." onClick={() => { setView('pipeline'); setGroup('closed'); }}>
                 <div className="kl">Worth a Nudge</div><div className="kv">{quietLeads.length}</div><div className="kd">we spoke last, 24h+ of silence, never said no</div>
               </div>
-              <div className="kpi clickable" title="See completed customers" onClick={() => { setView('pipeline'); setGroup('done'); }}><div className="kl">Completed</div><div className="kv">{countFor(['COMPLETED'])}</div><div className="kd up">all-time</div></div>
+              <div className="kpi clickable" title="See completed customers" onClick={() => { setView('pipeline'); setGroup('done'); }}><div className="kl">Completed</div><div className="kv">{countFor(STAGE_GROUPS.find((sg) => sg.id === 'done')!.states)}</div><div className="kd up">all-time</div></div>
             </div>
 
             <div className="pstrip">
@@ -623,8 +621,6 @@ export default function Dashboard() {
                     {c.lastMessagePreview && <div className="rc-msg">“{previewLine(c.lastMessagePreview)}”</div>}
                   </div>
                   <div className="rc-side">
-                    {c.aiPaused && <span className="chip">✋ manual</span>}
-                    {isStuck(c) && <span className="chip stuck">⚠ stuck</span>}
                     <span className="stagepill" style={{ ['--pc' as string]: g.color }}>{stageLabelOf(c.state)}</span>
                     {/* When the last message actually arrived, not when the
                         pipeline stage last changed: "2h" should mean 2h since
@@ -649,10 +645,12 @@ export default function Dashboard() {
                     the two action stages Review and Signature. ("Estimate" was
                     folded into Review when the owner removed it and Ready as
                     separate pipeline stops.) */}
+                {/* Filter chips (owner's choice): All, then the three stage
+                    stops that matter for a quick filter — Paid, Review,
+                    Signature. */}
                 <div className="chatfilter">
                   <button className={`cfchip ${chatFilter === 'all' ? 'on' : ''}`} onClick={() => setChatFilter('all')}>All</button>
-                  <button className={`cfchip ${chatFilter === 'unread' ? 'on' : ''}`} onClick={() => setChatFilter('unread')}>Unread</button>
-                  {STAGE_GROUPS.filter((sg) => sg.id === 'rev' || sg.id === 'sig').map((sg) => (
+                  {STAGE_GROUPS.filter((sg) => sg.id === 'onb' || sg.id === 'rev' || sg.id === 'sig').map((sg) => (
                     <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(sg.id)}>{sg.label}</button>
                   ))}
                 </div>
@@ -672,24 +670,6 @@ export default function Dashboard() {
                     {showUnread
                       ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
                       : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
-                    {/* Remove a chat entirely — test/simulator leftovers, or any
-                        chat that never should have counted as a real lead. Stops
-                        the click from also opening the chat, and confirms first
-                        since this is permanent (messages, tasks, history — gone). */}
-                    <button
-                      type="button"
-                      className="tdismiss"
-                      title="Delete this chat"
-                      style={{ marginLeft: 6 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (!confirm(`Delete this chat with ${phoneOf(c.waId)}? This removes it and its history for good.`)) return;
-                        act({ action: 'delete_customer', customerId: c.id }).then((r) => {
-                          if (r?.ok) { if (chatSelId === c.id) setChatSelId(null); say('Chat deleted'); refresh(); }
-                          else say(`❌ ${r?.error ?? 'could not delete'}`);
-                        });
-                      }}
-                    >✕</button>
                   </div>
                   );
                 })}
@@ -795,6 +775,20 @@ export default function Dashboard() {
                         doesn't fit rather than wrapping, same as Quick fill
                         always did. */}
                     <div className="tplchips">
+                      {/* Quick send: numbered buttons instead of long labels, so the
+                          row never overflows and needs no sideways scroll. Always
+                          first/leftmost, before the stage action button and
+                          Follow-up — a fixed anchor so "1-4" is always in the same
+                          place regardless of what else is showing. Hover a number
+                          to see the full text (native tooltip). Clicking a number
+                          does NOT send — it drops the text into the compose box so
+                          you can read it, edit it, and send it yourself. */}
+                      {QUICK_TEMPLATES.map((key, i) => {
+                        const t = data.templates.find((x) => x.key === key);
+                        if (!t) return null;
+                        const label = t.title.replace(/ \(.*\)/, '');
+                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label} — edit and send`); }}>{i + 1}</button>;
+                      })}
                       {/* Review-stage action: send the refund estimate + invoice
                           in one step. Only shown while the customer is in Review. */}
                       {chatSel.state === 'FORM_COMPLETE' && (
@@ -844,18 +838,6 @@ export default function Dashboard() {
                           ✅ Mark Lodged
                         </button>
                       )}
-                      {/* Quick send: numbered buttons instead of long labels, so the
-                          row never overflows and needs no sideways scroll. Hover a
-                          number to see the full text (native tooltip). Clicking a
-                          number does NOT send — it drops the text into the compose
-                          box so you can read it, edit it, and send it yourself. */}
-                      <span className="tplchips-label">Quick fill:</span>
-                      {QUICK_TEMPLATES.map((key, i) => {
-                        const t = data.templates.find((x) => x.key === key);
-                        if (!t) return null;
-                        const label = t.title.replace(/ \(.*\)/, '');
-                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label} — edit and send`); }}>{i + 1}</button>;
-                      })}
                       {/* The nudges for this customer's stage, so a follow-up can be
                           sent after reading the conversation rather than only on the
                           scheduler's timer. Which three appear is decided by the
@@ -1209,12 +1191,12 @@ export default function Dashboard() {
               <div className="psub">{ASSISTANT_NAME} keeps testing and improving until every lead converts. The target is fixed at 100% — that's the whole point, it's never negotiated down.</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 10 }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 30, fontWeight: 700 }}>{report?.leadToPaid ?? 0}%</div>
+                  <div style={{ fontSize: 21, fontWeight: 700 }}>{report?.leadToPaid ?? 0}%</div>
                   <div className="mini">lead → paid</div>
                 </div>
-                <div style={{ fontSize: 22, color: 'var(--ink3)' }}>→</div>
+                <div style={{ fontSize: 21, color: 'var(--ink3)' }}>→</div>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 30, fontWeight: 700 }}>100%</div>
+                  <div style={{ fontSize: 21, fontWeight: 700 }}>100%</div>
                   <div className="mini">your target · fixed</div>
                 </div>
                 <div style={{ flex: 1 }} />
@@ -1433,7 +1415,7 @@ export default function Dashboard() {
             : '';
           return (
             <div className="modal">
-              <div className="mh"><b>Send Estimate + Invoice — {phoneOf(estimateFor.waId)}</b><button className="x" onClick={() => setEstimateFor(null)}>✕</button></div>
+              <div className="mh"><b>Send Estimate + Invoice {phoneOf(estimateFor.waId)}</b><button className="x" onClick={() => setEstimateFor(null)}>✕</button></div>
               <div className="mlabel">Estimated refund (AUD)</div>
               <input className="edit" style={{ minHeight: 0, padding: 10 }} inputMode="decimal" value={estimateAmt}
                 onChange={(e) => setEstimateAmt(e.target.value)} placeholder="e.g. 3004" />

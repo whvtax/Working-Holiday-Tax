@@ -157,13 +157,13 @@ main{padding:14px 16px 36px;max-width:none;margin-left:245px;
 .will-scope .psrow{display:flex;align-items:flex-start;gap:4px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
 .will-scope .psrow::-webkit-scrollbar{display:none}
 .will-scope .ps{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;min-width:52px;flex:none;padding:6px 9px 5px;border:1.5px solid transparent;border-radius:10px;transition:border-color 160ms var(--ease-out),transform 140ms var(--ease-out)}
-.will-scope .ps .psc{min-width:23px;height:23px;border-radius:99px;padding:0 7px;display:grid;place-items:center;font-size:10.5px;font-weight:600;color:var(--pc);background:color-mix(in srgb,var(--pc) 12%, #fff);transition:transform 140ms var(--ease-out);font-variant-numeric:tabular-nums}
-.will-scope .ps .psl{font-size:10px;color:var(--pc);white-space:nowrap;transition:color 150ms var(--ease-out)}
+.will-scope .ps .psc{min-width:24px;height:24px;border-radius:99px;padding:0 7px;display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--pc);background:color-mix(in srgb,var(--pc) 17%, #fff);transition:transform 140ms var(--ease-out);font-variant-numeric:tabular-nums}
+.will-scope .ps .psl{font-size:10px;font-weight:600;color:var(--pc);white-space:nowrap;transition:color 150ms var(--ease-out)}
 .will-scope .ps.zero .psl{color:var(--ink3)}
 @media(hover:hover) and (pointer:fine){
 .will-scope .ps:hover{border-color:var(--line2)}
 }
-.will-scope .ps.active{border-color:var(--brand1)}
+.will-scope .ps.active{border-color:var(--pc);background:color-mix(in srgb,var(--pc) 6%, transparent)}
 .will-scope .psarrow{color:#c5cad2;font-size:11px;margin-top:11px;flex:none;user-select:none}
 .will-scope .psfoot{border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:9px 2px;font-size:11px;color:var(--ink2)}
 .will-scope .psfoot b{font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums}
@@ -330,15 +330,6 @@ main{padding:14px 16px 36px;max-width:none;margin-left:245px;
 .will-scope .task:hover .tdismiss{opacity:1}
 .will-scope .tdismiss:hover{background:var(--surface3);color:var(--ink2)}
 .will-scope .tdismiss:focus-visible{opacity:1}
-/* The chat-list delete button lived inside .citem, but the hover rule above
-   only ever targeted .task (the Tasks list), so it sat at opacity:0
-   permanently — not hidden until hover, just invisible outright — while
-   still reserving its 22px+margin of space. That blank strip on the right
-   of every chat row was the bug. Faint by default (so it doesn't compete
-   with the stage badge) and clear on hover, and — since hover doesn't exist
-   on a touch screen — visible enough to find without one. */
-.will-scope .citem .tdismiss{opacity:.32}
-.will-scope .citem:hover .tdismiss{opacity:1}
 /* Standalone delete button in the open-chat header: not part of a hover-reveal
    list row, and hover doesn't exist on touch anyway, so this one stays visible
    all the time instead of relying on :hover to reveal it. */

@@ -222,6 +222,31 @@ async function handleIncomingInner(
     .filter((m) => m.status === 'SENT') // pending/discarded drafts are NOT delivered context
     .map((m) => ({ role: m.direction === 'IN' ? ('customer' as const) : ('assistant' as const), text: m.body }));
 
+  // Owner's rule: more than 3 messages before payment means this lead needs a
+  // person, not more automated back-and-forth — even in FULL_AUTO. Counts
+  // every inbound message sent while unpaid (this one included, since it was
+  // already stored above), not just ones that end in a question mark: by the
+  // 4th message before a cent has changed hands, the conversation itself is
+  // the signal, whatever the exact wording. Checked before the engine runs so
+  // no 4th reply is ever drafted, let alone sent.
+  if (!customer.paid) {
+    const questionsBeforePayment = msgs.filter((m) => m.direction === 'IN').length;
+    if (questionsBeforePayment > 3) {
+      if (!customer.aiPaused) {
+        await store.updateCustomer(customer.id, { aiPaused: true });
+        await store.cancelJobsFor(customer.id);
+      }
+      await raiseOrUpdateTask(store, customer, {
+        reason: `Customer sent ${questionsBeforePayment} messages before paying — needs a person, not more automated replies`,
+        severity: 'REVIEW', newContext: text,
+        suggestedReply: await suggestReply(text, customer, 'many_questions'),
+      });
+      await store.audit('policy_guard', 'many_questions_before_payment', { customerId: customer.id, count: questionsBeforePayment });
+      const c2 = await store.getCustomerByWaId(waId);
+      return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 ?? customer };
+    }
+  }
+
   // COST-01: daily global cap on paid AI decisions. When the budget is spent,
   // hand the conversation to a human instead of calling the model.
   if (await aiBudgetExhausted()) {
