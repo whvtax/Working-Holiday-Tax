@@ -3,7 +3,6 @@
 // message, shared by the simulator and the future WhatsApp
 // webhook. Persists everything to the store.
 // ============================================================
-import { loadCustomRules } from './rules-store';
 import { getStore, CustomerRow, CustomerState } from './store';
 import { runEngine, AiMode, EngineOutcome } from './engine';
 import { CustomerContext } from './playbook';
@@ -259,11 +258,6 @@ async function handleIncomingInner(
       aiPaused: customer.aiPaused, killSwitch,
       optedOut: customer.optedOut, isLegacy: customer.isLegacy,
       lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : new Date(),
-      // Jo's own rules. Loaded here, once per incoming message, and spread into
-      // every guard call the engine makes — so a rule he adds applies to the
-      // very next reply without a deploy. A failed read means no custom rules
-      // for this message rather than no reply (loadCustomRules never throws).
-      customRules: await loadCustomRules(),
     },
   });
 

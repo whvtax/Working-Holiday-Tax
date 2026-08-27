@@ -6,7 +6,6 @@
 // ============================================================
 import { getStore, CustomerRow } from './store';
 import { schedulerConfig, withinQuietHours, deferToMorning, localMidnightUtc } from './config';
-import { loadCustomRules } from './rules-store';
 import { policyGuard } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
@@ -284,7 +283,6 @@ async function doProcess(): Promise<TickResult> {
               optedOut: false, isLegacy: false,
               lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
               isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
-              customRules: await loadCustomRules(),
             });
             if (!verdict.allowed) body = (await libraryCopy('en')) ?? formReceivedMessage('en'); // English is guard-safe
             if (await inApprovalMode()) {
@@ -332,7 +330,6 @@ async function doProcess(): Promise<TickResult> {
           optedOut: customer.optedOut, isLegacy: customer.isLegacy,
           lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
           isApprovedTemplate: false, estimateFromTeam: customer.estimatedRefundCents,
-          customRules: await loadCustomRules(),
         });
         if (!verdict.allowed) {
           await store.setMessageStatus(msg.id, 'BLOCKED');
@@ -395,7 +392,6 @@ async function doProcess(): Promise<TickResult> {
         optedOut: customer.optedOut, isLegacy: customer.isLegacy,
         lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
         isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
-        customRules: await loadCustomRules(),
       });
       if (!verdict.allowed) {
         await store.setJobStatus(job.id, 'FAILED');

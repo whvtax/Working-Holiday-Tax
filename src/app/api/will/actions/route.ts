@@ -4,7 +4,6 @@
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore, CustomerRow } from '@/lib/will/store';
-import { loadCustomRules } from '@/lib/will/rules-store';
 import { policyGuard } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank } from '@/lib/will/service';
@@ -157,7 +156,6 @@ async function handlePost(req: Request) {
         optedOut: customer.optedOut, isLegacy: customer.isLegacy,
         lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
         isApprovedTemplate, estimateFromTeam: customer.estimatedRefundCents,
-        customRules: await loadCustomRules(),
       });
       if (!verdict.allowed) {
         await store.setMessageStatus(msg.id, 'BLOCKED');
@@ -253,7 +251,6 @@ async function handlePost(req: Request) {
         optedOut: customer.optedOut, isLegacy: customer.isLegacy,
         lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
         isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
-        customRules: await loadCustomRules(),
       });
       if (!verdict.allowed) return NextResponse.json({ ok: false, blocked: verdict.violations }, { status: 422 });
 
@@ -573,10 +570,6 @@ async function handlePost(req: Request) {
         state: 'PRICE_SENT', paid: false, aiPaused: false, killSwitch: false,
         optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(),
         isApprovedTemplate: false, estimateFromTeam: null,
-        // Jo's own rules apply here too, which is the kind version: a Library
-        // entry that breaks one is refused now, at the moment he is writing it,
-        // rather than silently held every time it tries to send.
-        customRules: await loadCustomRules(),
       });
       const cv = saveTimeViolations(verdict.violations);
       if (cv.length) return NextResponse.json({ ok: false, blocked: cv }, { status: 422 });
@@ -601,7 +594,6 @@ async function handlePost(req: Request) {
           state: 'PRICE_SENT', paid: false, aiPaused: false, killSwitch: false,
           optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(),
           isApprovedTemplate: false, estimateFromTeam: null,
-          customRules: await loadCustomRules(),
         });
         const cv = saveTimeViolations(verdict.violations);
         if (cv.length) return NextResponse.json({ ok: false, blocked: cv }, { status: 422 });
@@ -627,10 +619,6 @@ async function handlePost(req: Request) {
         state: 'PRICE_SENT', paid: false, aiPaused: false, killSwitch: false,
         optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(),
         isApprovedTemplate: false, estimateFromTeam: null,
-        // Jo's own rules apply here too, which is the kind version: a Library
-        // entry that breaks one is refused now, at the moment he is writing it,
-        // rather than silently held every time it tries to send.
-        customRules: await loadCustomRules(),
       });
       const contentViolations = saveTimeViolations(verdict.violations);
       if (contentViolations.length) {

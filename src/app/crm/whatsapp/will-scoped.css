@@ -637,8 +637,10 @@ aside.side{
    so a 100% month built on two leads reads as what it is.
    ============================================================ */
 .will-scope .monthhist{margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
-.will-scope .mhhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
-.will-scope .mhhead .mini{text-transform:none;letter-spacing:normal;font-weight:400}
+/* The heading is now the question itself (Jo, 27 Aug), so it is no longer a
+   two-part row with a description on the right — and no longer uppercased,
+   because a question in small caps reads as a label rather than a question. */
+.will-scope .mhhead{font-size:12px;font-weight:650;color:var(--ink2);margin-bottom:10px}
 .will-scope .mhrows{display:flex;flex-direction:column;gap:6px}
 .will-scope .mhrow{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--ink2)}
 .will-scope .mhlabel{flex:none;width:74px;color:var(--ink2);font-variant-numeric:tabular-nums}
@@ -712,45 +714,93 @@ aside.side{
   background:var(--surface3);color:var(--ink3);
   transition:background 160ms var(--ease-out),color 160ms var(--ease-out);
 }
-.will-scope .secthead .pcount.on{background:var(--brand2);color:var(--surface)}
+/* Jo, 27 Aug: "why is this purple? make it the brand colour." --brand2 is the
+   violet used for Will's own voice — the AI author name, the draft marker, the
+   approval card. This badge is not about Will; it is a count of work waiting
+   for Jo, which is the business's own colour. */
+.will-scope .secthead .pcount.on{background:var(--brand1);color:var(--surface)}
 
 /* ============================================================
    Decision Log — one handoff to a person (Learning tab).
 
-   Rebuilt 27 Aug to Jo's spec: the WhatsApp number, one sentence saying what
-   the customer wrote and why Will could not finish it, and one sentence saying
-   what would stop it happening again. The labelled key/value grid it replaced
-   (.hoff-f / .hoff-k / .hoff-v / .hoff-raw) is gone with it — four uppercase
-   column headings repeated down twenty-five entries were most of the ink on
-   the panel and none of the meaning.
+   Rebuilt again 27 Aug. Jo's brief: "every time Will hands off, open a card
+   there with everything you need to know why. I screenshot it, send it to you,
+   you know what to fix. Then a button, resolved, and it's gone."
+
+   That makes this card a DIAGNOSTIC ARTEFACT rather than a status line, and
+   the layout follows from that: labelled blocks in a fixed order, so a
+   screenshot of any card carries the same fields in the same places, and
+   nothing important is truncated out of frame.
+
+   Note what this means for the raw reason string. It was removed this morning
+   as "the engineer's log creeping back", and it is back tonight — because it
+   is the line carrying the exact rule codes, and without it a screenshot says
+   the guard fired but not WHICH pattern fired. The purpose of the card changed;
+   the field earns its place under the new one.
    ============================================================ */
 .will-scope .hoff{
   border-left:2px solid color-mix(in srgb,var(--tc) 55%, transparent);
   background:var(--surface2);border-radius:0 9px 9px 0;
-  padding:9px 12px;margin-bottom:8px;
+  padding:10px 12px;margin-bottom:9px;
 }
-.will-scope .hoff.is-done{opacity:.62}
-.will-scope .hoff-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.will-scope .hoff-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px}
 .will-scope .hoff-who{font-size:12px;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
 .will-scope .hoff-name{font-size:11px;color:var(--ink3)}
+/* Stage and language. Both change what the right fix is, and both are one word. */
+.will-scope .hoff-meta{font-size:10px;color:var(--ink3);background:rgba(30,32,40,.05);padding:1px 6px;border-radius:5px}
 .will-scope .hoff-when{margin-left:auto;font-size:10.5px;color:var(--ink3);white-space:nowrap}
-.will-scope .hoff-done{font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--done);background:color-mix(in srgb,var(--done) 13%, transparent);padding:1px 6px;border-radius:5px}
 
-/* Sentence one: what they wrote and why it came to you. */
-.will-scope .hoff-said{font-size:11.5px;line-height:1.55;color:var(--ink2)}
-/* The customer's own words, in ink rather than grey — inside a sentence about
-   them, the quote is the part you actually read. */
-.will-scope .hoff-quote{color:var(--ink);font-weight:500}
+/* One labelled block. The key is a small uppercase line ABOVE its content
+   rather than a column beside it: a fixed-width key column costs 132px of a
+   panel that has to hold whole customer messages, and wraps into two lines the
+   moment the label is longer than "Why Will stopped". */
+.will-scope .hoff-block{margin-top:8px}
+.will-scope .hoff-k{
+  font-size:9.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:3px;
+}
+.will-scope .hoff-v{font-size:11.5px;line-height:1.55;color:var(--ink2)}
 
-/* Sentence two: what to do about it. */
-.will-scope .hoff-prevent{font-size:11.5px;line-height:1.55;color:var(--ink2);margin-top:5px}
+/* Quoted material: the customer's messages, and the reply Will wanted to send.
+   NOT clamped. This card exists to be screenshotted and read by someone who
+   was not there, and a cut-off quote is precisely the failure it is meant to
+   prevent — the 58-character cut used to remove the question and keep the
+   preamble. A very long message makes a tall card; that is the correct
+   trade. */
+.will-scope .hoff-quote{
+  font-size:11.5px;line-height:1.55;color:var(--ink);
+  white-space:pre-wrap;overflow-wrap:anywhere;
+  padding:5px 9px;margin-top:3px;border-radius:7px;
+  background:var(--surface);border:1px solid var(--line);
+}
+/* The same words inside a sentence rather than in their own block. */
+.will-scope .hoff-quote-inline{color:var(--ink);font-weight:500}
+
+/* The raw reason, exactly as it was written at the handoff. Deliberately
+   machine-looking: it IS machine text, and dressing it as prose would invite
+   it to be read as the explanation rather than as the evidence under it. */
+.will-scope .hoff-raw{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:10px;line-height:1.5;color:var(--ink3);
+  margin-top:5px;white-space:pre-wrap;overflow-wrap:anywhere;
+}
+
+.will-scope .hoff-prevent{font-size:11.5px;line-height:1.55;color:var(--ink2);margin-top:9px;padding-top:8px;border-top:1px solid var(--line)}
 .will-scope .hoff-prevent b{color:var(--ink);font-weight:650}
 
+.will-scope .hoff-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
 .will-scope .hoff-open{
-  margin-top:7px;border:1px solid var(--line2);background:var(--surface);color:var(--ink2);
+  border:1px solid var(--line2);background:var(--surface);color:var(--ink2);
   border-radius:7px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;
+  transition:border-color 140ms var(--ease-out),color 140ms var(--ease-out);
 }
 .will-scope .hoff-open:hover{border-color:var(--brand1);color:var(--brand1)}
+/* Resolving is the primary act on this card — it is how the card leaves. */
+.will-scope .hoff-done-btn{border-color:color-mix(in srgb,var(--done) 45%, transparent);color:var(--done)}
+.will-scope .hoff-done-btn:hover{border-color:var(--done);color:var(--done);background:color-mix(in srgb,var(--done) 8%, transparent)}
+
+/* Clearing the backlog, above the list. */
+.will-scope .hoff-clear{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
 
 /* ============================================================
    System & Costs: the estimate flag and the fault entries.
@@ -808,55 +858,15 @@ aside.side{
 .will-scope .qitem-why .qwhy{font-size:11px;line-height:1.45;color:var(--ink3)}
 .will-scope .qitem-why .qfix b{color:var(--ink2);font-weight:650}
 
-/* ============================================================
-   Rules tab (Jo, 27 Aug) — everything Will is not allowed to do, plus the
-   rules Jo adds himself.
-
-   Two different jobs on one screen, so two different treatments. His own rules
-   are a control panel: a form, and rows with buttons on them. The built-in
-   rules are reference: no controls at all, because there are none — nothing on
-   this screen can switch one off, and a disabled-looking switch would suggest
-   otherwise.
-   ============================================================ */
-
-/* ── The add form ──────────────────────────────────────────────────────── */
-.will-scope .rule-add{display:flex;flex-direction:column;gap:7px;margin:10px 0 4px}
-.will-scope .rule-add textarea{
-  resize:vertical;min-height:56px;font-family:inherit;line-height:1.5;
-}
-.will-scope .rule-add .btn{align-self:flex-start}
-
-/* ── One of Jo's rules ─────────────────────────────────────────────────── */
-.will-scope .myrule{
-  border:1px solid var(--line);border-radius:9px;background:var(--surface2);
-  padding:9px 11px;margin-top:8px;
-}
-/* A paused rule is still listed — deleting is a separate, deliberate act — but
-   it must not read as protection that is in force. */
-.will-scope .myrule.is-off{opacity:.6}
-.will-scope .myrule-top{display:flex;align-items:center;gap:8px}
-.will-scope .myrule-name{flex:1;min-width:0;font-size:12px;font-weight:650;color:var(--ink)}
-.will-scope .myrule-actions{display:flex;gap:6px;flex:none}
-.will-scope .myrule-phrases{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
-/* The banned phrases themselves, in ink rather than the chip's usual grey:
-   inside a rule about words, the words are the content. */
-.will-scope .myrule-phrases .chip{color:var(--ink);background:rgba(30,32,40,.06)}
-
-/* ── One built-in rule ─────────────────────────────────────────────────── */
-.will-scope .rulerow{padding:9px 0;border-bottom:1px solid var(--line)}
-.will-scope .rulerow:last-child{border-bottom:none;padding-bottom:2px}
-.will-scope .rulerow-name{font-size:12px;font-weight:650;color:var(--ink)}
-.will-scope .rulerow-what{font-size:11.5px;line-height:1.55;color:var(--ink2);margin-top:3px}
-/* The refused example. Warn-tinted and labelled, so it is unmistakably a
-   message that does NOT go out — the one thing that would be genuinely bad to
-   misread on this screen. */
-.will-scope .rulerow-eg{
-  font-size:11px;line-height:1.5;color:var(--ink2);margin-top:6px;
-  padding:6px 9px;border-radius:7px;
-  background:color-mix(in srgb,var(--crit) 5%, transparent);
-  border-left:2px solid color-mix(in srgb,var(--crit) 40%, transparent);
-}
-.will-scope .rulerow-eg span{
-  font-weight:700;font-size:9.5px;letter-spacing:.4px;text-transform:uppercase;
-  color:var(--crit);margin-right:5px;
+/* The all-clear state of System faults, showing its working: every live probe
+   that passed. Without this, "nothing is failing" is indistinguishable from
+   "nothing was checked" — which is the exact shape of the worst outage this
+   system has had (a missing migration dropped 105 leads while every dot on the
+   dashboard stayed green). */
+.will-scope .okchecks{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0 2px}
+.will-scope .okcheck{
+  font-size:10.5px;font-weight:600;color:var(--done);
+  background:color-mix(in srgb,var(--done) 9%, transparent);
+  border:1px solid color-mix(in srgb,var(--done) 22%, transparent);
+  padding:2px 8px;border-radius:999px;white-space:nowrap;cursor:default;
 }

@@ -7,7 +7,6 @@ import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, 
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
 import { explainHandoffReason } from '@/lib/will/handoff-reasons';
-import { RULE_GROUP_LABELS } from '@/lib/will/rules';
 import type { MonthConversion } from '@/lib/will/monthly-conversion';
 import type { AiUsage, SystemFault } from '@/lib/will/system-report';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
@@ -15,10 +14,10 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 // The Simulator was removed on Jo's instruction, 25 Aug: with real WhatsApp
 // traffic flowing it had no use left, and a fake customer sitting in the
 // pipeline next to the real ones was a hazard rather than a help.
-type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'rules' | 'followups' | 'insights' | 'lost' | 'learning';
+type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'followups' | 'insights' | 'lost' | 'learning';
 
 /** Sidebar labels. Only needed where the view id is not the words we want. */
-const VIEW_LABELS: Partial<Record<View, string>> = { followups: 'Follow-ups', lost: 'Lost Leads' };
+const VIEW_LABELS: Partial<Record<View, string>> = { followups: 'Follow-ups', insights: 'System & Costs', lost: 'Lost Leads' };
 
 // ────────────────────────────────────────────────────────────
 // Lost Leads report, as /api/will/lost returns it.
@@ -74,11 +73,6 @@ const RECOVER_TEXT: Record<LostAnalysisView['recoverable'], { label: string; col
   MAYBE: { label: 'Maybe winnable', color: 'var(--sig)' },
   NO: { label: 'Gone', color: 'var(--ink3)' },
 };
-
-/** One of the built-in rules, as the catalogue describes it (lib/will/rules.ts). */
-interface BuiltInRuleRow { id: string; group: string; name: string; what: string; example: string }
-/** One rule Jo added himself. */
-interface CustomRuleRow { id: string; label: string; phrases: string[]; enabled: boolean; createdAt: string }
 
 /** One scheduled follow-up, as /api/will/followups returns it. */
 interface FollowUpRow {
@@ -140,8 +134,6 @@ const ICONS: Record<View, React.ReactNode> = {
   library: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>,
   // A clock with a forward arrow: messages queued to leave later.
   followups: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>,
-  // A shield: the things Will is not allowed to do.
-  rules: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>,
   insights: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>,
   // A person walking away: the leads that did not become clients.
   lost: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M15 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/></svg>,
@@ -383,35 +375,8 @@ export default function Dashboard() {
       if (r.ok) setFollowups(r.rows ?? []);
     } catch { /* keep whatever is on screen */ }
   }, []);
-  // ── Rules ────────────────────────────────────────────────────────────────
-  // The built-in catalogue and Jo's own rules arrive together in one call, so
-  // the tab renders in one pass instead of stuttering in two.
-  const [rules, setRules] = useState<{ builtIn: BuiltInRuleRow[]; custom: CustomRuleRow[] } | null>(null);
-  const loadRules = useCallback(async () => {
-    try {
-      const r = await fetch('/api/will/rules').then((x) => x.json());
-      if (r.ok) setRules({ builtIn: r.builtIn ?? [], custom: r.custom ?? [] });
-    } catch { /* keep whatever is on screen */ }
-  }, []);
-  const [ruleLabel, setRuleLabel] = useState('');
-  const [rulePhrases, setRulePhrases] = useState('');
-  const [ruleBusy, setRuleBusy] = useState(false);
-  const ruleAct = useCallback(async (payload: Record<string, unknown>) => {
-    setRuleBusy(true);
-    try {
-      const r = await fetch('/api/will/rules', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).then((x) => x.json());
-      return r as { ok: boolean; error?: string; conflicts?: string[] };
-    } catch {
-      return { ok: false, error: 'Could not reach the server.' };
-    } finally {
-      setRuleBusy(false);
-    }
-  }, []);
-
+  // Two-click arming for "clear the log" (see the Decision Log panel).
+  const [clearArmed, setClearArmed] = useState(false);
   const [knwDrafts, setKnwDrafts] = useState<Record<string, string>>({});
   const [tplText, setTplText] = useState('');
   const [toast, setToast] = useState('');
@@ -495,7 +460,6 @@ export default function Dashboard() {
   useEffect(() => { if ((view === 'insights' || view === 'learning') && !report) fetch('/api/will/report').then((r) => r.json()).then((rp) => setReport(rp)).catch(() => {}); }, [view, report]);
   useEffect(() => { if (view === 'learning' || view === 'library') { loadKnowledge(); } }, [view, loadKnowledge]);
   useEffect(() => { if (view === 'learning') { loadMonthly(); } }, [view, loadMonthly]);
-  useEffect(() => { if (view === 'rules' && !rules) loadRules(); }, [view, rules, loadRules]);
   useEffect(() => { if (view === 'insights') loadSystem(); }, [view, loadSystem]);
   // Fetched on open, not polled: these rows only change once a night.
   useEffect(() => { if (view === 'lost') loadLost(); }, [view, loadLost]);
@@ -689,7 +653,7 @@ export default function Dashboard() {
     <>
       <aside className="side">
         <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
-        {(['pipeline', 'chats', 'tasks', 'library', 'rules', 'followups', 'insights', 'lost', 'learning'] as View[]).map((v) => (
+        {(['pipeline', 'chats', 'tasks', 'library', 'followups', 'insights', 'lost', 'learning'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
             <span className="nl">{VIEW_LABELS[v] ?? v[0].toUpperCase() + v.slice(1)}</span>
@@ -819,7 +783,7 @@ export default function Dashboard() {
             </div>
 
             <div className="pstrip">
-              <div className="pstitle">My Customers Pipeline</div>
+              <div className="pstitle">My Pipeline</div>
               <div className="psrow">
                 {STAGE_GROUPS.map((sg, i) => {
                   const n = countFor(sg.states);
@@ -1403,153 +1367,6 @@ export default function Dashboard() {
             message goes out is knowing WHO is about to get one. The list keeps
             itself current (20s while this view is open) and each row opens that
             customer's chat, which is what you want next. */}
-        {/* ────────────────────────────────────────────────────────────────
-            RULES — everything Will is not allowed to do, in one place, and the
-            rules Jo adds himself.
-
-            Jo, 27 Aug: "a whole tab of all the rules, each one with an option
-            to add more."
-
-            WHY IT EXISTS. policy-guard.ts is forty regular expressions with
-            the bypasses each one was written to close documented above it. It
-            is correct and it is unreadable, and until now the only way to find
-            out what Will could not say was to read it — or to watch a message
-            get refused. The catalogue (lib/will/rules.ts) says the same things
-            in the words Jo would use, keyed by the very code the guard reports,
-            so the two cannot drift apart without a test failing.
-
-            WHAT A RULE OF HIS IS. A name and a list of phrases that must never
-            reach a customer. Deliberately not a regular expression: a regex box
-            in a dashboard is how you write, at two in the morning, something
-            that silently blocks every message in the system — and nothing on
-            screen would tell that apart from a rule that simply never matches.
-
-            THE INVARIANT. His rules can only ever ADD a refusal. There is no
-            rule he can write that lets through something the built-in rules
-            refuse, and there is no control here — none — that switches a
-            built-in rule off. The worst case of a badly written rule is drafts
-            piling up in Tasks, which is loud, recoverable, and visible.
-            ──────────────────────────────────────────────────────────────── */}
-        {view === 'rules' && (
-          <section className="view active">
-            <h2 className="vt">Rules</h2>
-            <div className="vsub">
-              Everything {ASSISTANT_NAME} is not allowed to do. The built-in ones cannot be switched off — they are what makes it safe to let him talk to customers at all. Underneath, add your own.
-            </div>
-
-            {rules === null && <div className="sysline" style={{ margin: '20px 0' }}>Loading the rules…</div>}
-
-            {rules && (
-              <>
-                {/* ── Jo's own rules, FIRST. The built-ins are reference; this
-                       is the part he came here to use. ──────────────────── */}
-                <div className="panel" style={{ marginBottom: 12 }}>
-                  <h3>Your Rules</h3>
-                  <div className="psub">
-                    Give the rule a name, then the words {ASSISTANT_NAME} must never send. One phrase per line. He refuses any message containing one, exactly as if it were built in.
-                  </div>
-
-                  <div className="rule-add">
-                    <input
-                      className="inp"
-                      placeholder="What is this rule called? e.g. Never mention other agents"
-                      value={ruleLabel}
-                      maxLength={80}
-                      onChange={(e) => setRuleLabel(e.target.value)}
-                    />
-                    <textarea
-                      className="inp"
-                      rows={3}
-                      placeholder={'One phrase per line:\ncheapest\nbest in Australia'}
-                      value={rulePhrases}
-                      onChange={(e) => setRulePhrases(e.target.value)}
-                    />
-                    <button
-                      type="button"
-                      className="btn take sm"
-                      disabled={ruleBusy || !ruleLabel.trim() || !rulePhrases.trim()}
-                      onClick={async () => {
-                        const r = await ruleAct({ action: 'add', label: ruleLabel, phrases: rulePhrases });
-                        if (!r.ok) { say(`❌ ${r.error ?? 'could not add that rule'}`); return; }
-                        setRuleLabel(''); setRulePhrases('');
-                        await loadRules();
-                        // The warning that matters: a new rule can sit on top of
-                        // messages already in the Library, and the way to find
-                        // that out should not be noticing that follow-ups have
-                        // quietly stopped going out.
-                        say(r.conflicts && r.conflicts.length
-                          ? `Rule added — heads up, it also stops ${r.conflicts.length} Library ${r.conflicts.length === 1 ? 'message' : 'messages'}: ${r.conflicts.join(', ')}`
-                          : 'Rule added. It applies to the next message.');
-                      }}
-                    >{ruleBusy ? 'Saving…' : 'Add this rule'}</button>
-                  </div>
-
-                  {rules.custom.length === 0 && (
-                    <div className="mini" style={{ marginTop: 10 }}>
-                      No rules of your own yet. The built-in ones below are already in force.
-                    </div>
-                  )}
-
-                  {rules.custom.map((r) => (
-                    <div key={r.id} className={`myrule ${r.enabled ? '' : 'is-off'}`}>
-                      <div className="myrule-top">
-                        <span className="myrule-name">{r.label}</span>
-                        <span className="myrule-actions">
-                          <button
-                            type="button"
-                            className="btn quiet sm"
-                            disabled={ruleBusy}
-                            onClick={async () => {
-                              const res = await ruleAct({ action: 'toggle', id: r.id });
-                              if (res.ok) { await loadRules(); say(r.enabled ? 'Rule paused' : 'Rule back on'); }
-                              else say(`❌ ${res.error ?? 'could not change that rule'}`);
-                            }}
-                          >{r.enabled ? 'Pause' : 'Turn on'}</button>
-                          <button
-                            type="button"
-                            className="btn quiet sm"
-                            disabled={ruleBusy}
-                            onClick={async () => {
-                              const res = await ruleAct({ action: 'delete', id: r.id });
-                              if (res.ok) { await loadRules(); say('Rule deleted'); }
-                              else say(`❌ ${res.error ?? 'could not delete that rule'}`);
-                            }}
-                          >Delete</button>
-                        </span>
-                      </div>
-                      <div className="myrule-phrases">
-                        {r.phrases.map((p) => <span key={p} className="chip">{p}</span>)}
-                      </div>
-                      {!r.enabled && <div className="mini" style={{ marginTop: 4 }}>Paused — {ASSISTANT_NAME} is not checking for these right now.</div>}
-                    </div>
-                  ))}
-                </div>
-
-                {/* ── The built-in rules, grouped. Read-only, and the screen
-                       says so rather than showing a switch that refuses. ── */}
-                {Object.entries(RULE_GROUP_LABELS).map(([g, groupName]) => {
-                  const inGroup = rules.builtIn.filter((r) => r.group === g);
-                  if (inGroup.length === 0) return null;
-                  return (
-                    <div key={g} className="panel" style={{ marginBottom: 12 }}>
-                      <h3>{groupName}</h3>
-                      {inGroup.map((r) => (
-                        <div key={r.id} className="rulerow">
-                          <div className="rulerow-name">{r.name}</div>
-                          <div className="rulerow-what">{r.what}</div>
-                          {/* A rule you can only read is abstract; a message it
-                              would refuse is not. */}
-                          <div className="rulerow-eg"><span>Refused:</span> {r.example}</div>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })}
-              </>
-            )}
-          </section>
-        )}
-
         {view === 'followups' && (
           <section className="view active">
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -1563,7 +1380,7 @@ export default function Dashboard() {
                   {followups && followups.length > 0 && (
                     <strong style={{ color: 'var(--ink)', fontWeight: 650 }}>({followups.length}) </strong>
                   )}
-                  Everyone is queued for a nudge. Open to edit before sending.
+                  Everyone is queued for a nudge.
                 </div>
               </div>
             </div>
@@ -1632,8 +1449,8 @@ export default function Dashboard() {
 
         {view === 'insights' && (
           <section className="view active">
-            <h2 className="vt">Insights</h2>
-            <div className="vsub">Every conversation is raw material: what converts, what loses customers, what to fix. Each problem comes with a suggested fix.</div>
+            <h2 className="vt">System &amp; Costs</h2>
+            <div className="vsub">Live from the system.</div>
             <div className="igrid">
               {/* ────────────────────────────────────────────────────────────
                   "Why Will Handed Chats To You" was removed here on 27 Aug,
@@ -1696,49 +1513,55 @@ export default function Dashboard() {
                   next action. Full width for that reason.
                   ──────────────────────────────────────────────────────────── */}
               <div className="panel syspanel">
-                <h3>System &amp; Costs</h3>
-                <div className="psub">Live from the system. Everything below is readable on its own — screenshot it and send it to someone.</div>
                 <div className="costrow"><span>Brain ({ASSISTANT_NAME})</span><b>{health?.usingMock ? 'mock (no API key)' : 'Claude API'}</b></div>
                 <div className="costrow"><span>Auto-resolved by {ASSISTANT_NAME}</span><b>{(() => { const total = data.customers.length; if (!total) return '—'; const escalatedIds = new Set(data.tasks.filter((t) => t.customerId).map((t) => t.customerId)); const never = total - escalatedIds.size; return Math.round((never / total) * 100) + '%'; })()}</b></div>
                 <div className="costrow"><span>Messages in library</span><b>{data.templates.length}</b></div>
 
-                {/* ── What Claude has cost ──
-                    There is no billing feed wired into this system. The ONLY
-                    record of paid model usage is the daily counter migration
-                    029 added, which counts DECISIONS, not dollars. So the count
-                    is stated as fact and the money as an estimate at a stated
-                    rate — see ASSUMED_USD_PER_DECISION in lib/will/system-report.ts
-                    for the arithmetic. No invented dollar figure. */}
-                <div className="syshead">What Claude has cost</div>
-                {system === null && <div className="mini" style={{ marginTop: 0 }}>Reading the usage counters…</div>}
-                {system && (() => {
-                  const u = system.usage;
-                  return (
-                    <>
-                      <div className="costrow"><span>Decisions today</span><b>{u.callsToday.toLocaleString('en-AU')} of {u.budgetToday.toLocaleString('en-AU')}</b></div>
-                      <div className="costrow">
-                        <span>Decisions counted, all time</span>
-                        <b>{u.callsTotal.toLocaleString('en-AU')}{u.daysRecorded > 0 ? ` over ${u.daysRecorded} ${u.daysRecorded === 1 ? 'day' : 'days'}` : ''}</b>
-                      </div>
-                      <div className="costrow">
-                        <span>Spend <span className="estflag">estimate only</span></span>
-                        <b>{u.callsTotal === 0 ? '—' : `≈ US$${u.estimatedUsd.toFixed(2)}`}</b>
-                      </div>
-                      <div className="mini">
-                        {u.usingMock
-                          ? `No API key is set, so nothing has been billed at all — ${ASSISTANT_NAME} is answering from the mock brain.`
-                          : <>
-                              Not a bill. Anthropic&apos;s billing is not connected to this dashboard, so this is
-                              {' '}{u.callsTotal.toLocaleString('en-AU')} counted decisions × an assumed
-                              {' '}US${u.assumedUsdPerCall.toFixed(2)} each{u.firstDay ? `, since ${u.firstDay}` : ''}.
-                              A long conversation costs more than a short one, and the payment-photo checks and the
-                              nightly Library mining are real paid calls that this counter never sees — so treat it
-                              as a floor, not a total. The real number is in the Anthropic console.
-                            </>}
-                      </div>
-                    </>
-                  );
-                })()}
+                {/* Jo, 27 Aug: the money sits with the other headline facts,
+                    directly under the Library count — not two headings further
+                    down. It is the number he actually came to this panel for,
+                    and it was below the fold of his own screenshot.
+
+                    THE FLAG IS NOT DECORATION. There is no billing feed wired
+                    into this system. The only record of paid usage is the daily
+                    counter migration 029 added, and it counts DECISIONS, not
+                    dollars — so this is decisions × an assumed rate
+                    (ASSUMED_USD_PER_DECISION in lib/will/system-report.ts) and
+                    it says so on the row, in the caveat under it, and in the
+                    hover. A dollar figure on a dashboard gets quoted; this one
+                    must never be quoted as a bill. */}
+                {system?.usage && (
+                  <>
+                    <div className="costrow">
+                      <span>Spend <span className="estflag">estimate only</span></span>
+                      <b title="Not a bill — counted decisions times an assumed per-decision rate. The real number is in the Anthropic console.">
+                        {system.usage.callsTotal === 0 ? '—' : `≈ US$${system.usage.estimatedUsd.toFixed(2)}`}
+                      </b>
+                    </div>
+                    <div className="mini">
+                      {system.usage.usingMock
+                        ? `No API key is set, so nothing has been billed at all — ${ASSISTANT_NAME} is answering from the mock brain.`
+                        : <>
+                            Not a bill. Anthropic&apos;s billing is not connected to this dashboard, so this is
+                            {' '}{system.usage.callsTotal.toLocaleString('en-AU')} counted decisions × an assumed
+                            {' '}US${system.usage.assumedUsdPerCall.toFixed(2)} each{system.usage.firstDay ? `, since ${system.usage.firstDay}` : ''}.
+                            A long conversation costs more than a short one, and the payment-photo checks and the
+                            nightly Library mining are real paid calls that this counter never sees — so treat it
+                            as a floor, not a total. The real number is in the Anthropic console.
+                          </>}
+                    </div>
+                  </>
+                )}
+
+                {/* The "Claude usage" rows — decisions today, decisions counted
+                    all time — were removed here on 27 Aug, on Jo's instruction.
+                    They were the working of the estimate above rather than a
+                    fact he acts on: he wants to know roughly what it is costing,
+                    and "374 decisions over 8 days" is not that. The counters
+                    themselves are untouched — ai-budget.ts still counts every
+                    paid decision and still stops Will at the daily cap, and the
+                    estimate above is still computed from them. This dropped the
+                    display, not the accounting. */}
 
                 {/* ── What is broken ── */}
                 <div className="syshead">System faults</div>
@@ -1786,14 +1609,41 @@ export default function Dashboard() {
                       action: 'Open the WhatsApp pill in the header (or /crm/whatsapp/connect) and reconnect. The exact fault is in the error line above.',
                     },
                   };
-                  const live = Object.entries(health?.checks ?? {})
+                  const entries = Object.entries(health?.checks ?? {});
+                  const live = entries
                     .filter(([, v]) => !v.ok)
                     .map(([k, v]) => ({ key: k, info: CHECK_INFO[k], detail: v.detail }))
                     .filter((x) => !!x.info);
                   const past = system?.faults ?? [];
                   if (!health && system === null) return <div className="mini" style={{ marginTop: 0 }}>Checking…</div>;
                   if (live.length === 0 && past.length === 0) {
-                    return <div className="mini" style={{ marginTop: 0 }}>Nothing is failing, and nothing has failed in the last {system?.auditRowsRead ?? 0} recorded actions.</div>;
+                    // "Nothing is failing" is only worth anything if it says
+                    // WHAT it checked. Jo, 27 Aug: "it should genuinely reflect
+                    // if there is a fault — everything, every connection." It
+                    // does, and always did: every one of these is a real probe
+                    // (/api/will/health actually calls Meta, actually reads the
+                    // database, actually runs a known-bad message through the
+                    // guard), re-run every 45 seconds. But an all-clear with no
+                    // list behind it is indistinguishable from an all-clear that
+                    // checked nothing — which is exactly the failure this panel
+                    // exists because of: 105 leads were lost while every dot on
+                    // this dashboard stayed green. So the green state now shows
+                    // its working.
+                    return (
+                      <>
+                        <div className="mini" style={{ marginTop: 0 }}>
+                          Nothing is failing, and nothing has failed in the last {system?.auditRowsRead ?? 0} recorded actions.
+                        </div>
+                        <div className="okchecks">
+                          {entries.map(([k, v]) => (
+                            <span key={k} className="okcheck" title={v.detail}>
+                              ✓ {CHECK_INFO[k]?.name ?? k}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="mini">Each one is a live probe, re-run every 45 seconds — the database is read, Meta is asked whether the number really works, and a known-bad message is put through the guard to confirm it still blocks. Hover any of them for the detail.</div>
+                      </>
+                    );
                   }
                   return (
                     <>
@@ -1868,9 +1718,13 @@ export default function Dashboard() {
                   month, how many ever went on to pay. Paying in a later month
                   still counts for the month they arrived in. */}
               <div className="monthhist">
+                {/* Jo, 27 Aug: the question IS the heading. "Month by month"
+                    described the shape of the table, which the table was
+                    already showing; the question it answers was in the small
+                    grey text on the right, where headings do not live. They
+                    swapped, and the description went. */}
                 <div className="mhhead">
-                  <span>Month by month</span>
-                  <span className="mini" style={{ margin: 0 }}>How many leads ended up paying?</span>
+                  <span>How many leads ended up paying?</span>
                 </div>
                 {monthly === null && <div className="mini">Loading the history…</div>}
                 {monthly !== null && monthly.every((m) => m.leads === 0) && (
@@ -1963,63 +1817,188 @@ export default function Dashboard() {
                   lib/will/handoff-reasons.ts, which is now written to produce
                   those two strings and nothing else. One classifier: a second
                   one here would have drifted from it inside a week.
+
+                  ── CORRECTION, same day ──────────────────────────────────
+                  Dropping the raw reason line went one step too far, and Jo
+                  found it by asking a fair question: "if I send you this card,
+                  will you know what went wrong?" From the card as it stood:
+                  no.
+
+                  The reason is that the classifier only recognises the twelve
+                  reasons the SYSTEM writes. The commonest handoff by far is
+                  not one of those — it is Will choosing `human_task` and
+                  writing its own headline (engine.ts:150), which the model is
+                  asked to make 5-8 readable words: "Asking if DASP is
+                  included", "Confused about myGov login". Those never match a
+                  pattern, so every one of them fell to the generic fallback
+                  and the card said "Will had no approved answer for what they
+                  asked" — a guess, sometimes wrong (a complex return is not an
+                  unanswered question), and it threw away the single most
+                  informative field on the row: Will's own account of why it
+                  gave up, written at the moment it gave up.
+
+                  So the fallback branch now prints THAT, labelled as Will's
+                  own words rather than dressed up as the dashboard's. This is
+                  not the engineer's log returning: the raw string in that case
+                  IS plain English, because a model was asked for plain
+                  English. Where the classifier does recognise the reason, the
+                  clause it wrote still wins, because it is better.
+
+                  The quote was cut at 58 characters too, which on a message
+                  like "I was on a Working Holiday Maker visa from July 2025
+                  until…" removes the question and keeps the preamble. It now
+                  clamps by LINES in CSS, so short messages show whole and long
+                  ones still cannot run away with the row.
                   ──────────────────────────────────────────────────────────── */}
               <div className="panel">
                 <h3>Decision Log <span className="cstate" style={{ ['--sc' as string]: 'var(--warn)' }}>HANDOFFS</span></h3>
                 <div className="psub">
-                  Every time {ASSISTANT_NAME} could not finish something on his own — what the customer wrote, why it reached you, and what would let {ASSISTANT_NAME} handle it next time. Newest first.
+                  Every time {ASSISTANT_NAME} could not finish something himself. Each card carries everything needed to work out why — screenshot one and send it over. Mark it Resolved and it goes.
                 </div>
+
+                {/* Clearing the backlog. Two clicks rather than a dialog: a
+                    browser confirm() freezes the whole extension bridge, and a
+                    button that changes into its own confirmation cannot be
+                    clicked through by accident either.
+
+                    IT SAYS WHAT IT REALLY DOES. These cards are the SAME rows as
+                    the Tasks tab — one handoff, one item, and resolving it here
+                    resolves it there. Hiding that would mean Jo clears the log
+                    and silently empties his own to-do list. */}
                 {(() => {
-                  const handoffs = [...data.tasks].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+                  const open = data.tasks.filter((t) => t.status === 'OPEN');
+                  if (open.length === 0) return null;
+                  return (
+                    <div className="hoff-clear">
+                      <button
+                        type="button"
+                        className="hoff-open"
+                        onClick={async () => {
+                          if (!clearArmed) { setClearArmed(true); return; }
+                          setClearArmed(false);
+                          await Promise.all(open.map((t) => act({ action: 'resolve_task', id: t.id })));
+                          say(`Cleared ${open.length}`);
+                          refresh();
+                        }}
+                      >{clearArmed ? `Yes — clear all ${open.length}` : `Clear the ${open.length} showing`}</button>
+                      {clearArmed && (
+                        <>
+                          <button type="button" className="hoff-open" onClick={() => setClearArmed(false)}>Cancel</button>
+                          <span className="mini" style={{ margin: 0 }}>This also clears them from Tasks — they are the same items.</span>
+                        </>
+                      )}
+                    </div>
+                  );
+                })()}
+                {(() => {
+                  // OPEN only. Jo, 27 Aug: "I click Resolved and it's gone."
+                  // A resolved handoff is a thing that has been dealt with, and
+                  // leaving it greyed out on the panel meant the log was 276
+                  // rows of history with the handful that still matter buried
+                  // inside it. It is not deleted — the row stays in the task
+                  // table and the count still feeds the reports; it just stops
+                  // being on the screen whose whole job is "what is left".
+                  const handoffs = data.tasks
+                    .filter((t) => t.status === 'OPEN')
+                    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
                   const SHOWN = 25;
                   if (handoffs.length === 0) {
-                    return <div className="mini">Nothing has been handed over yet.</div>;
+                    return <div className="mini">Nothing waiting. Every time {ASSISTANT_NAME} cannot finish something himself, the card appears here with everything needed to work out why.</div>;
                   }
                   return (
                     <>
                       {handoffs.slice(0, SHOWN).map((t) => {
                         const c = custById(t.customerId);
                         const e = explainHandoffReason(t.reason);
-                        const done = t.status === 'RESOLVED';
-                        // What the customer actually wrote. A burst of messages
-                        // is stored as one context joined by "---", so only the
-                        // LAST one is quoted — that is the message that was on
-                        // screen when Will gave up, and quoting four of them
-                        // turns the sentence back into a transcript.
-                        const wrote = (t.context ?? '').split(/\n?---\n?/).map((x) => x.trim()).filter(Boolean).pop() ?? '';
+                        // EVERY message in the burst, not just the last one.
+                        // A burst folds into one task joined by "---", and the
+                        // question is as often in the second message as the
+                        // first ("I was on a WHM visa from July 2025…" / "…so
+                        // can I still claim the tax-free threshold?").
+                        const wrote = (t.context ?? '')
+                          .split(/\n?---\n?/)
+                          .map((x) => x.trim())
+                          .filter(Boolean);
+                        // An unclassified reason means Will wrote it itself —
+                        // the 5-8 word headline the model is asked for. Plain
+                        // English already, and the only account of why THIS
+                        // handoff happened, so it is quoted rather than
+                        // paraphrased into the classifier's generic guess.
+                        const willsOwnWords = e.kind === 'other' && t.reason.trim()
+                          ? t.reason.trim().replace(/[.\s]+$/, '')
+                          : null;
                         return (
-                          <div key={t.id} className={`hoff ${done ? 'is-done' : ''}`} style={{ ['--tc' as string]: done ? 'var(--ink3)' : 'var(--warn)' }}>
+                          <div key={t.id} className="hoff" style={{ ['--tc' as string]: t.severity === 'URGENT' ? 'var(--crit)' : 'var(--warn)' }}>
                             <div className="hoff-top">
                               {/* Jo's rule everywhere in this dashboard: the
                                   WhatsApp number is the identity, the profile
                                   name is only a hint beside it. */}
                               <span className="hoff-who">{c ? phoneOf(c.waId) : (t.customerName ?? 'System — no customer')}</span>
                               {c?.name && <span className="hoff-name">{c.name}</span>}
+                              {/* Stage and language: two words that change what
+                                  the right fix is. The same question from a
+                                  lead and from someone who has already paid are
+                                  different problems, and a German message that
+                                  reached a person may have reached one because
+                                  the guard cannot read German. */}
+                              {c && <span className="hoff-meta">{stageLabelOf(c.state)}{c.lang ? ` · ${c.lang}` : ''}</span>}
                               <span className="hoff-when" title={new Date(t.createdAt).toLocaleString('en-AU', { timeZone: MEL_TZ })}>
                                 {new Date(t.createdAt).toLocaleString('en-AU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: MEL_TZ })}
                               </span>
-                              {done && <span className="hoff-done">resolved</span>}
                             </div>
 
-                            {/* Sentence one. The quote is dropped when there is
-                                nothing to quote — a nightly check and a failed
-                                send have no customer message behind them, and
-                                an empty pair of quotation marks would read as
-                                "they sent a blank message", which is false. */}
-                            <div className="hoff-said">
-                              {wrote
-                                ? <>The customer wrote <span className="hoff-quote">&ldquo;{previewLine(wrote)}&rdquo;</span> and because {e.because}, {ASSISTANT_NAME} passed it to you.</>
-                                : <>Because {e.because}, {ASSISTANT_NAME} passed this to you.</>}
+                            {wrote.length > 0 && (
+                              <div className="hoff-block">
+                                <div className="hoff-k">What they wrote</div>
+                                {wrote.map((line, i) => (
+                                  <div key={i} className="hoff-quote">&ldquo;{line}&rdquo;</div>
+                                ))}
+                              </div>
+                            )}
+
+                            <div className="hoff-block">
+                              <div className="hoff-k">Why {ASSISTANT_NAME} stopped</div>
+                              <div className="hoff-v">
+                                {willsOwnWords
+                                  ? <>{ASSISTANT_NAME}&apos;s own words: <span className="hoff-quote-inline">&ldquo;{willsOwnWords}&rdquo;</span></>
+                                  : e.because.charAt(0).toUpperCase() + e.because.slice(1)}
+                              </div>
+                              {/* The raw reason, always, and this is the line
+                                  that makes a screenshot of this card diagnosable.
+                                  It carries the exact rule codes on a guard block
+                                  — FORBIDDEN_AMOUNT:50.00, MYGOV_TROUBLESHOOTING —
+                                  which is the difference between "the guard fired"
+                                  and knowing WHICH pattern fired and whether it was
+                                  right to. It reads as machine text because it is;
+                                  it is small, last, and labelled as the technical
+                                  detail rather than dressed up as prose. */}
+                              <div className="hoff-raw" title={t.reason}>{t.reason}</div>
                             </div>
 
-                            {/* Sentence two. */}
+                            {/* What Will wanted to send. On a guard block this
+                                IS the evidence: the rule refused this exact
+                                text, so whether the rule was too broad can only
+                                be judged by reading it. */}
+                            {t.suggestedReply?.trim() && (
+                              <div className="hoff-block">
+                                <div className="hoff-k">What {ASSISTANT_NAME} wanted to send</div>
+                                <div className="hoff-quote">&ldquo;{t.suggestedReply.trim()}&rdquo;</div>
+                              </div>
+                            )}
+
                             <div className="hoff-prevent"><b>To stop this happening again:</b> {e.prevent}</div>
 
-                            {t.customerId && (
-                              <button className="hoff-open" onClick={() => { setView('chats'); openChat(t.customerId!); }}>
-                                Open this chat →
-                              </button>
-                            )}
+                            <div className="hoff-actions">
+                              <button
+                                className="hoff-open hoff-done-btn"
+                                onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Resolved'); refresh(); }}
+                              >✓ Resolved</button>
+                              {t.customerId && (
+                                <button className="hoff-open" onClick={() => { setView('chats'); openChat(t.customerId!); }}>
+                                  Open this chat →
+                                </button>
+                              )}
+                            </div>
                           </div>
                         );
                       })}

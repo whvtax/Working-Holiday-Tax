@@ -57,7 +57,7 @@ const RULES: Rule[] = [
     kind: 'guard',
     label: 'A rule refused Will’s message',
     because: 'Will had an answer ready and one of the hard rules refused to let it go out',
-    prevent: 'Open the Rules tab and find the rule named in the task. If it stopped something genuinely unsafe, this is the guard working and there is nothing to change. If it stopped a perfectly safe message, the rule is too broad and needs narrowing.',
+    prevent: 'Open the task and read the message it refused. If the rule stopped something genuinely unsafe, this is the guard working and there is nothing to change. If it stopped a perfectly safe message, the rule is too broad — that is a code change, so send it over.',
   },
   {
     match: /^Customer sent an attachment Will cannot read/i,
