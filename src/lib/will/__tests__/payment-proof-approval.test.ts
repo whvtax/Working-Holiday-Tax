@@ -45,6 +45,11 @@ beforeEach(() => {
   deliverOut.mockClear(); audit.mockClear(); assessPaymentProofImage.mockClear();
   getSetting.mockResolvedValue('SUPERVISED');
   customer.optedOut = false;
+  // Reset the RETURN VALUES too, not just the call counts. A test that makes
+  // the download fail used to leak that into every test after it, which is the
+  // kind of green-then-mysteriously-red that costs an hour to find.
+  fetchWaMedia.mockResolvedValue({ ok: true, body: new ArrayBuffer(4), mime: 'image/jpeg' });
+  assessPaymentProofImage.mockResolvedValue({ isProof: true, reason: 'bank transfer confirmation' });
 });
 
 it('SUPERVISED: drafts the confirmation and does NOT send or move the stage', async () => {
@@ -107,4 +112,59 @@ describe('a customer who opted out is never messaged, in any mode', () => {
     await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
     expect(assessPaymentProofImage).not.toHaveBeenCalled();
   });
+});
+
+// ── Two routes to trust (Jo, 27 Aug) ────────────────────────────────────────
+// Either the customer says they paid, or the screenshot shows it. Either one
+// alone is enough. Before this, the picture decided on its own — so a real
+// payment with an unreadable screenshot fell through to a manual task while
+// the words "just paid it!" sat in the caption being ignored.
+
+it('trusts the caption, without asking the vision check at all', async () => {
+  assessPaymentProofImage.mockResolvedValue({ isProof: false, reason: 'too blurry to tell' });
+
+  await handlePaymentProofMedia('61400000001', '📷 [Photo] just paid it!', {
+    media: { ...media, caption: 'just paid it!' },
+  });
+
+  // Not merely trusted despite the picture — the picture is never looked at,
+  // because a paid answer cannot become more paid and this is a paid API call.
+  expect(assessPaymentProofImage).not.toHaveBeenCalled();
+  expect(addMessage).toHaveBeenCalledWith(expect.objectContaining({ status: 'PENDING_APPROVAL' }));
+  expect(addTask).toHaveBeenCalledTimes(1);
+  expect(addTask.mock.calls[0][0].reason).toMatch(/they said they paid/);
+});
+
+it('trusts the words even when the photo cannot be downloaded from Meta', async () => {
+  // The customer's word does not depend on us being able to read their picture.
+  fetchWaMedia.mockResolvedValue({ ok: false, error: 'media expired' });
+
+  const result = await handlePaymentProofMedia('61400000001', '📷 [Photo] transferred this morning', {
+    media: { ...media, caption: 'transferred this morning' },
+  });
+
+  expect(result).not.toBeNull();
+  expect(addTask).toHaveBeenCalledTimes(1);
+});
+
+it('still trusts a confirmed screenshot when nothing was typed', async () => {
+  assessPaymentProofImage.mockResolvedValue({ isProof: true, reason: 'PayID receipt' });
+
+  await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+
+  expect(assessPaymentProofImage).toHaveBeenCalled();
+  expect(addTask.mock.calls[0][0].reason).toMatch(/PayID receipt/);
+});
+
+it('does NOT trust a caption that is asking about paying', async () => {
+  // The one thing that must not happen: a customer who has not paid getting the
+  // form, the thank-you, and a return started for them.
+  assessPaymentProofImage.mockResolvedValue({ isProof: false, reason: 'a screenshot of a form' });
+
+  const result = await handlePaymentProofMedia('61400000001', '📷 [Photo] how do I pay this?', {
+    media: { ...media, caption: 'how do I pay this?' },
+  });
+
+  expect(result).toBeNull();       // falls through to the normal manual task
+  expect(addTask).not.toHaveBeenCalled();
 });

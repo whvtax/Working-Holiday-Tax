@@ -17,6 +17,7 @@ import { firstNameOf } from './text-normalize';
 import { suggestReply } from './suggest';
 import { APPROVED } from './approved-messages';
 import { assessPaymentProofImage } from './claude';
+import { claimsPayment } from './payment-claim';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
 
@@ -279,7 +280,28 @@ async function handleIncomingInner(
     guard: {
       aiPaused: customer.aiPaused, killSwitch,
       optedOut: customer.optedOut, isLegacy: customer.isLegacy,
-      lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : new Date(),
+      // ── WE ARE INSIDE THE 24-HOUR WINDOW. BY DEFINITION. ──────────────
+      //
+      // This read `customer.lastCustomerMsgAt`, and `customer` is the row that
+      // was fetched at the TOP of this function — before addMessage() stored
+      // the message we are answering right now. So the timestamp was the one
+      // BEFORE this one, and the guard was being told how long the customer had
+      // been quiet BEFORE they broke the silence.
+      //
+      // For anyone who came back after more than a day, that produced
+      // OUTSIDE_24H_WINDOW_NEEDS_TEMPLATE on the reply to the message that
+      // reopened the window. The block was real: the reply was refused, a task
+      // was raised, and a person had to answer by hand. Found 27 Aug from a
+      // Decision Log card Jo sent (+44 7482 783185) whose reply was refused for
+      // exactly this while the customer was mid-conversation.
+      //
+      // It landed hardest on the customers Will exists to win back — the ones
+      // who go quiet, get a follow-up, and reply. Their first reply back was
+      // the one that could not be answered automatically.
+      //
+      // We are processing an inbound message from this customer at this moment.
+      // That IS the last customer message time, and Meta's window opens on it.
+      lastCustomerMsgAt: new Date(),
     },
   });
 
@@ -400,6 +422,18 @@ export async function handleInboundNote(
      *  something a human needs to answer, so it is recorded in the thread and
      *  raises no task. */
     reaction?: { emoji: string | null; to?: string };
+    /**
+     * What Meta actually called this, for a message that carried no text and no
+     * media. Jo, 27 Aug: a customer edited a typo, Meta delivered the edit as a
+     * bodiless event, and the card could only say "voice note or unsupported
+     * type" — which was wrong (it was neither) and told nobody anything.
+     *
+     * The type and the error code were already written to will_audit and were
+     * unreadable without SQL. They now travel to the task as well, so the next
+     * occurrence explains itself on the Decision Log card and the exact cause
+     * can be fixed rather than guessed at.
+     */
+    undecoded?: { type?: string; errorCode?: number | null; errorTitle?: string | null };
   },
 ): Promise<CustomerRow> {
   const store = getStore();
@@ -441,10 +475,22 @@ export async function handleInboundNote(
   // Owner's rule: 20 invoice photos in a row is ONE task to open, not 20 —
   // raiseOrUpdateTask folds this into whatever task is already open for this
   // customer instead of creating a fresh one per attachment.
+  // The two cases were one reason string, which made a voice note and a
+  // WhatsApp event Meta could not render look like the same problem. They are
+  // not: one needs somebody to listen to it, the other is usually not a message
+  // from the customer at all. Where Meta told us what it was, the reason says
+  // so — that is the line that turns the next card into a diagnosis.
+  const u = meta?.undecoded;
+  const metaDetail = u
+    ? [u.type ? `type=${u.type}` : null, u.errorCode ? `error=${u.errorCode}` : null, u.errorTitle]
+      .filter(Boolean).join(' ')
+    : '';
   await raiseOrUpdateTask(store, customer, {
     reason: meta?.media
       ? 'Customer sent an attachment Will cannot read. Open the chat to view it and reply.'
-      : 'Customer sent a message Will cannot read (voice note or unsupported type). Open WhatsApp to read it and reply.',
+      : meta?.undecoded
+        ? `WhatsApp delivered an event with no readable text${metaDetail ? ` (${metaDetail})` : ''}. It may not be a message from the customer at all — open WhatsApp to check.`
+        : 'Customer sent a voice note. Open WhatsApp to listen and reply.',
     severity: 'REVIEW', newContext: body,
     // Even here there is something worth proposing: an acknowledgement that the
     // attachment arrived, so the customer is not left on read while the owner
@@ -495,14 +541,40 @@ export async function handlePaymentProofMedia(
   // reply, however that payment reached us.
   if (!customer || customer.optedOut || customer.paid || !PAYABLE_STATES.includes(customer.state)) return null;
 
-  const fetched = await fetchWaMedia(meta.media.id);
-  if (!fetched.ok) {
-    await store.audit('system', 'payment_proof_check_skipped', { customerId: customer.id, reason: fetched.error });
-    return null;
+  // ── ROUTE 1: they said it. ────────────────────────────────────────────────
+  // Jo, 27 Aug: at the payment step we trust the customer, and most people send
+  // the screenshot AND type "paid" under it. This case used to be decided by
+  // the picture alone, so a real payment with a blurry crop, a bank app in
+  // Japanese, or a file Meta would not hand us fell through to a manual task
+  // while the words "just paid it!" sat in the caption being ignored.
+  //
+  // Checked BEFORE the download, so it also covers the case where the media
+  // fetch itself fails — the customer's word does not depend on us being able
+  // to read their picture.
+  const said = claimsPayment(meta.media.caption) || claimsPayment(body);
+  if (said) {
+    await store.audit('system', 'payment_claimed_in_words', {
+      customerId: customer.id, from: meta.media.caption ? 'caption' : 'body',
+    });
   }
-  const check = await assessPaymentProofImage(fetched.body, fetched.mime || meta.media.mime || '');
-  await store.audit('system', 'payment_proof_checked', { customerId: customer.id, isProof: check.isProof, reason: check.reason ?? null });
-  if (!check.isProof) return null; // not confirmed as payment — falls through to the manual task
+
+  // ── ROUTE 2: the picture shows it. ────────────────────────────────────────
+  // Only asked when they did not say it, because a paid answer cannot become
+  // more paid — and this is a paid model call on every attachment.
+  let check: { isProof: boolean; reason?: string } = { isProof: false };
+  if (!said) {
+    const fetched = await fetchWaMedia(meta.media.id);
+    if (!fetched.ok) {
+      await store.audit('system', 'payment_proof_check_skipped', { customerId: customer.id, reason: fetched.error });
+      return null;
+    }
+    check = await assessPaymentProofImage(fetched.body, fetched.mime || meta.media.mime || '');
+    await store.audit('system', 'payment_proof_checked', { customerId: customer.id, isProof: check.isProof, reason: check.reason ?? null });
+  }
+
+  // Either route is enough on its own.
+  if (!said && !check.isProof) return null; // neither — falls through to the manual task
+  const trustedBecause = said ? 'they said they paid' : (check.reason ?? 'the screenshot shows a payment');
 
   await store.addMessage({
     customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,
@@ -528,7 +600,7 @@ export async function handlePaymentProofMedia(
     });
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-      reason: `Customer sent proof of payment${check.reason ? ` (${check.reason})` : ''}. A "payment received" reply is drafted and waiting for your approval — nothing has been sent or moved yet.`,
+      reason: `Customer confirmed payment (${trustedBecause}). A "payment received" reply is drafted and waiting for your approval — nothing has been sent or moved yet.`,
       severity: 'REVIEW', context: body, suggestedReply: null,
     });
     await store.audit('system', 'payment_proof_drafted', { customerId: customer.id, mediaKind: meta.media.kind, messageId: draft.id });
@@ -545,7 +617,7 @@ export async function handlePaymentProofMedia(
   // anything is waiting on them.
   await store.addTask({
     customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-    reason: `Customer sent proof of payment${check.reason ? ` (${check.reason})` : ''}. Moved to Paid automatically — worth a glance to confirm it looks right.`,
+    reason: `Customer confirmed payment (${trustedBecause}). Moved to Paid automatically — worth a glance to confirm it looks right.`,
     severity: 'REVIEW', context: body, suggestedReply: null,
   });
 

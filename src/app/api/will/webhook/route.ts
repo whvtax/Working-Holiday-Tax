@@ -520,7 +520,18 @@ export async function POST(req: Request) {
       const isProofCandidate = (media?.kind === 'image' || media?.kind === 'document');
       const autoPaid = isProofCandidate ? await handlePaymentProofMedia(msg.from, body, { name, media: media! }) : null;
       if (!autoPaid) {
-        await handleInboundNote(msg.from, body, { name, media, reaction });
+        // For a bodiless, media-less event, pass Meta's own type and error
+        // through so the task can name it. It was already going to will_audit,
+        // where reading it needs SQL; on the task it reaches the Decision Log
+        // card, which is where the question actually gets asked.
+        const undecoded = (!media && !reaction)
+          ? {
+            type: msg.type,
+            errorCode: msg.errors?.[0]?.code ?? null,
+            errorTitle: msg.errors?.[0]?.title ?? null,
+          }
+          : undefined;
+        await handleInboundNote(msg.from, body, { name, media, reaction, undecoded });
       }
       await store.audit('channel', 'inbound_note_stored', { id: msg.id, kind, hasMedia: !!media, from: maskWa(msg.from), autoPaid: !!autoPaid });
     } catch { /* best effort: the placeholder is a courtesy, not the lead itself */ }

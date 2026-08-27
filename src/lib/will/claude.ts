@@ -9,6 +9,7 @@ import { APPROVED } from './approved-messages';
 import { CustomerState } from './state-machine';
 import { getStore } from './store';
 import { LostAnalysis, LOST_CATEGORIES, validateLostAnalysis } from './lost-leads';
+import { claimsPayment } from './payment-claim';
 
 export interface Turn { role: 'customer' | 'assistant'; text: string }
 
@@ -500,13 +501,13 @@ const ALREADY_FILED = /\b(already (lodged|filed|submitted|did (it|my (tax )?retu
 const WANTS_REVIEW = /\b(check|review|correct|wrong|mistake|amend|look at|verify|fix)\b/i;
 
 // M3: a real payment confirmation, not "I paid attention to your ad".
-function looksLikePayment(text: string): boolean {
-  const t = text.toLowerCase().trim();
-  if (/\b(transferred|bank transfer|payment (?:sent|done|made|received)|sent (?:the )?(?:money|payment)|just paid|already paid|paid the fee|paid you|paid it|paid now|paid \$|paid today)\b/.test(t)) return true;
-  const words = t.split(/\s+/).filter(Boolean).length;
-  if (words <= 4 && /\b(paid|done|sent it)\b/.test(t) && !/\b(attention|visit|mind|off)\b/.test(t)) return true;
-  return false;
-}
+//
+// One definition, shared with the attachment path (payment-claim.ts). There
+// used to be a copy here and nothing equivalent in service.ts, so the same
+// sentence was trusted when typed on its own and ignored when typed under a
+// screenshot. It also only understood English, which is a strange thing for a
+// system whose customers are Spanish, German and Japanese.
+const looksLikePayment = claimsPayment;
 
 function mockDecide(ctx: CustomerContext, history: Turn[]): Decision {
   const last = history.filter((t) => t.role === 'customer').at(-1)?.text ?? '';
