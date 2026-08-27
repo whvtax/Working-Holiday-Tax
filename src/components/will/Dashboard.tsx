@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
-import { explainHandoffReason } from '@/lib/will/handoff-reasons';
+import { explainHandoffReason, describeSystemPlaceholder, captionAfterPlaceholder } from '@/lib/will/handoff-reasons';
 import type { MonthConversion } from '@/lib/will/monthly-conversion';
 import type { AiUsage, SystemFault } from '@/lib/will/system-report';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
@@ -1538,18 +1538,14 @@ export default function Dashboard() {
                         {system.usage.callsTotal === 0 ? '—' : `≈ US$${system.usage.estimatedUsd.toFixed(2)}`}
                       </b>
                     </div>
-                    <div className="mini">
-                      {system.usage.usingMock
-                        ? `No API key is set, so nothing has been billed at all — ${ASSISTANT_NAME} is answering from the mock brain.`
-                        : <>
-                            Not a bill. Anthropic&apos;s billing is not connected to this dashboard, so this is
-                            {' '}{system.usage.callsTotal.toLocaleString('en-AU')} counted decisions × an assumed
-                            {' '}US${system.usage.assumedUsdPerCall.toFixed(2)} each{system.usage.firstDay ? `, since ${system.usage.firstDay}` : ''}.
-                            A long conversation costs more than a short one, and the payment-photo checks and the
-                            nightly Library mining are real paid calls that this counter never sees — so treat it
-                            as a floor, not a total. The real number is in the Anthropic console.
-                          </>}
-                    </div>
+                    {/* The long "not a bill" paragraph was removed here on
+                        27 Aug. The caveat itself is NOT optional — a dollar
+                        figure on a dashboard gets quoted, and this one is
+                        counted decisions times an assumed rate, not a bill. It
+                        survives where it cannot be skimmed past: the ESTIMATE
+                        ONLY flag on the row, and the full explanation on the
+                        number's hover. What went was six lines of small grey
+                        text under a single number. */}
                   </>
                 )}
 
@@ -1641,7 +1637,7 @@ export default function Dashboard() {
                             </span>
                           ))}
                         </div>
-                        <div className="mini">Each one is a live probe, re-run every 45 seconds — the database is read, Meta is asked whether the number really works, and a known-bad message is put through the guard to confirm it still blocks. Hover any of them for the detail.</div>
+                        <div className="mini">Each one is a live probe, re-run every 45 seconds. the database is read, Meta is asked whether the number really works, and a known bad message is put through the guard to confirm it still blocks.</div>
                       </>
                     );
                   }
@@ -1852,9 +1848,11 @@ export default function Dashboard() {
                   ──────────────────────────────────────────────────────────── */}
               <div className="panel">
                 <h3>Decision Log <span className="cstate" style={{ ['--sc' as string]: 'var(--warn)' }}>HANDOFFS</span></h3>
-                <div className="psub">
-                  Every time {ASSISTANT_NAME} could not finish something himself. Each card carries everything needed to work out why — screenshot one and send it over. Mark it Resolved and it goes.
-                </div>
+                {/* Jo, 27 Aug: the standing subtitle and the empty state said
+                    the same thing twice, once above every card and once in
+                    place of them. They merged into the empty state, which is
+                    the only moment the explanation is needed — when there are
+                    cards, the cards are the explanation. */}
 
                 {/* Clearing the backlog. Two clicks rather than a dialog: a
                     browser confirm() freezes the whole extension bridge, and a
@@ -1903,7 +1901,7 @@ export default function Dashboard() {
                     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
                   const SHOWN = 25;
                   if (handoffs.length === 0) {
-                    return <div className="mini">Nothing waiting. Every time {ASSISTANT_NAME} cannot finish something himself, the card appears here with everything needed to work out why.</div>;
+                    return <div className="mini">Nothing waiting. When {ASSISTANT_NAME} can&rsquo;t finish something, a card appears with everything needed to understand why. Screenshot it, send it over, and mark it Resolved.</div>;
                   }
                   return (
                     <>
@@ -1949,10 +1947,30 @@ export default function Dashboard() {
 
                             {wrote.length > 0 && (
                               <div className="hoff-block">
-                                <div className="hoff-k">What they wrote</div>
-                                {wrote.map((line, i) => (
-                                  <div key={i} className="hoff-quote">&ldquo;{line}&rdquo;</div>
-                                ))}
+                                <div className="hoff-k">What arrived</div>
+                                {wrote.map((line, i) => {
+                                  // A stand-in the webhook wrote is described as
+                                  // an event; only the customer's own words are
+                                  // put in quotation marks. Quoting our own
+                                  // "[Message — open WhatsApp to view]" back as
+                                  // theirs was both false and, on the one
+                                  // handoff that means "there is nothing to
+                                  // read", actively misleading.
+                                  const asEvent = describeSystemPlaceholder(line);
+                                  if (asEvent) {
+                                    const caption = captionAfterPlaceholder(line);
+                                    return (
+                                      <div key={i} className="hoff-event">
+                                        {asEvent}. {ASSISTANT_NAME} reads text, so there was nothing here for him to work with — open WhatsApp to see it.
+                                        {/* A caption IS the customer's own words,
+                                            so it is quoted even though the thing
+                                            in front of it is not. */}
+                                        {caption && <span className="hoff-quote-inline"> They added: &ldquo;{caption}&rdquo;</span>}
+                                      </div>
+                                    );
+                                  }
+                                  return <div key={i} className="hoff-quote">&ldquo;{line}&rdquo;</div>;
+                                })}
                               </div>
                             )}
 

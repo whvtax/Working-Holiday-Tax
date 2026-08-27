@@ -164,3 +164,60 @@ export function explainHandoffReason(reason: string): HandoffExplanation {
 export function isTemplateShaped(reason: string): boolean {
   return explainHandoffReason(reason).kind === 'other';
 }
+
+// ============================================================
+// Messages the SYSTEM wrote into a chat, not the customer.
+//
+// Jo, 27 Aug: "when the system puts a message like that in the chat, I want it
+// explained in the same place."
+//
+// When WhatsApp delivers something with no text in it — a photo, a voice note,
+// a sticker, a Coexistence `unsupported` payload — the webhook stores a
+// stand-in so the thread does not have a hole in it (placeholderFor() in
+// api/will/webhook/route.ts), and that stand-in becomes the task's context.
+//
+// Which means the Decision Log was printing:
+//
+//     The customer wrote "📎 [Message — open WhatsApp to view]"
+//
+// They wrote no such thing. We did. It is our own text quoted back as theirs,
+// and on the one kind of handoff where the whole point is "there is nothing to
+// read", it manages to look like there was something to read.
+//
+// So the card asks here first. A recognised stand-in is described as an event
+// — what arrived, and what to do about it — and only genuine customer text is
+// ever put in quotation marks.
+// ============================================================
+
+/** What actually arrived, for a stand-in the webhook wrote. Null when the text
+ *  is the customer's own words, which is the common case and the default. */
+export function describeSystemPlaceholder(text: string): string | null {
+  const t = (text ?? '').trim();
+  if (!t) return null;
+  // Matched on the same literals placeholderFor() emits. A test pins the two
+  // lists together, because a new message type added there and not here would
+  // silently go back to being quoted as if the customer had typed it.
+  if (/^📷 \[Photo\]/.test(t))                return 'They sent a photo';
+  if (/^🎥 \[Video\]/.test(t))                return 'They sent a video';
+  if (/^🎤 \[Voice message\]/.test(t))        return 'They sent a voice message';
+  if (/^📄 \[Document/.test(t)) {
+    const name = t.match(/^📄 \[Document: ([^\]]+)\]/)?.[1];
+    return name ? `They sent a document (${name})` : 'They sent a document';
+  }
+  if (/^💟 \[Sticker\]/.test(t))              return 'They sent a sticker';
+  if (/^📍 \[Location\]/.test(t))             return 'They shared their location';
+  if (/^👤 \[Contact card\]/.test(t))         return 'They sent a contact card';
+  if (/^📎 \[Message — open WhatsApp to view\]/.test(t)) {
+    return 'WhatsApp delivered a message with no readable text in it — the kind Meta cannot render for us at all';
+  }
+  return null;
+}
+
+/** Anything the customer typed alongside a stand-in. A photo caption is real
+ *  customer text and is worth quoting; the stand-in in front of it is not. */
+export function captionAfterPlaceholder(text: string): string | null {
+  const t = (text ?? '').trim();
+  if (!describeSystemPlaceholder(t)) return null;
+  const rest = t.replace(/^(?:📷 \[Photo\]|🎥 \[Video\]|🎤 \[Voice message\]|📄 \[Document(?::[^\]]*)?\]|💟 \[Sticker\]|📍 \[Location\]|👤 \[Contact card\]|📎 \[Message — open WhatsApp to view\])/, '').trim();
+  return rest || null;
+}

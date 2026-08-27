@@ -870,3 +870,9 @@ aside.side{
   border:1px solid color-mix(in srgb,var(--done) 22%, transparent);
   padding:2px 8px;border-radius:999px;white-space:nowrap;cursor:default;
 }
+
+/* A message the SYSTEM wrote into the thread, described rather than quoted:
+   a photo, a voice note, a payload Meta could not render. Deliberately NOT
+   .hoff-quote — no quotation marks, no bordered well — because the whole point
+   of the distinction is that nobody said these words. */
+.will-scope .hoff-event{font-size:11.5px;line-height:1.55;color:var(--ink2);margin-top:3px}
