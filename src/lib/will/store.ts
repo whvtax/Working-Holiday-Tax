@@ -90,7 +90,7 @@ export interface TemplateRow {
 export interface JobRow {
   id: string;
   customerId: string | null;
-  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST';
+  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS';
   payload: {
     templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
     /** AUTO_REPLY only: the QUEUED message this job will transmit. */
@@ -125,6 +125,32 @@ export interface StateHistoryRow {
   to: CustomerState;
   causedBy: string;
   createdAt: string;
+}
+
+/** One stored post-mortem for a lead that never paid (migration 031).
+ *  Written ONLY by the nightly LOST_ANALYSIS job; read by /api/will/lost and
+ *  the dashboard's Lost Leads view. It never reaches a customer — there is no
+ *  draft, message or template field here on purpose. */
+export interface LostAnalysisRow {
+  customerId: string;
+  /** Snapshot of the lead as it was when analysed, so the report still reads
+   *  correctly if the customer later reactivates. */
+  state: CustomerState;
+  triggerKind: string;           // 'declined' | 'opted_out' | 'auto_closed' | 'silent'
+  quietDays: number;
+  hoursPriceToSilence: number | null;
+  status: 'OK' | 'ERROR';
+  error: string | null;
+  attempts: number;
+  reason: string;
+  category: string;
+  shouldHaveDone: string;
+  fault: string;                 // OURS | PARTLY_OURS | NOT_OURS
+  recoverable: string;           // YES | MAYBE | NO
+  recoveryAction: string | null;
+  evidenceQuote: string | null;
+  confidence: number;
+  analysedAt: string;
 }
 
 export interface AuditRow {
@@ -203,9 +229,19 @@ export interface Store {
   updateTask(id: string, patch: Partial<Pick<TaskRow, 'reason' | 'context' | 'suggestedReply' | 'severity'>>): Promise<void>;
 
   listTemplates(): Promise<TemplateRow[]>;
-  addTemplate(t: { category: string; title: string; body: string }): Promise<TemplateRow>;
+  /** `key` is optional: the owner adding a message from the Library gets a
+   *  generated `custom_…` key, while the seed backfill passes the stable key the
+   *  send path looks the message up by (e.g. 'estimate_invoice'). */
+  addTemplate(t: { category: string; title: string; body: string; key?: string }): Promise<TemplateRow>;
   updateTemplate(id: string, body: string): Promise<void>;
   deleteTemplate(id: string): Promise<void>;
+
+  // ── Lost-lead post-mortems (migration 031) ──
+  /** Every stored post-mortem, newest first. Read-only for the UI. */
+  listLostAnalyses(): Promise<LostAnalysisRow[]>;
+  /** Insert or replace the post-mortem for one customer. Keyed by customerId,
+   *  so re-running the nightly job is idempotent rather than duplicating. */
+  upsertLostAnalysis(row: LostAnalysisRow): Promise<void>;
 
   audit(actor: string, action: string, detail?: unknown): Promise<void>;
   /** Most recent audit rows, newest first (decision log for review). */
@@ -244,6 +280,12 @@ export interface Store {
   listUpcomingJobs(limit: number): Promise<JobRow[]>;
   /** PERF-04: cheap existence check for a queued nightly job. */
   hasScheduledNightly(): Promise<boolean>;
+  /** Cheap existence check for a queued job of any kind — the generic form of
+   *  `hasScheduledNightly`. Use this instead of scanning `listJobs()` to answer
+   *  "is one of these already queued?": that scan silently truncates at
+   *  PostgREST's 1000-row ceiling and starts answering "no" on a busy table,
+   *  which schedules a duplicate. */
+  hasScheduledJobOfKind(kind: JobRow['kind']): Promise<boolean>;
   getJob(id: string): Promise<JobRow | null>;
   setJobStatus(id: string, status: JobRow['status']): Promise<void>;
   /** Atomically move a SCHEDULED job to CLAIMED. Returns true if this caller won it. */
@@ -270,6 +312,15 @@ export interface Store {
    *  read-then-write spend cap did not hold across serverless instances, and it
    *  guards a paid API call reachable by anyone who messages the business. */
   bumpCounter?(key: string, limit: number): Promise<boolean>;
+
+  /** Optional: read back every counter bumpCounter has written whose key starts
+   *  with `prefix` (e.g. 'ai_calls:'). One query, not one per day.
+   *
+   *  This is what makes the paid-model usage visible on the dashboard at all:
+   *  the daily counters are the ONLY record this system keeps of how much Will
+   *  has been asked to think. Anthropic's billing is not connected to it, so
+   *  what comes back is a call count, never a measured dollar amount. */
+  listCounters?(prefix: string): Promise<{ key: string; value: number }[]>;
 }
 
 import { FileStore, lastPersistError as fileErr } from './store-file';

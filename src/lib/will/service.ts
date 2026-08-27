@@ -18,6 +18,7 @@ import { suggestReply } from './suggest';
 import { APPROVED } from './approved-messages';
 import { assessPaymentProofImage } from './claude';
 import { resolveAiMode, requiresApproval } from './mode';
+import { aiBudgetExhausted } from './ai-budget';
 
 export interface HandleResult {
   outcome: EngineOutcome;
@@ -79,38 +80,17 @@ export function handleIncoming(
   return next;
 }
 
-// COST-01: a soft global ceiling on paid AI decisions per day. Configurable via
-// the 'ai_daily_budget' setting; defaults high enough to never bother real
-// traffic (5k customers/yr) but caps a runaway/abuse spend. Returns true when
-// the budget for today is already spent (caller then hands off to a human).
-const DEFAULT_AI_DAILY_BUDGET = 3000;
-async function aiBudgetExhausted(): Promise<boolean> {
-  const store = getStore();
-  const raw = await store.getSetting('ai_daily_budget');
-  // An explicit 0 means "stop spending", and must not be swallowed by `||`.
-  // The old expression turned a deliberate 0 back into the 3000 default, so the
-  // budget could not be used as an off switch.
-  const configured = Number(raw);
-  const budget = raw != null && Number.isFinite(configured) && configured >= 0
-    ? configured
-    : DEFAULT_AI_DAILY_BUDGET;
-  if (budget === 0) return true;
-
-  const key = 'ai_calls:' + new Date().toISOString().slice(0, 10);
-
-  // Atomic path (migration 029). The previous read-then-write advanced the
-  // counter by ~1 instead of N under concurrency, because every serverless
-  // instance read the same value before any of them wrote. That made the daily
-  // cap ineffective on exactly the path it exists to protect: a paid model call
-  // triggered by anyone who sends a WhatsApp message to the business number.
-  if (typeof store.bumpCounter === 'function') return store.bumpCounter(key, budget);
-
-  // Fallback for the dev file store, which is single-process by definition.
-  const used = Number((await store.getSetting(key)) ?? 0);
-  if (used >= budget) return true;
-  await store.setSetting(key, used + 1);
-  return false;
-}
+// COST-01: the daily paid-AI ceiling now lives in ai-budget.ts, so a background
+// job (the nightly lost-lead analysis) can spend against the SAME counter
+// without importing this file — service.ts imports the scheduler, and the
+// scheduler runs that job, so the import would close a cycle. Nothing about the
+// budget changed: same setting, same key, same atomic function.
+//
+// Re-exported here because /api/will/system and the dashboard's cost card
+// already import these three names from '@/lib/will/service'.
+export {
+  DEFAULT_AI_DAILY_BUDGET, aiCallsKeyPrefix, aiCallsKeyFor, resolveAiDailyBudget,
+} from './ai-budget';
 
 async function handleIncomingInner(
   waId: string,
@@ -488,7 +468,10 @@ export async function handlePaymentProofMedia(
 ): Promise<CustomerRow | null> {
   const store = getStore();
   const customer = await store.getCustomerByWaId(waId);
-  if (!customer || customer.paid || !PAYABLE_STATES.includes(customer.state)) return null;
+  // `optedOut` belongs in this condition exactly as it does on every other send
+  // path: a customer who asked us to stop must not receive a "payment received"
+  // reply, however that payment reached us.
+  if (!customer || customer.optedOut || customer.paid || !PAYABLE_STATES.includes(customer.state)) return null;
 
   const fetched = await fetchWaMedia(meta.media.id);
   if (!fetched.ok) {

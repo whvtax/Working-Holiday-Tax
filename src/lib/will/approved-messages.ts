@@ -132,4 +132,41 @@ We'll now send everything for final review. Once approved, I'll send it to you f
 If you have a minute, we'd really appreciate a Google review 🙏 {{REVIEW_LINK}}`,
 
   legitimacy: `Yes, absolutely! We operate under the supervision of a registered tax agent. You can find more details here: https://workingholidaytax.com.au/client-agreement`,
+
+  // ============================================================
+  // Messages that Will (or the team, through Will) can put in front of a
+  // customer but which used to be written inline in the code, so they were
+  // invisible in the Message Library and could not be edited without a deploy.
+  // Nothing below is new wording: each string is the exact text the code was
+  // already sending, moved here so seed.ts can expose it as a Library entry
+  // and the send path can read the (editable) Library copy instead.
+  // ============================================================
+
+  /** "Send Estimate + Invoice" button (Review stage). Interpolated at send
+   *  time: {{AMOUNT}} is the refund figure typed by the team, {{INVOICE_LINK}}
+   *  the invoice URL pasted with it. Both are filled by the action before the
+   *  message leaves, so a leftover placeholder is refused as it is anywhere. */
+  estimate_invoice: `Your estimated tax refund is {{AMOUNT}}.
+I'll send it for final review, then to you for signature.
+Here is your invoice: {{INVOICE_LINK}}`,
+
+  /** "Mark Lodged" button (Signature stage). Fixed text, including the Google
+   *  review link, exactly as it was sent from the action handler. Kept separate
+   *  from `lodged` above, which is the older wording with a {{REVIEW_LINK}}
+   *  placeholder; both exist in the code, so both are in the Library. */
+  lodged_confirmation: `Your tax return has been lodged successfully! ✅
+Your refund should arrive in your bank account within 14 business days.
+If you have a moment, we'd really appreciate a Google review 🙏
+https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8?g_st=ic`,
+
+  /** The proposed replies attached to a handoff task (see suggest.ts). They are
+   *  drafts for a human, but "Send Reply" transmits them verbatim in one click,
+   *  so they are messages a customer can receive and belong in the Library. */
+  handoff: {
+    holding: `Thanks for that 😊 Let me look into it properly and come straight back to you.`,
+    attachment: `Got it, thanks for sending that through 😊 I'll go through it and come back to you shortly.`,
+    unreadable: `Thanks for your message 😊 It didn't come through on my end, would you mind sending it again as text?`,
+    returning_customer: `Hey, good to hear from you again 😊 What can I help you with?`,
+    many_questions: `Thanks for all the questions 😊 Let me jump in personally and go through everything with you properly.`,
+  },
 } as const;

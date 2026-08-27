@@ -38,3 +38,12 @@ export function formReceivedMessage(lang?: string | null): string {
   const key = (lang && lang in FORM_RECEIVED_MSG ? lang : 'en') as Lang;
   return FORM_RECEIVED_MSG[key];
 }
+
+/** The Library key holding this language's copy of the confirmation above.
+ *  Every one of them is seeded (seed.ts), so the scheduler sends the OWNER'S
+ *  current wording and the constants here are only a fallback for a store that
+ *  cannot be read. Unknown languages fall back to English, same as the message. */
+export function formReceivedTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in FORM_RECEIVED_MSG ? lang : 'en') as Lang;
+  return `form_received_${key}`;
+}

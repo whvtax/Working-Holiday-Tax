@@ -2,9 +2,13 @@
 import { useState, useRef, useId, isValidElement, cloneElement } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
-import { isValidEmail, isPlausibleDob } from '@/lib/validate'
+import { isValidEmail, isPlausibleDob, dobInputRange } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
+
+/* Bounds for the date-of-birth picker, identical to what `isPlausibleDob`
+   accepts. Computed once per module load rather than per render. */
+const DOB_RANGE = dobInputRange()
 
 type UploadState = { file: File | null; preview: string | null }
 
@@ -253,7 +257,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" autoComplete="email" inputMode="email" maxLength={200} value={email} onChange={e=>{ setEmail(e.target.value); setErrors(p=>({...p,email:''})) }}/>
           </Field>
           <Field label={T('dob')} required error={errors.dob}>
-            <input type="date" className={`form-input${errors.dob?' input-error':''}`} autoComplete="bday" value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
+            <input type="date" className={`form-input${errors.dob?' input-error':''}`} autoComplete="bday" min={DOB_RANGE.min} max={DOB_RANGE.max} value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
           </Field>
           <Field label={T('whatsapp')} required error={errors.whatsapp}>
             <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+44 7700 900123" autoComplete="tel" inputMode="tel" maxLength={30} value={whatsapp} onChange={e=>{ setWhatsapp(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p=>({...p,whatsapp:''})) }} onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>

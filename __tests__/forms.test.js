@@ -135,8 +135,12 @@ describe('isNdaCountry: matches official names and common real-world spellings',
   test('matches common UK aliases people actually type', () => {
     expect(isNdaCountry('UK')).toBe(true)
     expect(isNdaCountry('U.K.')).toBe(true)
+    expect(isNdaCountry('GB')).toBe(true)
     expect(isNdaCountry('England')).toBe(true)
     expect(isNdaCountry('Scotland')).toBe(true)
+    expect(isNdaCountry('Wales')).toBe(true)
+    expect(isNdaCountry('Northern Ireland')).toBe(true)
+    expect(isNdaCountry('Britain')).toBe(true)
     expect(isNdaCountry('Great Britain')).toBe(true)
   })
 
@@ -145,10 +149,59 @@ describe('isNdaCountry: matches official names and common real-world spellings',
     expect(isNdaCountry('german')).toBe(true)
   })
 
+  // The form is offered in German, so German spellings arrive in the free-text
+  // home-country field. These were all missed by the copy that used to run.
+  test('matches German-language country names, accented and unaccented', () => {
+    expect(isNdaCountry('Großbritannien')).toBe(true)
+    expect(isNdaCountry('Grossbritannien')).toBe(true)
+    expect(isNdaCountry('Vereinigtes Königreich')).toBe(true)
+    expect(isNdaCountry('Vereinigtes Konigreich')).toBe(true)
+    expect(isNdaCountry('Finnland')).toBe(true)
+    expect(isNdaCountry('Norwegen')).toBe(true)
+    expect(isNdaCountry('Türkei')).toBe(true)
+    expect(isNdaCountry('Turkei')).toBe(true)
+  })
+
+  // The form is offered in Japanese. The copy that used to run recognised only
+  // 日本 out of all of these - a Japanese client typing ドイツ was not detected.
+  test('matches Japanese country names', () => {
+    expect(isNdaCountry('イギリス')).toBe(true)
+    expect(isNdaCountry('英国')).toBe(true)
+    expect(isNdaCountry('ドイツ')).toBe(true)
+    expect(isNdaCountry('日本')).toBe(true)
+    expect(isNdaCountry('チリ')).toBe(true)
+    expect(isNdaCountry('フィンランド')).toBe(true)
+    expect(isNdaCountry('イスラエル')).toBe(true)
+    expect(isNdaCountry('ノルウェー')).toBe(true)
+    expect(isNdaCountry('トルコ')).toBe(true)
+  })
+
+  test('matches native-language and endonym spellings', () => {
+    expect(isNdaCountry('Suomi')).toBe(true)
+    expect(isNdaCountry('Norge')).toBe(true)
+    expect(isNdaCountry('Nippon')).toBe(true)
+    expect(isNdaCountry('Türkiye')).toBe(true)
+    expect(isNdaCountry('Turkiye')).toBe(true)
+    expect(isNdaCountry('ישראל')).toBe(true)
+  })
+
   test('is case-insensitive and tolerates surrounding text', () => {
     expect(isNdaCountry('germany')).toBe(true)
+    expect(isNdaCountry('GERMANY')).toBe(true)
+    expect(isNdaCountry('gErMaNy')).toBe(true)
+    expect(isNdaCountry('TÜRKIYE')).toBe(true)
+    expect(isNdaCountry('großbritannien')).toBe(true)
     expect(isNdaCountry('  Japan  ')).toBe(true)
     expect(isNdaCountry('I am from Israel')).toBe(true)
+  })
+
+  test('tolerates stray whitespace: tabs, newlines and doubled spaces', () => {
+    expect(isNdaCountry('\tNorway\n')).toBe(true)
+    expect(isNdaCountry('United  Kingdom')).toBe(true)
+    expect(isNdaCountry('United\tKingdom')).toBe(true)
+    expect(isNdaCountry('  Deutschland  ')).toBe(true)
+    // Ideographic space, which a Japanese IME produces.
+    expect(isNdaCountry('　日本　')).toBe(true)
   })
 
   test('does not match non-NDA countries', () => {
@@ -157,12 +210,42 @@ describe('isNdaCountry: matches official names and common real-world spellings',
     expect(isNdaCountry('United States')).toBe(false)
     expect(isNdaCountry('Canada')).toBe(false)
     expect(isNdaCountry('South Korea')).toBe(false)
+    expect(isNdaCountry('Austria')).toBe(false)
+    expect(isNdaCountry('Österreich')).toBe(false)
+    expect(isNdaCountry('Iceland')).toBe(false)
+    expect(isNdaCountry('Netherlands')).toBe(false)
+    expect(isNdaCountry('Republic of Ireland')).toBe(false)
+    expect(isNdaCountry('アイルランド')).toBe(false)
+    expect(isNdaCountry('フランス')).toBe(false)
+    expect(isNdaCountry('韓国')).toBe(false)
+  })
+
+  // Short codes and country names must match whole words only, or a long
+  // non-NDA name containing them becomes a false hit.
+  test('short codes and country names never match inside a longer word', () => {
+    expect(isNdaCountry('Ukraine')).toBe(false)
+    expect(isNdaCountry('GBP')).toBe(false)
+    expect(isNdaCountry('Israelite')).toBe(false)
+    expect(isNdaCountry('Germanic')).toBe(false)
+    expect(isNdaCountry('Chilean')).toBe(false)
+    expect(isNdaCountry('Turkeys')).toBe(false)
   })
 
   test('handles empty / null / undefined input', () => {
     expect(isNdaCountry('')).toBe(false)
     expect(isNdaCountry('   ')).toBe(false)
+    expect(isNdaCountry('\t\n')).toBe(false)
     expect(isNdaCountry(null)).toBe(false)
     expect(isNdaCountry(undefined)).toBe(false)
+  })
+
+  // Guards the rule that the merge must not have changed WHICH countries are
+  // on the list - only how many spellings of each are recognised.
+  test('covers exactly the eight countries on the list, and no others', () => {
+    const { NDA_COUNTRIES } = require('@/lib/nda-countries')
+    expect([...NDA_COUNTRIES].sort()).toEqual([
+      'Chile', 'Finland', 'Germany', 'Israel', 'Japan', 'Norway', 'Turkey', 'United Kingdom',
+    ])
+    for (const name of NDA_COUNTRIES) expect(isNdaCountry(name)).toBe(true)
   })
 })

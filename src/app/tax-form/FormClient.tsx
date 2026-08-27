@@ -4,11 +4,15 @@ import { useState, useRef, useEffect, useId, isValidElement, cloneElement } from
 import { useSearchParams, useRouter } from 'next/navigation'
 import { WA_URL, WA_NUMBER, AGENT_TPB } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
-import { isValidEmail, isValidTfn, isPlausibleDob } from '@/lib/validate'
+import { isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
 import { FormStepper } from '@/components/ui/FormStepper'
 import { setTaxFormHandoff, getTaxFormHandoff, clearTaxFormHandoff, takeTaxFormSubmitted } from '@/lib/tax-form-handoff'
+
+/* Bounds for the date-of-birth picker, identical to what `isPlausibleDob`
+   accepts. Computed once per module load rather than per render. */
+const DOB_RANGE = dobInputRange()
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
@@ -558,45 +562,54 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 : lang === 'ja' ? 'ご連絡可能な番号をご記入ください。'
                 : 'The number we can reach you on.'}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+44 7XXX XXXXXX" autoComplete="tel" inputMode="tel" maxLength={30}
-                value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
+                enterKeyHint="next"
+                value={waNumber} onChange={e => { setWaNumber(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({...p, waNumber: ''})) }} />
             </Field>
 
             <Field label={T('auPhone')} required error={errors.auPhone}>
               <input className={`inp ${errors.auPhone ? 'inp-err' : ''}`} type="tel" placeholder="04XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30}
-                value={auPhone} onChange={e => { setAuPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({...p, auPhone: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
+                enterKeyHint="next"
+                value={auPhone} onChange={e => { setAuPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({...p, auPhone: ''})) }} />
             </Field>
 
             <Field label={T('givenNames')} required error={errors.fullName}>
               <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="Exactly as shown on your passport" autoComplete="given-name" maxLength={60}
+                enterKeyHint="next"
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
             </Field>
             <Field label={T('lastName')} required error={errors.lastName}>
               <input className={`inp ${errors.lastName ? 'inp-err' : ''}`} type="text" placeholder="As shown on your passport" autoComplete="family-name" maxLength={60}
+                enterKeyHint="next"
                 value={lastName} onChange={e => { setLastName(e.target.value); setErrors(p => ({...p, lastName: ''})) }} />
             </Field>
 
             <Field label={T('dob')} required error={errors.dob}>
               <input className={`inp ${errors.dob ? 'inp-err' : ''}`} type="date" autoComplete="bday"
+                min={DOB_RANGE.min} max={DOB_RANGE.max} enterKeyHint="next"
                 value={dob} onChange={e => { setDob(e.target.value); setErrors(p => ({...p, dob: ''})) }} />
             </Field>
 
             <Field label={T('tfn')} required error={errors.tfn}>
               <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric"
-                value={tfn} onChange={e => { setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, tfn: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
+                enterKeyHint="next"
+                value={tfn} onChange={e => { setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, tfn: ''})) }} />
             </Field>
 
             <Field label={T('email')} required error={errors.email}>
               <input className={`inp ${errors.email ? 'inp-err' : ''}`} type="email" placeholder="your@email.com" autoComplete="email" inputMode="email" maxLength={200}
+                enterKeyHint="next"
                 value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ''})) }} />
             </Field>
 
             <Field label={T('addressShort')} required error={errors.address}>
               <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12 Smith Street, Bondi NSW 2026" autoComplete="street-address" maxLength={300}
+                enterKeyHint="next"
                 value={address} onChange={e => { setAddress(e.target.value); setErrors(p => ({...p, address: ''})) }} />
             </Field>
 
             <Field label={T('primaryJob')} required error={errors.primaryJob}>
               <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista"
+                enterKeyHint="done"
                 value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
             </Field>
 
@@ -604,11 +617,16 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <div className="errors-banner">
                 <strong>{T('fixBeforeSubmit')}</strong>
                 <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
+                  {/* Each field is named with the SAME label key the field itself
+                      renders above, and joined with the translated `fieldIsRequired`
+                      — matching how tfn-form and abn-form already do it. This list
+                      previously hardcoded English names and " is required", so the
+                      German and Japanese forms showed an English error summary. */}
                   {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
                     <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === T('required') ? `${({
-                      waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',lastName:'Last Name',
-                      dob:'Date of Birth',tfn:'TFN',email:'Email Address',address:'Australian Address',primaryJob:'Primary Job',
-                    } as Record<string,string>)[k] || k} is required` : v}</li>
+                      waNumber:T('whatsapp'),auPhone:T('auPhone'),fullName:T('givenNames'),lastName:T('lastName'),
+                      dob:T('dob'),tfn:T('tfn'),email:T('email'),address:T('addressShort'),primaryJob:T('primaryJob'),
+                    } as Record<string,string>)[k] || k} ${T('fieldIsRequired')}` : v}</li>
                   ))}
                 </ul>
               </div>
@@ -693,11 +711,13 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
             <Field label={T('homeCountry')} required error={errors.country}>
               <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60}
+                enterKeyHint="next"
                 value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
             </Field>
 
             <Field label={T('howHeard')} required error={errors.howHeard}>
               <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
+                enterKeyHint="done"
                 value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
             </Field>
 
@@ -744,14 +764,19 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <div className="errors-banner">
               <strong>{T('fixBeforeSubmit')}</strong>
               <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
+                {/* Same wiring as step 1's summary above: the field's own label key
+                    plus the translated `fieldIsRequired`, instead of hardcoded
+                    English names. (`taxStatus` is dropped: no error is ever set
+                    under that key in this file, and it has no translated label —
+                    an unreachable entry is not worth inventing copy for.) */}
                 {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
                   <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === T('required') ? `${({
-                    waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
-                    email:'Email Address',address:'Australian Address',country:'Home Country',
-                    dob:'Date of Birth',marital:'Marital Status',hasMedicare:'Medicare',tfn:'TFN',
-                    primaryJob:'Primary Job',bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
-                    taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
-                  } as Record<string,string>)[k] || k} is required` : v}</li>
+                    waNumber:T('whatsapp'),auPhone:T('auPhone'),fullName:T('givenNames'),lastName:T('lastName'),
+                    email:T('email'),address:T('addressShort'),country:T('homeCountry'),
+                    dob:T('dob'),marital:T('marital'),hasMedicare:T('hasMedicare'),tfn:T('tfn'),
+                    primaryJob:T('primaryJob'),bankStatement:T('bankStatements'),selfiePassport:T('selfieWithPassport'),
+                    declared:T('sectionDeclaration'),howHeard:T('howHeard')
+                  } as Record<string,string>)[k] || k} ${T('fieldIsRequired')}` : v}</li>
                 ))}
               </ul>
             </div>

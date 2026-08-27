@@ -8,6 +8,7 @@ import { buildSystemPrompt, CustomerContext, LiveTemplates } from './playbook';
 import { APPROVED } from './approved-messages';
 import { CustomerState } from './state-machine';
 import { getStore } from './store';
+import { LostAnalysis, LOST_CATEGORIES, validateLostAnalysis } from './lost-leads';
 
 export interface Turn { role: 'customer' | 'assistant'; text: string }
 
@@ -326,6 +327,163 @@ export async function mineKnowledge(
     } catch { /* skip this batch, continue */ }
   }
   return out;
+}
+
+// ============================================================
+// Lost-lead post-mortem: read one conversation that did NOT end in a payment
+// and say honestly why, what should have been done differently, and whether it
+// can still be recovered.
+//
+// FOR THE OWNER ONLY. Nothing this returns is ever shown to a customer, drafted
+// as a reply, or turned into a template — there is no path from here to an
+// outbound message, deliberately.
+//
+// Same hardening as decide() above: forced tool call, timeout, one retry with
+// jitter on 429/5xx, and strict validation of the result (lost-leads.ts). A
+// failure returns { error } rather than throwing, so the nightly job records it
+// and moves to the next lead instead of dying halfway through the batch.
+// ============================================================
+export interface LostLeadEvidence {
+  /** "Sarah (…123)" — never the full number, this ends up in a stored report. */
+  label: string;
+  stateLabel: string;
+  /** Why the system considers this lead lost (declined / cold / silent …). */
+  lostBecause: string;
+  income: string;
+  lang: string | null;
+  /** Human summary of the timing, built by lost-analysis.ts. */
+  timingSummary: string;
+  /** The conversation, redacted, oldest first. */
+  transcript: string;
+  /** The state transitions with their timestamps. */
+  stateHistory: string;
+}
+
+const POSTMORTEM_TOOL = {
+  name: 'post_mortem',
+  description: 'Your honest assessment of why this lead did not become a paying client.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      reason: {
+        type: 'string',
+        description: 'One or two sentences: why THIS lead did not convert. Specific to this conversation, not a generic sales truism. If the conversation does not actually say why, say that plainly.',
+      },
+      category: {
+        type: 'string',
+        enum: [...LOST_CATEGORIES],
+        description: 'The single closest bucket. Use "unclear" when the evidence genuinely does not support one of the others — a wrong bucket is worse than an honest "unclear", because these are counted and the counts are what the owner acts on.',
+      },
+      should_have_done: {
+        type: 'string',
+        description: 'What specifically should have been done differently, naming the moment in the conversation. If the answer is that nothing should have been done differently, write exactly that and say why — that is a correct and useful answer, not a cop-out.',
+      },
+      fault: {
+        type: 'string',
+        enum: ['OURS', 'PARTLY_OURS', 'NOT_OURS'],
+        description: 'OURS: a mistake or omission on our side cost this lead. PARTLY_OURS: we could have done better but the outcome was likely anyway. NOT_OURS: nothing was done wrong, this lead was never going to convert.',
+      },
+      recoverable: {
+        type: 'string',
+        enum: ['YES', 'MAYBE', 'NO'],
+        description: 'Could this specific person still become a client? NO for someone who asked us to stop, who has no Australian income to lodge, or who has already lodged elsewhere.',
+      },
+      recovery_action: {
+        type: 'string',
+        description: 'Required unless recoverable is NO: the one concrete move that would most likely win them back, in the owner\'s own hands. Not "follow up" — say what about, and why now.',
+      },
+      evidence_quote: {
+        type: 'string',
+        description: 'Optional: the single most telling line from the conversation, quoted verbatim, that supports your reason.',
+      },
+      confidence: { type: 'number', description: '0..1 — how well the conversation actually supports this reading.' },
+    },
+    required: ['reason', 'category', 'should_have_done', 'fault', 'recoverable', 'confidence'],
+  },
+} as const;
+
+const POSTMORTEM_SYSTEM = `You are an experienced sales and client-service reviewer looking at ONE conversation from "Working Holiday Tax", an Australian tax agency serving Working Holiday Makers (backpackers). A tax return is a fixed fee: $220 for TFN-only, $385 when there is also an ABN. Payment is upfront, and there is a guarantee that if the refund comes to less than the fee, the difference is refunded. The team cannot give personalised tax advice, quote a refund figure, or decide residency before someone has paid — that is a professional obligation, not a sales choice.
+
+This lead did NOT pay. You are writing a private post-mortem for the business owner. It will never be shown or sent to the customer, so write for the owner, plainly.
+
+BE HONEST ABOVE ALL ELSE. A large share of leads that do not convert were never going to: a backpacker with no Australian income, someone who already lodged, a wrong number, a person who simply stopped answering with no reason given. When that is the truth, say so — "nothing was done wrong, this lead was never going to convert" is a complete and correct answer, and you should give it whenever it fits. Do NOT manufacture a fault to have something to report. A post-mortem that always finds fault is worse than useless: the owner will stop reading it, and the real failures will be buried among invented ones.
+
+Equally, do not soften a real failure. If a question went unanswered, if a reply took days, if the price landed with no context and nobody followed up, if an objection was met with a script instead of an answer — name it, and name the message where it happened.
+
+The timing is often the whole story. Someone who read the price and never typed again is a different failure from someone who argued about it over three days, and both are different from someone who was still asking questions when the conversation stopped.
+
+What "should have been done differently" must be concrete and inside the rules above. Never suggest discounting, negotiating the fixed price, quoting a refund amount before payment, or giving tax advice before payment — those are not available and suggesting them makes the report unusable.
+
+Answer only by calling the post_mortem tool.`;
+
+/** Returns the validated analysis, or `{ error }` on any failure — no key, a
+ *  timeout, a bad status, a truncated response, or output that did not pass
+ *  validation. Never throws. */
+export async function analyseLostLead(
+  ev: LostLeadEvidence,
+): Promise<LostAnalysis | { error: string }> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  // No mock fallback here on purpose. decide() mocks because a customer is
+  // waiting and silence is not an option; a report can simply say it has not
+  // been generated, which is true. Inventing a post-mortem would be worse than
+  // an empty page.
+  if (!key) return { error: 'No Anthropic API key configured' };
+
+  const userContent = [
+    `Lead: ${ev.label}`,
+    `Stage when the conversation stopped: ${ev.stateLabel}`,
+    `Why the system counts this lead as lost: ${ev.lostBecause}`,
+    `Income type on file: ${ev.income}`,
+    `Language: ${ev.lang ?? 'unknown'}`,
+    '',
+    'TIMING',
+    ev.timingSummary,
+    '',
+    'STATE HISTORY',
+    ev.stateHistory || '(no transitions recorded)',
+    '',
+    'CONVERSATION (oldest first; long numbers and emails are redacted)',
+    ev.transcript || '(no messages on file)',
+  ].join('\n');
+
+  const body = JSON.stringify({
+    model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
+    max_tokens: 1024,
+    system: POSTMORTEM_SYSTEM,
+    tools: [POSTMORTEM_TOOL],
+    tool_choice: { type: 'tool', name: 'post_mortem' },
+    messages: [{ role: 'user', content: userContent.slice(0, 60000) }],
+  });
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        signal: AbortSignal.timeout(45_000),
+        headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+        body,
+      });
+      if (res.status === 429 || res.status >= 500) {
+        if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
+        return { error: `Claude API error ${res.status}` };
+      }
+      if (!res.ok) return { error: `Claude API error ${res.status}` };
+      const data = await res.json();
+      if (data.stop_reason === 'max_tokens') return { error: 'Model response truncated' };
+      const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
+        ?.find((bl) => bl.type === 'tool_use' && bl.name === 'post_mortem');
+      if (!tool?.input) return { error: 'Model returned no assessment' };
+      const parsed = validateLostAnalysis(tool.input);
+      // Never trust the shape. A half-formed answer is dropped rather than
+      // patched into something that looks complete in the report.
+      if (!parsed) return { error: 'Model returned an unusable assessment' };
+      return parsed;
+    } catch {
+      if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
+      return { error: 'Claude API unreachable' };
+    }
+  }
+  return { error: 'Claude API unreachable' };
 }
 
 // ---------- deterministic mock (no API key) ----------

@@ -144,6 +144,11 @@ export default function JapaneseBlogPage() {
           ui={blogUI}
           blogBasePath="/ja/blog"
           homePath="/ja"
+          categoryBasePath="/ja/blog/category"
+          // The Japanese Medicare hub is /medicare where English uses
+          // /medicare-and-other, so the filter pills get this locale's own
+          // slugs rather than reusing the English ones.
+          categorySlugs={Object.fromEntries(jaCategoryMeta.map(c => [c.category, c.slug]))}
         />
       </main>
       <MobileCta href={waUrl({ topic: "guide", lang: "ja" })} lang="ja" topic="guide" />

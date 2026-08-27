@@ -139,6 +139,11 @@ export default function GermanBlogPage() {
           ui={blogUI}
           blogBasePath="/de/blog"
           homePath="/de"
+          categoryBasePath="/de/blog/category"
+          // The German Medicare hub is /medicare where English uses
+          // /medicare-and-other, so the filter pills get this locale's own
+          // slugs rather than reusing the English ones.
+          categorySlugs={Object.fromEntries(deCategoryMeta.map(c => [c.category, c.slug]))}
         />
       </main>
       <MobileCta href={waUrl({ topic: "guide", lang: "de" })} lang="de" topic="guide" />

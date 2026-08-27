@@ -51,7 +51,11 @@ export async function POST(req: NextRequest) {
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
       const fa = await recordFailedAttemptRedis(redis as RedisClient, ip)
-      if (fa.locked && ADMIN_EMAIL) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
+      // Genuinely fire-and-forget now: `await` here made the alert block the
+      // login response, so the wrong-password reply waited on Resend. The
+      // function catches internally, so nothing can escape as an unhandled
+      // rejection; `void` marks the floating promise as intentional.
+      if (fa.locked && ADMIN_EMAIL) void sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 
@@ -92,6 +96,10 @@ export async function POST(req: NextRequest) {
   // No disconnect() - Redis singleton stays alive for warm instance reuse
 }
 
+/** Ceiling on a Resend call. Both calls sit on the login path, and neither had
+ *  one: a hanging request took the whole login with it. */
+const RESEND_TIMEOUT_MS = 8000
+
 async function sendOtpEmail(to: string, apiKey: string, otp: string): Promise<boolean> {
   if (!apiKey) return false
   const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
@@ -116,6 +124,9 @@ async function sendOtpEmail(to: string, apiKey: string, otp: string): Promise<bo
           </div>
         `,
       }),
+      // Without this, an unresponsive Resend holds the login request open until
+      // the platform kills it: the operator sees a hung login, not an error.
+      signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
     })
     if (!res.ok) { console.error('[Resend error]', res.status, await res.text()); return false }
     return true
@@ -137,5 +148,6 @@ async function sendSecurityAlert(to: string, apiKey: string, attempts: number) {
       subject: '⚠️ CRM login blocked',
       html:    `<p>${attempts} failed login attempts at ${time}</p>`,
     }),
+    signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
   }).catch(() => {}) // fire and forget - don't block the login response
 }

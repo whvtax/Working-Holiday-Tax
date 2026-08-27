@@ -6,12 +6,8 @@ import { guides, getGuideBySlug, getCategoryMeta, getCategoryColor } from '../da
 import GuideArticle from './GuideArticle'
 import StickyBreadcrumbs from './StickyBreadcrumbs'
 import CategoryHero from './CategoryHero'
-// The corpus was reframed on this date. dateModified previously mirrored
-// datePublished on every article, which told search engines nothing had
-// changed and was, after tonight, simply untrue.
-const CORPUS_REVISED = '2026-08-22'
 
-import { isoGuideDate } from '@/lib/blog-dates'
+import { isoGuideDate, guideModifiedIso } from '@/lib/blog-dates'
 import { GuideCta } from '@/components/ui/GuideCta'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
@@ -447,7 +443,13 @@ export default function GuidePage({ params }: Props) {
   // date only and never labels it as an update.
   const reviewedDate = (guide as { reviewed?: string }).reviewed
   const publishedIso = isoGuideDate(guide.date)
-  const modifiedIso = reviewedDate ? isoGuideDate(reviewedDate) : publishedIso
+  // The corpus was reframed on CORPUS_REVISED, and until now nothing read
+  // that constant: dateModified mirrored datePublished on every article, so
+  // guides revised in August 2026 told search engines they had not been
+  // touched since July 2024. guideModifiedIso applies the per-guide `reviewed`
+  // date where one exists, falls back to the corpus revision date, and clamps
+  // the result so it is never before publication and never in the future.
+  const modifiedIso = guideModifiedIso(publishedIso, undefined, reviewedDate)
 
   const articleLd = {
     '@context': 'https://schema.org',

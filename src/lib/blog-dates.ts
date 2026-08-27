@@ -41,3 +41,52 @@ export function formatGuideDateJa(s: string): string {
   if (!p) return s
   return `${p.y}年${p.m}月${p.d}日`
 }
+
+/**
+ * The date the guide corpus was last revised, in all three languages.
+ *
+ * This lived as an unread private constant in each of the three
+ * `blog/[slug]/page.tsx` files. It is the one date the codebase actually
+ * substantiates for a corpus-wide revision, so it lives here once and is
+ * imported by the three article pages and by the sitemap, which have to agree:
+ * an Article saying dateModified 2026-08-22 while the sitemap says lastmod
+ * 2024-07-01 for the same URL is worse than either alone.
+ *
+ * Only move this when the corpus is actually revised again.
+ */
+export const CORPUS_REVISED = '2026-08-22'
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
+
+/** Today as "YYYY-MM-DD", in UTC so it does not shift with the build machine. */
+function todayIso(): string {
+  return new Date().toISOString().slice(0, 10)
+}
+
+/**
+ * The dateModified / lastmod for one guide, as an ISO date.
+ *
+ * Precedence: an explicit per-guide `reviewed` date beats the corpus-wide
+ * revision date, which beats the publication date.
+ *
+ * Two invariants, both of which schema.org requires and Google enforces by
+ * dropping the field when they are broken:
+ *   - never earlier than datePublished;
+ *   - never in the future.
+ * Anything that does not parse as an ISO date falls back to the publication
+ * date, so a malformed constant understates the revision rather than
+ * asserting a date that cannot be justified.
+ *
+ * ISO dates sort lexicographically, so plain string comparison is correct here.
+ */
+export function guideModifiedIso(
+  publishedIso: string,
+  revisedIso: string = CORPUS_REVISED,
+  reviewedDate?: string,
+  today: string = todayIso(),
+): string {
+  const candidate = reviewedDate ? isoGuideDate(reviewedDate) : revisedIso
+  if (!ISO_DATE.test(candidate) || !ISO_DATE.test(publishedIso)) return publishedIso
+  const notFuture = ISO_DATE.test(today) && candidate > today ? today : candidate
+  return notFuture < publishedIso ? publishedIso : notFuture
+}

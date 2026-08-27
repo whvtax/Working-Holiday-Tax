@@ -168,9 +168,24 @@ function Pagination({
   )
 }
 
-function getCategorySlug(cat: Category): string {
-  const meta = categoryMeta.find(c => c.category === cat)
-  return meta?.slug ?? ''
+// English category slugs, keyed by category. The German and Japanese blogs
+// pass their own map because their Medicare hub is /medicare where English
+// uses /medicare-and-other.
+const EN_CATEGORY_SLUGS: Record<string, string> = Object.fromEntries(
+  categoryMeta.map(c => [c.category, c.slug])
+)
+
+function getCategorySlug(cat: Category, slugs: Record<string, string>): string {
+  return slugs[cat] ?? EN_CATEGORY_SLUGS[cat] ?? ''
+}
+
+/**
+ * A modifier-click, a middle-click or a right-click has to behave like a real
+ * link (new tab, copy address), so only a plain left click is intercepted to
+ * run the instant client-side filter instead of navigating.
+ */
+function isPlainLeftClick(e: React.MouseEvent): boolean {
+  return e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey
 }
 
 export type GuideCard = Omit<Guide, 'body'>
@@ -182,6 +197,8 @@ export default function BlogClient({
   ui = enUI,
   blogBasePath = '/blog',
   homePath = '/',
+  categoryBasePath = '/blog/category',
+  categorySlugs = EN_CATEGORY_SLUGS,
 }: {
   /**
    * Deliberately without `body`.
@@ -198,6 +215,11 @@ export default function BlogClient({
   ui?: BlogUIStrings
   blogBasePath?: string
   homePath?: string
+  /** Where this locale's category hubs live, e.g. '/de/blog/category'. */
+  categoryBasePath?: string
+  /** Category -> slug for this locale. Must be a plain object: it crosses the
+   *  server/client boundary, so it cannot be a function. */
+  categorySlugs?: Record<string, string>
 }) {
   const [page, setPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
@@ -355,12 +377,32 @@ export default function BlogClient({
             )}
           </div>
 
-          {/* Category filter pills */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            <button
-              onClick={() => handleCategoryChange('All')}
+          {/* Category filter pills.
+              These were <button>s that filtered client-side, which meant the
+              blog hub linked to 9 of 141 guides and to none of the six
+              category hubs: 396 pages across the three languages with no
+              crawlable route in. They are anchors now, pointing at the real
+              category page, and a plain left click still preventDefaults into
+              the same instant client-side filter - no navigation, no reload,
+              identical behaviour and identical styling. A crawler, which only
+              reads href, follows them to the category hubs, and each hub lists
+              every one of its articles unpaginated.
+              prefetch={false} because the click does not navigate: without it
+              Next would fetch seven full category pages the moment the pills
+              scroll into view on a phone. */}
+          <nav aria-label={ui.statsCategories} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            <Link
+              href={blogBasePath}
+              prefetch={false}
+              onClick={(e) => {
+                if (!isPlainLeftClick(e)) return
+                e.preventDefault()
+                handleCategoryChange('All')
+              }}
+              aria-current={activeCategory === 'All' ? 'true' : undefined}
               className="category-pill"
               style={{
+                textDecoration: 'none',
                 padding: '8px 16px',
                 borderRadius: '100px',
                 border: `1px solid ${activeCategory === 'All' ? '#E9A020' : '#E2EFE9'}`,
@@ -386,16 +428,24 @@ export default function BlogClient({
               }}>
                 {countsByCategory.All}
               </span>
-            </button>
+            </Link>
             {categories.map(cat => {
               const colors = getCategoryColor(cat)
               const isActive = activeCategory === cat
               return (
-                <button
+                <Link
                   key={cat}
-                  onClick={() => handleCategoryChange(cat)}
+                  href={`${categoryBasePath}/${getCategorySlug(cat, categorySlugs)}`}
+                  prefetch={false}
+                  onClick={(e) => {
+                    if (!isPlainLeftClick(e)) return
+                    e.preventDefault()
+                    handleCategoryChange(cat)
+                  }}
+                  aria-current={isActive ? 'true' : undefined}
                   className="category-pill"
                   style={{
+                    textDecoration: 'none',
                     padding: '8px 16px',
                     borderRadius: '100px',
                     border: `1px solid ${isActive ? colors.border : '#E2EFE9'}`,
@@ -421,10 +471,10 @@ export default function BlogClient({
                   }}>
                     {countsByCategory[cat] ?? 0}
                   </span>
-                </button>
+                </Link>
               )
             })}
-          </div>
+          </nav>
 
         </div>
       </section>

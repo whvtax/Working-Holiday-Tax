@@ -1862,7 +1862,7 @@ export default function DashboardClient() {
                   <span style={{fontSize:13,fontWeight:600,color:'var(--brand2)'}}>Married - Verify Status</span>
                 </div>
               )}
-              <div className="card" style={{padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14}}>
+              <div className="card" style={{padding:'14px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:14}}>
                 <div className="avatar lg" style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'var(--surface)',fontSize:16,fontWeight:700}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
                   <h2 className="vt">{displayName(activeTask.clientName)}</h2>
@@ -1903,8 +1903,13 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* 4 sections - adapted per taskType */}
-              <div style={{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',gap:12,marginBottom:12}}>
+              {/* 4 sections - adapted per taskType.
+                  rowGap is tighter than columnGap on purpose: the vertical gap
+                  is what pushes this view past the fold, the horizontal one is
+                  what keeps the two columns readable as separate cards. No
+                  marginBottom — this is the last thing in .pbody, and its own
+                  bottom padding already holds the record off the pinned .pfoot. */}
+              <div style={{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',columnGap:12,rowGap:9}}>
 
 
 
@@ -2247,7 +2252,7 @@ export default function DashboardClient() {
                   <table className="tbl">
                     <thead>
                       <tr>
-                        {['Name','WhatsApp','Email','Country','Source','Last refund'].map(h=>(
+                        {['Name','WhatsApp','Email','Country','Source'].map(h=>(
                           <th key={h}>{h}</th>
                         ))}
                       </tr>
@@ -2290,20 +2295,6 @@ export default function DashboardClient() {
                                   <div style={{display:'flex',alignItems:'center',gap:5}}>
                                     {isReferral && <span style={{fontSize:10}} title="Referral - someone referred this client">👤</span>}
                                     <span style={{color:isReferral?'var(--brand2)':'var(--ink3)',fontWeight:isReferral?600:400}}>{src}</span>
-                                  </div>
-                                )
-                              })()}
-                            </td>
-                            <td className="num">
-                              {(()=>{
-                                const lastTax = cl.taxReturns?.length
-                                  ? [...cl.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]
-                                  : null
-                                if (!lastTax) return <span style={{color:'var(--ink3)'}}>-</span>
-                                return (
-                                  <div>
-                                    <div style={{fontWeight:600,color:'var(--brand1)',whiteSpace:'nowrap' as const}}>{lastTax.year}</div>
-                                    <div style={{fontSize:11,color:'var(--ink3)'}}>{fmtCur(lastTax.refundAmount)}</div>
                                   </div>
                                 )
                               })()}

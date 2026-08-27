@@ -14,33 +14,53 @@
  * this matches common real-world spellings/aliases people actually type -
  * including German and Japanese country names, since the form UI is offered
  * in those languages.
+ *
+ * This is the ONLY implementation. A second, weaker copy used to live inline
+ * in ResidencyStep.tsx (the one that actually ran); it has been deleted and
+ * that component now imports this. The merge added only *spellings* the inline
+ * copy knew and this one did not - gb, Suomi, Norge, Nippon. The list of
+ * countries below is unchanged: both copies covered exactly these eight, so
+ * nothing was added to or removed from it. The country list is a tax fact;
+ * change it only on a deliberate decision, not as a side effect of a refactor.
  */
 export const NDA_COUNTRIES = [
   'United Kingdom', 'Germany', 'Japan', 'Chile', 'Finland', 'Israel', 'Norway', 'Turkey',
 ] as const
 
+/**
+ * One or more patterns per country. Latin aliases are matched case-insensitively
+ * on whole words, so short codes (uk, gb) can never fire inside a longer name
+ * ("Ukraine", "GBP"). Japanese and Hebrew names are matched as-is.
+ *
+ * Deliberately no Unicode NFD "strip the accents" pass over the input: NFD
+ * decomposes katakana dakuten too (ド -> ト + U+3099), which would break the
+ * Japanese names. Accented spellings are handled by the patterns themselves
+ * (t[üu]rkei, k[öo]nigreich, gro(ß|ss)britannien).
+ */
 const NDA_COUNTRY_PATTERNS: RegExp[] = [
   /\bchile\b/i,
   /チリ/,
-  /\bfinland\b|\bfinnland\b/i,
+  /\bfinland\b|\bfinnland\b|\bsuomi\b/i,
   /フィンランド/,
   /\bgermany\b|\bdeutschland\b|\bgerman\b/i,
   /ドイツ/,
   /\bisrael\b/i,
   /イスラエル/,
   /ישראל/,
-  /\bjapan\b/i,
+  /\bjapan\b|\bnippon\b/i,
   /日本/,
-  /\bnorway\b|\bnorwegen\b/i,
+  /\bnorway\b|\bnorwegen\b|\bnorge\b/i,
   /ノルウェー/,
   /\bturkey\b|\bturkiye\b|\bt[üu]rkiye\b|\bt[üu]rkei\b/i,
   /トルコ/,
-  /\b(united kingdom|u\.?k\.?|england|scotland|wales|northern ireland|britain|great britain|gro(ß|ss)britannien|vereinigtes k[öo]nigreich)\b/i,
+  /\b(united kingdom|u\.?k\.?|g\.?b\.?|england|scotland|wales|northern ireland|britain|great britain|gro(ß|ss)britannien|vereinigtes k[öo]nigreich)\b/i,
   /イギリス|英国/,
 ]
 
 export function isNdaCountry(raw: string | null | undefined): boolean {
-  const v = (raw ?? '').trim()
+  // Collapse runs of whitespace (including the ideographic space people get
+  // from a Japanese IME) so "United  Kingdom" is not a miss on a stray space.
+  const v = (raw ?? '').replace(/\s+/g, ' ').trim()
   if (!v) return false
   return NDA_COUNTRY_PATTERNS.some(re => re.test(v))
 }

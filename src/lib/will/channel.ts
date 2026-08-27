@@ -245,6 +245,20 @@ export async function deliverOut(
   template?: { name: string; params: string[]; lang?: string | null },
 ): Promise<{ ok: boolean; error?: string }> {
   const store = getStore();
+
+  // Last-resort opt-out guard. Every caller is supposed to check `optedOut`
+  // before getting here, and one of them (handlePaymentProofMedia) did not.
+  // Checking it at the single transmission point means a future caller cannot
+  // repeat that mistake. It returns rather than throws so a missed check
+  // degrades to "nothing was sent", never to a crashed handler — and it audits,
+  // so a caller that reaches this line is visible instead of silent.
+  if (customer.optedOut) {
+    await store.audit('channel', 'send_blocked_opted_out', {
+      customerId: customer.id, author, preview: body.slice(0, 120),
+    });
+    return { ok: false, error: 'customer opted out' };
+  }
+
   // REL-03 outbox: record the intended message as QUEUED FIRST, so if the send
   // succeeds but a later write throws, the fact that we messaged the customer is
   // already durable (never a silent double-send on retry). Then send, then
@@ -256,27 +270,49 @@ export async function deliverOut(
   const res = template?.name
     ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, template.lang ?? customer.lang)
     : await sendWhatsAppText(customer.waId, body);
-  await store.setMessageStatus(rec.id, res.ok ? 'SENT' : 'FAILED');
-  // So a reaction to this message later (which only carries Meta's id) can
-  // be matched back to this exact bubble instead of showing as a floating
-  // unattached line.
-  if (res.ok && res.providerId) await store.attachProviderId(rec.id, res.providerId);
-  // WhatsApp-real behaviour: the owner personally sending something to this
-  // customer IS them engaging with the conversation, exactly like replying
-  // on your phone clears the unread marker on your end. Only for a HUMAN
-  // send — an AI auto-reply doesn't mean the owner has actually looked at
-  // the chat, so it must not silently clear the bold/badge for them.
-  if (res.ok && author === 'HUMAN') await store.markCustomerRead(customer.id);
-  if (!res.ok) {
-    await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });
-    await store.addTask({
-      customerId: customer.id, customerName: customer.name ?? customer.waId,
-      reason: `WhatsApp send failed: ${res.error ?? 'unknown error'}`,
-      severity: 'REVIEW', context: body.slice(0, 200), suggestedReply: body,
-    });
+  // Once `res.ok` the customer HAS the message. From here on, a failing write is
+  // a bookkeeping problem, not a delivery problem: if it were allowed to throw,
+  // the caller would report a failed send, the operator would send again, and
+  // the customer would receive it twice. So the bookkeeping is wrapped, audited
+  // on failure, and the delivered send is still reported as delivered.
+  if (res.ok) {
+    try {
+      await store.setMessageStatus(rec.id, 'SENT');
+      // So a reaction to this message later (which only carries Meta's id) can
+      // be matched back to this exact bubble instead of showing as a floating
+      // unattached line.
+      if (res.providerId) await store.attachProviderId(rec.id, res.providerId);
+      // WhatsApp-real behaviour: the owner personally sending something to this
+      // customer IS them engaging with the conversation, exactly like replying
+      // on your phone clears the unread marker on your end. Only for a HUMAN
+      // send — an AI auto-reply doesn't mean the owner has actually looked at
+      // the chat, so it must not silently clear the bold/badge for them.
+      if (author === 'HUMAN') await store.markCustomerRead(customer.id);
+    } catch (e) {
+      await store.audit('channel', 'send_bookkeeping_failed', {
+        customerId: customer.id, messageId: rec.id, providerId: res.providerId ?? null,
+        error: e instanceof Error ? e.message : String(e),
+      }).catch(() => { /* the audit write is on the same store that just failed */ });
+    }
+    return { ok: true };
   }
-  return { ok: res.ok, error: res.error };
+
+  await store.setMessageStatus(rec.id, 'FAILED');
+  await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });
+  await store.addTask({
+    customerId: customer.id, customerName: customer.name ?? customer.waId,
+    reason: `WhatsApp send failed: ${res.error ?? 'unknown error'}`,
+    severity: 'REVIEW', context: body.slice(0, 200), suggestedReply: body,
+  });
+  return { ok: false, error: res.error };
 }
+
+/** Timeouts and size ceiling for the inbound-attachment path. `claude.ts` puts an
+ *  `AbortSignal.timeout` on every call it makes; these two were the only network
+ *  calls in the customer channel without one, on a route the public can trigger. */
+const MEDIA_LOOKUP_TIMEOUT_MS = 10_000;
+const MEDIA_DOWNLOAD_TIMEOUT_MS = 20_000;
+const MEDIA_MAX_BYTES = 8 * 1024 * 1024;
 
 /** Fetch one WhatsApp attachment from Meta.
  *
@@ -296,7 +332,7 @@ export async function fetchWaMedia(
   const auth = { Authorization: `Bearer ${token}` };
   try {
     const metaRes = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(mediaId)}`, {
-      headers: auth, cache: 'no-store',
+      headers: auth, cache: 'no-store', signal: AbortSignal.timeout(MEDIA_LOOKUP_TIMEOUT_MS),
     });
     if (!metaRes.ok) {
       return { ok: false, status: metaRes.status === 404 ? 404 : 502, error: `lookup failed (${metaRes.status})` };
@@ -307,11 +343,24 @@ export async function fetchWaMedia(
     // outright without a browser-like user agent.
     const fileRes = await fetch(info.url, {
       headers: { ...auth, 'User-Agent': 'WorkingHolidayTax-CRM/1.0' }, cache: 'no-store',
+      signal: AbortSignal.timeout(MEDIA_DOWNLOAD_TIMEOUT_MS),
     });
     if (!fileRes.ok) return { ok: false, status: 502, error: `download failed (${fileRes.status})` };
+    // Meta accepts uploads up to 100MB. Reading one into memory on a serverless
+    // function is an OOM, and an OOM on this path loses the customer's message.
+    // Refuse on the declared length BEFORE touching the bytes.
+    const declared = Number(fileRes.headers.get('content-length') ?? '');
+    if (Number.isFinite(declared) && declared > MEDIA_MAX_BYTES) {
+      return { ok: false, status: 413, error: `attachment too large (${Math.round(declared / 1024 / 1024)}MB, limit ${MEDIA_MAX_BYTES / 1024 / 1024}MB)` };
+    }
+    const bytes = await fileRes.arrayBuffer();
+    // Belt and braces: a chunked response declares no content-length at all.
+    if (bytes.byteLength > MEDIA_MAX_BYTES) {
+      return { ok: false, status: 413, error: `attachment too large (${Math.round(bytes.byteLength / 1024 / 1024)}MB, limit ${MEDIA_MAX_BYTES / 1024 / 1024}MB)` };
+    }
     return {
       ok: true,
-      body: await fileRes.arrayBuffer(),
+      body: bytes,
       mime: info.mime_type || fileRes.headers.get('content-type') || 'application/octet-stream',
     };
   } catch (e) {

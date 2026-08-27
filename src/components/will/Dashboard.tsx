@@ -6,12 +6,91 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
+import { explainHandoffReason } from '@/lib/will/handoff-reasons';
+import type { MonthConversion } from '@/lib/will/monthly-conversion';
+import type { AiUsage, SystemFault } from '@/lib/will/system-report';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 // The Simulator was removed on Jo's instruction, 25 Aug: with real WhatsApp
 // traffic flowing it had no use left, and a fake customer sitting in the
 // pipeline next to the real ones was a hazard rather than a help.
-type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'insights' | 'learning';
+type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'followups' | 'insights' | 'lost' | 'learning';
+
+/** Sidebar labels. Only needed where the view id is not the words we want. */
+const VIEW_LABELS: Partial<Record<View, string>> = { followups: 'Follow-ups', lost: 'Lost Leads' };
+
+// ────────────────────────────────────────────────────────────
+// Lost Leads report, as /api/will/lost returns it.
+//
+// Every post-mortem here is written for Jo and NOBODY else. There is no
+// "message them" button anywhere in this view and no draft is ever created
+// from it — the whole feature is read-only by construction.
+// ────────────────────────────────────────────────────────────
+interface LostAnalysisView {
+  reason: string;
+  category: string;
+  categoryLabel: string;
+  shouldHaveDone: string;
+  fault: 'OURS' | 'PARTLY_OURS' | 'NOT_OURS';
+  recoverable: 'YES' | 'MAYBE' | 'NO';
+  recoveryAction: string | null;
+  evidenceQuote: string | null;
+  confidence: number;
+  hoursPriceToSilence: number | null;
+  analysedAt: string;
+}
+interface LostRow {
+  customerId: string;
+  waId: string;
+  name: string | null;
+  flag: string;
+  state: CustomerState;
+  stateLabel: string;
+  lang: string | null;
+  trigger: string | null;
+  triggerLabel: string | null;
+  quietDays: number;
+  lostBecause: string;
+  analysis: LostAnalysisView | null;
+  failure: { error: string | null; attempts: number } | null;
+}
+interface LostReport {
+  generatedAt: string;
+  definition: { silenceDays: number; text: string };
+  counts: { lost: number; analysed: number; pending: number; failed: number; recoverable: number; ourFault: number };
+  categories: { category: string; label: string; n: number; share: number; recoverable: number; ourFault: number }[];
+  rows: LostRow[];
+  lastRun: { day: string; ranAt: string; analysed: number; failed: number; remaining: number; budgetExhausted: boolean; incomplete: boolean } | null;
+}
+/** How firmly the model committed, in the same three words the report uses. */
+const FAULT_TEXT: Record<LostAnalysisView['fault'], { label: string; color: string }> = {
+  OURS: { label: 'We lost this one', color: 'var(--crit)' },
+  PARTLY_OURS: { label: 'Partly on us', color: 'var(--warn)' },
+  NOT_OURS: { label: 'Nothing was done wrong', color: 'var(--ink3)' },
+};
+const RECOVER_TEXT: Record<LostAnalysisView['recoverable'], { label: string; color: string }> = {
+  YES: { label: 'Winnable', color: 'var(--good)' },
+  MAYBE: { label: 'Maybe winnable', color: 'var(--sig)' },
+  NO: { label: 'Gone', color: 'var(--ink3)' },
+};
+
+/** One scheduled follow-up, as /api/will/followups returns it. */
+interface FollowUpRow {
+  jobId: string;
+  customerId: string;
+  name: string | null;
+  waId: string;
+  state: CustomerState;
+  lang: string | null;
+  runAt: string;
+  flow: string | null;
+  seq: number;
+  templateKey: string | null;
+  templateTitle: string | null;
+}
+const FLOW_LABELS: Record<string, string> = {
+  prePayment: 'Before payment', form: 'Waiting on the form', signature: 'Waiting on a signature',
+};
 
 interface StateData {
   customers: CustomerRow[];
@@ -50,7 +129,11 @@ const ICONS: Record<View, React.ReactNode> = {
   chats: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg>,
   tasks: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
   library: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>,
+  // A clock with a forward arrow: messages queued to leave later.
+  followups: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>,
   insights: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>,
+  // A person walking away: the leads that did not become clients.
+  lost: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M15 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/></svg>,
   learning: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
 };
 const BELL = <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>;
@@ -118,6 +201,23 @@ const chatListTime = (iso: string | null) => {
   const daysAgo = Math.round((new Date(`${todayKey}T00:00:00Z`).getTime() - new Date(`${key}T00:00:00Z`).getTime()) / 86400000);
   if (daysAgo < 7) return d.toLocaleDateString('en-AU', { weekday: 'long', timeZone: MEL_TZ });
   return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'numeric', year: '2-digit', timeZone: MEL_TZ });
+};
+// When a scheduled message will actually leave, read in the business's own
+// timezone: "Tue 2 Sep, 09:15". The exact time matters here — this is a queue
+// you may want to get ahead of, not a "2h ago" you only glance at.
+const sendAtLabel = (iso: string) =>
+  new Date(iso).toLocaleString('en-AU', {
+    weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
+    hour12: false, timeZone: MEL_TZ,
+  });
+/** "in 4h" / "in 3d" / "due now" — how long until a scheduled job runs. */
+const untilLabel = (iso: string) => {
+  const s = (new Date(iso).getTime() - Date.now()) / 1000;
+  if (s <= 30) return 'due now';
+  if (s < 90) return `in ${Math.round(s)}s`;
+  if (s < 5400) return `in ${Math.round(s / 60)}m`;
+  if (s < 172800) return `in ${Math.round(s / 3600)}h`;
+  return `in ${Math.round(s / 86400)}d`;
 };
 /** One short line for a list row. You scan this list to see WHO is waiting, not
  *  to read the message, so anything past the first line is noise. */
@@ -236,6 +336,46 @@ export default function Dashboard() {
   const loadActivity = useCallback(async () => {
     try { const r = await fetch('/api/will/audit?limit=60').then((x) => x.json()); if (r.ok) setActivity(r.rows ?? []); } catch { /* */ }
   }, []);
+  // The raw audit feed is KEPT, but no longer IS the Decision Log — it sits
+  // behind a toggle underneath it. See the Decision Log panel for why.
+  const [showRawFeed, setShowRawFeed] = useState(false);
+  // Claude usage + the real system faults, for the System & Costs card.
+  const [system, setSystem] = useState<{ usage: AiUsage; faults: SystemFault[]; faultWindow: number; auditRowsRead: number } | null>(null);
+  const loadSystem = useCallback(async () => {
+    try {
+      const r = await fetch('/api/will/system').then((x) => x.json());
+      if (r.ok) setSystem({ usage: r.usage, faults: r.faults ?? [], faultWindow: r.faultWindow ?? 0, auditRowsRead: r.auditRowsRead ?? 0 });
+    } catch { /* keep whatever is on screen */ }
+  }, []);
+  // Month-by-month lead → paid, computed server-side from the state history.
+  // Sits under the goal card so July can be compared with August.
+  const [monthly, setMonthly] = useState<MonthConversion[] | null>(null);
+  const loadMonthly = useCallback(async () => {
+    try {
+      const r = await fetch('/api/will/insights/monthly').then((x) => x.json());
+      if (r.ok) setMonthly(r.months ?? []);
+    } catch { /* keep whatever is on screen */ }
+  }, []);
+  // The Lost Leads report. Read-only: the post-mortems are written once a night
+  // by the LOST_ANALYSIS job and simply read here, so opening the tab is instant
+  // and free and yesterday's finding is still the same finding today.
+  const [lost, setLost] = useState<LostReport | null>(null);
+  const [lostOpen, setLostOpen] = useState<string | null>(null);
+  const loadLost = useCallback(async () => {
+    try {
+      const r = await fetch('/api/will/lost').then((x) => x.json());
+      if (r.ok) setLost(r as LostReport);
+    } catch { /* keep whatever is on screen */ }
+  }, []);
+  // Everyone scheduled to receive a follow-up. Kept current while the view is
+  // open: this is a live queue, not a report you regenerate.
+  const [followups, setFollowups] = useState<FollowUpRow[] | null>(null);
+  const loadFollowups = useCallback(async () => {
+    try {
+      const r = await fetch('/api/will/followups').then((x) => x.json());
+      if (r.ok) setFollowups(r.rows ?? []);
+    } catch { /* keep whatever is on screen */ }
+  }, []);
   const [knwDrafts, setKnwDrafts] = useState<Record<string, string>>({});
   const [tplText, setTplText] = useState('');
   const [toast, setToast] = useState('');
@@ -318,7 +458,18 @@ export default function Dashboard() {
   }, [data]);
   useEffect(() => { if ((view === 'insights' || view === 'learning') && !report) fetch('/api/will/report').then((r) => r.json()).then((rp) => setReport(rp)).catch(() => {}); }, [view, report]);
   useEffect(() => { if (view === 'learning' || view === 'library') { loadKnowledge(); } }, [view, loadKnowledge]);
-  useEffect(() => { if (view === 'learning') { loadActivity(); } }, [view, loadActivity]);
+  useEffect(() => { if (view === 'learning') { loadActivity(); loadMonthly(); } }, [view, loadActivity, loadMonthly]);
+  useEffect(() => { if (view === 'insights') loadSystem(); }, [view, loadSystem]);
+  // Fetched on open, not polled: these rows only change once a night.
+  useEffect(() => { if (view === 'lost') loadLost(); }, [view, loadLost]);
+  // The follow-up queue moves on its own (the scheduler sends, cancels and
+  // re-arms jobs), so while you are looking at it, it refreshes itself.
+  useEffect(() => {
+    if (view !== 'followups') return;
+    loadFollowups();
+    const iv = setInterval(() => { if (!document.hidden) loadFollowups(); }, 20000);
+    return () => clearInterval(iv);
+  }, [view, loadFollowups]);
 
   // Update-on-change: instead of refetching everything on a fixed timer, poll a
   // tiny change-token and only pull the heavy /state payload when something
@@ -395,6 +546,11 @@ export default function Dashboard() {
   //   2. messages that could not be sent (WhatsApp/Meta rejected them)
   //   3. drafts the guard blocked before they could go out
   const pendingDrafts = data.pending;
+  // Which chats have a draft Will is holding. The chat list needs this because
+  // a draft is no longer allowed to masquerade as the row preview: it is a real
+  // and useful fact about the conversation, but it is not something the
+  // customer received, so it gets its own marker instead.
+  const draftWaitingFor = new Set(pendingDrafts.map((m) => m.customerId));
   // notSentTasks and outboxCount belonged to the Outbox tab, which is gone:
   // blocked and failed sends are ordinary tasks and are listed with the rest.
   const custById = (id: string | null) => data.customers.find((c) => c.id === id) ?? null;
@@ -496,10 +652,10 @@ export default function Dashboard() {
     <>
       <aside className="side">
         <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
-        {(['pipeline', 'chats', 'tasks', 'library', 'insights', 'learning'] as View[]).map((v) => (
+        {(['pipeline', 'chats', 'tasks', 'library', 'followups', 'insights', 'lost', 'learning'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
-            <span className="nl">{v[0].toUpperCase() + v.slice(1)}</span>
+            <span className="nl">{VIEW_LABELS[v] ?? v[0].toUpperCase() + v.slice(1)}</span>
             {v === 'tasks' && (openTasks.length + pendingDrafts.length) > 0 && <span className="nbadge">{openTasks.length + pendingDrafts.length}</span>}
           </button>
         ))}
@@ -711,12 +867,24 @@ export default function Dashboard() {
                     // mark-read round-trip above lands.
                     const isOpen = chatSelId === c.id;
                     const showUnread = c.unreadCount > 0 && !isOpen;
+                    // The preview is now guaranteed to be a message that really
+                    // went out or really came in (see store addMessage /
+                    // refreshLastMessage). A draft Will is holding is a
+                    // different fact about the chat, so it is shown as its own
+                    // small marker rather than by overwriting the preview with
+                    // words the customer never received.
+                    const draftWaiting = draftWaitingFor.has(c.id);
                     return (
                     <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''}`} onClick={() => openChat(c.id)}>
                       <div className="cav">{avatarFor(c.name)}</div>
                       <div className="cinfo">
                         <div className="cn"><b>{phoneOf(c.waId)}</b><time>{chatListTime(c.lastCustomerMsgAt)}</time></div>
-                        <div className="cm">{c.lastMessagePreview}</div>
+                        <div className="cm">
+                          {draftWaiting && (
+                            <span className="cdraft" title={`${ASSISTANT_NAME} has written a reply for this chat and is waiting for you to approve it. It has NOT been sent.`}>✎ draft waiting</span>
+                          )}
+                          {c.lastMessagePreview}
+                        </div>
                       </div>
                       {showUnread
                         ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
@@ -1043,15 +1211,28 @@ export default function Dashboard() {
         {view === 'tasks' && (
           <section className="view active">
             <h2 className="vt">Tasks</h2>
-            <div className="vsub">Everything waiting on you, in one place. {ASSISTANT_NAME} drafted a suggested answer for each one.</div>
+            <div className="vsub">Everything that needs your attention, in one place.</div>
 
             {/* This was a separate Outbox tab. It counted the drafts awaiting
                 approval PLUS the subset of these same tasks whose reason was a
                 blocked or failed send, so those items were listed twice with two
                 badges and there was no single answer to "what is left for me".
                 The drafts moved here; the blocked ones were already here. */}
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink2)', margin: '10px 0 8px', letterSpacing: '.02em' }}>
-              ✎ Awaiting your approval ({pendingDrafts.length})
+            {/* Jo, 26 Aug: "lose the label, keep the number" — he watches this
+                go 0 -> 1 -> 2 and the six words in front of it were noise on a
+                screen he reads twenty times a day. A bare digit floating on its
+                own would be worse than what it replaced, so the number keeps
+                the position and the ✎ mark the label had, as a count badge in
+                the same family as the sidebar's .nbadge and the .pcount pill.
+                The words survive as the accessible name and the hover title,
+                where they cost nothing. */}
+            <div className="secthead">
+              <span className="sectmark" aria-hidden="true">✎</span>
+              <span
+                className={`pcount ${pendingDrafts.length ? 'on' : ''}`}
+                title={`${pendingDrafts.length} ${pendingDrafts.length === 1 ? 'draft is' : 'drafts are'} awaiting your approval`}
+                aria-label={`${pendingDrafts.length} ${pendingDrafts.length === 1 ? 'draft' : 'drafts'} awaiting your approval`}
+              >{pendingDrafts.length}</span>
             </div>
             {pendingDrafts.map((m) => {
               const c = custById(m.customerId);
@@ -1181,19 +1362,100 @@ export default function Dashboard() {
           </section>
         )}
 
+        {/* Everyone who is scheduled to receive a follow-up, any flow, soonest
+            first. This replaced the "Regenerate report" button: that button
+            rebuilt a static analysis, while what is actually useful before a
+            message goes out is knowing WHO is about to get one. The list keeps
+            itself current (20s while this view is open) and each row opens that
+            customer's chat, which is what you want next. */}
+        {view === 'followups' && (
+          <section className="view active">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{ flex: 1 }}>
+                <h2 className="vt">Scheduled Follow-ups</h2>
+                <div className="vsub">
+                  Everyone {ASSISTANT_NAME} is about to nudge, soonest first. Open a row to read the conversation before it sends.
+                  {followups && followups.length > 0 && ` ${followups.length} queued.`}
+                </div>
+              </div>
+            </div>
+
+            {followups === null && <div className="sysline" style={{ margin: '20px 0' }}>Loading the queue…</div>}
+            {followups !== null && followups.length === 0 && (
+              <div className="sysline" style={{ margin: '20px 0' }}>
+                Nobody is scheduled for a follow-up right now. Nudges are armed automatically when a customer goes quiet at a stage that has a cadence.
+              </div>
+            )}
+
+            <div className="rowlist">
+              {(followups ?? []).map((f) => {
+                const flowLabel = f.flow ? FLOW_LABELS[f.flow] ?? f.flow : 'Follow-up';
+                const stageColor = stageColorOf(f.state);
+                return (
+                  <div
+                    key={f.jobId}
+                    className="rowcard"
+                    style={{ ['--gc' as string]: stageColor }}
+                    title={`Open the chat with ${phoneOf(f.waId)}`}
+                    onClick={() => { setView('chats'); openChat(f.customerId); }}
+                  >
+                    <div className="rc-main">
+                      <div className="rc-top">
+                        <span className="cname">{phoneOf(f.waId)}</span>
+                        <span className="chip">{flowLabel} · #{f.seq + 1}</span>
+                      </div>
+                      {/* Which message is queued, by its Library title, so it can
+                          be found and edited before it leaves. */}
+                      <div className="rc-msg">{f.templateTitle ?? f.templateKey ?? 'message no longer in the Library'}</div>
+                    </div>
+                    <div className="rc-side">
+                      <span className="stagepill" style={{ ['--pc' as string]: stageColor }}>{stageLabelOf(f.state)}</span>
+                      <span className="fu-when">
+                        <b>{untilLabel(f.runAt)}</b>
+                        <small>{sendAtLabel(f.runAt)}</small>
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {view === 'insights' && (
           <section className="view active">
             <h2 className="vt">Insights</h2>
             <div className="vsub">Every conversation is raw material: what converts, what loses customers, what to fix. Each problem comes with a suggested fix.</div>
             <div className="igrid">
+              {/* Re-framed, 26 Aug. This card used to promise "each one is a
+                  template you could add", which is not true of most of these:
+                  a template does not answer a voice note, and it does not
+                  unblock a message the policy guard refused. The counts are
+                  genuinely useful — "the guard stopped Will 85 times" says the
+                  assistant is being muzzled — so the data stays and the promise
+                  changes: each reason now says what it means and what would
+                  actually move it (lib/will/handoff-reasons.ts). */}
               <div className="panel">
-                <h3>What {ASSISTANT_NAME} Escalated <span className="cstate" style={{ ['--sc' as string]: 'var(--warn)' }}>LIVE</span></h3>
-                <div className="psub">Recurring reasons, each one is a template you could add</div>
-                {(report?.tasks.topReasons ?? []).map(([r, n]) => (
-                  <div key={r} className="qitem"><span className="qn">×{n}</span>{r}</div>
-                ))}
-                {(!report || report.tasks.topReasons.length === 0) && <div className="mini">Nothing escalated yet</div>}
-                <div className="sugg"><b>Suggested fix</b>Any reason appearing twice or more deserves an approved answer in the Library, then {ASSISTANT_NAME} resolves it alone.</div>
+                <h3>Why {ASSISTANT_NAME} Handed Chats To You <span className="cstate" style={{ ['--sc' as string]: 'var(--warn)' }}>LIVE</span></h3>
+                <div className="psub">Most common first. Each one says what it means and what would actually change it.</div>
+                {(report?.tasks.topReasons ?? []).map(([r, n]) => {
+                  const e = explainHandoffReason(r);
+                  return (
+                    <div key={r} className="qitem qitem-why">
+                      <span className="qn">×{n}</span>
+                      <span className="qwrap">
+                        <span className="qlabel" title={r}>{e.label}</span>
+                        <span className="qwhy">{e.meaning}</span>
+                        <span className="qwhy qfix"><b>What would change it:</b> {e.remedy}</span>
+                      </span>
+                    </div>
+                  );
+                })}
+                {(!report || report.tasks.topReasons.length === 0) && <div className="mini">Nothing handed over yet</div>}
+                <div className="sugg">
+                  <b>Read this honestly</b>
+                  Most of these are not template-shaped. A blocked reply is a rule question, an unreadable file or voice note needs a person by definition, and the &ldquo;bot?&rdquo; and returning-customer handoffs are rules working as intended. Only a recurring customer <i>question</i> is worth a new approved answer in the Library.
+                </div>
               </div>
 
               <div className="panel">
@@ -1205,7 +1467,7 @@ export default function Dashboard() {
                   <div className="mini">Runs through Claude over the full history: phrasing that converts vs loses, tone per language, the exact message where each customer dropped, objection win rates, suggested new templates.</div>
                 )}
                 <div style={{ marginTop: 8 }}>
-                  {upcoming.length > 0 && <div className="psub" style={{ marginBottom: 4 }}>Scheduled follow-ups</div>}
+                  {upcoming.length > 0 && <div className="psub" style={{ marginBottom: 4 }}>Next few scheduled messages</div>}
                   {upcoming.slice(0, 5).map((j) => {
                     const c = data.customers.find((x) => x.id === j.customerId);
                     const secs = Math.max(0, Math.round((new Date(j.runAt).getTime() - Date.now()) / 1000));
@@ -1213,17 +1475,166 @@ export default function Dashboard() {
                     return <div key={j.id} className="costrow"><span>{c?.flag} {c ? phoneOf(c.waId) : '?'} · {j.kind === 'AUTO_CLOSE' ? 'auto-close' : j.payload.templateKey}</span><b>in {label}</b></div>;
                   })}
                 </div>
-                <button className="genbtn" onClick={() => { setReport(null); say('Report refreshed'); }}>↻ Regenerate Report</button>
+                {/* Was "↻ Regenerate Report", which rebuilt this same analysis.
+                    What is actually worth doing from here is seeing everyone who
+                    is about to be nudged, so the button opens that live page. */}
+                <button className="genbtn" onClick={() => setView('followups')}>
+                  Everyone scheduled for a follow-up →
+                </button>
               </div>
 
-              <div className="panel">
+              {/* ────────────────────────────────────────────────────────────
+                  System & Costs, 26 Aug.
+
+                  Removed on Jo's instruction: the Customers row (already the
+                  first KPI on the pipeline) and the Open tasks row (already the
+                  sidebar badge, the bell badge, and the whole Tasks view).
+
+                  Added: what Claude has actually cost, and what is actually
+                  broken. Jo's test for the fault list is that he can screenshot
+                  this card and whoever reads it knows what to do — so each
+                  fault carries the component, the provider's own error text,
+                  when it last happened, how many times, what it means, and the
+                  next action. Full width for that reason.
+                  ──────────────────────────────────────────────────────────── */}
+              <div className="panel syspanel">
                 <h3>System &amp; Costs</h3>
-                <div className="psub">Live from the system</div>
+                <div className="psub">Live from the system. Everything below is readable on its own — screenshot it and send it to someone.</div>
                 <div className="costrow"><span>Brain ({ASSISTANT_NAME})</span><b>{health?.usingMock ? 'mock (no API key)' : 'Claude API'}</b></div>
-                <div className="costrow"><span>Customers</span><b>{data.customers.length}</b></div>
                 <div className="costrow"><span>Auto-resolved by {ASSISTANT_NAME}</span><b>{(() => { const total = data.customers.length; if (!total) return '—'; const escalatedIds = new Set(data.tasks.filter((t) => t.customerId).map((t) => t.customerId)); const never = total - escalatedIds.size; return Math.round((never / total) * 100) + '%'; })()}</b></div>
-                <div className="costrow"><span>Open tasks</span><b>{openTasks.length}</b></div>
                 <div className="costrow"><span>Messages in library</span><b>{data.templates.length}</b></div>
+
+                {/* ── What Claude has cost ──
+                    There is no billing feed wired into this system. The ONLY
+                    record of paid model usage is the daily counter migration
+                    029 added, which counts DECISIONS, not dollars. So the count
+                    is stated as fact and the money as an estimate at a stated
+                    rate — see ASSUMED_USD_PER_DECISION in lib/will/system-report.ts
+                    for the arithmetic. No invented dollar figure. */}
+                <div className="syshead">What Claude has cost</div>
+                {system === null && <div className="mini" style={{ marginTop: 0 }}>Reading the usage counters…</div>}
+                {system && (() => {
+                  const u = system.usage;
+                  return (
+                    <>
+                      <div className="costrow"><span>Decisions today</span><b>{u.callsToday.toLocaleString('en-AU')} of {u.budgetToday.toLocaleString('en-AU')}</b></div>
+                      <div className="costrow">
+                        <span>Decisions counted, all time</span>
+                        <b>{u.callsTotal.toLocaleString('en-AU')}{u.daysRecorded > 0 ? ` over ${u.daysRecorded} ${u.daysRecorded === 1 ? 'day' : 'days'}` : ''}</b>
+                      </div>
+                      <div className="costrow">
+                        <span>Spend <span className="estflag">estimate only</span></span>
+                        <b>{u.callsTotal === 0 ? '—' : `≈ US$${u.estimatedUsd.toFixed(2)}`}</b>
+                      </div>
+                      <div className="mini">
+                        {u.usingMock
+                          ? `No API key is set, so nothing has been billed at all — ${ASSISTANT_NAME} is answering from the mock brain.`
+                          : <>
+                              Not a bill. Anthropic&apos;s billing is not connected to this dashboard, so this is
+                              {' '}{u.callsTotal.toLocaleString('en-AU')} counted decisions × an assumed
+                              {' '}US${u.assumedUsdPerCall.toFixed(2)} each{u.firstDay ? `, since ${u.firstDay}` : ''}.
+                              A long conversation costs more than a short one, and the payment-photo checks and the
+                              nightly Library mining are real paid calls that this counter never sees — so treat it
+                              as a floor, not a total. The real number is in the Anthropic console.
+                            </>}
+                      </div>
+                    </>
+                  );
+                })()}
+
+                {/* ── What is broken ── */}
+                <div className="syshead">System faults</div>
+                {(() => {
+                  // Two sources, deliberately. The health checks say what is
+                  // failing RIGHT NOW (they re-probe every 45s); will_audit says
+                  // what has failed and how often, which a live probe cannot
+                  // know. `lastPersistError` is not used by either: it is a
+                  // per-instance module variable, so it reports whatever one
+                  // serverless instance happened to see.
+                  const CHECK_INFO: Record<string, { name: string; meaning: string; action: string }> = {
+                    store: {
+                      name: 'Database (Supabase)',
+                      meaning: 'The last write to the database failed. Customers, messages and tasks may not be saving.',
+                      action: 'Check the Supabase project is up and the service-role key is still valid, then reload this page.',
+                    },
+                    schema: {
+                      name: 'Database schema (migrations)',
+                      meaning: 'The database is missing columns or tables this code writes to. Brand-new customers are being dropped as they arrive.',
+                      action: 'Run the pending files in supabase/migrations, oldest first. This has already cost 105 real leads once.',
+                    },
+                    guard: {
+                      name: 'Policy guard',
+                      meaning: 'The guard failed its own self-test: it did not block a message it is built to block. Nothing is checking what Will says.',
+                      action: `Press Pause ${ASSISTANT_NAME} in the header, then get the guard green before resuming.`,
+                    },
+                    engine: {
+                      name: `Brain (${ASSISTANT_NAME})`,
+                      meaning: 'The engine is not configured to reach Claude, so replies come from the mock brain.',
+                      action: 'Set ANTHROPIC_API_KEY and redeploy. The mock brain is for development, not customers.',
+                    },
+                    scheduler: {
+                      name: 'Scheduler',
+                      meaning: 'The job queue could not be read, so follow-ups and the nightly check are not running.',
+                      action: 'Same database as the row above — fix that first, this usually clears with it.',
+                    },
+                    cron: {
+                      name: 'Scheduler cron',
+                      meaning: 'The cron cannot authorise itself to /api/will/tick, so nothing scheduled ever runs: no follow-ups, no auto-close, no nightly consistency check.',
+                      action: 'Set CRON_SECRET in the Vercel project settings and redeploy.',
+                    },
+                    whatsapp: {
+                      name: 'WhatsApp connection',
+                      meaning: 'Will is not properly connected to WhatsApp — messages are not being sent, not being received, or both.',
+                      action: 'Open the WhatsApp pill in the header (or /crm/whatsapp/connect) and reconnect. The exact fault is in the error line above.',
+                    },
+                  };
+                  const live = Object.entries(health?.checks ?? {})
+                    .filter(([, v]) => !v.ok)
+                    .map(([k, v]) => ({ key: k, info: CHECK_INFO[k], detail: v.detail }))
+                    .filter((x) => !!x.info);
+                  const past = system?.faults ?? [];
+                  if (!health && system === null) return <div className="mini" style={{ marginTop: 0 }}>Checking…</div>;
+                  if (live.length === 0 && past.length === 0) {
+                    return <div className="mini" style={{ marginTop: 0 }}>Nothing is failing, and nothing has failed in the last {system?.auditRowsRead ?? 0} recorded actions.</div>;
+                  }
+                  return (
+                    <>
+                      {live.map((f) => (
+                        <div key={f.key} className="fault now">
+                          <div className="fault-top">
+                            <span className="fault-sev">FAILING NOW</span>
+                            <span className="fault-comp">{f.info.name}</span>
+                          </div>
+                          <div className="fault-err">{f.detail}</div>
+                          <div className="fault-mean">{f.info.meaning}</div>
+                          <div className="fault-act"><b>Do this:</b> {f.info.action}</div>
+                        </div>
+                      ))}
+                      {past.map((f) => (
+                        <div key={f.key} className={`fault ${f.severity}`}>
+                          <div className="fault-top">
+                            <span className="fault-sev">{f.severity === 'critical' ? 'CUSTOMER AFFECTED' : 'WARNING'}</span>
+                            <span className="fault-comp">{f.component}</span>
+                            <span className="fault-n">×{f.count}</span>
+                            <span className="fault-when" title={new Date(f.lastAt).toLocaleString('en-AU', { timeZone: MEL_TZ })}>
+                              last {timeAgo(f.lastAt)} ago
+                            </span>
+                          </div>
+                          <div className="fault-err">{f.error}</div>
+                          <div className="fault-mean">{f.meaning}</div>
+                          <div className="fault-act"><b>Do this:</b> {f.action}</div>
+                        </div>
+                      ))}
+                      {past.length > 0 && (
+                        <div className="mini">
+                          Counts are within the last {system?.auditRowsRead ?? 0} recorded actions
+                          {system && system.auditRowsRead >= system.faultWindow ? ' (the window this card reads)' : ''}, newest first.
+                          Times are Melbourne.
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </section>
@@ -1260,6 +1671,36 @@ export default function Dashboard() {
                     : <div className="mini">{100 - (report?.leadToPaid ?? 0)} points to go. {ASSISTANT_NAME} is still learning.</div>}
                 </div>
               </div>
+
+              {/* Month by month, so July can be compared with August. Every bar
+                  is recomputed from the state history on each load — there is no
+                  running number being reset on the 1st, which is why a past
+                  month can never silently change or be lost.
+                  A month's number is: of the leads that FIRST appeared that
+                  month, how many ever went on to pay. Paying in a later month
+                  still counts for the month they arrived in. */}
+              <div className="monthhist">
+                <div className="mhhead">
+                  <span>Month by month</span>
+                  <span className="mini" style={{ margin: 0 }}>of the leads that arrived that month, how many paid</span>
+                </div>
+                {monthly === null && <div className="mini">Loading the history…</div>}
+                {monthly !== null && monthly.every((m) => m.leads === 0) && (
+                  <div className="mini">No leads recorded in the last 12 months yet.</div>
+                )}
+                {monthly !== null && monthly.some((m) => m.leads > 0) && (
+                  <div className="mhrows">
+                    {monthly.map((m) => (
+                      <div key={m.month} className={`mhrow ${m.leads === 0 ? 'empty' : ''}`}>
+                        <span className="mhlabel">{m.label}</span>
+                        <span className="mhbar"><span className="mhfill" style={{ width: `${Math.min(100, m.rate)}%` }} /></span>
+                        <span className="mhrate">{m.leads === 0 ? '·' : `${m.rate}%`}</span>
+                        <span className="mhcount">{m.leads === 0 ? 'no leads' : `${m.paid}/${m.leads}`}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="igrid">
@@ -1268,9 +1709,21 @@ export default function Dashboard() {
                   the daily digest + Knowledge Base panel below now cover this
                   properly, on every answered message rather than only
                   repeated escalations. */}
+              {/* KEPT, deliberately, 26 Aug. Jo asked whether the daily email
+                  makes this card redundant. It does not: the 8am email is a
+                  read-only copy of the drafts mined from yesterday, and a mined
+                  entry stays status='draft' until a person approves it here.
+                  retrieveKnowledge() only ever reads 'active' rows, so an
+                  un-approved draft is invisible to Will — removing the approve
+                  queue would leave the library permanently frozen at whatever
+                  was already active. The subtitle now says so, so the question
+                  answers itself next time. */}
               <div className="panel">
                 <h3>Knowledge Base {knowledge.drafts.length > 0 && <span className="cstate" style={{ ['--sc' as string]: 'var(--brand2)' }}>{knowledge.drafts.length} to review</span>}</h3>
                 <div className="psub">What {ASSISTANT_NAME} has learned from your real conversations. Approve a draft and {ASSISTANT_NAME} starts using it. Active answers: {knowledge.active.length}.</div>
+                <div className="mini" style={{ marginTop: 0, marginBottom: 11 }}>
+                  The 8am email is a copy to read; it cannot approve anything. Until a draft is approved — here, or from the Library — {ASSISTANT_NAME} does not use it.
+                </div>
                 {knowledge.drafts.length === 0 && knowledge.active.length === 0 && (
                   <div className="mini" style={{ marginTop: 8 }}>Nothing yet. Send your real conversations to teach {ASSISTANT_NAME} how your best answers sound — new drafts also arrive automatically from the daily digest.</div>
                 )}
@@ -1291,11 +1744,119 @@ export default function Dashboard() {
                 ))}
               </div>
 
+              {/* ────────────────────────────────────────────────────────────
+                  Decision Log, rebuilt 26 Aug around the question Jo actually
+                  asks it.
+
+                  It used to be the raw audit feed: "Owner · task resolved",
+                  "Channel · inbound received", one line per thing that
+                  happened. That is an engineer's log. What Jo wants from this
+                  panel is narrower and more useful — every time Will raised an
+                  urgent task or needed a person: who the client is, their
+                  WhatsApp number, what Will wanted done, why it reached a
+                  human, and how to stop it happening again.
+
+                  So the source is the TASK table, not the audit table: a task
+                  IS the record of a handoff, and it carries the real reason
+                  string written where the handoff happened. The "why" below is
+                  that string verbatim — never a guess, never re-derived.
+                  The "what would prevent it" comes from
+                  lib/will/handoff-reasons.ts, the one classifier that already
+                  knows what each reason means and what actually addresses it;
+                  a second classifier here would have drifted from it within a
+                  week.
+
+                  The raw audit feed is KEPT, one click away at the bottom. It
+                  still earns its place: it is the only view of the guard's
+                  verdicts and which learned answers Will drew on, which is
+                  what you want when the question is "why did Will say THAT",
+                  not "who needs me". It is just no longer the thing this panel
+                  opens with.
+                  ──────────────────────────────────────────────────────────── */}
               <div className="panel">
-                <h3>Decision Log</h3>
-                <div className="psub">The most recent things {ASSISTANT_NAME} and you did, with the reasoning attached, so you can see why, not just what. Newest first.</div>
-                {activity.length === 0 && <div className="mini">No activity yet. Once {ASSISTANT_NAME} starts handling messages, every decision shows here.</div>}
-                {activity.map((a) => {
+                <h3>Decision Log <span className="cstate" style={{ ['--sc' as string]: 'var(--warn)' }}>HANDOFFS</span></h3>
+                <div className="psub">
+                  Every time {ASSISTANT_NAME} raised a task or needed you. Who it is, what {ASSISTANT_NAME} wanted done,
+                  why it came to a person, and what would let {ASSISTANT_NAME} handle it next time. Newest first.
+                </div>
+                {(() => {
+                  const handoffs = [...data.tasks].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+                  const SHOWN = 25;
+                  if (handoffs.length === 0) {
+                    return <div className="mini">Nothing has been handed over yet. Every task {ASSISTANT_NAME} raises will appear here with its reason and its remedy.</div>;
+                  }
+                  return (
+                    <>
+                      {handoffs.slice(0, SHOWN).map((t) => {
+                        const c = custById(t.customerId);
+                        const e = explainHandoffReason(t.reason);
+                        const done = t.status === 'RESOLVED';
+                        const col = done ? 'var(--ink3)' : t.severity === 'URGENT' ? 'var(--crit)' : 'var(--warn)';
+                        // What Will wanted done. A suggested reply IS the
+                        // proposed action; its absence is meaningful too —
+                        // "am I talking to a bot" is the one handoff Will is
+                        // forbidden to draft an answer for, and a payment-proof
+                        // heads-up is a look-at-this, not a reply-to-this.
+                        const wanted = t.suggestedReply?.trim()
+                          ? `Send this reply: “${previewLine(t.suggestedReply)}”`
+                          : `Take the conversation over yourself — ${ASSISTANT_NAME} proposed no wording for this one.`;
+                        return (
+                          <div key={t.id} className={`hoff ${done ? 'is-done' : ''}`} style={{ ['--tc' as string]: col }}>
+                            <div className="hoff-top">
+                              <span className="tsev">{t.severity}</span>
+                              {/* Jo's rule everywhere in this dashboard: the
+                                  WhatsApp number is the identity, the profile
+                                  name is only a hint beside it. */}
+                              <span className="hoff-who">{c ? phoneOf(c.waId) : (t.customerName ?? 'System — no customer')}</span>
+                              {c?.name && <span className="hoff-name">{c.name}</span>}
+                              <span className="hoff-when" title={new Date(t.createdAt).toLocaleString('en-AU', { timeZone: MEL_TZ })}>
+                                {new Date(t.createdAt).toLocaleString('en-AU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: MEL_TZ })}
+                              </span>
+                              {done && <span className="hoff-done">resolved</span>}
+                            </div>
+                            <div className="hoff-f">
+                              <span className="hoff-k">What {ASSISTANT_NAME} wanted</span>
+                              <span className="hoff-v">{wanted}</span>
+                            </div>
+                            <div className="hoff-f">
+                              <span className="hoff-k">Why it came to you</span>
+                              <span className="hoff-v">
+                                <b>{e.label}</b>
+                                {/* The real reason string, exactly as it was
+                                    written when the handoff happened. */}
+                                <span className="hoff-raw">{t.reason}</span>
+                              </span>
+                            </div>
+                            <div className="hoff-f">
+                              <span className="hoff-k">What would prevent it</span>
+                              <span className="hoff-v hoff-fix">{e.remedy}</span>
+                            </div>
+                            {t.customerId && (
+                              <button className="hoff-open" onClick={() => { setView('chats'); openChat(t.customerId!); }}>
+                                Open this chat →
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                      {handoffs.length > SHOWN && (
+                        <div className="mini">Showing the {SHOWN} most recent of {handoffs.length} handoffs.</div>
+                      )}
+                    </>
+                  );
+                })()}
+
+                {/* The old feed, kept and demoted. */}
+                <button
+                  type="button"
+                  className="rawtoggle"
+                  aria-expanded={showRawFeed}
+                  onClick={() => setShowRawFeed((o) => !o)}
+                >
+                  {showRawFeed ? '▾' : '▸'} Raw system feed — every action, with the guard verdict and the learned answers used
+                </button>
+                {showRawFeed && activity.length === 0 && <div className="mini">No activity recorded yet.</div>}
+                {showRawFeed && activity.map((a) => {
                   const d = (a.detail ?? {}) as { action?: string; knowledgeUsed?: string[]; guard?: { blocked?: boolean; violations?: string[] }; preview?: string | null; newState?: string | null };
                   const label = a.action === 'decision'
                     ? (d.action === 'sent' ? 'Sent a reply' : d.action === 'queued' ? 'Reply queued to send' : d.action === 'pending_approval' ? 'Drafted for approval' : d.action === 'human_task' ? 'Handed to you' : d.action || 'Decision')
@@ -1320,6 +1881,193 @@ export default function Dashboard() {
 
 
             </div>
+          </section>
+        )}
+
+        {/* ────────────────────────────────────────────────────────────────
+            LOST LEADS — the post-mortem report.
+
+            Every lead that did not become a paying client, with an honest
+            assessment of why and what should have been done differently.
+
+            THIS IS FOR JO'S EYES ONLY. There is no send button, no draft, no
+            "message them" action anywhere in this view, and the API route
+            behind it is read-only. Nothing here ever reaches a customer.
+
+            The individual cards are anecdotes. The panel at the top — the
+            categories ranked by how often they happen — is the finding, which
+            is why it sits above the list and not below it.
+            ──────────────────────────────────────────────────────────────── */}
+        {view === 'lost' && (
+          <section className="view active">
+            <h2 className="vt">Lost Leads</h2>
+            <div className="vsub">
+              Every lead that did not become a paying client, read back and assessed. Written for you only — nothing on this page is ever sent to a customer.
+            </div>
+
+            {lost === null && <div className="sysline" style={{ margin: '20px 0' }}>Reading the report…</div>}
+
+            {lost && (
+              <>
+                <div className="kpis">
+                  <div className="kpi"><div className="kl">Lost leads</div><div className="kv">{lost.counts.lost}</div><div className="kd">by the definition below</div></div>
+                  <div className="kpi"><div className="kl">Assessed</div><div className="kv">{lost.counts.analysed}</div><div className="kd">{lost.counts.pending > 0 ? `${lost.counts.pending} waiting for tonight` : 'all of them'}</div></div>
+                  <div className="kpi"><div className="kl">Still winnable</div><div className="kv">{lost.counts.recoverable}</div><div className="kd">with something specific to do</div></div>
+                  <div className="kpi"><div className="kl">On us</div><div className="kv">{lost.counts.ourFault}</div><div className="kd">the rest were never going to convert</div></div>
+                </div>
+
+                {/* The aggregate. Eleven leads in one bucket is a thing to fix;
+                    eleven separate stories are not. */}
+                <div className="panel" style={{ marginBottom: 10 }}>
+                  <h3>Why they go, most common first</h3>
+                  <div className="psub">
+                    Counted across the {lost.counts.analysed} lead{lost.counts.analysed === 1 ? '' : 's'} assessed so far. This is the part worth acting on.
+                  </div>
+                  {lost.categories.length === 0 && (
+                    <div className="mini" style={{ marginTop: 0 }}>
+                      Nothing assessed yet. The report fills in after tonight&apos;s run.
+                    </div>
+                  )}
+                  {lost.categories.map((c) => (
+                    <div key={c.category} className="qitem qitem-why">
+                      <span className="qn">×{c.n}</span>
+                      <span className="qwrap">
+                        <span className="qlabel">{c.label}</span>
+                        <span className="qwhy">
+                          {c.share}% of everything assessed
+                          {c.ourFault > 0 && ` · ${c.ourFault} we could have handled better`}
+                          {c.recoverable > 0 && ` · ${c.recoverable} still worth a try`}
+                        </span>
+                      </span>
+                    </div>
+                  ))}
+                  <div className="sugg">
+                    <b>Read this honestly</b>
+                    A lead that was never going to convert is recorded as exactly that. If a category says nobody did anything wrong, nobody did — the assessment is asked for the truth, not for a culprit, because a report that always finds fault is one you stop reading.
+                  </div>
+                </div>
+
+                {/* What "lost" means, in the same words the code uses. It is
+                    sent by the API rather than written here twice, so the screen
+                    and the definition can never drift apart. */}
+                <div className="panel" style={{ marginBottom: 10 }}>
+                  <h3>What counts as lost</h3>
+                  <div className="psub" style={{ marginBottom: 6 }}>Deliberately conservative: a lead who is still deciding must never appear here.</div>
+                  <div className="mini" style={{ marginTop: 0, lineHeight: 1.55 }}>{lost.definition.text}</div>
+                  <div className="costrow" style={{ marginTop: 8 }}>
+                    <span>Assessed automatically each night, at 4am</span>
+                    <b>
+                      {lost.lastRun
+                        ? `last run ${new Date(lost.lastRun.ranAt).toLocaleString('en-AU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })}`
+                        : 'not run yet'}
+                    </b>
+                  </div>
+                  {lost.lastRun?.budgetExhausted && (
+                    <div className="mini" style={{ color: 'var(--warn)' }}>
+                      The last run stopped early because the daily AI budget was spent, with {lost.lastRun.remaining} lead{lost.lastRun.remaining === 1 ? '' : 's'} still to assess. It picks up where it left off tonight — nothing was spent past the cap.
+                    </div>
+                  )}
+                  {lost.counts.failed > 0 && (
+                    <div className="mini">
+                      {lost.counts.failed} lead{lost.counts.failed === 1 ? '' : 's'} could not be assessed. They are shown below with the reason rather than quietly left out.
+                    </div>
+                  )}
+                </div>
+
+                {lost.rows.length === 0 && (
+                  <div className="sysline" style={{ margin: '20px 0' }}>
+                    No lost leads right now. Everyone who has not paid is still inside the window where they might.
+                  </div>
+                )}
+
+                <div className="rowlist">
+                  {lost.rows.map((r) => {
+                    const open = lostOpen === r.customerId;
+                    const a = r.analysis;
+                    const color = stageColorOf(r.state);
+                    return (
+                      <div key={r.customerId}>
+                        <div
+                          className="rowcard"
+                          style={{ ['--gc' as string]: color }}
+                          title={open ? 'Hide the assessment' : 'Read the assessment'}
+                          onClick={() => setLostOpen(open ? null : r.customerId)}
+                        >
+                          <div className="rc-main">
+                            <div className="rc-top">
+                              <span className="cname">{r.flag} {phoneOf(r.waId)}</span>
+                              {r.triggerLabel && <span className="chip">{r.triggerLabel}</span>}
+                              {a && (
+                                <span className="cstate" style={{ ['--sc' as string]: RECOVER_TEXT[a.recoverable].color }}>
+                                  {RECOVER_TEXT[a.recoverable].label}
+                                </span>
+                              )}
+                            </div>
+                            <div className="rc-msg">
+                              {a ? a.reason
+                                : r.failure ? `Could not be assessed: ${r.failure.error ?? 'unknown reason'}`
+                                : 'Waiting to be assessed tonight'}
+                            </div>
+                          </div>
+                          <div className="rc-side">
+                            <span className="stagepill" style={{ ['--pc' as string]: color }}>{a ? a.categoryLabel : r.stateLabel}</span>
+                            <span className="rc-time">{r.quietDays}d</span>
+                          </div>
+                        </div>
+
+                        {open && (
+                          <div className="panel" style={{ margin: '6px 0 2px', borderRadius: 10 }}>
+                            <div className="costrow"><span>Stage when it stopped</span><b>{r.stateLabel}</b></div>
+                            <div className="costrow"><span>Why this counts as lost</span><b>{r.lostBecause}</b></div>
+                            {a?.hoursPriceToSilence != null && (
+                              <div className="costrow">
+                                <span>Between the price and their last word</span>
+                                <b>{a.hoursPriceToSilence < 1 ? 'under an hour' : a.hoursPriceToSilence < 48 ? `${Math.round(a.hoursPriceToSilence)} hours` : `${Math.round(a.hoursPriceToSilence / 24)} days`}</b>
+                              </div>
+                            )}
+                            {a ? (
+                              <>
+                                <div className="syshead">Why it did not convert</div>
+                                <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>{a.reason}</div>
+                                {a.evidenceQuote && <div className="tctx">&ldquo;{a.evidenceQuote}&rdquo;</div>}
+
+                                <div className="syshead">What should have been done differently</div>
+                                <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>{a.shouldHaveDone}</div>
+                                <div className="costrow" style={{ marginTop: 6 }}>
+                                  <span>Verdict</span>
+                                  <b style={{ color: FAULT_TEXT[a.fault].color }}>{FAULT_TEXT[a.fault].label}</b>
+                                </div>
+
+                                {a.recoveryAction && (
+                                  <div className="sugg">
+                                    <b>{a.recoverable === 'YES' ? 'Worth doing' : 'Long shot, but'}</b>
+                                    {a.recoveryAction}
+                                  </div>
+                                )}
+                                <div className="mini">
+                                  Assessed {new Date(a.analysedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Melbourne' })} · confidence {Math.round(a.confidence * 100)}%. A judgement from the conversation, not a fact — open the chat and read it yourself before acting on anything here.
+                                </div>
+                              </>
+                            ) : r.failure ? (
+                              <div className="mini" style={{ marginTop: 0 }}>
+                                Could not be assessed after {r.failure.attempts} attempt{r.failure.attempts === 1 ? '' : 's'}: {r.failure.error ?? 'unknown reason'}.
+                              </div>
+                            ) : (
+                              <div className="mini" style={{ marginTop: 0 }}>
+                                Not assessed yet. The nightly run works through the newest losses first.
+                              </div>
+                            )}
+                            <div className="tbtns">
+                              <button className="btn ghost" onClick={() => { setView('chats'); openChat(r.customerId); }}>Read the conversation →</button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </section>
         )}
 
@@ -1464,8 +2212,16 @@ export default function Dashboard() {
           const amountValid = Number.isFinite(parsed) && parsed > 0;
           let linkValid = false;
           try { const u = new URL(estimateLink.trim()); linkValid = u.protocol === 'http:' || u.protocol === 'https:'; } catch { /* invalid */ }
+          // The preview reads the SAME Library entry the server sends, so an
+          // edit made in the Library shows up here instead of the two drifting
+          // apart. The literal is only the fallback for a Library that has not
+          // loaded yet, and is the exact text the server falls back to too.
+          const estimateTpl = data.templates.find((t) => t.key === 'estimate_invoice')?.body
+            ?? `Your estimated tax refund is {{AMOUNT}}.\nI'll send it for final review, then to you for signature.\nHere is your invoice: {{INVOICE_LINK}}`;
           const preview = amountValid
-            ? `Your estimated tax refund is $${parsed.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}.\nI'll send it for final review, then to you for signature.\nHere is your invoice: ${estimateLink.trim() || '…'}`
+            ? estimateTpl
+              .replaceAll('{{AMOUNT}}', `$${parsed.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)
+              .replaceAll('{{INVOICE_LINK}}', estimateLink.trim() || '…')
             : '';
           return (
             <div className="modal">

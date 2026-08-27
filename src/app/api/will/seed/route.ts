@@ -4,7 +4,7 @@
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
-import { seedTemplates } from '@/lib/will/seed';
+import { seedTemplates, backfillMissingTemplates } from '@/lib/will/seed';
 import { getSupabase } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
@@ -13,7 +13,14 @@ export async function POST() {
   if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const existing = await getStore().listTemplates();
   if (existing.length > 0) {
-    return NextResponse.json({ ok: true, seeded: 0, note: 'templates already present' });
+    // Already seeded, but the seed set may have grown since. Add only the
+    // entries whose key is missing, so every sendable message is in the
+    // Library without duplicating or overwriting anything the owner edited.
+    const added = await backfillMissingTemplates(getStore());
+    return NextResponse.json({
+      ok: true, seeded: 0, backfilled: added.length, keys: added,
+      note: added.length ? 'templates already present; missing entries added' : 'templates already present',
+    });
   }
   const rows = seedTemplates().map((t) => ({
     id: t.id, key: t.key, category: t.category, title: t.title, body: t.body,

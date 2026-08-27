@@ -2,9 +2,13 @@
 import { useState, useRef, useId, isValidElement, cloneElement } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
-import { isValidEmail, isValidTfn, isPlausibleDob } from '@/lib/validate'
+import { isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
+
+/* Bounds for the date-of-birth picker, identical to what `isPlausibleDob`
+   accepts. Computed once per module load rather than per render. */
+const DOB_RANGE = dobInputRange()
 
 type UploadState = { file: File | null; preview: string | null }
 
@@ -246,7 +250,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" autoComplete="family-name" maxLength={60} value={lastName} onChange={e=>{ setLastName(e.target.value); setErrors(p=>({...p,lastName:''})) }}/>
           </Field>
           <Field label={T('dob')} required error={errors.dob}>
-            <input type="date" className={`form-input${errors.dob?' input-error':''}`} autoComplete="bday" value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
+            <input type="date" className={`form-input${errors.dob?' input-error':''}`} autoComplete="bday" min={DOB_RANGE.min} max={DOB_RANGE.max} value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
           </Field>
           <Field label={T('passport')} required error={errors.passport}>
             <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" autoComplete="off" maxLength={30} value={passport} onChange={e=>{ setPassport(e.target.value); setErrors(p=>({...p,passport:''})) }}/>

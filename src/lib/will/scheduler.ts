@@ -12,10 +12,11 @@ import { suggestReply } from './suggest';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { formReceivedMessage } from './i18n';
+import { formReceivedMessage, formReceivedTemplateKey } from './i18n';
 import { deliverOut, sendWhatsAppText } from './channel';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
+import { runLostLeadAnalysis } from './lost-analysis';
 
 
 /**
@@ -99,8 +100,12 @@ export async function ensureNightly(): Promise<void> {
  *  with whatever hour nightly maintenance happens to run at. */
 export async function ensureDailyDigest(): Promise<void> {
   const store = getStore();
-  const jobs = await store.listJobs();
-  if (jobs.some((j) => j.kind === 'DAILY_DIGEST' && j.status === 'SCHEDULED')) return;
+  // Existence check pushed to the DB, exactly like `ensureNightly` above. The
+  // previous `listJobs()` scan pulled every row to look for one, and once
+  // `will_jobs` passed PostgREST's 1000-row ceiling the truncated page stopped
+  // containing the queued digest — so this returned "not scheduled" and queued
+  // another one every tick.
+  if (await store.hasScheduledJobOfKind('DAILY_DIGEST')) return;
 
   const now = new Date();
   const parts = new Intl.DateTimeFormat('en-CA', {
@@ -118,7 +123,40 @@ export async function ensureDailyDigest(): Promise<void> {
   await store.addJob({ customerId: null, kind: 'DAILY_DIGEST', payload: {}, runAt: runAt.toISOString() });
 }
 
+/** Ensure exactly one lost-lead analysis job is queued (idempotent), for the
+ *  next 4:00am in Melbourne. Same shape as ensureDailyDigest, and separate from
+ *  NIGHTLY for the same reason: it makes paid model calls, so it needs its own
+ *  predictable slot in the quiet hours rather than riding on whenever nightly
+ *  maintenance happens to fire. 4am also puts it four hours before the digest,
+ *  so the two never contend for the same daily AI budget in the same minute. */
+export async function ensureLostAnalysis(): Promise<void> {
+  const store = getStore();
+  // Existence check pushed to the DB, for the same reason as the digest above:
+  // a `listJobs()` scan past PostgREST's row ceiling stops containing the queued
+  // job and quietly queues another one every tick.
+  if (await store.hasScheduledJobOfKind('LOST_ANALYSIS')) return;
+
+  const now = new Date();
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+    hour12: false, timeZone: 'Australia/Melbourne',
+  }).formatToParts(now);
+  const y = Number(parts.find((p) => p.type === 'year')?.value);
+  const mo = Number(parts.find((p) => p.type === 'month')?.value);
+  const da = Number(parts.find((p) => p.type === 'day')?.value);
+  const hh = Number(parts.find((p) => p.type === 'hour')?.value);
+  const targetDay = hh >= 4 ? da + 1 : da; // Date.UTC below normalises any overflow
+
+  const runAt = new Date(localMidnightUtc('Australia/Melbourne', y, mo, targetDay).getTime() + 4 * 60 * 60 * 1000);
+  await store.addJob({ customerId: null, kind: 'LOST_ANALYSIS', payload: {}, runAt: runAt.toISOString() });
+}
+
 export interface TickResult { processed: number; sent: string[]; closed: string[]; deferred: number }
+
+/** How long one tick will keep claiming jobs before it stops and leaves the rest
+ *  for the next run. Deliberately under the route's `maxDuration = 60`, so the
+ *  loop ends on its own terms rather than being killed mid-job. */
+const TICK_BUDGET_MS = 45_000;
 
 // Single-flight lock: overlapping ticks (multiple tabs / external cron)
 // must not double-process jobs.
@@ -140,8 +178,23 @@ async function doProcess(): Promise<TickResult> {
   }
   const due = await store.dueJobs(new Date());
   const result: TickResult = { processed: 0, sent: [], closed: [], deferred: 0 };
+  const startedAt = Date.now();
 
-  for (const job of due) {
+  for (let i = 0; i < due.length; i++) {
+    const job = due[i];
+    // Time budget. The tick runs as one serverless invocation with a hard
+    // ceiling (`maxDuration`); a busy morning used to run past it and be killed
+    // mid-job, which burned an `attempts` on every reclaim until the job hit a
+    // permanent FAILED and the cadence died silently. Stopping deliberately
+    // leaves the remainder SCHEDULED for the next tick, and says so out loud.
+    if (Date.now() - startedAt > TICK_BUDGET_MS) {
+      const remaining = due.length - i;
+      await store.audit('scheduler', 'tick_budget_exhausted', {
+        processed: result.processed, remaining,
+        note: `Stopped after ${Math.round((Date.now() - startedAt) / 1000)}s with ${remaining} due job(s) not yet processed; they remain SCHEDULED and run on the next tick.`,
+      }).catch(() => { /* never let the bookkeeping write end the tick */ });
+      break;
+    }
     // Atomic claim: only one caller wins; a crash mid-job leaves it CLAIMED and
     // it is reclaimed to SCHEDULED next tick (up to 3 attempts), never lost.
     if (!(await store.claimJob(job.id))) continue;
@@ -160,6 +213,34 @@ async function doProcess(): Promise<TickResult> {
         catch (e) { await store.audit('nightly', 'daily_digest_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {}); }
         await store.setJobStatus(job.id, 'DONE');
         await ensureDailyDigest();
+        continue;
+      }
+      if (job.kind === 'LOST_ANALYSIS') {
+        // Best-effort, exactly like the digest above: the run records its own
+        // outcome (including "the AI budget stopped me"), so a crash here must
+        // not take the tick down with it. The day key is only written by a run
+        // that got that far, so a crashed run is retried on the next tick.
+        //
+        // It is given whatever is LEFT of this tick's budget, never more: each
+        // post-mortem is a model call of up to 45s, and the invocation itself is
+        // capped at 60s. The run stops on that deadline with every finished lead
+        // already stored, and asks to be resumed rather than being killed
+        // mid-call and burning a retry on the job.
+        let outcome: Awaited<ReturnType<typeof runLostLeadAnalysis>> | null = null;
+        const leftOfTick = Math.max(2_000, TICK_BUDGET_MS - (Date.now() - startedAt) - 5_000);
+        try { outcome = await runLostLeadAnalysis(Date.now(), leftOfTick); }
+        catch (e) { await store.audit('nightly', 'lost_analysis_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {}); }
+        await store.setJobStatus(job.id, 'DONE');
+        if (outcome === 'incomplete') {
+          // Same night, more leads to get through. Come back in a few minutes
+          // rather than waiting for tomorrow's 4am slot.
+          await store.addJob({
+            customerId: null, kind: 'LOST_ANALYSIS', payload: {},
+            runAt: new Date(Date.now() + 3 * 60 * 1000).toISOString(),
+          });
+        } else {
+          await ensureLostAnalysis();
+        }
         continue;
       }
       if (!job.customerId) { await store.setJobStatus(job.id, 'CANCELLED'); continue; }
@@ -186,14 +267,24 @@ async function doProcess(): Promise<TickResult> {
           await store.setState(customer.id, 'FORM_COMPLETE', 'SYSTEM');
           await store.cancelJobsFor(customer.id, ['FOLLOW_UP']);
           if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
-            let body = formReceivedMessage(customer.lang);
+            // The confirmation now lives in the Library, one entry per language
+            // (seed.ts), so the owner can edit it without a deploy. The i18n
+            // constants stay as the fallback for a store that cannot be read.
+            const libraryCopy = async (lang: string | null) => {
+              try {
+                const key = formReceivedTemplateKey(lang);
+                const t = (await store.listTemplates()).find((x) => x.key === key);
+                return t && t.body.trim() ? t.body : null;
+              } catch { return null; }
+            };
+            let body = (await libraryCopy(customer.lang)) ?? formReceivedMessage(customer.lang);
             const verdict = policyGuard(body, {
               state: 'FORM_COMPLETE', paid: true, aiPaused: false, killSwitch: false,
               optedOut: false, isLegacy: false,
               lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
               isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
             });
-            if (!verdict.allowed) body = formReceivedMessage('en'); // English is guard-safe
+            if (!verdict.allowed) body = (await libraryCopy('en')) ?? formReceivedMessage('en'); // English is guard-safe
             if (await inApprovalMode()) {
               await store.addMessage({
                 customerId: customer.id, direction: 'OUT', author: 'AI',
@@ -360,8 +451,30 @@ async function doProcess(): Promise<TickResult> {
       await store.audit('scheduler', 'follow_up_sent', { customerId: customer.id, template: template.key, seq });
       result.sent.push(`${customer.name ?? customer.waId} · ${template.title}`);
       await scheduleFollowUp(customer.id, flow, seq + 1);
-    } catch {
-      await store.setJobStatus(job.id, 'FAILED');
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      // A FOLLOW_UP is marked DONE deliberately BEFORE it sends (REL-02 above),
+      // so by the time anything here can throw the customer may already have the
+      // message. Flipping DONE back to FAILED made the cadence read the step as
+      // never delivered and queue the same template again — the customer got the
+      // same follow-up twice. Only fail a job that has not already completed.
+      const current = await store.getJob(job.id).catch(() => null);
+      const alreadyDone = current?.status === 'DONE';
+      if (!alreadyDone) {
+        await store.setJobStatus(job.id, 'FAILED').catch(() => { /* nothing left to do */ });
+      }
+      // This catch was entirely silent — no log, no audit — so every scheduler
+      // crash was invisible and the cadence just stopped.
+      await store.audit('scheduler', 'job_crashed', {
+        jobId: job.id, kind: job.kind, customerId: job.customerId,
+        alreadyDone, error: message.slice(0, 300),
+      }).catch(() => { /* audit is best-effort here */ });
+      // One bad step must not end the cadence — the same rule the
+      // missing-template and guard-blocked branches above already follow.
+      if (job.kind === 'FOLLOW_UP' && job.customerId && job.payload.flow) {
+        await scheduleFollowUp(job.customerId, job.payload.flow, (job.payload.seq ?? 0) + 1)
+          .catch(() => { /* already audited above */ });
+      }
     }
   }
   return result;

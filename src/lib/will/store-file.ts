@@ -5,6 +5,7 @@ import path from 'path';
 import { randomUUID } from 'crypto';
 import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
+  LostAnalysisRow,
 } from './store';
 import { CustomerState } from './state-machine';
 import { seedCustomers, seedTemplates } from './seed';
@@ -20,6 +21,7 @@ interface Db {
   settings: Record<string, unknown>;
   audit: { id?: string; actor: string; action: string; detail: unknown; at: string }[];
   processed?: { id: string; at: string }[];
+  lostAnalyses?: LostAnalysisRow[];   // stored lost-lead post-mortems (migration 031)
   knownContacts?: string[]; // normalized numbers of pre-existing contacts kept OUT of Will
 }
 
@@ -48,6 +50,7 @@ async function load(): Promise<Db> {
     cache.knowledge ??= [];
     cache.settings ??= {};
     cache.processed ??= [];
+    cache.lostAnalyses ??= [];
     for (const c of cache.customers) { c.previousState ??= null; c.lastMessageDirection ??= (c.unread ? 'IN' : 'OUT'); c.botOwned ??= false; c.lang ??= null; c.unreadCount ??= (c.unread ? 1 : 0); c.lastMessageAt ??= (c.lastCustomerMsgAt ?? c.stateChangedAt ?? c.createdAt ?? null); }
     for (const t of cache.tasks) t.suggestedReply ??= null;
   } catch {
@@ -61,6 +64,7 @@ async function load(): Promise<Db> {
       knowledge: [],
       settings: {},
       audit: [],
+      lostAnalyses: [],
     };
     await persist();
   }
@@ -92,6 +96,30 @@ async function persist(): Promise<void> {
 }
 
 const now = () => new Date().toISOString();
+
+/** Most jobs a single tick will claim. Kept in step with the Supabase store. */
+const DUE_JOBS_BATCH = 50;
+
+/** Re-derive a customer's chat-list row (preview / direction / time) from the
+ *  newest message that actually exists as far as the customer is concerned:
+ *  one they sent, or one of ours WhatsApp accepted. Both are stored as 'SENT'.
+ *  A draft, a parked autopilot reply, a guard-blocked, discarded or failed
+ *  message never reached them and must never appear as the row's last message.
+ *  Mirrors SupabaseStore.refreshLastMessage; called on every status change. */
+function refreshLastMessage(db: Db, customerId: string): void {
+  const c = db.customers.find((x) => x.id === customerId);
+  if (!c) return;
+  let latest: MessageRow | null = null;
+  for (const m of db.messages) {
+    if (m.customerId !== customerId || m.status !== 'SENT') continue;
+    // `>=` not `>`: db.messages is append-ordered, so on two messages written
+    // in the same millisecond the later-appended one is the later message.
+    if (!latest || m.createdAt >= latest.createdAt) latest = m;
+  }
+  c.lastMessagePreview = latest ? latest.body.slice(0, 80) : null;
+  c.lastMessageDirection = latest ? latest.direction : null;
+  c.lastMessageAt = latest ? latest.createdAt : null;
+}
 
 export class FileStore implements Store {
   async listCustomers() { return (await load()).customers; }
@@ -173,9 +201,16 @@ export class FileStore implements Store {
     db.messages.push(row);
     const c = db.customers.find((x) => x.id === m.customerId);
     if (c) {
-      c.lastMessagePreview = m.body.slice(0, 80);
-      c.lastMessageDirection = m.direction;
-      c.lastMessageAt = row.createdAt;
+      // TRUTH RULE (mirrors SupabaseStore): only a message that actually
+      // reached the customer, or one they sent, may become the chat-list row
+      // preview. A draft awaiting approval, a parked autopilot reply, a
+      // guard-blocked or discarded one was never received, so it must not make
+      // the list read as though the customer got something.
+      if (m.status === 'SENT') {
+        c.lastMessagePreview = m.body.slice(0, 80);
+        c.lastMessageDirection = m.direction;
+        c.lastMessageAt = row.createdAt;
+      }
       if (m.direction === 'IN') { c.lastCustomerMsgAt = row.createdAt; c.unread = true; c.unreadCount = (c.unreadCount ?? 0) + 1; }
     }
     await persist();
@@ -239,7 +274,11 @@ export class FileStore implements Store {
   async setMessageStatus(id: string, status: MessageRow['status'], opts?: { restamp?: boolean }) {
     const db = await load();
     const m = db.messages.find((x) => x.id === id);
-    if (m) { m.status = status; if (opts?.restamp) m.createdAt = now(); }
+    if (m) {
+      m.status = status;
+      if (opts?.restamp) m.createdAt = now();
+      refreshLastMessage(db, m.customerId);
+    }
     await persist();
   }
 
@@ -252,7 +291,7 @@ export class FileStore implements Store {
   async discardByProviderId(providerId: string) {
     const db = await load();
     const m = db.messages.find((x) => x.meta?.providerId === providerId);
-    if (m) { m.status = 'DISCARDED'; await persist(); return true; }
+    if (m) { m.status = 'DISCARDED'; refreshLastMessage(db, m.customerId); await persist(); return true; }
     return false;
   }
 
@@ -294,11 +333,11 @@ export class FileStore implements Store {
 
   async listTemplates() { return (await load()).templates; }
 
-  async addTemplate(t: { category: string; title: string; body: string }): Promise<TemplateRow> {
+  async addTemplate(t: { category: string; title: string; body: string; key?: string }): Promise<TemplateRow> {
     const db = await load();
     const row: TemplateRow = {
       id: randomUUID(),
-      key: 'custom_' + randomUUID().slice(0, 8),
+      key: t.key || 'custom_' + randomUUID().slice(0, 8),
       category: t.category || 'Custom',
       title: t.title || 'Untitled message',
       body: t.body,
@@ -362,6 +401,14 @@ export class FileStore implements Store {
     await persist();
   }
 
+  async listCounters(prefix: string): Promise<{ key: string; value: number }[]> {
+    const db = await load();
+    return Object.entries(db.settings)
+      .filter(([k]) => k.startsWith(prefix))
+      .map(([key, value]) => ({ key, value: Number(value) }))
+      .filter((r) => Number.isFinite(r.value));
+  }
+
   async addJob(j: Omit<JobRow, 'id' | 'createdAt' | 'status'>): Promise<JobRow> {
     const db = await load();
     const row: JobRow = { ...j, id: randomUUID(), status: 'SCHEDULED', createdAt: now() };
@@ -370,9 +417,14 @@ export class FileStore implements Store {
     return row;
   }
 
+  /** Oldest-due first and capped, matching the Supabase store so the tick loop
+   *  behaves identically on both. */
   async dueJobs(nowDate: Date) {
     const db = await load();
-    return db.jobs.filter((j) => j.status === 'SCHEDULED' && new Date(j.runAt) <= nowDate);
+    return db.jobs
+      .filter((j) => j.status === 'SCHEDULED' && new Date(j.runAt) <= nowDate)
+      .sort((a, b) => a.runAt.localeCompare(b.runAt))
+      .slice(0, DUE_JOBS_BATCH);
   }
 
   async listJobs() { return (await load()).jobs; }
@@ -392,6 +444,10 @@ export class FileStore implements Store {
 
   async hasScheduledNightly() {
     return (await load()).jobs.some((j) => j.kind === 'NIGHTLY' && j.status === 'SCHEDULED');
+  }
+
+  async hasScheduledJobOfKind(kind: JobRow['kind']) {
+    return (await load()).jobs.some((j) => j.kind === kind && j.status === 'SCHEDULED');
   }
 
   async getJob(id: string) {
@@ -471,6 +527,21 @@ export class FileStore implements Store {
   async deleteKnowledge(id: string) {
     const db = await load();
     db.knowledge = db.knowledge.filter((k) => k.id !== id);
+    await persist();
+  }
+
+  // ── Lost-lead post-mortems (migration 031) ──
+  async listLostAnalyses(): Promise<LostAnalysisRow[]> {
+    const db = await load();
+    return [...(db.lostAnalyses ?? [])].sort((a, b) => (a.analysedAt < b.analysedAt ? 1 : -1));
+  }
+  /** Keyed by customerId: re-running the nightly job replaces the row rather
+   *  than adding a second post-mortem for the same lead. */
+  async upsertLostAnalysis(row: LostAnalysisRow): Promise<void> {
+    const db = await load();
+    db.lostAnalyses ??= [];
+    const i = db.lostAnalyses.findIndex((r) => r.customerId === row.customerId);
+    if (i >= 0) db.lostAnalyses[i] = row; else db.lostAnalyses.push(row);
     await persist();
   }
 

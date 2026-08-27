@@ -74,7 +74,11 @@ export default function CrmLoginPage() {
     // screen has no rail, so the one screen that is a single centred card
     // overrides the layout here rather than in the shared stylesheet.
     <div className="crm-scope" style={{ display: 'grid', placeItems: 'center', padding: 20 }}>
-      <div className="modal" style={{ maxWidth: 340, textAlign: 'center' }}>
+      {/* padding:0 and overflow:hidden so the photo below can run edge to edge
+          into the card's own rounded corners instead of floating inside a
+          border of white. The padding moves onto the fields block. */}
+      <div className="modal" style={{ maxWidth: 340, textAlign: 'center', padding: 0, overflow: 'hidden' }}>
+        <div style={{ padding: 20 }}>
         <div className="slogo" style={{ justifyContent: 'center', padding: '2px 0 14px' }}>
           <CrmLogoMark />
         </div>
@@ -163,6 +167,21 @@ export default function CrmLoginPage() {
             {error}
           </div>
         )}
+        </div>{/* end fields block */}
+
+        {/* Jo's photo, at his request. It sits BELOW the fields on purpose —
+            the reason to be on this screen is to sign in, so the sign-in comes
+            first and the picture is what you look at while the code arrives.
+            aria-hidden + empty alt: it is decoration, and a screen reader
+            announcing it would only get between the user and the password. */}
+        <img
+          src="/assets/crm-login.webp"
+          alt=""
+          aria-hidden="true"
+          width={680}
+          height={415}
+          style={{ display: 'block', width: '100%', height: 'auto' }}
+        />
       </div>
     </div>
   )

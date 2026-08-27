@@ -171,13 +171,29 @@ export async function uploadFiles(
   return results.filter((u): u is string => u !== null)
 }
 
+export interface DeleteFilesResult {
+  /** True only when every file this call was asked to remove is confirmed gone. */
+  ok: boolean
+  /** Storage paths the SDK confirmed as removed. */
+  deleted: string[]
+  /** Why it failed, when it did. */
+  error?: string
+}
+
 /**
  * Delete files from Supabase Storage by their public URLs.
  * Extracts the storage path from URLs and removes them.
+ *
+ * The storage SDK returns `{ data, error }` and does NOT throw, so the previous
+ * try/catch only ever caught a network-level fault: a storage rejection
+ * (permissions, wrong bucket, object already gone) came back as a resolved
+ * promise with `error` set and was dropped silently. The caller then cleared the
+ * task's file references believing the files were deleted. These are passports
+ * and bank statements, so the outcome is now reported rather than assumed.
  */
-export async function deleteFiles(urls: string[]): Promise<void> {
+export async function deleteFiles(urls: string[]): Promise<DeleteFilesResult> {
   const validUrls = urls.filter(u => typeof u === 'string' && u.startsWith('https://'))
-  if (validUrls.length === 0) return
+  if (validUrls.length === 0) return { ok: true, deleted: [] }
 
   const sb = getSupabase()
   // Extract storage paths from Supabase public URLs
@@ -191,11 +207,31 @@ export async function deleteFiles(urls: string[]): Promise<void> {
     })
     .filter((p): p is string => p !== null)
 
-  if (paths.length === 0) return
+  // A URL we cannot turn into a storage path is not a file we deleted. Saying
+  // otherwise is what let the references be cleared while the object stayed.
+  if (paths.length !== validUrls.length) {
+    return {
+      ok: false, deleted: [],
+      error: `${validUrls.length - paths.length} of ${validUrls.length} file URL(s) are not in the uploads bucket and were not deleted`,
+    }
+  }
+  if (paths.length === 0) return { ok: true, deleted: [] }
 
   try {
-    await sb.storage.from(STORAGE_BUCKETS.uploads).remove(paths)
+    const { data, error } = await sb.storage.from(STORAGE_BUCKETS.uploads).remove(paths)
+    if (error) {
+      console.error('[deleteFiles] Storage refused the delete:', error.message)
+      return { ok: false, deleted: [], error: error.message }
+    }
+    const deleted = (data ?? []).map(o => o.name)
+    if (deleted.length < paths.length) {
+      const missing = paths.filter(p => !deleted.includes(p))
+      console.error('[deleteFiles] Not every file was removed:', missing.join(', '))
+      return { ok: false, deleted, error: `not removed: ${missing.join(', ')}` }
+    }
+    return { ok: true, deleted }
   } catch (err) {
     console.error('[deleteFiles] Failed to delete files:', err)
+    return { ok: false, deleted: [], error: err instanceof Error ? err.message : String(err) }
   }
 }

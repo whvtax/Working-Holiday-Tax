@@ -18,7 +18,7 @@
 // send path runs the policy guard as usual.
 import { APPROVED } from './approved-messages';
 import { retrieveKnowledge } from './knowledge';
-import { CustomerRow } from './store';
+import { CustomerRow, getStore } from './store';
 
 /** Why the conversation is being handed to a human. Each reason has its own
  *  sensible opening, because "we cannot read your photo" and "you messaged us
@@ -36,18 +36,42 @@ export type HandoffReason =
 
 /** The last thing to fall back on: warm, true, commits to nothing, and is safe
  *  to send in any state the conversation could be in. */
-const HOLDING = `Thanks for that 😊 Let me look into it properly and come straight back to you.`;
+const HOLDING = APPROVED.handoff.holding;
 
 const BY_REASON: Record<HandoffReason, string> = {
   guard_blocked: HOLDING,
   draft_invalid: HOLDING,
-  attachment: `Got it, thanks for sending that through 😊 I'll go through it and come back to you shortly.`,
-  unreadable: `Thanks for your message 😊 It didn't come through on my end, would you mind sending it again as text?`,
-  returning_customer: `Hey, good to hear from you again 😊 What can I help you with?`,
+  attachment: APPROVED.handoff.attachment,
+  unreadable: APPROVED.handoff.unreadable,
+  returning_customer: APPROVED.handoff.returning_customer,
   budget: HOLDING,
   send_failed: HOLDING,
-  many_questions: `Thanks for all the questions 😊 Let me jump in personally and go through everything with you properly.`,
+  many_questions: APPROVED.handoff.many_questions,
   generic: HOLDING,
+};
+
+/** Where each of the messages above lives in the Message Library. Every one of
+ *  them is seeded (seed.ts), so what gets proposed is the owner's CURRENT
+ *  wording; the constants above are the fallback when the Library cannot be
+ *  read. Jo's rule, 26 Aug: anything a customer can receive is editable there. */
+const REASON_TEMPLATE_KEYS: Record<HandoffReason, string> = {
+  guard_blocked: 'handoff_holding',
+  draft_invalid: 'handoff_holding',
+  attachment: 'handoff_attachment',
+  unreadable: 'handoff_unreadable',
+  returning_customer: 'handoff_returning_customer',
+  budget: 'handoff_holding',
+  send_failed: 'handoff_holding',
+  many_questions: 'handoff_many_questions',
+  generic: 'handoff_holding',
+};
+
+/** Which Library entry carries the message this pipeline stage calls for. */
+const STATE_TEMPLATE_KEYS: Partial<Record<CustomerRow['state'], string>> = {
+  NEW_LEAD: 'opening',
+  PRICE_SENT: 'obj_11', PAYMENT_PENDING: 'obj_11',
+  PAID: 'payment_received', FORM_PENDING: 'payment_received',
+  SIGNATURE_PENDING: 'signature',
 };
 
 /** Where the customer is in the pipeline decides what they are most likely
@@ -68,6 +92,23 @@ function byState(c: Pick<CustomerRow, 'state' | 'income' | 'paid'>): string | nu
       return APPROVED.signature_ready;
     default:
       return null;
+  }
+}
+
+function stateTemplateKey(c: Pick<CustomerRow, 'state' | 'income'>): string | null {
+  if (c.state === 'QUALIFIED') return c.income === 'TFN_ABN' ? 'price_tfn_abn' : 'price_tfn';
+  return STATE_TEMPLATE_KEYS[c.state] ?? null;
+}
+
+/** The owner's current text for a Library key, or null if it cannot be read.
+ *  Never throws: a suggestion is a convenience, not a dependency. */
+async function libraryBody(key: string | null): Promise<string | null> {
+  if (!key) return null;
+  try {
+    const t = (await getStore().listTemplates()).find((x) => x.key === key);
+    return t && t.body.trim() ? t.body : null;
+  } catch {
+    return null;
   }
 }
 
@@ -100,10 +141,10 @@ export async function suggestReply(
   //    is what they are waiting on. Someone whose photo could not be read is not
   //    waiting to be quoted a price again.
   if (customer && (reason === 'guard_blocked' || reason === 'draft_invalid' || reason === 'budget' || reason === 'generic')) {
-    const s = byState(customer);
+    const s = (await libraryBody(stateTemplateKey(customer))) ?? byState(customer);
     if (s) return s;
   }
 
   // 3. Always something.
-  return BY_REASON[reason] ?? HOLDING;
+  return (await libraryBody(REASON_TEMPLATE_KEYS[reason])) ?? BY_REASON[reason] ?? HOLDING;
 }

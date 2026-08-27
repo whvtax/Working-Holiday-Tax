@@ -1,4 +1,9 @@
 export const runtime = 'nodejs'
+// This route receives uploaded file bytes (passport, bank statements) and then
+// writes them to storage. On the platform default a slow upload is cut off
+// mid-request and the customer's submission is lost with no error they can act
+// on. 60s matches the tick route.
+export const maxDuration = 60
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'

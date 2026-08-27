@@ -228,7 +228,23 @@ export async function markTaskDone(id: string): Promise<void> {
   const sb = getSupabase()
   const task = await getTask(id)
   if (!task) return
-  if (task.fileUrls?.length) await deleteFiles(task.fileUrls)
+
+  // The file references are the ONLY record of where these documents live. They
+  // may only be cleared once the documents are confirmed deleted: clearing them
+  // after a failed delete orphans a passport or a bank statement in storage with
+  // nothing left pointing at it, so nobody can find it to remove it later.
+  // `deleteFiles` used to swallow the storage SDK's `{ error }` and this cleared
+  // them regardless.
+  let filesDeleted = true
+  let fileDeleteError: string | undefined
+  if (task.fileUrls?.length) {
+    const del = await deleteFiles(task.fileUrls)
+    filesDeleted = del.ok
+    fileDeleteError = del.error
+    if (!del.ok) {
+      console.error(`[markTaskDone] task ${id}: file deletion failed, keeping file_urls so the documents remain traceable:`, del.error)
+    }
+  }
 
   // Strip sensitive PII from notes - keep only admin notes (📞 Called, ✉️ Emailed, etc.)
   // Remove: Passport No, Bank details, Home Country Address, Gender, ABN numbers, Expenses, Declarations, Returning client
@@ -245,8 +261,15 @@ export async function markTaskDone(id: string): Promise<void> {
   const { error } = await sb.from('crm_tasks').update({
     done: true,
     address: '', tfn: '', bank_details: '',
-    primary_job: '', marital: '', au_phone: '', file_urls: '[]',
-    notes: cleanedNotes,
+    primary_job: '', marital: '', au_phone: '',
+    // Only cleared when the files are actually gone; see above.
+    ...(filesDeleted ? { file_urls: '[]' } : {}),
+    notes: filesDeleted
+      ? cleanedNotes
+      // Leave a visible trace on the task itself, so this is not something only
+      // a server log knows about.
+      : [cleanedNotes, `⚠️ Attached files could NOT be deleted from storage${fileDeleteError ? ` (${fileDeleteError})` : ''} — they are still there and still linked.`]
+        .filter(Boolean).join(' | '),
     reviewer_note: '',
   }).eq('id', id)
   if (error) throw error

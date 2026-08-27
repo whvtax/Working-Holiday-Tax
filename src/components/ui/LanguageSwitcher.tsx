@@ -133,8 +133,21 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
         </svg>
       </button>
 
-      {open && (
-        <div style={{
+      {/* The alternate-language links are rendered on every page, open or not.
+          They used to live behind `{open && ...}`, so the only HTML path from
+          an English page to its German and Japanese twin was a click a crawler
+          never makes: 334 localized pages were reachable through the sitemap
+          alone, and a sitemap entry passes no authority. The panel is now
+          always in the markup and hidden with CSS instead. `visibility:hidden`
+          keeps it out of the accessibility tree and out of the tab order, and
+          `inert` matches what the mobile drawer in Nav already does - no focus,
+          no pointer events, no prefetch of the hidden links. Visually this is
+          identical to not rendering it: the panel is absolutely positioned, so
+          it takes no layout space either way. */}
+      <div
+        {...(open ? {} : { inert: '' as unknown as boolean })}
+        aria-hidden={!open}
+        style={{
           position: 'absolute',
           top: 'calc(100% + 8px)',
           right: 0,
@@ -145,6 +158,9 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
           border: '1px solid #E2EFE9',
           padding: '6px',
           zIndex: 60,
+          visibility: open ? 'visible' : 'hidden',
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? 'auto' : 'none',
         }}>
           {options.map(opt => {
             const isCurrent = opt.code === currentLocale
@@ -172,8 +188,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
               </Link>
             )
           })}
-        </div>
-      )}
+      </div>
     </div>
   )
 }

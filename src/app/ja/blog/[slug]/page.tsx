@@ -7,12 +7,8 @@ import { guides, getCategoryColor } from '@/app/blog/data'
 import GuideArticle from '@/app/blog/[slug]/GuideArticle'
 import StickyBreadcrumbs from '@/app/blog/[slug]/StickyBreadcrumbs'
 import CategoryHero from '@/app/blog/[slug]/CategoryHero'
-// The corpus was reframed on this date. dateModified previously mirrored
-// datePublished on every article, which told search engines nothing had
-// changed and was, after tonight, simply untrue.
-const CORPUS_REVISED = '2026-08-22'
 
-import { isoGuideDate, formatGuideDateJa } from '@/lib/blog-dates'
+import { isoGuideDate, guideModifiedIso, formatGuideDateJa } from '@/lib/blog-dates'
 import { getJapaneseGuide, getJapaneseCategoryMeta, jaCategoryMeta, blogUI } from '../data'
 import { GuideCta } from '@/components/ui/GuideCta'
 import { MobileCta } from '@/components/ui/MobileCta'
@@ -582,7 +578,13 @@ export default function JapaneseGuidePage({ params }: Props) {
   // date only and never labels it as an update.
   const reviewedDate = (guide as { reviewed?: string }).reviewed
   const publishedIso = isoGuideDate(guide.date)
-  const modifiedIso = reviewedDate ? isoGuideDate(reviewedDate) : publishedIso
+  // The corpus was reframed on CORPUS_REVISED, and until now nothing read
+  // that constant: dateModified mirrored datePublished on every article, so
+  // guides revised in August 2026 told search engines they had not been
+  // touched since July 2024. guideModifiedIso applies the per-guide `reviewed`
+  // date where one exists, falls back to the corpus revision date, and clamps
+  // the result so it is never before publication and never in the future.
+  const modifiedIso = guideModifiedIso(publishedIso, undefined, reviewedDate)
 
   // Set inLanguage based on whether body is Japanese or still English
   const articleLang = isTranslated ? 'ja' : 'en-AU'

@@ -185,7 +185,12 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .cfchip{flex:1 1 auto;min-width:0;border:1px solid var(--line2);background:var(--surface2);color:var(--ink2);border-radius:999px;padding:4px 8px;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;text-align:center;font-family:inherit;transition:background 140ms var(--ease-out),color 140ms var(--ease-out),border-color 140ms var(--ease-out)}
 .will-scope .cfchip:hover{border-color:var(--brand1)}
 .will-scope .cfchip.on{background:#d9f4ee;border-color:#d9f4ee;color:var(--ink)}
-.will-scope .citem{display:flex;gap:9px;padding:9px 11px;border-bottom:1px solid var(--line);cursor:pointer;transition:background 150ms var(--ease-out);align-items:center}
+/* No full-width rule between rows. Real WhatsApp separates chats with the
+ * avatar gutter and the vertical rhythm, not a line across the whole panel —
+ * the line was the one thing in this list that read as a table. A touch more
+ * padding does the separating instead, so the rows do not close up once the
+ * border is gone. */
+.will-scope .citem{display:flex;gap:9px;padding:10px 11px;cursor:pointer;transition:background 150ms var(--ease-out);align-items:center}
 .will-scope .citem:hover, .will-scope .citem.sel{background:rgba(30,32,40,.035)}
 .will-scope .citem.sel{box-shadow:inset 3px 0 0 var(--brand1)}
 .will-scope .cav{width:33px;height:33px;border-radius:50%;background:var(--surface3);display:grid;place-items:center;font-size:16px;flex:none;overflow:hidden}
@@ -593,3 +598,159 @@ aside.side{
 .will-scope .composer textarea{
   line-height:1.4;
 }
+
+/* ============================================================
+   Month-by-month conversion history (Learning → under the goal card).
+   A row per calendar month: label, a bar showing that month's lead → paid
+   rate against the fixed 100% target, the percent, and the raw paid/leads
+   so a 100% month built on two leads reads as what it is.
+   ============================================================ */
+.will-scope .monthhist{margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+.will-scope .mhhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+.will-scope .mhhead .mini{text-transform:none;letter-spacing:normal;font-weight:400}
+.will-scope .mhrows{display:flex;flex-direction:column;gap:6px}
+.will-scope .mhrow{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--ink2)}
+.will-scope .mhlabel{flex:none;width:74px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.will-scope .mhbar{flex:1;min-width:60px;height:8px;border-radius:5px;background:rgba(30,32,40,.05);overflow:hidden}
+.will-scope .mhfill{display:block;height:100%;border-radius:5px;background:var(--brand1);opacity:.85;min-width:2px;transition:width 600ms var(--ease-in-out)}
+.will-scope .mhrate{flex:none;width:40px;text-align:right;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.will-scope .mhcount{flex:none;width:74px;text-align:right;font-size:10.5px;color:var(--ink3);font-variant-numeric:tabular-nums}
+/* A month with no leads is shown rather than hidden — a gap in the row is
+   itself the finding — but it must not read as a bad month. */
+.will-scope .mhrow.empty{opacity:.45}
+
+/* ============================================================
+   Scheduled follow-ups list. Reuses .rowcard/.rc-* from the pipeline; this
+   only adds the two-line "when it sends" column on the right.
+   ============================================================ */
+.will-scope .fu-when{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex:none;min-width:104px}
+.will-scope .fu-when b{font-size:11.5px;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.will-scope .fu-when small{font-size:10px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:840px){
+  .will-scope .fu-when{min-width:0}
+  .will-scope .fu-when small{display:none}
+}
+
+/* A draft Will is holding for this chat. Deliberately NOT the preview: the
+   preview is only ever a message the customer really received (see the store's
+   refreshLastMessage), and a draft is a fact about US, not about them. Purple
+   is the same "awaiting approval" colour the draft bubble and the approval card
+   already use, so the marker reads as the same thing in a smaller place. */
+.will-scope .cdraft{
+  display:inline-block;margin-right:6px;padding:0 5px;border-radius:5px;
+  font-family:var(--ui-font);font-size:9.5px;font-weight:700;letter-spacing:.2px;
+  color:var(--brand2);background:color-mix(in srgb,var(--brand2) 12%, transparent);
+  vertical-align:1px;
+}
+
+/* ============================================================
+   Section head in Tasks: the count IS the heading (Jo, 26 Aug — "lose the
+   label, keep the number"). Sized and coloured like the sidebar's .nbadge so a
+   count means the same thing wherever it appears; the zero state stays quiet
+   rather than shouting an empty queue at him.
+   ============================================================ */
+.will-scope .secthead{display:flex;align-items:center;gap:7px;margin:10px 0 8px}
+.will-scope .sectmark{font-size:12px;color:var(--ink3);line-height:1}
+.will-scope .secthead .pcount{
+  min-width:20px;height:20px;padding:0 7px;border-radius:10px;
+  display:inline-grid;place-items:center;
+  font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;
+  background:var(--surface3);color:var(--ink3);
+  transition:background 160ms var(--ease-out),color 160ms var(--ease-out);
+}
+.will-scope .secthead .pcount.on{background:var(--brand2);color:var(--surface)}
+
+/* ============================================================
+   Decision Log — one handoff to a person (Learning tab).
+   Four labelled facts per entry: who, what Will wanted, why it reached a
+   person, what would prevent it. The key column is fixed-width so the four
+   answers line up down the panel and the whole thing can be read in one pass.
+   ============================================================ */
+.will-scope .hoff{
+  border-left:2px solid color-mix(in srgb,var(--tc) 55%, transparent);
+  background:var(--surface2);border-radius:0 9px 9px 0;
+  padding:9px 12px;margin-bottom:8px;
+}
+.will-scope .hoff.is-done{opacity:.62}
+.will-scope .hoff-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:6px}
+.will-scope .hoff-who{font-size:12px;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.will-scope .hoff-name{font-size:11px;color:var(--ink3)}
+.will-scope .hoff-when{margin-left:auto;font-size:10.5px;color:var(--ink3);white-space:nowrap}
+.will-scope .hoff-done{font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--done);background:color-mix(in srgb,var(--done) 13%, transparent);padding:1px 6px;border-radius:5px}
+.will-scope .hoff-f{display:flex;gap:9px;padding:3px 0;font-size:11.5px;align-items:baseline}
+.will-scope .hoff-k{flex:none;width:132px;font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--ink3)}
+.will-scope .hoff-v{flex:1;min-width:0;color:var(--ink2);line-height:1.45}
+.will-scope .hoff-v b{color:var(--ink);font-weight:650;display:block}
+/* The reason string exactly as it was written at the handoff. Monospaced-ish
+   quoting rather than prose, so it is obvious this is recorded text and not
+   the dashboard's own words. */
+.will-scope .hoff-raw{display:block;margin-top:2px;font-size:11px;color:var(--ink3);white-space:pre-wrap;overflow-wrap:anywhere}
+.will-scope .hoff-fix{color:var(--ink2)}
+.will-scope .hoff-open{
+  margin-top:7px;border:1px solid var(--line2);background:var(--surface);color:var(--ink2);
+  border-radius:7px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;
+}
+.will-scope .hoff-open:hover{border-color:var(--brand1);color:var(--brand1)}
+/* The raw audit feed, kept but folded away under the handoffs. */
+.will-scope .rawtoggle{
+  width:100%;text-align:left;margin-top:12px;padding:8px 0 6px;
+  border:none;border-top:1px solid var(--line);background:none;cursor:pointer;font-family:inherit;
+  font-size:11px;font-weight:600;color:var(--ink3);
+}
+.will-scope .rawtoggle:hover{color:var(--ink2)}
+
+/* ============================================================
+   System & Costs: the estimate flag and the fault entries.
+   Full width in the insights grid — a fault has to be readable at a glance in
+   a screenshot, which a 275px column cannot do.
+   ============================================================ */
+.will-scope .syspanel{grid-column:1 / -1}
+.will-scope .syshead{
+  font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--ink3);margin:14px 0 7px;padding-top:11px;border-top:1px solid var(--line);
+}
+/* Never let a modelled number be mistaken for a measured one. */
+.will-scope .estflag{
+  margin-left:6px;font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  color:var(--warn);background:color-mix(in srgb,var(--warn) 12%, transparent);
+  padding:1px 6px;border-radius:5px;
+}
+.will-scope .fault{
+  border:1px solid var(--line);border-left:3px solid var(--fc,var(--warn));
+  background:var(--surface2);border-radius:0 9px 9px 0;
+  padding:9px 12px;margin-bottom:8px;
+}
+.will-scope .fault.now,.will-scope .fault.critical{--fc:var(--crit)}
+.will-scope .fault.warning{--fc:var(--warn)}
+.will-scope .fault-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+.will-scope .fault-sev{
+  font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--fc);background:color-mix(in srgb,var(--fc) 13%, transparent);
+  padding:2px 7px;border-radius:5px;flex:none;
+}
+.will-scope .fault-comp{font-size:12px;font-weight:650;color:var(--ink)}
+.will-scope .fault-n{font-size:10.5px;font-weight:700;color:var(--ink2);background:var(--surface3);padding:1px 7px;border-radius:6px;font-variant-numeric:tabular-nums}
+.will-scope .fault-when{margin-left:auto;font-size:10.5px;color:var(--ink3);white-space:nowrap}
+/* The provider's own error text, unedited apart from the truncation marker.
+   Monospace because it is a machine's words, and wrapping because swallowing
+   the tail of an error is exactly what made these undiagnosable before. */
+.will-scope .fault-err{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;line-height:1.45;color:var(--ink);
+  background:var(--surface);border:1px solid var(--line2);border-radius:7px;
+  padding:6px 9px;margin-bottom:6px;white-space:pre-wrap;overflow-wrap:anywhere;
+}
+.will-scope .fault-mean{font-size:11.5px;line-height:1.5;color:var(--ink2)}
+.will-scope .fault-act{font-size:11.5px;line-height:1.5;color:var(--ink2);margin-top:4px}
+.will-scope .fault-act b{color:var(--ink);font-weight:650}
+
+/* ============================================================
+   Handoff-reason rows (Insights). The count stays on its own baseline; the
+   explanation stacks under the label rather than running off the row, so
+   each reason can say what it means and what would actually change it.
+   ============================================================ */
+.will-scope .qitem-why{align-items:flex-start;padding:10px 0}
+.will-scope .qitem-why .qwrap{display:flex;flex-direction:column;gap:3px;min-width:0}
+.will-scope .qitem-why .qlabel{font-size:11.5px;font-weight:600;color:var(--ink)}
+.will-scope .qitem-why .qwhy{font-size:11px;line-height:1.45;color:var(--ink3)}
+.will-scope .qitem-why .qfix b{color:var(--ink2);font-weight:650}

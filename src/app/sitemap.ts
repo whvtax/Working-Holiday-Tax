@@ -3,6 +3,7 @@ import { SITE_URL } from '@/lib/constants'
 import { guides, categoryMeta } from './blog/data'
 import { dePostTranslations } from './de/blog/data'
 import { jaPostTranslations } from './ja/blog/data'
+import { isoGuideDate, guideModifiedIso } from '@/lib/blog-dates'
 
 // A localized blog post is only "real" (indexable, sitemap-worthy) when it has a
 // translated body. Title/description-only entries still render English bodies,
@@ -10,14 +11,21 @@ import { jaPostTranslations } from './ja/blog/data'
 const isDeTranslated = (slug: string) => !!dePostTranslations[slug]?.body
 const isJaTranslated = (slug: string) => !!jaPostTranslations[slug]?.body
 
-// Parse a guide date string ("1 July 2024") into a Date for accurate <lastmod>.
 // Stable last-content-update date for static & category pages, so <lastmod>
 // doesn't churn on every deploy (which a build-time new Date() would cause).
 const LAST_CONTENT_UPDATE = new Date('2026-08-01')
 
-function parseGuideDate(s: string): Date {
-  const d = new Date(s)
-  return isNaN(d.getTime()) ? new Date() : d
+/**
+ * <lastmod> for a guide URL, in any language.
+ *
+ * This used to be the guide's English *publication* date for all three
+ * locales, so a German or Japanese translation written in August 2026
+ * advertised a lastmod of July 2024 - and disagreed with nothing, because
+ * dateModified on the page said the same wrong thing. Both now come from the
+ * same helper, so the sitemap and the Article schema for a URL always match.
+ */
+function guideLastMod(dateString: string): Date {
+  return new Date(guideModifiedIso(isoGuideDate(dateString)))
 }
 
 /**
@@ -118,7 +126,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // English guide pages
   const englishGuides: MetadataRoute.Sitemap = guides.map(g => ({
     url: `${SITE_URL}/blog/${g.slug}`,
-    lastModified: parseGuideDate(g.date),
+    lastModified: guideLastMod(g.date),
     changeFrequency: 'monthly' as const,
     priority: 0.75,
   }))
@@ -128,7 +136,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(g => isDeTranslated(g.slug))
     .map(g => ({
       url: `${SITE_URL}/de/blog/${g.slug}`,
-      lastModified: parseGuideDate(g.date),
+      lastModified: guideLastMod(g.date),
       changeFrequency: 'monthly' as const,
       priority: 0.71,
     }))
@@ -138,7 +146,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(g => isJaTranslated(g.slug))
     .map(g => ({
       url: `${SITE_URL}/ja/blog/${g.slug}`,
-      lastModified: parseGuideDate(g.date),
+      lastModified: guideLastMod(g.date),
       changeFrequency: 'monthly' as const,
       priority: 0.71,
     }))

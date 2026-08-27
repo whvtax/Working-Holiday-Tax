@@ -1,4 +1,21 @@
 -- ════════════════════════════════════════════════════════════════════════════
+-- ⚠ SUPERSEDED — 27 Aug 2026. The feature this table backed was removed at the
+-- owner's instruction ("the WHM form-submission block — cancel it, delete it
+-- completely"). The two API routes, the client explanation screen and the CRM
+-- toggle are gone; see WHM_BLOCK_REMOVAL.md in the project root.
+--
+-- This migration file is kept on purpose: it has already run against the
+-- database, and a migration that has run must not disappear from history.
+-- The form_settings table is deliberately NOT dropped — dropping a table is
+-- irreversible, and this one is simply unused now. Nothing reads it and
+-- nothing writes to it. It holds its single row (allow_whm_submissions =
+-- false) and is harmless where it sits.
+--
+-- Everything below is retained as a record of how the feature worked.
+-- None of it is live.
+-- ════════════════════════════════════════════════════════════════════════════
+
+-- ════════════════════════════════════════════════════════════════════════════
 -- Migration 014: Form settings — the working-holiday-maker override switch
 --
 -- By default the tax form does NOT accept a return from anyone who declares

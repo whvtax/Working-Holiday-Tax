@@ -8,7 +8,7 @@
  * exactly where it was, same as every other AI-authored reply; only
  * FULL_AUTO may send and move the stage on its own.
  */
-const customer = { id: 'c1', waId: '61400000001', name: 'Alex', paid: false, state: 'PRICE_SENT' };
+const customer = { id: 'c1', waId: '61400000001', name: 'Alex', paid: false, state: 'PRICE_SENT', optedOut: false };
 const addMessage = jest.fn().mockResolvedValue({ id: 'msg1' });
 const addTask = jest.fn().mockResolvedValue({ id: 't1' });
 const setState = jest.fn().mockResolvedValue(undefined);
@@ -42,8 +42,9 @@ const media = { id: 'm1', kind: 'image', mime: 'image/jpeg' };
 
 beforeEach(() => {
   addMessage.mockClear(); addTask.mockClear(); setState.mockClear();
-  deliverOut.mockClear(); audit.mockClear();
+  deliverOut.mockClear(); audit.mockClear(); assessPaymentProofImage.mockClear();
   getSetting.mockResolvedValue('SUPERVISED');
+  customer.optedOut = false;
 });
 
 it('SUPERVISED: drafts the confirmation and does NOT send or move the stage', async () => {
@@ -74,4 +75,36 @@ it('an unrecognised/missing ai_mode setting fails safe to SUPERVISED (no send)',
   await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
   expect(deliverOut).not.toHaveBeenCalled();
   expect(setState).not.toHaveBeenCalled();
+});
+
+/**
+ * This was the ONLY send path in the system that did not check `optedOut`
+ * before reaching the customer: someone who had asked us to stop still got a
+ * "payment received" reply if they sent a photo. The check belongs in the entry
+ * condition, alongside `paid` and the payable-states test, so nothing further
+ * down the function runs at all.
+ */
+describe('a customer who opted out is never messaged, in any mode', () => {
+  it('FULL_AUTO: does not send, does not move the stage, does not open a task', async () => {
+    getSetting.mockResolvedValue('FULL_AUTO');
+    customer.optedOut = true;
+    const result = await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+
+    expect(result).toBeNull();
+    expect(deliverOut).not.toHaveBeenCalled();
+    expect(setState).not.toHaveBeenCalled();
+    expect(addTask).not.toHaveBeenCalled();
+  });
+
+  it('SUPERVISED: does not even draft a reply for approval', async () => {
+    customer.optedOut = true;
+    await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(addMessage).not.toHaveBeenCalled();
+  });
+
+  it('bails before spending a paid vision call on the attachment', async () => {
+    customer.optedOut = true;
+    await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(assessPaymentProofImage).not.toHaveBeenCalled();
+  });
 });

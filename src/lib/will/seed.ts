@@ -1,9 +1,18 @@
 // First-run seed: the demo customers (so the pipeline is populated)
 // and the approved message library.
+//
+// LIBRARY COVERAGE RULE (Jo, 26 Aug): every message body Will can put in front
+// of a customer must appear here, so it is visible and editable in the Library.
+// That includes the ones that used to be written inline in a route or a helper:
+// the estimate + invoice message, the lodged confirmation, the "questionnaire
+// received" confirmation in each language, and the proposed replies attached to
+// a handoff task. `src/lib/will/__tests__/template-coverage.test.ts` fails if a
+// sendable body exists that is not seeded here, so the rule cannot quietly rot.
 import { randomUUID } from 'crypto';
-import { CustomerRow, TemplateRow } from './store';
+import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
+import { FORM_RECEIVED_MSG, formReceivedTemplateKey, Lang } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -87,5 +96,67 @@ export function seedTemplates(): TemplateRow[] {
     t('signature', 'Post-payment & Service', 'Ready for signature', APPROVED.signature_ready),
     t('lodged', 'Post-payment & Service', 'Lodged + Google review', APPROVED.lodged),
     t('legitimacy', 'FAQ · Operational', 'Is this legit / registered?', APPROVED.legitimacy),
+
+    // ── Previously code-only. Same text, now editable. ──
+    // Sent by the "Send Estimate + Invoice" button. {{AMOUNT}} and
+    // {{INVOICE_LINK}} are filled from what the team types in that dialog.
+    t('estimate_invoice', 'Post-payment & Service', 'Estimate + invoice ("Send Estimate" button)', APPROVED.estimate_invoice),
+    // Sent by the "Mark Lodged" button.
+    t('lodged_confirmation', 'Post-payment & Service', 'Lodged confirmation ("Mark Lodged" button)', APPROVED.lodged_confirmation),
+
+    // The questionnaire-received confirmation, one entry per language the
+    // scheduler can send it in. Will picks the row matching the customer's
+    // detected language and falls back to English.
+    ...(Object.keys(FORM_RECEIVED_MSG) as Lang[]).map((lang) =>
+      t(formReceivedTemplateKey(lang), 'Automatic confirmations', `Questionnaire received · ${LANG_LABELS[lang]}`, FORM_RECEIVED_MSG[lang])),
+
+    // The reply proposed on a handoff task. A draft for a person, but "Send
+    // Reply" transmits it word for word, so it is a sendable message.
+    t('handoff_holding', 'Handoff suggestions', 'Handoff · holding reply (guard blocked, budget, stale draft)', APPROVED.handoff.holding),
+    t('handoff_attachment', 'Handoff suggestions', 'Handoff · customer sent a file Will cannot read', APPROVED.handoff.attachment),
+    t('handoff_unreadable', 'Handoff suggestions', 'Handoff · voice note or unreadable message', APPROVED.handoff.unreadable),
+    t('handoff_returning_customer', 'Handoff suggestions', 'Handoff · a previous customer wrote in again', APPROVED.handoff.returning_customer),
+    t('handoff_many_questions', 'Handoff suggestions', 'Handoff · more than 3 messages before paying', APPROVED.handoff.many_questions),
   ];
+}
+
+const LANG_LABELS: Record<Lang, string> = {
+  en: 'English', de: 'German', ja: 'Japanese', es: 'Spanish',
+  fr: 'French', it: 'Italian', pt: 'Portuguese',
+};
+
+/** Bumped whenever seedTemplates() gains an entry that existing installs need.
+ *  Stored under the `templates_backfill` setting once applied. */
+export const TEMPLATE_BACKFILL_VERSION = '2026-08-26-library-coverage';
+
+/**
+ * Add any seeded template whose `key` is missing from the Library.
+ *
+ * The Library is only ever seeded when the table is completely EMPTY, so a
+ * template added to seedTemplates() after the first deploy would never reach a
+ * live install. This closes that gap exactly once, recorded under a setting, so
+ * a template the owner deliberately deletes afterwards is never resurrected on
+ * the next boot. Best-effort: it must never take a request or a tick down.
+ */
+export async function backfillMissingTemplates(
+  store: Pick<Store, 'listTemplates' | 'addTemplate' | 'getSetting' | 'setSetting'>,
+): Promise<string[]> {
+  try {
+    if ((await store.getSetting('templates_backfill')) === TEMPLATE_BACKFILL_VERSION) return [];
+    const existing = await store.listTemplates();
+    // An empty Library is a fresh install: the normal seed path handles it, and
+    // running here as well would duplicate every entry.
+    if (existing.length === 0) return [];
+    const have = new Set(existing.map((t) => t.key));
+    const added: string[] = [];
+    for (const t of seedTemplates()) {
+      if (have.has(t.key)) continue;
+      await store.addTemplate({ key: t.key, category: t.category, title: t.title, body: t.body });
+      added.push(t.key);
+    }
+    await store.setSetting('templates_backfill', TEMPLATE_BACKFILL_VERSION);
+    return added;
+  } catch {
+    return []; // retried on the next tick; never breaks the caller
+  }
 }

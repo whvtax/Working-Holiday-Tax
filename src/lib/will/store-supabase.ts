@@ -8,11 +8,15 @@ import { randomUUID } from 'crypto';
 import { getSupabase } from '@/lib/supabase';
 import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
+  LostAnalysisRow,
 } from './store';
 import { CustomerState } from './state-machine';
 import { seedTemplates } from './seed';
 
 const now = () => new Date().toISOString();
+
+/** Most jobs a single tick will claim. See `dueJobs`. */
+const DUE_JOBS_BATCH = 50;
 
 // Phone normalisation identical to SQL crm_norm_phone() so app-written and
 // DB-computed values always agree (used to match a customer to a crm_tasks row).
@@ -156,6 +160,12 @@ export class SupabaseStore implements Store {
       ['will_customers.last_message_at', () => this.sb().from('will_customers').select('last_message_at').limit(1)],
       ['will_known_contacts', () => this.sb().from('will_known_contacts').select('wa_norm').limit(1)],
       ['will_processed_messages', () => this.sb().from('will_processed_messages').select('meta_id').limit(1)],
+      // Migration 031's will_lost_analysis is deliberately NOT probed here.
+      // /api/will/health renders any miss in this list as "NEW CUSTOMERS ARE
+      // BEING DROPPED", which is true of the four above and false of that one:
+      // a missing lost-lead report costs a report, not a lead. It degrades
+      // visibly on its own instead — the read is caught, and the Lost Leads
+      // view says the analysis has not run.
     ];
     for (const [name, run] of probes) {
       try {
@@ -176,16 +186,27 @@ export class SupabaseStore implements Store {
     if (this.seeded) return;
     if (this.seedingPromise) return this.seedingPromise;
     this.seedingPromise = (async () => {
-      const { count } = await this.sb().from('will_templates').select('id', { count: 'exact', head: true });
+      // The count query's error was ignored: a transient failure read as
+      // "0 templates", which then tried to insert the whole seed set on top of
+      // a live table. Treat an errored count as "cannot tell" and retry later
+      // rather than guessing.
+      const { count, error } = await this.sb().from('will_templates').select('id', { count: 'exact', head: true });
+      if (error) throw new Error(`template seed check failed: ${error.message}`);
       if ((count ?? 0) === 0) {
         const rows = seedTemplates().map((t) => ({
           id: t.id, key: t.key, category: t.category, title: t.title, body: t.body,
           requires_meta: t.requiresMeta, versions: t.versions, updated_at: t.updatedAt,
         }));
-        await this.sb().from('will_templates').insert(rows);
+        const { error: insertError } = await this.sb().from('will_templates').insert(rows);
+        if (insertError) throw new Error(`template seed insert failed: ${insertError.message}`);
       }
       this.seeded = true;
-    })();
+    })()
+      // Without this, one rejected promise is cached forever and every later
+      // caller re-awaits the same rejection: the Library stays empty and every
+      // template is unavailable on this instance until the next deploy. Clearing
+      // it means the next caller simply tries again.
+      .finally(() => { this.seedingPromise = null; });
     return this.seedingPromise;
   }
 
@@ -283,10 +304,20 @@ export class SupabaseStore implements Store {
     };
     const { data, error } = await this.sb().from('will_messages').insert(row).select('*').single();
     if (error) { lastPersistError = error.message; throw error; }
-    const patch: Record<string, unknown> = {
-      last_message_preview: m.body.slice(0, 80), last_message_direction: m.direction,
-      last_message_at: row.created_at,
-    };
+    const patch: Record<string, unknown> = {};
+    // TRUTH RULE (see refreshLastMessage): the chat-list row preview may only
+    // ever be a message that actually reached the customer, or one they sent.
+    // This used to be written unconditionally, so the instant Will DRAFTED a
+    // reply (PENDING_APPROVAL) or parked one (QUEUED) the list started showing
+    // it as the conversation's last message — and if the draft was then
+    // discarded, blocked by the guard, or simply never approved, the row kept
+    // showing text the customer never received. The list was telling the owner
+    // something untrue about their own conversation.
+    if (m.status === 'SENT') {
+      patch.last_message_preview = m.body.slice(0, 80);
+      patch.last_message_direction = m.direction;
+      patch.last_message_at = row.created_at;
+    }
     if (m.direction === 'IN') {
       patch.last_customer_msg_at = row.created_at;
       patch.unread = true;
@@ -296,8 +327,46 @@ export class SupabaseStore implements Store {
         .select('unread_count').eq('id', m.customerId).maybeSingle();
       patch.unread_count = ((cur?.unread_count as number) ?? 0) + 1;
     }
-    await this.sb().from('will_customers').update(patch).eq('id', m.customerId);
+    if (Object.keys(patch).length) {
+      // The message row is already committed at this point, so a failure here
+      // does not lose the message — but its error was discarded, which meant the
+      // chat list could silently stop updating (no preview, no unread badge)
+      // while messages kept arriving. Audit it so the divergence is visible;
+      // don't throw, because the message itself did land.
+      const { error: custError } = await this.sb().from('will_customers').update(patch).eq('id', m.customerId);
+      if (custError) {
+        lastPersistError = custError.message;
+        await this.audit('system', 'message_customer_update_failed', {
+          customerId: m.customerId, messageId: row.id, direction: m.direction,
+          error: custError.message,
+        }).catch(() => { /* audit is a nice-to-have here, never the failure itself */ });
+      }
+    }
     return toMessage(data);
+  }
+
+  /** Re-derive the chat-list row (preview / direction / time) from the newest
+   *  message that ACTUALLY exists in the conversation as far as the customer is
+   *  concerned: one they sent, or one of ours that WhatsApp accepted. Both are
+   *  stored as status 'SENT'; a draft (PENDING_APPROVAL), a parked autopilot
+   *  reply (QUEUED), a guard-refused one (BLOCKED), a discarded one (DISCARDED)
+   *  and a rejected send (FAILED) are all things the customer never received,
+   *  so none of them may show up as "the last message" in the list.
+   *
+   *  Called whenever a message's status changes, so a QUEUED reply becomes the
+   *  preview at the moment it is really sent — and a send that FAILS falls back
+   *  to the last message that did land, instead of leaving the row claiming a
+   *  delivery that never happened. */
+  private async refreshLastMessage(customerId: string): Promise<void> {
+    const { data } = await this.sb().from('will_messages')
+      .select('body, direction, created_at')
+      .eq('customer_id', customerId).eq('status', 'SENT')
+      .order('created_at', { ascending: false }).limit(1).maybeSingle();
+    await this.sb().from('will_customers').update({
+      last_message_preview: data ? String(data.body ?? '').slice(0, 80) : null,
+      last_message_direction: data ? (data.direction as string) : null,
+      last_message_at: data ? (data.created_at as string) : null,
+    }).eq('id', customerId);
   }
 
   async markCustomerRead(id: string): Promise<void> {
@@ -374,7 +443,13 @@ export class SupabaseStore implements Store {
   async setMessageStatus(id: string, status: MessageRow['status'], opts?: { restamp?: boolean }): Promise<void> {
     const patch: Record<string, unknown> = { status };
     if (opts?.restamp) patch.created_at = now();
-    await this.sb().from('will_messages').update(patch).eq('id', id);
+    // `.select` so the customer comes back from the same round trip: the chat
+    // list row has to be re-derived whenever a message's delivery status moves
+    // (QUEUED -> SENT is the moment a reply becomes real; -> FAILED/BLOCKED/
+    // DISCARDED is the moment one stops being real).
+    const { data } = await this.sb().from('will_messages').update(patch).eq('id', id).select('customer_id');
+    const customerId = (data ?? [])[0]?.customer_id as string | undefined;
+    if (customerId) await this.refreshLastMessage(customerId);
   }
 
   async attachProviderId(id: string, providerId: string): Promise<void> {
@@ -388,7 +463,12 @@ export class SupabaseStore implements Store {
     const { data } = await this.sb().from('will_messages')
       .update({ status: 'DISCARDED' })
       .eq('meta->>providerId', providerId)
-      .select('id');
+      .select('id, customer_id');
+    // The owner deleted this message in the WhatsApp app, so it is no longer
+    // something the customer has: if it was the row preview, the row must fall
+    // back to whatever really is the last message now.
+    const customerId = (data ?? [])[0]?.customer_id as string | undefined;
+    if (customerId) await this.refreshLastMessage(customerId);
     return (data?.length ?? 0) > 0;
   }
 
@@ -447,9 +527,9 @@ export class SupabaseStore implements Store {
     return (data ?? []).map(toTemplate);
   }
 
-  async addTemplate(t: { category: string; title: string; body: string }): Promise<TemplateRow> {
+  async addTemplate(t: { category: string; title: string; body: string; key?: string }): Promise<TemplateRow> {
     const row = {
-      id: randomUUID(), key: 'custom_' + randomUUID().slice(0, 8),
+      id: randomUUID(), key: t.key || 'custom_' + randomUUID().slice(0, 8),
       category: t.category || 'Custom', title: t.title || 'Untitled message', body: t.body,
       requires_meta: false, versions: 1, updated_at: now(),
     };
@@ -505,6 +585,16 @@ export class SupabaseStore implements Store {
     await this.sb().from('will_settings').upsert({ key, value }, { onConflict: 'key' });
   }
 
+  async listCounters(prefix: string): Promise<{ key: string; value: number }[]> {
+    // `like` with a trailing % — the daily AI counters are 'ai_calls:2026-08-26'.
+    // The `_` and `%` wildcards are escaped so a prefix can never widen the match.
+    const pattern = prefix.replace(/([%_\\])/g, '\\$1') + '%';
+    const { data } = await this.sb().from('will_settings').select('key, value').like('key', pattern);
+    return (data ?? [])
+      .map((r) => ({ key: String(r.key), value: Number(r.value) }))
+      .filter((r) => Number.isFinite(r.value));
+  }
+
   /** Atomic slot claim against a daily limit (migration 029).
    *
    *  The counter this replaces was a SELECT then an upsert, which meant every
@@ -537,9 +627,15 @@ export class SupabaseStore implements Store {
     return toJob(data);
   }
 
+  /** Oldest-due first, capped. Unordered and unlimited, a backlog past
+   *  PostgREST's implicit 1000-row ceiling returned an arbitrary slice, so the
+   *  same newest jobs could be picked up forever while the oldest never ran.
+   *  The cap pairs with the tick loop's time budget: whatever this batch does
+   *  not clear is still SCHEDULED and comes back on the next tick. */
   async dueJobs(nowDate: Date): Promise<JobRow[]> {
     const { data } = await this.sb().from('will_jobs').select('*')
-      .eq('status', 'SCHEDULED').lte('run_at', nowDate.toISOString());
+      .eq('status', 'SCHEDULED').lte('run_at', nowDate.toISOString())
+      .order('run_at', { ascending: true }).limit(DUE_JOBS_BATCH);
     return (data ?? []).map(toJob);
   }
 
@@ -560,6 +656,15 @@ export class SupabaseStore implements Store {
       .eq('status', 'SCHEDULED').neq('kind', 'NIGHTLY')
       .order('run_at', { ascending: true }).limit(limit);
     return (data ?? []).map(toJob);
+  }
+
+  /** Generic form of `hasScheduledNightly`, for any job kind. A head+count
+   *  existence check, so testing for one row never pulls the whole table. */
+  async hasScheduledJobOfKind(kind: JobRow['kind']): Promise<boolean> {
+    const { count } = await this.sb().from('will_jobs')
+      .select('id', { count: 'exact', head: true })
+      .eq('kind', kind).eq('status', 'SCHEDULED');
+    return (count ?? 0) > 0;
   }
 
   async hasScheduledNightly(): Promise<boolean> {
@@ -654,6 +759,59 @@ export class SupabaseStore implements Store {
   }
   async deleteKnowledge(id: string): Promise<void> {
     await this.sb().from('will_knowledge').delete().eq('id', id);
+  }
+
+  // ── Lost-lead post-mortems (migration 031) ──
+  //
+  // Read-only for every UI path: these rows are written ONLY by the nightly
+  // LOST_ANALYSIS job. Nothing in them ever reaches a customer.
+  async listLostAnalyses(): Promise<LostAnalysisRow[]> {
+    const { data } = await this.sb().from('will_lost_analysis').select('*')
+      .order('analysed_at', { ascending: false });
+    return (data ?? []).map((r): LostAnalysisRow => ({
+      customerId: r.customer_id as string,
+      state: r.state as CustomerState,
+      triggerKind: (r.trigger_kind as string) ?? '',
+      quietDays: (r.quiet_days as number) ?? 0,
+      hoursPriceToSilence: r.hours_price_to_silence == null ? null : Number(r.hours_price_to_silence),
+      status: (r.status as LostAnalysisRow['status']) ?? 'OK',
+      error: (r.error as string) ?? null,
+      attempts: (r.attempts as number) ?? 1,
+      reason: (r.reason as string) ?? '',
+      category: (r.category as string) ?? 'unclear',
+      shouldHaveDone: (r.should_have_done as string) ?? '',
+      fault: (r.fault as string) ?? 'NOT_OURS',
+      recoverable: (r.recoverable as string) ?? 'NO',
+      recoveryAction: (r.recovery_action as string) ?? null,
+      evidenceQuote: (r.evidence_quote as string) ?? null,
+      confidence: Number(r.confidence ?? 0),
+      analysedAt: (r.analysed_at as string) ?? now(),
+    }));
+  }
+
+  /** Upsert on customer_id, so re-running the nightly job replaces a lead's
+   *  post-mortem rather than accumulating one row per run. */
+  async upsertLostAnalysis(row: LostAnalysisRow): Promise<void> {
+    const { error } = await this.sb().from('will_lost_analysis').upsert({
+      customer_id: row.customerId,
+      state: row.state,
+      trigger_kind: row.triggerKind,
+      quiet_days: row.quietDays,
+      hours_price_to_silence: row.hoursPriceToSilence,
+      status: row.status,
+      error: row.error,
+      attempts: row.attempts,
+      reason: row.reason,
+      category: row.category,
+      should_have_done: row.shouldHaveDone,
+      fault: row.fault,
+      recoverable: row.recoverable,
+      recovery_action: row.recoveryAction,
+      evidence_quote: row.evidenceQuote,
+      confidence: row.confidence,
+      analysed_at: row.analysedAt,
+    }, { onConflict: 'customer_id' });
+    if (error) lastPersistError = `upsertLostAnalysis: ${error.message}`;
   }
 
   async audit(actor: string, action: string, detail?: unknown): Promise<void> {

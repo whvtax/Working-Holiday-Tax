@@ -126,7 +126,11 @@ export const formStrings = {
   // ─ Submission errors ─
   tooMany:             { en: 'Too many submissions. Please wait 15 minutes and try again.', de: 'Zu viele Anfragen. Bitte warte 15 Minuten und versuche es nochmal.', ja: '送信回数が多すぎます。15分後にもう一度お試しください。' },
   fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：' },
-  fileErrorGeneric:    { en: 'Please upload a valid image or PDF under 10MB.', de: 'Bitte lade ein gültiges Bild oder PDF unter 10 MB hoch.', ja: '10MB以下の画像またはPDFファイルをアップロードしてください。' },
+  // The real client-side ceiling is MAX_UPLOAD_BYTES in compress-image.ts = 4MB.
+  // This said 10MB while `fileTooLarge` directly below said 4 MB, so the two
+  // upload errors a customer can see named different limits — and the wrong one
+  // promised that a file would be accepted which never could be.
+  fileErrorGeneric:    { en: 'Please upload a valid image or PDF under 4 MB.', de: 'Bitte lade ein gültiges Bild oder PDF unter 4 MB hoch.', ja: '4MB以下の画像またはPDFファイルをアップロードしてください。' },
   fileTooLarge:        { en: 'This file is too large to upload. Please use a file under 4 MB - for a PDF, try compressing it or photographing the document instead.', de: 'Diese Datei ist zu groß. Bitte verwende eine Datei unter 4 MB - komprimiere ein PDF oder fotografiere das Dokument stattdessen.', ja: 'このファイルは大きすぎます。4MB未満のファイルをご利用ください。PDFは圧縮するか、書類を写真で撮影してください。' },
   generic:             { en: 'Something went wrong. Please try again.', de: 'Etwas ist schiefgelaufen. Bitte versuche es nochmal.', ja: 'エラーが発生しました。もう一度お試しください。' },
 

@@ -42,6 +42,40 @@ interface ActionBody {
 
 const bad = (msg: string, code = 400) => NextResponse.json({ error: msg }, { status: code });
 
+/**
+ * The guard verdict, minus the two things that are only meaningful at SEND time.
+ *
+ * A template is judged before it is ever addressed to anyone, so:
+ *  - OUTSIDE_24H_WINDOW: there is no conversation window to be outside of yet.
+ *  - PLACEHOLDER_LEFTOVER: a placeholder is the POINT of a template. Without
+ *    this, the four Library entries that carry one ({{DOCUMENT}}, {{AMOUNT}},
+ *    {{REVIEW_LINK}}, {{INVOICE_LINK}}) could be read but never saved after an
+ *    edit — "editable in the Library" was not true for exactly the messages
+ *    that most need editing.
+ *
+ * Nothing is relaxed at send time: humanSend still refuses an unfilled
+ * placeholder, and the guard still raises it on every real send.
+ */
+function saveTimeViolations(violations: string[]): string[] {
+  return violations.filter((v) => !v.startsWith('OUTSIDE_24H') && v !== 'PLACEHOLDER_LEFTOVER');
+}
+
+/** The owner's current wording for a Library entry, falling back to the
+ *  approved constant if the Library cannot be read or the entry was deleted.
+ *
+ *  These two messages used to be typed inline right here, which meant they were
+ *  the only customer-facing text in the system that was invisible in the
+ *  Library and unchangeable without a deploy (Jo, 26 Aug). The text is
+ *  unchanged; it simply comes from the editable copy now. */
+async function libraryBody(key: string, fallback: string): Promise<string> {
+  try {
+    const t = (await getStore().listTemplates()).find((x) => x.key === key);
+    return t && t.body.trim() ? t.body : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 /** Final safety net for HUMAN-authored sends: fill placeholders, honour opt-out /
  *  kill switch / 24h window, and block leftover placeholders or secret/prompt leaks
  *  (owner content is trusted, but a raw {{AMOUNT}} or a leaked key never goes out). */
@@ -59,7 +93,27 @@ async function humanSend(customer: CustomerRow, rawBody: string): Promise<{ erro
   return { body: body.slice(0, 4000) };
 }
 
+/** Every owner action goes through this endpoint, including the ones that send a
+ *  message. An unhandled throw here returns Next's raw HTML 500, which the
+ *  dashboard cannot parse — so a send that actually reached the customer can
+ *  surface to the operator as an unexplained failure, and get sent again. The
+ *  wrapper below turns any escape into structured JSON the client can read. */
 export async function POST(req: Request) {
+  try {
+    return await handlePost(req);
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    try {
+      await getStore().audit('owner', 'action_unhandled_error', { error: message });
+    } catch { /* the store is the most likely thing that just failed */ }
+    return NextResponse.json(
+      { ok: false, error: 'action failed', detail: message.slice(0, 300) },
+      { status: 500 },
+    );
+  }
+}
+
+async function handlePost(req: Request) {
   if (!sessionValid()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   // APPSEC-05: defence-in-depth CSRF check on this state-changing endpoint (on
   // top of SameSite=Strict on crm_session). Reject a cross-origin Origin; allow
@@ -440,7 +494,12 @@ export async function POST(req: Request) {
       // Always two decimals, e.g. "$3,004.00" — formatAUD drops them for a
       // whole-dollar amount, which does not match the approved wording here.
       const amountStr = '$' + (amountCents / 100).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      const body = `Your estimated tax refund is ${amountStr}.\nI'll send it for final review, then to you for signature.\nHere is your invoice: ${invoiceUrl.toString()}`;
+      // {{AMOUNT}} and {{INVOICE_LINK}} are filled here rather than in
+      // humanSend: the amount comes from this request, and the customer's
+      // stored estimate is only written further down, once the send succeeded.
+      const body = (await libraryBody('estimate_invoice', APPROVED.estimate_invoice))
+        .replaceAll('{{AMOUNT}}', amountStr)
+        .replaceAll('{{INVOICE_LINK}}', invoiceUrl.toString());
 
       const send = await humanSend(customer, body);
       if (send.error) return bad(send.error);
@@ -491,7 +550,7 @@ export async function POST(req: Request) {
       if (!['SIGNATURE_PENDING', 'SIGNED'].includes(customer.state)) {
         return bad('this can only be sent once the customer has signed');
       }
-      const body = `Your tax return has been lodged successfully! ✅\nYour refund should arrive in your bank account within 14 business days.\nIf you have a moment, we'd really appreciate a Google review 🙏\nhttps://maps.app.goo.gl/UnFaHWjv1dTvqrKz8?g_st=ic`;
+      const body = await libraryBody('lodged_confirmation', APPROVED.lodged_confirmation);
       const send = await humanSend(customer, body);
       if (send.error) return bad(send.error);
       const out = await deliverOut(customer, send.body!, 'HUMAN');
@@ -512,7 +571,7 @@ export async function POST(req: Request) {
         optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(),
         isApprovedTemplate: false, estimateFromTeam: null,
       });
-      const cv = verdict.violations.filter((v) => !v.startsWith('OUTSIDE_24H'));
+      const cv = saveTimeViolations(verdict.violations);
       if (cv.length) return NextResponse.json({ ok: false, blocked: cv }, { status: 422 });
       const row = await store.addTemplate({ category: b.category ?? 'Custom', title: b.title ?? 'Untitled message', body: b.body });
       await store.audit('owner', 'template_added', { id: row.id });
@@ -536,7 +595,7 @@ export async function POST(req: Request) {
           optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(),
           isApprovedTemplate: false, estimateFromTeam: null,
         });
-        const cv = verdict.violations.filter((v) => !v.startsWith('OUTSIDE_24H'));
+        const cv = saveTimeViolations(verdict.violations);
         if (cv.length) return NextResponse.json({ ok: false, blocked: cv }, { status: 422 });
       }
       await store.setVariantB(b.id, variant);
@@ -561,7 +620,7 @@ export async function POST(req: Request) {
         optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(),
         isApprovedTemplate: false, estimateFromTeam: null,
       });
-      const contentViolations = verdict.violations.filter((v) => !v.startsWith('OUTSIDE_24H'));
+      const contentViolations = saveTimeViolations(verdict.violations);
       if (contentViolations.length) {
         return NextResponse.json({ ok: false, blocked: contentViolations }, { status: 422 });
       }

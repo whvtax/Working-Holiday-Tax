@@ -19,6 +19,11 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormLang } from '@/lib/formStrings'
 import { getTaxFormHandoff } from '@/lib/tax-form-handoff'
+// Non-Discrimination-Agreement countries: their working holiday makers can be
+// taxed as residents WITH the $18,200 threshold (the Addy decision). One shared
+// implementation lives in @/lib/nda-countries; this file used to carry a second,
+// weaker copy of it that missed the German and Japanese country names.
+import { isNdaCountry } from '@/lib/nda-countries'
 import ResidencyDeclaration from '@/components/ui/ResidencyDeclaration'
 import { FormStepper } from '@/components/ui/FormStepper'
 
@@ -124,34 +129,6 @@ const COPY = {
     nonNdaResult: 'ご回答に基づくと、あなたはオーストラリア税務居住者である可能性がありますが、$18,200の非課税枠は適用されません。低所得者税額控除（Low Income Tax Offset）として最大$700を受けられる可能性があります。',
   },
 } as const
-
-// Non-Discrimination-Agreement countries: their working holiday makers can be
-// taxed as residents WITH the $18,200 threshold (the Addy decision). The home
-// country is free text on the form, so match on normalised whole words plus
-// common aliases. Short codes (uk, gb) match as whole words only, so "Ukraine"
-// is never a false hit.
-const NDA_MULTI = ['united kingdom', 'great britain', 'northern ireland']
-const NDA_WORDS = new Set([
-  'uk', 'gb', 'britain', 'england', 'scotland', 'wales',
-  'germany', 'deutschland', 'german',
-  'japan', 'nippon', '日本',
-  'chile',
-  'finland', 'suomi',
-  'israel', 'ישראל',
-  'norway', 'norge',
-  'turkey', 'turkiye',
-])
-function isNdaCountry(raw: string): boolean {
-  const s = (raw || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z\u0590-\u05ff\u3040-\u30ff\u4e00-\u9fff ]/g, ' ')
-    .trim()
-  if (!s) return false
-  if (NDA_MULTI.some((k) => s.includes(k))) return true
-  return s.split(/\s+/).some((w) => NDA_WORDS.has(w))
-}
 
 export default function ResidencyStep({ lang = 'en', onSubmitted }: {
   lang?: FormLang

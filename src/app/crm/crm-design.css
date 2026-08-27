@@ -192,9 +192,14 @@
   border-bottom:1px solid var(--line);
   padding:8px 16px;
 }
+/* A header that carries nothing but a Back button does not need a title bar's
+ * padding — there is no title to sit under, and on a detail screen every pixel
+ * spent here is a pixel the record has to scroll for. The button keeps its own
+ * size, so the hit target is untouched; only the grey around it shrinks. */
+.crm-scope .phead:has(> .btn:only-child){padding:4px 16px}
 .crm-scope .hrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .crm-scope .hspacer{flex:1}
-.crm-scope .pbody{flex:1;min-height:0;overflow-y:auto;padding:14px 16px 36px}
+.crm-scope .pbody{flex:1;min-height:0;overflow-y:auto;padding:10px 16px 36px}
 /* A pinned action bar, the mirror of .phead. On a long record the buttons that
  * finish the job — Download PDF, Mark as done — used to sit under the fold, so
  * finishing a task always cost a scroll to the bottom first. Pinned, they are
@@ -206,9 +211,12 @@
   background:rgba(247,248,250,.92);backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);
   border-top:1px solid var(--line);
 }
-/* pbody sits between two pinned bars here, so it needs less bottom padding. */
+/* pbody sits between two pinned bars here, so it needs less bottom padding: the
+ * 36px above is breathing room for a view that ends in nothing, and under a
+ * pinned .pfoot it is simply grey the record has to scroll past. Verified
+ * matching on the task detail — .pfoot is a direct child of .view there. */
 .crm-scope main:has(> .view > .pfoot) .pbody,
-.crm-scope .view:has(> .pfoot) .pbody{padding-bottom:14px}
+.crm-scope .view:has(> .pfoot) .pbody{padding-bottom:10px}
 .crm-scope h1.vt,
 .crm-scope h2.vt{font-size:14.5px;font-weight:650;margin-bottom:3px;letter-spacing:0}
 .crm-scope .vsub{font-size:11.5px;color:var(--ink2);margin-bottom:15px}
@@ -481,7 +489,7 @@
   .crm-scope .ni{justify-content:center;padding:11px 0;gap:0}
   .crm-scope .ni .nbadge{position:absolute;top:3px;right:6px;margin:0}
   .crm-scope main{margin-left:58px}
-  .crm-scope .pbody{padding:14px 12px 30px}
+  .crm-scope .pbody{padding:10px 12px 30px}
   .crm-scope .tblwrap{-webkit-overflow-scrolling:touch}
   .crm-scope table.tbl{min-width:600px}
 }
