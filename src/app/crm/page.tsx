@@ -73,12 +73,39 @@ export default function CrmLoginPage() {
     // The .crm-scope default is the flex row that carries the side rail; this
     // screen has no rail, so the one screen that is a single centred card
     // overrides the layout here rather than in the shared stylesheet.
-    <div className="crm-scope" style={{ display: 'grid', placeItems: 'center', padding: 20 }}>
-      {/* padding:0 and overflow:hidden so the photo below can run edge to edge
-          into the card's own rounded corners instead of floating inside a
-          border of white. The padding moves onto the fields block. */}
-      <div className="modal" style={{ maxWidth: 340, textAlign: 'center', padding: 0, overflow: 'hidden' }}>
-        <div style={{ padding: 20 }}>
+    <div
+      className="crm-scope"
+      style={{
+        display: 'grid',
+        placeItems: 'center',
+        padding: 20,
+        /* Jo's photo, full-bleed behind the whole screen. `cover` and a fixed
+           centre so it fills any window without distorting; the source is
+           831×508, so on a wide monitor it is upscaled and will read soft —
+           there is no more detail in the file to show. */
+        backgroundImage: 'url(/assets/crm-login.webp)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* A scrim between the photo and the card. Without it the card's own
+          shadow disappears against a busy image and the edges go mushy; with
+          it the card reads as sitting above the picture rather than pasted on.
+          Dark enough to seat the card, light enough that the photo is still
+          clearly the photo. */}
+      <div style={{ position: 'fixed', inset: 0, background: 'rgba(20,24,30,.34)' }} aria-hidden="true" />
+      <div
+        className="modal"
+        style={{
+          maxWidth: 340,
+          textAlign: 'center',
+          padding: 20,
+          position: 'relative',   /* above the scrim */
+          boxShadow: '0 24px 70px rgba(12,16,22,.45)',
+        }}
+      >
+        <div>
         <div className="slogo" style={{ justifyContent: 'center', padding: '2px 0 14px' }}>
           <CrmLogoMark />
         </div>
@@ -168,20 +195,6 @@ export default function CrmLoginPage() {
           </div>
         )}
         </div>{/* end fields block */}
-
-        {/* Jo's photo, at his request. It sits BELOW the fields on purpose —
-            the reason to be on this screen is to sign in, so the sign-in comes
-            first and the picture is what you look at while the code arrives.
-            aria-hidden + empty alt: it is decoration, and a screen reader
-            announcing it would only get between the user and the password. */}
-        <img
-          src="/assets/crm-login.webp"
-          alt=""
-          aria-hidden="true"
-          width={680}
-          height={415}
-          style={{ display: 'block', width: '100%', height: 'auto' }}
-        />
       </div>
     </div>
   )

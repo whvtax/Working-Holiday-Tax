@@ -24,7 +24,7 @@
   background:var(--bg);
   color:var(--ink);
   font-size:12.5px;
-  line-height:1.5;
+  line-height:1.6;   /* matches crm-design.css — see the note there */
   overscroll-behavior:none;
 }
 .will-scope ::-webkit-scrollbar{height:6px;width:6px}

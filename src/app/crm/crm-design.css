@@ -16,7 +16,7 @@
  * kanban, drawer). Its token block was deleted; it reads them from here.
  * ==========================================================================*/
 
-/* ── The one visual-scale knob ─────────────────────────────────────────────
+/* ── The two visual-scale knobs ────────────────────────────────────────────
  * Jo works at 80% browser zoom. --crm-fit is (old zoom)/(new zoom): moving
  * Chrome from 75% to 80% makes everything 80/75 bigger, so the interface is
  * shrunk by 75/80 = 0.9375 to land back on the size that was already right.
@@ -26,13 +26,27 @@
  * scale() only paints a shrunk copy over an unshrunk layout and breaks exactly
  * those things.
  *
- * To change the feel of the WHOLE admin later, edit ONLY this number. 1 = none.
- * Both halves read the same variable, so they can never drift apart again. */
+ * Both halves read both variables, so they can never drift apart again. */
+/* ── The second knob: readability ──────────────────────────────────────────
+ * --crm-fit answers "what browser zoom is Jo on". --crm-text answers a
+ * different question: "is this comfortable to read for three hours". They are
+ * kept apart on purpose — if they were one number, changing browser zoom would
+ * silently undo the readability choice, and nobody would know which of the two
+ * intentions a given value was carrying.
+ *
+ * 1.09 came from the observation that the admin still read tight after the
+ * typeface and the contrast were both fixed. When two corrections in a row do
+ * not solve a legibility complaint, the remaining variable is size — the base
+ * here is 12.5px, which is small for a screen someone works in all day.
+ *
+ * To make the whole admin bigger or smaller, change THIS number, not --crm-fit.
+ * 1 = no adjustment. */
 .will-scope,
 .crm-scope{
-  --crm-fit:0.9375; /* 75 / 80 */
-  height:calc(80dvh / var(--crm-fit));
-  zoom:calc(1.25 * var(--crm-fit));
+  --crm-fit:0.9375;  /* 75 / 80 — browser-zoom compensation. Leave alone. */
+  --crm-text:1.09;   /* readability. This is the one to tune. */
+  height:calc(80dvh / (var(--crm-fit) * var(--crm-text)));
+  zoom:calc(1.25 * var(--crm-fit) * var(--crm-text));
 }
 
 /* ── Tokens ───────────────────────────────────────────────────────────────*/
@@ -131,7 +145,11 @@
   background:var(--bg);
   color:var(--ink);
   font-size:12.5px;
-  line-height:1.5;
+  /* 1.6, not 1.5: the extra tenth is where a dense screen stops feeling like a
+   * wall. It costs about two pixels a row, which the readability knob above has
+   * already paid for. Single-line rows that must not grow (nav rows, table
+   * cells, chips) set their own tighter leading where it matters. */
+  line-height:1.6;
   overscroll-behavior:none;
   display:flex;
   overflow:hidden;
