@@ -1,22 +1,31 @@
 // ============================================================
-// What a handoff reason actually MEANS, and what would actually change it.
+// What a handoff reason actually MEANS, and what would stop it happening again.
 //
-// The Insights card that lists these used to be headed "recurring reasons, each
-// one is a template you could add". That framing was wrong, and wrong in a way
-// that wastes the owner's time: a template does not fix "the customer sent a
-// voice note", and it does not fix "the policy guard refused Will's wording".
-// Only one of these reasons — a recurring question Will had no approved answer
-// for — is a template-shaped problem.
+// THE TWO SENTENCES (Jo, 27 Aug)
+//   The Decision Log answers one question: why could Will not deal with this
+//   himself? He asked for exactly two lines per handoff and nothing else:
 //
-// The counts themselves are worth keeping. "The guard blocked Will 85 times"
-// means the assistant is being muzzled 85 times, which is a real finding about
-// the system, not noise. So the card stays and the promise changes: each reason
-// says what it means and what would move the number.
+//     The customer wrote "…" and because <because>, Will passed it to you.
+//     To stop this happening again: <prevent>
+//
+//   So every reason here carries two short strings written to drop straight
+//   into those sentences:
+//
+//     `because` — a clause, lower case, no full stop, that completes
+//                 "…and because ___, Will passed it to you."
+//     `prevent` — one imperative sentence. Concrete: add the answer to the
+//                 Library, raise the budget, check WhatsApp Manager. When the
+//                 honest answer is "nothing, and it should not change", it says
+//                 that instead of inventing a chore.
+//
+//   `label` survives as the short name of the kind of handoff. `meaning` and
+//   `remedy` — the long-form pair written for the Insights card — went with
+//   that card on 27 Aug; nothing rendered them any more.
 //
 // The strings matched here are the reason text written where the task is
-// raised (service.ts, engine.ts, scheduler.ts, actions/route.ts). The report
-// route groups by `reason.replace(/:.*$/, '').slice(0, 60)`, so matching on a
-// prefix is what survives that truncation.
+// raised (service.ts, engine.ts, scheduler.ts, actions/route.ts). Matching is
+// on a PREFIX, which is what survives the report route's truncation of the
+// reason to 60 characters.
 // ============================================================
 
 export type HandoffKind =
@@ -30,109 +39,110 @@ export type HandoffKind =
 
 export interface HandoffExplanation {
   kind: HandoffKind;
-  /** Plain-language label for the reason itself. */
+  /** Short name for this kind of handoff. */
   label: string;
-  /** What this count is actually telling you. */
-  meaning: string;
-  /** What would actually reduce it. Honest: sometimes the answer is "nothing,
-   *  and it should not be reduced". */
-  remedy: string;
+  /** A clause completing "…and because ___, Will passed it to you."
+   *  Lower case, no trailing full stop. */
+  because: string;
+  /** One imperative sentence: what would stop it happening again. Says
+   *  "nothing to change" outright when that is the truthful answer. */
+  prevent: string;
 }
 
-interface Rule { match: RegExp; kind: HandoffKind; label: string; meaning: string; remedy: string }
+interface Rule { match: RegExp; kind: HandoffKind; label: string; because: string; prevent: string }
 
 const RULES: Rule[] = [
   {
     match: /^Policy Guard blocked reply|^Autopilot reply blocked before sending|^Follow-up blocked by Policy Guard|^Draft became invalid before approval/i,
     kind: 'guard',
-    label: 'The policy guard refused Will’s message',
-    meaning: 'Will had an answer ready and a hard rule stopped it going out — a price it was not allowed to state, a refund figure, a myGov instruction, a message outside the 24h window. The customer was answered by a person instead.',
-    remedy: 'Read the Decision Log entries marked "guard blocked" to see WHICH rule fired. A rule firing on genuinely unsafe text is the guard working. The same rule firing on a safe message means the guard is too broad and belongs in a code change, not a new template.',
+    label: 'A rule refused Will’s message',
+    because: 'Will had an answer ready and one of the hard rules refused to let it go out',
+    prevent: 'Open the Rules tab and find the rule named in the task. If it stopped something genuinely unsafe, this is the guard working and there is nothing to change. If it stopped a perfectly safe message, the rule is too broad and needs narrowing.',
   },
   {
     match: /^Customer sent an attachment Will cannot read/i,
     kind: 'unreadable',
-    label: 'Customer sent a file Will cannot read',
-    meaning: 'A photo, PDF or document arrived. Will reads text; it only interprets an image when it is a payment screenshot on an unpaid customer. Everything else waits for a person to open it.',
-    remedy: 'No template fixes this — there is no question to answer until someone looks at the file. It shrinks only by teaching Will to read more attachment types, or by asking for documents in a form rather than over WhatsApp.',
+    label: 'A file Will cannot read',
+    because: 'they sent a photo or a document, and Will only reads text',
+    prevent: 'Nothing to add to the Library — there is no question to answer until a person opens the file. Asking for documents through the form instead of WhatsApp is what actually reduces this.',
   },
   {
     match: /^Customer sent a message Will cannot read/i,
     kind: 'unreadable',
-    label: 'Voice note or unsupported message type',
-    meaning: 'A voice note, a sticker, a location, or a message type with no text body. There is nothing for Will to reason about, so the chat goes to a person immediately.',
-    remedy: 'A template cannot answer a voice note. Transcription would be the actual fix; until then this number is the cost of customers who prefer talking to typing.',
+    label: 'A voice note or sticker',
+    because: 'they sent a voice note or another message with no text in it',
+    prevent: 'Nothing to add to the Library — a template cannot answer a voice note. This is the cost of customers who would rather talk than type.',
   },
   {
     match: /^Customer asked whether they are talking to a bot/i,
     kind: 'policy',
-    label: '"Am I talking to a bot?"',
-    meaning: 'A deliberate rule, not a failure: Will never answers this, in any mode, and never even drafts an answer. The chat is handed over and Will steps out of it.',
-    remedy: 'Nothing to fix. This number going up is the rule working. It only matters if it is a large share of your leads, which would be a signal about how Will’s replies read.',
+    label: '“Am I talking to a bot?”',
+    because: 'they asked whether they are talking to a bot, and Will is never allowed to answer that',
+    prevent: 'Nothing to change — this one is a rule doing its job. It only matters if it happens to a large share of your leads, which would say something about how Will’s replies read.',
   },
   {
     match: /^Customer sent \d+ messages before paying|messages before paying/i,
     kind: 'policy',
-    label: 'More than 3 messages before paying',
-    meaning: 'A deliberate rule: by the fourth message before any money has changed hands, the conversation itself is the signal that this lead wants a person.',
-    remedy: 'Not a template problem — these leads already got answers. If it is high, the earlier messages are not landing; the Deep Analysis card and the actual transcripts are where to look, not the Library.',
+    label: 'Several messages before paying',
+    because: 'they wrote several times before paying, which is the point where the rules ask for a person',
+    prevent: 'Nothing to add to the Library — they already got answers. If this is high, the earlier replies are not landing, and the conversations themselves are where to look.',
   },
   {
     match: /^An existing chat sent a message|^A previous customer messaged again/i,
     kind: 'policy',
-    label: 'A returning or pre-existing chat wrote in',
-    meaning: 'Another deliberate rule: Will only handles brand-new leads. Anyone imported, or previously closed, is routed straight to a person and Will is paused for that chat.',
-    remedy: 'Nothing to fix while the new-chats-only policy stands. Changing this number means changing that policy, which is a decision, not a template.',
+    label: 'A returning customer',
+    because: 'they are an existing or previously closed chat, and Will only handles brand-new leads',
+    prevent: 'Nothing to change while Will is set to new leads only. Moving this number means changing that policy — a decision, not a template.',
   },
   {
     match: /^WhatsApp send failed/i,
     kind: 'delivery',
     label: 'WhatsApp refused the send',
-    meaning: 'The message existed and Meta rejected it — an expired token, a number outside the 24h window, a template not approved in WhatsApp Manager. The customer received nothing.',
-    remedy: 'This is infrastructure, and the most urgent kind on this list: a customer was left unanswered. Check the WhatsApp connection status in the header and the failing template’s approval in WhatsApp Manager.',
+    because: 'WhatsApp itself refused to deliver the message, so they received nothing at all',
+    prevent: 'Check the WhatsApp connection in the header and the template’s approval in WhatsApp Manager. This is the most urgent kind on this list — a customer was left with no reply.',
   },
   {
     match: /^Daily AI limit reached/i,
     kind: 'capacity',
     label: 'Daily AI limit reached',
-    meaning: 'The daily cap on paid model calls was spent, so Will stopped deciding and handed the rest of the day’s conversations to a person.',
-    remedy: 'Raise the ai_daily_budget setting if this is real traffic. If it is hit on a quiet day, something is calling the model far more than the conversations justify.',
+    because: 'the day’s AI budget was already spent, so Will stopped deciding',
+    prevent: 'Raise the daily AI budget if this is real traffic. If it runs out on a quiet day, something is calling the model far more often than the conversations justify.',
   },
   {
     match: /^Draft is stale/i,
     kind: 'guard',
-    label: 'Draft went stale before approval',
-    meaning: 'A draft assumed a stage the customer had already moved past by the time it was approved. It was held rather than sent, so nobody was told something untrue.',
-    remedy: 'Mostly a symptom of drafts waiting a long time for approval. Approving sooner, or Autopilot for the stages you trust, is what shrinks this.',
+    label: 'The draft went stale',
+    because: 'the draft assumed a stage they had already moved past by the time it was approved',
+    prevent: 'Approve drafts sooner, or switch the stages you trust to Autopilot. Holding it was correct — nobody was told something untrue.',
   },
   {
     match: /^Customer sent proof of payment/i,
     kind: 'system',
     label: 'Payment proof arrived',
-    meaning: 'Not a problem: a payment screenshot was recognised. In Approval mode a "payment received" reply is drafted and waiting; in Autopilot the stage already moved and this is a heads-up.',
-    remedy: 'Nothing to fix. This is Will doing exactly what it should.',
+    because: 'they sent a payment screenshot, and money always gets a person’s eyes on it',
+    prevent: 'Nothing to change — this is Will doing exactly what it should.',
   },
   {
     match: /^Nightly consistency check/i,
     kind: 'system',
-    label: 'Nightly consistency check found something',
-    meaning: 'Housekeeping found a customer whose paid flag and pipeline stage disagree. No customer is waiting on it.',
-    remedy: 'Open the named customers and correct the stage. Recurring hits mean a stage is being set somewhere without the matching flag.',
+    label: 'Nightly check found something',
+    because: 'the nightly check found a customer whose paid flag and pipeline stage disagree',
+    prevent: 'Open the customers it named and correct the stage. If it keeps happening, a stage is being set somewhere without the matching paid flag.',
   },
   {
     match: /^Model proposed invalid transition/i,
     kind: 'guard',
-    label: 'Will proposed an impossible stage move',
-    meaning: 'Will wanted to move the customer somewhere the state machine does not allow from where they are, so the reply that assumed it was held back.',
-    remedy: 'Not a template. Either the customer really is somewhere unexpected, or the allowed transitions are too strict for how the conversation actually goes.',
+    label: 'An impossible stage move',
+    because: 'Will wanted to move them to a stage they cannot reach from where they are',
+    prevent: 'Check whether the customer really is where the pipeline says. If the move was reasonable, the allowed stage transitions are too strict for how the conversation actually goes.',
   },
 ];
 
 const FALLBACK: HandoffExplanation = {
   kind: 'other',
-  label: 'Other handoff',
-  meaning: 'Will stepped out of the conversation and asked for a person.',
-  remedy: 'Open one of these tasks to see the conversation behind it — if the same customer QUESTION keeps appearing, that one genuinely is worth an approved answer in the Library.',
+  label: 'A question Will had no answer for',
+  because: 'Will had no approved answer for what they asked',
+  prevent: 'Open the chat and read what they asked. If the same question keeps coming back, add it — with the answer you would give — to the Library, and Will will handle it himself next time.',
 };
 
 /** Classify one grouped reason string from the report. Never throws. */
@@ -140,14 +150,17 @@ export function explainHandoffReason(reason: string): HandoffExplanation {
   const r = (reason ?? '').trim();
   for (const rule of RULES) {
     if (rule.match.test(r)) {
-      return { kind: rule.kind, label: rule.label, meaning: rule.meaning, remedy: rule.remedy };
+      return { kind: rule.kind, label: rule.label, because: rule.because, prevent: rule.prevent };
     }
   }
   return FALLBACK;
 }
 
-/** True when a template in the Library is genuinely the right remedy. Exactly
- *  one bucket qualifies — which is the whole point of the re-framing. */
+/** True when adding an answer to the Library is genuinely the right fix.
+ *  Exactly one bucket qualifies: an unclassified handoff, which is almost
+ *  always a customer question nobody has written an answer for yet. Everything
+ *  else on this list is a file, a rule, an outage or a budget — none of which a
+ *  template can touch. */
 export function isTemplateShaped(reason: string): boolean {
   return explainHandoffReason(reason).kind === 'other';
 }

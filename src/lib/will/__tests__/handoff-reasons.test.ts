@@ -1,8 +1,17 @@
 /**
- * The Insights card listing handoff reasons used to promise that each one was
- * "a template you could add". These tests pin the honest version: the reasons
- * the system actually writes are recognised, and the ones a template cannot fix
- * are not described as if it could.
+ * Every handoff reason the codebase raises must produce the two sentences the
+ * Decision Log is built from (Jo, 27 Aug):
+ *
+ *   The customer wrote "…" and because <because>, Will passed it to you.
+ *   To stop this happening again: <prevent>
+ *
+ * What these pin:
+ *   - every real reason string is recognised (an unrecognised one silently
+ *     falls back to "Will had no approved answer", which would be a lie about
+ *     a failed send or an unreadable file),
+ *   - `because` is grammatical in that sentence: lower case, no full stop,
+ *   - nothing is told to go and write a template when a template cannot fix it,
+ *   - a genuinely unclassified question still points at the Library.
  *
  * The strings below are the reason text as the report groups it —
  * `reason.replace(/:.*$/, '').slice(0, 60)` — which is why they are truncated.
@@ -34,8 +43,20 @@ describe('explainHandoffReason', () => {
     const e = explainHandoffReason(reason);
     expect(e.kind).not.toBe('other');
     expect(e.label.length).toBeGreaterThan(0);
-    expect(e.meaning.length).toBeGreaterThan(0);
-    expect(e.remedy.length).toBeGreaterThan(0);
+    expect(e.because.length).toBeGreaterThan(0);
+    expect(e.prevent.length).toBeGreaterThan(0);
+  });
+
+  // The clause is dropped into the middle of a sentence, so a stray capital or
+  // a trailing full stop shows up on screen as broken English. A proper noun is
+  // the one legitimate capital — "WhatsApp itself refused…" is correct.
+  const PROPER_NOUNS = /^(Will|WhatsApp|Meta|Autopilot)\b/;
+  it.each(REAL_REASONS)('gives a because-clause that reads mid-sentence for %s', (_where, reason) => {
+    const { because } = explainHandoffReason(reason);
+    if (!PROPER_NOUNS.test(because)) {
+      expect(because[0]).toBe(because[0].toLowerCase());
+    }
+    expect(because.endsWith('.')).toBe(false);
   });
 
   it('does not tell you to write a template for something a template cannot fix', () => {
@@ -48,14 +69,14 @@ describe('explainHandoffReason', () => {
     ];
     for (const r of notTemplateShaped) {
       expect(isTemplateShaped(r)).toBe(false);
-      expect(explainHandoffReason(r).remedy.toLowerCase()).not.toMatch(/add (an? )?(approved )?(answer|template) to the library/);
+      expect(explainHandoffReason(r).prevent.toLowerCase()).not.toMatch(/add (an? )?(approved )?(answer|template) to the library/);
     }
   });
 
   it('still points an unrecognised, recurring question at the Library', () => {
     const e = explainHandoffReason('Customer asked something nobody has classified yet');
     expect(e.kind).toBe('other');
-    expect(e.remedy.toLowerCase()).toContain('library');
+    expect(e.prevent.toLowerCase()).toContain('library');
   });
 
   it('never throws on empty or odd input', () => {

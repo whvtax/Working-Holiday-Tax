@@ -7,6 +7,7 @@ import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, 
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
 import { explainHandoffReason } from '@/lib/will/handoff-reasons';
+import { RULE_GROUP_LABELS } from '@/lib/will/rules';
 import type { MonthConversion } from '@/lib/will/monthly-conversion';
 import type { AiUsage, SystemFault } from '@/lib/will/system-report';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
@@ -14,7 +15,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 // The Simulator was removed on Jo's instruction, 25 Aug: with real WhatsApp
 // traffic flowing it had no use left, and a fake customer sitting in the
 // pipeline next to the real ones was a hazard rather than a help.
-type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'followups' | 'insights' | 'lost' | 'learning';
+type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'rules' | 'followups' | 'insights' | 'lost' | 'learning';
 
 /** Sidebar labels. Only needed where the view id is not the words we want. */
 const VIEW_LABELS: Partial<Record<View, string>> = { followups: 'Follow-ups', lost: 'Lost Leads' };
@@ -74,6 +75,11 @@ const RECOVER_TEXT: Record<LostAnalysisView['recoverable'], { label: string; col
   NO: { label: 'Gone', color: 'var(--ink3)' },
 };
 
+/** One of the built-in rules, as the catalogue describes it (lib/will/rules.ts). */
+interface BuiltInRuleRow { id: string; group: string; name: string; what: string; example: string }
+/** One rule Jo added himself. */
+interface CustomRuleRow { id: string; label: string; phrases: string[]; enabled: boolean; createdAt: string }
+
 /** One scheduled follow-up, as /api/will/followups returns it. */
 interface FollowUpRow {
   jobId: string;
@@ -91,29 +97,6 @@ interface FollowUpRow {
   body: string | null;
 }
 
-/** What /api/will/followups/advice returns for one queued follow-up: Will's
- *  read of the conversation, which approved message it thinks fits this person
- *  better, and — only when none of them really do — what a person would write
- *  instead. That last one is advice for Jo, not a message: a scheduled
- *  follow-up is always outside WhatsApp's 24h window, where free-form text
- *  cannot be delivered at all. See lib/will/nudge-advice.ts. */
-interface NudgeAdviceRow {
-  read: string;
-  why: string;
-  draft: string | null;
-  confidence: number;
-  recommendedKey: string | null;
-  recommendedTitle: string | null;
-  recommendedBody: string | null;
-  /** True only when the recommendation both differs from what is queued and is
-   *  confident enough to act on. The swap button appears on this and nothing
-   *  else. */
-  changesQueued: boolean;
-}
-type NudgeAdviceState =
-  | { status: 'loading' }
-  | { status: 'ready'; advice: NudgeAdviceRow }
-  | { status: 'error'; error: string };
 const FLOW_LABELS: Record<string, string> = {
   prePayment: 'Before payment', form: 'Waiting on the form', signature: 'Waiting on a signature',
 };
@@ -157,6 +140,8 @@ const ICONS: Record<View, React.ReactNode> = {
   library: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>,
   // A clock with a forward arrow: messages queued to leave later.
   followups: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>,
+  // A shield: the things Will is not allowed to do.
+  rules: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>,
   insights: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>,
   // A person walking away: the leads that did not become clients.
   lost: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M15 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/></svg>,
@@ -357,14 +342,10 @@ export default function Dashboard() {
   const [estimateFor, setEstimateFor] = useState<CustomerRow | null>(null);
   const [estimateAmt, setEstimateAmt] = useState('');
   const [estimateLink, setEstimateLink] = useState('');
-  type Audit = { id: string; actor: string; action: string; detail: unknown; at: string };
-  const [activity, setActivity] = useState<Audit[]>([]);
-  const loadActivity = useCallback(async () => {
-    try { const r = await fetch('/api/will/audit?limit=60').then((x) => x.json()); if (r.ok) setActivity(r.rows ?? []); } catch { /* */ }
-  }, []);
-  // The raw audit feed is KEPT, but no longer IS the Decision Log — it sits
-  // behind a toggle underneath it. See the Decision Log panel for why.
-  const [showRawFeed, setShowRawFeed] = useState(false);
+  // The raw audit feed was removed from the screen on 27 Aug (see the Decision
+  // Log panel), so nothing fetches /api/will/audit from here any more. The route
+  // and the rows behind it are untouched — this dropped the reader, not the
+  // record.
   // Claude usage + the real system faults, for the System & Costs card.
   const [system, setSystem] = useState<{ usage: AiUsage; faults: SystemFault[]; faultWindow: number; auditRowsRead: number } | null>(null);
   const loadSystem = useCallback(async () => {
@@ -402,58 +383,35 @@ export default function Dashboard() {
       if (r.ok) setFollowups(r.rows ?? []);
     } catch { /* keep whatever is on screen */ }
   }, []);
-  // ── Conversation-aware nudge advice, per queued follow-up ────────────────
-  // Keyed by jobId and held only for as long as this page is open. Each entry
-  // is one paid model call against one real conversation, so it is fetched
-  // when a row is opened and never on a timer, never for the whole list, and
-  // never again for a row already answered.
-  const [nudgeAdvice, setNudgeAdvice] = useState<Record<string, NudgeAdviceState>>({});
-  const askAdvice = useCallback(async (jobId: string) => {
-    setNudgeAdvice((prev) => (prev[jobId] ? prev : { ...prev, [jobId]: { status: 'loading' } }));
+  // ── Rules ────────────────────────────────────────────────────────────────
+  // The built-in catalogue and Jo's own rules arrive together in one call, so
+  // the tab renders in one pass instead of stuttering in two.
+  const [rules, setRules] = useState<{ builtIn: BuiltInRuleRow[]; custom: CustomRuleRow[] } | null>(null);
+  const loadRules = useCallback(async () => {
     try {
-      const r = await fetch('/api/will/followups/advice', {
+      const r = await fetch('/api/will/rules').then((x) => x.json());
+      if (r.ok) setRules({ builtIn: r.builtIn ?? [], custom: r.custom ?? [] });
+    } catch { /* keep whatever is on screen */ }
+  }, []);
+  const [ruleLabel, setRuleLabel] = useState('');
+  const [rulePhrases, setRulePhrases] = useState('');
+  const [ruleBusy, setRuleBusy] = useState(false);
+  const ruleAct = useCallback(async (payload: Record<string, unknown>) => {
+    setRuleBusy(true);
+    try {
+      const r = await fetch('/api/will/rules', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jobId }),
+        body: JSON.stringify(payload),
       }).then((x) => x.json());
-      setNudgeAdvice((prev) => ({
-        ...prev,
-        [jobId]: r.ok && r.advice
-          ? { status: 'ready', advice: r.advice }
-          : { status: 'error', error: r.error ?? 'Could not read this conversation.' },
-      }));
+      return r as { ok: boolean; error?: string; conflicts?: string[] };
     } catch {
-      setNudgeAdvice((prev) => ({ ...prev, [jobId]: { status: 'error', error: 'Could not reach the server.' } }));
+      return { ok: false, error: 'Could not reach the server.' };
+    } finally {
+      setRuleBusy(false);
     }
   }, []);
-  // Swap the queued approved message for the recommended approved message.
-  // The request carries a KEY and nothing else — there is deliberately no
-  // parameter here that composed prose could travel through, so "Will drafted
-  // something" and "a customer received something" stay separate facts.
-  const applyAdvice = useCallback(async (jobId: string, templateKey: string) => {
-    try {
-      const r = await fetch('/api/will/followups/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jobId, templateKey }),
-      }).then((x) => x.json());
-      if (r.ok) {
-        say('Queued message swapped. Same send time.');
-        // The swap cancels this job and queues a replacement with a new id, so
-        // the advice keyed to the old id is now about a job that is gone.
-        setNudgeAdvice((prev) => {
-          const next = { ...prev };
-          delete next[jobId];
-          return next;
-        });
-        await loadFollowups();
-      } else {
-        say(`❌ ${r.error ?? 'could not swap that message'}`);
-      }
-    } catch {
-      say('❌ could not reach the server');
-    }
-  }, [loadFollowups]);
+
   const [knwDrafts, setKnwDrafts] = useState<Record<string, string>>({});
   const [tplText, setTplText] = useState('');
   const [toast, setToast] = useState('');
@@ -536,7 +494,8 @@ export default function Dashboard() {
   }, [data]);
   useEffect(() => { if ((view === 'insights' || view === 'learning') && !report) fetch('/api/will/report').then((r) => r.json()).then((rp) => setReport(rp)).catch(() => {}); }, [view, report]);
   useEffect(() => { if (view === 'learning' || view === 'library') { loadKnowledge(); } }, [view, loadKnowledge]);
-  useEffect(() => { if (view === 'learning') { loadActivity(); loadMonthly(); } }, [view, loadActivity, loadMonthly]);
+  useEffect(() => { if (view === 'learning') { loadMonthly(); } }, [view, loadMonthly]);
+  useEffect(() => { if (view === 'rules' && !rules) loadRules(); }, [view, rules, loadRules]);
   useEffect(() => { if (view === 'insights') loadSystem(); }, [view, loadSystem]);
   // Fetched on open, not polled: these rows only change once a night.
   useEffect(() => { if (view === 'lost') loadLost(); }, [view, loadLost]);
@@ -730,7 +689,7 @@ export default function Dashboard() {
     <>
       <aside className="side">
         <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
-        {(['pipeline', 'chats', 'tasks', 'library', 'followups', 'insights', 'lost', 'learning'] as View[]).map((v) => (
+        {(['pipeline', 'chats', 'tasks', 'library', 'rules', 'followups', 'insights', 'lost', 'learning'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
             <span className="nl">{VIEW_LABELS[v] ?? v[0].toUpperCase() + v.slice(1)}</span>
@@ -854,7 +813,7 @@ export default function Dashboard() {
             <div className="kpis">
               <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Customers</div><div className="kv">{data.customers.length}</div><div className="kd">in the system</div></div>
               <div className="kpi clickable" title="We sent the last message and they went quiet, but never said no. Worth a personal follow-up later." onClick={() => { setView('pipeline'); setGroup('closed'); }}>
-                <div className="kl">Worth a Nudge</div><div className="kv">{quietLeads.length}</div><div className="kd">we spoke last, 24h+ of silence, never said no</div>
+                <div className="kl">Worth a Nudge</div><div className="kv">{quietLeads.length}</div><div className="kd">Never said no</div>
               </div>
               <div className="kpi clickable" title="See completed customers" onClick={() => { setView('pipeline'); setGroup('done'); }}><div className="kl">Completed</div><div className="kv">{countFor(STAGE_GROUPS.find((sg) => sg.id === 'done')!.states)}</div><div className="kd up">all-time</div></div>
             </div>
@@ -1380,7 +1339,7 @@ export default function Dashboard() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ flex: 1 }}>
                 <h2 className="vt">Message Library</h2>
-                <div className="vsub">Every automated message lives here. Tap to edit, changes go live instantly, with version history.</div>
+                <div className="vsub">Every automated message lives here. Tap to edit.</div>
               </div>
               <button className="btn save" onClick={() => setNewTpl({ title: '', category: 'Custom', body: '' })}>+ New Message</button>
             </div>
@@ -1444,6 +1403,153 @@ export default function Dashboard() {
             message goes out is knowing WHO is about to get one. The list keeps
             itself current (20s while this view is open) and each row opens that
             customer's chat, which is what you want next. */}
+        {/* ────────────────────────────────────────────────────────────────
+            RULES — everything Will is not allowed to do, in one place, and the
+            rules Jo adds himself.
+
+            Jo, 27 Aug: "a whole tab of all the rules, each one with an option
+            to add more."
+
+            WHY IT EXISTS. policy-guard.ts is forty regular expressions with
+            the bypasses each one was written to close documented above it. It
+            is correct and it is unreadable, and until now the only way to find
+            out what Will could not say was to read it — or to watch a message
+            get refused. The catalogue (lib/will/rules.ts) says the same things
+            in the words Jo would use, keyed by the very code the guard reports,
+            so the two cannot drift apart without a test failing.
+
+            WHAT A RULE OF HIS IS. A name and a list of phrases that must never
+            reach a customer. Deliberately not a regular expression: a regex box
+            in a dashboard is how you write, at two in the morning, something
+            that silently blocks every message in the system — and nothing on
+            screen would tell that apart from a rule that simply never matches.
+
+            THE INVARIANT. His rules can only ever ADD a refusal. There is no
+            rule he can write that lets through something the built-in rules
+            refuse, and there is no control here — none — that switches a
+            built-in rule off. The worst case of a badly written rule is drafts
+            piling up in Tasks, which is loud, recoverable, and visible.
+            ──────────────────────────────────────────────────────────────── */}
+        {view === 'rules' && (
+          <section className="view active">
+            <h2 className="vt">Rules</h2>
+            <div className="vsub">
+              Everything {ASSISTANT_NAME} is not allowed to do. The built-in ones cannot be switched off — they are what makes it safe to let him talk to customers at all. Underneath, add your own.
+            </div>
+
+            {rules === null && <div className="sysline" style={{ margin: '20px 0' }}>Loading the rules…</div>}
+
+            {rules && (
+              <>
+                {/* ── Jo's own rules, FIRST. The built-ins are reference; this
+                       is the part he came here to use. ──────────────────── */}
+                <div className="panel" style={{ marginBottom: 12 }}>
+                  <h3>Your Rules</h3>
+                  <div className="psub">
+                    Give the rule a name, then the words {ASSISTANT_NAME} must never send. One phrase per line. He refuses any message containing one, exactly as if it were built in.
+                  </div>
+
+                  <div className="rule-add">
+                    <input
+                      className="inp"
+                      placeholder="What is this rule called? e.g. Never mention other agents"
+                      value={ruleLabel}
+                      maxLength={80}
+                      onChange={(e) => setRuleLabel(e.target.value)}
+                    />
+                    <textarea
+                      className="inp"
+                      rows={3}
+                      placeholder={'One phrase per line:\ncheapest\nbest in Australia'}
+                      value={rulePhrases}
+                      onChange={(e) => setRulePhrases(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="btn take sm"
+                      disabled={ruleBusy || !ruleLabel.trim() || !rulePhrases.trim()}
+                      onClick={async () => {
+                        const r = await ruleAct({ action: 'add', label: ruleLabel, phrases: rulePhrases });
+                        if (!r.ok) { say(`❌ ${r.error ?? 'could not add that rule'}`); return; }
+                        setRuleLabel(''); setRulePhrases('');
+                        await loadRules();
+                        // The warning that matters: a new rule can sit on top of
+                        // messages already in the Library, and the way to find
+                        // that out should not be noticing that follow-ups have
+                        // quietly stopped going out.
+                        say(r.conflicts && r.conflicts.length
+                          ? `Rule added — heads up, it also stops ${r.conflicts.length} Library ${r.conflicts.length === 1 ? 'message' : 'messages'}: ${r.conflicts.join(', ')}`
+                          : 'Rule added. It applies to the next message.');
+                      }}
+                    >{ruleBusy ? 'Saving…' : 'Add this rule'}</button>
+                  </div>
+
+                  {rules.custom.length === 0 && (
+                    <div className="mini" style={{ marginTop: 10 }}>
+                      No rules of your own yet. The built-in ones below are already in force.
+                    </div>
+                  )}
+
+                  {rules.custom.map((r) => (
+                    <div key={r.id} className={`myrule ${r.enabled ? '' : 'is-off'}`}>
+                      <div className="myrule-top">
+                        <span className="myrule-name">{r.label}</span>
+                        <span className="myrule-actions">
+                          <button
+                            type="button"
+                            className="btn quiet sm"
+                            disabled={ruleBusy}
+                            onClick={async () => {
+                              const res = await ruleAct({ action: 'toggle', id: r.id });
+                              if (res.ok) { await loadRules(); say(r.enabled ? 'Rule paused' : 'Rule back on'); }
+                              else say(`❌ ${res.error ?? 'could not change that rule'}`);
+                            }}
+                          >{r.enabled ? 'Pause' : 'Turn on'}</button>
+                          <button
+                            type="button"
+                            className="btn quiet sm"
+                            disabled={ruleBusy}
+                            onClick={async () => {
+                              const res = await ruleAct({ action: 'delete', id: r.id });
+                              if (res.ok) { await loadRules(); say('Rule deleted'); }
+                              else say(`❌ ${res.error ?? 'could not delete that rule'}`);
+                            }}
+                          >Delete</button>
+                        </span>
+                      </div>
+                      <div className="myrule-phrases">
+                        {r.phrases.map((p) => <span key={p} className="chip">{p}</span>)}
+                      </div>
+                      {!r.enabled && <div className="mini" style={{ marginTop: 4 }}>Paused — {ASSISTANT_NAME} is not checking for these right now.</div>}
+                    </div>
+                  ))}
+                </div>
+
+                {/* ── The built-in rules, grouped. Read-only, and the screen
+                       says so rather than showing a switch that refuses. ── */}
+                {Object.entries(RULE_GROUP_LABELS).map(([g, groupName]) => {
+                  const inGroup = rules.builtIn.filter((r) => r.group === g);
+                  if (inGroup.length === 0) return null;
+                  return (
+                    <div key={g} className="panel" style={{ marginBottom: 12 }}>
+                      <h3>{groupName}</h3>
+                      {inGroup.map((r) => (
+                        <div key={r.id} className="rulerow">
+                          <div className="rulerow-name">{r.name}</div>
+                          <div className="rulerow-what">{r.what}</div>
+                          {/* A rule you can only read is abstract; a message it
+                              would refuse is not. */}
+                          <div className="rulerow-eg"><span>Refused:</span> {r.example}</div>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </section>
+        )}
+
         {view === 'followups' && (
           <section className="view active">
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -1473,145 +1579,50 @@ export default function Dashboard() {
               {(followups ?? []).map((f) => {
                 const flowLabel = f.flow ? FLOW_LABELS[f.flow] ?? f.flow : 'Follow-up';
                 const stageColor = stageColorOf(f.state);
-                const adv = nudgeAdvice[f.jobId];
                 return (
                   <div
                     key={f.jobId}
-                    className="rowcard fu-card"
+                    className="rowcard"
                     style={{ ['--gc' as string]: stageColor }}
                     title={`Open the chat with ${phoneOf(f.waId)}`}
                     onClick={() => { setView('chats'); openChat(f.customerId); }}
                   >
-                    <div className="fu-line">
-                      <div className="rc-main">
-                        <div className="rc-top">
-                          <span className="cname">{phoneOf(f.waId)}</span>
-                        </div>
-                        {/* Jo, 27 Aug: "add what you are actually going to send
-                            me in the nudge." The row used to name the Library
-                            entry, which tells you where the message lives but
-                            not what it says — so checking a queue of 22 meant
-                            opening 22 entries. This is the delivered text, {{1}}
-                            already replaced by the greeting name the scheduler
-                            will use, so what is on screen is what lands on their
-                            phone. The Library title moved to the hover, where it
-                            is still there when you need to go and edit it. */}
-                        <div
-                          className="fu-body"
-                          title={f.templateTitle ?? f.templateKey ?? undefined}
-                        >{f.body ?? 'This message is no longer in the Library — nothing will be sent.'}</div>
+                    <div className="rc-main">
+                      <div className="rc-top">
+                        <span className="cname">{phoneOf(f.waId)}</span>
                       </div>
-                      {/* Out of .rc-top and into its own column. As a direct
-                          child of the flex line it sits on the row's centre
-                          line instead of riding on the first line of a text
-                          block that is now several lines tall. */}
-                      <span className="chip fu-flow">{flowLabel} · #{f.seq + 1}</span>
-                      <div className="rc-side">
-                        {/* The stage pill was removed here on Jo's instruction,
-                            27 Aug. It repeated the flow chip next to it — a
-                            "Before payment" nudge is by definition queued for a
-                            lead — so it was a second colour saying the first
-                            one's news. The stage still drives the row's left
-                            border colour (--gc), which is where it earns its
-                            keep. */}
-                        <span className="fu-when">
-                          <b>{untilLabel(f.runAt)}</b>
-                          <small>{sendAtLabel(f.runAt)}</small>
-                        </span>
-                      </div>
+                      {/* Jo, 27 Aug: "add what you are actually going to send me
+                          in the nudge." The row used to name the Library entry,
+                          which tells you where the message lives but not what it
+                          says — so checking a queue of 22 meant opening 22
+                          entries. This is the delivered text, {{1}} already
+                          replaced by the greeting name the scheduler will use,
+                          so what is on screen is what lands on their phone. The
+                          Library title moved to the hover, where it is still
+                          there when you need to go and edit the entry. */}
+                      <div
+                        className="fu-body"
+                        title={f.templateTitle ?? f.templateKey ?? undefined}
+                      >{f.body ?? 'This message is no longer in the Library — nothing will be sent.'}</div>
                     </div>
-
-                    {/* ── Conversation-aware nudge (Jo, 27 Aug) ─────────────
-                        "Beyond the existing templates, try to analyse the
-                        conversation and word the next nudge accordingly."
-
-                        The cadence is positional — #1, then #2, then #3, to
-                        everyone — so two people who went quiet for completely
-                        different reasons get the identical message. This reads
-                        the actual conversation and says why THIS person is
-                        quiet, which approved message fits them best, and, when
-                        none really does, what to write instead.
-
-                        It is one paid model call against one conversation, so
-                        nothing happens until this button is pressed: not on
-                        load, not on the 20s refresh, not for the other 21 rows.
-
-                        stopPropagation throughout — the row itself opens the
-                        chat, and reading the advice must not navigate away from
-                        it. */}
-                    {!adv && (
-                      <button
-                        type="button"
-                        className="btn quiet sm fu-ask"
-                        onClick={(e) => { e.stopPropagation(); askAdvice(f.jobId); }}
-                        title="Read this conversation and recommend the best next nudge for this person"
-                      >Why this message for them?</button>
-                    )}
-                    {adv?.status === 'loading' && (
-                      <div className="fu-advice"><div className="mini">Reading the conversation…</div></div>
-                    )}
-                    {adv?.status === 'error' && (
-                      <div className="fu-advice" onClick={(e) => e.stopPropagation()}>
-                        <div className="mini">{adv.error}</div>
-                        <button
-                          type="button"
-                          className="btn quiet sm"
-                          style={{ marginTop: 6 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setNudgeAdvice((prev) => { const n = { ...prev }; delete n[f.jobId]; return n; });
-                          }}
-                        >Try again</button>
-                      </div>
-                    )}
-                    {adv?.status === 'ready' && (
-                      <div className="fu-advice" onClick={(e) => e.stopPropagation()}>
-                        <div className="fu-read"><b>Why they are quiet:</b> {adv.advice.read}</div>
-                        <div className="fu-why">{adv.advice.why}</div>
-
-                        {adv.advice.changesQueued && adv.advice.recommendedBody && (
-                          <div className="fu-alt">
-                            <div className="fu-alt-head">
-                              <span>A better fit for this person</span>
-                              <span className="mini" style={{ margin: 0 }}>{adv.advice.recommendedTitle}</span>
-                            </div>
-                            <div className="fu-body" style={{ maxWidth: 'none', WebkitLineClamp: 'unset' }}>{adv.advice.recommendedBody}</div>
-                            <button
-                              type="button"
-                              className="btn take sm"
-                              style={{ marginTop: 8 }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                if (adv.advice.recommendedKey) applyAdvice(f.jobId, adv.advice.recommendedKey);
-                              }}
-                            >Send this one instead</button>
-                          </div>
-                        )}
-                        {!adv.advice.changesQueued && (
-                          <div className="mini" style={{ marginTop: 6 }}>The queued message is already the right one for them — nothing to change.</div>
-                        )}
-
-                        {/* A composed nudge is NOT a message and is never
-                            presented as one. Every scheduled follow-up lands
-                            outside WhatsApp's 24-hour window by definition — we
-                            are messaging someone precisely because they went
-                            quiet — and outside it Meta rejects free-form text;
-                            only a pre-approved template goes through. So this
-                            says exactly what it is: something for Jo to send
-                            himself, or to turn into a new approved template. */}
-                        {adv.advice.draft && (
-                          <div className="fu-draft">
-                            <div className="fu-alt-head">
-                              <span>If it were up to {ASSISTANT_NAME}, it would write this</span>
-                            </div>
-                            <div className="fu-draft-text">{adv.advice.draft}</div>
-                            <div className="fu-draft-note">
-                              {ASSISTANT_NAME} cannot send this one. After 24 hours of silence WhatsApp only accepts pre-approved templates, and every follow-up is past that by definition. Send it yourself, or add it to the Library as a new approved message.
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                    {/* Out of .rc-top and into its own column. As a direct child
+                        of the row card (align-items:center) it sits on the row's
+                        centre line rather than riding on the first line of a
+                        text block that is now several lines tall. */}
+                    <span className="chip fu-flow">{flowLabel} · #{f.seq + 1}</span>
+                    <div className="rc-side">
+                      {/* The stage pill was removed here on Jo's instruction,
+                          27 Aug. It repeated the flow chip next to it — a
+                          "Before payment" nudge is by definition queued for a
+                          lead — so it was a second colour saying the first
+                          one's news. The stage still drives the row's left
+                          border colour (--gc), which is where it earns its
+                          keep. */}
+                      <span className="fu-when">
+                        <b>{untilLabel(f.runAt)}</b>
+                        <small>{sendAtLabel(f.runAt)}</small>
+                      </span>
+                    </div>
                   </div>
                 );
               })}
@@ -1624,36 +1635,23 @@ export default function Dashboard() {
             <h2 className="vt">Insights</h2>
             <div className="vsub">Every conversation is raw material: what converts, what loses customers, what to fix. Each problem comes with a suggested fix.</div>
             <div className="igrid">
-              {/* Re-framed, 26 Aug. This card used to promise "each one is a
-                  template you could add", which is not true of most of these:
-                  a template does not answer a voice note, and it does not
-                  unblock a message the policy guard refused. The counts are
-                  genuinely useful — "the guard stopped Will 85 times" says the
-                  assistant is being muzzled — so the data stays and the promise
-                  changes: each reason now says what it means and what would
-                  actually move it (lib/will/handoff-reasons.ts). */}
-              <div className="panel">
-                <h3>Why {ASSISTANT_NAME} Handed Chats To You <span className="cstate" style={{ ['--sc' as string]: 'var(--warn)' }}>LIVE</span></h3>
-                <div className="psub">Most common first. Each one says what it means and what would actually change it.</div>
-                {(report?.tasks.topReasons ?? []).map(([r, n]) => {
-                  const e = explainHandoffReason(r);
-                  return (
-                    <div key={r} className="qitem qitem-why">
-                      <span className="qn">×{n}</span>
-                      <span className="qwrap">
-                        <span className="qlabel" title={r}>{e.label}</span>
-                        <span className="qwhy">{e.meaning}</span>
-                        <span className="qwhy qfix"><b>What would change it:</b> {e.remedy}</span>
-                      </span>
-                    </div>
-                  );
-                })}
-                {(!report || report.tasks.topReasons.length === 0) && <div className="mini">Nothing handed over yet</div>}
-                <div className="sugg">
-                  <b>Read this honestly</b>
-                  Most of these are not template-shaped. A blocked reply is a rule question, an unreadable file or voice note needs a person by definition, and the &ldquo;bot?&rdquo; and returning-customer handoffs are rules working as intended. Only a recurring customer <i>question</i> is worth a new approved answer in the Library.
-                </div>
-              </div>
+              {/* ────────────────────────────────────────────────────────────
+                  "Why Will Handed Chats To You" was removed here on 27 Aug,
+                  on Jo's instruction.
+
+                  It counted the reasons Will gave up and asked for a person,
+                  most common first, and said what would move each number. The
+                  counts were real and the remedies were honest. It went for a
+                  simpler reason: the Decision Log already lists every one of
+                  those handoffs individually, with the same remedy attached
+                  (handoff-reasons.ts, one classifier, still the only one), and
+                  a per-customer row you can act on beats an aggregate you
+                  cannot. This card was the same information with the customer
+                  taken out of it.
+
+                  handoff-reasons.ts is NOT dead: the Decision Log is its other
+                  and now only caller.
+                  ──────────────────────────────────────────────────────────── */}
 
               {/* ────────────────────────────────────────────────────────────
                   "Deep Conversation Analysis" was removed here on 27 Aug.
@@ -1938,40 +1936,44 @@ export default function Dashboard() {
 
                   It used to be the raw audit feed: "Owner · task resolved",
                   "Channel · inbound received", one line per thing that
-                  happened. That is an engineer's log. What Jo wants from this
-                  panel is narrower and more useful — every time Will raised an
-                  urgent task or needed a person: who the client is, their
-                  WhatsApp number, what Will wanted done, why it reached a
-                  human, and how to stop it happening again.
+                  happened. That is an engineer's log.
 
-                  So the source is the TASK table, not the audit table: a task
-                  IS the record of a handoff, and it carries the real reason
-                  string written where the handoff happened. The "why" below is
-                  that string verbatim — never a guess, never re-derived.
-                  The "what would prevent it" comes from
-                  lib/will/handoff-reasons.ts, the one classifier that already
-                  knows what each reason means and what actually addresses it;
-                  a second classifier here would have drifted from it within a
-                  week.
+                  Rebuilt again 27 Aug, to Jo's own spec. He said the panel
+                  answers one question — "why couldn't Will solve this himself?"
+                  — and needs the WhatsApp number and two plain sentences, and
+                  nothing else:
 
-                  The raw audit feed is KEPT, one click away at the bottom. It
-                  still earns its place: it is the only view of the guard's
-                  verdicts and which learned answers Will drew on, which is
-                  what you want when the question is "why did Will say THAT",
-                  not "who needs me". It is just no longer the thing this panel
-                  opens with.
+                      The customer wrote "…" and because <reason>, Will passed
+                      it to you.
+                      To stop this happening again: <what to do>
+
+                  So what went: the severity pill (URGENT/REVIEW told him
+                  nothing he could act on), "What Will wanted" (the draft is one
+                  click away in Tasks, where it can actually be sent), and the
+                  raw reason string underneath the plain one, which was the
+                  engineer's log creeping back in a smaller font.
+
+                  What the customer wrote comes from the task's own `context`,
+                  which is exactly that text — captured when the handoff
+                  happened, and merged when a burst of messages folds into one
+                  task (service.ts, raiseOrUpdateTask). Never re-derived, never
+                  guessed.
+
+                  The "because" and the "to stop this" clauses come from
+                  lib/will/handoff-reasons.ts, which is now written to produce
+                  those two strings and nothing else. One classifier: a second
+                  one here would have drifted from it inside a week.
                   ──────────────────────────────────────────────────────────── */}
               <div className="panel">
                 <h3>Decision Log <span className="cstate" style={{ ['--sc' as string]: 'var(--warn)' }}>HANDOFFS</span></h3>
                 <div className="psub">
-                  Every time {ASSISTANT_NAME} raised a task or needed you. Who it is, what {ASSISTANT_NAME} wanted done,
-                  why it came to a person, and what would let {ASSISTANT_NAME} handle it next time. Newest first.
+                  Every time {ASSISTANT_NAME} could not finish something on his own — what the customer wrote, why it reached you, and what would let {ASSISTANT_NAME} handle it next time. Newest first.
                 </div>
                 {(() => {
                   const handoffs = [...data.tasks].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
                   const SHOWN = 25;
                   if (handoffs.length === 0) {
-                    return <div className="mini">Nothing has been handed over yet. Every task {ASSISTANT_NAME} raises will appear here with its reason and its remedy.</div>;
+                    return <div className="mini">Nothing has been handed over yet.</div>;
                   }
                   return (
                     <>
@@ -1979,19 +1981,15 @@ export default function Dashboard() {
                         const c = custById(t.customerId);
                         const e = explainHandoffReason(t.reason);
                         const done = t.status === 'RESOLVED';
-                        const col = done ? 'var(--ink3)' : t.severity === 'URGENT' ? 'var(--crit)' : 'var(--warn)';
-                        // What Will wanted done. A suggested reply IS the
-                        // proposed action; its absence is meaningful too —
-                        // "am I talking to a bot" is the one handoff Will is
-                        // forbidden to draft an answer for, and a payment-proof
-                        // heads-up is a look-at-this, not a reply-to-this.
-                        const wanted = t.suggestedReply?.trim()
-                          ? `Send this reply: “${previewLine(t.suggestedReply)}”`
-                          : `Take the conversation over yourself — ${ASSISTANT_NAME} proposed no wording for this one.`;
+                        // What the customer actually wrote. A burst of messages
+                        // is stored as one context joined by "---", so only the
+                        // LAST one is quoted — that is the message that was on
+                        // screen when Will gave up, and quoting four of them
+                        // turns the sentence back into a transcript.
+                        const wrote = (t.context ?? '').split(/\n?---\n?/).map((x) => x.trim()).filter(Boolean).pop() ?? '';
                         return (
-                          <div key={t.id} className={`hoff ${done ? 'is-done' : ''}`} style={{ ['--tc' as string]: col }}>
+                          <div key={t.id} className={`hoff ${done ? 'is-done' : ''}`} style={{ ['--tc' as string]: done ? 'var(--ink3)' : 'var(--warn)' }}>
                             <div className="hoff-top">
-                              <span className="tsev">{t.severity}</span>
                               {/* Jo's rule everywhere in this dashboard: the
                                   WhatsApp number is the identity, the profile
                                   name is only a hint beside it. */}
@@ -2002,23 +2000,21 @@ export default function Dashboard() {
                               </span>
                               {done && <span className="hoff-done">resolved</span>}
                             </div>
-                            <div className="hoff-f">
-                              <span className="hoff-k">What {ASSISTANT_NAME} wanted</span>
-                              <span className="hoff-v">{wanted}</span>
+
+                            {/* Sentence one. The quote is dropped when there is
+                                nothing to quote — a nightly check and a failed
+                                send have no customer message behind them, and
+                                an empty pair of quotation marks would read as
+                                "they sent a blank message", which is false. */}
+                            <div className="hoff-said">
+                              {wrote
+                                ? <>The customer wrote <span className="hoff-quote">&ldquo;{previewLine(wrote)}&rdquo;</span> and because {e.because}, {ASSISTANT_NAME} passed it to you.</>
+                                : <>Because {e.because}, {ASSISTANT_NAME} passed this to you.</>}
                             </div>
-                            <div className="hoff-f">
-                              <span className="hoff-k">Why it came to you</span>
-                              <span className="hoff-v">
-                                <b>{e.label}</b>
-                                {/* The real reason string, exactly as it was
-                                    written when the handoff happened. */}
-                                <span className="hoff-raw">{t.reason}</span>
-                              </span>
-                            </div>
-                            <div className="hoff-f">
-                              <span className="hoff-k">What would prevent it</span>
-                              <span className="hoff-v hoff-fix">{e.remedy}</span>
-                            </div>
+
+                            {/* Sentence two. */}
+                            <div className="hoff-prevent"><b>To stop this happening again:</b> {e.prevent}</div>
+
                             {t.customerId && (
                               <button className="hoff-open" onClick={() => { setView('chats'); openChat(t.customerId!); }}>
                                 Open this chat →
@@ -2034,40 +2030,24 @@ export default function Dashboard() {
                   );
                 })()}
 
-                {/* The old feed, kept and demoted. */}
-                <button
-                  type="button"
-                  className="rawtoggle"
-                  aria-expanded={showRawFeed}
-                  onClick={() => setShowRawFeed((o) => !o)}
-                >
-                  {showRawFeed ? '▾' : '▸'} Raw system feed — every action, with the guard verdict and the learned answers used
-                </button>
-                {showRawFeed && activity.length === 0 && <div className="mini">No activity recorded yet.</div>}
-                {showRawFeed && activity.map((a) => {
-                  const d = (a.detail ?? {}) as { action?: string; knowledgeUsed?: string[]; guard?: { blocked?: boolean; violations?: string[] }; preview?: string | null; newState?: string | null };
-                  const label = a.action === 'decision'
-                    ? (d.action === 'sent' ? 'Sent a reply' : d.action === 'queued' ? 'Reply queued to send' : d.action === 'pending_approval' ? 'Drafted for approval' : d.action === 'human_task' ? 'Handed to you' : d.action || 'Decision')
-                    : a.action.replace(/_/g, ' ');
-                  const blocked = d.guard?.blocked;
-                  return (
-                    <div key={a.id} style={{ padding: '8px 0', borderBottom: '1px solid var(--line)', fontSize: 12.5 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-                        <span style={{ fontWeight: 600 }}>
-                          <span style={{ color: 'var(--ink3)', fontWeight: 500, textTransform: 'capitalize' }}>{a.actor}</span> · {label}
-                          {blocked && <span className="cstate" style={{ ['--sc' as string]: 'var(--crit)', marginLeft: 6 }}>guard blocked</span>}
-                        </span>
-                        <span style={{ color: 'var(--ink3)', whiteSpace: 'nowrap' }}>{new Date(a.at).toLocaleString('en-AU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })}</span>
-                      </div>
-                      {d.preview && <div style={{ color: 'var(--ink2)', marginTop: 3 }}>&ldquo;{d.preview}&rdquo;</div>}
-                      {d.knowledgeUsed && d.knowledgeUsed.length > 0 && <div className="mini" style={{ marginTop: 2 }}>Used: {d.knowledgeUsed.join(', ')}</div>}
-                      {blocked && d.guard?.violations && <div className="mini" style={{ marginTop: 2, color: 'var(--crit)' }}>{d.guard.violations.join(', ')}</div>}
-                    </div>
-                  );
-                })}
+                {/* ──────────────────────────────────────────────────────
+                    The raw system feed was removed here on 27 Aug, on Jo's
+                    instruction ("no need for this one either").
+
+                    It was the original Decision Log: one line per action —
+                    "Owner · task resolved", "Channel · inbound received" —
+                    with the guard verdict and the learned answers attached.
+                    That is an engineer's log, and it read like one. The
+                    handoffs above answer the question he actually opens this
+                    panel with, per customer, in words.
+
+                    The audit rows themselves are UNTOUCHED: store.audit() still
+                    writes every action, /api/will/activity still serves them,
+                    and nightly maintenance still ages them out at 90 days. This
+                    removed the screen, not the record — if a "why did Will say
+                    THAT" investigation ever needs it, the data is all there.
+                    ────────────────────────────────────────────────────── */}
               </div>
-
-
             </div>
           </section>
         )}
@@ -2317,7 +2297,7 @@ export default function Dashboard() {
             <div className="mh"><b>{tpl.title}</b><button className="x" onClick={() => setTpl(null)}>✕</button></div>
             <div className="mlabel">Message text</div>
             <textarea className="edit" value={tplText} onChange={(e) => setTplText(e.target.value)} />
-            <div className="mlabel">Live preview: how the customer sees it</div>
+            <div className="mlabel">How the customer sees it</div>
             <div className="wapreview"><div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{tplText}</div></div>
             <div className="mfoot">
               <span className="vhist" style={{ cursor: 'pointer', color: 'var(--crit)' }} onClick={async () => { if (confirm('Delete this message?')) { await act({ action: 'delete_template', id: tpl.id }); say('Message deleted'); setTpl(null); refresh(); } }}>🗑 Delete</span>
@@ -2343,7 +2323,7 @@ export default function Dashboard() {
             <div className="wapreview"><div className="msg in" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{know.question}</div></div>
             <div className="mlabel">Answer text</div>
             <textarea className="edit" value={knowText} onChange={(e) => setKnowText(e.target.value)} />
-            <div className="mlabel">Live preview: how the customer sees it</div>
+            <div className="mlabel">How the customer sees it</div>
             <div className="wapreview"><div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{knowText}</div></div>
             <div className="mfoot">
               <span className="vhist" style={{ cursor: 'pointer', color: 'var(--crit)' }} onClick={async () => {
@@ -2379,7 +2359,7 @@ export default function Dashboard() {
             <input className="edit" style={{ minHeight: 0, padding: 10 }} value={newTpl.category} onChange={(e) => setNewTpl({ ...newTpl, category: e.target.value })} placeholder="e.g. FAQ · Operational" />
             <div className="mlabel">Message text</div>
             <textarea className="edit" value={newTpl.body} onChange={(e) => setNewTpl({ ...newTpl, body: e.target.value })} placeholder="Write the message exactly as the customer should see it…" />
-            <div className="mlabel">Live preview: how the customer sees it</div>
+            <div className="mlabel">How the customer sees it</div>
             <div className="wapreview"><div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{newTpl.body || ' '}</div></div>
             <div className="mfoot">
               <button className="btn ghost" style={{ marginLeft: 'auto' }} onClick={() => setNewTpl(null)}>Cancel</button>
@@ -2422,7 +2402,7 @@ export default function Dashboard() {
                 onChange={(e) => setEstimateLink(e.target.value)} placeholder="https://…" />
               {preview && (
                 <>
-                  <div className="mlabel">Live preview: how the customer sees it</div>
+                  <div className="mlabel">How the customer sees it</div>
                   <div className="wapreview"><div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{preview}</div></div>
                 </>
               )}

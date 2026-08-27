@@ -176,7 +176,13 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .chatlist{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 3px rgba(30,32,40,.04);display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .will-scope .chatlist-head{flex:none}
 .will-scope .chatlist-items{flex:1;min-height:0;overflow-y:auto}
-.will-scope .search{background:var(--surface);padding:10px;border-bottom:1px solid var(--line);position:relative}
+/* Jo, 27 Aug: "lose the separator lines, they aren't needed." The search field
+   and the filter chips each drew a full-width rule beneath them, stacking two
+   horizontal lines into the top of a panel 245px wide. The pill field and the
+   chips are already distinct shapes on their own ground — the rules were
+   drawing boundaries the eye had drawn for itself. Their vertical padding
+   stays, so the spacing is unchanged; only the lines are gone. */
+.will-scope .search{background:var(--surface);padding:10px;position:relative}
 /* line-art glyph, not an emoji: `line-height:0` so the svg does not carry a
  * text baseline that pushes it off centre, and currentColor so it takes the
  * muted ink below rather than an emoji's own colours. */
@@ -187,7 +193,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .search input:focus{border-color:var(--brand1)}
 /* Filter chips under the search. Sticky beneath it, and scroll SIDEWAYS when
    the stage chips do not all fit, with a visible thin scrollbar. */
-.will-scope .chatfilter{display:flex;gap:6px;padding:8px 10px;background:var(--surface);border-bottom:1px solid var(--line);overflow:hidden}
+.will-scope .chatfilter{display:flex;gap:6px;padding:2px 10px 10px;background:var(--surface);overflow:hidden}
 .will-scope .cfchip{flex:1 1 auto;min-width:0;border:1px solid var(--line2);background:var(--surface2);color:var(--ink2);border-radius:999px;padding:4px 8px;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;text-align:center;font-family:inherit;transition:background 140ms var(--ease-out),color 140ms var(--ease-out),border-color 140ms var(--ease-out)}
 .will-scope .cfchip:hover{border-color:var(--brand1)}
 .will-scope .cfchip.on{background:#d9f4ee;border-color:#d9f4ee;color:var(--ink)}
@@ -210,21 +216,40 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .stagepick{position:relative;display:inline-flex}
 .will-scope .cstate-btn{border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px}
 .will-scope .cstate-btn:hover{background:color-mix(in srgb,var(--sc) 24%, transparent)}
-/* WhatsApp-real: under the contact name, "online" is small plain text, not a
- * bold uppercase pill — same proportion to the name here (chnum is 15px), no
- * background fill, just coloured text. Scoped to the chat-header dropdown
- * specifically; the list-row and task-card badges keep the pill treatment,
- * where a scannable label matters more than looking like a status line. */
-.will-scope .chtitle .cstate-btn{background:none;padding:0;border-radius:0;font-size:12px;font-weight:500;letter-spacing:normal;text-transform:none}
-/* The underline goes on the LABEL only, never on the button.
- * .cstate-btn is display:inline-flex, so "Review" and the ▾ are two separate
- * flex items. text-decoration on the container makes each item draw its OWN
- * underline, at its own font-size and baseline — a 12px line under the word
- * and a 16px line under the caret, sitting at different heights. That is what
- * read as two mismatched lines. One line, under the word, is the fix. */
-.will-scope .chtitle .cstate-btn:hover{background:none;text-decoration:none}
-.will-scope .chtitle .cstate-btn:hover .cstate-label{text-decoration:underline;text-underline-offset:2px}
-.will-scope .cstate-caret{font-size:11px;line-height:1;opacity:.7;text-decoration:none;transform:translateY(1px)}
+/* ── The stage dropdown under the phone number ──────────────────────────────
+   Jo, 27 Aug: "something about the button under the number doesn't sit right —
+   can you make it nicer?" He was right, and it was three small things at once:
+
+     1. .st sat at margin-top:0 with line-height:1, so the word was jammed
+        against the underside of a 15px number with nothing between them.
+     2. The caret was nudged down 1px to fake alignment with a word whose
+        line-height had already been crushed, so the two drifted apart at some
+        zoom levels and touched at others.
+     3. At rest it looked like coloured text, and coloured text under a name is
+        a status line, not a control — there was nothing to say it could be
+        clicked until you happened to hover it, and then it grew an underline,
+        which is what a link does, not what a menu does.
+
+   So: the word and the caret now sit in one inline-flex box with a real
+   line-height and their own optical centring, the pair gets a little air under
+   the number, and hovering fills a soft rounded chip in the stage's own colour
+   instead of underlining. The chip is padded at rest too, in transparent, so
+   nothing moves when it appears. */
+.will-scope .chtitle .cstate-btn{
+  background:none;border-radius:6px;padding:1px 5px;margin-left:-5px; /* pull the padding out of the text's left edge */
+  font-size:12px;font-weight:500;letter-spacing:normal;text-transform:none;
+  line-height:1.35;gap:3px;
+  transition:background 140ms var(--ease-out);
+}
+.will-scope .chtitle .cstate-btn:hover{
+  background:color-mix(in srgb,var(--sc) 13%, transparent);
+  text-decoration:none;
+}
+.will-scope .chtitle .cstate-btn:hover .cstate-label{text-decoration:none}
+/* Optically centred against the label rather than nudged by a magic pixel: the
+   glyph's own box is taller than its ink, so matching the label's line-height
+   and letting flex centre it puts it where the eye expects at any zoom. */
+.will-scope .cstate-caret{font-size:9px;line-height:1.35;opacity:.65;text-decoration:none}
 .will-scope .stagemenu-backdrop{position:fixed;inset:0;z-index:40}
 .will-scope .stagemenu{position:absolute;top:calc(100% + 4px);left:0;z-index:41;min-width:190px;max-height:320px;overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 28px rgba(20,22,30,.18);padding:5px}
 .will-scope .stagemenu-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:none;background:none;font-family:inherit;font-size:12px;color:var(--ink);padding:7px 9px;border-radius:7px;cursor:pointer}
@@ -240,7 +265,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .chtitle b{font-size:14px}
 /* Normal weight, the way WhatsApp shows a contact. */
 .will-scope .chtitle .chnum{font-size:15px;font-weight:400;color:var(--ink);display:block;line-height:1.15}
-.will-scope .chtitle .st{display:flex;gap:6px;margin-top:0;align-items:center;line-height:1}
+.will-scope .chtitle .st{display:flex;gap:6px;margin-top:1px;align-items:center;line-height:1.35}
 .will-scope .aitoggle{display:flex;align-items:center;gap:8px;background:var(--surface3);border:1px solid var(--line2);border-radius:20px;padding:5px 6px 5px 12px;cursor:pointer;user-select:none}
 .will-scope .aitoggle .lbl{font-size:11.5px;font-weight:650;color:var(--good)}
 .will-scope .aitoggle.off .lbl{color:var(--ink3)}
@@ -652,42 +677,6 @@ aside.side{
    long; the fixed min-width lines the chips up with each other down the list
    instead of jittering with the label length. */
 .will-scope .fu-flow{flex:none;align-self:center;min-width:118px;justify-content:center}
-/* A follow-up row can now open downwards (the conversation-aware advice), so
-   the card itself stacks and the original three columns live on .fu-line. */
-.will-scope .fu-card{flex-direction:column;align-items:stretch}
-.will-scope .fu-line{display:flex;align-items:center;gap:12px}
-
-/* "Why this message for them?" — quiet by default. This costs a model call, so
-   it should read as available rather than as something to click on every row. */
-.will-scope .fu-ask{align-self:flex-start;margin-top:8px}
-
-/* The advice, once it is back. Inset and on its own ground so it reads as an
-   annotation about the message above it, not as a second message. */
-.will-scope .fu-advice{
-  margin-top:9px;padding:10px 12px;border-radius:9px;
-  background:var(--surface2);border:1px solid var(--line);
-  cursor:default; /* the row navigates; this panel is for reading */
-}
-.will-scope .fu-read{font-size:11.5px;line-height:1.55;color:var(--ink)}
-.will-scope .fu-read b{font-weight:650}
-.will-scope .fu-why{font-size:11px;line-height:1.5;color:var(--ink3);margin-top:3px}
-
-.will-scope .fu-alt,.will-scope .fu-draft{margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
-.will-scope .fu-alt-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px}
-.will-scope .fu-alt-head>span:first-child{font-size:11px;font-weight:650;color:var(--ink)}
-
-/* The draft is deliberately styled UNLIKE the sendable message above it. It is
-   not a queued message and must never be mistaken for one at a glance, so it
-   sits in a warn-tinted well with the reason it cannot be sent attached to it
-   rather than hidden in a tooltip. */
-.will-scope .fu-draft-text{
-  font-size:11.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap;
-  padding:8px 10px;border-radius:8px;
-  background:color-mix(in srgb,var(--warn) 7%, #fff);
-  border:1px solid color-mix(in srgb,var(--warn) 26%, transparent);
-}
-.will-scope .fu-draft-note{font-size:10.5px;line-height:1.5;color:var(--ink3);margin-top:5px}
-
 @media(max-width:840px){
   .will-scope .fu-when{min-width:0}
   .will-scope .fu-when small{display:none}
@@ -727,9 +716,13 @@ aside.side{
 
 /* ============================================================
    Decision Log — one handoff to a person (Learning tab).
-   Four labelled facts per entry: who, what Will wanted, why it reached a
-   person, what would prevent it. The key column is fixed-width so the four
-   answers line up down the panel and the whole thing can be read in one pass.
+
+   Rebuilt 27 Aug to Jo's spec: the WhatsApp number, one sentence saying what
+   the customer wrote and why Will could not finish it, and one sentence saying
+   what would stop it happening again. The labelled key/value grid it replaced
+   (.hoff-f / .hoff-k / .hoff-v / .hoff-raw) is gone with it — four uppercase
+   column headings repeated down twenty-five entries were most of the ink on
+   the panel and none of the meaning.
    ============================================================ */
 .will-scope .hoff{
   border-left:2px solid color-mix(in srgb,var(--tc) 55%, transparent);
@@ -737,32 +730,27 @@ aside.side{
   padding:9px 12px;margin-bottom:8px;
 }
 .will-scope .hoff.is-done{opacity:.62}
-.will-scope .hoff-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:6px}
+.will-scope .hoff-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
 .will-scope .hoff-who{font-size:12px;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
 .will-scope .hoff-name{font-size:11px;color:var(--ink3)}
 .will-scope .hoff-when{margin-left:auto;font-size:10.5px;color:var(--ink3);white-space:nowrap}
 .will-scope .hoff-done{font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--done);background:color-mix(in srgb,var(--done) 13%, transparent);padding:1px 6px;border-radius:5px}
-.will-scope .hoff-f{display:flex;gap:9px;padding:3px 0;font-size:11.5px;align-items:baseline}
-.will-scope .hoff-k{flex:none;width:132px;font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--ink3)}
-.will-scope .hoff-v{flex:1;min-width:0;color:var(--ink2);line-height:1.45}
-.will-scope .hoff-v b{color:var(--ink);font-weight:650;display:block}
-/* The reason string exactly as it was written at the handoff. Monospaced-ish
-   quoting rather than prose, so it is obvious this is recorded text and not
-   the dashboard's own words. */
-.will-scope .hoff-raw{display:block;margin-top:2px;font-size:11px;color:var(--ink3);white-space:pre-wrap;overflow-wrap:anywhere}
-.will-scope .hoff-fix{color:var(--ink2)}
+
+/* Sentence one: what they wrote and why it came to you. */
+.will-scope .hoff-said{font-size:11.5px;line-height:1.55;color:var(--ink2)}
+/* The customer's own words, in ink rather than grey — inside a sentence about
+   them, the quote is the part you actually read. */
+.will-scope .hoff-quote{color:var(--ink);font-weight:500}
+
+/* Sentence two: what to do about it. */
+.will-scope .hoff-prevent{font-size:11.5px;line-height:1.55;color:var(--ink2);margin-top:5px}
+.will-scope .hoff-prevent b{color:var(--ink);font-weight:650}
+
 .will-scope .hoff-open{
   margin-top:7px;border:1px solid var(--line2);background:var(--surface);color:var(--ink2);
   border-radius:7px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;
 }
 .will-scope .hoff-open:hover{border-color:var(--brand1);color:var(--brand1)}
-/* The raw audit feed, kept but folded away under the handoffs. */
-.will-scope .rawtoggle{
-  width:100%;text-align:left;margin-top:12px;padding:8px 0 6px;
-  border:none;border-top:1px solid var(--line);background:none;cursor:pointer;font-family:inherit;
-  font-size:11px;font-weight:600;color:var(--ink3);
-}
-.will-scope .rawtoggle:hover{color:var(--ink2)}
 
 /* ============================================================
    System & Costs: the estimate flag and the fault entries.
@@ -819,3 +807,56 @@ aside.side{
 .will-scope .qitem-why .qlabel{font-size:11.5px;font-weight:600;color:var(--ink)}
 .will-scope .qitem-why .qwhy{font-size:11px;line-height:1.45;color:var(--ink3)}
 .will-scope .qitem-why .qfix b{color:var(--ink2);font-weight:650}
+
+/* ============================================================
+   Rules tab (Jo, 27 Aug) — everything Will is not allowed to do, plus the
+   rules Jo adds himself.
+
+   Two different jobs on one screen, so two different treatments. His own rules
+   are a control panel: a form, and rows with buttons on them. The built-in
+   rules are reference: no controls at all, because there are none — nothing on
+   this screen can switch one off, and a disabled-looking switch would suggest
+   otherwise.
+   ============================================================ */
+
+/* ── The add form ──────────────────────────────────────────────────────── */
+.will-scope .rule-add{display:flex;flex-direction:column;gap:7px;margin:10px 0 4px}
+.will-scope .rule-add textarea{
+  resize:vertical;min-height:56px;font-family:inherit;line-height:1.5;
+}
+.will-scope .rule-add .btn{align-self:flex-start}
+
+/* ── One of Jo's rules ─────────────────────────────────────────────────── */
+.will-scope .myrule{
+  border:1px solid var(--line);border-radius:9px;background:var(--surface2);
+  padding:9px 11px;margin-top:8px;
+}
+/* A paused rule is still listed — deleting is a separate, deliberate act — but
+   it must not read as protection that is in force. */
+.will-scope .myrule.is-off{opacity:.6}
+.will-scope .myrule-top{display:flex;align-items:center;gap:8px}
+.will-scope .myrule-name{flex:1;min-width:0;font-size:12px;font-weight:650;color:var(--ink)}
+.will-scope .myrule-actions{display:flex;gap:6px;flex:none}
+.will-scope .myrule-phrases{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+/* The banned phrases themselves, in ink rather than the chip's usual grey:
+   inside a rule about words, the words are the content. */
+.will-scope .myrule-phrases .chip{color:var(--ink);background:rgba(30,32,40,.06)}
+
+/* ── One built-in rule ─────────────────────────────────────────────────── */
+.will-scope .rulerow{padding:9px 0;border-bottom:1px solid var(--line)}
+.will-scope .rulerow:last-child{border-bottom:none;padding-bottom:2px}
+.will-scope .rulerow-name{font-size:12px;font-weight:650;color:var(--ink)}
+.will-scope .rulerow-what{font-size:11.5px;line-height:1.55;color:var(--ink2);margin-top:3px}
+/* The refused example. Warn-tinted and labelled, so it is unmistakably a
+   message that does NOT go out — the one thing that would be genuinely bad to
+   misread on this screen. */
+.will-scope .rulerow-eg{
+  font-size:11px;line-height:1.5;color:var(--ink2);margin-top:6px;
+  padding:6px 9px;border-radius:7px;
+  background:color-mix(in srgb,var(--crit) 5%, transparent);
+  border-left:2px solid color-mix(in srgb,var(--crit) 40%, transparent);
+}
+.will-scope .rulerow-eg span{
+  font-weight:700;font-size:9.5px;letter-spacing:.4px;text-transform:uppercase;
+  color:var(--crit);margin-right:5px;
+}

@@ -7,6 +7,7 @@
 // ============================================================
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { APPROVED } from './approved-messages';
+import { CustomRule, brokenRules } from './rules';
 
 export interface GuardContext {
   state: CustomerState;
@@ -18,6 +19,22 @@ export interface GuardContext {
   lastCustomerMsgAt: Date | null;
   isApprovedTemplate: boolean;
   estimateFromTeam: number | null; // cents
+  /**
+   * The rules Jo added himself (lib/will/rules.ts), already loaded by whoever
+   * is calling.
+   *
+   * Passed in rather than read here so this function stays what it has always
+   * been: synchronous, pure, and testable with no store behind it. A caller
+   * that does not supply them gets exactly the behaviour that existed before
+   * custom rules did — which is what makes an un-wired caller safe rather than
+   * quietly permissive.
+   *
+   * These can only ever ADD violations. No value of this field — absent, empty,
+   * malformed, enormous — allows a message the built-in rules refuse. Adding
+   * rules can therefore only make Will more cautious, and the worst case is
+   * drafts piling up for approval, not something wrong reaching a customer.
+   */
+  customRules?: CustomRule[];
 }
 
 export interface GuardResult {
@@ -369,6 +386,25 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   if (NON_DOLLAR_CURRENCY.test(text)) violations.push('NON_DOLLAR_CURRENCY');
   if (AI_IDENTITY_CLAIM.test(text) || AI_IDENTITY_DENIAL.test(text)) {
     violations.push('AI_IDENTITY_ANSWER');
+  }
+
+  // Jo's own rules, checked across the WHOLE message and with no approved-corpus
+  // exemption — the two deliberate differences from the content rules below.
+  //
+  // Whole message, because "never mention crypto" means never, and a rule that
+  // could be defeated by putting the word in a second sentence would be a rule
+  // he thinks he has and does not.
+  //
+  // No exemption, because these are HIS words about HIS messages. If a phrase he
+  // has banned is sitting in a Library entry, that is a thing he needs to find
+  // out, and finding out by having follow-ups held is the loud version of being
+  // told. The Rules screen warns him at the moment he adds such a rule, which is
+  // the quiet version.
+  //
+  // The rule LABEL travels in the violation, so the task says "Never mention
+  // crypto" rather than an id nobody can read.
+  for (const label of brokenRules(text, ctx.customRules ?? [])) {
+    violations.push(`CUSTOM_RULE:${label}`);
   }
 
   // myGov / ATO access, checked across the WHOLE message rather than per
