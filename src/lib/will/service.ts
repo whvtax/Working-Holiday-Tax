@@ -202,22 +202,44 @@ async function handleIncomingInner(
     .filter((m) => m.status === 'SENT') // pending/discarded drafts are NOT delivered context
     .map((m) => ({ role: m.direction === 'IN' ? ('customer' as const) : ('assistant' as const), text: m.body }));
 
-  // Owner's rule: more than 3 messages before payment means this lead needs a
-  // person, not more automated back-and-forth — even in FULL_AUTO. Counts
-  // every inbound message sent while unpaid (this one included, since it was
-  // already stored above), not just ones that end in a question mark: by the
-  // 4th message before a cent has changed hands, the conversation itself is
-  // the signal, whatever the exact wording. Checked before the engine runs so
-  // no 4th reply is ever drafted, let alone sent.
+  // ── Runaway guard (was: "more than 3 messages before payment") ────────────
+  //
+  // THE OLD RULE. Any 4th inbound message before payment paused Will and handed
+  // the chat to a person. It counted every inbound message, which meant it
+  // counted the customer's ANSWERS to Will's own qualifying questions:
+  //
+  //     Will: did you work on a TFN, or also an ABN?   customer: "only TFN"
+  //     Will: do you still have an Australian account?  customer: "yes"
+  //
+  // Two of the four messages were replies Will asked for. The rule fired on the
+  // word "yes", paused Will one step before the price, and opened a task whose
+  // canned wording was "Thanks for all the questions" — to a customer who had
+  // asked one. It fired hardest on the BEST conversations, because a lead who
+  // answers promptly reaches four messages faster than one who dawdles.
+  //
+  // JO'S CALL, 27 Aug, and the reasoning is his: before payment the answer to
+  // everything is the same answer — yes, of course we can help, that is part of
+  // the review. So there is no pre-payment question that needs a person, and
+  // when this fired he stepped in to type what Will would have typed anyway.
+  //
+  // WHAT IT IS NOW. Not a sales rule any more — a loop guard. Twenty-five
+  // inbound messages before payment is not a conversation, it is something
+  // stuck: a reply loop, an automated sender, or a genuinely lost customer who
+  // should have had a person long ago. The webhook's rate limit catches a fast
+  // loop; this catches a slow one, over days, that no rate limit would see.
+  //
+  // A real sales conversation never comes near it. If it ever fires, it means
+  // what it says.
+  const MAX_INBOUND_BEFORE_PAYMENT = 25;
   if (!customer.paid) {
     const questionsBeforePayment = msgs.filter((m) => m.direction === 'IN').length;
-    if (questionsBeforePayment > 3) {
+    if (questionsBeforePayment > MAX_INBOUND_BEFORE_PAYMENT) {
       if (!customer.aiPaused) {
         await store.updateCustomer(customer.id, { aiPaused: true });
         await store.cancelJobsFor(customer.id);
       }
       await raiseOrUpdateTask(store, customer, {
-        reason: `Customer sent ${questionsBeforePayment} messages before paying — needs a person, not more automated replies`,
+        reason: `Customer sent ${questionsBeforePayment} messages before paying — this conversation is stuck, not progressing`,
         severity: 'REVIEW', newContext: text,
         suggestedReply: await suggestReply(text, customer, 'many_questions'),
       });

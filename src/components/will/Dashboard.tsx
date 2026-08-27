@@ -97,9 +97,13 @@ const FLOW_LABELS: Record<string, string> = {
 
 interface StateData {
   customers: CustomerRow[];
-  tasks: TaskRow[];
+  // `waId` is attached by /api/will/state from the customers in the same
+  // payload, so a task or a draft can always be labelled by the WhatsApp
+  // number — Jo's rule — without depending on the customer also being found in
+  // the loaded list. Null only when the customer no longer exists.
+  tasks: (TaskRow & { waId?: string | null })[];
   templates: TemplateRow[];
-  pending: (MessageRow & { customerName: string | null })[];
+  pending: (MessageRow & { customerName: string | null; waId?: string | null })[];
 }
 interface Health {
   ok: boolean;
@@ -739,7 +743,7 @@ export default function Dashboard() {
                         onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}>
                         <span style={{ width: 7, height: 7, borderRadius: 4, background: dot, marginTop: 5, flex: 'none' }} />
                         <span style={{ minWidth: 0, flex: 1 }}>
-                          <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{(() => { const c = custById(t.customerId); return c ? phoneOf(c.waId) : (t.customerName ?? 'System'); })()}</span>
+                          <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{(() => { const c = custById(t.customerId); const w = c?.waId ?? t.waId; return w ? phoneOf(w) : 'System'; })()}</span>
                           <span title={t.reason} style={{ display: 'block', fontSize: 11.5, color: 'var(--ink2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{shortReason(t.reason)}</span>
                         </span>
                         <span style={{ fontSize: 9.5, color: 'var(--ink3)', flex: 'none', marginTop: 2 }}>{timeAgo(t.createdAt)}</span>
@@ -1238,7 +1242,12 @@ export default function Dashboard() {
               return (
                 <div key={m.id} className="obcard">
                   <div className="obhead">
-                    <span className="obwho">{c ? phoneOf(c.waId) : (m.customerName ?? 'Customer')}</span>
+                    {/* The number, always. It used to fall back to the WhatsApp profile
+                        name whenever the customer was not in the loaded list, which
+                        is how "holly brazier" ended up as a card heading — a name
+                        that is not unique, not searchable, and not how anything else
+                        here identifies anyone. */}
+                    <span className="obwho">{(() => { const w = c?.waId ?? m.waId; return w ? phoneOf(w) : 'Customer'; })()}</span>
                     {c && <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
                     <span className="obtime">{timeAgo(m.createdAt)} ago</span>
                   </div>
@@ -1271,7 +1280,7 @@ export default function Dashboard() {
                       <span className="tsev">{t.severity}</span>
                       {/* Show the WhatsApp number (formatted per country, like the
                           chat) rather than the profile name. */}
-                      <span className="tmeta">{(() => { const c = custById(t.customerId); return c ? phoneOf(c.waId) : (t.customerName ?? 'System'); })()} · {timeAgo(t.createdAt)} ago</span>
+                      <span className="tmeta">{(() => { const c = custById(t.customerId); const w = c?.waId ?? t.waId; return w ? phoneOf(w) : 'System'; })()} · {timeAgo(t.createdAt)} ago</span>
                       <button className="tdismiss" title="Dismiss, I am not answering this"
                         onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Dismissed'); refresh(); }}>✕</button>
                     </div>
@@ -1586,8 +1595,8 @@ export default function Dashboard() {
                     },
                     engine: {
                       name: `Brain (${ASSISTANT_NAME})`,
-                      meaning: 'The engine is not configured to reach Claude, so replies come from the mock brain.',
-                      action: 'Set ANTHROPIC_API_KEY and redeploy. The mock brain is for development, not customers.',
+                      meaning: `${ASSISTANT_NAME} has no Claude key, so every reply is coming from the built-in mock brain instead — a short list of fixed answers, not a model reading the conversation. Customers are still getting replies, which is exactly what makes this easy to miss.`,
+                      action: 'Set ANTHROPIC_API_KEY in the Vercel project settings and redeploy. If it WAS set and this has just appeared, the key has expired or been revoked — check the Anthropic console.',
                     },
                     scheduler: {
                       name: 'Scheduler',
@@ -1847,7 +1856,13 @@ export default function Dashboard() {
                   ones still cannot run away with the row.
                   ──────────────────────────────────────────────────────────── */}
               <div className="panel">
-                <h3>Decision Log <span className="cstate" style={{ ['--sc' as string]: 'var(--warn)' }}>HANDOFFS</span></h3>
+                {/* The HANDOFFS badge was removed here on 27 Aug. It counted
+                    nothing, changed nothing and reflected no state — a static
+                    string in warn orange, which is the colour this dashboard
+                    uses for an actual warning (REVIEW tasks, warning-level
+                    faults). It said "this panel lists handoffs" in the alarm
+                    colour, next to a heading that already says so. */}
+                <h3>Decision Log</h3>
                 {/* Jo, 27 Aug: the standing subtitle and the empty state said
                     the same thing twice, once above every card and once in
                     place of them. They merged into the empty state, which is
@@ -1931,7 +1946,7 @@ export default function Dashboard() {
                               {/* Jo's rule everywhere in this dashboard: the
                                   WhatsApp number is the identity, the profile
                                   name is only a hint beside it. */}
-                              <span className="hoff-who">{c ? phoneOf(c.waId) : (t.customerName ?? 'System — no customer')}</span>
+                              <span className="hoff-who">{(() => { const w = c?.waId ?? t.waId; return w ? phoneOf(w) : 'System — no customer'; })()}</span>
                               {c?.name && <span className="hoff-name">{c.name}</span>}
                               {/* Stage and language: two words that change what
                                   the right fix is. The same question from a

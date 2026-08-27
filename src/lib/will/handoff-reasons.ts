@@ -83,9 +83,9 @@ const RULES: Rule[] = [
   {
     match: /^Customer sent \d+ messages before paying|messages before paying/i,
     kind: 'policy',
-    label: 'Several messages before paying',
-    because: 'they wrote several times before paying, which is the point where the rules ask for a person',
-    prevent: 'Nothing to add to the Library — they already got answers. If this is high, the earlier replies are not landing, and the conversations themselves are where to look.',
+    label: 'A conversation that is stuck',
+    because: 'they have written more than twenty times before paying, which is not a conversation any more but something looping',
+    prevent: 'Open the chat and read it end to end. This is not a sales problem — the same thing is going round, or an automated sender is on the other end. It should be rare; if it is not, tell me and we will find what is looping.',
   },
   {
     match: /^An existing chat sent a message|^A previous customer messaged again/i,

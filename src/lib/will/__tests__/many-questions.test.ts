@@ -1,8 +1,21 @@
 /**
- * Owner's rule: more than 3 messages from a customer before they pay means
- * a person should take over — even in FULL_AUTO mode. This is checked before
- * the engine ever runs, so a 4th automated reply is never drafted, let alone
- * sent, regardless of what ai_mode is set to.
+ * The pre-payment message count — now a RUNAWAY GUARD, not a sales rule.
+ *
+ * WHAT IT USED TO BE. Any 4th inbound message before payment paused Will and
+ * handed the chat to a person. It counted every inbound message, including the
+ * customer's own answers to Will's qualifying questions ("only TFN", "yes"), so
+ * it fired hardest on the conversations that were going BEST and stopped Will
+ * one step before he could send the price.
+ *
+ * JO'S CALL, 27 Aug: before payment the answer to everything is the same
+ * answer — yes, of course we can help, it is part of the review. So there is no
+ * pre-payment question that needs a person, and when this fired he stepped in
+ * to type what Will would have typed anyway.
+ *
+ * WHAT IT IS NOW. Twenty-five inbound messages before payment. A real sales
+ * conversation never comes near that; something looping does. These tests pin
+ * both halves: a normal qualifying exchange is NEVER interrupted, and a genuine
+ * runaway still stops and still pauses Will.
  */
 const messages: { direction: 'IN' | 'OUT'; body: string; status: string }[] = [];
 const customer = { id: 'c1', waId: '61400000001', name: 'Alex', paid: false, state: 'PRICE_SENT', aiPaused: false, lang: null, botOwned: true };
@@ -47,19 +60,40 @@ beforeEach(() => {
   runEngine.mockClear();
 });
 
-it('the 4th message before payment stops and opens a task, even in FULL_AUTO', async () => {
-  await handleIncoming('61400000001', 'question one', 'FULL_AUTO');
-  await handleIncoming('61400000001', 'question two', 'FULL_AUTO');
-  await handleIncoming('61400000001', 'question three', 'FULL_AUTO');
-  expect(runEngine).toHaveBeenCalledTimes(3); // first 3 go through normally
+it('a normal qualifying exchange is never interrupted', async () => {
+  // The exact shape that used to break: a question, then two one-word answers
+  // to Will's own questions. Under the old rule the 4th of these paused Will.
+  for (const t of [
+    'Hi, I would like to ask about my Australian tax return.',
+    'I am having a problem with the Adjustments section, can you help?',
+    'only TFN',
+    'yes',
+    'ok great',
+    'sounds good',
+  ]) {
+    // eslint-disable-next-line no-await-in-loop
+    await handleIncoming('61400000001', t, 'FULL_AUTO');
+  }
+  expect(runEngine).toHaveBeenCalledTimes(6); // every one reached the engine
+  expect(addTask).not.toHaveBeenCalled();
+  expect(updateCustomer).not.toHaveBeenCalledWith('c1', { aiPaused: true });
+});
 
-  const result = await handleIncoming('61400000001', 'question four', 'FULL_AUTO');
+it('a genuine runaway still stops, and still pauses Will', async () => {
+  for (let i = 0; i < 25; i++) {
+    // eslint-disable-next-line no-await-in-loop
+    await handleIncoming('61400000001', `message ${i + 1}`, 'FULL_AUTO');
+  }
+  expect(runEngine).toHaveBeenCalledTimes(25); // 25 is still fine
+  expect(addTask).not.toHaveBeenCalled();
 
-  expect(runEngine).toHaveBeenCalledTimes(3); // the engine is NOT called a 4th time
+  const result = await handleIncoming('61400000001', 'message 26', 'FULL_AUTO');
+
+  expect(runEngine).toHaveBeenCalledTimes(25); // the engine is NOT called again
   expect(result.outcome.kind).toBe('human_task');
   expect(updateCustomer).toHaveBeenCalledWith('c1', { aiPaused: true });
   expect(addTask).toHaveBeenCalledTimes(1);
-  expect(addTask.mock.calls[0][0].reason).toMatch(/4 messages before paying/);
+  expect(addTask.mock.calls[0][0].reason).toMatch(/26 messages before paying/);
 });
 
 it('a paid customer is never stopped by this rule, however many messages', async () => {
@@ -73,10 +107,10 @@ it('a paid customer is never stopped by this rule, however many messages', async
 });
 
 it('applies in SUPERVISED mode too, not just FULL_AUTO', async () => {
-  await handleIncoming('61400000001', 'q1', 'SUPERVISED');
-  await handleIncoming('61400000001', 'q2', 'SUPERVISED');
-  await handleIncoming('61400000001', 'q3', 'SUPERVISED');
-  const result = await handleIncoming('61400000001', 'q4', 'SUPERVISED');
-  expect(result.outcome.kind).toBe('human_task');
+  for (let i = 0; i < 26; i++) {
+    // eslint-disable-next-line no-await-in-loop
+    await handleIncoming('61400000001', `q${i + 1}`, 'SUPERVISED');
+  }
+  // The 26th is the one that trips it, in either mode.
   expect(addTask).toHaveBeenCalledTimes(1);
 });

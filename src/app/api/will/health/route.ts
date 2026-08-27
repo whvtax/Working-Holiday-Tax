@@ -66,10 +66,28 @@ export async function GET() {
     checks.guard = { ok: false, detail: 'error' };
   }
 
-  // Engine: mock always available; with a key we only verify configuration
-  // (no paid API call on every heartbeat).
+  // Engine: with a key we verify configuration only, not reachability — a paid
+  // API call on every 45-second heartbeat is not worth the bill.
+  //
+  // NO KEY IS NOW RED (27 Aug). This was hardcoded `ok: true`, with the detail
+  // string quietly reading "mock mode (no API key)". That meant the one failure
+  // this panel exists to prevent could happen entirely unseen: the key expires
+  // or drops out of the environment, Will carries on answering real customers
+  // from the deterministic mock brain, and every dot on the dashboard stays
+  // green while it does. That is the exact shape of the missing-migration
+  // outage that cost 105 leads.
+  //
+  // Same treatment the WhatsApp check already gives an unconfigured channel:
+  // "not configured" is not fine, it is "this is not doing what you think it
+  // is doing". In local development every dot goes red for the same honest
+  // reason, which is not a price worth trading the truth for.
   const hasKey = !!process.env.ANTHROPIC_API_KEY;
-  checks.engine = { ok: true, detail: hasKey ? 'Claude API configured' : 'mock mode (no API key)' };
+  checks.engine = {
+    ok: hasKey,
+    detail: hasKey
+      ? 'Claude API configured'
+      : 'NO API KEY — replies are coming from the mock brain, not Claude',
+  };
 
   // Scheduler: nightly job present and tick recent enough
   try {

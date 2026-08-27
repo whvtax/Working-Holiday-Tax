@@ -257,7 +257,30 @@ const TAX_DETERMINATION: RegExp[] = [
   // NOT a neutral mention of the concept ("who is considered a resident...").
   /\byou(?:'re| are|'d be| would be| count as| qualify as)[^.!?]{0,30}\b(?:foreign|temporary|non)[ -]?resident\b/i,
   /you(?:'re| are)? (?:probably |definitely )?(?:do(?:n'?t)? |don'?t )?(?:need to pay|have to pay|qualify|exempt(?:ed)?|eligible)[^.!?]{0,40}medicare/i,
-  /you can (?:claim|deduct|write off)/i,
+  // "You can claim your boots" is a determination and must never send.
+  // "We'll check WHAT you can claim" is a description of the service and must.
+  //
+  // Found in production, 27 Aug (Jo sent the card). The pattern was a bare
+  // /you can (?:claim|deduct|write off)/ and it refused the very first reply to
+  // every new lead:
+  //     "We'll check your tax residency, what you can claim, Medicare, and make
+  //      sure you're not missing anything you're entitled to."
+  // That sentence determines nothing about anyone. It says what the service
+  // looks at. And the approved corpus itself contains the same words twice —
+  // "any deductions you can claim" (o_intro) and "or what you can claim"
+  // (o4_mygov) — which only survived because a verbatim approved sentence is
+  // exempt. The moment Will adapted the opening, exactly as the playbook tells
+  // it to, its own approved wording was refused back at it.
+  //
+  // The distinction is grammatical, not semantic: in the safe form "you can
+  // claim" is a relative clause hanging off a noun or a wh-word (what / any
+  // deductions / anything), and the thing claimed is never named. In the unsafe
+  // form it is the main clause and the thing IS named. So the lookbehind lists
+  // the words that can only introduce the relative-clause reading.
+  //
+  // Deliberately narrow. Anything not in this list still fires, including the
+  // bare sentence-initial "You can claim ...".
+  /(?<!\b(?:what|whatever|whichever|which|that|anything|everything|nothing|something|whether|if|deductions?|expenses?|costs?|things?|items?)\s)you can (?:claim|deduct|write off)/i,
   /you (?:can(?:'?t| ?not)?|won'?t|will(?: not)?|don'?t|do not) owe/i,
   // "your refund will ..." is a determination — EXCEPT when what follows is
   // process rather than prediction. "Your refund will be paid into the account
