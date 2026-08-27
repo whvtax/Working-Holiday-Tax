@@ -37,8 +37,8 @@ beforeEach(() => {
     { id: 'c2', waId: '+61400000002', name: null, state: 'FORM_PENDING', lang: null },
   ];
   templates = [
-    { key: 'fu_pre_24h', title: 'Pre-payment · 24h' },
-    { key: 'fu_form_6h', title: 'Form · 6h' },
+    { key: 'fu_pre_24h', title: 'Pre-payment · 24h', body: 'Hi {{1}}, just checking in on your tax return.' },
+    { key: 'fu_form_6h', title: 'Form · 6h', body: 'Hi {{1}}, your form is still waiting for you.' },
   ];
   jobs = [];
 });
@@ -95,6 +95,36 @@ it('still lists a follow-up whose Library entry was deleted', async () => {
   const [row] = (await body()).rows;
   expect(row.templateKey).toBe('deleted_key');
   expect(row.templateTitle).toBeNull();
+  expect(row.body).toBeNull();
+});
+
+// ── The message text itself (Jo, 27 Aug: "add what you're actually going to
+//    send me in the nudge") ────────────────────────────────────────────────
+// The row shows the DELIVERED text, not the raw template, so that what is on
+// screen is what lands on someone's phone. The substitution must match
+// scheduler.ts exactly or the preview becomes a lie.
+
+it('returns the message with {{1}} already filled in, as the customer will see it', async () => {
+  jobs = [job({ id: 'j1', customerId: 'c1' })];
+  const [row] = (await body()).rows;
+  expect(row.body).toBe('Hi Marco, just checking in on your tax return.');
+  expect(row.body).not.toContain('{{1}}');
+});
+
+it('falls back to the same neutral greeting the scheduler uses when there is no name', async () => {
+  // greetingName() answers 'there' for a customer with no WhatsApp profile
+  // name, because Meta rejects an empty template parameter. The preview has to
+  // show that same word, not a blank or the raw placeholder.
+  jobs = [job({ id: 'j1', customerId: 'c2', payload: { templateKey: 'fu_form_6h', seq: 0, flow: 'form' } })];
+  const [row] = (await body()).rows;
+  expect(row.body).toBe('Hi there, your form is still waiting for you.');
+});
+
+it('treats an empty Library body as nothing to preview', async () => {
+  templates = [{ key: 'fu_pre_24h', title: 'Pre-payment · 24h', body: '   ' }];
+  jobs = [job({ id: 'j1', customerId: 'c1' })];
+  const [row] = (await body()).rows;
+  expect(row.body).toBeNull();
 });
 
 it('drops a job whose customer no longer exists', async () => {

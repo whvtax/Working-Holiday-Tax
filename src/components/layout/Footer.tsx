@@ -42,8 +42,6 @@ export function Footer() {
           { label: 'Rückerstattung schätzen',    href: '/de/calculator' },
           { label: 'TFN-Artikel',                href: '/de/blog/category/tfn' },
           { label: 'Steuererklärungs-Artikel',    href: '/de/blog/category/tax-return' },
-          { label: 'Super-Artikel',              href: '/de/blog/category/super' },
-          { label: 'Arbeitsrechte',              href: '/de/blog/category/work-rights' },
         ],
         connect: 'Kontakt',
         connectLinks: [
@@ -78,8 +76,6 @@ export function Footer() {
           { label: '還付額の目安',             href: '/ja/calculator' },
           { label: 'TFNの記事',                href: '/ja/blog/category/tfn' },
           { label: 'タックスリターンの記事',   href: '/ja/blog/category/tax-return' },
-          { label: 'スーパー受取の記事',       href: '/ja/blog/category/super' },
-          { label: '労働者の権利',             href: '/ja/blog/category/work-rights' },
         ],
         connect: 'お問い合わせ',
         connectLinks: [
@@ -108,14 +104,20 @@ export function Footer() {
           { label: 'Medicare',         href: '/medicare' },
         ],
         learn: 'Learn',
+        // Trimmed from seven to five at the owner's request. The two that went
+        // are Super and Work Rights — chosen because the four "…Articles" rows
+        // were all category hubs, and since the blog hub's category chips became
+        // real <Link>s, every hub already has a crawlable path from navigation.
+        // Dropping two of them therefore costs no discoverability. The three
+        // that had to stay are the ones nothing else links to from every page:
+        // the blog itself, the expenses guides, and the calculator — the last
+        // being the closest thing here to an intent-to-buy click.
         learnLinks: [
           { label: 'Blog',                       href: '/blog' },
           { label: 'Deductions by job',          href: '/expenses' },
           { label: 'Refund calculator',          href: '/calculator' },
           { label: 'TFN Articles',               href: '/blog/category/tfn' },
           { label: 'Tax Return Articles',        href: '/blog/category/tax-return' },
-          { label: 'Super Articles',             href: '/blog/category/super' },
-          { label: 'Work Rights',                href: '/blog/category/work-rights' },
         ],
         connect: 'Connect',
         connectLinks: [

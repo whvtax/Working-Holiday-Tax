@@ -87,7 +87,33 @@ interface FollowUpRow {
   seq: number;
   templateKey: string | null;
   templateTitle: string | null;
+  /** The message as the customer will receive it, {{1}} already filled in. */
+  body: string | null;
 }
+
+/** What /api/will/followups/advice returns for one queued follow-up: Will's
+ *  read of the conversation, which approved message it thinks fits this person
+ *  better, and — only when none of them really do — what a person would write
+ *  instead. That last one is advice for Jo, not a message: a scheduled
+ *  follow-up is always outside WhatsApp's 24h window, where free-form text
+ *  cannot be delivered at all. See lib/will/nudge-advice.ts. */
+interface NudgeAdviceRow {
+  read: string;
+  why: string;
+  draft: string | null;
+  confidence: number;
+  recommendedKey: string | null;
+  recommendedTitle: string | null;
+  recommendedBody: string | null;
+  /** True only when the recommendation both differs from what is queued and is
+   *  confident enough to act on. The swap button appears on this and nothing
+   *  else. */
+  changesQueued: boolean;
+}
+type NudgeAdviceState =
+  | { status: 'loading' }
+  | { status: 'ready'; advice: NudgeAdviceRow }
+  | { status: 'error'; error: string };
 const FLOW_LABELS: Record<string, string> = {
   prePayment: 'Before payment', form: 'Waiting on the form', signature: 'Waiting on a signature',
 };
@@ -376,6 +402,58 @@ export default function Dashboard() {
       if (r.ok) setFollowups(r.rows ?? []);
     } catch { /* keep whatever is on screen */ }
   }, []);
+  // ── Conversation-aware nudge advice, per queued follow-up ────────────────
+  // Keyed by jobId and held only for as long as this page is open. Each entry
+  // is one paid model call against one real conversation, so it is fetched
+  // when a row is opened and never on a timer, never for the whole list, and
+  // never again for a row already answered.
+  const [nudgeAdvice, setNudgeAdvice] = useState<Record<string, NudgeAdviceState>>({});
+  const askAdvice = useCallback(async (jobId: string) => {
+    setNudgeAdvice((prev) => (prev[jobId] ? prev : { ...prev, [jobId]: { status: 'loading' } }));
+    try {
+      const r = await fetch('/api/will/followups/advice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobId }),
+      }).then((x) => x.json());
+      setNudgeAdvice((prev) => ({
+        ...prev,
+        [jobId]: r.ok && r.advice
+          ? { status: 'ready', advice: r.advice }
+          : { status: 'error', error: r.error ?? 'Could not read this conversation.' },
+      }));
+    } catch {
+      setNudgeAdvice((prev) => ({ ...prev, [jobId]: { status: 'error', error: 'Could not reach the server.' } }));
+    }
+  }, []);
+  // Swap the queued approved message for the recommended approved message.
+  // The request carries a KEY and nothing else — there is deliberately no
+  // parameter here that composed prose could travel through, so "Will drafted
+  // something" and "a customer received something" stay separate facts.
+  const applyAdvice = useCallback(async (jobId: string, templateKey: string) => {
+    try {
+      const r = await fetch('/api/will/followups/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobId, templateKey }),
+      }).then((x) => x.json());
+      if (r.ok) {
+        say('Queued message swapped. Same send time.');
+        // The swap cancels this job and queues a replacement with a new id, so
+        // the advice keyed to the old id is now about a job that is gone.
+        setNudgeAdvice((prev) => {
+          const next = { ...prev };
+          delete next[jobId];
+          return next;
+        });
+        await loadFollowups();
+      } else {
+        say(`❌ ${r.error ?? 'could not swap that message'}`);
+      }
+    } catch {
+      say('❌ could not reach the server');
+    }
+  }, [loadFollowups]);
   const [knwDrafts, setKnwDrafts] = useState<Record<string, string>>({});
   const [tplText, setTplText] = useState('');
   const [toast, setToast] = useState('');
@@ -1220,14 +1298,12 @@ export default function Dashboard() {
                 The drafts moved here; the blocked ones were already here. */}
             {/* Jo, 26 Aug: "lose the label, keep the number" — he watches this
                 go 0 -> 1 -> 2 and the six words in front of it were noise on a
-                screen he reads twenty times a day. A bare digit floating on its
-                own would be worse than what it replaced, so the number keeps
-                the position and the ✎ mark the label had, as a count badge in
-                the same family as the sidebar's .nbadge and the .pcount pill.
-                The words survive as the accessible name and the hover title,
-                where they cost nothing. */}
+                screen he reads twenty times a day. The words survive as the
+                accessible name and the hover title, where they cost nothing.
+                27 Aug: the ✎ mark that stood in for the label went too — it
+                marked nothing the badge does not already say, and next to a
+                bare count it read as an edit affordance that is not there. */}
             <div className="secthead">
-              <span className="sectmark" aria-hidden="true">✎</span>
               <span
                 className={`pcount ${pendingDrafts.length ? 'on' : ''}`}
                 title={`${pendingDrafts.length} ${pendingDrafts.length === 1 ? 'draft is' : 'drafts are'} awaiting your approval`}
@@ -1374,8 +1450,14 @@ export default function Dashboard() {
               <div style={{ flex: 1 }}>
                 <h2 className="vt">Scheduled Follow-ups</h2>
                 <div className="vsub">
-                  Everyone {ASSISTANT_NAME} is about to nudge, soonest first. Open a row to read the conversation before it sends.
-                  {followups && followups.length > 0 && ` ${followups.length} queued.`}
+                  {/* The count leads, in bold, because it is the fact Jo scans
+                      for — how many are about to go out. It is rendered only
+                      once the list has loaded, so the line never flashes a
+                      stale or zero number while the fetch is in flight. */}
+                  {followups && followups.length > 0 && (
+                    <strong style={{ color: 'var(--ink)', fontWeight: 650 }}>({followups.length}) </strong>
+                  )}
+                  Everyone is queued for a nudge. Open to edit before sending.
                 </div>
               </div>
             </div>
@@ -1391,30 +1473,145 @@ export default function Dashboard() {
               {(followups ?? []).map((f) => {
                 const flowLabel = f.flow ? FLOW_LABELS[f.flow] ?? f.flow : 'Follow-up';
                 const stageColor = stageColorOf(f.state);
+                const adv = nudgeAdvice[f.jobId];
                 return (
                   <div
                     key={f.jobId}
-                    className="rowcard"
+                    className="rowcard fu-card"
                     style={{ ['--gc' as string]: stageColor }}
                     title={`Open the chat with ${phoneOf(f.waId)}`}
                     onClick={() => { setView('chats'); openChat(f.customerId); }}
                   >
-                    <div className="rc-main">
-                      <div className="rc-top">
-                        <span className="cname">{phoneOf(f.waId)}</span>
-                        <span className="chip">{flowLabel} · #{f.seq + 1}</span>
+                    <div className="fu-line">
+                      <div className="rc-main">
+                        <div className="rc-top">
+                          <span className="cname">{phoneOf(f.waId)}</span>
+                        </div>
+                        {/* Jo, 27 Aug: "add what you are actually going to send
+                            me in the nudge." The row used to name the Library
+                            entry, which tells you where the message lives but
+                            not what it says — so checking a queue of 22 meant
+                            opening 22 entries. This is the delivered text, {{1}}
+                            already replaced by the greeting name the scheduler
+                            will use, so what is on screen is what lands on their
+                            phone. The Library title moved to the hover, where it
+                            is still there when you need to go and edit it. */}
+                        <div
+                          className="fu-body"
+                          title={f.templateTitle ?? f.templateKey ?? undefined}
+                        >{f.body ?? 'This message is no longer in the Library — nothing will be sent.'}</div>
                       </div>
-                      {/* Which message is queued, by its Library title, so it can
-                          be found and edited before it leaves. */}
-                      <div className="rc-msg">{f.templateTitle ?? f.templateKey ?? 'message no longer in the Library'}</div>
+                      {/* Out of .rc-top and into its own column. As a direct
+                          child of the flex line it sits on the row's centre
+                          line instead of riding on the first line of a text
+                          block that is now several lines tall. */}
+                      <span className="chip fu-flow">{flowLabel} · #{f.seq + 1}</span>
+                      <div className="rc-side">
+                        {/* The stage pill was removed here on Jo's instruction,
+                            27 Aug. It repeated the flow chip next to it — a
+                            "Before payment" nudge is by definition queued for a
+                            lead — so it was a second colour saying the first
+                            one's news. The stage still drives the row's left
+                            border colour (--gc), which is where it earns its
+                            keep. */}
+                        <span className="fu-when">
+                          <b>{untilLabel(f.runAt)}</b>
+                          <small>{sendAtLabel(f.runAt)}</small>
+                        </span>
+                      </div>
                     </div>
-                    <div className="rc-side">
-                      <span className="stagepill" style={{ ['--pc' as string]: stageColor }}>{stageLabelOf(f.state)}</span>
-                      <span className="fu-when">
-                        <b>{untilLabel(f.runAt)}</b>
-                        <small>{sendAtLabel(f.runAt)}</small>
-                      </span>
-                    </div>
+
+                    {/* ── Conversation-aware nudge (Jo, 27 Aug) ─────────────
+                        "Beyond the existing templates, try to analyse the
+                        conversation and word the next nudge accordingly."
+
+                        The cadence is positional — #1, then #2, then #3, to
+                        everyone — so two people who went quiet for completely
+                        different reasons get the identical message. This reads
+                        the actual conversation and says why THIS person is
+                        quiet, which approved message fits them best, and, when
+                        none really does, what to write instead.
+
+                        It is one paid model call against one conversation, so
+                        nothing happens until this button is pressed: not on
+                        load, not on the 20s refresh, not for the other 21 rows.
+
+                        stopPropagation throughout — the row itself opens the
+                        chat, and reading the advice must not navigate away from
+                        it. */}
+                    {!adv && (
+                      <button
+                        type="button"
+                        className="btn quiet sm fu-ask"
+                        onClick={(e) => { e.stopPropagation(); askAdvice(f.jobId); }}
+                        title="Read this conversation and recommend the best next nudge for this person"
+                      >Why this message for them?</button>
+                    )}
+                    {adv?.status === 'loading' && (
+                      <div className="fu-advice"><div className="mini">Reading the conversation…</div></div>
+                    )}
+                    {adv?.status === 'error' && (
+                      <div className="fu-advice" onClick={(e) => e.stopPropagation()}>
+                        <div className="mini">{adv.error}</div>
+                        <button
+                          type="button"
+                          className="btn quiet sm"
+                          style={{ marginTop: 6 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setNudgeAdvice((prev) => { const n = { ...prev }; delete n[f.jobId]; return n; });
+                          }}
+                        >Try again</button>
+                      </div>
+                    )}
+                    {adv?.status === 'ready' && (
+                      <div className="fu-advice" onClick={(e) => e.stopPropagation()}>
+                        <div className="fu-read"><b>Why they are quiet:</b> {adv.advice.read}</div>
+                        <div className="fu-why">{adv.advice.why}</div>
+
+                        {adv.advice.changesQueued && adv.advice.recommendedBody && (
+                          <div className="fu-alt">
+                            <div className="fu-alt-head">
+                              <span>A better fit for this person</span>
+                              <span className="mini" style={{ margin: 0 }}>{adv.advice.recommendedTitle}</span>
+                            </div>
+                            <div className="fu-body" style={{ maxWidth: 'none', WebkitLineClamp: 'unset' }}>{adv.advice.recommendedBody}</div>
+                            <button
+                              type="button"
+                              className="btn take sm"
+                              style={{ marginTop: 8 }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (adv.advice.recommendedKey) applyAdvice(f.jobId, adv.advice.recommendedKey);
+                              }}
+                            >Send this one instead</button>
+                          </div>
+                        )}
+                        {!adv.advice.changesQueued && (
+                          <div className="mini" style={{ marginTop: 6 }}>The queued message is already the right one for them — nothing to change.</div>
+                        )}
+
+                        {/* A composed nudge is NOT a message and is never
+                            presented as one. Every scheduled follow-up lands
+                            outside WhatsApp's 24-hour window by definition — we
+                            are messaging someone precisely because they went
+                            quiet — and outside it Meta rejects free-form text;
+                            only a pre-approved template goes through. So this
+                            says exactly what it is: something for Jo to send
+                            himself, or to turn into a new approved template. */}
+                        {adv.advice.draft && (
+                          <div className="fu-draft">
+                            <div className="fu-alt-head">
+                              <span>If it were up to {ASSISTANT_NAME}, it would write this</span>
+                            </div>
+                            <div className="fu-draft-text">{adv.advice.draft}</div>
+                            <div className="fu-draft-note">
+                              {ASSISTANT_NAME} cannot send this one. After 24 hours of silence WhatsApp only accepts pre-approved templates, and every follow-up is past that by definition. Send it yourself, or add it to the Library as a new approved message.
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -1458,30 +1655,33 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="panel">
-                <h3>Deep Conversation Analysis</h3>
-                <div className="psub">Phrasing, tone, abandon points, per language</div>
-                {report?.qualitative ? (
-                  <div className="mini" style={{ lineHeight: 1.6 }}>{report.qualitative.note}</div>
-                ) : (
-                  <div className="mini">Runs through Claude over the full history: phrasing that converts vs loses, tone per language, the exact message where each customer dropped, objection win rates, suggested new templates.</div>
-                )}
-                <div style={{ marginTop: 8 }}>
-                  {upcoming.length > 0 && <div className="psub" style={{ marginBottom: 4 }}>Next few scheduled messages</div>}
-                  {upcoming.slice(0, 5).map((j) => {
-                    const c = data.customers.find((x) => x.id === j.customerId);
-                    const secs = Math.max(0, Math.round((new Date(j.runAt).getTime() - Date.now()) / 1000));
-                    const label = secs < 90 ? secs + 's' : secs < 5400 ? Math.round(secs / 60) + 'm' : Math.round(secs / 3600) + 'h';
-                    return <div key={j.id} className="costrow"><span>{c?.flag} {c ? phoneOf(c.waId) : '?'} · {j.kind === 'AUTO_CLOSE' ? 'auto-close' : j.payload.templateKey}</span><b>in {label}</b></div>;
-                  })}
-                </div>
-                {/* Was "↻ Regenerate Report", which rebuilt this same analysis.
-                    What is actually worth doing from here is seeing everyone who
-                    is about to be nudged, so the button opens that live page. */}
-                <button className="genbtn" onClick={() => setView('followups')}>
-                  Everyone scheduled for a follow-up →
-                </button>
-              </div>
+              {/* ────────────────────────────────────────────────────────────
+                  "Deep Conversation Analysis" was removed here on 27 Aug.
+
+                  It was not redundant — it was hollow. The card advertised
+                  "phrasing that converts vs loses, tone per language, the exact
+                  message where each customer dropped, objection win rates,
+                  suggested new templates", and none of it was ever implemented:
+                  /api/will/report returns `qualitative: null` whenever an API
+                  key IS configured (route.ts:92, "wired on demand"), and a
+                  "connect a key" note when it is not. There was no code path
+                  that produced the analysis in either case. The old "Regenerate
+                  Report" button re-fetched the same quantitative numbers and
+                  still got null back.
+
+                  It also carried a five-row preview of scheduled follow-ups
+                  under a heading about conversation analysis — two unrelated
+                  things in one box, and the preview is now its own Follow-ups
+                  page with the full list.
+
+                  What the card promised does now exist, properly scoped: Lost
+                  Leads reads each non-converting conversation through Claude and
+                  reports why it failed and what would have changed it.
+
+                  /api/will/report itself is NOT removed — the funnel, the
+                  variant tests, the conversion rate and the handoff reasons on
+                  this same screen all still read it.
+                  ──────────────────────────────────────────────────────────── */}
 
               {/* ────────────────────────────────────────────────────────────
                   System & Costs, 26 Aug.
@@ -1653,24 +1853,14 @@ export default function Dashboard() {
 
             <div className="panel" style={{ marginBottom: 12 }}>
               <h3>Your Goal: the best version of {ASSISTANT_NAME}</h3>
-              <div className="psub">{ASSISTANT_NAME} keeps testing and improving until every lead converts. The target is fixed at 100% — that's the whole point, it's never negotiated down.</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 10 }}>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 21, fontWeight: 700 }}>{report?.leadToPaid ?? 0}%</div>
-                  <div className="mini">lead → paid</div>
-                </div>
-                <div style={{ fontSize: 21, color: 'var(--ink3)' }}>→</div>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 21, fontWeight: 700 }}>100%</div>
-                  <div className="mini">your target · fixed</div>
-                </div>
-                <div style={{ flex: 1 }} />
-                <div style={{ textAlign: 'right' }}>
-                  {(report?.leadToPaid ?? 0) >= 100
-                    ? <div style={{ color: 'var(--good)', fontWeight: 700, fontSize: 15 }}>🎉 Goal reached. This is {ASSISTANT_NAME}&apos;s best version so far.</div>
-                    : <div className="mini">{100 - (report?.leadToPaid ?? 0)} points to go. {ASSISTANT_NAME} is still learning.</div>}
-                </div>
-              </div>
+              <div className="psub">{ASSISTANT_NAME} keeps testing and improving until every lead converts.</div>
+              {/* Jo, 27 Aug: the "12% → 100% · your target · fixed" pair and the
+                  "88 points to go" line were both removed. All three said the
+                  same thing three ways — the headline rate, the constant it is
+                  measured against, and the subtraction between them — and none
+                  of it was anything he could act on. The month-by-month bars
+                  directly below survive untouched on his instruction: that is
+                  the part that actually shows movement. */}
 
               {/* Month by month, so July can be compared with August. Every bar
                   is recomputed from the state history on each load — there is no
@@ -1682,7 +1872,7 @@ export default function Dashboard() {
               <div className="monthhist">
                 <div className="mhhead">
                   <span>Month by month</span>
-                  <span className="mini" style={{ margin: 0 }}>of the leads that arrived that month, how many paid</span>
+                  <span className="mini" style={{ margin: 0 }}>How many leads ended up paying?</span>
                 </div>
                 {monthly === null && <div className="mini">Loading the history…</div>}
                 {monthly !== null && monthly.every((m) => m.leads === 0) && (
@@ -1718,31 +1908,29 @@ export default function Dashboard() {
                   queue would leave the library permanently frozen at whatever
                   was already active. The subtitle now says so, so the question
                   answers itself next time. */}
-              <div className="panel">
-                <h3>Knowledge Base {knowledge.drafts.length > 0 && <span className="cstate" style={{ ['--sc' as string]: 'var(--brand2)' }}>{knowledge.drafts.length} to review</span>}</h3>
-                <div className="psub">What {ASSISTANT_NAME} has learned from your real conversations. Approve a draft and {ASSISTANT_NAME} starts using it. Active answers: {knowledge.active.length}.</div>
-                <div className="mini" style={{ marginTop: 0, marginBottom: 11 }}>
-                  The 8am email is a copy to read; it cannot approve anything. Until a draft is approved — here, or from the Library — {ASSISTANT_NAME} does not use it.
-                </div>
-                {knowledge.drafts.length === 0 && knowledge.active.length === 0 && (
-                  <div className="mini" style={{ marginTop: 8 }}>Nothing yet. Send your real conversations to teach {ASSISTANT_NAME} how your best answers sound — new drafts also arrive automatically from the daily digest.</div>
-                )}
-                {knowledge.drafts.map((k) => (
-                  <div key={k.id} className="sugcard" style={{ marginTop: 8 }}>
-                    <div className="sugq">Q: {k.question}</div>
-                    <textarea className="edit" style={{ minHeight: 64, marginTop: 6 }} value={knwDrafts[k.id] ?? k.answer} onChange={(e) => setKnwDrafts((d2) => ({ ...d2, [k.id]: e.target.value }))} />
-                    <div className="tbtns">
-                      <button className="btn approve" onClick={async () => {
-                        const body = knwDrafts[k.id] ?? k.answer;
-                        if (body !== k.answer) await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: k.id, answer: body }) });
-                        await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'approve', id: k.id }) });
-                        say('Learned ✓'); loadKnowledge();
-                      }}>✓ Approve</button>
-                      <button className="btn ghost" onClick={async () => { await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'dismiss', id: k.id }) }); loadKnowledge(); }}>Dismiss</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {/* ────────────────────────────────────────────────────────────
+                  The "Knowledge Base" card was removed on 27 Aug at Jo's
+                  instruction, after he was told what it costs.
+
+                  What it was: the approve queue. A draft mined overnight is
+                  invisible to the engine (knowledge.ts reads status='active'
+                  only); approving it here was what made Will allowed to say it.
+
+                  What still works, untouched:
+                    - the 49 already-active answers. Will keeps using them.
+                    - the 8am email. It is built from mineKnowledge() in
+                      daily-digest.ts, which is unrelated to this card and
+                      still runs, so the email keeps arriving with the same
+                      content.
+                    - the Library's "Learned Answers" section, which lists the
+                      active answers and can still approve/edit/delete.
+
+                  What is gone: this was the primary place to promote a draft.
+                  The Library section remains as the other one. And note that
+                  `action: 'add'` in /api/will/knowledge — which creates a new
+                  answer from scratch — has NO button anywhere in the UI, so
+                  writing an answer by hand is still not possible from the app.
+                  ──────────────────────────────────────────────────────────── */}
 
               {/* ────────────────────────────────────────────────────────────
                   Decision Log, rebuilt 26 Aug around the question Jo actually

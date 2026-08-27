@@ -116,8 +116,14 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .psrow{display:flex;align-items:flex-start;gap:4px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
 .will-scope .psrow::-webkit-scrollbar{display:none}
 .will-scope .ps{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;min-width:52px;flex:none;padding:6px 9px 5px;border:1.5px solid transparent;border-radius:10px;transition:border-color 160ms var(--ease-out),transform 140ms var(--ease-out)}
-.will-scope .ps .psc{min-width:24px;height:24px;border-radius:99px;padding:0 7px;display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--pc);background:color-mix(in srgb,var(--pc) 17%, #fff);transition:transform 140ms var(--ease-out);font-variant-numeric:tabular-nums}
-.will-scope .ps .psl{font-size:10px;font-weight:600;color:var(--pc);white-space:nowrap;transition:color 150ms var(--ease-out)}
+/* Jo, 27 Aug: "too strong for me — bring it down, but really only a little."
+   Two small moves, no change of identity: the disc fill drops 17% -> 12% tint
+   so the colour reads as a wash rather than a block, and the number/label are
+   mixed 12% toward ink, which takes the edge off the saturation while making
+   both slightly DARKER — so this is quieter to look at and no harder to read
+   (contrast goes up, not down). The hues themselves are untouched. */
+.will-scope .ps .psc{min-width:24px;height:24px;border-radius:99px;padding:0 7px;display:grid;place-items:center;font-size:11px;font-weight:700;color:color-mix(in srgb,var(--pc) 88%, var(--ink));background:color-mix(in srgb,var(--pc) 12%, #fff);transition:transform 140ms var(--ease-out);font-variant-numeric:tabular-nums}
+.will-scope .ps .psl{font-size:10px;font-weight:600;color:color-mix(in srgb,var(--pc) 88%, var(--ink));white-space:nowrap;transition:color 150ms var(--ease-out)}
 .will-scope .ps.zero .psl{color:var(--ink3)}
 @media(hover:hover) and (pointer:fine){
 .will-scope .ps:hover{border-color:var(--line2)}
@@ -626,9 +632,67 @@ aside.side{
 .will-scope .fu-when{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex:none;min-width:104px}
 .will-scope .fu-when b{font-size:11.5px;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
 .will-scope .fu-when small{font-size:10px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* The outgoing message itself. Deliberately NOT .rc-msg: that class truncates
+   to a single ellipsised line, which is right for "what did they last say" and
+   wrong here, where the whole point is to read the thing before it sends.
+   Two lines is the compromise — long enough that almost every follow-up shows
+   in full, short enough that 22 of them still scan as a list. Kept a shade
+   lighter than the phone number above it so the row still reads name-first. */
+.will-scope .fu-body{
+  font-size:11.5px;line-height:1.5;color:var(--ink2);margin-top:3px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;max-width:560px;
+  /* Library bodies contain real newlines; without this they collapse and two
+     sentences run together into something that is not what will be sent. */
+  white-space:pre-wrap;
+}
+/* The flow chip, on the row's centre line rather than on the first line of the
+   text block (Jo, 27 Aug). flex:none so it keeps its width when the body is
+   long; the fixed min-width lines the chips up with each other down the list
+   instead of jittering with the label length. */
+.will-scope .fu-flow{flex:none;align-self:center;min-width:118px;justify-content:center}
+/* A follow-up row can now open downwards (the conversation-aware advice), so
+   the card itself stacks and the original three columns live on .fu-line. */
+.will-scope .fu-card{flex-direction:column;align-items:stretch}
+.will-scope .fu-line{display:flex;align-items:center;gap:12px}
+
+/* "Why this message for them?" — quiet by default. This costs a model call, so
+   it should read as available rather than as something to click on every row. */
+.will-scope .fu-ask{align-self:flex-start;margin-top:8px}
+
+/* The advice, once it is back. Inset and on its own ground so it reads as an
+   annotation about the message above it, not as a second message. */
+.will-scope .fu-advice{
+  margin-top:9px;padding:10px 12px;border-radius:9px;
+  background:var(--surface2);border:1px solid var(--line);
+  cursor:default; /* the row navigates; this panel is for reading */
+}
+.will-scope .fu-read{font-size:11.5px;line-height:1.55;color:var(--ink)}
+.will-scope .fu-read b{font-weight:650}
+.will-scope .fu-why{font-size:11px;line-height:1.5;color:var(--ink3);margin-top:3px}
+
+.will-scope .fu-alt,.will-scope .fu-draft{margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+.will-scope .fu-alt-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px}
+.will-scope .fu-alt-head>span:first-child{font-size:11px;font-weight:650;color:var(--ink)}
+
+/* The draft is deliberately styled UNLIKE the sendable message above it. It is
+   not a queued message and must never be mistaken for one at a glance, so it
+   sits in a warn-tinted well with the reason it cannot be sent attached to it
+   rather than hidden in a tooltip. */
+.will-scope .fu-draft-text{
+  font-size:11.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap;
+  padding:8px 10px;border-radius:8px;
+  background:color-mix(in srgb,var(--warn) 7%, #fff);
+  border:1px solid color-mix(in srgb,var(--warn) 26%, transparent);
+}
+.will-scope .fu-draft-note{font-size:10.5px;line-height:1.5;color:var(--ink3);margin-top:5px}
+
 @media(max-width:840px){
   .will-scope .fu-when{min-width:0}
   .will-scope .fu-when small{display:none}
+  .will-scope .fu-flow{min-width:0}
+  .will-scope .fu-body{max-width:none;-webkit-line-clamp:1}
 }
 
 /* A draft Will is holding for this chat. Deliberately NOT the preview: the
@@ -650,7 +714,8 @@ aside.side{
    rather than shouting an empty queue at him.
    ============================================================ */
 .will-scope .secthead{display:flex;align-items:center;gap:7px;margin:10px 0 8px}
-.will-scope .sectmark{font-size:12px;color:var(--ink3);line-height:1}
+/* .sectmark (the ✎ that stood next to the count) was removed 27 Aug — the rule
+   goes with it rather than lingering as dead CSS. */
 .will-scope .secthead .pcount{
   min-width:20px;height:20px;padding:0 7px;border-radius:10px;
   display:inline-grid;place-items:center;

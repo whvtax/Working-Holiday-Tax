@@ -23,12 +23,54 @@ const NOW = new Date('2026-08-26T12:00:00Z');
 const monthOf = (rows: ReturnType<typeof monthlyConversion>, key: string) => rows.find((m) => m.month === key)!;
 
 describe('monthlyConversion', () => {
-  it('returns the last 12 months, oldest first, ending with the current one', () => {
+  // ── Order and length (Jo, 27 Aug) ────────────────────────────────────────
+  // "August is the first month and it should be the first row. Every month a
+  // new one opens — the current month at the top, last month drops down."
+
+  it('with no data at all, shows only the current month', () => {
     const rows = monthlyConversion([], [], NOW, 12);
-    expect(rows).toHaveLength(12);
-    expect(rows[0].month).toBe('2025-09');
-    expect(rows[11].month).toBe('2026-08');
-    expect(rows[11].label).toBe('Aug 2026');
+    expect(rows).toHaveLength(1);
+    expect(rows[0].month).toBe('2026-08');
+    expect(rows[0].label).toBe('Aug 2026');
+  });
+
+  it('puts the current month first and older months below it', () => {
+    const rows = monthlyConversion([
+      customer({ id: 'a', createdAt: '2026-06-03T02:00:00Z' }),
+      customer({ id: 'b', createdAt: '2026-08-02T02:00:00Z' }),
+    ], [], NOW, 12);
+    expect(rows.map((m) => m.month)).toEqual(['2026-08', '2026-07', '2026-06']);
+  });
+
+  it('starts at the first month that ever had a lead, not 12 months ago', () => {
+    // The eleven months before the first lead are not bad months — the system
+    // did not exist yet, and printing "no leads" against them says something
+    // untrue about the business.
+    const rows = monthlyConversion([customer({ id: 'a', createdAt: '2026-08-01T02:00:00Z' })], [], NOW, 12);
+    expect(rows).toHaveLength(1);
+    expect(rows[0].month).toBe('2026-08');
+  });
+
+  it('keeps a quiet month that falls AFTER the first lead', () => {
+    // "Nothing happened in July" is real information; "we weren't here in
+    // March" is not. Only the second kind is trimmed.
+    const rows = monthlyConversion([
+      customer({ id: 'a', createdAt: '2026-06-03T02:00:00Z' }),
+      customer({ id: 'b', createdAt: '2026-08-02T02:00:00Z' }),
+    ], [], NOW, 12);
+    expect(monthOf(rows, '2026-07')).toMatchObject({ leads: 0, paid: 0, rate: 0 });
+  });
+
+  it('adds a row when the month rolls over, without touching the month below', () => {
+    // The same data, read one month later: September opens on top and August
+    // keeps the number it had. This is the "grows by one row a month, forever"
+    // property, and it holds because nothing is stored.
+    const customers = [customer({ id: 'a', createdAt: '2026-08-02T02:00:00Z', paid: true })];
+    const inAugust = monthlyConversion(customers, [], NOW, 12);
+    const inSeptember = monthlyConversion(customers, [], new Date('2026-09-14T12:00:00Z'), 12);
+    expect(inAugust.map((m) => m.month)).toEqual(['2026-08']);
+    expect(inSeptember.map((m) => m.month)).toEqual(['2026-09', '2026-08']);
+    expect(monthOf(inSeptember, '2026-08')).toEqual(monthOf(inAugust, '2026-08'));
   });
 
   it('splits leads by the month they first appeared', () => {
@@ -77,18 +119,15 @@ describe('monthlyConversion', () => {
     expect(monthOf(rows, '2026-08')).toMatchObject({ leads: 2, paid: 1, rate: 50 });
   });
 
-  it('reports a month with no leads as 0, not as a failure', () => {
-    const rows = monthlyConversion([customer({ id: 'a', createdAt: '2026-08-01T02:00:00Z' })], [], NOW);
-    expect(monthOf(rows, '2026-03')).toMatchObject({ leads: 0, paid: 0, rate: 0 });
-  });
-
   it('ignores customers older than the window rather than folding them into the first month', () => {
     const rows = monthlyConversion([
       customer({ id: 'old', createdAt: '2023-01-05T02:00:00Z', paid: true }),
       customer({ id: 'new', createdAt: '2026-08-05T02:00:00Z' }),
     ], [], NOW);
     expect(rows.reduce((s, m) => s + m.leads, 0)).toBe(1);
-    expect(monthOf(rows, '2025-09').leads).toBe(0);
+    // The 2023 lead is outside the window, so it neither appears as its own row
+    // nor drags the list back to 2023 — the list still begins at August.
+    expect(rows.map((m) => m.month)).toEqual(['2026-08']);
   });
 
   it('is stable: recomputing gives the same answer for a past month', () => {

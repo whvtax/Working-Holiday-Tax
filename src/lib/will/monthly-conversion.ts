@@ -80,8 +80,32 @@ export function recentMonthKeys(now: Date, count: number): string[] {
 const POST_PAYMENT = new Set<CustomerState>(POST_PAYMENT_STATES);
 
 /**
- * Conversion for the last `months` calendar months, oldest first.
- * See the definition at the top of this file.
+ * Conversion by month, NEWEST FIRST, beginning at the first month that ever
+ * had a lead. See the definition of a month's number at the top of this file —
+ * that part is unchanged; this is only about which rows come back and in what
+ * order.
+ *
+ * Both are Jo's call, 27 Aug: "August is the first month and it should be the
+ * first row. Every month a new one opens, forever — the current month at the
+ * top, last month drops down a row, and so on."
+ *
+ *   NEWEST FIRST. The month he is living in is the one he checks, and it was
+ *   sitting at the bottom of a twelve-row list under eleven rows of nothing.
+ *   It is now the first row under the heading and it stays there — same
+ *   position every day, so the number is where his eye already is.
+ *
+ *   NOTHING BEFORE THE FIRST LEAD. The eleven months above August were not bad
+ *   months; the system did not exist yet. "No leads" against them states a fact
+ *   about our own history as if it were a fact about the business. The list now
+ *   starts where the data starts and grows by one row a month from there. A
+ *   quiet month AFTER that point is kept, because that one is real — it is the
+ *   difference between "nothing happened" and "we weren't here yet".
+ *
+ * The current month is always present, even before its first lead, so the
+ * panel is never empty on the 1st.
+ *
+ * `months` is still the far edge of the window rather than a row count: it caps
+ * how far back this looks, so the list cannot grow without bound in year ten.
  */
 export function monthlyConversion(
   customers: CustomerRow[],
@@ -108,11 +132,19 @@ export function monthlyConversion(
     if (c.paid || everPaid.has(c.id) || POST_PAYMENT.has(c.state)) bucket.paid++;
   }
 
-  return [...buckets.entries()].map(([month, b]) => ({
+  const oldestFirst = [...buckets.entries()].map(([month, b]) => ({
     month,
     label: labelFor(month),
     leads: b.leads,
     paid: b.paid,
     rate: b.leads ? Math.round((b.paid / b.leads) * 100) : 0,
   }));
+
+  // Cut everything before the first month that had a lead. `findIndex` returns
+  // -1 when no month in the window had one at all (a brand-new system, or a
+  // genuinely empty year) — in that case the list is just the current month,
+  // which is the last entry of the oldest-first window.
+  const first = oldestFirst.findIndex((m) => m.leads > 0);
+  const fromFirstLead = first === -1 ? oldestFirst.slice(-1) : oldestFirst.slice(first);
+  return fromFirstLead.reverse();
 }

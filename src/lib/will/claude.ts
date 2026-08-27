@@ -562,3 +562,205 @@ function mockDecide(ctx: CustomerContext, history: Turn[]): Decision {
     suggested_reply: "Thanks for your message! Let me double check this for you and get back to you shortly 😊",
   });
 }
+
+// ============================================================
+// Conversation-aware follow-up: what should the NEXT nudge to this person be?
+//
+// WHY THIS EXISTS
+//   The cadence is positional. It sends prePayment #1, then #2, then #3, in
+//   that order, to everyone, because that is all a fixed sequence can do. But
+//   the reason two people went quiet at the same stage is rarely the same
+//   reason: one is waiting on a number you never gave them, one asked about
+//   their visa and got a price, one said "next week" and meant it. Sending
+//   both the same #2 is the single most obvious thing this system does that a
+//   person would never do.
+//
+//   So before the next nudge goes out, the whole conversation is read, and
+//   this answers three questions: why are they actually quiet, which approved
+//   message fits THEM best, and — if none of them do — what a person would
+//   write instead.
+//
+// WHAT IT IS ALLOWED TO CHANGE
+//   Only which APPROVED template is chosen. `recommendedKey` is checked
+//   against the real Library keys by the caller and discarded if it is not one
+//   of them, so this can never invent a message and slip it into the queue.
+//
+//   `draft` is NOT a message. Every scheduled follow-up lands outside Meta's
+//   24-hour customer-service window by definition — we are messaging someone
+//   precisely because they went quiet — and outside that window WhatsApp
+//   rejects free-form text; only a pre-approved template goes through
+//   (channel.ts). A composed sentence therefore CANNOT be auto-sent, and this
+//   function does not pretend otherwise. The draft is written for Jo: to send
+//   himself, or to turn into a new approved template if he keeps needing it.
+//   Nothing in this module has a path to a customer.
+// ============================================================
+export interface NudgeCandidate { key: string; title: string; body: string }
+
+export interface NudgeAdvice {
+  /** One line: why this person is actually quiet, from the conversation. */
+  read: string;
+  /** An approved Library key that fits this person better, or null to keep the
+   *  cadence's own choice. The caller validates this against real keys. */
+  recommendedKey: string | null;
+  /** One line: why that message rather than the queued one. */
+  why: string;
+  /** A bespoke nudge for Jo to send himself. Advisory only — never sent. */
+  draft: string | null;
+  /** 0..1. Below 0.6 the caller keeps the cadence default regardless. */
+  confidence: number;
+}
+
+const NUDGE_TOOL = {
+  name: 'next_nudge',
+  description: 'Your recommendation for the next follow-up message to this specific person.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      read: {
+        type: 'string',
+        description:
+          'One sentence, maximum 20 words, on why THIS person has gone quiet and what they are '
+          + 'actually waiting on — grounded in something they said, not a generic guess. If the '
+          + 'conversation genuinely does not say, write "No signal in the conversation — they '
+          + 'simply stopped replying."',
+      },
+      recommended_key: {
+        type: 'string',
+        description:
+          'The key of the approved message that fits this person best, chosen ONLY from the '
+          + 'candidate list given to you. Use the queued message\'s own key when it is already '
+          + 'the right one — that is the normal answer, not a failure. Never invent a key.',
+      },
+      why: {
+        type: 'string',
+        description:
+          'One sentence, maximum 20 words, on why that message rather than the queued one. If you '
+          + 'kept the queued one, say briefly why it still fits.',
+      },
+      draft: {
+        type: 'string',
+        description:
+          'ONLY when no approved message really fits: what a thoughtful person would write to this '
+          + 'individual instead, in the same warm, plain, non-pushy voice as the approved messages, '
+          + 'under 300 characters, no emoji beyond what the approved messages use, no promises '
+          + 'about refund amounts or timing, no pressure. Leave empty when an approved message fits.',
+      },
+      confidence: { type: 'number', description: '0..1 — how sure you are the conversation supports this.' },
+    },
+    required: ['read', 'recommended_key', 'why', 'confidence'],
+  },
+} as const;
+
+const NUDGE_SYSTEM = `You advise a small Australian tax agent who helps working-holiday visa holders get their tax refunds. A customer went quiet at some stage of the process and an automatic follow-up is queued to go out to them.
+
+Your job is to read that specific conversation and say what the NEXT nudge to this person should be.
+
+Rules that are not negotiable:
+- You may only recommend a message from the candidate list you are given. These are approved WhatsApp templates. You cannot write a new one into the queue.
+- Keeping the queued message is very often correct. Recommend a different one only when the conversation gives a concrete reason.
+- Never promise a refund amount, a refund date, or an outcome.
+- Never pressure, guilt, or manufacture urgency. These are young people abroad, not leads to be squeezed.
+- Never claim the business is a registered tax agent, and never alter any statement about a registered tax agent reviewing the work.
+- If someone said no, asked to be left alone, or said they are using someone else, say so plainly in "read" and keep confidence low. Do not look for a way to push.
+
+Answer only by calling the next_nudge tool.`;
+
+/** Reads one conversation and recommends the next nudge. Returns { error } on
+ *  any failure — a missing recommendation just means the cadence's own choice
+ *  stands, which is the behaviour that existed before this function did. */
+export async function adviseNextNudge(input: {
+  label: string;
+  stateLabel: string;
+  lang: string | null;
+  quietSummary: string;
+  queuedKey: string;
+  queuedTitle: string;
+  queuedBody: string;
+  candidates: NudgeCandidate[];
+  transcript: string;
+}): Promise<NudgeAdvice | { error: string }> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  // Same reasoning as analyseLostLead: no mock. An invented recommendation
+  // about a real person's real conversation is worse than no recommendation,
+  // and "not analysed" is a true and harmless thing for the screen to say.
+  if (!key) return { error: 'No Anthropic API key configured' };
+
+  const userContent = [
+    `Person: ${input.label}`,
+    `Stage: ${input.stateLabel}`,
+    `Language: ${input.lang ?? 'unknown'}`,
+    `How long they have been quiet: ${input.quietSummary}`,
+    '',
+    'THE MESSAGE CURRENTLY QUEUED FOR THEM',
+    `key: ${input.queuedKey}`,
+    `title: ${input.queuedTitle}`,
+    input.queuedBody,
+    '',
+    'EVERY APPROVED MESSAGE YOU MAY CHOOSE FROM',
+    input.candidates.map((c) => `--- key: ${c.key}\ntitle: ${c.title}\n${c.body}`).join('\n'),
+    '',
+    'CONVERSATION (oldest first; long numbers and emails are redacted)',
+    input.transcript || '(no messages on file)',
+  ].join('\n');
+
+  const body = JSON.stringify({
+    model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
+    max_tokens: 700,
+    system: NUDGE_SYSTEM,
+    tools: [NUDGE_TOOL],
+    tool_choice: { type: 'tool', name: 'next_nudge' },
+    messages: [{ role: 'user', content: userContent.slice(0, 60000) }],
+  });
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        signal: AbortSignal.timeout(30_000),
+        headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+        body,
+      });
+      if (res.status === 429 || res.status >= 500) {
+        if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
+        return { error: `Claude API error ${res.status}` };
+      }
+      if (!res.ok) return { error: `Claude API error ${res.status}` };
+      const data = await res.json();
+      if (data.stop_reason === 'max_tokens') return { error: 'Model response truncated' };
+      const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
+        ?.find((bl) => bl.type === 'tool_use' && bl.name === 'next_nudge');
+      if (!tool?.input) return { error: 'Model returned no recommendation' };
+      const parsed = validateNudgeAdvice(tool.input);
+      if (!parsed) return { error: 'Model returned an unusable recommendation' };
+      return parsed;
+    } catch {
+      if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
+      return { error: 'Claude API unreachable' };
+    }
+  }
+  return { error: 'Claude API unreachable' };
+}
+
+/** Shape check only. Whether `recommendedKey` names a REAL Library entry is
+ *  the caller's job — this module does not have the Library. */
+export function validateNudgeAdvice(raw: unknown): NudgeAdvice | null {
+  const d = raw as Record<string, unknown> | null;
+  if (!d || typeof d !== 'object') return null;
+  const str = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : null);
+  const read = str(d.read);
+  const why = str(d.why);
+  const recommendedKey = str(d.recommended_key);
+  if (!read || !why) return null;
+  const conf = typeof d.confidence === 'number' && d.confidence >= 0 && d.confidence <= 1 ? d.confidence : null;
+  if (conf === null) return null;
+  const draft = str(d.draft);
+  return {
+    read: read.slice(0, 300),
+    recommendedKey,
+    why: why.slice(0, 300),
+    // The 300-char cap is the same one the tool description asks for. A model
+    // that ignores it gets cut rather than sending Jo an essay.
+    draft: draft ? draft.slice(0, 300) : null,
+    confidence: conf,
+  };
+}
