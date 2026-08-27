@@ -31,7 +31,12 @@ const EVERY_PLACEHOLDER: [string, string][] = [
   ['sticker', '💟 [Sticker]'],
   ['location', '📍 [Location]'],
   ['contacts', '👤 [Contact card]'],
-  ['unsupported / default', '📎 [Message — open WhatsApp to view]'],
+  ['unsupported / default', '📎 [Message - open WhatsApp to view]'],
+  // The em-dash spelling this used to be written with, before the no-dash rule
+  // reached it. Every message stored before 27 Aug still carries it, and must
+  // still be described as an event rather than quoted back as the customer's
+  // own words.
+  ['unsupported / default, historical em-dash', '📎 [Message — open WhatsApp to view]'],
 ];
 
 describe('describeSystemPlaceholder', () => {

@@ -159,7 +159,9 @@ function placeholderFor(m: WaMessage): string {
     case 'sticker': note = '💟 [Sticker]'; break;
     case 'location': note = '📍 [Location]'; break;
     case 'contacts': note = '👤 [Contact card]'; break;
-    default: note = '📎 [Message — open WhatsApp to view]';
+    // A plain hyphen, not an em-dash: the owner's no-dash rule applies to
+    // everything the system writes, and this string is shown in the CRM chat.
+    default: note = '📎 [Message - open WhatsApp to view]';
   }
   return caption ? `${note} ${caption}` : note;
 }

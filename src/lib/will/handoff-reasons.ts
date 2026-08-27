@@ -53,53 +53,69 @@ interface Rule { match: RegExp; kind: HandoffKind; label: string; because: strin
 
 const RULES: Rule[] = [
   {
+    // MUST come before the general guard rule below — it is the same reason
+    // string with a specific violation in it, and the first match wins.
+    //
+    // These stopped being raised as tasks on 27 Aug (engine.ts: deliberate
+    // silence is not a fault), but the rule stays for the ones already on the
+    // board. It exists because calling this "a hard rule refused Will's
+    // message" was actively misleading: nothing unsafe happened. Will stayed
+    // out of a conversation a person had taken over, which is the rule doing
+    // precisely its job.
+    match: /^Policy Guard blocked reply:\s*(?:AI_PAUSED_FOR_CUSTOMER|CUSTOMER_OPTED_OUT|LEGACY_CHAT_AI_DISABLED|KILL_SWITCH_ACTIVE)\s*$/i,
+    kind: 'policy',
+    label: 'You are handling this chat',
+    because: 'you replied in this conversation yourself, so Will stayed out of it',
+    prevent: 'Nothing to fix. This is Will keeping out of a chat you took over. He comes back when you switch him on again in the chat header.',
+  },
+  {
     match: /^Policy Guard blocked reply|^Autopilot reply blocked before sending|^Follow-up blocked by Policy Guard|^Draft became invalid before approval/i,
     kind: 'guard',
     label: 'A rule refused Will’s message',
     because: 'Will had an answer ready and one of the hard rules refused to let it go out',
-    prevent: 'Open the task and read the message it refused. If the rule stopped something genuinely unsafe, this is the guard working and there is nothing to change. If it stopped a perfectly safe message, the rule is too broad — that is a code change, so send it over.',
+    prevent: 'Open the task and read the message it refused. If the rule stopped something genuinely unsafe, this is the guard working and there is nothing to change. If it stopped a perfectly safe message, the rule is too broad. That is a code change, so send it over.',
   },
   {
     match: /^Customer sent an attachment Will cannot read/i,
     kind: 'unreadable',
     label: 'A file Will cannot read',
     because: 'they sent a photo or a document, and Will only reads text',
-    prevent: 'Nothing to add to the Library — there is no question to answer until a person opens the file. Asking for documents through the form instead of WhatsApp is what actually reduces this.',
+    prevent: 'Nothing to add to the Library. There is no question to answer until a person opens the file. Asking for documents through the form instead of WhatsApp is what actually reduces this.',
   },
   {
     match: /^Customer sent a message Will cannot read/i,
     kind: 'unreadable',
     label: 'A voice note or sticker',
     because: 'they sent a voice note or another message with no text in it',
-    prevent: 'Nothing to add to the Library — a template cannot answer a voice note. This is the cost of customers who would rather talk than type.',
+    prevent: 'Nothing to add to the Library. A template cannot answer a voice note. This is the cost of customers who would rather talk than type.',
   },
   {
     match: /^Customer asked whether they are talking to a bot/i,
     kind: 'policy',
     label: '“Am I talking to a bot?”',
     because: 'they asked whether they are talking to a bot, and Will is never allowed to answer that',
-    prevent: 'Nothing to change — this one is a rule doing its job. It only matters if it happens to a large share of your leads, which would say something about how Will’s replies read.',
+    prevent: 'Nothing to change. This one is a rule doing its job. It only matters if it happens to a large share of your leads, which would say something about how Will’s replies read.',
   },
   {
     match: /^Customer sent \d+ messages before paying|messages before paying/i,
     kind: 'policy',
     label: 'A conversation that is stuck',
     because: 'they have written more than twenty times before paying, which is not a conversation any more but something looping',
-    prevent: 'Open the chat and read it end to end. This is not a sales problem — the same thing is going round, or an automated sender is on the other end. It should be rare; if it is not, tell me and we will find what is looping.',
+    prevent: 'Open the chat and read it end to end. This is not a sales problem. The same thing is going round, or an automated sender is on the other end. It should be rare; if it is not, tell me and we will find what is looping.',
   },
   {
     match: /^An existing chat sent a message|^A previous customer messaged again/i,
     kind: 'policy',
     label: 'A returning customer',
     because: 'they are an existing or previously closed chat, and Will only handles brand-new leads',
-    prevent: 'Nothing to change while Will is set to new leads only. Moving this number means changing that policy — a decision, not a template.',
+    prevent: 'Nothing to change while Will is set to new leads only. Moving this number means changing that policy. A decision, not a template.',
   },
   {
     match: /^WhatsApp send failed/i,
     kind: 'delivery',
     label: 'WhatsApp refused the send',
     because: 'WhatsApp itself refused to deliver the message, so they received nothing at all',
-    prevent: 'Check the WhatsApp connection in the header and the template’s approval in WhatsApp Manager. This is the most urgent kind on this list — a customer was left with no reply.',
+    prevent: 'Check the WhatsApp connection in the header and the template’s approval in WhatsApp Manager. This is the most urgent kind on this list. A customer was left with no reply.',
   },
   {
     match: /^Daily AI limit reached/i,
@@ -113,14 +129,14 @@ const RULES: Rule[] = [
     kind: 'guard',
     label: 'The draft went stale',
     because: 'the draft assumed a stage they had already moved past by the time it was approved',
-    prevent: 'Approve drafts sooner, or switch the stages you trust to Autopilot. Holding it was correct — nobody was told something untrue.',
+    prevent: 'Approve drafts sooner, or switch the stages you trust to Autopilot. Holding it was correct. Nobody was told something untrue.',
   },
   {
     match: /^Customer sent proof of payment/i,
     kind: 'system',
     label: 'Payment proof arrived',
     because: 'they sent a payment screenshot, and money always gets a person’s eyes on it',
-    prevent: 'Nothing to change — this is Will doing exactly what it should.',
+    prevent: 'Nothing to change. This is Will doing exactly what it should.',
   },
   {
     match: /^Nightly consistency check/i,
@@ -142,7 +158,7 @@ const FALLBACK: HandoffExplanation = {
   kind: 'other',
   label: 'A question Will had no answer for',
   because: 'Will had no approved answer for what they asked',
-  prevent: 'Open the chat and read what they asked. If the same question keeps coming back, add it — with the answer you would give — to the Library, and Will will handle it himself next time.',
+  prevent: 'Open the chat and read what they asked. If the same question keeps coming back, add it. With the answer you would give. To the Library, and Will will handle it himself next time.',
 };
 
 /** Classify one grouped reason string from the report. Never throws. */
@@ -207,8 +223,13 @@ export function describeSystemPlaceholder(text: string): string | null {
   if (/^💟 \[Sticker\]/.test(t))              return 'They sent a sticker';
   if (/^📍 \[Location\]/.test(t))             return 'They shared their location';
   if (/^👤 \[Contact card\]/.test(t))         return 'They sent a contact card';
-  if (/^📎 \[Message — open WhatsApp to view\]/.test(t)) {
-    return 'WhatsApp delivered a message with no readable text in it — the kind Meta cannot render for us at all';
+  // Both spellings on purpose. The stand-in used to carry an em-dash; the
+  // no-dash rule changed it to a hyphen on 27 Aug, and every message stored
+  // before that still has the old one. Matching only the new form would make
+  // every historical row fall back to being QUOTED as if the customer had
+  // typed it, which is the exact bug this function exists to prevent.
+  if (/^📎 \[Message [—-] open WhatsApp to view\]/i.test(t)) {
+    return 'WhatsApp delivered a message with no readable text in it. The kind Meta cannot render for us at all';
   }
   return null;
 }
@@ -218,6 +239,6 @@ export function describeSystemPlaceholder(text: string): string | null {
 export function captionAfterPlaceholder(text: string): string | null {
   const t = (text ?? '').trim();
   if (!describeSystemPlaceholder(t)) return null;
-  const rest = t.replace(/^(?:📷 \[Photo\]|🎥 \[Video\]|🎤 \[Voice message\]|📄 \[Document(?::[^\]]*)?\]|💟 \[Sticker\]|📍 \[Location\]|👤 \[Contact card\]|📎 \[Message — open WhatsApp to view\])/, '').trim();
+  const rest = t.replace(/^(?:📷 \[Photo\]|🎥 \[Video\]|🎤 \[Voice message\]|📄 \[Document(?::[^\]]*)?\]|💟 \[Sticker\]|📍 \[Location\]|👤 \[Contact card\]|📎 \[Message [—-] open WhatsApp to view\])/, '').trim();
   return rest || null;
 }

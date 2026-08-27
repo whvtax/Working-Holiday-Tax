@@ -205,6 +205,35 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
 
   const verdict = policyGuard(text, guardCtx);
   if (!verdict.allowed) {
+    // ── DELIBERATE SILENCE IS NOT A FAULT ────────────────────────────────
+    //
+    // Four of the guard's rules do not mean "Will wrote something unsafe".
+    // They mean "Will is not the one talking here, on purpose":
+    //
+    //   AI_PAUSED_FOR_CUSTOMER   you replied yourself, so you have the wheel
+    //   CUSTOMER_OPTED_OUT       they asked to be left alone
+    //   LEGACY_CHAT_AI_DISABLED  an imported chat, yours by policy
+    //   KILL_SWITCH_ACTIVE       you switched everything off
+    //
+    // Raising a task for these was noise, and it grew with the thing Jo does
+    // most: the moment he answers a chat himself, every "thanks!", "perfect"
+    // and 👍 that follows opened an item for him to close. Found 27 Aug on
+    // Chloe (+1 657 258 1938) — he replied at 14:45, she wrote "Perfect,
+    // thanks again!" at 14:49, and that courtesy line became a task.
+    //
+    // There is nothing to hand over: the conversation is already his, and the
+    // message is already in the chat where he is reading it. So Will simply
+    // stays quiet, which is what these rules were asking for in the first
+    // place. Anything else in the verdict — a price, a determination, a myGov
+    // walkthrough — still raises the task exactly as before, including when it
+    // appears ALONGSIDE one of these four.
+    const NOT_A_FAULT = new Set([
+      'AI_PAUSED_FOR_CUSTOMER', 'CUSTOMER_OPTED_OUT',
+      'LEGACY_CHAT_AI_DISABLED', 'KILL_SWITCH_ACTIVE',
+    ]);
+    if (verdict.violations.every((v) => NOT_A_FAULT.has(v))) {
+      return { kind: 'silent', decision };
+    }
     return {
       kind: 'human_task',
       decision,

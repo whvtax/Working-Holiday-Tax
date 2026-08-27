@@ -148,7 +148,7 @@ const FAULT_RULES: FaultRule[] = [
     component: 'Inbound webhook (messages from customers)',
     severity: 'critical',
     meaning: 'A message a customer sent could not be processed after every retry. It was NOT auto-answered; it was turned into an urgent task instead.',
-    action: 'Read the error below — it is the exception the webhook threw. A schema error here means a migration is missing (see the Database check in the header). Answer the task by hand in the meantime.',
+    action: 'Read the error below. It is the exception the webhook threw. A schema error here means a migration is missing (see the Database check in the header). Answer the task by hand in the meantime.',
   },
   {
     key: 'inbound_signature_rejected',
@@ -171,7 +171,7 @@ const FAULT_RULES: FaultRule[] = [
     match: is('policy_guard', 'inbound_rate_limited'),
     component: 'Inbound rate limit',
     severity: 'warning',
-    meaning: 'Inbound messages were dropped because one sender, or the number as a whole, exceeded the rate limit. This is the abuse guard doing its job — but a real customer caught by it gets no reply.',
+    meaning: 'Inbound messages were dropped because one sender, or the number as a whole, exceeded the rate limit. This is the abuse guard doing its job. But a real customer caught by it gets no reply.',
     action: 'If the same masked number keeps appearing it is a loop or a spammer. If several different numbers appear, the limit is too tight for real traffic and belongs in a code change.',
   },
   {
@@ -187,7 +187,7 @@ const FAULT_RULES: FaultRule[] = [
     match: (a, b) => a === 'nightly' && (b === 'daily_digest_failed' || b === 'daily_digest_crashed' || b === 'daily_digest_mine_failed'),
     component: 'Daily digest email (8am)',
     severity: 'warning',
-    meaning: 'The overnight job that mines yesterday’s conversations for new Library answers, and emails them, did not complete. No customer is affected — the drafts simply were not produced.',
+    meaning: 'The overnight job that mines yesterday’s conversations for new Library answers, and emails them, did not complete. No customer is affected. The drafts simply were not produced.',
     action: 'Check RESEND_API_KEY and CRM_ADMIN_EMAIL are set, then read the error below. The Knowledge Base panel still works without the email.',
   },
   {
@@ -196,7 +196,7 @@ const FAULT_RULES: FaultRule[] = [
     component: 'Payment-photo check (Claude vision)',
     severity: 'warning',
     meaning: 'A customer sent a photo while a payment was outstanding and the file could not be fetched from Meta, so it was never checked for proof of payment. It fell through to an ordinary "open this and look" task.',
-    action: 'Meta deletes attachments after 30 days and the download needs a live access token — the same token as the send path. If sends are healthy and this still happens, open the chat and read the photo yourself.',
+    action: 'Meta deletes attachments after 30 days and the download needs a live access token. The same token as the send path. If sends are healthy and this still happens, open the chat and read the photo yourself.',
   },
 ];
 
@@ -244,7 +244,7 @@ export function faultsFromAudit(rows: AuditRow[]): SystemFault[] {
       component: rule.component,
       // Some failures genuinely carry no text (a rate limit is not an error
       // string). Say so rather than rendering an empty line.
-      error: error ?? 'No error text was recorded for this one — the entry itself is the signal.',
+      error: error ?? 'No error text was recorded for this one. The entry itself is the signal.',
       lastAt,
       count,
       meaning: rule.meaning,

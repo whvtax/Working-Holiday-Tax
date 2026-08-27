@@ -681,7 +681,7 @@ export default function Dashboard() {
                 onClick={async () => {
                   if (mode === 'SUPERVISED') return;
                   const r = await act({ action: 'set_ai_mode', mode: 'SUPERVISED' });
-                  if (!r?.ok) { say('Could not change mode — nothing was changed'); return; }
+                  if (!r?.ok) { say('Could not change mode. Nothing was changed'); return; }
                   setHealth((h) => h ? { ...h, aiMode: 'SUPERVISED' } : h);
                   say(`Approval mode: nothing sends without you`);
                 }}>Approval</button>
@@ -692,7 +692,7 @@ export default function Dashboard() {
                   // lets a message reach a customer unread by you. It asks first.
                   if (!window.confirm(`Autopilot means ${ASSISTANT_NAME} sends messages to customers WITHOUT your approval.\n\nTurn it on?`)) return;
                   const r = await act({ action: 'set_ai_mode', mode: 'FULL_AUTO' });
-                  if (!r?.ok) { say('Could not change mode — nothing was changed'); return; }
+                  if (!r?.ok) { say('Could not change mode. Nothing was changed'); return; }
                   setHealth((h) => h ? { ...h, aiMode: 'FULL_AUTO' } : h);
                   say(`Autopilot: ${ASSISTANT_NAME} sends, escalates anything unclear`);
                 }}>Autopilot</button>
@@ -709,14 +709,14 @@ export default function Dashboard() {
             {health && (health.whatsappLive
               ? <span className="waPill live" title={health.whatsappDetail}>● WhatsApp: Connected</span>
               : health.whatsappConfigured
-                ? <a className="waPill bad" href="/crm/whatsapp/connect" title={`${health.whatsappDetail || ''} — click to reconnect`}>● WhatsApp: NOT WORKING — connect</a>
-                : <a className="waPill test" href="/crm/whatsapp/connect" title={health.whatsappDetail || 'Cloud API credentials not active — click to connect'}>● WhatsApp: TEST MODE — connect</a>)}
+                ? <a className="waPill bad" href="/crm/whatsapp/connect" title={`${health.whatsappDetail || ''}. Click to reconnect`}>● WhatsApp: NOT WORKING, connect</a>
+                : <a className="waPill test" href="/crm/whatsapp/connect" title={health.whatsappDetail || 'Cloud API credentials not active. Click to connect'}>● WhatsApp: TEST MODE. Connect</a>)}
             {/* A missing migration silently dropped 105 real leads once, while
                 every dot up here stayed green the whole time. A tooltip is too
                 easy to miss for a failure that expensive, so it gets an alarm. */}
             {health?.checks?.schema && !health.checks.schema.ok && (
               <a className="waPill bad" href="/crm/whatsapp/inbound-check" title={health.checks.schema.detail}>
-                ● DATABASE OUT OF DATE — new customers are being dropped
+                ● DATABASE OUT OF DATE. New customers are being dropped
               </a>
             )}
             {!health && <span className="hdot"><span className="dot" style={{ background: 'var(--warn)' }} /><span className="hlabel">connecting…</span></span>}
@@ -919,7 +919,7 @@ export default function Dashboard() {
                               title="Move stage"
                             >
                               {/* The label is its own span so the hover underline
-                                  lands on the word alone — see .cstate-label. */}
+                                  lands on the word alone. See .cstate-label. */}
                               <span className="cstate-label">{stageLabelOf(chatSel.state)}</span>
                               <span className="cstate-caret">▾</span>
                             </button>
@@ -927,7 +927,7 @@ export default function Dashboard() {
                               <>
                                 <div className="stagemenu-backdrop" onClick={() => setStageMenuOpen(false)} />
                                 {/* This offers ONLY the same eight options as the
-                                    pipeline strip at the top of the dashboard — same
+                                    pipeline strip at the top of the dashboard. Same
                                     names, same order, nothing more. The eighteen
                                     internal states behind them are not exposed here
                                     at all (there used to be a "Move anywhere…" escape
@@ -981,7 +981,7 @@ export default function Dashboard() {
                         <div className="switch" />
                       </div>
                       {/* Same delete action as the ✕ in the chat list, but reachable
-                          from inside an open chat too — on mobile the list is hidden
+                          from inside an open chat too. On mobile the list is hidden
                           once a chat is open, so that button is otherwise unreachable. */}
                       <button
                         type="button"
@@ -1006,16 +1006,16 @@ export default function Dashboard() {
                       {/* Quick send: numbered buttons instead of long labels, so the
                           row never overflows and needs no sideways scroll. Always
                           first/leftmost, before the stage action button and
-                          Follow-up — a fixed anchor so "1-4" is always in the same
+                          Follow-up. A fixed anchor so "1-4" is always in the same
                           place regardless of what else is showing. Hover a number
                           to see the full text (native tooltip). Clicking a number
-                          does NOT send — it drops the text into the compose box so
+                          does NOT send. It drops the text into the compose box so
                           you can read it, edit it, and send it yourself. */}
                       {QUICK_TEMPLATES.map((key, i) => {
                         const t = data.templates.find((x) => x.key === key);
                         if (!t) return null;
                         const label = t.title.replace(/ \(.*\)/, '');
-                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label} — edit and send`); }}>{i + 1}</button>;
+                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label}. Edit and send`); }}>{i + 1}</button>;
                       })}
                       {/* Review-stage action: send the refund estimate + invoice
                           in one step. Only shown while the customer is in Review. */}
@@ -1042,7 +1042,7 @@ export default function Dashboard() {
                             if (!confirm(`Send the "ready for signature" message to ${phoneOf(chatSel.waId)} and move them to Signature?`)) return;
                             const r = await act({ action: 'send_signature', customerId: chatSel.id });
                             if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
-                            say('Sent — moved to Signature ✓'); loadChat(chatSel.id); refresh();
+                            say('Sent, moved to Signature ✓'); loadChat(chatSel.id); refresh();
                           }}
                         >
                           ✍️ Send for Signature
@@ -1060,7 +1060,7 @@ export default function Dashboard() {
                             if (!confirm(`Send the "lodged successfully" message to ${phoneOf(chatSel.waId)} and move them to Completed?`)) return;
                             const r = await act({ action: 'send_lodged', customerId: chatSel.id });
                             if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
-                            say('Sent — moved to Completed ✓'); loadChat(chatSel.id); refresh();
+                            say('Sent, moved to Completed ✓'); loadChat(chatSel.id); refresh();
                           }}
                         >
                           ✅ Mark Lodged
@@ -1174,7 +1174,7 @@ export default function Dashboard() {
                               )}
                               {m.meta?.media && <Attachment media={m.meta.media} />}
                               {/* With the attachment itself on screen, the stored
-                                  "📷 [Photo]" placeholder is noise — the caption
+                                  "📷 [Photo]" placeholder is noise. The caption
                                   rides along with the attachment. */}
                               {m.meta?.media ? null : m.body}
                               <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
@@ -1223,11 +1223,11 @@ export default function Dashboard() {
                 blocked or failed send, so those items were listed twice with two
                 badges and there was no single answer to "what is left for me".
                 The drafts moved here; the blocked ones were already here. */}
-            {/* Jo, 26 Aug: "lose the label, keep the number" — he watches this
+            {/* Jo, 26 Aug: "lose the label, keep the number". He watches this
                 go 0 -> 1 -> 2 and the six words in front of it were noise on a
                 screen he reads twenty times a day. The words survive as the
                 accessible name and the hover title, where they cost nothing.
-                27 Aug: the ✎ mark that stood in for the label went too — it
+                27 Aug: the ✎ mark that stood in for the label went too. It
                 marked nothing the badge does not already say, and next to a
                 bare count it read as an edit affordance that is not there. */}
             <div className="secthead">
@@ -1244,7 +1244,7 @@ export default function Dashboard() {
                   <div className="obhead">
                     {/* The number, always. It used to fall back to the WhatsApp profile
                         name whenever the customer was not in the loaded list, which
-                        is how "holly brazier" ended up as a card heading — a name
+                        is how "holly brazier" ended up as a card heading. A name
                         that is not unique, not searchable, and not how anything else
                         here identifies anyone. */}
                     <span className="obwho">{(() => { const w = c?.waId ?? m.waId; return w ? phoneOf(w) : 'Customer'; })()}</span>
@@ -1318,7 +1318,7 @@ export default function Dashboard() {
             </div>
             {/* The old crude "recurring unanswered question" suggestions box
                 was removed: the daily Library-suggestions digest (8am
-                Melbourne) does this properly now — it checks the actual
+                Melbourne) does this properly now. It checks the actual
                 Library on every customer message answered, not just repeated
                 escalations, and produces a real polished draft via the
                 mining model instead of a bracketed placeholder. Its output
@@ -1383,7 +1383,7 @@ export default function Dashboard() {
                 <h2 className="vt">Scheduled Follow-ups</h2>
                 <div className="vsub">
                   {/* The count leads, in bold, because it is the fact Jo scans
-                      for — how many are about to go out. It is rendered only
+                      for. How many are about to go out. It is rendered only
                       once the list has loaded, so the line never flashes a
                       stale or zero number while the fetch is in flight. */}
                   {followups && followups.length > 0 && (
@@ -1420,7 +1420,7 @@ export default function Dashboard() {
                       {/* Jo, 27 Aug: "add what you are actually going to send me
                           in the nudge." The row used to name the Library entry,
                           which tells you where the message lives but not what it
-                          says — so checking a queue of 22 meant opening 22
+                          says. So checking a queue of 22 meant opening 22
                           entries. This is the delivered text, {{1}} already
                           replaced by the greeting name the scheduler will use,
                           so what is on screen is what lands on their phone. The
@@ -1429,7 +1429,7 @@ export default function Dashboard() {
                       <div
                         className="fu-body"
                         title={f.templateTitle ?? f.templateKey ?? undefined}
-                      >{f.body ?? 'This message is no longer in the Library — nothing will be sent.'}</div>
+                      >{f.body ?? 'This message is no longer in the Library. Nothing will be sent.'}</div>
                     </div>
                     {/* Out of .rc-top and into its own column. As a direct child
                         of the row card (align-items:center) it sits on the row's
@@ -1438,9 +1438,9 @@ export default function Dashboard() {
                     <span className="chip fu-flow">{flowLabel} · #{f.seq + 1}</span>
                     <div className="rc-side">
                       {/* The stage pill was removed here on Jo's instruction,
-                          27 Aug. It repeated the flow chip next to it — a
+                          27 Aug. It repeated the flow chip next to it. A
                           "Before payment" nudge is by definition queued for a
-                          lead — so it was a second colour saying the first
+                          lead. So it was a second colour saying the first
                           one's news. The stage still drives the row's left
                           border colour (--gc), which is where it earns its
                           keep. */}
@@ -1482,7 +1482,7 @@ export default function Dashboard() {
               {/* ────────────────────────────────────────────────────────────
                   "Deep Conversation Analysis" was removed here on 27 Aug.
 
-                  It was not redundant — it was hollow. The card advertised
+                  It was not redundant. It was hollow. The card advertised
                   "phrasing that converts vs loses, tone per language, the exact
                   message where each customer dropped, objection win rates,
                   suggested new templates", and none of it was ever implemented:
@@ -1494,7 +1494,7 @@ export default function Dashboard() {
                   still got null back.
 
                   It also carried a five-row preview of scheduled follow-ups
-                  under a heading about conversation analysis — two unrelated
+                  under a heading about conversation analysis. Two unrelated
                   things in one box, and the preview is now its own Follow-ups
                   page with the full list.
 
@@ -1502,7 +1502,7 @@ export default function Dashboard() {
                   Leads reads each non-converting conversation through Claude and
                   reports why it failed and what would have changed it.
 
-                  /api/will/report itself is NOT removed — the funnel, the
+                  /api/will/report itself is NOT removed. The funnel, the
                   variant tests, the conversion rate and the handoff reasons on
                   this same screen all still read it.
                   ──────────────────────────────────────────────────────────── */}
@@ -1516,25 +1516,25 @@ export default function Dashboard() {
 
                   Added: what Claude has actually cost, and what is actually
                   broken. Jo's test for the fault list is that he can screenshot
-                  this card and whoever reads it knows what to do — so each
+                  this card and whoever reads it knows what to do. So each
                   fault carries the component, the provider's own error text,
                   when it last happened, how many times, what it means, and the
                   next action. Full width for that reason.
                   ──────────────────────────────────────────────────────────── */}
               <div className="panel syspanel">
                 <div className="costrow"><span>Brain ({ASSISTANT_NAME})</span><b>{health?.usingMock ? 'mock (no API key)' : 'Claude API'}</b></div>
-                <div className="costrow"><span>Auto-resolved by {ASSISTANT_NAME}</span><b>{(() => { const total = data.customers.length; if (!total) return '—'; const escalatedIds = new Set(data.tasks.filter((t) => t.customerId).map((t) => t.customerId)); const never = total - escalatedIds.size; return Math.round((never / total) * 100) + '%'; })()}</b></div>
+                <div className="costrow"><span>Auto-resolved by {ASSISTANT_NAME}</span><b>{(() => { const total = data.customers.length; if (!total) return '-'; const escalatedIds = new Set(data.tasks.filter((t) => t.customerId).map((t) => t.customerId)); const never = total - escalatedIds.size; return Math.round((never / total) * 100) + '%'; })()}</b></div>
                 <div className="costrow"><span>Messages in library</span><b>{data.templates.length}</b></div>
 
                 {/* Jo, 27 Aug: the money sits with the other headline facts,
-                    directly under the Library count — not two headings further
+                    directly under the Library count. Not two headings further
                     down. It is the number he actually came to this panel for,
                     and it was below the fold of his own screenshot.
 
                     THE FLAG IS NOT DECORATION. There is no billing feed wired
                     into this system. The only record of paid usage is the daily
                     counter migration 029 added, and it counts DECISIONS, not
-                    dollars — so this is decisions × an assumed rate
+                    dollars. So this is decisions × an assumed rate
                     (ASSUMED_USD_PER_DECISION in lib/will/system-report.ts) and
                     it says so on the row, in the caveat under it, and in the
                     hover. A dollar figure on a dashboard gets quoted; this one
@@ -1543,12 +1543,12 @@ export default function Dashboard() {
                   <>
                     <div className="costrow">
                       <span>Spend <span className="estflag">estimate only</span></span>
-                      <b title="Not a bill — counted decisions times an assumed per-decision rate. The real number is in the Anthropic console.">
-                        {system.usage.callsTotal === 0 ? '—' : `≈ US$${system.usage.estimatedUsd.toFixed(2)}`}
+                      <b title="Not a bill. Counted decisions times an assumed per-decision rate. The real number is in the Anthropic console.">
+                        {system.usage.callsTotal === 0 ? '-' : `≈ US$${system.usage.estimatedUsd.toFixed(2)}`}
                       </b>
                     </div>
                     {/* The long "not a bill" paragraph was removed here on
-                        27 Aug. The caveat itself is NOT optional — a dollar
+                        27 Aug. The caveat itself is NOT optional. A dollar
                         figure on a dashboard gets quoted, and this one is
                         counted decisions times an assumed rate, not a bill. It
                         survives where it cannot be skimmed past: the ESTIMATE
@@ -1558,12 +1558,12 @@ export default function Dashboard() {
                   </>
                 )}
 
-                {/* The "Claude usage" rows — decisions today, decisions counted
-                    all time — were removed here on 27 Aug, on Jo's instruction.
+                {/* The "Claude usage" rows. Decisions today, decisions counted
+                    all time. Were removed here on 27 Aug, on Jo's instruction.
                     They were the working of the estimate above rather than a
                     fact he acts on: he wants to know roughly what it is costing,
                     and "374 decisions over 8 days" is not that. The counters
-                    themselves are untouched — ai-budget.ts still counts every
+                    themselves are untouched. Ai-budget.ts still counts every
                     paid decision and still stops Will at the daily cap, and the
                     estimate above is still computed from them. This dropped the
                     display, not the accounting. */}
@@ -1595,13 +1595,13 @@ export default function Dashboard() {
                     },
                     engine: {
                       name: `Brain (${ASSISTANT_NAME})`,
-                      meaning: `${ASSISTANT_NAME} has no Claude key, so every reply is coming from the built-in mock brain instead — a short list of fixed answers, not a model reading the conversation. Customers are still getting replies, which is exactly what makes this easy to miss.`,
-                      action: 'Set ANTHROPIC_API_KEY in the Vercel project settings and redeploy. If it WAS set and this has just appeared, the key has expired or been revoked — check the Anthropic console.',
+                      meaning: `${ASSISTANT_NAME} has no Claude key, so every reply is coming from the built-in mock brain instead. A short list of fixed answers, not a model reading the conversation. Customers are still getting replies, which is exactly what makes this easy to miss.`,
+                      action: 'Set ANTHROPIC_API_KEY in the Vercel project settings and redeploy. If it WAS set and this has just appeared, the key has expired or been revoked. Check the Anthropic console.',
                     },
                     scheduler: {
                       name: 'Scheduler',
                       meaning: 'The job queue could not be read, so follow-ups and the nightly check are not running.',
-                      action: 'Same database as the row above — fix that first, this usually clears with it.',
+                      action: 'Same database as the row above. Fix that first, this usually clears with it.',
                     },
                     cron: {
                       name: 'Scheduler cron',
@@ -1610,7 +1610,7 @@ export default function Dashboard() {
                     },
                     whatsapp: {
                       name: 'WhatsApp connection',
-                      meaning: 'Will is not properly connected to WhatsApp — messages are not being sent, not being received, or both.',
+                      meaning: 'Will is not properly connected to WhatsApp. Messages are not being sent, not being received, or both.',
                       action: 'Open the WhatsApp pill in the header (or /crm/whatsapp/connect) and reconnect. The exact fault is in the error line above.',
                     },
                   };
@@ -1700,7 +1700,7 @@ export default function Dashboard() {
 
             {/* "Download every conversation" (transcript/JSON export) and the
                 monthly "what customers wrote" email were removed per the
-                owner's request — replaced by the daily Library-suggestions
+                owner's request. Replaced by the daily Library-suggestions
                 digest (scheduler.ts's DAILY_DIGEST job), which already does
                 the analysis automatically instead of a manual download. */}
 
@@ -1709,14 +1709,14 @@ export default function Dashboard() {
               <div className="psub">{ASSISTANT_NAME} keeps testing and improving until every lead converts.</div>
               {/* Jo, 27 Aug: the "12% → 100% · your target · fixed" pair and the
                   "88 points to go" line were both removed. All three said the
-                  same thing three ways — the headline rate, the constant it is
-                  measured against, and the subtraction between them — and none
+                  same thing three ways. The headline rate, the constant it is
+                  measured against, and the subtraction between them. And none
                   of it was anything he could act on. The month-by-month bars
                   directly below survive untouched on his instruction: that is
                   the part that actually shows movement. */}
 
               {/* Month by month, so July can be compared with August. Every bar
-                  is recomputed from the state history on each load — there is no
+                  is recomputed from the state history on each load. There is no
                   running number being reset on the 1st, which is why a past
                   month can never silently change or be lost.
                   A month's number is: of the leads that FIRST appeared that
@@ -1752,7 +1752,7 @@ export default function Dashboard() {
 
             <div className="igrid">
               {/* The old "Suggestions to Approve" panel (recurring-escalation
-                  scan) was removed here too — same reason as the Library tab:
+                  scan) was removed here too. Same reason as the Library tab:
                   the daily digest + Knowledge Base panel below now cover this
                   properly, on every answered message rather than only
                   repeated escalations. */}
@@ -1761,7 +1761,7 @@ export default function Dashboard() {
                   read-only copy of the drafts mined from yesterday, and a mined
                   entry stays status='draft' until a person approves it here.
                   retrieveKnowledge() only ever reads 'active' rows, so an
-                  un-approved draft is invisible to Will — removing the approve
+                  un-approved draft is invisible to Will. Removing the approve
                   queue would leave the library permanently frozen at whatever
                   was already active. The subtitle now says so, so the question
                   answers itself next time. */}
@@ -1784,8 +1784,8 @@ export default function Dashboard() {
 
                   What is gone: this was the primary place to promote a draft.
                   The Library section remains as the other one. And note that
-                  `action: 'add'` in /api/will/knowledge — which creates a new
-                  answer from scratch — has NO button anywhere in the UI, so
+                  `action: 'add'` in /api/will/knowledge. Which creates a new
+                  answer from scratch. Has NO button anywhere in the UI, so
                   writing an answer by hand is still not possible from the app.
                   ──────────────────────────────────────────────────────────── */}
 
@@ -1799,7 +1799,7 @@ export default function Dashboard() {
 
                   Rebuilt again 27 Aug, to Jo's own spec. He said the panel
                   answers one question — "why couldn't Will solve this himself?"
-                  — and needs the WhatsApp number and two plain sentences, and
+                 . And needs the WhatsApp number and two plain sentences, and
                   nothing else:
 
                       The customer wrote "…" and because <reason>, Will passed
@@ -1813,7 +1813,7 @@ export default function Dashboard() {
                   engineer's log creeping back in a smaller font.
 
                   What the customer wrote comes from the task's own `context`,
-                  which is exactly that text — captured when the handoff
+                  which is exactly that text. Captured when the handoff
                   happened, and merged when a burst of messages folds into one
                   task (service.ts, raiseOrUpdateTask). Never re-derived, never
                   guessed.
@@ -1831,13 +1831,13 @@ export default function Dashboard() {
 
                   The reason is that the classifier only recognises the twelve
                   reasons the SYSTEM writes. The commonest handoff by far is
-                  not one of those — it is Will choosing `human_task` and
+                  not one of those. It is Will choosing `human_task` and
                   writing its own headline (engine.ts:150), which the model is
                   asked to make 5-8 readable words: "Asking if DASP is
                   included", "Confused about myGov login". Those never match a
                   pattern, so every one of them fell to the generic fallback
                   and the card said "Will had no approved answer for what they
-                  asked" — a guess, sometimes wrong (a complex return is not an
+                  asked". A guess, sometimes wrong (a complex return is not an
                   unanswered question), and it threw away the single most
                   informative field on the row: Will's own account of why it
                   gave up, written at the moment it gave up.
@@ -1857,7 +1857,7 @@ export default function Dashboard() {
                   ──────────────────────────────────────────────────────────── */}
               <div className="panel">
                 {/* The HANDOFFS badge was removed here on 27 Aug. It counted
-                    nothing, changed nothing and reflected no state — a static
+                    nothing, changed nothing and reflected no state. A static
                     string in warn orange, which is the colour this dashboard
                     uses for an actual warning (REVIEW tasks, warning-level
                     faults). It said "this panel lists handoffs" in the alarm
@@ -1866,7 +1866,7 @@ export default function Dashboard() {
                 {/* Jo, 27 Aug: the standing subtitle and the empty state said
                     the same thing twice, once above every card and once in
                     place of them. They merged into the empty state, which is
-                    the only moment the explanation is needed — when there are
+                    the only moment the explanation is needed. When there are
                     cards, the cards are the explanation. */}
 
                 {/* Clearing the backlog. Two clicks rather than a dialog: a
@@ -1875,7 +1875,7 @@ export default function Dashboard() {
                     clicked through by accident either.
 
                     IT SAYS WHAT IT REALLY DOES. These cards are the SAME rows as
-                    the Tasks tab — one handoff, one item, and resolving it here
+                    the Tasks tab. One handoff, one item, and resolving it here
                     resolves it there. Hiding that would mean Jo clears the log
                     and silently empties his own to-do list. */}
                 {(() => {
@@ -1893,11 +1893,11 @@ export default function Dashboard() {
                           say(`Cleared ${open.length}`);
                           refresh();
                         }}
-                      >{clearArmed ? `Yes — clear all ${open.length}` : `Clear the ${open.length} showing`}</button>
+                      >{clearArmed ? `Yes, clear all ${open.length}` : `Clear the ${open.length} showing`}</button>
                       {clearArmed && (
                         <>
                           <button type="button" className="hoff-open" onClick={() => setClearArmed(false)}>Cancel</button>
-                          <span className="mini" style={{ margin: 0 }}>This also clears them from Tasks — they are the same items.</span>
+                          <span className="mini" style={{ margin: 0 }}>This also clears them from Tasks. They are the same items.</span>
                         </>
                       )}
                     </div>
@@ -1946,7 +1946,7 @@ export default function Dashboard() {
                               {/* Jo's rule everywhere in this dashboard: the
                                   WhatsApp number is the identity, the profile
                                   name is only a hint beside it. */}
-                              <span className="hoff-who">{(() => { const w = c?.waId ?? t.waId; return w ? phoneOf(w) : 'System — no customer'; })()}</span>
+                              <span className="hoff-who">{(() => { const w = c?.waId ?? t.waId; return w ? phoneOf(w) : 'System (no customer)'; })()}</span>
                               {c?.name && <span className="hoff-name">{c.name}</span>}
                               {/* Stage and language: two words that change what
                                   the right fix is. The same question from a
@@ -1976,7 +1976,7 @@ export default function Dashboard() {
                                     const caption = captionAfterPlaceholder(line);
                                     return (
                                       <div key={i} className="hoff-event">
-                                        {asEvent}. {ASSISTANT_NAME} reads text, so there was nothing here for him to work with — open WhatsApp to see it.
+                                        {asEvent}. {ASSISTANT_NAME} reads text, so there was nothing here for him to work with. Open WhatsApp to see it.
                                         {/* A caption IS the customer's own words,
                                             so it is quoted even though the thing
                                             in front of it is not. */}
@@ -2056,7 +2056,7 @@ export default function Dashboard() {
                     The audit rows themselves are UNTOUCHED: store.audit() still
                     writes every action, /api/will/activity still serves them,
                     and nightly maintenance still ages them out at 90 days. This
-                    removed the screen, not the record — if a "why did Will say
+                    removed the screen, not the record. If a "why did Will say
                     THAT" investigation ever needs it, the data is all there.
                     ────────────────────────────────────────────────────── */}
               </div>
@@ -2065,7 +2065,7 @@ export default function Dashboard() {
         )}
 
         {/* ────────────────────────────────────────────────────────────────
-            LOST LEADS — the post-mortem report.
+            LOST LEADS. The post-mortem report.
 
             Every lead that did not become a paying client, with an honest
             assessment of why and what should have been done differently.
@@ -2074,15 +2074,15 @@ export default function Dashboard() {
             "message them" action anywhere in this view, and the API route
             behind it is read-only. Nothing here ever reaches a customer.
 
-            The individual cards are anecdotes. The panel at the top — the
-            categories ranked by how often they happen — is the finding, which
+            The individual cards are anecdotes. The panel at the top. The
+            categories ranked by how often they happen. Is the finding, which
             is why it sits above the list and not below it.
             ──────────────────────────────────────────────────────────────── */}
         {view === 'lost' && (
           <section className="view active">
             <h2 className="vt">Lost Leads</h2>
             <div className="vsub">
-              Every lead that did not become a paying client, read back and assessed. Written for you only — nothing on this page is ever sent to a customer.
+              Every lead that did not become a paying client, read back and assessed. Written for you only. Nothing on this page is ever sent to a customer.
             </div>
 
             {lost === null && <div className="sysline" style={{ margin: '20px 0' }}>Reading the report…</div>}
@@ -2123,7 +2123,7 @@ export default function Dashboard() {
                   ))}
                   <div className="sugg">
                     <b>Read this honestly</b>
-                    A lead that was never going to convert is recorded as exactly that. If a category says nobody did anything wrong, nobody did — the assessment is asked for the truth, not for a culprit, because a report that always finds fault is one you stop reading.
+                    A lead that was never going to convert is recorded as exactly that. If a category says nobody did anything wrong, nobody did. The assessment is asked for the truth, not for a culprit, because a report that always finds fault is one you stop reading.
                   </div>
                 </div>
 
@@ -2144,7 +2144,7 @@ export default function Dashboard() {
                   </div>
                   {lost.lastRun?.budgetExhausted && (
                     <div className="mini" style={{ color: 'var(--warn)' }}>
-                      The last run stopped early because the daily AI budget was spent, with {lost.lastRun.remaining} lead{lost.lastRun.remaining === 1 ? '' : 's'} still to assess. It picks up where it left off tonight — nothing was spent past the cap.
+                      The last run stopped early because the daily AI budget was spent, with {lost.lastRun.remaining} lead{lost.lastRun.remaining === 1 ? '' : 's'} still to assess. It picks up where it left off tonight. Nothing was spent past the cap.
                     </div>
                   )}
                   {lost.counts.failed > 0 && (
@@ -2225,7 +2225,7 @@ export default function Dashboard() {
                                   </div>
                                 )}
                                 <div className="mini">
-                                  Assessed {new Date(a.analysedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Melbourne' })} · confidence {Math.round(a.confidence * 100)}%. A judgement from the conversation, not a fact — open the chat and read it yourself before acting on anything here.
+                                  Assessed {new Date(a.analysedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Melbourne' })} · confidence {Math.round(a.confidence * 100)}%. A judgement from the conversation, not a fact. Open the chat and read it yourself before acting on anything here.
                                 </div>
                               </>
                             ) : r.failure ? (

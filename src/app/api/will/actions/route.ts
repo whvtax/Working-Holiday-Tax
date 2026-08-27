@@ -208,6 +208,18 @@ async function handlePost(req: Request) {
       // customer receives it NOW, so its shown time must be now — otherwise it
       // displays the old draft time and sits above newer customer messages.
       await store.setMessageStatus(msg.id, 'SENT', { restamp: true });
+      // Approving a draft IS engaging with the conversation — you read what they
+      // wrote, you read the proposed answer, you sent it. So the chat stops
+      // being unread, exactly as it does when you reply from your own phone.
+      //
+      // deliverOut() has done this for every HUMAN send since it was written,
+      // but this branch transmits directly (a queued follow-up has to go as its
+      // approved WhatsApp template, which deliverOut's plain-text path cannot
+      // do), so it never inherited the behaviour. The result was chats staying
+      // bold with a green "1" on them after they had been answered — Jo, 27 Aug,
+      // and it is worse than cosmetic: an unread badge that lies is a list you
+      // stop trusting, and then a real unread message gets missed in it.
+      await store.markCustomerRead(customer.id).catch(() => { /* the message is sent; the badge is bookkeeping */ });
       // Apply the state/income change that was deferred until approval.
       if (msg.meta?.proposedState && canTransition(customer.state, msg.meta.proposedState)) {
         await store.setState(customer.id, msg.meta.proposedState, 'HUMAN');
