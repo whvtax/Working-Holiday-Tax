@@ -44,6 +44,12 @@ export interface MessageRow {
   meta?: {
     proposedState?: CustomerState; income?: 'TFN' | 'TFN_ABN'; templateId?: string;
     variant?: 'A' | 'B'; credited?: boolean; providerId?: string; channel?: string; sendError?: string;
+    /** The customer edited this message after sending it. WhatsApp shows an
+     *  "Edited" mark on the bubble and so does the chat here. Meta does not
+     *  always hand over the new wording, so this can be true while `body` is
+     *  still the original text — which is why it is a flag and not an
+     *  assumption that the body changed. */
+    edited?: boolean;
     /** Present on a draft the scheduler queued: it must go out as this
      *  Meta-approved template, because it is reaching someone who has been
      *  quiet for a day or more and free text is rejected outside the 24h
@@ -148,6 +154,8 @@ export interface LostAnalysisRow {
   fault: string;                 // OURS | PARTLY_OURS | NOT_OURS
   recoverable: string;           // YES | MAYBE | NO
   recoveryAction: string | null;
+  /** The ready-to-send win-back message. Null when recoverable is NO. */
+  recoveryMessage: string | null;
   evidenceQuote: string | null;
   confidence: number;
   analysedAt: string;
@@ -164,6 +172,18 @@ export interface AuditRow {
 export interface Store {
   listCustomers(): Promise<CustomerRow[]>;
   getCustomerByWaId(waId: string): Promise<CustomerRow | null>;
+  /**
+   * The same customer, found by a phone number written any way at all.
+   *
+   * The CRM stores whatever the customer typed into the form ("0412 345 678",
+   * "+61 412 345 678", "61412345678"); Will stores what WhatsApp gave us. The
+   * two only ever agree once both are reduced to digits, which is what the
+   * `wa_norm` column and crm_norm_phone() already do for the form trigger.
+   * This is that same join, reachable from application code, so a CRM task can
+   * find the WhatsApp conversation it belongs to. Null when nothing matches,
+   * which is normal and never an error.
+   */
+  findCustomerByPhone(phone: string): Promise<CustomerRow | null>;
   /** PERF-01/02: PK lookup instead of scanning listCustomers(). */
   getCustomerById(id: string): Promise<CustomerRow | null>;
   createCustomer(c: Partial<CustomerRow> & { waId: string }): Promise<CustomerRow>;
@@ -191,6 +211,15 @@ export interface Store {
    *  staff member deletes ("revokes") a message from the WhatsApp Business app,
    *  so it disappears from Will too. Returns true if a message was found. */
   discardByProviderId(providerId: string): Promise<boolean>;
+  /**
+   * The customer edited a message they had already sent.
+   *
+   * Matched on Meta's id of the ORIGINAL message. `body` is the new text when
+   * Meta gave us one and null when it did not — in which case the message is
+   * only marked as edited, and the stored text stays as it was rather than
+   * being replaced with a guess. Returns true if a message was found.
+   */
+  applyEditByProviderId(providerId: string, body: string | null): Promise<boolean>;
   /** Inbound messages in [startIso, endIso), newest last, with the sender's name
    *  and number joined on. Bounded by `limit` so a busy window cannot pull an
    *  unbounded result set into a serverless function. */

@@ -220,6 +220,14 @@ export class SupabaseStore implements Store {
     return data ? toCustomer(data) : null;
   }
 
+  async findCustomerByPhone(phone: string): Promise<CustomerRow | null> {
+    const norm = normPhone(phone);
+    if (!norm) return null;
+    // wa_norm is written on insert and on every waId patch, and is indexed.
+    const { data } = await this.sb().from('will_customers').select('*').eq('wa_norm', norm).limit(1).maybeSingle();
+    return data ? toCustomer(data) : null;
+  }
+
   async getCustomerById(id: string): Promise<CustomerRow | null> {
     const { data } = await this.sb().from('will_customers').select('*').eq('id', id).limit(1).maybeSingle();
     return data ? toCustomer(data) : null;
@@ -470,6 +478,23 @@ export class SupabaseStore implements Store {
     const customerId = (data ?? [])[0]?.customer_id as string | undefined;
     if (customerId) await this.refreshLastMessage(customerId);
     return (data?.length ?? 0) > 0;
+  }
+
+  async applyEditByProviderId(providerId: string, body: string | null): Promise<boolean> {
+    const { data: found } = await this.sb().from('will_messages')
+      .select('id, customer_id, meta').eq('meta->>providerId', providerId).maybeSingle();
+    if (!found) return false;
+    const meta = { ...((found.meta as Record<string, unknown>) ?? {}), edited: true };
+    const patch: Record<string, unknown> = { meta };
+    // Only when Meta actually handed us the new wording. Overwriting the stored
+    // text with anything else would replace what the customer really said with
+    // a guess, in the one record that is supposed to be the truth.
+    if (body && body.trim()) patch.body = body;
+    await this.sb().from('will_messages').update(patch).eq('id', found.id as string);
+    const customerId = found.customer_id as string | undefined;
+    // The edited message may be the one the chat list is previewing.
+    if (customerId && body && body.trim()) await this.refreshLastMessage(customerId);
+    return true;
   }
 
   async pendingApprovals(): Promise<(MessageRow & { customerName: string | null })[]> {
@@ -783,6 +808,7 @@ export class SupabaseStore implements Store {
       fault: (r.fault as string) ?? 'NOT_OURS',
       recoverable: (r.recoverable as string) ?? 'NO',
       recoveryAction: (r.recovery_action as string) ?? null,
+      recoveryMessage: (r.recovery_message as string) ?? null,
       evidenceQuote: (r.evidence_quote as string) ?? null,
       confidence: Number(r.confidence ?? 0),
       analysedAt: (r.analysed_at as string) ?? now(),
@@ -807,6 +833,7 @@ export class SupabaseStore implements Store {
       fault: row.fault,
       recoverable: row.recoverable,
       recovery_action: row.recoveryAction,
+      recovery_message: row.recoveryMessage,
       evidence_quote: row.evidenceQuote,
       confidence: row.confidence,
       analysed_at: row.analysedAt,

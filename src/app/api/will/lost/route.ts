@@ -62,6 +62,7 @@ export async function GET() {
         fault: a.fault,
         recoverable: a.recoverable,
         recoveryAction: a.recoveryAction,
+        recoveryMessage: a.recoveryMessage,
         evidenceQuote: a.evidenceQuote,
         confidence: a.confidence,
         hoursPriceToSilence: a.hoursPriceToSilence,

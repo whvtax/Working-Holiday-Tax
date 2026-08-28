@@ -1,0 +1,49 @@
+// ============================================================
+// What must be true the moment the owner answers somebody.
+//
+// THE RULE (Jo, 28 Aug). The Tasks tab and the chat are two views of ONE
+// conversation, so answering in either place has to settle both:
+//
+//   * the chat stops being bold and loses its unread count, exactly as it does
+//     on your own phone when you reply from it, and
+//   * every open task for that customer closes, because the thing the task was
+//     asking for has just been done.
+//
+// WHAT WAS ACTUALLY HAPPENING. Each send path had grown its own half of this.
+// manual_reply and send_task_reply closed the tasks. approve_message marked the
+// chat read. send_template, send_estimate, send_signature and send_lodged did
+// neither. So sending the very template Will proposed, from the chat, left its
+// task sitting in the Tasks tab under "Needs a decision" for a customer who had
+// already been answered, and approving a draft left the task open too.
+//
+// A board that shows work which is already done is worse than a board with
+// nothing on it: the owner learns to scroll past it, and then a real one goes
+// unnoticed in the same list.
+//
+// BEST EFFORT, ALWAYS. This runs AFTER WhatsApp has accepted the message. The
+// message is gone; it cannot be unsent. So nothing in here may throw and turn a
+// delivered reply into a failed request that gets sent a second time. A badge
+// that stays bold is a nuisance; a customer receiving the same message twice is
+// not.
+// ============================================================
+import type { Store } from './store';
+
+export interface AfterReply {
+  /** How many open tasks this reply closed. */
+  tasksResolved: number;
+}
+
+export async function afterHumanReply(store: Store, customerId: string): Promise<AfterReply> {
+  try {
+    await store.markCustomerRead(customerId);
+  } catch {
+    // The badge is bookkeeping. The message is already delivered.
+  }
+  try {
+    const open = (await store.listTasks()).filter((t) => t.customerId === customerId && t.status === 'OPEN');
+    await Promise.all(open.map((t) => store.resolveTask(t.id).catch(() => { /* per task */ })));
+    return { tasksResolved: open.length };
+  } catch {
+    return { tasksResolved: 0 };
+  }
+}

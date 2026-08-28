@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { LeadsTab } from '@/components/crm/LeadsTab'
 import { CrmSide, crmNav, NavIcons } from '@/components/crm/Shell'
@@ -420,6 +420,27 @@ export default function DashboardClient() {
   const [captureRefundType, setCaptureRefundType] = useState<'refund'|'owed'>('refund')
   const [captureSuperAmt, setCaptureSuperAmt] = useState('')
   const [confirmComplete, setConfirmComplete] = useState<string|null>(null)
+
+  // ── Done → estimate + invoice → WhatsApp (Jo, 28 Aug) ───────────────────
+  // Pressing Done on a task used to be bookkeeping: mark it finished, wipe the
+  // sensitive fields. But Done is pressed at the exact moment the work IS
+  // finished, which is also the moment the customer is owed their number and
+  // their invoice. Sending that from a second system, by hand, is how a
+  // finished return sits silent for a day.
+  //
+  // So Done now asks for the amount and the invoice link, sends the approved
+  // message on WhatsApp, and moves the customer to Signature. The task is only
+  // marked done AFTER WhatsApp accepts it: if the send fails, nothing is wiped
+  // and the button can simply be pressed again.
+  const [doneFor, setDoneFor]           = useState<Task|null>(null)
+  const [doneLink, setDoneLink]         = useState<{id:string;name:string|null;waId:string;state:string;stage:string|null}|null>(null)
+  const [doneTemplate, setDoneTemplate] = useState('')
+  const [doneLooking, setDoneLooking]   = useState(false)
+  const [doneAmt, setDoneAmt]           = useState('')
+  const [doneInvoice, setDoneInvoice]   = useState('')
+  const [doneBusy, setDoneBusy]         = useState(false)
+  const [doneErr, setDoneErr]           = useState<string|null>(null)
+  const doneReq = useRef<string|null>(null)
   const [showAddTax, setShowAddTax]     = useState(false)
   const [showAddSuper, setShowAddSuper] = useState(false)
   const [newTaxYear, setNewTaxYear]     = useState('')
@@ -729,7 +750,70 @@ export default function DashboardClient() {
     }
   }
 
-  async function markDone(id:string) {
+  /** Open the Done flow: look up the WhatsApp conversation behind this task.
+   *  No match is normal (an old lead, a mistyped number, someone who came in by
+   *  email) and simply gives the plain Done this button has always had. */
+  async function startDone(task: Task) {
+    // Which lookup is the current one. Closing the modal and opening another
+    // task while the first request is still in flight would otherwise show one
+    // customer's chat under another customer's name, which is the one mistake
+    // here that could send an estimate to the wrong person.
+    doneReq.current = task.id
+    setDoneFor(task); setDoneLink(null); setDoneTemplate('')
+    setDoneAmt(''); setDoneInvoice(''); setDoneErr(null); setDoneLooking(true)
+    try {
+      const r = await fetch(`/api/will/link?phone=${encodeURIComponent(task.whatsapp || '')}`)
+      const j = await r.json()
+      if (doneReq.current !== task.id) return
+      if (j?.customer) { setDoneLink(j.customer); setDoneTemplate(j.template || '') }
+    } catch {
+      // Will unreachable. The modal falls back to marking the task done only.
+    }
+    if (doneReq.current === task.id) setDoneLooking(false)
+  }
+
+  function closeDone() {
+    setDoneFor(null); setDoneLink(null); setDoneTemplate('')
+    setDoneAmt(''); setDoneInvoice(''); setDoneErr(null); setDoneBusy(false)
+  }
+
+  /** Send the estimate, and only then finish the task. The order is the whole
+   *  point: marking done wipes the TFN, the bank details and the files, so it
+   *  must never happen for a message that did not actually leave. */
+  async function sendEstimateThenDone() {
+    if (!doneFor || !doneLink) return
+    const amount = parseFloat(doneAmt.replace(/[^0-9.]/g,''))
+    if (!Number.isFinite(amount) || amount <= 0) { setDoneErr('Enter the refund amount'); return }
+    let invoice = ''
+    try {
+      const u = new URL(doneInvoice.trim())
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') throw new Error('scheme')
+      invoice = u.toString()
+    } catch { setDoneErr('Paste the invoice link'); return }
+
+    setDoneBusy(true); setDoneErr(null)
+    try {
+      const r = await fetch('/api/will/actions',{
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ action:'send_estimate', customerId: doneLink.id, amountCents: Math.round(amount*100), invoiceLink: invoice }),
+      })
+      const j = await r.json().catch(()=>null)
+      if (!r.ok || !j?.ok) {
+        setDoneErr(j?.error ?? 'WhatsApp did not accept the message')
+        setDoneBusy(false)
+        return
+      }
+    } catch {
+      setDoneErr('Could not reach the server. Nothing was sent.')
+      setDoneBusy(false)
+      return
+    }
+    const id = doneFor.id
+    closeDone()
+    await finishTask(id)
+  }
+
+  async function finishTask(id:string) {
     const prevTasks = tasks
     setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], reviewerNote:''} : t))
     setConfirmComplete(null)
@@ -739,7 +823,7 @@ export default function DashboardClient() {
       const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
       if (!res.ok) throw new Error('server_error')
     } catch (err) {
-      console.error('[markDone]', err)
+      console.error('[finishTask]', err)
       // Restore state on failure so admin knows it didn't save
       setTasks(prevTasks)
       alert('Failed to mark as done. Please try again.')
@@ -2071,7 +2155,7 @@ export default function DashboardClient() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                   Download PDF
                 </button>
-                <button className="btn ghost lg" style={{flex:1,justifyContent:'center'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>
+                <button className="btn ghost lg" style={{flex:1,justifyContent:'center'}} onClick={()=>startDone(activeTask)}>✓ Mark as done</button>
                 <button
                   className="btn quiet danger lg"
                   onClick={()=>setConfirmPermDelete(activeTask.id)}
@@ -2693,6 +2777,96 @@ export default function DashboardClient() {
 
       {/* ── Complete task confirmation modal ──────────────────────────── */}
 
+
+      {/* Done: the amount, the invoice, and the message that goes with them.
+          Everything the customer is owed at the end of the job, in one step. */}
+      {doneFor && (()=>{
+        const amount = parseFloat(doneAmt.replace(/[^0-9.]/g,''))
+        const amountOk = Number.isFinite(amount) && amount > 0
+        let linkOk = false
+        try { const u = new URL(doneInvoice.trim()); linkOk = u.protocol==='http:' || u.protocol==='https:' } catch { linkOk = false }
+        const amountStr = amountOk
+          ? '$' + amount.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2})
+          : '$0.00'
+        // The preview is the Library's CURRENT wording, fetched with the
+        // lookup, so what is shown here is what actually gets sent.
+        const preview = (doneTemplate || '')
+          .replaceAll('{{AMOUNT}}', amountStr)
+          .replaceAll('{{INVOICE_LINK}}', doneInvoice.trim() || 'https://in.xero.com/...')
+        return (
+        <div className="overlay" onClick={e=>{if(e.target===e.currentTarget && !doneBusy) closeDone()}}>
+          <div className="modal" style={{maxWidth:460}}>
+            <div style={{fontSize:21,marginBottom:8,textAlign:'center'}}>✅</div>
+            <div className="mh" style={{textAlign:'center'}}><b>Finish {doneFor.clientName}</b></div>
+
+            {doneLooking && (
+              <div className="msub" style={{textAlign:'center'}}>Looking for their WhatsApp chat...</div>
+            )}
+
+            {!doneLooking && !doneLink && (
+              <div className="msub" style={{textAlign:'center'}}>
+                No WhatsApp conversation found for {doneFor.whatsapp || 'this number'}.<br/>
+                The task can still be marked done, and nothing will be sent.
+              </div>
+            )}
+
+            {!doneLooking && doneLink && (<>
+              <div className="msub" style={{textAlign:'center'}}>
+                Sends the estimate and the invoice on WhatsApp, then moves them to Signature.
+              </div>
+
+              <div style={{marginBottom:12}}>
+                <div className="mlabel" style={{margin:'0 0 6px'}}>Estimated refund</div>
+                <input inputMode="decimal" autoFocus placeholder="e.g. 2036"
+                  value={doneAmt} onChange={e=>{setDoneAmt(e.target.value); setDoneErr(null)}} />
+              </div>
+
+              <div style={{marginBottom:14}}>
+                <div className="mlabel" style={{margin:'0 0 6px'}}>Invoice link</div>
+                <input placeholder="https://in.xero.com/..."
+                  value={doneInvoice} onChange={e=>{setDoneInvoice(e.target.value); setDoneErr(null)}} />
+              </div>
+
+              <div className="mlabel" style={{margin:'0 0 6px'}}>How the customer sees it</div>
+              <div style={{
+                background:'var(--panel2, rgba(0,0,0,0.04))', borderRadius:10, padding:'10px 12px',
+                fontSize:12.5, lineHeight:1.5, whiteSpace:'pre-wrap', wordBreak:'break-word',
+                color:'var(--ink2)', marginBottom:14, maxHeight:170, overflowY:'auto',
+              }}>{preview}</div>
+            </>)}
+
+            {doneErr && (
+              <div style={{fontSize:12,color:'var(--bad, #c0392b)',textAlign:'center',marginBottom:12}}>
+                {doneErr} Nothing was sent and nothing was deleted.
+              </div>
+            )}
+
+            <div style={{fontSize:11,color:'var(--ink3)',textAlign:'center',marginBottom:14}}>
+              Once this is done, the sensitive fields (TFN, bank, address, files) are deleted.
+            </div>
+
+            <div className="mfoot">
+              <button className="btn quiet lg" disabled={doneBusy} onClick={closeDone}>Cancel</button>
+              {doneLink ? (<>
+                <button className="btn quiet lg" disabled={doneBusy}
+                  onClick={()=>{ const id = doneFor.id; closeDone(); finishTask(id) }}>
+                  Done without sending
+                </button>
+                <button className="btn take lg" disabled={doneBusy || !amountOk || !linkOk}
+                  onClick={sendEstimateThenDone}>
+                  {doneBusy ? 'Sending...' : 'Send and finish'}
+                </button>
+              </>) : (
+                <button className="btn take lg" disabled={doneBusy || doneLooking}
+                  onClick={()=>{ const id = doneFor.id; closeDone(); finishTask(id) }}>
+                  ✓ Mark as done
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+        )
+      })()}
 
       {captureRefund && (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget){setCaptureRefund(null)}}}>

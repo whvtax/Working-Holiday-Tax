@@ -288,6 +288,35 @@ export async function deliverOut(
       // send — an AI auto-reply doesn't mean the owner has actually looked at
       // the chat, so it must not silently clear the bold/badge for them.
       if (author === 'HUMAN') await store.markCustomerRead(customer.id);
+      // A closed chat that has a new message in it is not a closed chat.
+      //
+      // Jo, 28 Aug: whoever wrote it, us or them, once there is another
+      // message in the thread the customer goes back to the top of the list as
+      // a Lead and the pipeline starts again from the beginning. The inbound
+      // half of this already existed (a photo or a message from someone marked
+      // Went Cold reactivates them); this is the other half, the one where WE
+      // reach out to somebody we had written off. Without it the conversation
+      // was live and the board still said Not Interested, and no follow-up
+      // cadence was ever armed behind it, so the reply we invited landed
+      // nowhere.
+      if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state)) {
+        await store.setState(customer.id, 'NEW_LEAD', 'HUMAN');
+        await store.audit('system', 'reactivated_to_lead', {
+          customerId: customer.id, from: customer.state, trigger: 'outbound_message',
+        });
+        const fresh = await store.getCustomerById(customer.id);
+        // Re-arm the follow-up cadence from the start, which is what "the whole
+        // pipeline from the beginning" means in practice.
+        //
+        // Imported here rather than at the top of the file on purpose: the
+        // scheduler imports deliverOut from this module, so a static import
+        // back would be a cycle, and a cycle between these two is how one of
+        // them ends up half-initialised at runtime for reasons nobody can see.
+        if (fresh) {
+          const { reconcileSchedule } = await import('./scheduler');
+          await reconcileSchedule(fresh);
+        }
+      }
     } catch (e) {
       await store.audit('channel', 'send_bookkeeping_failed', {
         customerId: customer.id, messageId: rec.id, providerId: res.providerId ?? null,

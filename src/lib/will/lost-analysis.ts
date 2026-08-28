@@ -284,7 +284,7 @@ export async function runLostLeadAnalysis(
         row = {
           ...base, status: 'ERROR', error: result.error,
           reason: '', category: 'unclear', shouldHaveDone: '',
-          fault: 'NOT_OURS', recoverable: 'NO', recoveryAction: null,
+          fault: 'NOT_OURS', recoverable: 'NO', recoveryAction: null, recoveryMessage: null,
           evidenceQuote: null, confidence: 0,
         };
         summary.failed++;
@@ -297,6 +297,7 @@ export async function runLostLeadAnalysis(
           fault: result.fault,
           recoverable: result.recoverable,
           recoveryAction: result.recoveryAction,
+          recoveryMessage: result.recoveryMessage,
           evidenceQuote: result.evidenceQuote,
           confidence: result.confidence,
         };
@@ -312,7 +313,7 @@ export async function runLostLeadAnalysis(
         analysedAt: new Date().toISOString(),
         status: 'ERROR', error: (e as Error).message?.slice(0, 200) ?? 'unknown error',
         reason: '', category: 'unclear', shouldHaveDone: '',
-        fault: 'NOT_OURS', recoverable: 'NO', recoveryAction: null,
+        fault: 'NOT_OURS', recoverable: 'NO', recoveryAction: null, recoveryMessage: null,
         evidenceQuote: null, confidence: 0,
       };
       summary.failed++;

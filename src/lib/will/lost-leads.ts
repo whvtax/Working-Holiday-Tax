@@ -282,12 +282,25 @@ export interface LostAnalysis {
   /** One or two sentences: why this specific lead did not convert. */
   reason: string;
   category: LostCategory;
-  /** What should have been done differently — or plainly that nothing should. */
+  /** The detailed walk-through: what should have been done differently, moment
+   *  by moment, or plainly that nothing should have been. This is the field Jo
+   *  reads, so it keeps its paragraph breaks and is allowed real length. */
   shouldHaveDone: string;
   fault: LostFault;
   recoverable: Recoverable;
-  /** The actual move that would recover them. Null when recoverable is NO. */
+  /** The reasoning: the move that would recover them. Null when recoverable is NO. */
   recoveryAction: string | null;
+  /**
+   * The message to actually send them, word for word, ready for a person to
+   * read, edit and send. Null when recoverable is NO.
+   *
+   * This is the one thing in a post-mortem that can end up in front of a
+   * customer, and it never does so on its own: the button on the card raises an
+   * ordinary task in Will with this as the suggested reply, and it goes out
+   * only when a human presses send, through the same policy guard as anything
+   * else.
+   */
+  recoveryMessage: string | null;
   /** The single most telling line from the conversation, quoted. Optional. */
   evidenceQuote: string | null;
   confidence: number;
@@ -295,6 +308,16 @@ export interface LostAnalysis {
 
 const isNonEmptyString = (v: unknown): v is string => typeof v === 'string' && v.trim().length > 0;
 const clip = (v: unknown, max: number): string => String(v ?? '').trim().replace(/\s+/g, ' ').slice(0, max);
+
+/** Like clip, but a paragraph break survives. The detailed assessment and the
+ *  draft message are both written to be READ, and flattening them into one
+ *  wall of text is what made the old one-line version skimmable and useless. */
+const clipKeepBreaks = (v: unknown, max: number): string => String(v ?? '')
+  .replace(/\r\n/g, '\n')
+  .replace(/[ \t]+/g, ' ')
+  .replace(/\n{3,}/g, '\n\n')
+  .trim()
+  .slice(0, max);
 
 /**
  * Validate the model's JSON the way claude.ts validates its own: the shape is
@@ -332,6 +355,16 @@ export function validateLostAnalysis(raw: unknown): LostAnalysis | null {
   const action = isNonEmptyString(d.recovery_action) ? clip(d.recovery_action, 400) : null;
   if (recoverable !== 'NO' && !action) return null;
 
+  // Same rule, one step further: "winnable" now has to come with the message.
+  // A card that says yes and hands the owner a blank box is the card he
+  // scrolls past, and the whole point of the button is that there is nothing
+  // left to write.
+  const message = isNonEmptyString(d.recovery_message) ? clipKeepBreaks(d.recovery_message, 700) : null;
+  if (recoverable !== 'NO' && !message) return null;
+  // A draft that still has a placeholder in it would be refused at send time
+  // anyway; rejecting it here means the card never offers it.
+  if (message && /\{\{[A-Z_]+\}\}/.test(message)) return null;
+
   const confidence = typeof d.confidence === 'number' && d.confidence >= 0 && d.confidence <= 1
     ? d.confidence
     : null;
@@ -340,12 +373,13 @@ export function validateLostAnalysis(raw: unknown): LostAnalysis | null {
   return {
     reason: clip(d.reason, 400),
     category,
-    shouldHaveDone: clip(d.should_have_done, 400),
+    shouldHaveDone: clipKeepBreaks(d.should_have_done, 2000),
     fault,
     recoverable,
     // A NO answer must not carry a recovery action; dropping it here means the
     // UI never has to decide which of two contradictory fields to believe.
     recoveryAction: recoverable === 'NO' ? null : action,
+    recoveryMessage: recoverable === 'NO' ? null : message,
     evidenceQuote: isNonEmptyString(d.evidence_quote) ? clip(d.evidence_quote, 240) : null,
     confidence,
   };

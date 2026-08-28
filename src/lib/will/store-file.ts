@@ -128,6 +128,12 @@ export class FileStore implements Store {
     return (await load()).customers.find((c) => c.waId === waId) ?? null;
   }
 
+  async findCustomerByPhone(phone: string) {
+    const norm = normPhoneDigits(phone);
+    if (!norm) return null;
+    return (await load()).customers.find((c) => normPhoneDigits(c.waId) === norm) ?? null;
+  }
+
   async getCustomerById(id: string) {
     return (await load()).customers.find((c) => c.id === id) ?? null;
   }
@@ -293,6 +299,18 @@ export class FileStore implements Store {
     const m = db.messages.find((x) => x.meta?.providerId === providerId);
     if (m) { m.status = 'DISCARDED'; refreshLastMessage(db, m.customerId); await persist(); return true; }
     return false;
+  }
+
+  async applyEditByProviderId(providerId: string, body: string | null) {
+    const db = await load();
+    const m = db.messages.find((x) => x.meta?.providerId === providerId);
+    if (!m) return false;
+    m.meta = { ...(m.meta ?? {}), edited: true };
+    // Only replace the text when Meta actually sent the new wording; otherwise
+    // the message is marked edited and keeps what the customer really said.
+    if (body && body.trim()) { m.body = body; refreshLastMessage(db, m.customerId); }
+    await persist();
+    return true;
   }
 
   async pendingApprovals() {

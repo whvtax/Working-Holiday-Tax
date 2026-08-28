@@ -335,9 +335,15 @@ export async function mineKnowledge(
 // and say honestly why, what should have been done differently, and whether it
 // can still be recovered.
 //
-// FOR THE OWNER ONLY. Nothing this returns is ever shown to a customer, drafted
-// as a reply, or turned into a template — there is no path from here to an
-// outbound message, deliberately.
+// FOR THE OWNER. The assessment itself (reason, fault, what should have been
+// done) is private and never leaves this screen.
+//
+// ONE THING NOW CROSSES OVER (Jo, 28 Aug): `recovery_message`, the actual text
+// to send a lead who could still come back. It is NOT sent from here. Pressing
+// the button on the card raises an ordinary task in Will with that text as its
+// suggested reply, so it is read, edited if needed, and sent by a person
+// through the same policy guard as every other outbound message. Nothing this
+// function returns can reach a customer without a human pressing send.
 //
 // Same hardening as decide() above: forced tool call, timeout, one retry with
 // jitter on 429/5xx, and strict validation of the result (lost-leads.ts). A
@@ -377,7 +383,7 @@ const POSTMORTEM_TOOL = {
       },
       should_have_done: {
         type: 'string',
-        description: 'What specifically should have been done differently, naming the moment in the conversation. If the answer is that nothing should have been done differently, write exactly that and say why — that is a correct and useful answer, not a cop-out.',
+        description: 'The detailed part of this report, and the reason the owner reads it. Walk through the conversation and set out what specifically should have been done differently: which message, what was said, what should have been said instead, and what would probably have happened. Where more than one moment mattered, cover each in turn, earliest first. Be concrete enough that someone could act on it tomorrow without having to reread the chat. Several sentences, or a short paragraph per moment. If the honest answer is that nothing should have been done differently, write exactly that and explain what makes you sure of it from this conversation — that is a correct and complete answer, not a cop-out, and it must not be padded out into invented criticism.',
       },
       fault: {
         type: 'string',
@@ -391,7 +397,11 @@ const POSTMORTEM_TOOL = {
       },
       recovery_action: {
         type: 'string',
-        description: 'Required unless recoverable is NO: the one concrete move that would most likely win them back, in the owner\'s own hands. Not "follow up" — say what about, and why now.',
+        description: 'Required unless recoverable is NO: the one concrete move that would most likely win them back, in the owner\'s own hands. Not "follow up" — say what about, and why now. One or two sentences; this is the reasoning, not the message itself.',
+      },
+      recovery_message: {
+        type: 'string',
+        description: 'Required unless recoverable is NO: the actual WhatsApp message to send this person, word for word, ready to send. Write it to THIS conversation: pick up the specific thing they last said or asked, and answer it. Their language, not English, if that is what they wrote in. Warm, short, three lines at most, no greeting beyond a natural opener, no pressure and no discount. Never quote a refund figure, never give tax advice, never negotiate the fixed fee. Do not include placeholders of any kind: write the finished text.',
       },
       evidence_quote: {
         type: 'string',
@@ -414,6 +424,12 @@ Equally, do not soften a real failure. If a question went unanswered, if a reply
 The timing is often the whole story. Someone who read the price and never typed again is a different failure from someone who argued about it over three days, and both are different from someone who was still asking questions when the conversation stopped.
 
 What "should have been done differently" must be concrete and inside the rules above. Never suggest discounting, negotiating the fixed price, quoting a refund amount before payment, or giving tax advice before payment — those are not available and suggesting them makes the report unusable.
+
+TWO OF THE FIELDS ARE THE WORK, AND THE REST IS CONTEXT FOR THEM.
+
+The should_have_done field is where the thinking goes. Do not summarise: go through the conversation and show your reasoning, message by message where it matters. The owner is trying to stop the same thing happening to the next twenty leads, so vague advice is worth nothing to him and a precise account of one wrong sentence is worth a great deal. And when the truth is that nothing would have changed the outcome, say that clearly instead of reaching for something.
+
+The recovery_message field is a message that a person will read on their phone. Write it as one, not as a description of one. It has to sound like the same person who was already talking to them, pick up where that conversation actually stopped, and give them a reason to answer that is about their situation rather than about our sales process. Somebody who asked us to stop, or who has nothing to lodge, gets no message at all: set recoverable to NO and leave it out.
 
 Answer only by calling the post_mortem tool.`;
 

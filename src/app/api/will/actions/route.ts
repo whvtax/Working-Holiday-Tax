@@ -15,12 +15,14 @@ import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/c
 import { resolveAiMode } from '@/lib/will/mode';
 import { suggestReply } from '@/lib/will/suggest';
 import { APPROVED } from '@/lib/will/approved-messages';
+import { canSendEstimate, stateAfterEstimate, composeEstimate } from '@/lib/will/estimate-send';
+import { afterHumanReply } from '@/lib/will/after-reply';
 
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer';
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead';
   id?: string;
   customerId?: string;
   body?: string;
@@ -219,7 +221,9 @@ async function handlePost(req: Request) {
       // bold with a green "1" on them after they had been answered — Jo, 27 Aug,
       // and it is worse than cosmetic: an unread badge that lies is a list you
       // stop trusting, and then a real unread message gets missed in it.
-      await store.markCustomerRead(customer.id).catch(() => { /* the message is sent; the badge is bookkeeping */ });
+      // Both halves of "this conversation has been answered": the badge, and
+      // the task that was asking for the answer. See lib/will/after-reply.ts.
+      await afterHumanReply(store, customer.id);
       // Apply the state/income change that was deferred until approval.
       if (msg.meta?.proposedState && canTransition(customer.state, msg.meta.proposedState)) {
         await store.setState(customer.id, msg.meta.proposedState, 'HUMAN');
@@ -269,6 +273,7 @@ async function handlePost(req: Request) {
       const waTemplate = { name: template.key, params: [firstName], lang: customer.lang };
       const out = await deliverOut(customer, body, 'HUMAN', { waTemplate }, waTemplate);
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      await afterHumanReply(store, customer.id);
       await store.audit('owner', 'followup_sent_manually', { customerId: customer.id, template: template.key });
       return NextResponse.json({ ok: true });
     }
@@ -321,7 +326,10 @@ async function handlePost(req: Request) {
       // customer was left unanswered with no trace on the board.
       const out = await deliverOut(customer, send.body!, 'HUMAN');
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
-      await store.resolveTask(task.id);
+      // Not only THIS task: everything open for this customer, and the unread
+      // badge with it. Two tasks for one person answered by one message is one
+      // conversation settled, not one and a half.
+      await afterHumanReply(store, customer.id);
       await store.audit('owner', 'task_reply_sent', { taskId: task.id });
       return NextResponse.json({ ok: true });
     }
@@ -346,9 +354,7 @@ async function handlePost(req: Request) {
       // closed if you used "Send Reply" on the Tasks card itself — replying
       // in the chat left it sitting open ("Needs a decision") even though it
       // was already handled, so it had to be dismissed by hand.
-      const openTasksForCustomer = (await store.listTasks())
-        .filter((t) => t.customerId === customer.id && t.status === 'OPEN');
-      await Promise.all(openTasksForCustomer.map((t) => store.resolveTask(t.id)));
+      await afterHumanReply(store, customer.id);
       await store.audit('owner', 'manual_reply', { customerId: customer.id });
       return NextResponse.json({ ok: true, aiPaused: true });
     }
@@ -366,7 +372,48 @@ async function handlePost(req: Request) {
       if (send.error) return bad(send.error);
       const out = await deliverOut(customer, send.body!, 'HUMAN');
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      // The case Jo hit: sending the very template Will proposed, from the
+      // chat, used to leave its task open in the Tasks tab.
+      await afterHumanReply(store, customer.id);
       await store.audit('owner', 'template_sent_manually', { customerId: customer.id, template: template.key });
+      return NextResponse.json({ ok: true });
+    }
+
+    case 'recover_lead': {
+      // The button on a lost-lead card. The post-mortem judged this person
+      // still winnable and wrote the message to send them; this puts that
+      // message in front of the owner as an ordinary task, in the same place
+      // as every other thing waiting for him.
+      //
+      // IT DOES NOT SEND. Jo, 28 Aug: "a button I press and it goes over to
+      // Will, to tasks and a draft". A win-back is the most delicate message
+      // this system produces, written about somebody who already said no or
+      // went quiet, so it is read by a person before it goes anywhere. The
+      // send path from the task is the ordinary one, guard included.
+      if (!b.customerId) return bad('customerId required');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      if (customer.optedOut) return bad('this person asked us to stop messaging them');
+
+      const analysis = (await store.listLostAnalyses()).find((r) => r.customerId === customer.id);
+      if (!analysis || analysis.status !== 'OK') return bad('this lead has not been assessed yet');
+      if (analysis.recoverable === 'NO') return bad('the assessment says this lead cannot be recovered');
+      const draft = analysis.recoveryMessage?.trim();
+      if (!draft) return bad('the assessment did not write a message for this lead');
+
+      const existing = await store.findOpenTaskForCustomer(customer.id);
+      const reason = 'Win-back: the assessment says this lead is still worth a message. Read it, change anything you want, send it.';
+      const context = analysis.reason;
+      if (existing) {
+        // One task per customer, same rule as everywhere else.
+        await store.updateTask(existing.id, { reason, severity: 'REVIEW', context, suggestedReply: draft });
+      } else {
+        await store.addTask({
+          customerId: customer.id, customerName: customer.name ?? customer.waId,
+          reason, severity: 'REVIEW', context, suggestedReply: draft,
+        });
+      }
+      await store.audit('owner', 'lost_lead_recovery_queued', { customerId: customer.id });
       return NextResponse.json({ ok: true });
     }
 
@@ -482,12 +529,25 @@ async function handlePost(req: Request) {
     }
 
     case 'send_estimate': {
-      // The "Send Estimate + Invoice" button on a Review chat: one step
-      // instead of set_estimate + compose + send + move-stage separately.
-      // Composes the fixed message, sends it, records the estimate, and
-      // advances the customer to Estimate — unless they are already at
-      // Estimate/Final Review, in which case this is a correction resend and
-      // the stage is left where it is.
+      // The "Send Estimate + Invoice" button on a Review chat, and the Done
+      // button on a CRM task: one step instead of set_estimate + compose +
+      // send + move-stage separately. Composes the fixed message, sends it,
+      // records the estimate, and moves the customer to Signature.
+      //
+      // WHY SIGNATURE AND NOT ESTIMATE READY (Jo, 28 Aug). This is pressed at
+      // the end of the work, not in the middle of it: the return is finished,
+      // the amount is known, the invoice is raised. There is nothing left for
+      // the customer to be "in review" for, so the pipeline moves them to
+      // Signature and the signature follow-ups take it from there.
+      //
+      // ONE MESSAGE, NOT TWO. The estimate message is the only thing sent.
+      // send_signature's wording ("I've emailed it to you for review and
+      // signature") is a claim about an email that has not been sent yet at
+      // this moment, so it stays on its own button.
+      //
+      // Someone already AT Signature or beyond is a correction resend: the
+      // message goes again and the stage is left exactly where it is, so
+      // fixing a typo in an amount can never drag a signed return backwards.
       if (!b.customerId || typeof b.amountCents !== 'number' || !Number.isFinite(b.amountCents) || b.amountCents < 0) {
         return bad('customerId and a valid amountCents required');
       }
@@ -498,20 +558,19 @@ async function handlePost(req: Request) {
 
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
-      if (!['FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW'].includes(customer.state)) {
-        return bad('the estimate can only be sent during review');
+      if (!canSendEstimate(customer.state)) {
+        return bad('the estimate can only be sent once the questionnaire is back');
       }
 
       const amountCents = Math.round(b.amountCents);
-      // Always two decimals, e.g. "$3,004.00" — formatAUD drops them for a
-      // whole-dollar amount, which does not match the approved wording here.
-      const amountStr = '$' + (amountCents / 100).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      // {{AMOUNT}} and {{INVOICE_LINK}} are filled here rather than in
-      // humanSend: the amount comes from this request, and the customer's
-      // stored estimate is only written further down, once the send succeeded.
-      const body = (await libraryBody('estimate_invoice', APPROVED.estimate_invoice))
-        .replaceAll('{{AMOUNT}}', amountStr)
-        .replaceAll('{{INVOICE_LINK}}', invoiceUrl.toString());
+      // Filled here rather than in humanSend: the amount comes from this
+      // request, and the customer's stored estimate is only written further
+      // down, once the send has actually succeeded.
+      const body = composeEstimate(
+        await libraryBody('estimate_invoice', APPROVED.estimate_invoice),
+        amountCents,
+        invoiceUrl.toString(),
+      );
 
       const send = await humanSend(customer, body);
       if (send.error) return bad(send.error);
@@ -519,11 +578,13 @@ async function handlePost(req: Request) {
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
 
       await store.updateCustomer(customer.id, { estimatedRefundCents: amountCents, aiPaused: true });
-      if (customer.state !== 'ESTIMATE_READY' && customer.state !== 'FINAL_REVIEW') {
-        await store.setState(customer.id, 'ESTIMATE_READY', 'HUMAN');
+      const nextState = stateAfterEstimate(customer.state);
+      if (nextState) {
+        await store.setState(customer.id, nextState, 'HUMAN');
         const fresh = await store.getCustomerById(customer.id);
         if (fresh) await reconcileSchedule(fresh);
       }
+      await afterHumanReply(store, customer.id);
       await store.audit('owner', 'estimate_sent', { customerId: customer.id, amountCents, invoiceLink: invoiceUrl.toString() });
       return NextResponse.json({ ok: true });
     }
@@ -547,6 +608,7 @@ async function handlePost(req: Request) {
       await store.setState(customer.id, 'SIGNATURE_PENDING', 'HUMAN');
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
+      await afterHumanReply(store, customer.id);
       await store.audit('owner', 'signature_sent', { customerId: customer.id });
       return NextResponse.json({ ok: true });
     }
@@ -571,6 +633,7 @@ async function handlePost(req: Request) {
       await store.setState(customer.id, 'LODGED', 'HUMAN');
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
+      await afterHumanReply(store, customer.id);
       await store.audit('owner', 'lodged_sent', { customerId: customer.id });
       return NextResponse.json({ ok: true });
     }

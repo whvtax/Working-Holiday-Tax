@@ -190,6 +190,7 @@ describe('validating what the model returned', () => {
     fault: 'PARTLY_OURS',
     recoverable: 'MAYBE',
     recovery_action: 'One message about the refund guarantee, before the October deadline.',
+    recovery_message: 'Hey, just so you know: if your refund comes to less than our fee we refund the difference, so you are never out of pocket. Happy to get started whenever you are.',
     evidence_quote: 'ok let me think about it',
     confidence: 0.8,
   };
@@ -254,6 +255,69 @@ describe('validating what the model returned', () => {
   it('clips runaway text rather than storing an essay', () => {
     const v = validateLostAnalysis({ ...good, reason: 'x'.repeat(5000) });
     expect(v!.reason.length).toBe(400);
+  });
+
+  // ── The message the owner actually sends (Jo, 28 Aug) ─────────────────────
+  // "Winnable" used to hand him a verdict and a sentence of advice, which left
+  // a blank message box at the exact moment his attention was elsewhere. The
+  // assessment writes the message now, and these pin that it is never missing,
+  // never half-written, and never present on a lead who must not be contacted.
+  describe('the win-back message', () => {
+    it('is kept, whole, when the lead is winnable', () => {
+      const v = validateLostAnalysis(good);
+      expect(v!.recoveryMessage).toContain('refund the difference');
+    });
+
+    it('refuses a "winnable" answer that did not write one', () => {
+      // A yes with nothing to send is the card he scrolls past.
+      const { recovery_message: _drop, ...noMessage } = good;
+      expect(validateLostAnalysis(noMessage)).toBeNull();
+      expect(validateLostAnalysis({ ...good, recovery_message: '   ' })).toBeNull();
+    });
+
+    it('refuses a draft with a placeholder still in it', () => {
+      // humanSend would refuse it at send time anyway. Rejecting it here means
+      // the button is never offered for a message that cannot go.
+      expect(validateLostAnalysis({ ...good, recovery_message: 'Hi {{NAME}}, still keen?' })).toBeNull();
+    });
+
+    it('carries none at all when the lead cannot be recovered', () => {
+      // Somebody who asked us to stop must not have a ready-to-send message
+      // sitting next to a button.
+      const v = validateLostAnalysis({ ...good, recoverable: 'NO' });
+      expect(v!.recoverable).toBe('NO');
+      expect(v!.recoveryMessage).toBeNull();
+      expect(v!.recoveryAction).toBeNull();
+    });
+
+    it('does not need one when the lead cannot be recovered', () => {
+      const { recovery_message: _m, recovery_action: _a, ...bare } = good;
+      const v = validateLostAnalysis({ ...bare, recoverable: 'NO' });
+      expect(v).not.toBeNull();
+      expect(v!.recoveryMessage).toBeNull();
+    });
+  });
+
+  // The detailed assessment is the part Jo reads, and a wall of text is the
+  // part people skip.
+  describe('the detailed assessment', () => {
+    it('keeps paragraph breaks', () => {
+      const v = validateLostAnalysis({
+        ...good,
+        should_have_done: 'First moment: the price landed with no context.\n\nSecond moment: nobody followed up for six days.',
+      });
+      expect(v!.shouldHaveDone.split('\n\n')).toHaveLength(2);
+    });
+
+    it('collapses runs of blank lines but does not flatten the text', () => {
+      const v = validateLostAnalysis({ ...good, should_have_done: 'One.\n\n\n\n\nTwo.' });
+      expect(v!.shouldHaveDone).toBe('One.\n\nTwo.');
+    });
+
+    it('has room for a real walk-through, not one sentence', () => {
+      const v = validateLostAnalysis({ ...good, should_have_done: 'y'.repeat(5000) });
+      expect(v!.shouldHaveDone.length).toBe(2000);
+    });
   });
 });
 

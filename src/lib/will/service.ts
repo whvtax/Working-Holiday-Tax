@@ -18,6 +18,7 @@ import { suggestReply } from './suggest';
 import { APPROVED } from './approved-messages';
 import { assessPaymentProofImage } from './claude';
 import { claimsPayment } from './payment-claim';
+import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
 
@@ -41,21 +42,39 @@ const MAX_TASK_CONTEXT = 2000;
 async function raiseOrUpdateTask(
   store: ReturnType<typeof getStore>,
   customer: Pick<CustomerRow, 'id' | 'name' | 'waId'>,
-  opts: { reason: string; severity: string; newContext: string; suggestedReply: string | null },
+  opts: {
+    reason: string; severity: string; newContext: string; suggestedReply: string | null;
+    /**
+     * Replace the growing transcript with something computed from it, rather
+     * than appending to it. Used by the after-payment document drop, where the
+     * useful context is "12 files received" and NOT twelve copies of
+     * "📄 [Document]". Receives the open task's context, or null when this is
+     * the first message of the burst.
+     */
+    fold?: (existing: string | null) => string;
+    /** The reason line, when it depends on the folded context (a count). */
+    reasonFor?: (context: string) => string;
+  },
 ): Promise<void> {
   const existing = await store.findOpenTaskForCustomer(customer.id);
   if (existing) {
-    const merged = existing.context ? `${existing.context}\n---\n${opts.newContext}` : opts.newContext;
+    const merged = opts.fold
+      ? opts.fold(existing.context)
+      : existing.context ? `${existing.context}\n---\n${opts.newContext}` : opts.newContext;
+    const context = merged.length > MAX_TASK_CONTEXT ? merged.slice(merged.length - MAX_TASK_CONTEXT) : merged;
     await store.updateTask(existing.id, {
-      reason: opts.reason, severity: opts.severity,
-      context: merged.length > MAX_TASK_CONTEXT ? merged.slice(merged.length - MAX_TASK_CONTEXT) : merged,
+      reason: opts.reasonFor ? opts.reasonFor(context) : opts.reason,
+      severity: opts.severity,
+      context,
       suggestedReply: opts.suggestedReply,
     });
     return;
   }
+  const fresh = opts.fold ? opts.fold(null) : opts.newContext;
   await store.addTask({
     customerId: customer.id, customerName: customer.name ?? customer.waId,
-    reason: opts.reason, severity: opts.severity, context: opts.newContext, suggestedReply: opts.suggestedReply,
+    reason: opts.reasonFor ? opts.reasonFor(fresh) : opts.reason,
+    severity: opts.severity, context: fresh, suggestedReply: opts.suggestedReply,
   });
 }
 
@@ -480,6 +499,23 @@ export async function handleInboundNote(
   // not: one needs somebody to listen to it, the other is usually not a message
   // from the customer at all. Where Meta told us what it was, the reason says
   // so — that is the line that turns the next card into a diagnosis.
+  // Jo, 28 Aug: files arriving from someone who has ALREADY PAID are not a
+  // problem to solve, they are the paperwork we asked for. Six of the sixteen
+  // cards on the board that morning were one paid customer's document drop
+  // rendered as an emergency: fifty lines of "📄 [Document: OptusInvoice.pdf]"
+  // under a reason that read like something had gone wrong. That collapses to
+  // one small task with a count, and a short acknowledgement so they are not
+  // left on read while the owner works through the pile.
+  if (meta?.media && isAfterPayment(customer.state)) {
+    await raiseOrUpdateTask(store, customer, {
+      reason: documentDropReason(1), severity: 'REVIEW', newContext: body,
+      fold: (existing) => foldDocumentDrop(existing, body),
+      reasonFor: (context) => documentDropReason(documentDropCount(context)),
+      suggestedReply: await suggestReply('', customer, 'documents_after_payment'),
+    });
+    const paidFresh = await store.getCustomerByWaId(waId);
+    return paidFresh ?? customer;
+  }
   const u = meta?.undecoded;
   const metaDetail = u
     ? [u.type ? `type=${u.type}` : null, u.errorCode ? `error=${u.errorCode}` : null, u.errorTitle]
@@ -489,7 +525,7 @@ export async function handleInboundNote(
     reason: meta?.media
       ? 'Customer sent an attachment Will cannot read. Open the chat to view it and reply.'
       : meta?.undecoded
-        ? `WhatsApp delivered an event with no readable text${metaDetail ? ` (${metaDetail})` : ''}. It may not be a message from the customer at all — open WhatsApp to check.`
+        ? `WhatsApp delivered an event with no readable text${metaDetail ? ` (${metaDetail})` : ''}. It may not be a message from the customer at all. Open WhatsApp to check.`
         : 'Customer sent a voice note. Open WhatsApp to listen and reply.',
     severity: 'REVIEW', newContext: body,
     // Even here there is something worth proposing: an acknowledgement that the

@@ -147,8 +147,10 @@ If you have a minute, we'd really appreciate a Google review 🙏 {{REVIEW_LINK}
    *  the invoice URL pasted with it. Both are filled by the action before the
    *  message leaves, so a leftover placeholder is refused as it is anywhere. */
   estimate_invoice: `Your estimated tax refund is {{AMOUNT}}.
+
 I'll send it for final review, then to you for signature.
-Here is your invoice: {{INVOICE_LINK}}`,
+Here is your invoice:
+ {{INVOICE_LINK}}`,
 
   /** "Mark Lodged" button (Signature stage). Fixed text, including the Google
    *  review link, exactly as it was sent from the action handler. Kept separate
@@ -168,5 +170,9 @@ https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8?g_st=ic`,
     unreadable: `Thanks for your message 😊 It didn't come through on my end, would you mind sending it again as text?`,
     returning_customer: `Hey, good to hear from you again 😊 What can I help you with?`,
     many_questions: `Thanks for all the questions 😊 Let me jump in personally and go through everything with you properly.`,
+    /** Files from someone who has ALREADY PAID. Not a question, so it asks none
+     *  back: it confirms the pile arrived and buys the time to work through it.
+     *  Jo, 28 Aug. */
+    documents_after_payment: `Perfect, got it all, thank you 😊 Let me work through everything and I'll come back to you soon.`,
   },
 } as const;

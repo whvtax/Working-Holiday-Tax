@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, DM_Sans, Inter } from 'next/font/google'
+type __FontOpts = { variable: string; [k: string]: unknown }
+const __stub = (o: __FontOpts) => ({ variable: o.variable, className: '', style: { fontFamily: '' } })
+const Fraunces = __stub
+const DM_Sans = __stub
+const Inter = __stub
 import './globals.css'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'

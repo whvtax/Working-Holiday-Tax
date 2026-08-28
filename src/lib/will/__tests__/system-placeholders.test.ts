@@ -19,7 +19,7 @@
  * silently goes back to being quoted as if a person had typed it. So the list
  * below is copied from the writer verbatim, and every entry must be recognised.
  */
-import { describeSystemPlaceholder, captionAfterPlaceholder } from '@/lib/will/handoff-reasons';
+import { describeSystemPlaceholder, captionAfterPlaceholder, summariseArrivals } from '@/lib/will/handoff-reasons';
 
 // Verbatim from placeholderFor(), one per branch of its switch.
 const EVERY_PLACEHOLDER: [string, string][] = [
@@ -92,5 +92,50 @@ describe('captionAfterPlaceholder', () => {
 
   it('returns null for text that is not a stand-in at all', () => {
     expect(captionAfterPlaceholder('Hi, can you help?')).toBeNull();
+  });
+});
+
+// ── One line for a whole burst (Huw, +44 7501 114256, 28 Aug) ───────────────
+// A task folds a burst into one, so three photos produced three identical
+// sentences, explanation and all, and buried the line the customer actually
+// typed. These pin the counting and, more importantly, that real text is never
+// swallowed by the summary.
+describe('summariseArrivals', () => {
+  it('counts repeats instead of repeating the sentence', () => {
+    const s = summariseArrivals(['📷 [Photo]', '📷 [Photo]', '📷 [Photo]']);
+    expect(s.events).toBe('They sent 3 photos');
+    expect(s.quotes).toEqual([]);
+  });
+
+  it('names a single attachment in the singular', () => {
+    expect(summariseArrivals(['📷 [Photo]']).events).toBe('They sent a photo');
+  });
+
+  it('lists mixed kinds the way a person would say them', () => {
+    const s = summariseArrivals(['📷 [Photo]', '📷 [Photo]', '🎤 [Voice message]', '📄 [Document]']);
+    expect(s.events).toBe('They sent 2 photos, a voice message and a document');
+  });
+
+  it('keeps what the customer actually typed, separate and unquoted-by-it', () => {
+    // The whole point: real words must not be absorbed into the summary.
+    const s = summariseArrivals(['📷 [Photo]', 'here is my payslip', '📷 [Photo]']);
+    expect(s.events).toBe('They sent 2 photos');
+    expect(s.quotes).toEqual(['here is my payslip']);
+  });
+
+  it('recovers a caption as the customer’s own words', () => {
+    const s = summariseArrivals(['📷 [Photo] this is the receipt']);
+    expect(s.events).toBe('They sent a photo');
+    expect(s.captions).toEqual(['this is the receipt']);
+  });
+
+  it('returns no event line when nothing but text arrived', () => {
+    const s = summariseArrivals(['hello', 'are you there?']);
+    expect(s.events).toBeNull();
+    expect(s.quotes).toEqual(['hello', 'are you there?']);
+  });
+
+  it('handles an empty burst', () => {
+    expect(summariseArrivals([]).events).toBeNull();
   });
 });

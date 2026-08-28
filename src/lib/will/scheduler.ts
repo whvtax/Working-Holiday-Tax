@@ -68,9 +68,20 @@ export async function scheduleFollowUp(customerId: string, flow: Flow, seq: numb
  * high-water mark for the current flow, so a chatty customer is not
  * followed-up #1 forever (audit finding).
  */
+/** The three ways a lead ends without paying. */
+const CLOSED_STATES: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
+
 export async function reconcileSchedule(customer: CustomerRow): Promise<void> {
   const store = getStore();
   await store.cancelJobsFor(customer.id, ['FOLLOW_UP', 'AUTO_CLOSE']);
+  // A lead that has just closed is a lead worth understanding, now rather than
+  // at 4am tomorrow (Jo, 28 Aug). Queued before the opt-out/paused checks
+  // below, because a lead who opted out or was paused and then closed is
+  // exactly the kind worth reading back. Best effort: failing to queue a
+  // post-mortem must never break the state change that caused it.
+  if (CLOSED_STATES.includes(customer.state)) {
+    await ensureLostAnalysisSoon().catch(() => { /* the close itself is what matters */ });
+  }
   if (customer.optedOut || customer.aiPaused || customer.isLegacy) return;
   const flow = flowForState(customer.state);
   if (!flow) return;
@@ -123,32 +134,37 @@ export async function ensureDailyDigest(): Promise<void> {
   await store.addJob({ customerId: null, kind: 'DAILY_DIGEST', payload: {}, runAt: runAt.toISOString() });
 }
 
-/** Ensure exactly one lost-lead analysis job is queued (idempotent), for the
- *  next 4:00am in Melbourne. Same shape as ensureDailyDigest, and separate from
- *  NIGHTLY for the same reason: it makes paid model calls, so it needs its own
- *  predictable slot in the quiet hours rather than riding on whenever nightly
- *  maintenance happens to fire. 4am also puts it four hours before the digest,
- *  so the two never contend for the same daily AI budget in the same minute. */
-export async function ensureLostAnalysis(): Promise<void> {
+/**
+ * Queue a lost-lead post-mortem, soon.
+ *
+ * WHAT THIS USED TO BE. One job a night, at 4:00am Melbourne, that swept up
+ * every lead that had gone quiet since the last sweep. Jo, 28 Aug: assess a
+ * lead the moment it closes, not the following morning. Reading why somebody
+ * walked away is worth most while it is still the conversation you remember,
+ * and a fixed hour meant the answer to "what just happened there" was always
+ * "ask me tomorrow".
+ *
+ * SO IT IS QUEUED BY THE CLOSE ITSELF. reconcileSchedule() calls this whenever
+ * a customer lands in Not Interested, Went Cold or Not Relevant.
+ *
+ * WHY A SHORT DELAY AND NOT IMMEDIATELY. Two minutes, for two reasons. It keeps
+ * a model call off the request path that closed the lead, and a batch of closes
+ * (the nightly auto-close cadence retires several at once) collapses into one
+ * run rather than one run each: the job assesses every lead that is waiting,
+ * not only the one that triggered it.
+ *
+ * IDEMPOTENT. The existence check is pushed to the database rather than done by
+ * scanning listJobs(), because once will_jobs passed PostgREST's 1000-row
+ * ceiling the truncated page stopped containing the queued job, and this
+ * quietly queued another one every time it was called.
+ */
+export async function ensureLostAnalysisSoon(): Promise<void> {
   const store = getStore();
-  // Existence check pushed to the DB, for the same reason as the digest above:
-  // a `listJobs()` scan past PostgREST's row ceiling stops containing the queued
-  // job and quietly queues another one every tick.
   if (await store.hasScheduledJobOfKind('LOST_ANALYSIS')) return;
-
-  const now = new Date();
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
-    hour12: false, timeZone: 'Australia/Melbourne',
-  }).formatToParts(now);
-  const y = Number(parts.find((p) => p.type === 'year')?.value);
-  const mo = Number(parts.find((p) => p.type === 'month')?.value);
-  const da = Number(parts.find((p) => p.type === 'day')?.value);
-  const hh = Number(parts.find((p) => p.type === 'hour')?.value);
-  const targetDay = hh >= 4 ? da + 1 : da; // Date.UTC below normalises any overflow
-
-  const runAt = new Date(localMidnightUtc('Australia/Melbourne', y, mo, targetDay).getTime() + 4 * 60 * 60 * 1000);
-  await store.addJob({ customerId: null, kind: 'LOST_ANALYSIS', payload: {}, runAt: runAt.toISOString() });
+  await store.addJob({
+    customerId: null, kind: 'LOST_ANALYSIS', payload: {},
+    runAt: new Date(Date.now() + 2 * 60 * 1000).toISOString(),
+  });
 }
 
 export interface TickResult { processed: number; sent: string[]; closed: string[]; deferred: number }
@@ -202,6 +218,12 @@ async function doProcess(): Promise<TickResult> {
     try {
       if (job.kind === 'NIGHTLY') {
         await runNightly();
+        // Catch-up, not a schedule. Most lost leads are assessed the moment
+        // they close. A lead that simply went silent in a sales stage never
+        // transitions anywhere, so nothing would ever ask about it; nightly
+        // maintenance queues one run if any of those are waiting. It is a
+        // no-op when there is nothing to assess.
+        await ensureLostAnalysisSoon().catch(() => { /* maintenance is best effort */ });
         await store.setJobStatus(job.id, 'DONE');
         await ensureNightly();
         continue;
@@ -239,7 +261,7 @@ async function doProcess(): Promise<TickResult> {
             runAt: new Date(Date.now() + 3 * 60 * 1000).toISOString(),
           });
         } else {
-          await ensureLostAnalysis();
+          await ensureLostAnalysisSoon();
         }
         continue;
       }

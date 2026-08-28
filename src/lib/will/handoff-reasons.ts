@@ -242,3 +242,69 @@ export function captionAfterPlaceholder(text: string): string | null {
   const rest = t.replace(/^(?:📷 \[Photo\]|🎥 \[Video\]|🎤 \[Voice message\]|📄 \[Document(?::[^\]]*)?\]|💟 \[Sticker\]|📍 \[Location\]|👤 \[Contact card\]|📎 \[Message [—-] open WhatsApp to view\])/, '').trim();
   return rest || null;
 }
+
+/**
+ * One line for everything that arrived in a burst.
+ *
+ * A task folds a burst of messages into one (service.ts, raiseOrUpdateTask), so
+ * three photos in a row produce three identical stand-ins. The Decision Log was
+ * describing each separately and printed the same sentence three times over,
+ * explanation and all:
+ *
+ *     They sent a photo. Will reads text, so there was nothing here...
+ *     They sent a photo. Will reads text, so there was nothing here...
+ *     They sent a photo. Will reads text, so there was nothing here...
+ *
+ * Seen on Huw (+44 7501 114256), 28 Aug. It reads as a stutter, and it buries
+ * the one line that is not a stand-in — the thing the customer actually typed.
+ *
+ * So the stand-ins are counted and named once, and anything the customer really
+ * wrote comes back separately to be quoted.
+ */
+const PLACEHOLDER_NOUNS: [RegExp, string, string][] = [
+  [/^📷 \[Photo\]/, 'a photo', 'photos'],
+  [/^🎥 \[Video\]/, 'a video', 'videos'],
+  [/^🎤 \[Voice message\]/, 'a voice message', 'voice messages'],
+  [/^📄 \[Document/, 'a document', 'documents'],
+  [/^💟 \[Sticker\]/, 'a sticker', 'stickers'],
+  [/^📍 \[Location\]/, 'their location', 'locations'],
+  [/^👤 \[Contact card\]/, 'a contact card', 'contact cards'],
+  [/^📎 \[Message [—-] open WhatsApp to view\]/i, 'something WhatsApp could not read', 'things WhatsApp could not read'],
+];
+
+export interface ArrivalSummary {
+  /** "They sent 3 photos and a voice message", or null when nothing but text. */
+  events: string | null;
+  /** The customer's own words, in order. Quoted by the caller. */
+  quotes: string[];
+  /** Captions typed alongside an attachment. Also the customer's own words. */
+  captions: string[];
+}
+
+export function summariseArrivals(lines: string[]): ArrivalSummary {
+  const counts = new Map<string, { one: string; many: string; n: number }>();
+  const quotes: string[] = [];
+  const captions: string[] = [];
+
+  for (const line of lines) {
+    const match = PLACEHOLDER_NOUNS.find(([re]) => re.test(line.trim()));
+    if (!match) { quotes.push(line); continue; }
+    const [, one, many] = match;
+    const cur = counts.get(one) ?? { one, many, n: 0 };
+    cur.n += 1;
+    counts.set(one, cur);
+    const caption = captionAfterPlaceholder(line);
+    if (caption) captions.push(caption);
+  }
+
+  const parts = [...counts.values()].map(({ one, many, n }) => (n === 1 ? one : `${n} ${many}`));
+  const events = parts.length === 0
+    ? null
+    : parts.length === 1
+      ? `They sent ${parts[0]}`
+      // "a photo, a document and 2 voice messages" — an Oxford-less list, which
+      // is how a person would say it out loud.
+      : `They sent ${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}`;
+
+  return { events, quotes, captions };
+}

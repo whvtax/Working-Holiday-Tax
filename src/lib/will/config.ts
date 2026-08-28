@@ -4,13 +4,30 @@
  *  as the team-member persona. Change it here once, applies everywhere. */
 export const ASSISTANT_NAME = 'Will';
 
+/**
+ * How long after the estimate goes out the finished return actually reaches
+ * the customer by email.
+ *
+ * WHY THIS NUMBER EXISTS (Jo, 28 Aug). Pressing Done in the CRM sends the
+ * estimate and moves the customer to Signature, but the return itself is
+ * emailed about three days later. The signature follow-ups are written as if
+ * the customer already has it in their inbox ("your tax return is ready and
+ * just needs your signature"), so without this offset the first one would
+ * arrive two days before the thing it is chasing, and read as a mistake.
+ *
+ * The signature cadence below is therefore 24h / 3d / 7d AFTER the email, not
+ * after the stage change. When the turnaround changes, change this one number.
+ */
+export const SIGNATURE_PREP_DAYS = 3;
+const sig = (daysAfterEmail: number) => (SIGNATURE_PREP_DAYS + daysAfterEmail) * 86400;
+
 // Follow-up timing per the spec is 24h/3d/7d (pre-payment & signature)
 // and 6h/3d/7d (form). Locally we run a compressed clock so the whole
 // cadence can be watched in minutes. Set FOLLOWUP_MODE=real for spec timing.
 const REAL = {
   prePayment: [24 * 3600, 3 * 86400, 7 * 86400],
   form: [6 * 3600, 3 * 86400, 7 * 86400],
-  signature: [24 * 3600, 3 * 86400, 7 * 86400],
+  signature: [sig(1), sig(3), sig(7)],
   autoCloseAfterFinal: 7 * 86400,
   quietHours: { start: 6, end: 24, tz: 'Australia/Sydney' },
   enforceQuietHours: true,

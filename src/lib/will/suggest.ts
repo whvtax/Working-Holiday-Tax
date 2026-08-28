@@ -32,6 +32,7 @@ export type HandoffReason =
   | 'budget'             // the daily AI limit was reached
   | 'send_failed'        // WhatsApp rejected the send
   | 'many_questions'     // more than 3 messages before payment, needs a person
+  | 'documents_after_payment' // files from someone who has already paid
   | 'generic';
 
 /** The last thing to fall back on: warm, true, commits to nothing, and is safe
@@ -47,6 +48,7 @@ const BY_REASON: Record<HandoffReason, string> = {
   budget: HOLDING,
   send_failed: HOLDING,
   many_questions: APPROVED.handoff.many_questions,
+  documents_after_payment: APPROVED.handoff.documents_after_payment,
   generic: HOLDING,
 };
 
@@ -63,6 +65,7 @@ const REASON_TEMPLATE_KEYS: Record<HandoffReason, string> = {
   budget: 'handoff_holding',
   send_failed: 'handoff_holding',
   many_questions: 'handoff_many_questions',
+  documents_after_payment: 'handoff_documents_after_payment',
   generic: 'handoff_holding',
 };
 

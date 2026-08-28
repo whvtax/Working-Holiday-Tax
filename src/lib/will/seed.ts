@@ -117,6 +117,7 @@ export function seedTemplates(): TemplateRow[] {
     t('handoff_unreadable', 'Handoff suggestions', 'Handoff · voice note or unreadable message', APPROVED.handoff.unreadable),
     t('handoff_returning_customer', 'Handoff suggestions', 'Handoff · a previous customer wrote in again', APPROVED.handoff.returning_customer),
     t('handoff_many_questions', 'Handoff suggestions', 'Handoff · more than 3 messages before paying', APPROVED.handoff.many_questions),
+    t('handoff_documents_after_payment', 'Handoff suggestions', 'Handoff · paid customer sent their documents', APPROVED.handoff.documents_after_payment),
   ];
 }
 

@@ -10,6 +10,7 @@
 // ============================================================
 import { createHmac, timingSafeEqual } from 'crypto';
 import { handleIncoming, handleInboundNote, handlePaymentProofMedia } from '@/lib/will/service';
+import { isEditMessage, editFrom, applyInboundEdits } from '@/lib/will/inbound-edit';
 import { suggestReply } from '@/lib/will/suggest';
 import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
@@ -122,6 +123,16 @@ interface WaMessage {
     list_reply?: { id?: string; title?: string; description?: string };
   };
   location?: unknown; contacts?: unknown;
+  /** On an EDIT, Meta identifies the message being edited here. Also present on
+   *  an ordinary reply (it quotes the message replied to), so `context` alone
+   *  never means "edit" — only `type: 'edit'` does. */
+  context?: { id?: string; from?: string };
+  /** Where the new wording WOULD live if Meta sent it. Confirmed on 27 Aug that
+   *  it sends `type: 'edit'` with no body at all, so this is almost always
+   *  absent — it is read defensively so that the day Meta starts including the
+   *  text, the chat picks it up with no further change. */
+  edit?: { body?: string; text?: { body?: string } };
+  edited_message?: { text?: { body?: string } };
   // Present on type:'unsupported' — the reason Meta could not render the message.
   errors?: { code?: number; title?: string; message?: string }[];
 }
@@ -134,6 +145,9 @@ interface InboundItem {
   msg: WaMessage; name?: string; body: string; isText: boolean; kind: string;
   media?: { id: string; kind: string; mime?: string; filename?: string; caption?: string };
   reaction?: { emoji: string | null; to?: string };
+  /** Set only on `kind: 'edit'`. `newText` is null whenever Meta withheld the
+   *  new wording, which is what it does today. */
+  edit?: { targetProviderId: string | null; newText: string | null };
 }
 
 /** The attachment on a message, in the shape the dashboard needs to show it.
@@ -276,6 +290,26 @@ function extract(payload: unknown, ourPhoneId?: string): InboundItem[] {
           // Drop messages older than the fresh-start cutoff (history sync / backfill).
           if (cutoff && m.timestamp && Number(m.timestamp) < cutoff) continue;
           const name = nameByWa.get(m.from);
+          // ── AN EDIT IS NOT A MESSAGE ──────────────────────────────────────
+          //
+          // When a customer corrects a typo, Meta sends `type: 'edit'`. It
+          // carries no text and no media, so before this it fell all the way
+          // through to the generic stand-in and produced, for one corrected
+          // word, a "[Message - open WhatsApp to view]" bubble in the thread
+          // AND a task for a person to go and look at.
+          //
+          // Seen on リョウタ ("I work" -> "I worked") and on Jp
+          // ("Xeros" -> "Xero"), and confirmed by the type reaching a Decision
+          // Log card on 27 Aug. Typo corrections are common, especially from
+          // customers writing in a second language, so this was a steady drip
+          // of phantom bubbles and invented work.
+          //
+          // Handled by its own branch here and dispatched in POST: it updates
+          // the message it edits and creates nothing.
+          if (isEditMessage(m)) {
+            out.push({ msg: m, name, body: '', isText: false, kind: 'edit', edit: editFrom(m) });
+            continue;
+          }
           // THE FIX: recover the text whenever a body is present, WHATEVER the
           // declared type. In WhatsApp Coexistence a plain text message can arrive
           // tagged `unsupported` while still carrying its `text.body`; the old
@@ -407,7 +441,18 @@ export async function POST(req: Request) {
   // voice note, a bodiless `unsupported`) is handled separately below so it is
   // never silently dropped.
   const textItems = items.filter((it) => it.isText);
-  const noteItems = items.filter((it) => !it.isText);
+  // An edit is neither. It creates nothing and answers nothing: it changes a
+  // message that is already in the thread, which is why it is pulled out of the
+  // note path entirely rather than being handled inside it.
+  const editItems = items.filter((it) => it.kind === 'edit');
+  const noteItems = items.filter((it) => !it.isText && it.kind !== 'edit');
+
+  // Message edits: update the message they edit, create nothing. See
+  // lib/will/inbound-edit.ts for what Meta does and does not send.
+  await applyInboundEdits(
+    editItems.map((it) => ({ messageId: it.msg.id, from: it.msg.from, edit: it.edit! })),
+    maskWa,
+  );
 
   // REL-01: process BEFORE acking (Meta allows ~10s and our work is a few
   // seconds), so a serverless freeze after the response can never drop a

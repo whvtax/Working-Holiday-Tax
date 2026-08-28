@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
-import { explainHandoffReason, describeSystemPlaceholder, captionAfterPlaceholder } from '@/lib/will/handoff-reasons';
+import { explainHandoffReason, summariseArrivals } from '@/lib/will/handoff-reasons';
 import type { MonthConversion } from '@/lib/will/monthly-conversion';
 import type { AiUsage, SystemFault } from '@/lib/will/system-report';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
@@ -34,6 +34,8 @@ interface LostAnalysisView {
   fault: 'OURS' | 'PARTLY_OURS' | 'NOT_OURS';
   recoverable: 'YES' | 'MAYBE' | 'NO';
   recoveryAction: string | null;
+  /** The ready-to-send win-back message. Null when recoverable is NO. */
+  recoveryMessage: string | null;
   evidenceQuote: string | null;
   confidence: number;
   hoursPriceToSilence: number | null;
@@ -332,12 +334,11 @@ export default function Dashboard() {
   // — so it needs its own selection + draft text and its own save action.
   const [know, setKnow] = useState<Knw | null>(null);
   const [knowText, setKnowText] = useState('');
-  // Review-stage chat button: type the refund estimate + paste the invoice
-  // link, one Send composes and delivers the message and moves the customer
-  // on to Estimate. `estimateFor` holds which customer the modal is open for.
-  const [estimateFor, setEstimateFor] = useState<CustomerRow | null>(null);
-  const [estimateAmt, setEstimateAmt] = useState('');
-  const [estimateLink, setEstimateLink] = useState('');
+  // The estimate + invoice modal used to live here as well as in the CRM.
+  // Removed 28 Aug (Jo): it is sent by the Done button on the CRM task now,
+  // which is the moment the work is actually finished, so a second way in from
+  // the chat was one more place to type the same amount and get it wrong. The
+  // send_estimate action itself is unchanged and is what Done calls.
   // The raw audit feed was removed from the screen on 27 Aug (see the Decision
   // Log panel), so nothing fetches /api/will/audit from here any more. The route
   // and the rows behind it are untouched — this dropped the reader, not the
@@ -1017,18 +1018,6 @@ export default function Dashboard() {
                         const label = t.title.replace(/ \(.*\)/, '');
                         return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label}. Edit and send`); }}>{i + 1}</button>;
                       })}
-                      {/* Review-stage action: send the refund estimate + invoice
-                          in one step. Only shown while the customer is in Review. */}
-                      {chatSel.state === 'FORM_COMPLETE' && (
-                        <button
-                          type="button"
-                          className="btn save"
-                          style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
-                          onClick={() => { setEstimateFor(chatSel); setEstimateAmt(''); setEstimateLink(''); }}
-                        >
-                          Send Estimate + Invoice
-                        </button>
-                      )}
                       {/* Estimate-stage action: once the return has actually been
                           sent to the customer to sign, one click sends the "ready
                           for signature" confirmation and moves them on to
@@ -1177,7 +1166,7 @@ export default function Dashboard() {
                                   "📷 [Photo]" placeholder is noise. The caption
                                   rides along with the attachment. */}
                               {m.meta?.media ? null : m.body}
-                              <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
+                              <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{/* WhatsApp-real: an edited message carries a small "Edited" next to its time. Meta does not send us the new wording, so the text shown is still what they first typed — the mark is there to say so, rather than letting the chat quietly disagree with their phone. */}{m.meta?.edited && <span className="edited" title="Edited in WhatsApp. Meta does not send the new wording, so the text above is the original.">Edited</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
                             </div>,
                           );
                         }
@@ -1217,6 +1206,22 @@ export default function Dashboard() {
           <section className="view active">
             <h2 className="vt">Tasks</h2>
             <div className="vsub">Everything that needs your attention, in one place.</div>
+
+            {/* Pull the whole history out as one document. Jo, 28 Aug: he
+                reads it through and sends back the answers worth adding to the
+                Library. The Library was written from what we EXPECTED people
+                to ask; this is what they actually asked.
+                A plain link, not a fetch: the browser streams the download
+                straight to disk, so a year of conversations never has to fit
+                in the page's memory first. */}
+            <a
+              className="btn ghost"
+              href="/api/will/export"
+              style={{ alignSelf: 'flex-start', margin: '2px 0 14px', textDecoration: 'none' }}
+              title="Download every conversation in Will as one markdown file"
+            >
+              ⬇ Download every conversation
+            </a>
 
             {/* This was a separate Outbox tab. It counted the drafts awaiting
                 approval PLUS the subset of these same tasks whose reason was a
@@ -1960,34 +1965,33 @@ export default function Dashboard() {
                               </span>
                             </div>
 
-                            {wrote.length > 0 && (
-                              <div className="hoff-block">
-                                <div className="hoff-k">What arrived</div>
-                                {wrote.map((line, i) => {
-                                  // A stand-in the webhook wrote is described as
-                                  // an event; only the customer's own words are
-                                  // put in quotation marks. Quoting our own
-                                  // "[Message — open WhatsApp to view]" back as
-                                  // theirs was both false and, on the one
-                                  // handoff that means "there is nothing to
-                                  // read", actively misleading.
-                                  const asEvent = describeSystemPlaceholder(line);
-                                  if (asEvent) {
-                                    const caption = captionAfterPlaceholder(line);
-                                    return (
-                                      <div key={i} className="hoff-event">
-                                        {asEvent}. {ASSISTANT_NAME} reads text, so there was nothing here for him to work with. Open WhatsApp to see it.
-                                        {/* A caption IS the customer's own words,
-                                            so it is quoted even though the thing
-                                            in front of it is not. */}
-                                        {caption && <span className="hoff-quote-inline"> They added: &ldquo;{caption}&rdquo;</span>}
-                                      </div>
-                                    );
-                                  }
-                                  return <div key={i} className="hoff-quote">&ldquo;{line}&rdquo;</div>;
-                                })}
-                              </div>
-                            )}
+                            {wrote.length > 0 && (() => {
+                              // Stand-ins the webhook wrote are counted and named
+                              // ONCE; only the customer's own words are quoted.
+                              // Three photos in a burst used to print the same
+                              // sentence three times, explanation and all, and
+                              // bury the one line that was actually typed.
+                              const arrived = summariseArrivals(wrote);
+                              return (
+                                <div className="hoff-block">
+                                  <div className="hoff-k">What arrived</div>
+                                  {arrived.events && (
+                                    <div className="hoff-event">
+                                      {arrived.events}. {ASSISTANT_NAME} reads text, so there was nothing here for him to work with. Open WhatsApp to see it.
+                                    </div>
+                                  )}
+                                  {/* A caption IS the customer's own words, so it
+                                      is quoted even though the attachment in
+                                      front of it is not. */}
+                                  {arrived.captions.map((cap, i) => (
+                                    <div key={`cap-${i}`} className="hoff-quote">&ldquo;{cap}&rdquo;</div>
+                                  ))}
+                                  {arrived.quotes.map((line, i) => (
+                                    <div key={`q-${i}`} className="hoff-quote">&ldquo;{line}&rdquo;</div>
+                                  ))}
+                                </div>
+                              );
+                            })()}
 
                             <div className="hoff-block">
                               <div className="hoff-k">Why {ASSISTANT_NAME} stopped</div>
@@ -2082,7 +2086,7 @@ export default function Dashboard() {
           <section className="view active">
             <h2 className="vt">Lost Leads</h2>
             <div className="vsub">
-              Every lead that did not become a paying client, read back and assessed. Written for you only. Nothing on this page is ever sent to a customer.
+              Every lead that did not become a paying client, read back and assessed.
             </div>
 
             {lost === null && <div className="sysline" style={{ margin: '20px 0' }}>Reading the report…</div>}
@@ -2090,18 +2094,18 @@ export default function Dashboard() {
             {lost && (
               <>
                 <div className="kpis">
-                  <div className="kpi"><div className="kl">Lost leads</div><div className="kv">{lost.counts.lost}</div><div className="kd">by the definition below</div></div>
-                  <div className="kpi"><div className="kl">Assessed</div><div className="kv">{lost.counts.analysed}</div><div className="kd">{lost.counts.pending > 0 ? `${lost.counts.pending} waiting for tonight` : 'all of them'}</div></div>
-                  <div className="kpi"><div className="kl">Still winnable</div><div className="kv">{lost.counts.recoverable}</div><div className="kd">with something specific to do</div></div>
-                  <div className="kpi"><div className="kl">On us</div><div className="kv">{lost.counts.ourFault}</div><div className="kd">the rest were never going to convert</div></div>
+                  <div className="kpi"><div className="kl">Lost leads</div><div className="kv">{lost.counts.lost}</div><div className="kd">reached WhatsApp, did not convert</div></div>
+                  <div className="kpi"><div className="kl">Assessed</div><div className="kv">{lost.counts.analysed}</div></div>
+                  <div className="kpi"><div className="kl">Still winnable</div><div className="kv">{lost.counts.recoverable}</div><div className="kd">a message is ready to send</div></div>
+                  <div className="kpi"><div className="kl">On us</div><div className="kv">{lost.counts.ourFault}</div><div className="kd">the rest could not have been converted</div></div>
                 </div>
 
                 {/* The aggregate. Eleven leads in one bucket is a thing to fix;
                     eleven separate stories are not. */}
                 <div className="panel" style={{ marginBottom: 10 }}>
-                  <h3>Why they go, most common first</h3>
+                  <h3>Why they go?</h3>
                   <div className="psub">
-                    Counted across the {lost.counts.analysed} lead{lost.counts.analysed === 1 ? '' : 's'} assessed so far. This is the part worth acting on.
+                    Counted across the {lost.counts.analysed} lead{lost.counts.analysed === 1 ? '' : 's'} assessed so far.
                   </div>
                   {lost.categories.length === 0 && (
                     <div className="mini" style={{ marginTop: 0 }}>
@@ -2121,37 +2125,6 @@ export default function Dashboard() {
                       </span>
                     </div>
                   ))}
-                  <div className="sugg">
-                    <b>Read this honestly</b>
-                    A lead that was never going to convert is recorded as exactly that. If a category says nobody did anything wrong, nobody did. The assessment is asked for the truth, not for a culprit, because a report that always finds fault is one you stop reading.
-                  </div>
-                </div>
-
-                {/* What "lost" means, in the same words the code uses. It is
-                    sent by the API rather than written here twice, so the screen
-                    and the definition can never drift apart. */}
-                <div className="panel" style={{ marginBottom: 10 }}>
-                  <h3>What counts as lost</h3>
-                  <div className="psub" style={{ marginBottom: 6 }}>Deliberately conservative: a lead who is still deciding must never appear here.</div>
-                  <div className="mini" style={{ marginTop: 0, lineHeight: 1.55 }}>{lost.definition.text}</div>
-                  <div className="costrow" style={{ marginTop: 8 }}>
-                    <span>Assessed automatically each night, at 4am</span>
-                    <b>
-                      {lost.lastRun
-                        ? `last run ${new Date(lost.lastRun.ranAt).toLocaleString('en-AU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })}`
-                        : 'not run yet'}
-                    </b>
-                  </div>
-                  {lost.lastRun?.budgetExhausted && (
-                    <div className="mini" style={{ color: 'var(--warn)' }}>
-                      The last run stopped early because the daily AI budget was spent, with {lost.lastRun.remaining} lead{lost.lastRun.remaining === 1 ? '' : 's'} still to assess. It picks up where it left off tonight. Nothing was spent past the cap.
-                    </div>
-                  )}
-                  {lost.counts.failed > 0 && (
-                    <div className="mini">
-                      {lost.counts.failed} lead{lost.counts.failed === 1 ? '' : 's'} could not be assessed. They are shown below with the reason rather than quietly left out.
-                    </div>
-                  )}
                 </div>
 
                 {lost.rows.length === 0 && (
@@ -2171,22 +2144,34 @@ export default function Dashboard() {
                           className="rowcard"
                           style={{ ['--gc' as string]: color }}
                           title={open ? 'Hide the assessment' : 'Read the assessment'}
+                          role="button"
+                          tabIndex={0}
+                          aria-expanded={open}
                           onClick={() => setLostOpen(open ? null : r.customerId)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLostOpen(open ? null : r.customerId); }
+                          }}
                         >
                           <div className="rc-main">
                             <div className="rc-top">
+                              {/* A row that opens has to look like one. Without
+                                  a marker the only way to find out was to click
+                                  it, which is how "does this do anything?"
+                                  happens. */}
+                              <span aria-hidden style={{
+                                display: 'inline-block', fontSize: 10, color: 'var(--ink3)',
+                                transform: open ? 'rotate(90deg)' : 'none', transition: 'transform .15s',
+                              }}>▶</span>
+                              {/* The number and the category, and nothing else.
+                                  The trigger chip ("Said no") and the winnable
+                                  chip said in two more places what the category
+                                  pill and the card inside already say. */}
                               <span className="cname">{r.flag} {phoneOf(r.waId)}</span>
-                              {r.triggerLabel && <span className="chip">{r.triggerLabel}</span>}
-                              {a && (
-                                <span className="cstate" style={{ ['--sc' as string]: RECOVER_TEXT[a.recoverable].color }}>
-                                  {RECOVER_TEXT[a.recoverable].label}
-                                </span>
-                              )}
                             </div>
                             <div className="rc-msg">
                               {a ? a.reason
                                 : r.failure ? `Could not be assessed: ${r.failure.error ?? 'unknown reason'}`
-                                : 'Waiting to be assessed tonight'}
+                                : 'Being assessed now, this updates in a minute or two'}
                             </div>
                           </div>
                           <div className="rc-side">
@@ -2197,32 +2182,51 @@ export default function Dashboard() {
 
                         {open && (
                           <div className="panel" style={{ margin: '6px 0 2px', borderRadius: 10 }}>
-                            <div className="costrow"><span>Stage when it stopped</span><b>{r.stateLabel}</b></div>
-                            <div className="costrow"><span>Why this counts as lost</span><b>{r.lostBecause}</b></div>
-                            {a?.hoursPriceToSilence != null && (
-                              <div className="costrow">
-                                <span>Between the price and their last word</span>
-                                <b>{a.hoursPriceToSilence < 1 ? 'under an hour' : a.hoursPriceToSilence < 48 ? `${Math.round(a.hoursPriceToSilence)} hours` : `${Math.round(a.hoursPriceToSilence / 24)} days`}</b>
-                              </div>
-                            )}
+                            {/* Jo's four questions, in his order. Each one is a
+                                heading and an answer, so the card is read the
+                                same way every time instead of being scanned for
+                                whichever part happens to matter. */}
+                            <div className="syshead" style={{ marginTop: 0 }}>Where it stopped</div>
+                            <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>
+                              {r.stateLabel}
+                              {a?.hoursPriceToSilence != null && (
+                                <>. {a.hoursPriceToSilence < 1 ? 'Under an hour' : a.hoursPriceToSilence < 48 ? `${Math.round(a.hoursPriceToSilence)} hours` : `${Math.round(a.hoursPriceToSilence / 24)} days`} between the price and their last word.</>
+                              )}
+                            </div>
+
+                            <div className="syshead">Why it closed</div>
+                            <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>
+                              {a ? a.reason : r.lostBecause}
+                            </div>
+                            {a?.evidenceQuote && <div className="tctx">&ldquo;{a.evidenceQuote}&rdquo;</div>}
+
                             {a ? (
                               <>
-                                <div className="syshead">Why it did not convert</div>
-                                <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>{a.reason}</div>
-                                {a.evidenceQuote && <div className="tctx">&ldquo;{a.evidenceQuote}&rdquo;</div>}
-
-                                <div className="syshead">What should have been done differently</div>
-                                <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>{a.shouldHaveDone}</div>
-                                <div className="costrow" style={{ marginTop: 6 }}>
-                                  <span>Verdict</span>
-                                  <b style={{ color: FAULT_TEXT[a.fault].color }}>{FAULT_TEXT[a.fault].label}</b>
+                                <div className="syshead">What could have been done differently</div>
+                                {/* Paragraph breaks survive the validator now,
+                                    because this is the part worth reading and a
+                                    single block of text is the part people skip. */}
+                                <div className="mini" style={{ marginTop: 0, lineHeight: 1.6, color: 'var(--ink2)', whiteSpace: 'pre-wrap' }}>
+                                  {a.fault === 'NOT_OURS' && !a.shouldHaveDone.trim()
+                                    ? `${ASSISTANT_NAME} did everything he could here. Nothing in this conversation would have changed the outcome.`
+                                    : a.shouldHaveDone}
                                 </div>
 
-                                {a.recoveryAction && (
-                                  <div className="sugg">
-                                    <b>{a.recoverable === 'YES' ? 'Worth doing' : 'Long shot, but'}</b>
-                                    {a.recoveryAction}
-                                  </div>
+                                <div className="syshead">Can they still become a client?</div>
+                                <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>
+                                  <b style={{ color: RECOVER_TEXT[a.recoverable].color }}>
+                                    {a.recoverable === 'NO' ? 'No' : a.recoverable === 'YES' ? 'Yes' : 'Possibly'}
+                                  </b>
+                                  {a.recoveryAction ? <>. {a.recoveryAction}</> : null}
+                                </div>
+
+                                {a.recoveryMessage && (
+                                  <>
+                                    <div className="syshead">The message to send</div>
+                                    <div className="wapreview">
+                                      <div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{a.recoveryMessage}</div>
+                                    </div>
+                                  </>
                                 )}
                                 <div className="mini">
                                   Assessed {new Date(a.analysedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Melbourne' })} · confidence {Math.round(a.confidence * 100)}%. A judgement from the conversation, not a fact. Open the chat and read it yourself before acting on anything here.
@@ -2234,10 +2238,23 @@ export default function Dashboard() {
                               </div>
                             ) : (
                               <div className="mini" style={{ marginTop: 0 }}>
-                                Not assessed yet. The nightly run works through the newest losses first.
+                                Not assessed yet. The assessment starts the moment a lead closes and usually lands within a couple of minutes, so this fills itself in shortly.
                               </div>
                             )}
                             <div className="tbtns">
+                              {a?.recoveryMessage && (
+                                <button
+                                  className="btn take"
+                                  disabled={acted.has('recover-' + r.customerId)}
+                                  onClick={() => once('recover-' + r.customerId, async () => {
+                                    const res = await act({ action: 'recover_lead', customerId: r.customerId });
+                                    say(res?.ok
+                                      ? `Draft is waiting in Tasks. Nothing has been sent.`
+                                      : `❌ ${res?.error ?? 'could not create the task'}`);
+                                    refresh();
+                                  })}
+                                >➤ Send this to Tasks as a draft</button>
+                              )}
                               <button className="btn ghost" onClick={() => { setView('chats'); openChat(r.customerId); }}>Read the conversation →</button>
                             </div>
                           </div>
@@ -2384,56 +2401,6 @@ export default function Dashboard() {
             </div>
           </div>
         )}
-      </div>
-
-      <div className={`overlay ${estimateFor ? 'open' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) setEstimateFor(null); }}>
-        {estimateFor && (() => {
-          const parsed = parseFloat(estimateAmt.replace(/[^0-9.]/g, ''));
-          const amountValid = Number.isFinite(parsed) && parsed > 0;
-          let linkValid = false;
-          try { const u = new URL(estimateLink.trim()); linkValid = u.protocol === 'http:' || u.protocol === 'https:'; } catch { /* invalid */ }
-          // The preview reads the SAME Library entry the server sends, so an
-          // edit made in the Library shows up here instead of the two drifting
-          // apart. The literal is only the fallback for a Library that has not
-          // loaded yet, and is the exact text the server falls back to too.
-          const estimateTpl = data.templates.find((t) => t.key === 'estimate_invoice')?.body
-            ?? `Your estimated tax refund is {{AMOUNT}}.\nI'll send it for final review, then to you for signature.\nHere is your invoice: {{INVOICE_LINK}}`;
-          const preview = amountValid
-            ? estimateTpl
-              .replaceAll('{{AMOUNT}}', `$${parsed.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)
-              .replaceAll('{{INVOICE_LINK}}', estimateLink.trim() || '…')
-            : '';
-          return (
-            <div className="modal">
-              <div className="mh"><b>Send Estimate + Invoice {phoneOf(estimateFor.waId)}</b><button className="x" onClick={() => setEstimateFor(null)}>✕</button></div>
-              <div className="mlabel">Estimated refund (AUD)</div>
-              <input className="edit" style={{ minHeight: 0, padding: 10 }} inputMode="decimal" value={estimateAmt}
-                onChange={(e) => setEstimateAmt(e.target.value)} placeholder="e.g. 3004" />
-              <div className="mlabel">Invoice link</div>
-              <input className="edit" style={{ minHeight: 0, padding: 10 }} value={estimateLink}
-                onChange={(e) => setEstimateLink(e.target.value)} placeholder="https://…" />
-              {preview && (
-                <>
-                  <div className="mlabel">How the customer sees it</div>
-                  <div className="wapreview"><div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{preview}</div></div>
-                </>
-              )}
-              <div className="mfoot">
-                <button className="btn ghost" onClick={() => setEstimateFor(null)}>Cancel</button>
-                <button
-                  className="btn save"
-                  disabled={!amountValid || !linkValid}
-                  onClick={async () => {
-                    const r = await act({ action: 'send_estimate', customerId: estimateFor.id, amountCents: Math.round(parsed * 100), invoiceLink: estimateLink.trim() });
-                    if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
-                    say('Estimate sent ✓'); setEstimateFor(null);
-                    loadChat(estimateFor.id); refresh();
-                  }}
-                >Send</button>
-              </div>
-            </div>
-          );
-        })()}
       </div>
 
       <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
