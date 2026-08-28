@@ -21,6 +21,7 @@ import { claimsPayment } from './payment-claim';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
+import { isLongComplicatedMessage, HANDOFF_ACK_DELAY_MS } from './long-message';
 
 export interface HandleResult {
   outcome: EngineOutcome;
@@ -397,6 +398,28 @@ async function handleIncomingInner(
       newContext: text, suggestedReply: outcome.task.suggestedReply ?? null,
     });
     await store.audit('assistant', 'human_task_created', { reason: outcome.task.reason });
+  }
+
+  // ── The long message that is now waiting on a person ─────────────────────
+  //
+  // Jo, 28 Aug: somebody who writes eight paragraphs and gets silence has no
+  // way to tell whether it even arrived. If he has not answered within half an
+  // hour, the approved holding line goes out by itself.
+  //
+  // THE TWO CONDITIONS, BOTH REQUIRED. Only for a long, complicated message,
+  // and only on Autopilot. In Approval mode nothing reaches a customer without
+  // him, and quietly making an exception to that would be the worst kind of
+  // surprise. The job itself checks again at fire time that he has still not
+  // replied, so answering in the first ten minutes cancels it in effect.
+  if ((outcome.kind === 'human_task' || outcome.kind === 'pending_approval')
+      && mode === 'FULL_AUTO'
+      && isLongComplicatedMessage(text)) {
+    try {
+      await store.addJob({
+        customerId: customer.id, kind: 'HANDOFF_ACK', payload: {},
+        runAt: new Date(Date.now() + HANDOFF_ACK_DELAY_MS).toISOString(),
+      });
+    } catch { /* the task is raised either way; the acknowledgement is a courtesy */ }
   }
   if (outcome.guardViolations?.length) {
     await store.audit('policy_guard', 'reply_blocked', { violations: outcome.guardViolations });

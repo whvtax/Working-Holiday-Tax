@@ -99,6 +99,19 @@ async function uploadOne(
   return null
 }
 
+/** Server field names, as a person would recognise them on the form. Only the
+ *  fields validateIntake can actually reject appear here. */
+const FIELD_LABELS: Record<string, Record<FormLang, string>> = {
+  email:     { en: 'email address',   de: 'E-Mail-Adresse',   ja: 'メールアドレス' },
+  tfn:       { en: 'TFN',             de: 'TFN',              ja: 'TFN' },
+  dob:       { en: 'date of birth',   de: 'Geburtsdatum',     ja: '生年月日' },
+  taxYear:   { en: 'tax year',        de: 'Steuerjahr',       ja: '課税年度' },
+  marital:   { en: 'marital status',  de: 'Familienstand',    ja: '婚姻状況' },
+  taxStatus: { en: 'tax status',      de: 'Steuerstatus',     ja: '税務上の居住区分' },
+  whatsapp:  { en: 'WhatsApp number', de: 'WhatsApp-Nummer',  ja: 'WhatsApp番号' },
+  fullName:  { en: 'name',            de: 'Name',             ja: 'お名前' },
+}
+
 export async function submitTaxForm(
   p: TaxFormPayload,
   taxStatus: 'resident' | 'whm',
@@ -175,8 +188,31 @@ export async function submitTaxForm(
     if (data?.error === 'invalid_file') {
       return { ok: false, error: `${t('fileErrorPrefix')}${data.message || t('fileErrorGeneric')}` }
     }
-    return { ok: false, error: 'Something went wrong. Please try again or contact us directly.' }
+
+    // ── Say WHICH field, when the server said which field ──────────────────
+    //
+    // The server has always answered a rejected submission with the exact list
+    // of fields it did not accept, and this function has always thrown that
+    // away and printed the same sentence as for a database outage. So somebody
+    // whose date of birth was typed as 2205 instead of 2025 was told only that
+    // something went wrong, could not tell what, and their most likely next
+    // move was to fill the whole form in again and be refused again.
+    if (data?.error === 'invalid_fields' && Array.isArray(data.fields) && data.fields.length) {
+      const named = data.fields
+        .map((f: { field?: string }) => FIELD_LABELS[String(f?.field ?? '')]?.[lang] ?? f?.field)
+        .filter(Boolean)
+        .join(', ')
+      if (named) return { ok: false, error: `${t('checkFields')}${named}` }
+    }
+    if (data?.error === 'missing_required_fields') {
+      return { ok: false, error: `${t('checkFields')}${FIELD_LABELS.fullName[lang]}, ${FIELD_LABELS.email[lang]}, ${FIELD_LABELS.whatsapp[lang]}` }
+    }
+
+    // Genuinely our end. The reference is the only thing that makes a
+    // screenshot of this screen actionable, so it is shown rather than hidden.
+    const ref = typeof data?.ref === 'string' ? data.ref : ''
+    return { ok: false, error: t('somethingWrong') + (ref ? ` (${t('refPrefix')}${ref})` : '') }
   } catch {
-    return { ok: false, error: 'Something went wrong. Please try again or contact us directly.' }
+    return { ok: false, error: t('somethingWrong') }
   }
 }

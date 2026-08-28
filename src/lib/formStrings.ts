@@ -125,6 +125,13 @@ export const formStrings = {
 
   // ─ Submission errors ─
   tooMany:             { en: 'Too many submissions. Please wait 15 minutes and try again.', de: 'Zu viele Anfragen. Bitte warte 15 Minuten und versuche es nochmal.', ja: '送信回数が多すぎます。15分後にもう一度お試しください。' },
+  // Shown when the server named the fields it would not accept, instead of the
+  // generic failure. Jo, 28 Aug: a form that only ever says "something went
+  // wrong" cannot be reported, only abandoned.
+  checkFields:         { en: 'Please check these and try again: ', de: 'Bitte prüfe diese Angaben und versuche es nochmal: ', ja: '次の項目をご確認のうえ、もう一度お試しください：' },
+  somethingWrong:      { en: 'Something went wrong. Please try again or contact us directly.', de: 'Etwas ist schiefgelaufen. Bitte versuche es nochmal oder kontaktiere uns direkt.', ja: '問題が発生しました。もう一度お試しいただくか、直接ご連絡ください。' },
+  // The six characters that let a screenshot be matched to the server log.
+  refPrefix:           { en: 'reference ', de: 'Referenz ', ja: '参照番号 ' },
   fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：' },
   // The real client-side ceiling is MAX_UPLOAD_BYTES in compress-image.ts = 4MB.
   // This said 10MB while `fileTooLarge` directly below said 4 MB, so the two

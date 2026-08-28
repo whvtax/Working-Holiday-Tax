@@ -9,6 +9,7 @@ import { schedulerConfig, withinQuietHours, deferToMorning, localMidnightUtc } f
 import { policyGuard } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
+import { APPROVED } from './approved-messages';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
@@ -167,6 +168,17 @@ export async function ensureLostAnalysisSoon(): Promise<void> {
   });
 }
 
+/** The owner's CURRENT wording for the holding line, falling back to the
+ *  approved constant. It is in the Library like every other sendable message,
+ *  so he can reword it without a deploy. */
+async function ackBody(): Promise<string> {
+  try {
+    const t = (await getStore().listTemplates()).find((x) => x.key === 'handoff_holding');
+    if (t?.body?.trim()) return t.body;
+  } catch { /* the constant is the honest fallback */ }
+  return APPROVED.handoff.holding;
+}
+
 export interface TickResult { processed: number; sent: string[]; closed: string[]; deferred: number }
 
 /** How long one tick will keep claiming jobs before it stops and leaves the rest
@@ -216,6 +228,47 @@ async function doProcess(): Promise<TickResult> {
     if (!(await store.claimJob(job.id))) continue;
     result.processed++;
     try {
+      // ── The holding line for a long message nobody has answered yet ────
+      //
+      // Jo, 28 Aug. Queued half an hour ago, when a long and complicated
+      // message was handed to a person on Autopilot. Everything is re-checked
+      // here rather than assumed, because the world has had thirty minutes to
+      // change: if he has already replied, or the task is closed, or the
+      // customer opted out, or the assistant was paused for this chat, nothing
+      // is sent and the job simply ends.
+      if (job.kind === 'HANDOFF_ACK') {
+        try {
+          const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
+          if (c && !c.optedOut && !c.aiPaused) {
+            const open = (await store.listTasks())
+              .some((t) => t.customerId === c.id && t.status === 'OPEN');
+            // Anything that actually reached the customer since the handoff
+            // means somebody got there first. A draft still sitting in
+            // PENDING_APPROVAL does not count: nobody has seen it but us.
+            const answered = (await store.listMessages(c.id)).some((m) =>
+              m.direction === 'OUT' && m.status === 'SENT'
+              && new Date(m.createdAt).getTime() > new Date(job.createdAt ?? job.runAt).getTime());
+            if (open && !answered) {
+              const body = await ackBody();
+              const out = await deliverOut(c, body, 'AI');
+              await store.audit('assistant', out.ok ? 'handoff_ack_sent' : 'handoff_ack_failed', {
+                customerId: c.id, error: out.ok ? undefined : out.error,
+              });
+            } else {
+              await store.audit('assistant', 'handoff_ack_skipped', {
+                customerId: c.id, reason: answered ? 'already answered' : 'task closed',
+              });
+            }
+          }
+        } catch (e) {
+          await store.audit('assistant', 'handoff_ack_crashed', {
+            error: (e as Error).message?.slice(0, 200),
+          }).catch(() => {});
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
       if (job.kind === 'NIGHTLY') {
         await runNightly();
         // Catch-up, not a schedule. Most lost leads are assessed the moment

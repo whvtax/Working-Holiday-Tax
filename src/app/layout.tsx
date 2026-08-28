@@ -159,7 +159,18 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0B5240',
+  // The page background (tailwind `canvas`), NOT the brand green.
+  //
+  // WHY (Jo, 28 Aug). theme-color tells a phone browser what to paint its own
+  // toolbar with. Set to the brand green it painted roughly 120pt of Safari's
+  // chrome in exactly the same colour as our 68px nav, with no line between
+  // them, so the top of every page on a phone read as one green block about
+  // three times the height of the real header. Measured: the page itself only
+  // ever paints one green band, the nav, and it is 68px.
+  //
+  // Matching the page background lets the browser's chrome disappear into the
+  // page, which is what it is there for.
+  themeColor: '#F5F9F7',
 }
 
 const schemaOrg = {

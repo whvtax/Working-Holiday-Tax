@@ -120,13 +120,44 @@ export async function POST(req: NextRequest) {
 
         // Tell Will the questionnaire arrived: this marks the form complete, STOPS
     // the form reminders (otherwise it keeps chasing someone who already filled
-    // it in) and sends the confirmation in their language. Best effort by
-    // design: the form submission must never fail because the CRM link did.
-    await notifyFormReceived(whatsapp, email)
+    // it in) and sends the confirmation in their language.
+    //
+    // BEST EFFORT, AND NOW ACTUALLY BEST EFFORT. The task above is already
+    // written at this point, so the submission has succeeded: anything that
+    // throws from here must not turn that into a 500. It used to be able to,
+    // and the cost is specific and bad — the lead is in the CRM, the customer
+    // is told it failed, and they fill the whole form in again.
+    try {
+      await notifyFormReceived(whatsapp, email)
+    } catch (err) {
+      console.error('[tax-form] notifyFormReceived failed after the task was saved:', err)
+    }
 
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[tax-form] FAILED:', err)
-    return NextResponse.json({ ok: false, error: 'submission_failed' }, { status: 500 })
+    // ── Make the failure findable ──────────────────────────────────────────
+    //
+    // Every failure in here used to reach the customer as one sentence:
+    // "Something went wrong. Please try again or contact us directly." A
+    // validation rejection and a database outage were indistinguishable on
+    // screen AND in a screenshot, so the only report anybody could make was
+    // "the form is broken", which is not something that can be fixed.
+    //
+    // The reference is six characters of a UUID, generated here and logged
+    // beside the real error. It identifies nothing about the person; it just
+    // lets a screenshot be matched to a log line. The error text itself is
+    // never returned, because this endpoint is public.
+    const ref = crypto.randomUUID().slice(0, 6)
+    console.error(`[tax-form] FAILED ref=${ref}:`, err)
+    // Also recorded where the owner can actually see it, since the server log
+    // needs a Vercel login and this does not.
+    try {
+      const { getStore } = await import('@/lib/will/store')
+      await getStore().audit('system', 'public_form_failed', {
+        ref, form: 'tax-form',
+        error: err instanceof Error ? err.message.slice(0, 300) : String(err).slice(0, 300),
+      })
+    } catch { /* the store is a likely thing to have just failed */ }
+    return NextResponse.json({ ok: false, error: 'submission_failed', ref }, { status: 500 })
   }
 }
