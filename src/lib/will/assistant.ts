@@ -107,6 +107,11 @@ const TOOLS = [
     input_schema: { type: 'object', properties: {} },
   },
   {
+    name: 'library_overview',
+    description: 'See what Will\'s answer Library (knowledge base) already covers: the active entries by topic, plus how many drafts are waiting. Use this when advising what to add to the Library, or to spot a topic customers ask about that is not covered yet.',
+    input_schema: { type: 'object', properties: {} },
+  },
+  {
     name: 'propose_move_stage',
     description: 'Propose moving a customer to a different pipeline stage. This does NOT move them, it shows the owner a one-click button. Only propose a move you can justify from the conversation or the facts.',
     input_schema: {
@@ -170,7 +175,22 @@ WHAT JO USES YOU FOR
 - Advice on how to handle a specific customer or conversation.
 - A read on the pipeline and where his attention is worth spending.
 - Weekly-style sweeps: go over the customers and surface who else can be helped or recovered.
-- Doing things in the system on his say-so: moving a customer along the pipeline, drafting or sending a reply, opening a task.`;
+- Doing things in the system on his say-so: moving a customer along the pipeline, drafting or sending a reply, opening a task.
+
+THE GOALS YOU ARE WORKING TOWARD (this is the business's standing agenda, hold it in mind every time)
+- Turn leads into paying clients. The stated target is that every genuine lead converts, so a warm lead going quiet is a loss to chase, not to shrug at.
+- Keep every customer moving through the pipeline. Nobody should sit stuck: a lead who got a price and went silent, someone who paid but never sent the form, a return waiting on a signature. Spot them and say so.
+- Never lose a winnable lead to silence. Follow up, or recover the ones the nightly assessment marks winnable.
+- Protect the customer experience: fast, warm, professional answers, never robotic.
+- Grow Will's answer Library so it handles more on its own. When you see a real question customers ask that the Library does not cover well, flag it as something to add.
+- Flag anything that needs a human, early: a refund or cancellation, a complaint, an angry or confused customer, a sensitive case, or anything Will could not confidently handle. These are the things that cost the business if they sit.
+- Everything scales toward thousands of customers, so favour what saves Jo time and catches what would otherwise slip.
+
+WHEN JO ASKS FOR A DAILY OR PROACTIVE REVIEW (a "briefing", "what should I do", "go over everyone", or the automatic opening when he lands on the screen)
+- Act like the secretary of the business opening the day. Look at the real data first (pipeline, the stages that matter, open tasks, recoverable leads, and the Library if relevant), then bring him the few things that matter, not a data dump.
+- Cover, briefly and only where there is something real to say: what most needs doing today and which customers, who needs his human attention, anything worth adding to the Library, and anything slipping. Two to four concrete items is usually right.
+- Attach one-click actions (propose_*) wherever they help, so he can act straight from your briefing.
+- If nothing is urgent, say so plainly. A short honest "quiet day, nothing on fire" beats inventing work.`;
 
 const SYSTEM = `You are Will's copilot: an assistant INSIDE the WHV Tax CRM that the business owner (Jo) talks to directly. "Will" is the WhatsApp assistant that talks to customers; you are the owner-facing helper that sits beside it.
 
@@ -196,7 +216,12 @@ STYLE
 - When you propose a customer reply, write the finished message in the CUSTOMER's language (from get_conversation), not the owner's.
 - If you are not sure which customer the owner means, ask, or search and confirm, rather than acting on the wrong one.`;
 
-const MODEL = () => process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5';
+// The copilot runs on a FAST model on purpose (Jo, 29 Aug: "fast thinking, not
+// deep"). Haiku answers in a second or two, which is what an owner talking to a
+// chat expects, and the mutating actions are propose-and-approve anyway so the
+// safety does not ride on the model's depth. Overridable per deployment; falls
+// back to Will's own model only if someone clears the default.
+const MODEL = () => process.env.CLAUDE_ASSISTANT_MODEL ?? 'claude-haiku-4-5';
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function phoneLabel(c: CustomerRow): string {
@@ -294,6 +319,15 @@ async function runReadTool(name: string, input: Record<string, unknown>): Promis
         }
         return { count: out.length, leads: out };
       }
+      case 'library_overview': {
+        const active = await store.listKnowledge('active');
+        const drafts = await store.listKnowledge('draft');
+        return {
+          active_count: active.length,
+          draft_count: drafts.length,
+          active_topics: active.slice(0, 60).map((k) => ({ intent: k.intent, question: k.question })),
+        };
+      }
       default:
         return { error: 'unknown tool' };
     }
@@ -365,7 +399,7 @@ function seedMessages(history: AssistantTurn[]): ApiMessage[] {
 
 async function callApi(key: string, system: string, messages: ApiMessage[]): Promise<{ ok: true; data: unknown } | { ok: false; error: string }> {
   const body = JSON.stringify({
-    model: MODEL(), max_tokens: 1500, system, tools: TOOLS, messages,
+    model: MODEL(), max_tokens: 1024, system, tools: TOOLS, messages,
   });
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
@@ -415,7 +449,9 @@ export async function runAssistant(history: AssistantTurn[]): Promise<AssistantR
 
   const proposals: Proposal[] = [];
   const idCounter = { n: 0 };
-  const MAX_STEPS = 6;
+  // Kept tight so a question resolves in a couple of fast round-trips, not a
+  // long chain. Haiku is quick, but every extra step is another network hop.
+  const MAX_STEPS = 4;
 
   for (let step = 0; step < MAX_STEPS; step++) {
     const r = await callApi(key, system, messages);

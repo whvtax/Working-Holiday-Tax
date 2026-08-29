@@ -184,6 +184,19 @@ const timeAgo = (iso: string | null) => {
   if (s < 86400) return `${Math.round(s / 3600)}h`;
   return `${Math.round(s / 86400)}d`;
 };
+// How long a reply took to go out after the customer's message, in short form
+// ("3s", "2m", "1h"). Shown as a small clock on a bot/owner reply so the owner
+// can see the response speed at a glance (Jo, 29 Aug). Returns null when the
+// gap is not worth showing (no preceding inbound, negative, or over a week).
+const respGap = (fromIso: string | null, toIso: string): string | null => {
+  if (!fromIso) return null;
+  const ms = new Date(toIso).getTime() - new Date(fromIso).getTime();
+  if (!(ms > 0) || ms > 7 * 86400e3) return null;
+  if (ms < 60e3) return `${Math.max(1, Math.round(ms / 1000))}s`;
+  if (ms < 3600e3) return `${Math.round(ms / 60e3)}m`;
+  if (ms < 86400e3) return `${Math.round(ms / 3600e3)}h`;
+  return `${Math.round(ms / 86400e3)}d`;
+};
 // WhatsApp-style date dividers in an open chat: "Today" / "Yesterday" / the
 // full date, all read in the business's own timezone so a message sent late
 // at night doesn't land on the wrong side of the divider.
@@ -434,9 +447,17 @@ export default function Dashboard() {
   // Proposal ids already acted on (approved/dismissed), so a button cannot be
   // pressed twice and the card shows its outcome.
   const [asstDone, setAsstDone] = useState<Record<string, 'approved' | 'dismissed'>>({});
+  // Proposals currently being executed (an action Jo pressed), so the card can
+  // show a spinner while /api/will/actions runs (Jo, 29 Aug: "so I know it's working").
+  const [asstRunning, setAsstRunning] = useState<Record<string, boolean>>({});
   // send_reply proposals are editable before sending; this holds the edited text.
   const [asstEdit, setAsstEdit] = useState<Record<string, string>>({});
   const asstScrollRef = useRef<HTMLDivElement>(null);
+  // The proactive opening ("like a secretary"): once per page load, when the
+  // Overview is first shown, the copilot scans the pipeline unprompted and
+  // greets Jo with what is worth his attention. This ref makes it fire once, not
+  // on every tab switch back to the Overview.
+  const asstKickedRef = useRef(false);
 
   const say = (m: string) => {
     setToast(m);
@@ -503,7 +524,7 @@ export default function Dashboard() {
   // mutation path is /api/will/actions, exactly as if the owner had done it by
   // hand elsewhere in the CRM.
   const approveProposal = useCallback(async (p: AsstProposal) => {
-    if (asstDone[p.id]) return;
+    if (asstDone[p.id] || asstRunning[p.id]) return;
     let body: Record<string, unknown> | null = null;
     if (p.kind === 'move_stage' && p.toState) {
       body = { action: 'set_state', customerId: p.customerId, state: p.toState, force: true };
@@ -515,16 +536,52 @@ export default function Dashboard() {
       body = { action: 'create_task', customerId: p.customerId, reason: p.reason, body: p.message };
     }
     if (!body) return;
-    setAsstDone((d) => ({ ...d, [p.id]: 'approved' }));
+    // Show the spinner while the action actually runs, then mark it done.
+    setAsstRunning((s) => ({ ...s, [p.id]: true }));
     const r = await act(body);
+    setAsstRunning((s) => { const n = { ...s }; delete n[p.id]; return n; });
     if (r && r.ok === false) {
-      setAsstDone((d) => { const n = { ...d }; delete n[p.id]; return n; });
       say(r.error || r.detail || 'That action did not go through.');
       return;
     }
+    setAsstDone((d) => ({ ...d, [p.id]: 'approved' }));
     say(p.kind === 'send_reply' ? 'Message sent ✓' : p.kind === 'move_stage' ? `Moved to ${p.toStateLabel} ✓` : 'Task opened ✓');
     refresh();
-  }, [asstDone, asstEdit, refresh]);
+  }, [asstDone, asstRunning, asstEdit, refresh]);
+
+  // The proactive briefing. Runs a fresh scan (ignores the ongoing chat on
+  // purpose) and appends the copilot's own suggestions. Fired automatically on
+  // first open, and by the "refresh ideas" button in the header.
+  const briefAsst = useCallback(async () => {
+    if (asstBusy) return;
+    setAsstBusy(true);
+    const kickoff = 'עשה סקירה קצרה ויזומה של העסק עכשיו. תעבור על הפייפליין והלקוחות ותביא לי 2 עד 4 דברים שהכי שווה שאשים לב אליהם כרגע: מי כדאי לפנות אליו, לעקוב אחריו, להזיז בפייפ, או להחזיר. תן הצעות עם כפתור פעולה איפה שזה עוזר. קצר וללא רשימות ארוכות.';
+    try {
+      const res = await fetch('/api/will/assistant', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', text: kickoff }] }),
+      });
+      const d = await res.json().catch(() => ({}));
+      setAsstMsgs((prev) => [...prev, {
+        role: 'assistant',
+        text: typeof d.reply === 'string' && d.reply.trim() ? d.reply : 'לא הצלחתי להביא סקירה כרגע.',
+        proposals: Array.isArray(d.proposals) ? d.proposals : [],
+        error: d.ok === false,
+      }]);
+    } catch {
+      setAsstMsgs((prev) => [...prev, { role: 'assistant', text: 'לא הצלחתי להגיע לשרת. נסה שוב.', error: true }]);
+    } finally {
+      setAsstBusy(false);
+    }
+  }, [asstBusy]);
+
+  // Fire the proactive opening once, the first time the Overview is shown.
+  useEffect(() => {
+    if (view === 'pipeline' && !asstKickedRef.current && asstMsgs.length === 0 && !asstBusy) {
+      asstKickedRef.current = true;
+      briefAsst();
+    }
+  }, [view, asstMsgs.length, asstBusy, briefAsst]);
 
   // Keep the copilot transcript pinned to the newest message.
   useEffect(() => {
@@ -744,20 +801,10 @@ export default function Dashboard() {
   );
   const openTaskNotif = (id: string) => { setFocusTaskId(id); setView('tasks'); setNotifOpen(false); };
   // `greeting` and `awaiting` were removed on 29 Aug: both were computed on
-  // every render and neither reached the screen. awaiting was also the input to
-  // awaitingPotential, a dollar total that was likewise never displayed.
-  // We sent the last message, they went quiet, but never explicitly declined:
-  // worth a personal nudge in a few weeks. "We spoke last" was being counted
-  // the instant our reply went out, with no time passed at all — a lead who
-  // messaged 5 minutes ago and got an instant answer counted as "gone quiet"
-  // just as much as someone silent for a month, which is why 60 of 84 showed
-  // up here. Requires at least 24h of actual silence since our side spoke,
-  // the same bar the "stuck" flag and the follow-up cadence already use.
-  const QUIET_THRESHOLD_MS = 24 * 3600e3;
-  const quietLeads = data.customers.filter((c) =>
-    c.lastMessageDirection === 'OUT' && !c.optedOut &&
-    c.lastMessageAt != null && Date.now() - new Date(c.lastMessageAt).getTime() > QUIET_THRESHOLD_MS &&
-    ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'WENT_COLD'].includes(c.state));
+  // every render and neither reached the screen. The "Worth a Nudge" KPI card
+  // (and its quietLeads calculation) came out with the other two KPI cards on
+  // 29 Aug when the Overview moved to the assistant-first layout; the same
+  // quiet-lead leads are still reachable through the Closed pipeline stage.
   const killSwitch = health?.killSwitch ?? false;
 
   // A customer opened from a search result may be outside the loaded window, so
@@ -941,18 +988,17 @@ export default function Dashboard() {
 
       <main>
         {view === 'pipeline' && (
-          <section className="view active">
-            {/* The "Welcome / Your Dashboard" heading and its gap were removed —
-                they only took space. The KPI row and the pipeline strip are now
-                a STICKY summary: they stay pinned to the top of the view while
-                the customer list below scrolls under them. */}
-            <div style={{ position: 'sticky', top: 0, zIndex: 5, background: 'var(--bg)', paddingTop: 2, marginBottom: 14 }}>
-            <div className="kpis">
-              <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Customers</div><div className="kv">{totalCustomers}</div><div className="kd">in the system</div></div>
-              <div className="kpi clickable" title="We sent the last message and they went quiet, but never said no. Worth a personal follow-up later." onClick={() => { setView('pipeline'); setGroup('closed'); }}>
-                <div className="kl">Worth a Nudge</div><div className="kv">{quietLeads.length}</div><div className="kd">Never said no</div>
-              </div>
-              <div className="kpi clickable" title="See completed customers" onClick={() => { setView('pipeline'); setGroup('done'); }}><div className="kl">Completed</div><div className="kv">{groupCount(STAGE_GROUPS.find((sg) => sg.id === 'done')!)}</div><div className="kd up">all-time</div></div>
+          <section className="view active overview-view">
+            {/* The KPI row and the pipeline strip are a FIXED summary at the top
+                of the Overview: they never scroll. Only the assistant transcript
+                below scrolls, inside its own panel (Jo, 29 Aug). */}
+            <div className="ov-summary" style={{ paddingTop: 2, marginBottom: 12 }}>
+            {/* Option 1 (Jo, 29 Aug): the three KPI cards were removed to give the
+                assistant the room, they duplicated the pipeline counts anyway.
+                One compact stat stays: the total number of chats, renamed from
+                "Customers" to "Chats" at Jo's request. */}
+            <div className="ovstat">
+              <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Chats</div><div className="kv">{totalCustomers}</div><div className="kd">in the system</div></div>
             </div>
 
             <div className="pstrip">
@@ -983,24 +1029,11 @@ export default function Dashboard() {
             <div className="asst">
               <div className="asst-head">
                 <div className="asst-title"><span className="asst-dot" />Ask {ASSISTANT_NAME}</div>
-                <div className="asst-sub">Advice, and one-click actions across your customers</div>
+                <button className="asst-refresh" title="רענן רעיונות" onClick={briefAsst} disabled={asstBusy} aria-label="Refresh ideas">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                </button>
               </div>
               <div className="asst-scroll" ref={asstScrollRef}>
-                {asstMsgs.length === 0 && !asstBusy && (
-                  <div className="asst-empty">
-                    <p>Ask me anything about your customers, or tell me what to do. For example:</p>
-                    <div className="asst-chips">
-                      {[
-                        'How should I answer the last person who messaged?',
-                        'Go over everyone and tell me who else we can help',
-                        'Who is stuck waiting on a signature?',
-                        'Anyone worth a follow-up this week?',
-                      ].map((s) => (
-                        <button key={s} className="asst-chip" onClick={() => sendAsst(s)}>{s}</button>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 {asstMsgs.map((m, i) => (
                   <div key={i} className={`asst-msg ${m.role}`}>
                     <div className={`asst-bubble ${m.error ? 'err' : ''}`}>{m.text}</div>
@@ -1008,6 +1041,7 @@ export default function Dashboard() {
                       <div className="asst-props">
                         {m.proposals.map((p) => {
                           const done = asstDone[p.id];
+                          const running = asstRunning[p.id];
                           return (
                             <div key={p.id} className={`asst-prop ${done ?? ''}`}>
                               <div className="asst-prop-head">
@@ -1031,6 +1065,8 @@ export default function Dashboard() {
                               )}
                               {done ? (
                                 <div className={`asst-prop-status ${done}`}>{done === 'approved' ? '✓ Done' : 'Dismissed'}</div>
+                              ) : running ? (
+                                <div className="asst-prop-running"><span className="asst-spin" aria-hidden="true" />Working…</div>
                               ) : (
                                 <div className="asst-prop-actions">
                                   <button className="btn take sm" onClick={() => approveProposal(p)}>
@@ -1406,6 +1442,10 @@ export default function Dashboard() {
 
                         const out: React.JSX.Element[] = [];
                         let lastDay = '';
+                        // The moment the customer last spoke, so a bot/owner reply
+                        // can show how long it took to answer (Jo, 29 Aug: a small
+                        // clock, "when it came in and when the bot replied").
+                        let lastInboundAt: string | null = null;
                         for (const m of visible) {
                           const dayKey = melDayKey(m.createdAt);
                           if (dayKey !== lastDay) {
@@ -1417,6 +1457,7 @@ export default function Dashboard() {
                             out.push(
                               <div key={m.id} className="msg out" style={{ opacity: 0.85, border: '1px dashed rgba(122,99,232,.6)' }}>
                                 {m.body}
+                                {m.meta?.review && <div className="reviewnote">👁 {m.meta.review}</div>}
                                 <div className="mt"><span className="ai">✎ awaiting your approval</span></div>
                                 <div className="abtns" style={{ marginTop: 8 }}>
                                   <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${r.blocked.join(', ')}` : 'Draft blocked: situation changed')); loadChat(chatSel.id); refresh(); })}>✓ Approve</button>
@@ -1441,6 +1482,10 @@ export default function Dashboard() {
                             continue;
                           }
                           const reactionEmojiHere = reactionEmojiByMsgId.get(m.id);
+                          // Response clock: on a bot or owner reply, how long after
+                          // the customer's last message it went out.
+                          const gap = (m.direction === 'OUT' && (m.author === 'AI' || m.author === 'HUMAN'))
+                            ? respGap(lastInboundAt, m.createdAt) : null;
                           out.push(
                             <div key={m.id} className={`msg ${m.direction === 'IN' ? 'in' : 'out'}${reactionEmojiHere ? ' has-react' : ''}`}>
                               {reactionEmojiHere && (
@@ -1451,9 +1496,10 @@ export default function Dashboard() {
                                   "📷 [Photo]" placeholder is noise. The caption
                                   rides along with the attachment. */}
                               {m.meta?.media ? null : m.body}
-                              <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{/* WhatsApp-real: an edited message carries a small "Edited" next to its time. Meta does not send us the new wording, so the text shown is still what they first typed — the mark is there to say so, rather than letting the chat quietly disagree with their phone. */}{m.meta?.edited && <span className="edited" title="Edited in WhatsApp. Meta does not send the new wording, so the text above is the original.">Edited</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
+                              <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{gap && <span className="respgap" title="Time from the customer's message to this reply">⏱ {gap}</span>}{/* WhatsApp-real: an edited message carries a small "Edited" next to its time. Meta does not send us the new wording, so the text shown is still what they first typed — the mark is there to say so, rather than letting the chat quietly disagree with their phone. */}{m.meta?.edited && <span className="edited" title="Edited in WhatsApp. Meta does not send the new wording, so the text above is the original.">Edited</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
                             </div>,
                           );
+                          if (m.direction === 'IN') lastInboundAt = m.createdAt;
                         }
                         return out;
                       })()}
@@ -1542,6 +1588,7 @@ export default function Dashboard() {
                     <span className="obtime">{timeAgo(m.createdAt)} ago</span>
                   </div>
                   <div className="obbody">{m.body}</div>
+                  {m.meta?.review && <div className="reviewnote">👁 {m.meta.review}</div>}
                   <div className="obbtns">
                     <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${r.blocked.join(', ')}` : 'Draft blocked: situation changed')); refresh(); })}>✓ Approve & send</button>
                     <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { await act({ action: 'discard_message', id: m.id }); say('Draft discarded'); refresh(); })}>✕ Discard</button>

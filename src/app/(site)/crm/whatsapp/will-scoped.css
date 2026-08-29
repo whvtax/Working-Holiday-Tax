@@ -110,6 +110,10 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .kpi .kl{font-size:9.5px;color:var(--ink3);font-weight:500;letter-spacing:.2px}
 .will-scope .kpi .kd{font-size:10px;margin-top:1px;color:var(--ink3)}
 .will-scope .kpi .up{color:#0a8409}
+/* The single "Chats" stat on the assistant-first Overview: the KPI card look,
+   kept compact and left-aligned instead of stretched across the row. */
+.will-scope .ovstat{display:flex;margin-bottom:12px}
+.will-scope .ovstat .kpi{min-width:150px}
 .will-scope /* ---------- pipeline strip ---------- */
 .pstrip{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px 0;margin-bottom:11px;box-shadow:0 1px 3px rgba(30,32,40,.04)}
 .will-scope .pstitle{font-size:12.5px;font-weight:650;margin-bottom:11px}
@@ -913,20 +917,33 @@ aside.side{
 .will-scope .btn.quiet:hover:not(:disabled){border-color:var(--brand1);color:var(--brand1)}
 .will-scope .btn:disabled{opacity:.5;cursor:default}
 
+/* The Overview is a FIXED frame, like the chats view: it fills main and clips,
+   so nothing scrolls at the page level. The summary (KPIs + pipeline) is pinned
+   at the top, and the only thing that scrolls is the assistant transcript. */
+.will-scope .view.active.overview-view{display:flex;flex-direction:column;overflow:hidden}
+.will-scope .overview-view .ov-summary{flex:none}
+
 .will-scope .asst{
   display:flex;flex-direction:column;
   background:var(--surface);border:1px solid var(--line);border-radius:14px;
   overflow:hidden;min-height:0;
-  /* Fill the viewport under the sticky summary rather than growing the page. */
-  height:min(560px,calc(80dvh - 250px));
+  /* Inside the Overview frame it simply fills whatever height is left under the
+     summary; the flex rule below drives that. */
+  flex:1;
 }
 .will-scope .asst-head{
-  flex:none;padding:12px 16px;border-bottom:1px solid var(--line);
-  background:var(--surface2);
+  flex:none;position:relative;padding:13px 16px;border-bottom:1px solid var(--line);
+  background:var(--surface2);display:flex;align-items:center;justify-content:center;
 }
-.will-scope .asst-title{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--ink)}
+.will-scope .asst-title{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:.2px}
 .will-scope .asst-dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 20%,transparent)}
-.will-scope .asst-sub{font-size:11px;color:var(--ink3);margin-top:2px}
+.will-scope .asst-refresh{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:30px;height:30px;border-radius:8px;border:1px solid var(--line2);background:var(--surface);
+  display:grid;place-items:center;cursor:pointer;color:var(--ink3);
+}
+.will-scope .asst-refresh:hover:not(:disabled){color:var(--brand1);border-color:var(--brand1)}
+.will-scope .asst-refresh:disabled{opacity:.5;cursor:default}
 
 .will-scope .asst-scroll{flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
 
@@ -986,3 +1003,27 @@ aside.side{
 }
 .will-scope .asst-composer textarea:focus{outline:none;border-color:var(--brand1)}
 .will-scope .asst-composer .btn{flex:none;padding:9px 16px}
+
+/* The reviewer's note on a draft (second set of eyes): why the wording was
+   adjusted, or why it was held for a person. Quiet, one line, under the draft. */
+.will-scope .reviewnote{
+  margin-top:7px;font-size:11px;line-height:1.45;color:var(--ink2);
+  background:color-mix(in srgb,var(--brand1) 6%, var(--surface));
+  border:1px solid color-mix(in srgb,var(--brand1) 22%, transparent);
+  border-radius:8px;padding:6px 9px;
+}
+
+/* The response clock on a reply bubble: how long after the customer's message
+   it went out. Sits inline in the message time row, quiet. */
+.will-scope .mt .respgap{color:var(--ink3);margin-right:5px;font-variant-numeric:tabular-nums}
+
+/* "Working…" state while an action Jo approved from the copilot actually runs,
+   with a small spinning loader so he can see it is in progress. */
+.will-scope .asst-prop-running{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--brand1)}
+.will-scope .asst-spin{
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid color-mix(in srgb,var(--brand1) 25%,transparent);
+  border-top-color:var(--brand1);
+  animation:asstspin .7s linear infinite;flex:none;
+}
+@keyframes asstspin{to{transform:rotate(360deg)}}

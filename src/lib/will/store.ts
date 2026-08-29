@@ -68,6 +68,10 @@ export interface MessageRow {
     /** A heart or thumbs up the customer put on one of our messages. Shown as a
      *  small note in the thread rather than a message bubble. */
     reaction?: { emoji: string | null; to?: string };
+    /** The reviewer's note on this AI message (second set of eyes): what it
+     *  changed or flagged. Shown on the draft card so the owner sees why the
+     *  wording differs from Will's first pass. */
+    review?: string;
   };
   createdAt: string;
 }

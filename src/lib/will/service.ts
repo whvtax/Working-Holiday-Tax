@@ -18,6 +18,7 @@ import { suggestReply } from './suggest';
 import { APPROVED } from './approved-messages';
 import { assessPaymentProofImage } from './claude';
 import { claimsPayment } from './payment-claim';
+import { reviewDraft } from './reviewer';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
@@ -375,6 +376,45 @@ async function handleIncomingInner(
     }).catch(() => {});
   }
 
+  // ── Second set of eyes ───────────────────────────────────────────────────
+  //
+  // Jo, 29 Aug: an extra layer of protection on the same rules Will works by.
+  // Before an auto reply goes out (Full Auto), before a draft is put up for
+  // approval, and on the suggested reply of any human task, a reviewer looks at
+  // what Will decided and can quietly fix it, or, in Full Auto, HOLD it so a
+  // person looks instead of it going out. It never sends and never overrides the
+  // owner: in Approval mode the owner still approves the (now improved) draft.
+  //
+  // It sits ON TOP of the deterministic policy guard, which is unchanged. And it
+  // is fail-open: reviewDraft returns "pass" on any error, so a reviewer problem
+  // can only ever leave Will's original decision exactly as it was.
+  if (outcome.replyText && (outcome.kind === 'sent' || outcome.kind === 'queued' || outcome.kind === 'pending_approval')) {
+    const review = await reviewDraft({
+      customer, history, draft: outcome.replyText, mode, isTask: false,
+    });
+    if (review.verdict === 'revise' && review.revised) {
+      outcome.replyText = review.revised;
+      outcome.reviewNote = review.note ?? 'Reviewed and adjusted before sending.';
+      await store.audit('reviewer', 'draft_revised', { customerId: customer.id, note: review.note ?? null }).catch(() => {});
+    } else if (review.verdict === 'hold' && (outcome.kind === 'sent' || outcome.kind === 'queued')) {
+      // Full Auto only reaches here. The reviewer wants a person on this one, so
+      // it does not go out on its own: it becomes a draft awaiting approval,
+      // exactly like Approval mode, with the reviewer's reason attached.
+      outcome.kind = 'pending_approval';
+      outcome.reviewNote = review.note ?? 'Held for you to check before it goes out.';
+      await store.audit('reviewer', 'auto_reply_held', { customerId: customer.id, note: review.note ?? null }).catch(() => {});
+    } else if (review.note) {
+      outcome.reviewNote = review.note;
+    }
+  } else if (outcome.kind === 'human_task' && outcome.task) {
+    const review = await reviewDraft({
+      customer, history, draft: outcome.task.suggestedReply ?? '', mode, isTask: true,
+    });
+    if (review.verdict === 'revise' && review.revised) outcome.task.suggestedReply = review.revised;
+    if (review.note) outcome.reviewNote = review.note;
+    if (review.note) await store.audit('reviewer', 'task_reviewed', { customerId: customer.id, note: review.note }).catch(() => {});
+  }
+
   // AI-04: infer the quoted product from the fee actually present in the reply,
   // not exact-string-equality with the template (the model is told to adapt the
   // opening wording, which broke exact matching). $385 => TFN+ABN, $220 => TFN.
@@ -413,7 +453,7 @@ async function handleIncomingInner(
     const m = await store.addMessage({
       customerId: customer.id, direction: 'OUT', author: 'AI', status: 'QUEUED',
       body: outcome.replyText,
-      meta: { proposedState: outcome.newState, income: inc ?? undefined },
+      meta: { proposedState: outcome.newState, income: inc ?? undefined, review: outcome.reviewNote },
     });
     await store.addJob({
       customerId: customer.id, kind: 'AUTO_REPLY', payload: { messageId: m.id },
@@ -439,13 +479,16 @@ async function handleIncomingInner(
     const m = await store.addMessage({
       customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL',
       body: outcome.replyText,
-      meta: { proposedState: outcome.newState, income: inc ?? undefined },
+      meta: { proposedState: outcome.newState, income: inc ?? undefined, review: outcome.reviewNote },
     });
     pendingMessageId = m.id;
   } else if (outcome.kind === 'human_task' && outcome.task) {
+    // Carry the reviewer's note into the task context so the owner sees what the
+    // second set of eyes noticed, alongside the message that triggered the task.
+    const taskContext = outcome.reviewNote ? `${text}\n\nReviewer: ${outcome.reviewNote}` : text;
     await raiseOrUpdateTask(store, customer, {
       reason: outcome.task.reason, severity: outcome.task.severity,
-      newContext: text, suggestedReply: outcome.task.suggestedReply ?? null,
+      newContext: taskContext, suggestedReply: outcome.task.suggestedReply ?? null,
     });
     await store.audit('assistant', 'human_task_created', { reason: outcome.task.reason });
   }

@@ -35,6 +35,9 @@ export interface EngineOutcome {
   invalidTransition?: boolean;
   task?: { reason: string; severity: string; suggestedReply?: string };
   guardViolations?: string[];
+  /** Set by the reviewer pass in service.ts (second set of eyes): a short note
+   *  on what it saw or changed. Stored on the message/task so the owner sees it. */
+  reviewNote?: string;
   decision: Decision;
 }
 
