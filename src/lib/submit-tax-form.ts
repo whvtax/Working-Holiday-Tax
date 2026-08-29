@@ -31,7 +31,19 @@ export type TaxFormPayload = {
   declared: 'yes' | 'no' | ''
   bankStatement: File | null
   selfiePassport: File | null
+  /**
+   * Work-related expense invoices, when the customer said they have expenses.
+   *
+   * Capped at MAX_INVOICES by the picker. Unlike the two identity documents
+   * these are OPTIONAL and NON-BLOCKING: see uploadInvoices below.
+   */
+  invoices: File[]
 }
+
+/** Jo, 28 Aug. Ten is plenty for a working holiday and keeps the upload inside
+ *  the rate limit with its retries: 2 identity documents + 10 invoices is 12
+ *  files, 36 requests worst case, against a ceiling of 100. */
+export const MAX_INVOICES = 10
 
 export type SubmitResult = { ok: true } | { ok: false; error: string }
 
@@ -39,10 +51,13 @@ export type SubmitResult = { ok: true } | { ok: false; error: string }
  * Uploads one file and returns its stored URL, or null after 3 failed attempts.
  * `onError` reports a human-readable reason for the final failure.
  */
+type UploadKind = 'bank' | 'selfie' | 'invoice'
+
 async function uploadOne(
   file: File,
   t: (k: keyof typeof formStrings) => string,
   onError: (msg: string) => void,
+  kind: UploadKind = 'invoice',
 ): Promise<string | null> {
   let f = await compressImage(file)
   if (f.size > MAX_UPLOAD_BYTES) {
@@ -75,7 +90,7 @@ async function uploadOne(
     if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
 
     const r = await fetch(
-      `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
+      `/api/tax-form/upload?kind=${kind}&filename=${encodeURIComponent(f.name)}`,
       { method: 'POST', body: f, headers: { 'Content-Type': contentType } },
     )
     const data = await r.json().catch(() => ({}))
@@ -118,6 +133,18 @@ export async function submitTaxForm(
   lang: FormLang,
   /** Defaults to the original endpoint so /tax-form is unaffected. */
   endpoint: string = '/api/tax-form',
+  /**
+   * Called after each file finishes, so the button can say "3 of 12" instead
+   * of a static label.
+   *
+   * WHY IT MATTERS. Uploads run one at a time with a 300ms gap and up to three
+   * tries with backoff, so two identity documents plus ten receipts on hostel
+   * wifi can sit behind an unchanging "Submitting..." for a minute. That reads
+   * as a freeze at the exact moment of commitment, and the natural response is
+   * to background the tab, which destroys the in-memory hand-off and loses the
+   * whole form.
+   */
+  onProgress?: (done: number, total: number) => void,
 ): Promise<SubmitResult> {
   const t = (k: keyof typeof formStrings) => {
     const entry = formStrings[k] as Record<FormLang, string>
@@ -128,13 +155,19 @@ export async function submitTaxForm(
   const noteError = (msg: string) => { if (!uploadError) uploadError = msg }
 
   // Upload bankStatement + selfiePassport sequentially to avoid rate-limiting
-  const coreUploads: { label: string; file: File }[] = []
-  if (p.bankStatement)  coreUploads.push({ label: 'bankStatement',  file: p.bankStatement })
-  if (p.selfiePassport) coreUploads.push({ label: 'selfiePassport', file: p.selfiePassport })
+  const coreUploads: { label: string; kind: UploadKind; file: File }[] = []
+  if (p.bankStatement)  coreUploads.push({ label: 'bankStatement',  kind: 'bank',   file: p.bankStatement })
+  if (p.selfiePassport) coreUploads.push({ label: 'selfiePassport', kind: 'selfie', file: p.selfiePassport })
+
+  const invoiceList = (p.invoices ?? []).slice(0, MAX_INVOICES)
+  const totalFiles = coreUploads.length + invoiceList.length
+  let doneFiles = 0
+  const tick = () => { doneFiles += 1; onProgress?.(doneFiles, totalFiles) }
 
   const coreResults: (string | null)[] = []
-  for (const { file: f } of coreUploads) {
-    coreResults.push(await uploadOne(f, t, noteError))
+  for (const { file: f, kind } of coreUploads) {
+    coreResults.push(await uploadOne(f, t, noteError, kind))
+    tick()
     await new Promise(r => setTimeout(r, 300))
   }
 
@@ -148,6 +181,33 @@ export async function submitTaxForm(
 
   const coreUrls: Record<string, string> = {}
   coreUploads.forEach(({ label }, i) => { if (coreResults[i]) coreUrls[label] = coreResults[i]! })
+
+  // ── The expense invoices ─────────────────────────────────────────────────
+  //
+  // Same route, same retry, same 300ms spacing as the two documents above. The
+  // spacing is not decoration: uploading these in parallel is what broke the
+  // previous attempt at this feature, and the file-name collision fix in the
+  // upload route is the scar it left behind.
+  //
+  // WHERE THEY DIFFER FROM THE IDENTITY DOCUMENTS, AND WHY IT MATTERS. A failed
+  // bank statement aborts the submission, because without it there is no job to
+  // do. A failed receipt must NOT: Jo, 28 Aug. Losing a whole form, with the
+  // TFN and the address and the identity documents already uploaded, because
+  // one blurry photo of a petrol receipt timed out on hostel wifi, is a lead
+  // thrown away over something worth twenty dollars of deduction. So each
+  // invoice is tried, and whatever failed is reported on the task instead, by
+  // name, so the file can simply be asked for on WhatsApp.
+  const invoiceUrls: string[] = []
+  const invoiceFailures: string[] = []
+  for (const f of invoiceList) {
+    // Deliberately swallows the error text: noteError() feeds the message shown
+    // when the submission ABORTS, and these never abort it.
+    const url = await uploadOne(f, t, () => {}, 'invoice')
+    if (url) invoiceUrls.push(url)
+    else invoiceFailures.push(f.name)
+    tick()
+    await new Promise(r => setTimeout(r, 300))
+  }
 
   // Build FormData (no file blobs - URLs only)
   const fd = new FormData()
@@ -175,9 +235,13 @@ export async function submitTaxForm(
   if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
   if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
-  // Combine all uploaded URLs (core files only - invoices are sent by email)
-  const allFileUrls = [...Object.values(coreUrls)]
+  // Everything that actually reached storage, in the order the CRM lists it:
+  // the two identity documents first, then the receipts.
+  const allFileUrls = [...Object.values(coreUrls), ...invoiceUrls]
   if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
+  // Named so the task can say which receipt to ask for, rather than a count
+  // that leaves the owner guessing which one is missing.
+  if (invoiceFailures.length) fd.append('invoiceFailures', JSON.stringify(invoiceFailures))
 
   try {
     const res = await fetch(endpoint, { method: 'POST', body: fd })

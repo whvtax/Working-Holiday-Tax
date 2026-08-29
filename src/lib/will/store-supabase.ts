@@ -5,6 +5,7 @@
 // data lives on your server exactly like the rest of the CRM.
 // ============================================================
 import { randomUUID } from 'crypto';
+import { phoneCandidates } from './phone-candidates';
 import { getSupabase } from '@/lib/supabase';
 import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
@@ -92,11 +93,6 @@ function toTemplate(r: Record<string, unknown>): TemplateRow {
     requiresMeta: !!r.requires_meta,
     versions: (r.versions as number) ?? 1,
     updatedAt: (r.updated_at as string) ?? now(),
-    variantB: (r.variant_b as string) ?? null,
-    sentA: (r.sent_a as number) ?? 0,
-    sentB: (r.sent_b as number) ?? 0,
-    convA: (r.conv_a as number) ?? 0,
-    convB: (r.conv_b as number) ?? 0,
   };
 }
 function toJob(r: Record<string, unknown>): JobRow {
@@ -123,7 +119,15 @@ function toHistory(r: Record<string, unknown>): StateHistoryRow {
 }
 
 // camelCase CustomerRow field -> snake_case column (for partial updates)
-const CUSTOMER_COL: Record<string, string> = {
+// KEYED BY THE ROW TYPE, NOT BY `string`.
+//
+// As Record<string, string> this compiled happily with a field missing, and
+// updateCustomer's `if (col)` then swallowed the write: the call returned
+// success and nothing was saved. That is the highest-probability silent
+// data-loss bug in the codebase and it triggers on the most ordinary task
+// there is, adding a field to a customer. Typed this way, omitting one is a
+// compile error at the point of the omission.
+const CUSTOMER_COL: Record<Exclude<keyof CustomerRow, 'id'>, string> = {
   waId: 'wa_id', name: 'name', flag: 'flag', state: 'state', income: 'income',
   paid: 'paid', formComplete: 'form_complete', missingDocs: 'missing_docs',
   aiPaused: 'ai_paused', isLegacy: 'is_legacy', botOwned: 'bot_owned', optedOut: 'opted_out',
@@ -215,17 +219,28 @@ export class SupabaseStore implements Store {
     return (data ?? []).map(toCustomer);
   }
 
+  async countCustomers(): Promise<number> {
+    const { count, error } = await this.sb().from('will_customers').select('id', { count: 'exact', head: true });
+    if (error) throw error;   // the probe must fail loudly; that is its job
+    return count ?? 0;
+  }
+
   async getCustomerByWaId(waId: string): Promise<CustomerRow | null> {
     const { data } = await this.sb().from('will_customers').select('*').eq('wa_id', waId).limit(1).maybeSingle();
     return data ? toCustomer(data) : null;
   }
 
   async findCustomerByPhone(phone: string): Promise<CustomerRow | null> {
-    const norm = normPhone(phone);
-    if (!norm) return null;
-    // wa_norm is written on insert and on every waId patch, and is indexed.
-    const { data } = await this.sb().from('will_customers').select('*').eq('wa_norm', norm).limit(1).maybeSingle();
-    return data ? toCustomer(data) : null;
+    // Both spellings of the same number: an Australian typing "0412 345 678"
+    // into the form has to find the customer WhatsApp gave us as
+    // "61412345678". See phone-candidates.ts for why the normaliser itself is
+    // left alone. wa_norm is written on insert and on every waId patch, and is
+    // indexed, so this stays a single indexed lookup.
+    const candidates = phoneCandidates(phone);
+    if (!candidates.length) return null;
+    const { data } = await this.sb().from('will_customers').select('*').in('wa_norm', candidates).limit(1);
+    const row = (data ?? [])[0];
+    return row ? toCustomer(row) : null;
   }
 
   async getCustomerById(id: string): Promise<CustomerRow | null> {
@@ -251,7 +266,10 @@ export class SupabaseStore implements Store {
   async updateCustomer(id: string, patch: Partial<CustomerRow>): Promise<void> {
     const upd: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(patch)) {
-      const col = CUSTOMER_COL[k];
+      // The cast is only to index a typed map with a runtime key. Completeness
+      // is now enforced by the map's own type above, so a field that is not
+      // mapped fails the build rather than being silently dropped here.
+      const col = CUSTOMER_COL[k as Exclude<keyof CustomerRow, 'id'>];
       if (col) upd[col] = v;
     }
     if ('waId' in patch && patch.waId) upd.wa_norm = normPhone(patch.waId);
@@ -448,6 +466,14 @@ export class SupabaseStore implements Store {
     return (data ?? []).length > 0;
   }
 
+  async claimQueuedForSend(id: string): Promise<boolean> {
+    // Atomic, same shape as claimMessageForSend above: the eq('status','QUEUED')
+    // in the UPDATE is what makes only one caller win.
+    const { data } = await this.sb().from('will_messages')
+      .update({ status: 'SENDING' }).eq('id', id).eq('status', 'QUEUED').select('id');
+    return (data ?? []).length > 0;
+  }
+
   async setMessageStatus(id: string, status: MessageRow['status'], opts?: { restamp?: boolean }): Promise<void> {
     const patch: Record<string, unknown> = { status };
     if (opts?.restamp) patch.created_at = now();
@@ -587,20 +613,6 @@ export class SupabaseStore implements Store {
     await this.sb().from('will_customers').delete().eq('id', id);
   }
 
-  async bumpVariant(templateId: string, variant: 'A' | 'B', field: 'sent' | 'conv'): Promise<void> {
-    const col = `${field === 'sent' ? 'sent' : 'conv'}_${variant.toLowerCase()}`;
-    const { data: t } = await this.sb().from('will_templates').select(col).eq('id', templateId).maybeSingle();
-    if (!t) return;
-    const cur = ((t as unknown as Record<string, number>)[col]) ?? 0;
-    await this.sb().from('will_templates').update({ [col]: cur + 1 }).eq('id', templateId);
-  }
-
-  async setVariantB(templateId: string, body: string | null): Promise<void> {
-    const upd: Record<string, unknown> = { variant_b: body };
-    if (!body) { upd.sent_b = 0; upd.conv_b = 0; }
-    await this.sb().from('will_templates').update(upd).eq('id', templateId);
-  }
-
   async getSetting(key: string): Promise<unknown> {
     const { data } = await this.sb().from('will_settings').select('value').eq('key', key).maybeSingle();
     return data ? (data.value as unknown) : undefined;
@@ -648,7 +660,19 @@ export class SupabaseStore implements Store {
       run_at: j.runAt, status: 'SCHEDULED', attempts: 0, created_at: now(),
     };
     const { data, error } = await this.sb().from('will_jobs').insert(row).select('*').single();
-    if (error) { lastPersistError = error.message; throw error; }
+    if (error) {
+      // 23505 on will_jobs_one_pending_followup means another process armed the
+      // same follow-up a moment ago. That is the index doing its job, not a
+      // failure: the customer already has exactly one pending nudge, which is
+      // the whole point. Migration 034 explains the race.
+      if ((error as { code?: string }).code === '23505') {
+        const { data: existing } = await this.sb().from('will_jobs').select('*')
+          .eq('customer_id', j.customerId).eq('kind', j.kind).eq('status', 'SCHEDULED')
+          .limit(1).maybeSingle();
+        if (existing) return toJob(existing);
+      }
+      lastPersistError = error.message; throw error;
+    }
     return toJob(data);
   }
 

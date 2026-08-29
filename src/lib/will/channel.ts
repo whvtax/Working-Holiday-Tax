@@ -40,6 +40,23 @@ export function metaVerifyToken(): string | undefined {
 // can be updated WITHOUT a redeploy. Stored values win over env vars. This is
 // what lets the "Connect WhatsApp" flow drop in a working token instantly.
 // ------------------------------------------------------------------
+/**
+ * How long a call to Meta may hang before we give up on it.
+ *
+ * WHY THIS EXISTS. postMessage had no timeout at all, and it is called for
+ * every single text and template we send. doProcess() is a SERIAL loop under a
+ * 45s tick budget inside a 60s function ceiling, so one stalled connection to
+ * Meta did four things at once: the rest of the batch went unprocessed, the
+ * claimed job was stranded, the reclaim turned it into a DUPLICATE send, and an
+ * attempt was burned toward a permanent FAILED. One hang, four failures.
+ *
+ * 15s sits well inside the tick budget, so a hang costs one message rather than
+ * the invocation. The health probe gets less: it is a status dot, not a
+ * delivery, and it must never be the thing that eats the budget.
+ */
+export const WA_SEND_TIMEOUT_MS = 15_000;
+export const WA_VERIFY_TIMEOUT_MS = 8_000;
+
 export const WA_TOKEN_KEY = 'wa_access_token';
 export const WA_PHONE_ID_KEY = 'wa_phone_number_id';
 export const WA_WABA_KEY = 'wa_waba_id';
@@ -104,7 +121,11 @@ export async function verifyChannel(): Promise<{ configured: boolean; live: bool
     // AND actually owns this phone number id.
     const res = await fetch(
       `https://graph.facebook.com/${GRAPH_VERSION}/${phoneId}?fields=display_phone_number,verified_name,code_verification_status`,
-      { method: 'GET', headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' },
+      {
+        method: 'GET', headers: { Authorization: `Bearer ${token}` }, cache: 'no-store',
+        // A status dot must never be the thing that eats the tick budget.
+        signal: AbortSignal.timeout(WA_VERIFY_TIMEOUT_MS),
+      },
     );
     const data = await res.json().catch(() => ({} as Record<string, unknown>));
     if (res.ok) {
@@ -134,6 +155,9 @@ async function postMessage(payload: Record<string, unknown>): Promise<SendResult
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       cache: 'no-store',
       body: JSON.stringify(payload),
+      // An AbortError lands in the catch below and becomes { ok:false, error },
+      // which every caller already handles.
+      signal: AbortSignal.timeout(WA_SEND_TIMEOUT_MS),
     });
     const data = await res.json().catch(() => ({} as Record<string, unknown>));
     if (!res.ok) {

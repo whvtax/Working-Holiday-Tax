@@ -1,12 +1,14 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabase, STORAGE_BUCKETS, assertUploadsBucketPrivate } from '@/lib/supabase'
-import { isRateLimited } from '@/lib/rate-limit'
+import { isRateLimited, getRedis } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import crypto from 'crypto'
 
 const ALLOWED = new Set(['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/heic','image/heif','application/pdf'])
 const MAX_SIZE = 10 * 1024 * 1024
+// Twelve full-size files: the ten-invoice cap plus the two identity documents.
+const MAX_BYTES_PER_WINDOW = 120 * 1024 * 1024
 
 // Block files containing executable/script signatures (defense in depth)
 const DANGEROUS_PATTERNS = [
@@ -67,8 +69,17 @@ function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req)
-  // Allow 100 file uploads per 15min per IP (handles 22 files × 3 retries + buffer)
-  if (await isRateLimited(ip, 'tax-form-upload', 40)) {
+  // ── The ceiling that used to break the invoice upload ────────────────────
+  //
+  // The comment here said 100 and the code said 40. One person filling the form
+  // on hostel wifi can legitimately need more than 40: two identity documents
+  // plus ten invoices is twelve files, and every one of them retries up to
+  // three times, so 36 requests is a NORMAL submission and a couple of dropped
+  // connections put it over. Past the ceiling every further upload came back
+  // 429 and the submission failed, worst for the customers with the most
+  // receipts. 100 is what the comment always intended and what the retry maths
+  // actually needs.
+  if (await isRateLimited(ip, 'tax-form-upload', 100)) {
     return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
   }
   try {
@@ -88,11 +99,45 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'File contains potentially dangerous content' }, { status: 400 })
     }
 
+    // Which document this is, so the CRM can label it instead of showing a
+    // flat list where the bank statement and a receipt look identical. Only
+    // these three values are honoured; anything else falls back to the original
+    // folder, which is also where every file uploaded before today lives.
+    const kindParam = req.nextUrl.searchParams.get('kind')
+    const folder = kindParam === 'bank' ? 'bank'
+      : kindParam === 'selfie' ? 'selfie'
+      : kindParam === 'invoice' ? 'invoices'
+      : 'invoices'
+
     const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80)
     // Use a UUID for the random portion - Math.random() can collide under
     // heavy concurrent uploads (the tax form may upload 20+ files in parallel
     // with retries) since 5 base-36 chars only gives ~60M combinations.
-    const pathname = `tax-form/invoices/${Date.now()}_${crypto.randomUUID().slice(0, 8)}_${safeName}`
+    const pathname = `tax-form/${folder}/${Date.now()}_${crypto.randomUUID().slice(0, 8)}_${safeName}`
+
+    // ── A BYTE BUDGET, NOT JUST A REQUEST COUNT ─────────────────────────────
+    //
+    // 100 requests x 10MB is 1GB per IP per window, written into the same
+    // private bucket that holds passports, selfies and bank statements. The
+    // request count has to stay generous, because the comment above is right
+    // that 40 broke real submissions. So bound the bytes instead: 120MB is
+    // twelve full-size files, which is more than the ten-invoice cap plus two
+    // identity documents can legitimately need, and nowhere near a gigabyte.
+    //
+    // Fails open, deliberately and consistently with the rest of the rate
+    // limiting: if Redis is unavailable a real customer must still be able to
+    // upload their bank statement.
+    try {
+      const redis = await getRedis()
+      if (redis) {
+        const key = `rlb:tax-form-upload:${ip}`
+        const used = await redis.incrBy(key, body.byteLength)
+        if (used === body.byteLength) await redis.expire(key, 15 * 60)
+        if (used > MAX_BYTES_PER_WINDOW) {
+          return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
+        }
+      }
+    } catch { /* fail open: never block a genuine upload on the limiter */ }
 
     const sb = getSupabase()
     // Fail closed: never write identity docs / invoices into a public bucket.

@@ -132,6 +132,11 @@ export const formStrings = {
   somethingWrong:      { en: 'Something went wrong. Please try again or contact us directly.', de: 'Etwas ist schiefgelaufen. Bitte versuche es nochmal oder kontaktiere uns direkt.', ja: '問題が発生しました。もう一度お試しいただくか、直接ご連絡ください。' },
   // The six characters that let a screenshot be matched to the server log.
   refPrefix:           { en: 'reference ', de: 'Referenz ', ja: '参照番号 ' },
+  // The expense-invoice picker (Jo, 28 Aug). Optional, so the wording never
+  // implies the form cannot be sent without them.
+  invoicesLabel:       { en: 'Receipts or invoices (optional)', de: 'Belege oder Rechnungen (optional)', ja: '領収書または請求書（任意）' },
+  invoicesHint:        { en: 'Add up to 10. You can also send them later on WhatsApp.', de: 'Bis zu 10. Du kannst sie auch später per WhatsApp schicken.', ja: '最大10件まで。後からWhatsAppで送っていただいても大丈夫です。' },
+  uploadInvoices:      { en: 'Upload receipts', de: 'Belege hochladen', ja: '領収書をアップロード' },
   fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：' },
   // The real client-side ceiling is MAX_UPLOAD_BYTES in compress-image.ts = 4MB.
   // This said 10MB while `fileTooLarge` directly below said 4 MB, so the two

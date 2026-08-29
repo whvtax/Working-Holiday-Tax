@@ -8,6 +8,7 @@ import {
   LostAnalysisRow,
 } from './store';
 import { CustomerState } from './state-machine';
+import { phoneCandidates } from './phone-candidates';
 import { seedCustomers, seedTemplates } from './seed';
 
 interface Db {
@@ -124,14 +125,20 @@ function refreshLastMessage(db: Db, customerId: string): void {
 export class FileStore implements Store {
   async listCustomers() { return (await load()).customers; }
 
+  async countCustomers() { return (await load()).customers.length; }
+
   async getCustomerByWaId(waId: string) {
     return (await load()).customers.find((c) => c.waId === waId) ?? null;
   }
 
   async findCustomerByPhone(phone: string) {
-    const norm = normPhoneDigits(phone);
-    if (!norm) return null;
-    return (await load()).customers.find((c) => normPhoneDigits(c.waId) === norm) ?? null;
+    // Same rule as the Supabase store: both spellings of the same number.
+    const candidates = phoneCandidates(phone);
+    if (!candidates.length) return null;
+    return (await load()).customers.find((c) => {
+      const stored = normPhoneDigits(c.waId);
+      return !!stored && candidates.includes(stored);
+    }) ?? null;
   }
 
   async getCustomerById(id: string) {
@@ -168,23 +175,6 @@ export class FileStore implements Store {
     const db = await load();
     const c = db.customers.find((x) => x.id === id);
     if (!c || c.state === to) return;
-    // A/B conversion credit: advancing forward (not closing) credits the last
-    // variant message sent to this customer.
-    const order = ['NEW_LEAD','QUALIFIED','PRICE_SENT','PAYMENT_PENDING','PAID','FORM_PENDING','FORM_COMPLETE','DOCUMENTS_COMPLETE','UNDER_REVIEW','ESTIMATE_READY','FINAL_REVIEW','SIGNATURE_PENDING','SIGNED','LODGED','COMPLETED'];
-    if (order.indexOf(to) > order.indexOf(c.state) && order.indexOf(c.state) >= 0) {
-      const lastVariantMsg = [...db.messages].reverse().find((m) => m.customerId === id && m.meta?.templateId && m.meta?.variant);
-      if (lastVariantMsg?.meta?.templateId && lastVariantMsg.meta.variant) {
-        const t = db.templates.find((x) => x.id === lastVariantMsg.meta!.templateId);
-        if (t) {
-          const key = ('conv' + lastVariantMsg.meta.variant) as 'convA' | 'convB';
-          // only credit once per message
-          if (!(lastVariantMsg.meta as { credited?: boolean }).credited) {
-            t[key] = (t[key] ?? 0) + 1;
-            (lastVariantMsg.meta as { credited?: boolean }).credited = true;
-          }
-        }
-      }
-    }
     db.history.push({ customerId: id, from: c.state, to, causedBy, createdAt: now() });
     if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(to)) c.previousState = c.state;
     c.state = to;
@@ -273,6 +263,15 @@ export class FileStore implements Store {
     const m = db.messages.find((x) => x.id === id);
     if (!m || m.status !== 'PENDING_APPROVAL') return false;
     m.status = 'QUEUED';
+    await persist();
+    return true;
+  }
+
+  async claimQueuedForSend(id: string): Promise<boolean> {
+    const db = await load();
+    const m = db.messages.find((x) => x.id === id);
+    if (!m || m.status !== 'QUEUED') return false;
+    m.status = 'SENDING';
     await persist();
     return true;
   }
@@ -390,22 +389,6 @@ export class FileStore implements Store {
     db.tasks = db.tasks.filter((x) => x.customerId !== c.id);
     db.history = db.history.filter((x) => x.customerId !== c.id);
     db.jobs = db.jobs.filter((x) => x.customerId !== c.id); // L4: no orphaned jobs
-    await persist();
-  }
-
-  async bumpVariant(templateId: string, variant: 'A' | 'B', field: 'sent' | 'conv') {
-    const db = await load();
-    const t = db.templates.find((x) => x.id === templateId);
-    if (!t) return;
-    const key = (field + variant) as 'sentA' | 'sentB' | 'convA' | 'convB';
-    t[key] = (t[key] ?? 0) + 1;
-    await persist();
-  }
-
-  async setVariantB(templateId: string, body: string | null) {
-    const db = await load();
-    const t = db.templates.find((x) => x.id === templateId);
-    if (t) { t.variantB = body; if (!body) { t.sentB = 0; t.convB = 0; } }
     await persist();
   }
 

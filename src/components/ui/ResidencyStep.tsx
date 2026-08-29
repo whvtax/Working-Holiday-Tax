@@ -61,6 +61,8 @@ const COPY = {
     ],
     whmResult: 'Based on your answers, you are a Working Holiday Maker for tax purposes, so the $18,200 tax-free threshold does not apply. Our team will confirm this when we prepare your return.',
     nonNdaResult: 'Based on your answers, you may be an Australian tax resident, but the $18,200 tax-free threshold does not apply. You may still be entitled to the Low Income Tax Offset of up to $700.',
+      sessionLost: 'Your session timed out, so your details need entering again. Nothing was sent.',
+    sessionLostCta: 'Back to the form',
   },
   de: {
     titleLead: 'Bestätigen wir deine ',
@@ -94,6 +96,8 @@ const COPY = {
     ],
     whmResult: 'Basierend auf deinen Antworten bist du steuerlich ein Working Holiday Maker, daher gilt der steuerfreie Betrag von $18.200 nicht. Unser Team bestätigt dies bei der Erstellung deiner Steuererklärung.',
     nonNdaResult: 'Basierend auf deinen Antworten bist du möglicherweise australischer Steuerresident, aber der steuerfreie Betrag von $18.200 gilt nicht. Möglicherweise hast du trotzdem Anspruch auf den Low Income Tax Offset von bis zu $700.',
+      sessionLost: 'Deine Sitzung ist abgelaufen, deine Angaben müssen noch einmal eingegeben werden. Es wurde nichts gesendet.',
+    sessionLostCta: 'Zurück zum Formular',
   },
   ja: {
     titleLead: '',
@@ -127,6 +131,8 @@ const COPY = {
     ],
     whmResult: 'ご回答に基づくと、税務上あなたはワーキングホリデーメーカーであるため、$18,200の非課税枠は適用されません。申告書作成時に当チームが確認します。',
     nonNdaResult: 'ご回答に基づくと、あなたはオーストラリア税務居住者である可能性がありますが、$18,200の非課税枠は適用されません。低所得者税額控除（Low Income Tax Offset）として最大$700を受けられる可能性があります。',
+      sessionLost: 'セッションの有効期限が切れたため、もう一度ご入力をお願いします。送信はされていません。',
+    sessionLostCta: 'フォームに戻る',
   },
 } as const
 
@@ -243,6 +249,28 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
           {/* Declaration is unchanged (same submit -> CRM -> PDF). The quiz result
               locks the selection; it is display-only. */}
           <ResidencyDeclaration lang={lang} onSubmitted={onSubmitted} autoStatus={autoStatus} />
+
+          {/* WHEN THE FORM IS GONE, SAY SO.
+              The hand-off between the form and this page is an in-memory
+              singleton, deliberately: File objects cannot be serialised and the
+              TFN must never touch browser storage. The cost is that a refresh,
+              a back/forward restore, or iOS discarding a backgrounded tab wipes
+              it. The declaration then rendered `null`, so the customer was left
+              on the last screen before conversion looking at a quiz with no
+              submit button and no explanation, with their TFN and uploads gone.
+              They assume the site is broken, and they are not wrong.
+              A dead end with an exit is recoverable; a dead end without one is
+              a lost lead. */}
+          {!hasForm && (
+            <div className="resstep-whmnote" style={{ marginTop: 18 }}>
+              <p style={{ margin: 0 }}>{c.sessionLost}</p>
+              <a
+                href={lang === 'de' ? '/de/tax-form' : lang === 'ja' ? '/ja/tax-form' : '/tax-form'}
+                className="resdecl-submit"
+                style={{ textDecoration: 'none', marginTop: 12, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+              >{c.sessionLostCta}</a>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -288,7 +316,7 @@ const styles = `
   .resstep-why-title { font-size: 13px; font-weight: 700; color: #0B5240; margin: 0 0 6px; }
   .resstep-why-body { font-size: 12.5px; color: #1A2822; line-height: 1.6; margin: 0; }
 
-  .resstep-compare { border: 1.5px solid #D4EAE2; border-radius: 14px; padding: 12px 12px 10px; margin-bottom: 22px; }
+  .resstep-compare { border: 1.5px solid #CDE3DB; border-radius: 14px; padding: 12px 12px 10px; margin-bottom: 22px; }
   .resstep-compare-cap { font-size: 11.5px; font-weight: 600; color: #587066; text-align: center; margin: 0 0 10px; }
   .resstep-compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .resstep-col { background: #F5F9F7; border: 1.5px solid #E2ECE7; border-radius: 11px; padding: 10px 8px; text-align: center; }
@@ -301,7 +329,7 @@ const styles = `
 
   .resstep-cond-intro { font-size: 13px; font-weight: 600; color: #1A2822; line-height: 1.55; margin: 0 0 10px; }
   .resstep-conditions { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-  .resstep-condition { display: flex; align-items: flex-start; gap: 9px; background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 12px; padding: 10px 12px; text-decoration: none; color: inherit; -webkit-tap-highlight-color: transparent; transition: background .15s, border-color .15s; }
+  .resstep-condition { display: flex; align-items: flex-start; gap: 9px; background: #F5F9F7; border: 1.5px solid #CDE3DB; border-radius: 12px; padding: 10px 12px; text-decoration: none; color: inherit; -webkit-tap-highlight-color: transparent; transition: background .15s, border-color .15s; }
   .resstep-condition:hover, .resstep-condition:active { background: #EAF6F1; border-color: #0B5240; }
   .resstep-condition:focus-visible { outline: 2px solid #0B5240; outline-offset: 2px; }
   /* Muted and vertically centred: enough to read as tappable, not enough to

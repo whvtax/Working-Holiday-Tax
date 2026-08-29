@@ -418,6 +418,17 @@ async function doProcess(): Promise<TickResult> {
           continue;
         }
 
+        // THE POINT OF NO RETURN, CLAIMED ATOMICALLY.
+        //
+        // Without this, a crash between the send and the status write left the
+        // row QUEUED; reclaimStaleJobs put the job back; the "still QUEUED?"
+        // guard above passed, because that write is precisely what did not
+        // happen; and the customer received the same reply twice. Only the
+        // winner of QUEUED -> SENDING may transmit, so a replay stops here.
+        if (!(await store.claimQueuedForSend(msg.id))) {
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
         const res = await sendWhatsAppText(customer.waId, msg.body);
         await store.setMessageStatus(msg.id, res.ok ? 'SENT' : 'FAILED', { restamp: true });
         if (res.ok) {
@@ -552,6 +563,17 @@ async function doProcess(): Promise<TickResult> {
       }
     }
   }
+  // A HEARTBEAT, SO A DEAD SCHEDULER IS VISIBLE.
+  //
+  // The scheduler health dot was hardcoded `ok: true`, so every one of the
+  // failures this file guards against presented as a green dashboard. This is
+  // the one fact the dot actually needs: when did the loop last finish. Best
+  // effort, and deliberately last, so it can never be the thing that fails a
+  // tick that otherwise worked.
+  // try/catch rather than .catch(): this must survive a store that throws AND a
+  // partial store that does not implement it at all, because the heartbeat can
+  // never be the reason a tick that otherwise worked is reported as failed.
+  try { await store.setSetting('last_tick_at', new Date().toISOString()); } catch { /* */ }
   return result;
 }
 

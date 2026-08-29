@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
     }
 
-    const task = await createTask({
+    await createTask({
       clientId,
       clientName:  fullName,
       taskType:    'tfn',

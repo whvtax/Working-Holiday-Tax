@@ -99,23 +99,10 @@ export async function GET() {
   const paidCount = customers.filter((c) => c.paid).length;
   const leadToPaid = customers.length ? Math.round((paidCount / customers.length) * 100) : 0;
   const goal = (await store.getSetting('conversion_goal')) as number | undefined ?? null;
-  const templates = await store.listTemplates();
-  const variantTests = templates.filter((t) => t.variantB).map((t) => {
-    const sA = t.sentA ?? 0, cA = t.convA ?? 0, sB = t.sentB ?? 0, cB = t.convB ?? 0;
-    const rA = sA ? cA / sA : null, rB = sB ? cB / sB : null;
-    return {
-      title: t.title,
-      a: { sent: sA, conv: cA, rate: rA },
-      b: { sent: sB, conv: cB, rate: rB },
-      winner: rA != null && rB != null ? (rB > rA ? 'B' : rA > rB ? 'A' : 'tie') : null,
-      enoughData: sA >= 20 && sB >= 20,
-    };
-  });
 
   return NextResponse.json({
     generatedAt: new Date().toISOString(),
     leadToPaid, goal, paidCount,
-    variantTests,
     funnel,
     stageGroups: STAGE_GROUPS.map((g) => ({ label: g.label, color: g.color, n: customers.filter((c) => (g.states as readonly CustomerState[]).includes(c.state)).length })),
     closed: { total: closed.length, coldAfterPrice },

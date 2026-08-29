@@ -1,6 +1,7 @@
 // Knowledge base management for the Learning tab: list entries, approve a draft
 // (make it active so Will starts using it), edit, dismiss, delete, or add manually.
 import { NextResponse } from 'next/server';
+import { readJson } from '@/lib/will/http';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { extractKeywords } from '@/lib/will/knowledge';
@@ -21,7 +22,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
-  let b: {
+  type KnowledgeBody = {
     action?: string; id?: string; question?: string; answer?: string; intent?: string;
     status?: string;
     entries?: Array<{
@@ -29,7 +30,14 @@ export async function POST(req: Request) {
       keywords?: string[]; tags?: string[]; lang?: string; weight?: number;
     }>;
   };
-  try { b = await req.json(); } catch { return NextResponse.json({ ok: false, error: 'bad json' }, { status: 400 }); }
+  // readJson enforces the 64KB body ceiling (H9). This route parsed the body
+  // raw and accepted an unbounded entries[] array, so the hardening item that
+  // helper exists for had reached exactly one of the sixteen routes that needed
+  // it. Knowledge entries also feed straight into the model prompt, so an
+  // uncapped answer inflates the token cost of every reply that retrieves it.
+  const parsed = await readJson<KnowledgeBody>(req);
+  if ('error' in parsed) return NextResponse.json({ ok: false, error: parsed.error }, { status: parsed.code });
+  const b = parsed.value;
   const store = getStore();
   switch (b.action) {
     case 'import_starter': {
@@ -92,7 +100,7 @@ export async function POST(req: Request) {
     case 'edit':
       if (b.id) {
         const patch: Record<string, unknown> = {};
-        if (typeof b.answer === 'string') patch.answer = b.answer;
+        if (typeof b.answer === 'string') patch.answer = b.answer.slice(0, 4000);
         if (typeof b.question === 'string') { patch.question = b.question; patch.keywords = extractKeywords(b.question); }
         if (typeof b.intent === 'string') patch.intent = b.intent;
         await store.updateKnowledge(b.id, patch);
@@ -102,7 +110,7 @@ export async function POST(req: Request) {
       if (b.question && b.answer) {
         await store.addKnowledge({
           intent: b.intent || b.question.slice(0, 60), question: b.question, examples: [],
-          answer: b.answer, keywords: extractKeywords(b.question), tags: [], lang: 'en',
+          answer: b.answer.slice(0, 4000), keywords: extractKeywords(b.question), tags: [], lang: 'en',
           weight: 1, status: 'active', source: 'manual',
         });
       }

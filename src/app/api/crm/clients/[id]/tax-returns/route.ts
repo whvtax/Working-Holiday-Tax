@@ -1,6 +1,6 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
-import { addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn } from '@/lib/db'
+import { addTaxReturn, removeTaxReturn, addSuperReturn } from '@/lib/db'
 import { validateSession } from '@/lib/crm-store'
 
 function auth(req: NextRequest) {

@@ -82,16 +82,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       if (!client) return NextResponse.json({ ok:false }, { status:404 })
       return NextResponse.json({ ok:true, client })
     }
-    if (body.action === 'clear') {
-      const client = await db.clearClientSensitiveData(params.id)
-      if (!client) return NextResponse.json({ ok:false }, { status:404 })
-      return NextResponse.json({ ok:true, client })
-    }
-    if (body.action === 'handle') {
-      const client = await db.markClientHandled(params.id)
-      if (!client) return NextResponse.json({ ok:false }, { status:404 })
-      return NextResponse.json({ ok:true, client })
-    }
+    // 'clear' and 'handle' were removed on 29 Aug with /crm/client/[id], the
+    // orphan page that was their only caller. Jo does not use that page: he
+    // works from the client card in the main CRM and presses Done. Neither
+    // action was reachable from there, and 'handle' only prefixed the notes
+    // string with "[HANDLED]" (there is no handled column), so nothing that is
+    // actually used depended on either.
     if (body.action === 'archive') {
       await db.archiveClient(params.id)
       return NextResponse.json({ ok:true })

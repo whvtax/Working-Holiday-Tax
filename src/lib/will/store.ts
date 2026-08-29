@@ -39,7 +39,12 @@ export interface MessageRow {
   customerId: string;
   direction: 'IN' | 'OUT';
   author: 'CUSTOMER' | 'AI' | 'HUMAN' | 'SYSTEM';
-  status: 'SENT' | 'PENDING_APPROVAL' | 'BLOCKED' | 'DISCARDED' | 'FAILED' | 'QUEUED';
+  /** SENDING is the in-flight state between the atomic claim and the result of
+   *  the WhatsApp call. It exists so that a crash mid-send leaves a visible,
+   *  recoverable row instead of a QUEUED one that a replay would transmit a
+   *  second time. A stranded SENDING is a bug you can see; a duplicate message
+   *  to a customer is one you cannot take back. */
+  status: 'SENT' | 'PENDING_APPROVAL' | 'BLOCKED' | 'DISCARDED' | 'FAILED' | 'QUEUED' | 'SENDING';
   body: string;
   meta?: {
     proposedState?: CustomerState; income?: 'TFN' | 'TFN_ABN'; templateId?: string;
@@ -88,9 +93,6 @@ export interface TemplateRow {
   requiresMeta: boolean;
   versions: number;
   updatedAt: string;
-  variantB?: string | null;
-  sentA?: number; sentB?: number;
-  convA?: number; convB?: number;
 }
 
 export interface JobRow {
@@ -171,6 +173,10 @@ export interface AuditRow {
 
 export interface Store {
   listCustomers(): Promise<CustomerRow[]>;
+  /** How many customers exist, without fetching any of them. Used as the
+   *  store's reachability probe: the health check used to call listCustomers()
+   *  for this, which pulled the whole table every 45 seconds per open tab. */
+  countCustomers(): Promise<number>;
   getCustomerByWaId(waId: string): Promise<CustomerRow | null>;
   /**
    * The same customer, found by a phone number written any way at all.
@@ -245,6 +251,16 @@ export interface Store {
   /** RACE-02: atomically move a PENDING_APPROVAL draft to QUEUED. Returns true if
    *  THIS caller won the claim (so only one concurrent approval actually sends). */
   claimMessageForSend(id: string): Promise<boolean>;
+  /**
+   * Atomically take a QUEUED message for transmission (QUEUED -> SENDING).
+   *
+   * The Autopilot path had no claim at all: it sent, then wrote SENT. An
+   * invocation killed in between left the row QUEUED, the stale-job reclaim put
+   * the job back, and the guard "is it still QUEUED?" passed, because the write
+   * that would have changed it is exactly the one that did not happen. The same
+   * reply went to the customer twice. Only the winner of this claim may send.
+   */
+  claimQueuedForSend(id: string): Promise<boolean>;
   pendingApprovals(): Promise<(MessageRow & { customerName: string | null })[]>;
 
   addTask(t: Omit<TaskRow, 'id' | 'createdAt' | 'status'>): Promise<TaskRow>;
@@ -286,9 +302,6 @@ export interface Store {
   purgeProcessedMessages(olderThanMs: number): Promise<number>;
 
   deleteCustomerByWaId(waId: string): Promise<void>;
-
-  bumpVariant(templateId: string, variant: 'A' | 'B', field: 'sent' | 'conv'): Promise<void>;
-  setVariantB(templateId: string, body: string | null): Promise<void>;
 
   getSetting(key: string): Promise<unknown>;
   setSetting(key: string, value: unknown): Promise<void>;
@@ -365,6 +378,18 @@ let _store: Store | null = null;
 export function getStore(): Store {
   if (_store) return _store;
   const hasSupabase = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  // FAIL CLOSED IN PRODUCTION.
+  //
+  // This chose the file store whenever the env vars were absent, silently. A
+  // mistyped key name during a rotation, or a new environment, and Will keeps
+  // running while writing real customer records AND the plaintext WhatsApp
+  // access token to .data/store.json on an ephemeral filesystem: a disclosure
+  // risk and silent data loss at the same time, with every health dot green.
+  // The .gitignore already carries a note recognising this exact hazard; the
+  // gitignore was fixed and the fail-open was not.
+  if (!hasSupabase && process.env.NODE_ENV === 'production') {
+    throw new Error('Refusing to start: Supabase is not configured, and the file store must never hold production data.');
+  }
   _store = hasSupabase ? new SupabaseStore() : new FileStore();
   return _store;
 }

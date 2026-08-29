@@ -36,7 +36,13 @@ export type TaxFormHandoff = {
   submitUrl?: string
   payload: TaxFormPayload
   /** Previews so the form can redraw its upload thumbnails on the way back. */
-  previews: { bankStatement: string | null; selfiePassport: string | null }
+  previews: {
+    bankStatement: string | null
+    selfiePassport: string | null
+    /** One per invoice, in the same order, null for a PDF. Carried across the
+     *  trip to the residency page so the thumbnails redraw on the way back. */
+    invoices?: (string | null)[]
+  }
   createdAt: number
 }
 

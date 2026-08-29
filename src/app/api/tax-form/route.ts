@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       } catch { return [] }
     })().filter(isValidSupabaseStorageUrl)
 
-    const task = await createTask({
+    await createTask({
       clientId,
       clientName:  fullName,
       taskType:    'tax-return',
@@ -87,6 +87,23 @@ export async function POST(req: NextRequest) {
         formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
         formData.get('hasMedicare') ? `Medicare: ${sanitiseShort(formData.get('hasMedicare'))}` : '',
         formData.get('hasExpenses') ? `Expenses: ${sanitiseShort(formData.get('hasExpenses'))}` : '',
+        // Receipts the client chose but that did not reach storage. Named, so
+        // the missing one can simply be asked for on WhatsApp instead of the
+        // whole submission having been thrown away for it (Jo, 28 Aug).
+        (() => {
+          const raw = formData.get('invoiceFailures')
+          if (typeof raw !== 'string') return ''
+          try {
+            const parsed: unknown = JSON.parse(raw)
+            if (!Array.isArray(parsed)) return ''
+            const names = parsed.slice(0, 10)
+              .filter((n): n is string => typeof n === 'string')
+              .map((n) => sanitiseShort(n))
+              .filter(Boolean)
+            if (!names.length) return ''
+            return `⚠️ ${names.length} receipt${names.length === 1 ? '' : 's'} did NOT upload, ask for ${names.length === 1 ? 'it' : 'them'}: ${names.join(', ')}`
+          } catch { return '' }
+        })(),
         (()=>{
           const raw = formData.get('invoiceDetails')
           if (!raw || typeof raw !== 'string') return ''
@@ -130,7 +147,16 @@ export async function POST(req: NextRequest) {
     try {
       await notifyFormReceived(whatsapp, email)
     } catch (err) {
+      // console.error on Vercel is a log nobody reads, and the consequence here
+      // is specific: the customer's form reminders keep chasing them for
+      // something they have already sent. Recorded where the owner can see it.
       console.error('[tax-form] notifyFormReceived failed after the task was saved:', err)
+      try {
+        const { getStore } = await import('@/lib/will/store')
+        await getStore().audit('system', 'form_notify_failed', {
+          error: err instanceof Error ? err.message.slice(0, 200) : String(err).slice(0, 200),
+        })
+      } catch { /* the store is a likely thing to have just failed */ }
     }
 
     return NextResponse.json({ ok: true })

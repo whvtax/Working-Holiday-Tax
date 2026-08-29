@@ -17,7 +17,14 @@ export async function GET() {
   // any real write failure recorded by the store (M9).
   try {
     const store = getStore();
-    await store.listCustomers();
+    // A REACHABILITY PROBE, NOT A TABLE DUMP.
+    //
+    // This used to call listCustomers(), which is select('*') with no limit and
+    // an unindexed sort, purely to answer "is the store up?". The dashboard
+    // polls this every 45 seconds per open tab, so the whole customer table went
+    // over the wire roughly eighty times an hour to light three status dots.
+    // countCustomers is a head-only count: same answer, none of the payload.
+    await store.countCustomers();
     const persistErr = getLastPersistError();
     checks.store = { ok: !persistErr, detail: persistErr ? 'write error' : 'ok' };
   } catch {
@@ -91,8 +98,25 @@ export async function GET() {
 
   // Scheduler: nightly job present and tick recent enough
   try {
-    const nightly = await getStore().hasScheduledNightly();
-    checks.scheduler = { ok: true, detail: nightly ? 'nightly queued' : 'nightly will queue on next tick' };
+    const store = getStore();
+    const nightly = await store.hasScheduledNightly();
+    // `ok` used to be the literal `true`, so this dot could only ever go red if
+    // the existence query itself threw. Every way the scheduler can actually
+    // die — an unguarded throw ahead of the loop, a hung send eating the
+    // invocation, a cron that stopped firing — looked green. The only fact that
+    // answers "is it alive" is when the loop last finished, so that is what is
+    // checked. Three missed five-minute crons is the threshold.
+    const raw = await store.getSetting('last_tick_at');
+    const lastTick = Date.parse(typeof raw === 'string' ? raw : '');
+    const fresh = Number.isFinite(lastTick) && Date.now() - lastTick < 15 * 60 * 1000;
+    checks.scheduler = fresh
+      ? { ok: true, detail: nightly ? 'nightly queued' : 'nightly will queue on next tick' }
+      : {
+        ok: false,
+        detail: Number.isFinite(lastTick)
+          ? `THE SCHEDULER HAS NOT RUN since ${new Date(lastTick).toISOString()}. No follow-ups are going out and Autopilot replies are stuck unsent.`
+          : 'THE SCHEDULER HAS NOT RUN yet. No follow-ups are going out and Autopilot replies are stuck unsent.',
+      };
   } catch {
     checks.scheduler = { ok: false, detail: 'error' };
   }

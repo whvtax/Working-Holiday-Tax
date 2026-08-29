@@ -89,16 +89,34 @@ export async function getBank(): Promise<{ bsb: string; account: string }> {
 // never interleave read-modify-write on the shared store (duplicate follow-ups,
 // double state advance). In-process mutex; a shared store would use a row lock.
 const chains = new Map<string, Promise<unknown>>();
+
+/**
+ * Run `fn` after everything else already queued for this customer.
+ *
+ * Extracted from handleIncoming so the payment-proof path can join the SAME
+ * queue. It was outside it, and the gap is real: WhatsApp delivers a batch, so
+ * a customer who sends the transfer screenshot and the PDF receipt one after
+ * the other has both arrive together. Both read `customer.paid` as false before
+ * either writes PAID, both pass the gate, and the customer is told "payment
+ * received" twice, with the form link twice behind it.
+ *
+ * Every other inbound path has been serialised per customer since H7 for
+ * exactly this reason. This is the one that was not.
+ */
+function queueForCustomer<T>(waId: string, fn: () => Promise<T>): Promise<T> {
+  const prev = chains.get(waId) ?? Promise.resolve();
+  const next = prev.catch(() => {}).then(fn);
+  chains.set(waId, next.finally(() => { if (chains.get(waId) === next) chains.delete(waId); }));
+  return next;
+}
+
 export function handleIncoming(
   waId: string,
   text: string,
   mode: AiMode,
   meta?: { name?: string; flag?: string },
 ): Promise<HandleResult> {
-  const prev = chains.get(waId) ?? Promise.resolve();
-  const next = prev.catch(() => {}).then(() => handleIncomingInner(waId, text, mode, meta));
-  chains.set(waId, next.finally(() => { if (chains.get(waId) === next) chains.delete(waId); }));
-  return next;
+  return queueForCustomer(waId, () => handleIncomingInner(waId, text, mode, meta));
 }
 
 // COST-01: the daily paid-AI ceiling now lives in ai-budget.ts, so a background
@@ -437,8 +455,29 @@ async function handleIncomingInner(
     customerId: customer.id,
   });
 
+  // ── AFTER THE CUSTOMER HAS THE MESSAGE, NOTHING MAY THROW ────────────────
+  //
+  // The reply may already have been transmitted several lines above. Arming the
+  // follow-up cadence ends in store.addJob(), which throws on any Supabase
+  // error, and that throw propagated all the way out to the webhook. The
+  // webhook read it as "this message failed", released the idempotency claim
+  // and returned 500, so Meta redelivered and the whole function ran again from
+  // the top: a second engine call, a second deliverOut, and the customer got
+  // the same answer twice.
+  //
+  // A missing follow-up is a small, visible problem. A duplicate reply is not
+  // recoverable, so this is best effort and the outcome stands either way.
   const fresh = await store.getCustomerByWaId(waId);
-  if (fresh) await reconcileSchedule(fresh);
+  if (fresh) {
+    try {
+      await reconcileSchedule(fresh);
+    } catch (e) {
+      await store.audit('scheduler', 'reconcile_failed_after_send', {
+        customerId: customer.id,
+        error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+      }).catch(() => { /* the store is the likely thing that just failed */ });
+    }
+  }
   return { outcome, customer: fresh ?? customer, pendingMessageId };
 }
 
@@ -588,7 +627,18 @@ const PAYABLE_STATES: CustomerState[] = ['PRICE_SENT', 'PAYMENT_PENDING'];
  *  already paid, not currently in a state where a price is outstanding, the
  *  file could not be downloaded from Meta, or the vision check did not
  *  confirm it as a payment. */
-export async function handlePaymentProofMedia(
+export function handlePaymentProofMedia(
+  waId: string,
+  body: string,
+  meta: { name?: string; media: { id: string; kind: string; mime?: string; filename?: string; caption?: string } },
+): Promise<CustomerRow | null> {
+  // Serialised with every other message from this customer. See
+  // queueForCustomer: two attachments in one delivery could both pass the
+  // "has this customer already paid?" gate before either answered it.
+  return queueForCustomer(waId, () => handlePaymentProofMediaInner(waId, body, meta));
+}
+
+async function handlePaymentProofMediaInner(
   waId: string,
   body: string,
   meta: { name?: string; media: { id: string; kind: string; mime?: string; filename?: string; caption?: string } },
@@ -669,15 +719,38 @@ export async function handlePaymentProofMedia(
   await store.setState(customer.id, 'PAID', 'SYSTEM'); // also flips customer.paid = true
   const bank = await getBank();
   await autoAdvanceToForm(customer.id, bank);
-  await deliverOut(customer, APPROVED.payment_received, 'AI');
+
+  // THE RESULT OF THE SEND IS NOT OPTIONAL READING.
+  //
+  // deliverOut returns { ok:false } on a rejected send; it does not throw. That
+  // return was discarded, so a customer could be moved to Paid and then to
+  // Form Pending, be told NOTHING, and get a task saying the opposite: "Moved
+  // to Paid automatically, worth a glance to confirm it looks right."
+  //
+  // Meta does not redeliver, the form reminders start chasing a form the
+  // customer was never asked for, and from their side they paid and we went
+  // silent. The state changes are correct and deliberately stay; what changes
+  // is that the task now tells the truth about the message.
+  const out = await deliverOut(customer, APPROVED.payment_received, 'AI');
+  if (!out.ok) {
+    await store.audit('channel', 'payment_received_send_failed', {
+      customerId: customer.id, error: out.error ?? 'unknown error',
+    }).catch(() => { /* the store is a likely thing to have just failed */ });
+  }
 
   // A heads-up, not a to-do: the stage already moved itself. This exists so
   // the owner can glance at the photo and catch a wrong/fake one, not because
   // anything is waiting on them.
   await store.addTask({
     customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-    reason: `Customer confirmed payment (${trustedBecause}). Moved to Paid automatically — worth a glance to confirm it looks right.`,
-    severity: 'REVIEW', context: body, suggestedReply: null,
+    reason: out.ok
+      ? `Customer confirmed payment (${trustedBecause}). Moved to Paid automatically. Worth a glance to confirm it looks right.`
+      : `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
+    // A customer who paid and heard nothing is the most urgent thing on the
+    // board, and the reply is ready to send in one click rather than retyped.
+    severity: out.ok ? 'REVIEW' : 'URGENT',
+    context: body,
+    suggestedReply: out.ok ? null : APPROVED.payment_received,
   });
 
   await store.audit('system', 'auto_paid_from_media', { customerId: customer.id, mediaKind: meta.media.kind });

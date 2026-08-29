@@ -186,7 +186,16 @@ export function Footer() {
                 {/* Jo's rule: the about page carries no tax agent mention at all,
                     which covers the seal as well as the sentence. */}
                 {!isAbout && (
-                  <>
+                  /* TRUST HIERARCHY.
+                     The Google pill was enclosed, elevated and 11.7:1, while
+                     the tax agent credential directly below it was smaller,
+                     unenclosed and 5.35:1. Most salient reads as most
+                     important, so a third-party star rating was outranking the
+                     site's strongest credential. `order: -1` puts the seal
+                     first in the flex column and the caption gets the same pill
+                     treatment as the rating. Presentation only: the sentence
+                     below is byte-for-byte unchanged, in all three languages. */
+                  <div style={{ order: -1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
                     {/* The same Tax Practitioners Board seal the tax form carries
                         above its first question, so the mark a visitor sees on
                         the site is the one they see when they hand over details. */}
@@ -204,14 +213,18 @@ export function Footer() {
                       // footer's green.
                       style={{ display: 'block', width: '104px', height: 'auto', marginTop: '2px' }}
                     />
-                    <span style={{ fontSize: '12px', lineHeight: 1.5, color: '#587066' }}>
+                    <span style={{
+                      fontSize: '12.5px', lineHeight: 1.5, color: '#2A3C34',
+                      background: '#fff', border: '1px solid #CDE3DB',
+                      borderRadius: '12px', padding: '8px 12px',
+                    }}>
                       {locale === 'de'
                         ? 'Geprüft und freigegeben von einem registrierten Steueragenten.'
                         : locale === 'ja'
                           ? '登録タックスエージェントが確認・承認します。'
                           : 'Reviewed and signed off by a registered tax agent.'}
                     </span>
-                  </>
+                  </div>
                 )}
               </div>
             </div>

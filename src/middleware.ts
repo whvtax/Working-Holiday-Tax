@@ -52,16 +52,22 @@ export function middleware(req: NextRequest) {
       ? 'de'
       : 'en-AU'
 
+  if (!CSP_NONCE_ENABLED) {
+    // Default path. NOTHING READS x-locale OR x-pathname ANY MORE.
+    //
+    // Both were set on every request for consumers that no longer exist: the
+    // root layout stopped reading headers() precisely to regain static
+    // generation (see its comment), and Analytics derives the path client-side.
+    // Setting them meant cloning the header set and returning a modified
+    // request on all 523 prerendered pages, so every page view paid for an edge
+    // invocation ahead of what is otherwise a pure CDN hit. With nonce mode off
+    // this branch now does nothing at all, which is the correct amount.
+    return NextResponse.next()
+  }
+
   const requestHeaders = new Headers(req.headers)
   requestHeaders.set('x-locale', locale)
-  // Used by the root layout to skip GA4 tagging on /crm (internal staff area),
-  // so admin/staff usage doesn't pollute public-site analytics.
   requestHeaders.set('x-pathname', pathname)
-
-  if (!CSP_NONCE_ENABLED) {
-    // Default path - unchanged behaviour. Static CSP from next.config.js applies.
-    return NextResponse.next({ request: { headers: requestHeaders } })
-  }
 
   // Nonce mode: generate a per-request nonce, expose it to the app via x-nonce,
   // and set the CSP on both request and response headers.

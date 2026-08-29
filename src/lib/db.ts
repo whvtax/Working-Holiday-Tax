@@ -4,6 +4,7 @@
 // ──────────────────────────────────────────────────────────────────────────
 
 import { getSupabase } from '@/lib/supabase'
+import { currentTaxYear } from '@/lib/tax-year'
 import { deleteFiles } from '@/lib/upload'
 import crypto from 'crypto'
 
@@ -611,33 +612,7 @@ export async function updateClient(id: string, data: Partial<ClientRecord> & {
   return getClientById(id)
 }
 
-export async function clearClientSensitiveData(id: string): Promise<ClientRecord | null> {
-  const sb = getSupabase()
-  const client = await getClientById(id)
-  if (!client) return null
 
-  await sb.from('crm_tasks').update({
-    address: '', tfn: '', bank_details: '', primary_job: '',
-    marital: '', au_phone: '', file_urls: '[]',
-  }).eq('client_id', id)
-
-  const clearedNote = client.notes.includes('[PII CLEARED]')
-    ? client.notes
-    : `[PII CLEARED ${new Date().toISOString().slice(0, 10)}] ${client.notes}`.trim()
-
-  await sb.from('crm_clients').update({ notes: clearedNote }).eq('id', id)
-  await logAudit('client.clear_sensitive_data', id)
-  return getClientById(id)
-}
-
-export async function markClientHandled(id: string): Promise<ClientRecord | null> {
-  const sb = getSupabase()
-  const client = await getClientById(id)
-  if (!client) return null
-  const note = client.notes.includes('[HANDLED]') ? client.notes : `[HANDLED] ${client.notes}`.trim()
-  await sb.from('crm_clients').update({ notes: note }).eq('id', id)
-  return getClientById(id)
-}
 
 // ── Archive ────────────────────────────────────────────────────────────────
 
@@ -687,14 +662,10 @@ export type DashboardStats = {
   lastTaxYear: string                 // e.g. "2023-24"
 }
 
-export function getCurrentTaxYear(): string {
-  // AU tax year: 1 Jul - 30 Jun. Computed in Australia/Sydney timezone.
-  const sydney = new Date(new Date().toLocaleString('en-US', { timeZone: 'Australia/Sydney' }))
-  const y = sydney.getFullYear()
-  return sydney.getMonth() >= 6
-    ? `${y}-${String(y + 1).slice(2)}`
-    : `${y - 1}-${String(y).slice(2)}`
-}
+// This implementation was the correct one of the eight that existed, so it is
+// the one that moved to lib/tax-year.ts. Re-exported under its original name so
+// nothing that imports it from here has to change.
+export const getCurrentTaxYear = currentTaxYear
 
 function getPreviousTaxYear(currentYear: string): string {
   const start = parseInt(currentYear.split('-')[0], 10) - 1

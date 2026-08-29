@@ -34,7 +34,9 @@ export async function getRedis(): Promise<ReturnType<typeof createClient> | null
       client.on('error', (err) => {
         console.error('[redis] connection error:', err.message)
         _client = null
-        _connecting = null
+        // _connecting is deliberately NOT cleared here. The promise it holds may
+        // still be pending, and nulling it let every concurrent caller during a
+        // blip open its own connection. The `finally` below owns its lifetime.
       })
 
       await Promise.race([

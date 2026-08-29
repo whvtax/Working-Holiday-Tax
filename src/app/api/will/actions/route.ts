@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_variant_b' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead';
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead';
   id?: string;
   customerId?: string;
   body?: string;
@@ -658,25 +658,6 @@ async function handlePost(req: Request) {
       await store.audit('owner', 'template_deleted', { id: b.id });
       return NextResponse.json({ ok: true });
 
-    case 'set_variant_b': {
-      if (!b.id) return bad('id required');
-      const variant = typeof b.body === 'string' && b.body.trim() ? b.body : null;
-      // H2: guard the B variant at save time, exactly like update_template,
-      // so the scheduler can't later send unguarded content as an "approved template".
-      if (variant) {
-        if (variant.length > 5000) return bad('too long');
-        const verdict = policyGuard(variant, {
-          state: 'PRICE_SENT', paid: false, aiPaused: false, killSwitch: false,
-          optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(),
-          isApprovedTemplate: false, estimateFromTeam: null,
-        });
-        const cv = saveTimeViolations(verdict.violations);
-        if (cv.length) return NextResponse.json({ ok: false, blocked: cv }, { status: 422 });
-      }
-      await store.setVariantB(b.id, variant);
-      await store.audit('owner', 'variant_b_set', { id: b.id });
-      return NextResponse.json({ ok: true });
-    }
 
     case 'set_goal':
       // The lead→paid target is fixed at 100% (owner decision) — it is never

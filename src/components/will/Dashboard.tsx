@@ -9,7 +9,7 @@ import { ASSISTANT_NAME } from '@/lib/will/config';
 import { explainHandoffReason, summariseArrivals } from '@/lib/will/handoff-reasons';
 import type { MonthConversion } from '@/lib/will/monthly-conversion';
 import type { AiUsage, SystemFault } from '@/lib/will/system-report';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { parsePhoneNumberFromString } from 'libphonenumber-js/min'  // /min: the full metadata set is ~29KB gz of country data for formatting AU and EU numbers;
 
 // The Simulator was removed on Jo's instruction, 25 Aug: with real WhatsApp
 // traffic flowing it had no use left, and a fake customer sitting in the
@@ -65,11 +65,6 @@ interface LostReport {
   lastRun: { day: string; ranAt: string; analysed: number; failed: number; remaining: number; budgetExhausted: boolean; incomplete: boolean } | null;
 }
 /** How firmly the model committed, in the same three words the report uses. */
-const FAULT_TEXT: Record<LostAnalysisView['fault'], { label: string; color: string }> = {
-  OURS: { label: 'We lost this one', color: 'var(--crit)' },
-  PARTLY_OURS: { label: 'Partly on us', color: 'var(--warn)' },
-  NOT_OURS: { label: 'Nothing was done wrong', color: 'var(--ink3)' },
-};
 const RECOVER_TEXT: Record<LostAnalysisView['recoverable'], { label: string; color: string }> = {
   YES: { label: 'Winnable', color: 'var(--good)' },
   MAYBE: { label: 'Maybe winnable', color: 'var(--sig)' },
@@ -130,7 +125,6 @@ interface Report {
   leadToPaid: number;
   goal: number | null;
   paidCount: number;
-  variantTests: { title: string; a: { sent: number; conv: number; rate: number | null }; b: { sent: number; conv: number; rate: number | null }; winner: string | null; enoughData: boolean }[];
 }
 
 const ICONS: Record<View, React.ReactNode> = {
@@ -382,7 +376,6 @@ export default function Dashboard() {
   }, []);
   // Two-click arming for "clear the log" (see the Decision Log panel).
   const [clearArmed, setClearArmed] = useState(false);
-  const [knwDrafts, setKnwDrafts] = useState<Record<string, string>>({});
   const [tplText, setTplText] = useState('');
   const [toast, setToast] = useState('');
   // NOT local state any more. This used to be a useState that the two mode
@@ -566,10 +559,9 @@ export default function Dashboard() {
     (a, b) => (SEV_RANK[a.severity] ?? 3) - (SEV_RANK[b.severity] ?? 3) || b.createdAt.localeCompare(a.createdAt),
   );
   const openTaskNotif = (id: string) => { setFocusTaskId(id); setView('tasks'); setNotifOpen(false); };
-  const greetHour = new Date().getHours();
-  const greeting = greetHour < 12 ? 'Good morning' : greetHour < 17 ? 'Good afternoon' : greetHour < 22 ? 'Good evening' : 'Working late';
-  const awaiting = data.customers.filter((c) => ['PRICE_SENT', 'PAYMENT_PENDING'].includes(c.state));
-  const awaitingPotential = awaiting.reduce((s, c) => s + (c.income === 'TFN_ABN' ? 385 : c.income === 'TFN' ? 220 : 0), 0);
+  // `greeting` and `awaiting` were removed on 29 Aug: both were computed on
+  // every render and neither reached the screen. awaiting was also the input to
+  // awaitingPotential, a dollar total that was likewise never displayed.
   // We sent the last message, they went quiet, but never explicitly declined:
   // worth a personal nudge in a few weeks. "We spoke last" was being counted
   // the instant our reply went out, with no time passed at all — a lead who
@@ -1352,7 +1344,7 @@ export default function Dashboard() {
                 shown here, active or still a draft, is editable in place. */}
             <div className="libcat">Learned Answers<span className="n">{knowledge.active.length + knowledge.drafts.length}</span></div>
             {knowledge.active.length === 0 && knowledge.drafts.length === 0 && (
-              <div className="sysline" style={{ margin: '6px 0 14px' }}>Nothing learned yet. Answers Will picks up from real conversations will show up here.</div>
+              <div className="sysline" style={{ margin: '6px 0 14px' }}>Loading the answers mined from your conversations. They appear here within a few minutes.</div>
             )}
             <div className="libgrid">
               {knowledge.active.map((k) => (

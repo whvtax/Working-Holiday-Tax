@@ -55,10 +55,40 @@ const FAILURE_TTL_SECS = 7 * 24 * 60 * 60; // Meta's redelivery horizon
  * which is the same trade `claimInbound` already makes: a duplicate costs one
  * wasted engine call, a drop costs a customer.
  */
+/** Per-instance fallback counter, used only when Redis is unavailable. Bounded
+ *  in size so a long-running instance cannot accumulate ids forever. */
+const _memFailures = new Map<string, { n: number; at: number }>();
+function noteInboundFailureInMemory(metaId: string): number {
+  const now = Date.now();
+  if (_memFailures.size > 5000) {
+    for (const [k, v] of _memFailures) {
+      if (now - v.at > FAILURE_TTL_SECS * 1000) _memFailures.delete(k);
+    }
+  }
+  const prev = _memFailures.get(metaId);
+  const n = prev && now - prev.at < FAILURE_TTL_SECS * 1000 ? prev.n + 1 : 1;
+  _memFailures.set(metaId, { n, at: now });
+  return n;
+}
+
 async function noteInboundFailure(metaId: string): Promise<number> {
   try {
     const redis = await getRedis();
-    if (!redis) return 1;
+    // WITHOUT REDIS THE CAP USED NOT TO EXIST AT ALL.
+    //
+    // This returned a hardcoded 1, so `attempt` was always below the maximum
+    // and a deterministically failing message released its claim and returned
+    // 500 on every redelivery, for Meta's whole retry horizon. Each pass re-ran
+    // handleIncoming: a paid model call every time, and if the failure came
+    // after the send, another message to the customer every time. The
+    // dead-letter branch that gets that customer a human answer never ran.
+    //
+    // Redis is optional and fails open by design, so it must not be the thing
+    // that decides whether a retry budget exists. The in-memory fallback below
+    // is per-instance rather than global, which is imperfect across warm
+    // lambdas but bounds the common case: Meta's redeliveries of one message
+    // usually land on the same instance, and a bounded retry is the point.
+    if (!redis) return noteInboundFailureInMemory(metaId);
     const key = `will:inbound_fail:${metaId}`;
     const n = await redis.incr(key);
     if (n === 1) await redis.expire(key, FAILURE_TTL_SECS);
@@ -273,7 +303,11 @@ function inboundSnapshot(payload: unknown): Record<string, unknown> {
  *  id while this filter kept matching the old one, silently dropping every
  *  inbound message with no error anywhere. Both directions now resolve the id
  *  the same way. */
-function extract(payload: unknown, ourPhoneId?: string): InboundItem[] {
+/** Messages inside a delivery that could not be parsed. Collected rather than
+ *  lost, so the count reaches the audit log instead of nowhere. */
+interface SkippedInbound { id?: string; type?: string; error: string }
+
+function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[] = []): InboundItem[] {
   const out: InboundItem[] = [];
   try {
     const entries = (payload as { entry?: unknown[] }).entry ?? [];
@@ -287,6 +321,15 @@ function extract(payload: unknown, ourPhoneId?: string): InboundItem[] {
         const nameByWa = new Map((val.contacts ?? []).map((c) => [c.wa_id, c.profile?.name]));
         const cutoff = inboundCutoffTs();
         for (const m of val.messages ?? []) {
+          // ── ONE BAD MESSAGE COSTS ONE MESSAGE ────────────────────────────
+          //
+          // The whole nested walk used to sit under a single try, so a throw
+          // anywhere inside it abandoned every REMAINING message in the
+          // payload. Meta batches messages from different senders, and this
+          // file's own DIAG-01 note records what that costs: 105 real leads
+          // lost with every dot on the dashboard still green. The boundary
+          // belongs here, around one message, not around the batch.
+          try {
           // Drop messages older than the fresh-start cutoff (history sync / backfill).
           if (cutoff && m.timestamp && Number(m.timestamp) < cutoff) continue;
           const name = nameByWa.get(m.from);
@@ -338,10 +381,15 @@ function extract(payload: unknown, ourPhoneId?: string): InboundItem[] {
               ? { emoji: m.reaction?.emoji ?? null, to: m.reaction?.message_id }
               : undefined,
           });
+          } catch (err) {
+            // Recorded rather than swallowed: a message we could not even parse
+            // is exactly the kind that used to vanish without trace.
+            skipped.push({ id: m?.id, type: m?.type, error: String(err).slice(0, 120) });
+          }
         }
       }
     }
-  } catch { /* malformed payload: ignore, we already 200 */ }
+  } catch { /* malformed payload at the envelope level: nothing to salvage */ }
   return out;
 }
 
@@ -436,7 +484,14 @@ export async function POST(req: Request) {
     }
   } catch { /* diagnostics only */ }
 
-  const items = extract(payload, ourPhoneId);
+  const skipped: SkippedInbound[] = [];
+  const items = extract(payload, ourPhoneId, skipped);
+  if (skipped.length) {
+    // Visible, rather than a silent gap between what Meta sent and what we
+    // stored. This is the line that would have caught the 105 lost leads.
+    await store.audit('channel', 'inbound_unparseable', { count: skipped.length, skipped: skipped.slice(0, 10) })
+      .catch(() => {});
+  }
   // Text messages run the AI engine; anything with no readable body (a photo, a
   // voice note, a bodiless `unsupported`) is handled separately below so it is
   // never silently dropped.
@@ -578,10 +633,44 @@ export async function POST(req: Request) {
             errorTitle: msg.errors?.[0]?.title ?? null,
           }
           : undefined;
+        // ── The note path is a public write surface. The payment route above
+        //    is deliberately NOT gated by any of this. ──────────────────────
+        //
+        // The text loop applies two guards and says why: a returning contact
+        // is kept out of Will, and a flood is bounded because anyone in the
+        // world can WhatsApp a number published on the site. This loop applied
+        // neither, so both were bypassed by sending a photo instead of typing:
+        // 500 stickers meant 500 rows, 500 audit lines and 500 cards burying
+        // the real ones, and a contact excluded on purpose was silently
+        // readmitted by one image.
+        //
+        // These checks sit INSIDE `if (!autoPaid)` on purpose. Putting them
+        // above handlePaymentProofMedia would change whether a customer's
+        // payment is confirmed, which is not this file's decision to make.
+        if (await store.isBlockedContact(msg.from)) {
+          await store.audit('policy_guard', 'returning_contact_skipped', { from: maskWa(msg.from), path: 'note' });
+          continue;
+        }
+        if (await isRateLimited(msg.from, 'will_inbound_note', PER_SENDER_MAX)) {
+          await store.audit('policy_guard', 'inbound_rate_limited', { from: maskWa(msg.from), scope: 'note' });
+          continue;
+        }
         await handleInboundNote(msg.from, body, { name, media, reaction, undecoded });
       }
       await store.audit('channel', 'inbound_note_stored', { id: msg.id, kind, hasMedia: !!media, from: maskWa(msg.from), autoPaid: !!autoPaid });
-    } catch { /* best effort: the placeholder is a courtesy, not the lead itself */ }
+    } catch (e) {
+      // NOT best effort any more, and the old comment had it backwards: for a
+      // message Will cannot read, the TASK is the only route to a human. A
+      // throw in addTask left the photo sitting in the thread with no task, no
+      // reply, and nothing distinguishing it from a handled message except a
+      // missing audit line. The claim is released so Meta's redelivery gets a
+      // second chance, and the failure is recorded either way.
+      try { await store.releaseInbound(msg.id); } catch { /* */ }
+      await store.audit('channel', 'inbound_note_failed', {
+        id: msg.id, from: maskWa(msg.from),
+        error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+      }).catch(() => {});
+    }
   }
 
   // Coexistence sync: mirror what the staff member did in the WhatsApp Business

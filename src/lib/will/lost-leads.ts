@@ -272,11 +272,6 @@ export const CATEGORY_LABELS: Record<LostCategory, string> = {
 export type LostFault = 'OURS' | 'PARTLY_OURS' | 'NOT_OURS';
 export type Recoverable = 'YES' | 'MAYBE' | 'NO';
 
-export const FAULT_LABELS: Record<LostFault, string> = {
-  OURS: 'We lost this one',
-  PARTLY_OURS: 'Partly on us',
-  NOT_OURS: 'Nothing was done wrong',
-};
 
 export interface LostAnalysis {
   /** One or two sentences: why this specific lead did not convert. */

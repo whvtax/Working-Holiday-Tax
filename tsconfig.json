@@ -8,6 +8,13 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    // Added 29 Aug. The audit found 17 symbols that were computed, stored or
+    // declared and never read: four write-only pieces of dashboard state, a
+    // 27-line useMemo whose result was discarded, a whole React component with
+    // zero references. Every one of them would have failed the build with these
+    // two flags on, at the moment it was written rather than months later.
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

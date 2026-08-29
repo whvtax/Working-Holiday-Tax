@@ -40,7 +40,17 @@ export function Analytics() {
   useEffect(() => {
     if (isAdminArea) return
     const lang = pathname.startsWith('/de') ? 'de' : pathname.startsWith('/ja') ? 'ja' : 'en'
-    const onScroll = () => {
+    // rAF-THROTTLED.
+    //
+    // `scrollHeight` is a layout-forcing read, and this ran on every scroll
+    // event, unthrottled, until the 75% mark. `passive: true` stops it blocking
+    // the compositor on touch; it does nothing about forced synchronous layout
+    // on the main thread. On a long article at 60-100 events a second while
+    // flicking, that is the cheapest jank on the site to remove. Nav.tsx and
+    // ScrollToTop.tsx already do exactly this; this listener was the one missed.
+    let pending = false
+    const measure = () => {
+      pending = false
       if (fired.current) return
       const doc = document.documentElement
       const max = doc.scrollHeight - window.innerHeight
@@ -48,6 +58,11 @@ export function Analytics() {
         fired.current = true
         trackDepth(lang)
       }
+    }
+    const onScroll = () => {
+      if (pending || fired.current) return
+      pending = true
+      requestAnimationFrame(measure)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)

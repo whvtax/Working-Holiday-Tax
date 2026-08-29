@@ -856,9 +856,11 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "examples": [
       "what happens if I have tax payable rather than a refund?",
       "I think I owe money, is the fee still charged?",
-      "what if the result is $0 or I have to pay?"
+      "what if the result is $0 or I have to pay?",
+      "I have an ABN and I owe the ATO, do I get the fee back?",
+      "if after the check I still can't get a refund, is the money I paid gone?"
     ],
-    "answer": "If it turns out you owe tax rather than getting a refund, and you decide not to lodge it, even though lodging is a legal requirement, we refund the full $220, so you're not out of pocket for the service. Either way we go through everything properly, so you know the figure is right.",
+    "answer": "If it's a TFN only return and you decide not to lodge, we refund the full $220, so you're not out of pocket.\n\nWhere there's ABN income as well the fee isn't refundable, but either way we go through everything properly so you know the figure is right.",
     "keywords": [
       "owe",
       "payable",
@@ -869,7 +871,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "zero",
       "guarantee",
       "fee",
-      "lodge"
+      "lodge",
+      "abn",
+      "non refundable"
     ],
     "tags": [
       "pricing",
@@ -1255,6 +1259,878 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "tags": [
       "smalltalk",
       "tone"
+    ],
+    "lang": "en"
+  },
+
+  // ══════════════════════════════════════════════════════════════════════
+  // Mined 28 Aug 2026 from the full conversation export: 112 conversations,
+  // 1,388 messages, read end to end.
+  //
+  // WHAT THESE ARE. Every one of them is a question a real customer asked
+  // that Will had no Library answer for, and where the TEAM's own reply is on
+  // record in the export. The answers are Jo's stated policy, shortened to the
+  // three line rule; nothing here was invented, and where the team never
+  // answered a question it was left OUT and reported to him instead.
+  //
+  // WHAT IS DELIBERATELY MISSING. Five recurring questions are NOT here
+  // because the team answered them two or three different ways in different
+  // conversations: what happens to the fee when the customer OWES tax, whether
+  // DASP/super is offered and at what price, whether a closed Australian bank
+  // account is a blocker, whether the free eligibility check still exists, and
+  // data deletion requests. Shipping a guess on any of those would make Will
+  // confidently wrong about money. They are waiting on one decision each.
+  // ══════════════════════════════════════════════════════════════════════
+  {
+    "intent": "claim work clothing footwear laundry",
+    "question": "Can I claim the clothes and shoes I bought for work?",
+    "examples": [
+      "Is it not classed as ppe?",
+      "I would've bought a plain black t shirt for work before I was given the company uniform",
+      "I did recently buy another pair of shoes for work",
+      "things like scrubs, washing (of scrubs)",
+      "I had bought several outfits for work, trousers, T-shirts, a sweater, and shoes"
+    ],
+    "answer": "Protective and occupation specific gear counts, so things like hi vis, safety boots and scrubs go in.\n\nPlain everyday clothing like ordinary trousers or t shirts can't be claimed. We can include the washing of your work clothes though, even without receipts.",
+    "keywords": [
+      "work clothing",
+      "uniform",
+      "ppe",
+      "scrubs",
+      "boots",
+      "footwear",
+      "laundry",
+      "washing",
+      "deduction",
+      "receipts"
+    ],
+    "tags": [
+      "documents",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "claim travel to work tolls fuel",
+    "question": "Can I claim my travel to work, tolls, fuel, buses or Ubers?",
+    "examples": [
+      "Can I not get any tolls back because it was to get to work?",
+      "Would transport on bus and train be a work expense?",
+      "I was driving to work for a few months so maybe diesel?",
+      "all I have for work was my RSA that I had to pay for and busses to work",
+      "I had also rented a scooter to get around"
+    ],
+    "answer": "Trips between home and work aren't deductible, and that covers the tolls, buses and Ubers on the way in.\n\nTravel between different work sites during the day can be claimed. If that's you, tell me and we'll set up a simple logbook.",
+    "keywords": [
+      "travel",
+      "tolls",
+      "commute",
+      "uber",
+      "fuel",
+      "bus",
+      "train",
+      "logbook",
+      "work sites",
+      "deduction"
+    ],
+    "tags": [
+      "documents",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "claim phone work use",
+    "question": "Can I claim my phone if I use it for work?",
+    "examples": [
+      "I suppose using my phone for checking my roster and communication about work etc",
+      "Can I claim my phone bill?",
+      "Would I be able to claim back money spent on using my phone at work?",
+      "Do I need to send my phone bills?"
+    ],
+    "answer": "Yes, we can claim the work related portion of it.\n\nJust tell me roughly what percentage of your phone use was for work, and send me your phone bills for the year.",
+    "keywords": [
+      "phone",
+      "mobile",
+      "phone bill",
+      "internet",
+      "percentage",
+      "work use",
+      "roster",
+      "deduction"
+    ],
+    "tags": [
+      "documents",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "claim courses licences union fees",
+    "question": "Can I claim my RSA, White Card, tickets, licence or union fees?",
+    "examples": [
+      "I completed my RSA I will have to find the receipt of the certificate though",
+      "I was working at the time and needed the tickets required for my job",
+      "Tickets being the tickets courses for operating machines",
+      "things like AHPRA, ANF (union)"
+    ],
+    "answer": "Yes, if you were already working in the role and the course or licence was needed for that job. Union and professional membership fees go in too.\n\nSend me the receipt, or a bank statement showing the payment if you can't find it.",
+    "keywords": [
+      "rsa",
+      "white card",
+      "tickets",
+      "course",
+      "certificate",
+      "licence",
+      "union fees",
+      "membership",
+      "training",
+      "receipt"
+    ],
+    "tags": [
+      "documents",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "receipt wrong financial year",
+    "question": "Does it matter what date is on my receipt?",
+    "examples": [
+      "it's a yearly expense, so paid again this year just don't have the invoice",
+      "The invoices you need are the ones from when I arrived to Australia?",
+      "Are these okay? (receipts from different years)",
+      "Can I still put this one in even though I paid it last year?"
+    ],
+    "answer": "Yes, it needs to fall between 1 July and 30 June of the year we're lodging.\n\nAnything paid outside those dates belongs to a different tax year, so we can't include it in this one.",
+    "keywords": [
+      "receipt date",
+      "financial year",
+      "1 july",
+      "30 june",
+      "previous year",
+      "invoice",
+      "expenses",
+      "which year"
+    ],
+    "tags": [
+      "documents",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "already paid but received invoice",
+    "question": "I already paid you, so why have you sent me an invoice for the same amount?",
+    "examples": [
+      "Is that definitely the final number? And I've already paid?",
+      "But I've paid already? Why is the invoice asking me to pay again?",
+      "You sent me a Xero link, do I have to pay again?",
+      "I got an invoice but I transferred the money yesterday"
+    ],
+    "answer": "No need to pay again, that's just your receipt for the fee you already sent. It's marked as paid on our side.\n\nThe refund figure is separate, that's what goes into your own bank account.",
+    "keywords": [
+      "invoice",
+      "xero",
+      "already paid",
+      "pay twice",
+      "receipt",
+      "double charge",
+      "fee",
+      "payment"
+    ],
+    "tags": [
+      "pricing",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "pay from overseas or third party",
+    "question": "I'm not in Australia any more. Can I pay from my overseas account, or can a friend send it for me?",
+    "examples": [
+      "Can I send from UK with wise ?",
+      "I do not have any money on my australian bank account, is it possible to send it from my nz account?",
+      "Can I send the money to my friend who is still in Australia and he will send it from his account?",
+      "I'm moving money from UK account to Australian may take a while"
+    ],
+    "answer": "Yes to both. It doesn't matter who sends it or where it comes from, as long as it reaches our account.\n\nYour refund still goes into your own account. If the transfer is tricky, send me your full name and I'll send you a payment link instead.",
+    "keywords": [
+      "wise",
+      "pay from overseas",
+      "friend paying",
+      "transfer",
+      "payment link",
+      "nz account",
+      "uk account",
+      "who pays"
+    ],
+    "tags": [
+      "pricing",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "cannot access banking app for statement",
+    "question": "I can't get into my Australian banking app to download a statement. Can I just give you my BSB and account number?",
+    "examples": [
+      "I don't have access to my bank statement as I can't get on my banking app due to no longer having my Ozzy number to verify",
+      "How should I go about this on the form ?",
+      "For some reason I can't get to my bank statements",
+      "My phone won't let me make calls abroad so I can't verify"
+    ],
+    "answer": "Sorry, we do need an actual document showing your full name, BSB and account number. It's an ATO requirement so the refund lands in the right account.\n\nYour bank can usually email you one through their online chat or overseas support line, that's normally the quickest way.",
+    "keywords": [
+      "bank statement",
+      "banking app",
+      "bsb",
+      "account number",
+      "cant access",
+      "australian number",
+      "verification",
+      "ato requirement"
+    ],
+    "tags": [
+      "documents",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "residency form wording usual home personal ties",
+    "question": "What does 'usual home' or 'personal ties' actually mean on your residency questions?",
+    "examples": [
+      "Unsure on what my usual home would be is that the uk or where I'm living now",
+      "I don't understand what that question on the form is asking",
+      "I lived in Australia the whole time I worked so should I have ticked yes?",
+      "What counts as personal ties?"
+    ],
+    "answer": "Your usual home means where you normally lived and thought of as home during that time.\n\nPersonal ties means family, close friends or a partner in Australia. Answer both for your actual situation and we'll confirm the rest in the review.",
+    "keywords": [
+      "usual home",
+      "personal ties",
+      "residency questionnaire",
+      "tax residency form",
+      "what does it mean",
+      "questionnaire",
+      "ticked yes"
+    ],
+    "tags": [
+      "residency",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "six months means 183 days",
+    "question": "Does the '6 months in Australia' question mean 183 days in the financial year?",
+    "examples": [
+      "Is the 6 months counted from when I arrived or from July?",
+      "I was only in Australia for about 5 months that year, does that mean I can't tick it?",
+      "Does it mean 183 days between 1 July and 30 June?",
+      "What period is the six months measured over?"
+    ],
+    "answer": "Yes, 183 days or more between 1 July and 30 June of that year.\n\nThat's only one of several residency tests though, so fewer days doesn't automatically rule you out. We confirm it properly during the review.",
+    "keywords": [
+      "183 days",
+      "six months",
+      "financial year",
+      "residency test",
+      "1 july",
+      "30 june",
+      "days in australia",
+      "questionnaire"
+    ],
+    "tags": [
+      "residency"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "medicare exemption approval before lodging",
+    "question": "Do I have to wait for my Medicare exemption to be approved before you lodge?",
+    "examples": [
+      "I have submitted and I've sent the screenshot like you said?",
+      "Do you need the approval letter or is the confirmation enough?",
+      "How long will the exemption take to come back?",
+      "Can you lodge while the exemption is still processing?"
+    ],
+    "answer": "No, a screenshot showing the application has been submitted is enough for us to go ahead.\n\nJust note that if it isn't approved, the Medicare levy will still be payable.",
+    "keywords": [
+      "medicare levy exemption",
+      "screenshot",
+      "submitted",
+      "approved",
+      "lodge",
+      "waiting",
+      "application",
+      "levy"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "fee for multiple tax years",
+    "question": "I have more than one year to lodge. How much is that?",
+    "examples": [
+      "I haven't done a tax return in a couple of years. I have 3 to do now including this year",
+      "How much would it be for two years?",
+      "Do I pay separately for each year?",
+      "Is it cheaper if I do them all together?"
+    ],
+    "answer": "It's $220 per year for TFN income, so it's one fee for each year we lodge.\n\nI'll send you a single invoice covering all of them.",
+    "keywords": [
+      "multiple years",
+      "back years",
+      "two years",
+      "three years",
+      "per year",
+      "fee",
+      "invoice",
+      "220"
+    ],
+    "tags": [
+      "pricing"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "abn application start date backdate",
+    "question": "The ABN application won't let me put a start date more than 3 months ago. What date should I enter?",
+    "examples": [
+      "the online application does not allow me to enter a start date more than 3 months in the past",
+      "I just try with 1/7/2025 and same issue",
+      "would that be incorrect data? My visa started on the 27/9/2025",
+      "Should I complete the form with the wrong date, or wait for your confirmation?"
+    ],
+    "answer": "Try 1 July of that financial year first. If the system won't take it, just submit with whatever earliest date it gives you.\n\nOnce the ABN comes through the start date can be moved back with the ATO. Tell me when you have it and we'll sort that part.",
+    "keywords": [
+      "abn",
+      "start date",
+      "backdate",
+      "3 months",
+      "registration",
+      "1 july",
+      "ato",
+      "application"
+    ],
+    "tags": [
+      "abn",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "international income treaty gst questions",
+    "question": "I worked remotely from Australia for an overseas company. Am I a foreign resident, which income is Australian source, and how does the tax treaty apply?",
+    "examples": [
+      "Am I considered a foreign resident for Australian tax purposes?",
+      "Which of my freelance income is Australian-source?",
+      "How does the double-tax treaty apply, and do I have an Australian permanent establishment?",
+      "Do I need to register for GST, and are my services to the US company GST-free?"
+    ],
+    "answer": "Those depend entirely on your own circumstances and the treaty rules, so they're not something I can answer from a summary.\n\nWe work through residency, which income is Australian source and what you actually declare as part of your return. Reviewed and signed off by a registered tax agent.",
+    "keywords": [
+      "double tax treaty",
+      "foreign resident",
+      "australian source",
+      "gst",
+      "permanent establishment",
+      "remote work",
+      "overseas client",
+      "contractor"
+    ],
+    "tags": [
+      "residency",
+      "abn"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "employer not registered whm employer",
+    "question": "One of my employers wasn't registered as a working holiday maker employer, so they withheld tax at a different rate and now I owe money. Can anything be done?",
+    "examples": [
+      "one of them wasn't registered as a 'working holiday maker employer' with the ATO, so they withheld tax at a different rate",
+      "I ended up owing money, which surprised me since I understood the WHM rate is a flat 15%",
+      "My return's already been lodged, is there anything that can be done now?",
+      "Can you check whether the amount owing is correct?"
+    ],
+    "answer": "That's usually what causes it. If an employer isn't registered they withhold at a different rate through the year, so it catches up at lodgement.\n\nWe can review the return, check the calculation and tell you whether it needs amending, plus how to stop it happening next year.",
+    "keywords": [
+      "working holiday maker employer",
+      "not registered",
+      "withheld",
+      "wrong rate",
+      "owing tax",
+      "amend",
+      "review",
+      "employer"
+    ],
+    "tags": [
+      "objection",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "australian tax year dates and when i can lodge",
+    "question": "Do I have to wait until I leave Australia to lodge, and when does the Australian tax year run?",
+    "examples": [
+      "Is anything required now or only when I leave Australia for good?",
+      "am I right in saying it starts on the 1st of July and ends on the 30th of June?",
+      "I'm still here on my visa, is it too early to do my tax return?",
+      "Do I need to wait until my visa ends before I can lodge?"
+    ],
+    "answer": "You don't need to wait until you leave 😊\n\nThe Australian tax year runs 1 July to 30 June, so you can lodge for any financial year that has already finished, even while you're still here.",
+    "keywords": [
+      "tax year",
+      "financial year",
+      "1 july",
+      "30 june",
+      "when to lodge",
+      "still in australia",
+      "leave australia",
+      "too early"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "only worked part of the financial year",
+    "question": "I only worked part of the year, can I still lodge a return?",
+    "examples": [
+      "Is it possible considering I haven't worked the full year?",
+      "I only started in February, can I still do a return for that year?",
+      "I was only employed for a few months of that financial year, does that count?",
+      "Do I need to have worked the whole 12 months?"
+    ],
+    "answer": "Yes, you can still lodge. You don't need to have worked the full 12 months.\n\nAs long as the financial year has finished, we can lodge for the part of the year you worked.",
+    "keywords": [
+      "part year",
+      "partial",
+      "few months",
+      "full year",
+      "12 months",
+      "lodge",
+      "financial year",
+      "eligible"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "timeline after payment",
+    "question": "Once I've paid, what happens next and how long does the whole thing take?",
+    "examples": [
+      "How long will it take when the payment is done?",
+      "The invoice has been paid, do you have a timeline?",
+      "what is my next step?",
+      "How long until I hear back after I send the money?"
+    ],
+    "answer": "Once you've paid and filled out the form, we review everything and come back to you within 24 hours.\n\nAfter you've signed, we lodge it with the ATO and your refund should arrive in your bank account within 14 business days.",
+    "keywords": [
+      "how long",
+      "timeline",
+      "next step",
+      "after payment",
+      "24 hours",
+      "14 business days",
+      "sign",
+      "lodge"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "confirm payment details before transferring",
+    "question": "Are these the correct account details before I send the money?",
+    "examples": [
+      "Is this correct?",
+      "Are these details correct",
+      "Just checking these are your right bank details before I transfer",
+      "Can you confirm the BSB and account number?"
+    ],
+    "answer": "Yes, those are the right details.\n\nAccount Name: Simple Tax Services, BSB: 062692, Account: 81049952.\n\nJust send me a screenshot once it's gone through and we'll get started.",
+    "keywords": [
+      "correct details",
+      "bsb",
+      "account number",
+      "simple tax services",
+      "confirm",
+      "transfer",
+      "payment",
+      "screenshot"
+    ],
+    "tags": [
+      "process",
+      "trust"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "how much tax do i owe on my income",
+    "question": "I earned about this much, how much tax do I owe or will I get anything back?",
+    "examples": [
+      "I have been working three months on ABN and earned 26000 dollars by the 30th of June. How much tax do I owe.",
+      "My income is more than 100.000. Is it still possible i can get tax return?",
+      "My year-to-date income was $70,710.34, and my taxes were $14,193.00.",
+      "I earned over the threshold this year, does that change anything?"
+    ],
+    "answer": "That's definitely something we can check for you.\n\nIt depends on your individual situation, so we need to review your details properly before giving you an accurate answer. That's all included as part of the service once we get started.",
+    "keywords": [
+      "how much tax",
+      "owe",
+      "income",
+      "earned",
+      "tax bracket",
+      "high income",
+      "abn income",
+      "calculate"
+    ],
+    "tags": [
+      "pricing",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "comparing with another accountant",
+    "question": "I'm getting a quote from another accountant, or I've found someone else.",
+    "examples": [
+      "I'm also going to meet with another accountant later this week and will cross check fees",
+      "hey thanks found someone else",
+      "I've been quoted less elsewhere, why should I use you?",
+      "I want to shop around before I decide"
+    ],
+    "answer": "No worries at all, I completely understand.\n\nJust make sure you're comparing the same level of service. With us your situation is properly reviewed and you get personal guidance throughout, not just a return submitted.\n\nIf anything comes up, or you need a hand with a future year, we're here anytime.",
+    "keywords": [
+      "another accountant",
+      "compare",
+      "cheaper",
+      "quote",
+      "shop around",
+      "elsewhere",
+      "fees",
+      "found someone else"
+    ],
+    "tags": [
+      "pricing",
+      "objection"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "form questions refer to which period",
+    "question": "The form asks if I plan to live in Australia. Do I answer for now, or for when I was there?",
+    "examples": [
+      "I live in Japan now so I answered no to planning to live in Australia, should I have said yes?",
+      "I've already left, should I answer based on today or based on when I was working there?",
+      "I said no to living in Australia because I'm home now, was that right?",
+      "Which period do these residency questions refer to?"
+    ],
+    "answer": "The questions are all about your working holiday period, not where you are now.\n\nBeing back home is completely fine. Just answer based on your situation while you were living and working in Australia.",
+    "keywords": [
+      "form",
+      "questions",
+      "period",
+      "while in australia",
+      "left australia",
+      "answer",
+      "residency questions",
+      "questionnaire"
+    ],
+    "tags": [
+      "process",
+      "residency"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "form wants australian phone and address i no longer have",
+    "question": "The form asks for an Australian phone number and address and I don't have them any more. What do I put?",
+    "examples": [
+      "I don't have an Australian phone number and I can't enter an address, what should I do?",
+      "I've left Australia and my Australian number is dead, what do I enter?",
+      "I don't live at my old Australian address any more, what should I put?",
+      "Can I use my home country number on the form?"
+    ],
+    "answer": "Just enter the Australian phone number you used at the time, and the Australian address you lived at while you were there.\n\nThat's all we need for the form.",
+    "keywords": [
+      "australian phone number",
+      "address",
+      "form",
+      "no longer",
+      "left australia",
+      "old number",
+      "what to enter",
+      "fields"
+    ],
+    "tags": [
+      "process",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "lodgement deadline",
+    "question": "Is there a deadline for paying and getting my tax return lodged?",
+    "examples": [
+      "What is the deadline for officially making the payment and submitting the application?",
+      "Is there a cut off date I need to have my tax return done by?",
+      "How long do I have to lodge my return for last financial year?",
+      "Am I too late to do my tax return?"
+    ],
+    "answer": "There's no deadline on our side, you can start whenever you're ready.\n\nThe ATO deadline is 31 October for the previous financial year, or 15 May if you're using a registered tax agent. So as long as we've got time to review everything and lodge, you're all good.",
+    "keywords": [
+      "deadline",
+      "cut off",
+      "31 october",
+      "15 may",
+      "lodge",
+      "late",
+      "financial year",
+      "due date"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "is my old tfn still valid",
+    "question": "I got my TFN years ago and haven't been back since. Is it still valid or do I need a new one?",
+    "examples": [
+      "I applied for one many years ago and haven't been in Australia since. Would my TFN still be valid?",
+      "Does a TFN expire if you leave Australia?",
+      "I got my TFN on my first WHV, can I still use the same one?",
+      "Do I need to apply for a new TFN for my second year?"
+    ],
+    "answer": "Good news, your TFN stays valid permanently. It doesn't expire, even if you haven't been in Australia for years.\n\nAnd once you're our client we deal with the ATO directly, so there's nothing you need to sort out first.",
+    "keywords": [
+      "tfn",
+      "expire",
+      "still valid",
+      "old tfn",
+      "new tfn",
+      "years ago",
+      "permanent",
+      "reuse"
+    ],
+    "tags": [
+      "process",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "tfn application not arrived",
+    "question": "I applied for a TFN and it still hasn't come. Can you help me get it?",
+    "examples": [
+      "I would like to ask about my TFN",
+      "I haven't received it after more than 28 days, what could I do?",
+      "Can you help me apply for a TFN?",
+      "My TFN application is taking ages, is there anything you can do?"
+    ],
+    "answer": "We help with tax returns once you already have your TFN. The application itself is handled directly by the ATO.\n\nIf it's been over 28 days, give the ATO a call on 13 28 61 from inside Australia, or +61 2 6216 1111 from overseas, and they'll check where it's at.",
+    "keywords": [
+      "tfn application",
+      "apply for tfn",
+      "28 days",
+      "not received",
+      "ato phone",
+      "13 28 61",
+      "waiting",
+      "tax file number"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "update details with ato",
+    "question": "Can you update my address or contact details with the ATO for me?",
+    "examples": [
+      "How can I update my TFN contact details with my new Australian address?",
+      "I want to update my address so I can use it as a proof of address",
+      "Can you change the address the ATO has for me?",
+      "Can you update my phone number on my ATO record?"
+    ],
+    "answer": "Sorry, updating your details directly with the ATO isn't something I can do. That one goes through myGov, or you can call the ATO on 13 28 61.\n\nThe tax return side we can definitely help with, and the address we use goes on your form once you're a client.",
+    "keywords": [
+      "update address",
+      "contact details",
+      "change details",
+      "proof of address",
+      "ato",
+      "mygov",
+      "13 28 61",
+      "record"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "form and documents come after payment",
+    "question": "Should I fill in your form or send my documents over now?",
+    "examples": [
+      "Should I go in here and fill it out?",
+      "Can I send you my tax documents? Thank you",
+      "does this mean I make the payment first and then upload my documents?",
+      "I'll have it completed this evening as I don't have my passport with me at the moment"
+    ],
+    "answer": "Not just yet. Once the fee is paid we'll send you a short form, and you upload your documents with it.\n\nJust send a screenshot of the payment and I'll get the form link over to you straight away.",
+    "keywords": [
+      "form",
+      "questionnaire",
+      "fill it out",
+      "send documents",
+      "upload",
+      "before paying",
+      "order",
+      "next step"
+    ],
+    "tags": [
+      "process",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "i already have my medicare entitlement statement",
+    "question": "I already have my Medicare Entitlement Statement. Where do I send it?",
+    "examples": [
+      "I haven't entered any Medicare information yet, as I have a Medicare Entitlement Statement",
+      "I've got my Medicare Entitlement Statement already, do you need it?",
+      "Should I send you my MES now or later?",
+      "Where do I upload my Medicare exemption certificate?"
+    ],
+    "answer": "Perfect, no problem at all!\n\nYou can upload it along with your other documents once you've filled out the form, and the team will make sure it's included in your return properly.",
+    "keywords": [
+      "medicare entitlement statement",
+      "mes",
+      "exemption",
+      "upload",
+      "already have",
+      "certificate",
+      "documents",
+      "levy"
+    ],
+    "tags": [
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "in person appointment",
+    "question": "Can I come in and see you? What's your availability and what should I bring?",
+    "examples": [
+      "I would be happy to come in and discuss all of the above. Please let me know your availability",
+      "Do you have an office I can visit?",
+      "Can I book an appointment to go through this in person?",
+      "Whereabouts are you based, can I drop my documents in?"
+    ],
+    "answer": "We work entirely online, so there's no need to come in.\n\nOnce payment is made you fill out a quick form and upload your documents, then our team reviews everything and gets back to you within 24 hours.",
+    "keywords": [
+      "come in",
+      "appointment",
+      "office",
+      "in person",
+      "visit",
+      "availability",
+      "bring",
+      "online"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "i was quoted a different price",
+    "question": "I thought the fee was cheaper than that. Why is it $220?",
+    "examples": [
+      "I understood the fee to be lower, so could you please explain why it is $220?",
+      "Your website said a different price, has it gone up?",
+      "My friend paid less than that last year, why is mine more?",
+      "I saw a lower number somewhere, which one is right?"
+    ],
+    "answer": "I can see where the confusion might have come from. The current fee for a TFN only return is $220.\n\nThat covers the whole return from start to finish, a proper review of your situation and lodging everything with the ATO. If your refund ends up less than $220, we'll refund the difference.",
+    "keywords": [
+      "price",
+      "fee",
+      "different price",
+      "cheaper",
+      "confusion",
+      "220",
+      "gone up",
+      "quote"
+    ],
+    "tags": [
+      "pricing",
+      "objection"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "short stay worth lodging",
+    "question": "I was only in Australia a few months and barely worked. Is it even worth doing a tax return?",
+    "examples": [
+      "I only stayed about 4 months and worked about 3, should I even lodge?",
+      "Can I check whether I need one lodging?",
+      "that was only a few weeks before the tax year ended so wouldn't be too much on there",
+      "I only did a couple of months of farm work, is it worth it?"
+    ],
+    "answer": "Even a few months of work is worth doing a return for. If tax was withheld from your pay, some of that may come back to you.\n\nThere's also your residency status and Medicare to check, and that's all part of the review.",
+    "keywords": [
+      "short stay",
+      "few months",
+      "only worked",
+      "worth it",
+      "small income",
+      "need to lodge",
+      "barely",
+      "part year"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "overseas investments out of scope",
+    "question": "I've got an investment back home as well. Can you include that?",
+    "examples": [
+      "I also have an investment back in the uk, unsure if this will be considered for tax purposes",
+      "It's an investment ISA",
+      "I have shares and a savings account in my home country, does that go in the return?",
+      "I own a rental property back home, can you handle that too?"
+    ],
+    "answer": "Sorry, overseas investments like an ISA aren't something we deal with.\n\nFor a return with that in it, you'd be better off with someone who has experience with that type of tax return.",
+    "keywords": [
+      "investment",
+      "isa",
+      "shares",
+      "overseas income",
+      "home country",
+      "foreign",
+      "property",
+      "out of scope"
+    ],
+    "tags": [
+      "process",
+      "objection"
     ],
     "lang": "en"
   }

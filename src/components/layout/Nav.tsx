@@ -390,7 +390,7 @@ export function Nav() {
                     : (locale === 'de' ? 'Menü öffnen' : locale === 'ja' ? 'メニューを開く' : 'Open menu')
                 }
                 aria-expanded={open}
-                className="flex flex-col justify-center gap-[5px] w-10 h-10 bg-transparent border-none p-2">
+                className="flex flex-col justify-center gap-[5px] w-11 h-11 bg-transparent border-none p-2">
                 <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-300 w-5 ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
                 <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-200 w-5 ${open ? 'opacity-0' : ''}`} />
                 <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-300 ${open ? 'w-5 -translate-y-[6.5px] -rotate-45' : 'w-3.5'}`} />
@@ -415,25 +415,45 @@ export function Nav() {
         {/* Grouped by section, same groups as the desktop dropdowns, so the
             menu reads as three short lists instead of sixteen equal rows.
             The link sets are the localized ones defined above - one source. */}
+        {/* THE EXPENSES GROUP OPENS COLLAPSED.
+            Sixteen rows at ~44px each is roughly 830px of drawer, so on a
+            667px phone the CTA below and both trust marks sat entirely below
+            the fold of a menu the user opened in order to ACT. Expenses alone
+            is eight of those rows and is the least-used group. Collapsed by
+            default it costs one tap for the people who want it and lifts the
+            button above the fold for everyone else. The summary row keeps the
+            same 44px target and the same styling as the other headers. */}
         {[
-          { title: servicesLabel, links: servicesLinks },
-          { title: expensesLabel, links: expensesLinks },
-          { title: locale === 'de' ? 'Mehr' : locale === 'ja' ? 'その他' : 'More', links: topLinks },
-        ].map(group => (
-          <div key={group.title} style={{ marginBottom: '18px' }}>
+          { title: servicesLabel, links: servicesLinks, collapsed: false },
+          { title: expensesLabel, links: expensesLinks, collapsed: true },
+          { title: locale === 'de' ? 'Mehr' : locale === 'ja' ? 'その他' : 'More', links: topLinks, collapsed: false },
+        ].map(group => {
+          const header = (
             <p className="font-semibold uppercase"
               style={{ fontSize: '11px', letterSpacing: '0.14em', color: '#16775C', padding: '6px 0 4px', borderBottom: '1px solid #E2EFE9', marginBottom: '2px' }}>
               {group.title}
             </p>
-            {group.links.map(l => (
-              <Link key={l.href} href={l.href} onClick={close}
-                className="block font-sans text-[16px] font-medium text-ink transition-colors hover:text-forest-500"
-                style={{ padding: '11px 0', borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
-                {l.label}
-              </Link>
-            ))}
-          </div>
-        ))}
+          );
+          const rows = group.links.map(l => (
+            <Link key={l.href} href={l.href} onClick={close}
+              className="block font-sans text-[16px] font-medium text-ink transition-colors hover:text-forest-500"
+              style={{ padding: '11px 0', borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
+              {l.label}
+            </Link>
+          ));
+          return (
+            <div key={group.title} style={{ marginBottom: '18px' }}>
+              {group.collapsed ? (
+                <details>
+                  <summary style={{ listStyle: 'none', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}>
+                    {header}
+                  </summary>
+                  {rows}
+                </details>
+              ) : (<>{header}{rows}</>)}
+            </div>
+          );
+        })}
 
         {/* CTA */}
         <div className="mt-6">

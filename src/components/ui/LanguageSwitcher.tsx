@@ -10,7 +10,7 @@ import { useState, useRef, useEffect } from 'react'
  * Used in Nav (desktop + mobile - same variant since the mobile menu now shows
  * the pill button beside the burger instead of an inline mobile variant).
  */
-export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' | 'mobile' }) {
+export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 'desktop' | 'mobile' }) {
   const pathname = usePathname() || '/'
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)

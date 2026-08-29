@@ -82,6 +82,7 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
   const [status, setStatus] = useState<Status>('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null)
 
   // Read the hand-off after mount only: it lives in the JS heap, so the server
   // render knows nothing about it and rendering it directly would hydrate-mismatch.
@@ -101,8 +102,15 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
 
   const doSubmit = async (picked: 'resident' | 'whm') => {
     setLoading(true)
+    setProgress(null)
     setError('')
-    const res = await submitTaxForm(handoff.payload, picked, handoff.lang, handoff.submitUrl)
+    // "3 of 12" instead of a static label. Uploads run one at a time with
+    // retries, so a dozen files on a slow connection is a long, silent minute
+    // behind an unchanging button, at the exact moment of commitment.
+    const res = await submitTaxForm(
+      handoff.payload, picked, handoff.lang, handoff.submitUrl,
+      (done, total) => { if (total > 1) setProgress({ done, total }) },
+    )
     if (res.ok) {
       const firstName = handoff.payload.fullName.split(' ')[0] || ''
       markTaxFormSubmitted(firstName)
@@ -151,7 +159,11 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
 
       {/* Disabled until the quiz has produced a status (all questions answered). */}
       <button type="button" className="resdecl-submit" onClick={handleSubmit} disabled={loading || !status}>
-        {loading ? t('submitting') : t('submitTax')}
+        {loading
+          ? (progress && progress.done < progress.total
+            ? `${t('submitting')} ${progress.done}/${progress.total}`
+            : t('submitting'))
+          : t('submitTax')}
       </button>
 
       {!status && !loading && <p className="resdecl-hint">{c.answerAll}</p>}
@@ -167,7 +179,7 @@ const styles = `
   .resdecl-intro { font-size: 14px; font-weight: 600; color: #1A2822; line-height: 1.6; margin-bottom: 14px; }
   .resdecl-req { color: #0B5240; margin-left: 3px; }
   .resdecl-options { display: flex; flex-direction: column; gap: 10px; }
-  .resdecl-card { display: flex; align-items: center; padding: 15px 16px; border-radius: 12px; border: 1.5px solid #D4EAE2; background: #F5F9F7; cursor: default; transition: all .15s; }
+  .resdecl-card { display: flex; align-items: center; padding: 15px 16px; border-radius: 12px; border: 1.5px solid #CDE3DB; background: #F5F9F7; cursor: default; transition: all .15s; }
   .resdecl-card-active { background: #EAF6F1; border-color: #0B5240; }
   .resdecl-row { display: flex; align-items: center; gap: 10px; }
   .resdecl-input { display: none; }

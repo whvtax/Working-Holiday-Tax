@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/constants'
-import { guides, categoryMeta } from './blog/data'
-import { dePostTranslations } from './de/blog/data'
-import { jaPostTranslations } from './ja/blog/data'
+import { guides, categoryMeta } from '@/app/(site)/blog/data'
+import { dePostTranslations } from '@/app/(de)/de/blog/data'
+import { jaPostTranslations } from '@/app/(ja)/ja/blog/data'
 import { isoGuideDate, guideModifiedIso } from '@/lib/blog-dates'
 
 // A localized blog post is only "real" (indexable, sitemap-worthy) when it has a

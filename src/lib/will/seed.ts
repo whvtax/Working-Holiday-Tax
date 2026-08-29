@@ -12,6 +12,7 @@ import { randomUUID } from 'crypto';
 import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
+import { KNOWLEDGE_SEED } from './knowledge-seed';
 import { FORM_RECEIVED_MSG, formReceivedTemplateKey, Lang } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
@@ -159,5 +160,64 @@ export async function backfillMissingTemplates(
     return added;
   } catch {
     return []; // retried on the next tick; never breaks the caller
+  }
+}
+
+/**
+ * The answers pack, in the Library, without anybody having to do anything.
+ *
+ * WHAT WAS WRONG (Jo, 28 Aug). The curated question-and-answer pack lived in
+ * knowledge-seed.ts and reached a live install only if somebody POSTed
+ * `import_starter`, which nothing in the dashboard ever did. So the pack could
+ * be written, reviewed, shipped, and still be invisible to Will forever. It
+ * was, until today.
+ *
+ * Jo's point, and he is right: the Library is one thing. A message he can send
+ * and an answer Will can look up are the same kind of object to the person
+ * using this, and neither of them should need a button, a concept, or an
+ * explanation. So this runs on the tick beside backfillMissingTemplates and
+ * the pack is simply there.
+ *
+ * VERSIONED, NOT ONCE-ONLY. The marker carries the size of the pack, so adding
+ * entries later lands them on the next tick instead of being locked out by a
+ * "already done" flag. Matching by question text means an answer Jo has since
+ * edited is never overwritten and a deleted one does come back, which is the
+ * right way round: the pack is the floor, his edits sit on top.
+ */
+export async function backfillKnowledgePack(
+  store: Pick<Store, 'listKnowledge' | 'addKnowledge' | 'getSetting' | 'setSetting'>,
+): Promise<number> {
+  try {
+    const marker = `pack-${KNOWLEDGE_SEED.length}`;
+    if ((await store.getSetting('knowledge_backfill')) === marker) return 0;
+    const existing = await store.listKnowledge();
+    const have = new Set(existing.map((k) => (k.question || '').trim().toLowerCase()));
+    let added = 0;
+    for (const e of KNOWLEDGE_SEED) {
+      const q = e.question.trim();
+      if (have.has(q.toLowerCase())) continue;
+      await store.addKnowledge({
+        intent: e.intent || q.slice(0, 60),
+        question: q,
+        examples: e.examples ?? [],
+        answer: e.answer,
+        keywords: e.keywords ?? [],
+        tags: e.tags ?? [],
+        lang: e.lang || 'en',
+        weight: 1,
+        // Active, not draft. A draft is invisible to the engine (knowledge.ts
+        // reads status='active'), so importing as draft would put the answers
+        // on the screen and still leave Will unable to use them, which is the
+        // exact failure this function exists to end.
+        status: 'active',
+        source: 'mined',
+      });
+      have.add(q.toLowerCase());
+      added++;
+    }
+    await store.setSetting('knowledge_backfill', marker);
+    return added;
+  } catch {
+    return 0; // retried on the next tick; never breaks the caller
   }
 }

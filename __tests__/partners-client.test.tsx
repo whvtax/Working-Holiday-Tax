@@ -2,8 +2,8 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import PartnersClient from '../src/app/crm/partners/PartnersClient'
-import PartnerDetailClient from '../src/app/crm/partners/[id]/PartnerDetailClient'
+import PartnersClient from '../src/app/(site)/crm/partners/PartnersClient'
+import PartnerDetailClient from '../src/app/(site)/crm/partners/[id]/PartnerDetailClient'
 
 beforeAll(() => {
   Object.assign(navigator, { clipboard: { writeText: jest.fn().mockResolvedValue(undefined) } })
