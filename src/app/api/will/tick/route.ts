@@ -2,7 +2,7 @@
 // in production any external cron can hit it too. Idempotent.
 import { NextResponse } from 'next/server';
 import { cronAuthorized } from '@/lib/will/auth';
-import { processDueJobs, ensureNightly, ensureDailyDigest } from '@/lib/will/scheduler';
+import { processDueJobs, ensureNightly, ensureDailyDigest, backfillFollowupSchedules } from '@/lib/will/scheduler';
 import { backfillMissingTemplates, backfillKnowledgePack } from '@/lib/will/seed';
 import { getStore } from '@/lib/will/store';
 
@@ -37,6 +37,13 @@ export async function GET() {
     .catch(() => {}));
   await ensureDailyDigest().catch((e) => getStore()
     .audit('scheduler', 'ensure_digest_failed', { error: String(e).slice(0, 200) })
+    .catch(() => {}));
+  // One-time retro (Jo, 29 Aug): reconcile every existing chat so leads and
+  // customers already in the system get the follow-up sequence under the new
+  // rules. Guarded and batched inside; a no-op cheap settings read once done.
+  // Wrapped so it can never block the send loop below.
+  await backfillFollowupSchedules().catch((e) => getStore()
+    .audit('scheduler', 'followup_backfill_failed', { error: String(e).slice(0, 200) })
     .catch(() => {}));
   // dueJobs now throws on a DB error instead of returning an empty list. Catch
   // it here so the failure is LOUD: audited and returned as a 500, rather than a

@@ -91,7 +91,14 @@ export const FLOW_TEMPLATES: Record<Flow, string[]> = {
 };
 
 export const FLOW_ELIGIBLE_STATES: Record<Flow, CustomerState[]> = {
-  prePayment: ['PRICE_SENT', 'PAYMENT_PENDING'],
+  // Jo, 29 Aug: chase a lead from the moment they land in WhatsApp, not only
+  // once a price has been sent. NEW_LEAD and QUALIFIED are included so a lead
+  // who starts a chat and then goes quiet before any price still gets the
+  // pre-payment nudge sequence. A lead who is actively chatting never gets one:
+  // every inbound reschedules the timer, so the nudge only fires after the
+  // silence gap (24h for the first), and it is cancelled the moment they move
+  // forward (a price, a payment) or close.
+  prePayment: ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'],
   form: ['FORM_PENDING'],
   signature: ['SIGNATURE_PENDING'],
 };

@@ -43,6 +43,15 @@ jest.mock('@/lib/will/policy-guard', () => ({
   policyGuard: () => ({ allowed: true, violations: [] }),
 }));
 
+// Also not under test: the quiet-hours gate is time-of-day dependent, so mock
+// it to "inside the sending window" and keep the rest of config real. Without
+// this the test flakes purely on the wall clock, taking the defer-to-morning
+// branch instead of the send branch it is written to exercise.
+jest.mock('@/lib/will/config', () => ({
+  ...jest.requireActual('@/lib/will/config'),
+  withinQuietHours: () => true,
+}));
+
 import { processDueJobs } from '@/lib/will/scheduler';
 
 const CUSTOMER = {

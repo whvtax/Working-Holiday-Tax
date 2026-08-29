@@ -1118,13 +1118,16 @@ export default function Dashboard() {
                     </span>
                     <input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} />
                   </div>
-                  {/* Filter chips (owner's choice): All, then the three stage
-                      stops that matter for a quick filter — Paid, Review,
-                      Signature. */}
+                  {/* Filter chips (Jo, 29 Aug): "Leads" first, then the three
+                      stage stops that matter, Paid, Review, Signature. Every chip
+                      TOGGLES: click it to filter to that stage, click the active
+                      one again to clear the filter and see everyone. There is no
+                      separate "All" chip any more, the toggle is how you get back
+                      to all. */}
                   <div className="chatfilter">
-                    <button className={`cfchip ${chatFilter === 'all' ? 'on' : ''}`} onClick={() => setChatFilter('all')}>All</button>
+                    <button className={`cfchip ${chatFilter === 'sales' ? 'on' : ''}`} style={{ ['--pc' as string]: STAGE_GROUPS.find((s) => s.id === 'sales')?.color }} onClick={() => setChatFilter(chatFilter === 'sales' ? 'all' : 'sales')}>Leads</button>
                     {STAGE_GROUPS.filter((sg) => sg.id === 'onb' || sg.id === 'rev' || sg.id === 'sig').map((sg) => (
-                      <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(sg.id)}>{sg.label}</button>
+                      <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(chatFilter === sg.id ? 'all' : sg.id)}>{sg.label}</button>
                     ))}
                   </div>
                 </div>
@@ -1259,6 +1262,23 @@ export default function Dashboard() {
                         <span className="lbl">{chatSel.aiPaused ? `${ASSISTANT_NAME} Paused` : `${ASSISTANT_NAME} Active`}</span>
                         <div className="switch" />
                       </div>
+                      {/* Per-chat follow-up switch (Jo, 29 Aug): turn the follow-up
+                          cadence on for THIS customer, e.g. a returning lead or
+                          one you handled by hand and now want chased again. On =
+                          being followed up (click to stop); Off = "Start". */}
+                      {(() => {
+                        const on = followupSet.has(chatSel.id);
+                        return (
+                          <button className={`fubtn ${on ? 'on' : 'off'}`} title={on ? 'This customer is being followed up. Click to stop.' : 'Start following up this customer.'} onClick={async () => {
+                            const r = await act({ action: 'set_followups', customerId: chatSel.id, value: !on });
+                            if (r?.ok === false) { say(r.error || 'Could not change follow-ups'); return; }
+                            say(!on ? (r?.armed ? 'Follow-ups started for this customer ✓' : 'This stage has no follow-up, nothing to chase') : 'Follow-ups stopped for this customer');
+                            refresh();
+                          }}>
+                            🔔 {on ? 'Following up' : 'Start follow-up'}
+                          </button>
+                        );
+                      })()}
                       {/* Same delete action as the ✕ in the chat list, but reachable
                           from inside an open chat too. On mobile the list is hidden
                           once a chat is open, so that button is otherwise unreachable. */}

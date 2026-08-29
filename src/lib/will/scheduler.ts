@@ -95,6 +95,48 @@ export async function reconcileSchedule(customer: CustomerRow): Promise<void> {
   await scheduleFollowUp(customer.id, flow, doneCount);
 }
 
+/**
+ * ONE-TIME RETRO (Jo, 29 Aug): apply the follow-up rules to every chat that
+ * already exists, so the leads and customers who were in the system before the
+ * rules changed get chased too, not only new ones. It reconciles each customer,
+ * which arms the right follow-up sequence for anyone sitting in a followupable
+ * state (now including a lead who never got a price) and queues a post-mortem
+ * for anyone already closed.
+ *
+ * Runs itself, once, off the tick, in the same style as the other one-time
+ * backfills in the tick route: guarded by a settings flag so it never repeats,
+ * batched by a stored cursor so a large base is spread across a few ticks
+ * instead of blowing the tick's time budget, and fully wrapped so it can never
+ * block the loop that actually sends messages. reconcileSchedule is idempotent,
+ * so a repeated customer in a batch is harmless.
+ */
+const FOLLOWUP_BACKFILL_VERSION = 'v1';
+const FOLLOWUP_BACKFILL_BATCH = 300;
+export async function backfillFollowupSchedules(): Promise<void> {
+  const store = getStore();
+  try {
+    if ((await store.getSetting('followup_schedule_backfill')) === FOLLOWUP_BACKFILL_VERSION) return;
+    const all = await store.allCustomers();
+    const offRaw = await store.getSetting('followup_schedule_backfill_offset');
+    const off = typeof offRaw === 'number' && offRaw >= 0 ? offRaw : 0;
+    const slice = all.slice(off, off + FOLLOWUP_BACKFILL_BATCH);
+    for (const c of slice) {
+      try { await reconcileSchedule(c); } catch { /* one customer must not stop the retro */ }
+    }
+    const next = off + slice.length;
+    if (next >= all.length) {
+      await store.setSetting('followup_schedule_backfill', FOLLOWUP_BACKFILL_VERSION);
+      await store.setSetting('followup_schedule_backfill_offset', 0);
+      await store.audit('scheduler', 'followup_backfill_done', { total: all.length }).catch(() => {});
+    } else {
+      await store.setSetting('followup_schedule_backfill_offset', next);
+      await store.audit('scheduler', 'followup_backfill_progress', { done: next, total: all.length }).catch(() => {});
+    }
+  } catch (e) {
+    await store.audit('scheduler', 'followup_backfill_failed', { error: String(e).slice(0, 200) }).catch(() => {});
+  }
+}
+
 /** Ensure exactly one nightly maintenance job is queued (idempotent). */
 export async function ensureNightly(): Promise<void> {
   const store = getStore();

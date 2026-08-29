@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task';
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups';
   id?: string;
   customerId?: string;
   body?: string;
@@ -499,6 +499,28 @@ async function handlePost(req: Request) {
       await store.setSetting('kill_switch', b.value === true);
       await store.audit('owner', b.value ? 'kill_switch_on' : 'kill_switch_off');
       return NextResponse.json({ ok: true });
+
+    case 'set_followups': {
+      // Per-customer follow-up switch (Jo, 29 Aug). Turn the follow-up cadence
+      // ON for one customer, e.g. a returning lead or someone you took over and
+      // handled by hand and now want chased again; or turn it OFF to stop
+      // chasing this one person. Turning it on also resumes Will for the chat,
+      // because a follow-up cannot go out while Will is paused for that customer.
+      if (!b.customerId) return bad('customerId required');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      if (b.value === true) {
+        if (customer.aiPaused) await store.updateCustomer(customer.id, { aiPaused: false });
+        const fresh = await store.getCustomerById(customer.id);
+        if (fresh) await reconcileSchedule(fresh);
+        const armed = flowForState((fresh ?? customer).state) != null && !(fresh ?? customer).optedOut;
+        await store.audit('owner', 'followups_started', { customerId: customer.id });
+        return NextResponse.json({ ok: true, armed });
+      }
+      await store.cancelJobsFor(customer.id, ['FOLLOW_UP', 'AUTO_CLOSE']);
+      await store.audit('owner', 'followups_stopped', { customerId: customer.id });
+      return NextResponse.json({ ok: true, armed: false });
+    }
 
     case 'set_state': {
       // Manual stage move by the owner. H3: validate against the state enum.
