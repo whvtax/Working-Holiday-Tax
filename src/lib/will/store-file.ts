@@ -127,6 +127,22 @@ export class FileStore implements Store {
 
   async countCustomers() { return (await load()).customers.length; }
 
+  async searchCustomers(q: string, limit = 50) {
+    const raw = (q ?? '').trim().toLowerCase();
+    if (!raw) return [];
+    const digits = raw.replace(/\D/g, '');
+    const noTrunk = digits.replace(/^0+/, '');
+    const all = (await load()).customers;
+    const out = all.filter((c) => {
+      const num = (c.waId ?? '').replace(/\D/g, '');
+      const numHit = digits.length >= 3 && (num.includes(digits) || (!!noTrunk && num.includes(noTrunk)));
+      const nameHit = (c.name ?? '').toLowerCase().includes(raw);
+      const prevHit = (c.lastMessagePreview ?? '').toLowerCase().includes(raw);
+      return numHit || nameHit || prevHit;
+    });
+    return out.slice(0, limit);
+  }
+
   async getCustomerByWaId(waId: string) {
     return (await load()).customers.find((c) => c.waId === waId) ?? null;
   }

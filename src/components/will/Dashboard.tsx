@@ -395,6 +395,11 @@ export default function Dashboard() {
   const [taskDrafts, setTaskDrafts] = useState<Record<string, string>>({});
   const [acted, setActed] = useState<Set<string>>(new Set());
   const [searchQ, setSearchQ] = useState('');
+  // Server-side search results (every customer, not just the loaded window), so a
+  // WhatsApp number finds its conversation however old it is. null = not
+  // searching; [] = searched, nothing matched.
+  const [searchResults, setSearchResults] = useState<CustomerRow[] | null>(null);
+  const [searchBusy, setSearchBusy] = useState(false);
   // Chat-list filter chip: 'all' | 'unread' | a pipeline stage-group id.
   const [chatFilter, setChatFilter] = useState('all');
   // Whether the chat-header stage badge dropdown (manual stage move) is open.
@@ -445,6 +450,28 @@ export default function Dashboard() {
     return () => clearTimeout(tmr);
   }, [view, focusTaskId, data]);
   useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); }, [view, chatSelId, loadChat]);
+  // Server-side search, debounced. A query of two or more characters is sent to
+  // /api/will/search, which looks across EVERY customer by number, name, or
+  // preview — so typing a WhatsApp number finds its chat even when that customer
+  // is nowhere in the window the dashboard loaded. Cleared when the box empties.
+  useEffect(() => {
+    const q = searchQ.trim();
+    if (q.length < 2) { setSearchResults(null); setSearchBusy(false); return; }
+    let cancelled = false;
+    setSearchBusy(true);
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/will/search?q=' + encodeURIComponent(q));
+        const d = await res.json();
+        if (!cancelled) setSearchResults(Array.isArray(d.customers) ? d.customers : []);
+      } catch {
+        if (!cancelled) setSearchResults([]);
+      } finally {
+        if (!cancelled) setSearchBusy(false);
+      }
+    }, 250);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [searchQ]);
   useEffect(() => {
     if (view !== 'chats' || !chatSelId) return;
     loadChat(chatSelId);
@@ -556,6 +583,10 @@ export default function Dashboard() {
   // notSentTasks and outboxCount belonged to the Outbox tab, which is gone:
   // blocked and failed sends are ordinary tasks and are listed with the rest.
   const custById = (id: string | null) => data.customers.find((c) => c.id === id) ?? null;
+  // Customers that already have a follow-up scheduled. Used to show a small green
+  // tick ABOVE the stage chip in the chat list, so at a glance the owner knows
+  // this lead is already being chased and needs nothing from him.
+  const followupSet = new Set(data.followupIds ?? []);
   // Notifications, most urgent first (URGENT > CONFLICT > REVIEW), then newest.
   const SEV_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
   const notifTasks = [...openTasks].sort(
@@ -579,17 +610,24 @@ export default function Dashboard() {
     ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'WENT_COLD'].includes(c.state));
   const killSwitch = health?.killSwitch ?? false;
 
-  const chatSel = data.customers.find((c) => c.id === chatSelId) ?? null;
-  const drawer = data.customers.find((c) => c.id === drawerId) ?? null;
+  // A customer opened from a search result may be outside the loaded window, so
+  // the selected/drawer lookups fall back to the search results too. loadChat
+  // fetches the messages by id regardless, so the conversation opens either way.
+  const chatSel = data.customers.find((c) => c.id === chatSelId) ?? searchResults?.find((c) => c.id === chatSelId) ?? null;
+  const drawer = data.customers.find((c) => c.id === drawerId) ?? searchResults?.find((c) => c.id === drawerId) ?? null;
 
   // Chat-list filter: 'all', 'unread', or a pipeline STAGE-GROUP id.
   const chatGroupStates = (id: string): readonly CustomerState[] | null => {
     const g = STAGE_GROUPS.find((x) => x.id === id);
     return g ? (g.states as readonly CustomerState[]) : null;
   };
-  const chatList = [...data.customers]
-    .filter((c) => c.lastMessagePreview)
-    .filter((c) => !searchQ || phoneOf(c.waId).toLowerCase().includes(searchQ.toLowerCase()) || (c.lastMessagePreview ?? '').toLowerCase().includes(searchQ.toLowerCase()))
+  // When searching, the list IS the server's results (every customer matched by
+  // number/name/preview, not just the loaded window) — the server already did
+  // the matching, so no client-side text filter is re-applied and a matched
+  // customer with no preview yet is still shown. Otherwise it is the loaded
+  // window, newest conversation first.
+  const searchingChats = searchQ.trim().length >= 2;
+  const chatList = (searchingChats ? [...(searchResults ?? [])] : [...data.customers].filter((c) => c.lastMessagePreview))
     .filter((c) => {
       if (chatFilter === 'all') return true;
       if (chatFilter === 'unread') return c.unreadCount > 0;
@@ -887,12 +925,28 @@ export default function Dashboard() {
                           {c.lastMessagePreview}
                         </div>
                       </div>
-                      {showUnread
-                        ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
-                        : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
+                      <div className="cright">
+                        {/* Jo: a small green tick sitting directly ABOVE the stage
+                            chip whenever this lead already has a follow-up scheduled,
+                            so at a glance he knows it is being chased and there is
+                            nothing for him to do on it. */}
+                        {followupSet.has(c.id) && (
+                          <span className="fu-tick" title="Follow-up scheduled — already being chased, nothing to do" aria-label="Follow-up scheduled">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </span>
+                        )}
+                        {showUnread
+                          ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
+                          : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
+                      </div>
                     </div>
                     );
                   })}
+                  {searchingChats && chatList.length === 0 && (
+                    <div className="sysline" style={{ margin: '18px 10px', color: 'var(--ink3)' }}>
+                      {searchBusy ? 'Searching…' : 'No customer matches that. Try the full WhatsApp number.'}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="chatpane">

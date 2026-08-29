@@ -254,6 +254,53 @@ export class SupabaseStore implements Store {
     return count ?? 0;
   }
 
+  /** Server-side search across EVERY customer, not just the window the dashboard
+   *  happened to load. The point is that a number typed into the search box finds
+   *  its customer however old the conversation is — the "a WhatsApp message from
+   *  ten years ago is still there" promise. Matches, in one merged set:
+   *    - the WhatsApp number: the typed digits anywhere inside wa_id or the
+   *      normalised wa_norm, plus a trunk-zero-stripped variant so a locally
+   *      typed 0176… still finds a stored 49176…;
+   *    - the profile name and the last-message preview, as a plain text contains.
+   *  Each sub-query is itself bounded, and the merge stops at `limit`. */
+  async searchCustomers(q: string, limit = 50): Promise<CustomerRow[]> {
+    const raw = (q ?? '').trim();
+    if (!raw) return [];
+    const esc = (s: string) => s.replace(/[\\%_]/g, (ch) => '\\' + ch);
+    const textPattern = `%${esc(raw)}%`;
+    const digits = raw.replace(/\D/g, '');
+
+    const queries: PromiseLike<{ data: Record<string, unknown>[] | null }>[] = [
+      this.sb().from('will_customers').select('*').ilike('name', textPattern).limit(limit),
+      this.sb().from('will_customers').select('*').ilike('last_message_preview', textPattern).limit(limit),
+    ];
+    if (digits.length >= 3) {
+      const variants = new Set<string>([digits]);
+      const noTrunk = digits.replace(/^0+/, '');
+      if (noTrunk && noTrunk !== digits) variants.add(noTrunk);
+      for (const d of variants) {
+        const p = `%${d}%`;
+        queries.push(this.sb().from('will_customers').select('*').ilike('wa_id', p).limit(limit));
+        queries.push(this.sb().from('will_customers').select('*').ilike('wa_norm', p).limit(limit));
+      }
+    }
+
+    const results = await Promise.all(queries);
+    const seen = new Set<string>();
+    const merged: CustomerRow[] = [];
+    for (const res of results) {
+      for (const row of res.data ?? []) {
+        const c = toCustomer(row);
+        if (seen.has(c.id)) continue;
+        seen.add(c.id);
+        merged.push(c);
+        if (merged.length >= limit) break;
+      }
+      if (merged.length >= limit) break;
+    }
+    return merged;
+  }
+
   async getCustomerByWaId(waId: string): Promise<CustomerRow | null> {
     const { data } = await this.sb().from('will_customers').select('*').eq('wa_id', waId).limit(1).maybeSingle();
     return data ? toCustomer(data) : null;

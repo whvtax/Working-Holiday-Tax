@@ -177,6 +177,10 @@ export interface Store {
    *  store's reachability probe: the health check used to call listCustomers()
    *  for this, which pulled the whole table every 45 seconds per open tab. */
   countCustomers(): Promise<number>;
+  /** Search every customer (not just a loaded window) by WhatsApp number, name,
+   *  or last-message preview. Powers the dashboard search box so a number finds
+   *  its customer however old the conversation is. Bounded by `limit`. */
+  searchCustomers(q: string, limit?: number): Promise<CustomerRow[]>;
   getCustomerByWaId(waId: string): Promise<CustomerRow | null>;
   /**
    * The same customer, found by a phone number written any way at all.
