@@ -151,6 +151,16 @@ export class FileStore implements Store {
     return (await load()).messages.find((m) => m.id === id) ?? null;
   }
 
+  async staleOutbound(olderThanMs: number, limit = 500) {
+    const cutoff = Date.now() - olderThanMs;
+    return (await load()).messages
+      .filter((m) => m.direction === 'OUT'
+        && (m.status === 'QUEUED' || m.status === 'SENDING')
+        && new Date(m.createdAt).getTime() < cutoff)
+      .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+      .slice(0, limit);
+  }
+
   async createCustomer(c: Partial<CustomerRow> & { waId: string }): Promise<CustomerRow> {
     const db = await load();
     const row: CustomerRow = {
@@ -239,6 +249,7 @@ export class FileStore implements Store {
   // Admin export only; the file store is small and in-memory, so no paging.
   async allCustomers() { return (await load()).customers; }
   async allMessages() { return (await load()).messages; }
+  async allJobs() { return (await load()).jobs; }
 
   async listInboundBetween(startIso: string, endIso: string, limit = 5000) {
     const db = await load();

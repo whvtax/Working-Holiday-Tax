@@ -38,7 +38,18 @@ export async function GET() {
   await ensureDailyDigest().catch((e) => getStore()
     .audit('scheduler', 'ensure_digest_failed', { error: String(e).slice(0, 200) })
     .catch(() => {}));
-  const result = await processDueJobs();
+  // dueJobs now throws on a DB error instead of returning an empty list. Catch
+  // it here so the failure is LOUD: audited and returned as a 500, rather than a
+  // 200 with an empty result that looks like a quiet, healthy "nothing to do".
+  // The external cron retries on the next tick, and the health endpoint's
+  // lastPersistError shows it too.
+  let result;
+  try {
+    result = await processDueJobs();
+  } catch (e) {
+    await getStore().audit('scheduler', 'tick_read_failed', { error: String(e).slice(0, 300) }).catch(() => {});
+    return NextResponse.json({ ok: false, error: 'tick read failed', detail: String(e).slice(0, 300) }, { status: 500 });
+  }
   // PERF-04: fetch only the 20 soonest jobs from the DB, not the whole table.
   const upcoming = await getStore().listUpcomingJobs(20);
   return NextResponse.json({ ...result, upcoming });

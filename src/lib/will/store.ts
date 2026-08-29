@@ -214,8 +214,17 @@ export interface Store {
    *  on a request-serving path. */
   allCustomers(): Promise<CustomerRow[]>;
   allMessages(): Promise<MessageRow[]>;
+  /** Every job, paged past PostgREST's 1,000-row cap. For the one place a
+   *  partial read would be WRONG rather than just incomplete: orphan-job cleanup
+   *  cancels jobs whose customer is missing, so it must see every job or it would
+   *  cancel live follow-ups for customers it simply did not read. */
+  allJobs(): Promise<JobRow[]>;
   /** PERF-01: PK lookup of a single message (includes its customerId). */
   getMessageById(id: string): Promise<MessageRow | null>;
+  /** Outbound messages stranded mid-send (QUEUED/SENDING) past the given age,
+   *  for the nightly sweep that recovers a reply a crashed invocation never
+   *  finished sending. `olderThanMs` is well beyond any real send. */
+  staleOutbound(olderThanMs: number, limit?: number): Promise<MessageRow[]>;
   /** `restamp` sets the message's created_at to now — used when an approved
    *  draft is actually sent, so its shown time is the SEND time, not the (older)
    *  time it was drafted, and it sorts to the bottom of the thread. */

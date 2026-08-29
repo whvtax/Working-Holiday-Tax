@@ -556,11 +556,6 @@ export default function Dashboard() {
   // notSentTasks and outboxCount belonged to the Outbox tab, which is gone:
   // blocked and failed sends are ordinary tasks and are listed with the rest.
   const custById = (id: string | null) => data.customers.find((c) => c.id === id) ?? null;
-  // Customers that already have a scheduled follow-up queued (computed once by
-  // the state endpoint). Used to show a small green tick on the card so the
-  // owner can see at a glance that this lead is already being chased and needs
-  // no action from him.
-  const followupSet = new Set(data.followupIds ?? []);
   // Notifications, most urgent first (URGENT > CONFLICT > REVIEW), then newest.
   const SEV_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
   const notifTasks = [...openTasks].sort(
@@ -818,11 +813,6 @@ export default function Dashboard() {
                     {c.lastMessagePreview && <div className="rc-msg">“{previewLine(c.lastMessagePreview)}”</div>}
                   </div>
                   <div className="rc-side">
-                    {followupSet.has(c.id) && (
-                      <span className="fu-tick" title="Follow-up scheduled — already being chased" aria-label="Follow-up scheduled">
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </span>
-                    )}
                     <span className="stagepill" style={{ ['--pc' as string]: g.color }}>{stageLabelOf(c.state)}</span>
                     {/* When the last message actually arrived, not when the
                         pipeline stage last changed: "2h" should mean 2h since
@@ -1108,20 +1098,48 @@ export default function Dashboard() {
                           .sort((a, b) => (a.status === 'PENDING_APPROVAL' ? 1 : 0) - (b.status === 'PENDING_APPROVAL' ? 1 : 0));
 
                         // WhatsApp-real: a reaction is a heart/thumbs-up ON another
-                        // message, not a message of its own. Match it to the bubble
-                        // it landed on via Meta's provider id, so it renders as a
-                        // small badge on that exact bubble instead of a floating
-                        // line unattached to anything.
-                        const reactionByTargetProviderId = new Map<string, MessageRow>();
+                        // message, not a message of its own. It must render as a
+                        // small badge in the CORNER of the bubble it landed on, never
+                        // as a floating "reacted to your message" line.
+                        //
+                        // Two ways to find that bubble, in order:
+                        //   1. Exact: Meta gives the reaction the target's message id
+                        //      (reaction.to), and our sent/echoed messages carry that
+                        //      same id as providerId. A direct hit is the truth.
+                        //   2. Fallback: when the exact id is missing (an older
+                        //      message with no providerId stored, or a target just
+                        //      outside the loaded window), a customer reacts to
+                        //      something WE sent, so it attaches to the most recent
+                        //      OUTBOUND bubble at or before the reaction's time. That
+                        //      is where WhatsApp shows it, and it is right in every
+                        //      normal case. This is what stops the standalone line
+                        //      Jo saw whenever the exact id did not line up.
+                        const byProviderId = new Map<string, MessageRow>();
                         for (const m of visible) {
-                          const to = m.meta?.reaction?.to;
-                          if (to) reactionByTargetProviderId.set(to, m);
+                          if (!m.meta?.reaction && m.meta?.providerId) byProviderId.set(m.meta.providerId, m);
                         }
-                        const matchedReactionIds = new Set<string>();
-                        for (const m of visible) {
-                          const pid = m.meta?.providerId;
-                          const r = pid ? reactionByTargetProviderId.get(pid) : undefined;
-                          if (r) matchedReactionIds.add(r.id);
+                        const outboundByTime = visible
+                          .filter((m) => !m.meta?.reaction && m.direction === 'OUT')
+                          .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
+                        // emoji to paint on each target bubble (latest reaction wins;
+                        // a removed reaction clears it), and the reaction rows that
+                        // found a home and so must not also print a line of their own.
+                        const reactionEmojiByMsgId = new Map<string, string>();
+                        const consumedReactionIds = new Set<string>();
+                        for (const r of visible) {
+                          if (!r.meta?.reaction) continue;
+                          let target = r.meta.reaction.to ? byProviderId.get(r.meta.reaction.to) : undefined;
+                          if (!target) {
+                            for (let i = outboundByTime.length - 1; i >= 0; i--) {
+                              if (String(outboundByTime[i].createdAt) <= String(r.createdAt)) { target = outboundByTime[i]; break; }
+                            }
+                            if (!target && outboundByTime.length) target = outboundByTime[outboundByTime.length - 1];
+                          }
+                          if (!target) continue; // truly nothing to attach to (no outbound at all) -> quiet line
+                          consumedReactionIds.add(r.id);
+                          const emoji = r.meta.reaction.emoji;
+                          if (emoji) reactionEmojiByMsgId.set(target.id, emoji);
+                          else reactionEmojiByMsgId.delete(target.id); // they removed it
                         }
 
                         const out: React.JSX.Element[] = [];
@@ -1147,12 +1165,12 @@ export default function Dashboard() {
                             continue;
                           }
                           if (m.meta?.reaction) {
-                            // Attached to its target bubble below — skip the
-                            // standalone line. Only an orphaned reaction (no
-                            // matching provider id, e.g. older data from before
-                            // provider ids were recorded) still falls back to a
-                            // quiet line so nothing silently disappears.
-                            if (matchedReactionIds.has(m.id)) continue;
+                            // It is painted in the corner of its target bubble, so it
+                            // never prints a line of its own. The only exception is a
+                            // reaction with nothing at all to attach to (no outbound
+                            // message in the chat), which stays a quiet line so it is
+                            // not silently lost.
+                            if (consumedReactionIds.has(m.id)) continue;
                             out.push(
                               <div key={m.id} className="sysline" style={{ fontSize: 15 }}>
                                 {m.meta.reaction.emoji ? `${m.meta.reaction.emoji}  reacted to your message` : 'removed their reaction'}
@@ -1160,11 +1178,11 @@ export default function Dashboard() {
                             );
                             continue;
                           }
-                          const reactionHere = m.meta?.providerId ? reactionByTargetProviderId.get(m.meta.providerId) : undefined;
+                          const reactionEmojiHere = reactionEmojiByMsgId.get(m.id);
                           out.push(
-                            <div key={m.id} className={`msg ${m.direction === 'IN' ? 'in' : 'out'}`}>
-                              {reactionHere?.meta?.reaction?.emoji && (
-                                <span className="msgreact" title="Reacted to this message">{reactionHere.meta.reaction.emoji}</span>
+                            <div key={m.id} className={`msg ${m.direction === 'IN' ? 'in' : 'out'}${reactionEmojiHere ? ' has-react' : ''}`}>
+                              {reactionEmojiHere && (
+                                <span className="msgreact" title="Reacted to this message">{reactionEmojiHere}</span>
                               )}
                               {m.meta?.media && <Attachment media={m.meta.media} />}
                               {/* With the attachment itself on screen, the stored

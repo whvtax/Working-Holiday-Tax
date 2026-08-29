@@ -240,8 +240,10 @@ async function doProcess(): Promise<TickResult> {
         try {
           const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
           if (c && !c.optedOut && !c.aiPaused) {
-            const open = (await store.listTasks())
-              .some((t) => t.customerId === c.id && t.status === 'OPEN');
+            // Targeted, indexed lookup for THIS customer's open task, instead of
+            // reading the whole tasks table on every HANDOFF_ACK job and scanning
+            // it in memory (O(all tasks) per job at 5,000 customers).
+            const open = (await store.findOpenTaskForCustomer(c.id)) != null;
             // Anything that actually reached the customer since the handoff
             // means somebody got there first. A draft still sitting in
             // PENDING_APPROVAL does not count: nobody has seen it but us.
@@ -584,7 +586,12 @@ async function doProcess(): Promise<TickResult> {
 /** Nightly maintenance: consistency checks + morning summary. */
 export async function runNightly(): Promise<void> {
   const store = getStore();
-  const customers = await store.listCustomers();
+  // allCustomers, NOT listCustomers: this function CANCELS every scheduled job
+  // whose customerId is not in the set it reads (orphan cleanup, below). With
+  // listCustomers() capped at PostgREST's 1,000 rows, at 5,000 customers the
+  // other 4,000 would look like orphans and have their live follow-ups
+  // cancelled every single night. The set must be complete, so it is paged.
+  const customers = await store.allCustomers();
   const salesStates: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
   const closedStates: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
   const issues: string[] = [];
@@ -600,11 +607,55 @@ export async function runNightly(): Promise<void> {
   // the owner's rule: "whenever, whatever they say, however long it's been."
   // Nothing to do here on a timer.
 
-  const jobs = await store.listJobs();
+  // allJobs, paged, for the same reason as allCustomers above: a job read capped
+  // at 1,000 rows would leave real orphans uncancelled AND, more importantly,
+  // pairs with a complete customer set so the cancellation below only ever fires
+  // on a genuinely missing customer, never on one that simply was not read.
+  const jobs = await store.allJobs();
   // PERF-01: O(jobs) with a Set instead of O(jobs x customers) via .some().
   const customerIds = new Set(customers.map((c) => c.id));
   const orphans = jobs.filter((j) => j.status === 'SCHEDULED' && j.customerId && !customerIds.has(j.customerId));
   for (const o of orphans) await store.setJobStatus(o.id, 'CANCELLED');
+
+  // STRANDED OUTBOUND SWEEP.
+  //
+  // deliverOut writes a row QUEUED, sends, then reconciles it to SENT/FAILED. An
+  // autopilot reply is claimed QUEUED -> SENDING and then sent. If the invocation
+  // dies in the gap — after the send, before the status write, or mid-flight —
+  // the row is left QUEUED or SENDING forever: the customer may have heard
+  // nothing, and nothing on the board says so. Reclaim only ever touched jobs,
+  // never these messages, so there was no path back.
+  //
+  // Anything still unresolved after 15 minutes is far past any real send and
+  // past the autopilot delay, so it is genuinely stranded. Each one becomes a
+  // one-click "resend" task for the owner (the body is the suggested reply) and
+  // is marked FAILED so it is neither swept twice nor mistaken for a live send.
+  // If it HAD in fact been delivered, the task says "may not have reached" so the
+  // owner decides rather than a duplicate being sent automatically. One task per
+  // customer, so a burst does not flood the queue.
+  if (typeof store.staleOutbound === 'function') {
+    try {
+      const stranded = await store.staleOutbound(15 * 60 * 1000);
+      const flagged = new Set<string>();
+      for (const m of stranded) {
+        await store.setMessageStatus(m.id, 'FAILED').catch(() => {});
+        if (m.customerId && !flagged.has(m.customerId)) {
+          flagged.add(m.customerId);
+          const c = customers.find((x) => x.id === m.customerId);
+          await store.addTask({
+            customerId: m.customerId, customerName: c?.name ?? c?.waId ?? null,
+            reason: 'A reply may not have reached this customer — it got stuck while sending. Check the chat and resend if needed.',
+            severity: 'URGENT', context: m.body.slice(0, 200), suggestedReply: m.body,
+          }).catch(() => {});
+        }
+      }
+      if (stranded.length) {
+        await store.audit('scheduler', 'stranded_outbound_swept', { count: stranded.length, customers: flagged.size }).catch(() => {});
+      }
+    } catch (e) {
+      await store.audit('scheduler', 'stranded_outbound_sweep_failed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+    }
+  }
 
   // COST-02: purge inbound-idempotency markers older than 30 days so the table
   // does not grow forever (Meta never retries a message that old).

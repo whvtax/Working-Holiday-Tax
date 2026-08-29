@@ -239,6 +239,10 @@ export class SupabaseStore implements Store {
     return (await this.pageAll<Record<string, unknown>>('will_messages', 'id')).map(toMessage);
   }
 
+  async allJobs(): Promise<JobRow[]> {
+    return (await this.pageAll<Record<string, unknown>>('will_jobs', 'id')).map(toJob);
+  }
+
   async listCustomers(): Promise<CustomerRow[]> {
     const { data } = await this.sb().from('will_customers').select('*').order('state_changed_at', { ascending: false });
     return (data ?? []).map(toCustomer);
@@ -460,6 +464,21 @@ export class SupabaseStore implements Store {
   async getMessageById(id: string): Promise<MessageRow | null> {
     const { data } = await this.sb().from('will_messages').select('*').eq('id', id).limit(1).maybeSingle();
     return data ? toMessage(data) : null;
+  }
+
+  /** Outbound messages stranded mid-send: written QUEUED (or claimed SENDING)
+   *  and never reconciled to SENT/FAILED because the invocation died in between.
+   *  Bounded and indexed on (direction,status,created_at). The caller passes an
+   *  age far beyond any real send or autopilot delay so a message still in
+   *  flight is never mistaken for a stranded one. */
+  async staleOutbound(olderThanMs: number, limit = 500): Promise<MessageRow[]> {
+    const cutoff = new Date(Date.now() - olderThanMs).toISOString();
+    const { data, error } = await this.sb().from('will_messages').select('*')
+      .eq('direction', 'OUT').in('status', ['QUEUED', 'SENDING'])
+      .lt('created_at', cutoff)
+      .order('created_at', { ascending: true }).limit(limit);
+    if (error) { lastPersistError = `staleOutbound: ${error.message}`; throw error; }
+    return (data ?? []).map(toMessage);
   }
 
   async listInboundBetween(
@@ -727,9 +746,19 @@ export class SupabaseStore implements Store {
    *  The cap pairs with the tick loop's time budget: whatever this batch does
    *  not clear is still SCHEDULED and comes back on the next tick. */
   async dueJobs(nowDate: Date): Promise<JobRow[]> {
-    const { data } = await this.sb().from('will_jobs').select('*')
+    const { data, error } = await this.sb().from('will_jobs').select('*')
       .eq('status', 'SCHEDULED').lte('run_at', nowDate.toISOString())
       .order('run_at', { ascending: true }).limit(DUE_JOBS_BATCH);
+    // A FAILED read must never look like "nothing is due". This is the one query
+    // that decides whether the tick does any work at all: if a transient DB
+    // error silently returned [], every Autopilot reply, follow-up, form
+    // confirmation and nightly job would freeze with the tick still reporting
+    // success — the whole automation stopped, invisibly, until someone noticed.
+    // So it fails loud: record it and throw, and the next tick retries.
+    if (error) {
+      lastPersistError = `dueJobs: ${error.message}`;
+      throw new Error(`dueJobs read failed: ${error.message}`);
+    }
     return (data ?? []).map(toJob);
   }
 
@@ -808,8 +837,12 @@ export class SupabaseStore implements Store {
 
   async reclaimStaleJobs(olderThanMs: number): Promise<number> {
     const cutoff = new Date(Date.now() - olderThanMs).toISOString();
-    const { data } = await this.sb().from('will_jobs').select('*')
+    const { data, error } = await this.sb().from('will_jobs').select('*')
       .eq('status', 'CLAIMED').or(`claimed_at.is.null,claimed_at.lt.${cutoff}`);
+    // Recorded but not thrown: a failed reclaim must not stop the tick from
+    // sending the jobs it CAN see. A job left CLAIMED by this miss is picked up
+    // on the next reclaim anyway. dueJobs, right after, is the one that throws.
+    if (error) lastPersistError = `reclaimStaleJobs: ${error.message}`;
     const stale = (data ?? []).map(toJob);
     let n = 0;
     for (const j of stale) {

@@ -228,7 +228,9 @@ export async function runLostLeadAnalysis(
   if (last === day) return 'already_run';
 
   const [customers, existing] = await Promise.all([
-    store.listCustomers().catch(() => [] as CustomerRow[]),
+    // allCustomers, paged: listCustomers caps at 1,000, which at scale would
+    // silently exclude thousands of lost leads from ever being analysed.
+    store.allCustomers().catch(() => [] as CustomerRow[]),
     store.listLostAnalyses().catch(() => [] as LostAnalysisRow[]),
   ]);
 
