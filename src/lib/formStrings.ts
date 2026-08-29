@@ -241,9 +241,9 @@ export const formStrings = {
     ja: '税金とスーパーファンド情報',
   },
   australianTaxResident: {
-    en: 'Australian resident for tax purposes',
+    en: 'Australian tax resident',
     de: 'Australischer Steuerresident',
-    ja: 'オーストラリアの税法上の居住者',
+    ja: 'オーストラリア税務居住者',
   },
   homeCountryAddress: {
     en: 'Home Country Address',

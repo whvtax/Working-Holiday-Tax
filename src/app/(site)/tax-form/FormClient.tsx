@@ -371,6 +371,13 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     const errs = validate()
     if (Object.keys(errs).length) {
       setErrors(errs)
+      // The Back button is gone, so a validation error on a STEP-1 field (which
+      // is not on screen here) must not dead-end the client on step 2 with no way
+      // to reach it. Jump them back to step 1 automatically so the flagged field
+      // is visible and fixable. (This also covers the restore-from-residency
+      // case, where the TFN is deliberately dropped and needs re-entering.)
+      const STEP1_KEYS = ['waNumber', 'auPhone', 'fullName', 'lastName', 'dob', 'tfn', 'email', 'address', 'primaryJob']
+      if (STEP1_KEYS.some((k) => errs[k])) setStep(1)
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
@@ -805,19 +812,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             {T('checkResidency')}
           </button>
 
-          {/* THE WAY BACK.
-              Nothing ever set step back to 1, so three paths dead-ended here:
-              a validation error naming a step-1 field, the restore that
-              deliberately omits the TFN and lands on step 2, and a server
-              rejection naming the date of birth. A single typo in an early
-              field became an unrecoverable form, after the uploads had already
-              succeeded. */}
-          <button
-            type="button"
-            className="submit-btn"
-            style={{ background: 'transparent', color: '#0B5240', height: 48, marginTop: 6, boxShadow: 'none' }}
-            onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-          >{T('backButton')}</button>
+          {/* The visible "Back" button was removed on Jo's request. The way back
+              is preserved automatically: goToResidency jumps to step 1 whenever a
+              step-1 field fails validation, so a typo in an early field can never
+              dead-end the form. */}
 
           <p className="form-footer-note" style={{marginTop:10}}>{T('checkResidencyNote')}</p>
           </>

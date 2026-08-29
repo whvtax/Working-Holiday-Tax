@@ -204,7 +204,9 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
  * border is gone. */
 .will-scope .citem{display:flex;gap:9px;padding:10px 11px;cursor:pointer;transition:background 150ms var(--ease-out);align-items:center}
 .will-scope .citem:hover, .will-scope .citem.sel{background:rgba(30,32,40,.035)}
-.will-scope .citem.sel{box-shadow:inset 3px 0 0 var(--brand1)}
+/* The open chat is shown by its background tint only. The left accent bar was
+   removed so it does not compete with the follow-up marker, which now lives on
+   the left edge (below). */
 .will-scope .cav{width:33px;height:33px;border-radius:50%;background:var(--surface3);display:grid;place-items:center;font-size:16px;flex:none;overflow:hidden}
 .will-scope .cinfo{flex:1;min-width:0}
 .will-scope .cn{display:flex;justify-content:space-between;gap:6px}
@@ -220,7 +222,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
    collide and a row that is both selected and scheduled shows both. A
    pseudo-element (not box-shadow) keeps it independent of the .sel shadow. */
 .will-scope .citem.fu-row{position:relative}
-.will-scope .citem.fu-row::after{content:'';position:absolute;top:7px;bottom:7px;right:0;width:3px;border-radius:3px 0 0 3px;background:#5cbf94}
+.will-scope .citem.fu-row::after{content:'';position:absolute;top:7px;bottom:7px;left:0;width:3px;border-radius:0 3px 3px 0;background:#5cbf94}
 /* Clickable stage badge + manual-move dropdown (owner override). */
 .will-scope .stagepick{position:relative;display:inline-flex}
 .will-scope .cstate-btn{border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px}
