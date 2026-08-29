@@ -381,10 +381,13 @@ export default function Dashboard() {
   // Everyone scheduled to receive a follow-up. Kept current while the view is
   // open: this is a live queue, not a report you regenerate.
   const [followups, setFollowups] = useState<FollowUpRow[] | null>(null);
+  // Status of the one-time retro that reconciled every existing chat.
+  type Backfill = { done: boolean; processed: number; total: number | null; at: string | null; started: boolean };
+  const [followupBackfill, setFollowupBackfill] = useState<Backfill | null>(null);
   const loadFollowups = useCallback(async () => {
     try {
       const r = await fetch('/api/will/followups').then((x) => x.json());
-      if (r.ok) setFollowups(r.rows ?? []);
+      if (r.ok) { setFollowups(r.rows ?? []); setFollowupBackfill(r.backfill ?? null); }
     } catch { /* keep whatever is on screen */ }
   }, []);
   // Two-click arming for "clear the log" (see the Decision Log panel).
@@ -1746,6 +1749,18 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
+
+            {/* Retro status: shows Jo that the one-time pass over every existing
+                chat has run and covered everyone, or how far it has got. */}
+            {followupBackfill && followupBackfill.started && (
+              <div className={`retrobar ${followupBackfill.done ? 'done' : 'run'}`}>
+                {followupBackfill.done ? (
+                  <span>✓ Retro complete. Went over all {followupBackfill.total ?? ''} chats and set follow-ups where needed{followupBackfill.at ? ` on ${new Date(followupBackfill.at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Melbourne' })}` : ''}.</span>
+                ) : (
+                  <span>⏳ Retro in progress. Reviewed {followupBackfill.processed}{followupBackfill.total ? ` of ${followupBackfill.total}` : ''} chats so far. It finishes on its own within a few minutes.</span>
+                )}
+              </div>
+            )}
 
             {followups === null && <div className="sysline" style={{ margin: '20px 0' }}>Loading the queue…</div>}
             {followups !== null && followups.length === 0 && (

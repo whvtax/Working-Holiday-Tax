@@ -1042,3 +1042,9 @@ aside.side{
 .will-scope .fubtn.on:hover{background:rgba(74,168,114,.16)}
 .will-scope .fubtn.off:hover{border-color:var(--brand1);color:var(--brand1)}
 .will-scope .fubtn:active{transform:scale(.97)}
+
+/* Retro (one-time backfill) status bar in the Follow-ups view. Green when done,
+   amber while it is still going over the chats. */
+.will-scope .retrobar{margin:14px 0 4px;padding:9px 13px;border-radius:10px;font-size:12px;font-weight:600;line-height:1.5}
+.will-scope .retrobar.done{color:var(--done);background:color-mix(in srgb,var(--done) 8%, transparent);border:1px solid color-mix(in srgb,var(--done) 26%, transparent)}
+.will-scope .retrobar.run{color:#b5820f;background:#fff6e6;border:1px solid #f0dcae}

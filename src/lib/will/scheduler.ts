@@ -119,6 +119,8 @@ export async function backfillFollowupSchedules(): Promise<void> {
     const all = await store.allCustomers();
     const offRaw = await store.getSetting('followup_schedule_backfill_offset');
     const off = typeof offRaw === 'number' && offRaw >= 0 ? offRaw : 0;
+    // Store the total so the CRM can show "reviewed X of Y chats" while it runs.
+    await store.setSetting('followup_schedule_backfill_total', all.length);
     const slice = all.slice(off, off + FOLLOWUP_BACKFILL_BATCH);
     for (const c of slice) {
       try { await reconcileSchedule(c); } catch { /* one customer must not stop the retro */ }
@@ -126,7 +128,8 @@ export async function backfillFollowupSchedules(): Promise<void> {
     const next = off + slice.length;
     if (next >= all.length) {
       await store.setSetting('followup_schedule_backfill', FOLLOWUP_BACKFILL_VERSION);
-      await store.setSetting('followup_schedule_backfill_offset', 0);
+      await store.setSetting('followup_schedule_backfill_offset', all.length);
+      await store.setSetting('followup_schedule_backfill_at', new Date().toISOString());
       await store.audit('scheduler', 'followup_backfill_done', { total: all.length }).catch(() => {});
     } else {
       await store.setSetting('followup_schedule_backfill_offset', next);

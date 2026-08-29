@@ -19,6 +19,9 @@ jest.mock('@/lib/will/store', () => ({
     listJobs: async () => jobs,
     listCustomers: async () => customers,
     listTemplates: async () => templates,
+    // The route also reads the one-time retro status from settings; not what
+    // these tests pin, so a plain no-op that returns nothing is enough.
+    getSetting: async () => null,
   }),
 }));
 

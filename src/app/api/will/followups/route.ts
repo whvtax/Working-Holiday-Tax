@@ -51,6 +51,22 @@ export async function GET() {
     store.listTemplates(),
   ]);
 
+  // Status of the one-time retro that reconciled every existing chat, so the CRM
+  // can show whether it has finished going over all the chats and when.
+  const [bfDone, bfOffset, bfTotal, bfAt] = await Promise.all([
+    store.getSetting('followup_schedule_backfill').catch(() => null),
+    store.getSetting('followup_schedule_backfill_offset').catch(() => null),
+    store.getSetting('followup_schedule_backfill_total').catch(() => null),
+    store.getSetting('followup_schedule_backfill_at').catch(() => null),
+  ]);
+  const backfill = {
+    done: bfDone === 'v1',
+    processed: typeof bfOffset === 'number' ? bfOffset : 0,
+    total: typeof bfTotal === 'number' ? bfTotal : null,
+    at: typeof bfAt === 'string' ? bfAt : null,
+    started: bfDone === 'v1' || typeof bfTotal === 'number',
+  };
+
   const customerById = new Map(customers.map((c) => [c.id, c]));
   const templateByKey = new Map(templates.map((t) => [t.key, t]));
 
@@ -85,5 +101,5 @@ export async function GET() {
   }
   rows.sort((a, b) => a.runAt.localeCompare(b.runAt));
 
-  return NextResponse.json({ ok: true, generatedAt: new Date().toISOString(), rows });
+  return NextResponse.json({ ok: true, generatedAt: new Date().toISOString(), rows, backfill });
 }
