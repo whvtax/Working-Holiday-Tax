@@ -127,6 +127,26 @@ export class FileStore implements Store {
 
   async countCustomers() { return (await load()).customers.length; }
 
+  async countInStates(states: CustomerState[]) {
+    if (!states.length) return 0;
+    const set = new Set(states);
+    return (await load()).customers.filter((c) => set.has(c.state)).length;
+  }
+
+  async listChatPage(offset: number, limit: number, opts?: { states?: CustomerState[]; unreadOnly?: boolean }) {
+    const set = opts?.states && opts.states.length ? new Set(opts.states) : null;
+    return (await load()).customers
+      .filter((c) => c.lastMessagePreview)
+      .filter((c) => !set || set.has(c.state))
+      .filter((c) => !opts?.unreadOnly || c.unreadCount > 0)
+      .sort((a, b) => {
+        const at = (a.lastMessageAt ?? a.lastCustomerMsgAt) ?? '';
+        const bt = (b.lastMessageAt ?? b.lastCustomerMsgAt) ?? '';
+        return bt.localeCompare(at) || String(b.id).localeCompare(String(a.id));
+      })
+      .slice(offset, offset + limit);
+  }
+
   async searchCustomers(q: string, limit = 50) {
     const raw = (q ?? '').trim().toLowerCase();
     if (!raw) return [];

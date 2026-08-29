@@ -263,6 +263,35 @@ export class SupabaseStore implements Store {
    *      typed 0176… still finds a stored 49176…;
    *    - the profile name and the last-message preview, as a plain text contains.
    *  Each sub-query is itself bounded, and the merge stops at `limit`. */
+  /** How many customers are in this set of states — a head-only COUNT, so the
+   *  pipeline totals are true at any size instead of being capped at the 1,000
+   *  the dashboard window happened to load. */
+  async countInStates(states: CustomerState[]): Promise<number> {
+    if (!states.length) return 0;
+    const { count, error } = await this.sb().from('will_customers')
+      .select('id', { count: 'exact', head: true }).in('state', states);
+    if (error) { lastPersistError = `countInStates: ${error.message}`; throw error; }
+    return count ?? 0;
+  }
+
+  /** One page of the chat list, ordered newest-conversation-first, so the list
+   *  scrolls through EVERY conversation like WhatsApp instead of stopping at the
+   *  first 1,000. Only rows that have a real last message are shown (the same
+   *  rule the client used). `opts.states` narrows to a pipeline group; `unreadOnly`
+   *  to the unread chats. Keyed by (last_message_at, id) with a stable tiebreak
+   *  so pages neither overlap nor skip. */
+  async listChatPage(offset: number, limit: number, opts?: { states?: CustomerState[]; unreadOnly?: boolean }): Promise<CustomerRow[]> {
+    let q = this.sb().from('will_customers').select('*').not('last_message_preview', 'is', null);
+    if (opts?.states && opts.states.length) q = q.in('state', opts.states);
+    if (opts?.unreadOnly) q = q.gt('unread_count', 0);
+    q = q.order('last_message_at', { ascending: false, nullsFirst: false })
+      .order('id', { ascending: false })
+      .range(offset, offset + limit - 1);
+    const { data, error } = await q;
+    if (error) { lastPersistError = `listChatPage: ${error.message}`; throw error; }
+    return (data ?? []).map(toCustomer);
+  }
+
   async searchCustomers(q: string, limit = 50): Promise<CustomerRow[]> {
     const raw = (q ?? '').trim();
     if (!raw) return [];

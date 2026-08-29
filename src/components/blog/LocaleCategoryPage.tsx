@@ -182,7 +182,7 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh', paddingTop: '68px' }}>
+      <div style={{ background: '#fff', minHeight: '100vh', paddingTop: '68px' }}>
 
         <section style={{ background: colors.bg }}>
           <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 20px 48px' }}>
@@ -368,7 +368,7 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
           </div>
         </section>
 
-      </main>
+      </div>
       <MobileCta href={waUrl({ topic: 'guide', lang: cfg.locale })} lang={cfg.locale} topic="guide" />
     </>
   )

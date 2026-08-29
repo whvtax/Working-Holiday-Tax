@@ -107,12 +107,6 @@ export function formatAUD(cents: number): string {
   });
 }
 
-/** Human-feel reply delay (seconds) per spec §8.1: varies, never uniform. */
-export function humanDelaySeconds(text: string): number {
-  const base = text.length > 300 ? 45 : text.length > 120 ? 25 : 12;
-  return Math.round(base + Math.random() * base * 0.8);
-}
-
 /** How long Autopilot waits before a reply actually leaves, in seconds.
  *
  *  Set to 4 minutes on Jo's instruction, 25 Aug. Until now Autopilot answered

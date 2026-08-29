@@ -394,4 +394,3 @@ export const formStrings = {
 } as const
 
 export type FormStringKey = keyof typeof formStrings
-export const t = (key: FormStringKey, lang: FormLang): string => formStrings[key][lang]

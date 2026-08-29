@@ -2,19 +2,28 @@
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
+import { STAGE_GROUPS } from '@/lib/will/state-machine';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const store = getStore();
-  const [customers, tasks, templates, pending, followupIds] = await Promise.all([
+  const [customers, tasks, templates, pending, followupIds, total, groupCountArr] = await Promise.all([
     store.listCustomers(),
     store.listTasks(),
     store.listTemplates(),
     store.pendingApprovals(),
     store.customerIdsWithScheduledFollowup(),
+    // True totals, straight from COUNT(*), so the pipeline numbers show 5,000
+    // and not the 1,000 the window happened to load. Each is a cheap head-only
+    // count; the group ones run in parallel.
+    store.countCustomers().catch(() => 0),
+    Promise.all(STAGE_GROUPS.map((g) => store.countInStates([...g.states]).catch(() => 0))),
   ]);
+  // stageCounts keyed by pipeline-group id, e.g. { sales: 1234, onb: 88, ... }.
+  const stageCounts: Record<string, number> = {};
+  STAGE_GROUPS.forEach((g, i) => { stageCounts[g.id] = groupCountArr[i]; });
 
   // Jo's rule, everywhere in this dashboard: the WhatsApp number is the
   // identity and the profile name is only a hint beside it.
@@ -43,5 +52,10 @@ export async function GET() {
     // customerIds that already have a scheduled follow-up, so the board can show
     // a small "already being chased" tick without a per-card query.
     followupIds,
+    // True totals from COUNT(*), so the KPI numbers are the real 5,000 and not
+    // the size of the loaded window. `total` = all customers; `stageCounts` =
+    // per pipeline-group id.
+    total,
+    stageCounts,
   });
 }

@@ -114,7 +114,7 @@ export function handleIncoming(
   waId: string,
   text: string,
   mode: AiMode,
-  meta?: { name?: string; flag?: string },
+  meta?: { name?: string; flag?: string; providerId?: string },
 ): Promise<HandleResult> {
   return queueForCustomer(waId, () => handleIncomingInner(waId, text, mode, meta));
 }
@@ -135,7 +135,7 @@ async function handleIncomingInner(
   waId: string,
   text: string,
   mode: AiMode,
-  meta?: { name?: string; flag?: string },
+  meta?: { name?: string; flag?: string; providerId?: string },
 ): Promise<HandleResult> {
   const store = getStore();
 
@@ -148,6 +148,11 @@ async function handleIncomingInner(
 
   await store.addMessage({
     customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body: text,
+    // The customer's own WhatsApp message id, so a reaction the customer later
+    // puts ON this message can be matched back to THIS bubble and rendered in its
+    // corner — instead of failing to match and being pinned to one of our
+    // messages. (Meta gives the reaction the target message's id in `to`.)
+    meta: meta?.providerId ? { providerId: meta.providerId } : {},
   });
 
   // Remember the customer's language (used for deterministic auto-messages like
@@ -542,6 +547,10 @@ export async function handleInboundNote(
      * can be fixed rather than guessed at.
      */
     undecoded?: { type?: string; errorCode?: number | null; errorTitle?: string | null };
+    /** The customer's WhatsApp message id, so a reaction they later add to this
+     *  photo/document can be matched back to its bubble. Not stored on a reaction
+     *  event itself (that carries its target in `reaction.to`). */
+    providerId?: string;
   },
 ): Promise<CustomerRow> {
   const store = getStore();
@@ -572,8 +581,13 @@ export async function handleInboundNote(
   }
   await store.addMessage({
     customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,
-    meta: (meta?.media || meta?.reaction)
-      ? { ...(meta.media ? { media: meta.media } : {}), ...(meta.reaction ? { reaction: meta.reaction } : {}) }
+    meta: (meta?.media || meta?.reaction || (meta?.providerId && !meta?.reaction))
+      ? {
+          ...(meta.media ? { media: meta.media } : {}),
+          ...(meta.reaction ? { reaction: meta.reaction } : {}),
+          // A reaction event stores its target in reaction.to, not providerId.
+          ...(meta.providerId && !meta.reaction ? { providerId: meta.providerId } : {}),
+        }
       : undefined,
   });
   // A reaction needs no reply, so it does not open a task — it is shown in the

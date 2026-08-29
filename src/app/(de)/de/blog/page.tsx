@@ -132,7 +132,7 @@ export default function GermanBlogPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <div style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient
           guides={guideCards}
           lang="de"
@@ -145,7 +145,7 @@ export default function GermanBlogPage() {
           // slugs rather than reusing the English ones.
           categorySlugs={Object.fromEntries(deCategoryMeta.map(c => [c.category, c.slug]))}
         />
-      </main>
+      </div>
       <MobileCta href={waUrl({ topic: "guide", lang: "de" })} lang="de" topic="guide" />
     </>
   )

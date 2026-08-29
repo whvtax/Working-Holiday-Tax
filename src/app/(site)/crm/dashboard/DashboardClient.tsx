@@ -345,7 +345,6 @@ export default function DashboardClient() {
   const [confirmPermDelete, setConfirmPermDelete] = useState<string|null>(null)
   const [editingNoteId, setEditingNoteId] = useState<string|null>(null)
   const [permDeleteText, setPermDeleteText] = useState('')
-  const [confirmArchive, setConfirmArchive] = useState<string|null>(null)
 
   // Reused AudioContext for the new-task notification beep.
   // Creating a new context per beep leaks resources - browsers cap at ~6 concurrent
@@ -622,16 +621,6 @@ export default function DashboardClient() {
   }
 
 
-  async function archiveClient(id: string) {
-    setClients(prev => prev.filter(c => c.id !== id))
-    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
-    // Trigger archive badge - client moved to archive
-    setNewArchiveCount(n => n + 1)
-    await Promise.all([loadClients(), loadArchived()])
-    setActiveClient(null)
-    setView('clients')
-    setConfirmArchive(null)
-  }
   async function unarchiveClient(id: string) {
       setArchivedClients(prev => prev.filter(c => c.id !== id))
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
@@ -2626,20 +2615,6 @@ export default function DashboardClient() {
       )}
 
       {/* Confirm archive client */}
-      {confirmArchive && (
-        <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setConfirmArchive(null)}}>
-          <div className="modal" style={{maxWidth:360,textAlign:'center'}}>
-            <div style={{fontSize:21,marginBottom:10}}>📦</div>
-            <div className="mh"><b>Client removed from ATO portal?</b></div>
-            <div className="msub">The client will move to Archive. You can restore them anytime.</div>
-            <div className="mfoot">
-              <button className="btn quiet lg" onClick={()=>setConfirmArchive(null)}>Cancel</button>
-              <button className="btn take lg" onClick={()=>archiveClient(confirmArchive)}>Yes, archive</button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Confirm delete client */}
       {confirmDeleteClient && (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setConfirmDeleteClient(null)}}>

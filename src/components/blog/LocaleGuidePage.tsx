@@ -671,7 +671,7 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
           scoped to these routes and to phones. */}
       <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 767px){body > div[role="dialog"]{bottom:calc(88px + env(safe-area-inset-bottom, 0px)) !important}}` }} />
 
-      <main style={{ paddingTop: '68px', background: '#fff', minHeight: '100dvh' }}>
+      <div style={{ paddingTop: '68px', background: '#fff', minHeight: '100dvh' }}>
 
         {categoryInfo && (
           <StickyBreadcrumbs
@@ -903,7 +903,7 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
           style={{ height: 'calc(84px + env(safe-area-inset-bottom, 0px))' }}
         />
 
-      </main>
+      </div>
       <MobileCta href={waUrl({ topic: 'guide', lang: cfg.locale })} lang={cfg.locale} topic="guide" />
     </>
   )

@@ -230,7 +230,7 @@ export default async function CategoryPage({ params }: Props) {
           already uses. */}
       <style dangerouslySetInnerHTML={{ __html: `.faq-item > summary::-webkit-details-marker{display:none}.faq-item > summary::marker{content:""}.faq-plus{transition:transform .25s ease}.faq-item[open] .faq-plus{transform:rotate(45deg)}@media (prefers-reduced-motion: reduce){.faq-plus{transition:none}}` }} />
 
-      <main style={{ background: '#fff', minHeight: '100vh', paddingTop: '68px' }}>
+      <div style={{ background: '#fff', minHeight: '100vh', paddingTop: '68px' }}>
 
         {/* Hero - now uses the category's color for the accent */}
         <section style={{ background: colors.bg }}>
@@ -426,7 +426,7 @@ export default async function CategoryPage({ params }: Props) {
           </div>
         </section>
 
-      </main>
+      </div>
       <MobileCta href={waUrl({ topic: "guide", lang: "en" })} lang="en" topic="guide" />
     </>
   )

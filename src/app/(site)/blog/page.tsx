@@ -139,9 +139,9 @@ export default function BlogPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <div style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient guides={guideCards} />
-      </main>
+      </div>
       <MobileCta href={waUrl({ topic: "guide", lang: "en" })} lang="en" topic="guide" />
     </>
   )

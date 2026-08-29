@@ -137,7 +137,7 @@ export default function JapaneseBlogPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <div style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient
           guides={guideCards}
           lang="ja"
@@ -150,7 +150,7 @@ export default function JapaneseBlogPage() {
           // slugs rather than reusing the English ones.
           categorySlugs={Object.fromEntries(jaCategoryMeta.map(c => [c.category, c.slug]))}
         />
-      </main>
+      </div>
       <MobileCta href={waUrl({ topic: "guide", lang: "ja" })} lang="ja" topic="guide" />
     </>
   )

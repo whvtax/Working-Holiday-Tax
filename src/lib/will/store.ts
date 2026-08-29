@@ -181,6 +181,13 @@ export interface Store {
    *  or last-message preview. Powers the dashboard search box so a number finds
    *  its customer however old the conversation is. Bounded by `limit`. */
   searchCustomers(q: string, limit?: number): Promise<CustomerRow[]>;
+  /** Accurate COUNT of customers in a set of states (head-only), for pipeline
+   *  totals that stay true past the 1,000-row window. */
+  countInStates(states: CustomerState[]): Promise<number>;
+  /** One page of the chat list, newest conversation first, for infinite scroll
+   *  through every conversation. `opts.states` narrows to a pipeline group;
+   *  `opts.unreadOnly` to unread chats. */
+  listChatPage(offset: number, limit: number, opts?: { states?: CustomerState[]; unreadOnly?: boolean }): Promise<CustomerRow[]>;
   getCustomerByWaId(waId: string): Promise<CustomerRow | null>;
   /**
    * The same customer, found by a phone number written any way at all.

@@ -655,7 +655,7 @@ export default async function JapaneseHomePage() {
             連絡させるために内容を出し惜しみすることはありません。
           </p>
 
-          <div className="grid gap-3 grid-cols-2">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"

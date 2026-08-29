@@ -551,7 +551,9 @@ export async function POST(req: Request) {
       // to an engine that treated "not SUPERVISED" as permission to send.
       // resolveAiMode recognises exactly one value as autopilot.
       const mode = resolveAiMode(await store.getSetting('ai_mode'));
-      await handleIncoming(msg.from, body, mode, { name });
+      // Pass the customer's WhatsApp message id so a reaction they later add to
+      // THIS message can be matched back to it and shown in its corner.
+      await handleIncoming(msg.from, body, mode, { name, providerId: msg.id });
       // success: the claim stands, so a Meta retry of the same id is a no-op.
     } catch (e) {
       const error = (e as Error).message?.slice(0, 200) ?? 'unknown';
@@ -655,7 +657,7 @@ export async function POST(req: Request) {
           await store.audit('policy_guard', 'inbound_rate_limited', { from: maskWa(msg.from), scope: 'note' });
           continue;
         }
-        await handleInboundNote(msg.from, body, { name, media, reaction, undecoded });
+        await handleInboundNote(msg.from, body, { name, media, reaction, undecoded, providerId: msg.id });
       }
       await store.audit('channel', 'inbound_note_stored', { id: msg.id, kind, hasMedia: !!media, from: maskWa(msg.from), autoPaid: !!autoPaid });
     } catch (e) {

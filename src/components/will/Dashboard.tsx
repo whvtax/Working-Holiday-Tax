@@ -104,6 +104,10 @@ interface StateData {
   pending: (MessageRow & { customerName: string | null; waId?: string | null })[];
   /** customerIds that already have a scheduled follow-up. */
   followupIds?: string[];
+  /** True total customer count from the server (not the loaded window). */
+  total?: number;
+  /** True per-pipeline-group counts from the server, keyed by group id. */
+  stageCounts?: Record<string, number>;
 }
 interface Health {
   ok: boolean;
@@ -400,6 +404,18 @@ export default function Dashboard() {
   // searching; [] = searched, nothing matched.
   const [searchResults, setSearchResults] = useState<CustomerRow[] | null>(null);
   const [searchBusy, setSearchBusy] = useState(false);
+  // The chat list is paged from the server (newest conversation first) so it
+  // scrolls through EVERY conversation, WhatsApp-style, instead of stopping at
+  // the loaded window. `chatPage` grows as the user scrolls; the refs track the
+  // next offset, how many pages are loaded (so a live top-refresh doesn't fight
+  // a deep scroll), and an in-flight guard.
+  const [chatPage, setChatPage] = useState<CustomerRow[]>([]);
+  const [chatHasMore, setChatHasMore] = useState(false);
+  const [chatLoadingMore, setChatLoadingMore] = useState(false);
+  const chatOffsetRef = useRef(0);
+  const chatPagesRef = useRef(0);
+  const chatBusyRef = useRef(false);
+  const chatListElRef = useRef<HTMLDivElement | null>(null);
   // Chat-list filter chip: 'all' | 'unread' | a pipeline stage-group id.
   const [chatFilter, setChatFilter] = useState('all');
   // Whether the chat-header stage badge dropdown (manual stage move) is open.
@@ -450,6 +466,60 @@ export default function Dashboard() {
     return () => clearTimeout(tmr);
   }, [view, focusTaskId, data]);
   useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); }, [view, chatSelId, loadChat]);
+  // Load one page of the chat list from the server. reset=true starts over at
+  // the top (a fresh view or a filter change); reset=false appends the next page
+  // as the user scrolls. An in-flight guard prevents overlapping fetches.
+  const CHAT_PAGE = 100;
+  const loadChatPage = useCallback(async (reset: boolean) => {
+    if (chatBusyRef.current) return;
+    chatBusyRef.current = true;
+    if (!reset) setChatLoadingMore(true);
+    const offset = reset ? 0 : chatOffsetRef.current;
+    try {
+      const res = await fetch(`/api/will/chats?offset=${offset}&limit=${CHAT_PAGE}&filter=${encodeURIComponent(chatFilter)}`);
+      const d = await res.json();
+      const rows: CustomerRow[] = Array.isArray(d.customers) ? d.customers : [];
+      setChatPage((prev) => {
+        if (reset) return rows;
+        const seen = new Set(prev.map((c) => c.id));
+        return [...prev, ...rows.filter((c) => !seen.has(c.id))];
+      });
+      chatOffsetRef.current = offset + rows.length;
+      chatPagesRef.current = reset ? 1 : chatPagesRef.current + 1;
+      setChatHasMore(!!d.hasMore);
+    } catch {
+      /* keep whatever is already shown */
+    } finally {
+      chatBusyRef.current = false;
+      setChatLoadingMore(false);
+    }
+  }, [chatFilter]);
+  // Reset and load the first page when entering the chats view or changing the
+  // filter. Not while a search is active — the search results own the list then.
+  useEffect(() => {
+    if (view !== 'chats') return;
+    if (searchQ.trim().length >= 2) return;
+    chatOffsetRef.current = 0;
+    chatPagesRef.current = 0;
+    loadChatPage(true);
+  }, [view, chatFilter, searchQ, loadChatPage]);
+  // Keep the TOP of the list live: every state poll, if the user is still on the
+  // first page (has not scrolled deeper) and is not searching, re-pull page one
+  // so a new inbound conversation jumps to the top like WhatsApp. Once they have
+  // scrolled and loaded more pages, this backs off so it never yanks them up.
+  useEffect(() => {
+    if (view !== 'chats' || searchQ.trim().length >= 2) return;
+    if (chatPagesRef.current <= 1) loadChatPage(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+  // Load the next page when the list is scrolled near its bottom.
+  const onChatListScroll = useCallback(() => {
+    const el = chatListElRef.current;
+    if (!el || !chatHasMore || chatBusyRef.current) return;
+    if (searchQ.trim().length >= 2) return;
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 240) loadChatPage(false);
+  }, [chatHasMore, searchQ, loadChatPage]);
+
   // Server-side search, debounced. A query of two or more characters is sent to
   // /api/will/search, which looks across EVERY customer by number, name, or
   // preview — so typing a WhatsApp number finds its chat even when that customer
@@ -567,6 +637,11 @@ export default function Dashboard() {
 
   const g = STAGE_GROUPS.find((x) => x.id === group)!;
   const countFor = (states: readonly CustomerState[]) => data.customers.filter((c) => states.includes(c.state)).length;
+  // The true count for a pipeline group: the server's COUNT(*) when we have it
+  // (accurate at any size), falling back to counting the loaded window only when
+  // the server number has not arrived yet.
+  const groupCount = (sg: { id: string; states: readonly CustomerState[] }) => data.stageCounts?.[sg.id] ?? countFor(sg.states);
+  const totalCustomers = data.total ?? data.customers.length;
   const openTasks = data.tasks.filter((t) => t.status === 'OPEN');
   // ── Drafts Will has written and not sent, waiting on your approval.
   //    They are listed at the top of Tasks, which is now the only inbox.
@@ -616,31 +691,16 @@ export default function Dashboard() {
   const chatSel = data.customers.find((c) => c.id === chatSelId) ?? searchResults?.find((c) => c.id === chatSelId) ?? null;
   const drawer = data.customers.find((c) => c.id === drawerId) ?? searchResults?.find((c) => c.id === drawerId) ?? null;
 
-  // Chat-list filter: 'all', 'unread', or a pipeline STAGE-GROUP id.
-  const chatGroupStates = (id: string): readonly CustomerState[] | null => {
-    const g = STAGE_GROUPS.find((x) => x.id === id);
-    return g ? (g.states as readonly CustomerState[]) : null;
-  };
-  // When searching, the list IS the server's results (every customer matched by
-  // number/name/preview, not just the loaded window) — the server already did
-  // the matching, so no client-side text filter is re-applied and a matched
-  // customer with no preview yet is still shown. Otherwise it is the loaded
-  // window, newest conversation first.
+  // Two sources, one list:
+  //   - searching: the server's global results (every customer matched by
+  //     number/name/preview, however old), and the filter chip is ignored so a
+  //     number always finds its person.
+  //   - not searching: the server-paged chat list, already filtered to the
+  //     active chip and ordered newest-conversation-first, growing as the user
+  //     scrolls. WhatsApp-style — an old conversation is never hidden, it is
+  //     just further down.
   const searchingChats = searchQ.trim().length >= 2;
-  const chatList = (searchingChats ? [...(searchResults ?? [])] : [...data.customers].filter((c) => c.lastMessagePreview))
-    .filter((c) => {
-      if (chatFilter === 'all') return true;
-      if (chatFilter === 'unread') return c.unreadCount > 0;
-      const states = chatGroupStates(chatFilter);
-      return states ? states.includes(c.state) : true;
-    })
-    // WhatsApp-style: most recent conversation first, bumped by ANY message
-    // (incoming or the owner's own reply), falling back to inbound time.
-    // No cap here any more — a chat with a real conversation must never
-    // silently drop off the list once there are more than N others, exactly
-    // like the WhatsApp app on a phone never hides an old conversation, it
-    // just scrolls further down.
-    .sort((a, b) => ((b.lastMessageAt ?? b.lastCustomerMsgAt) ?? '').localeCompare((a.lastMessageAt ?? a.lastCustomerMsgAt) ?? ''));
+  const chatList = searchingChats ? (searchResults ?? []) : chatPage;
 
   const stageColorOf = (s: CustomerState) => STAGE_GROUPS.find((sg) => (sg.states as readonly CustomerState[]).includes(s))?.color ?? '#7a8494';
   // Every status shown to the owner — in chat, in the pipeline strip, in the
@@ -813,18 +873,18 @@ export default function Dashboard() {
                 the customer list below scrolls under them. */}
             <div style={{ position: 'sticky', top: 0, zIndex: 5, background: 'var(--bg)', paddingTop: 2, marginBottom: 14 }}>
             <div className="kpis">
-              <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Customers</div><div className="kv">{data.customers.length}</div><div className="kd">in the system</div></div>
+              <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Customers</div><div className="kv">{totalCustomers}</div><div className="kd">in the system</div></div>
               <div className="kpi clickable" title="We sent the last message and they went quiet, but never said no. Worth a personal follow-up later." onClick={() => { setView('pipeline'); setGroup('closed'); }}>
                 <div className="kl">Worth a Nudge</div><div className="kv">{quietLeads.length}</div><div className="kd">Never said no</div>
               </div>
-              <div className="kpi clickable" title="See completed customers" onClick={() => { setView('pipeline'); setGroup('done'); }}><div className="kl">Completed</div><div className="kv">{countFor(STAGE_GROUPS.find((sg) => sg.id === 'done')!.states)}</div><div className="kd up">all-time</div></div>
+              <div className="kpi clickable" title="See completed customers" onClick={() => { setView('pipeline'); setGroup('done'); }}><div className="kl">Completed</div><div className="kv">{groupCount(STAGE_GROUPS.find((sg) => sg.id === 'done')!)}</div><div className="kd up">all-time</div></div>
             </div>
 
             <div className="pstrip">
               <div className="pstitle">My Pipeline</div>
               <div className="psrow">
                 {STAGE_GROUPS.map((sg, i) => {
-                  const n = countFor(sg.states);
+                  const n = groupCount(sg);
                   return (
                     <span key={sg.id} style={{ display: 'contents' }}>
                       {i > 0 && <div className="psarrow">→</div>}
@@ -835,7 +895,7 @@ export default function Dashboard() {
                   );
                 })}
               </div>
-              <div className="psfoot"><span>Total customers in pipeline</span><b>{data.customers.length}</b></div>
+              <div className="psfoot"><span>Total customers in pipeline</span><b>{totalCustomers}</b></div>
             </div>
             </div>{/* end sticky summary */}
 
@@ -899,7 +959,7 @@ export default function Dashboard() {
                     entirely (not just visually pinned via sticky), so the
                     scrollbar track starts right where the first chat does,
                     never running up alongside the search box. */}
-                <div className="chatlist-items">
+                <div className="chatlist-items" ref={chatListElRef} onScroll={onChatListScroll}>
                   {chatList.map((c) => {
                     // WhatsApp-real: the chat you're currently looking at is
                     // never shown as unread, even for the instant before the
@@ -932,7 +992,7 @@ export default function Dashboard() {
                             nothing for him to do on it. */}
                         {followupSet.has(c.id) && (
                           <span className="fu-tick" title="Follow-up scheduled — already being chased, nothing to do" aria-label="Follow-up scheduled">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
                           </span>
                         )}
                         {showUnread
@@ -947,6 +1007,9 @@ export default function Dashboard() {
                       {searchBusy ? 'Searching…' : 'No customer matches that. Try the full WhatsApp number.'}
                     </div>
                   )}
+                  {!searchingChats && chatLoadingMore && (
+                    <div className="sysline" style={{ margin: '12px 10px', color: 'var(--ink3)' }}>Loading more…</div>
+                  )}
                 </div>
               </div>
               <div className="chatpane">
@@ -955,8 +1018,11 @@ export default function Dashboard() {
                     <div className="chathead">
                       <div className="cav">{avatarFor(chatSel.name)}</div>
                       <div className="chtitle">
-                        {/* Normal weight, like WhatsApp shows a contact. */}
-                        <span className="chnum">{phoneOf(chatSel.waId)}</span>
+                        {/* Normal weight, like WhatsApp shows a contact. The
+                            leading "+" is boxed to a fixed width so the stage
+                            label below (.st, padded by the same width) lines up
+                            with the first DIGIT, not with the plus sign. */}
+                        <span className="chnum">{(() => { const n = phoneOf(chatSel.waId); return n.startsWith('+') ? <><span className="numpfx">+</span>{n.slice(1)}</> : n; })()}</span>
                         <div className="st">
                           {/* The stage badge is a dropdown: click it to move the
                               customer to ANY pipeline stage, forward or back. */}
@@ -1172,8 +1238,13 @@ export default function Dashboard() {
                         for (const m of visible) {
                           if (!m.meta?.reaction && m.meta?.providerId) byProviderId.set(m.meta.providerId, m);
                         }
-                        const outboundByTime = visible
-                          .filter((m) => !m.meta?.reaction && m.direction === 'OUT')
+                        // For the fallback: every real message (either direction) in
+                        // time order. A customer reacts to THEIR OWN message just as
+                        // often as to ours, so the fallback must be able to land on an
+                        // inbound bubble too — pinning every unmatched reaction to an
+                        // outbound bubble was exactly the "wrong bubble" Jo saw.
+                        const msgsByTime = visible
+                          .filter((m) => !m.meta?.reaction)
                           .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
                         // emoji to paint on each target bubble (latest reaction wins;
                         // a removed reaction clears it), and the reaction rows that
@@ -1182,14 +1253,20 @@ export default function Dashboard() {
                         const consumedReactionIds = new Set<string>();
                         for (const r of visible) {
                           if (!r.meta?.reaction) continue;
+                          // Exact id match is the truth and lands on the right bubble,
+                          // in either direction, now that inbound messages store their
+                          // id too.
                           let target = r.meta.reaction.to ? byProviderId.get(r.meta.reaction.to) : undefined;
                           if (!target) {
-                            for (let i = outboundByTime.length - 1; i >= 0; i--) {
-                              if (String(outboundByTime[i].createdAt) <= String(r.createdAt)) { target = outboundByTime[i]; break; }
+                            // Fallback for older messages with no stored id: the message
+                            // just before the reaction in the thread, whichever side sent
+                            // it — that is what someone reacts to.
+                            for (let i = msgsByTime.length - 1; i >= 0; i--) {
+                              if (String(msgsByTime[i].createdAt) <= String(r.createdAt)) { target = msgsByTime[i]; break; }
                             }
-                            if (!target && outboundByTime.length) target = outboundByTime[outboundByTime.length - 1];
+                            if (!target && msgsByTime.length) target = msgsByTime[0];
                           }
-                          if (!target) continue; // truly nothing to attach to (no outbound at all) -> quiet line
+                          if (!target) continue; // nothing at all to attach to -> quiet line
                           consumedReactionIds.add(r.id);
                           const emoji = r.meta.reaction.emoji;
                           if (emoji) reactionEmojiByMsgId.set(target.id, emoji);

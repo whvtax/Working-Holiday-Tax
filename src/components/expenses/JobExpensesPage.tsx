@@ -246,7 +246,7 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff' }}>
+      <div style={{ background: '#fff' }}>
 
         {/* HERO */}
         <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
@@ -528,7 +528,7 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
           </div>
         </section>
 
-      </main>
+      </div>
 
       <MobileCta href={c.WA} lang={c.lang} topic="expenses" />
     </>

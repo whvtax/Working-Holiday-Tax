@@ -215,7 +215,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 /* Right side of a chat-list row: the stage chip, with a small green follow-up
    tick stacked directly ABOVE it when one is scheduled. */
 .will-scope .cright{display:flex;flex-direction:column;align-items:center;gap:1px;flex:none}
-.will-scope .cright .fu-tick{display:flex;align-items:center;justify-content:center;color:#12a06a;line-height:0}
+.will-scope .cright .fu-tick{display:flex;align-items:center;justify-content:center;color:#4aa872;line-height:0}
 .will-scope .cright .fu-tick svg{display:block}
 /* Clickable stage badge + manual-move dropdown (owner override). */
 .will-scope .stagepick{position:relative;display:inline-flex}
@@ -270,7 +270,10 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .chtitle b{font-size:14px}
 /* Normal weight, the way WhatsApp shows a contact. */
 .will-scope .chtitle .chnum{font-size:15px;font-weight:400;color:var(--ink);display:block;line-height:1.15}
-.will-scope .chtitle .st{display:flex;gap:6px;margin-top:1px;align-items:center;line-height:1.35}
+.will-scope .chtitle .st{display:flex;gap:6px;margin-top:1px;align-items:center;line-height:1.35;padding-left:9px}
+/* The leading "+" of the number is boxed to exactly the padding above, so the
+   number's first digit and the stage label share one left edge. */
+.will-scope .chtitle .numpfx{display:inline-block;width:9px}
 .will-scope .aitoggle{display:flex;align-items:center;gap:8px;background:var(--surface3);border:1px solid var(--line2);border-radius:20px;padding:5px 6px 5px 12px;cursor:pointer;user-select:none}
 .will-scope .aitoggle .lbl{font-size:11.5px;font-weight:650;color:var(--good)}
 .will-scope .aitoggle.off .lbl{color:var(--ink3)}

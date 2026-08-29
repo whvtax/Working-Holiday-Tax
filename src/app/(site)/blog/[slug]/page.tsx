@@ -733,7 +733,7 @@ export default async function GuidePage({ params }: Props) {
           that lands. */}
       <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 767px){body > div[role="dialog"]{bottom:calc(88px + env(safe-area-inset-bottom, 0px)) !important}}` }} />
 
-      <main style={{ paddingTop: '68px', background: '#fff', minHeight: '100dvh' }}>
+      <div style={{ paddingTop: '68px', background: '#fff', minHeight: '100dvh' }}>
 
         {/* Sticky breadcrumbs (appear after scrolling past hero) */}
         {categoryInfo && (
@@ -966,7 +966,7 @@ export default async function GuidePage({ params }: Props) {
           style={{ height: 'calc(84px + env(safe-area-inset-bottom, 0px))' }}
         />
 
-      </main>
+      </div>
       <MobileCta href={waUrl({ topic: "guide", lang: "en" })} lang="en" topic="guide" />
     </>
   )

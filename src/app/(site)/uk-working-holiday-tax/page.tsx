@@ -277,7 +277,7 @@ export default function UKWorkingHolidayTaxPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <main style={{ background: '#fff' }}>
+      <div style={{ background: '#fff' }}>
 
         {/* HERO */}
         <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
@@ -638,7 +638,7 @@ export default function UKWorkingHolidayTaxPage() {
           </div>
         </section>
 
-      </main>
+      </div>
 
       <MobileCta href={WA} lang="en" topic="uk" />
     </>

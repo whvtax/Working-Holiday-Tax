@@ -539,7 +539,21 @@ async function doProcess(): Promise<TickResult> {
         continue;
       }
 
-      await deliverOut(customer, body, 'AI', meta, waTemplate);
+      const sent = await deliverOut(customer, body, 'AI', meta, waTemplate);
+      if (!sent.ok && sent.retryable) {
+        // Meta throttled us (429). Re-queue THIS same step for later rather than
+        // advancing the cadence, so the nudge still goes out and is not silently
+        // skipped — and no "send failed" task is raised (deliverOut suppressed it
+        // for a retryable send). This job was already marked DONE above, so a
+        // fresh job for the same step is added.
+        await store.addJob({
+          customerId: customer.id, kind: 'FOLLOW_UP', payload: job.payload,
+          runAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+        }).catch(() => { /* dueJobs will pick up the next tick regardless */ });
+        await store.audit('scheduler', 'follow_up_throttled_requeued', { customerId: customer.id, template: template.key, seq });
+        result.deferred++;
+        continue;
+      }
       await store.audit('scheduler', 'follow_up_sent', { customerId: customer.id, template: template.key, seq });
       result.sent.push(`${customer.name ?? customer.waId} · ${template.title}`);
       await scheduleFollowUp(customer.id, flow, seq + 1);

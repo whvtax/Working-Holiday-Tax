@@ -90,6 +90,10 @@ export interface SendResult {
   providerId?: string;
   error?: string;
   skipped?: boolean; // channel not configured yet (test mode)
+  /** True when Meta throttled us (HTTP 429 or a rate-limit error code). The send
+   *  did not go out but should be retried later rather than failed — the caller
+   *  reschedules instead of raising a "not delivered" task. */
+  retryable?: boolean;
 }
 
 /** True once the WhatsApp Cloud API credentials are present. */
@@ -165,7 +169,14 @@ async function postMessage(payload: Record<string, unknown>): Promise<SendResult
       // dot re-checks and reflects reality on the next heartbeat, not 30s later.
       _verifyCache = null;
       const err = (data as { error?: { message?: string; code?: number } }).error;
-      return { ok: false, error: `meta ${res.status}: ${err?.message ?? JSON.stringify(data).slice(0, 200)}` };
+      // Throttling is not a failure to surface as a task — it is "try again
+      // later". HTTP 429, or Meta's rate-limit error codes (4/80007 app rate
+      // limit, 131056 pair rate limit, 130429 too many messages), are marked
+      // retryable so the scheduler reschedules the follow-up instead of dumping
+      // dozens of "not delivered" tasks on the owner during a busy morning.
+      const code = err?.code;
+      const retryable = res.status === 429 || code === 4 || code === 80007 || code === 131056 || code === 130429;
+      return { ok: false, error: `meta ${res.status}: ${err?.message ?? JSON.stringify(data).slice(0, 200)}`, retryable };
     }
     const providerId = (data as { messages?: { id?: string }[] }).messages?.[0]?.id;
     return { ok: true, providerId };
@@ -267,7 +278,7 @@ export async function deliverOut(
    *  `body` is still what gets logged and shown in the CRM: it must be the
    *  template's text with the parameters already filled in. */
   template?: { name: string; params: string[]; lang?: string | null },
-): Promise<{ ok: boolean; error?: string }> {
+): Promise<{ ok: boolean; error?: string; retryable?: boolean }> {
   const store = getStore();
 
   // Last-resort opt-out guard. Every caller is supposed to check `optedOut`
@@ -351,6 +362,14 @@ export async function deliverOut(
   }
 
   await store.setMessageStatus(rec.id, 'FAILED');
+  // Throttling is "try again later", not a failure the owner must act on. Audit
+  // it and return retryable so the caller reschedules; do NOT raise a task, or a
+  // busy morning of 429s would bury the board in dozens of identical "send
+  // failed" cards for messages that will go out fine on the next attempt.
+  if (res.retryable) {
+    await store.audit('channel', 'send_throttled', { customerId: customer.id, error: res.error });
+    return { ok: false, error: res.error, retryable: true };
+  }
   await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });
   await store.addTask({
     customerId: customer.id, customerName: customer.name ?? customer.waId,
