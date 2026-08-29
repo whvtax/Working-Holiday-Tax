@@ -214,8 +214,13 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .cstate{font-size:9.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:color-mix(in srgb,var(--sc) 14%, transparent);color:var(--sc);flex:none}
 /* Right side of a chat-list row: the stage chip, with a small green follow-up
    tick stacked directly ABOVE it when one is scheduled. */
-.will-scope .cright{display:flex;flex-direction:column;align-items:center;gap:1px;flex:none}
-.will-scope .cright .fu-dot{width:9px;height:9px;border-radius:50%;background:#22c55e;flex:none;box-shadow:0 0 0 2px color-mix(in srgb,#22c55e 22%, transparent)}
+/* Follow-up scheduled: a thin, soft green bar on the RIGHT edge of the row, so
+   at a glance the lead reads as "already being chased". On the right on purpose —
+   the selected-row indicator is an inset bar on the LEFT, so the two never
+   collide and a row that is both selected and scheduled shows both. A
+   pseudo-element (not box-shadow) keeps it independent of the .sel shadow. */
+.will-scope .citem.fu-row{position:relative}
+.will-scope .citem.fu-row::after{content:'';position:absolute;top:7px;bottom:7px;right:0;width:3px;border-radius:3px 0 0 3px;background:#5cbf94}
 /* Clickable stage badge + manual-move dropdown (owner override). */
 .will-scope .stagepick{position:relative;display:inline-flex}
 .will-scope .cstate-btn{border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px}

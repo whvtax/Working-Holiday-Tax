@@ -974,7 +974,7 @@ export default function Dashboard() {
                     // words the customer never received.
                     const draftWaiting = draftWaitingFor.has(c.id);
                     return (
-                    <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''}`} onClick={() => openChat(c.id)}>
+                    <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''} ${followupSet.has(c.id) ? 'fu-row' : ''}`} onClick={() => openChat(c.id)} title={followupSet.has(c.id) ? 'Follow-up scheduled — already being chased' : undefined}>
                       <div className="cav">{avatarFor(c.name)}</div>
                       <div className="cinfo">
                         <div className="cn"><b>{phoneOf(c.waId)}</b><time>{chatListTime(c.lastCustomerMsgAt)}</time></div>
@@ -985,18 +985,9 @@ export default function Dashboard() {
                           {c.lastMessagePreview}
                         </div>
                       </div>
-                      <div className="cright">
-                        {/* Jo: a small green tick sitting directly ABOVE the stage
-                            chip whenever this lead already has a follow-up scheduled,
-                            so at a glance he knows it is being chased and there is
-                            nothing for him to do on it. */}
-                        {followupSet.has(c.id) && (
-                          <span className="fu-dot" title="Follow-up scheduled — already being chased, nothing to do" aria-label="Follow-up scheduled" />
-                        )}
-                        {showUnread
-                          ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
-                          : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
-                      </div>
+                      {showUnread
+                        ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
+                        : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
                     </div>
                     );
                   })}
