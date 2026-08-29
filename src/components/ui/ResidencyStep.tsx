@@ -50,6 +50,7 @@ const COPY = {
     ],
     note: 'If you\u2019re not from one of these countries but meet the other requirements, you can still qualify for Australian tax residency and a refund of up to $700.',
     quizIntro: 'To be considered an Australian tax resident, which means the first $18,200 of your income is tax free, answer "Yes" to the questions below only if they genuinely apply to you.',
+    yearNote: 'Please answer all the questions below for the tax year you are lodging this return for.',
     yesLabel: 'Yes',
     noLabel: 'No',
     questions: [
@@ -85,6 +86,7 @@ const COPY = {
     ],
     note: 'Wenn du nicht aus einem dieser Länder kommst, aber die anderen Voraussetzungen erfüllst, kannst du trotzdem als australischer Steuerresident gelten und bis zu $700 zurückbekommen.',
     quizIntro: 'Um als australischer Steuerresident zu gelten, was bedeutet, dass die ersten $18.200 deines Einkommens steuerfrei sind, beantworte die folgenden Fragen nur dann mit "Ja", wenn sie wirklich auf dich zutreffen.',
+    yearNote: 'Bitte beantworte alle folgenden Fragen für das Steuerjahr, für das du diese Erklärung einreichst.',
     yesLabel: 'Ja',
     noLabel: 'Nein',
     questions: [
@@ -120,6 +122,7 @@ const COPY = {
     ],
     note: 'これらの国の出身でなくても、他の条件を満たしていれば、オーストラリア税務居住者として最大$700の還付を受けられる場合があります。',
     quizIntro: 'オーストラリア税務居住者と見なされ、最初の$18,200の所得が非課税となるには、本当に当てはまる場合のみ以下の質問に「はい」とお答えください。',
+    yearNote: '以下のすべての質問は、今回申告する税務年度についてお答えください。',
     yesLabel: 'はい',
     noLabel: 'いいえ',
     questions: [
@@ -204,6 +207,11 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
           <div className="resstep-why">
             <p className="resstep-why-body">{c.quizIntro}</p>
           </div>
+
+          {/* All five questions are about ONE specific tax year — residency can
+              differ year to year, so the client must answer them for the year
+              they are lodging. */}
+          <p className="resstep-yearnote">{c.yearNote}</p>
 
           {/* Small progress cue: nudges the client to finish all five. */}
           <div className="resstep-progress">{answeredCount} / {c.questions.length}</div>
@@ -297,6 +305,7 @@ const styles = `
   /* --- Eligibility quiz (flowing list, Yes/No toggle on the right) --- */
   .resstep-quiz-intro { font-size: 12.5px; font-weight: 600; color: #1A2822; line-height: 1.55; margin: 4px 0 6px; }
   .resstep-progress { text-align: right; font-size: 11px; font-weight: 700; color: #9AA99F; margin: 0 2px 4px; letter-spacing: .3px; }
+  .resstep-yearnote { font-size: 12px; color: #7A5A16; background: #FFF8EC; border: 1px solid #F0D9A8; border-radius: 8px; padding: 8px 11px; margin: 2px 0 10px; line-height: 1.5; }
   .resstep-quiz { display: flex; flex-direction: column; }
   .resq { display: flex; align-items: center; gap: 12px; padding: 13px 2px; border-bottom: 1px solid #EEF3F1; }
   .resq:last-child { border-bottom: none; }

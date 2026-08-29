@@ -12,6 +12,7 @@ import { createHmac, timingSafeEqual } from 'crypto';
 import { handleIncoming, handleInboundNote, handlePaymentProofMedia } from '@/lib/will/service';
 import { isEditMessage, editFrom, applyInboundEdits } from '@/lib/will/inbound-edit';
 import { suggestReply } from '@/lib/will/suggest';
+import { afterHumanReply } from '@/lib/will/after-reply';
 import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
 import { isRateLimited, getRedis } from '@/lib/rate-limit';
@@ -693,12 +694,27 @@ export async function POST(req: Request) {
         customerId: customer.id, direction: 'OUT', author: 'HUMAN', status: 'SENT',
         body: echo.body, meta: { providerId: echo.id, channel: 'app' },
       });
-      // Same rule as sending through the CRM: typing to this customer on the
-      // phone/desktop WhatsApp app IS engaging with the conversation, so it
-      // clears the unread marker too — this path bypasses deliverOut (Meta is
-      // telling us what was typed elsewhere, not us transmitting it), so it
-      // needs its own call rather than inheriting deliverOut's.
-      await store.markCustomerRead(customer.id);
+      // The owner just answered this customer from the WhatsApp app (phone or
+      // desktop, does not matter). Settle the conversation exactly as answering
+      // through the CRM does, so the board never shows work that is already done:
+      //   1. clear the unread badge and CLOSE every open task for this customer
+      //      (afterHumanReply);
+      //   2. DISCARD any reply Will had drafted and was holding for approval, so
+      //      it can never be approved and sent as a duplicate on top of what the
+      //      owner just typed by hand;
+      //   3. PAUSE the assistant for this chat, because a person has taken it
+      //      over — the same rule a manual reply through the CRM follows. The
+      //      owner re-enables Will per chat with the "Will Active" toggle.
+      await afterHumanReply(store, customer.id).catch(() => { /* badge/tasks are bookkeeping */ });
+      try {
+        const msgs = await store.listMessages(customer.id);
+        await Promise.all(
+          msgs
+            .filter((m) => m.direction === 'OUT' && m.status === 'PENDING_APPROVAL')
+            .map((m) => store.setMessageStatus(m.id, 'DISCARDED').catch(() => { /* per draft */ })),
+        );
+      } catch { /* best effort: a lingering draft is a nuisance, not a double-send by itself */ }
+      await store.updateCustomer(customer.id, { aiPaused: true }).catch(() => { /* best effort */ });
       await store.audit('channel', 'app_echo_synced', { id: echo.id, from: maskWa(echo.to) });
     } catch { /* best effort */ }
   }

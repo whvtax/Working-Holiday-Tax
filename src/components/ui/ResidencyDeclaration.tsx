@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { submitTaxForm } from '@/lib/submit-tax-form'
+import { isNdaCountry } from '@/lib/nda-countries'
 import {
   getTaxFormHandoff,
   markTaxFormSubmitted,
@@ -33,9 +34,15 @@ const COPY = {
     pickOne: 'Please choose your tax residency status',
     secure: 'Your information is kept secure and private.',
     answerAll: 'Please answer all questions to continue.',
-    checkQuestion: 'Are you sure you are a working holiday maker for tax purposes?',
-    checkYes: 'Yes, I am sure',
-    checkNo: 'No, let me read again',
+    // Shown before submit ONLY when the person is from a treaty (NDA) country
+    // yet their answers came out as a Working Holiday Maker — so they may be
+    // giving up a residency (and the tax-free threshold) they could claim.
+    confirmLead: 'Based on your answers, you will be lodged as a Working Holiday Maker. Please confirm you understand that this means:',
+    confirmP1pre: 'You are ', confirmP1strong: 'not an Australian resident for tax purposes', confirmP1post: '.',
+    confirmP2pre: 'You are ', confirmP2strong: 'not entitled to the $18,200 tax-free threshold', confirmP2post: '.',
+    confirmNote: 'People from your country can sometimes qualify as a resident and keep the tax-free threshold. If that might apply to you, review your answers first.',
+    confirmYes: 'Yes, I understand. Submit this way',
+    confirmNo: 'Let me review again',
   },
   de: {
     intro: 'Nach Prüfung dieser Seite und der relevanten ATO-Informationen erkläre ich, dass ich bin:',
@@ -44,9 +51,12 @@ const COPY = {
     pickOne: 'Bitte wähle deinen Steuerresidenz-Status',
     secure: 'Deine Daten werden sicher und vertraulich behandelt.',
     answerAll: 'Bitte beantworte alle Fragen, um fortzufahren.',
-    checkQuestion: 'Bist du sicher, dass du steuerlich ein Working Holiday Maker bist?',
-    checkYes: 'Ja, ich bin sicher',
-    checkNo: 'Nein, ich lese nochmal',
+    confirmLead: 'Basierend auf deinen Antworten wirst du als Working Holiday Maker eingereicht. Bitte bestätige, dass dir Folgendes bewusst ist:',
+    confirmP1pre: 'Du bist ', confirmP1strong: 'kein australischer Steuerresident', confirmP1post: '.',
+    confirmP2pre: 'Du hast ', confirmP2strong: 'keinen Anspruch auf den steuerfreien Betrag von $18.200', confirmP2post: '.',
+    confirmNote: 'Menschen aus deinem Land können unter Umständen als Steuerresident gelten und den steuerfreien Betrag behalten. Falls das auf dich zutreffen könnte, prüfe zuerst deine Antworten.',
+    confirmYes: 'Ja, ich verstehe. So einreichen',
+    confirmNo: 'Nochmal überprüfen',
   },
   ja: {
     intro: 'このページと関連するATO情報を確認した上で、以下に該当することを宣言します：',
@@ -55,9 +65,12 @@ const COPY = {
     pickOne: '税務上の居住区分を選択してください',
     secure: 'お客様の情報は安全に、非公開で管理されます。',
     answerAll: '続行するにはすべての質問にお答えください。',
-    checkQuestion: '税務上ワーキングホリデーメーカーで間違いありませんか？',
-    checkYes: 'はい、間違いありません',
-    checkNo: 'いいえ、もう一度読みます',
+    confirmLead: 'ご回答に基づき、ワーキングホリデーメーカーとして申告されます。以下の点をご確認ください：',
+    confirmP1pre: 'あなたは', confirmP1strong: 'オーストラリアの税務居住者ではありません', confirmP1post: '。',
+    confirmP2pre: '', confirmP2strong: '$18,200の非課税枠は適用されません', confirmP2post: '。',
+    confirmNote: 'あなたの国の方は、居住者として非課税枠を受けられる場合があります。該当する可能性がある場合は、まず回答をご確認ください。',
+    confirmYes: 'はい、理解しました。この内容で申告する',
+    confirmNo: 'もう一度確認する',
   },
 } as const
 
@@ -83,6 +96,11 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null)
+  // Set true to gate the submit behind a confirmation, for the one case that
+  // warrants it: a Working Holiday Maker result for someone from a treaty (NDA)
+  // country, who may be giving up a residency and the $18,200 threshold they
+  // could otherwise claim.
+  const [confirming, setConfirming] = useState(false)
 
   // Read the hand-off after mount only: it lives in the JS heap, so the server
   // render knows nothing about it and rendering it directly would hydrate-mismatch.
@@ -128,6 +146,14 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
   // (which only happens once all questions are answered).
   const handleSubmit = () => {
     if (!status) { setError(c.pickOne); return }
+    // The one confirmation: a WHM result for someone from a treaty (NDA) country.
+    // They might qualify as a resident (with the tax-free threshold), so make the
+    // consequence explicit and let them go back before it is lodged. Everyone
+    // else submits straight through, unchanged.
+    if (status === 'whm' && isNdaCountry((handoff.payload as { country?: string }).country)) {
+      setConfirming(true)
+      return
+    }
     void doSubmit(status)
   }
 
@@ -170,6 +196,34 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
 
       <p className="resdecl-secure">{c.secure}</p>
 
+      {/* WHM + treaty-country confirmation. Explicit consequence, then a clear
+          choice: submit as declared, or go back and re-read. Nothing is lodged
+          until they confirm. */}
+      {confirming && (
+        <div className="resdecl-overlay" onClick={(e) => { if (e.target === e.currentTarget) setConfirming(false) }}>
+          <div className="resdecl-modal" role="dialog" aria-modal="true">
+            <p className="resdecl-modal-lead">{c.confirmLead}</p>
+            <ul className="resdecl-modal-points">
+              <li>{c.confirmP1pre}<strong>{c.confirmP1strong}</strong>{c.confirmP1post}</li>
+              <li>{c.confirmP2pre}<strong>{c.confirmP2strong}</strong>{c.confirmP2post}</li>
+            </ul>
+            <p className="resdecl-modal-note">{c.confirmNote}</p>
+            <div className="resdecl-modal-btns">
+              <button
+                type="button"
+                className="resdecl-submit"
+                onClick={() => { setConfirming(false); void doSubmit('whm') }}
+              >{c.confirmYes}</button>
+              <button
+                type="button"
+                className="resdecl-modal-back"
+                onClick={() => setConfirming(false)}
+              >{c.confirmNo}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
@@ -203,4 +257,17 @@ const styles = `
   .resdecl-check-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .resdecl-check-yes { flex: 1; min-width: 120px; min-height: 38px; border-radius: 100px; border: none; background: #0B5240; color: #fff; font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; }
   .resdecl-check-no { flex: 1; min-width: 120px; min-height: 38px; border-radius: 100px; border: 1.5px solid #E2E8E4; background: #fff; color: #587066; font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; }
+  /* WHM + treaty-country confirmation modal */
+  .resdecl-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(11,20,17,.5); display: flex; align-items: center; justify-content: center; padding: 18px; }
+  .resdecl-modal { width: 100%; max-width: 420px; background: #fff; border-radius: 20px; box-shadow: 0 12px 48px rgba(11,20,17,.28); padding: 22px 20px; text-align: left; }
+  .resdecl-modal-lead { font-size: 14px; font-weight: 600; color: #1A2822; line-height: 1.55; margin: 0 0 12px; }
+  .resdecl-modal-points { margin: 0 0 12px; padding: 0 0 0 2px; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .resdecl-modal-points li { position: relative; padding-left: 20px; font-size: 13.5px; color: #1A2822; line-height: 1.5; }
+  .resdecl-modal-points li::before { content: ''; position: absolute; left: 4px; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: #D08A00; }
+  .resdecl-modal-points strong { font-weight: 700; color: #0B3B2E; }
+  .resdecl-modal-note { font-size: 12.5px; color: #587066; line-height: 1.55; margin: 0 0 16px; background: #F5F9F7; border-radius: 10px; padding: 10px 12px; }
+  .resdecl-modal-btns { display: flex; flex-direction: column; gap: 8px; }
+  .resdecl-modal-btns .resdecl-submit { margin-top: 0; height: 50px; }
+  .resdecl-modal-back { width: 100%; height: 46px; border-radius: 100px; border: 1.5px solid #E2E8E4; background: #fff; color: #587066; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; }
+  .resdecl-modal-back:active { transform: scale(.98); }
 `
