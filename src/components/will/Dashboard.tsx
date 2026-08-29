@@ -229,13 +229,6 @@ const untilLabel = (iso: string) => {
   if (s < 172800) return `in ${Math.round(s / 3600)}h`;
   return `in ${Math.round(s / 86400)}d`;
 };
-/** One short line for a list row. You scan this list to see WHO is waiting, not
- *  to read the message, so anything past the first line is noise. */
-const previewLine = (s: string) => {
-  const first = (s || '').split('\n')[0].trim();
-  return first.length > 58 ? `${first.slice(0, 58).trimEnd()}…` : first;
-};
-
 /** A task headline in 8 words or fewer.
  *
  *  Will is now asked for a short headline, but tasks written before that, and
@@ -425,6 +418,26 @@ export default function Dashboard() {
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const latestChatReq = useRef<string | null>(null);
 
+  // ── Overview copilot ("Ask Will"): the owner-facing chat that replaced the
+  // recent-conversations list on the Overview. It reads the system and proposes
+  // actions; every proposal is a one-click button that goes through
+  // /api/will/actions, so nothing here mutates without an explicit press.
+  interface AsstProposal {
+    id: string; kind: 'move_stage' | 'send_reply' | 'open_task';
+    customerId: string; customerLabel: string;
+    toState?: CustomerState; toStateLabel?: string; message?: string; reason?: string; why?: string;
+  }
+  interface AsstMsg { role: 'user' | 'assistant'; text: string; proposals?: AsstProposal[]; error?: boolean }
+  const [asstMsgs, setAsstMsgs] = useState<AsstMsg[]>([]);
+  const [asstInput, setAsstInput] = useState('');
+  const [asstBusy, setAsstBusy] = useState(false);
+  // Proposal ids already acted on (approved/dismissed), so a button cannot be
+  // pressed twice and the card shows its outcome.
+  const [asstDone, setAsstDone] = useState<Record<string, 'approved' | 'dismissed'>>({});
+  // send_reply proposals are editable before sending; this holds the edited text.
+  const [asstEdit, setAsstEdit] = useState<Record<string, string>>({});
+  const asstScrollRef = useRef<HTMLDivElement>(null);
+
   const say = (m: string) => {
     setToast(m);
     clearTimeout(toastTimer.current);
@@ -455,6 +468,69 @@ export default function Dashboard() {
     await loadChat(id);
     act({ action: 'mark_read', id }).then(() => refresh());
   }, [loadChat, refresh]);
+
+  // ── Overview copilot handlers. Defined after refresh/openChat because they
+  // call them. Send one owner turn: the whole visible transcript goes each time
+  // (the server holds no session), and the answer plus any action proposals
+  // come back together.
+  const sendAsst = useCallback(async (raw: string) => {
+    const text = raw.trim();
+    if (!text || asstBusy) return;
+    const history = [...asstMsgs, { role: 'user' as const, text }];
+    setAsstMsgs(history);
+    setAsstInput('');
+    setAsstBusy(true);
+    try {
+      const res = await fetch('/api/will/assistant', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ messages: history.map((m) => ({ role: m.role, text: m.text })) }),
+      });
+      const d = await res.json().catch(() => ({}));
+      setAsstMsgs((prev) => [...prev, {
+        role: 'assistant',
+        text: typeof d.reply === 'string' && d.reply.trim() ? d.reply : 'Sorry, I could not answer that.',
+        proposals: Array.isArray(d.proposals) ? d.proposals : [],
+        error: d.ok === false,
+      }]);
+    } catch {
+      setAsstMsgs((prev) => [...prev, { role: 'assistant', text: 'I could not reach the server. Please try again.', error: true }]);
+    } finally {
+      setAsstBusy(false);
+    }
+  }, [asstMsgs, asstBusy]);
+
+  // Approve one proposal: map it to the existing owner action and run it. The
+  // mutation path is /api/will/actions, exactly as if the owner had done it by
+  // hand elsewhere in the CRM.
+  const approveProposal = useCallback(async (p: AsstProposal) => {
+    if (asstDone[p.id]) return;
+    let body: Record<string, unknown> | null = null;
+    if (p.kind === 'move_stage' && p.toState) {
+      body = { action: 'set_state', customerId: p.customerId, state: p.toState, force: true };
+    } else if (p.kind === 'send_reply') {
+      const msg = (asstEdit[p.id] ?? p.message ?? '').trim();
+      if (!msg) return;
+      body = { action: 'manual_reply', customerId: p.customerId, body: msg };
+    } else if (p.kind === 'open_task') {
+      body = { action: 'create_task', customerId: p.customerId, reason: p.reason, body: p.message };
+    }
+    if (!body) return;
+    setAsstDone((d) => ({ ...d, [p.id]: 'approved' }));
+    const r = await act(body);
+    if (r && r.ok === false) {
+      setAsstDone((d) => { const n = { ...d }; delete n[p.id]; return n; });
+      say(r.error || r.detail || 'That action did not go through.');
+      return;
+    }
+    say(p.kind === 'send_reply' ? 'Message sent ✓' : p.kind === 'move_stage' ? `Moved to ${p.toStateLabel} ✓` : 'Task opened ✓');
+    refresh();
+  }, [asstDone, asstEdit, refresh]);
+
+  // Keep the copilot transcript pinned to the newest message.
+  useEffect(() => {
+    const el = asstScrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [asstMsgs, asstBusy]);
 
   useEffect(() => { refresh(); }, [refresh, view]);
   // Scroll to and briefly highlight a task opened from the notification bell.
@@ -635,7 +711,6 @@ export default function Dashboard() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [chatMsgs]);
 
-  const g = STAGE_GROUPS.find((x) => x.id === group)!;
   const countFor = (states: readonly CustomerState[]) => data.customers.filter((c) => states.includes(c.state)).length;
   // The true count for a pipeline group: the server's COUNT(*) when we have it
   // (accurate at any size), falling back to counting the loaded window only when
@@ -899,28 +974,95 @@ export default function Dashboard() {
             </div>
             </div>{/* end sticky summary */}
 
-            <div className="rowlist">
-              {data.customers.filter((c) => (g.states as readonly CustomerState[]).includes(c.state))
-                .sort((a, b) => (g.states as readonly string[]).indexOf(a.state) - (g.states as readonly string[]).indexOf(b.state) || (b.lastCustomerMsgAt ?? '').localeCompare(a.lastCustomerMsgAt ?? ''))
-                .map((c) => (
-                <div key={c.id} className="rowcard" style={{ ['--gc' as string]: g.color }} onClick={() => { setView('chats'); openChat(c.id); }}>
-                  <div className="rc-main">
-                    <div className="rc-top">
-                      <span className="cname">{phoneOf(c.waId)}</span>
+            {/* The recent-conversations list used to sit here. Jo asked for the
+                copilot in its place (28 Aug): the pipeline strip above still
+                shows where everyone is, and this is where he now asks Will for
+                advice and to act. Nothing here sends or moves anyone on its own
+                — every action is a one-click button that runs through the same
+                guarded /api/will/actions path as the rest of the CRM. */}
+            <div className="asst">
+              <div className="asst-head">
+                <div className="asst-title"><span className="asst-dot" />Ask {ASSISTANT_NAME}</div>
+                <div className="asst-sub">Advice, and one-click actions across your customers</div>
+              </div>
+              <div className="asst-scroll" ref={asstScrollRef}>
+                {asstMsgs.length === 0 && !asstBusy && (
+                  <div className="asst-empty">
+                    <p>Ask me anything about your customers, or tell me what to do. For example:</p>
+                    <div className="asst-chips">
+                      {[
+                        'How should I answer the last person who messaged?',
+                        'Go over everyone and tell me who else we can help',
+                        'Who is stuck waiting on a signature?',
+                        'Anyone worth a follow-up this week?',
+                      ].map((s) => (
+                        <button key={s} className="asst-chip" onClick={() => sendAsst(s)}>{s}</button>
+                      ))}
                     </div>
-                    {c.lastMessagePreview && <div className="rc-msg">“{previewLine(c.lastMessagePreview)}”</div>}
                   </div>
-                  <div className="rc-side">
-                    <span className="stagepill" style={{ ['--pc' as string]: g.color }}>{stageLabelOf(c.state)}</span>
-                    {/* When the last message actually arrived, not when the
-                        pipeline stage last changed: "2h" should mean 2h since
-                        anyone spoke, which is what you scan this list for. */}
-                    <span className="rc-time">{timeAgo(c.lastMessageAt ?? c.stateChangedAt)}</span>
+                )}
+                {asstMsgs.map((m, i) => (
+                  <div key={i} className={`asst-msg ${m.role}`}>
+                    <div className={`asst-bubble ${m.error ? 'err' : ''}`}>{m.text}</div>
+                    {m.proposals && m.proposals.length > 0 && (
+                      <div className="asst-props">
+                        {m.proposals.map((p) => {
+                          const done = asstDone[p.id];
+                          return (
+                            <div key={p.id} className={`asst-prop ${done ?? ''}`}>
+                              <div className="asst-prop-head">
+                                <span className="asst-prop-kind">
+                                  {p.kind === 'move_stage' ? `Move to ${p.toStateLabel}` : p.kind === 'send_reply' ? 'Send a reply' : 'Open a task'}
+                                </span>
+                                <span className="asst-prop-who">{p.customerLabel}</span>
+                              </div>
+                              {p.why && <div className="asst-prop-why">{p.why}</div>}
+                              {p.kind === 'send_reply' && (
+                                <textarea
+                                  className="asst-prop-text"
+                                  value={asstEdit[p.id] ?? p.message ?? ''}
+                                  disabled={!!done}
+                                  onChange={(e) => setAsstEdit((d) => ({ ...d, [p.id]: e.target.value }))}
+                                  rows={3}
+                                />
+                              )}
+                              {p.kind === 'open_task' && p.message && (
+                                <div className="asst-prop-draft">Draft: “{p.message}”</div>
+                              )}
+                              {done ? (
+                                <div className={`asst-prop-status ${done}`}>{done === 'approved' ? '✓ Done' : 'Dismissed'}</div>
+                              ) : (
+                                <div className="asst-prop-actions">
+                                  <button className="btn take sm" onClick={() => approveProposal(p)}>
+                                    {p.kind === 'send_reply' ? 'Send' : p.kind === 'move_stage' ? 'Move' : 'Open task'}
+                                  </button>
+                                  <button className="btn quiet sm" onClick={() => setAsstDone((d) => ({ ...d, [p.id]: 'dismissed' }))}>Dismiss</button>
+                                  {p.customerId && <button className="btn ghost sm" onClick={() => { setView('chats'); openChat(p.customerId); }}>Open chat →</button>}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
-              {data.customers.filter((c) => (g.states as readonly CustomerState[]).includes(c.state)).length === 0 &&
-                <div className="sysline" style={{ margin: '20px 0' }}>No customers in {g.label} right now</div>}
+                ))}
+                {asstBusy && (
+                  <div className="asst-msg assistant">
+                    <div className="asst-bubble asst-typing"><span /><span /><span /></div>
+                  </div>
+                )}
+              </div>
+              <form className="asst-composer" onSubmit={(e) => { e.preventDefault(); sendAsst(asstInput); }}>
+                <textarea
+                  value={asstInput}
+                  placeholder={`Ask ${ASSISTANT_NAME}, or tell me what to do…`}
+                  onChange={(e) => setAsstInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAsst(asstInput); } }}
+                  rows={1}
+                />
+                <button className="btn take" type="submit" disabled={asstBusy || !asstInput.trim()}>Send</button>
+              </form>
             </div>
           </section>
         )}

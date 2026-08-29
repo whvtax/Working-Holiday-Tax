@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead';
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task';
   id?: string;
   customerId?: string;
   body?: string;
@@ -40,6 +40,8 @@ interface ActionBody {
   /** set_state only: owner manual override — move to any stage, bypassing the
    *  one-step-at-a-time guardrails. */
   force?: boolean;
+  /** create_task only: the task headline. `body`, if present, is its suggested reply. */
+  reason?: string;
 }
 
 const bad = (msg: string, code = 400) => NextResponse.json({ error: msg }, { status: code });
@@ -414,6 +416,30 @@ async function handlePost(req: Request) {
         });
       }
       await store.audit('owner', 'lost_lead_recovery_queued', { customerId: customer.id });
+      return NextResponse.json({ ok: true });
+    }
+
+    case 'create_task': {
+      // Open a task for the owner from the Overview copilot's "open task"
+      // proposal. This only writes an internal reminder — nothing is sent to
+      // the customer. Any suggested reply carried here is a draft: it is sent,
+      // if at all, from the Tasks screen through send_task_reply, which runs the
+      // full human-send guard. One task per customer, same rule as everywhere.
+      if (!b.customerId || typeof b.reason !== 'string' || !b.reason.trim()) return bad('customerId and reason required');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      const reason = b.reason.trim().slice(0, 300);
+      const suggestedReply = typeof b.body === 'string' && b.body.trim() ? b.body.trim().slice(0, 4000) : null;
+      const existing = await store.findOpenTaskForCustomer(customer.id);
+      if (existing) {
+        await store.updateTask(existing.id, { reason, severity: 'REVIEW', context: 'Opened from the Overview assistant', suggestedReply });
+      } else {
+        await store.addTask({
+          customerId: customer.id, customerName: customer.name ?? customer.waId,
+          reason, severity: 'REVIEW', context: 'Opened from the Overview assistant', suggestedReply,
+        });
+      }
+      await store.audit('owner', 'assistant_task_created', { customerId: customer.id });
       return NextResponse.json({ ok: true });
     }
 
