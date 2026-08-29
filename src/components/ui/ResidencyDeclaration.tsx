@@ -41,7 +41,7 @@ const COPY = {
     confirmP1pre: 'You are ', confirmP1strong: 'not an Australian tax resident', confirmP1post: '.',
     confirmP2pre: 'You are ', confirmP2strong: 'not entitled to the $18,200 tax-free threshold', confirmP2post: '.',
     confirmNote: 'People from your country can sometimes qualify as an Australian tax resident and keep the tax-free threshold. If this might apply to you, please review your answers first.',
-    confirmYes: 'Yes, I understand. Submit this way',
+    confirmYes: 'Yes, lodge me as a WHM',
     confirmNo: 'Let me review again',
   },
   de: {
@@ -55,7 +55,7 @@ const COPY = {
     confirmP1pre: 'Du bist ', confirmP1strong: 'kein australischer Steuerresident', confirmP1post: '.',
     confirmP2pre: 'Du hast ', confirmP2strong: 'keinen Anspruch auf den steuerfreien Betrag von $18.200', confirmP2post: '.',
     confirmNote: 'Menschen aus deinem Land können unter Umständen als australischer Steuerresident gelten und den steuerfreien Betrag behalten. Falls das auf dich zutreffen könnte, prüfe bitte zuerst deine Antworten.',
-    confirmYes: 'Ja, ich verstehe. So einreichen',
+    confirmYes: 'Ja, als WHM einreichen',
     confirmNo: 'Nochmal überprüfen',
   },
   ja: {
@@ -69,7 +69,7 @@ const COPY = {
     confirmP1pre: 'あなたは', confirmP1strong: 'オーストラリア税務居住者ではありません', confirmP1post: '。',
     confirmP2pre: '', confirmP2strong: '$18,200の非課税枠は適用されません', confirmP2post: '。',
     confirmNote: 'あなたの国の方は、オーストラリア税務居住者として非課税枠を受けられる場合があります。該当する可能性がある場合は、まず回答をご確認ください。',
-    confirmYes: 'はい、理解しました。この内容で申告する',
+    confirmYes: 'はい、WHMとして提出してください',
     confirmNo: 'もう一度確認する',
   },
 } as const
