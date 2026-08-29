@@ -933,7 +933,7 @@ aside.side{
 }
 .will-scope .asst-head{
   flex:none;position:relative;padding:13px 16px;border-bottom:1px solid var(--line);
-  background:var(--surface2);display:flex;align-items:center;justify-content:center;
+  background:var(--surface2);display:flex;align-items:center;justify-content:flex-start;
 }
 .will-scope .asst-title{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:.2px}
 .will-scope .asst-dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 20%,transparent)}

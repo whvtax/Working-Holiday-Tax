@@ -993,14 +993,10 @@ export default function Dashboard() {
                 of the Overview: they never scroll. Only the assistant transcript
                 below scrolls, inside its own panel (Jo, 29 Aug). */}
             <div className="ov-summary" style={{ paddingTop: 2, marginBottom: 12 }}>
-            {/* Option 1 (Jo, 29 Aug): the three KPI cards were removed to give the
-                assistant the room, they duplicated the pipeline counts anyway.
-                One compact stat stays: the total number of chats, renamed from
-                "Customers" to "Chats" at Jo's request. */}
-            <div className="ovstat">
-              <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Chats</div><div className="kv">{totalCustomers}</div><div className="kd">in the system</div></div>
-            </div>
-
+            {/* Option 1 (Jo, 29 Aug): the KPI cards were removed to give the
+                assistant the room, they duplicated the pipeline counts. The lone
+                "Chats" stat was removed too (Jo: redundant) since the pipeline
+                strip already shows the total at the bottom. */}
             <div className="pstrip">
               <div className="pstitle">My Pipeline</div>
               <div className="psrow">
