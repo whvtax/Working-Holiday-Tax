@@ -8,7 +8,7 @@ function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_se
 
 // PATCH /api/crm/clients/[id]/referral-payment - { paid: boolean }
 // Marks (or un-marks) the referral commission for this specific client as paid.
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
 
   const { paid } = await req.json().catch(() => ({}))
@@ -20,7 +20,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   const { error } = await sb
     .from('crm_clients')
     .update({ referral_commission_paid_at: paid ? new Date().toISOString() : null })
-    .eq('id', params.id)
+    .eq('id', (await params).id)
 
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
 

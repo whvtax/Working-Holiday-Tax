@@ -104,7 +104,7 @@ const FAQS = [
   },
   {
     question: 'What if I do not get a refund?',
-    answer: 'If your refund is less than our fee, we refund the difference, so you are never out of pocket. Not every working holiday year produces a refund, and where yours looks unlikely we would rather say so early than take the work on and hope.',
+    answer: 'If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service. Not every working holiday year produces a refund, and where yours looks unlikely we would rather say so early than take the work on and hope.',
   },
   {
     question: 'Can you help me from the UK, Germany or Japan?',

@@ -50,6 +50,39 @@ const EXPLICIT = new RegExp([
  *  four-word message is a confirmation; "done" inside a paragraph is a word. */
 const SHORT_CONFIRM = /\b(paid|done|sent it|sent|transferred|listo|hecho|fertig|fatto|完了|送りました)\b/i;
 
+/** A payment word inside a report of TROUBLE is not a confirmation.
+ *
+ *  Jo, 29 Aug: read the caption first and take the customer at their word,
+ *  UNLESS the caption says something went wrong. "I transferred but it got
+ *  declined" contains "transferred" and would otherwise sail straight through
+ *  EXPLICIT to Paid, sending "payment received" to someone whose money never
+ *  left. That is the one shape of trust this file must not extend, because the
+ *  customer has already told us not to.
+ *
+ *  Nothing is lost by not deciding it here: the message falls through to a
+ *  task and a person reads it. */
+const TROUBLE = new RegExp([
+  // English
+  // "went through" on its own is a SUCCESS report, so only the negated forms
+  // are listed. Getting that backwards would reject real confirmations.
+  'declined', 'rejected', 'failed', 'failing', "did ?n[o']?t work", 'not work',
+  "did ?n[o']?t go through", "has ?n[o']?t gone through", 'not gone through',
+  'error', 'problem', 'issue', 'blocked', 'cancell?ed', 'reversed', 'bounced',
+  'stuck', 'on hold', 'try again', 'trouble',
+  'wrong (?:amount|account|number|details|bsb)',
+  // Spanish / Portuguese
+  'rechazad[oa]', 'fall[oó]', 'no funcion', 'no pas[oó]', 'problema',
+  'recusad[oa]', 'falhou', 'n[aã]o (?:funcionou|passou|foi)',
+  // German
+  'abgelehnt', 'fehlgeschlagen', 'funktioniert nicht', 'fehler',
+  'ging nicht', 'storniert', 'klappt nicht',
+  // Italian / French
+  'rifiutat[oa]', 'non ha funzionato', 'errore',
+  'refus[eé]', "n'a pas (?:march[eé]|fonctionn[eé])", 'erreur', 'probl[eè]me',
+  // Japanese
+  '失敗', 'エラー', '問題', 'できません', 'できなかった', '拒否', '止ま',
+].join('|'), 'i');
+
 /** Words that turn an apparent confirmation into something else entirely.
  *  "I paid attention", "when do I pay?", "how do I pay?", "I will pay tomorrow". */
 const NOT_A_CLAIM = /\b(attention|visit|mind|off|how (?:do|can|should) i|when (?:do|should) i|where (?:do|can) i|can i pay|will pay|going to pay|about to pay|need to pay|have to pay|haven'?t paid|not paid|before i pay|once i pay|after i pay|if i pay)\b/i;
@@ -64,6 +97,11 @@ const NOT_A_CLAIM = /\b(attention|visit|mind|off|how (?:do|can|should) i|when (?
 export function claimsPayment(text: string | null | undefined): boolean {
   const t = (text ?? '').toLowerCase().trim();
   if (!t) return false;
+
+  // A payment that went wrong is never a claim, however clearly the customer
+  // says they tried. Checked first, ahead of everything, because the whole
+  // point is that it overrides an otherwise-explicit confirmation.
+  if (TROUBLE.test(t)) return false;
 
   // A question about paying is never a claim, however many payment words it
   // contains. Checked first so it can override both patterns below.

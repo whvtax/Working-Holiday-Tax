@@ -47,7 +47,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I'd like to know how much I'm likely to get back before paying you any money",
       "can you give me a rough idea of my refund first?"
     ],
-    "answer": "That's a really fair question 😊 Working out an accurate figure means a specialist reviewing your full situation with the ATO, and that review is the heart of the service, so the fee comes first. And you're protected either way: if your refund ends up lower than our fee, we refund you the difference, so you are never out of pocket for our service.",
+    "answer": "That's a really fair question 😊 Working out an accurate figure means a specialist reviewing your full situation with the ATO, and that review is the heart of the service, so the fee comes first. And you're protected either way: for TFN-only returns, if your refund ends up lower than our fee, we refund you the difference, so you are never out of pocket for our service.",
     "keywords": [
       "estimate",
       "before",
@@ -73,7 +73,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "is this legit?",
       "found you on Instagram and wasn't sure if this is real"
     ],
-    "answer": "Completely understand, it's smart to check 🙏 We operate under the supervision of a registered tax agent, feel free to look us up before you decide:\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle reviews: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nClient agreement: https://workingholidaytax.com.au/client-agreement\n\nWe've helped hundreds of backpackers from 45+ countries, and if your refund is lower than our fee, we refund the difference.",
+    "answer": "Completely understand, it's smart to check 🙏 We operate under the supervision of a registered tax agent, feel free to look us up before you decide:\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle reviews: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nClient agreement: https://workingholidaytax.com.au/client-agreement\n\nWe've helped hundreds of backpackers from 45+ countries, and on TFN-only returns, if your refund is lower than our fee, we refund the difference.",
     "keywords": [
       "legit",
       "real",
@@ -98,7 +98,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "how much do you charge for each tax return?",
       "is it a flat fee or %?"
     ],
-    "answer": "It's a simple flat fee, never a percentage of your refund 😊\n\n$220 for a TFN return, $385 if you also have ABN income, and $220 per year for multiple years.\n\nIf your refund is less than the fee, we refund the difference, so you're never out of pocket for our service.",
+    "answer": "It's a simple flat fee, never a percentage of your refund 😊\n\n$220 for a TFN return, $385 if you also have ABN income, and $220 per year for multiple years.\n\nFor TFN-only returns: if your refund is less than the fee, we refund the difference, so you're never out of pocket for our service. (This guarantee doesn't apply when there's ABN income.)",
     "keywords": [
       "price",
       "pricing",
@@ -123,7 +123,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "what if my refund is not even that much, might not be worth it",
       "do I pay 220 automatically?"
     ],
-    "answer": "No pressure at all 😊 You only pay if you're eligible for a refund, and if it turns out to be less than our fee, we refund the difference, so you're never out of pocket for our service. Nothing to lose by letting us check.",
+    "answer": "No pressure at all 😊 You only pay if you're eligible for a refund, and on TFN-only returns, if it turns out to be less than our fee, we refund the difference, so you're never out of pocket for our service. Nothing to lose by letting us check.",
     "keywords": [
       "fee",
       "small",
@@ -446,7 +446,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I want to know if I'm eligible and then lodge it myself",
       "can I just get an estimate then do it myself?"
     ],
-    "answer": "No problem, and I appreciate you being upfront 🙏 If you'd rather handle it yourself, the ATO offers free general guidance. With us, a specialist reviews everything and prepares and lodges the return for you, and if your refund is less than our fee we refund the difference. If you'd like it taken care of end to end, I'd be glad to help.",
+    "answer": "No problem, and I appreciate you being upfront 🙏 If you'd rather handle it yourself, the ATO offers free general guidance. With us, a specialist reviews everything and prepares and lodges the return for you, and on TFN-only returns, if your refund is less than our fee we refund the difference. If you'd like it taken care of end to end, I'd be glad to help.",
     "keywords": [
       "myself",
       "lodge",
@@ -493,7 +493,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "why would I pay before I know the amount?",
       "is this the full fee or are there extra charges?"
     ],
-    "answer": "The $220 covers everything, start to finish: a specialist reviews your situation with the ATO, makes sure nothing you're entitled to is missed, and prepares and lodges it all. One flat fee, no extras, and if your refund is less than the fee, we refund the difference.",
+    "answer": "The $220 covers everything, start to finish: a specialist reviews your situation with the ATO, makes sure nothing you're entitled to is missed, and prepares and lodges it all. One flat fee, no extras, and on TFN-only returns, if your refund is less than the fee, we refund the difference.",
     "keywords": [
       "upfront",
       "pay",
@@ -544,7 +544,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "what's the benefit of using you rather than doing it myself?",
       "can't I just do this myself for free?"
     ],
-    "answer": "Totally fair to ask 😊 You could of course handle it on your own, but Working Holiday tax gets complicated fast: residency, which deductions you're actually allowed, Medicare. It's easy to leave money on the table without knowing. With us, a specialist reviews your full situation and prepares and lodges everything, and if your refund is less than the fee we refund the difference.",
+    "answer": "Totally fair to ask 😊 You could of course handle it on your own, but Working Holiday tax gets complicated fast: residency, which deductions you're actually allowed, Medicare. It's easy to leave money on the table without knowing. With us, a specialist reviews your full situation and prepares and lodges everything, and on TFN-only returns, if your refund is less than the fee we refund the difference.",
     "keywords": [
       "why",
       "agency",

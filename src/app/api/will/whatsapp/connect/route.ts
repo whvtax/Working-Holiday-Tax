@@ -41,7 +41,7 @@ async function graphGet(
 }
 
 export async function POST(req: Request) {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
 
   let body: { code?: string; token?: string; phoneNumberId?: string; wabaId?: string };
   try { body = await req.json(); } catch { return NextResponse.json({ ok: false, error: 'bad json' }, { status: 400 }); }

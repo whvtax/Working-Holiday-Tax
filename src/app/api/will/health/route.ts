@@ -6,11 +6,12 @@ import { getStore, getLastPersistError } from '@/lib/will/store';
 import { policyGuard } from '@/lib/will/policy-guard';
 import { verifyChannel, metaAppSecret, metaVerifyToken } from '@/lib/will/channel';
 import { resolveAiMode } from '@/lib/will/mode';
+import { schedulerConfig } from '@/lib/will/config';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  if (!sessionValid()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const checks: Record<string, { ok: boolean; detail: string }> = {};
 
   // Store: read-only round-trip (H10 — never write on a heartbeat), and surface
@@ -130,6 +131,25 @@ export async function GET() {
     ok: cronSecretSet || !cronNeeded,
     detail: cronSecretSet ? 'cron secret set' : (cronNeeded ? 'CRON_SECRET missing — scheduler cron will be rejected' : 'cron secret unset (dev)'),
   };
+
+  // Cadence: is the follow-up clock the real one, or the compressed demo clock?
+  //
+  // DEMO timing fires the whole cadence in seconds, at any hour, and auto-closes
+  // a lead a minute after the final message. That is invisible on every other
+  // dot, so it gets its own. Real timing is now the default and needs no env
+  // var; this only ever goes red if someone deliberately switched demo on.
+  try {
+    const cadence = schedulerConfig();
+    checks.cadence = {
+      ok: cadence.enforceQuietHours,
+      detail: cadence.enforceQuietHours
+        ? 'real follow-up timing, quiet hours enforced'
+        : 'DEMO TIMING IS ON — follow-ups fire in seconds, quiet hours off, leads auto-close in one minute. Unset FOLLOWUP_MODE/FOLLOWUP_STEPS.',
+    };
+  } catch (e) {
+    // schedulerConfig throws if demo timing was requested in production.
+    checks.cadence = { ok: false, detail: (e as Error).message.slice(0, 200) };
+  }
 
   // WhatsApp channel: connected once the Cloud API credentials are set.
   // Not "broken" when unset — it just means Will is in test mode (nothing sends).

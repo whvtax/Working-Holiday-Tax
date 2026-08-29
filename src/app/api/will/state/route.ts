@@ -6,13 +6,14 @@ import { getStore } from '@/lib/will/store';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  if (!sessionValid()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const store = getStore();
-  const [customers, tasks, templates, pending] = await Promise.all([
+  const [customers, tasks, templates, pending, followupIds] = await Promise.all([
     store.listCustomers(),
     store.listTasks(),
     store.listTemplates(),
     store.pendingApprovals(),
+    store.customerIdsWithScheduledFollowup(),
   ]);
 
   // Jo's rule, everywhere in this dashboard: the WhatsApp number is the
@@ -39,5 +40,8 @@ export async function GET() {
     tasks: tasks.map(withWaId),
     templates,
     pending: pending.map(withWaId),
+    // customerIds that already have a scheduled follow-up, so the board can show
+    // a small "already being chased" tick without a per-card query.
+    followupIds,
   });
 }

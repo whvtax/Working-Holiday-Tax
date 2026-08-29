@@ -10,7 +10,7 @@ import { getSupabase } from '@/lib/supabase';
 export const dynamic = 'force-dynamic';
 
 export async function POST() {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const existing = await getStore().listTemplates();
   if (existing.length > 0) {
     // Already seeded, but the seed set may have grown since. Add only the

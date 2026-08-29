@@ -401,7 +401,7 @@ export default function ABNPage() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Our guarantee</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '22ch' }}>
-            If your refund is less than our fee, we refund the difference, so you are never out of pocket.
+            If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             The fee is flat and never a percentage of what comes back.

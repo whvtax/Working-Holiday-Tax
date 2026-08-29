@@ -194,7 +194,11 @@ export interface Store {
   getCustomerById(id: string): Promise<CustomerRow | null>;
   createCustomer(c: Partial<CustomerRow> & { waId: string }): Promise<CustomerRow>;
   updateCustomer(id: string, patch: Partial<CustomerRow>): Promise<void>;
-  setState(id: string, to: CustomerState, causedBy: string): Promise<void>;
+  /** Returns whether this call performed the transition. false = no-op (already
+   *  in the target state, or customer gone) or a lost race against a concurrent
+   *  transition on another instance. Callers on the payment path use it to avoid
+   *  a duplicate confirmation. */
+  setState(id: string, to: CustomerState, causedBy: string): Promise<boolean>;
   history(customerId: string): Promise<StateHistoryRow[]>;
   /** PERF-03: all state history in one query (for the aggregate report) instead
    *  of one history() call per customer. */
@@ -202,6 +206,14 @@ export interface Store {
 
   addMessage(m: Omit<MessageRow, 'id' | 'createdAt'>): Promise<MessageRow>;
   listMessages(customerId: string): Promise<MessageRow[]>;
+  /** SCALE: every customer and every message, fetched in pages, for the admin
+   *  export ONLY. `listCustomers()` silently truncates at PostgREST's 1,000-row
+   *  cap and the export used to fire one listMessages() per customer in
+   *  parallel (N concurrent queries). At 5,000 customers that overruns the
+   *  connection pool; these page through in bounded batches instead. Do not use
+   *  on a request-serving path. */
+  allCustomers(): Promise<CustomerRow[]>;
+  allMessages(): Promise<MessageRow[]>;
   /** PERF-01: PK lookup of a single message (includes its customerId). */
   getMessageById(id: string): Promise<MessageRow | null>;
   /** `restamp` sets the message's created_at to now — used when an approved
@@ -318,6 +330,11 @@ export interface Store {
   listJobs(): Promise<JobRow[]>;
   /** PERF-02: jobs for one customer (optionally filtered by kind), pushed to the DB. */
   listJobsForCustomer(customerId: string, kinds?: JobRow['kind'][]): Promise<JobRow[]>;
+  /** The set of customerIds that currently have a SCHEDULED FOLLOW_UP job, for
+   *  the dashboard's "already being chased" indicator. Selects one column and,
+   *  because migration 034 allows at most one pending follow-up per customer,
+   *  the result is bounded by the number of active leads. */
+  customerIdsWithScheduledFollowup(): Promise<string[]>;
   /** PERF-04: the N soonest SCHEDULED non-nightly jobs, pushed to the DB (LIMIT). */
   listUpcomingJobs(limit: number): Promise<JobRow[]>;
   /** PERF-04: cheap existence check for a queued nightly job. */

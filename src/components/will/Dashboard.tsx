@@ -2,6 +2,7 @@
 // Live dashboard. Two assistant modes (Approval / Autopilot), real health
 // checks, quick replies everywhere, suggested answers on every task,
 // one-click service templates, deep report.
+import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
@@ -101,6 +102,8 @@ interface StateData {
   tasks: (TaskRow & { waId?: string | null })[];
   templates: TemplateRow[];
   pending: (MessageRow & { customerName: string | null; waId?: string | null })[];
+  /** customerIds that already have a scheduled follow-up. */
+  followupIds?: string[];
 }
 interface Health {
   ok: boolean;
@@ -312,7 +315,7 @@ export default function Dashboard() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [focusTaskId, setFocusTaskId] = useState<string | null>(null);
   const [group, setGroup] = useState('sales');
-  const [data, setData] = useState<StateData>({ customers: [], tasks: [], templates: [], pending: [] });
+  const [data, setData] = useState<StateData>({ customers: [], tasks: [], templates: [], pending: [], followupIds: [] });
   const [health, setHealth] = useState<Health | null>(null);
   const [report, setReport] = useState<Report | null>(null);
   const [drawerId, setDrawerId] = useState<string | null>(null);
@@ -553,6 +556,11 @@ export default function Dashboard() {
   // notSentTasks and outboxCount belonged to the Outbox tab, which is gone:
   // blocked and failed sends are ordinary tasks and are listed with the rest.
   const custById = (id: string | null) => data.customers.find((c) => c.id === id) ?? null;
+  // Customers that already have a scheduled follow-up queued (computed once by
+  // the state endpoint). Used to show a small green tick on the card so the
+  // owner can see at a glance that this lead is already being chased and needs
+  // no action from him.
+  const followupSet = new Set(data.followupIds ?? []);
   // Notifications, most urgent first (URGENT > CONFLICT > REVIEW), then newest.
   const SEV_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
   const notifTasks = [...openTasks].sort(
@@ -810,6 +818,11 @@ export default function Dashboard() {
                     {c.lastMessagePreview && <div className="rc-msg">“{previewLine(c.lastMessagePreview)}”</div>}
                   </div>
                   <div className="rc-side">
+                    {followupSet.has(c.id) && (
+                      <span className="fu-tick" title="Follow-up scheduled — already being chased" aria-label="Follow-up scheduled">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </span>
+                    )}
                     <span className="stagepill" style={{ ['--pc' as string]: g.color }}>{stageLabelOf(c.state)}</span>
                     {/* When the last message actually arrived, not when the
                         pipeline stage last changed: "2h" should mean 2h since
@@ -1111,7 +1124,7 @@ export default function Dashboard() {
                           if (r) matchedReactionIds.add(r.id);
                         }
 
-                        const out: JSX.Element[] = [];
+                        const out: React.JSX.Element[] = [];
                         let lastDay = '';
                         for (const m of visible) {
                           const dayKey = melDayKey(m.createdAt);
@@ -2209,7 +2222,12 @@ export default function Dashboard() {
                                   <b style={{ color: RECOVER_TEXT[a.recoverable].color }}>
                                     {a.recoverable === 'NO' ? 'No' : a.recoverable === 'YES' ? 'Yes' : 'Possibly'}
                                   </b>
-                                  {a.recoveryAction ? <>. {a.recoveryAction}</> : null}
+                                  {/* Jo: this spot is the exact message to send (below),
+                                      not a theoretical "you could reach out and…". The
+                                      reasoning is only worth showing when there is NO
+                                      message to send — i.e. the lead is a dead end and
+                                      the line explains why not to bother. */}
+                                  {a.recoverable === 'NO' && a.recoveryAction ? <>. {a.recoveryAction}</> : null}
                                 </div>
 
                                 {a.recoveryMessage && (
@@ -2221,7 +2239,7 @@ export default function Dashboard() {
                                   </>
                                 )}
                                 <div className="mini">
-                                  Assessed {new Date(a.analysedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Melbourne' })} · confidence {Math.round(a.confidence * 100)}%. A judgement from the conversation, not a fact. Open the chat and read it yourself before acting on anything here.
+                                  Assessed {new Date(a.analysedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Melbourne' })} · confidence {Math.round(a.confidence * 100)}%.
                                 </div>
                               </>
                             ) : r.failure ? (

@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic';
 interface Insight { problem: string; evidence: string; solution: string }
 
 export async function GET() {
-  if (!sessionValid()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const store = getStore();
   const customers = await store.listCustomers();
   // PERF-03: one aggregate history query instead of one per customer.

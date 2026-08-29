@@ -186,7 +186,7 @@ const FAQS = [
   },
   {
     question: 'サービスの料金はいくらですか？',
-    answer: '料金は定額制で、還付金に対する歩合ではありません。\n\n作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。',
+    answer: '料金は定額制で、還付金に対する歩合ではありません。\n\n作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。還付金が当社の料金を下回った場合は、差額を返金します。当社のサービスでお客様が損をすることはありません。',
   },
   {
     question: 'ワーキングホリデーメーカーの税率はいくらですか？',
@@ -449,7 +449,7 @@ export default async function JapaneseHomePage() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 29px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
-            還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。
+            還付金が当社の料金を下回った場合は、差額を返金します。当社のサービスでお客様が損をすることはありません。
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
             料金は定額で、戻ってくる金額に対する歩合ではありません。

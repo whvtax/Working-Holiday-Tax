@@ -11,7 +11,7 @@
 const customer = { id: 'c1', waId: '61400000001', name: 'Alex', paid: false, state: 'PRICE_SENT', optedOut: false };
 const addMessage = jest.fn().mockResolvedValue({ id: 'msg1' });
 const addTask = jest.fn().mockResolvedValue({ id: 't1' });
-const setState = jest.fn().mockResolvedValue(undefined);
+const setState = jest.fn().mockResolvedValue(true);
 const getSetting = jest.fn().mockResolvedValue('SUPERVISED');
 const audit = jest.fn().mockResolvedValue(undefined);
 jest.mock('@/lib/will/store', () => ({
@@ -19,9 +19,14 @@ jest.mock('@/lib/will/store', () => ({
     getCustomerByWaId: jest.fn().mockResolvedValue(customer),
     getCustomerById: jest.fn().mockResolvedValue(customer),
     addMessage, addTask, setState, getSetting, audit,
+    // The AI daily budget is consulted before the vision check now. Without
+    // these the budget lookup throws and the whole handler dies.
+    setSetting: jest.fn().mockResolvedValue(undefined),
+    bumpCounter: (...a: unknown[]) => bumpCounter(...a),
   }),
 }));
 
+const bumpCounter = jest.fn().mockResolvedValue(false); // false = a slot was reserved
 const fetchWaMedia = jest.fn().mockResolvedValue({ ok: true, body: new ArrayBuffer(4), mime: 'image/jpeg' });
 const deliverOut = jest.fn().mockResolvedValue({ ok: true });
 jest.mock('@/lib/will/channel', () => ({
@@ -50,6 +55,7 @@ beforeEach(() => {
   // kind of green-then-mysteriously-red that costs an hour to find.
   fetchWaMedia.mockResolvedValue({ ok: true, body: new ArrayBuffer(4), mime: 'image/jpeg' });
   assessPaymentProofImage.mockResolvedValue({ isProof: true, reason: 'bank transfer confirmation' });
+  bumpCounter.mockReset(); bumpCounter.mockResolvedValue(false);
 });
 
 it('SUPERVISED: drafts the confirmation and does NOT send or move the stage', async () => {
@@ -167,4 +173,43 @@ it('does NOT trust a caption that is asking about paying', async () => {
 
   expect(result).toBeNull();       // falls through to the normal manual task
   expect(addTask).not.toHaveBeenCalled();
+});
+
+// ── The daily AI budget now covers the vision check ────────────────────────
+//
+// Jo, 29 Aug: read what the customer WROTE first; only reach for the picture
+// when there is nothing to read. These two tests pin the consequence of that
+// ordering, which is what makes the budget gate safe to add at all.
+
+it('a captioned screenshot never touches the budget or the vision check', async () => {
+  bumpCounter.mockResolvedValue(true); // budget fully exhausted
+  const c = await handlePaymentProofMedia('61400000001', 'just paid it!', { media });
+
+  expect(bumpCounter).not.toHaveBeenCalled();
+  expect(assessPaymentProofImage).not.toHaveBeenCalled();
+  expect(c).not.toBeNull(); // the customer's word is enough, budget or no budget
+});
+
+it('a caption-less screenshot on an exhausted budget goes to a human, not to nothing', async () => {
+  bumpCounter.mockResolvedValue(true);
+  const c = await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+
+  // No paid call was made.
+  expect(assessPaymentProofImage).not.toHaveBeenCalled();
+  // Nothing was decided, sent or moved.
+  expect(setState).not.toHaveBeenCalled();
+  expect(deliverOut).not.toHaveBeenCalled();
+  // null is the "a person must look at this" path, the same one a picture we
+  // cannot download takes. It is not silence.
+  expect(c).toBeNull();
+  expect(audit).toHaveBeenCalledWith('system', 'payment_proof_check_skipped',
+    expect.objectContaining({ reason: expect.stringContaining('budget') }));
+});
+
+it('a broken budget lookup does not block a payment', async () => {
+  bumpCounter.mockRejectedValue(new Error('store down'));
+  await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+
+  // Behaviour identical to before the gate existed: the check still runs.
+  expect(assessPaymentProofImage).toHaveBeenCalled();
 });

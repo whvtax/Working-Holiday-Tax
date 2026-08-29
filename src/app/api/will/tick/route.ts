@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export async function GET() {
-  if (!cronAuthorized()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
+  if (!(await cronAuthorized())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   // The Library is only seeded when it is completely empty, so a message added
   // to the seed after the first deploy would never reach a live install. This
   // adds the missing entries exactly once (recorded in settings) so every

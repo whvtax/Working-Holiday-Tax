@@ -25,7 +25,7 @@ import { APPROVED } from '@/lib/will/approved-messages';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
 
   const phone = req.nextUrl.searchParams.get('phone') ?? '';
   if (!phone.trim()) return NextResponse.json({ ok: true, customer: null });

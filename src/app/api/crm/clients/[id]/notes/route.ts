@@ -9,12 +9,12 @@ function auth(req: NextRequest) {
 
 const MAX_NOTES_LENGTH = 10_000
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
   try {
     const body = await req.json()
     const notes = typeof body.notes === 'string' ? body.notes.slice(0, MAX_NOTES_LENGTH) : ''
-    await updateClientNotes(params.id, notes)
+    await updateClientNotes((await params).id, notes)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[PATCH notes]', err)

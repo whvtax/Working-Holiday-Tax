@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import type React from 'react'
 import { useEffect, useState } from 'react'
 
 /**
@@ -17,7 +18,7 @@ import { useEffect, useState } from 'react'
 type SupportedLocale = 'de' | 'ja'
 
 type LocaleConfig = {
-  flag: () => JSX.Element
+  flag: () => React.JSX.Element
   name: string
   headerText: string
   bodyText: string

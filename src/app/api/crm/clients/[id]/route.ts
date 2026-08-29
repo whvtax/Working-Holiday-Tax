@@ -11,11 +11,11 @@ const safeYear = (v: unknown): string => {
   return YEAR_RE.test(v) ? v : ''
 }
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const { getClientById } = await import('@/lib/db')
-    const client = await getClientById(params.id)
+    const client = await getClientById((await params).id)
     if (!client) return NextResponse.json({ ok:false }, { status:404 })
     return NextResponse.json({ ok:true, client })
   } catch (err) {
@@ -24,14 +24,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const body = await req.json()
     const db = await import('@/lib/db')
 
     // Actions from DashboardClient
-    if (body.action === 'notes')        { const notes = typeof body.notes === 'string' ? body.notes.slice(0, 10_000) : ''; await db.updateClientNotes(params.id, notes); return NextResponse.json({ ok:true }) }
+    if (body.action === 'notes')        { const notes = typeof body.notes === 'string' ? body.notes.slice(0, 10_000) : ''; await db.updateClientNotes((await params).id, notes); return NextResponse.json({ ok:true }) }
     if (body.action === 'service')      {
       const svc = body.service === 'tfn' || body.service === 'abn' ? body.service : null
       if (!svc) return NextResponse.json({ ok:false, error:'invalid_service' }, { status:400 })
@@ -41,7 +41,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         completedAt: typeof rawData.completedAt === 'string' ? rawData.completedAt.slice(0, 50) : '',
         notes: typeof rawData.notes === 'string' ? rawData.notes.slice(0, 2000) : '',
       }
-      await db.updateService(params.id, svc, safeData)
+      await db.updateService((await params).id, svc, safeData)
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'add-tax') {
@@ -51,13 +51,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       const rawAmt = Number(d.refundAmount)
       const refundAmount = Math.max(0, Math.min(1_000_000, Number.isFinite(rawAmt) ? rawAmt : 0))
       const type = d.type === 'owed' ? 'owed' : 'refund'
-      await db.addTaxReturn(params.id, { year, refundAmount, type, completedAt: new Date().toISOString() })
+      await db.addTaxReturn((await params).id, { year, refundAmount, type, completedAt: new Date().toISOString() })
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'remove-tax')   {
       const year = safeYear(body.year)
       if (!year) return NextResponse.json({ ok:false, error:'invalid_year' }, { status:400 })
-      await db.removeTaxReturn(params.id, year)
+      await db.removeTaxReturn((await params).id, year)
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'add-super') {
@@ -66,19 +66,19 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       if (!year) return NextResponse.json({ ok:false, error:'invalid_year' }, { status:400 })
       const rawAmt = Number(d.amount)
       const amount = Math.max(0, Math.min(1_000_000, Number.isFinite(rawAmt) ? rawAmt : 0))
-      await db.addSuperReturn(params.id, { year, amount, completedAt: new Date().toISOString() })
+      await db.addSuperReturn((await params).id, { year, amount, completedAt: new Date().toISOString() })
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'remove-super') {
       const year = safeYear(body.year)
       if (!year) return NextResponse.json({ ok:false, error:'invalid_year' }, { status:400 })
-      await db.removeSuperReturn(params.id, year)
+      await db.removeSuperReturn((await params).id, year)
       return NextResponse.json({ ok:true })
     }
 
     // Actions from ClientPageClient (detail page)
     if (body.action === 'update') {
-      const client = await db.updateClient(params.id, body.data)
+      const client = await db.updateClient((await params).id, body.data)
       if (!client) return NextResponse.json({ ok:false }, { status:404 })
       return NextResponse.json({ ok:true, client })
     }
@@ -89,18 +89,18 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     // string with "[HANDLED]" (there is no handled column), so nothing that is
     // actually used depended on either.
     if (body.action === 'archive') {
-      await db.archiveClient(params.id)
+      await db.archiveClient((await params).id)
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'unarchive') {
-      await db.unarchiveClient(params.id)
+      await db.unarchiveClient((await params).id)
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'checkin') {
       const year = safeYear(body.year)
       if (!year) return NextResponse.json({ ok:false, error:'invalid_year' }, { status:400 })
       const done = body.done === true
-      await db.setYearlyCheckin(params.id, year, done)
+      await db.setYearlyCheckin((await params).id, year, done)
       return NextResponse.json({ ok:true })
     }
 
@@ -111,11 +111,11 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const { deleteClient } = await import('@/lib/db')
-    await deleteClient(params.id)
+    await deleteClient((await params).id)
     return NextResponse.json({ ok:true })
   } catch (err) {
     console.error('[DELETE client]', err)

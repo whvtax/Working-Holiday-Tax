@@ -4,22 +4,13 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { validateSession } from '@/lib/crm-store'
-import nextDynamic from 'next/dynamic'
 import './will-scoped.css'
-
-const WillDashboard = nextDynamic(() => import('@/components/will/Dashboard'), {
-  ssr: false,
-  loading: () => (
-    <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100vh',color:'#7a8a82',fontFamily:'system-ui,sans-serif',fontSize:14}}>
-      Loading WhatsApp…
-    </div>
-  ),
-})
+import ClientOnly from './ClientOnly'
 
 export default async function WhatsAppPage() {
-  const token = cookies().get('crm_session')?.value
+  const token = (await cookies()).get('crm_session')?.value
   if (!validateSession(token)) {
     redirect('/crm')
   }
-  return <div className="will-scope"><WillDashboard /></div>
+  return <div className="will-scope"><ClientOnly /></div>
 }

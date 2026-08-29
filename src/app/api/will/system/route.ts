@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic';
 const AUDIT_WINDOW = 500;
 
 export async function GET() {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
 
   const [budgetRaw, counters, audit] = await Promise.all([

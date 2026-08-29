@@ -71,7 +71,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'Ist das hier seriös?',
-    a: 'Deine Steuererklärung wird von einem registrierten Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Die Bedingungen, denen du zustimmen würdest, stehen vollständig in unserer Mandantenvereinbarung, und die Bewertungen in unserem Google-Profil stammen von Working Holiday Makern, mit denen wir tatsächlich gearbeitet haben.',
+    a: 'Deine Steuererklärung wird von einem registrierten Steueragenten geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Die Bedingungen, denen du zustimmen würdest, stehen vollständig in unserer Mandantenvereinbarung, und die Bewertungen in unserem Google-Profil stammen von Working Holiday Makern, mit denen wir tatsächlich gearbeitet haben.',
     link: { href: '/de/client-agreement', label: 'Mandantenvereinbarung lesen' },
   },
 ]
@@ -95,7 +95,7 @@ const FAQS = [
   },
   {
     question: 'Was ist, wenn ich keine Rückerstattung bekomme?',
-    answer: 'Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das früh, statt den Auftrag anzunehmen und zu hoffen.',
+    answer: 'Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das früh, statt den Auftrag anzunehmen und zu hoffen.',
   },
   {
     question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',

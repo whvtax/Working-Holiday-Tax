@@ -121,7 +121,7 @@ const SEQUENCE = [
   {
     n: '06',
     title: 'Es wird eingereicht',
-    body: 'Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten.',
+    body: 'Geprüft und freigegeben von einem registrierten Steueragenten, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten.',
   },
   {
     n: '07',
@@ -225,7 +225,7 @@ export default function TaxReturnPageDE() {
     name: 'Steuererklärung für Working Holiday Maker einreichen',
     serviceType: 'Steuererklärung Vorbereitung und Einreichung',
     description:
-      'Australische Steuererklärungen für Inhaber von 417- und 462-Visa. Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird, auch aus dem Ausland.',
+      'Australische Steuererklärungen für Inhaber von 417- und 462-Visa. Geprüft und freigegeben von einem registrierten Steueragenten, bevor sie beim ATO eingereicht wird, auch aus dem Ausland.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australien' },
     audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 und 462)' },
@@ -420,7 +420,7 @@ export default function TaxReturnPageDE() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
+            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Von dem, was das ATO überweist, wird nie etwas abgezogen. Der Betrag wird vor Schritt 01 auf WhatsApp mit dir
@@ -462,7 +462,7 @@ export default function TaxReturnPageDE() {
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Vorbereitet
-            von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO
+            von unserem Team, geprüft und freigegeben von einem registrierten Steueragenten, bevor sie beim ATO
             eingereicht wird.
           </p>
 

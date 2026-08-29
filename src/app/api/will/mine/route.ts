@@ -19,7 +19,7 @@ interface InConv { messages?: InMsg[]; converted?: boolean; paid?: boolean }
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
 export async function POST(req: Request) {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json({ ok: false, error: 'ANTHROPIC_API_KEY not set — mining needs the model' }, { status: 400 });
   }

@@ -132,13 +132,15 @@ export class FileStore implements Store {
   }
 
   async findCustomerByPhone(phone: string) {
-    // Same rule as the Supabase store: both spellings of the same number.
+    // Same rule as the Supabase store: both spellings of the same number, and
+    // an ambiguous match (two customers) is treated as no match.
     const candidates = phoneCandidates(phone);
     if (!candidates.length) return null;
-    return (await load()).customers.find((c) => {
+    const hits = (await load()).customers.filter((c) => {
       const stored = normPhoneDigits(c.waId);
       return !!stored && candidates.includes(stored);
-    }) ?? null;
+    });
+    return hits.length === 1 ? hits[0] : null;
   }
 
   async getCustomerById(id: string) {
@@ -171,16 +173,20 @@ export class FileStore implements Store {
     await persist();
   }
 
-  async setState(id: string, to: CustomerState, causedBy: string) {
+  async setState(id: string, to: CustomerState, causedBy: string): Promise<boolean> {
     const db = await load();
     const c = db.customers.find((x) => x.id === id);
-    if (!c || c.state === to) return;
+    // Returns whether this call performed the transition (mirrors SupabaseStore).
+    // The dev file store is single-process, so there is no race to lose; a
+    // no-op (missing customer or already in the target state) returns false.
+    if (!c || c.state === to) return false;
     db.history.push({ customerId: id, from: c.state, to, causedBy, createdAt: now() });
     if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(to)) c.previousState = c.state;
     c.state = to;
     c.stateChangedAt = now();
     if (to === 'PAID') c.paid = true;
     await persist();
+    return true;
   }
 
   async history(customerId: string) {
@@ -229,6 +235,10 @@ export class FileStore implements Store {
   async listMessages(customerId: string) {
     return (await load()).messages.filter((m) => m.customerId === customerId);
   }
+
+  // Admin export only; the file store is small and in-memory, so no paging.
+  async allCustomers() { return (await load()).customers; }
+  async allMessages() { return (await load()).messages; }
 
   async listInboundBetween(startIso: string, endIso: string, limit = 5000) {
     const db = await load();
@@ -434,6 +444,14 @@ export class FileStore implements Store {
     return (await load()).jobs.filter(
       (j) => j.customerId === customerId && (!kinds || kinds.includes(j.kind)),
     );
+  }
+
+  async customerIdsWithScheduledFollowup(): Promise<string[]> {
+    const out = new Set<string>();
+    for (const j of (await load()).jobs) {
+      if (j.kind === 'FOLLOW_UP' && j.status === 'SCHEDULED' && j.customerId) out.add(j.customerId);
+    }
+    return [...out];
   }
 
   async listUpcomingJobs(limit: number) {

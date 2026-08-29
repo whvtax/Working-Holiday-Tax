@@ -37,15 +37,27 @@ export function samePhone(waId: string, raw: string): boolean {
   return !!key && digits(waId).endsWith(key);
 }
 
+/**
+ * Match a website form's phone field to a Will customer.
+ *
+ * THIS NOW DELEGATES TO THE INDEXED STORE LOOKUP. It used to load the entire
+ * `will_customers` table and filter in JavaScript, which (a) grew linearly with
+ * every customer, on the request where someone is watching a spinner after
+ * uploading their passport, (b) silently truncated at PostgREST's 1,000-row cap
+ * so past a thousand customers it stopped finding people, and (c) matched on
+ * the last 9 digits, which never resolved German or Japanese domestic
+ * spellings. `store.findCustomerByPhone` is a single indexed query on `wa_norm`
+ * that handles all three markets' trunk-zero rules (phone-candidates.ts) and
+ * carries the same "an ambiguous match is not a match" guard this had.
+ *
+ * At 5,000 customers a year this is the difference between a constant-time
+ * indexed lookup and a full-table scan that would have stopped working at row
+ * 1,000. The `phoneKey`/`samePhone` helpers above are retained for the tests
+ * that pin the tail-9 semantics; production no longer scans.
+ */
 export async function findCustomerByPhone(raw: string): Promise<CustomerRow | null> {
   if (!phoneKey(raw)) return null;
-
-  const store = getStore();
-  const customers = await store.listCustomers();
-  const hits = customers.filter((c) => samePhone(c.waId, raw));
-  // An ambiguous match is not a match: acting on the wrong customer would mark
-  // someone else's form complete and stop their reminders.
-  return hits.length === 1 ? hits[0] : null;
+  return getStore().findCustomerByPhone(raw);
 }
 
 /**

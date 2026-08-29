@@ -24,7 +24,7 @@ import { LOST_RUN_SETTING, LostRunSummary } from '@/lib/will/lost-analysis';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
 
   const [customers, analyses, lastRun] = await Promise.all([

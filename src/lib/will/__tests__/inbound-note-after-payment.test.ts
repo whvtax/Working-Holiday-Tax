@@ -21,7 +21,7 @@ jest.mock('@/lib/will/store', () => ({
     getCustomerByWaId: jest.fn().mockResolvedValue(customer),
     createCustomer: jest.fn().mockResolvedValue(customer),
     addMessage, addTask, findOpenTaskForCustomer, updateTask,
-    setState: jest.fn().mockResolvedValue(undefined),
+    setState: jest.fn().mockResolvedValue(true),
     audit: jest.fn().mockResolvedValue(undefined),
     listTemplates: jest.fn().mockResolvedValue([]),
   }),

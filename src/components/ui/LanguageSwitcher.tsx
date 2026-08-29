@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import type React from 'react'
 import { useState, useRef, useEffect } from 'react'
 
 /**
@@ -94,7 +95,7 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
     'Switch language'
 
   // Order: current first (highlighted), others below
-  const options: Array<{ code: 'en'|'de'|'ja'; label: string; href: string; flag: JSX.Element }> = [
+  const options: Array<{ code: 'en'|'de'|'ja'; label: string; href: string; flag: React.JSX.Element }> = [
     { code: 'en', label: 'English',  href: englishHref,  flag: <FlagUK /> },
     { code: 'de', label: 'Deutsch',  href: germanHref,   flag: <FlagDE /> },
     { code: 'ja', label: '日本語',    href: japaneseHref, flag: <FlagJP /> },

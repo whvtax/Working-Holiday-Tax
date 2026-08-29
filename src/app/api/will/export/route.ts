@@ -24,15 +24,27 @@ const STATUS_NOTE: Record<string, string> = {
 };
 
 export async function GET(req: Request) {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
 
   const format = new URL(req.url).searchParams.get('format') === 'json' ? 'json' : 'txt';
   const store = getStore();
-  const customers = await store.listCustomers();
 
-  const withMessages = await Promise.all(
-    customers.map(async (c) => ({ customer: c, messages: await store.listMessages(c.id) })),
-  );
+  // SCALE: two paged reads and an in-memory group-by, instead of listCustomers()
+  // (truncated at 1,000 rows) plus one listMessages() per customer fired in
+  // parallel (N concurrent queries that overrun the pool at 5,000 customers).
+  // allCustomers/allMessages page through in bounded batches; grouping is O(n).
+  const customers = await store.allCustomers();
+  const allMessages = await store.allMessages();
+  const byCustomer = new Map<string, typeof allMessages>();
+  for (const m of allMessages) {
+    const arr = byCustomer.get(m.customerId);
+    if (arr) arr.push(m); else byCustomer.set(m.customerId, [m]);
+  }
+  // Keep each conversation in chronological order (the paged read is by id).
+  for (const arr of byCustomer.values()) {
+    arr.sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
+  }
+  const withMessages = customers.map((c) => ({ customer: c, messages: byCustomer.get(c.id) ?? [] }));
   // Busiest conversations first: those are the ones worth reading.
   withMessages.sort((a, b) => b.messages.length - a.messages.length);
 

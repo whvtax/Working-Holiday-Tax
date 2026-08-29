@@ -42,8 +42,32 @@ const DEMO = {
   enforceQuietHours: false,
 };
 
+// The safe default must need NO configuration, and the dangerous one must be
+// impossible to reach in production by accident.
+//
+// WHY THIS WAS INVERTED (Jo, 29 Aug, aiming for 5,000 customers a year). It
+// used to default to DEMO unless FOLLOWUP_MODE === 'real'. DEMO fires the whole
+// contact cadence in seconds, disables quiet hours (so at 3am), and auto-closes
+// a lead 60 seconds after the final message. FOLLOWUP_MODE was an undocumented
+// env var set only in Vercel; a new Preview project, a region move, an env
+// rotation or a typo silently reverted every real customer to demo timing, with
+// the dashboard staying green. One missing string could have burned leads at
+// scale at the exact moment of commercial commitment.
+//
+// Now REAL is the default. DEMO is opt-in via FOLLOWUP_MODE=demo (or the
+// explicit FOLLOWUP_STEPS override the tests use), and asking for demo timing
+// in production throws rather than shipping it.
 export function schedulerConfig() {
-  if (process.env.FOLLOWUP_MODE === 'real') return REAL;
+  const wantsDemo = process.env.FOLLOWUP_MODE === 'demo' || !!process.env.FOLLOWUP_STEPS;
+  if (!wantsDemo) return REAL;
+
+  if (process.env.NODE_ENV === 'production' && !process.env.FOLLOWUP_ALLOW_DEMO_IN_PROD) {
+    throw new Error(
+      'Refusing to run compressed demo follow-up timing in production. Unset FOLLOWUP_MODE/FOLLOWUP_STEPS, ' +
+      'or set FOLLOWUP_ALLOW_DEMO_IN_PROD=true only if a demo in production is genuinely intended.',
+    );
+  }
+
   const override = process.env.FOLLOWUP_STEPS;
   if (override) {
     const steps = override.split(',').map((n) => parseInt(n, 10));

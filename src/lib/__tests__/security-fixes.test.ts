@@ -201,3 +201,26 @@ describe('client-supplied money amounts are normalised or refused', () => {
     }
   });
 });
+
+// ── Client and server agree on what a phone number is (29 Aug) ─────────────
+//
+// The server's rule (intake-validate) arrived in the master audit; the forms
+// still accepted anything non-empty, so a too-short number failed only at the
+// final submit, after the uploads. Jo hit this with a real attempt. These pin
+// the shared client-side rule to the exact same shape as the server's.
+import { isPlausiblePhone } from '@/lib/validate';
+
+describe('isPlausiblePhone matches the server rule', () => {
+  const good = ['+972 50 123 4567', '0412 345 678', '+61 (4) 12-345-678', '0501234567', '+44 7700 900123'];
+  const bad = ['', '12345', '0000', 'undefined', '+', '12345678901234567', 'call me'];
+  for (const v of good) it(`accepts ${v}`, () => expect(isPlausiblePhone(v)).toBe(true));
+  for (const v of bad) it(`rejects ${JSON.stringify(v)}`, () => expect(isPlausiblePhone(v)).toBe(false));
+
+  it('agrees with validateIntake on both sides of the boundary', () => {
+    // 7 digits: the shortest the server accepts; 6: the longest it refuses.
+    expect(isPlausiblePhone('1234567')).toBe(true);
+    expect(validateIntake({ whatsapp: '1234567' })).toHaveLength(0);
+    expect(isPlausiblePhone('123456')).toBe(false);
+    expect(validateIntake({ whatsapp: '123456' }).map(i => i.field)).toContain('whatsapp');
+  });
+});

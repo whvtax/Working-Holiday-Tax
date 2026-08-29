@@ -10,7 +10,7 @@ import { KNOWLEDGE_SEED } from '@/lib/will/knowledge-seed';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const all = await getStore().listKnowledge();
   return NextResponse.json({
     ok: true,
@@ -21,7 +21,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   type KnowledgeBody = {
     action?: string; id?: string; question?: string; answer?: string; intent?: string;
     status?: string;

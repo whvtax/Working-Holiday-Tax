@@ -2,7 +2,12 @@
 // When CSP_NONCE_ENABLED=true, the CSP is set per-request (with a nonce) by
 // middleware instead, so we must NOT also emit a static CSP here or the two
 // headers conflict. All OTHER security headers stay regardless.
-const CSP_NONCE_ENABLED = process.env.CSP_NONCE_ENABLED === 'true'
+// Nonce CSP on /crm is ON BY DEFAULT (Jo, 29 Aug). The /crm surface renders
+// text a stranger typed into WhatsApp, so it is the one screen that most needs
+// a strict script policy; browser-verified that CRM login and the public site
+// both work under it. CSP_NONCE_DISABLED=true is the one-variable escape hatch
+// if the Facebook WhatsApp-connect popup ever misbehaves in production.
+const CSP_NONCE_ENABLED = process.env.CSP_NONCE_DISABLED !== 'true'
 
 const staticCsp = {
     key: 'Content-Security-Policy',
@@ -47,17 +52,36 @@ const securityHeaders = [
   { key: 'Cross-Origin-Opener-Policy',   value: 'same-origin-allow-popups' },
   { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
   { key: 'X-DNS-Prefetch-Control',       value: 'on' },
-  // Static CSP only when NOT in nonce mode (middleware owns CSP in nonce mode).
-  ...(CSP_NONCE_ENABLED ? [] : [staticCsp]),
 ]
+
+// ─────────────────────────────────────────────────────────────────────────
+// WHERE EACH CSP APPLIES — decided empirically, 29 Aug.
+//
+// Nonce CSP was designed as all-or-nothing (this flag used to swap the static
+// CSP out for the whole site). Tested in a real browser with the flag on: all
+// ~540 prerendered pages broke — every _next/static chunk refused, no
+// hydration, a dead tax form. That is structural, not a bug: the nonce changes
+// per request and prerendered HTML cannot carry it. Public pages therefore
+// KEEP the static CSP with 'unsafe-inline', always.
+//
+// The CRM is the opposite case on both axes: its pages are dynamically
+// rendered (cookies() on every one), so Next can stamp the per-request nonce
+// into its scripts — and it is where the strict policy actually matters,
+// because it renders text written by customers over WhatsApp. So the flag now
+// means: nonce CSP on /crm only, set by middleware. The static CSP is scoped
+// off /crm in that mode so the two policies never apply to the same response
+// (two CSPs enforce their intersection, which is a debugging trap).
+// ─────────────────────────────────────────────────────────────────────────
+const publicHeaders = [...securityHeaders, staticCsp]
+const crmHeaders    = CSP_NONCE_ENABLED ? securityHeaders : publicHeaders
 
 const nextConfig = {
   trailingSlash: false,
   compress: true,
-  // Build-time safety nets. The codebase typechecks clean and lint emits only
-  // warnings, so failing the build on real type errors is worth it for a site
-  // handling financial PII. Flip back to true only as a temporary escape hatch.
-  eslint:     { ignoreDuringBuilds: false },
+  // Build-time safety net. The codebase typechecks clean, so failing the build
+  // on real type errors is worth it for a site handling financial PII. (The
+  // eslint key is gone: Next 16 removed `next lint` and no longer runs ESLint
+  // during builds — `npm run lint` calls eslint directly instead.)
   typescript: { ignoreBuildErrors: false },
   experimental: {
     serverActions: { bodySizeLimit: '15mb' },
@@ -71,7 +95,11 @@ const nextConfig = {
   },
   async headers() {
     return [
-      { source: '/(.*)', headers: securityHeaders },
+      // Order matters to a reader, not to Next (all matching rules merge, later
+      // wins per key): /crm gets its own rule so the CSP key can differ there.
+      { source: '/crm/:path*', headers: crmHeaders },
+      { source: '/crm', headers: crmHeaders },
+      { source: '/((?!crm).*)', headers: publicHeaders },
       // Serve llms.txt and llms-full.txt as plain text with cache headers
       // so AI crawlers can ingest the structured content map.
       {

@@ -394,7 +394,7 @@ export default function MedicarePage() {
 
             <div className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1.5px solid #C8EAE0', margin: '20px 0' }}>
               <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
-                If your refund is less than our fee, we refund the difference, so you are never out of pocket.
+                If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service.
               </p>
               <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
                 Reviewed and signed off by a registered tax agent before it is lodged

@@ -5,7 +5,7 @@ import { lastCompletedTaxYear } from '@/lib/tax-year'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { WA_NUMBER, AGENT_TPB } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
-import { isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
+import { isPlausiblePhone, isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
 import { FormStepper } from '@/components/ui/FormStepper'
@@ -408,6 +408,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const validate = () => {
     const e: Record<string, string> = {}
     if (!waNumber.trim())    e.waNumber    = T('required')
+    else if (!isPlausiblePhone(waNumber)) e.waNumber = T('invalidPhone')
     if (!auPhone.trim())     e.auPhone     = T('required')
     if (!fullName.trim())    e.fullName    = T('required')
     if (!lastName.trim())     e.lastName     = T('required')
@@ -436,6 +437,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const validateStep1 = () => {
     const e: Record<string, string> = {}
     if (!waNumber.trim())    e.waNumber    = T('required')
+    else if (!isPlausiblePhone(waNumber)) e.waNumber = T('invalidPhone')
     if (!auPhone.trim())     e.auPhone     = T('required')
     if (!fullName.trim())    e.fullName    = T('required')
     if (!lastName.trim())    e.lastName    = T('required')

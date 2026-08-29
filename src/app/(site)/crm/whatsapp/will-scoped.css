@@ -539,6 +539,10 @@ aside.side{
 .will-scope .taskline{align-self:center;font-size:11px;color:var(--warn);background:rgba(181,106,0,.07);border:1px solid rgba(181,106,0,.25);padding:4px 12px;border-radius:9px;margin:4px 0;max-width:90%}
 .will-scope /* friend-style pipeline row cards */
 .stagepill{margin-left:auto;flex:none;font-size:9.5px;font-weight:600;padding:2px 9px;border-radius:99px;background:color-mix(in srgb,var(--pc) 12%, #fff);color:var(--pc);white-space:nowrap}
+/* A small, subtle green tick beside the stage chip: this lead already has a
+   follow-up scheduled, so it is being chased and needs nothing from the owner. */
+.fu-tick{display:inline-flex;align-items:center;justify-content:center;flex:none;color:#12a06a;opacity:.9}
+.fu-tick svg{display:block}
 .will-scope .cphone{font-size:10.5px;color:var(--ink3);margin-top:3px;font-variant-numeric:tabular-nums}
 .will-scope /* quick template chips above chat */
 /* Quick-send row: there are more chips than fit, so SHOW the horizontal

@@ -9,7 +9,7 @@
  *  - a job whose customer is gone is dropped rather than rendered as a blank.
  */
 const sessionValid = jest.fn().mockReturnValue(true);
-jest.mock('@/lib/will/auth', () => ({ sessionValid: () => sessionValid() }));
+jest.mock('@/lib/will/auth', () => ({ sessionValid: async () => sessionValid() }));
 
 let jobs: Record<string, unknown>[] = [];
 let customers: Record<string, unknown>[] = [];

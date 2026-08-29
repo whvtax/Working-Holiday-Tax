@@ -30,7 +30,7 @@ function cutoffTs(): number {
 }
 
 export async function GET(req: Request) {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
 
   const store = getStore();
   const url = new URL(req.url);

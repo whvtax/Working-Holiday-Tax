@@ -19,9 +19,9 @@ export const maxDuration = 30;
  *  this is a sanity check on the path segment rather than a strict format. */
 const ID_RE = /^[A-Za-z0-9_=-]{5,256}$/;
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
-  const id = params.id;
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  const id = (await params).id;
   if (!ID_RE.test(id)) return NextResponse.json({ ok: false, error: 'bad id' }, { status: 400 });
 
   const res = await fetchWaMedia(id);

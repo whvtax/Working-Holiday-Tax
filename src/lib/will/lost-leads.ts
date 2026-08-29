@@ -70,6 +70,7 @@
 // ============================================================
 import type { CustomerRow, MessageRow, StateHistoryRow } from './store';
 import { CustomerState, POST_PAYMENT_STATES, STATE_LABELS } from './state-machine';
+import { stripDashes } from './text';
 
 /** Days of customer silence, in a live sales state, before a lead is written
  *  off. One full week beyond the 14 days the auto-close would have taken. */
@@ -347,14 +348,15 @@ export function validateLostAnalysis(raw: unknown): LostAnalysis | null {
 
   // "Recoverable, and here is nothing you could do" is not an answer. If the
   // model claims a lead is winnable it has to say with what.
-  const action = isNonEmptyString(d.recovery_action) ? clip(d.recovery_action, 400) : null;
+  const action = isNonEmptyString(d.recovery_action) ? stripDashes(clip(d.recovery_action, 400)) : null;
   if (recoverable !== 'NO' && !action) return null;
 
   // Same rule, one step further: "winnable" now has to come with the message.
   // A card that says yes and hands the owner a blank box is the card he
   // scrolls past, and the whole point of the button is that there is nothing
   // left to write.
-  const message = isNonEmptyString(d.recovery_message) ? clipKeepBreaks(d.recovery_message, 700) : null;
+  // The customer-facing copy-paste message: no em dash ever, Jo's standing rule.
+  const message = isNonEmptyString(d.recovery_message) ? stripDashes(clipKeepBreaks(d.recovery_message, 700)) : null;
   if (recoverable !== 'NO' && !message) return null;
   // A draft that still has a placeholder in it would be refused at send time
   // anyway; rejecting it here means the card never offers it.
@@ -366,9 +368,9 @@ export function validateLostAnalysis(raw: unknown): LostAnalysis | null {
   if (confidence == null) return null;
 
   return {
-    reason: clip(d.reason, 400),
+    reason: stripDashes(clip(d.reason, 400)),
     category,
-    shouldHaveDone: clipKeepBreaks(d.should_have_done, 2000),
+    shouldHaveDone: stripDashes(clipKeepBreaks(d.should_have_done, 2000)),
     fault,
     recoverable,
     // A NO answer must not carry a recovery action; dropping it here means the

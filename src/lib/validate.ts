@@ -41,3 +41,20 @@ export const dobInputRange = (): { min: string; max: string } => {
   cutoff.setFullYear(cutoff.getFullYear() - DOB_MIN_AGE_YEARS)
   return { min: `${DOB_MIN_YEAR}-01-01`, max: cutoff.toISOString().slice(0, 10) }
 }
+
+/**
+ * Same rule as the server (intake-validate.ts): strip the usual punctuation,
+ * then 7–15 digits. THE TWO MUST STAY IN LOCKSTEP.
+ *
+ * WHY THIS EXISTS CLIENT-SIDE TOO (29 Aug). The server got this check in the
+ * master audit; the form still checked only "not empty". So a too-short number
+ * sailed through step 1, through step 2, uploaded both identity documents,
+ * walked the residency quiz — and died at the very last button with a message
+ * pointing back at a field three screens ago. The person who found it was Jo,
+ * with a real submission attempt. Deliberately not country-aware, exactly like
+ * the server: these customers are from everywhere.
+ */
+export const isPlausiblePhone = (v: string): boolean => {
+  const digits = v.replace(/[\s()+.-]/g, '')
+  return /^\d{7,15}$/.test(digits)
+}

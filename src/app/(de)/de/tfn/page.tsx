@@ -390,7 +390,7 @@ export default function TFNPageDE() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
+            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.
@@ -430,7 +430,7 @@ export default function TFNPageDE() {
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Steuererklärungen werden von einem
-            registrierten Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
+            registrierten Steueragenten geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
           </p>
           <GoogleReviews lang="de" />
         </div>

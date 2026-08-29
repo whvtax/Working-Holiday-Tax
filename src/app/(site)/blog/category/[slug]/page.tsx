@@ -8,7 +8,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
 
 interface Props {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
@@ -16,7 +16,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const meta = getCategoryBySlug(params.slug)
+  const meta = getCategoryBySlug((await params).slug)
   if (!meta) return {}
   return {
     title: meta.title,
@@ -152,8 +152,8 @@ const CATEGORY_INTRO: Record<string, CategoryIntro> = {
   },
 }
 
-export default function CategoryPage({ params }: Props) {
-  const meta = getCategoryBySlug(params.slug)
+export default async function CategoryPage({ params }: Props) {
+  const meta = getCategoryBySlug((await params).slug)
   if (!meta) notFound()
 
   const articles = guides.filter(g => g.category === meta.category)

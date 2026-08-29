@@ -490,10 +490,10 @@ export default function GermanSuperannuationPage() {
 
         <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0', margin: '22px 0 20px' }}>
           <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
-            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
+            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf.
           </p>
           <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
-            Von einem registrierten Steuerberater geprüft und freigegeben,
+            Von einem registrierten Steueragenten geprüft und freigegeben,
             bevor es beim ATO eingereicht wird.
           </p>
         </div>

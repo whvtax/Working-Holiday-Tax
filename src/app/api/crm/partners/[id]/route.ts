@@ -7,11 +7,11 @@ import { getSupabase } from '@/lib/supabase'
 function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
 
 // GET /api/crm/partners/[id] - partner details + list of referred clients
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
 
   const sb = getSupabase()
-  const { id } = params
+  const { id } = await params
 
   const { data: partner, error: partnerErr } = await sb
     .from('partners')
@@ -55,11 +55,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 // Referred clients are not deleted; their referred_by simply reverts to
 // null (the DB foreign key is ON DELETE SET NULL), so client records and
 // their tax history are never affected by removing a partner.
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
 
   const sb = getSupabase()
-  const { error } = await sb.from('partners').delete().eq('id', params.id)
+  const { error } = await sb.from('partners').delete().eq('id', (await params).id)
 
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
 

@@ -10,7 +10,7 @@ import { monthlyConversion } from '@/lib/will/monthly-conversion';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
   const [customers, history] = await Promise.all([
     store.listCustomers(),

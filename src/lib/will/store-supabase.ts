@@ -214,6 +214,31 @@ export class SupabaseStore implements Store {
     return this.seedingPromise;
   }
 
+  // Page through an entire table in bounded batches, so a table larger than
+  // PostgREST's 1,000-row response cap is fully read instead of silently
+  // truncated. Ordered by a stable key so pages do not overlap or skip.
+  private async pageAll<T>(table: string, orderCol: string): Promise<T[]> {
+    const PAGE = 1000;
+    const out: T[] = [];
+    for (let from = 0; ; from += PAGE) {
+      const { data, error } = await this.sb().from(table).select('*')
+        .order(orderCol, { ascending: true }).range(from, from + PAGE - 1);
+      if (error) { lastPersistError = `pageAll ${table}: ${error.message}`; throw error; }
+      const rows = data ?? [];
+      out.push(...(rows as T[]));
+      if (rows.length < PAGE) break;
+    }
+    return out;
+  }
+
+  async allCustomers(): Promise<CustomerRow[]> {
+    return (await this.pageAll<Record<string, unknown>>('will_customers', 'id')).map(toCustomer);
+  }
+
+  async allMessages(): Promise<MessageRow[]> {
+    return (await this.pageAll<Record<string, unknown>>('will_messages', 'id')).map(toMessage);
+  }
+
   async listCustomers(): Promise<CustomerRow[]> {
     const { data } = await this.sb().from('will_customers').select('*').order('state_changed_at', { ascending: false });
     return (data ?? []).map(toCustomer);
@@ -238,9 +263,13 @@ export class SupabaseStore implements Store {
     // indexed, so this stays a single indexed lookup.
     const candidates = phoneCandidates(phone);
     if (!candidates.length) return null;
-    const { data } = await this.sb().from('will_customers').select('*').in('wa_norm', candidates).limit(1);
-    const row = (data ?? [])[0];
-    return row ? toCustomer(row) : null;
+    // limit(2), not limit(1): an ambiguous match is not a match. If two
+    // customers resolve to the same candidate set, acting on either one would
+    // open the wrong person's conversation or mark the wrong form complete, so
+    // the safe answer is null. Two is enough to detect ambiguity cheaply.
+    const { data } = await this.sb().from('will_customers').select('*').in('wa_norm', candidates).limit(2);
+    const rows = data ?? [];
+    return rows.length === 1 ? toCustomer(rows[0]) : null;
   }
 
   async getCustomerById(id: string): Promise<CustomerRow | null> {
@@ -278,11 +307,11 @@ export class SupabaseStore implements Store {
     if (error) { lastPersistError = error.message; throw error; }
   }
 
-  async setState(id: string, to: CustomerState, causedBy: string): Promise<void> {
+  async setState(id: string, to: CustomerState, causedBy: string): Promise<boolean> {
     const { data: cur } = await this.sb().from('will_customers').select('*').eq('id', id).maybeSingle();
-    if (!cur) return;
+    if (!cur) return false;
     const c = toCustomer(cur);
-    if (c.state === to) return;
+    if (c.state === to) return false;
 
     // A/B conversion credit: forward move (not a close) credits the last variant message.
     if (FORWARD.indexOf(to) > FORWARD.indexOf(c.state) && FORWARD.indexOf(c.state) >= 0) {
@@ -308,8 +337,24 @@ export class SupabaseStore implements Store {
     if (to === 'PAID') upd.paid = true;
     // CONC-01: optimistic concurrency — only write if the state is still what we
     // read, so two concurrent transitions cannot clobber each other (lost update).
-    const { error } = await this.sb().from('will_customers').update(upd).eq('id', id).eq('state', c.state);
+    //
+    // The write now RETURNS whether it won. `.select('id')` makes the update
+    // report the rows it changed; zero rows means another serverless instance
+    // moved this customer between our read and our write. The caller uses this
+    // to avoid, for example, sending a second "payment received" message when a
+    // concurrent delivery already confirmed the same payment. Silent before,
+    // this is the cross-instance half of the duplicate-send guard (the
+    // in-process mutex covers same-instance). At 5,000 customers a year two
+    // Meta deliveries for one customer landing on two warm instances is no
+    // longer rare, so this matters.
+    const { data: won, error } = await this.sb().from('will_customers')
+      .update(upd).eq('id', id).eq('state', c.state).select('id');
     if (error) { lastPersistError = error.message; throw error; }
+    if (!won || won.length === 0) {
+      await this.audit('system', 'state_change_lost_race', { customerId: id, from: c.state, to });
+      return false;
+    }
+    return true;
   }
 
   async allHistory(): Promise<StateHistoryRow[]> {
@@ -698,6 +743,24 @@ export class SupabaseStore implements Store {
     if (kinds && kinds.length) q = q.in('kind', kinds);
     const { data } = await q;
     return (data ?? []).map(toJob);
+  }
+
+  async customerIdsWithScheduledFollowup(): Promise<string[]> {
+    // One indexed, single-column query, paged. At most one pending FOLLOW_UP
+    // per customer (migration 034), so the set is bounded by active leads.
+    const out = new Set<string>();
+    const PAGE = 1000;
+    for (let from = 0; ; from += PAGE) {
+      const { data, error } = await this.sb().from('will_jobs')
+        .select('customer_id')
+        .eq('kind', 'FOLLOW_UP').eq('status', 'SCHEDULED')
+        .range(from, from + PAGE - 1);
+      if (error) { lastPersistError = `followupIds: ${error.message}`; break; }
+      const rows = data ?? [];
+      for (const r of rows) if (r.customer_id) out.add(r.customer_id as string);
+      if (rows.length < PAGE) break;
+    }
+    return [...out];
   }
 
   async listUpcomingJobs(limit: number): Promise<JobRow[]> {

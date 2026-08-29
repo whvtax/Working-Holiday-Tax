@@ -92,3 +92,44 @@ describe('asking about paying is NOT a claim', () => {
     }
   });
 });
+
+// ── A payment that went wrong is not a payment ─────────────────────────────
+//
+// Jo, 29 Aug: take the customer at their word, unless the word is that
+// something broke. Every string below contains a phrase that would otherwise
+// match EXPLICIT outright, which is exactly why it needs pinning: getting this
+// wrong sends "payment received" to someone whose money never left.
+describe('reports of trouble are never claims', () => {
+  const trouble = [
+    'I transferred but it was declined',
+    'payment sent but it failed',
+    'I paid but it did not go through',
+    'just paid, got an error',
+    'already paid but there is a problem with the account number',
+    'I paid it, wrong amount sorry',
+    'transferred but the bank cancelled it',
+    'ya pagué pero fue rechazado',
+    'já paguei mas falhou',
+    'bezahlt, aber die Zahlung wurde abgelehnt',
+    'ho pagato ma non ha funzionato',
+    "j'ai payé mais il y a une erreur",
+    '支払いました が エラー',
+  ];
+  for (const t of trouble) {
+    it(`is not a claim: ${t}`, () => expect(claimsPayment(t)).toBe(false));
+  }
+});
+
+// The other half of the same rule. "went through" reads as failure to a naive
+// keyword list and is in fact the plainest success report there is, so it gets
+// its own test rather than being trusted to review.
+describe('successes that mention the mechanics still count', () => {
+  const ok = [
+    'just paid, it went through',
+    'payment done, went through fine',
+    'I transferred it and it went through',
+  ];
+  for (const t of ok) {
+    it(`is a claim: ${t}`, () => expect(claimsPayment(t)).toBe(true));
+  }
+});

@@ -2,7 +2,7 @@
 import { useState, useRef, useId, isValidElement, cloneElement } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
-import { isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
+import { isPlausiblePhone, isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
@@ -129,6 +129,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     else if (!isPlausibleDob(dob)) e.dob = T('invalidDob')
     if (!gender)           e.gender    = T('required')
     if (!whatsapp.trim())  e.whatsapp  = T('required')
+    else if (!isPlausiblePhone(whatsapp)) e.whatsapp = T('invalidPhone')
     if (!auPhone.trim())   e.auPhone   = T('required')
     if (!email.trim())     e.email     = T('required')
     else if (!isValidEmail(email)) e.email = T('invalidEmail')

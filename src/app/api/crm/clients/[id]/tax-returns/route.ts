@@ -10,7 +10,7 @@ function auth(req: NextRequest) {
 const VALID_TYPES = new Set(['refund', 'owed'])
 const YEAR_RE = /^\d{4}-\d{2}$/  // e.g. 2023-24
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
   try {
     const { year, refundAmount, type, isSuper, superAmount } = await req.json()
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       if (!Number.isFinite(amt) || amt < 0 || amt > 1_000_000) {
         return NextResponse.json({ ok: false, error: 'invalid_amount' }, { status: 400 })
       }
-      await addSuperReturn(params.id, { year, amount: amt, completedAt: new Date().toISOString() })
+      await addSuperReturn((await params).id, { year, amount: amt, completedAt: new Date().toISOString() })
       return NextResponse.json({ ok: true })
     }
 
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     }
     const safeType = VALID_TYPES.has(type) ? (type as 'refund' | 'owed') : 'refund'
 
-    await addTaxReturn(params.id, {
+    await addTaxReturn((await params).id, {
       year,
       refundAmount: amount,
       type: safeType,
@@ -48,14 +48,14 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
   try {
     const { year } = await req.json()
     if (typeof year !== 'string' || !YEAR_RE.test(year)) {
       return NextResponse.json({ ok: false, error: 'invalid_year' }, { status: 400 })
     }
-    await removeTaxReturn(params.id, year)
+    await removeTaxReturn((await params).id, year)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[DELETE tax-return]', err)

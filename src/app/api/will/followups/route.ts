@@ -43,7 +43,7 @@ export interface ScheduledFollowUp {
 }
 
 export async function GET() {
-  if (!sessionValid()) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
   const [jobs, customers, templates] = await Promise.all([
     store.listJobs(),

@@ -10,6 +10,7 @@ import { CustomerState } from './state-machine';
 import { getStore } from './store';
 import { LostAnalysis, LOST_CATEGORIES, validateLostAnalysis } from './lost-leads';
 import { claimsPayment } from './payment-claim';
+import { stripDashes } from './text';
 
 export interface Turn { role: 'customer' | 'assistant'; text: string }
 
@@ -73,14 +74,17 @@ function validateDecision(raw: unknown): Decision {
       action: 'human_task',
       task_reason: 'Low confidence, suppressed automatic action',
       task_severity: 'REVIEW',
-      suggested_reply: typeof d.reply_text === 'string' ? d.reply_text : undefined,
+      suggested_reply: typeof d.reply_text === 'string' ? stripDashes(d.reply_text) : undefined,
       confidence: conf,
     };
   }
   return {
     action: d.action,
-    reply_text: typeof d.reply_text === 'string' ? d.reply_text : undefined,
-    suggested_reply: typeof d.suggested_reply === 'string' ? d.suggested_reply : undefined,
+    // Jo's rule, enforced not just requested: no em dash ever reaches a
+    // customer, whatever the model wrote. stripDashes leaves ordinary hyphens
+    // ("tax-return") untouched.
+    reply_text: typeof d.reply_text === 'string' ? stripDashes(d.reply_text) : undefined,
+    suggested_reply: typeof d.suggested_reply === 'string' ? stripDashes(d.suggested_reply) : undefined,
     new_state: newState,
     task_reason: typeof d.task_reason === 'string' ? d.task_reason : undefined,
     task_severity: d.task_severity === 'URGENT' || d.task_severity === 'CONFLICT' ? d.task_severity : 'REVIEW',
@@ -271,7 +275,7 @@ Your job: extract each distinct customer question/topic, and for each recurring 
 CRITICAL RULES FOR THE ANSWERS:
 - Do NOT copy or imitate the human agent's wording, tone, or approach. The old replies are often rushed, impatient or informal — that is exactly what we are replacing. Produce the OPPOSITE: warm, patient, professional, polite, genuinely helpful, concise.
 - The company's approved messages, boundaries and prices always take precedence over anything in these old conversations. If an old reply conflicts with the boundaries below, ignore the old reply entirely.
-- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). Guarantee: if the refund is less than the fee, the difference is refunded. Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
+- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). Guarantee: TFN-ONLY ONLY: if the refund is less than the fee, the difference is refunded; a customer with ABN income gets NO refund promise of any kind, so an answer that mentions the guarantee must say it applies to TFN-only returns. Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
 - Write answers in English.
 - Merge duplicate questions into one entry; set examples to the real phrasings seen; set keywords to the important searchable words; set a short intent label.
 - Only include genuine, reusable questions (skip one-off logistics tied to a single person).
@@ -401,7 +405,7 @@ const POSTMORTEM_TOOL = {
       },
       recovery_message: {
         type: 'string',
-        description: 'Required unless recoverable is NO: the actual WhatsApp message to send this person, word for word, ready to send. Write it to THIS conversation: pick up the specific thing they last said or asked, and answer it. Their language, not English, if that is what they wrote in. Warm, short, three lines at most, no greeting beyond a natural opener, no pressure and no discount. Never quote a refund figure, never give tax advice, never negotiate the fixed fee. Do not include placeholders of any kind: write the finished text.',
+        description: 'Required unless recoverable is NO: the actual WhatsApp message to send this person, word for word, ready to send. Write it to THIS conversation: pick up the specific thing they last said or asked, and answer it. Their language, not English, if that is what they wrote in. Warm, short, three lines at most, no greeting beyond a natural opener, no pressure and no discount. Never quote a refund figure, never give tax advice, never negotiate the fixed fee. Never use an em dash or en dash. Do not include placeholders of any kind: write the finished text.',
       },
       evidence_quote: {
         type: 'string',
@@ -413,7 +417,7 @@ const POSTMORTEM_TOOL = {
   },
 } as const;
 
-const POSTMORTEM_SYSTEM = `You are an experienced sales and client-service reviewer looking at ONE conversation from "Working Holiday Tax", an Australian tax agency serving Working Holiday Makers (backpackers). A tax return is a fixed fee: $220 for TFN-only, $385 when there is also an ABN. Payment is upfront, and there is a guarantee that if the refund comes to less than the fee, the difference is refunded. The team cannot give personalised tax advice, quote a refund figure, or decide residency before someone has paid — that is a professional obligation, not a sales choice.
+const POSTMORTEM_SYSTEM = `You are an experienced sales and client-service reviewer looking at ONE conversation from "Working Holiday Tax", an Australian tax agency serving Working Holiday Makers (backpackers). A tax return is a fixed fee: $220 for TFN-only, $385 when there is also an ABN. Payment is upfront, and for TFN-only returns there is a guarantee that if the refund comes to less than the fee, the difference is refunded (no such guarantee exists when there is ABN income). The team cannot give personalised tax advice, quote a refund figure, or decide residency before someone has paid: that is a professional obligation, not a sales choice.
 
 This lead did NOT pay. You are writing a private post-mortem for the business owner. It will never be shown or sent to the customer, so write for the owner, plainly.
 

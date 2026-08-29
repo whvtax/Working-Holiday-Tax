@@ -1,21 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 // ─────────────────────────────────────────────────────────────────────────
-// Middleware: (1) locale header for server-side <html lang>, and
+// Proxy (the Next 16 name for middleware): (1) locale header for
+// server-side <html lang>, and
 // (2) OPTIONAL nonce-based Content-Security-Policy.
 //
 // CSP nonce mode is OFF by default and only activates when the environment
-// variable CSP_NONCE_ENABLED === 'true'. When OFF, behaviour is identical to
-// before and the static CSP in next.config.js (with 'unsafe-inline') applies.
+// nonce CSP is ON by default and applies only to /crm. The public
+// site always keeps the static CSP from next.config.js (with 'unsafe-inline'):
+// its ~540 pages are prerendered, a per-request nonce cannot exist in static
+// HTML, and turning nonce mode on site-wide was tested in a real browser and
+// broke every page. See the comment above `isCrm` below.
 //
-// ⚠️ BEFORE enabling in production: set CSP_NONCE_ENABLED=true in a Vercel
+// To DISABLE (fall back to the static CSP on /crm too): set CSP_NONCE_DISABLED=true in a Vercel
 // PREVIEW deployment, open the site, and confirm in DevTools that no scripts
 // are blocked (hydration works, JSON-LD present, YouTube embeds load). A
 // misconfigured nonce CSP blocks ALL inline scripts and breaks the page, so
 // this must be verified in a browser before promoting to prod.
 // ─────────────────────────────────────────────────────────────────────────
 
-const CSP_NONCE_ENABLED = process.env.CSP_NONCE_ENABLED === 'true'
+// ON by default for /crm; set CSP_NONCE_DISABLED=true to fall back to the
+// static CSP everywhere. See next.config.js for the reasoning.
+const CSP_NONCE_ENABLED = process.env.CSP_NONCE_DISABLED !== 'true'
 
 function buildCsp(nonce: string): string {
   const isDev = process.env.NODE_ENV === 'development'
@@ -44,7 +50,7 @@ function buildCsp(nonce: string): string {
   ].join('; ')
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
   const locale = pathname === '/ja' || pathname.startsWith('/ja/')
     ? 'ja'
@@ -52,7 +58,17 @@ export function middleware(req: NextRequest) {
       ? 'de'
       : 'en-AU'
 
-  if (!CSP_NONCE_ENABLED) {
+  // Nonce CSP is CRM-ONLY, and that is empirical, not taste (29 Aug): with the
+  // old site-wide behaviour every prerendered page broke in a real browser —
+  // the nonce changes per request and static HTML cannot carry it, so every
+  // chunk was refused and the tax form was dead. The CRM's pages are all
+  // dynamically rendered (cookies() on each), Next stamps this nonce into
+  // their scripts at request time, and the CRM is where customer-authored
+  // WhatsApp text gets rendered — the one surface that deserves the strict
+  // policy. Public pages keep the static CSP from next.config.js.
+  const isCrm = pathname === '/crm' || pathname.startsWith('/crm/')
+
+  if (!CSP_NONCE_ENABLED || !isCrm) {
     // Default path. NOTHING READS x-locale OR x-pathname ANY MORE.
     //
     // Both were set on every request for consumers that no longer exist: the
@@ -81,6 +97,12 @@ export function middleware(req: NextRequest) {
   return res
 }
 
+// The proxy now does exactly one thing: set the nonce CSP on /crm. It used to
+// match every non-asset, non-API path, so it ran an invocation in front of all
+// ~519 static pages to do nothing (it returned NextResponse.next() for anything
+// that was not /crm). Narrowing the matcher to /crm removes that hop from every
+// public page view, so those are pure CDN hits again. Nothing reads x-locale or
+// x-pathname any more, so no public page needs the proxy.
 export const config = {
-  matcher: ['/((?!_next/|api/|.*\\.[\\w]+$).*)'],
+  matcher: ['/crm', '/crm/:path*'],
 }

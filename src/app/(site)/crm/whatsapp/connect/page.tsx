@@ -10,13 +10,11 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { validateSession } from '@/lib/crm-store'
-import nextDynamic from 'next/dynamic'
-
-const Client = nextDynamic(() => import('./ConnectClient'), { ssr: false })
+import ClientOnly from './ClientOnly'
 
 export const dynamic = 'force-dynamic'
 
-export default function Page() {
-  if (!validateSession(cookies().get('crm_session')?.value)) redirect('/crm')
-  return <Client />
+export default async function Page() {
+  if (!validateSession((await cookies()).get('crm_session')?.value)) redirect('/crm')
+  return <ClientOnly />
 }

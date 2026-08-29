@@ -25,8 +25,83 @@ function ogForCategory(category: string): string {
   return OG_BY_CATEGORY[category] ?? '/og-image.png'
 }
 
+/* ── Article-schema enrichment (29 Aug) ────────────────────────────────────
+   The consolidation moved de and ja onto the shared LocaleGuidePage template,
+   which ships articleBody, mentions, citation/isBasedOn, image and a full
+   author entity. The English pages, which are the canonical, x-default,
+   highest-traffic versions of every guide, were left on this bespoke file with
+   a thinner Article node, so the site's source-authority signal was strongest
+   in its two smaller languages and weakest in its largest. These three helpers
+   mirror the shared template's exactly so English reaches parity. (The proper
+   fix is to fold this file into the template with an `en` config; that is a
+   larger change with its own HTML byte-verification, noted in the audit.) */
+function stripMarkdown(body: string): string {
+  return body
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/^[-*]\s+/gm, '')
+    .replace(/^\d+\.\s+/gm, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+const KNOWS_ABOUT_EN = [
+  'Australian tax law',
+  'Working Holiday Visa (subclass 417, 462)',
+  'Tax File Number (TFN)',
+  'Australian Business Number (ABN)',
+  'Superannuation and DASP',
+  'Medicare levy',
+  'Fair Work Australia',
+]
+
+const ORG_ENTITIES: Array<{ match: RegExp; name: string; sameAs: string }> = [
+  { match: /\bATO\b|Australian Taxation Office/, name: 'Australian Taxation Office', sameAs: 'https://www.ato.gov.au/' },
+  { match: /Fair Work/i, name: 'Fair Work Ombudsman', sameAs: 'https://www.fairwork.gov.au/' },
+  { match: /\bABR\b|Australian Business Register/, name: 'Australian Business Register', sameAs: 'https://www.abr.gov.au/' },
+  { match: /Services Australia|Medicare/, name: 'Services Australia', sameAs: 'https://www.servicesaustralia.gov.au/' },
+  { match: /Department of Home Affairs/i, name: 'Department of Home Affairs', sameAs: 'https://www.homeaffairs.gov.au/' },
+  { match: /myGov|MyGov/, name: 'myGov', sameAs: 'https://my.gov.au/' },
+]
+const PLACE_ENTITIES: Array<{ match: RegExp; name: string; sameAs: string }> = [
+  { match: /\bSydney\b/, name: 'Sydney', sameAs: 'https://en.wikipedia.org/wiki/Sydney' },
+  { match: /\bMelbourne\b/, name: 'Melbourne', sameAs: 'https://en.wikipedia.org/wiki/Melbourne' },
+  { match: /\bBrisbane\b/, name: 'Brisbane', sameAs: 'https://en.wikipedia.org/wiki/Brisbane' },
+  { match: /\bPerth\b/, name: 'Perth', sameAs: 'https://en.wikipedia.org/wiki/Perth' },
+  { match: /\bAdelaide\b/, name: 'Adelaide', sameAs: 'https://en.wikipedia.org/wiki/Adelaide' },
+  { match: /\bDarwin\b/, name: 'Darwin', sameAs: 'https://en.wikipedia.org/wiki/Darwin,_Northern_Territory' },
+  { match: /\bCairns\b/, name: 'Cairns', sameAs: 'https://en.wikipedia.org/wiki/Cairns' },
+  { match: /\bCanberra\b/, name: 'Canberra', sameAs: 'https://en.wikipedia.org/wiki/Canberra' },
+  { match: /\bHobart\b/, name: 'Hobart', sameAs: 'https://en.wikipedia.org/wiki/Hobart' },
+  { match: /Gold Coast/, name: 'Gold Coast', sameAs: 'https://en.wikipedia.org/wiki/Gold_Coast,_Queensland' },
+]
+function extractMentions(body: string): Array<{ '@type': string; name: string; sameAs?: string }> {
+  const mentions: Array<{ '@type': string; name: string; sameAs?: string }> = []
+  for (const e of ORG_ENTITIES) if (e.match.test(body)) mentions.push({ '@type': 'Organization', name: e.name, sameAs: e.sameAs })
+  for (const e of PLACE_ENTITIES) if (e.match.test(body)) mentions.push({ '@type': 'Place', name: e.name, sameAs: e.sameAs })
+  if (/Working Holiday|417|462|WHV/.test(body)) {
+    mentions.push({ '@type': 'Thing', name: 'Working Holiday Visa (Australia)', sameAs: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417' })
+  }
+  return mentions
+}
+function getRelevantCitations(slug: string, category: string): Array<{ name: string; url: string }> {
+  const c: Array<{ name: string; url: string }> = []
+  const s = slug.toLowerCase()
+  if (s.includes('tfn')) c.push({ name: 'ATO - Tax file number (TFN)', url: 'https://www.ato.gov.au/individuals/tax-file-number/' })
+  if (s.includes('abn')) c.push({ name: 'Australian Business Register (ABR)', url: 'https://www.abr.gov.au/' })
+  if (s.includes('tax-return') || s.includes('lodge') || s.includes('refund') || category === 'Tax Return') c.push({ name: 'ATO - Lodging your tax return', url: 'https://www.ato.gov.au/individuals/lodging-your-tax-return/' })
+  if (s.includes('super') || s.includes('dasp') || category === 'Super') c.push({ name: 'ATO - Departing Australia superannuation payment (DASP)', url: 'https://www.ato.gov.au/individuals/super/withdrawing-and-using-your-super/departing-australia-superannuation-payment-dasp/' })
+  if (s.includes('medicare')) c.push({ name: 'Services Australia - Medicare', url: 'https://www.servicesaustralia.gov.au/medicare' })
+  if (s.includes('award') || s.includes('minimum-wage') || s.includes('fair-work') || s.includes('penalty-rate') || s.includes('casual') || s.includes('unpaid') || s.includes('wage') || category === 'Work Rights') c.push({ name: 'Fair Work Ombudsman', url: 'https://www.fairwork.gov.au/' })
+  if (s.includes('backpacker-tax') || s.includes('working-holiday-tax')) c.push({ name: 'ATO - Working holiday makers', url: 'https://www.ato.gov.au/individuals/coming-to-australia-or-going-overseas/in-detail/coming-to-australia/working-holiday-makers/' })
+  return c
+}
+
 interface Props {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
@@ -82,7 +157,7 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const guide = getGuideBySlug(params.slug)
+  const guide = getGuideBySlug((await params).slug)
   if (!guide) return {}
   const categoryKeywords = CATEGORY_KEYWORDS[guide.category] || []
   return {
@@ -425,8 +500,8 @@ function getLeadParagraph(body: string): string {
     .trim()
 }
 
-export default function GuidePage({ params }: Props) {
-  const guide = getGuideBySlug(params.slug)
+export default async function GuidePage({ params }: Props) {
+  const guide = getGuideBySlug((await params).slug)
   if (!guide) notFound()
 
   const categoryInfo = getCategoryMeta(guide.category)
@@ -436,6 +511,9 @@ export default function GuidePage({ params }: Props) {
   const wordCount = calcWordCount(guide.body)
   const faqs = extractFAQs(guide.body)
   const leadParagraph = getLeadParagraph(guide.body)
+  const fullBody = stripMarkdown(guide.body)
+  const mentions = extractMentions(guide.body)
+  const citations = getRelevantCitations(guide.slug, guide.category)
   const service = SERVICE_FOR_CATEGORY[guide.category]
 
   // `reviewed` is optional and may not be populated on a given guide yet, so
@@ -459,9 +537,13 @@ export default function GuidePage({ params }: Props) {
     description: guide.description,
     abstract: leadParagraph,
     articleSection: guide.category,
-    // `articleBody` used to hold the lead paragraph, the same string as
-    // `abstract`. An engine reading it as the body got one paragraph of a
-    // 1,500 word guide. Better to say nothing than to say that.
+    articleBody: fullBody,
+    image: {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}${ogForCategory(guide.category)}`,
+      width: 1200,
+      height: 630,
+    },
     wordCount,
     timeRequired: `PT${readTime}M`,
     inLanguage: 'en-AU',
@@ -472,6 +554,8 @@ export default function GuidePage({ params }: Props) {
       '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
+      description: 'Australian tax service specialising in Working Holiday Makers (visa subclasses 417 and 462).',
+      knowsAbout: KNOWS_ABOUT_EN,
     },
     // Preparation and professional review are two different steps done by two
     // different parties, and they are modelled separately.
@@ -521,6 +605,11 @@ export default function GuidePage({ params }: Props) {
       guide.category,
       'backpacker tax',
     ].join(', '),
+    ...(citations.length > 0 && {
+      citation: citations.map(c => ({ '@type': 'CreativeWork', name: c.name, url: c.url })),
+      isBasedOn: citations.map(c => c.url),
+    }),
+    ...(mentions.length > 0 && { mentions }),
     speakable: {
       '@type': 'SpeakableSpecification',
       cssSelector: ['h1', '.guide-lead'],

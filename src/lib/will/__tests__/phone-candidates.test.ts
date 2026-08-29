@@ -43,12 +43,20 @@ describe('the number as WhatsApp gives it, and as a person types it', () => {
 });
 
 describe('the widening stays narrow, which matters more', () => {
-  it('does not invent a country code for a non-Australian number', () => {
-    // A UK mobile is 11 digits starting 07. Turning that into 617... would
-    // point at a real Australian number belonging to somebody else.
-    expect(phoneCandidates('07700 900123')).toEqual(['07700900123']);
-    // A German number, already in international form.
-    expect(phoneCandidates('+49 172 1234567')).toEqual(['491721234567']);
+  it('a non-target-market number never becomes an Australian number', () => {
+    // A UK mobile is 11 digits starting 07. The one thing that must never
+    // happen is it becoming 617..., a real Australian number belonging to
+    // somebody else. It is length 11, so the DE/JP rules do generate 49/81
+    // candidates, but WhatsApp stores UK customers under 44, so those can only
+    // ever MISS a UK customer, never match one to the wrong person. The 61
+    // candidate is the dangerous one, and it is not generated.
+    const uk = phoneCandidates('07700 900123');
+    expect(uk).toContain('07700900123');
+    expect(uk.some(x => x.startsWith('61'))).toBe(false);
+    // A German number already in international form resolves to its trunk-zero
+    // spelling too.
+    expect(phoneCandidates('+49 172 1234567')).toContain('491721234567');
+    expect(phoneCandidates('+49 172 1234567')).toContain('01721234567');
   });
 
   it('only applies the trunk rule at the exact Australian lengths', () => {
@@ -78,5 +86,40 @@ describe('normalisePhone must not drift from the SQL function', () => {
   it('does not drop a single leading zero', () => {
     // The trunk zero is meaningful and is handled by phoneCandidates, not here.
     expect(normalisePhone('0412345678')).toBe('0412345678');
+  });
+});
+
+// ── Germany and Japan resolve as cleanly as Australia (29 Aug) ──────────────
+//
+// The growth markets type their national numbers with a trunk 0 exactly the way
+// Australians do; WhatsApp hands them back with the country code. Before this,
+// only the Australian pair resolved, so the CRM-to-Will link and the form match
+// silently failed for German and Japanese customers.
+describe('German and Japanese trunk-zero, both directions', () => {
+  it('German mobile: typed <-> WhatsApp', () => {
+    // 0176 1234567 (national 10) <-> 49 176 1234567
+    expect(phoneCandidates('0176 1234567')).toContain('491761234567');
+    expect(phoneCandidates('+49 176 1234567')).toContain('01761234567');
+    // one-digit-longer German block
+    expect(phoneCandidates('0176 12345678')).toContain('4917612345678');
+  });
+
+  it('Japanese mobile: typed <-> WhatsApp', () => {
+    // 090 1234 5678 (national 10) <-> 81 90 1234 5678
+    expect(phoneCandidates('090 1234 5678')).toContain('819012345678');
+    expect(phoneCandidates('+81 90 1234 5678')).toContain('09012345678');
+  });
+
+  it('does not fan an Australian number out into other countries', () => {
+    // "0412 345 678" is national length 9, which only the AU rule claims.
+    const c = phoneCandidates('0412 345 678');
+    expect(c).toContain('61412345678');
+    expect(c.some(x => x.startsWith('49') || x.startsWith('81'))).toBe(false);
+  });
+
+  it('never repeats a candidate for any market', () => {
+    for (const n of ['491761234567', '819012345678', '61412345678']) {
+      expect(phoneCandidates(n).length).toBe(new Set(phoneCandidates(n)).size);
+    }
   });
 });

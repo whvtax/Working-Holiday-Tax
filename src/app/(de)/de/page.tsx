@@ -133,7 +133,7 @@ const ANALYSIS = [
   {
     n: '05',
     title: 'Dann wird eingereicht',
-    body: 'Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie zum ATO geht. Die vier Schritte davor entscheiden die Zahl.',
+    body: 'Geprüft und freigegeben von einem registrierten Steueragenten, bevor sie zum ATO geht. Die vier Schritte davor entscheiden die Zahl.',
   },
 ]
 
@@ -170,7 +170,7 @@ const FAQS = [
   },
   {
     question: 'Was kosten eure Leistungen?',
-    answer: 'Unsere Gebühren sind pauschal und niemals ein Prozentsatz deiner Rückerstattung.\n\nWir bestätigen die Gebühr per WhatsApp, bevor irgendetwas beginnt, und sie wird im Voraus bezahlt. Danach schicken wir dir den vollständigen Fragebogen und starten die Arbeit. Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.',
+    answer: 'Unsere Gebühren sind pauschal und niemals ein Prozentsatz deiner Rückerstattung.\n\nWir bestätigen die Gebühr per WhatsApp, bevor irgendetwas beginnt, und sie wird im Voraus bezahlt. Danach schicken wir dir den vollständigen Fragebogen und starten die Arbeit. Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf.',
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker in Australien?',
@@ -438,7 +438,7 @@ export default async function GermanHomePage() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
+            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.
@@ -573,7 +573,7 @@ export default async function GermanHomePage() {
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Jede Erklärung, die wir vorbereiten, ist für jemanden mit 417- oder 462-Visum und wird von einem registrierten
-            Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
+            Steueragenten geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
           </p>
 
           <GoogleReviews lang="de" />

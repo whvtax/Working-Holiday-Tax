@@ -436,6 +436,10 @@ async function doProcess(): Promise<TickResult> {
           // presupposed are applied at the moment it actually reaches them.
           if (msg.meta?.proposedState && msg.meta.proposedState !== customer.state) {
             await store.setState(customer.id, msg.meta.proposedState, 'AI');
+            // Same Paid -> Form Pending cascade the auto-send and approval paths
+            // do, so a payment confirmed through the delayed-autopilot reply arms
+            // the form follow-ups instead of stalling in Paid.
+            if (msg.meta.proposedState === 'PAID') await store.setState(customer.id, 'FORM_PENDING', 'SYSTEM');
           }
           if (msg.meta?.income) await store.updateCustomer(customer.id, { income: msg.meta.income });
           result.sent.push(`${customer.name ?? customer.waId} · autopilot reply`);

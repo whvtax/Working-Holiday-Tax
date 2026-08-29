@@ -258,12 +258,6 @@ export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
   const [referralPartners, setReferralPartners] = useState<{id:string;name:string}[]>([])
-  const [checkinYear, setCheckinYear] = useState(() => {
-    return currentTaxYear()
-  })
-  // The done/pending filter UI was removed; only the year select remains,
-  // so this was permanently 'all'.
-  const checkinFilter: 'all'|'done'|'pending' = 'all'
   // Dismissed birthday reminders - persisted so 'Done' survives reloads (keyed per client+occurrence)
   const [dismissedBdays, setDismissedBdays] = useState<Set<string>>(new Set())
   useEffect(() => {
@@ -290,7 +284,6 @@ export default function DashboardClient() {
   const [search, setSearch]       = useState('')
   // The global search box was removed, so this was permanently ''.
   const globalSearch = ''
-  const [yearFilter, setYearFilter] = useState<Set<string>>(new Set())
   const [howHeardFilter, setHowHeardFilter] = useState<Set<string>>(new Set())
   const [superFilter, setSuperFilter] = useState<'all'|'no-super'>('all')
   const [noReturnFilter, setNoReturnFilter] = useState<'all'|'didnt-return'>('all')
@@ -306,6 +299,13 @@ export default function DashboardClient() {
   const tasksScrollRef = React.useRef<HTMLDivElement|null>(null)
   const tasksScrollPosRef = React.useRef(0)
   const [openDropdown, setOpenDropdown] = useState<string|null>(null)
+  // A filter menu opens from the left edge of its button by default. For a
+  // button near the right side of the screen (Country, the rightmost filter)
+  // that runs the menu off the right edge and clips the option labels
+  // ("United Kingdom" cut in half). Measured at open time so it flips to
+  // right-aligned only when it actually would not fit — works at any zoom or
+  // window width. Only one menu is ever open, so a single flag is enough.
+  const [dropAlignRight, setDropAlignRight] = useState(false)
   const [archiveYearFilter, setArchiveYearFilter] = useState<Set<string>>(new Set())
   const [archiveHowHeardFilter, setArchiveHowHeardFilter] = useState<Set<string>>(new Set())
   const [archiveCountryFilter, setArchiveCountryFilter] = useState<Set<string>>(new Set())
@@ -402,13 +402,6 @@ export default function DashboardClient() {
   const [doneBusy, setDoneBusy]         = useState(false)
   const [doneErr, setDoneErr]           = useState<string|null>(null)
   const doneReq = useRef<string|null>(null)
-  const [showAddTax, setShowAddTax]     = useState(false)
-  const [showAddSuper, setShowAddSuper] = useState(false)
-  const [newTaxYear, setNewTaxYear]     = useState('')
-  const [newTaxAmt, setNewTaxAmt]       = useState('')
-  const [newTaxType, setNewTaxType]     = useState<'refund'|'owed'>('refund')
-  const [newSuperYear, setNewSuperYear] = useState('')
-  const [newSuperAmt, setNewSuperAmt]   = useState('')
   const _currentTaxYear = currentTaxYear()
   const [newClient, setNewClient]       = useState({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:_currentTaxYear as string})
 
@@ -821,71 +814,6 @@ export default function DashboardClient() {
   async function saveClientNotes() {
     if(!activeClient) return
     await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:clientNotes})})
-  }
-
-  async function addTaxReturn() {
-    if(!activeClient) return
-    // Allow $0 (e.g. tax return submitted with no refund). Year must be present
-    // and amount must be a valid non-negative number.
-    if (!newTaxYear) { alert('Please select a tax year.'); return }
-    const amt = parseFloat(newTaxAmt)
-    if (!Number.isFinite(amt) || amt < 0) { alert('Please enter a valid amount (0 or more).'); return }
-    if (amt > 1_000_000) { alert('Amount cannot exceed $1,000,000.'); return }
-    try {
-      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({action:'add-tax',data:{year:newTaxYear,refundAmount:amt,type:newTaxType,completedAt:new Date().toISOString()}})})
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        alert(`Failed to save: ${data.error || res.statusText || 'Unknown error'}`)
-        return
-      }
-      setNewTaxYear(''); setNewTaxAmt(''); setNewTaxType('refund'); setShowAddTax(false)
-      refreshClient()
-    } catch (err) {
-      alert('Network error. Please try again.')
-      console.error('[addTaxReturn]', err)
-    }
-  }
-
-  async function removeTaxReturn(year:string) {
-    if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'remove-tax',year})})
-    refreshClient()
-  }
-
-  async function addSuperReturn() {
-    if(!activeClient) return
-    if (!newSuperYear) { alert('Please select a tax year.'); return }
-    const amt = parseFloat(newSuperAmt)
-    if (!Number.isFinite(amt) || amt < 0) { alert('Please enter a valid amount (0 or more).'); return }
-    if (amt > 1_000_000) { alert('Amount cannot exceed $1,000,000.'); return }
-    try {
-      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({action:'add-super',data:{year:newSuperYear,amount:amt,completedAt:new Date().toISOString()}})})
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        alert(`Failed to save: ${data.error || res.statusText || 'Unknown error'}`)
-        return
-      }
-      setNewSuperYear(''); setNewSuperAmt(''); setShowAddSuper(false)
-      refreshClient()
-    } catch (err) {
-      alert('Network error. Please try again.')
-      console.error('[addSuperReturn]', err)
-    }
-  }
-
-  async function removeSuperReturn(year:string) {
-    if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'remove-super',year})})
-    refreshClient()
-  }
-
-  async function refreshClient() {
-    if(!activeClient) return
-    const r=await fetch(`/api/crm/clients/${activeClient.id}`)
-    const d=await r.json()
-    if(d.ok){ setActiveClient(d.client); await loadClients() }
   }
 
   async function deleteClient(id:string) {
@@ -1376,9 +1304,6 @@ export default function DashboardClient() {
       || displayName(c.fullName).toLowerCase().includes(q)
       || (c.email || '').toLowerCase().includes(q)
       || (qDigits && (c.whatsapp || '').replace(/[\s-]/g, '').includes(qDigits))
-    const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
-    const checkinDone = c.yearlyCheckins?.[checkinYear] ?? false
-    const mc = checkinFilter==='all' || (checkinFilter==='done' && checkinDone) || (checkinFilter==='pending' && !checkinDone)
     const mh = howHeardFilter.size===0 || howHeardFilter.has(canonicalSource(c.howHeard) || 'Unknown')
     const mcountry = countryFilter.size===0 || countryFilter.has(canonicalCountry(c.country))
     // Super filter: no-super = clients with tax returns but no super refund
@@ -1390,15 +1315,23 @@ export default function DashboardClient() {
     const hasThisYear = c.taxReturns.some(r => r.year === thisYearStr)
     const mNoReturn = noReturnFilter==='all' || (noReturnFilter==='didnt-return' && hadLastYear && !hasThisYear)
     const mStatus = statusFilter.size===0 || statusFilter.has(getClientStatus(c.notes || ''))
-    return ms && my && mc && mh && mcountry && msuper && mNoReturn && mStatus
+    return ms && mh && mcountry && msuper && mNoReturn && mStatus
   }).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime())
-  }, [clients, clientsTotal, searchResults, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, superFilter, noReturnFilter, statusFilter])
+  }, [clients, clientsTotal, searchResults, search, howHeardFilter, countryFilter, superFilter, noReturnFilter, statusFilter])
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (
       <div style={{flexShrink:0,position:'relative'}}>
         <button
-          onClick={()=>setOpenDropdown(isOpen?null:id)}
+          onClick={(e)=>{
+            if(!isOpen){
+              // Would a 220px menu opening leftwards from here spill past the
+              // right edge? If so, anchor it to the button's right edge instead.
+              const r=(e.currentTarget as HTMLElement).getBoundingClientRect()
+              setDropAlignRight(r.left + 220 > window.innerWidth - 8)
+            }
+            setOpenDropdown(isOpen?null:id)
+          }}
           className={`ptab${active?' active':''}`}>
           {icon}
           {label}
@@ -1407,7 +1340,7 @@ export default function DashboardClient() {
         </button>
         {isOpen && <>
           <div style={{position:'fixed',inset:0,zIndex:98}} onClick={()=>setOpenDropdown(null)}/>
-          <div className="card" style={{position:'absolute',top:'calc(100% + 6px)',left:0,zIndex:99,padding:'10px 12px',minWidth:200,display:'flex',flexDirection:'column' as const,maxHeight:'min(380px, 60vh)',overflow:'visible'}}>
+          <div className="card" style={{position:'absolute',top:'calc(100% + 6px)',left:dropAlignRight?'auto':0,right:dropAlignRight?0:'auto',zIndex:99,padding:'10px 12px',minWidth:200,maxWidth:'calc(100vw - 24px)',display:'flex',flexDirection:'column' as const,maxHeight:'min(380px, 60vh)',overflow:'visible'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,paddingBottom:6,borderBottom:'1px solid var(--line)',flexShrink:0}}>
               <span className="mlabel" style={{margin:0}}>{label}</span>
               {active && <button className="btn sm quiet" onClick={e=>{e.stopPropagation();onClear()}}>Clear</button>}
@@ -2090,8 +2023,8 @@ export default function DashboardClient() {
                   <span className="chip">{visibleClients.length}{clients.length!==visibleClients.length?` of ${clients.length}`:''} total</span>
                   {(()=>{
                     const tot = visibleClients.reduce((sum,c)=>{
-                      const tr = yearFilter.size===0?c.taxReturns:c.taxReturns.filter(r=>yearFilter.has(r.year))
-                      const sr = yearFilter.size===0?c.superReturns:c.superReturns.filter(r=>yearFilter.has(r.year))
+                      const tr = c.taxReturns
+                      const sr = c.superReturns
                       return sum
                         + tr.filter(r=>r.type==='refund').reduce((s,r)=>s+r.refundAmount,0)
                         - tr.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
@@ -2112,12 +2045,6 @@ export default function DashboardClient() {
                       <span style={{fontWeight:700,lineHeight:1}}>×</span>
                     </button>
                   )}
-                  <div className="hrow" style={{gap:6}}>
-                    <span style={{fontSize:11,color:'var(--ink3)',fontWeight:500}}>✓ Year:</span>
-                    <select value={checkinYear} onChange={e=>setCheckinYear(e.target.value)} style={{width:'auto'}}>
-                      {taxYearRange().map(y=><option key={y} value={y}>{y}</option>)}
-                    </select>
-                  </div>
                   <button
                     className="btn quiet"
                     onClick={()=>{
@@ -2166,12 +2093,6 @@ export default function DashboardClient() {
                   <span className="search-ic">{NavIcons.search}</span>
                   <input placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
                 </div>
-                <DropBtn id="cl-year" label={yearFilter.size===0?'All tax years':`${yearFilter.size} year${yearFilter.size>1?'s':''}`} active={yearFilter.size>0} onClear={()=>setYearFilter(new Set())}
-                  icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                  {taxYearRange().slice().reverse().map(y=>{const checked=yearFilter.has(y);const cnt=clients.filter(c=>c.taxReturns.some(r=>r.year===y)||c.superReturns.some(r=>r.year===y)).length;return(
-                    <FilterOpt key={y} label={y} count={cnt} checked={checked} onToggle={()=>{const s=new Set(yearFilter);checked?s.delete(y):s.add(y);setYearFilter(s)}}/>
-                  )})}
-                </DropBtn>
                 {<DropBtn id="cl-hh" label="How heard" active={howHeardFilter.size>0} onClear={()=>setHowHeardFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {/* Grouped by canonical label: eighteen spellings of ChatGPT
@@ -2189,8 +2110,8 @@ export default function DashboardClient() {
                     {groupByCanonical(clients.map(c=>c.country), canonicalCountry).length===0 && <FilterEmpty/>}
                   </DropBtn>}
 
-                {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search||statusFilter.size>0) && (
-                  <button className="btn quiet danger" onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('');setStatusFilter(new Set())}}>
+                {(howHeardFilter.size>0||countryFilter.size>0||search||statusFilter.size>0) && (
+                  <button className="btn quiet danger" onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setSearch('');setStatusFilter(new Set())}}>
                     ✕ Clear
                   </button>
                 )}
@@ -2200,28 +2121,24 @@ export default function DashboardClient() {
               {/* ── Refund summary bar (reactive to all filters) ── */}
               {visibleClients.length>0 && (()=>{
                 const totalTaxRefund = visibleClients.reduce((sum,c)=>{
-                  const filtered = yearFilter.size===0
-                    ? c.taxReturns
-                    : c.taxReturns.filter(r=>yearFilter.has(r.year))
+                  const filtered = c.taxReturns
                   return sum + filtered.filter(r=>r.type==='refund').reduce((s,r)=>s+r.refundAmount,0)
                     - filtered.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                 },0)
                 const totalSuper = visibleClients.reduce((sum,c)=>{
-                  const filtered = yearFilter.size===0
-                    ? c.superReturns
-                    : c.superReturns.filter(r=>yearFilter.has(r.year))
+                  const filtered = c.superReturns
                   return sum + filtered.reduce((s,r)=>s+r.amount,0)
                 },0)
                 const clientsWithRefund = visibleClients.filter(c=>{
-                  const f = yearFilter.size===0 ? c.taxReturns : c.taxReturns.filter(r=>yearFilter.has(r.year))
+                  const f = c.taxReturns
                   return f.length>0
                 }).length
                 const clientsWithSuper = visibleClients.filter(c=>{
-                  const f = yearFilter.size===0 ? c.superReturns : c.superReturns.filter(r=>yearFilter.has(r.year))
+                  const f = c.superReturns
                   return f.length>0
                 }).length
                 if (totalTaxRefund===0 && totalSuper===0) return null
-                const yearLabel = yearFilter.size===0 ? '' : ` · ${Array.from(yearFilter).sort().join(', ')}`
+                const yearLabel = ''
                 return (
                   <div className="kpis" style={{gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:10}}>
                     {totalTaxRefund!==0 && (
@@ -2485,171 +2402,6 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* Quick Stats Summary */}
-              {(()=>{
-                const totalTaxRefunds = activeClient.taxReturns.filter((r:TaxReturn)=>r.type==='refund').reduce((s:number,r:TaxReturn)=>s+r.refundAmount,0)
-                const totalSuperRefunds = activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0)
-                const totalReturns = activeClient.taxReturns.length
-                const totalSuper = activeClient.superReturns.length
-                const tfnDone = activeClient.tfnService?.done
-                const abnDone = activeClient.abnService?.done
-                if (totalReturns===0 && totalSuper===0 && !tfnDone && !abnDone) return null
-                return (
-                  <div className="kpis" style={{gridTemplateColumns:'repeat(4,1fr)'}}>
-                    <div className="kpi">
-                      <div className="kl">💵 Total Refunds</div>
-                      <div className="kv" style={{color:'var(--good)'}}>{fmtCur(totalTaxRefunds)}</div>
-                      <div className="kd">{totalReturns} return{totalReturns!==1?'s':''}</div>
-                    </div>
-                    <div className="kpi">
-                      <div className="kl">💰 Super Total</div>
-                      <div className="kv" style={{color:'var(--brand1)'}}>{fmtCur(totalSuperRefunds)}</div>
-                      <div className="kd">{totalSuper} withdrawal{totalSuper!==1?'s':''}</div>
-                    </div>
-                    <div className="kpi">
-                      <div className="kl">🆔 TFN</div>
-                      <div className="kv" style={{color:tfnDone?'var(--good)':'var(--ink3)'}}>{tfnDone?'✓ Done':'-'}</div>
-                    </div>
-                    <div className="kpi">
-                      <div className="kl">🏢 ABN</div>
-                      <div className="kv" style={{color:abnDone?'var(--good)':'var(--ink3)'}}>{abnDone?'✓ Done':'-'}</div>
-                    </div>
-                  </div>
-                )
-              })()}
-
-              {/* 1+2. Unified Year Timeline */}
-              <div className="card" style={{marginBottom:12}}>
-                <div className="sechead">
-                  <span>📅 History by Year</span>
-                  <div style={{display:'flex',gap:6}}>
-                    <button className="btn take sm" onClick={()=>setShowAddTax(v=>!v)}>+ Tax Return</button>
-                    <button className="btn take sm" onClick={()=>setShowAddSuper(v=>!v)}>+ Super</button>
-                  </div>
-                </div>
-                <div style={{padding:'12px 14px'}}>
-                  {showAddTax && (
-                    <div className="panel" style={{marginBottom:10,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const}}>
-                      <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
-                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Tax year</label>
-                        <select style={{padding:'7px 10px',cursor:'pointer'}} value={newTaxYear} onChange={e=>setNewTaxYear(e.target.value)}>
-                          <option value="">Select year…</option>
-                          {taxYearRange().slice().reverse().map(y=><option key={y} value={y}>{y}</option>)}
-                        </select>
-                      </div>
-                      <div style={{display:'flex',flexDirection:'column',gap:4,minWidth:130}}>
-                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Type</label>
-                        <div style={{display:'flex',gap:4}}>
-                          <button onClick={()=>setNewTaxType('refund')} className={`btn sm ${newTaxType==='refund'?'take':'quiet'}`} style={{flex:1,justifyContent:'center'}}>Refund</button>
-                          <button onClick={()=>setNewTaxType('owed')} className={`btn sm ${newTaxType==='owed'?'danger':'quiet'}`} style={{flex:1,justifyContent:'center'}}>Tax owed</button>
-                        </div>
-                      </div>
-                      <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:110}}>
-                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Amount (AUD)</label>
-                        <input style={{padding:'7px 10px'}} type="number" placeholder="e.g. 2500" value={newTaxAmt} onChange={e=>setNewTaxAmt(e.target.value)}/>
-                      </div>
-                      <button className="btn take sm" onClick={addTaxReturn}>Save</button>
-                      <button className="btn quiet sm" onClick={()=>setShowAddTax(false)}>✕</button>
-                    </div>
-                  )}
-                  {showAddSuper && (
-                    <div className="panel" style={{marginBottom:10,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const}}>
-                      <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
-                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Tax year</label>
-                        <select style={{padding:'7px 10px',cursor:'pointer'}} value={newSuperYear} onChange={e=>setNewSuperYear(e.target.value)}>
-                          <option value="">Select year…</option>
-                          {taxYearRange().slice().reverse().map(y=><option key={y} value={y}>{y}</option>)}
-                        </select>
-                      </div>
-                      <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:110}}>
-                        <label className="mlabel" style={{display:'block',margin:'0 0 4px'}}>Amount received (AUD)</label>
-                        <input style={{padding:'7px 10px'}} type="number" placeholder="e.g. 4200" value={newSuperAmt} onChange={e=>setNewSuperAmt(e.target.value)}/>
-                      </div>
-                      <button className="btn take sm" onClick={addSuperReturn}>Save</button>
-                      <button className="btn quiet sm" onClick={()=>setShowAddSuper(false)}>✕</button>
-                    </div>
-                  )}
-                  {(()=>{
-                    const allYears = Array.from(new Set([
-                      ...activeClient.taxReturns.map((r:TaxReturn)=>r.year),
-                      ...activeClient.superReturns.map((r:SuperReturn)=>r.year),
-                      ...taxYearRange(),
-                    ])).sort((a:string,b:string)=>b.localeCompare(a))
-                    const relevantYears = allYears.filter((y:string)=>{
-                      // Only show years that have at least one non-zero entry. A year with
-                      // only $0 super or $0 tax is effectively empty and clutters the view.
-                      const tax = activeClient.taxReturns.find((r:TaxReturn)=>r.year===y)
-                      const sup = activeClient.superReturns.find((r:SuperReturn)=>r.year===y)
-                      const hasTax = !!tax && tax.refundAmount > 0
-                      const hasSuper = !!sup && sup.amount > 0
-                      return hasTax || hasSuper
-                    })
-                    if (relevantYears.length===0) return <div className="empty" style={{padding:'16px 0'}}>No history yet.</div>
-                    return relevantYears.map((year:string)=>{
-                      const tax = activeClient.taxReturns.find((r:TaxReturn)=>r.year===year)
-                      const sup = activeClient.superReturns.find((r:SuperReturn)=>r.year===year)
-                      const hasAny = tax || sup
-                      return (
-                        <div key={year} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'10px 0',borderBottom:'1px solid var(--line)'}}>
-                          <div style={{minWidth:64,paddingTop:2}}>
-                            <div style={{fontSize:12,fontWeight:700,color:hasAny?'var(--ink)':'var(--ink3)'}}>{year}</div>
-                          </div>
-                          <div style={{flex:1,display:'flex',flexWrap:'wrap' as const,gap:6}}>
-                            {tax ? (
-                              <div style={{display:'flex',alignItems:'center',gap:6,borderRadius:8,padding:'4px 10px',background:tax.type==='owed'?'color-mix(in srgb, var(--crit) 8%, transparent)':'color-mix(in srgb, var(--brand1) 8%, transparent)',border:`1px solid ${tax.type==='owed'?'color-mix(in srgb, var(--crit) 35%, transparent)':'color-mix(in srgb, var(--brand1) 30%, transparent)'}`}}>
-                                <span style={{fontSize:11,fontWeight:700,color:tax.type==='owed'?'var(--crit)':'var(--brand1)'}}>💰 Tax {tax.type==='owed'?'owed':'refund'}</span>
-                                <span style={{fontSize:12,fontWeight:600,color:tax.type==='owed'?'var(--crit)':'var(--ink)'}}>{tax.type==='owed'?'-':''}{fmtCur(tax.refundAmount)}</span>
-                                <button style={{background:'none',border:'none',color:'var(--crit)',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeTaxReturn(year)}>×</button>
-                              </div>
-                            ) : (
-                              <div style={{display:'flex',alignItems:'center',gap:4,background:'var(--surface2)',border:'1px dashed var(--line2)',borderRadius:8,padding:'4px 10px'}}>
-                                <span style={{fontSize:11,color:'var(--ink3)'}}>💰 No tax return</span>
-                              </div>
-                            )}
-                            {sup && (
-                              <div style={{display:'flex',alignItems:'center',gap:6,background:'var(--surface2)',border:'1px solid var(--line2)',borderRadius:8,padding:'4px 10px'}}>
-                                <span style={{fontSize:11,fontWeight:700,color:'var(--brand1)'}}>🏦 Super</span>
-                                <span style={{fontSize:12,fontWeight:600,color:'var(--ink)'}}>{fmtCur(sup.amount)}</span>
-                                <button style={{background:'none',border:'none',color:'var(--crit)',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeSuperReturn(year)}>×</button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )
-                    })
-                  })()}
-                  {(activeClient.taxReturns.length>0||activeClient.superReturns.length>0) && (
-                    <div style={{display:'flex',gap:12,marginTop:10,paddingTop:8,borderTop:'1px solid var(--line2)'}}>
-                      {activeClient.taxReturns.length>0 && (
-                        <div className="kpi" style={{flex:1,textAlign:'center' as const}}>
-                          <div className="kl">Total tax refunds</div>
-                          <div className="kv" style={{color:'var(--brand1)'}}>{fmtCur(activeClient.taxReturns.reduce((s:number,r:TaxReturn)=>s+(r.type==='owed'?-r.refundAmount:r.refundAmount),0))}</div>
-                        </div>
-                      )}
-                      {activeClient.superReturns.length>0 && (
-                        <div className="kpi" style={{flex:1,textAlign:'center' as const}}>
-                          <div className="kl">Total super refunded</div>
-                          <div className="kv" style={{color:'var(--brand1)'}}>{fmtCur(activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0))}</div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Move to archive */}
-              <div className="panel">
-                <div style={{display:'flex',alignItems:'flex-start',gap:14}}>
-                  <div className="avatar" style={{width:36,height:36,borderRadius:10,background:'var(--surface)',border:'1px solid var(--line2)',fontSize:17}}>📦</div>
-                  <div style={{flex:1}}>
-                    <h3>Client left Australia?</h3>
-                    <div className="psub">Move them to Archive when they have completed all services (Tax Returns, Super Refund). You can always restore them later.</div>
-                    <button className="btn take" onClick={()=>setConfirmArchive(activeClient.id)}>
-                      📦 Move to Archive
-                    </button>
-                  </div>
-                </div>
-              </div>
               </div>{/* end scroll */}
             </div>
           )}

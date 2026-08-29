@@ -460,7 +460,7 @@ export default function JapaneseSuperannuationPage() {
 
         <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0', margin: '22px 0 20px' }}>
           <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.7, marginBottom: '8px' }}>
-            還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。
+            還付金が当社の料金を下回った場合は、差額を返金します。当社のサービスでお客様が損をすることはありません。
           </p>
           <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#4C6459' }}>
             ATOへ提出する前に、登録タックスエージェントが確認・承認します。

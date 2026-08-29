@@ -37,9 +37,12 @@ jest.mock('@/lib/will/store', () => ({
     getCustomerById: jest.fn().mockImplementation(() => Promise.resolve(customer)),
     setState: jest.fn().mockImplementation((_id: string, to: string) => {
       setState(_id, to);
+      // Mirror the real store's lost-race semantics: a transition to a state we
+      // are already in returns false (no-op); a real transition returns true.
+      const changed = customer.state !== to;
       customer.state = to;
       if (to === 'PAID') customer.paid = true;   // the real store flips this too
-      return Promise.resolve();
+      return Promise.resolve(changed);
     }),
     addTask, addMessage, audit,
     getSetting: jest.fn().mockResolvedValue('FULL_AUTO'),

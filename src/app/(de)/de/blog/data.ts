@@ -1696,9 +1696,9 @@ Auf Absenden zu drücken war nie der schwere Teil. Schwer ist die Entscheidung, 
 
 ## Wer erstellt deine Erklärung, und wer gibt sie frei?
 
-Zwei verschiedene Stellen, und das mit Absicht. Deine Erklärung wird von unserem Team erstellt, das ausschließlich an 417- und 462-Steuerfragen arbeitet und dieselben Situationen täglich sieht. Danach wird sie vor der Einreichung beim ATO von einem registrierten Steuerberater geprüft und freigegeben.
+Zwei verschiedene Stellen, und das mit Absicht. Deine Erklärung wird von unserem Team erstellt, das ausschließlich an 417- und 462-Steuerfragen arbeitet und dieselben Situationen täglich sieht. Danach wird sie vor der Einreichung beim ATO von einem registrierten Steueragenten geprüft und freigegeben.
 
-Diese Trennung gibt dir Fachwissen und berufliche Verantwortlichkeit zugleich, und sie ist überprüfbar: Die Registrierung des Steuerberaters steht im öffentlichen Register der Steuerpraktiker.
+Diese Trennung gibt dir Fachwissen und berufliche Verantwortlichkeit zugleich, und sie ist überprüfbar: Die Registrierung des Steueragenten steht im öffentlichen Register der Steuerpraktiker.
 
 ## Wie prüfst du, ob jemand mit Steuerhilfe seriös ist?
 
@@ -1934,7 +1934,7 @@ Deshalb ist jede Pauschalaussage über Backpacker und Wohnsitz mit Vorsicht zu l
 
 ## Wie wird die Frage bei uns beantwortet?
 
-Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind. Die Beurteilung geschieht bei der Erstellung deiner [Steuererklärung](/de/tax-return), am ganzen Jahr statt an einer einzelnen Angabe, und wir nehmen die Position ein, die sich gegenüber dem ATO vertreten lässt. Jede Erklärung wird vor der Einreichung von einem registrierten Steuerberater geprüft und freigegeben.
+Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind. Die Beurteilung geschieht bei der Erstellung deiner [Steuererklärung](/de/tax-return), am ganzen Jahr statt an einer einzelnen Angabe, und wir nehmen die Position ein, die sich gegenüber dem ATO vertreten lässt. Jede Erklärung wird vor der Einreichung von einem registrierten Steueragenten geprüft und freigegeben.
 
 Bis dahin rechnet der [Erstattungsrechner](/de/calculator) mit den gewöhnlichen Working-Holiday-Sätzen als Ausgangswert, und für eine erste Zahl ist das der richtige Ansatz. Auf der Withholding Declaration während des Jahres ist die vorsichtige Antwort fast immer die richtige, denn die Wohnsitzfrage wird beim Bescheid geklärt und nicht in der Lohnbuchhaltung.
 `,
@@ -2853,7 +2853,7 @@ Bei 1.000 $ pro Woche liegt der korrekte Einbehalt bei etwa 150 $. Mit fälschli
 
 Zwei Bedingungen müssen zusammen erfüllt sein, und beide sind anspruchsvoll. Die erste ist der steuerliche Wohnsitz: Du musst für das Jahr australischer Steuerresident sein, und das ist eine Beurteilung, die in beide Richtungen leicht falsch ausfällt. Die zweite Bedingung fällt von Person zu Person verschieden aus und lässt sich nicht am Visum ablesen.
 
-Der Hintergrund ist ein Urteil des High Court, Addy v Commissioner of Taxation [2021] HCA 34, ein Fall, über den die Gerichte jahrelang gestritten haben. Wenn selbst Richter sich uneins waren, ist das kein Anspruch, den man sich im Hostel selbst zuspricht. Warum die Frage so schwer zu greifen ist, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers). Die endgültige Position wird erst bei der Erstellung der Steuererklärung bezogen, nachdem dein ganzes Jahr durchgegangen wurde, und jede Erklärung wird vor der Einreichung von einem registrierten Steuerberater geprüft und freigegeben.
+Der Hintergrund ist ein Urteil des High Court, Addy v Commissioner of Taxation [2021] HCA 34, ein Fall, über den die Gerichte jahrelang gestritten haben. Wenn selbst Richter sich uneins waren, ist das kein Anspruch, den man sich im Hostel selbst zuspricht. Warum die Frage so schwer zu greifen ist, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers). Die endgültige Position wird erst bei der Erstellung der Steuererklärung bezogen, nachdem dein ganzes Jahr durchgegangen wurde, und jede Erklärung wird vor der Einreichung von einem registrierten Steueragenten geprüft und freigegeben.
 
 So oder so wird die Frage beim Bescheid geklärt, nicht in der Lohnbuchhaltung. Auch wer am Ende qualifizieren könnte, sollte während des Jahres Nein ankreuzen.
 
@@ -3118,7 +3118,7 @@ Das Erkennungszeichen ist immer dasselbe: eine konkrete Erstattungssumme, verspr
 
 Jeder Steuerberater, der in Australien tätig ist, steht im öffentlichen staatlichen Register der Steuerpraktiker, und es ist durchsuchbar. Die Prüfung dauert eine Minute, und eine seriöse Kanzlei erwartet, dass du sie machst.
 
-Zwei Dinge wird ein Steuerberater mit Registrierung nie brauchen: dein Passwort für dein Behördenkonto und dein Bankinglogin. Der Zugriff auf deine ATO-Daten läuft über einen professionellen Kanal und nicht darüber, sich als du einzuloggen. Jede Aufforderung zu diesen Zugangsdaten ist Betrug, egal wie das Gespräch bis dahin lief. Steuererklärungen, die hier für dich vorbereitet werden, werden vor der Einreichung von einem registrierten Steuerberater geprüft und freigegeben, und diese Registrierung ist im selben öffentlichen Register nachprüfbar.
+Zwei Dinge wird ein Steuerberater mit Registrierung nie brauchen: dein Passwort für dein Behördenkonto und dein Bankinglogin. Der Zugriff auf deine ATO-Daten läuft über einen professionellen Kanal und nicht darüber, sich als du einzuloggen. Jede Aufforderung zu diesen Zugangsdaten ist Betrug, egal wie das Gespräch bis dahin lief. Steuererklärungen, die hier für dich vorbereitet werden, werden vor der Einreichung von einem registrierten Steueragenten geprüft und freigegeben, und diese Registrierung ist im selben öffentlichen Register nachprüfbar.
 
 ## Was, wenn du sie schon an die Falschen gegeben hast?
 

@@ -116,7 +116,7 @@ export async function POST(req: Request) {
 }
 
 async function handlePost(req: Request) {
-  if (!sessionValid()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
+  if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   // APPSEC-05: defence-in-depth CSRF check on this state-changing endpoint (on
   // top of SameSite=Strict on crm_session). Reject a cross-origin Origin; allow
   // when the header is absent (same-origin fetches and some clients omit it).

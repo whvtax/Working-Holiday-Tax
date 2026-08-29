@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
-import { GoogleRating } from '@/components/ui/GoogleRating'
 import { usePathname } from 'next/navigation'
+import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
 import { EMAIL, AGENT_TPB } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
 import { trackWhatsApp } from '@/lib/analytics'
@@ -174,59 +174,33 @@ export function Footer() {
                 <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
 
-              {/* Jo, Aug 2026: the two icon badges are replaced by the same two
-                  trust signals the top of the site opens with, scaled down: the
-                  live Google rating and the registered agent line. */}
-              <div className="mt-6 flex flex-col items-start gap-2">
-                <span className="inline-flex items-center gap-1.5"
-                  style={{ fontSize: '12.5px', color: '#2A3C34', background: '#fff', border: '1px solid #CDE3DB', borderRadius: '100px', padding: '6px 12px' }}>
-                  <svg width="13" height="13" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.1-2 13.7-5.3l-6.3-5.3C29.3 35.1 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.6 5.1C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.3 5.3C40.8 35.6 44 30.3 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
-                  <GoogleRating variant="pill" lang={locale} />
-                </span>
-                {/* Jo's rule: the about page carries no tax agent mention at all,
-                    which covers the seal as well as the sentence. */}
-                {!isAbout && (
-                  /* TRUST HIERARCHY.
-                     The Google pill was enclosed, elevated and 11.7:1, while
-                     the tax agent credential directly below it was smaller,
-                     unenclosed and 5.35:1. Most salient reads as most
-                     important, so a third-party star rating was outranking the
-                     site's strongest credential. `order: -1` puts the seal
-                     first in the flex column and the caption gets the same pill
-                     treatment as the rating. Presentation only: the sentence
-                     below is byte-for-byte unchanged, in all three languages. */
-                  <div style={{ order: -1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
-                    {/* The same Tax Practitioners Board seal the tax form carries
-                        above its first question, so the mark a visitor sees on
-                        the site is the one they see when they hand over details. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/assets/tpb-registered.png"
-                      alt={`${locale === 'de' ? 'Registrierter Steueragent' : locale === 'ja' ? '登録税理士' : 'Registered Tax Agent'} ${AGENT_TPB}`}
-                      width={509}
-                      height={319}
-                      loading="lazy"
-                      decoding="async"
-                      // The asset is a transparent PNG, so it needs no blend
-                      // trick. multiply was tried first and had to go: it would
-                      // have tinted the white ring inside the seal with the
-                      // footer's green.
-                      style={{ display: 'block', width: '104px', height: 'auto', marginTop: '2px' }}
-                    />
-                    <span style={{
-                      fontSize: '12.5px', lineHeight: 1.5, color: '#2A3C34',
-                      background: '#fff', border: '1px solid #CDE3DB',
-                      borderRadius: '12px', padding: '8px 12px',
-                    }}>
-                      {locale === 'de'
-                        ? 'Geprüft und freigegeben von einem registrierten Steueragenten.'
-                        : locale === 'ja'
-                          ? '登録タックスエージェントが確認・承認します。'
-                          : 'Reviewed and signed off by a registered tax agent.'}
-                    </span>
-                  </div>
-                )}
-              </div>
+              {/* Jo, 29 Aug: exactly the form's trust row, scaled down a
+                  touch — the Google Reviews mark and the TPB seal side by
+                  side. The "Reviewed and signed off" pill and the review-count
+                  pill are gone at his request; the seal asset itself carries
+                  the agent number, so the credential is still on the page. */}
+              {!isAbout ? (
+                <div className="mt-6 flex flex-row flex-wrap items-center gap-x-4 gap-y-2"
+                  style={{ transform: 'scale(0.92)', transformOrigin: 'left center' }}>
+                  <GoogleReviewsBadge lang={locale === 'de' ? 'de' : locale === 'ja' ? 'ja' : 'en'} />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/assets/tpb-registered.png"
+                    alt={`${locale === 'de' ? 'Registrierter Steueragent' : locale === 'ja' ? '登録税理士' : 'Registered Tax Agent'} ${AGENT_TPB}`}
+                    width={509}
+                    height={319}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ display: 'block', width: '104px', height: 'auto' }}
+                  />
+                </div>
+              ) : (
+                /* Jo's rule: the about page carries no tax agent mention at
+                   all, which covers the seal as well as the sentence. */
+                <div className="mt-6">
+                  <GoogleReviewsBadge lang={locale === 'de' ? 'de' : locale === 'ja' ? 'ja' : 'en'} />
+                </div>
+              )}
             </div>
 
             {/* Services column */}

@@ -343,6 +343,33 @@ async function handleIncomingInner(
     },
   });
 
+  // ── "They said they paid" — moves the stage in EVERY language. ────────────
+  //
+  // Jo, 29 Aug: whatever language the customer wrote in, the moment the
+  // "payment received" step happens they must move to Paid. That already worked
+  // for a screenshot (handlePaymentProofMedia) and it worked in English by text,
+  // but a text-only "ich habe bezahlt" / "支払いました" moved the stage ONLY if
+  // the model happened to set new_state itself — which it did reliably in
+  // English and not in every language. So the move is no longer left to the
+  // model's memory: if the customer plainly reports a payment (claimsPayment
+  // covers EN/ES/PT/DE/IT/FR/JA and refuses "it was declined" and questions) and
+  // a payment is actually outstanding, the Paid transition is attached to
+  // whatever reply Will produced. The existing machinery then applies it exactly
+  // as before — on auto-send, on approval of the draft, or when the delayed
+  // autopilot reply goes out — including the Paid -> Form Pending cascade. This
+  // is the same trust rule as the screenshot path, made language-proof.
+  if (paymentClaimForcesPaid({
+    paid: customer.paid, state: customer.state,
+    outcomeKind: outcome.kind, outcomeNewState: outcome.newState,
+    hasReply: !!outcome.replyText, text,
+  })) {
+    outcome.newState = 'PAID';
+    outcome.stateChanged = true;
+    await store.audit('system', 'payment_claim_advanced_stage', {
+      customerId: customer.id, from: customer.state, lang: customer.lang ?? null,
+    }).catch(() => {});
+  }
+
   // AI-04: infer the quoted product from the fee actually present in the reply,
   // not exact-string-equality with the template (the model is told to adapt the
   // opening wording, which broke exact matching). $385 => TFN+ABN, $220 => TFN.
@@ -612,6 +639,43 @@ export async function autoAdvanceToForm(customerId: string, _bank: { bsb: string
  *  implementation detail, not something the webhook layer should depend on. */
 const PAYABLE_STATES: CustomerState[] = ['PRICE_SENT', 'PAYMENT_PENDING'];
 
+/**
+ * Should a plain-text payment claim force the Paid transition onto Will's reply,
+ * regardless of the language the customer wrote in and regardless of whether the
+ * model set the state itself?
+ *
+ * TRUE only when ALL of these hold:
+ *   - the customer is not already paid, and is in a state where a payment is
+ *     actually outstanding (PRICE_SENT / PAYMENT_PENDING);
+ *   - Will actually produced a reply that is going out (sent now, queued for a
+ *     short delay, or drafted for approval) — never on a wait or a human-task
+ *     escalation, where there is no reply to carry the transition;
+ *   - the model did not already move them to Paid (nothing to backfill);
+ *   - the message reads as a payment REPORT, not a question and not a failure,
+ *     which is exactly what claimsPayment decides (EN/ES/PT/DE/IT/FR/JA, with a
+ *     guard against "it was declined").
+ *
+ * This mirrors the screenshot path (handlePaymentProofMedia), which already
+ * trusts a captioned "paid" in any language: the two doors to Paid now behave
+ * the same, so the stage never depends on which one the customer used or which
+ * language they used.
+ */
+export function paymentClaimForcesPaid(opts: {
+  paid: boolean;
+  state: CustomerState;
+  outcomeKind: string;
+  outcomeNewState?: CustomerState;
+  hasReply: boolean;
+  text: string;
+}): boolean {
+  return !opts.paid
+    && PAYABLE_STATES.includes(opts.state)
+    && opts.outcomeNewState !== 'PAID'
+    && (opts.outcomeKind === 'sent' || opts.outcomeKind === 'queued' || opts.outcomeKind === 'pending_approval')
+    && opts.hasReply
+    && claimsPayment(opts.text);
+}
+
 /** Owner's rule: we trust the customer — but only once the attachment is
  *  actually confirmed to show a payment. A photo or document sent while a
  *  price is outstanding is looked at by Claude's vision (assessPaymentProofImage)
@@ -670,7 +734,35 @@ async function handlePaymentProofMediaInner(
   // ── ROUTE 2: the picture shows it. ────────────────────────────────────────
   // Only asked when they did not say it, because a paid answer cannot become
   // more paid — and this is a paid model call on every attachment.
+  //
+  // THE DAILY AI BUDGET APPLIES HERE TOO, and this is the only place in the
+  // system where that had never been checked — while being the most expensive
+  // call the system makes. Left ungated, a bad day of attachments could spend
+  // the budget through the one door that does not have a lock on it.
+  //
+  // The gate is safe to add ONLY because of the ordering above: the customer's
+  // own words are read first and cost nothing, so on a budget-exhausted day
+  // the ordinary case (a screenshot captioned "paid") is unaffected. What is
+  // left is the caption-less screenshot, and that does not get quietly
+  // dropped — it returns null, which is the same path as a picture we cannot
+  // download, and lands as a task for a person to open. A payment is never
+  // silently NOT confirmed; it is confirmed by a human instead of a model.
+  //
+  // The budget lookup itself must never be what stops a payment being
+  // confirmed, so a throw inside it is read as "not exhausted" and the check
+  // proceeds exactly as it did before this gate existed. A metering failure is
+  // allowed to cost money; it is not allowed to cost a customer.
+  let overBudget = false;
+  if (!said) {
+    try { overBudget = await aiBudgetExhausted(); } catch { overBudget = false; }
+  }
   let check: { isProof: boolean; reason?: string } = { isProof: false };
+  if (!said && overBudget) {
+    await store.audit('system', 'payment_proof_check_skipped', {
+      customerId: customer.id, reason: 'daily AI budget exhausted; sent to a human instead',
+    });
+    return null;
+  }
   if (!said) {
     const fetched = await fetchWaMedia(meta.media.id);
     if (!fetched.ok) {
@@ -716,7 +808,18 @@ async function handlePaymentProofMediaInner(
     return (await store.getCustomerByWaId(waId)) ?? customer;
   }
 
-  await store.setState(customer.id, 'PAID', 'SYSTEM'); // also flips customer.paid = true
+  // setState now reports whether THIS call performed the PAID transition. On
+  // false, another serverless instance already confirmed the same payment (two
+  // Meta deliveries for one customer landing on two warm instances), so it has
+  // already sent the "payment received" message and advanced the stage. Sending
+  // again here is exactly the duplicate the in-process mutex cannot prevent
+  // across instances. Return the current row without re-sending. The same-
+  // instance case is still covered by queueForCustomer upstream.
+  const won = await store.setState(customer.id, 'PAID', 'SYSTEM'); // also flips customer.paid = true
+  if (!won) {
+    await store.audit('system', 'payment_confirmed_by_other_instance', { customerId: customer.id });
+    return (await store.getCustomerByWaId(waId)) ?? customer;
+  }
   const bank = await getBank();
   await autoAdvanceToForm(customer.id, bank);
 
