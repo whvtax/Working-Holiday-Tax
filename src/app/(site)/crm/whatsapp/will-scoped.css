@@ -215,8 +215,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 /* Right side of a chat-list row: the stage chip, with a small green follow-up
    tick stacked directly ABOVE it when one is scheduled. */
 .will-scope .cright{display:flex;flex-direction:column;align-items:center;gap:1px;flex:none}
-.will-scope .cright .fu-tick{display:flex;align-items:center;justify-content:center;color:#4aa872;line-height:0}
-.will-scope .cright .fu-tick svg{display:block}
+.will-scope .cright .fu-dot{width:9px;height:9px;border-radius:50%;background:#22c55e;flex:none;box-shadow:0 0 0 2px color-mix(in srgb,#22c55e 22%, transparent)}
 /* Clickable stage badge + manual-move dropdown (owner override). */
 .will-scope .stagepick{position:relative;display:inline-flex}
 .will-scope .cstate-btn{border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px}

@@ -991,9 +991,7 @@ export default function Dashboard() {
                             so at a glance he knows it is being chased and there is
                             nothing for him to do on it. */}
                         {followupSet.has(c.id) && (
-                          <span className="fu-tick" title="Follow-up scheduled — already being chased, nothing to do" aria-label="Follow-up scheduled">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          </span>
+                          <span className="fu-dot" title="Follow-up scheduled — already being chased, nothing to do" aria-label="Follow-up scheduled" />
                         )}
                         {showUnread
                           ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>

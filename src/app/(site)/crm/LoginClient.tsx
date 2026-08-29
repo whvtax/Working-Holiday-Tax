@@ -79,12 +79,13 @@ export default function LoginClient() {
         display: 'grid',
         placeItems: 'center',
         padding: 20,
-        /* Jo's photo, full-bleed behind the whole screen. `cover` and a fixed
-           centre so it fills any window without distorting; the source is
-           831×508, so on a wide monitor it is upscaled and will read soft —
-           there is no more detail in the file to show. */
+        /* Jo's photo, shown WHOLE at its own aspect ratio — `contain`, not
+           `cover`, so nothing is zoomed in or cropped off the top and bottom.
+           The dark ground fills the letterbox area around it so the framing
+           reads as intentional rather than as empty space. */
+        backgroundColor: '#141a22',
         backgroundImage: 'url(/assets/crm-login.webp)',
-        backgroundSize: 'cover',
+        backgroundSize: 'contain',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
       }}
