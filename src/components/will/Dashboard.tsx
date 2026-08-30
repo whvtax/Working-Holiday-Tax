@@ -447,6 +447,14 @@ export default function Dashboard() {
   const [asstMsgs, setAsstMsgs] = useState<AsstMsg[]>([]);
   const [asstInput, setAsstInput] = useState('');
   const [asstBusy, setAsstBusy] = useState(false);
+  // TWO SEPARATE AGENTS (Jo, 30 Aug). The left "Open tasks" column is its OWN
+  // agent: a sweep that scans the whole pipeline for ways to advance a sale and
+  // fills this list with action cards. The right "Ask Will" chat (asstMsgs) is
+  // the separate interactive agent Jo talks to. `taskProposals` is the sweep's
+  // output; `tasksBusy` is its own loading state so it never blocks the chat.
+  const [taskProposals, setTaskProposals] = useState<AsstProposal[]>([]);
+  const [tasksBusy, setTasksBusy] = useState(false);
+  const [tasksNote, setTasksNote] = useState('');
   // Proposal ids already acted on (approved/dismissed), so a button cannot be
   // pressed twice and the card shows its outcome.
   const [asstDone, setAsstDone] = useState<Record<string, 'approved' | 'dismissed'>>({});
@@ -557,39 +565,73 @@ export default function Dashboard() {
     refresh();
   }, [asstDone, asstRunning, asstEdit, refresh]);
 
-  // The proactive briefing. Runs a fresh scan (ignores the ongoing chat on
-  // purpose) and appends the copilot's own suggestions. Fired automatically on
-  // first open, and by the "refresh ideas" button in the header.
+  // One action-card renderer, shared by the Open-tasks column (agent 1) and the
+  // chat's own inline cards (agent 2), so both look and behave identically.
+  const renderProposalCard = (p: AsstProposal) => {
+    const running = asstRunning[p.id];
+    return (
+      <div key={p.id} className={`asst-card${p.customerId ? ' clickable' : ''}`} onClick={() => { if (p.customerId) { setView('chats'); openChat(p.customerId); } }}>
+        <div className="asst-prop-head">
+          <span className="asst-card-num">{p.customerPhone ? phoneOf(p.customerPhone) : p.customerLabel}</span>
+        </div>
+        {p.why && <div className="asst-prop-why">{p.why}</div>}
+        {p.kind === 'send_reply' && (
+          <textarea
+            className="asst-prop-text"
+            value={asstEdit[p.id] ?? p.message ?? ''}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => setAsstEdit((d) => ({ ...d, [p.id]: e.target.value }))}
+            rows={3}
+          />
+        )}
+        {p.kind === 'open_task' && p.message && (
+          <div className="asst-prop-draft">Draft: “{p.message}”</div>
+        )}
+        {running ? (
+          <div className="asst-prop-running"><span className="asst-spin" aria-hidden="true" />Working…</div>
+        ) : (
+          <div className="asst-prop-actions">
+            <button className="btn take sm" onClick={(e) => { e.stopPropagation(); approveProposal(p); }}>
+              {p.kind === 'send_reply' ? 'Send' : p.kind === 'move_stage' ? 'Move' : 'Open task'}
+            </button>
+            <button className="btn quiet sm" onClick={(e) => { e.stopPropagation(); setAsstDone((d) => ({ ...d, [p.id]: 'dismissed' })); }}>Dismiss</button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // AGENT 1: the Open-tasks sweep. Scans the whole pipeline for ways to move a
+  // sale forward and fills the LEFT column with action cards. Separate from the
+  // chat: it writes to taskProposals, never to the conversation. Fired once on
+  // open and by the refresh button on the Open tasks title.
   const briefAsst = useCallback(async () => {
-    if (asstBusy) return;
-    setAsstBusy(true);
-    const kickoff = 'עשה סקירה יזומה עכשיו. תעבור על הפייפ, על הלקוחות, וגם על ה-Closed כדי לראות מי עוד אפשר להציל. תביא לי כרטיס פעולה לכל לקוח שיש עליו פעולה אמיתית, בלי הגבלה של כמות, הרשימה נגללת אז הרבה כרטיסים זה טוב. רק ככרטיסי פעולה עם כפתור מוכן (שלח / הזז / פתח משימה), לא כטקסט ולא כרשימה. אל תציע כלום על מי שכבר יש לו פולו אפ מתוזמן, הוא כבר בטיפול. שורת פתיחה אחת קצרה לכל היותר, ואז הכרטיסים. אם אין שום דבר לעשות, כתוב שורה אחת שהכל על המסלול.';
+    if (tasksBusy) return;
+    setTasksBusy(true);
+    const kickoff = 'אתה הסוכן של רשימת המשימות. סרוק עכשיו את כל הפייפליין, כל הלקוחות, וגם את ה-Closed, ומצא כל מקום שאפשר לקדם בו מכירה או שצריך פעולה. תביא כרטיס פעולה לכל לקוח כזה, בלי הגבלת כמות, הרשימה נגללת. רק כרטיסי פעולה עם כפתור מוכן (שלח / הזז / פתח משימה), בלי טקסט ובלי רשימה. אל תציע כלום על מי שכבר יש לו פולו אפ מתוזמן. אם אין באמת שום דבר לעשות, אל תחזיר כרטיסים בכלל.';
     try {
       const res = await fetch('/api/will/assistant', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ messages: [{ role: 'user', text: kickoff }] }),
       });
       const d = await res.json().catch(() => ({}));
-      setAsstMsgs((prev) => [...prev, {
-        role: 'assistant',
-        text: typeof d.reply === 'string' && d.reply.trim() ? d.reply : 'לא הצלחתי להביא סקירה כרגע.',
-        proposals: remapProps(d.proposals),
-        error: d.ok === false,
-      }]);
+      const ps = remapProps(d.proposals);
+      setTaskProposals(ps);
+      setTasksNote(ps.length ? '' : (typeof d.reply === 'string' && d.reply.trim() ? d.reply : 'הכל על המסלול, אין משימה פתוחה כרגע'));
     } catch {
-      setAsstMsgs((prev) => [...prev, { role: 'assistant', text: 'לא הצלחתי להגיע לשרת. נסה שוב.', error: true }]);
+      setTasksNote('לא הצלחתי לרענן משימות. נסה שוב.');
     } finally {
-      setAsstBusy(false);
+      setTasksBusy(false);
     }
-  }, [asstBusy]);
+  }, [tasksBusy]);
 
-  // Fire the proactive opening once, the first time the Overview is shown.
+  // Fire the sweep once, the first time the Overview is shown.
   useEffect(() => {
-    if (view === 'pipeline' && !asstKickedRef.current && asstMsgs.length === 0 && !asstBusy) {
+    if (view === 'pipeline' && !asstKickedRef.current && taskProposals.length === 0 && !tasksBusy) {
       asstKickedRef.current = true;
       briefAsst();
     }
-  }, [view, asstMsgs.length, asstBusy, briefAsst]);
+  }, [view, taskProposals.length, tasksBusy, briefAsst]);
 
   // Keep the copilot transcript pinned to the newest message.
   useEffect(() => {
@@ -1031,59 +1073,43 @@ export default function Dashboard() {
                 — every action is a one-click button that runs through the same
                 guarded /api/will/actions path as the rest of the CRM. */}
             <div className="asst">
-              {/* Two-column cockpit (Jo, 30 Aug): action cards as a vertical
-                  list on the LEFT, the chat on the RIGHT. Each open proposal is a
-                  card with its ready action; the whole card opens that chat.
-                  Acting on a card (Send / Move / Open / Dismiss) removes it. */}
+              {/* Two SEPARATE agents (Jo, 30 Aug). LEFT "Open tasks" is the sweep
+                  agent: it scans the whole pipeline for sales to advance and fills
+                  this column with action cards. RIGHT "Ask Will" is the separate
+                  interactive chat; its own action cards render inline in the
+                  conversation. The two never mix. */}
               <div className="asst-body">
                 <div className="asst-tasks">
-                  <div className="asst-coltitle">Open tasks</div>
+                  <div className="asst-coltitle">
+                    <span>Open tasks</span>
+                    <button className={`asst-taskrefresh${tasksBusy ? ' spinning' : ''}`} title="רענן משימות" onClick={briefAsst} disabled={tasksBusy} aria-label="Refresh tasks">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                    </button>
+                  </div>
                   <div className="asst-tasks-scroll">
                   {(() => {
-                    const active = asstMsgs.flatMap((m) => m.proposals ?? []).filter((p) => !asstDone[p.id]);
-                    if (active.length === 0) return <div className="asst-tasks-empty">אין משימות פתוחות</div>;
-                    return active.map((p) => {
-                      const running = asstRunning[p.id];
-                      return (
-                        <div key={p.id} className={`asst-card${p.customerId ? ' clickable' : ''}`} onClick={() => { if (p.customerId) { setView('chats'); openChat(p.customerId); } }}>
-                          <div className="asst-prop-head">
-                            <span className="asst-card-num">{p.customerPhone ? phoneOf(p.customerPhone) : p.customerLabel}</span>
-                          </div>
-                          {p.why && <div className="asst-prop-why">{p.why}</div>}
-                          {p.kind === 'send_reply' && (
-                            <textarea
-                              className="asst-prop-text"
-                              value={asstEdit[p.id] ?? p.message ?? ''}
-                              onClick={(e) => e.stopPropagation()}
-                              onChange={(e) => setAsstEdit((d) => ({ ...d, [p.id]: e.target.value }))}
-                              rows={3}
-                            />
-                          )}
-                          {p.kind === 'open_task' && p.message && (
-                            <div className="asst-prop-draft">Draft: “{p.message}”</div>
-                          )}
-                          {running ? (
-                            <div className="asst-prop-running"><span className="asst-spin" aria-hidden="true" />Working…</div>
-                          ) : (
-                            <div className="asst-prop-actions">
-                              <button className="btn take sm" onClick={(e) => { e.stopPropagation(); approveProposal(p); }}>
-                                {p.kind === 'send_reply' ? 'Send' : p.kind === 'move_stage' ? 'Move' : 'Open task'}
-                              </button>
-                              <button className="btn quiet sm" onClick={(e) => { e.stopPropagation(); setAsstDone((d) => ({ ...d, [p.id]: 'dismissed' })); }}>Dismiss</button>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    });
+                    const active = taskProposals.filter((p) => !asstDone[p.id]);
+                    if (active.length === 0) {
+                      return <div className="asst-tasks-empty">{tasksBusy ? 'סורק את הפייפ…' : (tasksNote || 'אין משימות פתוחות')}</div>;
+                    }
+                    return active.map(renderProposalCard);
                   })()}
                   </div>
                 </div>
                 <div className="asst-chatcol">
                   <div className="asst-coltitle in-chat"><span className="asst-dot" />Ask {ASSISTANT_NAME}</div>
                   <div className="asst-scroll" ref={asstScrollRef}>
+                    {asstMsgs.length === 0 && !asstBusy && (
+                      <div className="asst-chat-empty">שאל אותי משהו, או תגיד לי מה לעשות. למשל: "תיצור משימה עבור לקוח X", או "תעבור על שלב הביקורת".</div>
+                    )}
                     {asstMsgs.map((m, i) => (
                       <div key={i} className={`asst-msg ${m.role}`}>
                         <div className={`asst-bubble ${m.error ? 'err' : ''}`}>{m.text}</div>
+                        {m.proposals && m.proposals.filter((p) => !asstDone[p.id]).length > 0 && (
+                          <div className="asst-inline-cards">
+                            {m.proposals.filter((p) => !asstDone[p.id]).map(renderProposalCard)}
+                          </div>
+                        )}
                       </div>
                     ))}
                     {asstBusy && (

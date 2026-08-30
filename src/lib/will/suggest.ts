@@ -131,12 +131,19 @@ export async function suggestReply(
 ): Promise<string> {
   if (preferred && preferred.trim()) return preferred.trim();
 
-  // 1. The library. This is the whole point of having curated it: the answer Jo
-  //    approved for this question is better than anything assembled here.
+  // 1. The library, but only on a STRONG match. This suggestion is returned
+  //    verbatim, unlike the live engine which shows the same hit to the model as
+  //    a reference it can ignore. So a weak lexical overlap must NOT be proposed:
+  //    that is how "I already lodged it myself" once pulled up an unrelated
+  //    answer about a closed bank account (Jo, 30 Aug), because a single shared
+  //    word cleared the retrieval floor. Require a clearly relevant hit here;
+  //    below that, fall through to the pipeline/reason wording, which is always
+  //    safe to put in front of the owner.
+  const SUGGEST_MIN_SCORE = 0.6;
   if (customerMessage && customerMessage.trim()) {
     try {
       const hits = await retrieveKnowledge(customerMessage, { lang: customer?.lang ?? undefined, k: 1 });
-      if (hits.length && hits[0].answer.trim()) return hits[0].answer.trim();
+      if (hits.length && hits[0].score >= SUGGEST_MIN_SCORE && hits[0].answer.trim()) return hits[0].answer.trim();
     } catch { /* the library is a bonus, never a dependency */ }
   }
 

@@ -1103,3 +1103,19 @@ aside.side{
    same top so the two columns read as aligned. */
 .will-scope .asst-coltitle{flex:none;font-size:12.5px;font-weight:700;color:var(--ink);padding:4px 4px 10px;display:flex;align-items:center;gap:8px}
 .will-scope .asst-coltitle.in-chat{padding:12px 16px;border-bottom:1px solid var(--line);color:var(--ink)}
+
+/* Refresh button on the Open tasks title (Jo, 30 Aug): re-runs the sweep. */
+.will-scope .asst-taskrefresh{
+  margin-left:auto;width:28px;height:28px;border-radius:8px;flex:none;
+  border:1px solid var(--line2);background:var(--surface);color:var(--ink3);
+  display:grid;place-items:center;cursor:pointer;
+  transition:color 140ms,border-color 140ms;
+}
+.will-scope .asst-taskrefresh:hover:not(:disabled){color:var(--brand1);border-color:var(--brand1)}
+.will-scope .asst-taskrefresh:disabled{opacity:.5;cursor:default}
+
+/* Two-agent separation (Jo, 30 Aug): the chat's own action cards render inline
+   under its message; the refresh icon spins while the sweep runs. */
+.will-scope .asst-inline-cards{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:2px}
+.will-scope .asst-chat-empty{margin:auto 0;color:var(--ink3);font-size:12px;line-height:1.6;padding:8px 2px}
+.will-scope .asst-taskrefresh.spinning svg{animation:asstspin .8s linear infinite}
