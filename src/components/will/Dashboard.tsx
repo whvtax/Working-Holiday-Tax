@@ -1033,9 +1033,6 @@ export default function Dashboard() {
             <div className="asst">
               <div className="asst-head">
                 <div className="asst-title"><span className="asst-dot" />Ask {ASSISTANT_NAME}</div>
-                <button className="asst-refresh" title="רענן רעיונות" onClick={briefAsst} disabled={asstBusy} aria-label="Refresh ideas">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
-                </button>
               </div>
               {/* Two-column cockpit (Jo, 30 Aug): action cards as a vertical
                   list on the LEFT, the chat on the RIGHT. Each open proposal is a
