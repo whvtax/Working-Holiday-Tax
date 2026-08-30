@@ -15,7 +15,7 @@ import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/c
 import { resolveAiMode } from '@/lib/will/mode';
 import { suggestReply } from '@/lib/will/suggest';
 import { APPROVED } from '@/lib/will/approved-messages';
-import { canSendEstimate, stateAfterEstimate, composeEstimate } from '@/lib/will/estimate-send';
+import { stateAfterEstimate, composeEstimate } from '@/lib/will/estimate-send';
 import { afterHumanReply } from '@/lib/will/after-reply';
 
 export const dynamic = 'force-dynamic';
@@ -606,9 +606,14 @@ async function handlePost(req: Request) {
 
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
-      if (!canSendEstimate(customer.state)) {
-        return bad('the estimate can only be sent once the questionnaire is back');
-      }
+      // No pipeline-stage gate (Jo, 30 Aug). The owner can send the estimate and
+      // invoice from ANY stage: this is a deliberate manual action with a typed
+      // amount and a typed invoice link, and the completed CRM task is itself the
+      // proof the work is done - so whatever stage the linked WhatsApp chat
+      // happens to sit at must not block it. stateAfterEstimate still leaves
+      // anyone already at Signature or beyond exactly where they are (a
+      // correction resend never drags a signed return backwards); everyone else
+      // lands at Signature.
 
       const amountCents = Math.round(b.amountCents);
       // Filled here rather than in humanSend: the amount comes from this
