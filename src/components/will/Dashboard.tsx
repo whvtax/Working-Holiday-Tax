@@ -523,10 +523,21 @@ export default function Dashboard() {
         body: JSON.stringify({ messages: history.map((m) => ({ role: m.role, text: m.text })) }),
       });
       const d = await res.json().catch(() => ({}));
+      // The chat stays text only. Any action proposals the turn produced go to
+      // the LEFT Open-tasks column, never into the conversation (Jo, 30 Aug:
+      // "למה בצאט?" — no cards in the chat). New proposals are appended so a
+      // card the owner asked for joins the sweep's cards rather than replacing
+      // them.
+      const newProps = remapProps(d.proposals);
+      if (newProps.length) {
+        setTaskProposals((prev) => [...newProps, ...prev]);
+        setTasksNote('');
+      }
       setAsstMsgs((prev) => [...prev, {
         role: 'assistant',
-        text: typeof d.reply === 'string' && d.reply.trim() ? d.reply : 'Sorry, I could not answer that.',
-        proposals: remapProps(d.proposals),
+        text: typeof d.reply === 'string' && d.reply.trim()
+          ? d.reply
+          : (newProps.length ? 'הוספתי את זה למשימות משמאל.' : 'Sorry, I could not answer that.'),
         error: d.ok === false,
       }]);
     } catch {
@@ -1076,8 +1087,9 @@ export default function Dashboard() {
               {/* Two SEPARATE agents (Jo, 30 Aug). LEFT "Open tasks" is the sweep
                   agent: it scans the whole pipeline for sales to advance and fills
                   this column with action cards. RIGHT "Ask Will" is the separate
-                  interactive chat; its own action cards render inline in the
-                  conversation. The two never mix. */}
+                  interactive chat; it stays text only, and any card it produces
+                  is appended to this same LEFT column (Jo, 30 Aug: no cards in
+                  the chat). Every card lives here. */}
               <div className="asst-body">
                 <div className="asst-tasks">
                   <div className="asst-coltitle">
@@ -1102,11 +1114,6 @@ export default function Dashboard() {
                     {asstMsgs.map((m, i) => (
                       <div key={i} className={`asst-msg ${m.role}`}>
                         <div className={`asst-bubble ${m.error ? 'err' : ''}`}>{m.text}</div>
-                        {m.proposals && m.proposals.filter((p) => !asstDone[p.id]).length > 0 && (
-                          <div className="asst-inline-cards">
-                            {m.proposals.filter((p) => !asstDone[p.id]).map(renderProposalCard)}
-                          </div>
-                        )}
                       </div>
                     ))}
                     {asstBusy && (
