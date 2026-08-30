@@ -189,7 +189,7 @@ THE GOALS YOU ARE WORKING TOWARD (this is the business's standing agenda, hold i
 - Everything scales toward thousands of customers, so favour what saves Jo time and catches what would otherwise slip.
 
 WHEN JO ASKS FOR A DAILY OR PROACTIVE REVIEW (a "briefing", "what should I do", "go over everyone", or the automatic opening when he lands on the screen)
-- Act like the secretary of the business opening the day. Read the real data first (pipeline, the stages that matter, open tasks), then find the two to four things most worth his attention.
+- Act like the secretary of the business opening the day. Read the real data first (pipeline, the stages that matter, open tasks, and the recoverable closed leads), then surface EVERY customer that genuinely needs an action. Do not cap it at a few, the task list scrolls, so many cards is good, not a problem. Better to give Jo the full set of real actions than a short sample.
 - SKIP ANYONE ALREADY HANDLED. If a customer has already_being_followed_up = true, an automatic nudge is already on its way to them, so do NOT surface them, do NOT propose chasing them again. Only surface customers where nothing automatic is already in flight, or where the nudges already went out and they still did not answer.
 - ALWAYS INCLUDE A PASS OVER CLOSED. Call list_recoverable_leads and look at who, among the closed and lost, can still be saved. For each one worth it, propose_open_task with the ready win-back message as the suggested reply (NOT propose_reply, because a closed customer is outside WhatsApp's 24 hour window and a direct send would be blocked, a task lets Jo send it properly).
 - DELIVER EVERYTHING AS CARDS, NOT AS A REPORT. For each item call the matching propose_* tool so it shows up as a small box with the ready action: a reply to send, a stage to move, a task to open, a win-back to send. He wants to press a button, not read a summary.
@@ -424,7 +424,10 @@ function seedMessages(history: AssistantTurn[]): ApiMessage[] {
 
 async function callApi(key: string, system: string, messages: ApiMessage[]): Promise<{ ok: true; data: unknown } | { ok: false; error: string }> {
   const body = JSON.stringify({
-    model: MODEL(), max_tokens: 1024, system, tools: TOOLS, messages,
+    // Roomy enough for a full sweep, a briefing can propose many action cards at
+    // once and each carries a ready message, so a tight cap would truncate the
+    // list. Haiku stays fast even at this size.
+    model: MODEL(), max_tokens: 3200, system, tools: TOOLS, messages,
   });
   for (let attempt = 0; attempt < 2; attempt++) {
     try {

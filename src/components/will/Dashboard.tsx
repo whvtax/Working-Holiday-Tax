@@ -563,7 +563,7 @@ export default function Dashboard() {
   const briefAsst = useCallback(async () => {
     if (asstBusy) return;
     setAsstBusy(true);
-    const kickoff = 'עשה סקירה קצרה ויזומה עכשיו. תעבור על הפייפ, על הלקוחות, וגם על ה-Closed כדי לראות מי עוד אפשר להציל. תביא לי 2 עד 4 הדברים הכי שווים כרגע, אבל אך ורק ככרטיסי פעולה עם כפתור מוכן (שלח / הזז / פתח משימה), לא כטקסט ארוך ולא כרשימה. אל תציע כלום על מי שכבר יש לו פולו אפ מתוזמן, הוא כבר בטיפול. שורת פתיחה אחת קצרה לכל היותר, ואז הכרטיסים. אם אין שום דבר לעשות, כתוב שורה אחת שהכל על המסלול.';
+    const kickoff = 'עשה סקירה יזומה עכשיו. תעבור על הפייפ, על הלקוחות, וגם על ה-Closed כדי לראות מי עוד אפשר להציל. תביא לי כרטיס פעולה לכל לקוח שיש עליו פעולה אמיתית, בלי הגבלה של כמות, הרשימה נגללת אז הרבה כרטיסים זה טוב. רק ככרטיסי פעולה עם כפתור מוכן (שלח / הזז / פתח משימה), לא כטקסט ולא כרשימה. אל תציע כלום על מי שכבר יש לו פולו אפ מתוזמן, הוא כבר בטיפול. שורת פתיחה אחת קצרה לכל היותר, ואז הכרטיסים. אם אין שום דבר לעשות, כתוב שורה אחת שהכל על המסלול.';
     try {
       const res = await fetch('/api/will/assistant', {
         method: 'POST', headers: { 'content-type': 'application/json' },
@@ -1037,6 +1037,8 @@ export default function Dashboard() {
                   Acting on a card (Send / Move / Open / Dismiss) removes it. */}
               <div className="asst-body">
                 <div className="asst-tasks">
+                  <div className="asst-coltitle">Open tasks</div>
+                  <div className="asst-tasks-scroll">
                   {(() => {
                     const active = asstMsgs.flatMap((m) => m.proposals ?? []).filter((p) => !asstDone[p.id]);
                     if (active.length === 0) return <div className="asst-tasks-empty">אין משימות פתוחות</div>;
@@ -1074,8 +1076,10 @@ export default function Dashboard() {
                       );
                     });
                   })()}
+                  </div>
                 </div>
                 <div className="asst-chatcol">
+                  <div className="asst-coltitle in-chat"><span className="asst-dot" />Ask {ASSISTANT_NAME}</div>
                   <div className="asst-scroll" ref={asstScrollRef}>
                     {asstMsgs.map((m, i) => (
                       <div key={i} className={`asst-msg ${m.role}`}>
@@ -1096,7 +1100,9 @@ export default function Dashboard() {
                       onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAsst(asstInput); } }}
                       rows={1}
                     />
-                    <button className="btn take" type="submit" disabled={asstBusy || !asstInput.trim()}>Send</button>
+                    <button className="btn take asst-send" type="submit" disabled={asstBusy || !asstInput.trim()} aria-label="Send">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+                    </button>
                   </form>
                 </div>
               </div>
