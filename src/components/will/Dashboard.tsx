@@ -1031,9 +1031,6 @@ export default function Dashboard() {
                 — every action is a one-click button that runs through the same
                 guarded /api/will/actions path as the rest of the CRM. */}
             <div className="asst">
-              <div className="asst-head">
-                <div className="asst-title"><span className="asst-dot" />Ask {ASSISTANT_NAME}</div>
-              </div>
               {/* Two-column cockpit (Jo, 30 Aug): action cards as a vertical
                   list on the LEFT, the chat on the RIGHT. Each open proposal is a
                   card with its ready action; the whole card opens that chat.
