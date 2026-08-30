@@ -440,7 +440,7 @@ export default function Dashboard() {
   // /api/will/actions, so nothing here mutates without an explicit press.
   interface AsstProposal {
     id: string; kind: 'move_stage' | 'send_reply' | 'open_task';
-    customerId: string; customerLabel: string;
+    customerId: string; customerLabel: string; customerPhone?: string;
     toState?: CustomerState; toStateLabel?: string; message?: string; reason?: string; why?: string;
   }
   interface AsstMsg { role: 'user' | 'assistant'; text: string; proposals?: AsstProposal[]; error?: boolean }
@@ -1037,31 +1037,28 @@ export default function Dashboard() {
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
                 </button>
               </div>
-              {/* Action cards (Jo, 30 Aug): a horizontal, side-scrolling row of
-                  rectangles ABOVE the chat, not inside it. Each open proposal
-                  from any answer sits here as a card with its ready action; the
-                  chat below stays for the conversation itself. Acting on a card
-                  (Send / Move / Open / Dismiss) removes it from the row. */}
-              {(() => {
-                const active = asstMsgs.flatMap((m) => m.proposals ?? []).filter((p) => !asstDone[p.id]);
-                if (active.length === 0) return null;
-                return (
-                  <div className="asst-cardrow">
-                    {active.map((p) => {
+              {/* Two-column cockpit (Jo, 30 Aug): action cards as a vertical
+                  list on the LEFT, the chat on the RIGHT. Each open proposal is a
+                  card with its ready action; the whole card opens that chat.
+                  Acting on a card (Send / Move / Open / Dismiss) removes it. */}
+              <div className="asst-body">
+                <div className="asst-tasks">
+                  {(() => {
+                    const active = asstMsgs.flatMap((m) => m.proposals ?? []).filter((p) => !asstDone[p.id]);
+                    if (active.length === 0) return <div className="asst-tasks-empty">אין משימות פתוחות</div>;
+                    return active.map((p) => {
                       const running = asstRunning[p.id];
                       return (
-                        <div key={p.id} className="asst-card">
+                        <div key={p.id} className={`asst-card${p.customerId ? ' clickable' : ''}`} onClick={() => { if (p.customerId) { setView('chats'); openChat(p.customerId); } }}>
                           <div className="asst-prop-head">
-                            <span className="asst-prop-kind">
-                              {p.kind === 'move_stage' ? `Move to ${p.toStateLabel}` : p.kind === 'send_reply' ? 'Send a reply' : 'Open a task'}
-                            </span>
-                            <span className="asst-prop-who">{p.customerLabel}</span>
+                            <span className="asst-card-num">{p.customerPhone ? phoneOf(p.customerPhone) : p.customerLabel}</span>
                           </div>
                           {p.why && <div className="asst-prop-why">{p.why}</div>}
                           {p.kind === 'send_reply' && (
                             <textarea
                               className="asst-prop-text"
                               value={asstEdit[p.id] ?? p.message ?? ''}
+                              onClick={(e) => e.stopPropagation()}
                               onChange={(e) => setAsstEdit((d) => ({ ...d, [p.id]: e.target.value }))}
                               rows={3}
                             />
@@ -1073,41 +1070,42 @@ export default function Dashboard() {
                             <div className="asst-prop-running"><span className="asst-spin" aria-hidden="true" />Working…</div>
                           ) : (
                             <div className="asst-prop-actions">
-                              <button className="btn take sm" onClick={() => approveProposal(p)}>
+                              <button className="btn take sm" onClick={(e) => { e.stopPropagation(); approveProposal(p); }}>
                                 {p.kind === 'send_reply' ? 'Send' : p.kind === 'move_stage' ? 'Move' : 'Open task'}
                               </button>
-                              <button className="btn quiet sm" onClick={() => setAsstDone((d) => ({ ...d, [p.id]: 'dismissed' }))}>Dismiss</button>
-                              {p.customerId && <button className="btn ghost sm" onClick={() => { setView('chats'); openChat(p.customerId); }}>Open chat →</button>}
+                              <button className="btn quiet sm" onClick={(e) => { e.stopPropagation(); setAsstDone((d) => ({ ...d, [p.id]: 'dismissed' })); }}>Dismiss</button>
                             </div>
                           )}
                         </div>
                       );
-                    })}
+                    });
+                  })()}
+                </div>
+                <div className="asst-chatcol">
+                  <div className="asst-scroll" ref={asstScrollRef}>
+                    {asstMsgs.map((m, i) => (
+                      <div key={i} className={`asst-msg ${m.role}`}>
+                        <div className={`asst-bubble ${m.error ? 'err' : ''}`}>{m.text}</div>
+                      </div>
+                    ))}
+                    {asstBusy && (
+                      <div className="asst-msg assistant">
+                        <div className="asst-bubble asst-typing"><span /><span /><span /></div>
+                      </div>
+                    )}
                   </div>
-                );
-              })()}
-              <div className="asst-scroll" ref={asstScrollRef}>
-                {asstMsgs.map((m, i) => (
-                  <div key={i} className={`asst-msg ${m.role}`}>
-                    <div className={`asst-bubble ${m.error ? 'err' : ''}`}>{m.text}</div>
-                  </div>
-                ))}
-                {asstBusy && (
-                  <div className="asst-msg assistant">
-                    <div className="asst-bubble asst-typing"><span /><span /><span /></div>
-                  </div>
-                )}
+                  <form className="asst-composer" onSubmit={(e) => { e.preventDefault(); sendAsst(asstInput); }}>
+                    <textarea
+                      value={asstInput}
+                      placeholder={`Ask ${ASSISTANT_NAME}, or tell me what to do…`}
+                      onChange={(e) => setAsstInput(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAsst(asstInput); } }}
+                      rows={1}
+                    />
+                    <button className="btn take" type="submit" disabled={asstBusy || !asstInput.trim()}>Send</button>
+                  </form>
+                </div>
               </div>
-              <form className="asst-composer" onSubmit={(e) => { e.preventDefault(); sendAsst(asstInput); }}>
-                <textarea
-                  value={asstInput}
-                  placeholder={`Ask ${ASSISTANT_NAME}, or tell me what to do…`}
-                  onChange={(e) => setAsstInput(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAsst(asstInput); } }}
-                  rows={1}
-                />
-                <button className="btn take" type="submit" disabled={asstBusy || !asstInput.trim()}>Send</button>
-              </form>
             </div>
           </section>
         )}

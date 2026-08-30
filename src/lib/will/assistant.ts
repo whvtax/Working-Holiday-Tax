@@ -33,6 +33,8 @@ export interface Proposal {
   customerId: string;
   /** A human label for the card, e.g. the phone number and what will happen. */
   customerLabel: string;
+  /** The customer's raw WhatsApp number, so the card can show just the number. */
+  customerPhone: string;
   /** move_stage */
   toState?: CustomerState;
   toStateLabel?: string;
@@ -380,7 +382,7 @@ async function runProposeTool(
     if (!ALL_STATES.includes(to)) return { error: 'unknown state' };
     if (to === c.state) return { error: `already in ${STATE_LABELS[to]}` };
     proposals.push({
-      id: pid, kind: 'move_stage', customerId: c.id, customerLabel: phoneLabel(c),
+      id: pid, kind: 'move_stage', customerId: c.id, customerLabel: phoneLabel(c), customerPhone: c.waId,
       toState: to, toStateLabel: STATE_LABELS[to], why: stripDashes(String(input.reason ?? '')),
     });
     return { proposed: true, note: `Shown to the owner as a one-click button: move ${phoneLabel(c)} to ${STATE_LABELS[to]}.` };
@@ -390,7 +392,7 @@ async function runProposeTool(
     if (!msg) return { error: 'empty message' };
     if (c.optedOut) return { error: 'this customer opted out; a reply cannot be sent' };
     proposals.push({
-      id: pid, kind: 'send_reply', customerId: c.id, customerLabel: phoneLabel(c),
+      id: pid, kind: 'send_reply', customerId: c.id, customerLabel: phoneLabel(c), customerPhone: c.waId,
       message: msg.slice(0, 4000), why: stripDashes(String(input.reason ?? '')),
     });
     return { proposed: true, note: `Shown to the owner as an editable message with a one-click Send button.` };
@@ -399,7 +401,7 @@ async function runProposeTool(
     const reason = stripDashes(String(input.reason ?? '').trim());
     if (!reason) return { error: 'empty reason' };
     proposals.push({
-      id: pid, kind: 'open_task', customerId: c.id, customerLabel: phoneLabel(c),
+      id: pid, kind: 'open_task', customerId: c.id, customerLabel: phoneLabel(c), customerPhone: c.waId,
       reason: reason.slice(0, 300),
       message: input.suggested_reply ? stripDashes(String(input.suggested_reply)).slice(0, 4000) : undefined,
       why: undefined,
