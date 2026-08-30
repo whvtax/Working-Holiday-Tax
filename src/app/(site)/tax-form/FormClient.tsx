@@ -492,7 +492,33 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </svg>
           </div>
           <h1 className="success-title">{T('thankYou')}, {firstName}! 🎉</h1>
-          <p className="success-body">{T('successBody')}</p>
+          <p className="success-body">{T('successNextLead')}</p>
+
+          {/* "What happens next": three plain steps so the customer knows the
+              form is not the end and roughly when to expect us. The first step
+              is already done (filled tick); the other two are ahead (outline). */}
+          <div className="success-steps">
+            <div className="success-step">
+              <span className="success-step-dot is-done">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span className="success-step-label">{T('stepReceived')}</span>
+            </div>
+            <div className="success-step">
+              <span className="success-step-dot">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 01-9 8 9 9 0 01-4-.9L3 20l1.4-4A8.4 8.4 0 1121 11.5z"/></svg>
+              </span>
+              <span className="success-step-label">{T('stepWhatsApp')}</span>
+            </div>
+            <div className="success-step">
+              <span className="success-step-dot">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              </span>
+              <span className="success-step-label">{T('stepRefund')}</span>
+            </div>
+          </div>
+
+          <span className="success-eta">⏱ {T('etaLabel')}</span>
 
           <a href={waHref} target="_blank" rel="noopener noreferrer" className="success-wa-btn">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
@@ -504,7 +530,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
           <div className="success-divider" />
 
-          <p className="success-follow-label">{T('followUs')}<br />{T('followSub')}<br />{T('followGuides')}</p>
           <div className="success-socials">
             <a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="success-social-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -832,7 +857,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 const styles = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .hidden { display: none !important; }
-  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 100px 16px 60px; }
+  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 28px 16px 60px; }
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
   /* Narrower gutters than the form body: the heading needs the width more
      than the header needs the margin. */
@@ -915,12 +940,21 @@ const styles = `
      Deliberately small: it reassures, it does not compete with the title. */
   .form-time-note { text-align: center; font-size: 11px; color: #4C6459; margin: 10px 0 0; line-height: 1.6; }
   .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
-  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-  .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 10px; }
-  .success-body { font-size: 14px; color: #587066; line-height: 1.65; max-width: 28ch; margin: 0 0 24px; }
-  .success-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #22C55E; color: #fff; font-size: 14px; font-weight: 600; padding: 13px 26px; border-radius: 100px; text-decoration: none; font-family: inherit; }
-  .success-divider { width: 40px; height: 1px; background: #CDE3DB; margin: 28px auto; }
-  .success-follow-label { font-size: 13px; color: #587066; line-height: 1.8; margin: 0 0 16px; font-weight: 600; }
+  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 30% 25%, #EAF6F1, #D6EDE4); box-shadow: inset 0 0 0 2px rgba(11,82,64,0.14); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  /* The site's heading face (Fraunces) in brand forest, not DM Sans black - so
+     the last screen reads in the same voice as the rest of the site. */
+  .success-title { font-family: var(--font-serif), 'Fraunces', Georgia, serif; font-size: 27px; font-weight: 700; color: #0B5240; letter-spacing: -0.01em; margin: 0 0 10px; }
+  .success-body { font-size: 14px; color: #587066; line-height: 1.65; max-width: 30ch; margin: 0 0 18px; }
+  /* "What happens next" - three steps with a connecting line behind them. */
+  .success-steps { position: relative; width: 100%; max-width: 300px; display: flex; justify-content: space-between; margin: 2px 0 18px; }
+  .success-steps::before { content: ''; position: absolute; top: 15px; left: 15%; right: 15%; height: 2px; background: #D6E7DF; z-index: 0; }
+  .success-step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 33%; }
+  .success-step-dot { width: 32px; height: 32px; border-radius: 50%; background: #fff; border: 2px solid #0B5240; color: #0B5240; display: flex; align-items: center; justify-content: center; }
+  .success-step-dot.is-done { background: #0B5240; color: #fff; }
+  .success-step-label { font-size: 10.5px; font-weight: 600; color: #587066; line-height: 1.3; }
+  .success-eta { display: inline-flex; align-items: center; gap: 6px; background: #FFF8EC; border: 1px solid #F0D9A8; color: #7A5A16; font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 100px; margin-bottom: 22px; }
+  .success-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #0B5240; color: #fff; font-size: 14px; font-weight: 600; padding: 14px 26px; border-radius: 100px; text-decoration: none; font-family: inherit; box-shadow: 0 2px 8px rgba(11,82,64,0.28); }
+  .success-divider { width: 40px; height: 1px; background: #CDE3DB; margin: 26px auto 18px; }
   .success-socials { display: flex; gap: 10px; justify-content: center; }
   .success-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 100px; border: 1.5px solid #CDE3DB; font-size: 13px; font-weight: 600; color: #0B5240; text-decoration: none; background: #fff; font-family: inherit; }
 `

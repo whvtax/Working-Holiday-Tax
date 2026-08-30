@@ -156,6 +156,17 @@ export const formStrings = {
   followGuides:        { en: 'Free guides below ⬇️',                de: 'Kostenlose Anleitungen unten ⬇️', ja: '無料ガイドはこちら ⬇️' },
   secureNote:          { en: 'Your information is kept secure and private.', de: 'Deine Daten werden sicher und vertraulich behandelt.', ja: 'お客様の情報は安全かつ機密に管理されます。' },
 
+  // ─ Success screen: "what happens next" (tax form) ─
+  successNextLead: {
+    en: "We've received your details. Here's what happens next:",
+    de: 'Wir haben deine Daten erhalten. So geht es weiter:',
+    ja: '情報を受領しました。次の流れはこちらです：',
+  },
+  stepReceived:  { en: 'Details received',          de: 'Daten erhalten',            ja: '情報を受領' },
+  stepWhatsApp:  { en: 'We message you on WhatsApp', de: 'Wir schreiben dir auf WhatsApp', ja: 'WhatsAppでご連絡' },
+  stepRefund:    { en: 'You get your refund',       de: 'Du erhältst deine Rückerstattung', ja: '還付金を受け取り' },
+  etaLabel:      { en: 'Usually within 24 hours',   de: 'Meist innerhalb von 24 Stunden', ja: '通常24時間以内' },
+
   // ─ Expenses WhatsApp block (tax form) ─
   emailInvoicesTitle:  { en: 'Send us any receipts or invoices for your work expenses on WhatsApp.', de: 'Schicke uns Belege oder Rechnungen für deine Arbeitsausgaben per WhatsApp.', ja: '業務経費の領収書や請求書をWhatsAppでお送りください。' },
 

@@ -38,6 +38,10 @@ const COPY = {
     // yet their answers came out as a Working Holiday Maker — so they may be
     // giving up a residency (and the tax-free threshold) they could claim.
     confirmLead: 'Based on your answers, your tax return will be lodged as a WHM. Please confirm that you understand what this means:',
+    // Same confirmation for a WHM result from a NON-treaty country, but there is
+    // no residency to give up — the only consequence to flag is the low-income
+    // tax offset. Just the one line, then the buttons (Jo, 30 Aug).
+    confirmLeadNonNda: 'Based on your answers, your tax return will be lodged as a WHM. This means you may not be eligible for the low-income tax offset of up to $700.',
     confirmP1pre: 'You are ', confirmP1strong: 'not an Australian tax resident', confirmP1post: '.',
     confirmP2pre: 'You are ', confirmP2strong: 'not entitled to the $18,200 tax-free threshold', confirmP2post: '.',
     confirmNote: 'People from your country can sometimes qualify as an Australian tax resident and keep the tax-free threshold. If this might apply to you, please review your answers first.',
@@ -52,6 +56,7 @@ const COPY = {
     secure: 'Deine Daten werden sicher und vertraulich behandelt.',
     answerAll: 'Bitte beantworte alle Fragen, um fortzufahren.',
     confirmLead: 'Basierend auf deinen Antworten wird deine Steuererklärung als WHM eingereicht. Bitte bestätige, dass du verstehst, was das bedeutet:',
+    confirmLeadNonNda: 'Basierend auf deinen Antworten wird deine Steuererklärung als WHM eingereicht. Das bedeutet, dass du möglicherweise keinen Anspruch auf den Low Income Tax Offset von bis zu $700 hast.',
     confirmP1pre: 'Du bist ', confirmP1strong: 'kein australischer Steuerresident', confirmP1post: '.',
     confirmP2pre: 'Du hast ', confirmP2strong: 'keinen Anspruch auf den steuerfreien Betrag von $18.200', confirmP2post: '.',
     confirmNote: 'Menschen aus deinem Land können unter Umständen als australischer Steuerresident gelten und den steuerfreien Betrag behalten. Falls das auf dich zutreffen könnte, prüfe bitte zuerst deine Antworten.',
@@ -66,6 +71,7 @@ const COPY = {
     secure: 'お客様の情報は安全に、非公開で管理されます。',
     answerAll: '続行するにはすべての質問にお答えください。',
     confirmLead: 'ご回答に基づき、あなたの確定申告はWHMとして提出されます。これが何を意味するかご確認ください：',
+    confirmLeadNonNda: 'ご回答に基づき、あなたの確定申告はWHMとして提出されます。これは、最大$700の低所得者税額控除（Low Income Tax Offset）の対象とならない可能性があることを意味します。',
     confirmP1pre: 'あなたは', confirmP1strong: 'オーストラリア税務居住者ではありません', confirmP1post: '。',
     confirmP2pre: '', confirmP2strong: '$18,200の非課税枠は適用されません', confirmP2post: '。',
     confirmNote: 'あなたの国の方は、オーストラリア税務居住者として非課税枠を受けられる場合があります。該当する可能性がある場合は、まず回答をご確認ください。',
@@ -117,6 +123,10 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
     return entry?.[lang] ?? entry?.en ?? ''
   }
   const c = COPY[lang] ?? COPY.en
+  // Which WHM confirmation wording to show. Treaty (NDA) countries get the full
+  // "you are giving up residency + the $18,200 threshold" explanation; everyone
+  // else gets the one-line low-income-tax-offset note and nothing after it.
+  const nda = isNdaCountry((handoff.payload as { country?: string }).country)
 
   const doSubmit = async (picked: 'resident' | 'whm') => {
     setLoading(true)
@@ -146,11 +156,14 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
   // (which only happens once all questions are answered).
   const handleSubmit = () => {
     if (!status) { setError(c.pickOne); return }
-    // The one confirmation: a WHM result for someone from a treaty (NDA) country.
-    // They might qualify as a resident (with the tax-free threshold), so make the
-    // consequence explicit and let them go back before it is lodged. Everyone
-    // else submits straight through, unchanged.
-    if (status === 'whm' && isNdaCountry((handoff.payload as { country?: string }).country)) {
+    // Every WHM result now confirms before it is lodged (Jo, 30 Aug). The
+    // consequence differs by country, so the modal has two wordings (see below):
+    //   treaty (NDA) country  -> they might qualify as a resident WITH the
+    //                            $18,200 threshold, so spell that out.
+    //   non-treaty country    -> no residency to give up; the one thing to flag
+    //                            is the low-income tax offset.
+    // A resident result still submits straight through, unchanged.
+    if (status === 'whm') {
       setConfirming(true)
       return
     }
@@ -196,18 +209,23 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
 
       <p className="resdecl-secure">{c.secure}</p>
 
-      {/* WHM + treaty-country confirmation. Explicit consequence, then a clear
-          choice: submit as declared, or go back and re-read. Nothing is lodged
-          until they confirm. */}
+      {/* WHM confirmation. Explicit consequence, then a clear choice: submit as
+          declared, or go back and re-read. Nothing is lodged until they confirm.
+          Two wordings: a treaty (NDA) country sees the full points + note; a
+          non-treaty country sees only the one-line low-income-tax-offset lead. */}
       {confirming && (
         <div className="resdecl-overlay" onClick={(e) => { if (e.target === e.currentTarget) setConfirming(false) }}>
           <div className="resdecl-modal" role="dialog" aria-modal="true">
-            <p className="resdecl-modal-lead">{c.confirmLead}</p>
-            <ul className="resdecl-modal-points">
-              <li>{c.confirmP1pre}<strong>{c.confirmP1strong}</strong>{c.confirmP1post}</li>
-              <li>{c.confirmP2pre}<strong>{c.confirmP2strong}</strong>{c.confirmP2post}</li>
-            </ul>
-            <p className="resdecl-modal-note">{c.confirmNote}</p>
+            <p className="resdecl-modal-lead">{nda ? c.confirmLead : c.confirmLeadNonNda}</p>
+            {nda && (
+              <>
+                <ul className="resdecl-modal-points">
+                  <li>{c.confirmP1pre}<strong>{c.confirmP1strong}</strong>{c.confirmP1post}</li>
+                  <li>{c.confirmP2pre}<strong>{c.confirmP2strong}</strong>{c.confirmP2post}</li>
+                </ul>
+                <p className="resdecl-modal-note">{c.confirmNote}</p>
+              </>
+            )}
             <div className="resdecl-modal-btns">
               <button
                 type="button"

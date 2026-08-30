@@ -287,7 +287,7 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
 
 /* Mirrors the tax-form card so this reads as one continuous flow. */
 const styles = `
-  .resstep-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 100px 16px 60px; }
+  .resstep-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 28px 16px 60px; }
   .resstep-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
   .resstep-header { padding: 26px 18px 18px; text-align: center; }
 
@@ -305,7 +305,9 @@ const styles = `
   /* --- Eligibility quiz (flowing list, Yes/No toggle on the right) --- */
   .resstep-quiz-intro { font-size: 12.5px; font-weight: 600; color: #1A2822; line-height: 1.55; margin: 4px 0 6px; }
   .resstep-progress { text-align: right; font-size: 11px; font-weight: 700; color: #9AA99F; margin: 0 2px 4px; letter-spacing: .3px; }
-  .resstep-yearnote { font-size: 12px; color: #7A5A16; background: #FFF8EC; border: 1px solid #F0D9A8; border-radius: 8px; padding: 8px 11px; margin: 2px 0 10px; line-height: 1.5; }
+  /* Hug the text and sit centred, instead of a full-width bar with an empty
+     right half on wider screens (Jo, 30 Aug). */
+  .resstep-yearnote { width: fit-content; max-width: 100%; font-size: 12px; color: #7A5A16; background: #FFF8EC; border: 1px solid #F0D9A8; border-radius: 8px; padding: 8px 14px; margin: 2px auto 10px; line-height: 1.5; }
   .resstep-quiz { display: flex; flex-direction: column; }
   .resq { display: flex; align-items: center; gap: 12px; padding: 13px 2px; border-bottom: 1px solid #EEF3F1; }
   .resq:last-child { border-bottom: none; }
