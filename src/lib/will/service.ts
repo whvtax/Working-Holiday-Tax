@@ -141,7 +141,6 @@ async function handleIncomingInner(
   const store = getStore();
 
   let customer = await store.getCustomerByWaId(waId);
-  const brandNew = !customer;
   if (!customer) {
     customer = await store.createCustomer({ waId, name: meta?.name ?? null, flag: meta?.flag ?? '💬' });
     await store.audit('system', 'customer_created', { waId });
@@ -177,34 +176,36 @@ async function handleIncomingInner(
   }
 
   // ============================================================
-  // NEW-CHATS-ONLY POLICY (owner decision):
-  // The assistant handles brand-new leads only. Any pre-existing / imported
-  // chat, and any previously-closed chat that returns, is routed straight to a
-  // human: the assistant is paused for that chat and a task is opened once.
+  // WILL HANDLES EXISTING CHATS TOO (owner decision, Jo 30 Aug):
+  // The old rule routed EVERY pre-existing / imported chat straight to a human,
+  // which left real live leads (asking prices, sending details) sitting as tasks
+  // while Will had already drafted a good answer it was not allowed to send. Now
+  // Will treats an existing chat like any other lead and answers it.
+  //
+  // Two protections stay in place:
+  //  - A truly imported history stays silent: the policy guard fail-closes on
+  //    isLegacy (LEGACY_CHAT_AI_DISABLED), so Will still never messages a legacy
+  //    chat even though it flows past here.
+  //  - A previously-CLOSED chat that comes back is still handed to a human on its
+  //    first message (below): it is reopened to Lead, Will is paused for it, and
+  //    one task is raised, because a returning "no thanks" deserves a person's
+  //    eyes before the assistant speaks again.
   // ============================================================
   const isClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state);
-  const existingChat = !brandNew && !customer.botOwned; // pre-existing / legacy / imported
-  if (existingChat || isClosed) {
-    // Owner's rule: a closed customer (Went Cold / Not Interested / Not
-    // Relevant) who messages again — whenever, whatever they say, however
-    // long it's been — is no longer closed. The pipeline stage moves them
-    // straight back to Lead, full stop; the human-handoff below is a
-    // separate, deliberate policy (the assistant never auto-replies to a
-    // returning chat) and stays exactly as it was.
-    if (isClosed) {
-      await store.setState(customer.id, 'NEW_LEAD', 'SYSTEM');
-      await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, trigger: 'inbound_message' });
-      customer = (await store.getCustomerByWaId(waId)) ?? customer;
-    }
+  if (isClosed) {
+    // A closed customer (Went Cold / Not Interested / Not Relevant) who messages
+    // again is no longer closed: reopen to Lead, then hand this first message to
+    // a human rather than auto-replying to someone who had said no.
+    await store.setState(customer.id, 'NEW_LEAD', 'SYSTEM');
+    await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, trigger: 'inbound_message' });
+    customer = (await store.getCustomerByWaId(waId)) ?? customer;
     if (!customer.aiPaused) {
       await store.updateCustomer(customer.id, { aiPaused: true });
       await store.cancelJobsFor(customer.id);
-      await store.audit('system', 'routed_to_human_existing_chat', { customerId: customer.id });
+      await store.audit('system', 'routed_to_human_returning_closed', { customerId: customer.id });
     }
-    // Whether this is the first message that paused the AI or another one in
-    // the same burst, fold it into the one open task instead of a new one.
     await raiseOrUpdateTask(store, customer, {
-      reason: isClosed ? 'A previous customer messaged again, needs a human' : 'An existing chat sent a message, needs a human',
+      reason: 'A previous customer messaged again, needs a human',
       severity: 'REVIEW', newContext: text,
       suggestedReply: await suggestReply(text, customer, 'returning_customer'),
     });

@@ -187,10 +187,12 @@ THE GOALS YOU ARE WORKING TOWARD (this is the business's standing agenda, hold i
 - Everything scales toward thousands of customers, so favour what saves Jo time and catches what would otherwise slip.
 
 WHEN JO ASKS FOR A DAILY OR PROACTIVE REVIEW (a "briefing", "what should I do", "go over everyone", or the automatic opening when he lands on the screen)
-- Act like the secretary of the business opening the day. Look at the real data first (pipeline, the stages that matter, open tasks, recoverable leads, and the Library if relevant), then bring him the few things that matter, not a data dump.
-- Cover, briefly and only where there is something real to say: what most needs doing today and which customers, who needs his human attention, anything worth adding to the Library, and anything slipping. Two to four concrete items is usually right.
-- Attach one-click actions (propose_*) wherever they help, so he can act straight from your briefing.
-- If nothing is urgent, say so plainly. A short honest "quiet day, nothing on fire" beats inventing work.`;
+- Act like the secretary of the business opening the day. Read the real data first (pipeline, the stages that matter, open tasks), then find the two to four things most worth his attention.
+- SKIP ANYONE ALREADY HANDLED. If a customer has already_being_followed_up = true, an automatic nudge is already on its way to them, so do NOT surface them, do NOT propose chasing them again. Only surface customers where nothing automatic is already in flight, or where the nudges already went out and they still did not answer.
+- ALWAYS INCLUDE A PASS OVER CLOSED. Call list_recoverable_leads and look at who, among the closed and lost, can still be saved. For each one worth it, propose_open_task with the ready win-back message as the suggested reply (NOT propose_reply, because a closed customer is outside WhatsApp's 24 hour window and a direct send would be blocked, a task lets Jo send it properly).
+- DELIVER EVERYTHING AS CARDS, NOT AS A REPORT. For each item call the matching propose_* tool so it shows up as a small box with the ready action: a reply to send, a stage to move, a task to open, a win-back to send. He wants to press a button, not read a summary.
+- Your written text for a briefing is at most one short opening line (for example "עברתי על הלקוחות והסגורים, הנה מה ששווה עכשיו"), then the cards do the rest. No prose list, no markdown, no recap.
+- If nothing needs doing, skip the cards and write one short reassuring line that everything is on track. Never manufacture work to look busy.`;
 
 const SYSTEM = `You are Will's copilot: an assistant INSIDE the WHV Tax CRM that the business owner (Jo) talks to directly. "Will" is the WhatsApp assistant that talks to customers; you are the owner-facing helper that sits beside it.
 
@@ -210,9 +212,12 @@ BUSINESS RULES YOU MUST RESPECT (they apply to anything you propose sending a cu
 - Never claim or imply the business itself is a registered tax agent. Returns are reviewed and signed off by a registered tax agent; do not reword or overstate that.
 - Never use an em dash or an en dash anywhere. Use a comma, a full stop, or a hyphen.
 
-STYLE
+STYLE, AND THIS MATTERS A LOT
 - Reply in the SAME LANGUAGE the owner writes to you in. The owner usually writes Hebrew, so reply in Hebrew unless he writes to you in another language.
-- Be short and direct. The owner wants answers, not essays. A couple of sentences, then any proposals.
+- THE ACTION CARDS ARE THE ANSWER, NOT YOUR TEXT. When something can be done, do NOT describe it in prose. Turn it into a propose_* card (propose_reply, propose_move_stage, propose_open_task) so the owner sees a small box with the ready result and a one-click Send / Move / Open button. "Send this message to Nick, [Send]" as a card beats a paragraph explaining that Nick is waiting.
+- Keep your written text to ONE short line, or none at all when the cards speak for themselves. No essays, no walls of text, no recap of what you read.
+- PLAIN TEXT ONLY. Never use markdown: no asterisks for bold, no bullet lists, no headings, no numbered lists. Just plain short sentences. The owner's screen shows your text raw, so markdown looks like broken punctuation.
+- If there is nothing to act on, say so in one short reassuring line (for example "הכל על המסלול, אין משהו דחוף כרגע") and stop. Do not invent work to fill space.
 - When you propose a customer reply, write the finished message in the CUSTOMER's language (from get_conversation), not the owner's.
 - If you are not sure which customer the owner means, ask, or search and confirm, rather than acting on the wrong one.`;
 
@@ -228,7 +233,21 @@ function phoneLabel(c: CustomerRow): string {
   return c.name ? `${c.name} (${c.waId})` : c.waId;
 }
 
-function customerBrief(c: CustomerRow): Record<string, unknown> {
+/** Strip the markdown the owner's chat shows raw (asterisks, headings, bullet and
+ *  numbered list markers, backticks), so a stray "**bold**" or "- item" never
+ *  lands as broken punctuation. Plain, readable text is what the bubble renders.
+ *  Applied to the copilot's own reply only, never to a proposed customer message. */
+function plainText(s: string): string {
+  return s
+    .replace(/[*_`]{1,3}/g, '')                       // bold/italic/code markers
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '')               // headings
+    .replace(/^\s*[-*+]\s+/gm, '')                    // bullet markers
+    .replace(/^\s*\d+[.)]\s+/gm, '')                  // numbered markers
+    .replace(/\n{3,}/g, '\n\n')                        // collapse blank runs
+    .trim();
+}
+
+function customerBrief(c: CustomerRow, followupSet?: Set<string>): Record<string, unknown> {
   return {
     id: c.id,
     phone: c.waId,
@@ -241,6 +260,10 @@ function customerBrief(c: CustomerRow): Record<string, unknown> {
     refund_estimate: c.estimatedRefundCents != null ? `$${(c.estimatedRefundCents / 100).toFixed(2)}` : null,
     last_message: c.lastMessagePreview ?? null,
     last_message_at: c.lastMessageAt ?? null,
+    // True when an automatic follow-up nudge is already SCHEDULED (not yet sent)
+    // for this customer. They are already being chased, so in a proactive review
+    // do not surface them as needing action, the nudge is on its way.
+    already_being_followed_up: followupSet ? followupSet.has(c.id) : undefined,
   };
 }
 
@@ -248,7 +271,7 @@ function customerBrief(c: CustomerRow): Record<string, unknown> {
 // Read-tool execution. Each returns a small JSON-able object. Any error is
 // caught and returned as { error } so the loop keeps going.
 // ────────────────────────────────────────────────────────────
-async function runReadTool(name: string, input: Record<string, unknown>): Promise<unknown> {
+async function runReadTool(name: string, input: Record<string, unknown>, followupSet: Set<string>): Promise<unknown> {
   const store = getStore();
   try {
     switch (name) {
@@ -256,7 +279,7 @@ async function runReadTool(name: string, input: Record<string, unknown>): Promis
         const q = String(input.query ?? '').trim();
         if (!q) return { error: 'empty query' };
         const rows = await store.searchCustomers(q, 20);
-        return { count: rows.length, customers: rows.map(customerBrief) };
+        return { count: rows.length, customers: rows.map((c) => customerBrief(c, followupSet)) };
       }
       case 'get_conversation': {
         const id = String(input.customer_id ?? '');
@@ -265,7 +288,7 @@ async function runReadTool(name: string, input: Record<string, unknown>): Promis
         const limit = Math.min(Math.max(Number(input.limit) || 25, 1), 60);
         const msgs = (await store.listMessages(id)).slice(-limit);
         return {
-          customer: customerBrief(c),
+          customer: customerBrief(c, followupSet),
           messages: msgs.map((m) => ({
             from: m.author === 'CUSTOMER' ? 'customer' : m.author === 'HUMAN' ? 'owner' : m.author === 'AI' ? 'will' : 'system',
             direction: m.direction,
@@ -291,7 +314,7 @@ async function runReadTool(name: string, input: Record<string, unknown>): Promis
           .filter((c) => (g.states as readonly string[]).includes(c.state))
           .sort((a, b) => (b.lastMessageAt ?? '').localeCompare(a.lastMessageAt ?? ''))
           .slice(0, limit);
-        return { group: g.label, count: rows.length, customers: rows.map(customerBrief) };
+        return { group: g.label, count: rows.length, customers: rows.map((c) => customerBrief(c, followupSet)) };
       }
       case 'list_open_tasks': {
         const tasks = (await store.listTasks()).filter((t) => t.status === 'OPEN');
@@ -447,11 +470,16 @@ export async function runAssistant(history: AssistantTurn[]): Promise<AssistantR
     }
   } catch { /* use the baked-in profile alone */ }
 
+  // Who already has an automatic follow-up scheduled (not yet sent). The copilot
+  // is told, so in a proactive review it does not surface a customer who is
+  // already being chased, the nudge is on its way. Snapshotted once per turn.
+  const followupSet = new Set<string>(await getStore().customerIdsWithScheduledFollowup().catch(() => []));
+
   const proposals: Proposal[] = [];
   const idCounter = { n: 0 };
   // Kept tight so a question resolves in a couple of fast round-trips, not a
   // long chain. Haiku is quick, but every extra step is another network hop.
-  const MAX_STEPS = 4;
+  const MAX_STEPS = 5;
 
   for (let step = 0; step < MAX_STEPS; step++) {
     const r = await callApi(key, system, messages);
@@ -464,7 +492,7 @@ export async function runAssistant(history: AssistantTurn[]): Promise<AssistantR
 
     if (data.stop_reason !== 'tool_use' || toolUses.length === 0) {
       const text = content.filter((b) => b.type === 'text').map((b) => b.text ?? '').join('\n').trim();
-      return { ok: true, reply: stripDashes(text) || 'Done.', proposals };
+      return { ok: true, reply: plainText(stripDashes(text)) || 'Done.', proposals };
     }
 
     // Record the assistant turn (with its tool_use blocks) verbatim so the
@@ -475,7 +503,7 @@ export async function runAssistant(history: AssistantTurn[]): Promise<AssistantR
     for (const tu of toolUses) {
       const out = PROPOSE_NAMES.has(tu.name ?? '')
         ? await runProposeTool(tu.name!, tu.input ?? {}, proposals, idCounter)
-        : await runReadTool(tu.name!, tu.input ?? {});
+        : await runReadTool(tu.name!, tu.input ?? {}, followupSet);
       results.push({ type: 'tool_result', tool_use_id: tu.id, content: JSON.stringify(out).slice(0, 12000) });
     }
     messages.push({ role: 'user', content: results });
@@ -492,7 +520,7 @@ export async function runAssistant(history: AssistantTurn[]): Promise<AssistantR
     if (res.ok) {
       const data = await res.json() as { content?: ContentBlock[] };
       const text = (data.content ?? []).filter((b) => b.type === 'text').map((b) => b.text ?? '').join('\n').trim();
-      if (text) return { ok: true, reply: stripDashes(text), proposals };
+      if (text) return { ok: true, reply: plainText(stripDashes(text)), proposals };
     }
   } catch { /* fall through */ }
   return { ok: true, reply: 'I looked into it but ran long. Ask me again, or narrow it to one customer.', proposals };
