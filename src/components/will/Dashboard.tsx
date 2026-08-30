@@ -574,7 +574,7 @@ export default function Dashboard() {
         <div className="asst-prop-head">
           <span className="asst-card-num">{p.customerPhone ? phoneOf(p.customerPhone) : p.customerLabel}</span>
         </div>
-        {p.why && <div className="asst-prop-why">{p.why}</div>}
+        {(p.why || p.reason) && <div className="asst-prop-why">{p.why || p.reason}</div>}
         {p.kind === 'send_reply' && (
           <textarea
             className="asst-prop-text"
@@ -608,7 +608,7 @@ export default function Dashboard() {
   const briefAsst = useCallback(async () => {
     if (tasksBusy) return;
     setTasksBusy(true);
-    const kickoff = 'אתה הסוכן של רשימת המשימות. סרוק עכשיו את כל הפייפליין, כל הלקוחות, וגם את ה-Closed, ומצא כל מקום שאפשר לקדם בו מכירה או שצריך פעולה. תביא כרטיס פעולה לכל לקוח כזה, בלי הגבלת כמות, הרשימה נגללת. רק כרטיסי פעולה עם כפתור מוכן (שלח / הזז / פתח משימה), בלי טקסט ובלי רשימה. אל תציע כלום על מי שכבר יש לו פולו אפ מתוזמן. אם אין באמת שום דבר לעשות, אל תחזיר כרטיסים בכלל.';
+    const kickoff = 'אתה סוכן ההמרה של רשימת המשימות. המטרה היחידה שלך: להמיר לקוחות ללקוחות משלמים. סרוק שתי תחנות: (1) את כל הסגורים, השתמש בכלי list_recoverable_leads שכבר ניתח כל שיחה סגורה והחליט מי עוד ניתן להחזיר ועם איזו הודעה, ו-(2) את הלידים בפייפ שאין להם עדיין פולואפ מתוזמן (already_being_followed_up=false). לכל לקוח כזה, על סמך מה שקיים, החלט אם עוד אפשר להמיר אותו ללקוח משלם. אם כן, הבא כרטיס אחד עם הודעה מוכנה לשליחה שנועדה להמיר אותו. אם המסקנה שלך שאי אפשר להמיר אותו, אל תביא אותו בכלל, ואל תמציא לקוחות או סיבות. אל תיגע במי שכבר יש לו פולואפ מתוזמן. כל כרטיס חייב לכלול שני דברים: שורת סיבה קצרה אחת (למה הלקוח הזה ומה ההזדמנות להמיר), וההודעה המוכנה עצמה לשליחה (בכרטיס של פתיחת משימה, בשדה ההודעה המוצעת). אל תחזיר כרטיס בלי הודעה מוכנה ובלי סיבה. רק כרטיסים, בלי טקסט חופשי ובלי רשימה. אם אחרי שסרקת באמת אין אף לקוח שאפשר עוד להמיר, אל תחזיר כרטיסים, ובמקום זה כתוב משפט אחד בדיוק: סרקתי את כל הצ׳אטים בקלוזד ובלידים, אין כרגע לקוח שאפשר עוד להמיר.';
     try {
       const res = await fetch('/api/will/assistant', {
         method: 'POST', headers: { 'content-type': 'application/json' },
@@ -1099,9 +1099,6 @@ export default function Dashboard() {
                 <div className="asst-chatcol">
                   <div className="asst-coltitle in-chat"><span className="asst-dot" />Ask {ASSISTANT_NAME}</div>
                   <div className="asst-scroll" ref={asstScrollRef}>
-                    {asstMsgs.length === 0 && !asstBusy && (
-                      <div className="asst-chat-empty">שאל אותי משהו, או תגיד לי מה לעשות. למשל: "תיצור משימה עבור לקוח X", או "תעבור על שלב הביקורת".</div>
-                    )}
                     {asstMsgs.map((m, i) => (
                       <div key={i} className={`asst-msg ${m.role}`}>
                         <div className={`asst-bubble ${m.error ? 'err' : ''}`}>{m.text}</div>
