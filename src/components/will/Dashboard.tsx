@@ -461,6 +461,11 @@ export default function Dashboard() {
   // greets Jo with what is worth his attention. This ref makes it fire once, not
   // on every tab switch back to the Overview.
   const asstKickedRef = useRef(false);
+  // Proposal ids come back as p1, p2… restarting each turn, so two briefings can
+  // collide. Remap every incoming proposal to a session-unique id before storing.
+  const propUidRef = useRef(0);
+  const remapProps = (ps: unknown): AsstProposal[] =>
+    (Array.isArray(ps) ? ps : []).map((p) => ({ ...(p as AsstProposal), id: `pp${++propUidRef.current}` }));
 
   const say = (m: string) => {
     setToast(m);
@@ -513,7 +518,7 @@ export default function Dashboard() {
       setAsstMsgs((prev) => [...prev, {
         role: 'assistant',
         text: typeof d.reply === 'string' && d.reply.trim() ? d.reply : 'Sorry, I could not answer that.',
-        proposals: Array.isArray(d.proposals) ? d.proposals : [],
+        proposals: remapProps(d.proposals),
         error: d.ok === false,
       }]);
     } catch {
@@ -568,7 +573,7 @@ export default function Dashboard() {
       setAsstMsgs((prev) => [...prev, {
         role: 'assistant',
         text: typeof d.reply === 'string' && d.reply.trim() ? d.reply : 'לא הצלחתי להביא סקירה כרגע.',
-        proposals: Array.isArray(d.proposals) ? d.proposals : [],
+        proposals: remapProps(d.proposals),
         error: d.ok === false,
       }]);
     } catch {
@@ -1032,54 +1037,59 @@ export default function Dashboard() {
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
                 </button>
               </div>
+              {/* Action cards (Jo, 30 Aug): a horizontal, side-scrolling row of
+                  rectangles ABOVE the chat, not inside it. Each open proposal
+                  from any answer sits here as a card with its ready action; the
+                  chat below stays for the conversation itself. Acting on a card
+                  (Send / Move / Open / Dismiss) removes it from the row. */}
+              {(() => {
+                const active = asstMsgs.flatMap((m) => m.proposals ?? []).filter((p) => !asstDone[p.id]);
+                if (active.length === 0) return null;
+                return (
+                  <div className="asst-cardrow">
+                    {active.map((p) => {
+                      const running = asstRunning[p.id];
+                      return (
+                        <div key={p.id} className="asst-card">
+                          <div className="asst-prop-head">
+                            <span className="asst-prop-kind">
+                              {p.kind === 'move_stage' ? `Move to ${p.toStateLabel}` : p.kind === 'send_reply' ? 'Send a reply' : 'Open a task'}
+                            </span>
+                            <span className="asst-prop-who">{p.customerLabel}</span>
+                          </div>
+                          {p.why && <div className="asst-prop-why">{p.why}</div>}
+                          {p.kind === 'send_reply' && (
+                            <textarea
+                              className="asst-prop-text"
+                              value={asstEdit[p.id] ?? p.message ?? ''}
+                              onChange={(e) => setAsstEdit((d) => ({ ...d, [p.id]: e.target.value }))}
+                              rows={3}
+                            />
+                          )}
+                          {p.kind === 'open_task' && p.message && (
+                            <div className="asst-prop-draft">Draft: “{p.message}”</div>
+                          )}
+                          {running ? (
+                            <div className="asst-prop-running"><span className="asst-spin" aria-hidden="true" />Working…</div>
+                          ) : (
+                            <div className="asst-prop-actions">
+                              <button className="btn take sm" onClick={() => approveProposal(p)}>
+                                {p.kind === 'send_reply' ? 'Send' : p.kind === 'move_stage' ? 'Move' : 'Open task'}
+                              </button>
+                              <button className="btn quiet sm" onClick={() => setAsstDone((d) => ({ ...d, [p.id]: 'dismissed' }))}>Dismiss</button>
+                              {p.customerId && <button className="btn ghost sm" onClick={() => { setView('chats'); openChat(p.customerId); }}>Open chat →</button>}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
               <div className="asst-scroll" ref={asstScrollRef}>
                 {asstMsgs.map((m, i) => (
                   <div key={i} className={`asst-msg ${m.role}`}>
                     <div className={`asst-bubble ${m.error ? 'err' : ''}`}>{m.text}</div>
-                    {m.proposals && m.proposals.length > 0 && (
-                      <div className="asst-props">
-                        {m.proposals.map((p) => {
-                          const done = asstDone[p.id];
-                          const running = asstRunning[p.id];
-                          return (
-                            <div key={p.id} className={`asst-prop ${done ?? ''}`}>
-                              <div className="asst-prop-head">
-                                <span className="asst-prop-kind">
-                                  {p.kind === 'move_stage' ? `Move to ${p.toStateLabel}` : p.kind === 'send_reply' ? 'Send a reply' : 'Open a task'}
-                                </span>
-                                <span className="asst-prop-who">{p.customerLabel}</span>
-                              </div>
-                              {p.why && <div className="asst-prop-why">{p.why}</div>}
-                              {p.kind === 'send_reply' && (
-                                <textarea
-                                  className="asst-prop-text"
-                                  value={asstEdit[p.id] ?? p.message ?? ''}
-                                  disabled={!!done}
-                                  onChange={(e) => setAsstEdit((d) => ({ ...d, [p.id]: e.target.value }))}
-                                  rows={3}
-                                />
-                              )}
-                              {p.kind === 'open_task' && p.message && (
-                                <div className="asst-prop-draft">Draft: “{p.message}”</div>
-                              )}
-                              {done ? (
-                                <div className={`asst-prop-status ${done}`}>{done === 'approved' ? '✓ Done' : 'Dismissed'}</div>
-                              ) : running ? (
-                                <div className="asst-prop-running"><span className="asst-spin" aria-hidden="true" />Working…</div>
-                              ) : (
-                                <div className="asst-prop-actions">
-                                  <button className="btn take sm" onClick={() => approveProposal(p)}>
-                                    {p.kind === 'send_reply' ? 'Send' : p.kind === 'move_stage' ? 'Move' : 'Open task'}
-                                  </button>
-                                  <button className="btn quiet sm" onClick={() => setAsstDone((d) => ({ ...d, [p.id]: 'dismissed' }))}>Dismiss</button>
-                                  {p.customerId && <button className="btn ghost sm" onClick={() => { setView('chats'); openChat(p.customerId); }}>Open chat →</button>}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
                   </div>
                 ))}
                 {asstBusy && (

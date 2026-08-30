@@ -1048,3 +1048,17 @@ aside.side{
 .will-scope .retrobar{margin:14px 0 4px;padding:9px 13px;border-radius:10px;font-size:12px;font-weight:600;line-height:1.5}
 .will-scope .retrobar.done{color:var(--done);background:color-mix(in srgb,var(--done) 8%, transparent);border:1px solid color-mix(in srgb,var(--done) 26%, transparent)}
 .will-scope .retrobar.run{color:#b5820f;background:#fff6e6;border:1px solid #f0dcae}
+
+/* Action cards as a horizontal, side-scrolling row ABOVE the chat (Jo, 30 Aug),
+   not inside the transcript. Each card is a fixed-width rectangle; the row
+   scrolls sideways when there are more than fit. */
+.will-scope .asst-cardrow{
+  flex:none;display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;
+  padding:12px 14px;border-bottom:1px solid var(--line);background:var(--surface2);
+}
+.will-scope .asst-card{
+  flex:0 0 300px;max-width:300px;display:flex;flex-direction:column;gap:7px;
+  background:var(--surface);border:1px solid var(--line2);border-left:3px solid var(--brand1);
+  border-radius:11px;padding:11px 13px;
+}
+.will-scope .asst-cardrow .asst-prop-text{min-height:56px}
