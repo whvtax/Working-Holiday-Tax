@@ -13,31 +13,7 @@ export interface SeedKnowledge {
   lang: string;
 }
 
-export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
-    "intent": "eligibility check request",
-    "question": "Can you check if I'm eligible for a tax refund / can you help with my Working Holiday tax return?",
-    "examples": [
-      "could you do a tax eligibility check for me?",
-      "I'm on a WHV and need help lodging my tax return",
-      "can you do my aus tax return",
-      "looking to complete my tax return"
-    ],
-    "answer": "Hey! 😊 Absolutely, we'd be happy to help. To get started, fill out this quick 2 minute form and I'll review everything and come back to you:\nhttps://workingholidaytax.com.au/tax-form\nOur fee is $220 for a TFN return, and only applies if you're eligible for a refund. Any questions, just ask 🙌🏽",
-    "keywords": [
-      "eligibility",
-      "tax",
-      "return",
-      "refund",
-      "whv",
-      "help",
-      "lodge",
-      "check"
-    ],
-    "tags": [
-      "opening"
-    ],
-    "lang": "en"
-  },
+export const KNOWLEDGE_SEED: SeedKnowledge[] = [
   {
     "intent": "estimate before paying",
     "question": "Can you tell me how much I'll get back before I pay? Can I get a free estimate first?",
@@ -47,7 +23,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I'd like to know how much I'm likely to get back before paying you any money",
       "can you give me a rough idea of my refund first?"
     ],
-    "answer": "That's a really fair question 😊 Working out an accurate figure means a specialist reviewing your full situation with the ATO, and that review is the heart of the service, so the fee comes first. And you're protected either way: for TFN-only returns, if your refund ends up lower than our fee, we refund you the difference, so you are never out of pocket for our service.",
+    "answer": "That’s a really fair question!\n\nTo give you an estimate, we first need to review your full situation with the ATO, which is the main part of our service.\n\nFor TFN-only returns, if your refund is lower than our $220 fee, we refund the difference, so you’re never out of pocket for our service 😊",
     "keywords": [
       "estimate",
       "before",
@@ -73,7 +49,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "is this legit?",
       "found you on Instagram and wasn't sure if this is real"
     ],
-    "answer": "Completely understand, it's smart to check 🙏 We operate under the supervision of a registered tax agent, feel free to look us up before you decide:\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle reviews: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nClient agreement: https://workingholidaytax.com.au/client-agreement\n\nWe've helped hundreds of backpackers from 45+ countries, and on TFN-only returns, if your refund is lower than our fee, we refund the difference.",
+    "answer": "Completely understand, it’s smart to check 😊\n\nWe operate under the supervision of a registered tax agent and have helped hundreds of backpackers from more than 45 countries.\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle reviews: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nClient agreement: https://workingholidaytax.com.au/client-agreement\n\nFor TFN only returns, if your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
     "keywords": [
       "legit",
       "real",
@@ -98,7 +74,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "how much do you charge for each tax return?",
       "is it a flat fee or %?"
     ],
-    "answer": "It's a simple flat fee, never a percentage of your refund 😊\n\n$220 for a TFN return, $385 if you also have ABN income, and $220 per year for multiple years.\n\nFor TFN-only returns: if your refund is less than the fee, we refund the difference, so you're never out of pocket for our service. (This guarantee doesn't apply when there's ABN income.)",
+    "answer": "Our fee is fixed, never a percentage of your refund.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nFor TFN only returns, if your refund is lower than the fee, we refund the difference, so you’re never out of pocket for our service. This does not apply to returns with ABN income.",
     "keywords": [
       "price",
       "pricing",
@@ -123,7 +99,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "what if my refund is not even that much, might not be worth it",
       "do I pay 220 automatically?"
     ],
-    "answer": "No pressure at all 😊 You only pay if you're eligible for a refund, and on TFN-only returns, if it turns out to be less than our fee, we refund the difference, so you're never out of pocket for our service. Nothing to lose by letting us check.",
+    "answer": "For TFN only returns, if your refund is lower than our $220 fee, we refund the difference, so you’re never out of pocket for our service.",
     "keywords": [
       "fee",
       "small",
@@ -149,7 +125,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I can't get a digital ID",
       "do you offer a service that doesn't involve me accessing my ATO account?"
     ],
-    "answer": "Yes, absolutely, this is exactly what we're here for 😊 You don't need myGov or ATO access, and you never give us any login details. Once you're our client we handle everything with the ATO directly, and your refund is deposited straight into your Australian bank account. The only exception is a Medicare Levy Exemption, which you apply for yourself, and we'll tell you if you need one.",
+    "answer": "That’s exactly what we’re here for 😊\n\nYou don’t need myGov access and never share any login details. We handle everything directly with the ATO, and any refund goes straight into your Australian bank account.\n\nThe only exception is a Medicare Levy Exemption. If you need one, we’ll guide you through the application.",
     "keywords": [
       "mygov",
       "ato",
@@ -175,7 +151,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "is it not possible to pay after I receive my tax return?",
       "can I do the payment after the tax return is in?"
     ],
-    "answer": "Let me check that with the team and confirm what's possible for your situation, and I'll come right back to you 😊",
+    "answer": "Let me check this with the team and get back to you shortly 😊",
     "keywords": [
       "pay",
       "after",
@@ -196,7 +172,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "was I meant to send the bank statement for the whole tax year?",
       "why do you need a bank statement?"
     ],
-    "answer": "It's an ATO requirement 😊 The refund has to go into an account that belongs to you, so we need a recent statement showing your name, BSB and account number. That's all it's used for.",
+    "answer": "It’s an ATO requirement to make sure your tax refund goes directly into an account in your name.\n\nWe need a document showing your full name, BSB and account number.",
     "keywords": [
       "bank",
       "statement",
@@ -216,7 +192,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "examples": [
       "I'm not super comfortable submitting my passport, is there a reason you need it?"
     ],
-    "answer": "Thanks for checking 🙏 Your passport is only used to verify your identity before we lodge your return, as part of the required identity check. It's kept secure and private.",
+    "answer": "Your passport is only used for the required identity check before we lodge your return.\n\nIt’s kept secure and deleted as soon as your identity has been verified.",
     "keywords": [
       "passport",
       "identity",
@@ -241,7 +217,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "what's the Medicare Levy Exemption?",
       "do you need my Medicare number?"
     ],
-    "answer": "Since you weren't covered by Medicare, you can apply for a Medicare Levy Exemption so you're not charged the levy. It only takes a few minutes, here's a short guide:\nhttps://youtu.be/oj7ZSOHAxJk?si=KDMFlLoR0jYdpulB\nSend me a screenshot of the application and we'll lodge your return straight away. Just note the decision sits with Services Australia, so if it isn't approved the levy may still apply.",
+    "answer": "Since you weren’t covered by Medicare, you can apply for a Medicare Levy Exemption.\n\nhttps://youtu.be/oj7ZSOHAxJk?si=KDMFlLoR0jYdpulB\n\nSend us a screenshot once submitted and we can lodge your return. Approval is decided by Services Australia, and if it isn’t approved, the levy may still apply.",
     "keywords": [
       "medicare",
       "levy",
@@ -266,7 +242,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "the exemption form keeps taking me back to the same page",
       "it won't let me submit the Medicare entitlement statement"
     ],
-    "answer": "The IHI and Medicare Entitlement Statement are handled by Services Australia, not by us, so that side sits with them directly and isn't something we can sort out for you. Let me flag it with the team so someone can talk you through the next step, and meanwhile I'll keep your return moving so nothing is held up.",
+    "answer": "Your IHI and Medicare Entitlement Statement are handled directly by Services Australia, so unfortunately we can’t help with that part.\n\nPlease try again on a computer, as that usually works.",
     "keywords": [
       "ihi",
       "medicare",
@@ -294,7 +270,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "which should I select, Australian resident or working holiday maker?",
       "I'm unsure if I'm an aus tax resident"
     ],
-    "answer": "That's an important one, and it depends on your individual circumstances, so it's something we review properly rather than guess at. There's a short explanation on the form to guide you, and once we review your full situation we make sure your residency is assessed correctly.",
+    "answer": "This is a very important question and can make a big difference to your tax refund. It depends on your individual circumstances, so we check it carefully rather than guess.\n\nThere’s a short explanation in the form to guide you, and we’ll confirm your tax residency after reviewing your full situation.",
     "keywords": [
       "resident",
       "residency",
@@ -321,7 +297,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "my friend got 3000 back on the same visa",
       "have you done it as an Australian tax resident?"
     ],
-    "answer": "I understand wanting it as high as possible, and I'm glad to walk you through the calculation number by number. Every situation is different, even on the same visa: it depends on income, tax withheld and residency. The figure follows the ATO rules for your circumstances, and nothing you're legitimately entitled to is missed.",
+    "answer": "Every situation is different, even on the same visa, as it depends on your income, tax withheld and residency.\n\nWe follow the ATO rules, make sure nothing you’re entitled to is missed, and explain the calculation clearly.",
     "keywords": [
       "low",
       "refund",
@@ -347,7 +323,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "can I claim laundry, work from home, phone?",
       "I don't have receipts for these"
     ],
-    "answer": "Anything you paid for that helped you earn your income can generally be claimed: tools, uniform, work-specific clothing, a phone used for work, required courses. No receipt? A bank statement showing the payment usually works. Send me whatever you have and I'll tell you what we can include.",
+    "answer": "Expenses directly related to earning your income may be claimable, such as tools, uniforms, protective clothing, work use of your phone and courses related to your current job.\n\nIf you don’t have a receipt, send us a bank statement with the payment highlighted in yellow. We’ll check what can be included.",
     "keywords": [
       "expenses",
       "claim",
@@ -373,7 +349,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I have both TFN and ABN income",
       "I earned money on my ABN"
     ],
-    "answer": "Since you have ABN income, your return covers both TFN and ABN, and the fee is $385. Could you send me:\n• What kind of work you did under the ABN\n• Your total ABN income (for rideshare/delivery, your full earnings reports)\n• Any invoices or records of that income\n• Any work-related expenses, with receipts or bank statements\nOnce it's all here I'll get straight to work 🙌",
+    "answer": "Since you also have ABN income, the fee for your TFN + ABN return is $385.\n\nPlease send us:\n• The type of work you did under your ABN\n• Your total ABN income\n• Invoices or income records\n• For rideshare or delivery work, your full earnings reports\n• Work-related expenses, with receipts or bank statements\n\nOnce we have everything, we’ll get started.",
     "keywords": [
       "abn",
       "uber",
@@ -400,7 +376,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I have missed returns from before",
       "can you lodge all three years?"
     ],
-    "answer": "Yes, we can. Refunds can generally be claimed for the last few years, and the fee is $220 per year ($385 for a year with ABN income). Once I've reviewed your details I'll tell you which years you're eligible for and the estimated refund for each.",
+    "answer": "Yes, absolutely! We can help with previous years.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nOnce payment is made and we’ve reviewed your details, we’ll confirm which years need to be lodged and provide an estimate for each.",
     "keywords": [
       "previous",
       "years",
@@ -446,7 +422,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I want to know if I'm eligible and then lodge it myself",
       "can I just get an estimate then do it myself?"
     ],
-    "answer": "No problem, and I appreciate you being upfront 🙏 If you'd rather handle it yourself, the ATO offers free general guidance. With us, a specialist reviews everything and prepares and lodges the return for you, and on TFN-only returns, if your refund is less than our fee we refund the difference. If you'd like it taken care of end to end, I'd be glad to help.",
+    "answer": "No problem, and we appreciate you being upfront 😊\n\nIt’s completely your call. With us, a specialist reviews your residency, deductions and Medicare, then prepares and lodges everything for you, all online.\n\nFor TFN only returns, if your refund is lower than our $220 fee, we refund the difference, so you’re never out of pocket for our service. If you want peace of mind that everything is done properly, we’d be happy to help.",
     "keywords": [
       "myself",
       "lodge",
@@ -468,7 +444,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "how does my money reach me if I can't log into my ATO?",
       "does the amount just go into my aus bank automatically?"
     ],
-    "answer": "You don't need to log into anything 😊 Once your return is lodged, the ATO deposits your refund into the bank account we've verified for you, usually within about 14 business days.",
+    "answer": "Once your return is lodged, any refund is paid directly by the ATO into your verified Australian bank account, usually within 14 business days.",
     "keywords": [
       "money",
       "reach",
@@ -493,7 +469,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "why would I pay before I know the amount?",
       "is this the full fee or are there extra charges?"
     ],
-    "answer": "The $220 covers everything, start to finish: a specialist reviews your situation with the ATO, makes sure nothing you're entitled to is missed, and prepares and lodges it all. One flat fee, no extras, and on TFN-only returns, if your refund is less than the fee, we refund the difference.",
+    "answer": "The $220 covers your TFN only return from start to finish. A specialist reviews your full situation, checks that nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. If your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
     "keywords": [
       "upfront",
       "pay",
@@ -512,31 +488,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "referral from friend or social",
-    "question": "A friend / Instagram / TikTok referred me.",
-    "examples": [
-      "a friend gave me your number",
-      "I saw you on Instagram",
-      "someone recommended you"
-    ],
-    "answer": "That's lovely to hear, thank you 😊 Just fill out this quick 2 minute form and I'll review everything and get back to you:\nhttps://workingholidaytax.com.au/tax-form\nOur fee is $220 and only applies if you're eligible for a refund 🙌🏽",
-    "keywords": [
-      "friend",
-      "referred",
-      "recommended",
-      "instagram",
-      "tiktok",
-      "social",
-      "gave",
-      "number"
-    ],
-    "tags": [
-      "opening",
-      "referral"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "why use an agency instead of doing it myself",
     "question": "Why should I go through an agency instead of just doing my tax return myself?",
     "examples": [
@@ -544,7 +495,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "what's the benefit of using you rather than doing it myself?",
       "can't I just do this myself for free?"
     ],
-    "answer": "Totally fair to ask 😊 You could of course handle it on your own, but Working Holiday tax gets complicated fast: residency, which deductions you're actually allowed, Medicare. It's easy to leave money on the table without knowing. With us, a specialist reviews your full situation and prepares and lodges everything, and on TFN-only returns, if your refund is less than the fee we refund the difference.",
+    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nFor TFN only returns, if your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
     "keywords": [
       "why",
       "agency",
@@ -570,7 +521,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "any chance of a discount?",
       "can you do it cheaper?"
     ],
-    "answer": "I understand wanting the best value 😊 The fee is a flat $220 for a TFN return, the same for everyone, so it's not something I can lower. But you only pay if you're eligible for a refund, and if it comes to less than the fee we refund you the difference, so you are never out of pocket for our service.",
+    "answer": "Completely understand wanting the best value 😊 The fee is fixed at $220 for a TFN only return and is the same for everyone, so we can’t reduce it.\n\nIf your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
     "keywords": [
       "discount",
       "cheaper",
@@ -615,30 +566,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "bank account number format for the form",
-    "question": "Is the bank account number my card number or the account number? What bank details do you need?",
-    "examples": [
-      "is the bank account number the card number or the short account number?",
-      "what bank details do you need exactly?",
-      "do you need my card number?"
-    ],
-    "answer": "Not your card number 😊 We need the account itself: the name on the account, BSB and account number. That's where your refund gets paid, so it just needs to clearly belong to you. A recent bank statement showing those details is perfect.",
-    "keywords": [
-      "bank",
-      "account",
-      "number",
-      "card",
-      "bsb",
-      "details",
-      "which",
-      "need"
-    ],
-    "tags": [
-      "documents"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "already started or lodged the return myself",
     "question": "I already tried to do my return myself and I'm not sure I did it right. Can you check or fix it?",
     "examples": [
@@ -646,7 +573,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I started it myself and I'm not sure I filled it in correctly",
       "I already did it on my own but something looks wrong"
     ],
-    "answer": "Happy to help 😊 Because you've already started the return yourself, this works a little differently: the $220 is paid upfront, then we review everything, work out the correct figures and make sure nothing's been missed. If it turns out you're not eligible for a refund, we refund the $220 in full. Let me pass your details to the team.",
+    "answer": "Since you’ve already started the return yourself, the $220 is an upfront review fee. We’ll check everything, calculate the correct result and make sure nothing has been missed.\n\nThe review fee is non-refundable, regardless of the outcome.",
     "keywords": [
       "already",
       "myself",
@@ -674,7 +601,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "do you need me to send my payslips?",
       "where do I upload my income details?"
     ],
-    "answer": "That's right, no payslips needed 😊 Once you're our client we see all your income and tax information directly through the ATO. All we usually ask for is your ID, a bank statement, and any work-related expenses you'd like to claim.",
+    "answer": "That’s right, no payslips needed. Once you’re our client, we can see the income and tax information reported to the ATO.\n\nWe usually only need your ID, a bank statement and any work-related expenses you’d like us to check.",
     "keywords": [
       "payslip",
       "payslips",
@@ -699,7 +626,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "does the $220 cover the Medicare exemption too?",
       "do you charge extra for the Medicare part?"
     ],
-    "answer": "Yes, it's included 😊 If the Medicare Levy Exemption applies to your situation, we guide you through exactly what's needed as part of your return, at no extra charge. It's all covered by the single flat fee.",
+    "answer": "Yes, it’s included at no extra charge. If a Medicare Levy Exemption may apply, we’ll let you know and guide you through the application as part of your return.",
     "keywords": [
       "medicare",
       "levy",
@@ -718,32 +645,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "return not showing as lodged on myGov after lodging",
-    "question": "You said it's lodged but it still shows as not lodged on my myGov, why?",
-    "examples": [
-      "it's just showing as not lodged on my gov?",
-      "my myGov still says nothing has been lodged",
-      "why can't I see the return in my ATO account?"
-    ],
-    "answer": "No need to worry 😊 We lodge through our registered tax agent systems, not your personal myGov, so it can take a couple of days to show on your account. Your return is lodged. If it hasn't updated after 48 hours, let me know and I'll check.",
-    "keywords": [
-      "mygov",
-      "not",
-      "lodged",
-      "showing",
-      "ato",
-      "account",
-      "update",
-      "still",
-      "see"
-    ],
-    "tags": [
-      "process",
-      "mygov"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "signing documents link asks me to log in",
     "question": "The link to sign my documents is asking me to log in / create an account. What do I do?",
     "examples": [
@@ -751,7 +652,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "the signing link keeps asking me to log in",
       "it won't let me open the document to sign"
     ],
-    "answer": "You don't need to create any account to sign 😊 The link should open straight to your documents. If it's asking you to log in, it's usually a glitch, so let me resend a fresh one.",
+    "answer": "It looks like you may have accidentally created a Xero account. If it asks for a password, try 123456789.\n\nIf that doesn’t work, log in using the email address you gave us, select “Forgot password” and reset it. You should then be able to open and sign the documents.",
     "keywords": [
       "sign",
       "signing",
@@ -770,35 +671,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "form won't let me continue says correct tax paid",
-    "question": "The form won't let me submit / it says because I'm on a working holiday visa I paid the correct tax and don't qualify.",
-    "examples": [
-      "it won't let me continue, it says because I'm on a working holiday visa I paid the correct tax",
-      "the form says I don't qualify",
-      "I got blocked on the residency question"
-    ],
-    "answer": "Thanks for flagging that, and don't take the form's message as the final word 😊 Whether you're treated as a working holiday maker or an Australian resident depends on your circumstances, and there's a short explanation on that step to help you decide. It can make a real difference to your refund. If you're not sure, leave it with me and we'll review it properly rather than guess.",
-    "keywords": [
-      "form",
-      "won't",
-      "continue",
-      "submit",
-      "correct",
-      "tax",
-      "paid",
-      "qualify",
-      "whv",
-      "resident",
-      "blocked"
-    ],
-    "tags": [
-      "process",
-      "residency",
-      "handoff"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "Australian bank account is required",
     "question": "I've closed my Australian bank account / I don't have one any more. Can you still do my tax return?",
     "examples": [
@@ -806,7 +678,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I've left Australia and shut my bank account",
       "do I need an Australian bank account?"
     ],
-    "answer": "An open Australian bank account is needed, because that's where the ATO deposits your refund. If yours is already closed, unfortunately we can't help with the return. If you can reopen it, or you still have another Australian account, just let me know and we'll get started 😊",
+    "answer": "An active Australian bank account in your name is required because any refund is paid directly into it by the ATO.\n\nIf your account is closed and you don’t have another Australian account, unfortunately we can’t assist.",
     "keywords": [
       "bank",
       "account",
@@ -832,7 +704,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "my bank shows a different company name, is this the right account?",
       "the name doesn't match, should I still send it?"
     ],
-    "answer": "Yes, that's the right account 😊 It's registered under The Accounting Academy, so that's the name your bank shows. Go ahead with the transfer and send me a screenshot.",
+    "answer": "Yes, that’s the correct account. It’s registered under The Accounting Academy, which is why your bank shows that name.\n\nYou can go ahead with the transfer and send us a screenshot once it’s complete.",
     "keywords": [
       "account",
       "name",
@@ -860,7 +732,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I have an ABN and I owe the ATO, do I get the fee back?",
       "if after the check I still can't get a refund, is the money I paid gone?"
     ],
-    "answer": "If it's a TFN only return and you decide not to lodge, we refund the full $220, so you're not out of pocket.\n\nWhere there's ABN income as well the fee isn't refundable, but either way we go through everything properly so you know the figure is right.",
+    "answer": "For TFN only returns, if you decide not to lodge, even though you’re legally required to, we refund the full $220 so you’re not out of pocket.\n\nFor TFN + ABN returns, the $385 fee is non refundable. Either way, we review everything properly and explain the result before lodging.",
     "keywords": [
       "owe",
       "payable",
@@ -889,7 +761,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "can I speak to someone on the phone first?",
       "I'd feel better talking to a real person"
     ],
-    "answer": "Our service is fully online, which is how we keep it quick and the fee low. If you'd rather speak to someone, we can arrange a consultation for $110. Otherwise I'm right here, so ask me anything you're unsure about.",
+    "answer": "Our service is fully online, which helps us keep it quick and affordable.\n\nIf you’d prefer a call, we can arrange a consultation for $110. Otherwise, we’re happy to answer any questions here.",
     "keywords": [
       "call",
       "phone",
@@ -913,7 +785,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "can you check whether my return was done correctly?",
       "another agent did it and I think it's wrong, can it be amended?"
     ],
-    "answer": "Absolutely. We'll review your return, check the calculation and see whether anything needs correcting or amending. The fee is $220. This one is a review of a return that's already been lodged, so the refund guarantee doesn't apply to it.",
+    "answer": "Absolutely! We’ll review your return, check the calculation and see whether anything needs to be amended.\n\nThe review fee is $220 and is non-refundable.",
     "keywords": [
       "amend",
       "amendment",
@@ -939,7 +811,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "so I just pay and don't hand over any login details?",
       "how do I send you my TFN securely?"
     ],
-    "answer": "No, never. You'll never give us your myGov or ATO login details. After payment you fill in a short, secure form with your basic details, your TFN, your work information and the bank account for your refund, and we handle the rest with the ATO.",
+    "answer": "A registered tax agent will never ask for your myGov login details.\n\nAfter payment, you’ll complete a short, secure form with your basic details, TFN, work information and Australian bank account details. We’ll then handle everything directly with the ATO.",
     "keywords": [
       "login",
       "details",
@@ -966,7 +838,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "can the process be completed online while I'm in Italy?",
       "I no longer have my Australian phone number, is that a problem?"
     ],
-    "answer": "Yes, the whole process is online, from wherever you are, no Australian phone number needed. Once you're our client we access what we need directly through the ATO, including your income statement and tax withheld, and lodge your return. The one thing you do need is an open Australian bank account, because that's where the ATO deposits your refund.",
+    "answer": "Yes, the whole process is online, wherever you are, and you don’t need an Australian phone number.\n\nOnce you’re our client, we access your income and tax information directly through the ATO, then prepare and lodge your return.\n\nThe only thing you need is an active Australian bank account in your name, as any refund is paid directly into it by the ATO.",
     "keywords": [
       "overseas",
       "abroad",
@@ -995,7 +867,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "will this affect my visa?",
       "how do I know it's being done properly?"
     ],
-    "answer": "Completely understand, and that's the right thing to be careful about. We operate under the supervision of a registered tax agent, so your return is prepared properly and lodged correctly with the ATO: https://workingholidaytax.com.au/client-agreement\n\nYour refund, or any amount owing, comes straight from the ATO, so everything sits on your record the way it should.",
+    "answer": "Completely understand, it’s smart to be careful!\n\nWe operate under the supervision of a registered tax agent, and every return is reviewed and lodged with the ATO.\n\nhttps://workingholidaytax.com.au/client-agreement\n\nAny refund or tax owing is handled directly through the ATO and recorded on your account.",
     "keywords": [
       "pr",
       "visa",
@@ -1014,33 +886,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "help registering an ABN",
-    "question": "I need to register an ABN / I couldn't backdate the start date. Can you help, and does it cost more?",
-    "examples": [
-      "the ABN application won't let me put a start date more than 3 months ago",
-      "I worked as a contractor but never registered an ABN",
-      "since I have a TFN, is the price the same if I only need the ABN?"
-    ],
-    "answer": "No problem, we'll guide you through the ABN side of it, and it's included. It doesn't change what you pay: your tax return covers all your income, TFN and ABN together, which is $385 where there's ABN income.",
-    "keywords": [
-      "abn",
-      "register",
-      "registration",
-      "backdate",
-      "start",
-      "date",
-      "contractor",
-      "sole",
-      "trader"
-    ],
-    "tags": [
-      "abn",
-      "pricing",
-      "process"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "asked for a residency ruling on their own facts",
     "question": "Here are my dates, addresses and jobs. Am I an Australian resident for tax purposes?",
     "examples": [
@@ -1048,7 +893,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "based on my situation, would I be treated as a resident?",
       "I'd like your opinion on my residency before I decide"
     ],
-    "answer": "Thanks for setting it out so clearly. Residency for tax purposes depends on your individual circumstances, so it isn't something to answer from a summary. It's one of the first things our team reviews as part of your return, and once we've been through your full situation we'll confirm where you stand.",
+    "answer": "Thanks for explaining everything so clearly. Tax residency depends on your individual circumstances, so we can’t confirm it from a short summary.\n\nIt’s one of the first things we check in the review, and we’ll confirm your status after reviewing your full situation.",
     "keywords": [
       "resident",
       "residency",
@@ -1075,7 +920,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "me and my girlfriend both need to lodge",
       "can you handle both of us together?"
     ],
-    "answer": "Of course. Each return is handled individually, so it's easiest if you each message me from your own number. The fee is $220 each for TFN only, or $385 each where there's also ABN income.",
+    "answer": "Of course 😊\n\nEach return is handled separately, so each of you will need to message us from your own number.",
     "keywords": [
       "both",
       "two",
@@ -1100,7 +945,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "what information and documents will you need once we start?",
       "what details do you need to start this process?"
     ],
-    "answer": "Nothing complicated 😊 After payment you'll get a short form for your basic details, your TFN, your work information and the bank account for your refund. If anything else is needed, I'll ask you for it right here.",
+    "answer": "After payment, you’ll receive a short form asking for your basic details, TFN, work information and Australian bank account details.\n\nIf we need anything else, we’ll ask you here.",
     "keywords": [
       "documents",
       "details",
@@ -1124,7 +969,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "do I get to see the number before you lodge it?",
       "can I see the estimate first?"
     ],
-    "answer": "Yes, of course. Once payment is received, we review everything and send you an estimate of your expected refund before anything is lodged.",
+    "answer": "Yes, of course!\n\nOnce payment is received, we review everything and send you an estimate before anything is lodged.",
     "keywords": [
       "estimate",
       "before",
@@ -1148,7 +993,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I'll sort the payment after my payday",
       "can I pay next week when my wages come in?"
     ],
-    "answer": "No worries at all 😊 Just send me a screenshot once you've paid and we'll get started straight away.",
+    "answer": "No worries at all!\n\nJust send us a screenshot once payment is complete, and we’ll get started straight away.",
     "keywords": [
       "payday",
       "wages",
@@ -1172,7 +1017,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I got a free check link from a video about you",
       "your site said free eligibility test"
     ],
-    "answer": "That link is from before we changed how the service works, sorry about that, we no longer offer free eligibility checks. Now it's a full review with personal guidance for $220, and if your refund is less than that we refund the difference.",
+    "answer": "Sorry for the confusion. We no longer offer free eligibility checks. We now provide a full review with personal guidance for $220.\n\nFor TFN only returns, if your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
     "keywords": [
       "free",
       "eligibility",
@@ -1196,7 +1041,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "when will the money hit my account?",
       "how long does the ATO take to pay?"
     ],
-    "answer": "Once it's lodged, your refund should arrive in your bank account within 14 business days.",
+    "answer": "Once your return is lodged, any refund is usually paid into your bank account within 14 business days.",
     "keywords": [
       "when",
       "arrive",
@@ -1210,55 +1055,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "tags": [
       "process",
       "timing"
-    ],
-    "lang": "en"
-  },
-  {
-    "intent": "wants to postpone or cancel after the work is done",
-    "question": "Something came up, can I leave the return for now? (after the work is already done)",
-    "examples": [
-      "I'm flying home next week, can I leave my tax return and sort it when I'm back?",
-      "can we pause this? I'll deal with it later",
-      "I've decided not to lodge after all"
-    ],
-    "answer": "Of course, you can leave the lodgement until you're ready. The fee is still payable, though, as the work has already been done and we were only waiting for your signature.",
-    "keywords": [
-      "postpone",
-      "leave",
-      "later",
-      "pause",
-      "cancel",
-      "emergency",
-      "home",
-      "wait"
-    ],
-    "tags": [
-      "policy",
-      "payment"
-    ],
-    "lang": "en"
-  },
-  {
-    "intent": "personal small talk",
-    "question": "Personal questions and small talk (where are you from, how old are you, etc.)",
-    "examples": [
-      "which part of England are you from?",
-      "haha where are you based?",
-      "are you in Australia yourself?"
-    ],
-    "answer": "Ha, I'll keep the mystery 😄 Anyway, is there anything else you'd like to know before we get started?",
-    "keywords": [
-      "where",
-      "from",
-      "personal",
-      "old",
-      "based",
-      "name",
-      "yourself"
-    ],
-    "tags": [
-      "smalltalk",
-      "tone"
     ],
     "lang": "en"
   },
@@ -1291,7 +1087,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "things like scrubs, washing (of scrubs)",
       "I had bought several outfits for work, trousers, T-shirts, a sweater, and shoes"
     ],
-    "answer": "Protective and occupation specific gear counts, so things like hi vis, safety boots and scrubs go in.\n\nPlain everyday clothing like ordinary trousers or t shirts can't be claimed. We can include the washing of your work clothes though, even without receipts.",
+    "answer": "Protective or occupation specific clothing may be claimable, such as hi-vis clothing, safety boots and scrubs.\n\nEveryday clothing like ordinary trousers or T shirts can't be claimed, even if you wear it to work.\n\nIf your total work-related expenses are $300 or less, receipts generally aren't required, but you still need to show how you calculated the amount.",
     "keywords": [
       "work clothing",
       "uniform",
@@ -1320,7 +1116,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "all I have for work was my RSA that I had to pay for and busses to work",
       "I had also rented a scooter to get around"
     ],
-    "answer": "Trips between home and work aren't deductible, and that covers the tolls, buses and Ubers on the way in.\n\nTravel between different work sites during the day can be claimed. If that's you, tell me and we'll set up a simple logbook.",
+    "answer": "Travel between home and your regular workplace generally can't be claimed, including tolls, buses or Ubers.\n\nTravel directly between work sites during the day may be claimable. If you used your own car for these trips, prepare a simple record showing approximately how many work-related kilometres you travelled during the year and how you calculated the total, up to 5,000 kilometres.",
     "keywords": [
       "travel",
       "tolls",
@@ -1348,7 +1144,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "Would I be able to claim back money spent on using my phone at work?",
       "Do I need to send my phone bills?"
     ],
-    "answer": "Yes, we can claim the work related portion of it.\n\nJust tell me roughly what percentage of your phone use was for work, and send me your phone bills for the year.",
+    "answer": "Yes, we can claim the work-related portion.\n\nPlease tell us approximately what percentage of your phone use was for work and send us your phone bills for the year.",
     "keywords": [
       "phone",
       "mobile",
@@ -1374,7 +1170,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "Tickets being the tickets courses for operating machines",
       "things like AHPRA, ANF (union)"
     ],
-    "answer": "Yes, if you were already working in the role and the course or licence was needed for that job. Union and professional membership fees go in too.\n\nSend me the receipt, or a bank statement showing the payment if you can't find it.",
+    "answer": "Courses and licences may be claimable if you were already working in the role and they were directly related to that job. Union and professional membership fees may also be claimed.\n\nSend us the receipt, or a bank statement with the payment highlighted if you can't find it. We'll check what can be included.",
     "keywords": [
       "rsa",
       "white card",
@@ -1394,58 +1190,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "receipt wrong financial year",
-    "question": "Does it matter what date is on my receipt?",
-    "examples": [
-      "it's a yearly expense, so paid again this year just don't have the invoice",
-      "The invoices you need are the ones from when I arrived to Australia?",
-      "Are these okay? (receipts from different years)",
-      "Can I still put this one in even though I paid it last year?"
-    ],
-    "answer": "Yes, it needs to fall between 1 July and 30 June of the year we're lodging.\n\nAnything paid outside those dates belongs to a different tax year, so we can't include it in this one.",
-    "keywords": [
-      "receipt date",
-      "financial year",
-      "1 july",
-      "30 june",
-      "previous year",
-      "invoice",
-      "expenses",
-      "which year"
-    ],
-    "tags": [
-      "documents",
-      "process"
-    ],
-    "lang": "en"
-  },
-  {
-    "intent": "already paid but received invoice",
-    "question": "I already paid you, so why have you sent me an invoice for the same amount?",
-    "examples": [
-      "Is that definitely the final number? And I've already paid?",
-      "But I've paid already? Why is the invoice asking me to pay again?",
-      "You sent me a Xero link, do I have to pay again?",
-      "I got an invoice but I transferred the money yesterday"
-    ],
-    "answer": "No need to pay again, that's just your receipt for the fee you already sent. It's marked as paid on our side.\n\nThe refund figure is separate, that's what goes into your own bank account.",
-    "keywords": [
-      "invoice",
-      "xero",
-      "already paid",
-      "pay twice",
-      "receipt",
-      "double charge",
-      "fee",
-      "payment"
-    ],
-    "tags": [
-      "pricing",
-      "process"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "pay from overseas or third party",
     "question": "I'm not in Australia any more. Can I pay from my overseas account, or can a friend send it for me?",
     "examples": [
@@ -1454,7 +1198,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "Can I send the money to my friend who is still in Australia and he will send it from his account?",
       "I'm moving money from UK account to Australian may take a while"
     ],
-    "answer": "Yes to both. It doesn't matter who sends it or where it comes from, as long as it reaches our account.\n\nYour refund still goes into your own account. If the transfer is tricky, send me your full name and I'll send you a payment link instead.",
+    "answer": "Payment can come from any account, as long as it reaches ours. Any tax refund will still be paid into your own Australian bank account.\n\nIf the transfer is difficult, send us your full name and we'll send you a payment link instead.",
     "keywords": [
       "wise",
       "pay from overseas",
@@ -1480,7 +1224,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "For some reason I can't get to my bank statements",
       "My phone won't let me make calls abroad so I can't verify"
     ],
-    "answer": "Sorry, we do need an actual document showing your full name, BSB and account number. It's an ATO requirement so the refund lands in the right account.\n\nYour bank can usually email you one through their online chat or overseas support line, that's normally the quickest way.",
+    "answer": "Sorry, but we do need an official bank document showing your full name, BSB and account number.\n\nIt's an ATO requirement to make sure any refund goes into the correct account.\n\nYour bank can usually email this through online chat or its overseas support line, which is normally the quickest option.",
     "keywords": [
       "bank statement",
       "banking app",
@@ -1498,56 +1242,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "residency form wording usual home personal ties",
-    "question": "What does 'usual home' or 'personal ties' actually mean on your residency questions?",
-    "examples": [
-      "Unsure on what my usual home would be is that the uk or where I'm living now",
-      "I don't understand what that question on the form is asking",
-      "I lived in Australia the whole time I worked so should I have ticked yes?",
-      "What counts as personal ties?"
-    ],
-    "answer": "Your usual home means where you normally lived and thought of as home during that time.\n\nPersonal ties means family, close friends or a partner in Australia. Answer both for your actual situation and we'll confirm the rest in the review.",
-    "keywords": [
-      "usual home",
-      "personal ties",
-      "residency questionnaire",
-      "tax residency form",
-      "what does it mean",
-      "questionnaire",
-      "ticked yes"
-    ],
-    "tags": [
-      "residency",
-      "process"
-    ],
-    "lang": "en"
-  },
-  {
-    "intent": "six months means 183 days",
-    "question": "Does the '6 months in Australia' question mean 183 days in the financial year?",
-    "examples": [
-      "Is the 6 months counted from when I arrived or from July?",
-      "I was only in Australia for about 5 months that year, does that mean I can't tick it?",
-      "Does it mean 183 days between 1 July and 30 June?",
-      "What period is the six months measured over?"
-    ],
-    "answer": "Yes, 183 days or more between 1 July and 30 June of that year.\n\nThat's only one of several residency tests though, so fewer days doesn't automatically rule you out. We confirm it properly during the review.",
-    "keywords": [
-      "183 days",
-      "six months",
-      "financial year",
-      "residency test",
-      "1 july",
-      "30 june",
-      "days in australia",
-      "questionnaire"
-    ],
-    "tags": [
-      "residency"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "medicare exemption approval before lodging",
     "question": "Do I have to wait for my Medicare exemption to be approved before you lodge?",
     "examples": [
@@ -1556,7 +1250,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "How long will the exemption take to come back?",
       "Can you lodge while the exemption is still processing?"
     ],
-    "answer": "No, a screenshot showing the application has been submitted is enough for us to go ahead.\n\nJust note that if it isn't approved, the Medicare levy will still be payable.",
+    "answer": "No, you don't need to wait. A screenshot confirming the application was submitted is enough for us to proceed.\n\nIf Services Australia doesn't approve it, the Medicare levy may still apply.",
     "keywords": [
       "medicare levy exemption",
       "screenshot",
@@ -1581,7 +1275,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "Do I pay separately for each year?",
       "Is it cheaper if I do them all together?"
     ],
-    "answer": "It's $220 per year for TFN income, so it's one fee for each year we lodge.\n\nI'll send you a single invoice covering all of them.",
+    "answer": "The fee is $220 per TFN only year, so there's one fee for each return we lodge.",
     "keywords": [
       "multiple years",
       "back years",
@@ -1598,58 +1292,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "abn application start date backdate",
-    "question": "The ABN application won't let me put a start date more than 3 months ago. What date should I enter?",
-    "examples": [
-      "the online application does not allow me to enter a start date more than 3 months in the past",
-      "I just try with 1/7/2025 and same issue",
-      "would that be incorrect data? My visa started on the 27/9/2025",
-      "Should I complete the form with the wrong date, or wait for your confirmation?"
-    ],
-    "answer": "Try 1 July of that financial year first. If the system won't take it, just submit with whatever earliest date it gives you.\n\nOnce the ABN comes through the start date can be moved back with the ATO. Tell me when you have it and we'll sort that part.",
-    "keywords": [
-      "abn",
-      "start date",
-      "backdate",
-      "3 months",
-      "registration",
-      "1 july",
-      "ato",
-      "application"
-    ],
-    "tags": [
-      "abn",
-      "process"
-    ],
-    "lang": "en"
-  },
-  {
-    "intent": "international income treaty gst questions",
-    "question": "I worked remotely from Australia for an overseas company. Am I a foreign resident, which income is Australian source, and how does the tax treaty apply?",
-    "examples": [
-      "Am I considered a foreign resident for Australian tax purposes?",
-      "Which of my freelance income is Australian-source?",
-      "How does the double-tax treaty apply, and do I have an Australian permanent establishment?",
-      "Do I need to register for GST, and are my services to the US company GST-free?"
-    ],
-    "answer": "Those depend entirely on your own circumstances and the treaty rules, so they're not something I can answer from a summary.\n\nWe work through residency, which income is Australian source and what you actually declare as part of your return. Reviewed and signed off by a registered tax agent.",
-    "keywords": [
-      "double tax treaty",
-      "foreign resident",
-      "australian source",
-      "gst",
-      "permanent establishment",
-      "remote work",
-      "overseas client",
-      "contractor"
-    ],
-    "tags": [
-      "residency",
-      "abn"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "employer not registered whm employer",
     "question": "One of my employers wasn't registered as a working holiday maker employer, so they withheld tax at a different rate and now I owe money. Can anything be done?",
     "examples": [
@@ -1658,7 +1300,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "My return's already been lodged, is there anything that can be done now?",
       "Can you check whether the amount owing is correct?"
     ],
-    "answer": "That's usually what causes it. If an employer isn't registered they withhold at a different rate through the year, so it catches up at lodgement.\n\nWe can review the return, check the calculation and tell you whether it needs amending, plus how to stop it happening next year.",
+    "answer": "That may be part of the reason, but we'll need to review your full return to confirm what caused it.\n\nWe'll check the calculation, see whether anything needs amending.",
     "keywords": [
       "working holiday maker employer",
       "not registered",
@@ -1684,7 +1326,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I'm still here on my visa, is it too early to do my tax return?",
       "Do I need to wait until my visa ends before I can lodge?"
     ],
-    "answer": "You don't need to wait until you leave 😊\n\nThe Australian tax year runs 1 July to 30 June, so you can lodge for any financial year that has already finished, even while you're still here.",
+    "answer": "You don't need to wait until you leave. The Australian financial year runs from 1 July to 30 June, so you can lodge for any year that has already finished, even while you're still in Australia.",
     "keywords": [
       "tax year",
       "financial year",
@@ -1709,7 +1351,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I was only employed for a few months of that financial year, does that count?",
       "Do I need to have worked the whole 12 months?"
     ],
-    "answer": "Yes, you can still lodge. You don't need to have worked the full 12 months.\n\nAs long as the financial year has finished, we can lodge for the part of the year you worked.",
+    "answer": "Yes, absolutely!\n\nYou don't need to have worked for the full 12 months. Once the financial year has ended, we can lodge your return for the income you earned during that year.",
     "keywords": [
       "part year",
       "partial",
@@ -1734,7 +1376,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "what is my next step?",
       "How long until I hear back after I send the money?"
     ],
-    "answer": "Once you've paid and filled out the form, we review everything and come back to you within 24 hours.\n\nAfter you've signed, we lodge it with the ATO and your refund should arrive in your bank account within 14 business days.",
+    "answer": "Once you've paid and completed the form, we'll review everything and get back to you within 24 hours.\n\nAfter you've signed, we'll lodge your return with the ATO. Any refund usually arrives in your bank account within 14 business days.",
     "keywords": [
       "how long",
       "timeline",
@@ -1751,32 +1393,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "confirm payment details before transferring",
-    "question": "Are these the correct account details before I send the money?",
-    "examples": [
-      "Is this correct?",
-      "Are these details correct",
-      "Just checking these are your right bank details before I transfer",
-      "Can you confirm the BSB and account number?"
-    ],
-    "answer": "Yes, those are the right details.\n\nAccount Name: Simple Tax Services, BSB: 062692, Account: 81049952.\n\nJust send me a screenshot once it's gone through and we'll get started.",
-    "keywords": [
-      "correct details",
-      "bsb",
-      "account number",
-      "simple tax services",
-      "confirm",
-      "transfer",
-      "payment",
-      "screenshot"
-    ],
-    "tags": [
-      "process",
-      "trust"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "how much tax do i owe on my income",
     "question": "I earned about this much, how much tax do I owe or will I get anything back?",
     "examples": [
@@ -1785,7 +1401,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "My year-to-date income was $70,710.34, and my taxes were $14,193.00.",
       "I earned over the threshold this year, does that change anything?"
     ],
-    "answer": "That's definitely something we can check for you.\n\nIt depends on your individual situation, so we need to review your details properly before giving you an accurate answer. That's all included as part of the service once we get started.",
+    "answer": "That's definitely something we can check for you.\n\nIt depends on your individual circumstances, so we'll need to review your full details before confirming. It's all included in the service.",
     "keywords": [
       "how much tax",
       "owe",
@@ -1811,7 +1427,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I've been quoted less elsewhere, why should I use you?",
       "I want to shop around before I decide"
     ],
-    "answer": "No worries at all, I completely understand.\n\nJust make sure you're comparing the same level of service. With us your situation is properly reviewed and you get personal guidance throughout, not just a return submitted.\n\nIf anything comes up, or you need a hand with a future year, we're here anytime.",
+    "answer": "No worries at all, we completely understand.\n\nJust make sure you're comparing the same level of service. With us, your full situation is reviewed and you receive personal guidance throughout, not just a submitted return.\n\nA registered tax agent will never ask for your myGov login details, and neither will we. If you need help in the future, we're always here.",
     "keywords": [
       "another accountant",
       "compare",
@@ -1829,32 +1445,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "form questions refer to which period",
-    "question": "The form asks if I plan to live in Australia. Do I answer for now, or for when I was there?",
-    "examples": [
-      "I live in Japan now so I answered no to planning to live in Australia, should I have said yes?",
-      "I've already left, should I answer based on today or based on when I was working there?",
-      "I said no to living in Australia because I'm home now, was that right?",
-      "Which period do these residency questions refer to?"
-    ],
-    "answer": "The questions are all about your working holiday period, not where you are now.\n\nBeing back home is completely fine. Just answer based on your situation while you were living and working in Australia.",
-    "keywords": [
-      "form",
-      "questions",
-      "period",
-      "while in australia",
-      "left australia",
-      "answer",
-      "residency questions",
-      "questionnaire"
-    ],
-    "tags": [
-      "process",
-      "residency"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "form wants australian phone and address i no longer have",
     "question": "The form asks for an Australian phone number and address and I don't have them any more. What do I put?",
     "examples": [
@@ -1863,7 +1453,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "I don't live at my old Australian address any more, what should I put?",
       "Can I use my home country number on the form?"
     ],
-    "answer": "Just enter the Australian phone number you used at the time, and the Australian address you lived at while you were there.\n\nThat's all we need for the form.",
+    "answer": "Just enter the Australian phone number and address you used while you were living in Australia.",
     "keywords": [
       "australian phone number",
       "address",
@@ -1889,7 +1479,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "How long do I have to lodge my return for last financial year?",
       "Am I too late to do my tax return?"
     ],
-    "answer": "There's no deadline on our side, you can start whenever you're ready.\n\nThe ATO deadline is 31 October for the previous financial year, or 15 May if you're using a registered tax agent. So as long as we've got time to review everything and lodge, you're all good.",
+    "answer": "If you lodge through us, your deadline may be extended until 15 May.",
     "keywords": [
       "deadline",
       "cut off",
@@ -1899,82 +1489,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "late",
       "financial year",
       "due date"
-    ],
-    "tags": [
-      "process"
-    ],
-    "lang": "en"
-  },
-  {
-    "intent": "is my old tfn still valid",
-    "question": "I got my TFN years ago and haven't been back since. Is it still valid or do I need a new one?",
-    "examples": [
-      "I applied for one many years ago and haven't been in Australia since. Would my TFN still be valid?",
-      "Does a TFN expire if you leave Australia?",
-      "I got my TFN on my first WHV, can I still use the same one?",
-      "Do I need to apply for a new TFN for my second year?"
-    ],
-    "answer": "Good news, your TFN stays valid permanently. It doesn't expire, even if you haven't been in Australia for years.\n\nAnd once you're our client we deal with the ATO directly, so there's nothing you need to sort out first.",
-    "keywords": [
-      "tfn",
-      "expire",
-      "still valid",
-      "old tfn",
-      "new tfn",
-      "years ago",
-      "permanent",
-      "reuse"
-    ],
-    "tags": [
-      "process",
-      "documents"
-    ],
-    "lang": "en"
-  },
-  {
-    "intent": "tfn application not arrived",
-    "question": "I applied for a TFN and it still hasn't come. Can you help me get it?",
-    "examples": [
-      "I would like to ask about my TFN",
-      "I haven't received it after more than 28 days, what could I do?",
-      "Can you help me apply for a TFN?",
-      "My TFN application is taking ages, is there anything you can do?"
-    ],
-    "answer": "We help with tax returns once you already have your TFN. The application itself is handled directly by the ATO.\n\nIf it's been over 28 days, give the ATO a call on 13 28 61 from inside Australia, or +61 2 6216 1111 from overseas, and they'll check where it's at.",
-    "keywords": [
-      "tfn application",
-      "apply for tfn",
-      "28 days",
-      "not received",
-      "ato phone",
-      "13 28 61",
-      "waiting",
-      "tax file number"
-    ],
-    "tags": [
-      "process"
-    ],
-    "lang": "en"
-  },
-  {
-    "intent": "update details with ato",
-    "question": "Can you update my address or contact details with the ATO for me?",
-    "examples": [
-      "How can I update my TFN contact details with my new Australian address?",
-      "I want to update my address so I can use it as a proof of address",
-      "Can you change the address the ATO has for me?",
-      "Can you update my phone number on my ATO record?"
-    ],
-    "answer": "Sorry, updating your details directly with the ATO isn't something I can do. That one goes through myGov, or you can call the ATO on 13 28 61.\n\nThe tax return side we can definitely help with, and the address we use goes on your form once you're a client.",
-    "keywords": [
-      "update address",
-      "contact details",
-      "change details",
-      "proof of address",
-      "ato",
-      "mygov",
-      "13 28 61",
-      "record"
     ],
     "tags": [
       "process"
@@ -2008,31 +1522,6 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "i already have my medicare entitlement statement",
-    "question": "I already have my Medicare Entitlement Statement. Where do I send it?",
-    "examples": [
-      "I haven't entered any Medicare information yet, as I have a Medicare Entitlement Statement",
-      "I've got my Medicare Entitlement Statement already, do you need it?",
-      "Should I send you my MES now or later?",
-      "Where do I upload my Medicare exemption certificate?"
-    ],
-    "answer": "Perfect, no problem at all!\n\nYou can upload it along with your other documents once you've filled out the form, and the team will make sure it's included in your return properly.",
-    "keywords": [
-      "medicare entitlement statement",
-      "mes",
-      "exemption",
-      "upload",
-      "already have",
-      "certificate",
-      "documents",
-      "levy"
-    ],
-    "tags": [
-      "documents"
-    ],
-    "lang": "en"
-  },
-  {
     "intent": "in person appointment",
     "question": "Can I come in and see you? What's your availability and what should I bring?",
     "examples": [
@@ -2041,7 +1530,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "Can I book an appointment to go through this in person?",
       "Whereabouts are you based, can I drop my documents in?"
     ],
-    "answer": "We work entirely online, so there's no need to come in.\n\nOnce payment is made you fill out a quick form and upload your documents, then our team reviews everything and gets back to you within 24 hours.",
+    "answer": "Our service is fully online, so there's no need to come in. After payment, you'll complete a quick form and upload your documents.\n\nOur team will review everything and get back to you within 24 hours.",
     "keywords": [
       "come in",
       "appointment",
@@ -2092,7 +1581,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
       "that was only a few weeks before the tax year ended so wouldn't be too much on there",
       "I only did a couple of months of farm work, is it worth it?"
     ],
-    "answer": "Even a few months of work is worth doing a return for. If tax was withheld from your pay, some of that may come back to you.\n\nThere's also your residency status and Medicare to check, and that's all part of the review.",
+    "answer": "Even if you only worked for a few months, it may still be worth lodging. If tax was withheld, you may be entitled to some of it back.",
     "keywords": [
       "short stay",
       "few months",
@@ -2109,29 +1598,106 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [  {
     "lang": "en"
   },
   {
-    "intent": "overseas investments out of scope",
-    "question": "I've got an investment back home as well. Can you include that?",
+    "intent": "how tax residency is decided what makes me a resident",
+    "question": "How do you decide if I'm an Australian resident for tax? What makes me a resident?",
     "examples": [
-      "I also have an investment back in the uk, unsure if this will be considered for tax purposes",
-      "It's an investment ISA",
-      "I have shares and a savings account in my home country, does that go in the return?",
-      "I own a rental property back home, can you handle that too?"
+      "What would I need to show to be considered an Australian tax resident?",
+      "What do I need to do or tell you to be treated as a resident?",
+      "I lived in the same place and same job the whole time, does that make me a resident?",
+      "You said I'm classified as a WHM, how do I know which one I actually am?",
+      "What makes someone a resident for tax purposes?"
     ],
-    "answer": "Sorry, overseas investments like an ISA aren't something we deal with.\n\nFor a return with that in it, you'd be better off with someone who has experience with that type of tax return.",
-    "keywords": [
-      "investment",
-      "isa",
-      "shares",
-      "overseas income",
-      "home country",
-      "foreign",
-      "property",
-      "out of scope"
+    "answer": "Tax residency isn't decided by your visa or length of stay alone. The ATO uses several tests based on your full circumstances, and meeting any one of them may make you an Australian resident for tax purposes.\n\nThe questionnaire guides you through these tests, and we confirm your status during the review because it can significantly affect your tax result.",
+    "keywords": ["residency test","resident","criteria","five tests","whm","how decided","qualify","questionnaire","assess"],
+    "tags": ["residency","tax-question","boundary"],
+    "lang": "en"
+  },
+  {
+    "intent": "tax free threshold eligibility",
+    "question": "Do I get the $18,200 tax-free threshold?",
+    "examples": [
+      "Just wondered if I am eligible for the $18k tax free threshold",
+      "I have family in Australia, I think that still qualifies me for the tax free threshold",
+      "I earned over $45,001, can I still claim the threshold?",
+      "Am I entitled to the tax free threshold as a backpacker?"
     ],
-    "tags": [
-      "process",
-      "objection"
+    "answer": "That's a great question!\n\nWhether the tax-free threshold applies depends on your tax residency and individual circumstances. That's exactly what we check in the review, and we'll confirm where you stand after reviewing your full situation.",
+    "keywords": ["tax free threshold","18200","18k","threshold","resident","non resident","eligible","residency"],
+    "tags": ["residency","tax-question"],
+    "lang": "en"
+  },
+  {
+    "intent": "redo or resubmit the form after a mistake",
+    "question": "I think I answered something on the form wrong. Can I fill it out again?",
+    "examples": [
+      "I clicked the incorrect part, can I redo it?",
+      "I put yes but think I should have put no, do I need to do it again?",
+      "I filled it out as a WHM by mistake, how do I fix it?",
+      "Sorry I got the residency question wrong, can I resubmit?",
+      "I've filled it in wrong, what do I do?"
     ],
+    "answer": "No problem at all!\n\nPlease complete the questionnaire again with the correct answers.",
+    "keywords": ["form","questionnaire","mistake","wrong","redo","resubmit","fill again","correct","edit"],
+    "tags": ["process","residency"],
+    "lang": "en"
+  },
+  {
+    "intent": "difference between tfn and abn",
+    "question": "What's the difference between a TFN and an ABN? I'm not sure which one I worked under.",
+    "examples": [
+      "What does TFN or ABN mean? 😂",
+      "I'm unsure what that means",
+      "On my payslips it just states ABN",
+      "I just worked on a TFN I believe, but I'm not certain",
+      "Which one do I have?"
+    ],
+    "answer": "A TFN is used for regular employment, such as hospitality, farm work or hotels.\n\nAn ABN is used when you work for yourself, such as Uber, delivery, Airtasker or freelancing.",
+    "keywords": ["tfn","abn","difference","what does it mean","which one","employee","contractor","self employed","payslip"],
+    "tags": ["process"],
+    "lang": "en"
+  },
+  {
+    "intent": "must declare all abn income cannot do tfn only",
+    "question": "I only earned a little through my ABN. Can I just do a TFN-only return to keep it cheaper, or does small ABN income not need declaring?",
+    "examples": [
+      "I don't have much money so I want to stay on the TFN only",
+      "I understood the ABN only had to be declared up to a limit of $5,000",
+      "It was only a few weeks of Uber Eats before the tax year ended so it wouldn't be much",
+      "I did a few shifts under my ABN then moved to TFN, does that small bit count?",
+      "Can we leave the ABN part off?"
+    ],
+    "answer": "All income earned in Australia must be declared, including ABN income, even if it was a small amount or only a few weeks of work. Your TFN and ABN income are included in one return.\n\nPlease send us your full ABN earnings reports, such as Uber or delivery reports, plus any related expenses. We'll make sure everything is included correctly.",
+    "keywords": ["abn","declare","all income","tfn only","small","5000","uber","385","must report","leave off"],
+    "tags": ["abn","process","pricing"],
+    "lang": "en"
+  },
+  {
+    "intent": "am I guaranteed a refund will I definitely get money back",
+    "question": "Will I definitely get a refund? Can you confirm I'll get money back before I pay?",
+    "examples": [
+      "Will I definitely get tax back?",
+      "What happens if you can't get the return into positive figures?",
+      "I'm not sure if I'll get a refund, can you check it first?",
+      "My coworkers got around $1000 back, would mine be similar?",
+      "Am I guaranteed a rebate?"
+    ],
+    "answer": "Whether you're due a refund, and how much, depends on your individual situation. That's exactly what we check in the review, so we can't confirm anything beforehand.",
+    "keywords": ["definitely","guaranteed","refund","get back","money back","eligible","confirm","rebate","positive"],
+    "tags": ["objection","pricing","guarantee"],
+    "lang": "en"
+  },
+  {
+    "intent": "deduct the fee from my refund instead of paying upfront",
+    "question": "Can you just take your fee out of my refund instead of me paying upfront?",
+    "examples": [
+      "I thought you would just deduct it from the tax return",
+      "Isn't it possible to deduct the amount during the transfer?",
+      "Can the fee come out of my refund when it comes through?",
+      "I don't feel comfortable paying upfront, can you take it from the return?"
+    ],
+    "answer": "Unfortunately not. Any refund is paid directly by the ATO into your own Australian bank account and never passes through us, so the fee must be paid separately upfront.",
+    "keywords": ["deduct","take from refund","out of my refund","upfront","pay first","fee","before refund"],
+    "tags": ["payment","objection","pricing"],
     "lang": "en"
   }
 ];

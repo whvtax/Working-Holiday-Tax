@@ -90,6 +90,29 @@ const MAX_IMPROVISED_CHARS = 450;
 // sent. Post-payment nothing is allowed at all (see `allowedCents` below), so a
 // consultation price can only ever appear before the customer has paid.
 const FIXED_PRICES_CENTS = [22000, 38500, 11000];
+
+// The ATO's $300 work-related-expense substantiation threshold. This is a fixed
+// public regulatory figure, NOT a price and NOT a refund, and the team needs to
+// state it when explaining record-keeping ("if your total work expenses are $300
+// or less, receipts generally aren't required"). It is exempted from the money
+// net ONLY inside a record-keeping context (receipts / records / substantiate /
+// work-related expenses / claim) and ONLY when the same text says nothing about a
+// refund or money owed. So "your refund is $300", "$300 back to you", or any
+// other amount stays blocked. Deliberately one exact value, one direction.
+const SUBSTANTIATION_THRESHOLD_CENTS = 30000; // $300
+const SUBSTANTIATION_CTX =
+  /\b(?:receipts?|records?|record[- ]keeping|substantiat\w*|work[- ]related expenses?|work expenses?|claim(?:ed|ing|able)?)\b/i;
+const REFUND_MONEY_CTX =
+  /\b(?:refund|get\s+back|getting\s+back|back\s+to\s+you|you'?ll\s+get|you\s+would\s+get|you\s+will\s+get|owe[ds]?|owing|estimate)\b/i;
+/** True only for the exact $300 substantiation threshold stated in a pure record-keeping context. */
+function isBenignThreshold(cents: number, context: string): boolean {
+  return (
+    cents === SUBSTANTIATION_THRESHOLD_CENTS &&
+    SUBSTANTIATION_CTX.test(context) &&
+    !REFUND_MONEY_CTX.test(context)
+  );
+}
+
 // Currency words in the languages backpackers actually use.
 const CURRENCY_WORDS = 'dollars?|bucks?|aud|usd|dólares?|dolares?|euros?|eur|pounds?|libras?|sterline|quid|yen|jpy|francs?|kroner?|kronor?|reais?|pesos?|shekels?|rupees?|won';
 const CURRENCY_SYMBOLS = '\\$|€|£|¥|₪|₩|₺|₹|R\\$';
@@ -122,12 +145,21 @@ const AMOUNT_RE = new RegExp(
 const BARE_PRICE_RE = new RegExp(
   `\\b(?:fee|fees|price|priced|cost|costs|total|charge|charges|quote|quoted|rate)\\b` +
   `[^.!?\\d]{0,24}?(\\d[\\d.,]*)\\b` +
-  // not a duration, a percentage, a time, or a tax year
+  // not a duration, a percentage, a time, or a tax year (distance/quantity
+  // units like "5,000 kilometres" are excluded in amountsInCents, because a
+  // grouped number can backtrack past a trailing lookahead — see NON_MONEY_UNIT)
   `(?!\\s*(?:%|percent|weeks?|days?|months?|years?|minutes?|hours?|am|pm))`,
   'gi',
 );
 /** Four-digit values that are plainly a tax year, not a price. */
 const LOOKS_LIKE_YEAR = /^(19|20)\d{2}$/;
+/**
+ * The text right after a bare number. If it continues with more digits/commas
+ * the match was a truncated fragment of a bigger number; if it is a distance or
+ * quantity unit ("5,000 kilometres", "5000km") the number is not money. Either
+ * way the bare-price matcher must not treat it as a dollar figure.
+ */
+const NON_MONEY_UNIT = /^(?:\d|[.,]\d|\s*(?:kms?|kilomet(?:re|er)s?|litres?|liters?|kg|grams?)\b)/i;
 
 /**
  * "Pay us 50" — a demand for money with no fee/price word in front of it.
@@ -186,6 +218,13 @@ function amountsInCents(text: string): number[] {
   for (const m of text.matchAll(BARE_PRICE_RE)) {
     const raw = (m[1] ?? '').trim();
     if (LOOKS_LIKE_YEAR.test(raw)) continue; // "the fee for 2024" is a year, not a price
+    // What immediately follows the captured number. A grouped number like
+    // "5,000" can backtrack to "5" when a trailing unit lookahead fails, so the
+    // unit test is done here against the real tail: a number that continues with
+    // more digits/commas (a truncated fragment) or is followed by a distance /
+    // quantity unit is not a price. "5,000 kilometres" / "5000km" -> skipped.
+    const tail = text.slice(m.index! + m[0].length);
+    if (NON_MONEY_UNIT.test(tail)) continue;
     const c = toCents(raw);
     if (c != null) out.push(c);
   }
@@ -336,6 +375,15 @@ const DIY_INSTRUCTIONS = /(do it yourself|lodge (it |your (tax )?return )?(yours
 const MYGOV_TERMS = /\b(my ?gov|my\.gov(?:\.au)?|mygov ?id|ato (?:online|portal|account|login|app|website)|australian taxation office|\bato\b|digital id|myid|centrelink|services australia|ihi|individual healthcare identifier|medicare entitlement statement|\bmes\b)\b/i;
 const MYGOV_STEP_CUE = /\b(?:log ?in|logging in|sign ?in|signing in|go to|head to|click|tap|press|select|choose|enter (?:your|the)|type in|open (?:the |your )?(?:app|link|page|site|portal|account)|create (?:an? )?(?:account|id|my ?gov ?id|digital id|profile)|set up (?:an? )?(?:account|id)|reset (?:your )?password|apply for (?:an? )?(?:ihi|mes|medicare entitlement|exemption|digital id)|link(?:ing)? (?:your|the) (?:my ?gov|ato|account)|connect (?:your|the) (?:my ?gov|ato)|verify your|follow (?:these|the|this) (?:steps|guide|link)|you (?:need|have|'ll need|will need) to (?:log|sign|go|click|create|apply|link|enter|select|open|reset|submit|set up|verify|connect)|try (?:logging|signing) in|try (?:again|it again)|submit (?:the )?(?:form|application|statement))\b/i;
 const MYGOV_REASSURANCE = /\b(?:do(?:n'?t| not)|does(?:n'?t| not)|no need|never|without|won'?t|will not|you'?ll never|nothing to)\b[^.!?]{0,45}\b(?:need|have to|require|use|access|log ?in|sign ?in|worry|touch|deal with)\b|\b(?:we|our team|i)\b[^.!?]{0,45}\b(?:handle|take care of|takes care of|access|manage|deal with|look after|sort out|do (?:it |everything |all )?for you|on your behalf|through the ato)\b|leave (?:it|that|the my ?gov|everything)[^.!?]{0,25}\b(?:to us|with us|to me)\b/i;
+// A benign device hint ("try again on a computer/laptop") is NOT portal
+// troubleshooting: it names no site, no login and no step through a service, it
+// only suggests a different device. Owner-approved for the Services Australia
+// IHI/MES deflection (Jo, 31 Aug). Deliberately narrow: strictly
+// "try (again) on/using a computer|laptop|...". Anything carrying a real
+// instruction (log in, click, link, "try logging in") never matches this and
+// stays caught below, because the clause is re-tested for a step cue AFTER this
+// exact phrase is stripped out.
+const MYGOV_BENIGN = /\btry\s+(?:again\s+|it\s+again\s+)?(?:on|using|with|from|in)\s+(?:a\s+|an\s+|your\s+|another\s+|a\s+different\s+|the\s+)?(?:computer|laptop|desktop|pc|mac|browser|different\s+device|another\s+device|other\s+device)\b/i;
 // Prices are AUD, shown with the $ sign only. Any non-dollar currency next to a
 // number is a hard violation, even if the number itself matches an allowed price
 // (e.g. "220 euros" is a wrong-currency conversion and must never be sent).
@@ -362,6 +410,16 @@ const AI_IDENTITY_DENIAL =
 const PLACEHOLDER_LEFTOVER = /\{\{[A-Z_]+\}\}/;
 const PROMPT_ECHO = /(master rule|operating rules|non-negotiable boundar|system prompt|objection library|approved messages|# current customer)/i;
 const SENSITIVE_LEAK = /(password|api.?key|access token|secret key|admin (access|panel)|credentials)/i;
+// Owner-approved exception (Jo, 31 Aug): the Xero document-signing link is a
+// read-only portal for signing the return, not a login to any of our systems or
+// to a tax/gov account. Support for it sometimes shares the portal's temporary
+// password or names the "Forgot password" reset link. This is the ONLY place a
+// password may appear, and only when the message is clearly about that Xero
+// signing link. Deliberately narrow: it strips ONLY these exact benign phrases,
+// so an API key, "admin access", "credentials", or a raw "your password is ..."
+// (even next to the word Xero) is still caught by SENSITIVE_LEAK below.
+const XERO_SIGNING = /\bxero\b/i;
+const XERO_BENIGN_PWD = /\b(?:if it (?:asks|is asking) for a password|try\s+\d{4,}|forgot password|reset (?:your |the )?password)\b/gi;
 const DASHES = /[—–―−]/; // — – ― −
 
 export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
@@ -387,7 +445,11 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // --- whole-message checks (never exempt) ---
   if (PLACEHOLDER_LEFTOVER.test(text)) violations.push('PLACEHOLDER_LEFTOVER');
   if (PROMPT_ECHO.test(text)) violations.push('PROMPT_ECHO');
-  if (SENSITIVE_LEAK.test(text)) violations.push('SENSITIVE_CONTENT');
+  // Only in the Xero signing context, strip the approved benign password phrases
+  // before the sensitive check, so the portal support message sends while any
+  // other credential leak stays blocked.
+  const sensText = XERO_SIGNING.test(text) ? text.replace(XERO_BENIGN_PWD, ' ') : text;
+  if (SENSITIVE_LEAK.test(sensText)) violations.push('SENSITIVE_CONTENT');
   if (DASHES.test(text)) violations.push('EM_DASH_FORBIDDEN');
   if (NON_DOLLAR_CURRENCY.test(text)) violations.push('NON_DOLLAR_CURRENCY');
   if (AI_IDENTITY_CLAIM.test(text) || AI_IDENTITY_DENIAL.test(text)) {
@@ -412,9 +474,14 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // statements even when they share a sentence.
   if (MYGOV_TERMS.test(text) && MYGOV_STEP_CUE.test(text)) {
     const clauses = text.split(/[.!?\n]+|,\s+|\s+but\s+/i).map((c) => c.trim()).filter(Boolean);
-    const instructing = clauses.some(
-      (c) => MYGOV_STEP_CUE.test(c) && !MYGOV_REASSURANCE.test(c),
-    );
+    const instructing = clauses.some((c) => {
+      if (MYGOV_REASSURANCE.test(c)) return false;
+      // Strip the one allowed benign device hint, then a clause is instructing
+      // only if a REAL portal step still survives. So "try again on a computer"
+      // clears, but "log in on a computer" or "try logging in again" do not.
+      const stripped = c.replace(MYGOV_BENIGN, ' ');
+      return MYGOV_STEP_CUE.test(stripped);
+    });
     if (instructing) violations.push('MYGOV_TROUBLESHOOTING');
   }
 
@@ -450,7 +517,9 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // Money, re-checked across the flattened improvised text so a line break
   // cannot hide a price. Same allow-list as the per-sentence pass.
   for (const cents of amountsInCents(improvised)) {
-    if (!allowedCents.has(cents)) violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
+    if (!allowedCents.has(cents) && !isBenignThreshold(cents, improvised)) {
+      violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
+    }
   }
   // A price spelled out in words. No value is reported: the only correct way to
   // write a price here is $220 or $385, so words are wrong wording either way.
@@ -469,7 +538,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
 
     // Amount check is language-agnostic (currency symbols + words in many languages).
     for (const cents of amountsInCents(sentence)) {
-      if (!allowedCents.has(cents)) {
+      if (!allowedCents.has(cents) && !isBenignThreshold(cents, sentence)) {
         violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
       }
     }

@@ -24,7 +24,7 @@ export async function POST(req: Request) {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   type KnowledgeBody = {
     action?: string; id?: string; question?: string; answer?: string; intent?: string;
-    status?: string;
+    status?: string; overwrite?: boolean;
     entries?: Array<{
       intent?: string; question?: string; answer?: string; examples?: string[];
       keywords?: string[]; tags?: string[]; lang?: string; weight?: number;
@@ -42,24 +42,50 @@ export async function POST(req: Request) {
   switch (b.action) {
     case 'import_starter': {
       // One-click load of the bundled curated pack (KNOWLEDGE_SEED).
-      // Idempotent: existing questions are skipped, so it is safe to click twice.
+      //
+      // Default (overwrite:false): idempotent add. Existing questions are
+      // skipped, so it is safe to click twice, and it never touches an entry a
+      // human has since edited in the CRM.
+      //
+      // Sync mode (overwrite:true): the seed file is the source of truth. An
+      // existing question is UPDATED so its answer, examples, keywords and tags
+      // match the seed, and a new one is added. This is what makes the workflow
+      // "edit knowledge-seed.ts, deploy, click Sync" actually reach Will, whose
+      // library lives in the DB, not in this file. Status and weight are left
+      // exactly as they are, so a paused entry stays paused and manual entries
+      // (a different question) are never removed.
       const status = b.status === 'draft' ? 'draft' : 'active';
+      const overwrite = b.overwrite === true;
       const existing = await store.listKnowledge();
-      const seen = new Set(existing.map((k) => (k.question || '').trim().toLowerCase()));
-      let imported = 0, skipped = 0;
+      const byQuestion = new Map(existing.map((k) => [(k.question || '').trim().toLowerCase(), k]));
+      let imported = 0, updated = 0, skipped = 0;
       for (const e of KNOWLEDGE_SEED) {
         const q = e.question.trim();
-        if (seen.has(q.toLowerCase())) { skipped++; continue; }
-        await store.addKnowledge({
+        const key = q.toLowerCase();
+        const hit = byQuestion.get(key);
+        if (hit) {
+          if (!overwrite) { skipped++; continue; }
+          await store.updateKnowledge(hit.id, {
+            intent: e.intent || hit.intent,
+            examples: e.examples || [],
+            answer: e.answer,
+            keywords: e.keywords && e.keywords.length ? e.keywords : extractKeywords(q),
+            tags: e.tags || [],
+            lang: e.lang || 'en',
+          });
+          updated++;
+          continue;
+        }
+        const row = await store.addKnowledge({
           intent: e.intent || q.slice(0, 60), question: q, examples: e.examples || [],
           answer: e.answer, keywords: e.keywords && e.keywords.length ? e.keywords : extractKeywords(q),
           tags: e.tags || [], lang: e.lang || 'en', weight: 1,
           status: status as 'active' | 'draft' | 'archived', source: 'mined',
         });
-        seen.add(q.toLowerCase());
+        byQuestion.set(key, row);
         imported++;
       }
-      return NextResponse.json({ ok: true, imported, skipped, total: KNOWLEDGE_SEED.length });
+      return NextResponse.json({ ok: true, imported, updated, skipped, total: KNOWLEDGE_SEED.length });
     }
     case 'import': {
       // Bulk load a curated knowledge pack (e.g. will_knowledge_seed.json).

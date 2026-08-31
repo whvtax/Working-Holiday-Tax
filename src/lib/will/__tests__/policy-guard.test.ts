@@ -80,6 +80,28 @@ describe('myGov / ATO access — the biggest problem', () => {
     const r = policyGuard('You can leave all the myGov and ATO side of things to us.', ctx());
     expect(r.violations).not.toContain('MYGOV_TROUBLESHOOTING');
   });
+
+  // The owner-approved benign device hint (Jo, 31 Aug). Allowed, and proven
+  // NOT to leak: it must exempt ONLY "try (again) on a computer/laptop", never a
+  // real portal instruction sitting near a Services Australia term.
+  it('ALLOWS the benign "try again on a computer" device hint next to a Services Australia term', () => {
+    const r = policyGuard(
+      'Your IHI and Medicare Entitlement Statement are handled directly by Services Australia, so unfortunately we can’t help with that part. Please try again on a computer, as that usually works.',
+      ctx(),
+    );
+    expect(r.violations).not.toContain('MYGOV_TROUBLESHOOTING');
+  });
+  it('still allows other benign device phrasings', () => {
+    expect(policyGuard('If the IHI page will not load, try on a laptop instead.', ctx()).violations).not.toContain('MYGOV_TROUBLESHOOTING');
+    expect(policyGuard('For the Medicare Entitlement Statement, try again using a different device.', ctx()).violations).not.toContain('MYGOV_TROUBLESHOOTING');
+  });
+  it('NO LEAK: a real login/link instruction is still blocked even with "on a computer"', () => {
+    expect(has('Log in to your myGov on a computer and click Link the ATO.', 'MYGOV_TROUBLESHOOTING')).toBe(true);
+    expect(has('Go to my.gov.au on a computer and submit the Medicare Entitlement Statement.', 'MYGOV_TROUBLESHOOTING')).toBe(true);
+    expect(has('Try logging in again on a computer to your ATO account.', 'MYGOV_TROUBLESHOOTING')).toBe(true);
+    expect(has('Create a myGovID on a computer, then verify your identity.', 'MYGOV_TROUBLESHOOTING')).toBe(true);
+    expect(has('Apply for an IHI on a computer through Services Australia.', 'MYGOV_TROUBLESHOOTING')).toBe(true);
+  });
 });
 
 describe('currency — prices are AUD with the $ sign only', () => {
@@ -162,8 +184,71 @@ describe('leaks, echoes and formatting', () => {
   it('blocks leaking sensitive terms', () => {
     expect(has('Here is the admin panel password.', 'SENSITIVE_CONTENT')).toBe(true);
   });
+  // Owner-approved Xero signing-link support (Jo, 31 Aug). Allowed, and proven
+  // NOT to leak: it exempts ONLY the benign temp-password / reset-link phrasing,
+  // and ONLY in the Xero context. Real credential leaks stay blocked.
+  it('ALLOWS the Xero signing-link temp password support message', () => {
+    const r = policyGuard(
+      'It looks like you may have accidentally created a Xero account. If it asks for a password, try 123456789. If that doesn’t work, log in using the email address you gave us, select “Forgot password” and reset it. You should then be able to open and sign the documents.',
+      ctx(),
+    );
+    expect(r.violations).not.toContain('SENSITIVE_CONTENT');
+  });
+  it('NO LEAK: a real credential is still blocked even with the word Xero present', () => {
+    expect(has('Your Xero password is hunter2, use that to log in.', 'SENSITIVE_CONTENT')).toBe(true);
+    expect(has('For the Xero portal, here is the API key: sk_live_abc123.', 'SENSITIVE_CONTENT')).toBe(true);
+    expect(has('Xero admin access is via the admin panel password.', 'SENSITIVE_CONTENT')).toBe(true);
+  });
+  it('NO LEAK: the same password phrasing WITHOUT Xero context is still blocked', () => {
+    expect(has('If it asks for a password, try 123456789.', 'SENSITIVE_CONTENT')).toBe(true);
+    expect(has('Just reset your password and log back in.', 'SENSITIVE_CONTENT')).toBe(true);
+  });
   it('blocks an em dash', () => {
     expect(has('Sure — I can help.', 'EM_DASH_FORBIDDEN')).toBe(true);
+  });
+});
+
+// The ATO $300 substantiation threshold. A fixed public regulatory figure, safe
+// to state only in a record-keeping context and never near a refund. Everything
+// else about $300, and any other amount, stays blocked.
+describe('$300 substantiation threshold — allowed only in a record-keeping context', () => {
+  const amt = (msg: string) =>
+    policyGuard(msg, ctx()).violations.some((v) => v.startsWith('FORBIDDEN_AMOUNT'));
+
+  it('ALLOWS $300 when it is about receipts / work-related expenses', () => {
+    expect(
+      amt('If your total work-related expenses are $300 or less, receipts generally aren’t required, but you still need to show how you calculated the amount.'),
+    ).toBe(false);
+    expect(amt('Keep your receipts once your work expenses go over $300.')).toBe(false);
+  });
+
+  it('NO LEAK: $300 stated as a refund or amount owed is still blocked', () => {
+    expect(amt('Your refund is $300.')).toBe(true);
+    expect(amt('You’ll get back around $300.')).toBe(true);
+    expect(amt('We estimate $300 back to you.')).toBe(true);
+    expect(amt('You owe $300.')).toBe(true);
+  });
+
+  it('NO LEAK: a different amount in the same record-keeping context is still blocked', () => {
+    expect(amt('If your work-related expenses are $500 or less, receipts aren’t required.')).toBe(true);
+    expect(amt('Keep receipts for anything over $250.')).toBe(true);
+  });
+
+  it('NO LEAK: bare $300 with no record-keeping context is still blocked', () => {
+    expect(amt('It comes to $300.')).toBe(true);
+    expect(amt('That will be $300.')).toBe(true);
+  });
+
+  it('a distance in kilometres is not a price, even after the word "total"', () => {
+    expect(
+      amt('Show how you calculated the total, up to 5,000 kilometres.'),
+    ).toBe(false);
+    expect(amt('Keep a record of your work-related kilometres, up to 5000 km.')).toBe(false);
+  });
+
+  it('NO LEAK: a real dollar total is still caught next to the word total', () => {
+    expect(amt('The total cost is 5,000.')).toBe(true);
+    expect(amt('Your total is $5,000.')).toBe(true);
   });
 });
 

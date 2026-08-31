@@ -970,7 +970,7 @@ export class SupabaseStore implements Store {
   }
   async updateKnowledge(id: string, patch: Partial<KnowledgeRow>): Promise<void> {
     const upd: Record<string, unknown> = { updated_at: now() };
-    for (const key of ['answer', 'intent', 'question', 'keywords', 'tags', 'weight', 'lang'] as const) {
+    for (const key of ['answer', 'intent', 'question', 'examples', 'keywords', 'tags', 'weight', 'lang'] as const) {
       if (key in patch) upd[key] = (patch as Record<string, unknown>)[key];
     }
     await this.sb().from('will_knowledge').update(upd).eq('id', id);

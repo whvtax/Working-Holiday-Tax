@@ -2104,6 +2104,20 @@ export default function Dashboard() {
             <h2 className="vt">Learning</h2>
             <div className="vsub">{ASSISTANT_NAME} improves from every conversation. Approve what works, and watch it get better over time.</div>
 
+            {/* Sync the live library (the DB Will reads) to the bundled seed file
+                after a deploy. Updates existing answers in place and adds new
+                entries; never removes anything you added by hand, and leaves
+                paused entries paused. This is what makes edits to
+                knowledge-seed.ts actually reach Will. */}
+            <div style={{ margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <button className="btn take" onClick={async () => {
+                const r = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'import_starter', overwrite: true }) }).then((x) => x.json()).catch(() => null);
+                if (r && r.ok) { say(`Library synced: ${r.updated ?? 0} updated, ${r.imported ?? 0} added, ${r.skipped ?? 0} unchanged.`); loadKnowledge(); }
+                else say('Sync failed. Please try again.');
+              }}>Sync library from file</button>
+              <span className="psub" style={{ margin: 0 }}>Run once after a deploy to apply the latest bundled library.</span>
+            </div>
+
             {/* "Download every conversation" (transcript/JSON export) and the
                 monthly "what customers wrote" email were removed per the
                 owner's request. Replaced by the daily Library-suggestions

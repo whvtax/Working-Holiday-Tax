@@ -345,7 +345,7 @@ export interface Store {
   // Knowledge base (the brain's learned Q&A; RAG retrieval reads 'active' rows).
   listKnowledge(status?: KnowledgeRow['status']): Promise<KnowledgeRow[]>;
   addKnowledge(k: Omit<KnowledgeRow, 'id' | 'createdAt' | 'updatedAt'>): Promise<KnowledgeRow>;
-  updateKnowledge(id: string, patch: Partial<Pick<KnowledgeRow, 'answer' | 'intent' | 'question' | 'keywords' | 'tags' | 'weight' | 'lang'>>): Promise<void>;
+  updateKnowledge(id: string, patch: Partial<Pick<KnowledgeRow, 'answer' | 'intent' | 'question' | 'examples' | 'keywords' | 'tags' | 'weight' | 'lang'>>): Promise<void>;
   setKnowledgeStatus(id: string, status: KnowledgeRow['status']): Promise<void>;
   deleteKnowledge(id: string): Promise<void>;
 
