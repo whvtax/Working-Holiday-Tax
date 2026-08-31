@@ -196,3 +196,57 @@ https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8?g_st=ic`,
     documents_after_payment: `Perfect, got it all, thank you 😊 Let me work through everything and I'll come back to you soon.`,
   },
 } as const;
+
+// ============================================================
+// Nationality-based owing caveat (Jo, 31 Aug).
+//
+// The price messages end on a sentence that spells out that if the customer
+// OWES tax rather than getting a refund, the fee still isn't refundable. Jo's
+// rule: UK, German and Japanese backpackers reliably GET a refund (tax treaty /
+// residency), so that owing sentence just muddies their price message and is
+// dropped for them. It stays for every other number, where owing is a real
+// possibility and the customer must be told upfront the fee isn't refundable.
+//
+// Nationality is read off the WhatsApp number's country dialling code:
+//   +44 United Kingdom, +49 Germany, +81 Japan.
+// This never touches the guarantee itself and never states or predicts a refund
+// figure: it only removes a protective disclaimer for numbers that don't need it.
+// ============================================================
+
+/** Country dialling codes whose customers reliably receive a refund, so the
+ *  "if you owe tax the fee isn't refundable" caveat is omitted from their price
+ *  message. Order matters only for display; matching is prefix-based below. */
+export const REFUND_NATIONALITY_PREFIXES = ['44', '49', '81'] as const;
+
+/** True when a WhatsApp id (which is the phone number, e.g. "447700900123" or
+ *  "+44 7700 900123") belongs to a refund-nationality (+44/+49/+81). Anything
+ *  unknown, empty or any other country returns false, so the caveat is KEPT by
+ *  default. Fail-safe: when in doubt, the customer is told the fee isn't
+ *  refundable. */
+export function isRefundNationality(waId: string | null | undefined): boolean {
+  if (!waId) return false;
+  const digits = waId.replace(/\D/g, '');
+  if (!digits) return false;
+  return REFUND_NATIONALITY_PREFIXES.some((p) => digits.startsWith(p));
+}
+
+/** The trailing owing-tax caveat, for either fee ($220 or $385) and either
+ *  apostrophe style. Matched as a whole sentence (with the space that joins it
+ *  to the guarantee before it) so removing it leaves clean text. */
+const OWING_CAVEAT_RE =
+  /\s*If you owe tax instead of a refund, the \$\d+ covers our review either way and isn'?t refundable\.?/i;
+
+/** Remove the owing-tax caveat from a price message. Used for refund-nationality
+ *  numbers only. If the text has been edited in the Library and no longer holds
+ *  the exact sentence, nothing is removed and the caveat safely stays. */
+export function stripOwingCaveat(text: string): string {
+  return text.replace(OWING_CAVEAT_RE, '');
+}
+
+/** Given a price message body and the customer's WhatsApp id, return the copy
+ *  that should actually be sent: caveat removed for +44/+49/+81, kept otherwise.
+ *  Applies only to the two price templates; every other message is returned
+ *  untouched. */
+export function priceForNumber(body: string, waId: string | null | undefined): string {
+  return isRefundNationality(waId) ? stripOwingCaveat(body) : body;
+}

@@ -158,8 +158,22 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     }
   }
 
-  // A reply that presupposes a rejected state must never be sent (audit finding).
-  if (invalidTransition) {
+  // A rejected state jump is not, by itself, a reason to hand a good reply to a
+  // human (Jo, 31 Aug: "the answer is excellent, why did it become a task?").
+  // The common case is a customer who runs ahead of the pipeline: at PRICE_SENT
+  // they message "I've sent my form", and the model over-shoots to FORM_COMPLETE.
+  // The state machine only walks one step at a time, so the jump is invalid, but
+  // the warm holding reply ("got it, the team will get back to you") is perfectly
+  // safe to send. So: DROP the invalid state change, keep the current valid
+  // state, and let the reply go out normally through the guard below.
+  //
+  // The exception is a jump INTO a state that CONFIRMS something only we can
+  // verify: money received (PAID), a signed return (SIGNED), a lodgement
+  // (LODGED/COMPLETED). We must never let the customer's word alone flip those,
+  // because the reply then falsely confirms payment or lodgement. Those stay a
+  // human CONFLICT task exactly as before.
+  const UNVERIFIABLE_CONFIRM_STATES: CustomerState[] = ['PAID', 'SIGNED', 'LODGED', 'COMPLETED'];
+  if (invalidTransition && decision.new_state && UNVERIFIABLE_CONFIRM_STATES.includes(decision.new_state)) {
     return {
       kind: 'human_task',
       decision,
@@ -171,6 +185,9 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       },
     };
   }
+  // Any other invalid jump is neutralised: the reply proceeds, the state does not
+  // advance (newState stays undefined). invalidTransition is recorded on the
+  // outcome for the audit trail but no longer forces a task.
 
   // --- fill system-owned placeholders, then guard the final text ---
   // Owner rules (no dashes ever; at most one emoji, opening only) applied to the
@@ -257,6 +274,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     replyText: text,
     newState,
     stateChanged: !!newState,
+    invalidTransition,
     decision,
   };
 }

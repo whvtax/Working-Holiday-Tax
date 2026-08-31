@@ -16,7 +16,7 @@
 //
 // A suggestion is a DRAFT FOR A HUMAN. It is never transmitted by itself: the
 // send path runs the policy guard as usual.
-import { APPROVED } from './approved-messages';
+import { APPROVED, priceForNumber } from './approved-messages';
 import { retrieveKnowledge } from './knowledge';
 import { CustomerRow, getStore } from './store';
 
@@ -125,7 +125,7 @@ async function libraryBody(key: string | null): Promise<string | null> {
  */
 export async function suggestReply(
   customerMessage: string,
-  customer: Pick<CustomerRow, 'state' | 'income' | 'paid' | 'lang'> | null,
+  customer: Pick<CustomerRow, 'state' | 'income' | 'paid' | 'lang' | 'waId'> | null,
   reason: HandoffReason = 'generic',
   preferred?: string | null,
 ): Promise<string> {
@@ -151,7 +151,10 @@ export async function suggestReply(
   //    is what they are waiting on. Someone whose photo could not be read is not
   //    waiting to be quoted a price again.
   if (customer && (reason === 'guard_blocked' || reason === 'draft_invalid' || reason === 'budget' || reason === 'generic')) {
-    const s = (await libraryBody(stateTemplateKey(customer))) ?? byState(customer);
+    let s = (await libraryBody(stateTemplateKey(customer))) ?? byState(customer);
+    // At QUALIFIED the body is the price message; drop the owing caveat for
+    // +44/+49/+81 so the suggested reply matches what Will would send.
+    if (s && customer.state === 'QUALIFIED') s = priceForNumber(s, customer.waId);
     if (s) return s;
   }
 

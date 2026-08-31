@@ -358,7 +358,13 @@ const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (dea
 // ("refund your payment", "refund you $220", "money back", "cancel") but NOT on
 // the noun ("eligible for a refund", "your tax refund", "super refund") nor on
 // the approved guarantee ("refund the difference" / "refund you the difference").
-const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b|refund\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|\$?\d)))\b(?!\s+the\s+difference)/i;
+const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b|refund\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|full|amount|\$?\d)))\b(?!\s+the\s+difference)/i;
+// "never out of pocket" / "not out of pocket" — the exact over-promise that
+// broke the Indigo conversation (a customer who owes was told they would get
+// the fee back). It is now banned from every message, so any improvised reply
+// that reaches for it is a refund promise. (Approved templates are exempt at the
+// call site, and the phrase was removed from all of them.)
+const OUT_OF_POCKET_PROMISE = /\bout of pocket\b/i;
 const POST_PAYMENT_SALES = /(\bfee\b|\bprice\b|\bcost\b|\bdiscount\b|guarantee|out of pocket|cover the (gap|difference)|refund the difference)/i;
 const DIY_INSTRUCTIONS = /(do it yourself|lodge (it |your (tax )?return )?(yourself|on your own)|step[- ]by[- ]step|log ?in ?to mygov[^.!?]{0,40}(link|lodge|submit))/i;
 // myGov / ATO ACCESS (the team's single biggest problem): Will must never
@@ -564,7 +570,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     }
     if (DIY_INSTRUCTIONS.test(sentence)) violations.push('DIY_INSTRUCTIONS');
     if (paid && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
-    if (!ctx.isApprovedTemplate && REFUND_PROMISE.test(sentence)) violations.push('REFUND_OR_CANCEL_PROMISE');
+    if (!ctx.isApprovedTemplate && (REFUND_PROMISE.test(sentence) || OUT_OF_POCKET_PROMISE.test(sentence))) violations.push('REFUND_OR_CANCEL_PROMISE');
 
     // H5: a non-approved sentence in a language the English patterns can't cover.
     if (isLikelyNonEnglish(sentence)) unguardedLanguage = true;

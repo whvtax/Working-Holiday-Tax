@@ -5,7 +5,7 @@
 // Falls back to a deterministic mock when no ANTHROPIC_API_KEY.
 // ============================================================
 import { buildSystemPrompt, CustomerContext, LiveTemplates } from './playbook';
-import { APPROVED } from './approved-messages';
+import { APPROVED, stripOwingCaveat } from './approved-messages';
 import { CustomerState } from './state-machine';
 import { getStore } from './store';
 import { LostAnalysis, LOST_CATEGORIES, validateLostAnalysis } from './lost-leads';
@@ -650,7 +650,9 @@ function mockDecide(ctx: CustomerContext, history: Turn[]): Decision {
   }
   if ((ctx.state === 'NEW_LEAD' || ctx.state === 'QUALIFIED') && /(tfn|abn)/.test(lower)) {
     const abn = /abn/.test(lower) && !NO_ABN.test(lower);
-    return m({ action: 'reply', reply_text: abn ? APPROVED.price_tfn_abn : APPROVED.price_tfn, new_state: 'PRICE_SENT' });
+    const price = abn ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
+    // +44/+49/+81 get the price without the owing caveat (Jo, 31 Aug).
+    return m({ action: 'reply', reply_text: ctx.refundNationality ? stripOwingCaveat(price) : price, new_state: 'PRICE_SENT' });
   }
   if (ctx.state === 'NEW_LEAD') {
     return m({ action: 'reply', reply_text: APPROVED.opening, new_state: 'QUALIFIED' });

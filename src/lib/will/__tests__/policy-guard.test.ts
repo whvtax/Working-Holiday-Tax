@@ -143,6 +143,19 @@ describe('no negotiation, no invented promises', () => {
   it('blocks promising to refund a payment (not the approved "refund the difference")', () => {
     expect(has('No problem, we will refund your payment right away.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
   });
+  // The two over-promises that broke the Indigo conversation (a customer who
+  // owed was told they would get the fee back). Both must be blocked now.
+  it('blocks "refund the full $220" (the owing over-promise)', () => {
+    expect(has('If you decide not to lodge, we refund the full $220.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
+    expect(has('We would refund the full amount if you owe.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
+  });
+  it('blocks "never out of pocket" / "not out of pocket"', () => {
+    expect(has("So you're never out of pocket.", 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
+    expect(has('That way you are not out of pocket for our service.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
+  });
+  it('still allows the real guarantee "refund the difference"', () => {
+    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'REFUND_OR_CANCEL_PROMISE')).toBe(false);
+  });
 });
 
 describe('tax determination is never made before payment', () => {

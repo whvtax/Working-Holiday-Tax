@@ -15,11 +15,10 @@ import { AUTOPILOT_REPLY_DELAY_SECONDS } from './config';
 import { isIdentityQuestion } from './identity-question';
 import { firstNameOf } from './text-normalize';
 import { suggestReply } from './suggest';
-import { APPROVED } from './approved-messages';
+import { APPROVED, isRefundNationality } from './approved-messages';
 import { assessPaymentProofImage, describeAttachment } from './claude';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
-import { reviewDraft } from './reviewer';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
@@ -321,6 +320,8 @@ async function handleIncomingInner(
     paid: customer.paid, formComplete: customer.formComplete,
     missingDocs: customer.missingDocs, estimatedRefundCents: customer.estimatedRefundCents,
     lang: customer.lang,
+    // +44/+49/+81 → drop the owing caveat from the price message (Jo, 31 Aug).
+    refundNationality: isRefundNationality(customer.waId),
     knowledge,
   };
 
@@ -382,44 +383,19 @@ async function handleIncomingInner(
     }).catch(() => {});
   }
 
-  // ── Second set of eyes ───────────────────────────────────────────────────
+  // ── Second set of eyes: REMOVED ──────────────────────────────────────────
   //
-  // Jo, 29 Aug: an extra layer of protection on the same rules Will works by.
-  // Before an auto reply goes out (Full Auto), before a draft is put up for
-  // approval, and on the suggested reply of any human task, a reviewer looks at
-  // what Will decided and can quietly fix it, or, in Full Auto, HOLD it so a
-  // person looks instead of it going out. It never sends and never overrides the
-  // owner: in Approval mode the owner still approves the (now improved) draft.
+  // Jo, 31 Aug: "completely, completely disable the agent that writes the
+  // unnecessary summary under the task." The reviewer wrote a note on every task
+  // and draft (often plain wrong, e.g. accusing Will of giving tax advice it did
+  // not give) and held too much in Autopilot. It is gone from the send path
+  // entirely, not just gated behind a flag, so no reviewer note can ever be
+  // attached to a message or a task again.
   //
-  // It sits ON TOP of the deterministic policy guard, which is unchanged. And it
-  // is fail-open: reviewDraft returns "pass" on any error, so a reviewer problem
-  // can only ever leave Will's original decision exactly as it was.
-  if (outcome.replyText && (outcome.kind === 'sent' || outcome.kind === 'queued' || outcome.kind === 'pending_approval')) {
-    const review = await reviewDraft({
-      customer, history, draft: outcome.replyText, mode, isTask: false,
-    });
-    if (review.verdict === 'revise' && review.revised) {
-      outcome.replyText = review.revised;
-      outcome.reviewNote = review.note ?? 'Reviewed and adjusted before sending.';
-      await store.audit('reviewer', 'draft_revised', { customerId: customer.id, note: review.note ?? null }).catch(() => {});
-    } else if (review.verdict === 'hold' && (outcome.kind === 'sent' || outcome.kind === 'queued')) {
-      // Full Auto only reaches here. The reviewer wants a person on this one, so
-      // it does not go out on its own: it becomes a draft awaiting approval,
-      // exactly like Approval mode, with the reviewer's reason attached.
-      outcome.kind = 'pending_approval';
-      outcome.reviewNote = review.note ?? 'Held for you to check before it goes out.';
-      await store.audit('reviewer', 'auto_reply_held', { customerId: customer.id, note: review.note ?? null }).catch(() => {});
-    } else if (review.note) {
-      outcome.reviewNote = review.note;
-    }
-  } else if (outcome.kind === 'human_task' && outcome.task) {
-    const review = await reviewDraft({
-      customer, history, draft: outcome.task.suggestedReply ?? '', mode, isTask: true,
-    });
-    if (review.verdict === 'revise' && review.revised) outcome.task.suggestedReply = review.revised;
-    if (review.note) outcome.reviewNote = review.note;
-    if (review.note) await store.audit('reviewer', 'task_reviewed', { customerId: customer.id, note: review.note }).catch(() => {});
-  }
+  // The deterministic Policy Guard is UNCHANGED and still blocks every hard
+  // violation (refund figures, tax determinations, myGov help, price changes)
+  // before anything is sent. That is the safety net; the AI reviewer was only an
+  // extra layer, and the owner did not want it.
 
   // AI-04: infer the quoted product from the fee actually present in the reply,
   // not exact-string-equality with the template (the model is told to adapt the
@@ -674,8 +650,9 @@ export async function handleInboundNote(
   // cannot read this" task with a generic "thanks, I'll take a look". Will
   // cannot see images, so now we describe the attachment with vision and feed
   // that description into the SAME reply pipeline a text message uses: in
-  // Autopilot Will answers it automatically (the reviewer still holds anything
-  // sensitive), in Approval mode it drafts a context-aware reply. Only real
+  // Autopilot Will answers it automatically (the deterministic Policy Guard
+  // still blocks anything unsafe), in Approval mode it drafts a context-aware
+  // reply. Only real
   // images/PDFs (not voice notes or undecoded events), budget permitting; any
   // failure falls through to the existing task below, so nothing is ever lost.
   const mediaMime = (meta?.media?.mime || '').toLowerCase();
