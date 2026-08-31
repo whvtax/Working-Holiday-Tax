@@ -101,17 +101,18 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   const decision = await decide(ctx, history);
 
   if (decision.action === 'human_task') {
-    // Jo's rule: even when Will has no ready-made answer — it chose to hand off,
-    // or its confidence was too low to act — it should STILL give you a proposed
-    // reply to work from, instead of an empty task. But a proposal made in this
-    // situation is NEVER sent on its own, in ANY mode: it is always a draft that
-    // waits for your approval. So this returns 'pending_approval' unconditionally
-    // (never 'sent'), regardless of Approval vs Autopilot.
+    // TYPE 2 (Jo, 31 Aug): a human_task is a PROBLEM that needs a person — a
+    // handoff, low confidence, a refund/cancellation, something not in the
+    // library. It is ALWAYS a manual task, in BOTH modes (Approval and
+    // Autopilot). It is NEVER auto-sent and NEVER shown as a green "just
+    // approve" reply, because that green lane is only for a confident normal
+    // reply (type 1). Will still attaches its best draft to the task, so the
+    // owner has one-click "Send Reply" to work from — but it stays a task.
     //
-    // The proposal still has to clear the Policy Guard. If the model's own draft
-    // breaks a hard rule (a made-up price, a myGov walkthrough, a personal tax
-    // determination, an "are you a bot" answer), it is NOT offered as a one-click
-    // send — it falls through to a plain task for you to handle by hand.
+    // The attached draft is the cleaned, guard-passed version when it clears the
+    // Policy Guard; if the draft breaks a hard rule it is left as the raw draft
+    // for the owner to fix by hand.
+    let suggestedReply: string | undefined = decision.suggested_reply;
     const draft = (decision.suggested_reply ?? '').trim();
     if (draft) {
       // Owner rules: no dashes ever, and at most one emoji (opening only). Applied
@@ -122,28 +123,14 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
         fillPlaceholders(normaliseWillText(draft, { firstMessage, firstName: custFirstName }), bank),
       );
       if (text.trim()) {
-      const verdict = policyGuard(text, {
-        ...input.guard,
-        state: ctx.state,
-        paid: ctx.paid,
-        estimateFromTeam: ctx.estimatedRefundCents,
-        isApprovedTemplate: false,
-      });
-      if (verdict.allowed) {
-        // Will may ALSO suggest which pipeline stage to move the customer to
-        // (Jo's rule). It is only a suggestion, applied when Jo approves the
-        // draft — the same server-side transition check as a normal reply, so
-        // an illegal jump is dropped rather than proposed.
-        const suggestedState = decision.new_state && decision.new_state !== ctx.state
-          && canTransition(ctx.state, decision.new_state) ? decision.new_state : undefined;
-        return {
-          kind: 'pending_approval',
-          replyText: text,
-          newState: suggestedState,
-          stateChanged: !!suggestedState,
-          decision,
-        };
-      }
+        const verdict = policyGuard(text, {
+          ...input.guard,
+          state: ctx.state,
+          paid: ctx.paid,
+          estimateFromTeam: ctx.estimatedRefundCents,
+          isApprovedTemplate: false,
+        });
+        if (verdict.allowed) suggestedReply = text;
       }
     }
     return {
@@ -152,7 +139,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       task: {
         reason: decision.task_reason ?? 'Assistant requested handoff',
         severity: decision.task_severity ?? 'REVIEW',
-        suggestedReply: decision.suggested_reply,
+        suggestedReply,
       },
     };
   }

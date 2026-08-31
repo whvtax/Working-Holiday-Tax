@@ -16,7 +16,8 @@ import { isIdentityQuestion } from './identity-question';
 import { firstNameOf } from './text-normalize';
 import { suggestReply } from './suggest';
 import { APPROVED } from './approved-messages';
-import { assessPaymentProofImage } from './claude';
+import { assessPaymentProofImage, describeAttachment } from './claude';
+import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
 import { reviewDraft } from './reviewer';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
@@ -137,6 +138,12 @@ async function handleIncomingInner(
   text: string,
   mode: AiMode,
   meta?: { name?: string; flag?: string; providerId?: string },
+  // Set when the caller has ALREADY stored the inbound message (the image path:
+  // handleInboundNote stored the photo, described it, and is now reusing this
+  // reply pipeline with the description as `text`). We must not store a second
+  // message, and must not run language detection on our own English
+  // description — the customer's language is whatever they wrote in before.
+  opts?: { alreadyStored?: boolean },
 ): Promise<HandleResult> {
   const store = getStore();
 
@@ -146,18 +153,20 @@ async function handleIncomingInner(
     await store.audit('system', 'customer_created', { waId });
   }
 
-  await store.addMessage({
-    customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body: text,
-    // The customer's own WhatsApp message id, so a reaction the customer later
-    // puts ON this message can be matched back to THIS bubble and rendered in its
-    // corner — instead of failing to match and being pinned to one of our
-    // messages. (Meta gives the reaction the target message's id in `to`.)
-    meta: meta?.providerId ? { providerId: meta.providerId } : {},
-  });
+  if (!opts?.alreadyStored) {
+    await store.addMessage({
+      customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body: text,
+      // The customer's own WhatsApp message id, so a reaction the customer later
+      // puts ON this message can be matched back to THIS bubble and rendered in its
+      // corner — instead of failing to match and being pinned to one of our
+      // messages. (Meta gives the reaction the target message's id in `to`.)
+      meta: meta?.providerId ? { providerId: meta.providerId } : {},
+    });
+  }
 
   // Remember the customer's language (used for deterministic auto-messages like
   // the "questionnaire received" confirmation; the live path already replies natively).
-  const detected = detectLanguage(text);
+  const detected = opts?.alreadyStored ? null : detectLanguage(text);
   if (detected && customer.lang !== detected) {
     await store.updateCustomer(customer.id, { lang: detected });
     customer = { ...customer, lang: detected };
@@ -199,11 +208,9 @@ async function handleIncomingInner(
     await store.setState(customer.id, 'NEW_LEAD', 'SYSTEM');
     await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, trigger: 'inbound_message' });
     customer = (await store.getCustomerByWaId(waId)) ?? customer;
-    if (!customer.aiPaused) {
-      await store.updateCustomer(customer.id, { aiPaused: true });
-      await store.cancelJobsFor(customer.id);
-      await store.audit('system', 'routed_to_human_returning_closed', { customerId: customer.id });
-    }
+    // Will is NEVER auto-paused (Jo, 31 Aug: "never, ever turn Will off"). This
+    // message still gets a human's eyes as a task, but Will stays active and
+    // handles the customer's next messages itself.
     await raiseOrUpdateTask(store, customer, {
       reason: 'A previous customer messaged again, needs a human',
       severity: 'REVIEW', newContext: text,
@@ -221,10 +228,9 @@ async function handleIncomingInner(
   // is handed to a human and the assistant steps out of it.
   // ============================================================
   if (isIdentityQuestion(text)) {
-    if (!customer.aiPaused) {
-      await store.updateCustomer(customer.id, { aiPaused: true });
-      await store.cancelJobsFor(customer.id);
-    }
+    // Will is never auto-paused (Jo, 31 Aug). This specific "are you a bot"
+    // message still goes to a human with no draft, but Will stays active for the
+    // customer's next messages.
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? waId,
       reason: 'Customer asked whether they are talking to a bot, needs a human reply',
@@ -280,10 +286,8 @@ async function handleIncomingInner(
   if (!customer.paid) {
     const questionsBeforePayment = msgs.filter((m) => m.direction === 'IN').length;
     if (questionsBeforePayment > MAX_INBOUND_BEFORE_PAYMENT) {
-      if (!customer.aiPaused) {
-        await store.updateCustomer(customer.id, { aiPaused: true });
-        await store.cancelJobsFor(customer.id);
-      }
+      // Will is never auto-paused (Jo, 31 Aug). A stuck loop still raises a task
+      // for a human, but Will is not switched off for this customer.
       await raiseOrUpdateTask(store, customer, {
         reason: `Customer sent ${questionsBeforePayment} messages before paying — this conversation is stuck, not progressing`,
         severity: 'REVIEW', newContext: text,
@@ -316,6 +320,7 @@ async function handleIncomingInner(
     name: firstNameOf(customer.name) || null, state: customer.state, income: customer.income,
     paid: customer.paid, formComplete: customer.formComplete,
     missingDocs: customer.missingDocs, estimatedRefundCents: customer.estimatedRefundCents,
+    lang: customer.lang,
     knowledge,
   };
 
@@ -663,6 +668,44 @@ export async function handleInboundNote(
     const paidFresh = await store.getCustomerByWaId(waId);
     return paidFresh ?? customer;
   }
+
+  // ── Read the image/PDF and let Will reply in context (Jo, 31 Aug) ─────────
+  // A photo or document that is NOT a payment used to always become a "Will
+  // cannot read this" task with a generic "thanks, I'll take a look". Will
+  // cannot see images, so now we describe the attachment with vision and feed
+  // that description into the SAME reply pipeline a text message uses: in
+  // Autopilot Will answers it automatically (the reviewer still holds anything
+  // sensitive), in Approval mode it drafts a context-aware reply. Only real
+  // images/PDFs (not voice notes or undecoded events), budget permitting; any
+  // failure falls through to the existing task below, so nothing is ever lost.
+  const mediaMime = (meta?.media?.mime || '').toLowerCase();
+  const readableAttachment = !!meta?.media && !!process.env.ANTHROPIC_API_KEY
+    && (mediaMime.startsWith('image/') || mediaMime === 'application/pdf');
+  if (readableAttachment) {
+    let overBudget = true;
+    try { overBudget = await aiBudgetExhausted(); } catch { overBudget = false; }
+    if (!overBudget) {
+      const fetched = await fetchWaMedia(meta!.media!.id);
+      if (fetched.ok) {
+        const desc = await describeAttachment(fetched.body, fetched.mime || meta!.media!.mime || '');
+        if (desc) {
+          const framed = meta!.media!.caption
+            ? `[The customer sent an image with the caption "${sanitize(meta!.media!.caption)}". The image shows: ${desc}]`
+            : `[The customer sent an image. It shows: ${desc}]`;
+          // Recorded as an incoming turn so the model answers it; the photo
+          // bubble above it keeps the actual thumbnail.
+          await store.addMessage({
+            customerId: customer.id, direction: 'IN', author: 'SYSTEM', status: 'SENT', body: framed,
+          });
+          await store.audit('system', 'attachment_described', { customerId: customer.id, kind: mediaMime });
+          const mode = resolveAiMode(await store.getSetting('ai_mode'));
+          await handleIncomingInner(waId, framed, mode, { name: meta?.name }, { alreadyStored: true });
+          return (await store.getCustomerByWaId(waId)) ?? customer;
+        }
+      }
+    }
+  }
+
   const u = meta?.undecoded;
   const metaDetail = u
     ? [u.type ? `type=${u.type}` : null, u.errorCode ? `error=${u.errorCode}` : null, u.errorTitle]

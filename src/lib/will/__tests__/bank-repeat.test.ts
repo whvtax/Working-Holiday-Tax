@@ -57,7 +57,7 @@ describe('stripBankBlock (never repeat the bank details)', () => {
     });
     test('keeps the fee and the guarantee', () => {
       expect(out).toMatch(/The total fee is \$\d+/);
-      expect(out).toContain('never out of pocket');
+      expect(out).toContain('never costs you more than the refund you get back');
     });
   });
 });

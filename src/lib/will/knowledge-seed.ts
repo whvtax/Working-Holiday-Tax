@@ -23,7 +23,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I'd like to know how much I'm likely to get back before paying you any money",
       "can you give me a rough idea of my refund first?"
     ],
-    "answer": "That’s a really fair question!\n\nTo give you an estimate, we first need to review your full situation with the ATO, which is the main part of our service.\n\nFor TFN-only returns, if your refund is lower than our $220 fee, we refund the difference, so you’re never out of pocket for our service 😊",
+    "answer": "That’s a really fair question!\n\nTo give you an estimate, we first need to review your full situation with the ATO, which is the main part of our service.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable 😊",
     "keywords": [
       "estimate",
       "before",
@@ -49,7 +49,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "is this legit?",
       "found you on Instagram and wasn't sure if this is real"
     ],
-    "answer": "Completely understand, it’s smart to check 😊\n\nWe operate under the supervision of a registered tax agent and have helped hundreds of backpackers from more than 45 countries.\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle reviews: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nClient agreement: https://workingholidaytax.com.au/client-agreement\n\nFor TFN only returns, if your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
+    "answer": "Completely understand, it’s smart to check 😊\n\nWe operate under the supervision of a registered tax agent and have helped hundreds of backpackers from more than 45 countries.\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle reviews: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nClient agreement: https://workingholidaytax.com.au/client-agreement\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "legit",
       "real",
@@ -74,7 +74,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "how much do you charge for each tax return?",
       "is it a flat fee or %?"
     ],
-    "answer": "Our fee is fixed, never a percentage of your refund.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nFor TFN only returns, if your refund is lower than the fee, we refund the difference, so you’re never out of pocket for our service. This does not apply to returns with ABN income.",
+    "answer": "Our fee is fixed, never a percentage of your refund.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nIf you get a refund and it comes to less than the fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "price",
       "pricing",
@@ -99,7 +99,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what if my refund is not even that much, might not be worth it",
       "do I pay 220 automatically?"
     ],
-    "answer": "For TFN only returns, if your refund is lower than our $220 fee, we refund the difference, so you’re never out of pocket for our service.",
+    "answer": "If you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "fee",
       "small",
@@ -422,7 +422,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I want to know if I'm eligible and then lodge it myself",
       "can I just get an estimate then do it myself?"
     ],
-    "answer": "No problem, and we appreciate you being upfront 😊\n\nIt’s completely your call. With us, a specialist reviews your residency, deductions and Medicare, then prepares and lodges everything for you, all online.\n\nFor TFN only returns, if your refund is lower than our $220 fee, we refund the difference, so you’re never out of pocket for our service. If you want peace of mind that everything is done properly, we’d be happy to help.",
+    "answer": "No problem, and we appreciate you being upfront 😊\n\nIt’s completely your call. With us, a specialist reviews your residency, deductions and Medicare, then prepares and lodges everything for you, all online.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable. If you want peace of mind that everything is done properly, we’d be happy to help.",
     "keywords": [
       "myself",
       "lodge",
@@ -469,7 +469,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "why would I pay before I know the amount?",
       "is this the full fee or are there extra charges?"
     ],
-    "answer": "The $220 covers your TFN only return from start to finish. A specialist reviews your full situation, checks that nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. If your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
+    "answer": "The $220 covers your TFN only return from start to finish. A specialist reviews your full situation, checks that nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. If you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "upfront",
       "pay",
@@ -495,7 +495,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what's the benefit of using you rather than doing it myself?",
       "can't I just do this myself for free?"
     ],
-    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nFor TFN only returns, if your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
+    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "why",
       "agency",
@@ -521,7 +521,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "any chance of a discount?",
       "can you do it cheaper?"
     ],
-    "answer": "Completely understand wanting the best value 😊 The fee is fixed at $220 for a TFN only return and is the same for everyone, so we can’t reduce it.\n\nIf your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
+    "answer": "Completely understand wanting the best value 😊 The fee is fixed at $220 for a TFN only return and is the same for everyone, so we can’t reduce it.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "discount",
       "cheaper",
@@ -732,7 +732,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I have an ABN and I owe the ATO, do I get the fee back?",
       "if after the check I still can't get a refund, is the money I paid gone?"
     ],
-    "answer": "For TFN only returns, if you decide not to lodge, even though you’re legally required to, we refund the full $220 so you’re not out of pocket.\n\nFor TFN + ABN returns, the $385 fee is non refundable. Either way, we review everything properly and explain the result before lodging.",
+    "answer": "If it turns out you owe money instead of getting a refund, whether to lodge is your decision. Lodging is your own legal obligation and responsibility, but if you decide not to go ahead, we won’t lodge it for you.\n\nEither way, the service fee, $220 or $385, covers the review we carry out and is non-refundable.",
     "keywords": [
       "owe",
       "payable",
@@ -1017,7 +1017,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I got a free check link from a video about you",
       "your site said free eligibility test"
     ],
-    "answer": "Sorry for the confusion. We no longer offer free eligibility checks. We now provide a full review with personal guidance for $220.\n\nFor TFN only returns, if your refund is lower than our fee, we refund the difference, so you’re never out of pocket for our service.",
+    "answer": "Sorry for the confusion. We no longer offer free eligibility checks. We now provide a full review with personal guidance for $220.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "free",
       "eligibility",
@@ -1555,7 +1555,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "My friend paid less than that last year, why is mine more?",
       "I saw a lower number somewhere, which one is right?"
     ],
-    "answer": "I can see where the confusion might have come from. The current fee for a TFN only return is $220.\n\nThat covers the whole return from start to finish, a proper review of your situation and lodging everything with the ATO. If your refund ends up less than $220, we'll refund the difference.",
+    "answer": "I can see where the confusion might have come from. The current fee for a TFN only return is $220.\n\nThat covers the whole return from start to finish, a proper review of your situation and lodging everything with the ATO. If you get a refund and it's less than $220, we top up the difference, so our fee never costs you more than the refund you get back.",
     "keywords": [
       "price",
       "fee",

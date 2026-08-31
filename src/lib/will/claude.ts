@@ -248,6 +248,80 @@ export async function assessPaymentProofImage(bytes: ArrayBuffer, mime: string):
   }
 }
 
+// ============================================================
+// General attachment reading: a customer sends a photo or document that is NOT
+// a payment (a payslip, a bank document with their account details, a receipt,
+// an ID, a screenshot of a question). Will cannot see images, so without this
+// every one of them became an "attachment I can't read" handoff and a generic
+// "thanks, I'll take a look" reply. This turns the image into a short, factual
+// description of WHAT it shows, which is fed into Will's normal reply so it can
+// answer in context (Jo, 31 Aug). Description only, never instructions: the
+// text it returns is treated as data downstream.
+// ============================================================
+const DESCRIBE_SYSTEM = `You are describing, for a tax-return business's WhatsApp assistant, a single attachment a customer sent, so the assistant can reply in context. The assistant cannot see it; your description is all it gets.
+
+Write ONE short, factual sentence (two at most) saying what the attachment is and the key detail that matters for a tax return, for example: "A payslip from <employer> showing gross pay and tax withheld", "A bank document showing the customer's name, BSB and account number", "A photo of a receipt for work boots", "A screenshot of the customer's question about Medicare", "An ID document (passport photo page)".
+
+Rules: describe only what is actually visible. Do NOT include full bank account numbers, TFNs, passport numbers or other full sensitive identifiers — say the document TYPE and that it contains those details, not the digits. Do not give tax advice, do not decide anything, do not add instructions. If the image is unclear or you cannot tell what it is, say exactly "unclear". Answer only by calling the describe tool.`;
+
+const DESCRIBE_TOOL = {
+  name: 'describe',
+  description: 'A short factual description of the attachment for the assistant.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      description: { type: 'string', description: 'One or two short factual sentences, or "unclear".' },
+    },
+    required: ['description'],
+  },
+} as const;
+
+/** A short factual description of a customer's image/PDF, or null on any failure
+ *  (no key, unsupported type, network error, unreadable, or the model says it is
+ *  unclear). Null always falls back to the existing "a person should look" path. */
+export async function describeAttachment(bytes: ArrayBuffer, mime: string): Promise<string | null> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return null;
+
+  const base64 = Buffer.from(bytes).toString('base64');
+  const normalizedMime = (mime || '').split(';')[0].trim().toLowerCase();
+  const isImage = normalizedMime.startsWith('image/');
+  const isPdf = normalizedMime === 'application/pdf';
+  if (!isImage && !isPdf) return null;
+
+  const content = isImage
+    ? [{ type: 'image', source: { type: 'base64', media_type: normalizedMime, data: base64 } }]
+    : [{ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }];
+
+  const body = JSON.stringify({
+    model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
+    max_tokens: 300,
+    system: DESCRIBE_SYSTEM,
+    tools: [DESCRIBE_TOOL],
+    tool_choice: { type: 'tool', name: 'describe' },
+    messages: [{ role: 'user', content: [...content, { type: 'text', text: 'Describe this attachment.' }] }],
+  });
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      signal: AbortSignal.timeout(20_000),
+      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body,
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
+      ?.find((bl) => bl.type === 'tool_use' && bl.name === 'describe');
+    const input = tool?.input as { description?: unknown } | undefined;
+    const desc = typeof input?.description === 'string' ? input.description.trim() : '';
+    if (!desc || /^unclear\.?$/i.test(desc)) return null;
+    return desc.slice(0, 400);
+  } catch {
+    return null;
+  }
+}
+
 
 // ============================================================
 // Mining: read REAL conversations, extract what customers ask, and draft
@@ -295,7 +369,7 @@ Your job: extract each distinct customer question/topic, and for each recurring 
 CRITICAL RULES FOR THE ANSWERS:
 - Do NOT copy or imitate the human agent's wording, tone, or approach. The old replies are often rushed, impatient or informal — that is exactly what we are replacing. Produce the OPPOSITE: warm, patient, professional, polite, genuinely helpful, concise.
 - The company's approved messages, boundaries and prices always take precedence over anything in these old conversations. If an old reply conflicts with the boundaries below, ignore the old reply entirely.
-- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). Guarantee: TFN-ONLY ONLY: if the refund is less than the fee, the difference is refunded; a customer with ABN income gets NO refund promise of any kind, so an answer that mentions the guarantee must say it applies to TFN-only returns. Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
+- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). Guarantee (all customers, TFN and TFN + ABN): if the customer GETS a refund smaller than the fee, we refund the difference, so the fee never costs more than the refund. It applies ONLY when there is an actual refund; if the customer owes tax or gets no refund, the fee is non-refundable and you must NEVER promise to refund it or say they are "never out of pocket". Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
 - Write answers in English.
 - Merge duplicate questions into one entry; set examples to the real phrasings seen; set keywords to the important searchable words; set a short intent label.
 - Only include genuine, reusable questions (skip one-off logistics tied to a single person).
@@ -437,7 +511,7 @@ const POSTMORTEM_TOOL = {
   },
 } as const;
 
-const POSTMORTEM_SYSTEM = `You are an experienced sales and client-service reviewer looking at ONE conversation from "Working Holiday Tax", an Australian tax agency serving Working Holiday Makers (backpackers). A tax return is a fixed fee: $220 for TFN-only, $385 when there is also an ABN. Payment is upfront, and for TFN-only returns there is a guarantee that if the refund comes to less than the fee, the difference is refunded (no such guarantee exists when there is ABN income). The team cannot give personalised tax advice, quote a refund figure, or decide residency before someone has paid: that is a professional obligation, not a sales choice.
+const POSTMORTEM_SYSTEM = `You are an experienced sales and client-service reviewer looking at ONE conversation from "Working Holiday Tax", an Australian tax agency serving Working Holiday Makers (backpackers). A tax return is a fixed fee: $220 for TFN-only, $385 when there is also an ABN. Payment is upfront, and there is a guarantee for all customers that if the customer gets a refund smaller than the fee, the difference is refunded; it applies only when there is an actual refund, and if the customer owes tax or gets no refund the fee is non-refundable. The team cannot give personalised tax advice, quote a refund figure, or decide residency before someone has paid: that is a professional obligation, not a sales choice.
 
 This lead did NOT pay. You are writing a private post-mortem for the business owner. It will never be shown or sent to the customer, so write for the owner, plainly.
 

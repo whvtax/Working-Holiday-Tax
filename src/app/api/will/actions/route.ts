@@ -635,7 +635,9 @@ async function handlePost(req: Request) {
       const out = await deliverOut(customer, send.body!, 'HUMAN');
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
 
-      await store.updateCustomer(customer.id, { estimatedRefundCents: amountCents, aiPaused: true });
+      // Will is never auto-paused (Jo, 31 Aug): the estimate goes out but Will
+      // stays active on the chat and keeps handling the customer.
+      await store.updateCustomer(customer.id, { estimatedRefundCents: amountCents });
       const nextState = stateAfterEstimate(customer.state);
       if (nextState) {
         await store.setState(customer.id, nextState, 'HUMAN');
@@ -669,7 +671,8 @@ async function handlePost(req: Request) {
       if (send.error) return bad(send.error);
       const out = await deliverOut(customer, send.body!, 'HUMAN');
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
-      await store.updateCustomer(customer.id, { aiPaused: true });
+      // Will is never auto-paused (Jo, 31 Aug): the "ready for signature" note
+      // goes out but Will stays active on the chat.
       // Only move if they were still upstream; a customer already at Signature
       // stays put so the pipeline position does not change on this click.
       if (customer.state !== 'SIGNATURE_PENDING') await store.setState(customer.id, 'SIGNATURE_PENDING', 'HUMAN');
@@ -696,7 +699,8 @@ async function handlePost(req: Request) {
       if (send.error) return bad(send.error);
       const out = await deliverOut(customer, send.body!, 'HUMAN');
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
-      await store.updateCustomer(customer.id, { aiPaused: true });
+      // Will is never auto-paused (Jo, 31 Aug): the lodged note goes out but
+      // Will stays active on the chat.
       await store.setState(customer.id, 'LODGED', 'HUMAN');
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);

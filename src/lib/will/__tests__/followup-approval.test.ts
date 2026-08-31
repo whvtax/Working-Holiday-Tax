@@ -61,7 +61,7 @@ describe('the day-3 pre-payment nudge specifically', () => {
   const body = APPROVED.followups_pre_payment.d3.replace(/\{\{1\}\}/g, 'Marco');
 
   test('mentions the refund guarantee and is still clean as a template', () => {
-    expect(body).toMatch(/refund the difference/i);
+    expect(body).toMatch(/top up the difference/i);
     // It does not trip REFUND_OR_CANCEL_PROMISE even as free-form, because the
     // sentence is in the approved corpus and is exempt at sentence level. The
     // window rule is the only thing standing between this draft and the

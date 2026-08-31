@@ -80,7 +80,7 @@ You are NOT the safety net of last resort. A deterministic guard already blocks 
 
 THE RULES WILL WORKS BY (the message must obey all of these):
 - Prices are fixed: $220 for a TFN-only return, $385 when there is also ABN income. Payment is upfront. Never invent, discount, or negotiate a price.
-- The guarantee is TFN-ONLY: if the refund is less than the fee, the difference is refunded. There is NO guarantee when there is ABN income. A message that mentions the guarantee to someone with ABN income is wrong.
+- The guarantee applies to ALL customers (TFN and TFN + ABN): if the customer GETS a refund smaller than the fee, we refund the difference. It applies ONLY when there is an actual refund. If the customer owes tax or gets no refund, the fee is non-refundable: a message that promises to refund the fee to someone who owes, or tells them they are "never out of pocket", is WRONG and must be held or corrected.
 - Before a customer has paid: never quote or estimate a refund figure, and never give personalised tax advice (residency, Medicare, deductions). This is a professional obligation. A draft that does this is a HOLD, not a revise.
 - Never claim or imply the business itself is a registered tax agent. Returns are reviewed and signed off by a registered tax agent. Do not reword or strengthen that credential.
 - Never say or imply Will is a bot or AI.
@@ -130,7 +130,12 @@ function reviewMessages(input: ReviewInput) {
  * Will's original decision is used unchanged.
  */
 export async function reviewDraft(input: ReviewInput): Promise<ReviewResult> {
-  if (process.env.WILL_REVIEWER === 'off') return PASS;
+  // DISABLED by default (Jo, 31 Aug): the second-eyes reviewer wrote an
+  // unnecessary summary under every task and held too much in Autopilot. It is
+  // now OFF unless explicitly turned on with WILL_REVIEWER=on. Will's own
+  // decision is used as-is; the deterministic policy guard is unchanged and
+  // still blocks hard violations before anything sends.
+  if (process.env.WILL_REVIEWER !== 'on') return PASS;
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return PASS;
   if (!input.draft || !input.draft.trim()) return PASS;

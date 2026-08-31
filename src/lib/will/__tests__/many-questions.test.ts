@@ -79,7 +79,9 @@ it('a normal qualifying exchange is never interrupted', async () => {
   expect(updateCustomer).not.toHaveBeenCalledWith('c1', { aiPaused: true });
 });
 
-it('a genuine runaway still stops, and still pauses Will', async () => {
+it('a genuine runaway still stops and raises a task, but never pauses Will', async () => {
+  // Jo, 31 Aug: Will is NEVER auto-paused. A stuck loop still raises a task for a
+  // person, but Will is not switched off for the customer.
   for (let i = 0; i < 25; i++) {
     // eslint-disable-next-line no-await-in-loop
     await handleIncoming('61400000001', `message ${i + 1}`, 'FULL_AUTO');
@@ -91,7 +93,7 @@ it('a genuine runaway still stops, and still pauses Will', async () => {
 
   expect(runEngine).toHaveBeenCalledTimes(25); // the engine is NOT called again
   expect(result.outcome.kind).toBe('human_task');
-  expect(updateCustomer).toHaveBeenCalledWith('c1', { aiPaused: true });
+  expect(updateCustomer).not.toHaveBeenCalledWith('c1', { aiPaused: true });
   expect(addTask).toHaveBeenCalledTimes(1);
   expect(addTask.mock.calls[0][0].reason).toMatch(/26 messages before paying/);
 });
