@@ -338,7 +338,15 @@ async function handlePost(req: Request) {
 
     case 'manual_reply': {
       // Quick manual message to any customer, no chat screen needed.
-      // Per spec §9.1 a human send pauses the assistant for that chat.
+      //
+      // A manual reply NO LONGER pauses the assistant (Jo, 31 Aug: "never turn
+      // off Will, even if I stepped in manually — Will keeps the conversation").
+      // A quick line from the owner used to silence Will for that chat for good,
+      // and the lead then went cold with nothing chasing it. Taking over is now
+      // a deliberate choice: the per-chat "Will Active / Paused" toggle is still
+      // there for when the owner really wants the wheel. Genuinely sensitive
+      // threads (refunds, complaints, an upset customer) still route to a human
+      // task and are held, so this does not let Will talk over those.
       if (!b.customerId || typeof b.body !== 'string' || !b.body.trim()) return bad('customerId and body required');
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
@@ -350,15 +358,12 @@ async function handlePost(req: Request) {
       // customer looked sent. Now the real outcome is returned.
       const out = await deliverOut(customer, send.body!, 'HUMAN');
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
-      await store.updateCustomer(customer.id, { aiPaused: true });
       // Answering from the chat is the same signal as answering via the Tasks
-      // screen: the customer has a reply now. Without this, a task only ever
-      // closed if you used "Send Reply" on the Tasks card itself — replying
-      // in the chat left it sitting open ("Needs a decision") even though it
-      // was already handled, so it had to be dismissed by hand.
+      // screen: the customer has a reply now, so mark the chat read and close
+      // any open task for them — WITHOUT pausing Will.
       await afterHumanReply(store, customer.id);
       await store.audit('owner', 'manual_reply', { customerId: customer.id });
-      return NextResponse.json({ ok: true, aiPaused: true });
+      return NextResponse.json({ ok: true, aiPaused: customer.aiPaused });
     }
 
     case 'send_template': {
@@ -643,22 +648,31 @@ async function handlePost(req: Request) {
     }
 
     case 'send_signature': {
-      // "Send for Signature" button (Estimate stage): once the final review
-      // is done and the actual return has been sent to the customer (by
-      // email, per the approved wording) for them to sign, one click sends
-      // the confirmation message and moves them straight to Signature.
+      // "Send for Signature" button: once the actual return has been emailed to
+      // the customer for them to sign, one click sends the "ready for signature"
+      // confirmation.
+      //
+      // Two entry points share this. The Will Dashboard presses it while the
+      // customer is still at the estimate stage, so it also moves them to
+      // Signature. The CRM Done card presses it AFTER the Done flow has already
+      // sent the estimate + invoice and moved them to Signature, so here it must
+      // NOT move them: it only sends the notice and leaves them exactly where
+      // they are (Jo, 31 Aug: "the customer doesn't move in the pipe").
       if (!b.customerId) return bad('customerId required');
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
-      if (!['ESTIMATE_READY', 'FINAL_REVIEW'].includes(customer.state)) {
+      if (!['ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING'].includes(customer.state)) {
         return bad('signature can only be sent once the estimate stage is reached');
       }
-      const send = await humanSend(customer, APPROVED.signature_ready);
+      const sigBody = await libraryBody('signature', APPROVED.signature_ready);
+      const send = await humanSend(customer, sigBody);
       if (send.error) return bad(send.error);
       const out = await deliverOut(customer, send.body!, 'HUMAN');
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
       await store.updateCustomer(customer.id, { aiPaused: true });
-      await store.setState(customer.id, 'SIGNATURE_PENDING', 'HUMAN');
+      // Only move if they were still upstream; a customer already at Signature
+      // stays put so the pipeline position does not change on this click.
+      if (customer.state !== 'SIGNATURE_PENDING') await store.setState(customer.id, 'SIGNATURE_PENDING', 'HUMAN');
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
       await afterHumanReply(store, customer.id);

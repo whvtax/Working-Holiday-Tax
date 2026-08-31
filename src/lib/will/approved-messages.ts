@@ -11,7 +11,9 @@ export const APPROVED = {
   // Reworded by Jo, 24 Aug. Still one emoji and still ends on the TFN or ABN
   // question, which is what the state machine keys off.
   opening: `Hey! 😊 Of course, we'd be happy to help.
+
 We'll review your tax residency, Medicare situation and any deductions you can claim.
+
 Did you only work on a TFN, or did you also earn income through an ABN?`,
 
   // Reworded by Jo, 24 Aug, and already live in the Message Library. The source
@@ -94,8 +96,12 @@ Once paid, send us a screenshot and we'll get started.`,
     d7: `Hi {{1}}, last message from me 😊 If you want your tax looked at later, just text me any time.`,
   },
 
-  payment_received: `Perfect, payment received! 🎉
-Please fill out this quick form so we can start reviewing your situation: https://workingholidaytax.com.au/tax-form
+  payment_received: `Payment received! 🎉
+
+Please fill out this quick form so we can start reviewing your situation:
+
+https://workingholidaytax.com.au/tax-form
+
 Once you've submitted it, we'll go through everything and get back to you within 24 hours.`,
 
   followups_form: {
@@ -105,22 +111,32 @@ Once you've submitted it, we'll go through everything and get back to you within
   },
 
   request_abn_detail: `Hey! I've gone through your details. Since you also had ABN income, please send me:
+
 What kind of work did you do under your ABN?
+
 Proof of all your ABN income, such as invoices you've issued or income reports.
+
 Any receipts or invoices for expenses related to your ABN work.
+
 You can send everything here on WhatsApp.`,
 
   request_expenses: `Hey! I can see you mentioned having some work-related expenses. Could you please send me any receipts or invoices you have for them here on WhatsApp?`,
 
   request_missing_doc: `Hey! I've gone through everything and we're just missing your {{DOCUMENT}}. Could you please send it here on WhatsApp? Once we have it, we can continue with your tax return.`,
 
-  medicare_exemption: `Hey! Since you weren't covered by Medicare, you can apply for a Medicare Levy Exemption. It only takes a few minutes. Here's a quick guide: https://youtu.be/oj7ZSOHAxJk?si=KDMFlLoR0jYdpulB
+  medicare_exemption: `Hey! Since you weren't covered by Medicare, you can apply for a Medicare Levy Exemption. It only takes a few minutes. Here's a quick guide:
+
+https://youtu.be/oj7ZSOHAxJk?si=KDMFlLoR0jYdpulB
+
 Once you've applied, send me a screenshot of the application and we'll include the exemption in your tax return. If the application isn't approved, the Medicare Levy will still apply.`,
 
   estimate_ready: `Hey! We've now gone through all your details and completed the review of your tax situation. Based on everything we've checked, your estimated tax refund is {{AMOUNT}}.
+
 We'll now send everything for final review. Once approved, I'll send it to you for signature. I'll let you know as soon as it's ready.`,
 
-  signature_ready: `Your tax return is ready! 🎉 I've emailed it to you for review and signature 📧`,
+  signature_ready: `Your tax return is ready! 🎉
+
+I've emailed it to you for review and signature 📧`,
 
   followups_signature: {
     h24: `Hi {{1}}, your tax return is ready and just needs your signature before we can lodge it. Let me know if it didn't reach you 😊`,
@@ -129,6 +145,7 @@ We'll now send everything for final review. Once approved, I'll send it to you f
   },
 
   lodged: `Your tax return has been lodged successfully! 🎉 Your refund should arrive in your bank account within 14 business days.
+
 If you have a minute, we'd really appreciate a Google review 🙏 {{REVIEW_LINK}}`,
 
   legitimacy: `Yes, absolutely! We operate under the supervision of a registered tax agent. You can find more details here: https://workingholidaytax.com.au/client-agreement`,
@@ -146,19 +163,22 @@ If you have a minute, we'd really appreciate a Google review 🙏 {{REVIEW_LINK}
    *  time: {{AMOUNT}} is the refund figure typed by the team, {{INVOICE_LINK}}
    *  the invoice URL pasted with it. Both are filled by the action before the
    *  message leaves, so a leftover placeholder is refused as it is anywhere. */
-  estimate_invoice: `Your estimated tax refund is {{AMOUNT}}.
+  estimate_invoice: `Your estimated tax refund is {{AMOUNT}} I'll send it for final review and then for your signature.
 
-I'll send it for final review, then to you for signature.
 Here is your invoice:
- {{INVOICE_LINK}}`,
+
+{{INVOICE_LINK}}`,
 
   /** "Mark Lodged" button (Signature stage). Fixed text, including the Google
    *  review link, exactly as it was sent from the action handler. Kept separate
    *  from `lodged` above, which is the older wording with a {{REVIEW_LINK}}
    *  placeholder; both exist in the code, so both are in the Library. */
   lodged_confirmation: `Your tax return has been lodged successfully! ✅
+
 Your refund should arrive in your bank account within 14 business days.
+
 If you have a moment, we'd really appreciate a Google review 🙏
+
 https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8?g_st=ic`,
 
   /** The proposed replies attached to a handoff task (see suggest.ts). They are

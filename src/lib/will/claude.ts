@@ -116,10 +116,20 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
     liveTemplates = Object.fromEntries(templates.map((t) => [t.key, t.body]));
   } catch { /* fall back to APPROVED below */ }
 
+  // Prompt caching (Anthropic billing email, 31 Aug): the big playbook is
+  // identical across every customer message, so it goes in a cached block and
+  // the per-customer profile + retrieved knowledge follow in an uncached block.
+  // A cache_control breakpoint caches everything up to and including that block;
+  // repeated calls then re-read the playbook from cache instead of paying full
+  // input price for it each time.
+  const { stable, dynamic } = buildSystemPrompt(ctx, liveTemplates);
   const body = JSON.stringify({
     model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
     max_tokens: 1024,
-    system: buildSystemPrompt(ctx, liveTemplates),
+    system: [
+      { type: 'text', text: stable, cache_control: { type: 'ephemeral' } },
+      { type: 'text', text: dynamic },
+    ],
     tools: [DECIDE_TOOL],
     tool_choice: { type: 'tool', name: 'decide' },
     messages: apiMessages(history),
@@ -181,7 +191,17 @@ const PROOF_TOOL = {
   },
 } as const;
 
-const PROOF_SYSTEM = `You are checking a single attachment a customer sent on WhatsApp to a tax-return business, to decide whether it is genuine proof they made a payment (a bank transfer confirmation, PayID receipt, or card payment success screen showing an amount was sent) — as opposed to any other photo or document (a question about something, an unrelated receipt, a form, an ID, a screenshot of an error, or anything unclear). Be conservative: if it is not clearly a completed payment confirmation, say false. Answer only by calling the assess tool.`;
+const PROOF_SYSTEM = `You are checking a single attachment a customer sent on WhatsApp to a tax-return business, to decide whether it is genuine proof that THEY have just SENT US a payment for our fee.
+
+TRUE only for a confirmation that a specific amount was PAID OUT / TRANSFERRED — a bank transfer "payment sent/successful" screen, a PayID confirmation, or a card payment success screen — showing the money has left their account (ideally to us).
+
+Say FALSE for everything else, and in particular for these look-alikes, which are NOT a payment and must never be treated as one:
+- a bank statement or account statement (a list of past transactions, or an account balance);
+- a payslip, income statement, PAYG summary, or any record of money they RECEIVED;
+- a screenshot showing only a balance, an account number, or bank details (someone sharing where their refund should go);
+- an invoice, a form, an ID, a receipt for something unrelated, a photo of a document, or anything unclear.
+
+A statement that lists transactions or shows a balance is the single most common false positive: it looks financial but proves no payment to us was made. When in doubt, say false — a real payment is confirmed by a person instead. Answer only by calling the assess tool.`;
 
 /** Returns { isProof: false } on any failure (no key, network error, bad
  *  response, unreadable format) — never assume proof when uncertain; the

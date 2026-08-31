@@ -1276,6 +1276,55 @@ export default function DashboardClient() {
     const base = tasks.filter(t=>t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime())
     return q ? base.filter(t=>taskMatchesSearch(t, q)) : base
   }, [tasks, taskSearch])
+
+  // ── CRM Done card: two-step Signature action (Jo, 31 Aug) ────────────────
+  // A Done task has already had its estimate + invoice sent and its linked Will
+  // customer moved to Signature. From the card the owner sends the "ready for
+  // signature" notice, then marks it lodged, without opening the chat. Which of
+  // the two buttons shows is driven by the linked Will customer, fetched lazily
+  // per card (by phone) and cached so a card is looked up only once.
+  const [sigLinks, setSigLinks] = useState<Record<string, {id:string;state:string;signatureReadySent:boolean}|null>>({})
+  const sigFetched = useRef<Set<string>>(new Set())
+  const [sigBusy, setSigBusy] = useState<string|null>(null)
+  useEffect(() => {
+    const pending = doneTasks.filter(t => t.whatsapp && !sigFetched.current.has(t.id))
+    if (!pending.length) return
+    let cancelled = false
+    ;(async () => {
+      for (const t of pending) {
+        sigFetched.current.add(t.id)
+        try {
+          const r = await fetch(`/api/will/link?phone=${encodeURIComponent(t.whatsapp||'')}`)
+          const j = await r.json()
+          if (cancelled) return
+          setSigLinks(prev => ({ ...prev, [t.id]: j?.customer ? { id:j.customer.id, state:j.customer.state, signatureReadySent:!!j.customer.signatureReadySent } : null }))
+        } catch { if (!cancelled) setSigLinks(prev => ({ ...prev, [t.id]: null })) }
+      }
+    })()
+    return () => { cancelled = true }
+  }, [doneTasks])
+  async function sendSignatureFromCard(taskId: string, willId: string, name: string) {
+    if (!confirm(`Send the "your tax return is ready for signature" message to ${name}?`)) return
+    setSigBusy(taskId)
+    try {
+      const r = await fetch('/api/will/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_signature',customerId:willId})})
+      const j = await r.json().catch(()=>null)
+      if (r.ok && j?.ok) setSigLinks(prev => ({ ...prev, [taskId]: prev[taskId] ? { ...prev[taskId]!, signatureReadySent:true } : prev[taskId] }))
+      else alert(j?.error ?? 'Could not send the message')
+    } catch { alert('Could not reach the server. Nothing was sent.') }
+    setSigBusy(null)
+  }
+  async function markLodgedFromCard(taskId: string, willId: string, name: string) {
+    if (!confirm(`Send the "lodged" message to ${name} and move them to Completed?`)) return
+    setSigBusy(taskId)
+    try {
+      const r = await fetch('/api/will/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_lodged',customerId:willId})})
+      const j = await r.json().catch(()=>null)
+      if (r.ok && j?.ok) setSigLinks(prev => ({ ...prev, [taskId]: prev[taskId] ? { ...prev[taskId]!, state:'LODGED' } : prev[taskId] }))
+      else alert(j?.error ?? 'Could not send the message')
+    } catch { alert('Could not reach the server. Nothing was sent.') }
+    setSigBusy(null)
+  }
   const visibleClients = useMemo(()=>{
     // If user is searching and we have server-side results (more clients than loaded),
     // use the merged set so they can find clients beyond the first page.
@@ -1677,6 +1726,26 @@ export default function DashboardClient() {
                         )}
                       </div>
                     </div>
+                    {/* Middle: the two-step Signature action, driven by the linked
+                        Will customer. First "Send for Signature" (sends the ready
+                        notice, does not move them in the pipe), then it becomes
+                        "Mark Lodged" (moves them to Completed). Nothing shows if the
+                        task has no WhatsApp conversation behind it. */}
+                    {(() => {
+                      const link = sigLinks[t.id]
+                      if (!link) return <div style={{flex:1}}/>
+                      const busy = sigBusy === t.id
+                      const lodged = link.state === 'LODGED' || link.state === 'COMPLETED'
+                      if (lodged) return <div style={{flex:1,display:'flex',justifyContent:'center'}}><span className="chip good">✓ Lodged</span></div>
+                      const readySent = link.signatureReadySent || link.state === 'SIGNED'
+                      return (
+                        <div style={{flex:1,display:'flex',justifyContent:'center'}}>
+                          {readySent
+                            ? <button disabled={busy} onClick={e=>{e.stopPropagation();markLodgedFromCard(t.id, link.id, displayName(t.clientName))}} className="btn take sm">{busy ? '…' : '✅ Mark Lodged'}</button>
+                            : <button disabled={busy} onClick={e=>{e.stopPropagation();sendSignatureFromCard(t.id, link.id, displayName(t.clientName))}} className="btn take sm">{busy ? '…' : '✍️ Send for Signature'}</button>}
+                        </div>
+                      )
+                    })()}
                     <div className="rc-side">
                       <div className="rc-time" style={{whiteSpace:'nowrap',minWidth:0}}>{fmtDate(t.submittedAt)}</div>
                     </div>

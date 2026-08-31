@@ -42,6 +42,18 @@ export async function GET(req: NextRequest) {
       if (t?.body?.trim()) template = t.body;
     } catch { /* the constant is the honest fallback */ }
     const stage = STAGE_GROUPS.find((g) => (g.states as readonly string[]).includes(c.state));
+    // Has the "ready for signature" notice already gone out? The CRM Done card
+    // uses this to decide whether to show "Send for Signature" or "Mark Lodged",
+    // and it must survive a page reload (the customer stays at SIGNATURE_PENDING
+    // for both, so state alone cannot tell them apart). Matched on the stable,
+    // distinctive phrase so a wording tweak to the template does not break it.
+    let signatureReadySent = false;
+    try {
+      const msgs = await store.listMessages(c.id);
+      signatureReadySent = msgs.some(
+        (m) => m.direction === 'OUT' && /tax return is ready/i.test(m.body || ''),
+      );
+    } catch { /* best effort: default to not-sent, so the worst case is a re-send */ }
     return NextResponse.json({
       ok: true,
       customer: {
@@ -52,6 +64,7 @@ export async function GET(req: NextRequest) {
         stage: stage?.label ?? null,
         paid: c.paid,
         estimatedRefundCents: c.estimatedRefundCents ?? null,
+        signatureReadySent,
       },
       template,
     });

@@ -922,7 +922,7 @@ export default function Dashboard() {
     // The server now reports whether WhatsApp actually accepted the message.
     // Reporting "Sent" on a failure is how a lost message looked delivered.
     if (r?.ok) {
-      say(`Sent. ${ASSISTANT_NAME} paused for this chat, you have the wheel`);
+      say(`Sent ✓ ${ASSISTANT_NAME} stays active on this chat`);
     } else {
       say(`❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`);
     }
@@ -1568,7 +1568,7 @@ export default function Dashboard() {
                           typed paragraph is never flattened into one blob).
                           Enter sends, Shift+Enter adds a new line. */}
                       <textarea
-                        placeholder={`Reply as yourself (pauses ${ASSISTANT_NAME} for this chat)…`}
+                        placeholder={`Reply as yourself (${ASSISTANT_NAME} stays active, use the toggle above to take over)…`}
                         value={composer}
                         rows={1}
                         onChange={(e) => { setComposer(e.target.value); const el = e.target as HTMLTextAreaElement; el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 140) + 'px'; }}

@@ -517,7 +517,10 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // Money, re-checked across the flattened improvised text so a line break
   // cannot hide a price. Same allow-list as the per-sentence pass.
   for (const cents of amountsInCents(improvised)) {
-    if (!allowedCents.has(cents) && !isBenignThreshold(cents, improvised)) {
+    // The $300 substantiation threshold is a deduction/record-keeping fact, so
+    // it is only allowed AFTER payment: before payment we give no personalised
+    // tax advice at all, and an answer that reaches for it there must be held.
+    if (!allowedCents.has(cents) && !(paid && isBenignThreshold(cents, improvised))) {
       violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
     }
   }
@@ -538,7 +541,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
 
     // Amount check is language-agnostic (currency symbols + words in many languages).
     for (const cents of amountsInCents(sentence)) {
-      if (!allowedCents.has(cents) && !isBenignThreshold(cents, sentence)) {
+      if (!allowedCents.has(cents) && !(paid && isBenignThreshold(cents, sentence))) {
         violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
       }
     }

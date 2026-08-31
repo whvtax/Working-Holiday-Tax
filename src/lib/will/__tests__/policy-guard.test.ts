@@ -211,44 +211,52 @@ describe('leaks, echoes and formatting', () => {
 // The ATO $300 substantiation threshold. A fixed public regulatory figure, safe
 // to state only in a record-keeping context and never near a refund. Everything
 // else about $300, and any other amount, stays blocked.
-describe('$300 substantiation threshold — allowed only in a record-keeping context', () => {
-  const amt = (msg: string) =>
+describe('$300 substantiation threshold — allowed only in a record-keeping context, and only after payment', () => {
+  // AFTER payment (the only time a deduction/record-keeping answer is given).
+  const amtPaid = (msg: string) =>
+    policyGuard(msg, ctx({ paid: true, state: 'PAID' })).violations.some((v) => v.startsWith('FORBIDDEN_AMOUNT'));
+  // BEFORE payment: no personalised tax advice at all, so even the threshold is held.
+  const amtUnpaid = (msg: string) =>
     policyGuard(msg, ctx()).violations.some((v) => v.startsWith('FORBIDDEN_AMOUNT'));
 
-  it('ALLOWS $300 when it is about receipts / work-related expenses', () => {
+  it('ALLOWS $300 after payment when it is about receipts / work-related expenses', () => {
     expect(
-      amt('If your total work-related expenses are $300 or less, receipts generally aren’t required, but you still need to show how you calculated the amount.'),
+      amtPaid('If your total work-related expenses are $300 or less, receipts generally aren’t required, but you still need to show how you calculated the amount.'),
     ).toBe(false);
-    expect(amt('Keep your receipts once your work expenses go over $300.')).toBe(false);
+    expect(amtPaid('Keep your receipts once your work expenses go over $300.')).toBe(false);
   });
 
-  it('NO LEAK: $300 stated as a refund or amount owed is still blocked', () => {
-    expect(amt('Your refund is $300.')).toBe(true);
-    expect(amt('You’ll get back around $300.')).toBe(true);
-    expect(amt('We estimate $300 back to you.')).toBe(true);
-    expect(amt('You owe $300.')).toBe(true);
+  it('BLOCKS the same $300 answer BEFORE payment (deduction advice is held pre-payment)', () => {
+    expect(
+      amtUnpaid('If your total work-related expenses are $300 or less, receipts generally aren’t required, but you still need to show how you calculated the amount.'),
+    ).toBe(true);
+  });
+
+  it('NO LEAK: $300 stated as a refund or amount owed is still blocked, even after payment', () => {
+    expect(amtPaid('Your refund is $300.')).toBe(true);
+    expect(amtPaid('You’ll get back around $300.')).toBe(true);
+    expect(amtPaid('We estimate $300 back to you.')).toBe(true);
+    expect(amtPaid('You owe $300.')).toBe(true);
   });
 
   it('NO LEAK: a different amount in the same record-keeping context is still blocked', () => {
-    expect(amt('If your work-related expenses are $500 or less, receipts aren’t required.')).toBe(true);
-    expect(amt('Keep receipts for anything over $250.')).toBe(true);
+    expect(amtPaid('If your work-related expenses are $500 or less, receipts aren’t required.')).toBe(true);
+    expect(amtPaid('Keep receipts for anything over $250.')).toBe(true);
   });
 
   it('NO LEAK: bare $300 with no record-keeping context is still blocked', () => {
-    expect(amt('It comes to $300.')).toBe(true);
-    expect(amt('That will be $300.')).toBe(true);
+    expect(amtPaid('It comes to $300.')).toBe(true);
+    expect(amtPaid('That will be $300.')).toBe(true);
   });
 
   it('a distance in kilometres is not a price, even after the word "total"', () => {
-    expect(
-      amt('Show how you calculated the total, up to 5,000 kilometres.'),
-    ).toBe(false);
-    expect(amt('Keep a record of your work-related kilometres, up to 5000 km.')).toBe(false);
+    expect(amtUnpaid('Show how you calculated the total, up to 5,000 kilometres.')).toBe(false);
+    expect(amtUnpaid('Keep a record of your work-related kilometres, up to 5000 km.')).toBe(false);
   });
 
   it('NO LEAK: a real dollar total is still caught next to the word total', () => {
-    expect(amt('The total cost is 5,000.')).toBe(true);
-    expect(amt('Your total is $5,000.')).toBe(true);
+    expect(amtUnpaid('The total cost is 5,000.')).toBe(true);
+    expect(amtUnpaid('Your total is $5,000.')).toBe(true);
   });
 });
 
@@ -334,7 +342,14 @@ describe('the mined knowledge pack is safe to send (content-level)', () => {
   ];
   for (const entry of KNOWLEDGE_SEED) {
     it(`"${entry.intent}" answer is guard-clean`, () => {
-      const v = policyGuard(entry.answer, ctx()).violations;
+      // Deduction / record-keeping answers (the ATO $300 substantiation
+      // threshold) are POST-payment content — Will gives no personalised tax
+      // advice before payment — so they are checked in the paid context they
+      // are actually sent in. Everything else is checked in the neutral
+      // pre-payment context.
+      const isPostPaymentDeduction = /\$300\b/.test(entry.answer);
+      const context = isPostPaymentDeduction ? ctx({ paid: true, state: 'PAID' }) : ctx();
+      const v = policyGuard(entry.answer, context).violations;
       const bad = v.filter((x) => CONTENT_CODES.includes(x) || x.startsWith('FORBIDDEN_AMOUNT'));
       expect(bad).toEqual([]);
     });

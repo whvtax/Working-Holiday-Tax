@@ -697,6 +697,19 @@ export async function autoAdvanceToForm(customerId: string, _bank: { bsb: string
  *  implementation detail, not something the webhook layer should depend on. */
 const PAYABLE_STATES: CustomerState[] = ['PRICE_SENT', 'PAYMENT_PENDING'];
 
+/** States in which a customer might send a PAYMENT SCREENSHOT — wider than
+ *  PAYABLE_STATES on purpose (Jo, 31 Aug). A real case: the price was quoted in
+ *  the back-and-forth rather than sent as the formal price message, so the
+ *  customer sat at QUALIFIED (or NEW_LEAD) when she paid $220 and sent the bank
+ *  receipt. The old gate only ran the payment-proof vision check at
+ *  PRICE_SENT / PAYMENT_PENDING, so an obvious payment landed as an "attachment
+ *  I can't read" task. Widening the gate is safe because the vision check
+ *  itself confirms the image really is a payment before anything moves, and in
+ *  Supervised mode it only drafts the "payment received" reply for approval.
+ *  Excludes already-paid and closed/declined states (a closed customer's media
+ *  is reactivated to Lead on the ordinary path first). */
+export const PAYMENT_PROOF_STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
+
 /**
  * Should a plain-text payment claim force the Paid transition onto Will's reply,
  * regardless of the language the customer wrote in and regardless of whether the
@@ -770,7 +783,7 @@ async function handlePaymentProofMediaInner(
   // `optedOut` belongs in this condition exactly as it does on every other send
   // path: a customer who asked us to stop must not receive a "payment received"
   // reply, however that payment reached us.
-  if (!customer || customer.optedOut || customer.paid || !PAYABLE_STATES.includes(customer.state)) return null;
+  if (!customer || customer.optedOut || customer.paid || !PAYMENT_PROOF_STATES.includes(customer.state)) return null;
 
   // ── ROUTE 1: they said it. ────────────────────────────────────────────────
   // Jo, 27 Aug: at the payment step we trust the customer, and most people send
