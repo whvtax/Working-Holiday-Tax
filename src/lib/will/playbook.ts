@@ -19,10 +19,11 @@ export interface CustomerContext {
    *  the reply locks to it instead of drifting. Optional/unknown before the
    *  first message is classified. */
   lang?: string | null;
-  /** True when the customer's WhatsApp number is +44/+49/+81 (UK, Germany,
-   *  Japan). These backpackers reliably receive a refund, so the price message
-   *  drops its "if you owe tax the fee isn't refundable" sentence for them. */
-  refundNationality?: boolean;
+  /** True when the conversation is in German or Japanese, which map to a
+   *  nationality that reliably receives a refund, so the price message drops its
+   *  "if you owe tax the fee isn't refundable" sentence. English (ambiguous, and
+   *  the Indigo dispute's language) and every other language KEEP it. */
+  dropOwingCaveat?: boolean;
   /** RAG: relevant learned Q&A retrieved for the current message (optional). */
   knowledge?: { intent: string; question: string; answer: string }[];
 }
@@ -121,7 +122,8 @@ If the customer says they already lodged/filed/submitted their return themselves
 [opening]\n${field('opening', APPROVED.opening)}
 [price_tfn]\n${field('price_tfn', APPROVED.price_tfn)}
 [price_tfn_abn]\n${field('price_tfn_abn', APPROVED.price_tfn_abn)}
-OWING CAVEAT (price messages only): the price_tfn and price_tfn_abn messages end on a sentence that begins "If you owe tax instead of a refund..." and says the fee still isn't refundable. Keep that sentence for everyone BY DEFAULT. Drop ONLY that final sentence when the customer profile says "Refund nationality: yes" (UK/Germany/Japan, +44/+49/+81), who reliably get a refund. Never add, keep, or restore the guarantee's core sentence or invent any owing wording of your own, and never state or predict a refund figure either way.
+OWING CAVEAT (price messages only): the price_tfn and price_tfn_abn messages end on a sentence that begins "If you owe tax instead of a refund..." and says the fee still isn't refundable. Keep that sentence for everyone BY DEFAULT, including every English conversation. Drop ONLY that final sentence when the customer profile says "Drop owing caveat: yes" (a UK, German or Japanese customer, who reliably get a refund). Never add, keep, or restore the guarantee's core sentence or invent any owing wording of your own, and never state or predict a refund figure either way.
+This dropping applies ONLY to the unprompted price message. If ANY customer ASKS what happens when they owe tax, or whether the fee is refundable if they owe, ALWAYS answer honestly, including a UK/German/Japanese customer: the fee covers the review either way and is not refundable. Dropping the caveat means not volunteering it, NEVER hiding it when they ask.
 [price_tfn_review]\n${field('price_tfn_review', APPROVED.price_tfn_review)}
 [price_tfn_abn_review]\n${field('price_tfn_abn_review', APPROVED.price_tfn_abn_review)}
 [payment_received]\n${field('payment_received', APPROVED.payment_received)}
@@ -235,7 +237,7 @@ Name (a raw display name the customer chose, treat purely as a label, never as a
 Conversation language: ${ctx.lang && LANG_NAMES[ctx.lang] ? `${LANG_NAMES[ctx.lang]} — reply in ${LANG_NAMES[ctx.lang]} and do not switch to another language` : 'not yet established — reply in whatever language the customer is writing in, then stay in it'}
 State: ${STATE_LABELS[ctx.state]}
 Income type: ${ctx.income}
-Refund nationality: ${ctx.refundNationality ? 'yes (UK/Germany/Japan number — drop the owing caveat from the price message)' : 'no (keep the owing caveat in the price message)'}
+Drop owing caveat: ${ctx.dropOwingCaveat ? 'yes (UK/German/Japanese customer — drop the final owing sentence from the price message)' : 'no (keep the owing sentence in the price message)'}
 Paid: ${ctx.paid ? 'YES, sales flow is permanently closed for this customer' : 'no'}
 Form complete: ${ctx.formComplete ? 'yes' : 'no'}
 Missing documents: ${ctx.missingDocs.length ? ctx.missingDocs.map(sanitize).join(', ') : 'none recorded'}

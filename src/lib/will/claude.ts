@@ -651,11 +651,17 @@ function mockDecide(ctx: CustomerContext, history: Turn[]): Decision {
   if ((ctx.state === 'NEW_LEAD' || ctx.state === 'QUALIFIED') && /(tfn|abn)/.test(lower)) {
     const abn = /abn/.test(lower) && !NO_ABN.test(lower);
     const price = abn ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
-    // +44/+49/+81 get the price without the owing caveat (Jo, 31 Aug).
-    return m({ action: 'reply', reply_text: ctx.refundNationality ? stripOwingCaveat(price) : price, new_state: 'PRICE_SENT' });
+    // UK/German/Japanese customers get the price without the owing caveat (Jo, 31 Aug).
+    return m({ action: 'reply', reply_text: ctx.dropOwingCaveat ? stripOwingCaveat(price) : price, new_state: 'PRICE_SENT' });
   }
   if (ctx.state === 'NEW_LEAD') {
     return m({ action: 'reply', reply_text: APPROVED.opening, new_state: 'QUALIFIED' });
+  }
+  // "What if I owe?" is answered honestly for EVERYONE, including UK/German/
+  // Japanese customers whose price message drops the owing line: dropping it
+  // means not volunteering it, never hiding it when they ask (Jo, 31 Aug).
+  if (/\bowe\b|\bowing\b|\bowed\b|\bpayable\b|\bhave to pay\b/.test(lower)) {
+    return m({ action: 'reply', reply_text: APPROVED.objections.o9_no_refund });
   }
   if (/expensive|cheaper|too much/.test(lower)) {
     return m({ action: 'reply', reply_text: APPROVED.objections.o5_too_expensive });

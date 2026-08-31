@@ -198,36 +198,64 @@ https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8?g_st=ic`,
 } as const;
 
 // ============================================================
-// Nationality-based owing caveat (Jo, 31 Aug).
+// Refund-nationality owing caveat (Jo, 31 Aug).
 //
 // The price messages end on a sentence that spells out that if the customer
-// OWES tax rather than getting a refund, the fee still isn't refundable. Jo's
-// rule: UK, German and Japanese backpackers reliably GET a refund (tax treaty /
-// residency), so that owing sentence just muddies their price message and is
-// dropped for them. It stays for every other number, where owing is a real
-// possibility and the customer must be told upfront the fee isn't refundable.
+// OWES tax rather than getting a refund, the fee still isn't refundable.
 //
-// Nationality is read off the WhatsApp number's country dialling code:
-//   +44 United Kingdom, +49 Germany, +81 Japan.
-// This never touches the guarantee itself and never states or predicts a refund
-// figure: it only removes a protective disclaimer for numbers that don't need it.
+// Jo's rule: Germans, Japanese and British backpackers reliably GET a refund,
+// so that owing line only muddies their price message and is DROPPED for them.
+// Everyone else KEEPS it, because owing is a real possibility and they must be
+// told upfront the fee isn't refundable.
+//
+// The hard part is that a phone number alone is not enough: backpackers in
+// Australia mostly use a local +61 SIM, so a Japanese or British customer often
+// writes from an Australian number. Jo, explicitly: it must not matter whether
+// they wrote from their own country's number or an Australian one. So THREE
+// signals are combined, and ANY one of them drops the caveat:
+//   1. Conversation language German or Japanese (holds on any number).
+//   2. Phone country code +44 / +49 / +81 (UK / Germany / Japan).
+//   3. The customer says where they are from in the chat ("from England",
+//      "I'm British", "from Germany", "from Japan"...), which is the only way to
+//      catch a Brit on a +61 number writing English.
+//
+// English on its own is NOT a signal (it is also Irish, Australian, American),
+// so a plain English chat with no British tell keeps the caveat. This never
+// touches the guarantee itself and never states or predicts a refund figure.
 // ============================================================
 
-/** Country dialling codes whose customers reliably receive a refund, so the
- *  "if you owe tax the fee isn't refundable" caveat is omitted from their price
- *  message. Order matters only for display; matching is prefix-based below. */
-export const REFUND_NATIONALITY_PREFIXES = ['44', '49', '81'] as const;
+/** Phone country codes that map to a refund nationality (UK, Germany, Japan). */
+export const REFUND_PHONE_PREFIXES = ['44', '49', '81'] as const;
 
-/** True when a WhatsApp id (which is the phone number, e.g. "447700900123" or
- *  "+44 7700 900123") belongs to a refund-nationality (+44/+49/+81). Anything
- *  unknown, empty or any other country returns false, so the caveat is KEPT by
- *  default. Fail-safe: when in doubt, the customer is told the fee isn't
- *  refundable. */
-export function isRefundNationality(waId: string | null | undefined): boolean {
-  if (!waId) return false;
-  const digits = waId.replace(/\D/g, '');
-  if (!digits) return false;
-  return REFUND_NATIONALITY_PREFIXES.some((p) => digits.startsWith(p));
+/** Conversation languages that map unambiguously to a refund nationality. */
+export const REFUND_CAVEAT_DROP_LANGS = ['de', 'ja'] as const;
+
+/** The customer stating their own country/nationality, in the languages we see.
+ *  Deliberately requires a "from <place>" / "I am <nationality>" shape so a
+ *  passing mention ("I worked for a UK company") does not trip it. */
+const REFUND_NATIONALITY_MENTION =
+  /\bfrom\s+(the\s+)?(uk|u\.k\.|england|scotland|wales|britain|great\s+britain|northern\s+ireland|germany|deutschland|japan|nihon)\b/i;
+const REFUND_NATIONALITY_SELF =
+  /\bi'?m\s+(a\s+)?(british|english|scottish|welsh|german|japanese)\b|\bich\s+komme\s+aus\s+deutschland\b|\bich\s+bin\s+deutsche?r?\b|\b日本(から|人)\b/i;
+
+/** Signals that a customer is a refund nationality (UK / Germany / Japan), from
+ *  whichever of the three is available. ANY match drops the owing caveat; all
+ *  absent keeps it. Fail-safe: unknown stays "keep". */
+export function shouldDropOwingCaveat(opts: {
+  lang?: string | null;
+  waId?: string | null;
+  text?: string | null;
+}): boolean {
+  const lang = opts.lang?.toLowerCase();
+  if (lang && (REFUND_CAVEAT_DROP_LANGS as readonly string[]).includes(lang)) return true;
+
+  const digits = (opts.waId ?? '').replace(/\D/g, '');
+  if (digits && REFUND_PHONE_PREFIXES.some((p) => digits.startsWith(p))) return true;
+
+  const text = opts.text ?? '';
+  if (text && (REFUND_NATIONALITY_MENTION.test(text) || REFUND_NATIONALITY_SELF.test(text))) return true;
+
+  return false;
 }
 
 /** The trailing owing-tax caveat, for either fee ($220 or $385) and either
@@ -236,17 +264,20 @@ export function isRefundNationality(waId: string | null | undefined): boolean {
 const OWING_CAVEAT_RE =
   /\s*If you owe tax instead of a refund, the \$\d+ covers our review either way and isn'?t refundable\.?/i;
 
-/** Remove the owing-tax caveat from a price message. Used for refund-nationality
- *  numbers only. If the text has been edited in the Library and no longer holds
- *  the exact sentence, nothing is removed and the caveat safely stays. */
+/** Remove the owing-tax caveat from a price message. Used for refund
+ *  nationalities only. If the text has been edited in the Library and no longer
+ *  holds the exact sentence, nothing is removed and the caveat safely stays. */
 export function stripOwingCaveat(text: string): string {
   return text.replace(OWING_CAVEAT_RE, '');
 }
 
-/** Given a price message body and the customer's WhatsApp id, return the copy
- *  that should actually be sent: caveat removed for +44/+49/+81, kept otherwise.
- *  Applies only to the two price templates; every other message is returned
- *  untouched. */
-export function priceForNumber(body: string, waId: string | null | undefined): string {
-  return isRefundNationality(waId) ? stripOwingCaveat(body) : body;
+/** Given a price message body and what we know about the customer, return the
+ *  copy that should actually be sent: caveat dropped for UK/German/Japanese
+ *  customers (by language, number, or a stated origin), kept for everyone else.
+ *  Applies only to the two price templates; every other message is untouched. */
+export function priceForCustomer(
+  body: string,
+  who: { lang?: string | null; waId?: string | null; text?: string | null },
+): string {
+  return shouldDropOwingCaveat(who) ? stripOwingCaveat(body) : body;
 }

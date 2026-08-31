@@ -15,7 +15,7 @@ import { AUTOPILOT_REPLY_DELAY_SECONDS } from './config';
 import { isIdentityQuestion } from './identity-question';
 import { firstNameOf } from './text-normalize';
 import { suggestReply } from './suggest';
-import { APPROVED, isRefundNationality } from './approved-messages';
+import { APPROVED, shouldDropOwingCaveat } from './approved-messages';
 import { assessPaymentProofImage, describeAttachment } from './claude';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
@@ -320,8 +320,15 @@ async function handleIncomingInner(
     paid: customer.paid, formComplete: customer.formComplete,
     missingDocs: customer.missingDocs, estimatedRefundCents: customer.estimatedRefundCents,
     lang: customer.lang,
-    // +44/+49/+81 → drop the owing caveat from the price message (Jo, 31 Aug).
-    refundNationality: isRefundNationality(customer.waId),
+    // UK / German / Japanese customers reliably get a refund, so their price
+    // message drops the owing caveat (Jo, 31 Aug). Caught by ANY of: the
+    // conversation language, the phone country code, or a stated origin in the
+    // chat, so it works whether they use a home number or an Australian +61 SIM.
+    dropOwingCaveat: shouldDropOwingCaveat({
+      lang: customer.lang,
+      waId: customer.waId,
+      text: `${history.filter((t) => t.role === 'customer').map((t) => t.text).join(' ')} ${text}`,
+    }),
     knowledge,
   };
 

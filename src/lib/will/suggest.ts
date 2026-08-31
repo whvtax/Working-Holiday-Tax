@@ -16,7 +16,7 @@
 //
 // A suggestion is a DRAFT FOR A HUMAN. It is never transmitted by itself: the
 // send path runs the policy guard as usual.
-import { APPROVED, priceForNumber } from './approved-messages';
+import { APPROVED, priceForCustomer } from './approved-messages';
 import { retrieveKnowledge } from './knowledge';
 import { CustomerRow, getStore } from './store';
 
@@ -153,8 +153,11 @@ export async function suggestReply(
   if (customer && (reason === 'guard_blocked' || reason === 'draft_invalid' || reason === 'budget' || reason === 'generic')) {
     let s = (await libraryBody(stateTemplateKey(customer))) ?? byState(customer);
     // At QUALIFIED the body is the price message; drop the owing caveat for
-    // +44/+49/+81 so the suggested reply matches what Will would send.
-    if (s && customer.state === 'QUALIFIED') s = priceForNumber(s, customer.waId);
+    // UK/German/Japanese customers so the suggested reply matches what Will
+    // would send (by language, number, or a stated origin in their message).
+    if (s && customer.state === 'QUALIFIED') {
+      s = priceForCustomer(s, { lang: customer.lang, waId: customer.waId, text: customerMessage });
+    }
     if (s) return s;
   }
 
