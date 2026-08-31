@@ -164,6 +164,43 @@ export async function backfillMissingTemplates(
 }
 
 /**
+ * Bring every seeded template's body in the DB up to the code.
+ *
+ * The message templates (opening, prices, objections, follow-ups) live in
+ * will_templates, seeded once from approved-messages.ts. A deploy changes the
+ * code but never the DB, and the plain seed path only ADDS missing keys, so an
+ * edit to the wording of a template that already exists in the DB (e.g. a
+ * shorter opening) never reaches Will on its own. This is the templates twin of
+ * the knowledge "Sync library from file" flow: for every seeded key it UPDATES
+ * the DB body when it differs from the code and ADDS a missing key. A template
+ * whose key is not in the seed set (something the owner added by hand) is never
+ * touched. Matched by `key`, so a retitled or recategorised entry still syncs.
+ */
+export async function syncTemplatesFromCode(
+  store: Pick<Store, 'listTemplates' | 'updateTemplate' | 'addTemplate'>,
+): Promise<{ updated: number; added: number; keys: string[] }> {
+  const existing = await store.listTemplates();
+  const byKey = new Map(existing.map((t) => [t.key, t]));
+  let updated = 0, added = 0;
+  const keys: string[] = [];
+  for (const t of seedTemplates()) {
+    const hit = byKey.get(t.key);
+    if (hit) {
+      if (hit.body !== t.body) {
+        await store.updateTemplate(hit.id, t.body);
+        updated++;
+        keys.push(t.key);
+      }
+    } else {
+      await store.addTemplate({ key: t.key, category: t.category, title: t.title, body: t.body });
+      added++;
+      keys.push(t.key);
+    }
+  }
+  return { updated, added, keys };
+}
+
+/**
  * The answers pack, in the Library, without anybody having to do anything.
  *
  * WHAT WAS WRONG (Jo, 28 Aug). The curated question-and-answer pack lived in

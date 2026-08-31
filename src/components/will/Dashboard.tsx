@@ -2111,11 +2111,19 @@ export default function Dashboard() {
                 knowledge-seed.ts actually reach Will. */}
             <div style={{ margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               <button className="btn take" onClick={async () => {
+                // One click brings BOTH stores up to the deployed code: the
+                // knowledge answers (will_knowledge) and the message templates
+                // (will_templates, e.g. the opening/price/objection wording).
+                // Both live in the DB, so a deploy alone does not touch them.
                 const r = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'import_starter', overwrite: true }) }).then((x) => x.json()).catch(() => null);
-                if (r && r.ok) { say(`Library synced: ${r.updated ?? 0} updated, ${r.imported ?? 0} added, ${r.skipped ?? 0} unchanged.`); loadKnowledge(); }
-                else say('Sync failed. Please try again.');
+                const rt = await fetch('/api/will/seed', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ overwrite: true }) }).then((x) => x.json()).catch(() => null);
+                if (r && r.ok) {
+                  const tpl = rt && rt.ok ? ` Messages: ${(rt.updated ?? 0) + (rt.backfilled ?? 0)} updated.` : '';
+                  say(`Library synced: ${r.updated ?? 0} updated, ${r.imported ?? 0} added, ${r.skipped ?? 0} unchanged.${tpl}`);
+                  loadKnowledge();
+                } else say('Sync failed. Please try again.');
               }}>Sync library from file</button>
-              <span className="psub" style={{ margin: 0 }}>Run once after a deploy to apply the latest bundled library.</span>
+              <span className="psub" style={{ margin: 0 }}>Run once after a deploy to apply the latest bundled answers and message wording.</span>
             </div>
 
             {/* "Download every conversation" (transcript/JSON export) and the
