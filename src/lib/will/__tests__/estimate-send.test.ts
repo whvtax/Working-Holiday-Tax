@@ -95,16 +95,16 @@ describe('the message', () => {
   });
 
   it('is laid out the way Jo asked for it', () => {
-    // Reworded by Jo, 31 Aug: the amount and the next-steps sit on one line, and
-    // the link goes on its own line after a blank one, so WhatsApp renders it as
-    // a link instead of running it into the sentence before.
+    // Reworded by Jo, 31 Aug: the amount and the next-steps sit on one line.
+    // Updated 1 Sep: the link sits directly under "Here is your invoice:" with
+    // NO blank line between them (Jo removed the paragraph gap), while it still
+    // starts on its own line so WhatsApp renders it as a link.
     const out = composeEstimate(APPROVED.estimate_invoice, 203600, url);
     const lines = out.split('\n');
     expect(lines[0]).toBe("Your estimated tax refund is $2,036.00 I'll send it for final review and then for your signature.");
     expect(lines[1]).toBe('');
     expect(lines[2]).toBe('Here is your invoice:');
-    expect(lines[3]).toBe('');
-    expect(lines[4].trim()).toBe(url);
+    expect(lines[3].trim()).toBe(url);
   });
 
   it('carries no AI dash', () => {

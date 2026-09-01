@@ -237,15 +237,15 @@ async function handleIncomingInner(
     // Will is never auto-paused (Jo, 31 Aug). This specific "are you a bot"
     // message still goes to a human with no draft, but Will stays active for the
     // customer's next messages.
-    await store.addTask({
-      customerId: customer.id, customerName: customer.name ?? waId,
+    await raiseOrUpdateTask(store, customer, {
       reason: 'Customer asked whether they are talking to a bot, needs a human reply',
       // THE ONE TASK WITH NO SUGGESTED REPLY, and deliberately so. Every other
       // handoff now arrives with a draft (Jo, 25 Aug), but the older owner rule
       // is narrower and stricter: no answer to "am I talking to a bot" may ever
       // exist, not even as a draft, because a draft is one click from being
-      // sent. This answer has to be a person's own words.
-      severity: 'REVIEW', context: text.slice(0, 200), suggestedReply: null,
+      // sent. This answer has to be a person's own words. Folded into the one
+      // open task per customer (raiseOrUpdateTask) so asking twice never stacks.
+      severity: 'REVIEW', newContext: text.slice(0, 200), suggestedReply: null,
     });
     await store.audit('policy_guard', 'identity_question_handoff', { customerId: customer.id });
     const c2 = await store.getCustomerByWaId(waId);
@@ -258,7 +258,13 @@ async function handleIncomingInner(
   const msgs = await store.listMessages(customer.id);
   const history: Turn[] = msgs
     .filter((m) => m.status === 'SENT') // pending/discarded drafts are NOT delivered context
-    .map((m) => ({ role: m.direction === 'IN' ? ('customer' as const) : ('assistant' as const), text: m.body }));
+    .map((m) => ({
+      role: m.direction === 'IN' ? ('customer' as const) : ('assistant' as const),
+      text: m.body,
+      // Mark outbound messages a human on the team sent, so the model can see
+      // where the owner has already stepped in (Jo, 31 Aug).
+      author: m.direction === 'OUT' ? (m.author === 'HUMAN' ? ('HUMAN' as const) : ('AI' as const)) : undefined,
+    }));
 
   // ── Runaway guard (was: "more than 3 messages before payment") ────────────
   //

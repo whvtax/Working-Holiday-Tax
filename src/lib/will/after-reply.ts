@@ -39,6 +39,25 @@ export async function afterHumanReply(store: Store, customerId: string): Promise
   } catch {
     // The badge is bookkeeping. The message is already delivered.
   }
+  // Discard any of Will's OWN drafts still waiting for this customer. The owner
+  // has just answered in person, so a draft awaiting approval (Approval mode) or
+  // an autopilot reply still parked in its send delay (QUEUED) is now stale.
+  //
+  // THIS IS WHY AN ALREADY-HANDLED CHAT CAME BACK (Jo, 31 Aug). Closing the task
+  // was only half of it: the pending draft stayed under "Needs a decision", so
+  // the same conversation reappeared on the next refresh, and approving that
+  // draft would have sent a second answer on top of the owner's. A queued
+  // autopilot reply is dropped safely too: the AUTO_REPLY job only sends a
+  // message that is still QUEUED, so a DISCARDED one simply never goes out.
+  try {
+    const msgs = await store.listMessages(customerId);
+    const stale = msgs.filter((m) =>
+      m.direction === 'OUT' && (m.status === 'PENDING_APPROVAL' || m.status === 'QUEUED'));
+    await Promise.all(stale.map((m) => store.setMessageStatus(m.id, 'DISCARDED').catch(() => { /* per message */ })));
+  } catch {
+    // Best effort: a leftover draft is a nuisance, never a reason to fail a
+    // reply that has already been delivered.
+  }
   try {
     const open = (await store.listTasks()).filter((t) => t.customerId === customerId && t.status === 'OPEN');
     await Promise.all(open.map((t) => store.resolveTask(t.id).catch(() => { /* per task */ })));

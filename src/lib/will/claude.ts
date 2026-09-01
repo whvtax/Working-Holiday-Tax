@@ -12,7 +12,15 @@ import { LostAnalysis, LOST_CATEGORIES, validateLostAnalysis } from './lost-lead
 import { claimsPayment } from './payment-claim';
 import { stripDashes } from './text';
 
-export interface Turn { role: 'customer' | 'assistant'; text: string }
+export interface Turn {
+  role: 'customer' | 'assistant';
+  text: string;
+  /** For an assistant turn: who actually sent it. 'HUMAN' means the owner/team
+   *  stepped in and typed it themselves, 'AI' means Will. Lets the model read
+   *  the whole conversation and see where a person has already handled things,
+   *  so it does not hand the same matter back as a task. */
+  author?: 'AI' | 'HUMAN';
+}
 
 export interface Decision {
   action: 'reply' | 'human_task' | 'wait';
@@ -92,14 +100,22 @@ function validateDecision(raw: unknown): Decision {
   };
 }
 
-/** History must start with a user turn, contain no empty bodies, and stay bounded. */
+/** History must start with a user turn, contain no empty bodies, and stay bounded.
+ *  Messages a human on the team sent are tagged inline ([Sent by a human team
+ *  member]) so the model, reading the whole conversation, can see where a person
+ *  has already stepped in and must not hand the same matter back as a task. */
 function apiMessages(history: Turn[]) {
   const trimmed = history.filter((t) => t.text.trim().length > 0).slice(-40);
   while (trimmed.length && trimmed[0].role !== 'customer') trimmed.shift();
-  return trimmed.map((t) => ({
-    role: t.role === 'customer' ? ('user' as const) : ('assistant' as const),
-    content: t.text.slice(0, 4000),
-  }));
+  return trimmed.map((t) => {
+    const body = t.text.slice(0, 4000);
+    return {
+      role: t.role === 'customer' ? ('user' as const) : ('assistant' as const),
+      content: t.role === 'assistant' && t.author === 'HUMAN'
+        ? `[Sent by a human team member] ${body}`
+        : body,
+    };
+  });
 }
 
 export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Decision> {

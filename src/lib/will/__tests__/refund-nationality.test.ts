@@ -44,23 +44,34 @@ describe('shouldDropOwingCaveat — by phone country code', () => {
   });
 });
 
-describe('shouldDropOwingCaveat — by a stated origin in the chat', () => {
+describe('shouldDropOwingCaveat — by the home-country answer in the chat', () => {
+  // Will now asks "Which country are you from" in the opening, so a bare country
+  // name is the answer and must count, in any language.
   it.each([
-    "Hi, I'm from England on my final WHV",
-    'I am from the UK',
-    "I'm British",
-    'from Germany, worked on a TFN',
+    'Japan',
+    'Germany, only TFN',
+    'UK',
+    'England',
     'from Japan',
+    "I'm British",
     'ich komme aus Deutschland',
-  ])('drops when the customer says where they are from: %s', (text) => {
+    'Japon',            // French/Spanish spelling
+    'Allemagne',        // French: Germany
+    'Reino Unido',      // Spanish/Portuguese: UK
+    '日本',              // Japanese: Japan
+    'イギリス',          // Japanese: UK
+  ])('drops for a refund-country answer: %s', (text) => {
     expect(shouldDropOwingCaveat({ lang: 'en', text })).toBe(true);
   });
 
   it.each([
-    'I worked for a UK company in Sydney',
+    'Australia',
+    'Ireland',
+    'France, only TFN',
+    'Spain',
     'Hi, I would like to ask about my Australian tax return. I worked on a TFN.',
     'only TFN',
-  ])('keeps for plain English with no origin tell: %s', (text) => {
+  ])('keeps for a non-refund country or no country: %s', (text) => {
     expect(shouldDropOwingCaveat({ lang: 'en', waId: '61472724880', text })).toBe(false);
   });
 

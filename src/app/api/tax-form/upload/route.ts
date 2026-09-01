@@ -18,23 +18,34 @@ const DANGEROUS_PATTERNS = [
   [0x4D, 0x5A],                                // MZ (Windows exe/dll)
 ]
 
-function containsDangerous(buf: ArrayBuffer): boolean {
-  const bytes = new Uint8Array(buf, 0, Math.min(8192, buf.byteLength))
+// An executable/script signature is only a threat at the very START of a file,
+// and validateMagicBytes() has already confirmed a genuine image/PDF header
+// there. We therefore check these patterns at offset 0 ONLY.
+//
+// THE BUG THIS FIXES (Jo, 1 Sep). The old check scanned the first 8192 bytes for
+// each pattern "anywhere", including "MZ" (just two bytes, 0x4D 0x5A). After a
+// JPEG's header the bytes are entropy-coded and effectively random, so that
+// two-byte sequence turns up by chance in roughly one in eight real photos, and
+// legitimate bank statements and passport selfies were rejected with "File
+// contains potentially dangerous content". Uploads go to a PRIVATE bucket and
+// are never executed or served as HTML, so bytes deeper inside a valid image are
+// harmless data, never code.
+export function containsDangerous(buf: ArrayBuffer): boolean {
+  const bytes = new Uint8Array(buf, 0, Math.min(16, buf.byteLength))
   for (const pattern of DANGEROUS_PATTERNS) {
-    for (let i = 0; i <= bytes.length - pattern.length; i++) {
-      let match = true
-      for (let j = 0; j < pattern.length; j++) {
-        if (bytes[i + j] !== pattern[j]) { match = false; break }
-      }
-      if (match) return true
+    if (pattern.length > bytes.length) continue
+    let match = true
+    for (let j = 0; j < pattern.length; j++) {
+      if (bytes[j] !== pattern[j]) { match = false; break }
     }
+    if (match) return true
   }
   return false
 }
 
 // Magic bytes validation. Confirms the declared MIME type matches the actual
 // file signature so an attacker cannot upload `<?php ...` while declaring image/jpeg.
-function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
+export function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
   const bytes = new Uint8Array(buf, 0, Math.min(12, buf.byteLength))
   const isJpeg = bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF
   const isPng  = bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47

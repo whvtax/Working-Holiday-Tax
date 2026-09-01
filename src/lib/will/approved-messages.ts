@@ -12,9 +12,9 @@ export const APPROVED = {
   // question, which is what the state machine keys off.
   opening: `Hey! 😊 Of course, we'd be happy to help.
 
-We'll review your tax residency, Medicare situation and any deductions you can claim.
+We'll review your tax residency, Medicare status and any deductions you can claim.
 
-Did you only work on a TFN, or did you also earn income through an ABN?`,
+Which country are you from, and did you only work on a TFN or did you have any other income too, like ABN?`,
 
   // Reworded by Jo, 24 Aug, and already live in the Message Library. The source
   // is updated to match so a fresh seed or a new environment does not put the
@@ -164,7 +164,6 @@ I've emailed it to you for review and signature 📧`,
   estimate_invoice: `Your estimated tax refund is {{AMOUNT}} I'll send it for final review and then for your signature.
 
 Here is your invoice:
-
 {{INVOICE_LINK}}`,
 
   /** "Mark Lodged" button (Signature stage). The Google review ask was SPLIT out
@@ -228,11 +227,31 @@ export const REFUND_PHONE_PREFIXES = ['44', '49', '81'] as const;
 /** Conversation languages that map unambiguously to a refund nationality. */
 export const REFUND_CAVEAT_DROP_LANGS = ['de', 'ja'] as const;
 
-/** The customer stating their own country/nationality, in the languages we see.
- *  Deliberately requires a "from <place>" / "I am <nationality>" shape so a
- *  passing mention ("I worked for a UK company") does not trip it. */
-const REFUND_NATIONALITY_MENTION =
-  /\bfrom\s+(the\s+)?(uk|u\.k\.|england|scotland|wales|britain|great\s+britain|northern\s+ireland|germany|deutschland|japan|nihon)\b/i;
+/** A refund-nationality country named anywhere in the customer's own messages.
+ *  Will now asks "Which country are you from" in the opening, so the reply is the
+ *  country itself, often on its own ("Japan", "UK", "Germany"). Customers answer
+ *  in ANY language, so the country names for the UK, Germany and Japan are listed
+ *  across the languages Will handles (English, German, Japanese, Spanish, French,
+ *  Italian, Portuguese). The conversation-language and phone-prefix signals stay
+ *  as backups. Bare CJK names have no word boundary, so they sit outside \b. */
+const REFUND_COUNTRY = new RegExp(
+  '\\b(' + [
+    // United Kingdom (and its nations)
+    'uk', 'u\\.k\\.', 'united\\s+kingdom', 'great\\s+britain', 'britain',
+    'england', 'scotland', 'wales',
+    'gro(?:ß|ss)britannien', 'vereinigtes\\s+k(?:ö|oe)nigreich',
+    'royaume[-\\s]?uni', 'angleterre', 'grande[-\\s]?bretagne',
+    'reino\\s+unido', 'inglaterra', 'gran\\s+breta(?:ñ|n)a',
+    'regno\\s+unito', 'inghilterra',
+    // Germany
+    'germany', 'deutschland', 'allemagne', 'alemania', 'germania', 'alemanha',
+    // Japan
+    'japan', 'japon', 'jap(?:ó|o)n', 'giappone', 'jap(?:ã|a)o', 'nihon',
+  ].join('|') + ')\\b|日本|ドイツ|イギリス|英国',
+  'i',
+);
+/** A stated nationality ("I'm British/German/Japanese") that the country-word
+ *  list above does not cover. */
 const REFUND_NATIONALITY_SELF =
   /\bi'?m\s+(a\s+)?(british|english|scottish|welsh|german|japanese)\b|\bich\s+komme\s+aus\s+deutschland\b|\bich\s+bin\s+deutsche?r?\b|\b日本(から|人)\b/i;
 
@@ -251,7 +270,7 @@ export function shouldDropOwingCaveat(opts: {
   if (digits && REFUND_PHONE_PREFIXES.some((p) => digits.startsWith(p))) return true;
 
   const text = opts.text ?? '';
-  if (text && (REFUND_NATIONALITY_MENTION.test(text) || REFUND_NATIONALITY_SELF.test(text))) return true;
+  if (text && (REFUND_COUNTRY.test(text) || REFUND_NATIONALITY_SELF.test(text))) return true;
 
   return false;
 }

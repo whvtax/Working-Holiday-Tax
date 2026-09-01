@@ -255,12 +255,17 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     };
   }
 
-  // H5: a free-form reply in a language the deterministic guard cannot cover is
-  // never auto-sent. In Autopilot it is held for one-click human approval; in
-  // Approval mode it already awaits approval. State still advances on approval.
-  if (verdict.unguardedLanguage && resolveAiMode(mode) === 'FULL_AUTO') {
-    return { kind: 'pending_approval', replyText: text, newState, stateChanged: !!newState, decision };
-  }
+  // LANGUAGE NO LONGER HOLDS A GREEN REPLY (Jo, 1 Sep). A reply that passed the
+  // guard is a "green" reply and, on Autopilot, sends on its own whatever the
+  // language: English, German, Japanese, French, it makes no difference. This
+  // used to hold every non-English reply for approval, because the guard's
+  // lexical rules were English-only, so a clean foreign reply could not be
+  // verified. The guard's MONEY rules (a refund figure, a non-fixed price, a
+  // foreign-currency amount) are number/symbol based and already fire in every
+  // language, and the phrase rules (refund-the-fee / out-of-pocket promise,
+  // discounts) have been extended to the languages Will speaks, so a foreign
+  // reply is now genuinely checked rather than merely held. `unguardedLanguage`
+  // is still returned for the audit trail; it no longer gates the send.
 
   // FAIL SAFE: only the exact string 'FULL_AUTO' transmits. This used to read
   // `mode === 'SUPERVISED' ? 'pending_approval' : 'sent'`, which sent on every

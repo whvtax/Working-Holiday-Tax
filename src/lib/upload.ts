@@ -56,18 +56,26 @@ function matchesMagicBytes(bytes: Uint8Array, signature: { offset: number; bytes
   return true
 }
 
+// Check executable/script signatures at the very START of the file ONLY. The
+// magic-byte check below already proves the file IS a genuine image/PDF, and an
+// executable's signature only matters at offset 0.
+//
+// THE BUG THIS FIXES (Jo, 1 Sep). The old check scanned the whole buffer for
+// each pattern "anywhere", including "MZ" (two bytes, 0x4D 0x5A) and decoded the
+// first 512 bytes to text looking for "<script"/"javascript:". After a JPEG's
+// header the bytes are entropy-coded and effectively random, so those sequences
+// turn up by chance inside real photos, and legitimate bank statements and
+// selfies were rejected as "dangerous content". Uploads live in a PRIVATE bucket
+// and are never executed or served as HTML, so deeper bytes are harmless data.
 function containsDangerousPattern(bytes: Uint8Array): boolean {
   for (const pattern of DANGEROUS_PATTERNS) {
-    for (let i = 0; i <= bytes.length - pattern.length; i++) {
-      let match = true
-      for (let j = 0; j < pattern.length; j++) {
-        if (bytes[i + j] !== pattern[j]) { match = false; break }
-      }
-      if (match) return true
+    if (pattern.length > bytes.length) continue
+    let match = true
+    for (let j = 0; j < pattern.length; j++) {
+      if (bytes[j] !== pattern[j]) { match = false; break }
     }
+    if (match) return true
   }
-  const text = new TextDecoder('utf-8', { fatal: false }).decode(bytes.slice(0, 512)).toLowerCase()
-  if (text.includes('<script') || text.includes('<?php') || text.includes('javascript:')) return true
   return false
 }
 

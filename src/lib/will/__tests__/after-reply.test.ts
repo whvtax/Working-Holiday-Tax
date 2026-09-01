@@ -17,7 +17,7 @@
  * again. A stale badge is a nuisance; the same message arriving twice is not.
  */
 import { afterHumanReply } from '@/lib/will/after-reply';
-import type { Store, TaskRow } from '@/lib/will/store';
+import type { Store, TaskRow, MessageRow } from '@/lib/will/store';
 
 const task = (over: Partial<TaskRow>): TaskRow => ({
   id: 't1', customerId: 'c1', customerName: null, reason: 'r', severity: 'REVIEW',
@@ -25,11 +25,21 @@ const task = (over: Partial<TaskRow>): TaskRow => ({
   ...over,
 });
 
-function fakeStore(tasks: TaskRow[]) {
+const msg = (over: Partial<MessageRow>): MessageRow => ({
+  id: 'm1', customerId: 'c1', direction: 'OUT', author: 'AI', status: 'SENT',
+  body: 'x', createdAt: '2026-08-28T00:00:00.000Z', meta: {}, ...over,
+} as unknown as MessageRow);
+
+function fakeStore(tasks: TaskRow[], messages: MessageRow[] = []) {
   const markCustomerRead = jest.fn().mockResolvedValue(undefined);
   const resolveTask = jest.fn().mockResolvedValue(undefined);
   const listTasks = jest.fn().mockResolvedValue(tasks);
-  return { store: { markCustomerRead, resolveTask, listTasks } as unknown as Store, markCustomerRead, resolveTask, listTasks };
+  const listMessages = jest.fn().mockResolvedValue(messages);
+  const setMessageStatus = jest.fn().mockResolvedValue(undefined);
+  return {
+    store: { markCustomerRead, resolveTask, listTasks, listMessages, setMessageStatus } as unknown as Store,
+    markCustomerRead, resolveTask, listTasks, listMessages, setMessageStatus,
+  };
 }
 
 describe('answering somebody settles both views', () => {
@@ -66,6 +76,32 @@ describe('answering somebody settles both views', () => {
     const f = fakeStore([]);
     const r = await afterHumanReply(f.store, 'c1');
     expect(r.tasksResolved).toBe(0);
+  });
+});
+
+describe('it discards Will\'s stale drafts so the chat does not come back', () => {
+  it('discards a pending approval and a queued autopilot reply, nothing else', async () => {
+    // The owner has just answered in person. A draft awaiting approval and an
+    // autopilot reply still in its delay are now stale: leaving them is exactly
+    // why an already-handled chat reappeared under "Needs a decision".
+    const f = fakeStore([], [
+      msg({ id: 'pending', status: 'PENDING_APPROVAL' }),
+      msg({ id: 'queued', status: 'QUEUED' }),
+      msg({ id: 'alreadySent', status: 'SENT' }),
+      msg({ id: 'inbound', direction: 'IN', author: 'CUSTOMER', status: 'PENDING_APPROVAL' }),
+    ]);
+    await afterHumanReply(f.store, 'c1');
+    expect(f.setMessageStatus.mock.calls.map((c) => c[0]).sort()).toEqual(['pending', 'queued']);
+    expect(f.setMessageStatus).toHaveBeenCalledWith('pending', 'DISCARDED');
+    expect(f.setMessageStatus).toHaveBeenCalledWith('queued', 'DISCARDED');
+  });
+
+  it('still closes the task even if the draft cleanup throws', async () => {
+    const f = fakeStore([task({ id: 'a' })]);
+    (f.listMessages as jest.Mock).mockRejectedValue(new Error('db down'));
+    const r = await afterHumanReply(f.store, 'c1');
+    expect(r.tasksResolved).toBe(1);
+    expect(f.resolveTask).toHaveBeenCalledWith('a');
   });
 });
 

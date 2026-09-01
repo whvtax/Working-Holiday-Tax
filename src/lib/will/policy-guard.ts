@@ -352,7 +352,7 @@ const TAX_DETERMINATION: RegExp[] = [
   /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
 ];
 
-const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (deal|price|offer)|just for you[^.!?]{0,15}\d|one.time (deal|price|offer))/i;
+const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (deal|price|offer)|just for you[^.!?]{0,15}\d|one.time (deal|price|offer)|rabatt|nachlass|descuento|oferta especial|r[ée]duction|remise|rabais|sconto|desconto|割引|値引き)/i;
 // Blocks Will from unilaterally promising to refund the customer's PAYMENT or to
 // cancel. Precise on purpose: it must fire on transitive payment-refund promises
 // ("refund your payment", "refund you $220", "money back", "cancel") but NOT on
@@ -364,7 +364,13 @@ const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?b
 // the fee back). It is now banned from every message, so any improvised reply
 // that reaches for it is a refund promise. (Approved templates are exempt at the
 // call site, and the phrase was removed from all of them.)
-const OUT_OF_POCKET_PROMISE = /\bout of pocket\b/i;
+const OUT_OF_POCKET_PROMISE = /\bout of pocket\b|\baus eigener tasche\b|\bde (?:tu|su) bolsillo\b|\bde (?:ta|votre) poche\b|\bdi tasca (?:tua|propria)\b|\bdo (?:teu|seu) bolso\b|自己負担/i;
+// A promise to give the customer their money back / a full refund, in every
+// language Will speaks. The over-promise that has to be caught even when the
+// deterministic English phrases above do not (Jo, 1 Sep: all rules, every
+// language). The bare noun ("a refund", "reembolso", "Erstattung") is fine; only
+// a FULL / total money-back promise trips it. Approved templates are exempt.
+const MONEY_BACK_ML = /\b(?:money\s?back|full\s+refund)\b|\bgeld\s+zur(?:ü|ue)ck\b|\bvolle\s+(?:r[üue]ck)?erstattung\b|\bdinero\s+de\s+vuelta\b|\breembolso\s+(?:completo|total|íntegro|integro)\b|\bremboursement\s+(?:complet|total|int[ée]gral)\b|\brimborso\s+(?:completo|totale|integrale)\b|全額返金|返金します/i;
 const POST_PAYMENT_SALES = /(\bfee\b|\bprice\b|\bcost\b|\bdiscount\b|guarantee|out of pocket|cover the (gap|difference)|refund the difference)/i;
 const DIY_INSTRUCTIONS = /(do it yourself|lodge (it |your (tax )?return )?(yourself|on your own)|step[- ]by[- ]step|log ?in ?to mygov[^.!?]{0,40}(link|lodge|submit))/i;
 // myGov / ATO ACCESS (the team's single biggest problem): Will must never
@@ -570,7 +576,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     }
     if (DIY_INSTRUCTIONS.test(sentence)) violations.push('DIY_INSTRUCTIONS');
     if (paid && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
-    if (!ctx.isApprovedTemplate && (REFUND_PROMISE.test(sentence) || OUT_OF_POCKET_PROMISE.test(sentence))) violations.push('REFUND_OR_CANCEL_PROMISE');
+    if (!ctx.isApprovedTemplate && (REFUND_PROMISE.test(sentence) || OUT_OF_POCKET_PROMISE.test(sentence) || MONEY_BACK_ML.test(sentence))) violations.push('REFUND_OR_CANCEL_PROMISE');
 
     // H5: a non-approved sentence in a language the English patterns can't cover.
     if (isLikelyNonEnglish(sentence)) unguardedLanguage = true;
