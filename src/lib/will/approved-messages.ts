@@ -144,9 +144,7 @@ I've emailed it to you for review and signature 📧`,
     d7: `Hi {{1}}, your return is still waiting on your signature. Send it through when you can and we'll lodge it 😊`,
   },
 
-  lodged: `Your tax return has been lodged successfully! 🎉 Your refund should arrive in your bank account within 14 business days.
-
-If you have a minute, we'd really appreciate a Google review 🙏 {{REVIEW_LINK}}`,
+  lodged: `Your tax return has been lodged successfully! 🎉 Your refund should arrive in your bank account within 14 business days.`,
 
   legitimacy: `Yes, absolutely! We operate under the supervision of a registered tax agent. You can find more details here: https://workingholidaytax.com.au/client-agreement`,
 
@@ -169,17 +167,17 @@ Here is your invoice:
 
 {{INVOICE_LINK}}`,
 
-  /** "Mark Lodged" button (Signature stage). Fixed text, including the Google
-   *  review link, exactly as it was sent from the action handler. Kept separate
-   *  from `lodged` above, which is the older wording with a {{REVIEW_LINK}}
-   *  placeholder; both exist in the code, so both are in the Library. */
+  /** "Mark Lodged" button (Signature stage). The Google review ask was SPLIT out
+   *  of this message (Jo, 31 Aug): the lodgement note is now just the good news,
+   *  and the review request is a separate, warmer message sent an hour later (see
+   *  `review_request` below and the REVIEW_REQUEST job). */
   lodged_confirmation: `Your tax return has been lodged successfully! ✅
 
-Your refund should arrive in your bank account within 14 business days.
+Your refund should arrive in your bank account within 14 business days.`,
 
-If you have a moment, we'd really appreciate a Google review 🙏
-
-https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8?g_st=ic`,
+  // The Google review request (sent 1 hour after lodgement) is per-language and
+  // lives in i18n.ts (REVIEW_REQUEST_MSG), seeded as review_request_<lang>, the
+  // same shape as the questionnaire-received confirmation.
 
   /** The proposed replies attached to a handoff task (see suggest.ts). They are
    *  drafts for a human, but "Send Reply" transmits them verbatim in one click,

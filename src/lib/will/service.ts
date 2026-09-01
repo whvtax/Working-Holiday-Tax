@@ -165,10 +165,17 @@ async function handleIncomingInner(
 
   // Remember the customer's language (used for deterministic auto-messages like
   // the "questionnaire received" confirmation; the live path already replies natively).
+  // LOCK the conversation language, and only ever change it on a CONFIDENT read.
+  // The old code set the language on ANY keyword hit, so one stray foreign word
+  // ("dove", "para") flipped an English chat to Spanish, and every reply then
+  // followed the wrong stored language. Now: a confident reading establishes the
+  // language the first time and can switch it only when the customer clearly
+  // writes in another language (a confident English message reclaims a chat that
+  // had drifted). An ambiguous message never touches it.
   const detected = opts?.alreadyStored ? null : detectLanguage(text);
-  if (detected && customer.lang !== detected) {
-    await store.updateCustomer(customer.id, { lang: detected });
-    customer = { ...customer, lang: detected };
+  if (detected?.lang && detected.confident && detected.lang !== customer.lang) {
+    await store.updateCustomer(customer.id, { lang: detected.lang });
+    customer = { ...customer, lang: detected.lang };
   }
 
   // Opt-out: mark, cancel everything, discard pending drafts, stay silent forever.

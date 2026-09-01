@@ -64,6 +64,21 @@ const COPY = {
     nonNdaResult: 'Based on your answers, you may be an Australian tax resident, but the $18,200 tax-free threshold does not apply. You may still be entitled to the Low Income Tax Offset of up to $700.',
       sessionLost: 'Your session timed out, so your details need entering again. Nothing was sent.',
     sessionLostCta: 'Back to the form',
+    warn: {
+      title: 'Please read this carefully',
+      leadPre: 'Based on your answers, you are ',
+      leadEmph: 'not',
+      leadPost: ' considered an Australian resident for tax purposes.',
+      meansLabel: 'This means',
+      b1: 'The tax-free threshold does not apply, so the first $18,200 of your income is not tax-free.',
+      b2: 'You are not entitled to the Low Income Tax Offset of up to $700.',
+      notePre: 'Your tax residency status is ',
+      noteEmph: 'completely separate',
+      notePost: ' from your immigration (visa) status.',
+      read: 'Please make sure you have read and understood every question, and answered only for the tax year you are lodging.',
+      btnReview: 'Review my answers',
+      btnConfirm: 'I understand, this is correct',
+    },
   },
   de: {
     titleLead: 'Bestätigen wir deine ',
@@ -100,6 +115,21 @@ const COPY = {
     nonNdaResult: 'Basierend auf deinen Antworten bist du möglicherweise australischer Steuerresident, aber der steuerfreie Betrag von $18.200 gilt nicht. Möglicherweise hast du trotzdem Anspruch auf den Low Income Tax Offset von bis zu $700.',
       sessionLost: 'Deine Sitzung ist abgelaufen, deine Angaben müssen noch einmal eingegeben werden. Es wurde nichts gesendet.',
     sessionLostCta: 'Zurück zum Formular',
+    warn: {
+      title: 'Bitte lies das aufmerksam',
+      leadPre: 'Basierend auf deinen Antworten giltst du steuerlich ',
+      leadEmph: 'nicht',
+      leadPost: ' als australischer Steuerresident.',
+      meansLabel: 'Das bedeutet',
+      b1: 'Der steuerfreie Betrag gilt nicht, die ersten $18.200 deines Einkommens sind nicht steuerfrei.',
+      b2: 'Du hast keinen Anspruch auf den Low Income Tax Offset von bis zu $700.',
+      notePre: 'Deine Steuerresidenz ist ',
+      noteEmph: 'völlig getrennt',
+      notePost: ' von deinem Aufenthalts- bzw. Visastatus.',
+      read: 'Bitte stelle sicher, dass du jede Frage gelesen und verstanden hast und nur für das Steuerjahr antwortest, das du einreichst.',
+      btnReview: 'Antworten überprüfen',
+      btnConfirm: 'Ich verstehe, das ist korrekt',
+    },
   },
   ja: {
     titleLead: '',
@@ -136,6 +166,21 @@ const COPY = {
     nonNdaResult: 'ご回答に基づくと、あなたはオーストラリア税務居住者である可能性がありますが、$18,200の非課税枠は適用されません。低所得者税額控除（Low Income Tax Offset）として最大$700を受けられる可能性があります。',
       sessionLost: 'セッションの有効期限が切れたため、もう一度ご入力をお願いします。送信はされていません。',
     sessionLostCta: 'フォームに戻る',
+    warn: {
+      title: '重要：必ずお読みください',
+      leadPre: 'ご回答に基づくと、あなたはオーストラリアの税務居住者には',
+      leadEmph: '該当しません',
+      leadPost: '。',
+      meansLabel: 'これは次を意味します',
+      b1: '非課税枠は適用されず、所得の最初の$18,200は非課税になりません。',
+      b2: '最大$700の低所得者税額控除（Low Income Tax Offset）を受けられません。',
+      notePre: '税務上の居住区分は、在留資格（ビザ）とは',
+      noteEmph: 'まったく別のもの',
+      notePost: 'です。',
+      read: '各質問をよく読んで理解し、申告する税務年度についてのみお答えください。',
+      btnReview: '回答を確認する',
+      btnConfirm: '理解しました、これで正しいです',
+    },
   },
 } as const
 
@@ -174,6 +219,16 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
   const setAnswer = (i: number, val: 'yes' | 'no') =>
     setAnswers((prev) => { const next = [...prev]; next[i] = val; return next })
 
+  // One-time blocking warning when the answers come out "Working Holiday Maker"
+  // (not an Australian tax resident). Jo, 31 Aug: too many clients tick their way
+  // to non-residency without reading the questions, losing the $18,200 tax-free
+  // threshold and the $700 offset, so before they move on they must see, ONCE,
+  // exactly what that means. Shown a single time per session (warnShownRef): if
+  // they edit their answers afterwards it never nags them again.
+  const [warnOpen, setWarnOpen] = useState(false)
+  const warnShownRef = useRef(false)
+  const quizRef = useRef<HTMLDivElement>(null)
+
   // When the last question is answered, glide down to the result + submit so the
   // client never has to hunt for what comes next (the finish line, where people
   // otherwise drop off). Fires once, on the false -> true transition.
@@ -181,6 +236,15 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
   useEffect(() => {
     if (allAnswered) resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, [allAnswered])
+
+  // Fire the one-time WHM warning the moment all questions are answered and the
+  // result is "not a tax resident". Once only, whatever they do afterwards.
+  useEffect(() => {
+    if (allAnswered && autoStatus === 'whm' && !warnShownRef.current) {
+      warnShownRef.current = true
+      setWarnOpen(true)
+    }
+  }, [allAnswered, autoStatus])
 
   return (
     <div className="resstep-wrap">
@@ -218,7 +282,7 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
 
           {/* Flowing list: no numbers, a Yes/No toggle on the right, thin
               separators. Answering pre-selects the declaration below. */}
-          <div className="resstep-quiz">
+          <div className="resstep-quiz" ref={quizRef}>
             {c.questions.map((q, i) => (
               <div key={i} className="resq">
                 <span className="resq-text">{q}</span>
@@ -281,6 +345,37 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
           )}
         </div>
       </div>
+
+      {warnOpen && (
+        <div className="reswarn-overlay" role="dialog" aria-modal="true" aria-labelledby="reswarn-title">
+          <div className="reswarn-modal">
+            <div className="reswarn-top">
+              <div className="reswarn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              </div>
+              <h2 id="reswarn-title" className="reswarn-title">{c.warn.title}</h2>
+            </div>
+            <div className="reswarn-body">
+              <p className="reswarn-lead">{c.warn.leadPre}<strong>{c.warn.leadEmph}</strong>{c.warn.leadPost}</p>
+              <p className="reswarn-means-label">{c.warn.meansLabel}</p>
+              <ul className="reswarn-means">
+                <li><span className="reswarn-x" aria-hidden="true">✕</span><span>{c.warn.b1}</span></li>
+                <li><span className="reswarn-x" aria-hidden="true">✕</span><span>{c.warn.b2}</span></li>
+              </ul>
+              <div className="reswarn-note"><p>{c.warn.notePre}<strong>{c.warn.noteEmph}</strong>{c.warn.notePost}</p></div>
+              <p className="reswarn-read">{c.warn.read}</p>
+              <div className="reswarn-btns">
+                <button type="button" className="reswarn-btn reswarn-btn-primary" onClick={() => { setWarnOpen(false); quizRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }}>{c.warn.btnReview}</button>
+                <button type="button" className="reswarn-btn reswarn-btn-ghost" onClick={() => { setWarnOpen(false); resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }) }}>{c.warn.btnConfirm}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -358,4 +453,31 @@ const styles = `
     .resstep-intro { font-size: 13px; }
     .resstep-why-body, .resstep-cond-text, .resstep-note { font-size: 13px; }
   }
+
+  /* --- One-time blocking residency warning (Jo, 31 Aug) --- */
+  .reswarn-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(8,15,13,.62); display: flex; align-items: center; justify-content: center; padding: 18px; }
+  .reswarn-modal { width: 100%; max-width: 390px; max-height: calc(100dvh - 36px); overflow-y: auto; background: #fff; border-radius: 22px; box-shadow: 0 18px 60px rgba(0,0,0,.35); animation: reswarnPop .28s ease both; }
+  @keyframes reswarnPop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+  .reswarn-top { background: #FFF8EC; border-bottom: 1px solid #F0D9A8; padding: 18px 20px 14px; text-align: center; }
+  .reswarn-icon { width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1.5px solid #F0D9A8; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; }
+  .reswarn-icon svg { width: 24px; height: 24px; color: #7A5A16; }
+  .reswarn-title { font-size: 16px; font-weight: 800; color: #080F0D; margin: 0; letter-spacing: -.01em; }
+  .reswarn-body { padding: 16px 20px 20px; }
+  .reswarn-lead { font-size: 13.5px; color: #1A2822; line-height: 1.55; margin: 0 0 12px; }
+  .reswarn-lead strong { color: #B23B2E; font-weight: 800; }
+  .reswarn-means-label { font-size: 12px; font-weight: 700; color: #587066; text-transform: uppercase; letter-spacing: .4px; margin: 0 0 8px; }
+  .reswarn-means { list-style: none; margin: 0 0 14px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .reswarn-means li { display: flex; gap: 10px; align-items: flex-start; background: #FBEDEB; border: 1px solid #F0C9C3; border-radius: 11px; padding: 10px 12px; }
+  .reswarn-x { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; background: #B23B2E; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+  .reswarn-means span { font-size: 12.5px; color: #1A2822; line-height: 1.5; }
+  .reswarn-note { background: #EAF6F1; border: 1.5px solid #C8EAE0; border-radius: 12px; padding: 11px 13px; margin: 0 0 10px; }
+  .reswarn-note p { margin: 0; font-size: 12.5px; color: #1A2822; line-height: 1.55; }
+  .reswarn-note strong { color: #0B5240; font-weight: 800; }
+  .reswarn-read { font-size: 12.5px; color: #587066; line-height: 1.55; margin: 0 0 16px; }
+  .reswarn-btns { display: flex; flex-direction: column; gap: 9px; }
+  .reswarn-btn { width: 100%; min-height: 48px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; font-family: inherit; border: none; }
+  .reswarn-btn-primary { background: #0B5240; color: #fff; }
+  .reswarn-btn-ghost { background: #fff; color: #587066; border: 1.5px solid #D9E7E1; font-weight: 700; }
+  .reswarn-btn:active { transform: scale(.99); }
+  @media (prefers-reduced-motion: reduce) { .reswarn-modal { animation: none; } .reswarn-btn:active { transform: none; } }
 `

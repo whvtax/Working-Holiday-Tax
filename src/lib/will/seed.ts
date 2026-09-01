@@ -13,7 +13,7 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { FORM_RECEIVED_MSG, formReceivedTemplateKey, Lang } from './i18n';
+import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, Lang } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -95,7 +95,7 @@ export function seedTemplates(): TemplateRow[] {
     t('medicare', 'Post-payment & Service', 'Medicare exemption guide', APPROVED.medicare_exemption),
     t('estimate', 'Post-payment & Service', 'Estimate ready', APPROVED.estimate_ready),
     t('signature', 'Post-payment & Service', 'Ready for signature', APPROVED.signature_ready),
-    t('lodged', 'Post-payment & Service', 'Lodged + Google review', APPROVED.lodged),
+    t('lodged', 'Post-payment & Service', 'Lodged confirmation (older wording)', APPROVED.lodged),
     t('legitimacy', 'FAQ · Operational', 'Is this legit / registered?', APPROVED.legitimacy),
 
     // ── Previously code-only. Same text, now editable. ──
@@ -104,6 +104,11 @@ export function seedTemplates(): TemplateRow[] {
     t('estimate_invoice', 'Post-payment & Service', 'Estimate + invoice ("Send Estimate" button)', APPROVED.estimate_invoice),
     // Sent by the "Mark Lodged" button.
     t('lodged_confirmation', 'Post-payment & Service', 'Lodged confirmation ("Mark Lodged" button)', APPROVED.lodged_confirmation),
+    // The Google review request, sent 1 hour after lodgement by the REVIEW_REQUEST
+    // job, one entry per language (the scheduler picks the customer's language and
+    // falls back to English), same shape as the questionnaire confirmation.
+    ...(Object.keys(REVIEW_REQUEST_MSG) as Lang[]).map((lang) =>
+      t(reviewRequestTemplateKey(lang), 'Post-payment & Service', `Google review request (1h after lodged) · ${LANG_LABELS[lang]}`, REVIEW_REQUEST_MSG[lang])),
 
     // The questionnaire-received confirmation, one entry per language the
     // scheduler can send it in. Will picks the row matching the customer's
@@ -129,7 +134,7 @@ const LANG_LABELS: Record<Lang, string> = {
 
 /** Bumped whenever seedTemplates() gains an entry that existing installs need.
  *  Stored under the `templates_backfill` setting once applied. */
-export const TEMPLATE_BACKFILL_VERSION = '2026-08-26-library-coverage';
+export const TEMPLATE_BACKFILL_VERSION = '2026-08-31-review-request';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

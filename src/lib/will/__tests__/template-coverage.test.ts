@@ -20,7 +20,7 @@
  */
 import { seedTemplates, backfillMissingTemplates } from '@/lib/will/seed';
 import { APPROVED } from '@/lib/will/approved-messages';
-import { FORM_RECEIVED_MSG, formReceivedTemplateKey, Lang } from '@/lib/will/i18n';
+import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, Lang } from '@/lib/will/i18n';
 import { policyGuard } from '@/lib/will/policy-guard';
 import type { TemplateRow } from '@/lib/will/store';
 
@@ -53,6 +53,17 @@ describe('every sendable message is in the Message Library', () => {
       const row = templates.find((t) => t.key === key);
       expect(row).toBeDefined();
       expect(row!.body).toBe(FORM_RECEIVED_MSG[lang]);
+    },
+  );
+
+  it.each(Object.keys(REVIEW_REQUEST_MSG) as Lang[])(
+    'the Google review request is seeded for %s',
+    (lang) => {
+      const row = templates.find((t) => t.key === reviewRequestTemplateKey(lang));
+      expect(row).toBeDefined();
+      expect(row!.body).toBe(REVIEW_REQUEST_MSG[lang]);
+      // The split (Jo, 31 Aug): no full stop before the praying-hands emoji.
+      expect(row!.body).not.toMatch(/\.\s*🙏/);
     },
   );
 

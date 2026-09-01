@@ -13,7 +13,7 @@ import { APPROVED } from './approved-messages';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { formReceivedMessage, formReceivedTemplateKey } from './i18n';
+import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey } from './i18n';
 import { deliverOut, sendWhatsAppText } from './channel';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
@@ -418,6 +418,36 @@ async function doProcess(): Promise<TickResult> {
           }
           await store.audit('system', 'form_received_confirmed', { customerId: customer.id });
           result.sent.push(`${customer.name ?? customer.waId} · questionnaire received`);
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
+      // REVIEW_REQUEST: 1 hour after a customer is marked lodged, ask for a
+      // Google review as its OWN warmer message (Jo, 31 Aug). The lodgement note
+      // no longer carries the ask; this does, once, a little after the good news
+      // has landed. Skip anyone who opted out or is a legacy import, and only
+      // send to someone still in the done stage (signed/lodged/completed).
+      if (job.kind === 'REVIEW_REQUEST') {
+        if (!customer.optedOut && !customer.isLegacy
+          && ['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state)) {
+          let body: string | null = null;
+          try {
+            const key = reviewRequestTemplateKey(customer.lang);
+            const t = (await store.listTemplates()).find((x) => x.key === key);
+            body = t && t.body.trim() ? t.body : null;
+          } catch { /* the Library is a bonus; the constant is the fallback */ }
+          body = body ?? reviewRequestMessage(customer.lang);
+          if (await inApprovalMode()) {
+            await store.addMessage({
+              customerId: customer.id, direction: 'OUT', author: 'AI',
+              status: 'PENDING_APPROVAL', body, meta: {},
+            });
+          } else {
+            await deliverOut(customer, body, 'AI');
+          }
+          await store.audit('system', 'review_request_sent', { customerId: customer.id });
+          result.sent.push(`${customer.name ?? customer.waId} · review request`);
         }
         await store.setJobStatus(job.id, 'DONE');
         continue;

@@ -702,6 +702,13 @@ async function handlePost(req: Request) {
       // Will is never auto-paused (Jo, 31 Aug): the lodged note goes out but
       // Will stays active on the chat.
       await store.setState(customer.id, 'LODGED', 'HUMAN');
+      // Ask for a Google review 1 hour later, as its own warmer message (Jo, 31
+      // Aug): the lodgement note no longer carries the ask; the REVIEW_REQUEST
+      // job sends it once, a little after the good news lands.
+      await store.addJob({
+        customerId: customer.id, kind: 'REVIEW_REQUEST', payload: {},
+        runAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+      }).catch(() => { /* never let the review nudge block marking lodged */ });
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
       await afterHumanReply(store, customer.id);
