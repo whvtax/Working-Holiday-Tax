@@ -371,6 +371,22 @@ const OUT_OF_POCKET_PROMISE = /\bout of pocket\b|\baus eigener tasche\b|\bde (?:
 // language). The bare noun ("a refund", "reembolso", "Erstattung") is fine; only
 // a FULL / total money-back promise trips it. Approved templates are exempt.
 const MONEY_BACK_ML = /\b(?:money\s?back|full\s+refund)\b|\bgeld\s+zur(?:ü|ue)ck\b|\bvolle\s+(?:r[üue]ck)?erstattung\b|\bdinero\s+de\s+vuelta\b|\breembolso\s+(?:completo|total|íntegro|integro)\b|\bremboursement\s+(?:complet|total|int[ée]gral)\b|\brimborso\s+(?:completo|totale|integrale)\b|全額返金|返金します/i;
+// A refund FIGURE stated as a bare number (no $ / currency word) next to a
+// refund noun IN ANOTHER LANGUAGE. The currency-marked figures and the English
+// "refund … <number>" case are already caught above (amountsInCents +
+// TAX_DETERMINATION); this closes the one gap the audit found (Jo, 1 Sep):
+// "Deine Erstattung beträgt 3800" in a non-English reply that now auto-sends.
+// Only foreign refund nouns are listed here, so it adds no English false
+// positives. Fixed prices and any year are excluded.
+const REFUND_NOUN_ML =
+  'erstattung|r[üu]ckerstattung|rueckerstattung|steuerr[üu]ckerstattung|reembolso|devoluci[óo]n|devolu[çc][ãa]o|remboursement|rimborso|restituzione|restitui[çc][ãa]o';
+const REFUND_FIGURE_ML = new RegExp(
+  '(?:' + REFUND_NOUN_ML + ')\\b[^.!?]{0,25}\\b(?!220\\b|385\\b|110\\b|19\\d\\d\\b|20\\d\\d\\b)\\d{3,6}\\b'
+  + '|\\b(?!220\\b|385\\b|110\\b|19\\d\\d\\b|20\\d\\d\\b)\\d{3,6}\\b[^.!?]{0,25}\\b(?:' + REFUND_NOUN_ML + ')',
+  'i',
+);
+// Japanese: 還付 / 返金 next to a (half- or full-width) 3-6 digit number.
+const REFUND_FIGURE_JA = /[還付返金][^。！？!?]{0,15}[0-9０-９]{3,6}|[0-9０-９]{3,6}[^。！？!?]{0,15}[還付返金]/;
 const POST_PAYMENT_SALES = /(\bfee\b|\bprice\b|\bcost\b|\bdiscount\b|guarantee|out of pocket|cover the (gap|difference)|refund the difference)/i;
 const DIY_INSTRUCTIONS = /(do it yourself|lodge (it |your (tax )?return )?(yourself|on your own)|step[- ]by[- ]step|log ?in ?to mygov[^.!?]{0,40}(link|lodge|submit))/i;
 // myGov / ATO ACCESS (the team's single biggest problem): Will must never
@@ -556,6 +572,14 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
       if (!allowedCents.has(cents) && !(paid && isBenignThreshold(cents, sentence))) {
         violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
       }
+    }
+    // A bare-number refund figure in a foreign sentence with NO currency token
+    // (e.g. German "Deine Erstattung beträgt 3800", Japanese "還付は3800です").
+    // amountsInCents only sees currency-marked figures, so it misses these; this
+    // catches a refund noun sitting next to a 3-6 digit number, minus the fixed
+    // prices and 19xx/20xx years. Matters now that green foreign replies auto-send.
+    if (!ctx.isApprovedTemplate && (REFUND_FIGURE_ML.test(sentence) || REFUND_FIGURE_JA.test(sentence))) {
+      violations.push('FORBIDDEN_AMOUNT:foreign-refund-figure');
     }
     if (PRICE_NEGOTIATION.test(sentence)) violations.push('PRICE_NEGOTIATION');
 
