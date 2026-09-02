@@ -137,11 +137,11 @@ describe('when WhatsApp rejects the confirmation', () => {
     expect(setState.mock.calls.some((c) => c[1] === 'PAID')).toBe(true);
   });
 
-  it('keeps the ordinary wording when the send succeeded', async () => {
+  it('raises NO task when the payment confirmed and the customer was told', async () => {
+    // Jo, 2 Sep: "why would they lie to me?" A clean auto-confirmed payment
+    // moves the stage and sends the confirmation; there is nothing for a person
+    // to do, so Will raises no glance task at all.
     await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    const task = addTask.mock.calls[0][0];
-    expect(task.reason).toContain('Worth a glance');
-    expect(task.severity).toBe('REVIEW');
-    expect(task.suggestedReply).toBeNull();
+    expect(addTask).not.toHaveBeenCalled();
   });
 });

@@ -84,8 +84,8 @@ describe('every sendable message is in the Message Library', () => {
 
   it('keeps the placeholders of an interpolated message intact', () => {
     const estimate = templates.find((t) => t.key === 'estimate_invoice')!;
-    expect(estimate.body).toContain('{{AMOUNT}}');
-    expect(estimate.body).toContain('{{INVOICE_LINK}}');
+    expect(estimate.body).toContain('{{OUTCOME_AMOUNT}}');
+    expect(estimate.body).toContain('{{LODGEMENT_FEE}}');
     // The follow-ups are personalised with the customer's first name as {{1}},
     // which is the parameter name Meta uses for an approved template.
     for (const key of ['fu_pre_24h', 'fu_form_6h', 'fu_sig_24h']) {

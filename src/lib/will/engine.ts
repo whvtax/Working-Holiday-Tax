@@ -76,8 +76,9 @@ const CUSTOMER_ASKED_PAYMENT_RE = /\b(bank|bsb|account|pay|payment|transfer|depo
 // is told this in the playbook (so it asks the income question instead of
 // guessing); this is the deterministic backstop for when it quotes anyway.
 // ============================================================
-// The two fixed prices, as they actually appear in a message.
-const FIXED_PRICE_QUOTE_RE = /\$\s?220\b|\$\s?385\b/;
+// A price quote, as it appears in a message. The two-step assessment message
+// leads on $110 and shows the $220/$385 all-up totals (Jo, 2 Sep).
+const FIXED_PRICE_QUOTE_RE = /\$\s?110\b|\$\s?220\b|\$\s?275\b|\$\s?385\b/;
 // Has the CUSTOMER themselves named their income type? A bare "TFN" or "ABN" (or
 // an obvious self-employment word) counts — we only need to know they told us
 // which, not to parse it perfectly. If neither appears anywhere in what they

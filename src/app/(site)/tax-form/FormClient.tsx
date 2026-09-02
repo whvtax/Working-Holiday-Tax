@@ -436,6 +436,9 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (declared === 'no')    e.declared       = 'You must agree to submit'
     if (!howHeard.trim())     e.howHeard       = T('required')
     if (!hasExpenses)         e.hasExpenses    = T('required')
+    // If they said they HAVE work expenses, the receipts are mandatory: no
+    // moving on to the residency page until at least one is attached (Jo, 2 Sep).
+    if (hasExpenses === 'yes' && invoices.files.length === 0) e.invoices = T('invoicesRequired')
     return e
   }
 
@@ -470,7 +473,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
   /* ── Success screen ── */
   if (submitted) {
-    const firstName = fullName.split(' ')[0]
+    const firstName = fullName.trim().split(/\s+/)[0] || ''
     // The prefilled WhatsApp message from the success screen.
     //
     // It used to say "I'd like to check my eligibility", which is where the
@@ -491,7 +494,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h1 className="success-title">{T('thankYou')}, {firstName}! 🎉</h1>
+          <h1 className="success-title">{T('thankYou')}{firstName ? `, ${firstName}` : ''}! 🎉</h1>
           <p className="success-body">{T('successNextLead')}</p>
 
           {/* "What happens next": three plain steps so the customer knows the
@@ -742,13 +745,13 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 Optional on purpose. Nothing here can fail the submission. */}
             {hasExpenses === 'yes' && (
               <div style={{ marginTop: 10 }}>
-                <Field label={T('invoicesLabel')} hint={T('invoicesHint')}>
+                <Field label={T('invoicesLabel')} hint={T('invoicesHint')} required error={errors.invoices}>
                   <MultiFileUpload
                     id="invoices"
                     label={T('uploadInvoices')}
                     accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
                     value={invoices}
-                    onChange={setInvoices}
+                    onChange={(v) => { setInvoices(v); setErrors(p => ({ ...p, invoices: '' })) }}
                     maxFiles={MAX_INVOICES}
                   />
                 </Field>

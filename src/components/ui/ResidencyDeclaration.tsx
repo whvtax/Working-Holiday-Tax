@@ -140,7 +140,9 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
       (done, total) => { if (total > 1) setProgress({ done, total }) },
     )
     if (res.ok) {
-      const firstName = handoff.payload.fullName.split(' ')[0] || ''
+      // Trim first: a leading space (autofill/paste) made "  Sarah".split(' ')[0]
+      // return "", which showed as "Thank you, !" on the success screen (Jo, 2 Sep).
+      const firstName = handoff.payload.fullName.trim().split(/\s+/)[0] || ''
       markTaxFormSubmitted(firstName)
       if (onSubmitted) onSubmitted(firstName)
       else router.push(handoff.formUrl)

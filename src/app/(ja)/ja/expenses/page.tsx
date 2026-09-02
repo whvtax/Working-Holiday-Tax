@@ -66,7 +66,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "自分の職種で控
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
   "ctaSub": "約1時間で返信します。",
-  "guaranteeHeading": "還付金が当社の料金を下回った場合は、差額を返金します。当社のサービスでお客様が損をすることはありません。",
+  "guaranteeHeading": "まず税務アセスメントから始め、お客様の状況全体を確認して見込みの税額結果をお伝えします。そのため、申告に進むかどうかを決める前に、ご自身の状況を正確に把握できます。",
   "guaranteeBody": "ワーキングホリデーの税金だけを専門にしています。申告書は、ATOへ提出する前に登録税理士が確認して承認します。",
   "faqHeading": "よくある質問",
   "guidesHeading": "次に読むと役に立つガイド",

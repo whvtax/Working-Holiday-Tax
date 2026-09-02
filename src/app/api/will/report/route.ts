@@ -60,7 +60,7 @@ export async function GET() {
     insights.push({
       problem: `${closed.length} customers closed; ${coldAfterPrice} went cold right after seeing the price`,
       evidence: 'Tracked from state history (previous stage before closing)',
-      solution: 'A/B test the day-3 follow-up wording in the Library, and consider a softer price framing that leads with the guarantee before the number.',
+      solution: 'A/B test the day-3 follow-up wording in the Library, and consider a softer price framing that leads with the low-risk $110 assessment (they see their full outcome before committing to lodge) before the number.',
     });
   }
   if (stuck.length > 0) {

@@ -60,10 +60,12 @@ export function seedTemplates(): TemplateRow[] {
   const o = APPROVED.objections;
   return [
     t('opening', 'Opening & Qualification', 'Opening message', APPROVED.opening),
-    t('price_tfn', 'Pricing', 'Price: TFN only ($220)', APPROVED.price_tfn),
-    t('price_tfn_abn', 'Pricing', 'Price: TFN + ABN ($385)', APPROVED.price_tfn_abn),
-    t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($220, no guarantee)', APPROVED.price_tfn_review),
-    t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($385, no guarantee)', APPROVED.price_tfn_abn_review),
+    t('price_tfn', 'Pricing', 'Price: TFN, two-step ($110 assessment + $110, $220 all up)', APPROVED.price_tfn),
+    t('price_tfn_abn', 'Pricing', 'Price: TFN + ABN, two-step ($110 assessment + $275, $385 all up)', APPROVED.price_tfn_abn),
+    t('payment_details', 'Pricing', 'Assessment bank details (sent once they agree)', APPROVED.payment_details),
+    t('lodgement_details', 'Pricing', 'Lodgement bank details (sent once they agree to lodge)', APPROVED.lodgement_details),
+    t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($220, non-refundable)', APPROVED.price_tfn_review),
+    t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($385, non-refundable)', APPROVED.price_tfn_abn_review),
     t('obj_1', 'Objections', '#1 Refund amount before paying', o.o1_refund_before_pay),
     t('obj_2', 'Objections', '#2 Why pay before knowing', o.o2_why_pay_first),
     t('obj_3', 'Objections', '#3 Thought the check was free', o.o3_thought_free),
@@ -85,6 +87,9 @@ export function seedTemplates(): TemplateRow[] {
     t('fu_form_6h', 'Follow-ups', 'Form · 6h', APPROVED.followups_form.h6, true),
     t('fu_form_3d', 'Follow-ups', 'Form · 3d', APPROVED.followups_form.d3, true),
     t('fu_form_7d', 'Follow-ups', 'Form · 7d', APPROVED.followups_form.d7, true),
+    t('fu_lodge_24h', 'Follow-ups', 'Lodgement payment · 24h', APPROVED.followups_lodgement.h24, true),
+    t('fu_lodge_3d', 'Follow-ups', 'Lodgement payment · 3d', APPROVED.followups_lodgement.d3, true),
+    t('fu_lodge_7d', 'Follow-ups', 'Lodgement payment · 7d', APPROVED.followups_lodgement.d7, true),
     t('fu_sig_24h', 'Follow-ups', 'Signature · 24h', APPROVED.followups_signature.h24, true),
     t('fu_sig_3d', 'Follow-ups', 'Signature · 3d', APPROVED.followups_signature.d3, true),
     t('fu_sig_7d', 'Follow-ups', 'Signature · 7d', APPROVED.followups_signature.d7, true),
@@ -99,9 +104,11 @@ export function seedTemplates(): TemplateRow[] {
     t('legitimacy', 'FAQ · Operational', 'Is this legit / registered?', APPROVED.legitimacy),
 
     // ── Previously code-only. Same text, now editable. ──
-    // Sent by the "Send Estimate + Invoice" button. {{AMOUNT}} and
-    // {{INVOICE_LINK}} are filled from what the team types in that dialog.
-    t('estimate_invoice', 'Post-payment & Service', 'Estimate + invoice ("Send Estimate" button)', APPROVED.estimate_invoice),
+    // Sent by the "Send Result + Request Lodgement Payment" button. Every
+    // placeholder is filled from the estimate composer the team completes.
+    t('estimate_invoice', 'Post-payment & Service', 'Result + lodgement request ("Send Result" button)', APPROVED.estimate_invoice),
+    // Sent automatically when the second (lodgement) payment is detected.
+    t('lodgement_received', 'Post-payment & Service', 'Lodgement payment received (auto)', APPROVED.lodgement_received),
     // Sent by the "Mark Lodged" button.
     t('lodged_confirmation', 'Post-payment & Service', 'Lodged confirmation ("Mark Lodged" button)', APPROVED.lodged_confirmation),
     // The Google review request, sent 1 hour after lodgement by the REVIEW_REQUEST
@@ -134,7 +141,7 @@ const LANG_LABELS: Record<Lang, string> = {
 
 /** Bumped whenever seedTemplates() gains an entry that existing installs need.
  *  Stored under the `templates_backfill` setting once applied. */
-export const TEMPLATE_BACKFILL_VERSION = '2026-08-31-review-request';
+export const TEMPLATE_BACKFILL_VERSION = '2026-09-02-two-step';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

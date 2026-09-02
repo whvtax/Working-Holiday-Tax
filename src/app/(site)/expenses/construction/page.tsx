@@ -66,7 +66,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Construction and site
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service.",
+  "guaranteeHeading": "We start with a Tax Assessment that reviews your full situation and shows you your estimated outcome, so you know exactly where you stand before deciding whether to go ahead and lodge.",
   "guaranteeBody": "Site returns, ticket renewals and the ute argument are a weekly job here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",

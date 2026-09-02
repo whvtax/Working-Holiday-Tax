@@ -25,25 +25,27 @@ import type { CustomerState } from './state-machine';
  * one more press of the same button, not a stage rolled backwards by hand.
  */
 export const ESTIMATE_SENDABLE_STATES: CustomerState[] = [
-  'FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW',
-  'SIGNATURE_PENDING', 'SIGNED',
+  'FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'LODGEMENT_PENDING',
+  'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED',
 ];
 
-/** States where sending again is a correction, so the stage must not move. */
-const ALREADY_THERE: CustomerState[] = ['SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED'];
+/** States where sending again is a correction, so the stage must not move
+ *  backwards (they have already paid the lodgement fee or moved past it). */
+const ALREADY_THERE: CustomerState[] = ['FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED'];
 
 export function canSendEstimate(state: string | null | undefined): boolean {
   return !!state && (ESTIMATE_SENDABLE_STATES as string[]).includes(state);
 }
 
 /**
- * Where the customer sits once the estimate has gone.
- *
- * Null means "leave them exactly where they are", which is the answer for
- * anyone already at Signature or past it.
+ * Where the customer sits once the result + lodgement invoice has gone (Jo,
+ * 2 Sep, two-step model). They now owe the second (lodgement) payment before
+ * the return goes out for signature, so they move to LODGEMENT_PENDING. Null
+ * means "leave them where they are", the answer for a correction resend to
+ * someone who has already paid the lodgement fee.
  */
 export function stateAfterEstimate(state: string): CustomerState | null {
-  return (ALREADY_THERE as string[]).includes(state) ? null : 'SIGNATURE_PENDING';
+  return (ALREADY_THERE as string[]).includes(state) ? null : 'LODGEMENT_PENDING';
 }
 
 /**
@@ -60,14 +62,55 @@ export function formatEstimateAmount(cents: number): string {
 }
 
 /**
- * The message itself.
+ * The fields the team fills in the CRM estimate composer (Jo, 2 Sep). Two
+ * toggles (residency, and refund vs payable) plus the money lines and the
+ * Medicare exemption. `incomeType` decides the lodgement fee shown ($110 for
+ * TFN, $275 for TFN + ABN). All money values are in cents.
+ */
+export interface EstimateFields {
+  residency: 'WHM' | 'RESIDENT';
+  taxableIncomeCents: number;
+  taxWithheldCents: number;
+  taxPayableCents: number;
+  expensesCents: number;
+  medicareExempt: boolean;
+  medicareCents: number;
+  outcome: 'REFUND' | 'PAYABLE';
+  outcomeCents: number;
+  incomeType: 'TFN' | 'TFN_ABN';
+}
+
+/** The lodgement top-up fee shown in the result message, by income type. */
+export function lodgementFeeLabel(incomeType: 'TFN' | 'TFN_ABN'): string {
+  return incomeType === 'TFN_ABN' ? '$275' : '$110';
+}
+
+/**
+ * The result message itself (the two-step model's value message).
  *
  * `template` is the owner's CURRENT Library wording, so the layout is his to
- * change without a deploy. Both placeholders are filled here, before the policy
+ * change without a deploy. EVERY placeholder is filled here, before the policy
  * guard runs, so a leftover {{...}} is refused like anywhere else.
  */
-export function composeEstimate(template: string, cents: number, invoiceUrl: string): string {
+export function composeEstimate(template: string, f: EstimateFields): string {
+  const money = (c: number) => formatEstimateAmount(c);
+  const residency = f.residency === 'RESIDENT'
+    ? 'Australian resident for tax purposes'
+    : 'Working Holiday Maker';
+  const medicare = f.medicareExempt ? '$0 (exempt)' : money(f.medicareCents);
+  const outcomeLabel = f.outcome === 'REFUND' ? 'Estimated refund' : 'Estimated tax payable';
+  const explanation = f.outcome === 'REFUND'
+    ? "You paid more tax than you needed to during the year, which is why you're due a refund."
+    : "You paid less than required during the year, which is why there's an amount payable.";
   return template
-    .replaceAll('{{AMOUNT}}', formatEstimateAmount(cents))
-    .replaceAll('{{INVOICE_LINK}}', invoiceUrl);
+    .replaceAll('{{RESIDENCY}}', residency)
+    .replaceAll('{{TAXABLE_INCOME}}', money(f.taxableIncomeCents))
+    .replaceAll('{{EXPENSES}}', money(f.expensesCents))
+    .replaceAll('{{MEDICARE}}', medicare)
+    .replaceAll('{{TAX_WITHHELD}}', money(f.taxWithheldCents))
+    .replaceAll('{{TAX_PAYABLE}}', money(f.taxPayableCents))
+    .replaceAll('{{OUTCOME_LABEL}}', outcomeLabel)
+    .replaceAll('{{OUTCOME_AMOUNT}}', money(f.outcomeCents))
+    .replaceAll('{{EXPLANATION}}', explanation)
+    .replaceAll('{{LODGEMENT_FEE}}', lodgementFeeLabel(f.incomeType));
 }

@@ -137,7 +137,7 @@ const CUSTOMER_COL: Record<Exclude<keyof CustomerRow, 'id'>, string> = {
   unread: 'unread', unreadCount: 'unread_count', lastMessageAt: 'last_message_at', lang: 'lang', createdAt: 'created_at',
 };
 
-const FORWARD = ['NEW_LEAD','QUALIFIED','PRICE_SENT','PAYMENT_PENDING','PAID','FORM_PENDING','FORM_COMPLETE','DOCUMENTS_COMPLETE','UNDER_REVIEW','ESTIMATE_READY','FINAL_REVIEW','SIGNATURE_PENDING','SIGNED','LODGED','COMPLETED'];
+const FORWARD = ['NEW_LEAD','QUALIFIED','PRICE_SENT','PAYMENT_PENDING','PAID','FORM_PENDING','FORM_COMPLETE','DOCUMENTS_COMPLETE','UNDER_REVIEW','ESTIMATE_READY','LODGEMENT_PENDING','FINAL_REVIEW','SIGNATURE_PENDING','SIGNED','LODGED','COMPLETED'];
 const CLOSED = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
 
 export let lastPersistError: string | null = null;

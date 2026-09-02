@@ -16,11 +16,11 @@
 import {
   APPROVED,
   shouldDropOwingCaveat,
-  stripOwingCaveat,
   priceForCustomer,
 } from '@/lib/will/approved-messages';
 
 const OWING = /if you owe tax/i;
+const GUARANTEE = /top up the difference|refund the difference|never costs you more|never out of pocket/i;
 
 describe('shouldDropOwingCaveat — by language', () => {
   it.each(['de', 'ja', 'DE', 'Ja'])('drops for German/Japanese: %s', (lang) => {
@@ -85,44 +85,31 @@ describe('shouldDropOwingCaveat — by the home-country answer in the chat', () 
   });
 });
 
-describe('the price templates still carry the caveat by default', () => {
-  it('price_tfn and price_tfn_abn both keep the owing sentence in source', () => {
-    expect(APPROVED.price_tfn).toMatch(OWING);
-    expect(APPROVED.price_tfn_abn).toMatch(OWING);
+describe('the two-step price messages carry no guarantee or owing caveat (Jo, 2 Sep)', () => {
+  it('price_tfn and price_tfn_abn contain neither an owing caveat nor a guarantee', () => {
+    for (const msg of [APPROVED.price_tfn, APPROVED.price_tfn_abn]) {
+      expect(msg).not.toMatch(OWING);
+      expect(msg).not.toMatch(GUARANTEE);
+    }
+  });
+  it('both are the two-step assessment message', () => {
+    expect(APPROVED.price_tfn).toMatch(/Tax Assessment \$110/);
+    expect(APPROVED.price_tfn).toMatch(/\$220 all up/);
+    expect(APPROVED.price_tfn_abn).toMatch(/\$385 all up/);
   });
 });
 
-describe('stripOwingCaveat', () => {
-  it('removes the owing sentence from the $220 message and nothing else', () => {
-    const out = stripOwingCaveat(APPROVED.price_tfn);
-    expect(out).not.toMatch(OWING);
-    expect(out).toMatch(/top up the difference/i); // guarantee untouched
-    expect(out.trimEnd().endsWith("Once paid, send us a screenshot and we'll get started.")).toBe(true);
-  });
-  it('removes the owing sentence from the $385 message', () => {
-    expect(stripOwingCaveat(APPROVED.price_tfn_abn)).not.toMatch(OWING);
-  });
-  it('leaves a message with no caveat untouched', () => {
-    expect(stripOwingCaveat('The total fee is $220.')).toBe('The total fee is $220.');
-  });
-});
-
-describe('priceForCustomer ties it together', () => {
-  it('drops the caveat for German/Japanese, a +44 number, or a stated UK origin', () => {
-    expect(priceForCustomer(APPROVED.price_tfn, { lang: 'de' })).not.toMatch(OWING);
-    expect(priceForCustomer(APPROVED.price_tfn_abn, { waId: '447735654528' })).not.toMatch(OWING);
-    expect(priceForCustomer(APPROVED.price_tfn, { lang: 'en', waId: '61467577453', text: 'from England' })).not.toMatch(OWING);
-  });
-
-  it('keeps the caveat for a plain English / Australian-number customer', () => {
-    expect(priceForCustomer(APPROVED.price_tfn, { lang: 'en', waId: '61472724880', text: 'only TFN' })).toMatch(OWING);
-  });
-
-  it('never states or invents a refund figure either way', () => {
-    for (const who of [{ lang: 'de' }, { lang: 'en', waId: '61472724880', text: 'only TFN' }]) {
+describe('priceForCustomer never reintroduces a guarantee', () => {
+  it('returns a message with no guarantee, for a refund-nationality or a plain customer', () => {
+    const cases = [
+      { lang: 'de' },
+      { waId: '447735654528' },
+      { lang: 'en', waId: '61472724880', text: 'only TFN' },
+    ];
+    for (const who of cases) {
       const out = priceForCustomer(APPROVED.price_tfn, who);
-      const dollars = out.match(/\$\d+/g) ?? [];
-      expect(dollars.every((d) => d === '$220')).toBe(true);
+      expect(out).not.toMatch(OWING);
+      expect(out).not.toMatch(GUARANTEE);
     }
   });
 });

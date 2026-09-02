@@ -83,13 +83,36 @@ const isApprovedSentence = (sentence: string) => APPROVED_SENTENCES.has(norm(sen
 const MAX_IMPROVISED_CHARS = 450;
 
 // ---------- money (currency-symbol / currency-word agnostic across languages) ----------
-// The only prices that may leave the building: $220 (TFN), $385 (TFN + ABN) and
-// $110 for a phone consultation. $110 was added on Jo's approval, 25 Aug, after
-// the export showed the team quoting it to a customer who asked for a call —
-// without it here the guard blocked the sentence and the answer could never be
-// sent. Post-payment nothing is allowed at all (see `allowedCents` below), so a
-// consultation price can only ever appear before the customer has paid.
-const FIXED_PRICES_CENTS = [22000, 38500, 11000];
+// The only prices that may leave the building. Two-step model (Jo, 2 Sep):
+// $110 (the Tax Assessment, and the lodgement top-up for TFN), $275 (the
+// lodgement top-up for TFN + ABN), $220 (TFN all up) and $385 (TFN + ABN all
+// up). $110 also covers a phone consultation. Post-payment nothing is allowed
+// at all (see `allowedCents` below).
+const FIXED_PRICES_CENTS = [22000, 38500, 11000, 27500];
+
+// A customer can claim more than one year at once, and the fee is PER YEAR: two
+// years of TFN+ABN is $385 x 2 = $770, three TFN years is $220 x 3 = $660, and a
+// mix is possible (a TFN-only year plus a TFN+ABN year is $220 + $385 = $605).
+// Without this the guard blocked a correct multi-year total as a forbidden
+// amount and buried a perfect reply in a task (Jo, 2 Sep, Lewis: "I worked with
+// both", "I have 2 years to claim back" -> "$385 per year, so $770 for both
+// years"). We allow every total that is a whole number of years priced at the
+// fixed per-year fees, up to a generous cap, and NOTHING else: an arbitrary or
+// invented figure is still caught. The $110 phone consult is a one-off, not
+// per-year, so it is not multiplied.
+const MAX_CLAIM_YEARS = 6;
+const PER_YEAR_PRICES_CENTS = [22000, 38500] as const; // $220 (TFN), $385 (TFN + ABN)
+const MULTI_YEAR_PRICES_CENTS: number[] = (() => {
+  const set = new Set<number>();
+  for (let tfnYears = 0; tfnYears <= MAX_CLAIM_YEARS; tfnYears++) {
+    for (let abnYears = 0; abnYears <= MAX_CLAIM_YEARS; abnYears++) {
+      const years = tfnYears + abnYears;
+      if (years < 1 || years > MAX_CLAIM_YEARS) continue;
+      set.add(tfnYears * PER_YEAR_PRICES_CENTS[0] + abnYears * PER_YEAR_PRICES_CENTS[1]);
+    }
+  }
+  return [...set];
+})();
 
 // The ATO's $300 work-related-expense substantiation threshold. This is a fixed
 // public regulatory figure, NOT a price and NOT a refund, and the team needs to
@@ -330,9 +353,9 @@ const TAX_DETERMINATION: RegExp[] = [
   /your (?:estimated |expected )?refund (?:will|would|should|is going to|is likely|is about|is around)(?!\s+(?:be\s+)?(?:paid|deposited|transferred|sent|processed|issued|released|go|land|arrive|show|take|hit|come)\b)/i,
   /you(?:'ll| will) (?:get|receive)[^.!?]{0,25}(?:refund|\$|back)/i,
   // WILL-AI-01: bare-number refund/return estimates (no $ sign, so the currency
-  // guard misses them). Excludes the two fixed prices 220/385.
-  /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b)\d{3,6}\b/i,
-  /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|385\b)\d{3,6}\b/i,
+  // guard misses them). Excludes the fixed prices 110/220/275/385 (two-step model).
+  /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b|110\b|275\b)\d{3,6}\b/i,
+  /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|385\b|110\b|275\b)\d{3,6}\b/i,
   // The phrasings a model actually reaches for when it is hedging, all of which
   // walked straight past the list above. Verified passes before these existed:
   //   "Based on your payslips you should get around 3,800 back."
@@ -349,28 +372,39 @@ const TAX_DETERMINATION: RegExp[] = [
   /\byour\s+(?:visa|situation|case|circumstances)\s+means\b/i,
   // A hedge is still a determination: "roughly", "around", "ballpark" attached
   // to a refund is the number the customer will hold us to.
-  /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
+  /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b|110\b|275\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
 ];
 
 const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (deal|price|offer)|just for you[^.!?]{0,15}\d|one.time (deal|price|offer)|rabatt|nachlass|descuento|oferta especial|r[ée]duction|remise|rabais|sconto|desconto|割引|値引き)/i;
 // Blocks Will from unilaterally promising to refund the customer's PAYMENT or to
 // cancel. Precise on purpose: it must fire on transitive payment-refund promises
-// ("refund your payment", "refund you $220", "money back", "cancel") but NOT on
-// the noun ("eligible for a refund", "your tax refund", "super refund") nor on
-// the approved guarantee ("refund the difference" / "refund you the difference").
-const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b|refund\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|full|amount|\$?\d)))\b(?!\s+the\s+difference)/i;
+// ("refund your payment", "refund you $220", "cancel") but NOT on the noun
+// ("eligible for a refund", "your tax refund", "super refund") nor on the
+// the removed refund guarantee ("refund the difference" / "top up the difference").
+// Two-step model (Jo, 2 Sep): there is NO guarantee any more, so "refund the
+// difference" is now a forbidden over-promise and is BLOCKED, not exempted.
+// A bare "money back" is deliberately NOT here: "you could be owed money back"
+// is the customer's TAX refund from the ATO, our core value proposition, not a
+// promise about our fee (Jo, 2 Sep, Victoria: a perfect reply blocked for
+// exactly that). The money-back-guarantee wording is also caught below.
+const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|payment[^.!?]{0,20}\bback\b|give\s+you[^.!?]{0,15}\byour\s+money\s+back\b|(?:refund|top\s+up)\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|full|amount|difference|\$?\d)))\b/i;
 // "never out of pocket" / "not out of pocket" — the exact over-promise that
 // broke the Indigo conversation (a customer who owes was told they would get
 // the fee back). It is now banned from every message, so any improvised reply
 // that reaches for it is a refund promise. (Approved templates are exempt at the
 // call site, and the phrase was removed from all of them.)
 const OUT_OF_POCKET_PROMISE = /\bout of pocket\b|\baus eigener tasche\b|\bde (?:tu|su) bolsillo\b|\bde (?:ta|votre) poche\b|\bdi tasca (?:tua|propria)\b|\bdo (?:teu|seu) bolso\b|自己負担/i;
-// A promise to give the customer their money back / a full refund, in every
-// language Will speaks. The over-promise that has to be caught even when the
-// deterministic English phrases above do not (Jo, 1 Sep: all rules, every
-// language). The bare noun ("a refund", "reembolso", "Erstattung") is fine; only
-// a FULL / total money-back promise trips it. Approved templates are exempt.
-const MONEY_BACK_ML = /\b(?:money\s?back|full\s+refund)\b|\bgeld\s+zur(?:ü|ue)ck\b|\bvolle\s+(?:r[üue]ck)?erstattung\b|\bdinero\s+de\s+vuelta\b|\breembolso\s+(?:completo|total|íntegro|integro)\b|\bremboursement\s+(?:complet|total|int[ée]gral)\b|\brimborso\s+(?:completo|totale|integrale)\b|全額返金|返金します/i;
+// A promise to give the customer their FEE back / a full refund / a money-back
+// guarantee, in every language Will speaks. The over-promise that has to be
+// caught even when the deterministic English phrases above do not (Jo, 1 Sep:
+// all rules, every language).
+//
+// A bare "money back" / "Geld zurück" / "dinero de vuelta" is deliberately NOT
+// here: "you could be owed money back" is the customer's TAX refund, the whole
+// point of the service, not a promise about our fee (Jo, 2 Sep, Victoria). Only
+// a FULL / total refund or an explicit money-back GUARANTEE trips it; the plain
+// noun ("a refund", "reembolso", "Erstattung") is fine.
+const MONEY_BACK_ML = /\bfull\s+refund\b|\bmoney[-\s]?back\s+guarantee\b|\bgeld[-\s]?zur(?:ü|ue)ck[-\s]?garantie\b|\bvolle\s+(?:r[üue]ck)?erstattung\b|\breembolso\s+(?:completo|total|íntegro|integro)\b|\bremboursement\s+(?:complet|total|int[ée]gral)\b|\brimborso\s+(?:completo|totale|integrale)\b|全額返金|返金します/i;
 // A refund FIGURE stated as a bare number (no $ / currency word) next to a
 // refund noun IN ANOTHER LANGUAGE. The currency-marked figures and the English
 // "refund … <number>" case are already caught above (amountsInCents +
@@ -381,8 +415,8 @@ const MONEY_BACK_ML = /\b(?:money\s?back|full\s+refund)\b|\bgeld\s+zur(?:ü|ue)c
 const REFUND_NOUN_ML =
   'erstattung|r[üu]ckerstattung|rueckerstattung|steuerr[üu]ckerstattung|reembolso|devoluci[óo]n|devolu[çc][ãa]o|remboursement|rimborso|restituzione|restitui[çc][ãa]o';
 const REFUND_FIGURE_ML = new RegExp(
-  '(?:' + REFUND_NOUN_ML + ')\\b[^.!?]{0,25}\\b(?!220\\b|385\\b|110\\b|19\\d\\d\\b|20\\d\\d\\b)\\d{3,6}\\b'
-  + '|\\b(?!220\\b|385\\b|110\\b|19\\d\\d\\b|20\\d\\d\\b)\\d{3,6}\\b[^.!?]{0,25}\\b(?:' + REFUND_NOUN_ML + ')',
+  '(?:' + REFUND_NOUN_ML + ')\\b[^.!?]{0,25}\\b(?!220\\b|385\\b|110\\b|275\\b|19\\d\\d\\b|20\\d\\d\\b)\\d{3,6}\\b'
+  + '|\\b(?!220\\b|385\\b|110\\b|275\\b|19\\d\\d\\b|20\\d\\d\\b)\\d{3,6}\\b[^.!?]{0,25}\\b(?:' + REFUND_NOUN_ML + ')',
   'i',
 );
 // Japanese: 還付 / 返金 next to a (half- or full-width) 3-6 digit number.
@@ -537,8 +571,16 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
 
   // --- sentence-level content checks with approved-corpus exemption ---
   const paid = ctx.paid || POST_PAYMENT_STATES.includes(ctx.state);
-  const allowedCents = new Set<number>(paid ? [] : FIXED_PRICES_CENTS);
-  if (ctx.estimateFromTeam != null) allowedCents.add(ctx.estimateFromTeam);
+  // Two-step model (Jo, 2 Sep): a paid customer's sales flow stays closed EXCEPT
+  // at Lodgement Payment Pending, the one post-assessment state where Will
+  // legitimately restates the lodgement price and talks about the fee. Everywhere
+  // else after payment (form, review, In Progress, signature, done) sales talk and
+  // prices stay locked exactly as before.
+  const salesClosed = paid && ctx.state !== 'LODGEMENT_PENDING';
+  const allowedCents = new Set<number>(salesClosed ? [] : [...FIXED_PRICES_CENTS, ...MULTI_YEAR_PRICES_CENTS]);
+  // The team's approved figure is stored signed (negative = tax payable); allow
+  // its magnitude so a payable outcome can be stated back without a false block.
+  if (ctx.estimateFromTeam != null) allowedCents.add(Math.abs(ctx.estimateFromTeam));
 
   let unguardedLanguage = false;
 
@@ -563,7 +605,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // post-payment-sales gate still applies (H2/H4: never re-send sales content
     // to a paid customer, even if the wording is approved).
     if (isApprovedSentence(sentence)) {
-      if (paid && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
+      if (salesClosed && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
       continue;
     }
 
@@ -599,7 +641,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
       if (p.test(sentence)) { violations.push('TAX_DETERMINATION'); break; }
     }
     if (DIY_INSTRUCTIONS.test(sentence)) violations.push('DIY_INSTRUCTIONS');
-    if (paid && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
+    if (salesClosed && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
     if (!ctx.isApprovedTemplate && (REFUND_PROMISE.test(sentence) || OUT_OF_POCKET_PROMISE.test(sentence) || MONEY_BACK_ML.test(sentence))) violations.push('REFUND_OR_CANCEL_PROMISE');
 
     // H5: a non-approved sentence in a language the English patterns can't cover.

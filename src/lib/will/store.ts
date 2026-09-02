@@ -104,7 +104,7 @@ export interface JobRow {
   customerId: string | null;
   kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'REVIEW_REQUEST';
   payload: {
-    templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
+    templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'lodgement' | 'signature'; taskId?: string;
     /** AUTO_REPLY only: the QUEUED message this job will transmit. */
     messageId?: string;
   };

@@ -134,6 +134,30 @@ describe('prices — never invent or change a fee', () => {
   it('blocks an estimate figure the team never provided', () => {
     expect(policyGuard('Your refund is $1,460.', ctx()).violations.some((v) => v.startsWith('FORBIDDEN_AMOUNT'))).toBe(true);
   });
+
+  // Multi-year: the fee is per year, so a legitimate total for several years must
+  // pass (Jo, 2 Sep, Lewis: "worked with both", "2 years to claim" -> "$385 per
+  // year, so $770 for both years"). Only whole-year multiples/combinations of the
+  // fixed per-year fees are allowed; an arbitrary figure is still blocked.
+  const noAmount = (t: string) =>
+    !policyGuard(t, ctx()).violations.some((v) => v.startsWith('FORBIDDEN_AMOUNT'));
+  it('allows $770 for two years of TFN+ABN ($385 x 2)', () => {
+    expect(noAmount('The total fee is $385 per year, so $770 for both years.')).toBe(true);
+  });
+  it('allows $660 for three TFN years ($220 x 3) and $440 for two ($220 x 2)', () => {
+    expect(noAmount('That is $220 per year, so $660 for the three years.')).toBe(true);
+    expect(noAmount('$220 each year, $440 for the two years.')).toBe(true);
+  });
+  it('allows a mixed total: one TFN year plus one TFN+ABN year is $605', () => {
+    expect(noAmount('One year was TFN only and one had ABN too, so $220 plus $385 is $605.')).toBe(true);
+  });
+  it('still blocks a near-miss that is not a whole-year total ($700)', () => {
+    expect(noAmount('The total fee is $700.')).toBe(false);
+  });
+  it('does not allow multi-year totals after payment', () => {
+    expect(policyGuard('The total for both years was $770.', ctx({ paid: true, state: 'PAID' }))
+      .violations.some((v) => v.startsWith('FORBIDDEN_AMOUNT'))).toBe(true);
+  });
 });
 
 describe('no negotiation, no invented promises', () => {
@@ -153,8 +177,24 @@ describe('no negotiation, no invented promises', () => {
     expect(has("So you're never out of pocket.", 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
     expect(has('That way you are not out of pocket for our service.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
   });
-  it('still allows the real guarantee "refund the difference"', () => {
-    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'REFUND_OR_CANCEL_PROMISE')).toBe(false);
+  it('now BLOCKS "refund the difference" too (the guarantee is gone, Jo 2 Sep)', () => {
+    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
+    expect(has('we top up the difference if your refund is lower', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
+  });
+
+  // "money back" as the customer's TAX refund is the whole point of the service
+  // and must pass; only a promise about OUR fee (a full refund / money-back
+  // guarantee / "we give you your money back") is blocked. Jo, 2 Sep, Victoria:
+  // "there's definitely a chance you could be owed money back" was a perfect
+  // reply refused for REFUND_OR_CANCEL_PROMISE.
+  it('allows "you could be owed money back" (the tax refund, not the fee)', () => {
+    expect(has("There's definitely a chance you could be owed money back.", 'REFUND_OR_CANCEL_PROMISE')).toBe(false);
+    expect(has('You might get some money back once we review it.', 'REFUND_OR_CANCEL_PROMISE')).toBe(false);
+    expect(has('We think you could get money back from the ATO.', 'REFUND_OR_CANCEL_PROMISE')).toBe(false);
+  });
+  it('still blocks a money-back guarantee or giving the fee back', () => {
+    expect(has('We offer a money-back guarantee.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
+    expect(has("If you're not happy, we give you your money back.", 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
   });
 });
 
@@ -184,6 +224,19 @@ describe('tax determination is never made before payment', () => {
 describe('post-payment: sales talk is shut off', () => {
   it('blocks fee / guarantee talk once the customer has paid', () => {
     expect(has('Remember our fee is $220 and we refund the difference if your refund is lower.', 'SALES_CONTENT_AFTER_PAYMENT', { paid: true, state: 'PAID' })).toBe(true);
+  });
+});
+
+describe('two-step model: the lodgement price is allowed at Lodgement Payment Pending', () => {
+  // The one post-assessment state where Will legitimately restates the lodgement
+  // fee. Prices/fee talk must NOT be blocked there (Jo, 2 Sep).
+  it('allows the $275 lodgement top-up at LODGEMENT_PENDING', () => {
+    const v = policyGuard('The lodgement fee is an additional $275, so $385 all up.', ctx({ paid: true, state: 'LODGEMENT_PENDING' })).violations;
+    expect(v.some((x) => x.startsWith('FORBIDDEN_AMOUNT'))).toBe(false);
+    expect(v).not.toContain('SALES_CONTENT_AFTER_PAYMENT');
+  });
+  it('still blocks the same fee talk at In Progress (lodgement already paid)', () => {
+    expect(has('Our fee is $275.', 'SALES_CONTENT_AFTER_PAYMENT', { paid: true, state: 'FINAL_REVIEW' })).toBe(true);
   });
 });
 

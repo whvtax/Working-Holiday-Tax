@@ -42,6 +42,11 @@ export const AFTER_PAYMENT_STATES: CustomerState[] = [
   'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW',
   'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED',
 ];
+// LODGEMENT_PENDING is deliberately NOT here (Jo, 2 Sep): at that stage a
+// screenshot is almost always the lodgement PAYMENT. The payment-proof path
+// confirms it; if it cannot (blurry, budget, unreadable), the message must
+// escalate as "attachment I can't read", exactly like the first payment, rather
+// than be filed silently as routine paperwork and miss a real payment.
 
 export function isAfterPayment(state: string | null | undefined): boolean {
   return !!state && (AFTER_PAYMENT_STATES as string[]).includes(state);
