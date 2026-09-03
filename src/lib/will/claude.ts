@@ -12,6 +12,7 @@ import { LostAnalysis, LOST_CATEGORIES, validateLostAnalysis } from './lost-lead
 import { claimsPayment } from './payment-claim';
 import { stripDashes } from './text';
 import { greetingName } from './text-normalize';
+import { registerLibraryBodies } from './policy-guard';
 
 export interface Turn {
   role: 'customer' | 'assistant';
@@ -131,6 +132,10 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
   try {
     const templates = await getStore().listTemplates();
     liveTemplates = Object.fromEntries(templates.map((t) => [t.key, t.body]));
+    // The guard that reads this decision's reply must recognise the wording
+    // the model is about to be told to use, or Jo's own Library edits come
+    // back as "the model's prose" and trip the length rule (3 Sep).
+    registerLibraryBodies(templates.map((t) => t.body));
   } catch { /* fall back to APPROVED below */ }
 
   // Prompt caching (Anthropic billing email, 31 Aug): the big playbook is

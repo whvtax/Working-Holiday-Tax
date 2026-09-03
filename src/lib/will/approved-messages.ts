@@ -140,9 +140,10 @@ Once you've applied, send me a screenshot of the application and we'll include t
 
 We'll now send everything for final review. Once approved, I'll send it to you for signature. I'll let you know as soon as it's ready.`,
 
+  // Matches the Meta-approved `signature` template word for word (Jo, 3 Sep),
+  // so the customer gets the identical text inside and outside the 24h window.
   signature_ready: `Your tax return is ready! 🎉
-
-I've emailed it to you for review and signature 📧`,
+I've emailed it to you for review and signature.`,
 
   followups_signature: {
     h24: `Hi {{1}}, your tax return is ready and just needs your signature before we can lodge it. Let me know if it didn't reach you 😊`,
@@ -167,17 +168,24 @@ I've emailed it to you for review and signature 📧`,
    *  time: {{AMOUNT}} is the refund figure typed by the team, {{INVOICE_LINK}}
    *  the invoice URL pasted with it. Both are filled by the action before the
    *  message leaves, so a leftover placeholder is refused as it is anywhere. */
-  estimate_invoice: `Your estimated tax refund is {{AMOUNT}} I'll send it for final review and then for your signature.
+  // Matches the Meta-approved `estimate_invoice` template word for word
+  // ({{AMOUNT}} = its {{1}}, {{INVOICE_LINK}} = its {{2}}; Jo, 3 Sep), so the
+  // customer gets the identical text inside and outside the 24h window. The
+  // link sits on its own line and the message does not end on a variable.
+  estimate_invoice: `Your estimated tax refund is {{AMOUNT}}.
 
 Here is your invoice:
-{{INVOICE_LINK}}`,
+{{INVOICE_LINK}}
+
+I'll send it for final review and then for your signature.`,
 
   /** "Mark Lodged" button (Signature stage). The Google review ask was SPLIT out
    *  of this message (Jo, 31 Aug): the lodgement note is now just the good news,
    *  and the review request is a separate, warmer message sent an hour later (see
    *  `review_request` below and the REVIEW_REQUEST job). */
+  // Matches the Meta-approved `lodged_confirmation` template line for line
+  // (Jo, 3 Sep): two consecutive lines, no blank line between them.
   lodged_confirmation: `Your tax return has been lodged successfully! ✅
-
 Your refund should arrive in your bank account within 14 business days.`,
 
   // The Google review request (sent 1 hour after lodgement) is per-language and

@@ -95,16 +95,18 @@ describe('the message', () => {
   });
 
   it('is laid out the way Jo asked for it', () => {
-    // Reworded by Jo, 31 Aug: the amount and the next-steps sit on one line.
-    // Updated 1 Sep: the link sits directly under "Here is your invoice:" with
-    // NO blank line between them (Jo removed the paragraph gap), while it still
-    // starts on its own line so WhatsApp renders it as a link.
+    // Matches the Meta-approved `estimate_invoice` template line for line
+    // (Jo, 3 Sep): amount on its own sentence, the link on its own line under
+    // "Here is your invoice:", and the next-steps sentence LAST so the message
+    // never ends on a variable (Meta rejects floating trailing parameters).
     const out = composeEstimate(APPROVED.estimate_invoice, 203600, url);
     const lines = out.split('\n');
-    expect(lines[0]).toBe("Your estimated tax refund is $2,036.00 I'll send it for final review and then for your signature.");
+    expect(lines[0]).toBe('Your estimated tax refund is $2,036.00.');
     expect(lines[1]).toBe('');
     expect(lines[2]).toBe('Here is your invoice:');
     expect(lines[3].trim()).toBe(url);
+    expect(lines[4]).toBe('');
+    expect(lines[5]).toBe("I'll send it for final review and then for your signature.");
   });
 
   it('carries no AI dash', () => {

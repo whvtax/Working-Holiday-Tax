@@ -109,17 +109,18 @@ export function formatAUD(cents: number): string {
 
 /** How long Autopilot waits before a reply actually leaves, in seconds.
  *
- *  Set to 3 minutes on Jo's instruction, 31 Aug (was 4). Until Autopilot had a
- *  delay it answered the instant the webhook landed, which reads as a machine:
- *  nobody types a considered answer about someone's tax in two seconds.
+ *  Set to 2 minutes on Jo's instruction, 3 Sep (was 3, before that 4). Until
+ *  Autopilot had a delay it answered the instant the webhook landed, which reads
+ *  as a machine: nobody types a considered answer about someone's tax in two
+ *  seconds.
  *
  *  The reply is written immediately and parked as QUEUED, so it is visible in
  *  the chat and can still be discarded; the scheduler transmits it once this
  *  delay has passed. The tick runs every 5 minutes (vercel.json), so the real
- *  gap lands between 3 and 8 minutes — still within the human range.
+ *  gap lands between 2 and 7 minutes, still within the human range.
  *
  *  Approval mode is unaffected: there the owner's click is the delay. */
-export const AUTOPILOT_REPLY_DELAY_SECONDS = 180;
+export const AUTOPILOT_REPLY_DELAY_SECONDS = 120;
 
 export function withinQuietHours(now = new Date()): boolean {
   const cfg = schedulerConfig();

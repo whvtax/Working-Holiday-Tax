@@ -57,11 +57,19 @@ const bad = (msg: string, code = 400) => NextResponse.json({ error: msg }, { sta
  *    edit — "editable in the Library" was not true for exactly the messages
  *    that most need editing.
  *
+ *  - REPLY_TOO_LONG: that rule caps the MODEL'S own prose so Will does not
+ *    write essays. A Library message is the owner's deliberate wording, and
+ *    the [opening] alone is ~580 characters; a rewrite of it that no longer
+ *    matched the code copy sentence for sentence could not be saved at all
+ *    (3 Sep). Every content rule (amounts, tax determinations, myGov steps,
+ *    promises) still applies to a Library edit exactly as before.
+ *
  * Nothing is relaxed at send time: humanSend still refuses an unfilled
  * placeholder, and the guard still raises it on every real send.
  */
 function saveTimeViolations(violations: string[]): string[] {
-  return violations.filter((v) => !v.startsWith('OUTSIDE_24H') && v !== 'PLACEHOLDER_LEFTOVER');
+  return violations.filter((v) =>
+    !v.startsWith('OUTSIDE_24H') && v !== 'PLACEHOLDER_LEFTOVER' && v !== 'REPLY_TOO_LONG');
 }
 
 /** The owner's current wording for a Library entry, falling back to the
@@ -82,19 +90,30 @@ async function libraryBody(key: string, fallback: string): Promise<string> {
 
 /** Final safety net for HUMAN-authored sends: fill placeholders, honour opt-out /
  *  kill switch / 24h window, and block leftover placeholders or secret/prompt leaks
- *  (owner content is trusted, but a raw {{AMOUNT}} or a leaked key never goes out). */
-async function humanSend(customer: CustomerRow, rawBody: string): Promise<{ error?: string; body?: string }> {
+ *  (owner content is trusted, but a raw {{AMOUNT}} or a leaked key never goes out).
+ *
+ *  Outside Meta's 24h customer-service window free text is rejected, so a plain
+ *  send is refused there. The three fixed CRM messages (estimate, signature,
+ *  lodged) have pre-approved Meta templates, so a caller that passes
+ *  `templateBacked` is not refused: it gets `outsideWindow: true` back and sends
+ *  the message as that template instead (Jo, 3 Sep). */
+async function humanSend(
+  customer: CustomerRow,
+  rawBody: string,
+  opts: { templateBacked?: boolean } = {},
+): Promise<{ error?: string; body?: string; outsideWindow?: boolean }> {
   const store = getStore();
   if (customer.optedOut) return { error: 'customer opted out' };
   if ((await store.getSetting('kill_switch')) === true) return { error: 'kill switch is on' };
   const last = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
-  if (Date.now() - last > 24 * 60 * 60 * 1000) return { error: 'outside the 24h messaging window; use an approved template' };
+  const outsideWindow = Date.now() - last > 24 * 60 * 60 * 1000;
+  if (outsideWindow && !opts.templateBacked) return { error: 'outside the 24h messaging window; use an approved template' };
   const reviewLink = (await store.getSetting('google_review_link')) as string | undefined;
   const amount = customer.estimatedRefundCents != null ? formatAUD(customer.estimatedRefundCents) : undefined;
   const body = fillPlaceholders(rawBody, await getBank(), { amount, reviewLink });
   if (/\{\{[A-Z_]+\}\}/.test(body)) return { error: 'message still has an unfilled placeholder (e.g. set the refund estimate first, or fill the document name)' };
   if (/(password|api.?key|access token|secret key|credentials)/i.test(body)) return { error: 'message looks like it contains a secret' };
-  return { body: body.slice(0, 4000) };
+  return { body: body.slice(0, 4000), outsideWindow };
 }
 
 /** Every owner action goes through this endpoint, including the ones that send a
@@ -630,9 +649,15 @@ async function handlePost(req: Request) {
         invoiceUrl.toString(),
       );
 
-      const send = await humanSend(customer, body);
+      const send = await humanSend(customer, body, { templateBacked: true });
       if (send.error) return bad(send.error);
-      const out = await deliverOut(customer, send.body!, 'HUMAN');
+      // Outside the 24h window this goes as the pre-approved Meta template
+      // `estimate_invoice` ({{1}} = amount, {{2}} = invoice link); inside it,
+      // the Library wording goes as free text. Same text either way.
+      const waTemplate = send.outsideWindow
+        ? { name: 'estimate_invoice', params: [formatAUD(amountCents), invoiceUrl.toString()], lang: customer.lang }
+        : undefined;
+      const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
 
       // Will is never auto-paused (Jo, 31 Aug): the estimate goes out but Will
@@ -667,9 +692,12 @@ async function handlePost(req: Request) {
         return bad('signature can only be sent once the estimate stage is reached');
       }
       const sigBody = await libraryBody('signature', APPROVED.signature_ready);
-      const send = await humanSend(customer, sigBody);
+      const send = await humanSend(customer, sigBody, { templateBacked: true });
       if (send.error) return bad(send.error);
-      const out = await deliverOut(customer, send.body!, 'HUMAN');
+      // Outside the 24h window: the pre-approved Meta template `signature` (no
+      // variables). Inside it: the Library wording as free text.
+      const waTemplate = send.outsideWindow ? { name: 'signature', params: [], lang: customer.lang } : undefined;
+      const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
       // Will is never auto-paused (Jo, 31 Aug): the "ready for signature" note
       // goes out but Will stays active on the chat.
@@ -695,9 +723,12 @@ async function handlePost(req: Request) {
         return bad('this can only be sent once the customer has signed');
       }
       const body = await libraryBody('lodged_confirmation', APPROVED.lodged_confirmation);
-      const send = await humanSend(customer, body);
+      const send = await humanSend(customer, body, { templateBacked: true });
       if (send.error) return bad(send.error);
-      const out = await deliverOut(customer, send.body!, 'HUMAN');
+      // Outside the 24h window: the pre-approved Meta template
+      // `lodged_confirmation` (no variables). Inside it: free text.
+      const waTemplate = send.outsideWindow ? { name: 'lodged_confirmation', params: [], lang: customer.lang } : undefined;
+      const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
       // Will is never auto-paused (Jo, 31 Aug): the lodged note goes out but
       // Will stays active on the chat.

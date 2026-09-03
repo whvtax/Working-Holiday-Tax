@@ -59,15 +59,48 @@ const splitSentences = (s: string) =>
   s.split(/\n+|(?<=[.!?])\s+/).map((x) => x.trim()).filter(Boolean);
 
 const APPROVED_SENTENCES = new Set<string>();
+/** The longest single approved script, normalised. Sizes the allowance a
+ *  translated reply gets on the length rule (see MAX_IMPROVISED_CHARS). */
+let LONGEST_APPROVED_CHARS = 0;
 {
   const bodies: string[] = [];
   collectStrings(APPROVED, bodies);
   for (const b of bodies) {
     APPROVED_SENTENCES.add(norm(b));
+    LONGEST_APPROVED_CHARS = Math.max(LONGEST_APPROVED_CHARS, norm(b).length);
     for (const sent of splitSentences(b)) APPROVED_SENTENCES.add(norm(sent));
   }
 }
-const isApprovedSentence = (sentence: string) => APPROVED_SENTENCES.has(norm(sentence));
+
+/**
+ * The owner's LIVE Library wording, registered per decision.
+ *
+ * The corpus above is the code's copy of the approved messages. The model,
+ * though, is told to use the Library (playbook `field()` reads will_templates),
+ * and the two drift the moment Jo edits a message in the CRM: the model then
+ * sends exactly what it was told to send, and this guard, knowing only the code
+ * copy, counts every one of those sentences as the model's own prose. A long
+ * message the owner wrote himself came back as REPLY_TOO_LONG (Jo's queue,
+ * 3 Sep). Every Library body already passes the content rules when it is saved
+ * (add_template / update_template run this guard first), so treating it as
+ * approved here does not open anything the save-time check did not already
+ * close. Replaced wholesale on each call rather than appended, so a wording Jo
+ * has since changed is not still exempt from memory.
+ */
+let LIBRARY_SENTENCES = new Set<string>();
+export function registerLibraryBodies(bodies: readonly string[]): void {
+  const next = new Set<string>();
+  for (const b of bodies) {
+    if (typeof b !== 'string' || !b.trim()) continue;
+    next.add(norm(b));
+    for (const sent of splitSentences(b)) next.add(norm(sent));
+  }
+  LIBRARY_SENTENCES = next;
+}
+const isApprovedSentence = (sentence: string) => {
+  const n = norm(sentence);
+  return APPROVED_SENTENCES.has(n) || LIBRARY_SENTENCES.has(n);
+};
 
 /** Ceiling on the model's OWN prose in one reply, in characters.
  *
@@ -81,6 +114,20 @@ const isApprovedSentence = (sentence: string) => APPROVED_SENTENCES.has(norm(sen
  *  sits well above that on purpose: the playbook shapes the normal case, and
  *  this only catches replies that have clearly turned into essays. */
 const MAX_IMPROVISED_CHARS = 450;
+
+/** Extra room on the length rule for a reply that is NOT in English.
+ *
+ *  The approved-corpus subtraction only works in English: a German or Japanese
+ *  rendering of the [opening] matches nothing in the corpus, so the whole
+ *  ~700-character script counted as the model's own prose and every German or
+ *  Japanese new lead became a REPLY_TOO_LONG task instead of an answered
+ *  customer (Jo's queue, 3 Sep). The playbook tells the model to answer in the
+ *  customer's language, so this is the normal case for a third of the leads,
+ *  not an edge. A translated reply therefore gets the length of the longest
+ *  approved script (x1.3, because translations run longer than the English) on
+ *  top of the normal ceiling. It is a STYLE rule that is relaxed here, nothing
+ *  else: every content rule below still reads every sentence in every language. */
+const TRANSLATED_SCRIPT_ALLOWANCE = Math.ceil(LONGEST_APPROVED_CHARS * 1.3);
 
 // ---------- money (currency-symbol / currency-word agnostic across languages) ----------
 // The only prices that may leave the building: $220 (TFN), $385 (TFN + ABN) and
@@ -516,7 +563,14 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     .join(' ');
 
   if (!ctx.isApprovedTemplate) {
-    if (improvised.length > MAX_IMPROVISED_CHARS) violations.push('REPLY_TOO_LONG');
+    // English: the corpus subtraction above has already removed the approved
+    // wording, so what is left really is the model's own prose. Any other
+    // language: the subtraction cannot see a translated script, so allow one
+    // (see TRANSLATED_SCRIPT_ALLOWANCE) before calling the reply an essay.
+    const ceiling = isConfidentlyEnglish(improvised)
+      ? MAX_IMPROVISED_CHARS
+      : MAX_IMPROVISED_CHARS + TRANSLATED_SCRIPT_ALLOWANCE;
+    if (improvised.length > ceiling) violations.push('REPLY_TOO_LONG');
   }
 
   // --- sentence-level content checks with approved-corpus exemption ---

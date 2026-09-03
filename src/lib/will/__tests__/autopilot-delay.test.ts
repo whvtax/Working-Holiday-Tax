@@ -13,8 +13,8 @@
 import { AUTOPILOT_REPLY_DELAY_SECONDS } from '@/lib/will/config';
 
 describe('the configured delay', () => {
-  it('is the three minutes Jo asked for', () => {
-    expect(AUTOPILOT_REPLY_DELAY_SECONDS).toBe(180);
+  it('is the two minutes Jo asked for (3 Sep)', () => {
+    expect(AUTOPILOT_REPLY_DELAY_SECONDS).toBe(120);
   });
 
   it('is long enough to read as a person, short enough not to lose the lead', () => {

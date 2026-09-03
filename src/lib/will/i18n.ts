@@ -79,18 +79,20 @@ export function formReceivedTemplateKey(lang?: string | null): string {
 }
 
 /** The Google review request, per language. Sent ONCE, 1 hour after a customer
- *  is marked lodged (scheduler REVIEW_REQUEST job). Two short paragraphs, then
- *  the review link on its own line. No full stop before the 🙏 (Jo, 31 Aug). No
- *  prices, no currency, no dashes: passes the policy guard unchanged. */
+ *  is marked lodged (scheduler REVIEW_REQUEST job), as FREE TEXT on purpose:
+ *  it follows the lodged confirmation by an hour, so Jo keeps it out of Meta's
+ *  template library (Jo, 3 Sep). Two short paragraphs, "we" not "I", and the
+ *  review link on the line straight after the 🙏, exactly as Jo laid it out.
+ *  No prices, no currency, no dashes: passes the policy guard unchanged. */
 const REVIEW_LINK = 'https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8';
 export const REVIEW_REQUEST_MSG: Record<Lang, string> = {
-  en: `Great, glad everything went smoothly! Thanks so much for trusting me with your tax return. I really appreciate it!\n\nIf you have a minute, I'd really appreciate a short Google review. It would help us a lot 🙏\n\n${REVIEW_LINK}`,
-  de: `Super, ich freue mich, dass alles reibungslos geklappt hat! Vielen Dank, dass du mir deine Steuererklärung anvertraut hast. Das weiß ich wirklich zu schätzen!\n\nWenn du eine Minute hast, würde ich mich sehr über eine kurze Google-Bewertung freuen. Das würde uns sehr helfen 🙏\n\n${REVIEW_LINK}`,
-  ja: `すべてスムーズに進んでよかったです！確定申告をお任せいただき、本当にありがとうございました。とても感謝しています！\n\nもしよろしければ、Googleに短いレビューをいただけるととても嬉しいです。私たちにとって大きな助けになります 🙏\n\n${REVIEW_LINK}`,
-  es: `¡Genial, me alegra que todo haya ido bien! Muchas gracias por confiarme tu declaración de impuestos. ¡Lo aprecio de verdad!\n\nSi tienes un minuto, te agradecería mucho una breve reseña en Google. Nos ayudaría muchísimo 🙏\n\n${REVIEW_LINK}`,
-  fr: `Super, je suis ravi que tout se soit bien passé ! Merci beaucoup de m'avoir confié ta déclaration d'impôts. Je l'apprécie vraiment !\n\nSi tu as une minute, un petit avis Google me ferait très plaisir. Ça nous aiderait énormément 🙏\n\n${REVIEW_LINK}`,
-  it: `Ottimo, sono felice che sia andato tutto liscio! Grazie mille per avermi affidato la tua dichiarazione dei redditi. Lo apprezzo davvero!\n\nSe hai un minuto, ti sarei molto grato per una breve recensione su Google. Ci aiuterebbe tantissimo 🙏\n\n${REVIEW_LINK}`,
-  pt: `Ótimo, fico feliz que tenha corrido tudo bem! Muito obrigado por confiares em mim com a tua declaração de impostos. Agradeço imenso!\n\nSe tiveres um minuto, agradecia muito uma breve avaliação no Google. Ajudaria-nos bastante 🙏\n\n${REVIEW_LINK}`,
+  en: `Thank you so much for trusting us with your tax return!\n\nIf you have a minute, we'd really appreciate a quick Google review. It would help us a lot! 🙏\n${REVIEW_LINK}`,
+  de: `Vielen Dank, dass du uns deine Steuererklärung anvertraut hast!\n\nWenn du eine Minute hast, würden wir uns sehr über eine kurze Google-Bewertung freuen. Das würde uns sehr helfen! 🙏\n${REVIEW_LINK}`,
+  ja: `確定申告をお任せいただき、本当にありがとうございました！\n\nもしよろしければ、Googleに簡単なレビューをいただけるととても嬉しいです。私たちにとって大きな助けになります！🙏\n${REVIEW_LINK}`,
+  es: `¡Muchas gracias por confiarnos tu declaración de impuestos!\n\nSi tienes un minuto, te agradeceríamos mucho una breve reseña en Google. ¡Nos ayudaría muchísimo! 🙏\n${REVIEW_LINK}`,
+  fr: `Merci beaucoup de nous avoir confié ta déclaration d'impôts !\n\nSi tu as une minute, un petit avis Google nous ferait très plaisir. Ça nous aiderait énormément ! 🙏\n${REVIEW_LINK}`,
+  it: `Grazie mille per averci affidato la tua dichiarazione dei redditi!\n\nSe hai un minuto, ti saremmo molto grati per una breve recensione su Google. Ci aiuterebbe tantissimo! 🙏\n${REVIEW_LINK}`,
+  pt: `Muito obrigado por confiares em nós com a tua declaração de impostos!\n\nSe tiveres um minuto, agradecíamos muito uma breve avaliação no Google. Ajudava-nos imenso! 🙏\n${REVIEW_LINK}`,
 };
 
 export function reviewRequestMessage(lang?: string | null): string {

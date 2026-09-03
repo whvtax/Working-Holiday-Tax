@@ -7,7 +7,7 @@
  * If any of these ever go red, an off-policy message could reach a real
  * customer, so they are meant to be strict.
  */
-import { policyGuard, GuardContext, isConfidentlyEnglish } from '@/lib/will/policy-guard';
+import { policyGuard, GuardContext, isConfidentlyEnglish, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { APPROVED } from '@/lib/will/approved-messages';
 import { KNOWLEDGE_SEED } from '@/lib/will/knowledge-seed';
 
@@ -413,5 +413,105 @@ describe('REPLY_TOO_LONG: replies must read like a person texting', () => {
   it('does not fire when the message is an explicitly approved template', () => {
     const essay = 'x'.repeat(2000);
     expect(has(essay, 'REPLY_TOO_LONG', { isApprovedTemplate: true })).toBe(false);
+  });
+
+  // Jo's queue, 3 Sep: a German new lead got the [opening] in German, the guard
+  // recognised none of it (the corpus is English) and raised REPLY_TOO_LONG on
+  // the owner's own script. The playbook tells the model to answer in the
+  // customer's language, so this was every German and Japanese lead, not one.
+  describe('a translated approved script is not an essay', () => {
+    const germanOpening = 'Hey Lena! 😊 Natürlich, wir helfen dir gerne.\n\n'
+      + 'Wir haben zwei Optionen, je nach deiner Situation:\n\n'
+      + '*TFN: $220*\nUnser Team prüft deine Steuererklärung vollständig, einschließlich deiner '
+      + 'steuerlichen Ansässigkeit, Medicare und aller absetzbaren Ausgaben, um deine Rückerstattung zu maximieren.\n\n'
+      + '*TFN + ABN: $385*\nAlles aus der TFN-Option, plus eine vollständige Geschäftsaufstellung deiner '
+      + 'ABN-Einnahmen und -Ausgaben, alles in einer Steuererklärung zusammengefasst.\n\n'
+      + 'In beiden Fällen: Wenn deine Rückerstattung geringer ist als die Gebühr, erstatten wir dir die '
+      + 'Differenz. Wenn du Steuern nachzahlen musst, deckt die Gebühr die Prüfung ab und ist nicht erstattungsfähig.\n\n'
+      + 'Welche Option passt zu dir?';
+    const japaneseOpening = 'こんにちは、ユキさん！😊 もちろん、喜んでお手伝いします。\n\n'
+      + '状況に応じて、2つのオプションがあります：\n\n'
+      + '*TFN: $220*\n税務上の居住区分、Medicare、対象となるすべての控除を含め、税務申告を完全に確認し、還付金を最大化します。\n\n'
+      + '*TFN + ABN: $385*\nTFNオプションのすべてに加えて、ABNの収入と経費をカバーする完全な事業スケジュールを1つの申告にまとめます。\n\n'
+      + 'どちらの場合も、還付金が料金より少ない場合は差額を返金します。納税が必要な場合、料金は確認作業の費用となり、返金はできません。\n\n'
+      + 'どちらのオプションがよろしいですか？';
+
+    it('lets the German opening through', () => {
+      expect(germanOpening.length).toBeGreaterThan(450); // the case that was blocked
+      expect(has(germanOpening, 'REPLY_TOO_LONG')).toBe(false);
+    });
+
+    it('lets the Japanese opening through', () => {
+      expect(has(japaneseOpening, 'REPLY_TOO_LONG')).toBe(false);
+    });
+
+    it('lets the longest approved objection through in German', () => {
+      // o3 is the longest objection script (~530 chars in English); its German
+      // rendering is longer still and must not be an essay either.
+      const o3de = 'Verstehe ich total! Viele denken, dass eine Steuererklärung kostenlos ist, weil man sie '
+        + 'selbst über myGov einreichen kann. Das stimmt auch, aber dann bist du auf dich allein gestellt: '
+        + 'Ansässigkeit, Medicare, absetzbare Ausgaben, alles musst du selbst richtig einschätzen, und ein '
+        + 'Fehler dort kostet schnell mehr als unsere Gebühr. Bei uns prüft ein Team jede Position, damit '
+        + 'du die maximale Rückerstattung bekommst, und wenn deine Rückerstattung geringer ist als die '
+        + 'Gebühr, erstatten wir dir die Differenz. Du gehst also kein Risiko ein. Soll ich dir die '
+        + 'Zahlungsdetails schicken, damit wir loslegen können?';
+      expect(o3de.length).toBeGreaterThan(450);
+      expect(has(o3de, 'REPLY_TOO_LONG')).toBe(false);
+    });
+
+    it('still stops a German essay that outgrows any script', () => {
+      const para = 'Ich verstehe vollkommen, wo du herkommst, und ich möchte dir versichern, dass wir dir bei '
+        + 'jedem Schritt zur Seite stehen. Viele Backpacker fühlen sich genauso, wenn sie sich zum ersten '
+        + 'Mal bei uns melden, also sei dir sicher, dass deine Frage sehr häufig und sehr vernünftig ist. ';
+      expect(has(para.repeat(5), 'REPLY_TOO_LONG')).toBe(true);
+    });
+
+    it('gives an English reply no extra room at all', () => {
+      // The allowance exists only because the corpus cannot see translations.
+      // English improvised prose is still capped exactly where it was.
+      const essay = 'I completely understand where you are coming from and I want to reassure you that '
+        + 'we are here to help you every step of the way. Many backpackers feel exactly the same way when '
+        + 'they first get in touch with us, so please know that your question is very common and very '
+        + 'reasonable. What we usually do is take a careful look at your situation, go through everything '
+        + 'in detail, and then come back to you with a clear picture of where you stand. Please feel free '
+        + 'to let me know if you have any other questions at all, I am always happy to help.';
+      expect(essay.length).toBeLessThan(1000); // under the translated ceiling, over the English one
+      expect(has(essay, 'REPLY_TOO_LONG')).toBe(true);
+    });
+  });
+
+  // Same queue, same day: an English reply built from a Library message Jo had
+  // edited in the CRM. The model sent what it was told to send; the guard only
+  // knew the code copy, so the owner's own wording counted as improvised prose.
+  describe('the live Library counts as approved wording', () => {
+    const edited = 'Perfect! Here is how it works with us: our team goes through your whole return, '
+      + 'checks your residency, Medicare and every deduction you can claim, and prepares it for lodgement. '
+      + 'We send you an estimate first, then the return for your signature, and we lodge it the moment '
+      + 'you sign. If your refund ends up lower than the fee we refund you the difference, so there is '
+      + 'nothing to lose by letting us take a look. '
+      + 'Once you have made the payment, just send us a screenshot and we will get started!';
+
+    afterEach(() => registerLibraryBodies([]));
+
+    it('is the model prose limit without registration', () => {
+      expect(edited.length).toBeGreaterThan(450);
+      expect(has(edited, 'REPLY_TOO_LONG')).toBe(true);
+    });
+
+    it('passes once the Library wording is registered', () => {
+      registerLibraryBodies([edited]);
+      expect(has(edited, 'REPLY_TOO_LONG')).toBe(false);
+    });
+
+    it('is replaced, not accumulated, on the next registration', () => {
+      registerLibraryBodies([edited]);
+      registerLibraryBodies(['Something else entirely.']);
+      expect(has(edited, 'REPLY_TOO_LONG')).toBe(true);
+    });
+
+    it('ignores empty bodies', () => {
+      registerLibraryBodies(['', '   ']);
+      expect(has('', 'REPLY_TOO_LONG')).toBe(false);
+    });
   });
 });
