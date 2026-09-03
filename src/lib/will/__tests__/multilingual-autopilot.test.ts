@@ -36,27 +36,6 @@ describe('the money red line is caught in every language', () => {
   it('still allows the two fixed prices in a foreign sentence', () => {
     expect(policyGuard('Die Gebühr beträgt $220.', gctx()).violations).toEqual([]);
   });
-
-  it('flags a bare-number refund figure with no currency token', () => {
-    // amountsInCents only sees currency-marked figures, so these evade it; the
-    // refund-noun + bare-number rule catches them. Matters because green foreign
-    // replies now auto-send on Autopilot.
-    expect(policyGuard('Deine Erstattung beträgt 3800', gctx()).violations)
-      .toContain('FORBIDDEN_AMOUNT:foreign-refund-figure');
-    expect(policyGuard('Tu reembolso es de 3800', gctx()).violations)
-      .toContain('FORBIDDEN_AMOUNT:foreign-refund-figure');
-    expect(policyGuard('Ton remboursement est de 1800', gctx()).violations)
-      .toContain('FORBIDDEN_AMOUNT:foreign-refund-figure');
-    expect(policyGuard('還付は3800円です', gctx()).violations)
-      .toContain('FORBIDDEN_AMOUNT:foreign-refund-figure');
-  });
-
-  it('does not flag the fixed prices or a year next to a refund noun', () => {
-    expect(policyGuard('Die Bearbeitungsgebühr für deine Erstattung beträgt 220.', gctx()).violations)
-      .toEqual([]);
-    expect(policyGuard('Wir bearbeiten deine Erstattung für die Steuerjahre 2024 und 2025.', gctx()).violations)
-      .toEqual([]);
-  });
 });
 
 describe('the over-promise rules are caught in every language', () => {

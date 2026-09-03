@@ -132,6 +132,64 @@ export function firstNameOf(name: string | null | undefined): string {
   return String(name).trim().split(/\s+/)[0] ?? '';
 }
 
+/** Words that look like a name to a regex but never are: greetings, fillers,
+ *  and the things people type after "I'm" that are not their name. */
+const NOT_A_NAME = new Set([
+  'hi', 'hey', 'hello', 'hiya', 'yes', 'no', 'ok', 'okay', 'thanks', 'thank',
+  'test', 'me', 'you', 'user', 'admin', 'whatsapp', 'business', 'info',
+  'interested', 'looking', 'from', 'a', 'an', 'the', 'here', 'just', 'wondering',
+  'hoping', 'on', 'in', 'not', 'sorry', 'back', 'new', 'currently', 'working',
+  'doing', 'planning', 'trying', 'able', 'happy', 'glad', 'keen', 'good', 'fine',
+  'also', 'still', 'only', 'already', 'going', 'getting', 'thinking', 'asking',
+  'writing', 'messaging', 'reaching', 'contacting', 'sending', 'filling', 'done',
+  'finished', 'ready', 'unsure', 'confused', 'worried', 'concerned', 'about',
+  'after', 'so', 'very', 'really', 'quite', 'pretty', 'super', 'now', 'today',
+]);
+
+/** Turn a candidate into a clean, presentable first name, or '' if it is not
+ *  one. A real first name is letters only (apostrophe/hyphen allowed inside),
+ *  2 to 20 characters, and not a greeting or filler word. Emoji, digits,
+ *  handles, and "xX_Dave_Xx" all come back as ''. All-lower/all-upper input is
+ *  title-cased ("sarah" -> "Sarah"); mixed case is kept ("McDonald"). */
+export function cleanFirstName(candidate: string | null | undefined): string {
+  if (!candidate) return '';
+  // Drop anything before the first letter (a leading emoji, bracket, quote), so
+  // "🎉 Sarah" reads as "Sarah", then take the first word and trim its edges.
+  const raw = String(candidate).trim().replace(/^[^\p{L}]+/u, '').split(/\s+/)[0] ?? '';
+  const stripped = raw.replace(/[^\p{L}]+$/u, '');
+  if (!/^\p{L}[\p{L}'’-]{1,19}$/u.test(stripped)) return '';
+  if (NOT_A_NAME.has(stripped.toLowerCase())) return '';
+  const allLower = stripped === stripped.toLowerCase();
+  const allUpper = stripped === stripped.toUpperCase();
+  if (allLower || allUpper) {
+    return stripped.charAt(0).toUpperCase() + stripped.slice(1).toLowerCase();
+  }
+  return stripped.charAt(0).toUpperCase() + stripped.slice(1);
+}
+
+/** A first name the customer stated in their own message ("Hi, I'm Sarah",
+ *  "my name is Dave", "this is Tom"). "I'm ..." is only trusted when the next
+ *  word is capitalised, so "I'm interested" / "I'm from Germany" never count. */
+export function nameFromText(text: string | null | undefined): string {
+  if (!text) return '';
+  const s = String(text);
+  const explicit = s.match(/\b(?:my name(?:'s| is)|this is|name'?s)\s+([\p{L}][\p{L}'’-]{1,19})\b/iu);
+  if (explicit) return cleanFirstName(explicit[1]);
+  // No `i` flag here on purpose: the name must actually be capitalised, and the
+  // `i` flag would let \p{Lu} match lowercase too. So "I'm" is spelled out.
+  const im = s.match(/\b(?:[Ii]['’]?m|[Ii] am)\s+(\p{Lu}[\p{L}'’-]{1,19})\b/u);
+  if (im) return cleanFirstName(im[1]);
+  return '';
+}
+
+/** The name to greet a NEW lead with in the opening, or '' for a plain "Hey!".
+ *  Tries the WhatsApp profile name first, then a name stated in their message
+ *  (Jo, 3 Sep): a clean first name gives "Hey Sarah!", anything else (empty,
+ *  an emoji, a handle, a number) falls back to "Hey!" so nothing odd goes out. */
+export function greetingName(profileName: string | null | undefined, text: string | null | undefined): string {
+  return cleanFirstName(firstNameOf(profileName)) || nameFromText(text);
+}
+
 const NAME_ESCAPE = /[.*+?^${}()|[\]\\]/g;
 
 /** Remove the customer's first name where it is used to ADDRESS them (a leading

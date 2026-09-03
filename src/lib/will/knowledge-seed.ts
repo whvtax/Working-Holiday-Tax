@@ -23,7 +23,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I'd like to know how much I'm likely to get back before paying you any money",
       "can you give me a rough idea of my refund first?"
     ],
-    "answer": "That’s a really fair question!\n\nTo give you an estimate, we first carry out a $110 Tax Assessment, where we review your full situation with the ATO and give you your estimated tax outcome.\n\nThe $110 assessment covers the full review whatever the outcome, so you’ll see exactly where you stand before deciding whether to go ahead and lodge 😊",
+    "answer": "That’s a really fair question!\n\nTo give you an estimate, we first need to review your full situation with the ATO, which is the main part of our service.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable 😊",
     "keywords": [
       "estimate",
       "before",
@@ -49,7 +49,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "is this legit?",
       "found you on Instagram and wasn't sure if this is real"
     ],
-    "answer": "Completely understand, it’s smart to check 😊\n\nWe operate under the supervision of a registered tax agent and have helped hundreds of backpackers from more than 45 countries.\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle reviews: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nClient agreement: https://workingholidaytax.com.au/client-agreement\n\nThe $110 assessment covers the full review whatever the outcome, so you’ll see exactly where you stand before deciding whether to go ahead and lodge.",
+    "answer": "Completely understand, it’s smart to check 😊\n\nWe operate under the supervision of a registered tax agent and have helped hundreds of backpackers from more than 45 countries.\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle reviews: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nClient agreement: https://workingholidaytax.com.au/client-agreement\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "legit",
       "real",
@@ -74,7 +74,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "how much do you charge for each tax return?",
       "is it a flat fee or %?"
     ],
-    "answer": "Our service is two steps, and the fee is fixed, never a percentage of your refund.\n\nStep 1, a $110 Tax Assessment: we review your full situation and give you your estimated tax outcome.\n\nStep 2, Preparation & Lodgement, only if you decide to go ahead: an additional $110 for TFN only ($220 all up), or an additional $275 for TFN + ABN ($385 all up).\n\nThe $110 assessment covers the review whatever the outcome.",
+    "answer": "Our fee is fixed, never a percentage of your refund.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nIf you get a refund and it comes to less than the fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "price",
       "pricing",
@@ -99,7 +99,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what if my refund is not even that much, might not be worth it",
       "do I pay 220 automatically?"
     ],
-    "answer": "The first step is a $110 Tax Assessment, which we carry out whatever your refund turns out to be. The $110 assessment covers the full review whatever the outcome, so you’ll see exactly where you stand before deciding whether to go ahead and lodge.",
+    "answer": "If you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "fee",
       "small",
@@ -151,7 +151,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "is it not possible to pay after I receive my tax return?",
       "can I do the payment after the tax return is in?"
     ],
-    "answer": "The service works in two steps: the $110 Tax Assessment is paid first, then the lodgement fee only once you've seen your result and decide to go ahead. So there's no option to pay after your refund arrives, but you'll see your full outcome before committing to lodge, so there are no surprises 😊",
+    "answer": "Let me check this with the team and get back to you shortly 😊",
     "keywords": [
       "pay",
       "after",
@@ -349,7 +349,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I have both TFN and ABN income",
       "I earned money on my ABN"
     ],
-    "answer": "Since you also have ABN income, your return is TFN + ABN. Our service is two steps: a $110 Tax Assessment first, then Preparation & Lodgement is an additional $275 if you decide to go ahead ($385 all up).\n\nPlease send us:\n• The type of work you did under your ABN\n• Your total ABN income\n• Invoices or income records\n• For rideshare or delivery work, your full earnings reports\n• Work-related expenses, with receipts or bank statements\n\nOnce we have everything, we’ll get started.",
+    "answer": "Since you also have ABN income, the fee for your TFN + ABN return is $385.\n\nPlease send us:\n• The type of work you did under your ABN\n• Your total ABN income\n• Invoices or income records\n• For rideshare or delivery work, your full earnings reports\n• Work-related expenses, with receipts or bank statements\n\nOnce we have everything, we’ll get started.",
     "keywords": [
       "abn",
       "uber",
@@ -376,7 +376,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I have missed returns from before",
       "can you lodge all three years?"
     ],
-    "answer": "Yes, absolutely! We can help with previous years.\n\nOur service is two steps, with a fixed fee per year.\n\nStep 1, a $110 Tax Assessment: we review your full situation and give you your estimated tax outcome.\n\nStep 2, Preparation & Lodgement, only if you decide to go ahead: an additional $110 for TFN only ($220 all up), or an additional $275 for TFN + ABN ($385 all up).\n\nOnce we’ve reviewed your details, we’ll confirm which years need to be lodged and provide an estimate for each.",
+    "answer": "Yes, absolutely! We can help with previous years.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nOnce payment is made and we’ve reviewed your details, we’ll confirm which years need to be lodged and provide an estimate for each.",
     "keywords": [
       "previous",
       "years",
@@ -422,7 +422,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I want to know if I'm eligible and then lodge it myself",
       "can I just get an estimate then do it myself?"
     ],
-    "answer": "No problem, and we appreciate you being upfront 😊\n\nIt’s completely your call. With us, the first step is a $110 Tax Assessment, where a specialist reviews your residency, deductions and Medicare and gives you your estimated tax outcome. If you decide to go ahead, Preparation & Lodgement is a separate step ($110 more for TFN only, $220 all up) and we prepare and lodge everything for you, all online.\n\nThe $110 assessment covers the full review whatever the outcome, so you’ll see exactly where you stand before deciding whether to go ahead and lodge. If you want peace of mind that everything is done properly, we’d be happy to help.",
+    "answer": "No problem, and we appreciate you being upfront 😊\n\nIt’s completely your call. With us, a specialist reviews your residency, deductions and Medicare, then prepares and lodges everything for you, all online.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable. If you want peace of mind that everything is done properly, we’d be happy to help.",
     "keywords": [
       "myself",
       "lodge",
@@ -469,7 +469,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "why would I pay before I know the amount?",
       "is this the full fee or are there extra charges?"
     ],
-    "answer": "Our service is two steps. It starts with a $110 Tax Assessment, where a specialist reviews your full situation, checks that nothing you’re entitled to is missed, and gives you your estimated tax outcome. If you decide to go ahead, Preparation & Lodgement is an additional $110 for a TFN only return ($220 all up), and we prepare and lodge everything online.\n\nThe $110 assessment covers the full review whatever the outcome, so you’ll see exactly where you stand before deciding whether to go ahead and lodge.",
+    "answer": "The $220 covers your TFN only return from start to finish. A specialist reviews your full situation, checks that nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. If you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "upfront",
       "pay",
@@ -495,7 +495,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what's the benefit of using you rather than doing it myself?",
       "can't I just do this myself for free?"
     ],
-    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, the first step is a $110 Tax Assessment, where a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, and gives you your estimated tax outcome. If you decide to go ahead, Preparation & Lodgement is a separate step ($110 more for TFN only, $220 all up) and we prepare and lodge everything online.\n\nThe $110 assessment covers the full review whatever the outcome, so you’ll see exactly where you stand before deciding whether to go ahead and lodge.",
+    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "why",
       "agency",
@@ -521,7 +521,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "any chance of a discount?",
       "can you do it cheaper?"
     ],
-    "answer": "Completely understand wanting the best value 😊 The two-step fee ($110 assessment, then an additional $110 to lodge, $220 all up for TFN only) is the same for everyone, so we can’t reduce it.\n\nThe $110 assessment covers the full review whatever the outcome, so you’ll see exactly where you stand before deciding whether to go ahead and lodge.",
+    "answer": "Completely understand wanting the best value 😊 The fee is fixed at $220 for a TFN only return and is the same for everyone, so we can’t reduce it.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "discount",
       "cheaper",
@@ -573,7 +573,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I started it myself and I'm not sure I filled it in correctly",
       "I already did it on my own but something looks wrong"
     ],
-    "answer": "Since you’ve already started the return yourself, we begin with a $110 Tax Assessment. We’ll check everything, calculate the correct result and make sure nothing has been missed.\n\nThe $110 assessment is non-refundable and covers the review whatever the outcome. If you decide to go ahead, lodgement is an additional $110 ($220 all up for TFN only).",
+    "answer": "Since you’ve already started the return yourself, the $220 is an upfront review fee. We’ll check everything, calculate the correct result and make sure nothing has been missed.\n\nThe review fee is non-refundable, regardless of the outcome.",
     "keywords": [
       "already",
       "myself",
@@ -732,7 +732,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I have an ABN and I owe the ATO, do I get the fee back?",
       "if after the check I still can't get a refund, is the money I paid gone?"
     ],
-    "answer": "If it turns out you owe money instead of getting a refund, whether to lodge is your decision. Lodging is your own legal obligation and responsibility, but if you decide not to go ahead, we won’t lodge it for you.\n\nThe $110 Tax Assessment covers the review we carry out whatever the outcome and is non-refundable. Preparation & Lodgement is only charged if you decide to go ahead (an additional $110 for TFN only, $220 all up, or an additional $275 for TFN + ABN, $385 all up).",
+    "answer": "If it turns out you owe money instead of getting a refund, whether to lodge is your decision. Lodging is your own legal obligation and responsibility, but if you decide not to go ahead, we won’t lodge it for you.\n\nEither way, the service fee, $220 or $385, covers the review we carry out and is non-refundable.",
     "keywords": [
       "owe",
       "payable",
@@ -785,7 +785,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "can you check whether my return was done correctly?",
       "another agent did it and I think it's wrong, can it be amended?"
     ],
-    "answer": "Absolutely! We start with a $110 Tax Assessment, where we review your return, check the calculation and see whether anything needs to be amended.\n\nThe $110 assessment is non-refundable and covers the review whatever the outcome. If an amendment is needed and you decide to go ahead, lodgement is an additional $110 ($220 all up for TFN only).",
+    "answer": "Absolutely! We’ll review your return, check the calculation and see whether anything needs to be amended.\n\nThe review fee is $220 and is non-refundable.",
     "keywords": [
       "amend",
       "amendment",
@@ -1017,7 +1017,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I got a free check link from a video about you",
       "your site said free eligibility test"
     ],
-    "answer": "Sorry for the confusion. We no longer offer free eligibility checks. We now provide a full review with personal guidance. It starts with a $110 Tax Assessment, and lodgement is a separate step only if you decide to go ahead ($220 all up for TFN only).\n\nThe $110 assessment covers the full review whatever the outcome, so you’ll see exactly where you stand before deciding whether to go ahead and lodge.",
+    "answer": "Sorry for the confusion. We no longer offer free eligibility checks. We now provide a full review with personal guidance for $220.\n\nIf you get a refund and it comes to less than our fee, we refund you the difference, so our fee never costs you more than the refund you get back. If you owe tax instead of getting a refund, the fee covers our review either way and isn’t refundable.",
     "keywords": [
       "free",
       "eligibility",
@@ -1275,7 +1275,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "Do I pay separately for each year?",
       "Is it cheaper if I do them all together?"
     ],
-    "answer": "The fee applies per year. For each TFN only year that's a $110 Tax Assessment, then an additional $110 to prepare and lodge if you decide to go ahead ($220 all up per year).",
+    "answer": "The fee is $220 per TFN only year, so there's one fee for each return we lodge.",
     "keywords": [
       "multiple years",
       "back years",
@@ -1555,7 +1555,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "My friend paid less than that last year, why is mine more?",
       "I saw a lower number somewhere, which one is right?"
     ],
-    "answer": "I can see where the confusion might have come from. Our service is two steps for a TFN only return: a $110 Tax Assessment, then an additional $110 to prepare and lodge if you decide to go ahead ($220 all up).\n\nThe assessment is a proper review of your situation and gives you your estimated tax outcome, and the $110 covers that review whatever the outcome, so you'll see exactly where you stand before deciding whether to go ahead and lodge.",
+    "answer": "I can see where the confusion might have come from. The current fee for a TFN only return is $220.\n\nThat covers the whole return from start to finish, a proper review of your situation and lodging everything with the ATO. If you get a refund and it's less than $220, we top up the difference, so our fee never costs you more than the refund you get back.",
     "keywords": [
       "price",
       "fee",

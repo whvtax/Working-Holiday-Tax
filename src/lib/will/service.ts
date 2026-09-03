@@ -15,7 +15,7 @@ import { AUTOPILOT_REPLY_DELAY_SECONDS } from './config';
 import { isIdentityQuestion } from './identity-question';
 import { firstNameOf } from './text-normalize';
 import { suggestReply } from './suggest';
-import { APPROVED, shouldDropOwingCaveat } from './approved-messages';
+import { APPROVED } from './approved-messages';
 import { assessPaymentProofImage, describeAttachment } from './claude';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
@@ -311,46 +311,6 @@ async function handleIncomingInner(
     }
   }
 
-  // PAYMENT 2 (the lodgement fee), deterministic — the same language-proof trust
-  // as payment 1, but from LODGEMENT_PENDING it moves the customer to In Progress
-  // (FINAL_REVIEW) and sends the lodgement-received note (Jo, 2 Sep). Placed
-  // BEFORE the AI-budget gate because claimsPayment costs no AI, and gated on the
-  // same hard silences as any send (kill switch / owner takeover / legacy): if any
-  // of those is set we fall through to the normal path, which stays silent.
-  // Drafted for approval in Supervised, sent and advanced in Autopilot.
-  if (customer.state === 'LODGEMENT_PENDING' && claimsPayment(text)
-      && !killSwitch && !customer.aiPaused && !customer.isLegacy) {
-    if (requiresApproval(mode)) {
-      await store.addMessage({
-        customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL',
-        body: APPROVED.lodgement_received, meta: { proposedState: 'FINAL_REVIEW' },
-      });
-      await store.addTask({
-        customerId: customer.id, customerName: customer.name ?? meta?.name ?? waId,
-        reason: 'Customer reports the lodgement payment. The lodgement confirmation is drafted and waiting for your approval; nothing has moved yet.',
-        severity: 'REVIEW', context: text.slice(0, 200), suggestedReply: null,
-      });
-      await store.audit('system', 'lodgement_payment_drafted', { customerId: customer.id });
-    } else {
-      const won = await store.setState(customer.id, 'FINAL_REVIEW', 'SYSTEM');
-      if (won) {
-        const out = await deliverOut(customer, APPROVED.lodgement_received, 'AI');
-        if (!out.ok) {
-          await store.addTask({
-            customerId: customer.id, customerName: customer.name ?? meta?.name ?? waId,
-            reason: `Lodgement payment confirmed and they are moved to In Progress, but WhatsApp rejected the confirmation: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
-            severity: 'URGENT', context: text.slice(0, 200), suggestedReply: APPROVED.lodgement_received,
-          }).catch(() => {});
-        }
-        const fresh0 = await store.getCustomerById(customer.id);
-        if (fresh0) await reconcileSchedule(fresh0).catch(() => {});
-        await store.audit('system', 'lodgement_payment_advanced_stage', { customerId: customer.id });
-      }
-    }
-    const c2 = await store.getCustomerByWaId(waId);
-    return { outcome: { kind: 'sent', decision: { action: 'reply', confidence: 1 } }, customer: c2 ?? customer };
-  }
-
   // COST-01: daily global cap on paid AI decisions. When the budget is spent,
   // hand the conversation to a human instead of calling the model.
   if (await aiBudgetExhausted()) {
@@ -373,15 +333,6 @@ async function handleIncomingInner(
     paid: customer.paid, formComplete: customer.formComplete,
     missingDocs: customer.missingDocs, estimatedRefundCents: customer.estimatedRefundCents,
     lang: customer.lang,
-    // UK / German / Japanese customers reliably get a refund, so their price
-    // message drops the owing caveat (Jo, 31 Aug). Caught by ANY of: the
-    // conversation language, the phone country code, or a stated origin in the
-    // chat, so it works whether they use a home number or an Australian +61 SIM.
-    dropOwingCaveat: shouldDropOwingCaveat({
-      lang: customer.lang,
-      waId: customer.waId,
-      text: `${history.filter((t) => t.role === 'customer').map((t) => t.text).join(' ')} ${text}`,
-    }),
     knowledge,
   };
 
@@ -863,18 +814,7 @@ async function handlePaymentProofMediaInner(
   // `optedOut` belongs in this condition exactly as it does on every other send
   // path: a customer who asked us to stop must not receive a "payment received"
   // reply, however that payment reached us.
-  // Two-step model (Jo, 2 Sep): a screenshot may confirm EITHER payment. Payment 1
-  // (assessment) is confirmed from a pre-payment PAYMENT_PROOF_STATE; payment 2
-  // (lodgement) is confirmed from LODGEMENT_PENDING, where the customer is already
-  // paid (the assessment) — so the blanket `customer.paid` block is kept for the
-  // first-payment states but lifted for LODGEMENT_PENDING.
-  if (!customer || customer.optedOut) return null;
-  const proofEligible = PAYMENT_PROOF_STATES.includes(customer.state) || customer.state === 'LODGEMENT_PENDING';
-  if (!proofEligible || (customer.paid && customer.state !== 'LODGEMENT_PENDING')) return null;
-  // Which payment this screenshot confirms, and where it takes them.
-  const isLodgementPayment = customer.state === 'LODGEMENT_PENDING';
-  const confirmTargetState: CustomerState = isLodgementPayment ? 'FINAL_REVIEW' : 'PAID';
-  const confirmBody = isLodgementPayment ? APPROVED.lodgement_received : APPROVED.payment_received;
+  if (!customer || customer.optedOut || customer.paid || !PAYMENT_PROOF_STATES.includes(customer.state)) return null;
 
   // ── ROUTE 1: they said it. ────────────────────────────────────────────────
   // Jo, 27 Aug: at the payment step we trust the customer, and most people send
@@ -954,16 +894,16 @@ async function handlePaymentProofMediaInner(
   if (requiresApproval(mode)) {
     const draft = await store.addMessage({
       customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL',
-      body: confirmBody,
-      // proposedState is what approve_message already knows how to apply — same
-      // guard re-check, same cascade, same reconcileSchedule — as any other
-      // deferred-state draft. PAID -> FORM_PENDING for payment 1; FINAL_REVIEW
-      // for the lodgement payment.
-      meta: { proposedState: confirmTargetState },
+      body: APPROVED.payment_received,
+      // proposedState: 'PAID' is exactly what approve_message already knows
+      // how to apply — same guard re-check, same PAID -> FORM_PENDING
+      // cascade via autoAdvanceToForm, same reconcileSchedule — as any other
+      // deferred-state draft. No new approval machinery needed here.
+      meta: { proposedState: 'PAID' },
     });
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-      reason: `Customer confirmed ${isLodgementPayment ? 'the lodgement payment' : 'payment'} (${trustedBecause}). A reply is drafted and waiting for your approval — nothing has been sent or moved yet.`,
+      reason: `Customer confirmed payment (${trustedBecause}). A "payment received" reply is drafted and waiting for your approval — nothing has been sent or moved yet.`,
       severity: 'REVIEW', context: body, suggestedReply: null,
     });
     await store.audit('system', 'payment_proof_drafted', { customerId: customer.id, mediaKind: meta.media.kind, messageId: draft.id });
@@ -977,20 +917,13 @@ async function handlePaymentProofMediaInner(
   // again here is exactly the duplicate the in-process mutex cannot prevent
   // across instances. Return the current row without re-sending. The same-
   // instance case is still covered by queueForCustomer upstream.
-  const won = await store.setState(customer.id, confirmTargetState, 'SYSTEM'); // payment 1 also flips customer.paid = true
+  const won = await store.setState(customer.id, 'PAID', 'SYSTEM'); // also flips customer.paid = true
   if (!won) {
     await store.audit('system', 'payment_confirmed_by_other_instance', { customerId: customer.id });
     return (await store.getCustomerByWaId(waId)) ?? customer;
   }
-  // Payment 1 cascades into the form; the lodgement payment does not (the return
-  // is already prepared, it just moves to In Progress for signature).
-  if (!isLodgementPayment) {
-    const bank = await getBank();
-    await autoAdvanceToForm(customer.id, bank);
-  } else {
-    const fresh0 = await store.getCustomerById(customer.id);
-    if (fresh0) await reconcileSchedule(fresh0).catch(() => {});
-  }
+  const bank = await getBank();
+  await autoAdvanceToForm(customer.id, bank);
 
   // THE RESULT OF THE SEND IS NOT OPTIONAL READING.
   //
@@ -1003,29 +936,27 @@ async function handlePaymentProofMediaInner(
   // customer was never asked for, and from their side they paid and we went
   // silent. The state changes are correct and deliberately stay; what changes
   // is that the task now tells the truth about the message.
-  const out = await deliverOut(customer, confirmBody, 'AI');
+  const out = await deliverOut(customer, APPROVED.payment_received, 'AI');
   if (!out.ok) {
     await store.audit('channel', 'payment_received_send_failed', {
-      customerId: customer.id, error: out.error ?? 'unknown error', payment: isLodgementPayment ? 'lodgement' : 'assessment',
+      customerId: customer.id, error: out.error ?? 'unknown error',
     }).catch(() => { /* the store is a likely thing to have just failed */ });
   }
 
-  // NO "worth a glance" task on the happy path (Jo, 2 Sep: "why would they lie
-  // to me?"). When the payment is confirmed AND the customer was told, the stage
-  // moved itself and there is nothing for a person to do, so Will stays silent
-  // and raises nothing. The ONE case that still raises a task is a genuine
-  // problem, not a glance: the confirmation FAILED to send, so the customer paid
-  // and heard nothing. That is the most urgent thing on the board, with the
-  // reply ready to send in one click.
-  if (!out.ok) {
-    await store.addTask({
-      customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-      reason: `${isLodgementPayment ? 'LODGEMENT PAID' : 'PAID'}, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to ${isLodgementPayment ? 'In Progress' : 'Paid'}, but WhatsApp rejected the confirmation: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
-      severity: 'URGENT',
-      context: body,
-      suggestedReply: confirmBody,
-    });
-  }
+  // A heads-up, not a to-do: the stage already moved itself. This exists so
+  // the owner can glance at the photo and catch a wrong/fake one, not because
+  // anything is waiting on them.
+  await store.addTask({
+    customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
+    reason: out.ok
+      ? `Customer confirmed payment (${trustedBecause}). Moved to Paid automatically. Worth a glance to confirm it looks right.`
+      : `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
+    // A customer who paid and heard nothing is the most urgent thing on the
+    // board, and the reply is ready to send in one click rather than retyped.
+    severity: out.ok ? 'REVIEW' : 'URGENT',
+    context: body,
+    suggestedReply: out.ok ? null : APPROVED.payment_received,
+  });
 
   await store.audit('system', 'auto_paid_from_media', { customerId: customer.id, mediaKind: meta.media.kind });
   return (await store.getCustomerByWaId(waId)) ?? customer;

@@ -9,7 +9,7 @@
   "crons": [
     {
       "path": "/api/will/tick",
-      "schedule": "*/2 * * * *"
+      "schedule": "*/5 * * * *"
     }
   ],
   "headers": [

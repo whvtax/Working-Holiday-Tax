@@ -47,10 +47,10 @@ export async function POST(req: Request) {
 
   if (overwrite) {
     // Sync mode: bring every seeded key's body in the DB up to the code.
-    const { updated, added, keys } = await syncTemplatesFromCode(store);
+    const { updated, added, removed, keys } = await syncTemplatesFromCode(store);
     return NextResponse.json({
-      ok: true, seeded: 0, updated, backfilled: added, keys,
-      note: updated || added ? 'templates synced from code' : 'templates already match code',
+      ok: true, seeded: 0, updated, backfilled: added, removed, keys,
+      note: updated || added || removed ? 'templates synced from code' : 'templates already match code',
     });
   }
 

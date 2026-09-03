@@ -396,19 +396,8 @@ export default function DashboardClient() {
   const [doneLink, setDoneLink]         = useState<{id:string;name:string|null;waId:string;state:string;stage:string|null}|null>(null)
   const [doneTemplate, setDoneTemplate] = useState('')
   const [doneLooking, setDoneLooking]   = useState(false)
-  // Two-step model estimate composer (Jo, 2 Sep): two toggles (residency,
-  // refund/payable), the Medicare exemption toggle, and the money lines. The
-  // income type decides the lodgement fee shown in the result message.
-  const [estResidency, setEstResidency] = useState<'WHM'|'RESIDENT'>('WHM')
-  const [estIncome, setEstIncome]       = useState<'TFN'|'TFN_ABN'>('TFN')
-  const [estOutcome, setEstOutcome]     = useState<'REFUND'|'PAYABLE'>('REFUND')
-  const [estMedicareExempt, setEstMedicareExempt] = useState(true)
-  const [estTaxableIncome, setEstTaxableIncome]   = useState('')
-  const [estTaxWithheld, setEstTaxWithheld]       = useState('')
-  const [estTaxPayable, setEstTaxPayable]         = useState('')
-  const [estExpenses, setEstExpenses]             = useState('')
-  const [estMedicare, setEstMedicare]             = useState('')
-  const [estOutcomeAmt, setEstOutcomeAmt]         = useState('')
+  const [doneAmt, setDoneAmt]           = useState('')
+  const [doneInvoice, setDoneInvoice]   = useState('')
   const [doneBusy, setDoneBusy]         = useState(false)
   const [doneErr, setDoneErr]           = useState<string|null>(null)
   const doneReq = useRef<string|null>(null)
@@ -684,9 +673,7 @@ export default function DashboardClient() {
     // here that could send an estimate to the wrong person.
     doneReq.current = task.id
     setDoneFor(task); setDoneLink(null); setDoneTemplate('')
-    setEstResidency('WHM'); setEstIncome('TFN'); setEstOutcome('REFUND'); setEstMedicareExempt(true)
-    setEstTaxableIncome(''); setEstTaxWithheld(''); setEstTaxPayable(''); setEstExpenses(''); setEstMedicare(''); setEstOutcomeAmt('')
-    setDoneErr(null); setDoneLooking(true)
+    setDoneAmt(''); setDoneInvoice(''); setDoneErr(null); setDoneLooking(true)
     try {
       const r = await fetch(`/api/will/link?phone=${encodeURIComponent(task.whatsapp || '')}`)
       const j = await r.json()
@@ -700,41 +687,28 @@ export default function DashboardClient() {
 
   function closeDone() {
     setDoneFor(null); setDoneLink(null); setDoneTemplate('')
-    setEstResidency('WHM'); setEstIncome('TFN'); setEstOutcome('REFUND'); setEstMedicareExempt(true)
-    setEstTaxableIncome(''); setEstTaxWithheld(''); setEstTaxPayable(''); setEstExpenses(''); setEstMedicare(''); setEstOutcomeAmt('')
-    setDoneErr(null); setDoneBusy(false)
+    setDoneAmt(''); setDoneInvoice(''); setDoneErr(null); setDoneBusy(false)
   }
 
-  /** Send the two-step result + lodgement request, and only then finish the
-   *  task. The order is the whole point: marking done wipes the TFN, the bank
-   *  details and the files, so it must never happen for a message that did not
-   *  actually leave. */
+  /** Send the estimate, and only then finish the task. The order is the whole
+   *  point: marking done wipes the TFN, the bank details and the files, so it
+   *  must never happen for a message that did not actually leave. */
   async function sendEstimateThenDone() {
     if (!doneFor || !doneLink) return
-    const cents = (s: string) => Math.round((parseFloat(s.replace(/[^0-9.]/g,'')) || 0) * 100)
-    const required: [string, string][] = [
-      [estTaxableIncome, 'taxable income'], [estTaxWithheld, 'tax withheld'],
-      [estTaxPayable, 'tax payable'], [estOutcomeAmt, estOutcome === 'REFUND' ? 'refund amount' : 'amount payable'],
-    ]
-    for (const [v, label] of required) {
-      if (!Number.isFinite(parseFloat(v.replace(/[^0-9.]/g,'')))) { setDoneErr(`Enter the ${label}`); return }
-    }
-    if (!estMedicareExempt && !Number.isFinite(parseFloat(estMedicare.replace(/[^0-9.]/g,'')))) {
-      setDoneErr('Enter the Medicare levy amount, or mark exempt'); return
-    }
+    const amount = parseFloat(doneAmt.replace(/[^0-9.]/g,''))
+    if (!Number.isFinite(amount) || amount <= 0) { setDoneErr('Enter the refund amount'); return }
+    let invoice = ''
+    try {
+      const u = new URL(doneInvoice.trim())
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') throw new Error('scheme')
+      invoice = u.toString()
+    } catch { setDoneErr('Paste the invoice link'); return }
 
     setDoneBusy(true); setDoneErr(null)
     try {
       const r = await fetch('/api/will/actions',{
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          action:'send_estimate', customerId: doneLink.id,
-          residency: estResidency, incomeType: estIncome, outcome: estOutcome,
-          medicareExempt: estMedicareExempt,
-          taxableIncomeCents: cents(estTaxableIncome), taxWithheldCents: cents(estTaxWithheld),
-          taxPayableCents: cents(estTaxPayable), expensesCents: cents(estExpenses),
-          medicareCents: estMedicareExempt ? 0 : cents(estMedicare), outcomeCents: cents(estOutcomeAmt),
-        }),
+        body: JSON.stringify({ action:'send_estimate', customerId: doneLink.id, amountCents: Math.round(amount*100), invoiceLink: invoice }),
       })
       const j = await r.json().catch(()=>null)
       if (!r.ok || !j?.ok) {
@@ -1329,7 +1303,8 @@ export default function DashboardClient() {
     })()
     return () => { cancelled = true }
   }, [doneTasks])
-  async function sendSignatureFromCard(taskId: string, willId: string, _name: string) {
+  async function sendSignatureFromCard(taskId: string, willId: string, name: string) {
+    if (!confirm(`Send the "your tax return is ready for signature" message to ${name}?`)) return
     setSigBusy(taskId)
     try {
       const r = await fetch('/api/will/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_signature',customerId:willId})})
@@ -1339,20 +1314,13 @@ export default function DashboardClient() {
     } catch { alert('Could not reach the server. Nothing was sent.') }
     setSigBusy(null)
   }
-  async function markLodgedFromCard(taskId: string, willId: string, _name: string) {
+  async function markLodgedFromCard(taskId: string, willId: string, name: string) {
+    if (!confirm(`Send the "lodged" message to ${name} and move them to Completed?`)) return
     setSigBusy(taskId)
     try {
       const r = await fetch('/api/will/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_lodged',customerId:willId})})
       const j = await r.json().catch(()=>null)
-      if (r.ok && j?.ok) {
-        setSigLinks(prev => ({ ...prev, [taskId]: prev[taskId] ? { ...prev[taskId]!, state:'LODGED' } : prev[taskId] }))
-        // Marking lodged now ALSO moves them into Clients automatically (Jo,
-        // 2 Sep), so there is no separate "Move to Clients" click after every
-        // lodgement. Same operation as that button, reused as-is: it archives
-        // the task, wipes the sensitive fields, and creates the client card.
-        const task = tasks.find(x => x.id === taskId)
-        if (task) await transferToClients(task)
-      }
+      if (r.ok && j?.ok) setSigLinks(prev => ({ ...prev, [taskId]: prev[taskId] ? { ...prev[taskId]!, state:'LODGED' } : prev[taskId] }))
       else alert(j?.error ?? 'Could not send the message')
     } catch { alert('Could not reach the server. Nothing was sent.') }
     setSigBusy(null)
@@ -1758,27 +1726,18 @@ export default function DashboardClient() {
                         )}
                       </div>
                     </div>
-                    {/* Middle: one contextual action, driven by the linked Will
-                        customer's stage (Jo, 2 Sep, two-step model). Awaiting
-                        lodgement payment shows a status (payment is auto-detected);
-                        In Progress shows "Send for Signature"; after that "Mark
-                        Lodged"; then "✓ Lodged". Nothing shows with no chat behind it. */}
+                    {/* Middle: the two-step Signature action, driven by the linked
+                        Will customer. First "Send for Signature" (sends the ready
+                        notice, does not move them in the pipe), then it becomes
+                        "Mark Lodged" (moves them to Completed). Nothing shows if the
+                        task has no WhatsApp conversation behind it. */}
                     {(() => {
                       const link = sigLinks[t.id]
                       if (!link) return <div style={{flex:1}}/>
                       const busy = sigBusy === t.id
                       const lodged = link.state === 'LODGED' || link.state === 'COMPLETED'
                       if (lodged) return <div style={{flex:1,display:'flex',justifyContent:'center'}}><span className="chip good">✓ Lodged</span></div>
-                      // Waiting on the second (lodgement) payment: auto-detected, no button.
-                      if (link.state === 'LODGEMENT_PENDING') return <div style={{flex:1,display:'flex',justifyContent:'center'}}><span className="chip warn">⏳ Awaiting lodgement payment</span></div>
-                      // Drive purely off the CURRENT state (Jo, 2 Sep): a returning
-                      // client can have an old "ready for signature" message in
-                      // history (signatureReadySent=true) while sitting at
-                      // FINAL_REVIEW, which used to show Mark Lodged and 400 on the
-                      // server. Mark Lodged only once actually at Signature.
-                      const readySent = link.state === 'SIGNED' || link.state === 'SIGNATURE_PENDING'
-                      const canSign = readySent || link.state === 'FINAL_REVIEW'
-                      if (!canSign) return <div style={{flex:1}}/>
+                      const readySent = link.signatureReadySent || link.state === 'SIGNED'
                       return (
                         <div style={{flex:1,display:'flex',justifyContent:'center'}}>
                           {readySent
@@ -2542,47 +2501,23 @@ export default function DashboardClient() {
       {/* Done: the amount, the invoice, and the message that goes with them.
           Everything the customer is owed at the end of the job, in one step. */}
       {doneFor && (()=>{
-        const money = (s:string) => { const n = parseFloat(s.replace(/[^0-9.]/g,'')); return Number.isFinite(n) ? '$'+n.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2}) : '$0.00' }
-        const residencyLabel = estResidency==='RESIDENT' ? 'Australian resident for tax purposes' : 'Working Holiday Maker'
-        const medicareLabel = estMedicareExempt ? '$0 (exempt)' : money(estMedicare)
-        const outcomeLabel = estOutcome==='REFUND' ? 'Estimated refund' : 'Estimated tax payable'
-        const explanation = estOutcome==='REFUND'
-          ? "You paid more tax than you needed to during the year, which is why you're due a refund."
-          : "You paid less than required during the year, which is why there's an amount payable."
-        const lodgeFee = estIncome==='TFN_ABN' ? '$275' : '$110'
-        // Live preview = the Library's CURRENT wording with the composer values,
-        // so what is shown is exactly what will be sent.
+        const amount = parseFloat(doneAmt.replace(/[^0-9.]/g,''))
+        const amountOk = Number.isFinite(amount) && amount > 0
+        let linkOk = false
+        try { const u = new URL(doneInvoice.trim()); linkOk = u.protocol==='http:' || u.protocol==='https:' } catch { linkOk = false }
+        const amountStr = amountOk
+          ? '$' + amount.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2})
+          : '$0.00'
+        // The preview is the Library's CURRENT wording, fetched with the
+        // lookup, so what is shown here is what actually gets sent.
         const preview = (doneTemplate || '')
-          .replaceAll('{{RESIDENCY}}', residencyLabel)
-          .replaceAll('{{TAXABLE_INCOME}}', money(estTaxableIncome))
-          .replaceAll('{{EXPENSES}}', money(estExpenses))
-          .replaceAll('{{MEDICARE}}', medicareLabel)
-          .replaceAll('{{TAX_WITHHELD}}', money(estTaxWithheld))
-          .replaceAll('{{TAX_PAYABLE}}', money(estTaxPayable))
-          .replaceAll('{{OUTCOME_LABEL}}', outcomeLabel)
-          .replaceAll('{{OUTCOME_AMOUNT}}', money(estOutcomeAmt))
-          .replaceAll('{{EXPLANATION}}', explanation)
-          .replaceAll('{{LODGEMENT_FEE}}', lodgeFee)
-        const filled = (s:string)=>Number.isFinite(parseFloat(s.replace(/[^0-9.]/g,'')))
-        const canSend = filled(estTaxableIncome) && filled(estTaxWithheld) && filled(estTaxPayable)
-          && filled(estOutcomeAmt) && (estMedicareExempt || filled(estMedicare))
-        const Toggle = ({left,right,val,on,leftV,rightV}:{left:string;right:string;val:string;on:(v:string)=>void;leftV:string;rightV:string}) => (
-          <div style={{display:'flex',gap:6}}>
-            <button type="button" onClick={()=>{on(leftV); setDoneErr(null)}} className={`btn ${val===leftV?'take':'quiet'}`} style={{flex:1,justifyContent:'center',padding:'6px 8px',fontSize:12}}>{left}</button>
-            <button type="button" onClick={()=>{on(rightV); setDoneErr(null)}} className={`btn ${val===rightV?'take':'quiet'}`} style={{flex:1,justifyContent:'center',padding:'6px 8px',fontSize:12}}>{right}</button>
-          </div>
-        )
-        const Money = ({label,val,on,ph}:{label:string;val:string;on:(v:string)=>void;ph:string}) => (
-          <div>
-            <div className="mlabel" style={{margin:'0 0 4px',fontSize:11}}>{label}</div>
-            <input inputMode="decimal" placeholder={ph} value={val} onChange={e=>{on(e.target.value); setDoneErr(null)}} />
-          </div>
-        )
+          .replaceAll('{{AMOUNT}}', amountStr)
+          .replaceAll('{{INVOICE_LINK}}', doneInvoice.trim() || 'https://in.xero.com/...')
         return (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget && !doneBusy) closeDone()}}>
-          <div className="modal" style={{maxWidth:480}}>
+          <div className="modal" style={{maxWidth:460}}>
             <div style={{fontSize:21,marginBottom:8,textAlign:'center'}}>✅</div>
-            <div className="mh" style={{textAlign:'center'}}><b>Send result to {doneFor.clientName}</b></div>
+            <div className="mh" style={{textAlign:'center'}}><b>Finish {doneFor.clientName}</b></div>
 
             {doneLooking && (
               <div className="msub" style={{textAlign:'center'}}>Looking for their WhatsApp chat...</div>
@@ -2596,42 +2531,27 @@ export default function DashboardClient() {
             )}
 
             {!doneLooking && doneLink && (<>
-              <div className="msub" style={{textAlign:'center',marginBottom:10}}>
-                Sends the assessment result and asks for the lodgement payment, then moves them to Lodgement Payment.
+              <div className="msub" style={{textAlign:'center'}}>
+                Sends the estimate and the invoice on WhatsApp, then moves them to Signature.
               </div>
 
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px 12px',marginBottom:12}}>
-                <div>
-                  <div className="mlabel" style={{margin:'0 0 4px',fontSize:11}}>Residency</div>
-                  <Toggle left="WHM" right="Resident" val={estResidency} on={v=>setEstResidency(v as 'WHM'|'RESIDENT')} leftV="WHM" rightV="RESIDENT" />
-                </div>
-                <div>
-                  <div className="mlabel" style={{margin:'0 0 4px',fontSize:11}}>Income type</div>
-                  <Toggle left="TFN" right="TFN + ABN" val={estIncome} on={v=>setEstIncome(v as 'TFN'|'TFN_ABN')} leftV="TFN" rightV="TFN_ABN" />
-                </div>
-                <Money label="Taxable income" val={estTaxableIncome} on={setEstTaxableIncome} ph="e.g. 32400" />
-                <Money label="Work expenses" val={estExpenses} on={setEstExpenses} ph="e.g. 1250" />
-                <Money label="Tax withheld" val={estTaxWithheld} on={setEstTaxWithheld} ph="e.g. 6180" />
-                <Money label="Tax should have paid" val={estTaxPayable} on={setEstTaxPayable} ph="e.g. 3640" />
-                <div>
-                  <div className="mlabel" style={{margin:'0 0 4px',fontSize:11}}>Medicare</div>
-                  <Toggle left="Exempt" right="Not exempt" val={estMedicareExempt?'Y':'N'} on={v=>setEstMedicareExempt(v==='Y')} leftV="Y" rightV="N" />
-                </div>
-                {!estMedicareExempt
-                  ? <Money label="Medicare levy" val={estMedicare} on={setEstMedicare} ph="e.g. 420" />
-                  : <div/>}
-                <div>
-                  <div className="mlabel" style={{margin:'0 0 4px',fontSize:11}}>Outcome</div>
-                  <Toggle left="Refund" right="Payable" val={estOutcome} on={v=>setEstOutcome(v as 'REFUND'|'PAYABLE')} leftV="REFUND" rightV="PAYABLE" />
-                </div>
-                <Money label={estOutcome==='REFUND'?'Refund amount':'Amount payable'} val={estOutcomeAmt} on={setEstOutcomeAmt} ph="e.g. 2540" />
+              <div style={{marginBottom:12}}>
+                <div className="mlabel" style={{margin:'0 0 6px'}}>Estimated refund</div>
+                <input inputMode="decimal" autoFocus placeholder="e.g. 2036"
+                  value={doneAmt} onChange={e=>{setDoneAmt(e.target.value); setDoneErr(null)}} />
+              </div>
+
+              <div style={{marginBottom:14}}>
+                <div className="mlabel" style={{margin:'0 0 6px'}}>Invoice link</div>
+                <input placeholder="https://in.xero.com/..."
+                  value={doneInvoice} onChange={e=>{setDoneInvoice(e.target.value); setDoneErr(null)}} />
               </div>
 
               <div className="mlabel" style={{margin:'0 0 6px'}}>How the customer sees it</div>
               <div style={{
                 background:'var(--panel2, rgba(0,0,0,0.04))', borderRadius:10, padding:'10px 12px',
                 fontSize:12.5, lineHeight:1.5, whiteSpace:'pre-wrap', wordBreak:'break-word',
-                color:'var(--ink2)', marginBottom:14, maxHeight:200, overflowY:'auto',
+                color:'var(--ink2)', marginBottom:14, maxHeight:170, overflowY:'auto',
               }}>{preview}</div>
             </>)}
 
@@ -2652,7 +2572,7 @@ export default function DashboardClient() {
                   onClick={()=>{ const id = doneFor.id; closeDone(); finishTask(id) }}>
                   Done without sending
                 </button>
-                <button className="btn take lg" disabled={doneBusy || !canSend}
+                <button className="btn take lg" disabled={doneBusy || !amountOk || !linkOk}
                   onClick={sendEstimateThenDone}>
                   {doneBusy ? 'Sending...' : 'Send and finish'}
                 </button>

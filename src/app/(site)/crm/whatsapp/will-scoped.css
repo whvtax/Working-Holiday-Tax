@@ -120,9 +120,8 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .psrow{display:flex;align-items:flex-start;gap:4px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
 .will-scope .psrow::-webkit-scrollbar{display:none}
 /* Every stage is the SAME width so the columns and the arrows between them are
-   evenly spaced regardless of label length (Jo, 3 Sep: the strip looked
-   disproportionate because "Lodgement Payment" pushed its column far wider than
-   "Lead"). Long labels now wrap to two centred lines instead of stretching. */
+   evenly spaced regardless of label length (Jo, 3 Sep). Long labels wrap to two
+   centred lines instead of stretching. */
 .will-scope .ps{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;width:76px;flex:none;box-sizing:border-box;padding:6px 6px 5px;border:1.5px solid transparent;border-radius:10px;transition:border-color 160ms var(--ease-out),transform 140ms var(--ease-out)}
 /* Jo, 27 Aug: "too strong for me — bring it down, but really only a little."
    Two small moves, no change of identity: the disc fill drops 17% -> 12% tint

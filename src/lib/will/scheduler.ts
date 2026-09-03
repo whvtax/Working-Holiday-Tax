@@ -388,35 +388,7 @@ async function doProcess(): Promise<TickResult> {
           await store.updateCustomer(customer.id, { formComplete: true });
           await store.setState(customer.id, 'FORM_COMPLETE', 'SYSTEM');
           await store.cancelJobsFor(customer.id, ['FOLLOW_UP']);
-
-          // The form landing is the authoritative "questionnaire received"
-          // event, so this deterministic confirmation is the ONE that should go
-          // out. Two things stop it duplicating Will's conversational reply to
-          // an "I've just sent my form" message (Jo, 2 Sep: a customer got both
-          // "Perfect, got it!" and "we've received your questionnaire" seconds
-          // apart):
-          //   1. Discard any of Will's PARKED drafts (a queued autopilot reply
-          //      or one awaiting approval), so a "got it" still sitting in its
-          //      send delay cannot fire on top of this.
-          //   2. If Will or the team ALREADY sent a reply since the customer's
-          //      last message, they have been acknowledged in the chat, so skip
-          //      this text. The state change and reminder cancellation above
-          //      still stand either way.
-          let alreadyAnswered = false;
-          try {
-            const msgs = await store.listMessages(customer.id);
-            const lastIn = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
-            alreadyAnswered = lastIn > 0 && msgs.some((m) =>
-              m.direction === 'OUT' && m.status === 'SENT'
-              && new Date(m.createdAt).getTime() >= lastIn);
-            const parked = msgs.filter((m) =>
-              m.direction === 'OUT' && (m.status === 'PENDING_APPROVAL' || m.status === 'QUEUED'));
-            await Promise.all(parked.map((m) => store.setMessageStatus(m.id, 'DISCARDED').catch(() => { /* per message */ })));
-          } catch {
-            // Dedupe is a nicety; never let it stop the confirmation or fail the job.
-          }
-
-          if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy && !alreadyAnswered) {
+          if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
             // The confirmation now lives in the Library, one entry per language
             // (seed.ts), so the owner can edit it without a deploy. The i18n
             // constants stay as the fallback for a store that cannot be read.
@@ -443,11 +415,39 @@ async function doProcess(): Promise<TickResult> {
             } else {
               await deliverOut(customer, body, 'AI');
             }
-            result.sent.push(`${customer.name ?? customer.waId} · questionnaire received`);
+
+            // A TFN + ABN customer gets a SECOND message straight after the
+            // confirmation: the ABN questions the business schedule needs
+            // (Jo, 3 Sep). Same Library lookup (req_abn, editable without a
+            // deploy) with the code copy as fallback, and the same
+            // approval-or-send path as everything else the scheduler says.
+            if (customer.income === 'TFN_ABN') {
+              let abnBody: string = APPROVED.request_abn_detail;
+              try {
+                const t = (await store.listTemplates()).find((x) => x.key === 'req_abn');
+                if (t && t.body.trim()) abnBody = t.body;
+              } catch { /* fall back to the code copy */ }
+              const abnVerdict = policyGuard(abnBody, {
+                state: 'FORM_COMPLETE', paid: true, aiPaused: false, killSwitch: false,
+                optedOut: false, isLegacy: false,
+                lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
+                isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
+              });
+              if (abnVerdict.allowed) {
+                if (await inApprovalMode()) {
+                  await store.addMessage({
+                    customerId: customer.id, direction: 'OUT', author: 'AI',
+                    status: 'PENDING_APPROVAL', body: abnBody, meta: {},
+                  });
+                } else {
+                  await deliverOut(customer, abnBody, 'AI');
+                }
+                await store.audit('system', 'abn_questions_sent', { customerId: customer.id });
+              }
+            }
           }
-          await store.audit('system', 'form_received_confirmed', {
-            customerId: customer.id, skippedConfirmation: alreadyAnswered,
-          });
+          await store.audit('system', 'form_received_confirmed', { customerId: customer.id });
+          result.sent.push(`${customer.name ?? customer.waId} · questionnaire received`);
         }
         await store.setJobStatus(job.id, 'DONE');
         continue;
@@ -549,12 +549,6 @@ async function doProcess(): Promise<TickResult> {
             if (msg.meta.proposedState === 'PAID') await store.setState(customer.id, 'FORM_PENDING', 'SYSTEM');
           }
           if (msg.meta?.income) await store.updateCustomer(customer.id, { income: msg.meta.income });
-          // Will handled this chat itself on Autopilot, so clear the unread badge
-          // (Jo, 2 Sep): the inbox should stay bold only for chats that still need
-          // a person (a task, or one Will stayed silent on), not for ones Will has
-          // already answered. This mirrors what a HUMAN reply does via
-          // afterHumanReply; a green Autopilot answer is just as much "handled".
-          await store.markCustomerRead(customer.id);
           result.sent.push(`${customer.name ?? customer.waId} · autopilot reply`);
         } else {
           await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });

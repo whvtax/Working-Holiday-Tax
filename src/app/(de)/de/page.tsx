@@ -170,7 +170,7 @@ const FAQS = [
   },
   {
     question: 'Was kosten eure Leistungen?',
-    answer: 'Unser Service besteht aus zwei einfachen Schritten.\n\nZuerst ein Tax Assessment: Wir prüfen deine gesamte Situation, deine steuerliche Ansässigkeit, Medicare und mögliche Abzüge, und zeigen dir dein voraussichtliches Steuerergebnis. Danach, nur wenn du weitermachen möchtest, bereiten wir deine Erklärung vor und geben sie für dich ab.\n\nWir bestätigen alles per WhatsApp, bevor irgendetwas beginnt, und unsere Gebühren sind pauschal, niemals ein Prozentsatz deiner Rückerstattung.',
+    answer: 'Unsere Gebühren sind pauschal und niemals ein Prozentsatz deiner Rückerstattung.\n\nWir bestätigen die Gebühr per WhatsApp, bevor irgendetwas beginnt, und sie wird im Voraus bezahlt. Danach schicken wir dir den vollständigen Fragebogen und starten die Arbeit. Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf.',
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker in Australien?',
@@ -435,10 +435,10 @@ export default async function GermanHomePage() {
       {/* ── 4. DIE GARANTIE ──────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>So funktioniert es</p>
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Wir beginnen mit einem Tax Assessment, das deine gesamte Situation prüft und dir dein voraussichtliches Steuerergebnis zeigt, damit du genau weißt, wo du stehst, bevor du entscheidest, ob du abgeben möchtest.
+            Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.

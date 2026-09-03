@@ -5,12 +5,13 @@
 // Falls back to a deterministic mock when no ANTHROPIC_API_KEY.
 // ============================================================
 import { buildSystemPrompt, CustomerContext, LiveTemplates } from './playbook';
-import { APPROVED, openingForKnownCountry } from './approved-messages';
+import { APPROVED } from './approved-messages';
 import { CustomerState } from './state-machine';
 import { getStore } from './store';
 import { LostAnalysis, LOST_CATEGORIES, validateLostAnalysis } from './lost-leads';
 import { claimsPayment } from './payment-claim';
 import { stripDashes } from './text';
+import { greetingName } from './text-normalize';
 
 export interface Turn {
   role: 'customer' | 'assistant';
@@ -33,7 +34,7 @@ export interface Decision {
   mock?: boolean;
 }
 
-const STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'PAID', 'FORM_PENDING', 'FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'LODGEMENT_PENDING', 'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
+const STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'PAID', 'FORM_PENDING', 'FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
 
 const DECIDE_TOOL = {
   name: 'decide',
@@ -151,27 +152,9 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
     messages: apiMessages(history),
   });
 
-  // Retry with exponential backoff on transient failures (429 / 5xx / network).
-  // Anthropic returns 529 ("overloaded") in bursts, and a short in-request retry
-  // is not always enough: a busy MINUTE turned trivial messages ("I'm from the
-  // UK and only working on TFN") into manual tasks (Jo, 2 Sep). So there are now
-  // TWO layers of patience, and a transient overload NEVER becomes a manual task
-  // on its own:
-  //   1. In-request: four attempts with a growing gap (~0.5s, 1s, 2s) ride out a
-  //      few-second overload. The reply is queued on Autopilot anyway, so the
-  //      extra couple of seconds is invisible to the customer.
-  //   2. If it is STILL overloaded after that, we THROW instead of returning a
-  //      task. engine.decide() is not wrapped, so the throw propagates to the
-  //      webhook, which releases the inbound and asks Meta to redeliver it — the
-  //      same message is retried minutes later, over and over, until Anthropic
-  //      recovers. Only after MAX_INBOUND_ATTEMPTS redeliveries does it finally
-  //      dead-letter to a task. A genuine overload is thus ridden out silently.
-  // NON-transient failures (a real 4xx, a truncated response, no decision) do
-  // NOT improve on retry, so those still fall back to a human task immediately.
-  const MAX_ATTEMPTS = 4;
-  const backoff = (attempt: number) => 500 * 2 ** attempt + Math.random() * 300;
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-    const lastAttempt = attempt === MAX_ATTEMPTS - 1;
+  // M10: one retry with backoff on transient (429 / 5xx / network); a persistent
+  // failure falls back to a human task, never an error to the customer.
+  for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -180,10 +163,8 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
         body,
       });
       if (res.status === 429 || res.status >= 500) {
-        if (!lastAttempt) { await sleep(backoff(attempt)); continue; }
-        // Still overloaded after every in-request attempt: hand off to the
-        // webhook's redelivery retry rather than burning the lead on a task.
-        throw new Error(`Claude API overloaded (${res.status}) — will retry on redelivery`);
+        if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
+        return fallbackTask(`Claude API error ${res.status}`);
       }
       if (!res.ok) return fallbackTask(`Claude API error ${res.status}`);
       const data = await res.json();
@@ -192,16 +173,12 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
         ?.find((bl) => bl.type === 'tool_use' && bl.name === 'decide');
       if (!tool?.input) return fallbackTask('Model returned no decision');
       return validateDecision(tool.input);
-    } catch (e) {
-      if (!lastAttempt) { await sleep(backoff(attempt)); continue; }
-      // Network error or the overload throw above: propagate so the inbound is
-      // redelivered and retried, instead of becoming an immediate manual task.
-      throw e instanceof Error ? e : new Error('Claude API unreachable');
+    } catch {
+      if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
+      return fallbackTask('Claude API unreachable');
     }
   }
-  // Unreachable (the loop always returns or throws on the last attempt), but the
-  // compiler wants a terminal statement.
-  throw new Error('Claude API unreachable');
+  return fallbackTask('Claude API unreachable');
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -409,7 +386,7 @@ Your job: extract each distinct customer question/topic, and for each recurring 
 CRITICAL RULES FOR THE ANSWERS:
 - Do NOT copy or imitate the human agent's wording, tone, or approach. The old replies are often rushed, impatient or informal — that is exactly what we are replacing. Produce the OPPOSITE: warm, patient, professional, polite, genuinely helpful, concise.
 - The company's approved messages, boundaries and prices always take precedence over anything in these old conversations. If an old reply conflicts with the boundaries below, ignore the old reply entirely.
-- Stay within the business boundaries: the service is two steps. A $110 Tax Assessment is paid first (it covers the review whatever the outcome and is non-refundable), then a SEPARATE Preparation & Lodgement fee only if the customer decides to lodge (an additional $110 for TFN, so $220 all up; an additional $275 for TFN + ABN, so $385 all up). There is NO refund guarantee: NEVER say we top up or refund the difference, that the fee never costs more than the refund, or that they are "never out of pocket". NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before the assessment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
+- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). Guarantee (all customers, TFN and TFN + ABN): if the customer GETS a refund smaller than the fee, we refund the difference, so the fee never costs more than the refund. It applies ONLY when there is an actual refund; if the customer owes tax or gets no refund, the fee is non-refundable and you must NEVER promise to refund it or say they are "never out of pocket". Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
 - Write answers in English.
 - Merge duplicate questions into one entry; set examples to the real phrasings seen; set keywords to the important searchable words; set a short intent label.
 - Only include genuine, reusable questions (skip one-off logistics tied to a single person).
@@ -551,7 +528,7 @@ const POSTMORTEM_TOOL = {
   },
 } as const;
 
-const POSTMORTEM_SYSTEM = `You are an experienced sales and client-service reviewer looking at ONE conversation from "Working Holiday Tax", an Australian tax agency serving Working Holiday Makers (backpackers). The service is two steps: a $110 Tax Assessment paid first (it reviews the customer's situation and gives their estimated outcome, and is non-refundable whatever the result), then a separate Preparation & Lodgement fee only if they decide to lodge (an additional $110 for TFN-only, so $220 all up; an additional $275 with an ABN, so $385 all up). There is NO refund guarantee. The team cannot give personalised tax advice, quote a refund figure, or decide residency before the assessment is paid: that is a professional obligation, not a sales choice.
+const POSTMORTEM_SYSTEM = `You are an experienced sales and client-service reviewer looking at ONE conversation from "Working Holiday Tax", an Australian tax agency serving Working Holiday Makers (backpackers). A tax return is a fixed fee: $220 for TFN-only, $385 when there is also an ABN. Payment is upfront, and there is a guarantee for all customers that if the customer gets a refund smaller than the fee, the difference is refunded; it applies only when there is an actual refund, and if the customer owes tax or gets no refund the fee is non-refundable. The team cannot give personalised tax advice, quote a refund figure, or decide residency before someone has paid: that is a professional obligation, not a sales choice.
 
 This lead did NOT pay. You are writing a private post-mortem for the business owner. It will never be shown or sent to the customer, so write for the owner, plainly.
 
@@ -685,32 +662,21 @@ function mockDecide(ctx: CustomerContext, history: Turn[]): Decision {
   if (/refund|cancel|money back/.test(lower) && ctx.paid) {
     return m({ action: 'human_task', task_reason: 'Customer requests refund/cancellation', task_severity: 'URGENT', suggested_reply: 'I completely understand. Let me check this with the team and get right back to you.' });
   }
-  // Payment 1 (the $110 Tax Assessment): a payment message while a price is out
-  // and nothing paid yet moves them to PAID and sends the form.
   if (looksLikePayment(last) && !ctx.paid && PAYABLE_STATES.includes(ctx.state)) {
     return m({ action: 'reply', reply_text: APPROVED.payment_received, new_state: 'PAID' });
   }
-  // Payment 2 (the lodgement fee): a payment message while they are in
-  // LODGEMENT_PENDING (they have seen their result and the lodgement invoice)
-  // moves them to In Progress and sends the finalising note (Jo, 2 Sep). Same
-  // detection as payment 1, exactly as Jo asked.
-  if (looksLikePayment(last) && ctx.state === 'LODGEMENT_PENDING') {
-    return m({ action: 'reply', reply_text: APPROVED.lodgement_received, new_state: 'FINAL_REVIEW' });
-  }
   if ((ctx.state === 'NEW_LEAD' || ctx.state === 'QUALIFIED') && /(tfn|abn)/.test(lower)) {
     const abn = /abn/.test(lower) && !NO_ABN.test(lower);
-    // The two-step assessment price message, matched to TFN vs TFN + ABN. No
-    // owing caveat to strip any more (the guarantee is gone).
     const price = abn ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
+    // Everyone gets the same price message, regardless of country/number (Jo, 3 Sep).
     return m({ action: 'reply', reply_text: price, new_state: 'PRICE_SENT' });
   }
   if (ctx.state === 'NEW_LEAD') {
-    // If the number/language already tells us their country, don't ask it again
-    // (Jo, 2 Sep): +44 is plainly UK. dropOwingCaveat is exactly "we already
-    // know this is a UK/German/Japanese customer" — from the phone country code,
-    // the conversation language, or a stated origin — so reuse it to drop the
-    // "Which country are you from" clause from the opening.
-    const opening = ctx.dropOwingCaveat ? openingForKnownCountry() : APPROVED.opening;
+    // Greet by first name when we can tell it cleanly (WhatsApp profile, or a
+    // name they stated), otherwise a plain "Hey!" (Jo, 3 Sep). The opening
+    // template starts with "Hey!" so the name slots in after it.
+    const name = greetingName(ctx.name, last);
+    const opening = name ? APPROVED.opening.replace(/^Hey!/, `Hey ${name}!`) : APPROVED.opening;
     return m({ action: 'reply', reply_text: opening, new_state: 'QUALIFIED' });
   }
   // "What if I owe?" is answered honestly for EVERYONE, including UK/German/

@@ -66,7 +66,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Delivery driving and 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "We start with a Tax Assessment that reviews your full situation and shows you your estimated outcome, so you know exactly where you stand before deciding whether to go ahead and lodge.",
+  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service.",
   "guaranteeBody": "Platform riders on 417 and 462 visas are a large part of what we do, which is why the logbook question and the GST line get settled before the return is written. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",

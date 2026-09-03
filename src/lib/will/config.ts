@@ -27,7 +27,6 @@ const sig = (daysAfterEmail: number) => (SIGNATURE_PREP_DAYS + daysAfterEmail) *
 const REAL = {
   prePayment: [24 * 3600, 3 * 86400, 7 * 86400],
   form: [6 * 3600, 3 * 86400, 7 * 86400],
-  lodgement: [24 * 3600, 3 * 86400, 7 * 86400],
   signature: [sig(1), sig(3), sig(7)],
   autoCloseAfterFinal: 7 * 86400,
   quietHours: { start: 6, end: 24, tz: 'Australia/Sydney' },
@@ -37,7 +36,6 @@ const REAL = {
 const DEMO = {
   prePayment: [40, 90, 150],
   form: [40, 90, 150],
-  lodgement: [40, 90, 150],
   signature: [40, 90, 150],
   autoCloseAfterFinal: 60,
   quietHours: { start: 0, end: 24, tz: 'Australia/Sydney' },
@@ -73,7 +71,7 @@ export function schedulerConfig() {
   const override = process.env.FOLLOWUP_STEPS;
   if (override) {
     const steps = override.split(',').map((n) => parseInt(n, 10));
-    return { ...DEMO, prePayment: steps, form: steps, lodgement: steps, signature: steps, autoCloseAfterFinal: steps[steps.length - 1] };
+    return { ...DEMO, prePayment: steps, form: steps, signature: steps, autoCloseAfterFinal: steps[steps.length - 1] };
   }
   return DEMO;
 }
@@ -111,18 +109,17 @@ export function formatAUD(cents: number): string {
 
 /** How long Autopilot waits before a reply actually leaves, in seconds.
  *
- *  Set to 2 minutes on Jo's instruction, 2 Sep (was 3). Until Autopilot had a
+ *  Set to 3 minutes on Jo's instruction, 31 Aug (was 4). Until Autopilot had a
  *  delay it answered the instant the webhook landed, which reads as a machine:
- *  nobody types a considered answer about someone's tax in two seconds. Two
- *  minutes still reads as a person, and gets the reply out sooner.
+ *  nobody types a considered answer about someone's tax in two seconds.
  *
  *  The reply is written immediately and parked as QUEUED, so it is visible in
  *  the chat and can still be discarded; the scheduler transmits it once this
- *  delay has passed. The tick now runs every 2 minutes (vercel.json), so the
- *  real gap lands between 2 and 4 minutes.
+ *  delay has passed. The tick runs every 5 minutes (vercel.json), so the real
+ *  gap lands between 3 and 8 minutes — still within the human range.
  *
  *  Approval mode is unaffected: there the owner's click is the delay. */
-export const AUTOPILOT_REPLY_DELAY_SECONDS = 120;
+export const AUTOPILOT_REPLY_DELAY_SECONDS = 180;
 
 export function withinQuietHours(now = new Date()): boolean {
   const cfg = schedulerConfig();

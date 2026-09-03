@@ -83,12 +83,12 @@ const TOOLS = [
   },
   {
     name: 'pipeline_overview',
-    description: 'Get the live count of customers in every pipeline stage (Lead, Assessment Paid, Review, Lodgement Payment, In Progress, Signature, Completed, Closed) and the total. Use this for "how is the pipeline", weekly reviews, or to decide where to look.',
+    description: 'Get the live count of customers in every pipeline stage (Lead, Paid, Review, Signature, Completed, Closed) and the total. Use this for "how is the pipeline", weekly reviews, or to decide where to look.',
     input_schema: { type: 'object', properties: {} },
   },
   {
     name: 'list_stage',
-    description: 'List the customers currently in one pipeline stage group, newest activity first. Stage group ids: sales (Lead), onb (Assessment Paid), rev (Review), pay2 (Lodgement Payment, paid the assessment and saw their result but has not paid to lodge, high-intent), ready (In Progress), sig (Signature), done (Completed), closed (Closed). Use this for a weekly sweep of who is sitting where.',
+    description: 'List the customers currently in one pipeline stage group, newest activity first. Stage group ids: sales (Lead), onb (Paid), rev (Review), sig (Signature), done (Completed), closed (Closed). Use this for a weekly sweep of who is sitting where.',
     input_schema: {
       type: 'object',
       properties: {
@@ -162,7 +162,7 @@ const TOOLS = [
 const ABOUT = `ABOUT US (this is always true, you never need to be told it again)
 - The business is "Working Holiday Tax" (WHV Tax), workingholidaytax.com.au: an Australian tax service for Working Holiday Makers (backpackers on 417/462 visas) and other temporary residents.
 - What we do for customers: lodge their Australian tax return, and help claim their superannuation (DASP) after they leave Australia. Returns are reviewed and signed off by a registered tax agent. The business itself is not the registered tax agent, and you never imply it is.
-- Pricing is two steps: a $110 Tax Assessment paid first (non-refundable, covers the review whatever the outcome), then a separate Preparation & Lodgement fee only if the customer decides to lodge (an additional $110 for TFN, so $220 all up; an additional $275 with ABN, so $385 all up). There is NO refund guarantee.
+- Pricing is fixed and upfront: $220 for a TFN-only return, $385 when there is also ABN income. Guarantee (all customers, TFN and TFN + ABN): if the customer gets a refund smaller than the fee, we refund the difference. It applies only when there is an actual refund; if they owe tax or get no refund, the fee is non-refundable.
 - Customers are international and write in many languages (English, Spanish, German, Japanese and more). They reach us on WhatsApp, where "Will" answers them. You are the owner's side of the same system.
 - The business is growing fast, heading for thousands of customers a year, so the owner cares about what scales: spotting who is stuck, who is worth chasing, and what is slipping through.
 
@@ -204,11 +204,11 @@ WHAT YOU DO
 - Read the system yourself using the tools before you answer. Do not guess a customer's stage or what they said, look it up.
 - When something should change, PROPOSE it with a propose_* tool. You never move a customer, send a message, or open a task directly. Each proposal becomes a one-click button the owner presses (and can edit first). This is deliberate: this is a tax business with real customers, and the owner stays the one who presses send.
 
-THE PIPELINE (stage groups): Lead -> Assessment Paid -> Review -> Lodgement Payment -> In Progress -> Signature -> Completed, with Closed off to the side. "Lodgement Payment" (LODGEMENT_PENDING) is the customer who paid the $110 assessment and saw their result but has not yet paid the lodgement fee, a high-intent second-payment lead worth chasing. Individual states within them: ${ALL_STATES.join(', ')}.
+THE PIPELINE (stage groups): Lead -> Paid -> Review -> Signature -> Completed, with Closed off to the side. Individual states within them: ${ALL_STATES.join(', ')}.
 
 BUSINESS RULES YOU MUST RESPECT (they apply to anything you propose sending a customer)
-- Two-step pricing: a $110 Tax Assessment first, then a separate lodgement fee only if they go ahead (an additional $110 for TFN, $220 all up; an additional $275 with ABN, $385 all up). Never invent, discount, or negotiate a price.
-- There is NO refund guarantee. Never propose a message that says we top up or refund the difference, that the fee never costs more than the refund, or that the customer is never out of pocket. The reassurance is that the $110 assessment shows the customer their full outcome before they commit to lodging.
+- Fixed prices: $220 for a TFN-only return, $385 when there is also ABN income. Payment is upfront. Never invent, discount, or negotiate a price.
+- Guarantee applies to ALL customers (TFN and TFN + ABN): if the customer gets a refund smaller than the fee, the difference is refunded. It applies only when there is an actual refund; if they owe tax or get no refund, the fee is non-refundable and must never be promised back.
 - Before a customer has paid, never quote a refund figure and never give personalised tax advice (residency, Medicare, deductions). That is a professional obligation, not a sales choice.
 - Never claim or imply the business itself is a registered tax agent. Returns are reviewed and signed off by a registered tax agent; do not reword or overstate that.
 - Never use an em dash or an en dash anywhere. Use a comma, a full stop, or a hyphen.
@@ -258,10 +258,7 @@ function customerBrief(c: CustomerRow, followupSet?: Set<string>): Record<string
     paid: c.paid,
     language: c.lang ?? 'unknown',
     opted_out: c.optedOut,
-    // Signed: positive is a refund, negative is tax payable (two-step model).
-    outcome_estimate: c.estimatedRefundCents != null
-      ? `$${(Math.abs(c.estimatedRefundCents) / 100).toFixed(2)} ${c.estimatedRefundCents < 0 ? 'payable' : 'refund'}`
-      : null,
+    refund_estimate: c.estimatedRefundCents != null ? `$${(c.estimatedRefundCents / 100).toFixed(2)}` : null,
     last_message: c.lastMessagePreview ?? null,
     last_message_at: c.lastMessageAt ?? null,
     // True when an automatic follow-up nudge is already SCHEDULED (not yet sent)

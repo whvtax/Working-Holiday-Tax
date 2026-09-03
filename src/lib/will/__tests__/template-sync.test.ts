@@ -23,7 +23,10 @@ function fakeStore(seed: TemplateRow[]) {
     const row = { id: `new-${t.key}`, key: t.key ?? '', category: t.category, title: t.title, body: t.body, requiresMeta: false, versions: 1, updatedAt: '' } as TemplateRow;
     rows.push(row); return Promise.resolve(row);
   });
-  return { store: { listTemplates, updateTemplate, addTemplate } as unknown as Store, rows, updateTemplate, addTemplate };
+  const deleteTemplate = jest.fn().mockImplementation((id: string) => {
+    const i = rows.findIndex((x) => x.id === id); if (i >= 0) rows.splice(i, 1); return Promise.resolve();
+  });
+  return { store: { listTemplates, updateTemplate, addTemplate, deleteTemplate } as unknown as Store, rows, updateTemplate, addTemplate, deleteTemplate };
 }
 
 describe('syncTemplatesFromCode', () => {
@@ -61,6 +64,23 @@ describe('syncTemplatesFromCode', () => {
     expect(res.keys).toContain('opening');
     expect(f.rows.find((t) => t.key === 'opening')!.body).toBe(APPROVED.opening);
     // The custom one is untouched.
+    expect(f.rows.find((t) => t.key === 'my_custom')!.body).toBe('hand written');
+  });
+
+  it('deletes a retired (obsolete) template from the DB but keeps hand-added customs', async () => {
+    const seeded = seedTemplates();
+    // A two-step template that was retired from the code but still lingers in the DB.
+    const orphan = { id: 'o1', key: 'lodgement_received', category: 'Pricing', title: 'old two-step', body: 'stale two-step template', requiresMeta: false, versions: 1, updatedAt: '' } as TemplateRow;
+    const custom = { id: 'c1', key: 'my_custom', category: 'Custom', title: 'Mine', body: 'hand written', requiresMeta: false, versions: 1, updatedAt: '' } as TemplateRow;
+    const f = fakeStore([...seeded, orphan, custom]);
+
+    const res = await syncTemplatesFromCode(f.store);
+
+    // The retired template is gone.
+    expect(f.rows.find((t) => t.key === 'lodgement_received')).toBeUndefined();
+    expect(res.removed).toBeGreaterThanOrEqual(1);
+    expect(res.keys).toContain('lodgement_received');
+    // A hand-added custom template is never deleted.
     expect(f.rows.find((t) => t.key === 'my_custom')!.body).toBe('hand written');
   });
 });

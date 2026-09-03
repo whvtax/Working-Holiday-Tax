@@ -15,7 +15,7 @@ import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/c
 import { resolveAiMode } from '@/lib/will/mode';
 import { suggestReply } from '@/lib/will/suggest';
 import { APPROVED } from '@/lib/will/approved-messages';
-import { stateAfterEstimate, composeEstimate, type EstimateFields } from '@/lib/will/estimate-send';
+import { stateAfterEstimate, composeEstimate } from '@/lib/will/estimate-send';
 import { afterHumanReply } from '@/lib/will/after-reply';
 
 export const dynamic = 'force-dynamic';
@@ -35,19 +35,8 @@ interface ActionBody {
   proposedBody?: string;
   goal?: number;
   amountCents?: number;
-  /** send_estimate only (legacy field; the two-step composer uses the fields below). */
+  /** send_estimate only. */
   invoiceLink?: string;
-  /** send_estimate composer (two-step model). Money values in cents. */
-  residency?: string;
-  incomeType?: string;
-  outcome?: string;
-  medicareExempt?: boolean;
-  taxableIncomeCents?: number;
-  taxWithheldCents?: number;
-  taxPayableCents?: number;
-  expensesCents?: number;
-  medicareCents?: number;
-  outcomeCents?: number;
   /** set_state only: owner manual override — move to any stage, bypassing the
    *  one-step-at-a-time guardrails. */
   force?: boolean;
@@ -101,10 +90,7 @@ async function humanSend(customer: CustomerRow, rawBody: string): Promise<{ erro
   const last = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
   if (Date.now() - last > 24 * 60 * 60 * 1000) return { error: 'outside the 24h messaging window; use an approved template' };
   const reviewLink = (await store.getSetting('google_review_link')) as string | undefined;
-  // Signed outcome (two-step model): negative is tax payable, positive a refund.
-  const amount = customer.estimatedRefundCents != null
-    ? (customer.estimatedRefundCents < 0 ? `${formatAUD(Math.abs(customer.estimatedRefundCents))} payable` : formatAUD(customer.estimatedRefundCents))
-    : undefined;
+  const amount = customer.estimatedRefundCents != null ? formatAUD(customer.estimatedRefundCents) : undefined;
   const body = fillPlaceholders(rawBody, await getBank(), { amount, reviewLink });
   if (/\{\{[A-Z_]+\}\}/.test(body)) return { error: 'message still has an unfilled placeholder (e.g. set the refund estimate first, or fill the document name)' };
   if (/(password|api.?key|access token|secret key|credentials)/i.test(body)) return { error: 'message looks like it contains a secret' };
@@ -615,42 +601,33 @@ async function handlePost(req: Request) {
       // Someone already AT Signature or beyond is a correction resend: the
       // message goes again and the stage is left exactly where it is, so
       // fixing a typo in an amount can never drag a signed return backwards.
-      // Two-step model (Jo, 2 Sep): the team fills the estimate composer (the
-      // residency and refund/payable toggles, the money lines, the Medicare
-      // exemption). Every money value arrives in cents. Sending this result
-      // moves the customer to LODGEMENT_PENDING, where the second (lodgement)
-      // payment is awaited before signature.
-      const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.round(v) : null);
-      if (!b.customerId) return bad('customerId required');
-      const residency = b.residency === 'RESIDENT' ? 'RESIDENT' : 'WHM';
-      const outcome = b.outcome === 'PAYABLE' ? 'PAYABLE' : 'REFUND';
-      const incomeType = b.incomeType === 'TFN_ABN' ? 'TFN_ABN' : 'TFN';
-      const medicareExempt = b.medicareExempt === true;
-      const taxableIncomeCents = num(b.taxableIncomeCents);
-      const taxWithheldCents = num(b.taxWithheldCents);
-      const taxPayableCents = num(b.taxPayableCents);
-      const expensesCents = num(b.expensesCents);
-      const medicareCents = medicareExempt ? 0 : num(b.medicareCents);
-      const outcomeCents = num(b.outcomeCents);
-      if (taxableIncomeCents === null || taxWithheldCents === null || taxPayableCents === null
-        || expensesCents === null || medicareCents === null || outcomeCents === null) {
-        return bad('all estimate figures are required and must be valid amounts in cents');
+      if (!b.customerId || typeof b.amountCents !== 'number' || !Number.isFinite(b.amountCents) || b.amountCents < 0) {
+        return bad('customerId and a valid amountCents required');
       }
+      if (typeof b.invoiceLink !== 'string' || !b.invoiceLink.trim()) return bad('invoiceLink required');
+      let invoiceUrl: URL;
+      try { invoiceUrl = new URL(b.invoiceLink.trim()); } catch { return bad('invoiceLink must be a valid URL'); }
+      if (invoiceUrl.protocol !== 'http:' && invoiceUrl.protocol !== 'https:') return bad('invoiceLink must be a valid URL');
 
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
-      // No pipeline-stage gate (Jo, 30 Aug): the completed CRM task is itself the
-      // proof the work is done, so whatever stage the chat sits at must not block
-      // the send. stateAfterEstimate still leaves anyone already past the
-      // lodgement payment exactly where they are (a correction resend never drags
-      // a return backwards); everyone else lands at LODGEMENT_PENDING.
-      const fields: EstimateFields = {
-        residency, incomeType, outcome, medicareExempt,
-        taxableIncomeCents, taxWithheldCents, taxPayableCents, expensesCents, medicareCents, outcomeCents,
-      };
+      // No pipeline-stage gate (Jo, 30 Aug). The owner can send the estimate and
+      // invoice from ANY stage: this is a deliberate manual action with a typed
+      // amount and a typed invoice link, and the completed CRM task is itself the
+      // proof the work is done - so whatever stage the linked WhatsApp chat
+      // happens to sit at must not block it. stateAfterEstimate still leaves
+      // anyone already at Signature or beyond exactly where they are (a
+      // correction resend never drags a signed return backwards); everyone else
+      // lands at Signature.
+
+      const amountCents = Math.round(b.amountCents);
+      // Filled here rather than in humanSend: the amount comes from this
+      // request, and the customer's stored estimate is only written further
+      // down, once the send has actually succeeded.
       const body = composeEstimate(
         await libraryBody('estimate_invoice', APPROVED.estimate_invoice),
-        fields,
+        amountCents,
+        invoiceUrl.toString(),
       );
 
       const send = await humanSend(customer, body);
@@ -658,10 +635,9 @@ async function handlePost(req: Request) {
       const out = await deliverOut(customer, send.body!, 'HUMAN');
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
 
-      // Will is never auto-paused (Jo, 31 Aug): the result goes out but Will
-      // stays active on the chat and keeps handling the customer. The stored
-      // figure is signed: a positive refund, a negative amount payable.
-      await store.updateCustomer(customer.id, { estimatedRefundCents: outcome === 'REFUND' ? outcomeCents : -outcomeCents });
+      // Will is never auto-paused (Jo, 31 Aug): the estimate goes out but Will
+      // stays active on the chat and keeps handling the customer.
+      await store.updateCustomer(customer.id, { estimatedRefundCents: amountCents });
       const nextState = stateAfterEstimate(customer.state);
       if (nextState) {
         await store.setState(customer.id, nextState, 'HUMAN');
@@ -669,7 +645,7 @@ async function handlePost(req: Request) {
         if (fresh) await reconcileSchedule(fresh);
       }
       await afterHumanReply(store, customer.id);
-      await store.audit('owner', 'estimate_sent', { customerId: customer.id, outcome, outcomeCents, incomeType });
+      await store.audit('owner', 'estimate_sent', { customerId: customer.id, amountCents, invoiceLink: invoiceUrl.toString() });
       return NextResponse.json({ ok: true });
     }
 
@@ -687,12 +663,8 @@ async function handlePost(req: Request) {
       if (!b.customerId) return bad('customerId required');
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
-      // Two-step model (Jo, 2 Sep): signature comes AFTER the lodgement payment,
-      // so it is only sendable once they are in In Progress (FINAL_REVIEW) or
-      // already at Signature (a resend). ESTIMATE_READY/LODGEMENT_PENDING are
-      // before the second payment and must not skip it.
-      if (!['FINAL_REVIEW', 'SIGNATURE_PENDING'].includes(customer.state)) {
-        return bad('signature can only be sent once the lodgement payment is in (In Progress)');
+      if (!['ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING'].includes(customer.state)) {
+        return bad('signature can only be sent once the estimate stage is reached');
       }
       const sigBody = await libraryBody('signature', APPROVED.signature_ready);
       const send = await humanSend(customer, sigBody);

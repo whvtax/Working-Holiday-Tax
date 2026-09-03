@@ -186,7 +186,7 @@ const FAQS = [
   },
   {
     question: 'サービスの料金はいくらですか？',
-    answer: '当社のサービスは2つのシンプルなステップで進みます。\n\nまず税務アセスメント：お客様の状況全体、税務上の居住区分、メディケア、控除可能な項目を確認し、見込みの税額結果をお伝えします。その後、進めることを決められた場合にのみ、申告書を作成して代理で提出します。\n\n作業開始前にすべてWhatsAppでご確認いただけます。料金は定額制で、還付金に対する歩合ではありません。',
+    answer: '料金は定額制で、還付金に対する歩合ではありません。\n\n作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。還付金が当社の料金を下回った場合は、差額を返金します。当社のサービスでお客様が損をすることはありません。',
   },
   {
     question: 'ワーキングホリデーメーカーの税率はいくらですか？',
@@ -446,10 +446,10 @@ export default async function JapaneseHomePage() {
       {/* ── 4. 保証 ──────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>ご利用の流れ</p>
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 29px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
-            まず税務アセスメントから始め、お客様の状況全体を確認して見込みの税額結果をお伝えします。そのため、申告に進むかどうかを決める前に、ご自身の状況を正確に把握できます。
+            還付金が当社の料金を下回った場合は、差額を返金します。当社のサービスでお客様が損をすることはありません。
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
             料金は定額で、戻ってくる金額に対する歩合ではありません。

@@ -174,7 +174,7 @@ const FAQS = [
   },
   {
     question: 'How much do your services cost?',
-    answer: 'Our service works in two simple steps.\n\nFirst, a Tax Assessment: we review your full situation, your tax residency, Medicare and any deductions you can claim, and give you your estimated tax outcome. Then, only if you decide to go ahead, we prepare and lodge your return for you.\n\nWe confirm everything on WhatsApp before anything begins, and our fees are flat, never a percentage of your refund.',
+    answer: 'Our fees are flat and never a percentage of your refund.\n\nWe confirm the fee on WhatsApp before anything begins, and it is paid up front. Then we send the full questionnaire and start work. If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service.',
   },
   {
     question: 'What tax rate do working holiday makers pay in Australia?',
@@ -449,10 +449,10 @@ export default async function HomePage() {
       {/* ── 4. THE GUARANTEE ─────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>How it works</p>
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Our guarantee</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '22ch' }}>
-            We start with a Tax Assessment that reviews your full situation and shows you your estimated outcome, so you know exactly where you stand before deciding whether to go ahead and lodge.
+            If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             The fee is flat and never a percentage of what comes back.

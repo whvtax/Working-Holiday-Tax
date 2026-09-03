@@ -506,9 +506,8 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Absenden kann jeder. Die Arbeit passiert davor.
           </h2>
           <p className="mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.7, marginBottom: '10px', maxWidth: '46ch' }}>
-            Schick uns deine Zahlen und wir sagen dir, was in deinem Jahr drin ist. Wir beginnen mit einem
-            Tax Assessment, das deine gesamte Situation prüft und dir dein voraussichtliches Steuerergebnis
-            zeigt, damit du genau weißt, wo du stehst, bevor du entscheidest, ob du abgeben möchtest.
+            Schick uns deine Zahlen und wir sagen dir, was in deinem Jahr drin ist. Wenn deine
+            Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz.
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '22px', maxWidth: '46ch' }}>
             Von einem registrierten Steueragenten geprüft und freigegeben,

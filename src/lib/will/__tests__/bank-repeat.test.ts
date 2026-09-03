@@ -39,13 +39,13 @@ describe('stripBankBlock (never repeat the bank details)', () => {
   });
 
   // The cases above are hand-built. These run against the real approved
-  // messages that carry the bank block. Two-step model (Jo, 2 Sep): the bank
-  // details moved out of the price messages into [payment_details] (the $110
-  // assessment) and [lodgement_details] (the lodgement), so those are what must
-  // stay strippable.
+  // messages, so a reformat of them cannot quietly stop the stripper working.
+  // This caught nothing when the messages were reworded on 24 Aug, but only
+  // because "Once paid" and the account number happened to still match; the
+  // "Account:" and "quick screenshot" patterns no longer do.
   describe.each([
-    ['payment_details', APPROVED.payment_details],
-    ['lodgement_details', APPROVED.lodgement_details],
+    ['price_tfn', APPROVED.price_tfn],
+    ['price_tfn_abn', APPROVED.price_tfn_abn],
   ])('the live %s message', (_name, msg) => {
     const out = stripBankBlock(msg);
     test('loses every bank line', () => {
@@ -53,17 +53,21 @@ describe('stripBankBlock (never repeat the bank details)', () => {
       expect(out).not.toContain('81049952');
       expect(out).not.toMatch(/account name/i);
       expect(out).not.toMatch(/account number/i);
+      expect(out).not.toMatch(/screenshot/i);
     });
-    test('keeps the non-bank opening line', () => {
-      expect(out).toMatch(/Perfect!/);
+    test('keeps the total for the chosen track', () => {
+      // The price message is now a bank-details confirmation (Jo, 3 Sep): it
+      // states the total and nothing else survives the strip.
+      expect(out).toMatch(/The total is \$\d+/);
     });
   });
 
-  // The two-step price messages must NOT carry a bank block at all now.
-  test('the price messages no longer contain bank details', () => {
-    for (const msg of [APPROVED.price_tfn, APPROVED.price_tfn_abn]) {
-      expect(msg).not.toContain('81049952');
-      expect(msg).not.toMatch(/account name/i);
-    }
+  test('the guarantee and the owing line now live in the menu opening, not the price messages', () => {
+    expect(APPROVED.opening).toContain("we'll refund the difference");
+    expect(APPROVED.opening).toContain('non-refundable');
+    expect(APPROVED.opening).toContain('$220');
+    expect(APPROVED.opening).toContain('$385');
+    expect(APPROVED.price_tfn).not.toContain('refund the difference');
+    expect(APPROVED.price_tfn_abn).not.toContain('refund the difference');
   });
 });

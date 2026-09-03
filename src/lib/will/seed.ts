@@ -60,12 +60,10 @@ export function seedTemplates(): TemplateRow[] {
   const o = APPROVED.objections;
   return [
     t('opening', 'Opening & Qualification', 'Opening message', APPROVED.opening),
-    t('price_tfn', 'Pricing', 'Price: TFN, two-step ($110 assessment + $110, $220 all up)', APPROVED.price_tfn),
-    t('price_tfn_abn', 'Pricing', 'Price: TFN + ABN, two-step ($110 assessment + $275, $385 all up)', APPROVED.price_tfn_abn),
-    t('payment_details', 'Pricing', 'Assessment bank details (sent once they agree)', APPROVED.payment_details),
-    t('lodgement_details', 'Pricing', 'Lodgement bank details (sent once they agree to lodge)', APPROVED.lodgement_details),
-    t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($220, non-refundable)', APPROVED.price_tfn_review),
-    t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($385, non-refundable)', APPROVED.price_tfn_abn_review),
+    t('price_tfn', 'Pricing', 'Price: TFN only ($220)', APPROVED.price_tfn),
+    t('price_tfn_abn', 'Pricing', 'Price: TFN + ABN ($385)', APPROVED.price_tfn_abn),
+    t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($220, no guarantee)', APPROVED.price_tfn_review),
+    t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($385, no guarantee)', APPROVED.price_tfn_abn_review),
     t('obj_1', 'Objections', '#1 Refund amount before paying', o.o1_refund_before_pay),
     t('obj_2', 'Objections', '#2 Why pay before knowing', o.o2_why_pay_first),
     t('obj_3', 'Objections', '#3 Thought the check was free', o.o3_thought_free),
@@ -87,9 +85,6 @@ export function seedTemplates(): TemplateRow[] {
     t('fu_form_6h', 'Follow-ups', 'Form · 6h', APPROVED.followups_form.h6, true),
     t('fu_form_3d', 'Follow-ups', 'Form · 3d', APPROVED.followups_form.d3, true),
     t('fu_form_7d', 'Follow-ups', 'Form · 7d', APPROVED.followups_form.d7, true),
-    t('fu_lodge_24h', 'Follow-ups', 'Lodgement payment · 24h', APPROVED.followups_lodgement.h24, true),
-    t('fu_lodge_3d', 'Follow-ups', 'Lodgement payment · 3d', APPROVED.followups_lodgement.d3, true),
-    t('fu_lodge_7d', 'Follow-ups', 'Lodgement payment · 7d', APPROVED.followups_lodgement.d7, true),
     t('fu_sig_24h', 'Follow-ups', 'Signature · 24h', APPROVED.followups_signature.h24, true),
     t('fu_sig_3d', 'Follow-ups', 'Signature · 3d', APPROVED.followups_signature.d3, true),
     t('fu_sig_7d', 'Follow-ups', 'Signature · 7d', APPROVED.followups_signature.d7, true),
@@ -104,11 +99,9 @@ export function seedTemplates(): TemplateRow[] {
     t('legitimacy', 'FAQ · Operational', 'Is this legit / registered?', APPROVED.legitimacy),
 
     // ── Previously code-only. Same text, now editable. ──
-    // Sent by the "Send Result + Request Lodgement Payment" button. Every
-    // placeholder is filled from the estimate composer the team completes.
-    t('estimate_invoice', 'Post-payment & Service', 'Result + lodgement request ("Send Result" button)', APPROVED.estimate_invoice),
-    // Sent automatically when the second (lodgement) payment is detected.
-    t('lodgement_received', 'Post-payment & Service', 'Lodgement payment received (auto)', APPROVED.lodgement_received),
+    // Sent by the "Send Estimate + Invoice" button. {{AMOUNT}} and
+    // {{INVOICE_LINK}} are filled from what the team types in that dialog.
+    t('estimate_invoice', 'Post-payment & Service', 'Estimate + invoice ("Send Estimate" button)', APPROVED.estimate_invoice),
     // Sent by the "Mark Lodged" button.
     t('lodged_confirmation', 'Post-payment & Service', 'Lodged confirmation ("Mark Lodged" button)', APPROVED.lodged_confirmation),
     // The Google review request, sent 1 hour after lodgement by the REVIEW_REQUEST
@@ -141,7 +134,7 @@ const LANG_LABELS: Record<Lang, string> = {
 
 /** Bumped whenever seedTemplates() gains an entry that existing installs need.
  *  Stored under the `templates_backfill` setting once applied. */
-export const TEMPLATE_BACKFILL_VERSION = '2026-09-02-two-step';
+export const TEMPLATE_BACKFILL_VERSION = '2026-08-31-review-request';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.
@@ -176,7 +169,22 @@ export async function backfillMissingTemplates(
 }
 
 /**
- * Bring every seeded template's body in the DB up to the code.
+ * Template keys that USED to be seeded from the code but have since been retired
+ * (e.g. the two-step-model templates removed when the two-step pricing was
+ * reverted, 3 Sep 2026). "Sync library from file" DELETES these from the DB so a
+ * retired template does not linger as an orphan in the Library. Only keys listed
+ * here are ever deleted; a template the owner added by hand (any key that is
+ * neither seeded nor listed here) is never touched. When you retire a seeded
+ * template, remove it from seedTemplates() and add its key here.
+ */
+export const OBSOLETE_TEMPLATE_KEYS: readonly string[] = [
+  // Two-step payment model, reverted 3 Sep 2026 (back to the single-fee model).
+  'payment_details', 'lodgement_details', 'lodgement_received',
+  'fu_lodge_24h', 'fu_lodge_3d', 'fu_lodge_7d',
+];
+
+/**
+ * Bring the DB template Library in line with the code.
  *
  * The message templates (opening, prices, objections, follow-ups) live in
  * will_templates, seeded once from approved-messages.ts. A deploy changes the
@@ -184,17 +192,20 @@ export async function backfillMissingTemplates(
  * edit to the wording of a template that already exists in the DB (e.g. a
  * shorter opening) never reaches Will on its own. This is the templates twin of
  * the knowledge "Sync library from file" flow: for every seeded key it UPDATES
- * the DB body when it differs from the code and ADDS a missing key. A template
- * whose key is not in the seed set (something the owner added by hand) is never
+ * the DB body when it differs from the code and ADDS a missing key. It also
+ * DELETES any template whose key is in OBSOLETE_TEMPLATE_KEYS, so a retired
+ * template is cleaned out instead of lingering. A template whose key is neither
+ * seeded nor listed as obsolete (something the owner added by hand) is never
  * touched. Matched by `key`, so a retitled or recategorised entry still syncs.
  */
 export async function syncTemplatesFromCode(
-  store: Pick<Store, 'listTemplates' | 'updateTemplate' | 'addTemplate'>,
-): Promise<{ updated: number; added: number; keys: string[] }> {
+  store: Pick<Store, 'listTemplates' | 'updateTemplate' | 'addTemplate' | 'deleteTemplate'>,
+): Promise<{ updated: number; added: number; removed: number; keys: string[] }> {
   const existing = await store.listTemplates();
   const byKey = new Map(existing.map((t) => [t.key, t]));
-  let updated = 0, added = 0;
+  let updated = 0, added = 0, removed = 0;
   const keys: string[] = [];
+  const seedKeys = new Set(seedTemplates().map((t) => t.key));
   for (const t of seedTemplates()) {
     const hit = byKey.get(t.key);
     if (hit) {
@@ -209,7 +220,17 @@ export async function syncTemplatesFromCode(
       keys.push(t.key);
     }
   }
-  return { updated, added, keys };
+  // Delete retired templates that still linger in the DB. Guarded so a key that
+  // is somehow both seeded and listed obsolete is never deleted.
+  const obsolete = new Set(OBSOLETE_TEMPLATE_KEYS);
+  for (const t of existing) {
+    if (obsolete.has(t.key) && !seedKeys.has(t.key)) {
+      await store.deleteTemplate(t.id);
+      removed++;
+      keys.push(t.key);
+    }
+  }
+  return { updated, added, removed, keys };
 }
 
 /**

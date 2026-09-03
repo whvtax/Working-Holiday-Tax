@@ -90,8 +90,7 @@ interface FollowUpRow {
 }
 
 const FLOW_LABELS: Record<string, string> = {
-  prePayment: 'Before payment', form: 'Waiting on the form',
-  lodgement: 'Waiting on the lodgement payment', signature: 'Waiting on a signature',
+  prePayment: 'Before payment', form: 'Waiting on the form', signature: 'Waiting on a signature',
 };
 
 interface StateData {
@@ -1362,12 +1361,13 @@ export default function Dashboard() {
                           sent to the customer to sign, one click sends the "ready
                           for signature" confirmation and moves them on to
                           Signature. Only shown during Estimate. */}
-                      {chatSel.state === 'FINAL_REVIEW' && (
+                      {(chatSel.state === 'ESTIMATE_READY' || chatSel.state === 'FINAL_REVIEW') && (
                         <button
                           type="button"
                           className="btn save"
                           style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
                           onClick={async () => {
+                            if (!confirm(`Send the "ready for signature" message to ${phoneOf(chatSel.waId)} and move them to Signature?`)) return;
                             const r = await act({ action: 'send_signature', customerId: chatSel.id });
                             if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
                             say('Sent, moved to Signature ✓'); loadChat(chatSel.id); refresh();
@@ -1385,6 +1385,7 @@ export default function Dashboard() {
                           className="btn save"
                           style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
                           onClick={async () => {
+                            if (!confirm(`Send the "lodged successfully" message to ${phoneOf(chatSel.waId)} and move them to Completed?`)) return;
                             const r = await act({ action: 'send_lodged', customerId: chatSel.id });
                             if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
                             say('Sent, moved to Completed ✓'); loadChat(chatSel.id); refresh();

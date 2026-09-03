@@ -64,30 +64,11 @@ export function fillPlaceholders(
 // BSB, the account number, or the "Payment details" label.
 const BANK_DETAILS_RE = /\b0?62\s?692\b|\b81049952\b|payment details|bank details|bankverbindung|振込先/i;
 // A single line that is part of the bank block, to be removed on a repeat.
-const BANK_LINE_RE = /\b0?62\s?692\b|\b81049952\b|payment details|account name\s*:|^\s*bsb\b|^\s*account\s*:|quick screenshot|once paid|bankverbindung|振込先|口座/i;
+// "once you've made the payment" / "send us a screenshot" cover the closing line
+// of the bank-details message as reworded on 3 Sep (previously "once paid").
+const BANK_LINE_RE = /\b0?62\s?692\b|\b81049952\b|payment details|account name\s*:|^\s*bsb\b|^\s*account\s*:|quick screenshot|send us a screenshot|once paid|once you['’]?ve made the payment|bankverbindung|振込先|口座/i;
 // The customer explicitly asking for payment / bank details (then repeating is fine).
 const CUSTOMER_ASKED_PAYMENT_RE = /\b(bank|bsb|account|pay|payment|transfer|deposit|screenshot|where.*(send|pay)|how.*(pay|transfer)|remind|again|details)\b|振込|支払|口座|bezahl|überweis|kontonummer/i;
-
-// ============================================================
-// Owner rule (Jo, 1 Sep): NEVER quote a price on an assumption. A price is only
-// sent once the customer has actually told us their income type — "only TFN", or
-// that there was ABN income too. Country, visa, or how long they worked are NOT
-// an income type, and we never infer TFN from the mere absence of ABN. The model
-// is told this in the playbook (so it asks the income question instead of
-// guessing); this is the deterministic backstop for when it quotes anyway.
-// ============================================================
-// A price quote, as it appears in a message. The two-step assessment message
-// leads on $110 and shows the $220/$385 all-up totals (Jo, 2 Sep).
-const FIXED_PRICE_QUOTE_RE = /\$\s?110\b|\$\s?220\b|\$\s?275\b|\$\s?385\b/;
-// Has the CUSTOMER themselves named their income type? A bare "TFN" or "ABN" (or
-// an obvious self-employment word) counts — we only need to know they told us
-// which, not to parse it perfectly. If neither appears anywhere in what they
-// wrote, we have nothing to quote from.
-const CUSTOMER_STATED_INCOME_RE = /\b(?:TFN|ABN)\b|\bsole\s+trader\b|\bself[-\s]?employed\b/i;
-function customerStatedIncomeType(history: Turn[]): boolean {
-  const said = history.filter((t) => t.role === 'customer').map((t) => t.text).join('\n');
-  return CUSTOMER_STATED_INCOME_RE.test(said);
-}
 
 /** Remove only the bank-detail lines from a message, leaving any surrounding text
  *  (a greeting, an answer) intact. Used when the details were already sent and the
@@ -273,31 +254,6 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       },
       newState,
       stateChanged: false,
-    };
-  }
-
-  // PRICE-ON-AN-ASSUMPTION BACKSTOP (Jo, 1 Sep). A price may only leave once the
-  // customer has actually named their income type. If this reply quotes a fixed
-  // price (or steps the customer into PRICE_SENT) while the income type is still
-  // unknown AND the customer never said "TFN" or "ABN" anywhere in the chat, the
-  // model has guessed — the exact failure Jo caught (a German who worked one
-  // month, quoted $220 on the assumption it was TFN only). We do not send a
-  // guessed price on Autopilot: it becomes a task carrying the draft, so a person
-  // confirms the income type first. A customer who DID say their type (income no
-  // longer 'UNKNOWN', or a TFN/ABN mention in the chat) is unaffected and the
-  // price sends normally.
-  const quotesAPrice =
-    FIXED_PRICE_QUOTE_RE.test(text) || newState === 'PRICE_SENT' || decision.new_state === 'PRICE_SENT';
-  const incomeTypeConfirmed = ctx.income !== 'UNKNOWN' || customerStatedIncomeType(history);
-  if (quotesAPrice && !ctx.paid && !incomeTypeConfirmed) {
-    return {
-      kind: 'human_task',
-      decision,
-      task: {
-        reason: 'Quoted a price before the customer confirmed TFN or ABN income',
-        severity: 'REVIEW',
-        suggestedReply: text,
-      },
     };
   }
 

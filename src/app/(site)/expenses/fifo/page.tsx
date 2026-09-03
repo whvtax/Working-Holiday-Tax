@@ -66,7 +66,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "FIFO and camp work" }
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "We start with a Tax Assessment that reviews your full situation and shows you your estimated outcome, so you know exactly where you stand before deciding whether to go ahead and lodge.",
+  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service.",
   "guaranteeBody": "417 and 462 visas are the only tax work we take, so the zone offset, the residency position and the super sitting in three funds all get looked at together. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
