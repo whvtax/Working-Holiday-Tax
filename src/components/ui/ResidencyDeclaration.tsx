@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { submitTaxForm } from '@/lib/submit-tax-form'
-import { isNdaCountry } from '@/lib/nda-countries'
+import { isNdaCountry, languageForCountry } from '@/lib/nda-countries'
 import {
   getTaxFormHandoff,
   markTaxFormSubmitted,
@@ -78,9 +78,27 @@ const COPY = {
     confirmYes: 'はい、WHMとして提出してください',
     confirmNo: 'もう一度確認する',
   },
+  // Spanish is used ONLY for the WHM warning shown to a customer whose home
+  // country is Chile (a treaty/NDA country). The tax form UI itself is not
+  // offered in Spanish; see languageForCountry (Jo, 3 Sep).
+  es: {
+    intro: 'Tras revisar esta página y la información pertinente de la ATO, declaro que soy:',
+    residentLabel: 'Residente fiscal australiano',
+    whmLabel: 'Working Holiday Maker',
+    pickOne: 'Por favor, elige tu situación de residencia fiscal',
+    secure: 'Tu información se mantiene segura y privada.',
+    answerAll: 'Por favor, responde todas las preguntas para continuar.',
+    confirmLead: 'Según tus respuestas, tu declaración de impuestos se presentará como Working Holiday Maker. Por favor, confirma que entiendes lo que esto significa:',
+    confirmLeadNonNda: 'Según tus respuestas, tu declaración de impuestos se presentará como Working Holiday Maker. Esto significa que podrías no tener derecho a la bonificación fiscal por ingresos bajos de hasta $700.',
+    confirmP1pre: 'No eres ', confirmP1strong: 'residente fiscal australiano', confirmP1post: '.',
+    confirmP2pre: 'No tienes derecho al ', confirmP2strong: 'umbral libre de impuestos de $18,200', confirmP2post: '.',
+    confirmNote: 'Las personas de tu país a veces pueden calificar como residente fiscal australiano y conservar el umbral libre de impuestos. Si esto podría aplicarte, revisa primero tus respuestas.',
+    confirmYes: 'Sí, presentar como WHM',
+    confirmNo: 'Déjame revisar de nuevo',
+  },
 } as const
 
-export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoStatus }: {
+export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   lang?: FormLang
   /**
    * Called instead of navigating, when the caller is already rendering this
@@ -89,12 +107,6 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
    * component - the success screen would never appear.
    */
   onSubmitted?: (firstName: string) => void
-  /**
-   * The eligibility quiz's verdict. When it changes, it PRE-SELECTS the matching
-   * option — the client can still change it. Everything downstream (submit, CRM,
-   * PDF) is identical to a manual selection.
-   */
-  autoStatus?: 'resident' | 'whm'
 }) {
   const router = useRouter()
   const [handoff, setHandoff] = useState<TaxFormHandoff | null>(null)
@@ -112,10 +124,6 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
   // render knows nothing about it and rendering it directly would hydrate-mismatch.
   useEffect(() => { setHandoff(getTaxFormHandoff()) }, [])
 
-  // The quiz decides the status; the client cannot change it by hand (owner rule).
-  // The declaration is display-only and follows the quiz verdict.
-  useEffect(() => { if (autoStatus) setStatus(autoStatus) }, [autoStatus])
-
   if (!handoff) return null
 
   const t = (k: keyof typeof formStrings) => {
@@ -126,7 +134,12 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
   // Which WHM confirmation wording to show. Treaty (NDA) countries get the full
   // "you are giving up residency + the $18,200 threshold" explanation; everyone
   // else gets the one-line low-income-tax-offset note and nothing after it.
-  const nda = isNdaCountry((handoff.payload as { country?: string }).country)
+  const country = (handoff.payload as { country?: string }).country
+  const nda = isNdaCountry(country)
+  // The WHM warning is shown in the language of the customer's HOME COUNTRY, not
+  // the language they filled the form in: a German who used the English form
+  // still sees the warning in German, a Japanese person in Japanese (Jo, 3 Sep).
+  const cAlert = COPY[languageForCountry(country)] ?? COPY.en
 
   const doSubmit = async (picked: 'resident' | 'whm') => {
     setLoading(true)
@@ -181,14 +194,21 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
     <div className="resdecl-wrap">
       <style>{styles}</style>
 
-      {/* Display-only: the active card (green highlight, no dot) is the quiz's
-          verdict. There is no radio and no click handler — it cannot be changed. */}
-      <div className="resdecl-options">
+      <p className="resdecl-intro">{c.intro}</p>
+
+      {/* The client picks their status by hand (Jo, 3 Sep). */}
+      <div className="resdecl-options" role="radiogroup" aria-label={c.pickOne}>
         {options.map(opt => (
-          <div key={opt.val} className={`resdecl-card${status === opt.val ? ' resdecl-card-active' : ''}`}>
+          <div
+            key={opt.val}
+            role="radio"
+            tabIndex={0}
+            aria-checked={status === opt.val}
+            className={`resdecl-card resdecl-card-btn${status === opt.val ? ' resdecl-card-active' : ''}`}
+            onClick={() => { setStatus(opt.val); setError('') }}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setStatus(opt.val); setError('') } }}
+          >
             <span className="resdecl-row">
-              {/* A tick box that fills with a checkmark on the option the quiz
-                  worked out — for whichever of the two it is. */}
               <span className={`resdecl-tick${status === opt.val ? ' is-checked' : ''}`}>{status === opt.val ? '✓' : ''}</span>
               <span className="resdecl-label">{opt.label}</span>
             </span>
@@ -207,8 +227,6 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
           : t('submitTax')}
       </button>
 
-      {!status && !loading && <p className="resdecl-hint">{c.answerAll}</p>}
-
       <p className="resdecl-secure">{c.secure}</p>
 
       {/* WHM confirmation. Explicit consequence, then a clear choice: submit as
@@ -218,14 +236,14 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
       {confirming && (
         <div className="resdecl-overlay" onClick={(e) => { if (e.target === e.currentTarget) setConfirming(false) }}>
           <div className="resdecl-modal" role="dialog" aria-modal="true">
-            <p className="resdecl-modal-lead">{nda ? c.confirmLead : c.confirmLeadNonNda}</p>
+            <p className="resdecl-modal-lead">{nda ? cAlert.confirmLead : cAlert.confirmLeadNonNda}</p>
             {nda && (
               <>
                 <ul className="resdecl-modal-points">
-                  <li>{c.confirmP1pre}<strong>{c.confirmP1strong}</strong>{c.confirmP1post}</li>
-                  <li>{c.confirmP2pre}<strong>{c.confirmP2strong}</strong>{c.confirmP2post}</li>
+                  <li>{cAlert.confirmP1pre}<strong>{cAlert.confirmP1strong}</strong>{cAlert.confirmP1post}</li>
+                  <li>{cAlert.confirmP2pre}<strong>{cAlert.confirmP2strong}</strong>{cAlert.confirmP2post}</li>
                 </ul>
-                <p className="resdecl-modal-note">{c.confirmNote}</p>
+                <p className="resdecl-modal-note">{cAlert.confirmNote}</p>
               </>
             )}
             <div className="resdecl-modal-btns">
@@ -233,12 +251,12 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted, autoSta
                 type="button"
                 className="resdecl-submit"
                 onClick={() => { setConfirming(false); void doSubmit('whm') }}
-              >{c.confirmYes}</button>
+              >{cAlert.confirmYes}</button>
               <button
                 type="button"
                 className="resdecl-modal-back"
                 onClick={() => setConfirming(false)}
-              >{c.confirmNo}</button>
+              >{cAlert.confirmNo}</button>
             </div>
           </div>
         </div>
@@ -254,6 +272,10 @@ const styles = `
   .resdecl-req { color: #0B5240; margin-left: 3px; }
   .resdecl-options { display: flex; flex-direction: column; gap: 10px; }
   .resdecl-card { display: flex; align-items: center; padding: 15px 16px; border-radius: 12px; border: 1.5px solid #CDE3DB; background: #F5F9F7; cursor: default; transition: all .15s; }
+  .resdecl-card-btn { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .resdecl-card-btn:hover { border-color: #0B5240; }
+  .resdecl-card-btn:focus-visible { outline: 2px solid #0B5240; outline-offset: 2px; }
+  .resdecl-card-btn:active { transform: scale(.99); }
   .resdecl-card-active { background: #EAF6F1; border-color: #0B5240; }
   .resdecl-row { display: flex; align-items: center; gap: 10px; }
   .resdecl-input { display: none; }

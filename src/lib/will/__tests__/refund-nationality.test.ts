@@ -93,7 +93,7 @@ describe('the two-step price messages carry no guarantee or owing caveat (Jo, 2 
     }
   });
   it('both are the two-step assessment message', () => {
-    expect(APPROVED.price_tfn).toMatch(/Tax Assessment \$110/);
+    expect(APPROVED.price_tfn).toMatch(/Tax Assessment\s*-?\s*\$110/);
     expect(APPROVED.price_tfn).toMatch(/\$220 all up/);
     expect(APPROVED.price_tfn_abn).toMatch(/\$385 all up/);
   });

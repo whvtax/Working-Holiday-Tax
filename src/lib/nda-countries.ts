@@ -64,3 +64,20 @@ export function isNdaCountry(raw: string | null | undefined): boolean {
   if (!v) return false
   return NDA_COUNTRY_PATTERNS.some(re => re.test(v))
 }
+
+/**
+ * Which of our three supported languages best matches a customer's HOME COUNTRY,
+ * independent of the language they filled the form in (Jo, 3 Sep). We want the
+ * WHM warning to reach a German in German and a Japanese person in Japanese even
+ * when they completed the English form. Anything outside German/Japanese falls
+ * back to English. Matches the same real-world spellings people type into the
+ * free-text country field (English, native, and Japanese katakana names).
+ */
+export function languageForCountry(raw: string | null | undefined): 'en' | 'de' | 'ja' | 'es' {
+  const v = (raw ?? '').replace(/\s+/g, ' ').trim()
+  if (!v) return 'en'
+  if (/日本|\bjapan\b|\bnippon\b|\bnihon\b/i.test(v)) return 'ja'
+  if (/ドイツ|\bgermany\b|\bdeutschland\b|\bgerman\b|\ballemagne\b|\balemania\b/i.test(v)) return 'de'
+  if (/チリ|\bchile\b/i.test(v)) return 'es'
+  return 'en'
+}

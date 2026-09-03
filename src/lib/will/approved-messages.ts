@@ -24,12 +24,12 @@ Which country are you from, and did you only work on a TFN or did you have any o
   // account details go out in [payment_details] once the customer agrees.
   price_tfn: `Great! Here's how it works:
 
-🔹 *Step 1: Tax Assessment $110*
+*Tax Assessment - $110*
 We review your tax residency, Medicare status and eligible deductions. Then we give you your estimated tax outcome.
 
-🔹 *Step 2: Preparation & Lodgement*
-Happy with the outcome and want to lodge?
-It's an additional $110, making it $220 all up.
+*Preparation & Lodgement - $110*
+Happy with the outcome and ready to lodge? We'll prepare all the necessary documents and lodge your tax return on your behalf.
+That's $220 all up.
 
 The $110 assessment fee covers the review regardless of the outcome.
 
@@ -37,12 +37,12 @@ Does that work for you? 😊`,
 
   price_tfn_abn: `Great! Here's how it works:
 
-🔹 *Step 1: Tax Assessment $110*
+*Tax Assessment - $110*
 We review your tax residency, Medicare status and eligible deductions. Then we give you your estimated tax outcome.
 
-🔹 *Step 2: Preparation & Lodgement*
-Happy with the outcome and want to lodge?
-It's an additional $275, making it $385 all up.
+*Preparation & Lodgement - $275*
+Happy with the outcome and ready to lodge? We'll prepare all the necessary documents and lodge your tax return on your behalf.
+That's $385 all up.
 
 The $110 assessment fee covers the review regardless of the outcome.
 
