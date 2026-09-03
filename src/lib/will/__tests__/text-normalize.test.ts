@@ -15,11 +15,18 @@ describe('stripDashes (owner rule: Will never emits a dash)', () => {
     expect(DASH_RE.test(out)).toBe(false);
   });
 
-  test('en dash and intra-word hyphen are removed', () => {
+  test('an en dash between numbers is removed; a hyphen inside a word is spelling and stays', () => {
+    // Audit, 3 Sep: Jo's approved opening ends "is non-refundable." and the ABN
+    // questions say "work-related expenses"; stripping those hyphens delivered
+    // "non refundable" to every customer. A hyphen with letters on both sides is
+    // part of the word. An em/en dash, a spaced hyphen, a bullet, a range dash
+    // are still dashes and still go.
     const out = stripDashes('full-time and self-employed 2023–2024');
-    expect(DASH_RE.test(out)).toBe(false);
-    expect(out).toContain('full time');
-    expect(out).toContain('self employed');
+    expect(out).toBe('full-time and self-employed 2023 2024');
+    expect(stripDashes('the fee covers the review and is non-refundable.')).toBe('the fee covers the review and is non-refundable.');
+    expect(stripDashes('Hey Jean-Pierre! work-related expenses')).toBe('Hey Jean-Pierre! work-related expenses');
+    // Between words, an em dash is punctuation even with no spaces.
+    expect(stripDashes('review—including deductions')).toBe('review including deductions');
   });
 
   test('leading bullet dashes are removed', () => {

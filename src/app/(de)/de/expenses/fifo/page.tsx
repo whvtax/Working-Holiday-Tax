@@ -66,7 +66,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "FIFO und Camp-Arbeit"
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz. Musst du stattdessen Steuern nachzahlen, deckt die Gebühr unsere Prüfung ab und wird nicht erstattet.",
   "guaranteeBody": "417 und 462 sind die einzigen Visa, für die wir Steuerarbeit annehmen, deshalb werden Zone Offset, Wohnsitzfrage und die Super in drei Fonds zusammen angesehen. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",

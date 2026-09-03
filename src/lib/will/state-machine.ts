@@ -64,8 +64,12 @@ export const TRANSITIONS: Partial<Record<CustomerState, CustomerState[]>> = {
   // CONFLICT instead of appearing as a normal draft in the chat.
   NEW_LEAD:            ['QUALIFIED', 'PRICE_SENT', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
   QUALIFIED:           ['PRICE_SENT', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
-  PRICE_SENT:          ['PAYMENT_PENDING', 'PAID', 'NOT_INTERESTED', 'WENT_COLD'],
-  PAYMENT_PENDING:     ['PAID', 'NOT_INTERESTED', 'WENT_COLD'],
+  // NOT_RELEVANT after the price too: a wrong number or spam sometimes only
+  // shows itself once the price is out, and without this exit the contact was
+  // chased with the whole pre-payment cadence, auto-closed as Went Cold and
+  // counted as a lost sale (audit, 3 Sep).
+  PRICE_SENT:          ['PAYMENT_PENDING', 'PAID', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
+  PAYMENT_PENDING:     ['PAID', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
   PAID:                ['FORM_PENDING'],
   FORM_PENDING:        ['FORM_COMPLETE'],
   FORM_COMPLETE:       ['DOCUMENTS_COMPLETE'],
@@ -102,6 +106,27 @@ export const FLOW_ELIGIBLE_STATES: Record<Flow, CustomerState[]> = {
   form: ['FORM_PENDING'],
   signature: ['SIGNATURE_PENDING'],
 };
+
+/**
+ * Where a closed customer goes when the conversation comes back to life.
+ *
+ * A lead who never paid starts again from the top: NEW_LEAD, the whole
+ * pipeline from the beginning (Jo, 28 Aug). A customer who HAD paid does not:
+ * they go back to the stage they were closed from, because Lead is a sales
+ * stage and spec §5 says paid never re-enters sales. Audit, 3 Sep: a paid
+ * customer closed after ignoring the form reminders wrote back two weeks
+ * later with "sorry, I'll do the form now", was reopened as Lead with
+ * paid=true, and the questionnaire that followed was ignored (FORM_RECEIVED
+ * only acts on a customer in Form Pending). When the stage they were closed
+ * from is unknown, Form Pending is the safe post-payment step: it is where a
+ * paid customer who has not finished the form belongs, and it is one step
+ * from every later stage the team can move them to by hand.
+ */
+export function reopenTarget(c: { paid: boolean; previousState: CustomerState | null }): CustomerState {
+  if (c.previousState && POST_PAYMENT_STATES.includes(c.previousState)) return c.previousState;
+  if (c.paid) return 'FORM_PENDING';
+  return 'NEW_LEAD';
+}
 
 export function flowForState(state: CustomerState): Flow | null {
   if (FLOW_ELIGIBLE_STATES.prePayment.includes(state)) return 'prePayment';

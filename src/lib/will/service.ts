@@ -3,7 +3,8 @@
 // message, shared by the simulator and the future WhatsApp
 // webhook. Persists everything to the store.
 // ============================================================
-import { getStore, CustomerRow, CustomerState } from './store';
+import { getStore, CustomerRow, CustomerState, Store, MessageRow } from './store';
+import { reopenTarget } from './state-machine';
 import { runEngine, AiMode, EngineOutcome } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
@@ -13,10 +14,11 @@ import { retrieveKnowledge } from './knowledge';
 import { deliverOut, fetchWaMedia } from './channel';
 import { AUTOPILOT_REPLY_DELAY_SECONDS } from './config';
 import { isIdentityQuestion } from './identity-question';
-import { firstNameOf } from './text-normalize';
+import { firstNameOf, cleanFirstName } from './text-normalize';
 import { suggestReply } from './suggest';
 import { APPROVED } from './approved-messages';
-import { assessPaymentProofImage, describeAttachment } from './claude';
+import { assessPaymentProofImage, describeAttachment, PaymentProofCheck } from './claude';
+import { verifyProofDetails, isNotOurPayment, describeProof } from './payment-proof';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
@@ -30,7 +32,14 @@ export interface HandleResult {
   pendingMessageId?: string;
 }
 
-const OPT_OUT = /\b(stop|unsubscribe|opt ?out|stop messaging me|leave me alone|remove me)\b/i;
+// Opt-out (audit, 3 Sep). The old rule was `\bstop\b` anywhere, so "Can I stop
+// my ABN and still get a refund?" opted a lead out for good: no reply, every
+// follow-up cancelled, and "customer opted out" when Jo tried to answer. Now
+// either an explicit phrase (any language Will speaks) anywhere in the
+// message, or the bare word as the WHOLE message ("STOP", "Stopp.", "やめて").
+const OPT_OUT_EXPLICIT = /\b(?:unsubscribe|opt ?out|stop (?:messaging|texting|contacting|writing to|sending)(?: me| messages)?|leave me alone|remove me|take me off|don'?t (?:message|text|contact|write to) me|no more messages|please stop (?:messaging|texting|contacting)(?: me)?)\b|\b(?:bitte )?(?:nicht mehr schreiben|keine nachrichten mehr|h[öo]r auf(?:,)? mir zu schreiben|schreib(?:t)? mir nicht mehr)|\bno me (?:escribas|escriban|contactes|mandes) (?:m[áa]s)|\bdejen? de (?:escribirme|contactarme|mandarme)|\barr[êe]te(?:z)? de m['’]?[ée]crire|\bne m['’]?[ée]cri(?:s|vez) plus|\bsmetti(?:la)? di scrivermi|\bnon scrivermi pi[ùu]|\bpar[ae]m? de me (?:mandar|escrever|contactar)|\bn[ãa]o me (?:escrevas|escrevam|contactes|mandes) mais|配信停止|もう連絡しないで|連絡しないでください|メッセージを止めて|送らないでください/i;
+const OPT_OUT_BARE = /^\s*(?:stop|stopp|unsubscribe|basta|arr[êe]te|やめて|停止)\s*[.!]*\s*$/i;
+export const isOptOut = (text: string) => OPT_OUT_EXPLICIT.test(text) || OPT_OUT_BARE.test(text);
 const SALES_STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
 
 // Owner's rule: a burst of messages (or attachments) from the same customer
@@ -111,6 +120,23 @@ function queueForCustomer<T>(waId: string, fn: () => Promise<T>): Promise<T> {
   return next;
 }
 
+/** The customer just spoke, so the follow-up timer restarts from now, whatever
+ *  else happened to the message (a task, a reopen, a budget stop). Best effort:
+ *  the message is already stored and answered or escalated by the time this
+ *  runs, so a scheduling error is audited, never thrown. */
+async function restartCadence(store: Store, waId: string, fallback: CustomerRow): Promise<CustomerRow> {
+  const fresh = await store.getCustomerByWaId(waId);
+  if (fresh) {
+    try { await reconcileSchedule(fresh); } catch (e) {
+      await store.audit('scheduler', 'reconcile_failed_after_send', {
+        customerId: fresh.id,
+        error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+      }).catch(() => { /* the store is the likely thing that just failed */ });
+    }
+  }
+  return fresh ?? fallback;
+}
+
 export function handleIncoming(
   waId: string,
   text: string,
@@ -179,7 +205,10 @@ async function handleIncomingInner(
   }
 
   // Opt-out: mark, cancel everything, discard pending drafts, stay silent forever.
-  if (OPT_OUT.test(text)) {
+  // Only on the customer's OWN words: an attachment arrives here as our vision
+  // description (alreadyStored), and a payslip from "Stop N Go Cafe" or a
+  // photo of a bus stop must not opt somebody out forever (audit, 3 Sep).
+  if (!opts?.alreadyStored && isOptOut(text)) {
     await store.updateCustomer(customer.id, { optedOut: true });
     await store.cancelJobsFor(customer.id);
     for (const m of await store.listMessages(customer.id)) {
@@ -209,10 +238,13 @@ async function handleIncomingInner(
   const isClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state);
   if (isClosed) {
     // A closed customer (Went Cold / Not Interested / Not Relevant) who messages
-    // again is no longer closed: reopen to Lead, then hand this first message to
-    // a human rather than auto-replying to someone who had said no.
-    await store.setState(customer.id, 'NEW_LEAD', 'SYSTEM');
-    await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, trigger: 'inbound_message' });
+    // again is no longer closed: reopen (to Lead, or for a paid customer back
+    // to the stage they were closed from, see reopenTarget), then hand this
+    // first message to a human rather than auto-replying to someone who had
+    // said no.
+    const target = reopenTarget(customer);
+    await store.setState(customer.id, target, 'SYSTEM');
+    await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, to: target, trigger: 'inbound_message' });
     customer = (await store.getCustomerByWaId(waId)) ?? customer;
     // Will is NEVER auto-paused (Jo, 31 Aug: "never, ever turn Will off"). This
     // message still gets a human's eyes as a task, but Will stays active and
@@ -222,8 +254,8 @@ async function handleIncomingInner(
       severity: 'REVIEW', newContext: text,
       suggestedReply: await suggestReply(text, customer, 'returning_customer'),
     });
-    const c2 = await store.getCustomerByWaId(waId);
-    return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 ?? customer };
+    const c2 = await restartCadence(store, waId, customer);
+    return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 };
   }
 
   // ============================================================
@@ -248,24 +280,14 @@ async function handleIncomingInner(
       severity: 'REVIEW', newContext: text.slice(0, 200), suggestedReply: null,
     });
     await store.audit('policy_guard', 'identity_question_handoff', { customerId: customer.id });
-    const c2 = await store.getCustomerByWaId(waId);
-    return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 ?? customer };
+    const c2 = await restartCadence(store, waId, customer);
+    return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 };
   }
 
   // Global kill switch: store everything, but the assistant stays silent.
   const killSwitch = (await store.getSetting('kill_switch')) === true;
 
   const msgs = await store.listMessages(customer.id);
-  const history: Turn[] = msgs
-    .filter((m) => m.status === 'SENT') // pending/discarded drafts are NOT delivered context
-    .map((m) => ({
-      role: m.direction === 'IN' ? ('customer' as const) : ('assistant' as const),
-      text: m.body,
-      // Mark outbound messages a human on the team sent, so the model can see
-      // where the owner has already stepped in (Jo, 31 Aug).
-      author: m.direction === 'OUT' ? (m.author === 'HUMAN' ? ('HUMAN' as const) : ('AI' as const)) : undefined,
-    }));
-
   // ── Runaway guard (was: "more than 3 messages before payment") ────────────
   //
   // THE OLD RULE. Any 4th inbound message before payment paused Will and handed
@@ -306,10 +328,104 @@ async function handleIncomingInner(
         suggestedReply: await suggestReply(text, customer, 'many_questions'),
       });
       await store.audit('policy_guard', 'many_questions_before_payment', { customerId: customer.id, count: questionsBeforePayment });
-      const c2 = await store.getCustomerByWaId(waId);
-      return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 ?? customer };
+      const c2 = await restartCadence(store, waId, customer);
+      return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 };
     }
   }
+
+  // ── Decide now, or decide in two minutes ─────────────────────────────────
+  //
+  // Jo, 3 Sep: on Autopilot the two-minute wait is FOR READING, not for
+  // holding. People write in bursts ("hi", "I have a question", "about my
+  // tax return..."), and a reply written the instant the first line landed
+  // answers the first line. So nothing is decided here on Autopilot: a timer is
+  // armed (and re-armed by every further message), and when it fires Will
+  // reads everything they wrote and answers it all, once. In Approval mode the
+  // draft is still written now, because there the owner's click is the wait.
+  if (mode === 'FULL_AUTO') {
+    const armed = await armAutoReply(store, customer);
+    await store.audit('assistant', 'decision', {
+      action: 'deferred', fromState: customer.state, newState: null, knowledgeUsed: [],
+      guard: { blocked: false }, preview: null, customerId: customer.id, runAt: armed.runAt,
+    });
+    // The follow-up cadence still moves on every inbound (a lead who is
+    // talking is not a lead to chase), same as the immediate path below.
+    const fresh0 = await store.getCustomerByWaId(waId);
+    if (fresh0) {
+      try { await reconcileSchedule(fresh0); } catch (e) {
+        await store.audit('scheduler', 'reconcile_failed_after_send', {
+          customerId: customer.id,
+          error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+        }).catch(() => { /* the store is the likely thing that just failed */ });
+      }
+    }
+    return {
+      outcome: { kind: 'deferred', decision: { action: 'wait', confidence: 1 } },
+      customer: fresh0 ?? customer,
+    };
+  }
+
+  const { outcome, pendingMessageId } = await decideAndAct(store, customer, text, mode, { killSwitch });
+
+  // ── AFTER THE CUSTOMER HAS THE MESSAGE, NOTHING MAY THROW ────────────────
+  //
+  // The reply may already have been transmitted several lines above. Arming the
+  // follow-up cadence ends in store.addJob(), which throws on any Supabase
+  // error, and that throw propagated all the way out to the webhook. The
+  // webhook read it as "this message failed", released the idempotency claim
+  // and returned 500, so Meta redelivered and the whole function ran again from
+  // the top: a second engine call, a second deliverOut, and the customer got
+  // the same answer twice.
+  //
+  // A missing follow-up is a small, visible problem. A duplicate reply is not
+  // recoverable, so this is best effort and the outcome stands either way.
+  const fresh = await store.getCustomerByWaId(waId);
+  if (fresh) {
+    try {
+      await reconcileSchedule(fresh);
+    } catch (e) {
+      await store.audit('scheduler', 'reconcile_failed_after_send', {
+        customerId: customer.id,
+        error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+      }).catch(() => { /* the store is the likely thing that just failed */ });
+    }
+  }
+  return { outcome, customer: fresh ?? customer, pendingMessageId };
+}
+
+// ============================================================
+// THE DECISION, separated from the ingest so it can run at two different
+// moments: right away (Approval mode, and every path that already has a
+// human waiting), or two minutes after the customer's LAST message on
+// Autopilot (runDeferredAutoReply below), reading the whole burst at once.
+// ============================================================
+export interface DecideOpts {
+  killSwitch: boolean;
+  /** Set by the deferred Autopilot path: send the reply NOW instead of parking
+   *  it QUEUED, and drop it if the customer wrote again after `anchorAt`. */
+  sendNow?: boolean;
+  /** The customer's last-message time the deferred reply was armed on. */
+  anchorAt?: string | null;
+}
+
+export async function decideAndAct(
+  store: Store,
+  customer: CustomerRow,
+  text: string,
+  mode: AiMode,
+  opts: DecideOpts,
+): Promise<{ outcome: EngineOutcome; pendingMessageId?: string }> {
+  const killSwitch = opts.killSwitch;
+  const msgs = await store.listMessages(customer.id);
+  const history: Turn[] = msgs
+    .filter((m) => m.status === 'SENT') // pending/discarded drafts are NOT delivered context
+    .map((m) => ({
+      role: m.direction === 'IN' ? ('customer' as const) : ('assistant' as const),
+      text: m.body,
+      // Mark outbound messages a human on the team sent, so the model can see
+      // where the owner has already stepped in (Jo, 31 Aug).
+      author: m.direction === 'OUT' ? (m.author === 'HUMAN' ? ('HUMAN' as const) : ('AI' as const)) : undefined,
+    }));
 
   // COST-01: daily global cap on paid AI decisions. When the budget is spent,
   // hand the conversation to a human instead of calling the model.
@@ -320,8 +436,7 @@ async function handleIncomingInner(
       suggestedReply: await suggestReply(text, customer, 'budget'),
     });
     await store.audit('policy_guard', 'ai_budget_exhausted', { customerId: customer.id });
-    const c2 = await store.getCustomerByWaId(waId);
-    return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 ?? customer };
+    return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } } };
   }
 
   // RAG: pull the most relevant learned answers for this exact message.
@@ -329,7 +444,11 @@ async function handleIncomingInner(
   const ctx: CustomerContext = {
     // Owner rule: the model only ever sees the FIRST name, so it can never address
     // the customer by surname even if a full name was captured from WhatsApp.
-    name: firstNameOf(customer.name) || null, state: customer.state, income: customer.income,
+    // The cleaned first name (a leading emoji, ALL CAPS, a company or a phone
+    // number as the profile name all read as "no name"), so the model never
+    // greets "Hey 🌸!" or "Hey SYDNEY!" (audit, 3 Sep). Same cleaner the
+    // deterministic opening uses.
+    name: cleanFirstName(firstNameOf(customer.name)) || null, state: customer.state, income: customer.income,
     paid: customer.paid, formComplete: customer.formComplete,
     missingDocs: customer.missingDocs, estimatedRefundCents: customer.estimatedRefundCents,
     lang: customer.lang,
@@ -422,6 +541,19 @@ async function handleIncomingInner(
   };
 
   let pendingMessageId: string | undefined;
+
+  // The deferred Autopilot reply goes out now, not into the queue: the wait
+  // already happened. Right before it leaves, one more look at the clock: if
+  // the customer wrote again while the model was thinking, this answer is to
+  // an older version of the conversation. The newer message armed its own
+  // timer, so drop this one rather than talk past them.
+  if (opts.sendNow && outcome.kind === 'queued') {
+    if (await supersededByNewerTimer(store, customer.id)) {
+      await store.audit('assistant', 'auto_reply_superseded', { customerId: customer.id, anchorAt: opts.anchorAt ?? null });
+      return { outcome: { kind: 'silent', decision: outcome.decision } };
+    }
+    outcome.kind = 'sent';
+  }
 
   if (outcome.kind === 'sent' && outcome.replyText) {
     // apply state + income ONLY when actually sent
@@ -523,30 +655,107 @@ async function handleIncomingInner(
     customerId: customer.id,
   });
 
-  // ── AFTER THE CUSTOMER HAS THE MESSAGE, NOTHING MAY THROW ────────────────
-  //
-  // The reply may already have been transmitted several lines above. Arming the
-  // follow-up cadence ends in store.addJob(), which throws on any Supabase
-  // error, and that throw propagated all the way out to the webhook. The
-  // webhook read it as "this message failed", released the idempotency claim
-  // and returned 500, so Meta redelivered and the whole function ran again from
-  // the top: a second engine call, a second deliverOut, and the customer got
-  // the same answer twice.
-  //
-  // A missing follow-up is a small, visible problem. A duplicate reply is not
-  // recoverable, so this is best effort and the outcome stands either way.
-  const fresh = await store.getCustomerByWaId(waId);
+  return { outcome, pendingMessageId };
+}
+
+/** Another timer owns the answer now: a newer TEXT message re-armed one
+ *  (armAutoReply cancels the SCHEDULED predecessor, but a timer that is
+ *  already running when the message lands has to notice by itself). This is
+ *  deliberately NOT "a newer inbound message exists": a 👍 reaction, a voice
+ *  note or a sticker between the question and the timer is stored as an
+ *  inbound message too, and reading those as supersession dropped the reply
+ *  with nothing to replace it, so the question was never answered (audit,
+ *  3 Sep). Only a text arms a timer, so only a newer timer supersedes. */
+async function supersededByNewerTimer(store: Store, customerId: string): Promise<boolean> {
+  try {
+    const jobs = await store.listJobsForCustomer(customerId, ['AUTO_REPLY']);
+    return jobs.some((j) => j.status === 'SCHEDULED' && !!j.payload.debounce);
+  } catch {
+    return false; // a store hiccup must not silence a reply that is ready
+  }
+}
+
+/** The text a deferred reply answers: everything the customer wrote since we
+ *  last said anything, oldest first, so a burst reads as one message. Falls
+ *  back to the latest inbound line when the thread has no outbound at all. */
+export function burstText(msgs: MessageRow[]): string {
+  const sent = msgs.filter((m) => m.status === 'SENT');
+  let lastOut = -1;
+  for (let i = sent.length - 1; i >= 0; i--) {
+    if (sent[i].direction === 'OUT') { lastOut = i; break; }
+  }
+  const burst = sent.slice(lastOut + 1).filter((m) => m.direction === 'IN').map((m) => m.body.trim()).filter(Boolean);
+  if (burst.length) return burst.join('\n');
+  const lastIn = [...sent].reverse().find((m) => m.direction === 'IN');
+  return lastIn?.body ?? '';
+}
+
+/**
+ * Arm (or re-arm) the Autopilot reply timer for this customer.
+ *
+ * One pending timer per customer: every new message cancels the previous one
+ * and starts the two minutes again, so the reply is written only once the
+ * customer has been quiet for AUTOPILOT_REPLY_DELAY_SECONDS. The anchor is the
+ * customer's last-message time as the STORE recorded it (same clock the
+ * supersession check reads), never this process's own clock.
+ */
+export async function armAutoReply(store: Store, customer: CustomerRow): Promise<{ runAt: string; anchorAt: string | null }> {
+  try { await store.cancelJobsFor(customer.id, ['AUTO_REPLY']); } catch { /* a stale timer is dropped at fire time anyway */ }
+  const fresh = await store.getCustomerById(customer.id);
+  const anchorAt = fresh?.lastCustomerMsgAt ? new Date(fresh.lastCustomerMsgAt).toISOString() : null;
+  const runAt = new Date(Date.now() + AUTOPILOT_REPLY_DELAY_SECONDS * 1000).toISOString();
+  await store.addJob({
+    customerId: customer.id, kind: 'AUTO_REPLY', payload: { debounce: true, anchorAt }, runAt,
+  });
+  return { runAt, anchorAt };
+}
+
+/**
+ * The timer fired: read everything the customer wrote and answer it, once.
+ *
+ * Called by the scheduler for an AUTO_REPLY job carrying `debounce`. Everything
+ * is re-checked at this moment rather than assumed from two minutes ago: a
+ * newer message (its own timer will answer), a reply that already went out (Jo
+ * or a template got there first), opt-out, and the mode as it is NOW (switched
+ * to Approval in the meantime means a draft, not a send).
+ */
+export async function runDeferredAutoReply(
+  customer: CustomerRow,
+  job: { payload: { anchorAt?: string | null }; createdAt?: string | null; runAt: string },
+): Promise<'sent' | 'superseded' | 'answered' | 'skipped' | 'decided'> {
+  const store = getStore();
+  const anchorAt = job.payload.anchorAt ?? null;
+  if (customer.optedOut) return 'skipped';
+  if (await supersededByNewerTimer(store, customer.id)) {
+    await store.audit('assistant', 'auto_reply_superseded', { customerId: customer.id, anchorAt });
+    return 'superseded';
+  }
+  const msgs = await store.listMessages(customer.id);
+  const since = anchorAt ? new Date(anchorAt).getTime() : new Date(job.createdAt ?? job.runAt).getTime();
+  const answered = msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT' && new Date(m.createdAt).getTime() >= since);
+  if (answered) {
+    await store.audit('assistant', 'auto_reply_already_answered', { customerId: customer.id, anchorAt });
+    return 'answered';
+  }
+  const text = burstText(msgs);
+  if (!text.trim()) return 'skipped';
+  const mode = resolveAiMode(await store.getSetting('ai_mode'));
+  const killSwitch = (await store.getSetting('kill_switch')) === true;
+  const { outcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: mode === 'FULL_AUTO', anchorAt });
+  // The stage may have just moved (a price sent, a payment confirmed and the
+  // form requested), and the follow-up cadence belongs to the NEW stage: a
+  // customer who was just asked for the form needs the form reminders, not
+  // the pre-payment ones. Same best-effort rule as the immediate path.
+  const fresh = await store.getCustomerById(customer.id);
   if (fresh) {
-    try {
-      await reconcileSchedule(fresh);
-    } catch (e) {
+    try { await reconcileSchedule(fresh); } catch (e) {
       await store.audit('scheduler', 'reconcile_failed_after_send', {
         customerId: customer.id,
         error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
       }).catch(() => { /* the store is the likely thing that just failed */ });
     }
   }
-  return { outcome, customer: fresh ?? customer, pendingMessageId };
+  return outcome.kind === 'sent' ? 'sent' : 'decided';
 }
 
 // ============================================================
@@ -611,8 +820,9 @@ export async function handleInboundNote(
   // signal to count as "messaged again", so it is excluded.
   const wasClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state);
   if (wasClosed && !meta?.reaction) {
-    await store.setState(customer.id, 'NEW_LEAD', 'SYSTEM');
-    await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, trigger: 'inbound_media' });
+    const target = reopenTarget(customer);
+    await store.setState(customer.id, target, 'SYSTEM');
+    await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, to: target, trigger: 'inbound_media' });
     customer = (await store.getCustomerByWaId(waId)) ?? customer;
   }
   await store.addMessage({
@@ -712,14 +922,39 @@ export async function handleInboundNote(
     suggestedReply: await suggestReply('', customer, meta?.media ? 'attachment' : 'unreadable'),
   });
   const fresh = await store.getCustomerByWaId(waId);
+  // A voice note or an unreadable attachment is still the customer talking:
+  // the follow-up timer restarts from now, exactly as it does for a text
+  // message. Without this, a lead who sent a voice note at hour 23 was nudged
+  // with "still want us to take a look?" an hour later, while their message
+  // sat unanswered in a task (audit, 3 Sep). Best effort, as everywhere.
+  if (fresh) {
+    try { await reconcileSchedule(fresh); } catch (e) {
+      await store.audit('scheduler', 'reconcile_failed_after_send', {
+        customerId: customer.id,
+        error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+      }).catch(() => { /* the store is the likely thing that just failed */ });
+    }
+  }
   return fresh ?? customer;
 }
 
-/** After payment confirmation (form link just sent), move to FORM_PENDING so the form follow-ups run. */
+/** After payment confirmation (form link just sent), move to FORM_PENDING so the
+ *  form follow-ups run. A customer who already sent the questionnaire before
+ *  paying (form-link.ts remembers it as formComplete) goes straight on to
+ *  FORM_COMPLETE, so the form reminders never chase a form we already have. */
 export async function autoAdvanceToForm(customerId: string, _bank: { bsb: string; account: string }): Promise<void> {
   const store = getStore();
   const c = await store.getCustomerById(customerId);
-  if (c && c.state === 'PAID') await store.setState(customerId, 'FORM_PENDING', 'SYSTEM');
+  if (!c || c.state !== 'PAID') return;
+  await store.setState(customerId, 'FORM_PENDING', 'SYSTEM');
+  if (c.formComplete) {
+    // The questionnaire is already in: run the same FORM_RECEIVED step the
+    // form submission would have triggered now, so the customer gets the
+    // "received" confirmation and the ABN questions, the form reminders are
+    // cancelled, and the stage moves on to Form Complete.
+    await store.addJob({ customerId, kind: 'FORM_RECEIVED', payload: {}, runAt: new Date().toISOString() });
+    await store.audit('system', 'form_received_before_payment_applied', { customerId }).catch(() => {});
+  }
 }
 
 /** States in which a payment is actually outstanding — matches the text-based
@@ -789,6 +1024,11 @@ export function paymentClaimForcesPaid(opts: {
  *  problem, an unclear image — is NOT proof, and falls through to the normal
  *  "cannot read this" handoff task instead.
  *
+ *  Jo, 3 Sep: the vision check also reads the amount, the recipient and the
+ *  status. When they add up to our fee in our account, completed, the payment
+ *  is VERIFIED and no task is raised at all; when something is not visible the
+ *  stage still moves on trust and a heads-up task names what to glance at.
+ *
  *  Returns null when the attachment does not qualify: no existing customer,
  *  already paid, not currently in a state where a price is outstanding, the
  *  file could not be downloaded from Meta, or the vision check did not
@@ -834,17 +1074,23 @@ async function handlePaymentProofMediaInner(
   }
 
   // ── ROUTE 2: the picture shows it. ────────────────────────────────────────
-  // Only asked when they did not say it, because a paid answer cannot become
-  // more paid — and this is a paid model call on every attachment.
+  // Jo, 3 Sep: the picture is read EVERY time we can afford it, whether or not
+  // they also typed "paid". It used to be skipped once the words were there,
+  // to save the call, and the saving cost Jo a task per payment: with nothing
+  // read off the picture there was nothing to confirm the amount and the
+  // recipient with, so every confirmed payment ended as "worth a glance". Now
+  // the vision check returns the amount, the recipient and the status, and
+  // when those add up to our fee in our account the payment is confirmed with
+  // no task at all (verifyProofDetails). The words still decide on their own
+  // whenever the picture cannot be read: a paid answer never becomes less paid.
   //
   // THE DAILY AI BUDGET APPLIES HERE TOO, and this is the only place in the
   // system where that had never been checked — while being the most expensive
   // call the system makes. Left ungated, a bad day of attachments could spend
   // the budget through the one door that does not have a lock on it.
   //
-  // The gate is safe to add ONLY because of the ordering above: the customer's
-  // own words are read first and cost nothing, so on a budget-exhausted day
-  // the ordinary case (a screenshot captioned "paid") is unaffected. What is
+  // On a budget-exhausted day the ordinary case (a screenshot captioned
+  // "paid") is unaffected: the words carry it, with the glance task. What is
   // left is the caption-less screenshot, and that does not get quietly
   // dropped — it returns null, which is the same path as a picture we cannot
   // download, and lands as a task for a person to open. A payment is never
@@ -855,29 +1101,52 @@ async function handlePaymentProofMediaInner(
   // proceeds exactly as it did before this gate existed. A metering failure is
   // allowed to cost money; it is not allowed to cost a customer.
   let overBudget = false;
-  if (!said) {
-    try { overBudget = await aiBudgetExhausted(); } catch { overBudget = false; }
-  }
-  let check: { isProof: boolean; reason?: string } = { isProof: false };
-  if (!said && overBudget) {
+  try { overBudget = await aiBudgetExhausted(); } catch { overBudget = false; }
+  let check: PaymentProofCheck = { isProof: false };
+  if (overBudget) {
     await store.audit('system', 'payment_proof_check_skipped', {
-      customerId: customer.id, reason: 'daily AI budget exhausted; sent to a human instead',
+      customerId: customer.id,
+      reason: said ? 'daily AI budget exhausted; trusting their words' : 'daily AI budget exhausted; sent to a human instead',
     });
-    return null;
-  }
-  if (!said) {
+    if (!said) return null;
+  } else {
     const fetched = await fetchWaMedia(meta.media.id);
     if (!fetched.ok) {
       await store.audit('system', 'payment_proof_check_skipped', { customerId: customer.id, reason: fetched.error });
-      return null;
+      if (!said) return null;
+    } else {
+      check = await assessPaymentProofImage(fetched.body, fetched.mime || meta.media.mime || '');
+      await store.audit('system', 'payment_proof_checked', {
+        customerId: customer.id, isProof: check.isProof, reason: check.reason ?? null, details: check.details ?? null,
+      });
+      // A payment, but demonstrably not ours (another recipient) or not done
+      // (failed): the picture alone must never confirm it. Their words still
+      // can, and then the task carries this verdict so the mismatch is seen.
+      if (check.isProof && check.details && isNotOurPayment(check.details)) {
+        await store.audit('system', 'payment_proof_rejected', {
+          customerId: customer.id, reason: describeProof(check.details),
+        });
+        check = { isProof: false, reason: `the screenshot shows a payment of ${describeProof(check.details)}`, details: check.details };
+      }
     }
-    check = await assessPaymentProofImage(fetched.body, fetched.mime || meta.media.mime || '');
-    await store.audit('system', 'payment_proof_checked', { customerId: customer.id, isProof: check.isProof, reason: check.reason ?? null });
   }
 
   // Either route is enough on its own.
   if (!said && !check.isProof) return null; // neither — falls through to the manual task
-  const trustedBecause = said ? 'they said they paid' : (check.reason ?? 'the screenshot shows a payment');
+
+  // Fully verified means our fee, to our account, completed, read off the
+  // picture. Anything short of that moves the stage on trust and says exactly
+  // what could not be checked.
+  const verification = check.details
+    ? verifyProofDetails(check.details)
+    : { verified: false, unverified: [said ? 'the screenshot could not be read' : 'nothing could be read off the screenshot'] };
+  const shown = check.details ? describeProof(check.details) : null;
+  const trustedBecause = verification.verified
+    ? `the screenshot shows ${shown}`
+    : said
+      ? `they said they paid${shown ? `; the screenshot shows ${shown}` : ''}`
+      : (check.reason ?? 'the screenshot shows a payment');
+  const unverifiedNote = verification.verified ? '' : ` Not verified from the picture: ${verification.unverified.join('; ')}.`;
 
   await store.addMessage({
     customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,
@@ -903,10 +1172,10 @@ async function handlePaymentProofMediaInner(
     });
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-      reason: `Customer confirmed payment (${trustedBecause}). A "payment received" reply is drafted and waiting for your approval — nothing has been sent or moved yet.`,
+      reason: `Customer confirmed payment (${trustedBecause}).${unverifiedNote} A "payment received" reply is drafted and waiting for your approval — nothing has been sent or moved yet.`,
       severity: 'REVIEW', context: body, suggestedReply: null,
     });
-    await store.audit('system', 'payment_proof_drafted', { customerId: customer.id, mediaKind: meta.media.kind, messageId: draft.id });
+    await store.audit('system', 'payment_proof_drafted', { customerId: customer.id, mediaKind: meta.media.kind, messageId: draft.id, verified: verification.verified });
     return (await store.getCustomerByWaId(waId)) ?? customer;
   }
 
@@ -943,23 +1212,54 @@ async function handlePaymentProofMediaInner(
     }).catch(() => { /* the store is a likely thing to have just failed */ });
   }
 
-  // A heads-up, not a to-do: the stage already moved itself. This exists so
-  // the owner can glance at the photo and catch a wrong/fake one, not because
-  // anything is waiting on them.
-  await store.addTask({
-    customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-    reason: out.ok
-      ? `Customer confirmed payment (${trustedBecause}). Moved to Paid automatically. Worth a glance to confirm it looks right.`
-      : `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
-    // A customer who paid and heard nothing is the most urgent thing on the
-    // board, and the reply is ready to send in one click rather than retyped.
-    severity: out.ok ? 'REVIEW' : 'URGENT',
-    context: body,
-    suggestedReply: out.ok ? null : APPROVED.payment_received,
+  // The task, and when there is none.
+  //
+  // A customer who paid and heard nothing is the most urgent thing on the
+  // board, so a rejected send is always a task, with the reply ready to send
+  // in one click rather than retyped.
+  //
+  // Otherwise: a payment the picture VERIFIED (our fee, our account, completed)
+  // raises nothing. Jo, 3 Sep: the model read the receipt; asking him to read
+  // it again was the task he did not want. Only a payment taken on trust, with
+  // something the picture could not show, gets the heads-up, and the heads-up
+  // says what that something was.
+  if (!out.ok) {
+    await store.addTask({
+      customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
+      reason: `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
+      severity: 'URGENT',
+      context: body,
+      suggestedReply: APPROVED.payment_received,
+    });
+  } else if (!verification.verified) {
+    await store.addTask({
+      customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
+      reason: `Customer confirmed payment (${trustedBecause}).${unverifiedNote} Moved to Paid automatically. Worth a glance to confirm it looks right.`,
+      severity: 'REVIEW',
+      context: body,
+      suggestedReply: null,
+    });
+  }
+
+  await store.audit('system', 'auto_paid_from_media', {
+    customerId: customer.id, mediaKind: meta.media.kind, verified: verification.verified, shown: shown ?? null,
   });
 
-  await store.audit('system', 'auto_paid_from_media', { customerId: customer.id, mediaKind: meta.media.kind });
-  return (await store.getCustomerByWaId(waId)) ?? customer;
+  // The customer just moved Paid -> Form Pending, and the form reminders (6h,
+  // 3d, 7d) belong to that stage. Nothing armed them on this path (audit,
+  // 3 Sep): a screenshot-confirmed payment on Autopilot sat in Form Pending
+  // with no reminder ever sent, and was only chased again if they wrote first.
+  // Best effort, same as every other reconcile after a send.
+  const after = await store.getCustomerByWaId(waId);
+  if (after) {
+    try { await reconcileSchedule(after); } catch (e) {
+      await store.audit('scheduler', 'reconcile_failed_after_send', {
+        customerId: customer.id,
+        error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+      }).catch(() => { /* the store is the likely thing that just failed */ });
+    }
+  }
+  return after ?? customer;
 }
 
 export { SALES_STATES };

@@ -66,9 +66,14 @@ import { normalizeTemplateLang } from '@/lib/will/channel';
 
 describe('normalizeTemplateLang', () => {
   it('passes through the plain codes Will detects', () => {
-    for (const c of ['de', 'es', 'fr', 'it', 'pt', 'ja']) {
+    for (const c of ['de', 'es', 'fr', 'it', 'ja']) {
       expect(normalizeTemplateLang(c)).toBe(c);
     }
+  });
+
+  it("maps the detector's 'pt' to pt_BR, the only Portuguese Meta knows (audit, 3 Sep)", () => {
+    expect(normalizeTemplateLang('pt')).toBe('pt_BR');
+    expect(normalizeTemplateLang('pt_PT')).toBe('pt_PT'); // an explicit regional code is kept
   });
 
   it('normalises regional variants to Meta casing', () => {

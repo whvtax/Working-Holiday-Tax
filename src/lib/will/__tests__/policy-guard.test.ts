@@ -515,3 +515,46 @@ describe('REPLY_TOO_LONG: replies must read like a person texting', () => {
     });
   });
 });
+
+// ── The guarantee in translation (audit, 3 Sep) ─────────────────────────────
+//
+// Two rules that only ever saw English wording refused the approved guarantee
+// once it was rendered in another language: the money-back ban matched the
+// Japanese "差額を返金します" (we refund THE DIFFERENCE), so every Japanese menu
+// opening became a task; and objection #9's worked example ($100 refund, $220
+// fee, $120 back) tripped FORBIDDEN_AMOUNT in German, Spanish, French and
+// Japanese because only the English sentence is in the corpus.
+describe('the guarantee survives translation', () => {
+  it('lets the Japanese opening guarantee through', () => {
+    expect(has('どちらの場合も、還付金が料金より少ない場合は差額を返金します。', 'REFUND_OR_CANCEL_PROMISE')).toBe(false);
+  });
+
+  it('lets the worked example through in German and Japanese', () => {
+    const de = 'Wenn deine Rückerstattung also nur $100 wäre und unsere Gebühr $220, würden wir dir $120 erstatten.';
+    const ja = '例えば還付金が$100で料金が$220なら、$120を返金します。';
+    for (const t of [de, ja]) {
+      const v = policyGuard(t, ctx({ state: 'PRICE_SENT' })).violations;
+      expect([t, v.filter((x) => x.startsWith('FORBIDDEN_AMOUNT') || x === 'REFUND_OR_CANCEL_PROMISE')]).toEqual([t, []]);
+    }
+  });
+
+  it('is only the exact arithmetic: a made-up pair is still a forbidden amount', () => {
+    const v = policyGuard('Wenn deine Rückerstattung $150 wäre und unsere Gebühr $220, bekommst du $120 zurück.', ctx()).violations;
+    expect(v).toContain('FORBIDDEN_AMOUNT:150.00');
+  });
+
+  it('a lone $100 refund figure is still forbidden', () => {
+    expect(policyGuard('Your refund will be about $100.', ctx()).violations).toContain('FORBIDDEN_AMOUNT:100.00');
+  });
+
+  it('a FULL refund promise is still caught in every language', () => {
+    for (const t of ['全額返金します。', '料金を返金します。', 'Du bekommst dein Geld zurück.', 'Te devolvemos el dinero de vuelta.', 'No worries, you get your money back.']) {
+      expect([t, has(t, 'REFUND_OR_CANCEL_PROMISE')]).toEqual([t, true]);
+    }
+  });
+
+  it('the example is not exempt after payment, where it is sales content anyway', () => {
+    const v = policyGuard('If your refund was only $100 and our fee was $220, we would refund you $120.', ctx({ paid: true, state: 'FORM_PENDING' })).violations;
+    expect(v.some((x) => x.startsWith('FORBIDDEN_AMOUNT') || x === 'SALES_CONTENT_AFTER_PAYMENT')).toBe(true);
+  });
+});

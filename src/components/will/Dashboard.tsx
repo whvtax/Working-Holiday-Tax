@@ -104,6 +104,9 @@ interface StateData {
   pending: (MessageRow & { customerName: string | null; waId?: string | null })[];
   /** customerIds that already have a scheduled follow-up. */
   followupIds?: string[];
+  /** customerIds whose Autopilot two-minute timer is armed: Will is about to
+   *  read everything they wrote and answer (Jo, 3 Sep). */
+  autoReplyIds?: string[];
   /** True total customer count from the server (not the loaded window). */
   total?: number;
   /** True per-pipeline-group counts from the server, keyed by group id. */
@@ -855,6 +858,11 @@ export default function Dashboard() {
   // tick ABOVE the stage chip in the chat list, so at a glance the owner knows
   // this lead is already being chased and needs nothing from him.
   const followupSet = new Set(data.followupIds ?? []);
+  // Autopilot no longer writes the reply the moment a message lands; it waits
+  // two minutes of quiet and then answers everything at once. Without a
+  // marker, those two minutes look like a chat Will ignored, so the list says
+  // he is about to answer.
+  const answeringSet = new Set(data.autoReplyIds ?? []);
   // Notifications, most urgent first (URGENT > CONFLICT > REVIEW), then newest.
   const SEV_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
   const notifTasks = [...openTasks].sort(
@@ -1199,6 +1207,9 @@ export default function Dashboard() {
                         <div className="cm">
                           {draftWaiting && (
                             <span className="cdraft" title={`${ASSISTANT_NAME} has written a reply for this chat and is waiting for you to approve it. It has NOT been sent.`}>✎ draft waiting</span>
+                          )}
+                          {!draftWaiting && answeringSet.has(c.id) && (
+                            <span className="cdraft" title={`${ASSISTANT_NAME} is waiting two minutes for the customer to finish writing, then answers everything at once.`}>⏳ answering soon</span>
                           )}
                           {c.lastMessagePreview}
                         </div>
@@ -2398,9 +2409,14 @@ export default function Dashboard() {
                               return (
                                 <div className="hoff-block">
                                   <div className="hoff-k">What arrived</div>
+                                  {/* Will DOES read pictures now (vision describes
+                                      every attachment, and reads payment receipts
+                                      in full), so the old "reads text, nothing to
+                                      work with" line was untrue; what he read is
+                                      in his own words below. */}
                                   {arrived.events && (
                                     <div className="hoff-event">
-                                      {arrived.events}. {ASSISTANT_NAME} reads text, so there was nothing here for him to work with. Open WhatsApp to see it.
+                                      {arrived.events}. Open WhatsApp to see it.
                                     </div>
                                   )}
                                   {/* A caption IS the customer's own words, so it

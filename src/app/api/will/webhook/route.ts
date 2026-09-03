@@ -27,7 +27,7 @@ const MAX_WEBHOOK_BYTES = 256 * 1024;
 /** Throttle for the signature-rejection audit line (DIAG-02). */
 let _lastSigFailLog = 0;
 // COST-01: bound paid Anthropic calls + DB writes triggered by a public endpoint.
-const PER_SENDER_MAX = 12;   // inbound messages per sender per rate-limit window
+const PER_SENDER_MAX = 40;   // inbound messages per sender per rate-limit window (audit, 3 Sep: 12 dropped the 13th line of a real burst)
 const GLOBAL_INBOUND_MAX = 400; // inbound messages across ALL senders per window
 
 // REL-03: how many times Meta may redeliver one message before we stop asking.
@@ -293,6 +293,84 @@ function inboundSnapshot(payload: unknown): Record<string, unknown> {
   return out;
 }
 
+// ── Delivery statuses for OUR messages ──────────────────────────────────────
+//
+// Meta's Cloud API accepts a well-formed send with 200 + a wamid and reports
+// what happened to it AFTERWARDS, as `value.statuses[]`: sent, delivered,
+// read, or FAILED with an error code (131047 outside the 24h window, 131026
+// undeliverable, 131049 marketing limit, 130472 experiment...). These used to
+// be ignored (audit, 3 Sep): a free text sent to a customer quiet for more
+// than a day got 200 + wamid, showed ✓✓ in the CRM, audited *_sent, and the
+// pipeline moved on while the customer heard nothing. Now a failed status
+// flips the message to FAILED with the reason, and raises ONE task with the
+// text ready to resend (as a template, when the window is the reason).
+// Delivered / read receipts are stamped on the message for the two ticks.
+const WINDOW_ERROR_CODES = new Set([131047]);
+const STATUS_ERROR_HINT: Record<number, string> = {
+  131047: 'outside the 24h window: the customer has not written for over a day, so only an approved template can reach them',
+  131026: 'the number cannot receive WhatsApp messages (blocked, or not on WhatsApp)',
+  131049: 'Meta held it back under its marketing message limit for this person',
+  130472: 'the customer is in a Meta experiment group that does not receive marketing templates',
+  131053: 'the media could not be uploaded',
+  131037: 'the phone number is not registered or the display name was not approved',
+};
+
+interface WaStatus {
+  id?: string; status?: string; timestamp?: string; recipient_id?: string;
+  errors?: { code?: number; title?: string; message?: string; error_data?: { details?: string } }[];
+}
+
+function extractStatuses(payload: unknown): WaStatus[] {
+  const out: WaStatus[] = [];
+  try {
+    const p = payload as { entry?: { changes?: { value?: { statuses?: WaStatus[] } }[] }[] };
+    for (const e of p.entry ?? []) {
+      for (const ch of e.changes ?? []) {
+        for (const st of ch.value?.statuses ?? []) if (st && typeof st === 'object') out.push(st);
+      }
+    }
+  } catch { /* malformed: nothing to report */ }
+  return out;
+}
+
+async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
+  const store = getStore();
+  for (const st of statuses) {
+    if (!st.id || !st.status) continue;
+    try {
+      if (st.status === 'failed') {
+        const first = st.errors?.[0];
+        const code = typeof first?.code === 'number' ? first.code : undefined;
+        const detail = first?.error_data?.details || first?.message || first?.title || 'unknown error';
+        const hint = code != null ? STATUS_ERROR_HINT[code] : undefined;
+        const error = `meta ${code ?? '?'}: ${detail}${hint ? ` (${hint})` : ''}`;
+        const msg = await store.markDeliveryFailedByProviderId(st.id, error);
+        if (!msg) continue; // not one of ours (or already gone): nothing to flip
+        const customer = await store.getCustomerById(msg.customerId);
+        await store.audit('channel', 'delivery_failed', {
+          customerId: msg.customerId, messageId: msg.id, providerId: st.id, code: code ?? null, error,
+        });
+        if (!customer) continue;
+        const outsideWindow = code != null && WINDOW_ERROR_CODES.has(code);
+        await store.addTask({
+          customerId: customer.id, customerName: customer.name ?? customer.waId,
+          reason: outsideWindow
+            ? `WhatsApp did not deliver this message: ${hint}. It shows as failed in the chat. Send it as an approved template (the estimate, signature and lodged buttons do that by themselves), or wait for the customer to write.`
+            : `WhatsApp did not deliver this message: ${error}. It shows as failed in the chat.`,
+          severity: 'URGENT', context: msg.body.slice(0, 200), suggestedReply: msg.body,
+        });
+      } else if (st.status === 'delivered' || st.status === 'read') {
+        const at = st.timestamp ? new Date(Number(st.timestamp) * 1000).toISOString() : new Date().toISOString();
+        await store.markDeliveryReceiptByProviderId(st.id, st.status, at);
+      }
+    } catch (e) {
+      await store.audit('channel', 'delivery_status_error', {
+        providerId: st.id, status: st.status, error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+      }).catch(() => { /* diagnostics only */ });
+    }
+  }
+}
+
 /** Extract text messages + sender profile names from a Meta webhook payload.
  *  WH-01: only accept messages addressed to OUR phone number id (when we know
  *  it), so a valid-HMAC payload for a different WABA cannot inject customers.
@@ -484,6 +562,11 @@ export async function POST(req: Request) {
       });
     }
   } catch { /* diagnostics only */ }
+
+  // Our own messages' fate, before anything else: a delivery failure is the
+  // one thing in this payload that changes what the CRM has already told Jo.
+  const statuses = extractStatuses(payload);
+  if (statuses.length) await applyDeliveryStatuses(statuses);
 
   const skipped: SkippedInbound[] = [];
   const items = extract(payload, ourPhoneId, skipped);
@@ -702,9 +785,14 @@ export async function POST(req: Request) {
       //   2. DISCARD any reply Will had drafted and was holding for approval, so
       //      it can never be approved and sent as a duplicate on top of what the
       //      owner just typed by hand;
-      //   3. PAUSE the assistant for this chat, because a person has taken it
-      //      over — the same rule a manual reply through the CRM follows. The
-      //      owner re-enables Will per chat with the "Will Active" toggle.
+      //   3. Will is NOT paused. This used to pause him (the old CRM rule), but
+      //      Jo, 31 Aug: never, ever turn Will off. A reply from the phone is
+      //      the owner answering one message, not taking the chat over for
+      //      good; the questionnaire confirmation, the ABN questions and the
+      //      follow-ups must still run for this customer (audit, 3 Sep: they
+      //      went silent after every phone reply). The draft discard above is
+      //      what prevents a duplicate answer; the "Will Active" toggle is the
+      //      owner's explicit way to pause a chat if he wants to.
       await afterHumanReply(store, customer.id).catch(() => { /* badge/tasks are bookkeeping */ });
       try {
         const msgs = await store.listMessages(customer.id);
@@ -714,7 +802,6 @@ export async function POST(req: Request) {
             .map((m) => store.setMessageStatus(m.id, 'DISCARDED').catch(() => { /* per draft */ })),
         );
       } catch { /* best effort: a lingering draft is a nuisance, not a double-send by itself */ }
-      await store.updateCustomer(customer.id, { aiPaused: true }).catch(() => { /* best effort */ });
       await store.audit('channel', 'app_echo_synced', { id: echo.id, from: maskWa(echo.to) });
     } catch { /* best effort */ }
   }

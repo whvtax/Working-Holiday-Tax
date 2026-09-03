@@ -49,6 +49,11 @@ export interface MessageRow {
   meta?: {
     proposedState?: CustomerState; income?: 'TFN' | 'TFN_ABN'; templateId?: string;
     variant?: 'A' | 'B'; credited?: boolean; providerId?: string; channel?: string; sendError?: string;
+    /** Meta's asynchronous delivery report for one of OUR messages: stamped by
+     *  the status webhook. deliveryFailedAt goes with status FAILED + sendError
+     *  (a send Meta accepted and then could not deliver, e.g. 131047 outside
+     *  the 24h window); deliveredAt / readAt are the two ticks. */
+    deliveryFailedAt?: string; deliveredAt?: string; readAt?: string;
     /** The customer edited this message after sending it. WhatsApp shows an
      *  "Edited" mark on the bubble and so does the chat here. Meta does not
      *  always hand over the new wording, so this can be true while `body` is
@@ -105,8 +110,16 @@ export interface JobRow {
   kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'REVIEW_REQUEST';
   payload: {
     templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
-    /** AUTO_REPLY only: the QUEUED message this job will transmit. */
+    /** AUTO_REPLY, older shape: the QUEUED message this job will transmit.
+     *  Only jobs armed before the 3 Sep change carry it; kept so a reply that
+     *  was already queued at deploy time still goes out. */
     messageId?: string;
+    /** AUTO_REPLY, current shape (Jo, 3 Sep): no reply exists yet. When the job
+     *  fires, Will reads everything the customer wrote and answers once. */
+    debounce?: boolean;
+    /** The customer's last-message time this timer was armed on; a newer
+     *  message than this means another timer owns the answer. */
+    anchorAt?: string | null;
   };
   runAt: string;
   status: 'SCHEDULED' | 'CLAIMED' | 'DONE' | 'CANCELLED' | 'FAILED';
@@ -262,6 +275,15 @@ export interface Store {
    * being replaced with a guess. Returns true if a message was found.
    */
   applyEditByProviderId(providerId: string, body: string | null): Promise<boolean>;
+  /** Meta reported, AFTER accepting the send, that it could not deliver the
+   *  message (a `statuses[].status = 'failed'` webhook: 131047 outside the 24h
+   *  window, 131026 undeliverable, 131049 marketing limit...). The row goes
+   *  SENT -> FAILED with the reason in meta.sendError. Returns the row so the
+   *  caller can raise the task. Null when no message carries that id. */
+  markDeliveryFailedByProviderId(providerId: string, error: string): Promise<MessageRow | null>;
+  /** A 'delivered' / 'read' receipt for one of our messages: stamped on meta so
+   *  the CRM can show it; never changes the status. */
+  markDeliveryReceiptByProviderId(providerId: string, receipt: 'delivered' | 'read', at: string): Promise<void>;
   /** Inbound messages in [startIso, endIso), newest last, with the sender's name
    *  and number joined on. Bounded by `limit` so a busy window cannot pull an
    *  unbounded result set into a serverless function. */
@@ -359,6 +381,11 @@ export interface Store {
    *  because migration 034 allows at most one pending follow-up per customer,
    *  the result is bounded by the number of active leads. */
   customerIdsWithScheduledFollowup(): Promise<string[]>;
+  /** Customers whose Autopilot two-minute timer is armed (an AUTO_REPLY job
+   *  with `debounce`, SCHEDULED or CLAIMED): Will is about to answer them. The
+   *  CRM shows it so a chat with no reply yet does not read as a chat Will
+   *  ignored. */
+  customerIdsWithPendingAutoReply(): Promise<string[]>;
   /** PERF-04: the N soonest SCHEDULED non-nightly jobs, pushed to the DB (LIMIT). */
   listUpcomingJobs(limit: number): Promise<JobRow[]>;
   /** PERF-04: cheap existence check for a queued nightly job. */

@@ -1315,15 +1315,27 @@ export default function DashboardClient() {
     setSigBusy(null)
   }
   async function markLodgedFromCard(taskId: string, willId: string, name: string) {
-    if (!confirm(`Send the "lodged" message to ${name} and move them to Completed?`)) return
+    if (!confirm(`Send the "lodged" message to ${name}, move them to Completed and file them under Clients?`)) return
     setSigBusy(taskId)
+    let lodged = false
     try {
       const r = await fetch('/api/will/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_lodged',customerId:willId})})
       const j = await r.json().catch(()=>null)
-      if (r.ok && j?.ok) setSigLinks(prev => ({ ...prev, [taskId]: prev[taskId] ? { ...prev[taskId]!, state:'LODGED' } : prev[taskId] }))
+      if (r.ok && j?.ok) {
+        setSigLinks(prev => ({ ...prev, [taskId]: prev[taskId] ? { ...prev[taskId]!, state:'LODGED' } : prev[taskId] }))
+        lodged = true
+      }
       else alert(j?.error ?? 'Could not send the message')
     } catch { alert('Could not reach the server. Nothing was sent.') }
     setSigBusy(null)
+    // Jo, 3 Sep: lodged IS the end of the job. The card used to sit in Done with
+    // a "✓ Lodged" chip until the Clients button was pressed as a second step;
+    // now the same click files the person under Clients (the identical
+    // transfer that button does), so a lodged return never waits on a click.
+    if (lodged) {
+      const task = tasks.find(t => t.id === taskId)
+      if (task) await transferToClients(task)
+    }
   }
   const visibleClients = useMemo(()=>{
     // If user is searching and we have server-side results (more clients than loaded),
@@ -1729,7 +1741,8 @@ export default function DashboardClient() {
                     {/* Middle: the two-step Signature action, driven by the linked
                         Will customer. First "Send for Signature" (sends the ready
                         notice, does not move them in the pipe), then it becomes
-                        "Mark Lodged" (moves them to Completed). Nothing shows if the
+                        "Mark Lodged" (moves them to Completed AND files the card
+                        under Clients in the same click, Jo 3 Sep). Nothing shows if the
                         task has no WhatsApp conversation behind it. */}
                     {(() => {
                       const link = sigLinks[t.id]

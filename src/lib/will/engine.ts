@@ -8,6 +8,8 @@
 import { decide, Decision, Turn } from './claude';
 import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
+import { claimsPayment } from './payment-claim';
+import { professionalQuestionMessage } from './i18n';
 import { canTransition, CustomerState } from './state-machine';
 import { resolveAiMode, type AiMode } from './mode';
 import { normaliseWillText, firstNameOf } from './text-normalize';
@@ -27,8 +29,11 @@ export interface EngineInput {
 export interface EngineOutcome {
   /** 'queued' is Autopilot: the reply is final, but it waits
    *  AUTOPILOT_REPLY_DELAY_SECONDS before it is transmitted. 'sent' is kept for
-   *  paths that must go out immediately. */
-  kind: 'sent' | 'queued' | 'pending_approval' | 'human_task' | 'silent';
+   *  paths that must go out immediately. 'deferred' is never produced by the
+   *  engine: the service returns it on Autopilot when NO reply was written yet,
+   *  because the two-minute timer was armed instead (Jo, 3 Sep: wait first,
+   *  then read everything the customer wrote, then answer once). */
+  kind: 'sent' | 'queued' | 'pending_approval' | 'human_task' | 'silent' | 'deferred';
   replyText?: string;
   newState?: CustomerState;
   stateChanged?: boolean;
@@ -191,6 +196,35 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // advance (newState stays undefined). invalidTransition is recorded on the
   // outcome for the audit trail but no longer forces a task.
 
+  // A VALID jump into PAID is still the model's word, and the model's word is
+  // not money. Jo's rule is "trust the CUSTOMER": the deterministic payment
+  // claim (payment-claim.ts, every language) or a verified screenshot is what
+  // moves someone to Paid, never a reply that happens to carry new_state PAID.
+  // Audit, 3 Sep: a customer at PRICE_SENT asking "can I pay by card?" could be
+  // answered "Perfect, thanks! Please fill out the form" with new_state PAID
+  // and, on Autopilot, be moved to Paid, sent the form link and handed to the
+  // team with no money received. So a proposed PAID with no payment report in
+  // anything the customer wrote since our last message is held as a CONFLICT
+  // task with the draft attached, exactly like an invalid jump into PAID.
+  if (newState === 'PAID' && !ctx.paid) {
+    let lastAssistant = -1;
+    for (let i = history.length - 1; i >= 0; i--) if (history[i].role === 'assistant') { lastAssistant = i; break; }
+    const sinceOurs = history.slice(lastAssistant + 1).filter((t) => t.role === 'customer');
+    const burst = sinceOurs.length ? sinceOurs : history.filter((t) => t.role === 'customer').slice(-1);
+    if (!burst.some((t) => claimsPayment(t.text))) {
+      return {
+        kind: 'human_task',
+        decision,
+        invalidTransition: true,
+        task: {
+          reason: `Model proposed ${ctx.state} -> PAID but the customer did not report a payment; reply held for review`,
+          severity: 'CONFLICT',
+          suggestedReply: decision.reply_text,
+        },
+      };
+    }
+  }
+
   // --- fill system-owned placeholders, then guard the final text ---
   // Owner rules (no dashes ever; at most one emoji, opening only) applied to the
   // model's prose before filling, so links and bank details are never mangled.
@@ -243,6 +277,40 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     if (verdict.violations.every((v) => NOT_A_FAULT.has(v))) {
       return { kind: 'silent', decision };
     }
+
+    // ── THE SAFE ANSWER INSTEAD OF A TASK (Jo, 3 Sep) ────────────────────
+    //
+    // Before payment, a customer asks the question every customer asks:
+    // "so do you think I'll get money back?", "am I a resident?", "do I pay
+    // Medicare?". The model sometimes answers it ("you can apply for a
+    // Medicare Levy Exemption, which would save you around 2%"), the guard
+    // stops it as a TAX_DETERMINATION, and Jo gets an URGENT task whose
+    // right answer he already approved months ago: objection #7, "that is
+    // exactly what we check as part of the review". So when the ONLY thing
+    // wrong with a pre-payment reply is that it determined something (or was
+    // long while doing so), Will sends #7 in the customer's language and the
+    // chat keeps moving. Every other violation (an invented price, a refund
+    // promise, a myGov walkthrough, a placeholder) is still a task: those
+    // have no approved stand-in.
+    const DETERMINATION_ONLY = new Set(['TAX_DETERMINATION', 'REPLY_TOO_LONG']);
+    if (!ctx.paid
+        && verdict.violations.includes('TAX_DETERMINATION')
+        && verdict.violations.every((v) => DETERMINATION_ONLY.has(v) || NOT_A_FAULT.has(v))) {
+      const safe = professionalQuestionMessage(ctx.lang);
+      const safeVerdict = policyGuard(safe, guardCtx);
+      if (safeVerdict.allowed) {
+        return {
+          kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+          replyText: safe,
+          decision: { ...decision, reply_text: safe, new_state: undefined },
+          guardViolations: verdict.violations,
+          reviewNote: `Will's own draft was held (${verdict.violations.join(', ')}); the approved "we check that as part of the review" answer went instead.`,
+          newState: undefined,
+          stateChanged: false,
+        };
+      }
+    }
+
     return {
       kind: 'human_task',
       decision,

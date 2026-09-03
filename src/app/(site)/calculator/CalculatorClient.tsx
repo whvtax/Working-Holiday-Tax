@@ -538,7 +538,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
           </h2>
           <p className="mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.7, marginBottom: '10px', maxWidth: '46ch' }}>
             Send us your figures and we will tell you what is in play for your year. If your refund is less
-            than our fee, we refund the difference, so you are never out of pocket for our service.
+            than our fee, we refund the difference. If you owe tax instead, the fee covers our review and is not refundable.
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '22px', maxWidth: '46ch' }}>
             Reviewed and signed off by a registered tax agent before it is lodged

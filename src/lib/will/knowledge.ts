@@ -7,6 +7,7 @@
 // ============================================================
 import { getStore } from './store';
 import { KnowledgeRow } from './store';
+import { bridgeTokens } from './knowledge-i18n';
 
 const STOP = new Set(('a an the and or but if of to in on for with is are am was were be been being do does did ' +
   'i you he she it we they me my your our their this that these those at as by from not no yes can could would ' +
@@ -39,7 +40,12 @@ function scoreEntry(k: KnowledgeRow, msgTokens: Set<string>): number {
 /** Top-K active knowledge entries relevant to the customer's message. */
 export async function retrieveKnowledge(message: string, opts?: { lang?: string; k?: number }): Promise<KnowledgeHit[]> {
   const k = opts?.k ?? 3;
-  const tokens = new Set(tokenize(message));
+  // The pack is indexed on English words. A German, Spanish, French, Italian,
+  // Portuguese or Japanese message gains the English tokens its words stand
+  // for (knowledge-i18n.ts), so it scores against the same entries an English
+  // customer's would. Audit, 3 Sep: without this, DE 1/10, ES 2/10, JA 0/10
+  // of the top questions found their learned answer.
+  const tokens = new Set([...tokenize(message), ...bridgeTokens(message).flatMap((t) => (t.includes(' ') ? t.split(' ') : [t]))]);
   if (tokens.size === 0) return [];
   let entries: KnowledgeRow[];
   try {

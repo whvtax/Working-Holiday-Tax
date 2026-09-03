@@ -35,12 +35,14 @@ const audit = jest.fn().mockResolvedValue(undefined);
 const getSetting = jest.fn().mockResolvedValue(undefined);
 const setSetting = jest.fn().mockResolvedValue(undefined);
 
+const addJob = jest.fn().mockResolvedValue({ id: 'j1' });
 jest.mock('@/lib/will/store', () => ({
   getStore: () => ({
     getCustomerByWaId: jest.fn().mockImplementation(async () => ({ ...customer })),
+    getCustomerById: jest.fn().mockImplementation(async () => ({ ...customer })),
     createCustomer: jest.fn(),
     addMessage, updateCustomer, findOpenTaskForCustomer, addTask, updateTask,
-    cancelJobsFor, audit, getSetting, setSetting,
+    cancelJobsFor, audit, getSetting, setSetting, addJob,
     listMessages: jest.fn().mockImplementation(async () => messages.map((m, i) => ({ id: `m${i + 1}`, customerId: 'c1', direction: m.direction, author: m.direction === 'IN' ? 'CUSTOMER' : 'AI', status: m.status, body: m.body, createdAt: '2026-08-25T00:00:00.000Z' }))),
   }),
 }));
@@ -57,7 +59,7 @@ beforeEach(() => {
   addMessage.mockClear(); updateCustomer.mockClear(); findOpenTaskForCustomer.mockClear();
   findOpenTaskForCustomer.mockResolvedValue(null);
   addTask.mockClear(); updateTask.mockClear(); cancelJobsFor.mockClear(); audit.mockClear();
-  runEngine.mockClear();
+  runEngine.mockClear(); addJob.mockClear();
 });
 
 it('a normal qualifying exchange is never interrupted', async () => {
@@ -72,11 +74,30 @@ it('a normal qualifying exchange is never interrupted', async () => {
     'sounds good',
   ]) {
     // eslint-disable-next-line no-await-in-loop
-    await handleIncoming('61400000001', t, 'FULL_AUTO');
+    await handleIncoming('61400000001', t, 'SUPERVISED');
   }
   expect(runEngine).toHaveBeenCalledTimes(6); // every one reached the engine
   expect(addTask).not.toHaveBeenCalled();
   expect(updateCustomer).not.toHaveBeenCalledWith('c1', { aiPaused: true });
+});
+
+it('on Autopilot the same exchange arms the two-minute timer instead of deciding now', async () => {
+  // Jo, 3 Sep: wait first, then read everything, then answer once. So the
+  // engine is NOT called when the message lands; a timer is (re)armed each
+  // time, the previous one cancelled, and the decision runs when it fires.
+  for (const t of ['hi', 'I have a question', 'about my tax return']) {
+    // eslint-disable-next-line no-await-in-loop
+    const r = await handleIncoming('61400000001', t, 'FULL_AUTO');
+    expect(r.outcome.kind).toBe('deferred');
+  }
+  expect(runEngine).not.toHaveBeenCalled();
+  expect(addJob).toHaveBeenCalledTimes(3);
+  expect(cancelJobsFor).toHaveBeenCalledWith('c1', ['AUTO_REPLY']);
+  const job = addJob.mock.calls[2][0];
+  expect(job.kind).toBe('AUTO_REPLY');
+  expect(job.payload.debounce).toBe(true);
+  expect(new Date(job.runAt).getTime()).toBeGreaterThan(Date.now() + 100 * 1000);
+  expect(addTask).not.toHaveBeenCalled();
 });
 
 it('a genuine runaway still stops and raises a task, but never pauses Will', async () => {
@@ -84,14 +105,18 @@ it('a genuine runaway still stops and raises a task, but never pauses Will', asy
   // person, but Will is not switched off for the customer.
   for (let i = 0; i < 25; i++) {
     // eslint-disable-next-line no-await-in-loop
-    await handleIncoming('61400000001', `message ${i + 1}`, 'FULL_AUTO');
+    await handleIncoming('61400000001', `message ${i + 1}`, 'SUPERVISED');
   }
   expect(runEngine).toHaveBeenCalledTimes(25); // 25 is still fine
   expect(addTask).not.toHaveBeenCalled();
 
+  // The 26th on Autopilot: the runaway guard sits BEFORE the timer, so the
+  // stuck loop is stopped and named without arming anything.
+  addJob.mockClear();
   const result = await handleIncoming('61400000001', 'message 26', 'FULL_AUTO');
 
   expect(runEngine).toHaveBeenCalledTimes(25); // the engine is NOT called again
+  expect(addJob).not.toHaveBeenCalled();       // and no timer is armed either
   expect(result.outcome.kind).toBe('human_task');
   expect(updateCustomer).not.toHaveBeenCalledWith('c1', { aiPaused: true });
   expect(addTask).toHaveBeenCalledTimes(1);
@@ -102,7 +127,7 @@ it('a paid customer is never stopped by this rule, however many messages', async
   Object.assign(customer, { paid: true, state: 'PAID' });
   for (const t of ['a', 'b', 'c', 'd', 'e']) {
     // eslint-disable-next-line no-await-in-loop
-    await handleIncoming('61400000001', t, 'FULL_AUTO');
+    await handleIncoming('61400000001', t, 'SUPERVISED');
   }
   expect(runEngine).toHaveBeenCalledTimes(5);
   expect(addTask).not.toHaveBeenCalled();

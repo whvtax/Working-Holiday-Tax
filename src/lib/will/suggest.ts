@@ -84,7 +84,13 @@ function byState(c: Pick<CustomerRow, 'state' | 'income' | 'paid'>): string | nu
     case 'NEW_LEAD':
       return APPROVED.opening;
     case 'QUALIFIED':
-      return c.income === 'TFN_ABN' ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
+      // The menu model: the customer CHOOSES the track. Until they have, the
+      // right thing to put in front of Jo is the menu again, never a price
+      // that guesses TFN for them (audit, 3 Sep: an ABN customer whose reply
+      // hit a task was one click from being quoted $220 and locked to TFN).
+      if (c.income === 'TFN_ABN') return APPROVED.price_tfn_abn;
+      if (c.income === 'TFN') return APPROVED.price_tfn;
+      return APPROVED.opening;
     case 'PRICE_SENT':
     case 'PAYMENT_PENDING':
       return APPROVED.objections.o11_think_about_it;
@@ -99,7 +105,11 @@ function byState(c: Pick<CustomerRow, 'state' | 'income' | 'paid'>): string | nu
 }
 
 function stateTemplateKey(c: Pick<CustomerRow, 'state' | 'income'>): string | null {
-  if (c.state === 'QUALIFIED') return c.income === 'TFN_ABN' ? 'price_tfn_abn' : 'price_tfn';
+  if (c.state === 'QUALIFIED') {
+    if (c.income === 'TFN_ABN') return 'price_tfn_abn';
+    if (c.income === 'TFN') return 'price_tfn';
+    return 'opening';
+  }
   return STATE_TEMPLATE_KEYS[c.state] ?? null;
 }
 

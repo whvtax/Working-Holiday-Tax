@@ -562,21 +562,7 @@ export class SupabaseStore implements Store {
     endIso: string,
     limit = 5000,
   ): Promise<(MessageRow & { customerName?: string | null; waId?: string })[]> {
-    // One query with the customer joined on, rather than a lookup per message:
-    // a busy month is thousands of rows and this runs inside nightly maintenance.
-    // The explicit .limit() matters — without one PostgREST silently caps the
-    // result at 1000 rows and the digest would quietly go incomplete.
-    const { data } = await this.sb().from('will_messages')
-      .select('*, will_customers(name, wa_id)')
-      .eq('direction', 'IN')
-      .gte('created_at', startIso)
-      .lt('created_at', endIso)
-      .order('created_at', { ascending: true })
-      .limit(limit);
-    return (data ?? []).map((row) => {
-      const joined = (row as { will_customers?: { name?: string | null; wa_id?: string } | null }).will_customers;
-      return { ...toMessage(row), customerName: joined?.name ?? null, waId: joined?.wa_id };
-    });
+    return this.messagesBetween(startIso, endIso, limit, 'IN');
   }
 
   async listMessagesBetween(
@@ -584,17 +570,43 @@ export class SupabaseStore implements Store {
     endIso: string,
     limit = 10000,
   ): Promise<(MessageRow & { customerName?: string | null; waId?: string })[]> {
-    // Same shape as listInboundBetween but both directions — the daily digest
+    // Same shape as listInboundBetween but both directions: the daily digest
     // needs the outbound reply that followed each inbound question.
-    const { data } = await this.sb().from('will_messages')
-      .select('*, will_customers(name, wa_id)')
-      .gte('created_at', startIso)
-      .lt('created_at', endIso)
-      .order('created_at', { ascending: true })
-      .limit(limit);
-    return (data ?? []).map((row) => {
-      const joined = (row as { will_customers?: { name?: string | null; wa_id?: string } | null }).will_customers;
-      return { ...toMessage(row), customerName: joined?.name ?? null, waId: joined?.wa_id };
+    return this.messagesBetween(startIso, endIso, limit);
+  }
+
+  /** The messages in a window with their customer's name and number.
+   *
+   *  This used to be one query with `will_customers(name, wa_id)` embedded.
+   *  PostgREST can only embed across a FOREIGN KEY, and will_messages has none
+   *  (migration 021 declares customer_id as plain TEXT), so the query failed
+   *  with PGRST200, the error was ignored, and the digest read an empty day
+   *  every night: "No new suggestions today, every message was answered using
+   *  the Library" (audit, 3 Sep). Two plain queries now, and a failed read is
+   *  a thrown error, never a quiet empty list. The explicit .limit() matters:
+   *  without one PostgREST caps the result at 1000 rows. */
+  private async messagesBetween(
+    startIso: string, endIso: string, limit: number, direction?: 'IN' | 'OUT',
+  ): Promise<(MessageRow & { customerName?: string | null; waId?: string })[]> {
+    let q = this.sb().from('will_messages').select('*')
+      .gte('created_at', startIso).lt('created_at', endIso)
+      .order('created_at', { ascending: true }).limit(limit);
+    if (direction) q = q.eq('direction', direction);
+    const { data, error } = await q;
+    if (error) { lastPersistError = `messagesBetween: ${error.message}`; throw new Error(`messagesBetween read failed: ${error.message}`); }
+    const rows = data ?? [];
+    const ids = [...new Set(rows.map((r) => r.customer_id as string).filter(Boolean))];
+    const byId = new Map<string, { name: string | null; wa_id: string }>();
+    // .in() with a long list is fine for PostgREST, but keep the URL sane.
+    for (let i = 0; i < ids.length; i += 200) {
+      const { data: cs, error: cerr } = await this.sb().from('will_customers')
+        .select('id, name, wa_id').in('id', ids.slice(i, i + 200));
+      if (cerr) { lastPersistError = `messagesBetween customers: ${cerr.message}`; throw new Error(`messagesBetween customers read failed: ${cerr.message}`); }
+      for (const c of cs ?? []) byId.set(c.id as string, { name: (c.name as string | null) ?? null, wa_id: c.wa_id as string });
+    }
+    return rows.map((row) => {
+      const c = byId.get(row.customer_id as string);
+      return { ...toMessage(row), customerName: c?.name ?? null, waId: c?.wa_id };
     });
   }
 
@@ -646,6 +658,28 @@ export class SupabaseStore implements Store {
     return (data?.length ?? 0) > 0;
   }
 
+  async markDeliveryFailedByProviderId(providerId: string, error: string): Promise<MessageRow | null> {
+    const { data: found } = await this.sb().from('will_messages').select('*')
+      .eq('meta->>providerId', providerId).limit(1).maybeSingle();
+    if (!found) return null;
+    const meta = { ...((found.meta as Record<string, unknown>) ?? {}), sendError: error, deliveryFailedAt: now() };
+    const { error: err } = await this.sb().from('will_messages')
+      .update({ status: 'FAILED', meta }).eq('id', found.id);
+    if (err) { lastPersistError = `markDeliveryFailed: ${err.message}`; throw new Error(err.message); }
+    // A failed message is not what the customer last saw: the preview falls
+    // back to whatever really is the last message now.
+    await this.refreshLastMessage(found.customer_id as string);
+    return toMessage({ ...found, status: 'FAILED', meta });
+  }
+
+  async markDeliveryReceiptByProviderId(providerId: string, receipt: 'delivered' | 'read', at: string): Promise<void> {
+    const { data: found } = await this.sb().from('will_messages').select('id, meta')
+      .eq('meta->>providerId', providerId).limit(1).maybeSingle();
+    if (!found) return;
+    const meta = { ...((found.meta as Record<string, unknown>) ?? {}), [receipt === 'read' ? 'readAt' : 'deliveredAt']: at };
+    await this.sb().from('will_messages').update({ meta }).eq('id', found.id);
+  }
+
   async applyEditByProviderId(providerId: string, body: string | null): Promise<boolean> {
     const { data: found } = await this.sb().from('will_messages')
       .select('id, customer_id, meta').eq('meta->>providerId', providerId).maybeSingle();
@@ -687,8 +721,24 @@ export class SupabaseStore implements Store {
   }
 
   async listTasks(): Promise<TaskRow[]> {
-    const { data } = await this.sb().from('will_tasks').select('*').order('created_at', { ascending: false });
-    return (data ?? []).map(toTask);
+    // Every OPEN task, however old, plus the most recent resolved ones. One
+    // unbounded query used to be capped at PostgREST's 1,000 rows, newest
+    // first, so once the table passed that an old OPEN handoff simply fell
+    // off the Tasks tab and could never be resolved (audit, 3 Sep).
+    const [{ data: open, error: e1 }, { data: recent, error: e2 }] = await Promise.all([
+      this.sb().from('will_tasks').select('*').eq('status', 'OPEN').order('created_at', { ascending: false }).limit(5000),
+      this.sb().from('will_tasks').select('*').neq('status', 'OPEN').order('created_at', { ascending: false }).limit(500),
+    ]);
+    if (e1) { lastPersistError = `listTasks: ${e1.message}`; throw new Error(`listTasks read failed: ${e1.message}`); }
+    if (e2) { lastPersistError = `listTasks: ${e2.message}`; }
+    const seen = new Set<string>();
+    const out: TaskRow[] = [];
+    for (const r of [...(open ?? []), ...(recent ?? [])]) {
+      if (seen.has(r.id as string)) continue;
+      seen.add(r.id as string);
+      out.push(toTask(r));
+    }
+    return out.sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0));
   }
 
   async resolveTask(id: string): Promise<void> {
@@ -868,6 +918,24 @@ export class SupabaseStore implements Store {
     return [...out];
   }
 
+  async customerIdsWithPendingAutoReply(): Promise<string[]> {
+    // At most one armed timer per customer (armAutoReply cancels the previous
+    // one), so this is bounded by the customers who wrote in the last few
+    // minutes. Payload shape is checked in memory: the older messageId jobs
+    // are not "about to answer", they are a reply already written.
+    const out = new Set<string>();
+    const { data, error } = await this.sb().from('will_jobs')
+      .select('customer_id, payload')
+      .eq('kind', 'AUTO_REPLY').in('status', ['SCHEDULED', 'CLAIMED'])
+      .limit(2000);
+    if (error) { lastPersistError = `autoReplyIds: ${error.message}`; return []; }
+    for (const r of data ?? []) {
+      const payload = (r.payload ?? {}) as { debounce?: boolean };
+      if (r.customer_id && payload.debounce) out.add(r.customer_id as string);
+    }
+    return [...out];
+  }
+
   async listUpcomingJobs(limit: number): Promise<JobRow[]> {
     const { data } = await this.sb().from('will_jobs').select('*')
       .eq('status', 'SCHEDULED').neq('kind', 'NIGHTLY')
@@ -897,7 +965,12 @@ export class SupabaseStore implements Store {
   }
 
   async setJobStatus(id: string, status: JobRow['status']): Promise<void> {
-    await this.sb().from('will_jobs').update({ status }).eq('id', id);
+    // A swallowed error here defeated the mark-DONE-before-send guard: the
+    // template went out, the job stayed CLAIMED, was reclaimed, and the same
+    // nudge went again (audit, 3 Sep). A write that fails now fails loudly,
+    // which the job loop turns into FAILED + audit instead of a resend.
+    const { error } = await this.sb().from('will_jobs').update({ status }).eq('id', id);
+    if (error) { lastPersistError = `setJobStatus: ${error.message}`; throw new Error(`setJobStatus failed: ${error.message}`); }
   }
 
   // Atomic at the DB: the conditional UPDATE only matches a still-SCHEDULED row,

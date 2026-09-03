@@ -11,6 +11,7 @@
 // the building. Adding the two env vars flips it live with no code change.
 // ============================================================
 import { getStore, CustomerRow } from './store';
+import { reopenTarget } from './state-machine';
 
 const GRAPH_VERSION = process.env.WHATSAPP_GRAPH_VERSION || 'v21.0';
 
@@ -210,11 +211,22 @@ export function normalizeTemplateLang(lang: string | null | undefined): string {
   const v = (lang || '').trim().toLowerCase().replace('-', '_');
   if (!v) return TEMPLATE_LANG;
   if (!/^[a-z]{2}(_[a-z]{2})?$/.test(v)) return TEMPLATE_LANG;
+  // Meta has no plain 'pt': Portuguese templates exist only as pt_BR / pt_PT.
+  // Brazil is where the Portuguese-speaking backpackers come from, so the
+  // detector's 'pt' becomes pt_BR (audit, 3 Sep: 'pt' was either rejected
+  // outright or fell straight through to the English template).
+  if (v === 'pt') return 'pt_BR';
   return v.length === 5 ? `${v.slice(0, 3)}${v.slice(3).toUpperCase()}` : v;
 }
 
+/** Meta's rules for a body parameter: no newlines, tabs or runs of 4+ spaces,
+ *  and at most 1024 characters. This was written for the first-name parameter
+ *  and cut everything at 60, which also cut the INVOICE LINK the
+ *  estimate_invoice template carries as {{2}}: a Stripe link is ~150
+ *  characters, so the customer tapped a dead link (audit, 3 Sep). */
+const TEMPLATE_PARAM_MAX = 1024;
 function sanitizeTemplateParam(v: string): string {
-  return (v || '').replace(/[\r\n\t]+/g, ' ').replace(/ {4,}/g, ' ').trim().slice(0, 60);
+  return (v || '').replace(/[\r\n\t]+/g, ' ').replace(/ {4,}/g, ' ').trim().slice(0, TEMPLATE_PARAM_MAX);
 }
 
 /**
@@ -277,7 +289,17 @@ export async function deliverOut(
    *  message outside Meta's 24h window, which is every scheduled follow-up.
    *  `body` is still what gets logged and shown in the CRM: it must be the
    *  template's text with the parameters already filled in. */
-  template?: { name: string; params: string[]; lang?: string | null },
+  template?: {
+    name: string; params: string[]; lang?: string | null;
+    /** The system messages that go out when a customer may or may not have
+     *  written recently (questionnaire received, ABN questions, review
+     *  request, holding line): try the Meta template named by the Library
+     *  key first, and when Jo has not created that template, send the same
+     *  text as free text, which works inside the 24h window. So a template
+     *  he adds later starts working outside the window with no deploy, and
+     *  one he never adds costs nothing inside it. */
+    fallbackToText?: boolean;
+  },
 ): Promise<{ ok: boolean; error?: string; retryable?: boolean }> {
   const store = getStore();
 
@@ -302,9 +324,15 @@ export async function deliverOut(
     customerId: customer.id, direction: 'OUT', author, status: 'QUEUED', body,
     meta: { ...(meta ?? {}) },
   });
-  const res = template?.name
+  let res = template?.name
     ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, template.lang ?? customer.lang)
     : await sendWhatsAppText(customer.waId, body);
+  if (!res.ok && template?.fallbackToText && /does not exist|not exist|132001|template/i.test(res.error ?? '')) {
+    await store.audit('channel', 'template_missing_sent_as_text', {
+      customerId: customer.id, template: template.name, error: res.error ?? null,
+    }).catch(() => { /* diagnostics */ });
+    res = await sendWhatsAppText(customer.waId, body);
+  }
   // Once `res.ok` the customer HAS the message. From here on, a failing write is
   // a bookkeeping problem, not a delivery problem: if it were allowed to throw,
   // the caller would report a failed send, the operator would send again, and
@@ -317,12 +345,16 @@ export async function deliverOut(
       // be matched back to this exact bubble instead of showing as a floating
       // unattached line.
       if (res.providerId) await store.attachProviderId(rec.id, res.providerId);
-      // WhatsApp-real behaviour: the owner personally sending something to this
-      // customer IS them engaging with the conversation, exactly like replying
-      // on your phone clears the unread marker on your end. Only for a HUMAN
-      // send — an AI auto-reply doesn't mean the owner has actually looked at
-      // the chat, so it must not silently clear the bold/badge for them.
-      if (author === 'HUMAN') await store.markCustomerRead(customer.id);
+      // WhatsApp-real behaviour: sending something to this customer IS
+      // engaging with the conversation, exactly like replying on your phone
+      // clears the unread marker on your end. This used to be HUMAN sends only,
+      // on the theory that an AI reply did not mean the owner had looked. Jo,
+      // 3 Sep: in Autopilot a chat Will has already answered is a chat that has
+      // been dealt with, and it must not sit in bold waiting for a look that
+      // is not needed. So every successful send clears it. A chat Will could
+      // NOT answer (a task) sends nothing here and stays bold, which is the
+      // one case that does need his eyes.
+      await store.markCustomerRead(customer.id);
       // A closed chat that has a new message in it is not a closed chat.
       //
       // Jo, 28 Aug: whoever wrote it, us or them, once there is another
@@ -335,9 +367,12 @@ export async function deliverOut(
       // cadence was ever armed behind it, so the reply we invited landed
       // nowhere.
       if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state)) {
-        await store.setState(customer.id, 'NEW_LEAD', 'HUMAN');
+        // Lead for a lead; a paid customer goes back to the stage they were
+        // closed from (reopenTarget), never into the sales flow.
+        const target = reopenTarget(customer);
+        await store.setState(customer.id, target, 'HUMAN');
         await store.audit('system', 'reactivated_to_lead', {
-          customerId: customer.id, from: customer.state, trigger: 'outbound_message',
+          customerId: customer.id, from: customer.state, to: target, trigger: 'outbound_message',
         });
         const fresh = await store.getCustomerById(customer.id);
         // Re-arm the follow-up cadence from the start, which is what "the whole

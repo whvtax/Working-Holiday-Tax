@@ -66,7 +66,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Reinigungsarbeit" })
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also für unseren Service nie drauf.",
+  "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz. Musst du stattdessen Steuern nachzahlen, deckt die Gebühr unsere Prüfung ab und wird nicht erstattet.",
   "guaranteeBody": "Reinigungserklärungen landen hier jede Woche auf dem Tisch, und jede gehört jemandem mit 417- oder 462-Visum. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",

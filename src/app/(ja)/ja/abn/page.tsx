@@ -391,7 +391,7 @@ export default function ABNPageJA() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 28px)', lineHeight: 1.6, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
-            還付金が当社の料金を下回った場合は、差額を返金します。当社のサービスでお客様が損をすることはありません。
+            還付金が当社の料金を下回った場合は、差額を返金します。逆に納税が必要になった場合、料金は当社の確認作業の費用となり、返金はできません。
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
             料金は定額制で、還付額に対する歩合ではありません。

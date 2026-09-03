@@ -13,7 +13,7 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, Lang } from './i18n';
+import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -90,6 +90,11 @@ export function seedTemplates(): TemplateRow[] {
     t('fu_sig_7d', 'Follow-ups', 'Signature · 7d', APPROVED.followups_signature.d7, true),
     t('payment_received', 'Post-payment & Service', 'Payment received + form link', APPROVED.payment_received),
     t('req_abn', 'Post-payment & Service', 'Request ABN detail', APPROVED.request_abn_detail),
+    // The same three questions in the other six languages, so a German or
+    // Japanese ABN customer is not asked in English right after being thanked
+    // in their own language (audit, 3 Sep).
+    ...(Object.keys(REQUEST_ABN_MSG) as Lang[]).filter((l) => l !== 'en').map((lang) =>
+      t(requestAbnTemplateKey(lang), 'Post-payment & Service', `Request ABN detail · ${LANG_LABELS[lang]}`, REQUEST_ABN_MSG[lang])),
     t('req_expenses', 'Post-payment & Service', 'Request expense receipts', APPROVED.request_expenses),
     t('req_doc', 'Post-payment & Service', 'Request missing document', APPROVED.request_missing_doc),
     t('medicare', 'Post-payment & Service', 'Medicare exemption guide', APPROVED.medicare_exemption),

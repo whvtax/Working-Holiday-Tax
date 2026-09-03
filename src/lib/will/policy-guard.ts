@@ -129,6 +129,33 @@ const MAX_IMPROVISED_CHARS = 450;
  *  else: every content rule below still reads every sentence in every language. */
 const TRANSLATED_SCRIPT_ALLOWANCE = Math.ceil(LONGEST_APPROVED_CHARS * 1.3);
 
+/**
+ * The guarantee's worked example, in any language.
+ *
+ * Objection #9 is approved with a worked example: "if your refund was only $100
+ * and our fee was $220, we'd refund you $120". In English it passes because the
+ * sentence is in the corpus. Rendered in German or Japanese it is the model's
+ * own sentence, and $100 and $120 are not on the allow-list, so every non-
+ * English "what if I owe / get no refund?" became an URGENT task (audit, 3 Sep).
+ * The example is recognisable without reading the language: a fee is named and
+ * the other two amounts add up to it exactly. Only that arithmetic shape is
+ * exempt, and only before payment (after payment the whole sentence is sales
+ * content anyway). "$100" on its own, or "$150" next to "$220", stays blocked.
+ */
+function guaranteeExampleAmounts(cents: number[], fees: readonly number[]): Set<number> {
+  const out = new Set<number>();
+  const have = new Set(cents);
+  for (const fee of fees) {
+    if (!have.has(fee)) continue;
+    for (const a of have) {
+      if (a >= fee || a <= 0) continue;
+      const b = fee - a;
+      if (have.has(b)) { out.add(a); out.add(b); }
+    }
+  }
+  return out;
+}
+
 // ---------- money (currency-symbol / currency-word agnostic across languages) ----------
 // The only prices that may leave the building: $220 (TFN), $385 (TFN + ABN) and
 // $110 for a phone consultation. $110 was added on Jo's approval, 25 Aug, after
@@ -161,12 +188,18 @@ function isBenignThreshold(cents: number, context: string): boolean {
 }
 
 // Currency words in the languages backpackers actually use.
-const CURRENCY_WORDS = 'dollars?|bucks?|aud|usd|dólares?|dolares?|euros?|eur|pounds?|libras?|sterline|quid|yen|jpy|francs?|kroner?|kronor?|reais?|pesos?|shekels?|rupees?|won';
+// Audit, 3 Sep: Italian "dollari", Portuguese "dólares", German "Dollar",
+// Japanese ドル / 円 / 万円 and a currency CODE before the number ("AUD 1.800")
+// were all outside the net, so a refund figure in those forms auto-sent.
+const CURRENCY_WORDS = 'dollars?|dollari|dollar|bucks?|aud|usd|dólares?|dolares?|euros?|eur|pounds?|libras?|sterline|quid|yen|jpy|francs?|kroner?|kronor?|reais?|pesos?|shekels?|rupees?|won|ドル|万円|円';
 const CURRENCY_SYMBOLS = '\\$|€|£|¥|₪|₩|₺|₹|R\\$';
+// A currency code or word can also come FIRST: "AUD 1,800", "EUR 130", "USD 50".
+const CURRENCY_CODES_BEFORE = 'aud|usd|eur|gbp|jpy|brl|chf|nzd|cad';
 // number (with , or . grouping) preceded OR followed by a currency symbol/word
 const AMOUNT_RE = new RegExp(
   `(?:(?:${CURRENCY_SYMBOLS})\\s?)(\\d[\\d.,]*)` +
-  `|(\\d[\\d.,]*)\\s?(?:${CURRENCY_SYMBOLS}|(?:${CURRENCY_WORDS})\\b)`,
+  `|\\b(?:${CURRENCY_CODES_BEFORE})\\s?(\\d[\\d.,]*)` +
+  `|(\\d[\\d.,]*)\\s?(?:${CURRENCY_SYMBOLS}|(?:${CURRENCY_WORDS})(?![a-z]))`,
   'gi',
 );
 
@@ -190,7 +223,9 @@ const AMOUNT_RE = new RegExp(
 // forbidden amount of $2024, and "we just need 2 more documents" as $2.
 // Year mentions are everywhere here, so a year is excluded explicitly too.
 const BARE_PRICE_RE = new RegExp(
-  `\\b(?:fee|fees|price|priced|cost|costs|total|charge|charges|quote|quoted|rate)\\b` +
+  // The same money words in the six other languages (audit, 3 Sep: "die
+  // Gebühr 150", "la tarifa es 150", "料金は150" all passed as no amount).
+  `(?:\\b(?:fee|fees|price|priced|cost|costs|total|charge|charges|quote|quoted|rate|geb[üu]hr(?:en)?|preis|kosten|betrag|tarifa|precio|coste|costo|importe|frais|prix|tarif|co[ûu]t|montant|prezzo|costi|tariffa|importo|taxa|pre[çc]o|custo|valor)\\b|料金|費用|値段|価格|合計|金額)` +
   `[^.!?\\d]{0,24}?(\\d[\\d.,]*)\\b` +
   // not a duration, a percentage, a time, or a tax year (distance/quantity
   // units like "5,000 kilometres" are excluded in amountsInCents, because a
@@ -219,7 +254,7 @@ const NON_MONEY_UNIT = /^(?:\d|[.,]\d|\s*(?:kms?|kilomet(?:re|er)s?|litres?|lite
  * `pay` on its own is ordinary in this business: "you can pay in 2 instalments"
  * and "pay by 5 pm" must not be read as $2 and $5.
  */
-const PAY_ME_RE = /\b(?:pay|send|transfer|deposit)\s+(?:us|me|to us|to me)\s+(?:only\s+|just\s+)?\$?(\d[\d.,]*)\b/gi;
+const PAY_ME_RE = /\b(?:pay|send|transfer|deposit)\s+(?:us|me|to us|to me)\s+(?:only\s+|just\s+)?\$?(\d[\d.,]*)\b|(?<![A-Za-zÀ-ÿ])(?:[üu]berweis\w*\s+(?:uns|mir)|zahl\w*\s+(?:uns|mir)|p[áa]ga(?:nos|me)|env[íi]a(?:nos|me)|transf[ié]re(?:nos|me)|paie(?:-nous|-moi|z-nous)|envoie(?:-nous|-moi)|paga(?:ci|mi)|invia(?:ci|mi)|paga(?:-nos|-me)|envia(?:-nos|-me))\s+(?:einfach\s+|nur\s+|solo\s+|s[óo]lo\s+|juste\s+|apenas\s+)?\$?(\d[\d.,]*)\b/gi;
 
 /**
  * An amount written as WORDS.
@@ -246,9 +281,12 @@ const WORD_AMOUNT_RE = new RegExp(
 const WORD_AMOUNT_EXEMPT = /\b(?:hundred|thousand)\s*(?:%|percent|per ?cent)\b/i;
 
 function toCents(raw: string): number | null {
-  // Normalise both 1,234.56 and 1.234,56 style groupings.
+  // Normalise both 1,234.56 and 1.234,56 style groupings, and the European
+  // thousands dot on its own ("1.800" is eighteen hundred, not one dollar
+  // eighty; audit, 3 Sep: an Italian/German refund figure was read as $1.80).
   let s = raw.trim();
   if (/,\d{2}$/.test(s) && s.includes('.')) s = s.replace(/\./g, '').replace(',', '.');
+  else if (/^\d{1,3}(?:\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
   else s = s.replace(/,/g, '');
   const n = parseFloat(s);
   return Number.isNaN(n) ? null : Math.round(n * 100);
@@ -257,7 +295,10 @@ function toCents(raw: string): number | null {
 function amountsInCents(text: string): number[] {
   const out: number[] = [];
   for (const m of text.matchAll(AMOUNT_RE)) {
-    const c = toCents(m[1] ?? m[2] ?? '');
+    const raw = m[1] ?? m[2] ?? m[3] ?? '';
+    let c = toCents(raw);
+    // 万円: tens of thousands of yen. "18万円" is 180,000 yen, not 18.
+    if (c != null && /万円/.test(m[0])) c = c * 10000;
     if (c != null) out.push(c);
   }
   // Also catch a price written without any currency marker: "our fee is 50".
@@ -277,7 +318,7 @@ function amountsInCents(text: string): number[] {
   }
   // "pay us 50" — money demanded without ever saying the word "fee".
   for (const m of text.matchAll(PAY_ME_RE)) {
-    const raw = (m[1] ?? '').trim();
+    const raw = (m[1] ?? m[2] ?? '').trim();
     if (LOOKS_LIKE_YEAR.test(raw)) continue;
     const c = toCents(raw);
     if (c != null) out.push(c);
@@ -399,6 +440,66 @@ const TAX_DETERMINATION: RegExp[] = [
   /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
 ];
 
+// ---------- the same content rules in the six other languages ----------
+// Audit, 3 Sep: every content pattern above is English. A German "du bist
+// steuerlich nicht ansässig", a French myGov walkthrough, a Spanish "te
+// devolvemos el pago" all passed the guard and, on Autopilot, auto-sent. The
+// playbook tells the model to answer in the customer's language, so these are
+// the ordinary case for a third of the leads. Each set below is deliberately
+// the DETERMINATION / INSTRUCTION / PROMISE shape, aimed at the customer, so a
+// neutral mention of the concept still sends.
+const TAX_DETERMINATION_ML: RegExp[] = [
+  // "you are (not) a resident / non-resident" — DE, ES, FR, IT, PT, JA
+  /\b(?:du|sie)\s+(?:bist|sind|wärst|wären|giltst|gelten)\b[^.!?]{0,40}\b(?:steuer(?:lich)?[ -]?)?(?:nicht[ -]?)?ans[äa]ssig|\b(?:du|sie)\s+(?:bist|sind)\b[^.!?]{0,30}\b(?:steuer)?(?:in|aus)l[äa]nder\b|\bnicht[ -]?ans[äa]ssig\b[^.!?]{0,20}\b(?:bist du|sind sie)\b/i,
+  /\b(?:eres|es|ser[ií]as|ser[ií]a|te consideran|cuentas como|calificas como)\b[^.!?]{0,30}\b(?:no[ -]?)?residente\b/i,
+  /\b(?:tu es|vous [êe]tes|tu serais|vous seriez|tu comptes comme)\b[^.!?]{0,30}\b(?:non[ -]?)?r[ée]sident/i,
+  /\b(?:sei|[èe]|saresti|sarebbe|conti come|risulti)\b[^.!?]{0,30}\b(?:non[ -]?)?residente\b/i,
+  /\b(?:[ée]s|voc[êe] [ée]|serias|seria|contas como)\b[^.!?]{0,30}\b(?:n[ãa]o[ -]?)?residente\b/i,
+  /(?:あなた|お客様)[はが][^。！？]{0,20}(?:非)?居住者(?:です|になります|とみなされ|に該当|扱い)|(?:非)?居住者(?:です|になります|とみなされます|に該当します)/,
+  // Medicare: "you (don't) have to pay / are exempt" — DE, ES, FR, IT, PT, JA
+  /\b(?:du|sie)\s+(?:musst|müssen|brauchst|bist|sind)\b[^.!?]{0,40}\bmedicare/i,
+  /\b(?:tienes que|debes|no tienes que|est[áa]s exent[oa]|no pagas|pagas)\b[^.!?]{0,40}\bmedicare/i,
+  /\b(?:tu dois|vous devez|tu n'as pas|tu es exempt|vous [êe]tes exempt)\b[^.!?]{0,40}\bmedicare/i,
+  /\b(?:devi|deve|non devi|sei esente|paghi|non paghi)\b[^.!?]{0,40}\bmedicare/i,
+  /\b(?:tens de|tem de|n[ãa]o tens|est[áa]s isent[oa]|pagas|n[ãa]o pagas)\b[^.!?]{0,40}\bmedicare/i,
+  /medicare[^。！？]{0,20}(?:支払う必要|免除|払わなくて|対象)|(?:支払う必要|免除|払わなくて)[^。！？]{0,20}medicare/i,
+  // "you can claim X" as a main clause — DE, ES, FR, IT, PT, JA
+  /\b(?:du kannst|sie k[öo]nnen)\s+(?:deine?n?|ihre?n?|die|das|den)\s+\w+[^.!?]{0,30}\b(?:absetzen|geltend machen|abschreiben)\b/i,
+  /\b(?:puedes|pod[ée]s|puede)\s+(?:deducir|reclamar|desgravar)\s+(?:tus?|el|la|los|las)\b/i,
+  /\b(?:tu peux|vous pouvez)\s+(?:d[ée]duire|r[ée]clamer)\s+(?:tes|ton|ta|vos|votre|les|le|la)\b/i,
+  /\b(?:puoi|pu[òo])\s+(?:dedurre|scaricare|detrarre)\s+(?:i|le|il|la|gli|tuoi?|tue)\b/i,
+  /\b(?:podes|pode)\s+(?:deduzir|reclamar|abater)\s+(?:as|os|a|o|teus?|tuas?|seus?|suas?)\b/i,
+  /(?:を)?(?:経費として|控除として)?(?:計上|控除|申請)できます/,
+  // "you (won't) owe" / "you'll get back around N" — DE, ES, FR, IT, PT, JA
+  /\b(?:du|sie)\b[^.!?]{0,20}\b(?:musst|müssen|wirst|werden)\b[^.!?]{0,20}\b(?:nachzahlen|nichts nachzahlen|keine steuern zahlen)\b/i,
+  /\b(?:no )?(?:vas a|tendr[áa]s que|deber[áa]s)\s+(?:pagar|deber)\b[^.!?]{0,20}\bimpuestos?\b/i,
+  /\b(?:tu (?:ne )?devras|vous (?:ne )?devrez)\b[^.!?]{0,30}\bimp[ôo]ts?\b/i,
+  /\b(?:non )?(?:dovrai|dovr[àa])\s+pagare\b[^.!?]{0,20}\btasse\b/i,
+  /\b(?:n[ãa]o )?(?:vais|ter[áa]s que|dever[áa]s)\s+(?:pagar|dever)\b[^.!?]{0,20}\bimpostos?\b/i,
+  /(?:納税|追徴|支払い)(?:は)?(?:必要ありません|不要です|ありません|になります|が必要です)/,
+  // a refund figure in words of prediction — DE, ES, FR, IT, PT, JA
+  /\b(?:ungef[äa]hr|etwa|rund|circa|ca\.|um die|so um)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:zur[üu]ck|r[üu]ckerstattung|erstattung|erstattet)/i,
+  /\b(?:unos|unas|aproximadamente|alrededor de|cerca de|m[áa]s o menos)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de vuelta|reembolso|devoluci[óo]n)/i,
+  /\b(?:environ|à peu près|autour de|dans les)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de retour|remboursement|rembours[ée])/i,
+  /\b(?:circa|all'incirca|intorno a|pi[ùu] o meno)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:indietro|rimborso|rimborsat)/i,
+  /\b(?:cerca de|aproximadamente|uns|umas|mais ou menos)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de volta|reembolso|restitui)/i,
+  /(?:約|およそ|だいたい|ほぼ)\s?(?!220|385)\d[\d,]{2,}[^。！？]{0,15}(?:還付|戻|返金|返っ)/,
+  /(?:還付|戻っ|返っ)[^。！？]{0,15}(?:約|およそ|だいたい)?\s?(?!220|385)\d[\d,]{2,}/,
+];
+
+// myGov / ATO walkthroughs in the other languages: the site name is the same,
+// the STEP verb is what changes. Fires only with a myGov/ATO term in the same
+// sentence (MYGOV_TERMS below), like the English rule.
+const MYGOV_STEP_CUE_ML = /\b(?:melde dich|logge dich|einloggen|anmelden|geh(?:e)? (?:auf|zu)|klick(?:e)? (?:auf)?|tipp(?:e)? (?:auf)?|w[äa]hl(?:e)? (?:aus)?|gib .{0,20}ein|[öo]ffne|erstell(?:e)? (?:ein|eine|einen)|setz(?:e)? .{0,10}zur[üu]ck|verkn[üu]pf(?:e)?|verbind(?:e)?|du musst dich|inicia sesi[óo]n|iniciar sesi[óo]n|entra (?:en|a)|ve a|haz clic|pulsa|selecciona|introduce|abre|crea (?:una|un)|restablece|vincula|conecta|tienes que (?:entrar|iniciar|crear|vincular|introducir|seleccionar|abrir)|connecte-toi|connectez-vous|va (?:sur|dans)|allez (?:sur|dans)|clique|cliquez|s[ée]lectionne|saisis|saisissez|ouvre|ouvrez|cr[ée]e (?:un|une)|r[ée]initialise|lie ton|liez votre|tu dois (?:te connecter|aller|cr[ée]er|lier|saisir)|accedi|effettua l'accesso|vai (?:su|in)|clicca|seleziona|inserisci|apri|crea (?:un|una)|reimposta|collega|devi (?:accedere|andare|creare|collegare|inserire)|inicia sess[ãa]o|entra (?:em|no|na)|vai (?:a|em|ao)|clica|seleciona|insere|abre|cria (?:um|uma)|redefine|liga (?:a|o) teu|tens de (?:entrar|iniciar|criar|ligar|inserir)|ログイン|サインイン|にアクセス|をクリック|をタップ|を選択|を入力|を開い|を作成|リセット|をリンク|を連携|してください)/i;
+
+// A promise to refund the FEE / the payment / to cancel, in the other five
+// Latin languages (English and Japanese are covered above). Same carve-out as
+// REFUND_PROMISE: "the difference" is the guarantee, not a promise.
+const REFUND_PROMISE_ML = /\b(?:wir|ich)\b[^.!?]{0,30}\b(?:erstatten|zur[üu]ckzahlen|zur[üu]ckerstatten|zur[üu]ck[üu]berweisen|stornieren)\b[^.!?]{0,20}\b(?:die geb[üu]hr|deine zahlung|ihre zahlung|das geld|dein geld|ihr geld|den betrag|die zahlung)\b(?![^.!?]{0,15}\bdifferenz\b)|\b(?:dir|ihnen)\s+(?:die geb[üu]hr|das geld|die zahlung|den betrag)\s+(?:zur[üu]ck|erstatten)(?![^.!?]{0,15}\bdifferenz\b)|\b(?:te|le)\s+(?:devolvemos|devolver[ée]|devolveremos|reembolsamos|reembolsaremos)\s+(?:el pago|la tarifa|el dinero|el importe|la cuota|lo pagado)\b(?![^.!?]{0,15}\bdiferencia\b)|\b(?:on te|nous te|nous vous|je te|je vous)\s+(?:rembourse|rembourserons|remboursons|remboursera)\s+(?:les frais|le paiement|l'argent|le montant|la somme)\b(?![^.!?]{0,15}\bdiff[ée]rence\b)|\b(?:ti|le|vi)\s+(?:rimborsiamo|rimborseremo|restituiamo|restituiremo)\s+(?:la tariffa|il pagamento|i soldi|l'importo|la somma|le spese)\b(?![^.!?]{0,15}\bdifferenza\b)|\b(?:devolvemos|devolveremos|reembolsamos|reembolsaremos)(?:-te|-lhe)?\s+(?:a taxa|o pagamento|o dinheiro|o valor|o montante)\b(?![^.!?]{0,15}\bdiferen[çc]a\b)|\bcancel(?:amos|aremos|lamos|leremo|ons|lerons)\b[^.!?]{0,20}\b(?:pago|pagamento|paiement|pagamento|pedido|commande|ordine|servicio|service|servizio|servi[çc]o)\b/i;
+
+// DIY lodgement in the other languages.
+const DIY_INSTRUCTIONS_ML = /\b(?:selbst (?:einreichen|abgeben|machen)|selber (?:einreichen|abgeben|machen)|schritt f[üu]r schritt|hazlo t[úu] mismo|preséntala t[úu] mismo|presentarla t[úu] mismo|paso a paso|fais-le toi-m[êe]me|d[ée]pose-la toi-m[êe]me|[ée]tape par [ée]tape|fallo da solo|presentala da solo|passo dopo passo|faz tu mesmo|entrega tu mesmo|passo a passo)\b|自分で(?:申告|提出|ロッジ)|ステップバイステップ|手順(?:は|を)(?:次の|以下の)/i;
+
 const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (deal|price|offer)|just for you[^.!?]{0,15}\d|one.time (deal|price|offer)|rabatt|nachlass|descuento|oferta especial|r[ée]duction|remise|rabais|sconto|desconto|割引|値引き)/i;
 // Blocks Will from unilaterally promising to refund the customer's PAYMENT or to
 // cancel. Precise on purpose: it must fire on transitive payment-refund promises
@@ -417,7 +518,20 @@ const OUT_OF_POCKET_PROMISE = /\bout of pocket\b|\baus eigener tasche\b|\bde (?:
 // deterministic English phrases above do not (Jo, 1 Sep: all rules, every
 // language). The bare noun ("a refund", "reembolso", "Erstattung") is fine; only
 // a FULL / total money-back promise trips it. Approved templates are exempt.
-const MONEY_BACK_ML = /\b(?:money\s?back|full\s+refund)\b|\bgeld\s+zur(?:ü|ue)ck\b|\bvolle\s+(?:r[üue]ck)?erstattung\b|\bdinero\s+de\s+vuelta\b|\breembolso\s+(?:completo|total|íntegro|integro)\b|\bremboursement\s+(?:complet|total|int[ée]gral)\b|\brimborso\s+(?:completo|totale|integrale)\b|全額返金|返金します/i;
+// Japanese: 返金します ("we refund") is exactly how the guarantee itself reads
+// in Japanese ("差額を返金します", we refund the DIFFERENCE), so the check below
+// lets a guarantee sentence through (GUARANTEE_CONTEXT / the worked example)
+// unless it promises a FULL refund. Without that every Japanese menu opening
+// was refused and every Japanese lead on Autopilot waited for a person
+// (audit, 3 Sep).
+const MONEY_BACK_ML = /\b(?:money\s?back|full\s+refund)\b|\bgeld\s+zur(?:ü|ue)ck\b|\bvolle\s+(?:r[üue]ck)?erstattung\b|\bdinero\s+de\s+vuelta\b|\breembolso\s+(?:completo|total|íntegro|integro)\b|\bremboursement\s+(?:complet|total|int[ée]gral)\b|\brimborso\s+(?:completo|totale|integrale)\b|全額(?:を)?返金|返金します/i;
+// The guarantee talks about refunding THE DIFFERENCE, in every language, and
+// its worked example says "we'd refund you $120". Neither is a money-back
+// promise. A sentence that names the difference, or carries the worked
+// example's arithmetic (fee = refund + amount returned), is the guarantee.
+const GUARANTEE_CONTEXT = /差額|\bthe difference\b|\bdie differenz\b|\bla diferencia\b|\bla diff[ée]rence\b|\bla differenza\b|\ba diferen[çc]a\b/i;
+// A FULL refund is a promise whatever the context.
+const FULL_REFUND_WORDS = /全額|\bfull\s+refund\b|\bmoney\s?back\b|\bvolle\b|\bgeld\s+zur|\bcompleto\b|\btotal\b|\b[íi]ntegro\b|\bint[ée]gral\b|\bcomplet\b|\btotale\b|\bintegrale\b|\bde\s+vuelta\b/i;
 const POST_PAYMENT_SALES = /(\bfee\b|\bprice\b|\bcost\b|\bdiscount\b|guarantee|out of pocket|cover the (gap|difference)|refund the difference)/i;
 const DIY_INSTRUCTIONS = /(do it yourself|lodge (it |your (tax )?return )?(yourself|on your own)|step[- ]by[- ]step|log ?in ?to mygov[^.!?]{0,40}(link|lodge|submit))/i;
 // myGov / ATO ACCESS (the team's single biggest problem): Will must never
@@ -531,15 +645,18 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // only the clause it is actually in — which is the truthful reading, because
   // "you never need to log in" and "go to my.gov.au and click" are different
   // statements even when they share a sentence.
-  if (MYGOV_TERMS.test(text) && MYGOV_STEP_CUE.test(text)) {
-    const clauses = text.split(/[.!?\n]+|,\s+|\s+but\s+/i).map((c) => c.trim()).filter(Boolean);
+  if (MYGOV_TERMS.test(text) && (MYGOV_STEP_CUE.test(text) || MYGOV_STEP_CUE_ML.test(text))) {
+    const clauses = text.split(/[.!?\n。！？]+|,\s+|、|\s+but\s+/i).map((c) => c.trim()).filter(Boolean);
     const instructing = clauses.some((c) => {
       if (MYGOV_REASSURANCE.test(c)) return false;
       // Strip the one allowed benign device hint, then a clause is instructing
       // only if a REAL portal step still survives. So "try again on a computer"
       // clears, but "log in on a computer" or "try logging in again" do not.
       const stripped = c.replace(MYGOV_BENIGN, ' ');
-      return MYGOV_STEP_CUE.test(stripped);
+      // A step in another language counts only in a clause that also names
+      // the portal: the verbs are ordinary words ("open", "select") in their
+      // own languages, so on their own they must not fire.
+      return MYGOV_STEP_CUE.test(stripped) || (MYGOV_TERMS.test(stripped) && MYGOV_STEP_CUE_ML.test(stripped));
     });
     if (instructing) violations.push('MYGOV_TROUBLESHOOTING');
   }
@@ -582,11 +699,13 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
 
   // Money, re-checked across the flattened improvised text so a line break
   // cannot hide a price. Same allow-list as the per-sentence pass.
-  for (const cents of amountsInCents(improvised)) {
+  const improvisedAmounts = amountsInCents(improvised);
+  const exampleAmounts = paid ? new Set<number>() : guaranteeExampleAmounts(improvisedAmounts, FIXED_PRICES_CENTS.slice(0, 2));
+  for (const cents of improvisedAmounts) {
     // The $300 substantiation threshold is a deduction/record-keeping fact, so
     // it is only allowed AFTER payment: before payment we give no personalised
     // tax advice at all, and an answer that reaches for it there must be held.
-    if (!allowedCents.has(cents) && !(paid && isBenignThreshold(cents, improvised))) {
+    if (!allowedCents.has(cents) && !exampleAmounts.has(cents) && !(paid && isBenignThreshold(cents, improvised))) {
       violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
     }
   }
@@ -606,8 +725,10 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     }
 
     // Amount check is language-agnostic (currency symbols + words in many languages).
-    for (const cents of amountsInCents(sentence)) {
-      if (!allowedCents.has(cents) && !(paid && isBenignThreshold(cents, sentence))) {
+    const sentenceAmounts = amountsInCents(sentence);
+    const sentenceExample = paid ? new Set<number>() : guaranteeExampleAmounts(sentenceAmounts, FIXED_PRICES_CENTS.slice(0, 2));
+    for (const cents of sentenceAmounts) {
+      if (!allowedCents.has(cents) && !sentenceExample.has(cents) && !(paid && isBenignThreshold(cents, sentence))) {
         violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
       }
     }
@@ -628,9 +749,18 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     for (const p of TAX_DETERMINATION) {
       if (p.test(sentence)) { violations.push('TAX_DETERMINATION'); break; }
     }
-    if (DIY_INSTRUCTIONS.test(sentence)) violations.push('DIY_INSTRUCTIONS');
+    if (!violations.includes('TAX_DETERMINATION')) {
+      for (const p of TAX_DETERMINATION_ML) {
+        if (p.test(sentence)) { violations.push('TAX_DETERMINATION'); break; }
+      }
+    }
+    if (DIY_INSTRUCTIONS.test(sentence) || DIY_INSTRUCTIONS_ML.test(sentence)) violations.push('DIY_INSTRUCTIONS');
+    if (REFUND_PROMISE_ML.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
     if (paid && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
-    if (!ctx.isApprovedTemplate && (REFUND_PROMISE.test(sentence) || OUT_OF_POCKET_PROMISE.test(sentence) || MONEY_BACK_ML.test(sentence))) violations.push('REFUND_OR_CANCEL_PROMISE');
+    const moneyBack = MONEY_BACK_ML.test(sentence)
+      && (FULL_REFUND_WORDS.test(sentence)
+        || !(GUARANTEE_CONTEXT.test(sentence) || guaranteeExampleAmounts(sentenceAmounts, FIXED_PRICES_CENTS.slice(0, 2)).size > 0));
+    if (!ctx.isApprovedTemplate && (REFUND_PROMISE.test(sentence) || OUT_OF_POCKET_PROMISE.test(sentence) || moneyBack)) violations.push('REFUND_OR_CANCEL_PROMISE');
 
     // H5: a non-approved sentence in a language the English patterns can't cover.
     if (isLikelyNonEnglish(sentence)) unguardedLanguage = true;

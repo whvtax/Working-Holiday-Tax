@@ -55,19 +55,28 @@ describe('stripBankBlock (never repeat the bank details)', () => {
       expect(out).not.toMatch(/account number/i);
       expect(out).not.toMatch(/screenshot/i);
     });
-    test('keeps the total for the chosen track', () => {
-      // The price message is now a bank-details confirmation (Jo, 3 Sep): it
-      // states the total and nothing else survives the strip.
-      expect(out).toMatch(/The total is \$\d+/);
+    test('keeps the guarantee and the owing line, which are not bank details', () => {
+      // Jo, 3 Sep (evening): the guarantee moved from the opening to the price
+      // message, beside the bank details. A repeat strips the details, not the
+      // wording around them.
+      expect(out).toContain("we'll refund the difference");
+      expect(out).toContain('non-refundable');
     });
   });
 
-  test('the guarantee and the owing line now live in the menu opening, not the price messages', () => {
-    expect(APPROVED.opening).toContain("we'll refund the difference");
-    expect(APPROVED.opening).toContain('non-refundable');
+  test('the guarantee and the owing line live in the price messages; the opening is short', () => {
+    for (const msg of [APPROVED.price_tfn, APPROVED.price_tfn_abn]) {
+      expect(msg).toContain("If your refund is less than our fee, we'll refund the difference.");
+      expect(msg).toContain('the fee covers the work completed and is non-refundable');
+    }
+    expect(APPROVED.opening).not.toContain('refund the difference');
     expect(APPROVED.opening).toContain('$220');
     expect(APPROVED.opening).toContain('$385');
-    expect(APPROVED.price_tfn).not.toContain('refund the difference');
-    expect(APPROVED.price_tfn_abn).not.toContain('refund the difference');
+    expect(APPROVED.opening).toMatch(/Which option suits you\?$/);
+    // The amount is stated in the price message, next to the details the
+    // customer copies into their bank app, and it is what the system reads
+    // the chosen track from.
+    expect(APPROVED.price_tfn).toContain('for the $220:');
+    expect(APPROVED.price_tfn_abn).toContain('for the $385:');
   });
 });

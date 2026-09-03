@@ -498,7 +498,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             提出は誰でもできます。仕事はその前にあります。
           </h2>
           <p className="mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.85, marginBottom: '10px', maxWidth: '34ch' }}>
-            試算した数字をお送りください。あなたの1年で何が効くのかをお伝えします。還付金が当社の料金を下回った場合は、差額を返金します。当社のサービスでお客様が損をすることはありません。
+            試算した数字をお送りください。あなたの1年で何が効くのかをお伝えします。還付金が当社の料金を下回った場合は、差額を返金します。逆に納税が必要になった場合、料金は当社の確認作業の費用となり、返金はできません。
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: '22px', maxWidth: '34ch' }}>
             申告書は、ATOへ提出する前に登録税理士が確認して承認します。

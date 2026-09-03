@@ -66,7 +66,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Deductions for my lin
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service.",
+  "guaranteeHeading": "If you get a refund and it comes to less than our fee, we refund the difference. If you owe tax instead, the fee covers our review and is not refundable.",
   "guaranteeBody": "Working holiday tax is the only thing we do. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",

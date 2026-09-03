@@ -39,7 +39,8 @@ jest.mock('@/lib/will/claude', () => ({
   assessPaymentProofImage: (...a: unknown[]) => assessPaymentProofImage(...a),
 }));
 
-jest.mock('@/lib/will/scheduler', () => ({ reconcileSchedule: jest.fn().mockResolvedValue(undefined) }));
+const reconcileSchedule = jest.fn().mockResolvedValue(undefined);
+jest.mock('@/lib/will/scheduler', () => ({ reconcileSchedule: (...a: unknown[]) => reconcileSchedule(...a) }));
 
 import { handlePaymentProofMedia } from '@/lib/will/service';
 
@@ -126,16 +127,18 @@ describe('a customer who opted out is never messaged, in any mode', () => {
 // payment with an unreadable screenshot fell through to a manual task while
 // the words "just paid it!" sat in the caption being ignored.
 
-it('trusts the caption, without asking the vision check at all', async () => {
+it('trusts the caption even when the vision check cannot read the picture', async () => {
   assessPaymentProofImage.mockResolvedValue({ isProof: false, reason: 'too blurry to tell' });
 
   await handlePaymentProofMedia('61400000001', '📷 [Photo] just paid it!', {
     media: { ...media, caption: 'just paid it!' },
   });
 
-  // Not merely trusted despite the picture — the picture is never looked at,
-  // because a paid answer cannot become more paid and this is a paid API call.
-  expect(assessPaymentProofImage).not.toHaveBeenCalled();
+  // Jo, 3 Sep: the picture IS looked at now even when the words are there,
+  // because reading the amount and the recipient off it is what lets a
+  // verified payment go through with no task. When it cannot be read, the
+  // words still carry the payment exactly as before.
+  expect(assessPaymentProofImage).toHaveBeenCalled();
   expect(addMessage).toHaveBeenCalledWith(expect.objectContaining({ status: 'PENDING_APPROVAL' }));
   expect(addTask).toHaveBeenCalledTimes(1);
   expect(addTask.mock.calls[0][0].reason).toMatch(/they said they paid/);
@@ -175,19 +178,21 @@ it('does NOT trust a caption that is asking about paying', async () => {
   expect(addTask).not.toHaveBeenCalled();
 });
 
-// ── The daily AI budget now covers the vision check ────────────────────────
+// ── The daily AI budget covers the vision check ─────────────────────────────
 //
-// Jo, 29 Aug: read what the customer WROTE first; only reach for the picture
-// when there is nothing to read. These two tests pin the consequence of that
-// ordering, which is what makes the budget gate safe to add at all.
+// Jo, 29 Aug: the customer's words never depend on the budget. Jo, 3 Sep: the
+// picture is read whenever the budget allows, words or no words, because that
+// is what verifies the amount and the recipient. On an exhausted budget the
+// words alone still carry the payment (with the glance task).
 
-it('a captioned screenshot never touches the budget or the vision check', async () => {
+it('a captioned screenshot on an exhausted budget is still trusted on the words', async () => {
   bumpCounter.mockResolvedValue(true); // budget fully exhausted
   const c = await handlePaymentProofMedia('61400000001', 'just paid it!', { media });
 
-  expect(bumpCounter).not.toHaveBeenCalled();
-  expect(assessPaymentProofImage).not.toHaveBeenCalled();
+  expect(assessPaymentProofImage).not.toHaveBeenCalled(); // no paid call on an exhausted day
   expect(c).not.toBeNull(); // the customer's word is enough, budget or no budget
+  expect(addTask).toHaveBeenCalledTimes(1);
+  expect(addTask.mock.calls[0][0].reason).toMatch(/they said they paid/);
 });
 
 it('a caption-less screenshot on an exhausted budget goes to a human, not to nothing', async () => {
@@ -212,4 +217,117 @@ it('a broken budget lookup does not block a payment', async () => {
 
   // Behaviour identical to before the gate existed: the check still runs.
   expect(assessPaymentProofImage).toHaveBeenCalled();
+});
+
+// ── Verified means no task (Jo, 3 Sep) ──────────────────────────────────────
+//
+// The vision check reads the amount, the recipient and the status. When they
+// add up to our fee, in our account, completed, there is nothing for a person
+// to check, so in Autopilot the payment is confirmed with NO task. Anything
+// the picture could not show keeps the heads-up, and the heads-up names it.
+
+const wise220 = {
+  isProof: true,
+  reason: 'Wise transfer confirmation',
+  details: { amountAud: 220, recipient: 'Simple Tax Services', recipientIsUs: 'yes', status: 'completed' },
+};
+
+describe('a fully verified screenshot in Autopilot', () => {
+  beforeEach(() => { getSetting.mockResolvedValue('FULL_AUTO'); });
+
+  it('moves to Paid, sends the confirmation and opens NO task', async () => {
+    assessPaymentProofImage.mockResolvedValue(wise220);
+    reconcileSchedule.mockClear();
+    await handlePaymentProofMedia('61400000001', '📷 [Photo] Erledigt :)', { media: { ...media, caption: 'Erledigt :)' } });
+
+    expect(setState).toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
+    expect(deliverOut).toHaveBeenCalledTimes(1);
+    expect(addTask).not.toHaveBeenCalled();
+    expect(audit).toHaveBeenCalledWith('system', 'auto_paid_from_media', expect.objectContaining({ verified: true }));
+    // Paid -> Form Pending just happened, so the form reminders are armed for
+    // it (audit, 3 Sep: this path never reconciled, so no reminder was sent).
+    expect(reconcileSchedule).toHaveBeenCalledTimes(1);
+  });
+
+  it('accepts the ABN fee and a few dollars of transfer loss', async () => {
+    assessPaymentProofImage.mockResolvedValue({ ...wise220, details: { ...wise220.details, amountAud: 381.5 } });
+    await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(addTask).not.toHaveBeenCalled();
+  });
+
+  it('still raises the URGENT task when WhatsApp rejects the confirmation', async () => {
+    assessPaymentProofImage.mockResolvedValue(wise220);
+    deliverOut.mockResolvedValueOnce({ ok: false, error: 'outside the 24h window' });
+    await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(addTask).toHaveBeenCalledTimes(1);
+    expect(addTask.mock.calls[0][0].severity).toBe('URGENT');
+  });
+});
+
+describe('a payment taken on trust keeps the heads-up, and says why', () => {
+  beforeEach(() => { getSetting.mockResolvedValue('FULL_AUTO'); });
+
+  it('no AUD amount visible: Paid, plus a task naming the gap', async () => {
+    assessPaymentProofImage.mockResolvedValue({ ...wise220, details: { ...wise220.details, amountAud: null } });
+    await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(setState).toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
+    expect(addTask).toHaveBeenCalledTimes(1);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/no AUD amount is visible/);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/Worth a glance/);
+  });
+
+  it('a wrong amount to us: Paid on trust, task says the amount', async () => {
+    assessPaymentProofImage.mockResolvedValue({ ...wise220, details: { ...wise220.details, amountAud: 150 } });
+    await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(addTask).toHaveBeenCalledTimes(1);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/\$150, not \$220 or \$385/);
+  });
+
+  it('a pending transfer: Paid on trust, task says pending', async () => {
+    assessPaymentProofImage.mockResolvedValue({ ...wise220, details: { ...wise220.details, status: 'pending' } });
+    await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(addTask).toHaveBeenCalledTimes(1);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/pending/);
+  });
+
+  it('words plus an unreadable picture: Paid, task says the screenshot could not be read', async () => {
+    assessPaymentProofImage.mockResolvedValue({ isProof: false, reason: 'too blurry to tell' });
+    await handlePaymentProofMedia('61400000001', '📷 [Photo] paid!', { media: { ...media, caption: 'paid!' } });
+    expect(setState).toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
+    expect(addTask).toHaveBeenCalledTimes(1);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/they said they paid/);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/could not be read/);
+  });
+});
+
+describe('a payment that is demonstrably not ours never confirms on the picture alone', () => {
+  beforeEach(() => { getSetting.mockResolvedValue('FULL_AUTO'); });
+
+  it('a transfer to someone else falls through to the manual task', async () => {
+    assessPaymentProofImage.mockResolvedValue({
+      ...wise220, details: { amountAud: 220, recipient: 'Jane Citizen', recipientIsUs: 'no', status: 'completed' },
+    });
+    const c = await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(c).toBeNull();
+    expect(setState).not.toHaveBeenCalled();
+    expect(deliverOut).not.toHaveBeenCalled();
+    expect(audit).toHaveBeenCalledWith('system', 'payment_proof_rejected', expect.anything());
+  });
+
+  it('a failed transfer falls through to the manual task', async () => {
+    assessPaymentProofImage.mockResolvedValue({ ...wise220, details: { ...wise220.details, status: 'failed' } });
+    const c = await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(c).toBeNull();
+    expect(setState).not.toHaveBeenCalled();
+  });
+
+  it('but the words still win, with the mismatch spelled out on the task', async () => {
+    assessPaymentProofImage.mockResolvedValue({
+      ...wise220, details: { amountAud: 220, recipient: 'Jane Citizen', recipientIsUs: 'no', status: 'completed' },
+    });
+    await handlePaymentProofMedia('61400000001', '📷 [Photo] paid', { media: { ...media, caption: 'paid' } });
+    expect(setState).toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
+    expect(addTask).toHaveBeenCalledTimes(1);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/Jane Citizen/);
+  });
 });

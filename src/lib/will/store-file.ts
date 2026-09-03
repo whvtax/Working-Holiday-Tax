@@ -357,6 +357,25 @@ export class FileStore implements Store {
     return false;
   }
 
+  async markDeliveryFailedByProviderId(providerId: string, error: string) {
+    const db = await load();
+    const m = db.messages.find((x) => x.meta?.providerId === providerId);
+    if (!m) return null;
+    m.status = 'FAILED';
+    m.meta = { ...(m.meta ?? {}), sendError: error, deliveryFailedAt: now() };
+    refreshLastMessage(db, m.customerId);
+    await persist();
+    return { ...m };
+  }
+
+  async markDeliveryReceiptByProviderId(providerId: string, receipt: 'delivered' | 'read', at: string) {
+    const db = await load();
+    const m = db.messages.find((x) => x.meta?.providerId === providerId);
+    if (!m) return;
+    m.meta = { ...(m.meta ?? {}), [receipt === 'read' ? 'readAt' : 'deliveredAt']: at };
+    await persist();
+  }
+
   async applyEditByProviderId(providerId: string, body: string | null) {
     const db = await load();
     const m = db.messages.find((x) => x.meta?.providerId === providerId);
@@ -497,6 +516,13 @@ export class FileStore implements Store {
     const out = new Set<string>();
     for (const j of (await load()).jobs) {
       if (j.kind === 'FOLLOW_UP' && j.status === 'SCHEDULED' && j.customerId) out.add(j.customerId);
+    }
+    return [...out];
+  }
+  async customerIdsWithPendingAutoReply(): Promise<string[]> {
+    const out = new Set<string>();
+    for (const j of (await load()).jobs) {
+      if (j.kind === 'AUTO_REPLY' && j.payload?.debounce && (j.status === 'SCHEDULED' || j.status === 'CLAIMED') && j.customerId) out.add(j.customerId);
     }
     return [...out];
   }

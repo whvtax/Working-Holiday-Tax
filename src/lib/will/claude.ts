@@ -13,6 +13,7 @@ import { claimsPayment } from './payment-claim';
 import { stripDashes } from './text';
 import { greetingName } from './text-normalize';
 import { registerLibraryBodies } from './policy-guard';
+import { coerceProofDetails, ProofDetails } from './payment-proof';
 
 export interface Turn {
   role: 'customer' | 'assistant';
@@ -122,7 +123,18 @@ function apiMessages(history: Turn[]) {
 
 export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Decision> {
   const key = process.env.ANTHROPIC_API_KEY;
-  if (!key) return mockDecide(ctx, history);
+  // The keyword mock exists for the simulator and the test suite. In
+  // production a missing key is an outage, not a reason to let an English-only
+  // keyword matcher talk to customers (audit, 3 Sep: with the key dropped and
+  // Autopilot on, a German "keine ABN, nur TFN" got the $385 message in
+  // English, auto-sent). So in production every reply becomes a task until the
+  // key is back; the health page already shows the missing key.
+  if (!key) {
+    if (process.env.NODE_ENV === 'production' && process.env.WILL_ALLOW_MOCK_BRAIN !== 'true') {
+      return fallbackTask('ANTHROPIC_API_KEY is not configured, so Will cannot write replies. Reply by hand and restore the key.');
+    }
+    return mockDecide(ctx, history);
+  }
 
   // Pull the owner's current Library edits so a change made there reaches the
   // live model, not just the manual "Send Template" button. Best-effort: a
@@ -163,7 +175,12 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        signal: AbortSignal.timeout(30_000),
+        // Two attempts must fit inside one serverless invocation (webhook and
+        // tick are both capped at 60 s): 2 x 25 s + the backoff stays under it.
+        // At 2 x 30 s a degraded API could run past the cap, the function was
+        // killed mid-flight, no catch ran, and the customer's message vanished
+        // with no task (audit, 3 Sep).
+        signal: AbortSignal.timeout(25_000),
         headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
         body,
       });
@@ -195,7 +212,15 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // unrelated document, a screenshot of something else) from silently moving
 // someone to Paid. Kind/stage alone are never enough on their own.
 // ============================================================
-export interface PaymentProofCheck { isProof: boolean; reason?: string }
+export interface PaymentProofCheck {
+  isProof: boolean;
+  reason?: string;
+  /** What the picture showed, when it IS a payment: amount, recipient, status.
+   *  Absent when the check failed or the attachment is not a payment. The
+   *  service decides from these whether the payment is fully verified (no task)
+   *  or merely trusted (stage moves, a heads-up task says what to glance at). */
+  details?: ProofDetails;
+}
 
 const PROOF_TOOL = {
   name: 'assess',
@@ -208,8 +233,26 @@ const PROOF_TOOL = {
         description: 'true ONLY if this clearly shows a completed bank transfer / PayID / card payment confirmation with an amount and either a reference, a bank name, or a "successful/completed" status. false for anything else, including a photo of a problem, a document, an ID, a receipt for something unrelated, or an image too unclear to tell.',
       },
       reason: { type: 'string', description: 'One short factual sentence on what the attachment actually shows.' },
+      amount_aud: {
+        type: ['number', 'null'],
+        description: 'The amount in AUD that the RECIPIENT receives if the screen shows it (e.g. "recipient gets 220 AUD", "Simple Tax Services erhielt 220 AUD"); otherwise the amount sent, if it is in AUD. null if no AUD figure is visible (only a foreign currency, or cropped). Number only, no symbols.',
+      },
+      recipient: {
+        type: ['string', 'null'],
+        description: 'The payee / recipient name or account label exactly as displayed, or null if none is visible.',
+      },
+      recipient_is_us: {
+        type: 'string',
+        enum: ['yes', 'no', 'unknown'],
+        description: '"yes" if the recipient is Simple Tax Services, Working Holiday Tax, BSB 062692 or account 81049952. "no" if a DIFFERENT recipient is clearly shown. "unknown" if no recipient is visible.',
+      },
+      status: {
+        type: 'string',
+        enum: ['completed', 'pending', 'failed', 'unknown'],
+        description: 'The transfer status as shown: completed/successful/sent, pending/processing/scheduled, failed/declined/cancelled, or unknown if no status is visible.',
+      },
     },
-    required: ['is_payment_proof'],
+    required: ['is_payment_proof', 'amount_aud', 'recipient', 'recipient_is_us', 'status'],
   },
 } as const;
 
@@ -223,7 +266,9 @@ Say FALSE for everything else, and in particular for these look-alikes, which ar
 - a screenshot showing only a balance, an account number, or bank details (someone sharing where their refund should go);
 - an invoice, a form, an ID, a receipt for something unrelated, a photo of a document, or anything unclear.
 
-A statement that lists transactions or shows a balance is the single most common false positive: it looks financial but proves no payment to us was made. When in doubt, say false — a real payment is confirmed by a person instead. Answer only by calling the assess tool.`;
+A statement that lists transactions or shows a balance is the single most common false positive: it looks financial but proves no payment to us was made. When in doubt, say false — a real payment is confirmed by a person instead.
+
+When it IS a payment, also read off the details, in any language the app is in (German "erhielt", Japanese "受取", Spanish "recibe" all mean the recipient received): the AUD amount the recipient gets (prefer that over the amount sent, which may include fees or be in another currency), the recipient exactly as shown, whether that recipient is us (Simple Tax Services / Working Holiday Tax / BSB 062692 / account 81049952), and the status. Report only what is visible; use null / "unknown" rather than guessing. Answer only by calling the assess tool.`;
 
 /** Returns { isProof: false } on any failure (no key, network error, bad
  *  response, unreadable format) — never assume proof when uncertain; the
@@ -264,7 +309,9 @@ export async function assessPaymentProofImage(bytes: ArrayBuffer, mime: string):
       ?.find((bl) => bl.type === 'tool_use' && bl.name === 'assess');
     const input = tool?.input as { is_payment_proof?: unknown; reason?: unknown } | undefined;
     if (!input || typeof input.is_payment_proof !== 'boolean') return { isProof: false, reason: 'model returned no assessment' };
-    return { isProof: input.is_payment_proof, reason: typeof input.reason === 'string' ? input.reason : undefined };
+    const reason = typeof input.reason === 'string' ? input.reason : undefined;
+    if (!input.is_payment_proof) return { isProof: false, reason };
+    return { isProof: true, reason, details: coerceProofDetails(input) };
   } catch (e) {
     return { isProof: false, reason: e instanceof Error ? e.message : 'vision check unreachable' };
   }
@@ -391,7 +438,7 @@ Your job: extract each distinct customer question/topic, and for each recurring 
 CRITICAL RULES FOR THE ANSWERS:
 - Do NOT copy or imitate the human agent's wording, tone, or approach. The old replies are often rushed, impatient or informal — that is exactly what we are replacing. Produce the OPPOSITE: warm, patient, professional, polite, genuinely helpful, concise.
 - The company's approved messages, boundaries and prices always take precedence over anything in these old conversations. If an old reply conflicts with the boundaries below, ignore the old reply entirely.
-- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). Guarantee (all customers, TFN and TFN + ABN): if the customer GETS a refund smaller than the fee, we refund the difference, so the fee never costs more than the refund. It applies ONLY when there is an actual refund; if the customer owes tax or gets no refund, the fee is non-refundable and you must NEVER promise to refund it or say they are "never out of pocket". Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
+- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). Guarantee (all customers, TFN and TFN + ABN): if the customer GETS a refund smaller than the fee, we refund the difference. It applies ONLY when there is an actual refund; if the customer owes tax or gets no refund, the fee is non-refundable and you must NEVER promise to refund it or say they are "never out of pocket". Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
 - Write answers in English.
 - Merge duplicate questions into one entry; set examples to the real phrasings seen; set keywords to the important searchable words; set a short intent label.
 - Only include genuine, reusable questions (skip one-off logistics tied to a single person).

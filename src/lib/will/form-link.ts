@@ -97,6 +97,18 @@ export async function notifyFormReceived(
     // into the form; that is a product change, not a code change, and is noted
     // in the audit report.
     if (!['PAID', 'FORM_PENDING'].includes(customer.state)) {
+      // A lead who fills the questionnaire BEFORE paying (it happens: the site
+      // link is public) is remembered, not ignored. Nothing moves and nothing is
+      // sent, so the phone-match risk above stays contained to one flag; but
+      // when they do pay, autoAdvanceToForm skips straight to Form Complete
+      // instead of chasing them for a form they already sent (audit, 3 Sep).
+      if (['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'].includes(customer.state) && !customer.formComplete) {
+        await store.updateCustomer(customer.id, { formComplete: true });
+        await store.audit('system', 'form_received_before_payment', {
+          customerId: customer.id, state: customer.state,
+        });
+        return { matched: true };
+      }
       await store.audit('system', 'form_received_ignored', {
         customerId: customer.id, state: customer.state,
       });

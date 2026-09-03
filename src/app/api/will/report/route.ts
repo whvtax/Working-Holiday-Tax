@@ -39,9 +39,13 @@ export async function GET() {
 
   // ---- stuck & drop analysis ----
   const now = Date.now();
+  // Lodged is the end of the job as far as the pipeline is concerned (the ATO
+  // takes it from there), so it is a resting state, not a stuck one: without
+  // LODGED here every lodged return counted as "stuck" from the next day
+  // forever, and the count only ever went up (audit, 3 Sep).
   const stuck = customers.filter((c) =>
     now - new Date(c.stateChangedAt).getTime() > 24 * 3600e3 &&
-    !['COMPLETED', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(c.state));
+    !['LODGED', 'COMPLETED', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(c.state));
   const closed = customers.filter((c) => ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(c.state));
   const coldAfterPrice = closed.filter((c) => c.previousState === 'PRICE_SENT' || c.previousState === 'PAYMENT_PENDING').length;
 

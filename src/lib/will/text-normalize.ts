@@ -7,10 +7,13 @@
 // This is applied to Will's OWN generated prose only — never to the owner's
 // manual typing, and never to a filled-in URL or email address (removing a dash
 // from a link would break it). URLs and emails are stashed out before the dash
-// pass and restored afterwards.
+// pass and restored afterwards. A hyphen INSIDE a word ("non-refundable",
+// "work-related", "Jean-Pierre") is spelling rather than a dash and is kept
+// (Jo's own approved wording uses these; audit, 3 Sep).
 // ============================================================
 
-// Every Unicode dash/hyphen that could appear in generated text.
+// Every Unicode dash/hyphen that could appear in generated text. The one
+// exception, carved out below, is a plain hyphen joining two words.
 const DASH_CLASS =
   '\\u002D' + // hyphen-minus
   '\\u058A' + // armenian hyphen
@@ -28,6 +31,8 @@ const PUNCT_DASH_TRAIL = new RegExp('\\s*[' + DASH_CLASS + ']+\\s+', 'g'); // "w
 const PUNCT_DASH_LEAD = new RegExp('\\s+[' + DASH_CLASS + ']+', 'g'); // "word —word"
 // A dash opening a line (a bullet) -> removed entirely.
 const LINE_LEAD = new RegExp('(^|\\n)[ \\t]*[' + DASH_CLASS + ']+[ \\t]*', 'g');
+// A hyphen with a letter on both sides is part of a word (compound, name).
+const WORD_HYPHEN = /(?<=\p{L})-(?=\p{L})/gu;
 // Links and emails must survive untouched (a hyphen in a URL is load-bearing).
 const PROTECT = /\bhttps?:\/\/[^\s]+|\bwww\.[^\s]+|\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g;
 // Private-use sentinels: never occur in real chat text, so restoring cannot
@@ -56,10 +61,20 @@ export function stripDashes(input: string | null | undefined): string {
   // 3) Punctuation dash (spaced) -> comma.
   s = s.replace(PUNCT_DASH_TRAIL, ', ');
   s = s.replace(PUNCT_DASH_LEAD, ', ');
-  // 4) Hard guarantee: any dash still standing (intra-word) -> space.
+  // 4) A plain hyphen joining two words is spelling, not a dash: "non-refundable",
+  //    "work-related", "Jean-Pierre", "TFN-Option". Jo's approved wording uses
+  //    these, and stripping them delivered "is non refundable" to every customer
+  //    (audit, 3 Sep). They are stashed like the URLs so the guarantee below
+  //    cannot touch them. Only the ASCII hyphen-minus between letters counts;
+  //    an em dash between words is still punctuation and still goes.
+  s = s.replace(WORD_HYPHEN, (m) => {
+    stash.push(m);
+    return STASH_OPEN + (stash.length - 1) + STASH_CLOSE;
+  });
+  // 5) Hard guarantee: any dash still standing -> space.
   s = s.replace(ANY_DASH, ' ');
 
-  // 5) Tidy the seams left behind.
+  // 6) Tidy the seams left behind.
   s = s
     .replace(/[ \t]{2,}/g, ' ')
     .replace(/ +([,.!?;:])/g, '$1')
@@ -67,7 +82,7 @@ export function stripDashes(input: string | null | undefined): string {
     .replace(/(^|\n)[ \t]+/g, '$1')
     .replace(/[ \t]+(\n|$)/g, '$1');
 
-  // 6) Restore the protected links/emails.
+  // 7) Restore the protected links, emails and hyphenated words.
   s = s.replace(new RegExp(STASH_OPEN + '(\\d+)' + STASH_CLOSE, 'g'), (_, i) => stash[Number(i)] ?? '');
   return s;
 }

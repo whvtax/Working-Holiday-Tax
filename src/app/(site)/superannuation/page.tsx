@@ -515,7 +515,7 @@ export default function SuperannuationPage() {
 
         <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0', margin: '22px 0 20px' }}>
           <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
-            If your refund is less than our fee, we refund the difference, so you are never out of pocket for our service.
+            If you get a refund and it comes to less than our fee, we refund the difference. If you owe tax instead, the fee covers our review and is not refundable.
           </p>
           <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
             Reviewed and signed off by a registered tax agent before it is lodged

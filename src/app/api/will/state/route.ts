@@ -9,12 +9,15 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const store = getStore();
-  const [customers, tasks, templates, pending, followupIds, total, groupCountArr] = await Promise.all([
+  const [customers, tasks, templates, pending, followupIds, autoReplyIds, total, groupCountArr] = await Promise.all([
     store.listCustomers(),
     store.listTasks(),
     store.listTemplates(),
     store.pendingApprovals(),
     store.customerIdsWithScheduledFollowup(),
+    // Chats whose Autopilot two-minute timer is armed: Will is about to
+    // answer them, and the list says so instead of showing a silent chat.
+    store.customerIdsWithPendingAutoReply().catch(() => [] as string[]),
     // True totals, straight from COUNT(*), so the pipeline numbers show 5,000
     // and not the 1,000 the window happened to load. Each is a cheap head-only
     // count; the group ones run in parallel.
@@ -52,6 +55,7 @@ export async function GET() {
     // customerIds that already have a scheduled follow-up, so the board can show
     // a small "already being chased" tick without a per-card query.
     followupIds,
+    autoReplyIds,
     // True totals from COUNT(*), so the KPI numbers are the real 5,000 and not
     // the size of the loaded window. `total` = all customers; `stageCounts` =
     // per pipeline-group id.

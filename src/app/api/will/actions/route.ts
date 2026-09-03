@@ -4,9 +4,9 @@
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore, CustomerRow } from '@/lib/will/store';
-import { policyGuard } from '@/lib/will/policy-guard';
+import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
-import { autoAdvanceToForm, getBank } from '@/lib/will/service';
+import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES } from '@/lib/will/service';
 import { reconcileSchedule, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
@@ -174,6 +174,12 @@ async function handlePost(req: Request) {
       // OUTSIDE_24H_WINDOW_NEEDS_TEMPLATE every time, marked the draft BLOCKED
       // and opened a task, so the nudge could never be sent.
       const isApprovedTemplate = !!(msg.meta?.waTemplate as { name?: string } | undefined)?.name;
+      // The guard must recognise Jo's LIVE Library wording here exactly as it
+      // does when the draft was written (decide() registers it); this process
+      // may be a different serverless instance that has never seen it, and
+      // his own long Library text came back as REPLY_TOO_LONG on approval
+      // (audit, 3 Sep).
+      try { registerLibraryBodies((await store.listTemplates()).map((t) => t.body)); } catch { /* best effort */ }
       const verdict = policyGuard(msg.body, {
         state: customer.state, paid: customer.paid, aiPaused: false, killSwitch,
         optedOut: customer.optedOut, isLegacy: customer.isLegacy,
@@ -196,12 +202,24 @@ async function handlePost(req: Request) {
 
       // M4: if the draft presupposed a state change that is no longer valid
       // (the world moved on), do not send a message that assumes it happened.
-      if (msg.meta?.proposedState && msg.meta.proposedState !== customer.state
-          && !canTransition(customer.state, msg.meta.proposedState)) {
+      //
+      // One transition is allowed here that the state machine's one-step walk
+      // does not list: a confirmed payment from ANY pre-payment sales stage.
+      // The screenshot path already accepts a receipt from NEW_LEAD/QUALIFIED
+      // (PAYMENT_PROOF_STATES, Jo 31 Aug: the price was quoted in the chat, not
+      // by the price message), and in Approval mode it drafts "payment
+      // received" with proposedState PAID. That draft could then never be
+      // approved: QUALIFIED -> PAID is not a listed step, so Approve blocked
+      // it as STALE_DRAFT and the customer stayed in Lead with paid=false
+      // (audit, 3 Sep). Same rule in both places now.
+      const proposed = msg.meta?.proposedState;
+      const allowedStep = (to: CustomerState) => canTransition(customer.state, to)
+        || (to === 'PAID' && !customer.paid && PAYMENT_PROOF_STATES.includes(customer.state));
+      if (proposed && proposed !== customer.state && !allowedStep(proposed)) {
         await store.setMessageStatus(msg.id, 'BLOCKED');
         await store.addTask({
           customerId: customer.id, customerName: customer.name ?? customer.waId,
-          reason: `Draft is stale: it assumed ${msg.meta.proposedState} but the customer is now ${customer.state}`,
+          reason: `Draft is stale: it assumed ${proposed} but the customer is now ${customer.state}`,
           severity: 'REVIEW', context: msg.body.slice(0, 200), suggestedReply: msg.body,
         });
         return NextResponse.json({ ok: false, blocked: ['STALE_DRAFT'] });
@@ -218,10 +236,16 @@ async function handlePost(req: Request) {
       // out as, because it is deliberately reaching someone who has been quiet
       // for a day or more and free-form text is rejected outside Meta's 24h
       // window. Conversation replies carry nothing and go as plain text.
-      const wa = msg.meta?.waTemplate as { name?: string; params?: string[]; lang?: string | null } | undefined;
-      const tx = wa?.name
+      const wa = msg.meta?.waTemplate as { name?: string; params?: string[]; lang?: string | null; fallbackToText?: boolean } | undefined;
+      let tx = wa?.name
         ? await sendWhatsAppTemplate(customer.waId, wa.name, wa.params ?? [], wa.lang ?? customer.lang)
         : await sendWhatsAppText(customer.waId, msg.body);
+      // A system line drafted with a template Jo has not created in Meta goes
+      // as the same text (see deliverOut's fallbackToText), so approving it
+      // does not fail on a template that was only ever optional.
+      if (!tx.ok && wa?.fallbackToText && /does not exist|not exist|132001|template/i.test(tx.error ?? '')) {
+        tx = await sendWhatsAppText(customer.waId, msg.body);
+      }
       if (!tx.ok) {
         await store.setMessageStatus(msg.id, 'FAILED');
         await store.audit('channel', 'send_failed', { id: msg.id, error: tx.error });
@@ -246,9 +270,9 @@ async function handlePost(req: Request) {
       // the task that was asking for the answer. See lib/will/after-reply.ts.
       await afterHumanReply(store, customer.id);
       // Apply the state/income change that was deferred until approval.
-      if (msg.meta?.proposedState && canTransition(customer.state, msg.meta.proposedState)) {
-        await store.setState(customer.id, msg.meta.proposedState, 'HUMAN');
-        if (msg.meta.proposedState === 'PAID') await autoAdvanceToForm(customer.id, await getBank());
+      if (proposed && proposed !== customer.state && allowedStep(proposed)) {
+        await store.setState(customer.id, proposed, 'HUMAN');
+        if (proposed === 'PAID') await autoAdvanceToForm(customer.id, await getBank());
       }
       if (msg.meta?.income) await store.updateCustomer(customer.id, { income: msg.meta.income });
       const fresh = await store.getCustomerById(customer.id);
@@ -295,6 +319,29 @@ async function handlePost(req: Request) {
       const out = await deliverOut(customer, body, 'HUMAN', { waTemplate }, waTemplate);
       if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
       await afterHumanReply(store, customer.id);
+      // A nudge sent by hand IS that step of the cadence, so it is recorded as
+      // a delivered step and the sequence continues from the next one. It used
+      // to be invisible to the scheduler, which sent the identical template
+      // again on its own timer, so the customer got the same nudge twice in a
+      // day, both metered (audit, 3 Sep). Cancel the pending step first: the
+      // one-pending-follow-up index would otherwise hand back that row.
+      try {
+        await store.cancelJobsFor(customer.id, ['FOLLOW_UP', 'AUTO_CLOSE']);
+        const seq = allowed.indexOf(b.id);
+        const done = await store.addJob({
+          customerId: customer.id, kind: 'FOLLOW_UP',
+          payload: { templateKey: template.key, seq, flow: flow ?? undefined },
+          runAt: new Date().toISOString(),
+        });
+        await store.setJobStatus(done.id, 'DONE');
+        const fresh = await store.getCustomerById(customer.id);
+        if (fresh) await reconcileSchedule(fresh);
+      } catch (e) {
+        await store.audit('scheduler', 'manual_followup_not_recorded', {
+          customerId: customer.id, template: template.key,
+          error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+        }).catch(() => { /* the message is out either way */ });
+      }
       await store.audit('owner', 'followup_sent_manually', { customerId: customer.id, template: template.key });
       return NextResponse.json({ ok: true });
     }
@@ -560,6 +607,11 @@ async function handlePost(req: Request) {
       // action from the CRM, so the step-by-step guardrails below are bypassed.
       if (b.force === true) {
         await store.setState(customer.id, target, 'HUMAN');
+        // Paid by hand is paid: the same Paid -> Form Pending cascade every
+        // automatic path does, so the form reminders exist for this customer
+        // too (audit, 3 Sep: a customer marked Paid from the stage menu sat in
+        // Paid with no reminder ever sent).
+        if (target === 'PAID') await autoAdvanceToForm(customer.id, await getBank());
         const f = await store.getCustomerById(customer.id);
         if (f) await reconcileSchedule(f);
         return NextResponse.json({ ok: true });
@@ -579,6 +631,7 @@ async function handlePost(req: Request) {
         return bad('that stage jump is not allowed; move one stage at a time');
       }
       await store.setState(customer.id, target, 'HUMAN');
+      if (target === 'PAID') await autoAdvanceToForm(customer.id, await getBank());
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
       return NextResponse.json({ ok: true });

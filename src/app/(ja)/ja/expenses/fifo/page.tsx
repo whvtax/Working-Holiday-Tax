@@ -66,7 +66,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "FIFOとキャンプ�
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
   "ctaSub": "約1時間で返信します。",
-  "guaranteeHeading": "還付金が当社の料金を下回った場合は、差額を返金します。当社のサービスでお客様が損をすることはありません。",
+  "guaranteeHeading": "還付金が当社の料金を下回った場合は、差額を返金します。逆に納税が必要になった場合、料金は当社の確認作業の費用となり、返金はできません。",
   "guaranteeBody": "扱うのは417・462ビザだけなので、Zone Offset、居住区分、3つのファンドに散ったスーパーをまとめて見ます。申告書は、ATOへ提出する前に登録税理士が確認して承認します。",
   "faqHeading": "よくある質問",
   "guidesHeading": "次に読むと役に立つガイド",

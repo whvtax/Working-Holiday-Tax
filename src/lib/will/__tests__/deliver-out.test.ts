@@ -84,6 +84,40 @@ describe('a write failure after a successful send is not reported as a failed se
     const res = await deliverOut(customer(), 'hello', 'HUMAN');
     expect(res.ok).toBe(true);
   });
+});
+
+// Jo, 3 Sep: a chat Will has answered himself in Autopilot is dealt with, so
+// it must not sit in bold on the list waiting for a look nobody needs to take.
+// Only a chat Will could NOT answer (a task, nothing sent) stays unread.
+describe('a successful send clears the unread marker, whoever wrote it', () => {
+  it('an AI send marks the chat read', async () => {
+    await deliverOut(customer(), 'hello', 'AI');
+    expect(store.markCustomerRead).toHaveBeenCalledWith('c1');
+  });
+
+  it('a HUMAN send marks the chat read', async () => {
+    await deliverOut(customer(), 'hello', 'HUMAN');
+    expect(store.markCustomerRead).toHaveBeenCalledWith('c1');
+  });
+
+  it('a rejected send leaves the marker alone: the customer was not answered', async () => {
+    // Real credentials from the settings row, and Meta answering with the
+    // 24h-window rejection: the message is FAILED, the chat stays bold.
+    store.getSetting.mockImplementation(async (key: string) =>
+      key === 'wa_access_token' ? 'tok' : key === 'wa_phone_number_id' ? '123' : undefined);
+    const realFetch = global.fetch;
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false, status: 400,
+      json: async () => ({ error: { code: 131047, message: 'Re-engagement message' } }),
+    }) as unknown as typeof fetch;
+    try {
+      const res = await deliverOut(customer(), 'hello', 'AI');
+      expect(res.ok).toBe(false);
+      expect(store.markCustomerRead).not.toHaveBeenCalled();
+    } finally {
+      global.fetch = realFetch;
+    }
+  });
 
   it('audits the bookkeeping failure, so a delivered-but-unrecorded message is visible', async () => {
     store.setMessageStatus.mockRejectedValue(new Error('db unreachable'));
