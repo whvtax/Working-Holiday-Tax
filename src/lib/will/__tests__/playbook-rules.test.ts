@@ -29,6 +29,14 @@ it('lets the customer choose TFN only even with ABN income', () => {
   expect(stable).toMatch(/do NOT raise a human_task/);
 });
 
+it('reads the two kinds of customer and adapts, without answering either', () => {
+  expect(stable).toMatch(/THE TWO KINDS OF CUSTOMER/);
+  expect(stable).toMatch(/THE ONE WHO CAME NOT INTENDING TO PAY/);
+  expect(stable).toMatch(/THE ONE WHO CAME TO PAY A PROFESSIONAL/);
+  expect(stable).toMatch(/DO NOT SELL TO THIS PERSON/);
+  expect(stable).toMatch(/Never the answer, always the reassurance/);
+});
+
 it('a myGov login problem gets the reassurance, not a task', () => {
   expect(stable).toMatch(/is NOT a human_task \(Jo, 4 Sep, Nick\)/);
 });

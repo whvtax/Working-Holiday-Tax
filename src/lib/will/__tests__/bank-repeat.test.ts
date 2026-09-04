@@ -55,12 +55,17 @@ describe('stripBankBlock (never repeat the bank details)', () => {
       expect(out).not.toMatch(/account number/i);
       expect(out).not.toMatch(/screenshot/i);
     });
-    test('keeps the guarantee and the owing line, which are not bank details', () => {
-      // Jo, 3 Sep (evening): the guarantee moved from the opening to the price
-      // message, beside the bank details. A repeat strips the details, not the
-      // wording around them.
-      expect(out).toContain("we'll refund the difference");
-      expect(out).toContain('non-refundable');
+    test('takes the guarantee with it, leaving nothing to send', () => {
+      // 3 Sep: the guarantee moved into the price message, beside the bank
+      // details, and a repeat stripped the details but kept the wording around
+      // them. 4 Sep, on the audit: what that actually produced was a message
+      // consisting of NOTHING BUT the guarantee, arriving in a conversation
+      // about something else, which is the exact repetition Jo banned. The
+      // guarantee belongs to the price message and goes with it; the engine
+      // then finds nothing left worth sending and stays quiet.
+      expect(out).not.toContain("refund the difference");
+      expect(out).not.toContain('non-refundable');
+      expect(out.trim()).toBe('');
     });
   });
 

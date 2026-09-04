@@ -33,6 +33,17 @@ const PUNCT_DASH_LEAD = new RegExp('\\s+[' + DASH_CLASS + ']+', 'g'); // "word �
 const LINE_LEAD = new RegExp('(^|\\n)[ \\t]*[' + DASH_CLASS + ']+[ \\t]*', 'g');
 // A hyphen with a letter on both sides is part of a word (compound, name).
 const WORD_HYPHEN = /(?<=\p{L})-(?=\p{L})/gu;
+// A hyphen INSIDE a number is data, not punctuation: an Australian tax year
+// ("2023-24"), a timeframe ("1-2 weeks", "2-3 business days"), an ABN or a
+// phone number. Every one of these was being turned into a space, so Will told
+// customers about the "2023 24" tax year and "1 2 weeks" (audit, 4 Sep). Same
+// stash treatment as a compound word. A spaced dash between numbers ("2019 -
+// 2023") is still punctuation and still goes.
+const NUMBER_HYPHEN = /(?<=\d)-(?=\d)/g;
+// A number joined to a word is a compound too: "24-hour", "3-day", "2-week".
+const NUMBER_WORD_HYPHEN = /(?<=\d)-(?=\p{L})/gu;
+// A leading minus on a number ("-$50", "-20") is a sign, not punctuation.
+const NEGATIVE_SIGN = /(?<=^|[\s(])-(?=[\d$€£¥])/g;
 // Links and emails must survive untouched (a hyphen in a URL is load-bearing).
 const PROTECT = /\bhttps?:\/\/[^\s]+|\bwww\.[^\s]+|\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g;
 // Private-use sentinels: never occur in real chat text, so restoring cannot
@@ -56,21 +67,26 @@ export function stripDashes(input: string | null | undefined): string {
     return STASH_OPEN + (stash.length - 1) + STASH_CLOSE;
   });
 
-  // 2) Bullet dash at the start of a line -> gone.
-  s = s.replace(LINE_LEAD, '$1');
-  // 3) Punctuation dash (spaced) -> comma.
-  s = s.replace(PUNCT_DASH_TRAIL, ', ');
-  s = s.replace(PUNCT_DASH_LEAD, ', ');
-  // 4) A plain hyphen joining two words is spelling, not a dash: "non-refundable",
-  //    "work-related", "Jean-Pierre", "TFN-Option". Jo's approved wording uses
-  //    these, and stripping them delivered "is non refundable" to every customer
-  //    (audit, 3 Sep). They are stashed like the URLs so the guarantee below
-  //    cannot touch them. Only the ASCII hyphen-minus between letters counts;
-  //    an em dash between words is still punctuation and still goes.
-  s = s.replace(WORD_HYPHEN, (m) => {
+  // 2) Stash the hyphens that are SPELLING or DATA before any punctuation rule
+  //    can reach them: a compound word, a hyphen inside a number, a number
+  //    joined to a word, and a leading minus sign. Order matters — the punctuation
+  //    rules below match on surrounding whitespace, so "-$50" was being turned
+  //    into ", $50" before this ran (audit, 4 Sep).
+  const stashHyphen = (m: string) => {
     stash.push(m);
     return STASH_OPEN + (stash.length - 1) + STASH_CLOSE;
-  });
+  };
+  s = s.replace(WORD_HYPHEN, stashHyphen);
+  s = s.replace(NUMBER_HYPHEN, stashHyphen);
+  s = s.replace(NUMBER_WORD_HYPHEN, stashHyphen);
+  s = s.replace(NEGATIVE_SIGN, stashHyphen);
+
+  // 3) Bullet dash at the start of a line -> gone.
+  s = s.replace(LINE_LEAD, '$1');
+  // 4) Punctuation dash (spaced) -> comma. Whatever it touches now is genuinely
+  //    punctuation: the spelling and the numbers were stashed above.
+  s = s.replace(PUNCT_DASH_TRAIL, ', ');
+  s = s.replace(PUNCT_DASH_LEAD, ', ');
   // 5) Hard guarantee: any dash still standing -> space.
   s = s.replace(ANY_DASH, ' ');
 

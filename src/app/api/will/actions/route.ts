@@ -7,7 +7,7 @@ import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES } from '@/lib/will/service';
-import { reconcileSchedule, restartSignatureCadenceFromNotice, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
+import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
@@ -111,7 +111,10 @@ async function humanSend(
   const reviewLink = (await store.getSetting('google_review_link')) as string | undefined;
   const amount = customer.estimatedRefundCents != null ? formatAUD(customer.estimatedRefundCents) : undefined;
   const body = fillPlaceholders(rawBody, await getBank(), { amount, reviewLink });
-  if (/\{\{[A-Z_]+\}\}/.test(body)) return { error: 'message still has an unfilled placeholder (e.g. set the refund estimate first, or fill the document name)' };
+  // ANY leftover placeholder, not just {{UPPER_CASE}}: a Library body edited to
+  // use {{1}} or {{name}} passed this check and reached the customer literally
+  // (audit, 4 Sep). Every caller fills its own placeholders before this point.
+  if (/\{\{[^}]{1,40}\}\}/.test(body)) return { error: 'message still has an unfilled placeholder (e.g. set the refund estimate first, fill the document name, or replace {{1}} with the first name)' };
   if (/(password|api.?key|access token|secret key|credentials)/i.test(body)) return { error: 'message looks like it contains a secret' };
   return { body: body.slice(0, 4000), outsideWindow };
 }
@@ -581,6 +584,7 @@ async function handlePost(req: Request) {
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
       if (b.value === true) {
+        await store.setSetting(followupsOffKey(customer.id), false);
         if (customer.aiPaused) await store.updateCustomer(customer.id, { aiPaused: false });
         const fresh = await store.getCustomerById(customer.id);
         if (fresh) await reconcileSchedule(fresh);
@@ -588,6 +592,9 @@ async function handlePost(req: Request) {
         await store.audit('owner', 'followups_started', { customerId: customer.id });
         return NextResponse.json({ ok: true, armed });
       }
+      // Remembered, not just cancelled: reconcileSchedule reads this on every
+      // inbound message and state change (audit, 4 Sep).
+      await store.setSetting(followupsOffKey(customer.id), true);
       await store.cancelJobsFor(customer.id, ['FOLLOW_UP', 'AUTO_CLOSE']);
       await store.audit('owner', 'followups_stopped', { customerId: customer.id });
       return NextResponse.json({ ok: true, armed: false });

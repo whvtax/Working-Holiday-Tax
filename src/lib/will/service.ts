@@ -9,14 +9,13 @@ import { runEngine, AiMode, EngineOutcome } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
 import { reconcileSchedule } from './scheduler';
-import { detectLanguage, FORM_RECEIVED_MSG } from './i18n';
+import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, paymentReceivedMessage, paymentReceivedTemplateKey } from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut, fetchWaMedia } from './channel';
 import { AUTOPILOT_REPLY_DELAY_SECONDS } from './config';
 import { isIdentityQuestion } from './identity-question';
 import { firstNameOf, cleanFirstName } from './text-normalize';
 import { suggestReply } from './suggest';
-import { APPROVED } from './approved-messages';
 import { assessPaymentProofImage, describeAttachment, PaymentProofCheck } from './claude';
 import { verifyProofDetails, isNotOurPayment, describeProof } from './payment-proof';
 import { sanitize } from './playbook';
@@ -199,8 +198,15 @@ async function handleIncomingInner(
   // writes in another language (a confident English message reclaims a chat that
   // had drifted). An ambiguous message never touches it.
   const detected = opts?.alreadyStored ? null : detectLanguage(text);
-  if (detected?.lang && detected.confident && detected.lang !== customer.lang) {
+  // SETTING a language the customer does not have yet takes one clear foreign
+  // signal ("Olá, quero saber o preço"); SWITCHING one they already have takes
+  // a confident read, so a single "Danke!" in an English chat cannot move it
+  // (audit, 4 Sep: half the Latin-language customers never got a language at
+  // all, and every deterministic message they received was in English).
+  const enough = customer.lang ? detected?.confident : (detected?.enoughToSet ?? detected?.confident);
+  if (detected?.lang && enough && detected.lang !== customer.lang) {
     await store.updateCustomer(customer.id, { lang: detected.lang });
+    await store.audit('system', 'language_set', { customerId: customer.id, from: customer.lang, to: detected.lang });
     customer = { ...customer, lang: detected.lang };
   }
 
@@ -580,8 +586,17 @@ export async function decideAndAct(
     const out = await deliverOut(customer, outcome.replyText, 'AI');
     if (!out.ok) {
       await store.audit('channel', 'auto_reply_send_failed', {
-        customerId: customer.id, error: out.error ?? 'unknown error',
+        customerId: customer.id, error: out.error ?? 'unknown error', retryable: !!out.retryable,
       }).catch(() => { /* the store is a likely thing to have just failed */ });
+      if (out.retryable) {
+        // A throttle or a transient Meta error is not a reason to hand the chat
+        // to a person: it is a reason to try again in a minute. The timer is
+        // re-armed with the same anchor, so the next run answers the same burst
+        // (it will not be treated as answered, because nothing was sent).
+        await armAutoReply(store, customer).catch(() => { /* the task below is the backstop */ });
+        await store.audit('assistant', 'auto_reply_rearmed_after_throttle', { customerId: customer.id }).catch(() => {});
+        return { outcome: { ...outcome, kind: 'silent' } };
+      }
       await raiseOrUpdateTask(store, customer, {
         reason: `Will's reply was not delivered: ${out.error ?? 'WhatsApp rejected it'}. They are waiting with no answer.`,
         severity: 'URGENT', newContext: text.slice(0, 200), suggestedReply: outcome.replyText,
@@ -769,7 +784,7 @@ export async function runDeferredAutoReply(
   // not the customer's question: "here you go, just paid, and how long until
   // the money lands?" plus a screenshot used to end with only "Payment
   // received", the question dropped silently with no task (audit, 4 Sep).
-  const SYSTEM_LINES = [APPROVED.payment_received, ...Object.values(FORM_RECEIVED_MSG)]
+  const SYSTEM_LINES = [...Object.values(PAYMENT_RECEIVED_MSG), ...Object.values(FORM_RECEIVED_MSG)]
     .map((t) => t.slice(0, 40).toLowerCase());
   const isSystemLine = (body: string) => SYSTEM_LINES.some((p) => body.slice(0, 40).toLowerCase() === p);
   const answered = msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT'
@@ -1098,6 +1113,20 @@ export function handlePaymentProofMedia(
   return queueForCustomer(waId, () => handlePaymentProofMediaInner(waId, body, meta));
 }
 
+/** The "payment received" confirmation for THIS customer: their language's
+ *  Library row first, then the English row, then the code copy. Was hardcoded
+ *  English and ignored the Library entirely (audit, 4 Sep). */
+async function paymentReceivedBody(store: Store, lang?: string | null): Promise<string> {
+  const key = paymentReceivedTemplateKey(lang);
+  try {
+    const templates = await store.listTemplates();
+    const row = templates.find((t) => t.key === key)
+      ?? (key !== 'payment_received' ? templates.find((t) => t.key === 'payment_received') : undefined);
+    if (row?.body?.trim() && !/\{\{[A-Z_]+\}\}/.test(row.body)) return row.body;
+  } catch { /* the constant is the honest fallback */ }
+  return paymentReceivedMessage(lang);
+}
+
 async function handlePaymentProofMediaInner(
   waId: string,
   body: string,
@@ -1251,7 +1280,7 @@ async function handlePaymentProofMediaInner(
   if (requiresApproval(mode)) {
     const draft = await store.addMessage({
       customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL',
-      body: APPROVED.payment_received,
+      body: await paymentReceivedBody(store, customer.lang),
       // proposedState: 'PAID' is exactly what approve_message already knows
       // how to apply — same guard re-check, same PAID -> FORM_PENDING
       // cascade via autoAdvanceToForm, same reconcileSchedule — as any other
@@ -1293,7 +1322,23 @@ async function handlePaymentProofMediaInner(
   // customer was never asked for, and from their side they paid and we went
   // silent. The state changes are correct and deliberately stay; what changes
   // is that the task now tells the truth about the message.
-  const out = await deliverOut(customer, APPROVED.payment_received, 'AI');
+  // The kill switch, a per-chat AI pause, a legacy chat and an opted-out
+  // customer all mean "Will does not talk here", and this send used to walk
+  // past every one of them (audit, 4 Sep). The confirmation still MATTERS, so
+  // it is not dropped: the stage stays Paid and Jo gets it as a one-click task.
+  const confirmation = await paymentReceivedBody(store, customer.lang);
+  const killSwitch = (await store.getSetting('kill_switch')) === true;
+  const silenced = killSwitch || customer.aiPaused || customer.isLegacy;
+  if (silenced) {
+    await store.addTask({
+      customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
+      reason: `They paid (${trustedBecause}) and are moved to Paid, but Will is switched off on this chat${killSwitch ? ' (kill switch)' : customer.aiPaused ? ' (AI paused)' : ' (legacy chat)'}, so nothing was sent. Send the confirmation yourself.`,
+      severity: 'URGENT', context: body, suggestedReply: confirmation,
+    });
+    await store.audit('system', 'payment_received_not_sent', { customerId: customer.id, reason: killSwitch ? 'kill_switch' : customer.aiPaused ? 'ai_paused' : 'legacy' });
+    return (await store.getCustomerByWaId(waId)) ?? customer;
+  }
+  const out = await deliverOut(customer, confirmation, 'AI');
   if (!out.ok) {
     await store.audit('channel', 'payment_received_send_failed', {
       customerId: customer.id, error: out.error ?? 'unknown error',
@@ -1317,7 +1362,7 @@ async function handlePaymentProofMediaInner(
       reason: `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
       severity: 'URGENT',
       context: body,
-      suggestedReply: APPROVED.payment_received,
+      suggestedReply: confirmation,
     });
   } else if (!verification.verified) {
     await store.addTask({

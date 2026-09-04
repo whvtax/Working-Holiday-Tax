@@ -5,7 +5,8 @@
 // seq resume (no restart-forever), kill switch, quiet hours.
 // ============================================================
 import { getStore, CustomerRow } from './store';
-import { schedulerConfig, withinQuietHours, deferToMorning, localMidnightUtc } from './config';
+import { cleanFirstName, firstNameOf } from './text-normalize';
+import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts } from './config';
 import { policyGuard, registerLibraryBodies } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
@@ -36,9 +37,21 @@ async function inApprovalMode(): Promise<boolean> {
 
 /** The name used in a template's {{1}}. Meta rejects an empty parameter, so a
  *  customer with no WhatsApp profile name still needs something natural. */
+/** The {{1}} parameter of a follow-up template, and the greeting inside it.
+ *
+ *  It used to be "the first word of whatever WhatsApp gave us", so a profile
+ *  name of "🌸 Yuki 🌸" sent "Hi 🌸", a profile name that is a phone number sent
+ *  a phone fragment, and a company name sent the company (audit, 4 Sep). Meta
+ *  also rejects a parameter with a newline or an empty value outright, which
+ *  fails the whole send. cleanFirstName already does this properly for the live
+ *  path (it skips leading emoji, refuses non-name words, fixes capitalisation);
+ *  this now uses it and falls back to the neutral "there". */
 export function greetingName(customer: CustomerRow): string {
-  const first = (customer.name ?? '').trim().split(/\s+/)[0] ?? '';
-  return first.length >= 2 ? first : 'there';
+  // cleanFirstName on the WHOLE name, not on the first word: "🌸 Yuki 🌸" has an
+  // emoji as its first word, and cleanFirstName is the thing that knows to skip
+  // past it to the actual name.
+  const cleaned = cleanFirstName(customer.name) || cleanFirstName(firstNameOf(customer.name));
+  return cleaned.length >= 2 ? cleaned : 'there';
 }
 
 
@@ -99,6 +112,12 @@ export async function reconcileSchedule(customer: CustomerRow): Promise<void> {
     await ensureLostAnalysisSoon().catch(() => { /* the close itself is what matters */ });
   }
   if (customer.optedOut || customer.aiPaused || customer.isLegacy) return;
+  // "Stop chasing this one person" has to survive their next message. The
+  // button cancelled the queued jobs and nothing else, so the very next inbound
+  // message or stage change armed the cadence again and the follow-ups Jo had
+  // just switched off came back (audit, 4 Sep). Cleared by switching them back
+  // on, which is the only thing that writes false here.
+  if ((await store.getSetting(followupsOffKey(customer.id))) === true) return;
   const flow = flowForState(customer.state);
   if (!flow) return;
   // A paid customer is never chased with the sales cadence, whatever stage
@@ -176,14 +195,26 @@ export async function backfillFollowupSchedules(): Promise<void> {
   }
 }
 
+/** The per-customer "do not chase this one" switch, as a setting key so it
+ *  needs no column. Read by reconcileSchedule, written by the CRM button. */
+export const followupsOffKey = (customerId: string) => `followups_off:${customerId}`;
+
 /** Ensure exactly one nightly maintenance job is queued (idempotent). */
 export async function ensureNightly(): Promise<void> {
   const store = getStore();
   if (await store.hasScheduledNightly()) return; // PERF-04: cheap existence check
   const cfg = schedulerConfig();
-  const next = new Date();
-  if (cfg.enforceQuietHours) { next.setDate(next.getDate() + 1); next.setHours(3, 0, 0, 0); }
-  else { next.setMinutes(next.getMinutes() + 10); }
+  let next: Date;
+  if (cfg.enforceQuietHours) {
+    // 3am MELBOURNE, not 3am server time. On Vercel the server is UTC, so this
+    // was running at 1pm or 2pm Melbourne: nightly maintenance, auto-closes and
+    // consistency checks in the middle of the working day (audit, 4 Sep).
+    const { y, mo, da } = localParts('Australia/Melbourne');
+    next = localTimeUtc('Australia/Melbourne', y, mo, da + 1, 3);
+  } else {
+    next = new Date();
+    next.setMinutes(next.getMinutes() + 10);
+  }
   await store.addJob({ customerId: null, kind: 'NIGHTLY', payload: {}, runAt: next.toISOString() });
 }
 
@@ -200,19 +231,12 @@ export async function ensureDailyDigest(): Promise<void> {
   // another one every tick.
   if (await store.hasScheduledJobOfKind('DAILY_DIGEST')) return;
 
-  const now = new Date();
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
-    hour12: false, timeZone: 'Australia/Melbourne',
-  }).formatToParts(now);
-  const y = Number(parts.find((p) => p.type === 'year')?.value);
-  const mo = Number(parts.find((p) => p.type === 'month')?.value);
-  const da = Number(parts.find((p) => p.type === 'day')?.value);
-  const hh = Number(parts.find((p) => p.type === 'hour')?.value);
+  const { y, mo, da, hh } = localParts('Australia/Melbourne');
   const pastEightToday = hh >= 8; // at/after 8am local: today's slot has passed (or is passing right now)
-  const targetDay = pastEightToday ? da + 1 : da; // Date.UTC below normalises any overflow
-
-  const runAt = new Date(localMidnightUtc('Australia/Melbourne', y, mo, targetDay).getTime() + 8 * 60 * 60 * 1000);
+  const targetDay = pastEightToday ? da + 1 : da; // Date.UTC normalises any overflow
+  // 8am local, computed as a wall-clock time rather than midnight + 8h, so the
+  // two DST days do not shift it (audit, 4 Sep).
+  const runAt = localTimeUtc('Australia/Melbourne', y, mo, targetDay, 8);
   await store.addJob({ customerId: null, kind: 'DAILY_DIGEST', payload: {}, runAt: runAt.toISOString() });
 }
 

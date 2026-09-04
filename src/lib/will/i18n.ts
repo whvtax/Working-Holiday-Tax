@@ -45,10 +45,10 @@ function countMatches(re: RegExp, t: string): number {
  * over every other language) is confident. The caller only ever acts on a
  * confident read, so an ambiguous message leaves the established language alone.
  */
-export function detectLanguage(text: string): { lang: Lang | null; confident: boolean } {
+export function detectLanguage(text: string): { lang: Lang | null; confident: boolean; enoughToSet?: boolean } {
   const t = (text || '').trim();
   if (!t) return { lang: null, confident: false };
-  if (/[぀-ゟ゠-ヿ]/.test(t)) return { lang: 'ja', confident: true }; // hiragana/katakana
+  if (/[぀-ゟ゠-ヿ]/.test(t)) return { lang: 'ja', confident: true, enoughToSet: true }; // hiragana/katakana
 
   const scores = (Object.keys(KEYWORDS) as Exclude<Lang, 'ja'>[])
     .map((lang) => [lang, countMatches(KEYWORDS[lang], t)] as [Lang, number])
@@ -57,7 +57,23 @@ export function detectLanguage(text: string): { lang: Lang | null; confident: bo
   const [topLang, topScore] = scores[0];
   const runnerUp = scores[1]?.[1] ?? 0;
   if (topScore === 0) return { lang: null, confident: false };
-  return { lang: topLang, confident: topScore >= 2 && topScore > runnerUp };
+
+  // A CLEAR non-English signal counts on its own. The English list is far
+  // longer than every other (it has to be, to reclaim a chat), so a message
+  // like "Ola, quero saber o preco" scored 1 for Portuguese and 0 for English
+  // and stayed unconfident: the customer was never given a language, and every
+  // deterministic message they later received went out in English (audit,
+  // 4 Sep). One distinctive foreign hit with nothing competing is a real
+  // signal; English still needs two, so a stray "ok" or "thanks" inside a
+  // German conversation cannot flip it.
+  //
+  // It is deliberately only enough to SET a language that is not set yet
+  // (`enoughToSet`), never to SWITCH one that is: switching still needs two
+  // hits, so a "Danke!" or a "grazie" dropped into an English conversation
+  // cannot move it. See handleIncomingInner, which is what reads these two.
+  const clearForeign = topLang !== 'en' && topScore >= 1 && topScore > runnerUp;
+  const confident = topScore >= 2 && topScore > runnerUp;
+  return { lang: topLang, confident, enoughToSet: confident || clearForeign };
 }
 
 /** "We've received your questionnaire" confirmation, per language (Jo's
@@ -134,6 +150,32 @@ export const PROFESSIONAL_QUESTION_MSG: Record<Lang, string> = {
   it: 'È sicuramente qualcosa che possiamo verificare per te. Dipende dalla tua situazione individuale, quindi dobbiamo prima esaminare bene i tuoi dati prima di darti una risposta precisa. È tutto incluso nel servizio una volta che iniziamo.',
   pt: 'Isso é algo que podemos verificar para ti, sem dúvida. Depende da tua situação individual, por isso precisamos de analisar bem os teus dados antes de te dar uma resposta exata. Está tudo incluído no serviço assim que começarmos.',
 };
+
+/** "Payment received" + the questionnaire link, per language (Jo's English
+ *  wording, no emoji). The automatic confirmation used to go out in English to
+ *  everyone, in the middle of a German or Japanese conversation, at the single
+ *  moment the customer is most invested (audit, 4 Sep). English lives under the
+ *  Library key `payment_received`, the others under payment_received_<lang>. */
+export const PAYMENT_RECEIVED_MSG: Record<Lang, string> = {
+  en: 'Payment received!\n\nPlease fill out this quick form so we can start reviewing your situation:\n\nhttps://workingholidaytax.com.au/tax-form\n\nOnce you\'ve submitted it, we\'ll go through everything and get back to you within 24 hours.',
+  de: 'Zahlung erhalten!\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation starten können:\n\nhttps://workingholidaytax.com.au/tax-form\n\nSobald du es abgeschickt hast, gehen wir alles durch und melden uns innerhalb von 24 Stunden bei dir.',
+  ja: 'お支払いを確認しました。\n\nご状況の確認を始められるよう、こちらの簡単なフォームにご記入ください:\n\nhttps://workingholidaytax.com.au/tax-form\n\nご送信いただいたら、すべて確認のうえ24時間以内にご連絡します。',
+  es: '¡Pago recibido!\n\nRellena este formulario rápido para que podamos empezar a revisar tu situación:\n\nhttps://workingholidaytax.com.au/tax-form\n\nEn cuanto lo envíes, revisamos todo y te respondemos en 24 horas.',
+  fr: 'Paiement bien reçu !\n\nRemplis ce court formulaire pour que nous puissions commencer à examiner ta situation :\n\nhttps://workingholidaytax.com.au/tax-form\n\nDès que tu l\'as envoyé, nous passons tout en revue et revenons vers toi sous 24 heures.',
+  it: 'Pagamento ricevuto!\n\nCompila questo breve modulo così possiamo iniziare a esaminare la tua situazione:\n\nhttps://workingholidaytax.com.au/tax-form\n\nUna volta inviato, controlliamo tutto e ti rispondiamo entro 24 ore.',
+  pt: 'Pagamento recebido!\n\nPreenche este formulário rápido para podermos começar a analisar a tua situação:\n\nhttps://workingholidaytax.com.au/tax-form\n\nAssim que o enviares, vemos tudo e respondemos dentro de 24 horas.',
+};
+
+export function paymentReceivedMessage(lang?: string | null): string {
+  const key = (lang && lang in PAYMENT_RECEIVED_MSG ? lang : 'en') as Lang;
+  return PAYMENT_RECEIVED_MSG[key];
+}
+
+/** The Library key for this customer's language. */
+export function paymentReceivedTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in PAYMENT_RECEIVED_MSG ? lang : 'en') as Lang;
+  return key === 'en' ? 'payment_received' : `payment_received_${key}`;
+}
 
 /** The holding line sent half an hour after a handoff, when the customer is
  *  still waiting and nobody has answered yet. Was English only, so a German or

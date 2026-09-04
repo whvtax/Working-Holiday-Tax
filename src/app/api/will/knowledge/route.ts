@@ -6,6 +6,25 @@ import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { extractKeywords } from '@/lib/will/knowledge';
 import { KNOWLEDGE_SEED } from '@/lib/will/knowledge-seed';
+import { policyGuard } from '@/lib/will/policy-guard';
+
+/** A knowledge answer is quoted to customers, so it is held to the same content
+ *  rules as anything else Will says (audit, 4 Sep: adds, edits and approvals all
+ *  bypassed the guard entirely, so a forbidden amount, a refund promise or the
+ *  retired guarantee line could be pasted straight into the pack). Only the
+ *  CONTENT rules matter here: the delivery gates (24h window, kill switch,
+ *  opt-out, paused) belong to a send, not to a stored answer. */
+const CONTENT_ONLY = new Set([
+  'OUTSIDE_24H_WINDOW_NEEDS_TEMPLATE', 'KILL_SWITCH_ACTIVE', 'AI_PAUSED_FOR_CUSTOMER',
+  'CUSTOMER_OPTED_OUT', 'LEGACY_CHAT_AI_DISABLED', 'REPLY_TOO_LONG',
+]);
+function knowledgeViolations(answer: string): string[] {
+  const verdict = policyGuard(answer, {
+    aiPaused: false, killSwitch: false, optedOut: false, isLegacy: false,
+    lastCustomerMsgAt: new Date(), state: 'NEW_LEAD', paid: false, isApprovedTemplate: false, estimateFromTeam: null,
+  });
+  return verdict.violations.filter((v) => !CONTENT_ONLY.has(v));
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -120,13 +139,25 @@ export async function POST(req: Request) {
       }
       return NextResponse.json({ ok: true, imported, skipped });
     }
-    case 'approve': if (b.id) await store.setKnowledgeStatus(b.id, 'active'); break;
+    case 'approve': {
+      if (b.id) {
+        const entry = (await store.listKnowledge()).find((k) => k.id === b.id);
+        const bad = entry?.answer ? knowledgeViolations(entry.answer) : [];
+        if (bad.length) return NextResponse.json({ ok: false, error: `this answer breaks a rule and cannot go live: ${bad.join(', ')}` }, { status: 422 });
+        await store.setKnowledgeStatus(b.id, 'active');
+      }
+      break;
+    }
     case 'dismiss': if (b.id) await store.setKnowledgeStatus(b.id, 'archived'); break;
     case 'delete':  if (b.id) await store.deleteKnowledge(b.id); break;
     case 'edit':
       if (b.id) {
         const patch: Record<string, unknown> = {};
-        if (typeof b.answer === 'string') patch.answer = b.answer.slice(0, 4000);
+        if (typeof b.answer === 'string') {
+          const bad = knowledgeViolations(b.answer);
+          if (bad.length) return NextResponse.json({ ok: false, error: `this answer breaks a rule: ${bad.join(', ')}` }, { status: 422 });
+          patch.answer = b.answer.slice(0, 4000);
+        }
         if (typeof b.question === 'string') { patch.question = b.question; patch.keywords = extractKeywords(b.question); }
         if (typeof b.intent === 'string') patch.intent = b.intent;
         await store.updateKnowledge(b.id, patch);
@@ -134,6 +165,8 @@ export async function POST(req: Request) {
       break;
     case 'add':
       if (b.question && b.answer) {
+        const bad = knowledgeViolations(b.answer);
+        if (bad.length) return NextResponse.json({ ok: false, error: `this answer breaks a rule: ${bad.join(', ')}` }, { status: 422 });
         await store.addKnowledge({
           intent: b.intent || b.question.slice(0, 60), question: b.question, examples: [],
           answer: b.answer.slice(0, 4000), keywords: extractKeywords(b.question), tags: [], lang: 'en',

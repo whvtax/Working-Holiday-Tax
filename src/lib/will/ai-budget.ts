@@ -23,7 +23,18 @@ export const DEFAULT_AI_DAILY_BUDGET = 3000;
  *  second copy of `toISOString().slice(0,10)` elsewhere would silently report a
  *  different day the moment either side changed its mind about timezones. */
 export const aiCallsKeyPrefix = 'ai_calls:';
-export const aiCallsKeyFor = (d: Date = new Date()) => aiCallsKeyPrefix + d.toISOString().slice(0, 10);
+/** The day is the MELBOURNE day, not the UTC one. On UTC the budget reset at
+ *  10 or 11am Melbourne, in the middle of the business's morning: a busy
+ *  morning could exhaust "today" and then reset mid-shift, and the System card
+ *  showed a day that did not match the one being spent against (audit,
+ *  4 Sep). */
+export const aiCallsKeyFor = (d: Date = new Date()) => {
+  const p = new Intl.DateTimeFormat('en-CA', {
+    year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Australia/Melbourne',
+  }).formatToParts(d);
+  const get = (t: string) => p.find((x) => x.type === t)?.value ?? '';
+  return `${aiCallsKeyPrefix}${get('year')}-${get('month')}-${get('day')}`;
+};
 
 /** Today's cap, from the 'ai_daily_budget' setting.
  *  An explicit 0 means "stop spending", and must not be swallowed by `||`:

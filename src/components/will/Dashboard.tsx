@@ -204,8 +204,15 @@ const respGap = (fromIso: string | null, toIso: string): string | null => {
 // full date, all read in the business's own timezone so a message sent late
 // at night doesn't land on the wrong side of the divider.
 const MEL_TZ = 'Australia/Melbourne';
-const melDayKey = (iso: string) =>
-  new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: MEL_TZ }).format(new Date(iso));
+// ONE formatter, built once. `new Intl.DateTimeFormat(...)` is one of the more
+// expensive things in the browser and this was constructing a fresh one per
+// message per render, on a dashboard that re-renders on a timer (audit,
+// 4 Sep). Same for the two below it.
+const MEL_DAY_FMT = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: MEL_TZ });
+const MEL_TIME_FMT = new Intl.DateTimeFormat('en-AU', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: MEL_TZ });
+const MEL_WEEKDAY_FMT = new Intl.DateTimeFormat('en-AU', { weekday: 'long', timeZone: MEL_TZ });
+const MEL_SHORTDATE_FMT = new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'numeric', year: '2-digit', timeZone: MEL_TZ });
+const melDayKey = (iso: string) => MEL_DAY_FMT.format(new Date(iso));
 const melDayLabel = (iso: string) => {
   const key = melDayKey(iso);
   if (key === melDayKey(new Date().toISOString())) return 'Today';
@@ -222,11 +229,11 @@ const chatListTime = (iso: string | null) => {
   const key = melDayKey(iso);
   const todayKey = melDayKey(new Date().toISOString());
   const yesterdayKey = melDayKey(new Date(Date.now() - 86400e3).toISOString());
-  if (key === todayKey) return d.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: MEL_TZ });
+  if (key === todayKey) return MEL_TIME_FMT.format(d);
   if (key === yesterdayKey) return 'Yesterday';
   const daysAgo = Math.round((new Date(`${todayKey}T00:00:00Z`).getTime() - new Date(`${key}T00:00:00Z`).getTime()) / 86400000);
-  if (daysAgo < 7) return d.toLocaleDateString('en-AU', { weekday: 'long', timeZone: MEL_TZ });
-  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'numeric', year: '2-digit', timeZone: MEL_TZ });
+  if (daysAgo < 7) return MEL_WEEKDAY_FMT.format(d);
+  return MEL_SHORTDATE_FMT.format(d);
 };
 // When a scheduled message will actually leave, read in the business's own
 // timezone: "Tue 2 Sep, 09:15". The exact time matters here — this is a queue
@@ -330,7 +337,10 @@ export default function Dashboard() {
   const [group, setGroup] = useState('sales');
   const [data, setData] = useState<StateData>({ customers: [], tasks: [], templates: [], pending: [], followupIds: [] });
   const [health, setHealth] = useState<Health | null>(null);
-  const [report, setReport] = useState<Report | null>(null);
+  // Kept for the type import and any future card that renders it; nothing sets
+  // it today (see the note on the removed fetch below).
+  const [report] = useState<Report | null>(null);
+  void report;
   const [drawerId, setDrawerId] = useState<string | null>(null);
   const [tpl, setTpl] = useState<TemplateRow | null>(null);
   const [newTpl, setNewTpl] = useState<{ title: string; category: string; body: string } | null>(null);
@@ -761,7 +771,11 @@ export default function Dashboard() {
     }
     /* eslint-disable-next-line */
   }, [data]);
-  useEffect(() => { if ((view === 'insights' || view === 'learning') && !report) fetch('/api/will/report').then((r) => r.json()).then((rp) => setReport(rp)).catch(() => {}); }, [view, report]);
+  // /api/will/report is NOT fetched here any more (audit, 4 Sep). Nothing on
+  // this screen reads `report`: the funnel, the variant tests and the handoff
+  // reasons the old comment credited it with all read /api/will/state. The
+  // fetch cost a full customers + tasks + history read on every Insights open
+  // and threw the answer away. The route stays for direct use.
   useEffect(() => { if (view === 'learning' || view === 'library') { loadKnowledge(); } }, [view, loadKnowledge]);
   useEffect(() => { if (view === 'learning') { loadMonthly(); } }, [view, loadMonthly]);
   useEffect(() => { if (view === 'insights') loadSystem(); }, [view, loadSystem]);
@@ -829,9 +843,13 @@ export default function Dashboard() {
     const healthIv = setInterval(() => {           // keep status dots fresh even when idle
       if (!hidden()) fetch('/api/will/health').then((r) => (r.ok ? r.json() : null)).then((h) => { if (!stop && h && h.checks) setHealth(h); }).catch(() => {});
     }, 45000);
-    // Skip while hidden: this re-renders the whole dashboard once a second,
-    // and a backgrounded tab has nobody to show a ticking clock to.
-    const clockIv = setInterval(() => { if (!hidden()) setClock((c) => c + 1); }, 1000);
+    // The only thing this drives is the relative timestamps ("3s ago", "2m
+    // ago") and the "answering soon" chip. It re-renders the WHOLE dashboard,
+    // rebuilding every message row and a fresh Intl formatter per row, and at
+    // one second it was doing that 3,600 times an hour to move a label that
+    // changes at ten-second granularity (audit, 4 Sep). Five seconds looks
+    // identical and costs a fifth. Skipped entirely while the tab is hidden.
+    const clockIv = setInterval(() => { if (!hidden()) setClock((c) => c + 1); }, 5000);
     return () => { stop = true; clearInterval(pollIv); clearInterval(tickIv); clearInterval(healthIv); clearInterval(clockIv); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -1289,6 +1307,17 @@ export default function Dashboard() {
                                       if (s === chatSel.state) return;
                                       // Only an out-of-order correction forces.
                                       const force = !nextStates.includes(s);
+                                      // Moving somebody who has PAID back into a
+                                      // sales stage is the one move with a real
+                                      // cost: the sales cadence is theirs again
+                                      // ("still want us to take a look?") and the
+                                      // pipeline stops telling the truth about
+                                      // money received. Forced moves skip every
+                                      // server guardrail, so this is the only
+                                      // place left to ask (audit, 4 Sep).
+                                      const SALES = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
+                                      if (force && chatSel.paid && SALES.includes(s)
+                                        && !confirm(`${chatSel.name ?? 'This customer'} has PAID. Moving them back to ${stageLabelOf(s)} puts them in the sales stages again. Are you sure?`)) return;
                                       const r = await act({ action: 'set_state', customerId: chatSel.id, state: s, force });
                                       say(r?.ok ? `Moved to ${stageLabelOf(s)}` : `❌ ${r?.error ?? 'could not move'}`);
                                       loadChat(chatSel.id); refresh();
@@ -1587,6 +1616,22 @@ export default function Dashboard() {
                       })()}
                       {chatMsgs.length === 0 && <div className="sysline">No messages stored for this customer yet</div>}
                     </div>
+                    {/* OUTSIDE META'S 24H WINDOW. Free text is refused by Meta
+                        once the customer has been quiet for a day, so typing
+                        here would fail on send with an error the owner has to
+                        read to understand. Saying it up front, next to the
+                        template buttons that DO work, is the honest version
+                        (audit, 4 Sep). */}
+                    {(() => {
+                      const last = chatSel.lastCustomerMsgAt ? new Date(chatSel.lastCustomerMsgAt).getTime() : 0;
+                      const outside = Date.now() - last > 24 * 60 * 60 * 1000;
+                      if (!outside) return null;
+                      return (
+                        <div className="win24" role="status">
+                          ⏳ Outside WhatsApp&apos;s 24 hour window: {chatSel.name?.split(/\s+/)[0] || 'they'} last wrote {last ? timeAgo(new Date(last).toISOString()) + ' ago' : 'a while ago'}. A typed message will be refused by WhatsApp. Use one of the template buttons above.
+                        </div>
+                      );
+                    })()}
                     <div className="composer">
                       {/* WhatsApp-style compose box: multi-line, grows with the
                           text, keeps line breaks (so a quick-fill template or a
@@ -1718,7 +1763,14 @@ export default function Dashboard() {
                     )}
                     <div className="tbtns">
                       {t.customerId && <button className="btn take" disabled={acted.has(t.id) || !draft.trim()} onClick={() => once(t.id, async () => { const r = await act({ action: 'send_task_reply', id: t.id, body: draft }); say(r?.ok ? 'Reply sent & task resolved ✓' : `❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`); refresh(); })}>➤ Send Reply</button>}
-                      {t.customerId && <button className="btn ghost" onClick={async () => { setView('chats'); openChat(t.customerId!); await act({ action: 'resolve_task', id: t.id }); refresh(); }}>Open Chat</button>}
+                      {/* Open Chat OPENS the chat. It used to resolve the task on
+                          the way, so a task opened and then left (a phone call, a
+                          second thought) was closed with the customer still
+                          waiting and nothing on the board saying so (audit,
+                          4 Sep). Answering in the chat resolves it, as it always
+                          did (afterHumanReply); the ✕ is there to dismiss one
+                          deliberately. */}
+                      {t.customerId && <button className="btn ghost" onClick={() => { setView('chats'); openChat(t.customerId!); }}>Open Chat</button>}
                       {!t.customerId && <button className="btn ghost" onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Marked resolved ✓'); refresh(); }}>Mark Resolved</button>}
                     </div>
                   </div>

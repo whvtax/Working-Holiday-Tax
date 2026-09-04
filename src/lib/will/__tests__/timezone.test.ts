@@ -37,3 +37,39 @@ describe('localMidnightUtc: Australia/Melbourne', () => {
     expect((after.getTime() - before.getTime()) / 3600000).toBe(49);
   });
 });
+
+// ── 4 Sep audit: the two days a year the one-pass offset read was wrong ─────
+import { localTimeUtc, localParts } from '@/lib/will/config';
+import { aiCallsKeyFor } from '@/lib/will/ai-budget';
+
+describe('DST days', () => {
+  const melbHour = (d: Date) => Number(new Intl.DateTimeFormat('en-CA', {
+    hour: '2-digit', hour12: false, timeZone: 'Australia/Melbourne',
+  }).format(d));
+
+  it('local midnight is midnight on the day the clocks go forward (October)', () => {
+    // AEST -> AEDT, first Sunday in October 2026 = 4 Oct.
+    expect(melbHour(localMidnightUtc('Australia/Melbourne', 2026, 10, 4))).toBe(0);
+    expect(melbHour(localMidnightUtc('Australia/Melbourne', 2026, 10, 5))).toBe(0);
+  });
+
+  it('local midnight is midnight on the day the clocks go back (April)', () => {
+    expect(melbHour(localMidnightUtc('Australia/Melbourne', 2026, 4, 5))).toBe(0);
+  });
+
+  it('8am is 8am on both transition days, so the digest never skips one', () => {
+    for (const [mo, da] of [[10, 4], [10, 5], [4, 5], [4, 6], [6, 15]] as [number, number][]) {
+      expect(melbHour(localTimeUtc('Australia/Melbourne', 2026, mo, da, 8))).toBe(8);
+    }
+  });
+
+  it('3am nightly maintenance is 3am in Melbourne, not on the server', () => {
+    const { y, mo, da } = localParts('Australia/Melbourne');
+    expect(melbHour(localTimeUtc('Australia/Melbourne', y, mo, da + 1, 3))).toBe(3);
+  });
+
+  it('the AI budget day is the Melbourne day', () => {
+    // 23:30 UTC on 3 Sep is already 4 Sep in Melbourne (UTC+10).
+    expect(aiCallsKeyFor(new Date('2026-09-03T23:30:00Z'))).toBe('ai_calls:2026-09-04');
+  });
+});

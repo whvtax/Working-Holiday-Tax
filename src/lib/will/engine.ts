@@ -65,15 +65,66 @@ export function fillPlaceholders(
 // them, it does not send them again unless the customer explicitly asks for them.
 // The customer already has them in the thread; repeating reads as pushy and robotic.
 // ============================================================
-// "Bank details are present" — the concrete, language-independent signals: the
-// BSB, the account number, or the "Payment details" label.
-const BANK_DETAILS_RE = /\b0?62\s?692\b|\b81049952\b|payment details|bank details|bankverbindung|振込先/i;
+// "THE BANK DETAILS ARE ACTUALLY HERE" — the numbers, nothing else.
+//
+// Audit, 4 Sep, and it was the worst bug in the file: this used to match the
+// PHRASE "payment details" too, so an ordinary sentence promising them
+// ("once you pick an option I'll send you the payment details") counted as the
+// details having been sent. The very next message, the real price message with
+// the BSB and the account number, was then treated as a REPEAT and stripped —
+// so the customer was asked to pay and given no account to pay into.
+//
+// The account number and the BSB are language-independent and unambiguous, and
+// they are the only thing that means the customer actually has what they need.
+const BANK_DETAILS_RE = /\b0?62\s?692\b|\b81049952\b/;
 // A single line that is part of the bank block, to be removed on a repeat.
-// "once you've made the payment" / "send us a screenshot" cover the closing line
-// of the bank-details message as reworded on 3 Sep (previously "once paid").
-const BANK_LINE_RE = /\b0?62\s?692\b|\b81049952\b|payment details|account name\s*:|^\s*bsb\b|^\s*account\s*:|quick screenshot|send us a screenshot|once paid|once you['’]?ve made the payment|bankverbindung|振込先|口座/i;
-// The customer explicitly asking for payment / bank details (then repeating is fine).
-const CUSTOMER_ASKED_PAYMENT_RE = /\b(bank|bsb|account|pay|payment|transfer|deposit|screenshot|where.*(send|pay)|how.*(pay|transfer)|remind|again|details)\b|振込|支払|口座|bezahl|überweis|kontonummer/i;
+// Every language Will speaks, because a German or Spanish repeat used to lose
+// only the numbers and keep the sentence introducing them, leaving "Here are
+// the payment details:" with nothing under it (audit, 4 Sep).
+const BANK_LINE_RE = new RegExp([
+  '\\b0?62\\s?692\\b', '\\b81049952\\b',
+  // the labels, in every language
+  'payment details', 'bank details', 'account name\\s*:', '^\\s*bsb\\b', '^\\s*account\\s*:',
+  'zahlungsdetails', 'bankverbindung', 'kontoinhaber', 'kontonummer', '^\\s*blz\\b',
+  'datos de pago', 'datos bancarios', 'titular de la cuenta', 'n[úu]mero de cuenta',
+  'coordonn[ée]es bancaires', 'd[ée]tails de paiement', 'titulaire du compte', 'num[ée]ro de compte',
+  'dati (?:di|per il) pagamento', 'dati bancari', 'intestatario', 'numero di conto',
+  'dados (?:de|para o) pagamento', 'dados banc[áa]rios', 'titular da conta', 'n[úu]mero da conta',
+  '振込先', '口座名義', '口座番号', '支店番号',
+  // the closing line that belongs to the same block
+  'quick screenshot', 'send us a screenshot', 'once paid', "once you['’]?ve made the payment",
+  'sobald du bezahlt hast', 'schick(?:e)? uns (?:einfach )?(?:einen )?screenshot',
+  'una vez (?:que )?(?:hayas )?pagado', 'env[íi]anos (?:una )?captura',
+  'une fois (?:que tu as |le )?pay[ée]', 'envoie[- ]nous (?:une )?capture',
+  'una volta (?:che hai )?pagato', 'mandaci (?:uno )?screenshot',
+  'assim que (?:tiveres )?pago', 'envia[- ]nos (?:uma )?captura',
+  'お支払い(?:が)?完了(?:し)?たら', 'スクリーンショット(?:を)?(?:送|お送り)',
+  // The guarantee line belongs to the price message and goes with it. Left
+  // behind, the "repeat" became a message consisting of nothing but the
+  // guarantee, tacked onto a conversation that was about something else, which
+  // is precisely what Jo banned on 3 Sep (audit, 4 Sep).
+  'if your refund is less than', 'refund the difference', 'if you owe money to the ato',
+  'wenn deine r[üu]ckerstattung', 'differenz', 'falls du dem ato',
+  'si tu reembolso es (?:menor|inferior)', 'la diferencia', 'si le debes',
+  'si ton remboursement est', 'la diff[ée]rence', 'si tu dois de l',
+  'se il tuo rimborso [èe]', 'la differenza', 'se devi (?:dei soldi|pagare)',
+  'se o teu reembolso for', 'a diferen[çc]a', 'se dever(?:es)? dinheiro',
+  '還付(?:金|額)が.*少ない', '差額', 'ATOに.*支払う',
+].join('|'), 'i');
+// The customer explicitly asking for payment / bank details (then repeating is
+// fine). English was covered; es/fr/it/pt/ja were not, so "Podes reenviar os
+// dados bancários?" was read as NOT asking and the answer arrived with the
+// numbers stripped out of it (audit, 4 Sep).
+const CUSTOMER_ASKED_PAYMENT_RE = new RegExp([
+  '\\b(?:bank|bsb|account|pay|payment|transfer|deposit|screenshot|remind|again|details)\\b',
+  'where.*(?:send|pay)', 'how.*(?:pay|transfer)',
+  'bezahl', '[üu]berweis', 'kontonummer', 'kontodaten', 'bankverbindung', 'wohin.*(?:geld|zahlen|überweisen)', 'zahlungsdetails',
+  'pagar', 'pago', 'transferencia', 'cuenta', 'datos bancarios', 'datos de pago', 'ad[óo]nde.*(?:pago|enviar)', 'd[óo]nde.*pag',
+  'payer', 'paiement', 'virement', 'compte', 'coordonn[ée]es bancaires', 'o[ùu].*(?:payer|envoyer)',
+  'pagare', 'pagamento', 'bonifico', 'conto', 'dati bancari', 'dove.*(?:pago|pagare|inviare)',
+  'pagar', 'pagamento', 'transfer[êe]ncia', 'conta', 'dados banc[áa]rios', 'onde.*(?:pago|pagar|enviar)',
+  '振込', '支払', '口座', '送金', 'どこ(?:に|へ).*(?:払|振込|送金)',
+].join('|'), 'i');
 
 /** Remove only the bank-detail lines from a message, leaving any surrounding text
  *  (a greeting, an answer) intact. Used when the details were already sent and the
@@ -100,8 +151,17 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // Bank-repeat suppression: if the bank details were already sent earlier AND the
   // customer is not asking for them right now, strip them from any repeat.
   const bankAlreadySent = history.some((t) => t.role === 'assistant' && BANK_DETAILS_RE.test(t.text));
-  const lastCustomerText = [...history].reverse().find((t) => t.role === 'customer')?.text ?? '';
-  const suppressBankRepeat = bankAlreadySent && !CUSTOMER_ASKED_PAYMENT_RE.test(lastCustomerText);
+  // Everything the customer has written since WE last said anything, not only
+  // their last line. On Autopilot a burst is answered as one message, so "hey,
+  // one more thing / can you resend the bank details? / thanks!" hid the ask
+  // behind the "thanks!" and the numbers were stripped out (audit, 4 Sep).
+  let lastAssistantIdx = -1;
+  for (let i = history.length - 1; i >= 0; i--) if (history[i].role === 'assistant') { lastAssistantIdx = i; break; }
+  const burstSinceOurs = history.slice(lastAssistantIdx + 1).filter((t) => t.role === 'customer').map((t) => t.text);
+  const customerBurst = burstSinceOurs.length
+    ? burstSinceOurs.join('\n')
+    : ([...history].reverse().find((t) => t.role === 'customer')?.text ?? '');
+  const suppressBankRepeat = bankAlreadySent && !CUSTOMER_ASKED_PAYMENT_RE.test(customerBurst);
   const applyBankRule = (t: string): string =>
     suppressBankRepeat && BANK_DETAILS_RE.test(t) ? stripBankBlock(t) : t;
 
@@ -129,16 +189,12 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       const text = applyBankRule(
         fillPlaceholders(normaliseWillText(draft, { firstMessage, firstName: custFirstName }), bank),
       );
-      if (text.trim()) {
-        const verdict = policyGuard(text, {
-          ...input.guard,
-          state: ctx.state,
-          paid: ctx.paid,
-          estimateFromTeam: ctx.estimatedRefundCents,
-          isApprovedTemplate: false,
-        });
-        if (verdict.allowed) suggestedReply = text;
-      }
+      // The CLEANED text either way. It used to fall back to the model's raw
+      // prose when the guard refused it, so the draft in the task box could
+      // carry three emojis, "Hi Daniel," on a non-opening turn and an unfilled
+      // {{PLACEHOLDER}}, one click from being sent (audit, 4 Sep). The task
+      // still says why the reply was held; what the owner sends is normalised.
+      if (text.trim()) suggestedReply = text;
     }
     return {
       kind: 'human_task',
@@ -188,7 +244,8 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       task: {
         reason: `Model proposed invalid transition ${ctx.state} -> ${decision.new_state}; reply held for review`,
         severity: 'CONFLICT',
-        suggestedReply: decision.reply_text,
+        // Normalised, not raw: this is a one-click "Send Reply" (audit, 4 Sep).
+        suggestedReply: applyBankRule(fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank)),
       },
     };
   }
@@ -219,7 +276,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
         task: {
           reason: `Model proposed ${ctx.state} -> PAID but the customer did not report a payment; reply held for review`,
           severity: 'CONFLICT',
-          suggestedReply: decision.reply_text,
+          suggestedReply: applyBankRule(fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank)),
         },
       };
     }

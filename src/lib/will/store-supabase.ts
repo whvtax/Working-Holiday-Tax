@@ -1017,8 +1017,31 @@ export class SupabaseStore implements Store {
     const stale = (data ?? []).map(toJob);
     let n = 0;
     for (const j of stale) {
-      const next = (j.attempts ?? 0) >= 3 ? 'FAILED' : 'SCHEDULED';
+      const deadLettered = (j.attempts ?? 0) >= 3;
+      const next = deadLettered ? 'FAILED' : 'SCHEDULED';
       await this.sb().from('will_jobs').update({ status: next }).eq('id', j.id);
+      // A job that has given up is a message that will never be sent: a
+      // follow-up that never goes, a review request nobody gets, a payment
+      // confirmation left undelivered. It used to end here in silence, with
+      // nothing in the audit trail and nothing on the board (audit, 4 Sep).
+      if (deadLettered) {
+        try {
+          await this.audit('scheduler', 'job_dead_lettered', {
+            jobId: j.id, kind: j.kind, customerId: j.customerId, attempts: j.attempts ?? 0,
+          });
+          if (j.customerId) {
+            const c = await this.getCustomerById(j.customerId);
+            await this.addTask({
+              customerId: j.customerId,
+              customerName: c?.name ?? null,
+              reason: `A scheduled ${j.kind.replace(/_/g, ' ').toLowerCase()} failed three times and has been given up on. Nothing was sent to this customer.`,
+              severity: 'REVIEW',
+              context: `Job ${j.id} (${j.kind}) was claimed and never completed after ${j.attempts ?? 0} attempts. Check the chat and send it by hand if the customer is still waiting.`,
+              suggestedReply: null,
+            });
+          }
+        } catch { /* the reclaim itself must still finish */ }
+      }
       n++;
     }
     return n;

@@ -103,8 +103,33 @@ function tzOffsetMinutes(tz: string, atUtcMs: number): number {
  *  month — same as the Date constructor). */
 export function localMidnightUtc(tz: string, year: number, month: number, day: number): Date {
   const roughUtc = Date.UTC(year, month - 1, day, 0, 0, 0);
-  const offsetMin = tzOffsetMinutes(tz, roughUtc);
-  return new Date(roughUtc - offsetMin * 60 * 1000);
+  // TWO PASSES, because of the two days a year this is wrong with one. The
+  // offset is read at UTC midnight, which is 10 or 11 hours BEFORE the local
+  // midnight we are aiming at; on the day the clocks change, those two instants
+  // sit on opposite sides of the change, so the result lands an hour early and
+  // the digest skipped a whole day every October (audit, 4 Sep). Reading the
+  // offset again at the computed instant settles it.
+  const first = roughUtc - tzOffsetMinutes(tz, roughUtc) * 60 * 1000;
+  const refined = roughUtc - tzOffsetMinutes(tz, first) * 60 * 1000;
+  return new Date(refined);
+}
+
+/** The UTC instant of a given local wall-clock time on a given local date.
+ *  Same DST care as localMidnightUtc; `hour` may be any 0..23. */
+export function localTimeUtc(tz: string, year: number, month: number, day: number, hour: number): Date {
+  const rough = Date.UTC(year, month - 1, day, hour, 0, 0);
+  const first = rough - tzOffsetMinutes(tz, rough) * 60 * 1000;
+  return new Date(rough - tzOffsetMinutes(tz, first) * 60 * 1000);
+}
+
+/** Today's date in a timezone, as {y, mo, da, hh}. */
+export function localParts(tz: string, at: Date = new Date()): { y: number; mo: number; da: number; hh: number } {
+  const p = new Intl.DateTimeFormat('en-CA', {
+    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+    hour12: false, timeZone: tz,
+  }).formatToParts(at);
+  const get = (t: string) => Number(p.find((x) => x.type === t)?.value);
+  return { y: get('year'), mo: get('month'), da: get('day'), hh: get('hour') };
 }
 
 /** One canonical money formatter shared by playbook and guard so the

@@ -147,7 +147,9 @@ function getClientStatus(notes: string): ClientStatus {
 const WA_TEMPLATES = [
   { id: 'received', icon: '📨', label: 'Received', text: (n:string) => `Hi ${n}! Just letting you know I received your form and started processing it. I'll get back to you soon with updates 👍` },
   { id: 'docs', icon: '📋', label: 'Docs submitted', text: (n:string) => `Hi ${n}! Your documents have been submitted to the ATO ✅ I'll let you know once they're processed.` },
-  { id: 'refund', icon: '💰', label: 'Refund processed', text: (n:string) => `Great news ${n}! Your refund has been processed and should arrive in your bank account within 1-2 weeks 🎉` },
+  // Same timing as the approved lodged_confirmation message, so the two do not
+  // promise different things to the same customer (audit, 4 Sep).
+  { id: 'refund', icon: '💰', label: 'Refund processed', text: (n:string) => `Great news ${n}! Your refund has been processed and should arrive in your bank account within 14 business days 🎉` },
   { id: 'followup', icon: '🔔', label: 'Yearly follow-up', text: (n:string) => `Hi ${n}! Hope you're well. Just a reminder - it's tax season again. If you'd like to file this year's return, send me a message and I'll send you the link 🙂` },
   { id: 'super', icon: '💼', label: 'Super reminder', text: (n:string) => `Hi ${n}! Are you planning to leave Australia soon? You may be eligible to claim back your superannuation. Let me know if you'd like help with this!` },
 ]

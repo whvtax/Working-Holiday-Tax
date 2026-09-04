@@ -23,7 +23,7 @@ describe('detectLanguage confidence', () => {
   });
 
   it('reads Japanese script as confident Japanese', () => {
-    expect(detectLanguage('こんにちは、税金について質問があります')).toEqual({ lang: 'ja', confident: true });
+    expect(detectLanguage('こんにちは、税金について質問があります')).toMatchObject({ lang: 'ja', confident: true });
   });
 
   it('reads a clear German message as confident German', () => {

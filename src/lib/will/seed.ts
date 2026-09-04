@@ -13,7 +13,7 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG } from './i18n';
+import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, PAYMENT_RECEIVED_MSG } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -89,6 +89,10 @@ export function seedTemplates(): TemplateRow[] {
     t('fu_sig_3d', 'Follow-ups', 'Signature · 3d', APPROVED.followups_signature.d3, true),
     t('fu_sig_7d', 'Follow-ups', 'Signature · 7d', APPROVED.followups_signature.d7, true),
     t('payment_received', 'Post-payment & Service', 'Payment received + form link', APPROVED.payment_received),
+    // The same confirmation per language (4 Sep). It is the one automatic
+    // message that lands at the moment the customer has just parted with money.
+    ...(Object.keys(PAYMENT_RECEIVED_MSG).filter((l) => l !== 'en') as (keyof typeof PAYMENT_RECEIVED_MSG)[]).map((l) =>
+      t(`payment_received_${l}`, 'Post-payment & Service', `Payment received + form link (${l})`, PAYMENT_RECEIVED_MSG[l])),
     t('req_abn', 'Post-payment & Service', 'Request ABN detail', APPROVED.request_abn_detail),
     // The same three questions in the other six languages, so a German or
     // Japanese ABN customer is not asked in English right after being thanked
