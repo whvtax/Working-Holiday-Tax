@@ -1837,6 +1837,73 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
           "deductions"
       ],
       "lang": "en"
+  },
+  {
+      "intent": "small abn income still declared",
+      "question": "I only earned a tiny amount on my ABN (Uber, delivery, a one-off job). Does that still have to be declared, and does it put me on the $385 plan?",
+      "examples": [
+          "I only made $20 on Uber during that period, does that mean I need the 385 plan?",
+          "I did one delivery shift on an ABN, is that even worth declaring?",
+          "It was a really small amount on my ABN, can I just ignore it?",
+          "ウーバーで20ドルだけ稼いだんですけど、385のプランになりますよね？"
+      ],
+      "answer": "Yes, any income you earned in Australia has to be declared, whatever the amount.\n\nABN income is covered by the TFN + ABN option, so that's the one that fits. Want me to send the details?",
+      "keywords": [
+          "abn",
+          "uber",
+          "delivery",
+          "small",
+          "tiny",
+          "only",
+          "amount",
+          "20",
+          "declare",
+          "declared",
+          "report",
+          "include",
+          "385",
+          "plan",
+          "option",
+          "one",
+          "off",
+          "shift"
+      ],
+      "tags": [
+          "abn",
+          "declaration"
+      ],
+      "lang": "en"
+  },
+  {
+      "intent": "is the service worth it for me",
+      "question": "I might not get much back, so is your service even worth it for someone like me?",
+      "examples": [
+          "I don't think I'd benefit from your service in my situation",
+          "I haven't lived here 6 months so I might owe tax anyway, is there any point?",
+          "Would I actually gain anything by paying you?"
+      ],
+      "answer": "What you're paying for is a return that's complete and correct, and that's worth having either way.\n\nOur team goes through your whole situation before anything is lodged, so nothing is missed and nothing is guessed. Shall I send you the details?",
+      "keywords": [
+          "worth",
+          "benefit",
+          "point",
+          "gain",
+          "pointless",
+          "not",
+          "much",
+          "back",
+          "owe",
+          "anyway",
+          "service",
+          "for",
+          "me",
+          "situation"
+      ],
+      "tags": [
+          "objection"
+      ],
+      "lang": "en"
   }
 ];
+
 

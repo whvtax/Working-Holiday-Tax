@@ -100,27 +100,38 @@ it('on Autopilot the same exchange arms the two-minute timer instead of deciding
   expect(addTask).not.toHaveBeenCalled();
 });
 
-it('a genuine runaway still stops and raises a task, but never pauses Will', async () => {
-  // Jo, 31 Aug: Will is NEVER auto-paused. A stuck loop still raises a task for a
-  // person, but Will is not switched off for the customer.
-  for (let i = 0; i < 25; i++) {
+// Jo, 4 Sep, from the Decision Log: Ami wrote 37 DIFFERENT messages before
+// paying, ending with "That's totally fine, thank you for confirming!", and the
+// count alone called that stuck and handed her to a person. The customer who
+// came not intending to pay asks exactly like that, and staying patient with
+// her is the job. So volume is no longer the signal; a repeating line is.
+it('a long, engaged conversation before payment is never stopped', async () => {
+  for (let i = 0; i < 40; i++) {
     // eslint-disable-next-line no-await-in-loop
-    await handleIncoming('61400000001', `message ${i + 1}`, 'SUPERVISED');
+    await handleIncoming('61400000001', `a different question number ${i + 1}`, 'SUPERVISED');
   }
-  expect(runEngine).toHaveBeenCalledTimes(25); // 25 is still fine
+  expect(runEngine).toHaveBeenCalledTimes(40);
   expect(addTask).not.toHaveBeenCalled();
+});
 
-  // The 26th on Autopilot: the runaway guard sits BEFORE the timer, so the
-  // stuck loop is stopped and named without arming anything.
+it('the SAME message arriving over and over is stopped and named, without pausing Will', async () => {
+  // Five of the last six identical: an automated sender or a stuck loop.
+  for (let i = 0; i < 5; i++) {
+    // eslint-disable-next-line no-await-in-loop
+    await handleIncoming('61400000001', 'hello?', 'SUPERVISED');
+  }
   addJob.mockClear();
-  const result = await handleIncoming('61400000001', 'message 26', 'FULL_AUTO');
+  const before = (runEngine as jest.Mock).mock.calls.length;
+  const result = await handleIncoming('61400000001', 'hello?', 'FULL_AUTO');
 
-  expect(runEngine).toHaveBeenCalledTimes(25); // the engine is NOT called again
-  expect(addJob).not.toHaveBeenCalled();       // and no timer is armed either
+  expect(runEngine).toHaveBeenCalledTimes(before); // the engine is NOT called again
+  expect(addJob).not.toHaveBeenCalled();           // and no timer is armed either
   expect(result.outcome.kind).toBe('human_task');
   expect(updateCustomer).not.toHaveBeenCalledWith('c1', { aiPaused: true });
-  expect(addTask).toHaveBeenCalledTimes(1);
-  expect(addTask.mock.calls[0][0].reason).toMatch(/26 messages before paying/);
+  // In production raiseOrUpdateTask folds these into the ONE open task per
+  // customer; here the store is a mock, so only the wording is asserted.
+  expect(addTask).toHaveBeenCalled();
+  expect(addTask.mock.calls[addTask.mock.calls.length - 1][0].reason).toMatch(/looping/i);
 });
 
 it('a paid customer is never stopped by this rule, however many messages', async () => {
@@ -134,10 +145,9 @@ it('a paid customer is never stopped by this rule, however many messages', async
 });
 
 it('applies in SUPERVISED mode too, not just FULL_AUTO', async () => {
-  for (let i = 0; i < 26; i++) {
+  for (let i = 0; i < 6; i++) {
     // eslint-disable-next-line no-await-in-loop
-    await handleIncoming('61400000001', `q${i + 1}`, 'SUPERVISED');
+    await handleIncoming('61400000001', 'is anyone there', 'SUPERVISED');
   }
-  // The 26th is the one that trips it, in either mode.
-  expect(addTask).toHaveBeenCalledTimes(1);
+  expect(addTask).toHaveBeenCalled();
 });

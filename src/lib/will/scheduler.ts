@@ -582,11 +582,36 @@ async function doProcess(): Promise<TickResult> {
               customerId: customer.id, direction: 'OUT', author: 'AI',
               status: 'PENDING_APPROVAL', body, meta: { waTemplate: reviewTemplate },
             });
+            await store.audit('system', 'review_request_sent', { customerId: customer.id });
+            result.sent.push(`${customer.name ?? customer.waId} · review request`);
           } else {
-            await deliverOut(customer, body, 'AI', { waTemplate: reviewTemplate }, reviewTemplate);
+            const out = await deliverOut(customer, body, 'AI', { waTemplate: reviewTemplate }, reviewTemplate);
+            if (out.ok) {
+              await store.audit('system', 'review_request_sent', { customerId: customer.id });
+              result.sent.push(`${customer.name ?? customer.waId} · review request`);
+            } else {
+              // THE REVIEW REQUEST IS ALMOST ALWAYS OUTSIDE THE WINDOW.
+              //
+              // It goes an hour after lodgement, and by then the customer has
+              // usually not written for days, so free text is refused by Meta
+              // and only an approved template can reach them. Mads, 4 Sep: the
+              // ask failed in the chat and the card said "WhatsApp did not
+              // deliver this message", which is true and useless — there is
+              // nothing to fix in the conversation. What is missing is the
+              // template. The task now says exactly that, and names it.
+              const missingTemplate = /131047|24|window|template/i.test(out.error ?? '');
+              await store.addTask({
+                customerId: customer.id, customerName: customer.name ?? customer.waId,
+                reason: missingTemplate
+                  ? `The Google review ask could not be delivered: ${customer.name?.split(/\s+/)[0] ?? 'this customer'} has not written for over a day, so it needs the approved WhatsApp template "${reviewTemplate.name}", which does not exist yet in WhatsApp Manager. Create it there (no variables) and this sends itself next time.`
+                  : `The Google review ask was not delivered: ${out.error ?? 'WhatsApp rejected it'}.`,
+                severity: 'REVIEW',
+                context: body.slice(0, 300),
+                suggestedReply: body,
+              });
+              await store.audit('system', 'review_request_failed', { customerId: customer.id, error: out.error ?? null, template: reviewTemplate.name });
+            }
           }
-          await store.audit('system', 'review_request_sent', { customerId: customer.id });
-          result.sent.push(`${customer.name ?? customer.waId} · review request`);
         }
         await store.setJobStatus(job.id, 'DONE');
         continue;

@@ -108,7 +108,12 @@ function validateDecision(raw: unknown): Decision {
  *  member]) so the model, reading the whole conversation, can see where a person
  *  has already stepped in and must not hand the same matter back as a task. */
 function apiMessages(history: Turn[]) {
-  const trimmed = history.filter((t) => t.text.trim().length > 0).slice(-40);
+  // 60 turns, not 40 (Jo, 4 Sep: read the whole chat). Long conversations
+  // before payment are the normal shape of the customer who came not intending
+  // to pay, and the early part is exactly where their story is. Anything older
+  // than this window is summarised into the `backstory` line on the profile, so
+  // nothing about who they are is lost.
+  const trimmed = history.filter((t) => t.text.trim().length > 0).slice(-60);
   while (trimmed.length && trimmed[0].role !== 'customer') trimmed.shift();
   return trimmed.map((t) => {
     const body = t.text.slice(0, 4000);

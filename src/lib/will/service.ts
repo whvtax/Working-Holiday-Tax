@@ -252,16 +252,25 @@ async function handleIncomingInner(
     await store.setState(customer.id, target, 'SYSTEM');
     await store.audit('system', 'reactivated_to_lead', { customerId: customer.id, from: customer.state, to: target, trigger: 'inbound_message' });
     customer = (await store.getCustomerByWaId(waId)) ?? customer;
-    // Will is NEVER auto-paused (Jo, 31 Aug: "never, ever turn Will off"). This
-    // message still gets a human's eyes as a task, but Will stays active and
-    // handles the customer's next messages itself.
-    await raiseOrUpdateTask(store, customer, {
-      reason: 'A previous customer messaged again, needs a human',
-      severity: 'REVIEW', newContext: text,
-      suggestedReply: await suggestReply(text, customer, 'returning_customer'),
+    // WHO ACTUALLY NEEDS A PERSON HERE (Jo, 4 Sep, from the Decision Log).
+    // Marina, a COMPLETED customer, wrote "Yes, all good" and that became a
+    // task. It is a courtesy line at the end of a finished job: there is
+    // nothing for anyone to do with it, and the card is noise on the board.
+    //
+    // The one return that does deserve eyes is somebody who told us NO and has
+    // come back: how that is answered matters, and it is not a script. A
+    // customer who simply went quiet, or a finished customer saying thanks, is
+    // an ordinary conversation and Will handles it like any other.
+    // EVERY MESSAGE TAKES THE SAME PATH (Jo, 4 Sep). Whoever wrote and whatever
+    // their history, Will waits the two minutes, reads the WHOLE chat, works out
+    // who this is, and answers accordingly. A returning customer used to stop
+    // here as a task, which meant the one conversation that most needs context
+    // was the one Will never got to read. The profile now carries the return
+    // itself ("RETURNING CUSTOMER: they went quiet and were closed, then came
+    // back"), so the reply knows what it is picking up.
+    await store.audit('system', 'returning_customer_handled_by_will', {
+      customerId: customer.id, from: customer.state, courtesy: isCourtesyLine(text),
     });
-    const c2 = await restartCadence(store, waId, customer);
-    return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 };
   }
 
   // ============================================================
@@ -328,14 +337,32 @@ async function handleIncomingInner(
   //
   // A real sales conversation never comes near it. If it ever fires, it means
   // what it says.
-  const MAX_INBOUND_BEFORE_PAYMENT = 25;
+  // WHAT THIS IS FOR, RESTATED (Jo, 4 Sep, from the Decision Log). Ami wrote 37
+  // messages before paying and the 37th was "That's totally fine, thank you for
+  // confirming!" — a customer who is engaged, polite and nearly there. The count
+  // alone called that "stuck" and handed her to a person.
+  //
+  // Jo's rule for the customer who came NOT intending to pay is that they ask a
+  // lot, one question after another, and the whole job is to stay patient with
+  // them. So VOLUME IS NOT THE SIGNAL: a long conversation before payment is
+  // the normal shape of the best leads, not a fault. What this catches is an
+  // actual LOOP — the same line arriving over and over, an automated sender on
+  // the other end — plus an absolute ceiling far above any real conversation.
+  const MAX_INBOUND_BEFORE_PAYMENT = 80;
   if (!customer.paid) {
-    const questionsBeforePayment = msgs.filter((m) => m.direction === 'IN').length;
-    if (questionsBeforePayment > MAX_INBOUND_BEFORE_PAYMENT) {
+    const inbound = msgs.filter((m) => m.direction === 'IN');
+    const questionsBeforePayment = inbound.length;
+    // A loop: of the last six things they sent, at most two are different.
+    const norm = (t: string) => t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+    const recent = inbound.slice(-6).map((m) => norm(m.body ?? '')).filter(Boolean);
+    const looping = recent.length >= 5 && new Set(recent).size <= 2;
+    if (looping || questionsBeforePayment > MAX_INBOUND_BEFORE_PAYMENT) {
       // Will is never auto-paused (Jo, 31 Aug). A stuck loop still raises a task
       // for a human, but Will is not switched off for this customer.
       await raiseOrUpdateTask(store, customer, {
-        reason: `Customer sent ${questionsBeforePayment} messages before paying — this conversation is stuck, not progressing`,
+        reason: looping
+          ? 'The same message keeps arriving in this chat, so it is looping rather than progressing'
+          : `Customer sent ${questionsBeforePayment} messages before paying — this conversation is stuck, not progressing`,
         severity: 'REVIEW', newContext: text,
         suggestedReply: await suggestReply(text, customer, 'many_questions'),
       });
@@ -423,6 +450,58 @@ export interface DecideOpts {
   jobId?: string;
 }
 
+/**
+ * WHO THIS CUSTOMER IS, in one line, for the top of the prompt.
+ *
+ * Jo, 4 Sep: whatever arrives, and from whoever, Will waits two minutes and
+ * reads the WHOLE chat before it writes, so it knows which customer it has and
+ * never answers a person with history as if they were new. The transcript
+ * window carries the recent turns; this carries everything the window cannot:
+ * when they first wrote, how much has been said, whether they went cold or said
+ * no and came back, and whether they have already paid.
+ */
+/** Customer text quoted into the profile block: prompt structure stripped, and
+ *  capped. Same idea as playbook.sanitize, with room for a sentence. */
+const quoteForPrompt = (v: string): string =>
+  (v || '').replace(/[\r\n{}#`<>*_|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160);
+
+async function buildBackstory(store: Store, customer: CustomerRow, msgs: MessageRow[]): Promise<string> {
+  const parts: string[] = [];
+  const sent = msgs.filter((m) => m.status === 'SENT');
+  const inbound = sent.filter((m) => m.direction === 'IN');
+  const first = sent[0];
+  if (first) {
+    const days = Math.floor((Date.now() - new Date(first.createdAt).getTime()) / 86400000);
+    parts.push(days <= 0
+      ? 'first wrote to us today'
+      : `first wrote to us ${days} day${days === 1 ? '' : 's'} ago`);
+  }
+  if (inbound.length) parts.push(`${inbound.length} message${inbound.length === 1 ? '' : 's'} from them so far`);
+
+  // The stage history says what actually happened, including the returns.
+  try {
+    const hist = await store.history(customer.id);
+    const closes = hist.filter((h) => ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(h.to));
+    const reopens = hist.filter((h) => !!h.from && ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(h.from));
+    if (closes.length && reopens.length) {
+      const last = closes[closes.length - 1];
+      const label = last.to === 'NOT_INTERESTED' ? 'said they were not interested'
+        : last.to === 'WENT_COLD' ? 'went quiet and was closed'
+          : 'was closed as not relevant';
+      parts.push(`RETURNING CUSTOMER: they ${label}, and then came back and wrote again. Do not greet them as new and do not remind them they said no`);
+    }
+    if (hist.some((h) => h.to === 'PAID')) parts.push('they have already paid us');
+    if (hist.some((h) => h.to === 'LODGED' || h.to === 'COMPLETED')) parts.push('a return has already been lodged for them');
+  } catch { /* the profile is still useful without it */ }
+
+  // The very first thing they ever asked is usually the whole story.
+  const firstIn = inbound[0];
+  if (firstIn && inbound.length > 3) {
+    parts.push(`their first message to us was: "${quoteForPrompt(firstIn.body)}"`);
+  }
+  return parts.join('; ');
+}
+
 export async function decideAndAct(
   store: Store,
   customer: CustomerRow,
@@ -467,6 +546,7 @@ export async function decideAndAct(
     paid: customer.paid, formComplete: customer.formComplete,
     missingDocs: customer.missingDocs, estimatedRefundCents: customer.estimatedRefundCents,
     lang: customer.lang,
+    backstory: await buildBackstory(store, customer, msgs).catch(() => ''),
     knowledge,
   };
 
@@ -719,6 +799,23 @@ async function supersededByNewerTimer(store: Store, customerId: string, selfJobI
   } catch {
     return false; // a store hiccup must not silence a reply that is ready
   }
+}
+
+/** A message that is purely an acknowledgement: "thanks", "ok", "yes all good",
+ *  "perfect 👍", and the same in the languages Will speaks. Nothing in it asks
+ *  for anything, so it never needs a person (Jo, 4 Sep). Deliberately short-only:
+ *  the words are common, and inside a longer sentence they mean nothing. */
+export function isCourtesyLine(text: string | null | undefined): boolean {
+  const t = (text ?? '').trim();
+  if (!t) return true;
+  if (t.length > 60) return false;
+  if (t.includes('?') || t.includes('？')) return false;
+  const stripped = t.toLowerCase().replace(/[^\p{L}\p{N}\s]+/gu, ' ').replace(/\s+/g, ' ').trim();
+  if (!stripped) return true; // emoji only
+  const words = stripped.split(' ').filter(Boolean);
+  if (words.length > 8) return false;
+  const COURTESY = /^(?:yes|yeah|yep|ok|okay|okey|k|sure|all|good|great|perfect|lovely|nice|cool|thanks|thank|you|thankyou|cheers|much|appreciate|it|awesome|amazing|got|received|noted|understood|fine|no|worries|problem|super|danke|dir|vielen|dank|alles|klar|passt|perfekt|super|gracias|muchas|vale|genial|perfecto|todo|bien|merci|beaucoup|parfait|nickel|super|grazie|mille|perfetto|va|bene|tutto|ottimo|obrigad[oa]|muito|perfeito|tudo|bem|certo|ありがとう|ありがとうございます|了解|承知|わかりました|大丈夫|はい)$/u;
+  return words.every((w) => COURTESY.test(w));
 }
 
 /** The text a deferred reply answers: everything the customer wrote since we

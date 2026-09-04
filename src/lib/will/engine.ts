@@ -332,7 +332,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       );
       const shorterVerdict = policyGuard(shorter, guardCtx);
       if (shorter.trim() && shorterVerdict.allowed) {
-        rewriteNote = 'Will\'s first draft was too long; he rewrote it short and that version went.';
+        rewriteNote = `Will's first draft was held (${verdict.violations.join(', ')}); he rewrote it short and that version went.`;
         text = shorter;
         verdict = shorterVerdict;
       }

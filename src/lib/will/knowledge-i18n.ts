@@ -111,7 +111,13 @@ const JA_BRIDGE: [string, string[]][] = [
   ['制服', ['uniform']], ['工具', ['tools']], ['去年', ['previous', 'years', 'prior']], ['前年', ['previous', 'years', 'prior']], ['過去', ['previous', 'years']], ['年度', ['financial year']], ['数ヶ月', ['few months', 'part year']], ['数か月', ['few months', 'part year']],
   ['電話', ['phone']], ['友達', ['friend']], ['友人', ['friend']], ['会計士', ['agent', 'accountant']], ['税理士', ['agent', 'accountant', 'registered']], ['登録番号', ['registration', 'number', 'tpb']], ['登録', ['registered', 'registration']], ['ライセンス', ['licence']], ['資格', ['licence', 'registered']],
   ['メディケア', ['medicare', 'levy']], ['免除', ['exemption']], ['なぜ', ['why']], ['どうして', ['why']], ['いつ', ['when']], ['必要', ['need']],
-  ['配達', ['delivery', 'driver']], ['ウーバー', ['uber', 'delivery']], ['個人事業', ['sole', 'trader', 'abn']], ['フリーランス', ['sole', 'trader', 'abn']], ['請求書', ['invoices']], ['インボイス', ['invoices']],
+  ['配達', ['delivery', 'driver']], ['ウーバー', ['uber', 'delivery']],
+  // 4 Sep: "I only earned a tiny amount on my ABN, does it still count?" — the
+  // words that carry that question in Japanese, so it reaches the right answer.
+  ['申告', ['declare', 'declared', 'report', 'return']], ['申告する', ['declare', 'report']],
+  ['少し', ['small', 'only', 'tiny']], ['少ない', ['small', 'only']], ['だけ', ['only', 'just']],
+  ['プラン', ['plan', 'option']], ['対象', ['eligible', 'apply']], ['収入', ['income', 'earned']],
+  ['稼い', ['earned', 'income']], ['必要', ['need', 'have']], ['個人事業', ['sole', 'trader', 'abn']], ['フリーランス', ['sole', 'trader', 'abn']], ['請求書', ['invoices']], ['インボイス', ['invoices']],
 ];
 
 const stripAccents = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss');

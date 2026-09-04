@@ -46,3 +46,25 @@ it('the prompt forbids the retired guarantee paraphrase and no approved message 
   const { APPROVED } = jest.requireActual('@/lib/will/approved-messages');
   expect(JSON.stringify(APPROVED)).not.toMatch(/never costs you more than the refund/i);
 });
+
+// ── Misaki (+61 432, 4 Sep): "I only made $20 on Uber, does that put me on the
+// $385 plan?" got four paragraphs that hedged the answer, re-quoted the
+// guarantee, and speculated that she might not benefit. Jo: all Australian
+// income is declared, full stop, and by the fifth message the answer is two
+// lines.
+describe('all Australian income is declared', () => {
+  it('is stated as a plain fact, not hedged', () => {
+    expect(stable).toMatch(/ALL AUSTRALIAN INCOME IS DECLARED IN AUSTRALIA/);
+    expect(stable).toMatch(/whatever the amount/);
+    expect(stable).toMatch(/NEVER answer this with "it depends on your circumstances"/);
+  });
+
+  it('never suggests the service may not be worth it', () => {
+    expect(stable).toMatch(/NEVER suggest the service might not be worth it/);
+  });
+
+  it('replies get shorter as the conversation goes on', () => {
+    expect(stable).toMatch(/THE DEEPER INTO A CONVERSATION, THE SHORTER THE REPLY/);
+    expect(stable).toMatch(/By the fifth message TWO LINES is the normal answer/);
+  });
+});
