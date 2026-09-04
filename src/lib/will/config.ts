@@ -17,8 +17,18 @@ export const ASSISTANT_NAME = 'Will';
  *
  * The signature cadence below is therefore 24h / 3d / 7d AFTER the email, not
  * after the stage change. When the turnaround changes, change this one number.
+ *
+ * 4 Sep: this offset applies to the DONE path only (estimate sent, email still
+ * to come). When Jo presses "Send for Signature" he is telling the customer the
+ * return is in their inbox right now, so that path re-arms the cadence at a
+ * plain 24h / 3d / 7d from the click (see SIGNATURE_AFTER_NOTICE below and
+ * actions/route.ts send_signature). Before that the first nudge landed four
+ * days after the notice instead of one.
  */
 export const SIGNATURE_PREP_DAYS = 3;
+/** The signature cadence measured from the moment the customer is TOLD, used
+ *  when the "ready for signature" notice has just gone out. */
+export const SIGNATURE_AFTER_NOTICE = [24 * 3600, 3 * 86400, 7 * 86400];
 const sig = (daysAfterEmail: number) => (SIGNATURE_PREP_DAYS + daysAfterEmail) * 86400;
 
 // Follow-up timing per the spec is 24h/3d/7d (pre-payment & signature)

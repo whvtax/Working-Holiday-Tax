@@ -13,13 +13,21 @@ export type Lang = 'en' | 'de' | 'ja' | 'es' | 'fr' | 'it' | 'pt';
 // language could never be pulled back: an English message returned "unknown" and
 // left the stale wrong language in place. Now English is a first-class signal so
 // a real English message can reclaim the conversation.
+// The lists were thin for the Latin languages, so a normal Spanish, Portuguese
+// or Italian opening message scored 0 or 1 and the customer stayed lang=null:
+// every deterministic message they later received (questionnaire confirmation,
+// ABN questions, review request, the "we check that in the review" answer) went
+// out in English (audit, 4 Sep). These add the words those messages are
+// actually made of. Accented forms are matched with lookarounds, not \b, which
+// is ASCII-only in JavaScript and never fires next to á, ç, ê or ñ.
+const W = (words: string) => new RegExp(`(?<![A-Za-zÀ-ÿ])(?:${words})(?![A-Za-zÀ-ÿ])`, 'gi');
 const KEYWORDS: Record<Exclude<Lang, 'ja'>, RegExp> = {
   en: /\b(the|and|you|your|you're|youre|i'?m|i'?ve|don'?t|doesn'?t|can'?t|won'?t|isn'?t|please|thanks|thank|hello|hey|yeah|will|would|should|what|when|where|why|how|have|has|had|my|ask|friend|need|help|about|okay)\b/gi,
-  de: /\b(und|nicht|ich|danke|guten|hallo|kein|bitte|sehr|gerne|für|ist|über|während)\b/gi,
-  es: /\b(hola|gracias|por favor|usted|para|pero|cómo|muy|reembolso|impuesto|dónde)\b/gi,
-  fr: /\b(bonjour|merci|vous|avec|pour|oui|remboursement|impôt|bonsoir|s'il vous plaît)\b/gi,
-  it: /\b(ciao|grazie|prego|sono|molto|rimborso|imposta|dove|perché)\b/gi,
-  pt: /\b(olá|obrigad\w*|você|não|imposto|reembolso|por favor|onde|porquê)\b/gi,
+  de: W("und|nicht|ich|mich|mir|dein\\w*|mein\\w*|danke|guten|hallo|servus|kein\\w*|bitte|sehr|gerne|für|ist|sind|habe|hab|haben|kann|können|möchte|würde|wie|was|wann|wo|warum|über|während|steuer\\w*|rückerstattung|frage"),
+  es: W("hola|buenas|gracias|por favor|usted|ustedes|para|pero|como|cómo|muy|reembolso|impuesto\\w*|donde|dónde|cuando|cuándo|que|qué|quiero|necesito|tengo|puedo|hacer|mi|una|los|las|del|declaración|devolución|pregunta"),
+  fr: W("bonjour|salut|merci|vous|tu|avec|pour|oui|non|remboursement|impôt\\w*|bonsoir|s'il vous plaît|je|j'ai|est|sont|comment|quand|où|pourquoi|mon|ma|une|des|déclaration|question|voudrais|besoin"),
+  it: W("ciao|buongiorno|grazie|prego|sono|molto|rimborso|imposta|tasse|dove|perche|perché|come|quando|vorrei|ho|posso|mio|mia|una|dei|dichiarazione|domanda|bisogno"),
+  pt: W("ola|olá|bom dia|obrigad\\w*|voce|você|nao|não|imposto\\w*|reembolso|por favor|onde|porque|porquê|como|quando|quero|preciso|tenho|posso|meu|minha|uma|dos|declaração|pergunta|gostaria"),
 };
 
 function countMatches(re: RegExp, t: string): number {
@@ -126,6 +134,33 @@ export const PROFESSIONAL_QUESTION_MSG: Record<Lang, string> = {
   it: 'È sicuramente qualcosa che possiamo verificare per te. Dipende dalla tua situazione individuale, quindi dobbiamo prima esaminare bene i tuoi dati prima di darti una risposta precisa. È tutto incluso nel servizio una volta che iniziamo.',
   pt: 'Isso é algo que podemos verificar para ti, sem dúvida. Depende da tua situação individual, por isso precisamos de analisar bem os teus dados antes de te dar uma resposta exata. Está tudo incluído no serviço assim que começarmos.',
 };
+
+/** The holding line sent half an hour after a handoff, when the customer is
+ *  still waiting and nobody has answered yet. Was English only, so a German or
+ *  Japanese customer waiting on a person got an English line in the middle of a
+ *  German conversation (audit, 4 Sep). English lives under the Library key
+ *  `handoff_holding`, the others under handoff_holding_<lang>. */
+export const HANDOFF_HOLDING_MSG: Record<Lang, string> = {
+  en: 'Thanks for that 😊 Let me look into it properly and come straight back to you.',
+  de: 'Danke dir 😊 Ich schaue mir das in Ruhe an und melde mich gleich bei dir.',
+  ja: 'ありがとうございます 😊 きちんと確認して、すぐにご連絡しますね。',
+  es: 'Gracias 😊 Lo reviso bien y te respondo enseguida.',
+  fr: 'Merci 😊 Je regarde ça correctement et je reviens vers toi tout de suite.',
+  it: 'Grazie 😊 Lo controllo per bene e ti rispondo subito.',
+  pt: 'Obrigado 😊 Vou ver isso com atenção e respondo-te já de seguida.',
+};
+
+export function handoffHoldingMessage(lang?: string | null): string {
+  const key = (lang && lang in HANDOFF_HOLDING_MSG ? lang : 'en') as Lang;
+  return HANDOFF_HOLDING_MSG[key];
+}
+
+/** The Library key for this customer's language: `handoff_holding` for English,
+ *  `handoff_holding_<lang>` otherwise. Same names for the Meta templates. */
+export function handoffHoldingTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in HANDOFF_HOLDING_MSG ? lang : 'en') as Lang;
+  return key === 'en' ? 'handoff_holding' : `handoff_holding_${key}`;
+}
 
 export function professionalQuestionMessage(lang?: string | null): string {
   const key = (lang && lang in PROFESSIONAL_QUESTION_MSG ? lang : 'en') as Lang;

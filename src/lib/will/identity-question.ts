@@ -12,7 +12,11 @@
 
 /** Words for a non-human responder, in the languages backpackers actually use. */
 const BOT_WORDS =
-  'bots?|robots?|robôs?|robots?|roboter|ro?bot|a\\.?i\\.?|artificial\\s+intelligen\\w*|' +
+  // The bare "a.i." token needs a lookbehind for an apostrophe: without it the
+  // French "j'ai payé" ("I have paid") matched the AI alternative, and every
+  // French payment confirmation was intercepted as "are you a bot?" and handed
+  // to a person with no draft, the payment claim never processed (audit, 4 Sep).
+  "bots?|robots?|robôs?|robots?|roboter|ro?bot|(?<!['’])a\\.?i\\.?|artificial\\s+intelligen\\w*|" +
   'inteligencia\\s+artificial|intelligence\\s+artificielle|intelligenza\\s+artificiale|' +
   'künstliche\\s+intelligenz|kunstliche\\s+intelligenz|chat\\s?gpt|gpt|chatbot|' +
   'automated|automatic\\s+(?:reply|message|system)|auto[- ]?reply|' +
@@ -82,8 +86,15 @@ const PATTERNS: RegExp[] = [
  * ordinary tax conversation, because every hit takes the chat away from the
  * assistant and puts it on a human's desk.
  */
+/** A message that reports a payment, sends the form, or asks about money is
+ *  never the "are you a bot?" question, whatever else it happens to contain.
+ *  This interceptor runs before every other rule, so a false positive costs the
+ *  customer their answer AND loses the payment claim behind it. */
+const NOT_THE_QUESTION = /\b(?:paid|payment|transferred|sent (?:it|the|you)|screenshot|invoice|form|refund|bezahlt|überwiesen|gezahlt|pagado|pagu[ée]|transferido|pag(?:o|uei|amento)|pay[ée]|vir[ée]|virement|pagato|bonifico)\b|振込|支払|送金/i;
+
 export function isIdentityQuestion(text: string): boolean {
   const t = (text || '').replace(/\s+/g, ' ').trim();
   if (!t || t.length > 400) return false; // long essays are not this question
+  if (NOT_THE_QUESTION.test(t)) return false;
   return PATTERNS.some((p) => p.test(t));
 }

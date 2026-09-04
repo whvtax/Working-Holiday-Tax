@@ -150,10 +150,19 @@ export async function suggestReply(
   //    below that, fall through to the pipeline/reason wording, which is always
   //    safe to put in front of the owner.
   const SUGGEST_MIN_SCORE = 0.6;
+  // The Library is written in English. For a customer whose conversation is in
+  // another language the answer is still the right ANSWER, but it is not the
+  // right MESSAGE: pressing "Send Reply" put an English paragraph into a German
+  // or Japanese thread (audit, 4 Sep). It is offered with a line saying so, so
+  // the owner sends it knowingly or has Will rewrite it.
+  const foreign = !!customer?.lang && customer.lang !== 'en';
+  const label = (answer: string) => (foreign
+    ? `[Library answer, in English. The customer writes in ${customer?.lang}. Translate before sending, or edit.]\n\n${answer}`
+    : answer);
   if (customerMessage && customerMessage.trim()) {
     try {
       const hits = await retrieveKnowledge(customerMessage, { lang: customer?.lang ?? undefined, k: 1 });
-      if (hits.length && hits[0].score >= SUGGEST_MIN_SCORE && hits[0].answer.trim()) return hits[0].answer.trim();
+      if (hits.length && hits[0].score >= SUGGEST_MIN_SCORE && hits[0].answer.trim()) return label(hits[0].answer.trim());
     } catch { /* the library is a bonus, never a dependency */ }
   }
 

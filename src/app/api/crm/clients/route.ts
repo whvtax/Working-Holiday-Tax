@@ -20,8 +20,13 @@ export async function GET(req: NextRequest) {
       ? await Promise.all([getAllArchivedClients(limit, offset), countArchivedClients()])
       : await Promise.all([getAllActiveClients(limit, offset),  countActiveClients()])
     return NextResponse.json({ ok:true, clients, total, limit, offset })
-  } catch {
-    return NextResponse.json({ ok:true, clients:[], total:0, limit:100, offset:0 })
+  } catch (err) {
+    // A database failure is NOT an empty clients list. Answering ok:true with []
+    // made the CRM say "No clients yet." and wipe the rows it already had, on a
+    // 20-second poll, with nothing on screen to say anything had gone wrong
+    // (audit, 4 Sep). The client keeps what it has and shows the error.
+    console.error('[crm/clients] read failed:', err)
+    return NextResponse.json({ ok:false, error:'db_error' }, { status:503 })
   }
 }
 

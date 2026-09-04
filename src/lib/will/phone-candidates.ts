@@ -53,6 +53,18 @@ const TRUNK: { cc: string; nationalLen: number }[] = [
   { cc: '81', nationalLen: 10 },  // JP: 0 + 10 <-> 81 + 10  (typed "090 1234 5678")
   { cc: '49', nationalLen: 10 },  // DE: 0 + 10 <-> 49 + 10  (typed "0176 1234567")
   { cc: '49', nationalLen: 11 },  // DE: some mobile blocks run one digit longer
+  // Audit, 4 Sep: a UK backpacker typing "07700 900123" on the questionnaire
+  // matched nothing, so their form was dropped and the reminders kept chasing
+  // them. These are the remaining markets the leads actually come from; each is
+  // still an exact wa_norm match, and an ambiguous match is treated as a miss.
+  { cc: '44', nationalLen: 10 },  // UK: 0 + 10 <-> 44 + 10 (typed "07700 900123")
+  { cc: '33', nationalLen: 9 },   // FR: 0 + 9  <-> 33 + 9  (typed "06 12 34 56 78")
+  { cc: '39', nationalLen: 10 },  // IT: mobile numbers keep their leading 3, no trunk 0
+  { cc: '34', nationalLen: 9 },   // ES: no trunk 0, but records are saved both ways
+  { cc: '353', nationalLen: 9 },  // IE: 0 + 9  <-> 353 + 9
+  { cc: '64', nationalLen: 9 },   // NZ
+  { cc: '351', nationalLen: 9 },  // PT
+  { cc: '1', nationalLen: 10 },   // US/CA
 ];
 
 export function phoneCandidates(num: string | null | undefined): string[] {

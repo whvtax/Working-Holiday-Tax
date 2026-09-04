@@ -267,20 +267,36 @@ describe('a fully verified screenshot in Autopilot', () => {
 describe('a payment taken on trust keeps the heads-up, and says why', () => {
   beforeEach(() => { getSetting.mockResolvedValue('FULL_AUTO'); });
 
-  it('no AUD amount visible: Paid, plus a task naming the gap', async () => {
+  // 4 Sep: the picture alone no longer decides it when the picture itself says
+  // something else. The customer's WORD still does (that is Jo's trust rule and
+  // it is unchanged, see the two cases below) — but a screenshot showing $150,
+  // or no amount at all, with nothing typed under it, must not move anyone to
+  // Paid or tell them "Payment received" for money that has not arrived.
+  it('no AUD amount visible and nothing said: NOT Paid, task says what was shown', async () => {
     assessPaymentProofImage.mockResolvedValue({ ...wise220, details: { ...wise220.details, amountAud: null } });
     await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
-    expect(setState).toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
+    expect(setState).not.toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
+    expect(deliverOut).not.toHaveBeenCalled();
     expect(addTask).toHaveBeenCalledTimes(1);
-    expect(addTask.mock.calls[0][0].reason).toMatch(/no AUD amount is visible/);
-    expect(addTask.mock.calls[0][0].reason).toMatch(/Worth a glance/);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/does not match/);
+    expect(addTask.mock.calls[0][0].context).toMatch(/no AUD amount is visible/);
   });
 
-  it('a wrong amount to us: Paid on trust, task says the amount', async () => {
+  it('a wrong amount and nothing said: NOT Paid, task says the amount', async () => {
     assessPaymentProofImage.mockResolvedValue({ ...wise220, details: { ...wise220.details, amountAud: 150 } });
     await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
+    expect(setState).not.toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
     expect(addTask).toHaveBeenCalledTimes(1);
-    expect(addTask.mock.calls[0][0].reason).toMatch(/\$150, not \$220 or \$385/);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/\$150/);
+    expect(addTask.mock.calls[0][0].context).toMatch(/not \$220 or \$385/);
+  });
+
+  it('the same wrong amount WITH "paid" typed under it is still trusted', async () => {
+    assessPaymentProofImage.mockResolvedValue({ ...wise220, details: { ...wise220.details, amountAud: 150 } });
+    await handlePaymentProofMedia('61400000001', '📷 [Photo] paid!', { media: { ...media, caption: 'paid!' } });
+    expect(setState).toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
+    expect(addTask).toHaveBeenCalledTimes(1);
+    expect(addTask.mock.calls[0][0].reason).toMatch(/they said they paid/);
   });
 
   it('a pending transfer: Paid on trust, task says pending', async () => {

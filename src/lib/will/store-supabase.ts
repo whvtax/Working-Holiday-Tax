@@ -243,9 +243,15 @@ export class SupabaseStore implements Store {
     return (await this.pageAll<Record<string, unknown>>('will_jobs', 'id')).map(toJob);
   }
 
+  /** Every customer, most recently active first.
+   *
+   *  Paged, then sorted in memory: the ordered select was capped at 1,000 rows,
+   *  which was fine for the dashboard window but wrong for the reports built on
+   *  it (monthly conversion, funnel, lost leads all counted only the newest
+   *  1,000 customers, audit 4 Sep). */
   async listCustomers(): Promise<CustomerRow[]> {
-    const { data } = await this.sb().from('will_customers').select('*').order('state_changed_at', { ascending: false });
-    return (data ?? []).map(toCustomer);
+    const rows = (await this.pageAll<Record<string, unknown>>('will_customers', 'id')).map(toCustomer);
+    return rows.sort((a, b) => String(b.stateChangedAt ?? '').localeCompare(String(a.stateChangedAt ?? '')));
   }
 
   async countCustomers(): Promise<number> {
@@ -437,9 +443,12 @@ export class SupabaseStore implements Store {
     return true;
   }
 
+  /** Every transition ever recorded. Paged: an unbounded select stopped at
+   *  PostgREST's 1,000 rows, and the funnel, the monthly conversion figures and
+   *  the "did they ever pay" test all quietly read a fraction of the history
+   *  once the business passed that many transitions (audit, 4 Sep). */
   async allHistory(): Promise<StateHistoryRow[]> {
-    const { data } = await this.sb().from('will_state_history').select('*');
-    return (data ?? []).map(toHistory);
+    return (await this.pageAll<Record<string, unknown>>('will_state_history', 'id')).map(toHistory);
   }
 
   async history(customerId: string): Promise<StateHistoryRow[]> {
@@ -531,10 +540,21 @@ export class SupabaseStore implements Store {
     return !!data;
   }
 
+  /** A conversation, oldest first.
+   *
+   *  Audit, 4 Sep: this was an unbounded ASCENDING read, so PostgREST's
+   *  1,000-row cap silently dropped the NEWEST messages once a thread passed
+   *  that length: the chat, the link route's "already sent for signature"
+   *  check and the export all read a stale conversation. It now takes the
+   *  newest MESSAGE_WINDOW rows and hands them back in reading order, which is
+   *  the window the dashboard renders anyway. */
   async listMessages(customerId: string): Promise<MessageRow[]> {
+    const MESSAGE_WINDOW = 1000;
     const { data } = await this.sb().from('will_messages').select('*')
-      .eq('customer_id', customerId).order('created_at', { ascending: true });
-    return (data ?? []).map(toMessage);
+      .eq('customer_id', customerId)
+      .order('created_at', { ascending: false })
+      .limit(MESSAGE_WINDOW);
+    return (data ?? []).map(toMessage).reverse();
   }
 
   async getMessageById(id: string): Promise<MessageRow | null> {
@@ -888,9 +908,11 @@ export class SupabaseStore implements Store {
     return (data ?? []).map(toJob);
   }
 
+  /** Every job. Paged for the same reason as allHistory: the Scheduled
+   *  Follow-ups view read an unordered, 1,000-row-capped slice, so once the job
+   *  table grew past that the queue it showed was arbitrary (audit, 4 Sep). */
   async listJobs(): Promise<JobRow[]> {
-    const { data } = await this.sb().from('will_jobs').select('*');
-    return (data ?? []).map(toJob);
+    return (await this.pageAll<Record<string, unknown>>('will_jobs', 'id')).map(toJob);
   }
 
   async listJobsForCustomer(customerId: string, kinds?: JobRow['kind'][]): Promise<JobRow[]> {

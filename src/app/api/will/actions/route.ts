@@ -7,7 +7,7 @@ import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES } from '@/lib/will/service';
-import { reconcileSchedule, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
+import { reconcileSchedule, restartSignatureCadenceFromNotice, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
@@ -741,9 +741,12 @@ async function handlePost(req: Request) {
       if (!b.customerId) return bad('customerId required');
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
-      if (!['ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING'].includes(customer.state)) {
-        return bad('signature can only be sent once the estimate stage is reached');
-      }
+      // Jo, 4 Sep: the button decides. Wherever the customer sits in the pipe,
+      // sending "your tax return is ready for signature" from the CRM moves
+      // them to Signature, because the return really has been emailed to them.
+      // The old stage gate refused the click for anyone not already at the
+      // estimate stage, which meant the message Jo had just sent by hand and
+      // the pipeline disagreed.
       const sigBody = await libraryBody('signature', APPROVED.signature_ready);
       const send = await humanSend(customer, sigBody, { templateBacked: true });
       if (send.error) return bad(send.error);
@@ -757,9 +760,15 @@ async function handlePost(req: Request) {
       // Only move if they were still upstream; a customer already at Signature
       // stays put so the pipeline position does not change on this click.
       if (customer.state !== 'SIGNATURE_PENDING') await store.setState(customer.id, 'SIGNATURE_PENDING', 'HUMAN');
+      await store.audit('owner', 'signature_stage_forced', { customerId: customer.id, from: customer.state });
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
       await afterHumanReply(store, customer.id);
+      // LAST, because reconcileSchedule above re-arms the signature cadence with
+      // the three-day prep offset that belongs to the Done path. The customer has
+      // the return in their inbox NOW, so the nudges run 24h / 3d / 7d from this
+      // click (audit, 4 Sep: nudge one landed four days after the notice).
+      await restartSignatureCadenceFromNotice(customer.id).catch(() => { /* the notice is what matters */ });
       await store.audit('owner', 'signature_sent', { customerId: customer.id });
       return NextResponse.json({ ok: true });
     }
@@ -772,9 +781,9 @@ async function handlePost(req: Request) {
       if (!b.customerId) return bad('customerId required');
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
-      if (!['SIGNATURE_PENDING', 'SIGNED'].includes(customer.state)) {
-        return bad('this can only be sent once the customer has signed');
-      }
+      // Same rule as the signature button (Jo, 4 Sep): the click is the truth.
+      // A customer moved to Completed by hand, or still at Estimate when the
+      // return was lodged, could not be marked lodged at all before this.
       const body = await libraryBody('lodged_confirmation', APPROVED.lodged_confirmation);
       const send = await humanSend(customer, body, { templateBacked: true });
       if (send.error) return bad(send.error);
@@ -796,8 +805,17 @@ async function handlePost(req: Request) {
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
       await afterHumanReply(store, customer.id);
-      await store.audit('owner', 'lodged_sent', { customerId: customer.id });
-      return NextResponse.json({ ok: true });
+      // Lodged IS the end of the job, from whichever button it was pressed
+      // (Jo, 3 Sep). From the CRM card the client transfer happened in the
+      // browser; pressed inside Will's chat it did not happen at all, so the
+      // card stayed in Done (audit, 4 Sep). Filing it here covers both.
+      let filedUnderClients = false;
+      try {
+        const { archiveTaskByPhone } = await import('@/lib/db');
+        filedUnderClients = !!(await archiveTaskByPhone(customer.waId));
+      } catch { /* never let the CRM half block marking lodged */ }
+      await store.audit('owner', 'lodged_sent', { customerId: customer.id, filedUnderClients });
+      return NextResponse.json({ ok: true, filedUnderClients });
     }
 
     case 'add_template': {

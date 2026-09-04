@@ -383,7 +383,13 @@ const TAX_DETERMINATION: RegExp[] = [
   // A determination directed at the customer ("you're a foreign resident"),
   // NOT a neutral mention of the concept ("who is considered a resident...").
   /\byou(?:'re| are|'d be| would be| count as| qualify as)[^.!?]{0,30}\b(?:foreign|temporary|non)[ -]?resident\b/i,
-  /you(?:'re| are)? (?:probably |definitely )?(?:do(?:n'?t)? |don'?t )?(?:need to pay|have to pay|qualify|exempt(?:ed)?|eligible)[^.!?]{0,40}medicare/i,
+  // 4 Sep audit: "You are NOT a resident", "You do not need to pay the Medicare
+  // levy", "You are not required to pay it", "You will definitely get a refund"
+  // and "your boots are deductible" all walked past the list. A negative
+  // determination is a determination.
+  /you(?:'re| are|'d be| would be| will be)(?: probably| definitely| likely)?(?: not| never)?(?: considered)?(?: an?| a)?\s*(?:australian |tax |non-?|foreign |temporary |permanent |working[ -]?holiday |non[ -]?)*resident/i,
+  /you(?:'re| are)? (?:probably |definitely )?(?:do(?:n'?t| not)? |don'?t |are(?: not)? |aren'?t |will(?: not)? |won'?t )?(?:need to pay|have to pay|required to pay|qualify|exempt(?:ed)?|eligible)[^.!?]{0,40}medicare/i,
+  /\byour\s+[\w' -]{2,30}\s+(?:is|are)\s+(?:fully\s+|partly\s+|not\s+)?(?:tax[- ])?deductible\b/i,
   // "You can claim your boots" is a determination and must never send.
   // "We'll check WHAT you can claim" is a description of the service and must.
   //
@@ -416,7 +422,7 @@ const TAX_DETERMINATION: RegExp[] = [
   // tasks. "Your refund will be around 1800" is still caught: "around" is not
   // in this list.
   /your (?:estimated |expected )?refund (?:will|would|should|is going to|is likely|is about|is around)(?!\s+(?:be\s+)?(?:paid|deposited|transferred|sent|processed|issued|released|go|land|arrive|show|take|hit|come)\b)/i,
-  /you(?:'ll| will) (?:get|receive)[^.!?]{0,25}(?:refund|\$|back)/i,
+  /you(?:'ll| will|'re going to| are going to)(?: probably| definitely| certainly| surely| likely)? (?:get|receive|be getting)[^.!?]{0,25}(?:refund|\$|back)/i,
   // WILL-AI-01: bare-number refund/return estimates (no $ sign, so the currency
   // guard misses them). Excludes the two fixed prices 220/385.
   /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b)\d{3,6}\b/i,
@@ -451,10 +457,10 @@ const TAX_DETERMINATION: RegExp[] = [
 const TAX_DETERMINATION_ML: RegExp[] = [
   // "you are (not) a resident / non-resident" — DE, ES, FR, IT, PT, JA
   /\b(?:du|sie)\s+(?:bist|sind|wärst|wären|giltst|gelten)\b[^.!?]{0,40}\b(?:steuer(?:lich)?[ -]?)?(?:nicht[ -]?)?ans[äa]ssig|\b(?:du|sie)\s+(?:bist|sind)\b[^.!?]{0,30}\b(?:steuer)?(?:in|aus)l[äa]nder\b|\bnicht[ -]?ans[äa]ssig\b[^.!?]{0,20}\b(?:bist du|sind sie)\b/i,
-  /\b(?:eres|es|ser[ií]as|ser[ií]a|te consideran|cuentas como|calificas como)\b[^.!?]{0,30}\b(?:no[ -]?)?residente\b/i,
-  /\b(?:tu es|vous [êe]tes|tu serais|vous seriez|tu comptes comme)\b[^.!?]{0,30}\b(?:non[ -]?)?r[ée]sident/i,
-  /\b(?:sei|[èe]|saresti|sarebbe|conti come|risulti)\b[^.!?]{0,30}\b(?:non[ -]?)?residente\b/i,
-  /\b(?:[ée]s|voc[êe] [ée]|serias|seria|contas como)\b[^.!?]{0,30}\b(?:n[ãa]o[ -]?)?residente\b/i,
+  /(?<![A-Za-zÀ-ÿ])(?:eres|es|ser[ií]as|ser[ií]a|te consideran|cuentas como|calificas como)(?![A-Za-zÀ-ÿ])[^.!?]{0,30}(?<![A-Za-zÀ-ÿ])(?:no[ -]?)?residente(?![A-Za-zÀ-ÿ])/i,
+  /(?<![A-Za-zÀ-ÿ])(?:tu es|vous [êe]tes|tu serais|vous seriez|tu comptes comme)(?![A-Za-zÀ-ÿ])[^.!?]{0,30}(?<![A-Za-zÀ-ÿ])(?:non[ -]?)?r[ée]sident/i,
+  /(?<![A-Za-zÀ-ÿ])(?:sei|lei [èe]|tu [èe]|[èe]|saresti|sarebbe|conti come|risulti)(?![A-Za-zÀ-ÿ])[^.!?]{0,30}(?<![A-Za-zÀ-ÿ])(?:non[ -]?)?residente(?![A-Za-zÀ-ÿ])/i,
+  /(?<![A-Za-zÀ-ÿ])(?:[ée]s|voc[êe] [ée]|serias|seria|contas como)(?![A-Za-zÀ-ÿ])[^.!?]{0,30}(?<![A-Za-zÀ-ÿ])(?:n[ãa]o[ -]?)?residente(?![A-Za-zÀ-ÿ])/i,
   /(?:あなた|お客様)[はが][^。！？]{0,20}(?:非)?居住者(?:です|になります|とみなされ|に該当|扱い)|(?:非)?居住者(?:です|になります|とみなされます|に該当します)/,
   // Medicare: "you (don't) have to pay / are exempt" — DE, ES, FR, IT, PT, JA
   /\b(?:du|sie)\s+(?:musst|müssen|brauchst|bist|sind)\b[^.!?]{0,40}\bmedicare/i,
@@ -462,7 +468,11 @@ const TAX_DETERMINATION_ML: RegExp[] = [
   /\b(?:tu dois|vous devez|tu n'as pas|tu es exempt|vous [êe]tes exempt)\b[^.!?]{0,40}\bmedicare/i,
   /\b(?:devi|deve|non devi|sei esente|paghi|non paghi)\b[^.!?]{0,40}\bmedicare/i,
   /\b(?:tens de|tem de|n[ãa]o tens|est[áa]s isent[oa]|pagas|n[ãa]o pagas)\b[^.!?]{0,40}\bmedicare/i,
-  /medicare[^。！？]{0,20}(?:支払う必要|免除|払わなくて|対象)|(?:支払う必要|免除|払わなくて)[^。！？]{0,20}medicare/i,
+  // 4 Sep: 対象 on its own appears in the APPROVED Japanese opening
+  // ("Medicare、対象となるすべての控除を含め" = "including Medicare and every
+  // eligible deduction"), which is a description of the service, not a
+  // determination. It only counts with a determination ending after it.
+  /medicare[^。！？]{0,20}(?:支払う必要|免除され|払わなくて|対象(?:です|になります|外です|となります))|(?:支払う必要|免除され|払わなくて)[^。！？]{0,20}medicare/i,
   // "you can claim X" as a main clause — DE, ES, FR, IT, PT, JA
   /\b(?:du kannst|sie k[öo]nnen)\s+(?:deine?n?|ihre?n?|die|das|den)\s+\w+[^.!?]{0,30}\b(?:absetzen|geltend machen|abschreiben)\b/i,
   /\b(?:puedes|pod[ée]s|puede)\s+(?:deducir|reclamar|desgravar)\s+(?:tus?|el|la|los|las)\b/i,
@@ -485,6 +495,14 @@ const TAX_DETERMINATION_ML: RegExp[] = [
   /\b(?:cerca de|aproximadamente|uns|umas|mais ou menos)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de volta|reembolso|restitui)/i,
   /(?:約|およそ|だいたい|ほぼ)\s?(?!220|385)\d[\d,]{2,}[^。！？]{0,15}(?:還付|戻|返金|返っ)/,
   /(?:還付|戻っ|返っ)[^。！？]{0,15}(?:約|およそ|だいたい)?\s?(?!220|385)\d[\d,]{2,}/,
+  // 4 Sep: a BARE figure next to the refund word, with no hedge ("Deine
+  // Rückerstattung beträgt 1.800", "tu reembolso es de 1.800"). English is
+  // covered above; these six were not, so the figure sent on Autopilot.
+  /(?<![A-Za-zÀ-ÿ])(?:r[üu]ckerstattung|erstattung|steuerr[üu]ckzahlung)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:reembolso|devoluci[óo]n|reintegro)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:remboursement|restitution)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:rimborso|restituzione)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:reembolso|restitui[çc][ãa]o)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
 ];
 
 // myGov / ATO walkthroughs in the other languages: the site name is the same,
@@ -593,6 +611,88 @@ const SENSITIVE_LEAK = /(password|api.?key|access token|secret key|admin (access
 // (even next to the word Xero) is still caught by SENSITIVE_LEAK below.
 const XERO_SIGNING = /\bxero\b/i;
 const XERO_BENIGN_PWD = /\b(?:if it (?:asks|is asking) for a password|try\s+\d{4,}|forgot password|reset (?:your |the )?password)\b/gi;
+// ── THE RETIRED GUARANTEE LINE (Jo, 3 Sep; enforced 4 Sep) ────────────────
+// "so our fee never costs you more than the refund you get back" was removed
+// from every approved message because it is not true: a customer who OWES tax
+// gets no refund of the fee. It was only ever a prompt rule, so the model could
+// still reach for it (and did, in the Kay conversation). It is now blocked
+// outright, in every language, template or not, together with the family of
+// paraphrases that say the same untrue thing.
+const RETIRED_GUARANTEE_LINE = new RegExp(
+  [
+    'never costs? you (?:any )?more than',
+    "(?:never|won'?t|will not|can'?t|cannot) (?:pay|be) (?:any )?more than (?:your|the) refund",
+    'never (?:lose|be out of pocket|end up out)',
+    "you can'?t lose",
+    'no risk to you',
+    'nie mehr als (?:deine|ihre) (?:r[üu]ckerstattung|erstattung)',
+    'kostet dich (?:die geb[üu]hr )?nie mehr',
+    'nunca (?:te )?cuesta m[áa]s que',
+    'nunca pagar[áa]s m[áa]s que',
+    'nunca (?:te )?custa mais (?:do )?que',
+    'jamais plus que (?:ton|votre) remboursement',
+    'ne (?:te|vous) co[ûu]te jamais plus',
+    'mai pi[ùu] del (?:tuo )?rimborso',
+    'non ti costa mai pi[ùu]',
+    '還付(?:金|額)を上回(?:る|ること)(?:は|が)?(?:ありません|ない)',
+    '損(?:を)?(?:することは|しません)',
+  ].join('|'),
+  'i',
+);
+
+// ── REFUND-THE-FEE PROMISES IN THE PASSIVE / POSSESSIVE FORM ──────────────
+// 4 Sep audit: "the fee is refundable", "the fee will be refunded to you", "du
+// bekommst die Gebühr zurück", "recuperas la tarifa", "全額お返しします" all
+// passed, because every existing pattern needed "we/I" followed by the verb.
+// The negative form ("non-refundable", "nicht erstattet") is the approved
+// wording and must still send, so each alternative carries a negation guard.
+const FEE_REFUNDABLE_PASSIVE = new RegExp(
+  [
+    // English: "the fee is/will be refunded|refundable" but not "non-refundable"/"is not refundable"
+    "(?<!non[- ])(?<!not )\\b(?:the |our |your )?(?:fee|payment|charge)\\b(?![^.!?]{0,20}\\bnon[- ]?refundable\\b)[^.!?]{0,25}\\b(?:is|are|will be|would be|gets?|can be)\\b(?:\\s+(?:fully|completely|always))?\\s+(?:refunded|refundable|returned|given back|paid back)\\b",
+    // German: "du bekommst die Gebühr zurück", "die Gebühr wird erstattet", "erstatten wir dir die Gebühr"
+    '\\b(?:bekommst|bekommen|kriegst|erh[äa]ltst|erhalten)\\b[^.!?]{0,30}\\b(?:geb[üu]hr|zahlung|betrag|geld)\\b[^.!?]{0,15}\\bzur[üu]ck\\b',
+    '\\b(?:geb[üu]hr|zahlung|betrag)\\b[^.!?]{0,25}\\bwird\\b[^.!?]{0,15}\\b(?:erstattet|zur[üu]ckgezahlt|zur[üu]ck[üu]berwiesen)\\b(?![^.!?]{0,15}\\bnicht\\b)',
+    '\\berstatten wir\\b[^.!?]{0,25}\\b(?:die geb[üu]hr|das geld|die zahlung|den betrag)\\b(?![^.!?]{0,15}\\bdifferenz\\b)',
+    // Spanish / Portuguese: "recuperas la tarifa", "a taxa é reembolsável", "te devuelven el pago"
+    '\\b(?:recuperas|recuperar[áa]s|te devuelven|te devolver[áa]n)\\b[^.!?]{0,25}\\b(?:tarifa|pago|dinero|importe|cuota)\\b',
+    '(?:la tarifa|el pago|la cuota|a taxa|o pagamento)[^.!?]{0,20}(?<![A-Za-zÀ-ÿ])(?:es|ser[áa]|[ée])(?![A-Za-zÀ-ÿ])\\s+(?:totalmente\\s+|completamente\\s+)?(?:reembolsable|reembols[áa]vel|devuelta|devolvida)(?![A-Za-zÀ-ÿ])',
+    '\\b(?:recuperas|receber[áa]s de volta|tens de volta|ter[áa]s de volta)\\b[^.!?]{0,25}\\b(?:taxa|pagamento|dinheiro|valor)\\b',
+    // French: "les frais sont remboursables", "tu récupères les frais"
+    '\\b(?:les frais|le paiement|le montant)\\b[^.!?]{0,20}\\b(?:sont|est|seront|sera)\\s+(?:enti[èe]rement\\s+|totalement\\s+)?rembours(?:able|ables|[ée]s?)\\b(?![^.!?]{0,15}\\bnon\\b)',
+    '\\b(?:tu r[ée]cup[èe]res|vous r[ée]cup[ée]rez|tu r[ée]cup[ée]reras)\\b[^.!?]{0,25}\\b(?:les frais|le paiement|l\'argent|le montant)\\b',
+    // Italian: "la tariffa è rimborsabile", "riavrai la tariffa"
+    '(?:la tariffa|il pagamento|l\'importo)[^.!?]{0,20}(?<![A-Za-zÀ-ÿ])(?:[èe]|sar[àa])(?![A-Za-zÀ-ÿ])\\s+(?:interamente\\s+|totalmente\\s+)?rimborsabile(?![A-Za-zÀ-ÿ])(?![^.!?]{0,15}\\bnon\\b)',
+    '\\b(?:riavrai|riavr[àa]|ti torna|ti tornano)\\b[^.!?]{0,25}\\b(?:la tariffa|i soldi|il pagamento|l\'importo)\\b',
+    // Japanese: "全額お返しします" / "料金は返金されます"
+    '全額(?:お)?返し|料金[はも][^。！？]{0,10}(?:返金|お返し)(?:され|します|いたします)',
+  ].join('|'),
+  'i',
+);
+
+// ── POST-PAYMENT SALES CONTENT, IN EVERY LANGUAGE ─────────────────────────
+// 4 Sep audit: the gate was English-only, so after payment the fee, the price
+// and the guarantee could be talked about again in the six other languages.
+const POST_PAYMENT_SALES_ML = /\b(?:geb[üu]hr|preis|kosten|rabatt|garantie|tarifa|precio|coste|costo|descuento|garant[íi]a|frais|prix|co[ûu]t|remise|garantie|tariffa|prezzo|sconto|garanzia|taxa|pre[çc]o|custo|desconto|garantia)\b|料金|費用|値段|割引|保証|差額|\bdifferenz\b|\bdiferencia\b|\bdiff[ée]rence\b|\bdifferenza\b|\bdiferen[çc]a\b/i;
+
+/** Mask amounts that are legitimately allowed in this sentence, so a permitted
+ *  figure (the team's estimate, the guarantee's worked example) cannot trip the
+ *  bare-number determination patterns. 4 Sep audit: "Your estimated refund is
+ *  $1,234" with the team's own estimate, and the Japanese worked example, were
+ *  both refused as TAX_DETERMINATION. */
+function maskAllowedAmounts(text: string, cents: Iterable<number>): string {
+  let out = text;
+  for (const c of cents) {
+    if (!c || c < 0) continue;
+    const whole = Math.round(c / 100);
+    const grouped = whole.toLocaleString('en-US');
+    for (const form of new Set([String(whole), grouped, grouped.replace(/,/g, '.'), grouped.replace(/,/g, ' '), `${whole}.00`, `${grouped}.00`])) {
+      out = out.split(form).join('\u00A4');
+    }
+  }
+  return out;
+}
+
 const DASHES = /[—–―−]/; // — – ― −
 
 export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
@@ -624,6 +724,10 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   const sensText = XERO_SIGNING.test(text) ? text.replace(XERO_BENIGN_PWD, ' ') : text;
   if (SENSITIVE_LEAK.test(sensText)) violations.push('SENSITIVE_CONTENT');
   if (DASHES.test(text)) violations.push('EM_DASH_FORBIDDEN');
+  // The retired line is banned everywhere, including in an "approved" template:
+  // it was deleted from all of them, so anything carrying it is either a stale
+  // Library row or the model reaching for wording Jo retired (4 Sep).
+  if (RETIRED_GUARANTEE_LINE.test(text)) violations.push('RETIRED_GUARANTEE_LINE');
   if (NON_DOLLAR_CURRENCY.test(text)) violations.push('NON_DOLLAR_CURRENCY');
   if (AI_IDENTITY_CLAIM.test(text) || AI_IDENTITY_DENIAL.test(text)) {
     violations.push('AI_IDENTITY_ANSWER');
@@ -720,7 +824,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // post-payment-sales gate still applies (H2/H4: never re-send sales content
     // to a paid customer, even if the wording is approved).
     if (isApprovedSentence(sentence)) {
-      if (paid && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
+      if (paid && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
       continue;
     }
 
@@ -746,17 +850,27 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // before payment" — the determination is the team's to make, and after
     // payment it is worth MORE, not less. Nothing is lost by holding these: a
     // blocked reply becomes a task carrying the text, for a human to send.
+    // The team's own estimate and the guarantee's worked example are permitted
+    // figures; mask them before the determination patterns so a legitimate
+    // sentence is not refused for carrying a number it is allowed to carry
+    // (4 Sep). Everything else in the sentence is still read as written.
+    const maskable: number[] = [...sentenceExample];
+    if (ctx.estimateFromTeam != null) maskable.push(ctx.estimateFromTeam);
+    // Inside a worked example the fee itself is part of the arithmetic.
+    if (sentenceExample.size > 0) maskable.push(...FIXED_PRICES_CENTS);
+    const determinationText = maskable.length ? maskAllowedAmounts(sentence, maskable) : sentence;
     for (const p of TAX_DETERMINATION) {
-      if (p.test(sentence)) { violations.push('TAX_DETERMINATION'); break; }
+      if (p.test(determinationText)) { violations.push('TAX_DETERMINATION'); break; }
     }
     if (!violations.includes('TAX_DETERMINATION')) {
       for (const p of TAX_DETERMINATION_ML) {
-        if (p.test(sentence)) { violations.push('TAX_DETERMINATION'); break; }
+        if (p.test(determinationText)) { violations.push('TAX_DETERMINATION'); break; }
       }
     }
     if (DIY_INSTRUCTIONS.test(sentence) || DIY_INSTRUCTIONS_ML.test(sentence)) violations.push('DIY_INSTRUCTIONS');
     if (REFUND_PROMISE_ML.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
-    if (paid && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
+    if (FEE_REFUNDABLE_PASSIVE.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
+    if (paid && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
     const moneyBack = MONEY_BACK_ML.test(sentence)
       && (FULL_REFUND_WORDS.test(sentence)
         || !(GUARANTEE_CONTEXT.test(sentence) || guaranteeExampleAmounts(sentenceAmounts, FIXED_PRICES_CENTS.slice(0, 2)).size > 0));

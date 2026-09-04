@@ -25,7 +25,7 @@
 // counter that "resets on the 1st" — a stored counter drifts, cannot be
 // recomputed after a correction, and loses every month before the last reset.
 // ============================================================
-import { CustomerRow, StateHistoryRow } from './store';
+import { CustomerRow, StateHistoryRow, MessageRow } from './store';
 import { POST_PAYMENT_STATES, CustomerState } from './state-machine';
 
 const MELBOURNE = 'Australia/Melbourne';
@@ -41,7 +41,18 @@ export interface MonthConversion {
   paid: number;
   /** Whole percent, 0 when there were no leads. */
   rate: number;
+  /** Of the `paid`, how many paid AND completed the questionnaire with Will
+   *  alone: not one message written by a person in the chat up to the moment
+   *  the questionnaire was in (Jo, 4 Sep). */
+  willOnly: number;
+  /** Whole percent of `paid`, 0 when nobody paid. */
+  willOnlyRate: number;
 }
+
+const FORM_DONE = new Set<CustomerState>([
+  'FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY',
+  'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED',
+]);
 
 /** 'YYYY-MM' for an instant, read in the business's own timezone. */
 export function melbourneMonthKey(iso: string | Date): string {
@@ -112,15 +123,47 @@ export function monthlyConversion(
   history: StateHistoryRow[],
   now: Date = new Date(),
   months = 12,
+  /** Every message in the system (only HUMAN-authored ones are looked at).
+   *  Optional: without it willOnly is 0 for every month. */
+  messages: MessageRow[] = [],
 ): MonthConversion[] {
-  // Everyone who ever reached a post-payment state, from the transition log.
+  // Everyone who ever reached a post-payment state, from the transition log,
+  // and the moment each customer's questionnaire first counted as in.
   const everPaid = new Set<string>();
+  const formDoneAt = new Map<string, number>();
   for (const h of history) {
     if (POST_PAYMENT.has(h.to)) everPaid.add(h.customerId);
+    if (FORM_DONE.has(h.to)) {
+      const t = new Date(h.createdAt).getTime();
+      const prev = formDoneAt.get(h.customerId);
+      if (!Number.isNaN(t) && (prev === undefined || t < prev)) formDoneAt.set(h.customerId, t);
+    }
   }
+  // The first time a person (not Will) wrote in each chat.
+  const firstHumanAt = new Map<string, number>();
+  for (const m of messages) {
+    if (m.author !== 'HUMAN' || m.direction !== 'OUT') continue;
+    if (m.status === 'DISCARDED' || m.status === 'BLOCKED') continue;
+    const t = new Date(m.createdAt).getTime();
+    if (Number.isNaN(t)) continue;
+    const prev = firstHumanAt.get(m.customerId);
+    if (prev === undefined || t < prev) firstHumanAt.set(m.customerId, t);
+  }
+  // "Will did it all": paid, questionnaire in, and nobody from the team had
+  // written in the chat by the time the questionnaire arrived. Where the
+  // questionnaire's moment is unknown (an older customer with no transition
+  // row), any human message at all disqualifies, which is the strict reading.
+  const willOnly = (c: CustomerRow): boolean => {
+    const formIn = c.formComplete || FORM_DONE.has(c.state) || formDoneAt.has(c.id);
+    if (!formIn) return false;
+    const human = firstHumanAt.get(c.id);
+    if (human === undefined) return true;
+    const done = formDoneAt.get(c.id);
+    return done !== undefined && human > done;
+  };
 
-  const buckets = new Map<string, { leads: number; paid: number }>();
-  for (const key of recentMonthKeys(now, months)) buckets.set(key, { leads: 0, paid: 0 });
+  const buckets = new Map<string, { leads: number; paid: number; willOnly: number }>();
+  for (const key of recentMonthKeys(now, months)) buckets.set(key, { leads: 0, paid: 0, willOnly: 0 });
 
   for (const c of customers) {
     const key = melbourneMonthKey(c.createdAt ?? '');
@@ -129,7 +172,10 @@ export function monthlyConversion(
     bucket.leads++;
     // `paid` on the row is the authority for "they paid"; the history covers a
     // customer who was moved straight to a later stage without a PAID row.
-    if (c.paid || everPaid.has(c.id) || POST_PAYMENT.has(c.state)) bucket.paid++;
+    if (c.paid || everPaid.has(c.id) || POST_PAYMENT.has(c.state)) {
+      bucket.paid++;
+      if (willOnly(c)) bucket.willOnly++;
+    }
   }
 
   const oldestFirst = [...buckets.entries()].map(([month, b]) => ({
@@ -138,6 +184,8 @@ export function monthlyConversion(
     leads: b.leads,
     paid: b.paid,
     rate: b.leads ? Math.round((b.paid / b.leads) * 100) : 0,
+    willOnly: b.willOnly,
+    willOnlyRate: b.paid ? Math.round((b.willOnly / b.paid) * 100) : 0,
   }));
 
   // Cut everything before the first month that had a lead. `findIndex` returns

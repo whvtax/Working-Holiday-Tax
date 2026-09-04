@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
     // the form reminders (otherwise it keeps chasing someone who already filled
     // it in) and sends the confirmation in their language. Best effort by
     // design: the form submission must never fail because the CRM link did.
-    await notifyFormReceived(whatsapp, email)
+    await notifyFormReceived(whatsapp, email, 'super')
 
     return NextResponse.json({ ok: true })
   } catch (err) {

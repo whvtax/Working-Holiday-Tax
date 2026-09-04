@@ -678,6 +678,9 @@ aside.side{
 /* A month with no leads is shown rather than hidden — a gap in the row is
    itself the finding — but it must not read as a bad month. */
 .will-scope .mhrow.empty{opacity:.45}
+.will-scope .mhsub{display:block;font-size:10.5px;font-weight:450;color:var(--ink3);margin-top:2px}
+.will-scope .mhwill{flex:none;min-width:150px;text-align:right;font-size:10.5px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:640px){.will-scope .mhrow{flex-wrap:wrap}.will-scope .mhwill{width:100%;min-width:0;text-align:left;padding-left:0}}
 
 /* ============================================================
    Scheduled follow-ups list. Reuses .rowcard/.rc-* from the pipeline; this

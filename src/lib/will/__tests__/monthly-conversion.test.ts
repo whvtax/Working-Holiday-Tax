@@ -149,3 +149,33 @@ describe('monthlyConversion', () => {
     expect(recentMonthKeys(new Date('2026-02-10T00:00:00Z'), 4)).toEqual(['2025-11', '2025-12', '2026-01', '2026-02']);
   });
 });
+
+// ── "Will alone" share (Jo, 4 Sep) ────────────────────────────────────────
+// Of the paying customers in a month, how many paid AND sent the questionnaire
+// with nobody from the team writing in the chat up to that point.
+describe('willOnly', () => {
+  const hist = (customerId: string, to: StateHistoryRow['to'], createdAt: string): StateHistoryRow =>
+    ({ customerId, from: 'PAID', to, causedBy: 'SYSTEM', createdAt } as StateHistoryRow);
+  const msg = (customerId: string, author: 'HUMAN' | 'AI', createdAt: string) =>
+    ({ id: `${customerId}-${createdAt}`, customerId, direction: 'OUT', author, status: 'SENT', body: 'x', createdAt } as never);
+
+  const paidWithForm = (id: string) => customer({ id, createdAt: '2026-08-02T02:00:00Z', paid: true, state: 'FORM_COMPLETE', formComplete: true });
+
+  it('counts a paid customer whose questionnaire came in with only Will in the chat', () => {
+    const rows = monthlyConversion([paidWithForm('a')], [hist('a', 'FORM_COMPLETE', '2026-08-05T00:00:00Z')], NOW, 12,
+      [msg('a', 'AI', '2026-08-03T00:00:00Z')]);
+    expect(monthOf(rows, '2026-08')).toMatchObject({ paid: 1, willOnly: 1, willOnlyRate: 100 });
+  });
+
+  it('a team message before the questionnaire disqualifies; one after it does not', () => {
+    const rows = monthlyConversion([paidWithForm('a'), paidWithForm('b')], [
+      hist('a', 'FORM_COMPLETE', '2026-08-05T00:00:00Z'), hist('b', 'FORM_COMPLETE', '2026-08-05T00:00:00Z'),
+    ], NOW, 12, [msg('a', 'HUMAN', '2026-08-04T00:00:00Z'), msg('b', 'HUMAN', '2026-08-09T00:00:00Z')]);
+    expect(monthOf(rows, '2026-08')).toMatchObject({ paid: 2, willOnly: 1, willOnlyRate: 50 });
+  });
+
+  it('a paid customer with no questionnaire yet is not counted', () => {
+    const rows = monthlyConversion([customer({ id: 'a', createdAt: '2026-08-02T02:00:00Z', paid: true, state: 'FORM_PENDING' })], [], NOW, 12, []);
+    expect(monthOf(rows, '2026-08')).toMatchObject({ paid: 1, willOnly: 0, willOnlyRate: 0 });
+  });
+});

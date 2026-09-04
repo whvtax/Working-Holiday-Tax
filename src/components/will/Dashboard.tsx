@@ -487,7 +487,14 @@ export default function Dashboard() {
   const refresh = useCallback(async () => {
     try {
       const res = await fetch('/api/will/state');
+      // The CRM session lasts 8 hours. When it ends every route answers
+      // {ok:false,error:'unauthorized'}, and storing THAT as the dashboard's
+      // state made the next render read .checks/.customers off an object that
+      // does not have them: a white error page instead of the login (audit,
+      // 4 Sep). Any 401 sends the browser back to the login, once.
+      if (res.status === 401) { window.location.href = '/crm'; return; }
       const d: StateData = await res.json();
+      if (!d || !Array.isArray(d.customers)) return;
       setData(d);
       setChatSelId((sel) => sel ?? (
         [...d.customers].sort((a, b) => (b.lastCustomerMsgAt ?? '').localeCompare(a.lastCustomerMsgAt ?? ''))[0]?.id ?? null
@@ -499,7 +506,9 @@ export default function Dashboard() {
     setChatSelId(id);
     latestChatReq.current = id;
     const res = await fetch('/api/will/messages?customerId=' + id);
-    const d = await res.json();
+    if (res.status === 401) { window.location.href = '/crm'; return; }
+    const d = await res.json().catch(() => null);
+    if (!d || !Array.isArray(d.messages)) return;
     if (latestChatReq.current === id) setChatMsgs(d.messages); // race guard
   }, []);
   // Opening a chat clears its unread badge (WhatsApp-style). Only fired on an
@@ -818,7 +827,7 @@ export default function Dashboard() {
     const pollIv = setInterval(poll, 15000);
     const tickIv = setInterval(tickOnce, 30000);   // slow scheduler safety net
     const healthIv = setInterval(() => {           // keep status dots fresh even when idle
-      if (!hidden()) fetch('/api/will/health').then((r) => r.json()).then((h) => { if (!stop) setHealth(h); }).catch(() => {});
+      if (!hidden()) fetch('/api/will/health').then((r) => (r.ok ? r.json() : null)).then((h) => { if (!stop && h && h.checks) setHealth(h); }).catch(() => {});
     }, 45000);
     // Skip while hidden: this re-renders the whole dashboard once a second,
     // and a backgrounded tab has nobody to show a ticking clock to.
@@ -924,8 +933,12 @@ export default function Dashboard() {
     try { await fn(); } finally { /* keep acted to prevent double fire */ }
   };
 
-  const sendManual = async (customerId: string, text: string) => {
-    if (!text.trim()) return;
+  /** Returns true only when WhatsApp accepted the message, so the composer can
+   *  KEEP what was typed when it did not (audit, 4 Sep: the box was cleared
+   *  before the result, so a refusal outside the 24h window silently threw away
+   *  a message Jo had just written). */
+  const sendManual = async (customerId: string, text: string): Promise<boolean> => {
+    if (!text.trim()) return false;
     const r = await act({ action: 'manual_reply', customerId, body: text });
     // The server now reports whether WhatsApp actually accepted the message.
     // Reporting "Sent" on a failure is how a lost message looked delivered.
@@ -936,6 +949,7 @@ export default function Dashboard() {
     }
     refresh();
     if (chatSelId === customerId) loadChat(customerId);
+    return !!r?.ok;
   };
 
   return (
@@ -1586,12 +1600,14 @@ export default function Dashboard() {
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
                             e.preventDefault();
-                            sendManual(chatSel.id, composer);
-                            setComposer('');
-                            (e.target as HTMLTextAreaElement).style.height = 'auto';
+                            const el = e.target as HTMLTextAreaElement;
+                            const text = composer;
+                            sendManual(chatSel.id, text).then((sent) => {
+                              if (sent) { setComposer(''); el.style.height = 'auto'; }
+                            });
                           }
                         }} />
-                      <button className="send" onClick={() => { sendManual(chatSel.id, composer); setComposer(''); }}>➤</button>
+                      <button className="send" onClick={() => { const text = composer; sendManual(chatSel.id, text).then((sent) => { if (sent) setComposer(''); }); }}>➤</button>
                     </div>
                   </>
                 ) : <div className="sysline" style={{ margin: 20 }}>Select a conversation</div>}
@@ -2169,6 +2185,7 @@ export default function Dashboard() {
                     swapped, and the description went. */}
                 <div className="mhhead">
                   <span>How many leads ended up paying?</span>
+                  <span className="mhsub">and how many of those paid and sent the questionnaire with Will alone</span>
                 </div>
                 {monthly === null && <div className="mini">Loading the history…</div>}
                 {monthly !== null && monthly.every((m) => m.leads === 0) && (
@@ -2182,6 +2199,12 @@ export default function Dashboard() {
                         <span className="mhbar"><span className="mhfill" style={{ width: `${Math.min(100, m.rate)}%` }} /></span>
                         <span className="mhrate">{m.leads === 0 ? '·' : `${m.rate}%`}</span>
                         <span className="mhcount">{m.leads === 0 ? 'no leads' : `${m.paid}/${m.leads}`}</span>
+                        {/* Jo, 4 Sep: of those who paid, how many paid AND sent the
+                            questionnaire with Will alone, nobody from the team
+                            having written in the chat up to that point. */}
+                        <span className="mhwill" title="Of the paying customers this month, the share who paid and completed the questionnaire with Will alone, with no message from the team up to that point">
+                          {m.paid === 0 ? '' : `${m.willOnlyRate ?? 0}% Will alone (${m.willOnly ?? 0}/${m.paid})`}
+                        </span>
                       </div>
                     ))}
                   </div>

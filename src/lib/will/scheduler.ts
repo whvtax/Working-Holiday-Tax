@@ -9,11 +9,10 @@ import { schedulerConfig, withinQuietHours, deferToMorning, localMidnightUtc } f
 import { policyGuard, registerLibraryBodies } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
-import { APPROVED } from './approved-messages';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey } from './i18n';
+import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
 import { deliverOut, sendWhatsAppText } from './channel';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
@@ -60,6 +59,22 @@ export async function scheduleFollowUp(customerId: string, flow: Flow, seq: numb
     customerId, kind: 'FOLLOW_UP',
     payload: { templateKey: FLOW_TEMPLATES[flow][seq], seq, flow },
     runAt: new Date(Date.now() + delays[seq] * 1000).toISOString(),
+  });
+}
+
+/**
+ * The "ready for signature" notice has just gone out, so the three signature
+ * nudges are measured from NOW (24h / 3d / 7d), not from the Done click three
+ * days earlier. Cancels whatever was armed and re-arms the first one.
+ */
+export async function restartSignatureCadenceFromNotice(customerId: string): Promise<void> {
+  const store = getStore();
+  const { SIGNATURE_AFTER_NOTICE } = await import('./config');
+  await store.cancelJobsFor(customerId, ['FOLLOW_UP', 'AUTO_CLOSE']);
+  await store.addJob({
+    customerId, kind: 'FOLLOW_UP',
+    payload: { templateKey: FLOW_TEMPLATES.signature[0], seq: 0, flow: 'signature' },
+    runAt: new Date(Date.now() + SIGNATURE_AFTER_NOTICE[0] * 1000).toISOString(),
   });
 }
 
@@ -237,12 +252,17 @@ export async function ensureLostAnalysisSoon(): Promise<void> {
 /** The owner's CURRENT wording for the holding line, falling back to the
  *  approved constant. It is in the Library like every other sendable message,
  *  so he can reword it without a deploy. */
-async function ackBody(): Promise<string> {
+/** The holding line in the CUSTOMER'S language: their Library row first
+ *  (handoff_holding / handoff_holding_<lang>), then the code copy for that
+ *  language, then English. Before 4 Sep this was English for everyone. */
+async function ackBody(lang?: string | null): Promise<{ body: string; key: string }> {
+  const key = handoffHoldingTemplateKey(lang);
   try {
-    const t = (await getStore().listTemplates()).find((x) => x.key === 'handoff_holding');
-    if (t?.body?.trim()) return t.body;
+    const templates = await getStore().listTemplates();
+    const t = templates.find((x) => x.key === key) ?? (key !== 'handoff_holding' ? templates.find((x) => x.key === 'handoff_holding') : undefined);
+    if (t?.body?.trim()) return { body: t.body, key };
   } catch { /* the constant is the honest fallback */ }
-  return APPROVED.handoff.holding;
+  return { body: handoffHoldingMessage(lang), key };
 }
 
 export interface TickResult { processed: number; sent: string[]; closed: string[]; deferred: number }
@@ -317,7 +337,7 @@ async function doProcess(): Promise<TickResult> {
               m.direction === 'OUT' && m.status === 'SENT'
               && new Date(m.createdAt).getTime() > new Date(job.createdAt ?? job.runAt).getTime());
             if (open && !answered) {
-              const body = await ackBody();
+              const { body, key: ackKey } = await ackBody(c.lang);
               // Inside the window by construction (the long message arrived
               // half an hour ago), but the same template-or-text shape as the
               // other system lines, so a Library {{PLACEHOLDER}} slip is
@@ -327,7 +347,7 @@ async function doProcess(): Promise<TickResult> {
                 await store.setJobStatus(job.id, 'DONE');
                 continue;
               }
-              const ackTemplate = { name: 'handoff_holding', params: [], lang: c.lang, fallbackToText: true };
+              const ackTemplate = { name: ackKey, params: [], lang: c.lang, fallbackToText: true };
               const out = await deliverOut(c, body, 'AI', { waTemplate: ackTemplate }, ackTemplate);
               await store.audit('assistant', out.ok ? 'handoff_ack_sent' : 'handoff_ack_failed', {
                 customerId: c.id, error: out.ok ? undefined : out.error,

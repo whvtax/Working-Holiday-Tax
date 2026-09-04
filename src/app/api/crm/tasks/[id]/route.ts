@@ -9,7 +9,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   try {
     const body = await req.json()
     const { markTaskDone, updateTaskNotes, updateTaskReviewerNote, deleteTaskAndArchive, deleteTaskPermanent } = await import('@/lib/db')
-    if (body.action === 'done')             { await markTaskDone((await params).id); return NextResponse.json({ ok:true, archived:true }) }
+    if (body.action === 'done')             { const amt = typeof body.refundAmount === 'number' && isFinite(body.refundAmount) && body.refundAmount > 0 ? body.refundAmount : undefined; await markTaskDone((await params).id, amt); return NextResponse.json({ ok:true, archived:true }) }
     if (body.action === 'notes')            { const notes = typeof body.notes === 'string' ? body.notes.slice(0, 10_000) : ''; await updateTaskNotes((await params).id, notes); return NextResponse.json({ ok:true }) }
     if (body.action === 'reviewerNote')     { const note = typeof body.reviewerNote === 'string' ? body.reviewerNote.slice(0, 2_000) : ''; await updateTaskReviewerNote((await params).id, note); return NextResponse.json({ ok:true }) }
     if (body.action === 'delete')           { await deleteTaskAndArchive((await params).id);  return NextResponse.json({ ok:true }) }

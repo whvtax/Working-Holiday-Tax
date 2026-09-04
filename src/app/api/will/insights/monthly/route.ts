@@ -12,13 +12,16 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
-  const [customers, history] = await Promise.all([
+  const [customers, history, messages] = await Promise.all([
     store.listCustomers(),
     store.allHistory(),
+    // Only HUMAN-authored rows matter (the "Will did it all" share); the whole
+    // list is read because the store has no author filter.
+    store.allMessages().catch(() => []),
   ]);
   return NextResponse.json({
     ok: true,
     generatedAt: new Date().toISOString(),
-    months: monthlyConversion(customers, history, new Date(), 12),
+    months: monthlyConversion(customers, history, new Date(), 12, messages),
   });
 }

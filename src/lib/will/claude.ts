@@ -121,7 +121,17 @@ function apiMessages(history: Turn[]) {
   });
 }
 
-export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Decision> {
+export interface DecideOptions {
+  /** A one-off instruction appended to the uncached prompt block for a
+   *  rewrite of the previous answer (engine.ts, 4 Sep: a reply refused only for
+   *  length is asked once to say the same thing short). */
+  rewriteHint?: string;
+  /** Per-attempt fetch timeout; the rewrite uses a shorter one so two model
+   *  calls still fit inside one serverless invocation. */
+  timeoutMs?: number;
+}
+
+export async function decide(ctx: CustomerContext, history: Turn[], opts: DecideOptions = {}): Promise<Decision> {
   const key = process.env.ANTHROPIC_API_KEY;
   // The keyword mock exists for the simulator and the test suite. In
   // production a missing key is an outage, not a reason to let an English-only
@@ -157,12 +167,13 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
   // repeated calls then re-read the playbook from cache instead of paying full
   // input price for it each time.
   const { stable, dynamic } = buildSystemPrompt(ctx, liveTemplates);
+  const dynamicWithHint = opts.rewriteHint ? `${dynamic}\n\n# REWRITE (this call only)\n${opts.rewriteHint}` : dynamic;
   const body = JSON.stringify({
     model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
     max_tokens: 1024,
     system: [
       { type: 'text', text: stable, cache_control: { type: 'ephemeral' } },
-      { type: 'text', text: dynamic },
+      { type: 'text', text: dynamicWithHint },
     ],
     tools: [DECIDE_TOOL],
     tool_choice: { type: 'tool', name: 'decide' },
@@ -180,12 +191,12 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
         // At 2 x 30 s a degraded API could run past the cap, the function was
         // killed mid-flight, no catch ran, and the customer's message vanished
         // with no task (audit, 3 Sep).
-        signal: AbortSignal.timeout(25_000),
+        signal: AbortSignal.timeout(opts.timeoutMs ?? 25_000),
         headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
         body,
       });
       if (res.status === 429 || res.status >= 500) {
-        if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
+        if (attempt === 0 && !opts.rewriteHint) { await sleep(400 + Math.random() * 400); continue; }
         return fallbackTask(`Claude API error ${res.status}`);
       }
       if (!res.ok) return fallbackTask(`Claude API error ${res.status}`);
@@ -196,7 +207,7 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
       if (!tool?.input) return fallbackTask('Model returned no decision');
       return validateDecision(tool.input);
     } catch {
-      if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
+      if (attempt === 0 && !opts.rewriteHint) { await sleep(400 + Math.random() * 400); continue; }
       return fallbackTask('Claude API unreachable');
     }
   }

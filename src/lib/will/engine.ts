@@ -229,12 +229,11 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // Owner rules (no dashes ever; at most one emoji, opening only) applied to the
   // model's prose before filling, so links and bank details are never mangled.
   // Then strip a repeated bank block if the details were already sent.
-  const text = applyBankRule(
-    fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
-  );
   // If the whole reply was just a repeat of the bank details, there is nothing
   // left worth sending — stay silent rather than send an empty message.
-  if (!text.trim()) return { kind: 'silent', decision };
+  if (!applyBankRule(
+    fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
+  ).trim()) return { kind: 'silent', decision };
   const guardCtx: GuardContext = {
     ...input.guard,
     state: ctx.state,
@@ -246,7 +245,43 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // only relax when the customer was NOT already paid (audit finding).
   if (newState === 'PAID' && !ctx.paid) guardCtx.paid = false;
 
-  const verdict = policyGuard(text, guardCtx);
+  let text = applyBankRule(
+    fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
+  );
+  let verdict = policyGuard(text, guardCtx);
+  let rewriteNote: string | undefined;
+
+  // ── TOO LONG IS NOT A REASON TO STOP (Jo, 4 Sep) ─────────────────────
+  //
+  // Helena (+44 7984, 4 Sep): a correct answer to "can your agent assess my
+  // residency and the Addy case before lodging?" was refused for REPLY_TOO_LONG
+  // and became a task. The answer itself was fine; it was an essay. Jo's rule:
+  // before payment every such question gets the same short shape, three or
+  // four lines that acknowledge what they wrote, say it is exactly what the
+  // review covers, and end with the next step. So when length is the ONLY
+  // fault, Will is asked once to rewrite the same answer short, and that
+  // rewrite goes through the same guard. Only if that still fails does the
+  // approved "we check that as part of the review" line (pre-payment) or a
+  // task (post-payment) follow.
+  const LENGTH_ONLY = new Set(['REPLY_TOO_LONG', 'AI_PAUSED_FOR_CUSTOMER', 'CUSTOMER_OPTED_OUT', 'LEGACY_CHAT_AI_DISABLED', 'KILL_SWITCH_ACTIVE']);
+  if (!verdict.allowed && verdict.violations.includes('REPLY_TOO_LONG') && verdict.violations.every((v) => LENGTH_ONLY.has(v))) {
+    const retry = await decide(ctx, history, {
+      rewriteHint: `Your previous reply was refused because it was TOO LONG. Send the SAME answer again, rewritten to at most 3 short lines plus one closing line with the next step: a first line that shows you read what they wrote, one line that says it is exactly what our review covers (no explanation of how, no teaching, no examples, no dates, no second scenario, no list), then the next step for their current stage. Under 60 words. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`,
+      timeoutMs: 12_000,
+    });
+    if (retry.action === 'reply' && retry.reply_text) {
+      const shorter = applyBankRule(
+        fillPlaceholders(normaliseWillText(retry.reply_text, { firstMessage, firstName: custFirstName }), bank),
+      );
+      const shorterVerdict = policyGuard(shorter, guardCtx);
+      if (shorter.trim() && shorterVerdict.allowed) {
+        rewriteNote = 'Will\'s first draft was too long; he rewrote it short and that version went.';
+        text = shorter;
+        verdict = shorterVerdict;
+      }
+    }
+  }
+
   if (!verdict.allowed) {
     // ── DELIBERATE SILENCE IS NOT A FAULT ────────────────────────────────
     //
@@ -292,9 +327,13 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     // chat keeps moving. Every other violation (an invented price, a refund
     // promise, a myGov walkthrough, a placeholder) is still a task: those
     // have no approved stand-in.
+    // 4 Sep: the same stand-in also covers a pre-payment reply that is STILL
+    // too long after the rewrite above. Jo: before payment the answer to any
+    // detailed tax story is the same, "that is exactly what our review
+    // covers", so a long draft is not worth a task either.
     const DETERMINATION_ONLY = new Set(['TAX_DETERMINATION', 'REPLY_TOO_LONG']);
     if (!ctx.paid
-        && verdict.violations.includes('TAX_DETERMINATION')
+        && (verdict.violations.includes('TAX_DETERMINATION') || verdict.violations.includes('REPLY_TOO_LONG'))
         && verdict.violations.every((v) => DETERMINATION_ONLY.has(v) || NOT_A_FAULT.has(v))) {
       const safe = professionalQuestionMessage(ctx.lang);
       const safeVerdict = policyGuard(safe, guardCtx);
@@ -350,6 +389,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     newState,
     stateChanged: !!newState,
     invalidTransition,
-    decision,
+    decision: rewriteNote ? { ...decision, reply_text: text } : decision,
+    reviewNote: rewriteNote,
   };
 }

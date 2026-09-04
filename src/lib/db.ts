@@ -225,7 +225,7 @@ export async function createTask(data: Omit<Task, 'id' | 'done'>): Promise<Task>
   return { ...data, id, done: false }
 }
 
-export async function markTaskDone(id: string): Promise<void> {
+export async function markTaskDone(id: string, refundAmount?: number): Promise<void> {
   const sb = getSupabase()
   const task = await getTask(id)
   if (!task) return
@@ -259,6 +259,15 @@ export async function markTaskDone(id: string): Promise<void> {
     .join(' | ')
     .trim()
 
+  // The refund the Done modal was filled in with. It used to go only to Will
+  // (the estimate message), so the client card built from this task recorded
+  // $0 and the year's figures were wrong (audit, 4 Sep). Written under a label
+  // the archive step reads directly, instead of the old "find a $ in the notes"
+  // guess, which also picked up any amount an admin happened to type.
+  const refundLine = typeof refundAmount === 'number' && refundAmount > 0
+    ? `💵 Refund: $${refundAmount.toFixed(2)}`
+    : ''
+
   const { error } = await sb.from('crm_tasks').update({
     done: true,
     address: '', tfn: '', bank_details: '',
@@ -266,10 +275,10 @@ export async function markTaskDone(id: string): Promise<void> {
     // Only cleared when the files are actually gone; see above.
     ...(filesDeleted ? { file_urls: '[]' } : {}),
     notes: filesDeleted
-      ? cleanedNotes
+      ? [cleanedNotes, refundLine].filter(Boolean).join(' | ')
       // Leave a visible trace on the task itself, so this is not something only
       // a server log knows about.
-      : [cleanedNotes, `⚠️ Attached files could NOT be deleted from storage${fileDeleteError ? ` (${fileDeleteError})` : ''} — they are still there and still linked.`]
+      : [cleanedNotes, refundLine, `⚠️ Attached files could NOT be deleted from storage${fileDeleteError ? ` (${fileDeleteError})` : ''} — they are still there and still linked.`]
         .filter(Boolean).join(' | '),
     reviewer_note: '',
   }).eq('id', id)
@@ -314,7 +323,10 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
 
   // Determine which service this task represents and update history accordingly
   const today = new Date().toISOString().slice(0, 10)
-  const refundMatch = (task.notes||'').match(/\$\s*([\d,]+(?:\.\d+)?)/);
+  // The labelled figure written by the Done flow first; the old loose "$ in the
+  // notes" match only as a fallback for cards done before 4 Sep.
+  const labelled = (task.notes||'').match(/💵 Refund:\s*\$\s*([\d,]+(?:\.\d+)?)/)
+  const refundMatch = labelled ?? (task.notes||'').match(/\$\s*([\d,]+(?:\.\d+)?)/);
   const refundAmount = refundMatch ? parseFloat(refundMatch[1].replace(/,/g,'')) : 0
 
   if (existing) {
@@ -447,8 +459,50 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   if (error) throw error
 }
 
+/**
+ * File the CRM card for this WhatsApp number under Clients.
+ *
+ * Jo, 3 Sep: "Mark Lodged" files the person under Clients in the same click.
+ * That worked from the CRM card, but the identical button inside Will's chat
+ * only moved the Will pipeline, so the card sat in Done for ever (audit,
+ * 4 Sep). This is the same transfer, addressed by phone instead of task id.
+ *
+ * Best effort by design: lodging must never fail because the CRM half did.
+ * Returns the archived task id, or null when there was nothing to file.
+ */
+export async function archiveTaskByPhone(whatsapp: string): Promise<string | null> {
+  try {
+    const { phoneCandidates } = await import('@/lib/will/phone-candidates')
+    const candidates = phoneCandidates(whatsapp)
+    if (!candidates.length) return null
+    const sb = getSupabase()
+    const { data } = await sb.from('crm_tasks').select('id, whatsapp, done, created_at').order('created_at', { ascending: false }).limit(500)
+    const digits = (v: unknown) => String(v ?? '').replace(/\D/g, '')
+    const wanted = new Set(candidates.map(digits))
+    const match = (data ?? []).find((t) => wanted.has(digits(t.whatsapp)))
+    if (!match) return null
+    await deleteTaskAndArchive(match.id as string)
+    return match.id as string
+  } catch {
+    return null
+  }
+}
+
 export async function deleteTaskPermanent(taskId: string): Promise<void> {
   const sb = getSupabase()
+  // Take the documents with it. Deleting only the row left passports and bank
+  // statements sitting in storage with nothing pointing at them, so nobody
+  // could find them to remove them later (audit, 4 Sep). Same rule as
+  // markTaskDone: if the files cannot be deleted, the row STAYS, because the
+  // row is the only thing that knows where they are.
+  const task = await getTask(taskId)
+  if (task?.fileUrls?.length) {
+    const del = await deleteFiles(task.fileUrls)
+    if (!del.ok) {
+      console.error(`[deleteTaskPermanent] task ${taskId}: file deletion failed, keeping the row:`, del.error)
+      throw new Error(`documents could not be deleted (${del.error ?? 'storage error'}), so the task was kept`)
+    }
+  }
   const { error } = await sb.from('crm_tasks').delete().eq('id', taskId)
   if (error) throw error
   await logAudit('task.delete_permanent', taskId)

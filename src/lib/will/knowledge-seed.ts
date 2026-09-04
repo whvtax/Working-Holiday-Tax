@@ -67,6 +67,35 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "lang": "en"
   },
   {
+    "intent": "registered agent details",
+    "question": "Who is your registered tax agent? Can I have the name and TPB registration number?",
+    "examples": [
+      "Can you tell me the full name and TPB number of the registered tax agent lodging my return?",
+      "What is your tax agent number?",
+      "Are you registered with the Tax Practitioners Board?",
+      "Who actually lodges the return, are they licensed?"
+    ],
+    "answer": "Yes, absolutely! We operate under the supervision of a registered tax agent. You can find all the details, including the agent and registration, in our client agreement here: https://workingholidaytax.com.au/client-agreement",
+    "keywords": [
+      "tpb",
+      "registration",
+      "registered",
+      "agent",
+      "number",
+      "licence",
+      "license",
+      "practitioner",
+      "name",
+      "lodges",
+      "who"
+    ],
+    "tags": [
+      "objection",
+      "legitimacy"
+    ],
+    "lang": "en"
+  },
+  {
     "intent": "pricing",
     "question": "How much do you charge? Is it a flat fee or a percentage?",
     "examples": [
@@ -1699,5 +1728,115 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "keywords": ["deduct","take from refund","out of my refund","upfront","pay first","fee","before refund"],
     "tags": ["payment","objection","pricing"],
     "lang": "en"
+  },
+  {
+      "intent": "assess residency before lodging",
+      "question": "Can your registered tax agent assess whether I was an Australian tax resident (or the Addy case / UK treaty position) before my return is lodged?",
+      "examples": [
+          "Before I book or pay, can you confirm your agent can specifically assess whether I was a tax resident during this period?",
+          "Could the Australia UK treaty non discrimination principle from the Addy case apply to my return rather than the 15% working holiday maker rate?",
+          "I would like the residency position assessed before my return is lodged",
+          "I lived in the same place and worked for the same employer for five months, could I be treated as a resident instead of a WHM?"
+      ],
+      "answer": "Yes, that's exactly what our tax agent assesses as part of the review: your tax residency and whether the working holiday maker rate actually applies to you, based on your own circumstances, before anything is lodged.\n\nNothing gets lodged until that's been looked at properly.",
+      "keywords": [
+          "residency",
+          "resident",
+          "assess",
+          "assessed",
+          "addy",
+          "treaty",
+          "non",
+          "discrimination",
+          "whm",
+          "rate",
+          "15%",
+          "before",
+          "lodged",
+          "lodge",
+          "employer",
+          "same",
+          "accommodation",
+          "reconsider",
+          "uk",
+          "citizen"
+      ],
+      "tags": [
+          "tax-question",
+          "residency"
+      ],
+      "lang": "en"
+  },
+  {
+      "intent": "visa switch or tax bill mid year",
+      "question": "I switched from a working holiday visa to a bridging visa this year and now I have a large tax bill. Have you dealt with this before?",
+      "examples": [
+          "This tax year I switched from a WHV to a bridging visa waiting for visa 820 and my tax bill is $4,200",
+          "I changed visas during the year and now I owe tax, is something wrong?",
+          "Have you had experience with people switching between visas resulting in a large tax bill?",
+          "I did my taxes myself and it says I owe money"
+      ],
+      "answer": "Yes, we see this a lot. A visa change during the year can change how each part of the year is taxed, and that's exactly what our team reviews properly rather than leaving it to the automatic calculation.\n\nIf you'd like us to take it on, the next step is the option that suits you and we'll get started.",
+      "keywords": [
+          "visa",
+          "switched",
+          "switch",
+          "bridging",
+          "820",
+          "partner",
+          "tax",
+          "bill",
+          "owe",
+          "owing",
+          "large",
+          "changed",
+          "mid",
+          "year",
+          "experience",
+          "dealt"
+      ],
+      "tags": [
+          "tax-question",
+          "owing"
+      ],
+      "lang": "en"
+  },
+  {
+      "intent": "receipts and documents sent for deductions",
+      "question": "How do I claim work clothes and tools? Here are my receipts. Do I send them here or through the form?",
+      "examples": [
+          "How does it work with claiming work clothes expenses in your form, do I send them into this chat or the form online?",
+          "I've attached my receipts for boots, work pants and tools",
+          "Here are my invoices from Bunnings and Supercheap Auto for tools",
+          "Can I claim these? sending the receipts now"
+      ],
+      "answer": "Perfect, got them, they're on your file now. Either way works, here in the chat or through the form.\n\nOur team reviews what can be claimed as part of your return, so you don't need to work that out yourself.",
+      "keywords": [
+          "receipts",
+          "receipt",
+          "invoice",
+          "invoices",
+          "claim",
+          "claiming",
+          "clothes",
+          "clothing",
+          "boots",
+          "tools",
+          "work",
+          "expenses",
+          "deduction",
+          "deductions",
+          "send",
+          "attach",
+          "attached",
+          "chat",
+          "form"
+      ],
+      "tags": [
+          "documents",
+          "deductions"
+      ],
+      "lang": "en"
   }
 ];
+

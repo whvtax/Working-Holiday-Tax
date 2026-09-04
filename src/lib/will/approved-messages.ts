@@ -96,7 +96,11 @@ Once paid, send us a screenshot and we'll get started.`,
 
   followups_pre_payment: {
     h24: `Hi {{1}}, still want us to take a look at your tax situation? If anything about how the review works is unclear, just ask and I'll happily explain.`,
-    d3: `Hi {{1}}, the part most people miss on their own is what they're actually entitled to claim. That's exactly what our team goes through with you, and if you get a refund and it's less than the fee, we top up the difference.`,
+    // 4 Sep: this used to end with "if you get a refund and it's less than the
+    // fee, we top up the difference" — half the guarantee, without the owing
+    // half, in a message that is not the price message. The guarantee is stated
+    // once, in full, where the customer is about to pay, and nowhere else.
+    d3: `Hi {{1}}, the part most people miss on their own is what they're actually entitled to claim. That's exactly what our team goes through with you.`,
     d7: `Hi {{1}}, last message from me 😊 If you want your tax looked at later, just text me any time.`,
   },
 

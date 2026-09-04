@@ -13,7 +13,7 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang } from './i18n';
+import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -124,6 +124,10 @@ export function seedTemplates(): TemplateRow[] {
     // The reply proposed on a handoff task. A draft for a person, but "Send
     // Reply" transmits it word for word, so it is a sendable message.
     t('handoff_holding', 'Handoff suggestions', 'Handoff · holding reply (guard blocked, budget, stale draft)', APPROVED.handoff.holding),
+    // The same line per language (4 Sep): a German or Japanese customer waiting
+    // on a person was sent the English one mid-conversation.
+    ...(Object.keys(HANDOFF_HOLDING_MSG).filter((l) => l !== 'en') as (keyof typeof HANDOFF_HOLDING_MSG)[]).map((l) =>
+      t(`handoff_holding_${l}`, 'Handoff suggestions', `Handoff · holding reply (${l})`, HANDOFF_HOLDING_MSG[l])),
     t('handoff_attachment', 'Handoff suggestions', 'Handoff · customer sent a file Will cannot read', APPROVED.handoff.attachment),
     t('handoff_unreadable', 'Handoff suggestions', 'Handoff · voice note or unreadable message', APPROVED.handoff.unreadable),
     t('handoff_returning_customer', 'Handoff suggestions', 'Handoff · a previous customer wrote in again', APPROVED.handoff.returning_customer),
@@ -139,7 +143,10 @@ const LANG_LABELS: Record<Lang, string> = {
 
 /** Bumped whenever seedTemplates() gains an entry that existing installs need.
  *  Stored under the `templates_backfill` setting once applied. */
-export const TEMPLATE_BACKFILL_VERSION = '2026-08-31-review-request';
+// Bump this whenever new Library rows are added in code, or an existing install
+// never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
+// version was not bumped, so no live install ever got those rows).
+export const TEMPLATE_BACKFILL_VERSION = '2026-09-04-abn-and-holding-languages';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

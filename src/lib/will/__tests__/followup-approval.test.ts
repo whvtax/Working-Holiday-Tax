@@ -60,8 +60,12 @@ describe.each(FOLLOW_UPS)('follow-up %s', (_key, body) => {
 describe('the day-3 pre-payment nudge specifically', () => {
   const body = APPROVED.followups_pre_payment.d3.replace(/\{\{1\}\}/g, 'Marco');
 
-  test('mentions the refund guarantee and is still clean as a template', () => {
-    expect(body).toMatch(/top up the difference/i);
+  // 4 Sep: the nudge no longer carries "we top up the difference". That was half
+  // the guarantee (the refund half, without the owing half) in a message that is
+  // not the price message, and Jo's rule is that the guarantee is stated once, in
+  // full, where the customer is about to pay.
+  test('does NOT paraphrase the guarantee, and is still clean as a template', () => {
+    expect(body).not.toMatch(/top up the difference|refund the difference|less than the fee/i);
     // It does not trip REFUND_OR_CANCEL_PROMISE even as free-form, because the
     // sentence is in the approved corpus and is exempt at sentence level. The
     // window rule is the only thing standing between this draft and the

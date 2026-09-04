@@ -202,3 +202,15 @@ describe('normaliseWillText (both rules together)', () => {
     expect(out.startsWith('Hi,')).toBe(true);
   });
 });
+
+// 4 Sep: a greeting that stood alone on its line goes with the name on a
+// non-opening message; before, "Hi Helena!\n\nYes, ..." became "Hi, Yes, ...".
+describe('stripNameAddress and a greeting line of its own', () => {
+  const { stripNameAddress } = jest.requireActual('@/lib/will/text-normalize');
+  it('drops the whole greeting line', () => {
+    expect(stripNameAddress('Hi Helena!\n\nYes, that is part of the review.', 'Helena')).toBe('Yes, that is part of the review.');
+  });
+  it('keeps an inline greeting word', () => {
+    expect(stripNameAddress('Hi Helena, yes that is part of the review.', 'Helena')).toBe('Hi, yes that is part of the review.');
+  });
+});

@@ -9,7 +9,7 @@ import { runEngine, AiMode, EngineOutcome } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
 import { reconcileSchedule } from './scheduler';
-import { detectLanguage } from './i18n';
+import { detectLanguage, FORM_RECEIVED_MSG } from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut, fetchWaMedia } from './channel';
 import { AUTOPILOT_REPLY_DELAY_SECONDS } from './config';
@@ -280,6 +280,12 @@ async function handleIncomingInner(
       severity: 'REVIEW', newContext: text.slice(0, 200), suggestedReply: null,
     });
     await store.audit('policy_guard', 'identity_question_handoff', { customerId: customer.id });
+    // Cancel any Autopilot timer already armed for this customer. Without this
+    // the question could be the SECOND message of a burst: the timer fired two
+    // minutes later, the model saw "how much do you charge? / wait, am I
+    // talking to a bot?" as one text, and answered both, auto-sending exactly
+    // the answer this rule exists to prevent (audit, 4 Sep).
+    await store.cancelJobsFor(customer.id, ['AUTO_REPLY']).catch(() => 0);
     const c2 = await restartCadence(store, waId, customer);
     return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 };
   }
@@ -406,6 +412,9 @@ export interface DecideOpts {
   sendNow?: boolean;
   /** The customer's last-message time the deferred reply was armed on. */
   anchorAt?: string | null;
+  /** The AUTO_REPLY job this run belongs to, so the supersession check does not
+   *  read the run's own claimed row as a rival timer. */
+  jobId?: string;
 }
 
 export async function decideAndAct(
@@ -548,7 +557,7 @@ export async function decideAndAct(
   // an older version of the conversation. The newer message armed its own
   // timer, so drop this one rather than talk past them.
   if (opts.sendNow && outcome.kind === 'queued') {
-    if (await supersededByNewerTimer(store, customer.id)) {
+    if (await supersededByNewerTimer(store, customer.id, opts.jobId)) {
       await store.audit('assistant', 'auto_reply_superseded', { customerId: customer.id, anchorAt: opts.anchorAt ?? null });
       return { outcome: { kind: 'silent', decision: outcome.decision } };
     }
@@ -563,7 +572,22 @@ export async function decideAndAct(
     }
     const inc = inferIncome(outcome.replyText);
     if (inc) await store.updateCustomer(customer.id, { income: inc });
-    await deliverOut(customer, outcome.replyText, 'AI');
+    // deliverOut REPORTS a rejection, it does not throw. Discarding that made a
+    // throttled or refused autopilot send read as "· autopilot reply" on the
+    // tick while the customer got nothing (audit, 4 Sep). A rejection that
+    // deliverOut itself did not turn into a task (the retryable ones) becomes
+    // one here, with the text ready to send in a click.
+    const out = await deliverOut(customer, outcome.replyText, 'AI');
+    if (!out.ok) {
+      await store.audit('channel', 'auto_reply_send_failed', {
+        customerId: customer.id, error: out.error ?? 'unknown error',
+      }).catch(() => { /* the store is a likely thing to have just failed */ });
+      await raiseOrUpdateTask(store, customer, {
+        reason: `Will's reply was not delivered: ${out.error ?? 'WhatsApp rejected it'}. They are waiting with no answer.`,
+        severity: 'URGENT', newContext: text.slice(0, 200), suggestedReply: outcome.replyText,
+      }).catch(() => { /* never let the bookkeeping hide the failure */ });
+      return { outcome: { ...outcome, kind: 'human_task' } };
+    }
   } else if (outcome.kind === 'queued' && outcome.replyText) {
     // Autopilot with a human pause. The reply is finished and correct now, but
     // it does not leave for AUTOPILOT_REPLY_DELAY_SECONDS: an instant answer
@@ -666,10 +690,17 @@ export async function decideAndAct(
  *  inbound message too, and reading those as supersession dropped the reply
  *  with nothing to replace it, so the question was never answered (audit,
  *  3 Sep). Only a text arms a timer, so only a newer timer supersedes. */
-async function supersededByNewerTimer(store: Store, customerId: string): Promise<boolean> {
+async function supersededByNewerTimer(store: Store, customerId: string, selfJobId?: string): Promise<boolean> {
   try {
     const jobs = await store.listJobsForCustomer(customerId, ['AUTO_REPLY']);
-    return jobs.some((j) => j.status === 'SCHEDULED' && !!j.payload.debounce);
+    // CLAIMED counts too (audit, 4 Sep). Two ticks can run at once — the Vercel
+    // cron and the dashboard's own tick, or two warm instances — and each can
+    // claim one of two timers armed a moment apart. Looking only for SCHEDULED
+    // meant neither run saw the other, both called the model, and the customer
+    // got two replies to the same burst. `selfJobId` keeps a run from reading
+    // its own claimed row as a rival.
+    return jobs.some((j) => (j.status === 'SCHEDULED' || j.status === 'CLAIMED')
+      && !!j.payload.debounce && j.id !== selfJobId);
   } catch {
     return false; // a store hiccup must not silence a reply that is ready
   }
@@ -721,27 +752,50 @@ export async function armAutoReply(store: Store, customer: CustomerRow): Promise
  */
 export async function runDeferredAutoReply(
   customer: CustomerRow,
-  job: { payload: { anchorAt?: string | null }; createdAt?: string | null; runAt: string },
+  job: { id?: string; payload: { anchorAt?: string | null }; createdAt?: string | null; runAt: string },
 ): Promise<'sent' | 'superseded' | 'answered' | 'skipped' | 'decided'> {
   const store = getStore();
   const anchorAt = job.payload.anchorAt ?? null;
   if (customer.optedOut) return 'skipped';
-  if (await supersededByNewerTimer(store, customer.id)) {
+  if (await supersededByNewerTimer(store, customer.id, job.id)) {
     await store.audit('assistant', 'auto_reply_superseded', { customerId: customer.id, anchorAt });
     return 'superseded';
   }
   const msgs = await store.listMessages(customer.id);
   const since = anchorAt ? new Date(anchorAt).getTime() : new Date(job.createdAt ?? job.runAt).getTime();
-  const answered = msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT' && new Date(m.createdAt).getTime() >= since);
+  // "Somebody already answered this burst" — but only a REAL answer. A
+  // deterministic system line (the payment-received confirmation, the
+  // questionnaire acknowledgement, the review request) answers its own trigger,
+  // not the customer's question: "here you go, just paid, and how long until
+  // the money lands?" plus a screenshot used to end with only "Payment
+  // received", the question dropped silently with no task (audit, 4 Sep).
+  const SYSTEM_LINES = [APPROVED.payment_received, ...Object.values(FORM_RECEIVED_MSG)]
+    .map((t) => t.slice(0, 40).toLowerCase());
+  const isSystemLine = (body: string) => SYSTEM_LINES.some((p) => body.slice(0, 40).toLowerCase() === p);
+  const answered = msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT'
+    && new Date(m.createdAt).getTime() >= since && !isSystemLine(m.body ?? ''));
   if (answered) {
     await store.audit('assistant', 'auto_reply_already_answered', { customerId: customer.id, anchorAt });
     return 'answered';
   }
   const text = burstText(msgs);
   if (!text.trim()) return 'skipped';
+  // The owner's absolute rule, re-checked on the WHOLE burst: no answer to
+  // "am I talking to a bot?" may exist, not even as a draft. At ingest it is
+  // checked per message; here it is checked on everything the customer wrote
+  // in the window, so the question cannot ride in on a second message
+  // (audit, 4 Sep).
+  if (isIdentityQuestion(text)) {
+    await raiseOrUpdateTask(store, customer, {
+      reason: 'Customer asked whether they are talking to a bot, needs a human reply',
+      severity: 'REVIEW', newContext: text.slice(0, 200), suggestedReply: null,
+    });
+    await store.audit('policy_guard', 'identity_question_handoff', { customerId: customer.id, from: 'burst' });
+    return 'decided';
+  }
   const mode = resolveAiMode(await store.getSetting('ai_mode'));
   const killSwitch = (await store.getSetting('kill_switch')) === true;
-  const { outcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: mode === 'FULL_AUTO', anchorAt });
+  const { outcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: mode === 'FULL_AUTO', anchorAt, jobId: job.id });
   // The stage may have just moved (a price sent, a payment confirmed and the
   // form requested), and the follow-up cadence belongs to the NEW stage: a
   // customer who was just asked for the form needs the form reminders, not
@@ -1066,7 +1120,10 @@ async function handlePaymentProofMediaInner(
   // Checked BEFORE the download, so it also covers the case where the media
   // fetch itself fails — the customer's word does not depend on us being able
   // to read their picture.
-  const said = claimsPayment(meta.media.caption) || claimsPayment(body);
+  // The attachment is right here, so the caption is read with the lower bar:
+  // "here you go" under a receipt is a payment report (Jo, 4 Sep).
+  const said = claimsPayment(meta.media.caption, { hasAttachment: true })
+    || claimsPayment(body, { hasAttachment: true });
   if (said) {
     await store.audit('system', 'payment_claimed_in_words', {
       customerId: customer.id, from: meta.media.caption ? 'caption' : 'body',
@@ -1152,6 +1209,37 @@ async function handlePaymentProofMediaInner(
     customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,
     meta: { media: meta.media },
   });
+
+  // ── A PICTURE THAT DOES NOT SHOW OUR PAYMENT IS NOT A PAYMENT ────────────
+  //
+  // Jo, 3 Sep: a screenshot showing our fee, to our account, completed, is
+  // approved automatically and raises no task. The other half of that rule was
+  // missing (audit, 4 Sep): a picture showing $150, or a transfer still
+  // PENDING, or a recipient that is not visible, was also auto-confirmed —
+  // the customer was moved to Paid and told "Payment received" for money that
+  // had not arrived.
+  //
+  // The customer's WORD still moves them (that is the trust rule and it stays).
+  // What is refused here is the picture DECIDING it on its own when the picture
+  // itself says something different. Nothing is lost: the message is in the
+  // thread, the task says exactly what the screenshot showed, and one click
+  // sends the confirmation if Jo recognises the payment.
+  // Only when the picture was actually READ and contradicts our payment. A
+  // proof the model recognised but could not break down (no structured details
+  // at all) keeps the old behaviour: trusted, with the heads-up task.
+  if (!said && check.details && !verification.verified) {
+    await store.addTask({
+      customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
+      reason: `Payment screenshot does not match: ${shown ?? 'nothing could be read off it'}. Nothing has been sent and they have NOT been moved to Paid.`,
+      severity: 'REVIEW',
+      context: `${body}\n\nWhat the screenshot showed: ${shown ?? 'unreadable'}.\nWhy it was not accepted: ${verification.unverified.join('; ')}.\nIf this is a real payment, mark them Paid and the confirmation goes out.`,
+      suggestedReply: null,
+    });
+    await store.audit('system', 'payment_proof_not_accepted', {
+      customerId: customer.id, shown: shown ?? null, unverified: verification.unverified,
+    });
+    return (await store.getCustomerByWaId(waId)) ?? customer;
+  }
 
   // Same rule as every other AI-authored reply: SUPERVISED means nothing
   // reaches the customer, and nothing about the pipeline moves, until the

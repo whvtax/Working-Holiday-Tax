@@ -74,10 +74,45 @@ export async function notifyFormReceived(
   /** Email from the same submission. Not proof of identity, but recorded so a
    *  mismatch can be reconciled by a human afterwards. */
   email?: string | null,
+  /** WHICH form was submitted. Only the tax-return questionnaire is "the
+   *  questionnaire" (Jo; migration 038 fixed the same thing on the DB trigger
+   *  and this is the app-side half, audit 4 Sep). A super / TFN / ABN
+   *  application is a different service: it must never mark the questionnaire
+   *  complete, never stop the questionnaire reminders and never send "we've
+   *  received your questionnaire". It is recorded and nothing else. */
+  formKind: 'tax-return' | 'super' | 'tfn' | 'abn' = 'tax-return',
 ): Promise<{ matched: boolean }> {
   try {
     const customer = await findCustomerByPhone(waNumber);
-    if (!customer) return { matched: false };
+    if (!customer) {
+      // A submission whose phone does not match any WhatsApp customer used to
+      // vanish here: nothing recorded, and the questionnaire reminders kept
+      // chasing a customer who had already sent it in (typically a number typed
+      // in a national format the matcher does not build a candidate for, e.g.
+      // a UK 07... number). It is now a task with the number on it, so a person
+      // can link the two in one click.
+      try {
+        const store = getStore();
+        await store.audit('system', 'form_received_unmatched', { waNumber, formKind });
+        if (formKind === 'tax-return') {
+          await store.addTask({
+            customerId: null,
+            customerName: null,
+            reason: 'Questionnaire submitted by a number that matches no WhatsApp chat',
+            severity: 'REVIEW',
+            context: `The website questionnaire was submitted with the phone number "${waNumber}"${email ? ` and the email ${email}` : ''}, and no WhatsApp customer has that number. Find the customer in the CRM and mark their form complete by hand, otherwise the form reminders keep chasing them.`,
+            suggestedReply: null,
+          });
+        }
+      } catch { /* the form must never fail because the CRM link failed */ }
+      return { matched: false };
+    }
+    if (formKind !== 'tax-return') {
+      await getStore().audit('system', 'other_form_received', {
+        customerId: customer.id, formKind, state: customer.state,
+      });
+      return { matched: true };
+    }
 
     const store = getStore();
 

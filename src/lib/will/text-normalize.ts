@@ -217,7 +217,12 @@ export function stripNameAddress(input: string | null | undefined, firstName: st
   if (!n) return String(input);
   let s = String(input);
   // "Hi Daniel," / "Hey Daniel!" / "Hello Daniel" -> keep the greeting, drop name.
-  s = s.replace(new RegExp('^(\\s*)(hi|hey|hello|hiya|dear)\\s+' + n + '\\b[\\s!,.]*', 'i'), '$1$2, ');
+  // A greeting that stood ALONE on its line ("Hi Daniel!\n\nYes, ...") goes
+  // with the name: a bare "Hi," line on a non-opening message is not something
+  // a person writes, and gluing it to the next line gave "Hi, Yes, that is..."
+  // (4 Sep). An inline greeting keeps its word: "Hi Daniel, yes" -> "Hi, yes".
+  s = s.replace(new RegExp('^(\\s*)(hi|hey|hello|hiya|dear)\\s+' + n + '\\b[ \\t!,.]*(?:\\r?\\n)+\\s*', 'i'), '$1');
+  s = s.replace(new RegExp('^(\\s*)(hi|hey|hello|hiya|dear)\\s+' + n + '\\b[ \\t!,.]*', 'i'), '$1$2, ');
   // Leading vocative: "Daniel, ..." -> "..."
   s = s.replace(new RegExp('^(\\s*)' + n + '\\s*[,!]\\s*', 'i'), '$1');
   // Trailing vocative: "... , Daniel." / "... Daniel!" at the very end -> drop name.

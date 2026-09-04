@@ -409,13 +409,18 @@ export default function DashboardClient() {
   // Same, but for archive view (which can grow to 500k+)
   const [archiveSearchResults, setArchiveSearchResults] = useState<Client[]|null>(null)
 
+  // A failed read used to be invisible: the poll swallowed it, the list stayed
+  // as it was and nothing on screen said the data was stale (audit, 4 Sep).
+  const [loadError, setLoadError] = useState<string|null>(null)
+
   const loadTasks   = useCallback(async()=>{
     try {
       const r=await fetchWithTimeout(`/api/crm/tasks?limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
       if(r.status===401){ window.location.replace('/crm'); return }
       const d=await r.json()
-      if(d.ok) { setTasks(d.tasks); setTasksTotal(d.total ?? d.tasks.length) }
-    } catch(e){ console.error('[loadTasks]',e) }
+      if(d.ok) { setTasks(d.tasks); setTasksTotal(d.total ?? d.tasks.length); setLoadError(null) }
+      else setLoadError('Could not load the tasks just now. What you see may be out of date.')
+    } catch(e){ console.error('[loadTasks]',e); setLoadError('Could not reach the server. What you see may be out of date.') }
   },[])
 
   const loadMoreTasks = useCallback(async()=>{
@@ -441,8 +446,9 @@ export default function DashboardClient() {
         prevClientsCountRef.current = newCount
         setClients(d.clients)
         setClientsTotal(d.total ?? d.clients.length)
-      }
-    } catch(e){ console.error('[loadClients]',e) }
+        setLoadError(null)
+      } else setLoadError('Could not load the clients just now. What you see may be out of date.')
+    } catch(e){ console.error('[loadClients]',e); setLoadError('Could not reach the server. What you see may be out of date.') }
   },[])
 
   const loadMoreClients = useCallback(async()=>{
@@ -723,16 +729,19 @@ export default function DashboardClient() {
     }
     const id = doneFor.id
     closeDone()
-    await finishTask(id)
+    // The same figure that just went to the customer is recorded on the task,
+    // so the client card built from it carries the refund instead of $0
+    // (audit, 4 Sep).
+    await finishTask(id, amount)
   }
 
-  async function finishTask(id:string) {
+  async function finishTask(id:string, refundAmount?:number) {
     const prevTasks = tasks
     setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], reviewerNote:''} : t))
     setActiveTask(null)
     setTaskView('list')
     try {
-      const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
+      const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done', refundAmount})})
       if (!res.ok) throw new Error('server_error')
     } catch (err) {
       console.error('[finishTask]', err)
@@ -1304,7 +1313,10 @@ export default function DashboardClient() {
     return () => { cancelled = true }
   }, [doneTasks])
   async function sendSignatureFromCard(taskId: string, willId: string, name: string) {
-    if (!confirm(`Send the "your tax return is ready for signature" message to ${name}?`)) return
+    // Jo, 4 Sep: no confirm. The button says what it does and the card shows
+    // "Sent" straight after, so the extra dialog was one click of friction on
+    // the action he presses most. `name` is kept for the failure alert.
+    void name
     setSigBusy(taskId)
     try {
       const r = await fetch('/api/will/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_signature',customerId:willId})})
@@ -1451,6 +1463,15 @@ export default function DashboardClient() {
       />
 
       <main>
+
+          {/* A read that failed says so, instead of the list quietly going stale
+              or emptying itself (audit, 4 Sep). */}
+          {loadError && (
+            <div role="status" style={{margin:'8px 12px',padding:'8px 12px',borderRadius:8,background:'#fdecea',color:'#8a1c12',fontSize:13,display:'flex',alignItems:'center',gap:10}}>
+              <span style={{flex:1}}>{loadError}</span>
+              <button onClick={()=>{ setLoadError(null); loadTasks(); loadClients() }} style={{border:'1px solid #8a1c12',background:'transparent',color:'#8a1c12',borderRadius:6,padding:'3px 10px',cursor:'pointer'}}>Try again</button>
+            </div>
+          )}
 
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (

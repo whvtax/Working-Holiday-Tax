@@ -76,6 +76,7 @@ const BRIDGE: Record<string, string[]> = {
   monate: ['few months', 'part year'], meses: ['few months', 'part year'], mois: ['few months', 'part year'], mesi: ['few months', 'part year'],
   telefon: ['phone'], anruf: ['phone'], anrufen: ['phone'], llamada: ['phone'], llamar: ['phone'], telefono: ['phone'], appel: ['phone'], appeler: ['phone'], telefonata: ['phone'], chiamare: ['phone'], ligar: ['phone'], ligacao: ['phone'],
   freund: ['friend'], freundin: ['friend'], amigo: ['friend'], amiga: ['friend'], ami: ['friend'], amie: ['friend'], amico: ['friend'], amica: ['friend'],
+  registrierung: ['registration', 'registered'], registrierungsnummer: ['registration', 'number', 'tpb'], registriert: ['registered'], lizenz: ['licence'], zugelassen: ['registered', 'licence'], registro: ['registration', 'registered'], registrado: ['registered'], licencia: ['licence'], enregistrement: ['registration'], enregistre: ['registered'], registrazione: ['registration'], registrato: ['registered'], registado: ['registered'], registo: ['registration'], numero: ['number'], nummer: ['number'], name: ['name'], nombre: ['name'], nom: ['name'], nome: ['name'],
   steuerberater: ['agent', 'accountant'], buchhalter: ['agent', 'accountant'], contador: ['agent', 'accountant'], contable: ['agent', 'accountant'], comptable: ['agent', 'accountant'], commercialista: ['agent', 'accountant'], contabilista: ['agent', 'accountant'],
   krankenversicherung: ['medicare', 'levy'], sanidad: ['medicare', 'levy'], sante: ['medicare'], sanita: ['medicare'], saude: ['medicare'],
   befreiung: ['exemption'], exencion: ['exemption'], esenzione: ['exemption'], isencao: ['exemption'],
@@ -108,7 +109,7 @@ const JA_BRIDGE: [string, string[]][] = [
   ['スーパー', ['super', 'superannuation']], ['年金', ['super', 'superannuation', 'pension']], ['退職年金', ['super', 'superannuation']],
   ['収入', ['income']], ['所得', ['income']], ['経費', ['expenses', 'deduction']], ['控除', ['claim', 'deduction']], ['領収書', ['receipts']], ['レシート', ['receipts']],
   ['制服', ['uniform']], ['工具', ['tools']], ['去年', ['previous', 'years', 'prior']], ['前年', ['previous', 'years', 'prior']], ['過去', ['previous', 'years']], ['年度', ['financial year']], ['数ヶ月', ['few months', 'part year']], ['数か月', ['few months', 'part year']],
-  ['電話', ['phone']], ['友達', ['friend']], ['友人', ['friend']], ['会計士', ['agent', 'accountant']], ['税理士', ['agent', 'accountant']],
+  ['電話', ['phone']], ['友達', ['friend']], ['友人', ['friend']], ['会計士', ['agent', 'accountant']], ['税理士', ['agent', 'accountant', 'registered']], ['登録番号', ['registration', 'number', 'tpb']], ['登録', ['registered', 'registration']], ['ライセンス', ['licence']], ['資格', ['licence', 'registered']],
   ['メディケア', ['medicare', 'levy']], ['免除', ['exemption']], ['なぜ', ['why']], ['どうして', ['why']], ['いつ', ['when']], ['必要', ['need']],
   ['配達', ['delivery', 'driver']], ['ウーバー', ['uber', 'delivery']], ['個人事業', ['sole', 'trader', 'abn']], ['フリーランス', ['sole', 'trader', 'abn']], ['請求書', ['invoices']], ['インボイス', ['invoices']],
 ];
