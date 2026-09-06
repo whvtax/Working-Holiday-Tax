@@ -9,7 +9,6 @@ import { runEngine, AiMode, EngineOutcome } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
-import { maybeAutoOffWill } from './review-auto-off';
 import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, formReceivedMessage, formReceivedTemplateKey, isPaymentReceivedDraft } from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut, fetchWaMedia } from './channel';
@@ -550,14 +549,6 @@ async function sendOwedFormAck(store: Store, customer: CustomerRow, text: string
   await store.audit('system', out.ok ? 'form_ack_sent_after_abn' : 'form_ack_failed_after_abn', {
     customerId: customer.id, error: out.ok ? undefined : out.error, answered: text.slice(0, 120),
   });
-  if (out.ok) {
-    // The ABN answers just genuinely went through — if they had already
-    // reached Review and Medicare (if owed) had already sent, this is the
-    // piece that was missing, so re-check now rather than waiting for
-    // another trigger that may never come (Jo, 6 Sep).
-    const fresh = await store.getCustomerById(customer.id);
-    if (fresh) await maybeAutoOffWill(store, fresh).catch(() => { /* best effort */ });
-  }
 }
 
 /** Customer text quoted into the profile block: prompt structure stripped, and

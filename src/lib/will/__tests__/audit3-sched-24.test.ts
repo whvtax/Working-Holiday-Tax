@@ -63,12 +63,11 @@ describe('before payment, form-link remembers the "No"', () => {
     expect(store.setSetting).not.toHaveBeenCalled();
   });
 
-  it('after payment the normal path still queues it directly, and only records that the exemption applies (Jo, 6 Sep: needed so the auto-off-at-Review check can tell "applies" from "not applicable")', async () => {
+  it('after payment the normal path still queues it directly, no setting involved', async () => {
     Object.assign(customer, { state: 'FORM_PENDING', paid: true });
     await notifyFormReceived('61400000001', 'a@b.c', 'tax-return', 'No');
     expect(medicareJobs()).toHaveLength(1);
-    expect(store.setSetting).toHaveBeenCalledWith('medicare_applies:c1', true);
-    expect(store.setSetting).not.toHaveBeenCalledWith(medicareNoKey('c1'), expect.anything());
+    expect(store.setSetting).not.toHaveBeenCalled();
   });
 });
 
@@ -101,6 +100,6 @@ describe('the FORM_RECEIVED handler replays it', () => {
 
   it('the 15 minute spacing is the one form-link uses', () => {
     expect(MEDICARE_DELAY_MS).toBe(15 * 60 * 1000);
-    expect(scheduler).toMatch(/import \{ medicareNoKey, medicareInfoSentKey, MEDICARE_DELAY_MS \} from '\.\/form-link'/);
+    expect(scheduler).toMatch(/import \{ medicareNoKey, MEDICARE_DELAY_MS \} from '\.\/form-link'/);
   });
 });

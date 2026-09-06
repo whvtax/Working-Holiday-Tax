@@ -19,8 +19,7 @@ import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
 import { runLostLeadAnalysis } from './lost-analysis';
-import { medicareNoKey, medicareInfoSentKey, MEDICARE_DELAY_MS } from './form-link';
-import { maybeAutoOffWill } from './review-auto-off';
+import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
 // One open task per customer (audit, 5 Sep): every task the scheduler raises
 // for a customer goes through the shared fold, so a repeat of the same failure
 // grows the open card instead of adding one per step. Same reason, severity
@@ -960,16 +959,7 @@ async function doProcess(): Promise<TickResult> {
             const out = await deliverOut(customer, body, 'AI', { waTemplate: medicareTemplate }, medicareTemplate);
             if (out.ok) {
               await store.audit('system', 'medicare_info_sent', { customerId: customer.id });
-              // Genuinely delivered (deliverOut reported ok), not merely queued
-              // or awaiting approval — the one signal the auto-pause-at-Review
-              // check (Jo, 6 Sep) is allowed to trust.
-              await store.setSetting(medicareInfoSentKey(customer.id), true);
               result.sent.push(`${customer.name ?? customer.waId} · Medicare exemption`);
-              // The exemption message just genuinely went out — if the customer
-              // had already reached Review and the ABN answers (if owed) were
-              // already in, this was the missing piece (Jo, 6 Sep).
-              const fresh = await store.getCustomerById(customer.id);
-              if (fresh) await maybeAutoOffWill(store, fresh).catch(() => { /* best effort */ });
             } else {
               await raiseOrUpdateTask(store, customer, {
                 reason: `The Medicare exemption message was not delivered: ${out.error ?? 'WhatsApp rejected it'}. If it needs the approved template, create "${medicareKey}" in WhatsApp Manager (no variables) and it sends itself next time.`,

@@ -9,7 +9,6 @@ import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerS
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES, paymentReceivedBody } from '@/lib/will/service';
 import { paymentReceivedTemplateKey } from '@/lib/will/i18n';
 import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
-import { maybeAutoOffWill } from '@/lib/will/review-auto-off';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
@@ -25,6 +24,7 @@ import { stateAfterEstimate, composeEstimate } from '@/lib/will/estimate-send';
 // send_task_reply already fixed at getTaskById, above (audit3, 5 Sep).
 import { afterHumanReplyIndexed as afterHumanReply } from '@/lib/will/after-reply';
 import { applyFormReceived, parseUnmatchedFormTask } from '@/lib/will/form-link';
+import { pauseWillOnCrmOpen } from '@/lib/will/review-auto-off';
 import { explainSendError, describeViolations } from '@/lib/will/send-errors';
 import { faultDismissedKey } from '@/lib/will/system-report';
 
@@ -851,10 +851,17 @@ async function handlePost(req: Request) {
       await store.audit('owner', 'task_resolved', { id: b.id, customerId: resolvedFor });
       return NextResponse.json({ ok: true });
 
-    case 'mark_read':
+    case 'mark_read': {
       if (!b.id) return bad('id required');
       await store.markCustomerRead(b.id);
+      // Opening the chat is Jo taking the wheel (Jo, 6 Sep): Will switches
+      // off for this customer right here, every time, no matter the stage.
+      // Reuses aiPaused, so the manual Take Over / Resume Will toggle keeps
+      // working exactly as before on top of this.
+      const opened = await store.getCustomerById(b.id);
+      if (opened) await pauseWillOnCrmOpen(store, opened).catch(() => { /* best effort: mark_read itself must not fail */ });
       return NextResponse.json({ ok: true });
+    }
 
     case 'delete_customer': {
       // Permanently remove a chat/customer and everything tied to it (messages,
@@ -1000,10 +1007,6 @@ async function handlePost(req: Request) {
       }
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
-      // Reaching Review with the questionnaire, ABN (if owed) and Medicare
-      // (if owed) all genuinely done switches Will off for this customer for
-      // good (Jo, 6 Sep) — see review-auto-off.ts for the exact condition.
-      if (fresh) await maybeAutoOffWill(store, fresh).catch(() => { /* best effort: the stage move itself must not fail */ });
       return NextResponse.json({ ok: true });
     }
 
