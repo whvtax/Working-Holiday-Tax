@@ -39,7 +39,16 @@ const REAL = {
   form: [6 * 3600, 3 * 86400, 7 * 86400],
   signature: [sig(1), sig(3), sig(7)],
   autoCloseAfterFinal: 7 * 86400,
-  quietHours: { start: 6, end: 24, tz: 'Australia/Sydney' },
+  // THE EVENING WINDOW (Jo, 4 Sep). Follow-ups go out between 7pm and 11pm only.
+  // These are backpackers: during the day they are on a farm, in a cafe or on a
+  // site, and a nudge that lands at 9am is read at a bad moment and dismissed.
+  // In the evening they are on the phone. Anything due before 7pm waits for 7pm;
+  // anything due after 11pm waits for 7pm the next day.
+  //
+  // This gates FOLLOW-UPS ONLY. A reply to somebody who just wrote, a payment
+  // confirmation, the questionnaire acknowledgement and the review request are
+  // answers to something the customer did, and they go when they go.
+  quietHours: { start: 19, end: 23, tz: 'Australia/Sydney' },
   enforceQuietHours: true,
 };
 
@@ -157,29 +166,58 @@ export function formatAUD(cents: number): string {
  *  Approval mode is unaffected: there the owner's click is the delay. */
 export const AUTOPILOT_REPLY_DELAY_SECONDS = 120;
 
+/**
+ * How long THIS particular reply waits: the delay above, with a human amount of
+ * scatter on top.
+ *
+ * WHY (Jo, 4 Sep, Nicky +44 7794). She asked "just checking I'm speaking to
+ * someone, not an AI chat bot?" after three exchanges. One of the things that
+ * gave it away was the metronome: 6 minutes, then 4 minutes, then 6 minutes,
+ * every time, whatever the message. Nobody answers like that. A person replies
+ * in one minute, then in forty, then when they get back to their desk.
+ *
+ * So each reply picks its own wait, anywhere between two and ten minutes (Jo,
+ * 4 Sep). The floor stays at two minutes because an instant answer reads as a
+ * machine; the ceiling is ten because past that a customer who is sitting there
+ * waiting starts to feel ignored.
+ *
+ * The scatter is per reply, not per customer: the same person waiting twice
+ * gets two different gaps, which is the whole idea.
+ */
+export function autopilotReplyDelaySeconds(rand: () => number = Math.random): number {
+  const base = AUTOPILOT_REPLY_DELAY_SECONDS;   // 2 minutes, the floor
+  const ceiling = 10 * 60;                      // 10 minutes, Jo's ceiling (4 Sep)
+  return Math.round(base + rand() * (ceiling - base));
+}
+
+/** Is a FOLLOW-UP allowed to leave right now? (The evening window; see the
+ *  quietHours note in REAL above.) Nothing else consults this. */
 export function withinQuietHours(now = new Date()): boolean {
   const cfg = schedulerConfig();
   if (!cfg.enforceQuietHours) return true;
-  const hour = parseInt(
-    new Intl.DateTimeFormat('en-AU', { hour: 'numeric', hour12: false, timeZone: cfg.quietHours.tz }).format(now),
-    10,
-  );
-  return hour >= cfg.quietHours.start && hour < cfg.quietHours.end;
+  const { hh } = localParts(cfg.quietHours.tz, now);
+  return hh >= cfg.quietHours.start && hh < cfg.quietHours.end;
 }
 
-/** Next opening of the send window (e.g. 06:00) in the configured timezone. */
+/**
+ * The next moment a follow-up may go out: the start of the evening window in
+ * the business's own timezone.
+ *
+ * Computed as a WALL-CLOCK time in that timezone (localTimeUtc), not by adding
+ * hours to the server clock. The old version did `d.setHours(...)`, which is
+ * the SERVER's hours: on Vercel that is UTC, so "defer to 7pm" actually meant
+ * 7pm UTC, which is 5am in Melbourne (audit, 4 Sep). Every deferred follow-up
+ * would have landed in the middle of the night.
+ */
 export function deferToMorning(now = new Date()): Date {
   const cfg = schedulerConfig();
   if (!cfg.enforceQuietHours) { const d = new Date(now); d.setMinutes(d.getMinutes() + 1); return d; }
-  const startHour = cfg.quietHours.start;
-  // Current hour in the target tz.
-  const hourNow = parseInt(new Intl.DateTimeFormat('en-AU', { hour: 'numeric', hour12: false, timeZone: cfg.quietHours.tz }).format(now), 10);
-  const d = new Date(now);
-  // Advance to the next start hour. If we're already at/after it but out of window
-  // (i.e. after end), roll to tomorrow's start.
-  let hoursToAdd = (startHour - hourNow + 24) % 24;
-  if (hoursToAdd === 0) hoursToAdd = 24;
-  d.setHours(d.getHours() + hoursToAdd, 0, 0, 0);
-  return d;
+  const tz = cfg.quietHours.tz;
+  const { y, mo, da, hh } = localParts(tz, now);
+  // Before the window opens today -> today at the opening hour.
+  // At or after it (so either inside, which does not call this, or past the
+  // end) -> tomorrow at the opening hour.
+  const day = hh < cfg.quietHours.start ? da : da + 1;
+  return localTimeUtc(tz, y, mo, day, cfg.quietHours.start);
 }
 

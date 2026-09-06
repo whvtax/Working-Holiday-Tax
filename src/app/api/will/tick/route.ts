@@ -1,7 +1,7 @@
 // Scheduler heartbeat. The dashboard calls this every ~15s while open;
 // in production any external cron can hit it too. Idempotent.
 import { NextResponse } from 'next/server';
-import { cronAuthorized } from '@/lib/will/auth';
+import { cronAuthorized, cronAuthMethod } from '@/lib/will/auth';
 import { processDueJobs, ensureNightly, ensureDailyDigest, backfillFollowupSchedules } from '@/lib/will/scheduler';
 import { backfillMissingTemplates, backfillKnowledgePack } from '@/lib/will/seed';
 import { getStore } from '@/lib/will/store';
@@ -15,6 +15,15 @@ export const maxDuration = 60;
 
 export async function GET() {
   if (!(await cronAuthorized())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
+  // (audit, 5 Sep) last_tick_at (set at the end of processDueJobs) is written on
+  // EVERY authorised tick, including the dashboard's own 15s keepalive call, so
+  // it cannot tell a live Vercel cron from an open browser tab. Record a second,
+  // narrower heartbeat only when a real cron secret (not a session) authorised
+  // this call, so the health dot can see the cron specifically stop.
+  const authMethod = await cronAuthMethod();
+  if (authMethod === 'cron_secret' || authMethod === 'will_cron_secret') {
+    await getStore().setSetting('last_cron_tick_at', new Date().toISOString()).catch(() => {});
+  }
   // The Library is only seeded when it is completely empty, so a message added
   // to the seed after the first deploy would never reach a live install. This
   // adds the missing entries exactly once (recorded in settings) so every

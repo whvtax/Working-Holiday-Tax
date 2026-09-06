@@ -45,11 +45,19 @@ export interface ScheduledFollowUp {
 export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
-  const [jobs, customers, templates] = await Promise.all([
-    store.listJobs(),
-    store.listCustomers(),
+  // Only the live queue and only the customers it reaches. This used to be
+  // listJobs() + listCustomers() filtered in JS: will_jobs is never purged, so
+  // every 20 s poll of this view paged the entire job history (every DONE
+  // auto-reply timer, every CANCELLED deferral) plus every customer to find a
+  // few hundred rows, and once a response took longer than the poll the
+  // requests piled up. The rows returned are identical (audit, 5 Sep).
+  const [jobs, templates] = await Promise.all([
+    store.listScheduledFollowUps(),
     store.listTemplates(),
   ]);
+  const customers = await store.listCustomersByIds(
+    jobs.map((j) => j.customerId).filter((id): id is string => !!id),
+  );
 
   // Status of the one-time retro that reconciled every existing chat, so the CRM
   // can show whether it has finished going over all the chats and when.

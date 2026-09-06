@@ -2,9 +2,9 @@
 // actually exercised, not assumed. Red dot = something is truly broken.
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
-import { getStore, getLastPersistError } from '@/lib/will/store';
+import { getStore, getLastPersistError, clearLastPersistError } from '@/lib/will/store';
 import { policyGuard } from '@/lib/will/policy-guard';
-import { verifyChannel, metaAppSecret, metaVerifyToken } from '@/lib/will/channel';
+import { verifyChannel, verifyTemplates, metaAppSecret, metaVerifyToken } from '@/lib/will/channel';
 import { resolveAiMode } from '@/lib/will/mode';
 import { schedulerConfig } from '@/lib/will/config';
 
@@ -27,7 +27,17 @@ export async function GET() {
     // countCustomers is a head-only count: same answer, none of the payload.
     await store.countCustomers();
     const persistErr = getLastPersistError();
-    checks.store = { ok: !persistErr, detail: persistErr ? 'write error' : 'ok' };
+    // (audit, 5 Sep) Used to be `'write error'` with no text, and the flag was
+    // only ever cleared by a successful createCustomer — so a single stray
+    // read error (not even a write) turned this dot red with no clue why, and
+    // it stayed red on this instance until an unrelated customer signed up.
+    // The round-trip just above IS a fresh reachability check, so a pass here
+    // proves the store works right now; report the real error text once, then
+    // clear it so the next poll is not stuck showing history as if it were live.
+    checks.store = persistErr
+      ? { ok: false, detail: `last error seen on this instance: ${persistErr}` }
+      : { ok: true, detail: 'ok' };
+    if (persistErr) clearLastPersistError();
   } catch {
     checks.store = { ok: false, detail: 'unreachable' };
   }
@@ -122,6 +132,37 @@ export async function GET() {
     checks.scheduler = { ok: false, detail: 'error' };
   }
 
+  // (audit, 5 Sep) The scheduler dot above only proves SOME authorised tick ran
+  // recently, and the tick route accepts either a real Vercel cron secret or the
+  // dashboard's own open-tab session — so that dot stayed green all day purely
+  // from an operator's browser polling every 15s, even if the actual cron job
+  // had stopped firing (wrong plan, rotated secret, removed vercel.json entry,
+  // deploy protection). last_cron_tick_at is written by the tick route ONLY when
+  // a cron secret (not a session) authorised the call, so this checks the real
+  // schedule, independent of whether a tab happens to be open right now.
+  try {
+    const store = getStore();
+    const rawCron = await store.getSetting('last_cron_tick_at');
+    const lastCronTick = Date.parse(typeof rawCron === 'string' ? rawCron : '');
+    const cronFresh = Number.isFinite(lastCronTick) && Date.now() - lastCronTick < 15 * 60 * 1000;
+    // Only meaningful once a cron secret is actually configured (checks.cron
+    // below already goes red with no secret at all) and only in production —
+    // in dev nobody expects an external cron to be hitting this.
+    const cronSecretConfigured = !!(process.env.CRON_SECRET || process.env.WILL_CRON_SECRET);
+    checks.cronTick = {
+      ok: !cronSecretConfigured || process.env.NODE_ENV !== 'production' || cronFresh,
+      detail: cronFresh
+        ? 'the Vercel cron itself has ticked recently'
+        : Number.isFinite(lastCronTick)
+          ? `THE VERCEL CRON HAS NOT RUN since ${new Date(lastCronTick).toISOString()} — the open dashboard tab is doing the scheduling; follow-ups will stop when it closes.`
+          : (cronSecretConfigured && process.env.NODE_ENV === 'production'
+            ? 'THE VERCEL CRON HAS NEVER RUN — the open dashboard tab is doing the scheduling; follow-ups will stop when it closes.'
+            : 'not checked (no cron secret configured, or not production)'),
+    };
+  } catch {
+    checks.cronTick = { ok: false, detail: 'error' };
+  }
+
   // REL-04: the Vercel cron authorizes /api/will/tick with CRON_SECRET. If it is
   // unset in production the cron silently 401s and the scheduler never runs, so
   // surface it as RED rather than letting follow-ups quietly stop.
@@ -170,6 +211,28 @@ export async function GET() {
     checks.whatsapp = { ok: true, detail: `connected & ${wa.detail}` };
   }
 
+  // Templates: do the ~20 Meta template names the code sends actually exist,
+  // and are they approved with the right number of variables?
+  //
+  // (audit, 5 Sep) Until now nothing asked. The first sign that fu_form_3d was
+  // never created, or that estimate_invoice was approved with one variable
+  // instead of two, or that Meta paused fu_pre_24h, was a failed send to a
+  // real customer at 7pm and a raw error task. This dot shows the gap first.
+  // Only a problem that WILL fail a send goes red (a required template
+  // missing, nothing approved, wrong variable count); a missing optional
+  // template is sent as text inside the window by design and only shows in
+  // the tooltip. Same 5 minute cache as the WhatsApp check. Sending is not
+  // touched.
+  let templates: Awaited<ReturnType<typeof verifyTemplates>> | null = null;
+  if (wa.configured && wa.live) {
+    try {
+      templates = await verifyTemplates();
+      checks.templates = { ok: templates.ok, detail: templates.detail };
+    } catch (e) {
+      checks.templates = { ok: false, detail: `template check failed: ${(e as Error).message.slice(0, 120)}` };
+    }
+  }
+
   const killSwitch = ((await getStore().getSetting('kill_switch').catch(() => false)) === true);
   // The dashboard used to show whichever mode was last clicked in that browser
   // tab, which was not necessarily the mode the system was actually in. It now
@@ -181,5 +244,10 @@ export async function GET() {
     whatsappLive: wa.live && webhookSecretsSet,
     whatsappConfigured: wa.configured,
     whatsappDetail: checks.whatsapp.detail,
+    templates: templates && {
+      ok: templates.ok, checked: templates.checked, missing: templates.missing,
+      missingOptional: templates.missingOptional, notApproved: templates.notApproved,
+      paramMismatch: templates.paramMismatch, approvedLanguages: templates.approvedLanguages,
+    },
   });
 }

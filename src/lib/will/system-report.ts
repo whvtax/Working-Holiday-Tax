@@ -183,6 +183,19 @@ const FAULT_RULES: FaultRule[] = [
     action: 'Raise the ai_daily_budget setting if this is real traffic. Hit on a quiet day, it means something is calling the model far more often than the conversations justify.',
   },
   {
+    // (audit, 5 Sep) Added alongside ai_budget_exhausted, not replacing it:
+    // bumpCounter fails closed on ANY error, and the two used to be reported
+    // identically ("raise the budget") even when the RPC itself was the
+    // problem (migration 029 missing, a transient Supabase error). This rule
+    // only fires when the code has told the two apart.
+    key: 'ai_budget_unavailable',
+    match: is('policy_guard', 'ai_budget_unavailable'),
+    component: 'Daily AI budget',
+    severity: 'critical',
+    meaning: 'The database function that guards the daily AI spend (migration 029) could not be reached, so Will failed closed and handed the rest of the day to a person — this is not a real budget cap being hit.',
+    action: 'Check that migration 029 has been run and that Supabase is reachable. Read the error below for the real cause.',
+  },
+  {
     key: 'daily_digest_failed',
     match: (a, b) => a === 'nightly' && (b === 'daily_digest_failed' || b === 'daily_digest_crashed' || b === 'daily_digest_mine_failed'),
     component: 'Daily digest email (8am)',
@@ -198,13 +211,90 @@ const FAULT_RULES: FaultRule[] = [
     meaning: 'A customer sent a photo while a payment was outstanding and the file could not be fetched from Meta, so it was never checked for proof of payment. It fell through to an ordinary "open this and look" task.',
     action: 'Meta deletes attachments after 30 days and the download needs a live access token. The same token as the send path. If sends are healthy and this still happens, open the chat and read the photo yourself.',
   },
+  // The rules below were missing until the 5 Sep audit: every failure they
+  // cover was already written to will_audit (with the error text) but the card
+  // never looked for it, so a scheduler crashing on every tick, or a week of
+  // out-of-window delivery failures from Meta's status callbacks, showed a
+  // clean card. Grouped by component so the card stays short. Read-side only;
+  // nothing about how or when the failures are raised changes (audit, 5 Sep).
+  {
+    key: 'delivery_failed',
+    match: is('channel', 'delivery_failed'),
+    component: 'WhatsApp delivery (Meta status callbacks)',
+    severity: 'critical',
+    meaning: 'Meta accepted a message and then reported afterwards that it could not be delivered. This is the commonest way a message fails: it never shows as a send error, only as this callback. The message shows as failed in the chat and the customer received nothing.',
+    action: 'Read the error below. Code 131047 means the customer has been quiet more than 24 hours, so only an approved template may be sent (the estimate, signature and lodged buttons do that by themselves). Code 131026 means the number is not on WhatsApp. Each failure also raised an urgent task with the message text on it.',
+  },
+  {
+    key: 'will_reply_failed',
+    match: (a, b) =>
+      (a === 'channel' && (b === 'auto_reply_send_failed' || b === 'payment_received_send_failed'))
+      || (a === 'assistant' && b === 'auto_reply_failed'),
+    component: "Will's reply",
+    severity: 'critical',
+    meaning: 'Will decided what to say (or a payment confirmation was due) and the reply could not be produced or sent. The customer is waiting on a message that never went.',
+    action: 'Read the error below. A Meta error is the same fix as the WhatsApp rows above. Anything else is Will itself failing and wants a look at the code. A task was raised so the customer can be answered by hand.',
+  },
+  {
+    key: 'scheduled_message_failed',
+    match: (a, b) =>
+      (a === 'scheduler' && (b === 'job_crashed' || b === 'job_dead_lettered' || b === 'stranded_outbound_swept'))
+      || (a === 'system' && (b === 'medicare_info_failed' || b === 'review_request_failed'))
+      || (a === 'assistant' && (b === 'handoff_ack_failed' || b === 'handoff_ack_crashed')),
+    component: 'Scheduled messages (follow-ups, Medicare info, review requests, handoff acknowledgements)',
+    severity: 'warning',
+    meaning: 'A scheduled step crashed, gave up after every retry, or was found stuck part way through sending. The customer simply did not get that message; nothing wrong was sent.',
+    action: 'Read the error below. One crash on its own is usually a transient database blip and the cadence carries on. A job that was dead lettered raised a task naming the customer. The same error repeating on every tick is a code fault.',
+  },
+  {
+    key: 'scheduler_tick_failed',
+    match: (a, b) => a === 'scheduler' && (b === 'tick_budget_exhausted' || b === 'tick_read_failed' || b === 'ensure_nightly_failed' || b === 'ensure_digest_failed'),
+    component: 'Scheduler tick',
+    severity: 'warning',
+    meaning: 'The minute by minute tick that runs every scheduled message either could not read its queue, could not make sure the nightly jobs exist, or ran out of time with due jobs still waiting. Messages go out late while this continues.',
+    action: 'Out of time on a busy day is fine: the rest runs on the next tick. A read failure means the database was unreachable (see the Database check in the header). Steady repeats mean the tick is taking too long and wants a look.',
+  },
+  {
+    key: 'bookkeeping_failed',
+    match: (a, b) =>
+      (a === 'channel' && b === 'send_bookkeeping_failed')
+      || (a === 'scheduler' && b === 'reconcile_failed_after_send')
+      || (a === 'system' && b === 'message_customer_update_failed'),
+    component: 'Bookkeeping after a send',
+    severity: 'warning',
+    meaning: 'A message did reach the customer, but the record of it (the chat log, the customer stage, or the follow-up reschedule) could not be written. The chat may look behind, or a follow-up may fire that should not.',
+    action: 'Read the error below. A schema error means a migration is missing (see the Database check in the header). Open the customer named in the entry and check their stage and last message match what was actually sent.',
+  },
+  {
+    key: 'web_form_failed',
+    match: (a, b) => a === 'system' && (b === 'form_notify_failed' || b === 'public_form_failed'),
+    component: 'Website tax form',
+    severity: 'warning',
+    meaning: 'A customer submitted the tax form on the website and either it could not be saved at all (they saw an error with a short reference code) or it was saved but Will was not told, so the form reminders may keep chasing someone who has already sent it.',
+    action: 'Read the error below. If the form was saved and only the notification failed, open the customer and mark the form as received. If the save itself failed, the customer will need to send it again; the reference code in the entry matches the one on their screen.',
+  },
+  // A follow-up step deleted from the Library is skipped for every customer
+  // (H6) and, until now, nothing said so outside the Follow-ups tab. The
+  // delete action writes the owner row; the scheduler row is matched too so a
+  // missing step found at send time lands on the same card (audit, 5 Sep).
+  {
+    key: 'follow_up_template_missing',
+    match: (a, b) =>
+      (a === 'owner' && b === 'follow_up_template_deleted')
+      || (a === 'scheduler' && b === 'follow_up_template_missing'),
+    component: 'Follow-up messages (Library)',
+    severity: 'warning',
+    meaning: 'One of the scheduled follow-up messages is no longer in the Library. That step is skipped for every customer who reaches it; the rest of the cadence carries on. Nothing wrong was sent.',
+    action: 'Restore it with Sync library from file on the Learning tab. The entry below names the step.',
+  },
 ];
 
 /** The provider's own words, as recorded. Truncated at `max`, and marked so a
  *  truncated string is never mistaken for the whole error. */
 function errorTextOf(detail: unknown, max = 240): string | null {
   const d = (detail ?? {}) as Record<string, unknown>;
-  const raw = [d.error, d.reason, d.hint, d.detail, d.message].find((v) => typeof v === 'string' && v.trim());
+  // `note` is what tick_budget_exhausted writes instead of an error (audit, 5 Sep).
+  const raw = [d.error, d.reason, d.hint, d.detail, d.message, d.note].find((v) => typeof v === 'string' && v.trim());
   if (typeof raw !== 'string') return null;
   const clean = raw.trim().replace(/\s+/g, ' ');
   return clean.length > max ? `${clean.slice(0, max)}… (truncated)` : clean;

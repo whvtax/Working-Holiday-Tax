@@ -284,6 +284,10 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 /* Normal weight, the way WhatsApp shows a contact. */
 .will-scope .chtitle .chnum{font-size:15px;font-weight:400;color:var(--ink);display:block;line-height:1.15}
 .will-scope .chtitle .st{display:flex;gap:6px;margin-top:1px;align-items:center;line-height:1.35;padding-left:9px}
+/* The language picker beside the stage (audit, 5 Sep): styled as quiet text
+   like the stage button so it reads as part of the same line, not a form. */
+.will-scope .chtitle .langpick{border:none;background:none;font-family:inherit;font-size:12px;color:var(--ink3);padding:1px 4px;border-radius:6px;cursor:pointer;line-height:1.35}
+.will-scope .chtitle .langpick:hover{background:var(--surface2);color:var(--ink)}
 /* The leading "+" of the number is boxed to exactly the padding above, so the
    number's first digit and the stage label share one left edge. */
 .will-scope .chtitle .numpfx{display:inline-block;width:9px}
@@ -491,26 +495,41 @@ aside.side{
 .will-scope /* toast */
 .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:#fff;border:1px solid var(--line2);color:var(--ink);padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:200;opacity:0;transition:opacity 220ms var(--ease-out),transform 220ms var(--ease-out);pointer-events:none;box-shadow:0 6px 22px rgba(30,32,40,.14);white-space:nowrap}
 .will-scope .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Long refusals (e.g. outside-24h-window, unfilled placeholder) get to wrap
+   and stay readable instead of a nowrap line racing off a phone-width screen
+   (audit, 5 Sep). */
+.will-scope .toast.long{white-space:normal;max-width:min(90vw,520px);text-align:center}
 @media(max-width:840px){
 .will-scope aside.side{width:58px;padding:14px 7px}
 .will-scope .modelabel{display:none}
 .will-scope .hrow{gap:8px}
-.will-scope .health{display:none}
+/* Only the quiet per-check dots hide on a phone; the WhatsApp-down and
+   database-out-of-date alarm pills must stay visible everywhere so Will
+   going silently offline is never invisible on the device Jo actually
+   carries (audit, 5 Sep). */
+.will-scope .health{gap:6px;flex-wrap:wrap}
+.will-scope .health .hdot{display:none}
 .will-scope .slogo{justify-content:center;padding:2px 0 14px}
 .will-scope .slogo .sname, .will-scope .ni .nl, .will-scope .sfoot{display:none}
 .will-scope .ni{justify-content:center;padding:11px 0;gap:0}
 .will-scope .ni .nbadge{position:absolute;top:3px;right:6px;margin:0}
 .will-scope header{margin-left:58px}
 .will-scope main{margin-left:58px;padding:14px 12px 30px}
-.will-scope .chatwrap{grid-template-columns:1fr;height:auto}
-.will-scope .chatlist{max-height:190px}
 /* The chat pane on a phone.
    Audit, 4 Sep: a fixed 560px pane inside overflow:hidden meant that on a short
    phone (a 667px viewport with the browser chrome taking ~150px) the composer
    sat below the fold of its own frame and could not be reached at all: the chat
-   was readable and unanswerable. It now sizes to the viewport, and the message
-   list is the part that scrolls, with the composer pinned under it. */
-.will-scope .chatpane{height:min(560px, calc(100dvh - 210px));min-height:340px}
+   was readable and unanswerable.
+   Audit, 5 Sep: sizing the pane off 100dvh (the 4 Sep fix) still guessed how
+   much chrome sat above it (header height, chatlist height, zoom factor) and
+   undercounted, so the composer was still below the fold on a short phone.
+   .chatwrap now stretches to fill the real space .chats-view already gives it
+   (a column flex instead of a grid, height:100% instead of auto) and .chatpane
+   takes whatever is left after the fixed-height chatlist, so it is always
+   exactly as tall as the frame allows, on any phone, at any zoom. */
+.will-scope .chatwrap{display:flex;flex-direction:column;grid-template-columns:1fr;height:100%}
+.will-scope .chatlist{flex:none;max-height:190px}
+.will-scope .chatpane{flex:1;min-height:0;height:auto}
 .will-scope .chatpane .msgs{flex:1;min-height:0;overflow-y:auto}
 .will-scope .composer{position:sticky;bottom:0;padding-bottom:max(11px, env(safe-area-inset-bottom))}
 .will-scope .msg{max-width:86%}
@@ -539,6 +558,22 @@ aside.side{
  * the whole public site. Fixed.) */
 @media(hover:none),(pointer:coarse){
   .will-scope .card:hover,.will-scope .tpl:hover{transform:none;box-shadow:0 1px 2px rgba(30,32,40,.03)}
+  /* The task ✕, the full handoff reason and the numbered quick-fill chips
+   * were hover-only, so on a phone the dismiss button was invisible, the
+   * reason was cut to 8 words with no way to see the rest, and the chips
+   * were unlabelled digits (audit, 5 Sep). Same information, just not gated
+   * on a pointer that doesn't exist here. */
+  .will-scope .tdismiss{opacity:1}
+  .will-scope .ttitle{white-space:normal}
+  .will-scope .chipbtn.qsnum{width:auto;display:inline-flex;align-items:center;gap:5px;padding:0 10px}
+  .will-scope .chipbtn.qsnum::after{content:attr(data-label);font-weight:500;font-size:10.5px}
+  /* Same complaint, different shape: the stage badge, the filter chips, the
+   * follow-up/quick-fill chips and the task dismiss were all well under the
+   * ~44px touch guideline, so a near-miss on a phone missed the control
+   * entirely. Grown here, coarse pointers only, so desktop's tighter rows are
+   * untouched: same label, same colour, same click, just a bigger box to hit
+   * (audit, 5 Sep). */
+  .will-scope .cstate-btn,.will-scope .cfchip,.will-scope .chipbtn,.will-scope .tdismiss{min-height:36px;display:inline-flex;align-items:center;justify-content:center}
 }
 /* staggered entrance for cards and KPI tiles (decorative, non-blocking) */
 @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}

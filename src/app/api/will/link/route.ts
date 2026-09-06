@@ -21,6 +21,7 @@ import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { STAGE_GROUPS } from '@/lib/will/state-machine';
 import { APPROVED } from '@/lib/will/approved-messages';
+import { signatureNoticeStands } from '@/lib/will/scheduler';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,12 +48,16 @@ export async function GET(req: NextRequest) {
     // and it must survive a page reload (the customer stays at SIGNATURE_PENDING
     // for both, so state alone cannot tell them apart). Matched on the stable,
     // distinctive phrase so a wording tweak to the template does not break it.
+    // Reads the same `signature_notice_sent:${id}` marker the cadence uses
+    // (scheduler.ts), instead of scanning every message for the phrase "tax
+    // return is ready". The regex flipped the card early on a discarded or
+    // pending draft that happened to contain the words, and flipped it back
+    // (re-arming a resend) if Jo ever edited the Library `signature` wording.
+    // The marker also already knows to reset on a fresh re-entry to Signature
+    // via Done, which the regex never could (audit, 5 Sep).
     let signatureReadySent = false;
     try {
-      const msgs = await store.listMessages(c.id);
-      signatureReadySent = msgs.some(
-        (m) => m.direction === 'OUT' && /tax return is ready/i.test(m.body || ''),
-      );
+      signatureReadySent = await signatureNoticeStands(c.id);
     } catch { /* best effort: default to not-sent, so the worst case is a re-send */ }
     return NextResponse.json({
       ok: true,

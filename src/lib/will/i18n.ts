@@ -7,6 +7,9 @@
 // ============================================================
 
 export type Lang = 'en' | 'de' | 'ja' | 'es' | 'fr' | 'it' | 'pt';
+/** The seven codes a chat can be locked to, for the owner's language picker
+ *  and the set_lang action (audit, 5 Sep). Same set as `Lang`, nothing new. */
+export const LANGS: readonly Lang[] = ['en', 'de', 'ja', 'es', 'fr', 'it', 'pt'];
 
 // Distinctive keyword lists per language, English included. English used to be
 // undetectable (no list), which is why a chat that had drifted to the wrong
@@ -112,13 +115,18 @@ export function formReceivedTemplateKey(lang?: string | null): string {
  *  No prices, no currency, no dashes: passes the policy guard unchanged. */
 const REVIEW_LINK = 'https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8';
 export const REVIEW_REQUEST_MSG: Record<Lang, string> = {
-  en: `Thank you so much for trusting us with your tax return!\nIf you have a minute, we'd really appreciate a quick Google review 🙏\n${REVIEW_LINK}`,
-  de: `Vielen Dank, dass du uns deine Steuererklärung anvertraut hast!\nWenn du eine Minute hast, würden wir uns sehr über eine kurze Google-Bewertung freuen 🙏\n${REVIEW_LINK}`,
-  ja: `確定申告をお任せいただき、本当にありがとうございました！\nもしよろしければ、Googleに簡単なレビューをいただけると嬉しいです 🙏\n${REVIEW_LINK}`,
-  es: `¡Muchas gracias por confiarnos tu declaración de impuestos!\nSi tienes un minuto, te agradeceríamos mucho una breve reseña en Google 🙏\n${REVIEW_LINK}`,
-  fr: `Merci beaucoup de nous avoir confié ta déclaration d'impôts !\nSi tu as une minute, un petit avis Google nous ferait très plaisir 🙏\n${REVIEW_LINK}`,
-  it: `Grazie mille per averci affidato la tua dichiarazione dei redditi!\nSe hai un minuto, ti saremmo molto grati per una breve recensione su Google 🙏\n${REVIEW_LINK}`,
-  pt: `Muito obrigado por confiares em nós com a tua declaração de impostos!\nSe tiveres um minuto, agradecíamos muito uma breve avaliação no Google 🙏\n${REVIEW_LINK}`,
+  // Jo, 4 Sep: "If you have a minute," is filler, and the playbook bans filler.
+  // Two lines, then the link on its own. The first two lines are word for word
+  // the body of the Meta template `review_request`; the link is here because
+  // INSIDE the 24h window this goes as free text and the customer needs
+  // something to tap, while outside it the template carries it as a button.
+  en: `Thank you so much for trusting us with your tax return!\n\nWe'd really appreciate a quick Google review 🙏\n\n${REVIEW_LINK}`,
+  de: `Vielen Dank, dass du uns deine Steuererklärung anvertraut hast!\n\nWir würden uns sehr über eine kurze Google-Bewertung freuen 🙏\n\n${REVIEW_LINK}`,
+  ja: `確定申告をお任せいただき、本当にありがとうございました！\n\nGoogleに簡単なレビューをいただけると嬉しいです 🙏\n\n${REVIEW_LINK}`,
+  es: `¡Muchas gracias por confiarnos tu declaración de impuestos!\n\nNos encantaría recibir una breve reseña en Google 🙏\n\n${REVIEW_LINK}`,
+  fr: `Merci beaucoup de nous avoir confié ta déclaration d'impôts !\n\nUn petit avis Google nous ferait très plaisir 🙏\n\n${REVIEW_LINK}`,
+  it: `Grazie mille per averci affidato la tua dichiarazione dei redditi!\n\nCi farebbe molto piacere ricevere una breve recensione su Google 🙏\n\n${REVIEW_LINK}`,
+  pt: `Muito obrigado por confiares em nós com a tua declaração de impostos!\n\nAgradecíamos muito uma breve avaliação no Google 🙏\n\n${REVIEW_LINK}`,
 };
 
 export function reviewRequestMessage(lang?: string | null): string {
@@ -171,6 +179,26 @@ export function paymentReceivedMessage(lang?: string | null): string {
   return PAYMENT_RECEIVED_MSG[key];
 }
 
+/** Is this OUT message the "payment received" confirmation drafted for
+ *  approval by the screenshot path (proposedState PAID + the deterministic
+ *  system line)? It answers its own trigger, the receipt, not whatever the
+ *  customer typed afterwards, so a later draft written against the full
+ *  conversation does not make it stale: it used to be discarded with the
+ *  rest, the customer stayed unpaid and the open payment task pointed at a
+ *  draft that no longer existed (audit, 5 Sep). `libraryBodies` are Jo's
+ *  live payment_received Library texts, which may differ from the constants. */
+export function isPaymentReceivedDraft(
+  m: { body?: string | null; meta?: { proposedState?: string } | null },
+  libraryBodies: readonly string[] = [],
+): boolean {
+  if (m.meta?.proposedState !== 'PAID') return false;
+  const body = (m.body ?? '').trim();
+  if (!body) return false;
+  const head = body.slice(0, 40).toLowerCase();
+  if (Object.values(PAYMENT_RECEIVED_MSG).some((t) => t.slice(0, 40).toLowerCase() === head)) return true;
+  return libraryBodies.some((t) => t.trim() === body);
+}
+
 /** The Library key for this customer's language. */
 export function paymentReceivedTemplateKey(lang?: string | null): string {
   const key = (lang && lang in PAYMENT_RECEIVED_MSG ? lang : 'en') as Lang;
@@ -204,6 +232,36 @@ export function handoffHoldingTemplateKey(lang?: string | null): string {
   return key === 'en' ? 'handoff_holding' : `handoff_holding_${key}`;
 }
 
+/** The acknowledgement a PAID customer gets when their documents arrive
+ *  (Jo's English wording, 28 Aug; the others are faithful renderings). This is
+ *  the one post-payment auto-send that never got its language variants on
+ *  3 and 4 Sep, so a customer just thanked in German for their questionnaire
+ *  sent payslips and got "Perfect, got it all" back in English (audit, 5 Sep).
+ *  English lives under the Library key `handoff_documents_after_payment`, the
+ *  others under handoff_documents_after_payment_<lang>. */
+export const DOCUMENTS_RECEIVED_MSG: Record<Lang, string> = {
+  en: `Perfect, got it all, thank you 😊 Let me work through everything and I'll come back to you soon.`,
+  de: 'Perfekt, alles angekommen, danke dir 😊 Ich gehe alles durch und melde mich bald wieder bei dir.',
+  ja: '完璧です、すべて受け取りました、ありがとうございます 😊 全部確認して、近いうちにご連絡しますね。',
+  es: 'Perfecto, lo tengo todo, gracias 😊 Lo reviso todo y te respondo pronto.',
+  fr: "Parfait, j'ai tout reçu, merci 😊 Je passe tout en revue et je reviens vers toi bientôt.",
+  it: 'Perfetto, ho ricevuto tutto, grazie 😊 Controllo tutto e ti rispondo presto.',
+  pt: 'Perfeito, recebi tudo, obrigado 😊 Vou ver tudo com atenção e respondo em breve.',
+};
+
+export function documentsReceivedMessage(lang?: string | null): string {
+  const key = (lang && lang in DOCUMENTS_RECEIVED_MSG ? lang : 'en') as Lang;
+  return DOCUMENTS_RECEIVED_MSG[key];
+}
+
+/** The Library key for this customer's language: `handoff_documents_after_payment`
+ *  for English (the key Jo already knows), `handoff_documents_after_payment_<lang>`
+ *  otherwise. */
+export function documentsReceivedTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in DOCUMENTS_RECEIVED_MSG ? lang : 'en') as Lang;
+  return key === 'en' ? 'handoff_documents_after_payment' : `handoff_documents_after_payment_${key}`;
+}
+
 export function professionalQuestionMessage(lang?: string | null): string {
   const key = (lang && lang in PROFESSIONAL_QUESTION_MSG ? lang : 'en') as Lang;
   return PROFESSIONAL_QUESTION_MSG[key];
@@ -234,4 +292,35 @@ export function requestAbnMessage(lang?: string | null): string {
 export function requestAbnTemplateKey(lang?: string | null): string {
   const key = (lang && lang in REQUEST_ABN_MSG ? lang : 'en') as Lang;
   return key === 'en' ? 'req_abn' : `req_abn_${key}`;
+}
+
+/** The automatic Medicare Levy Exemption message (MEDICARE_INFO job, 15 minutes
+ *  after a questionnaire that said "No" to Medicare), per language. English is
+ *  Jo's 4 Sep wording verbatim (APPROVED.medicare_exemption); the others are
+ *  faithful renderings. It was the last post-form auto-send without a language
+ *  variant, so a German or Japanese customer thanked in their own language got
+ *  three English paragraphs asking them to go and apply (audit, 5 Sep).
+ *  English lives under the Library key `medicare` (the key Jo already knows),
+ *  the others under medicare_<lang>. Same Meta template names. No dashes,
+ *  no prices, guard-clean. */
+export const MEDICARE_MSG: Record<Lang, string> = {
+  en: `Since you weren't covered by Medicare, you may be eligible to apply for a Medicare Levy Exemption.\n\nOnce you've submitted your application, send me a screenshot and we'll include the exemption in your tax return.\n\nIf Services Australia doesn't approve it, the levy still applies and you'll need to pay it.`,
+  de: 'Da du nicht durch Medicare abgedeckt warst, kannst du möglicherweise eine Medicare Levy Exemption beantragen.\n\nSobald du deinen Antrag eingereicht hast, schick mir einen Screenshot und wir nehmen die Befreiung in deine Steuererklärung auf.\n\nWenn Services Australia den Antrag nicht genehmigt, gilt die Abgabe weiterhin und du musst sie bezahlen.',
+  ja: 'Medicareに加入していなかったため、Medicare Levy Exemption（メディケア税免除）を申請できる可能性があります。\n\n申請を送信したら、スクリーンショットを送ってください。免除を確定申告に含めます。\n\nServices Australiaが承認しなかった場合、税金は引き続き適用され、お支払いいただく必要があります。',
+  es: 'Como no estabas cubierto por Medicare, es posible que puedas solicitar la Medicare Levy Exemption.\n\nUna vez que hayas enviado tu solicitud, mándame una captura de pantalla y la incluiremos en tu declaración de impuestos.\n\nSi Services Australia no la aprueba, el Medicare Levy sigue aplicándose y tendrás que pagarlo.',
+  fr: "Comme tu n'étais pas couvert par Medicare, il se peut que tu puisses demander la Medicare Levy Exemption.\n\nUne fois ta demande envoyée, il suffit de m'envoyer une capture d'écran et nous inclurons l'exemption dans ta déclaration d'impôts.\n\nSi Services Australia ne l'approuve pas, la Medicare Levy s'applique toujours et tu devras la payer.",
+  it: "Dato che non eri coperto da Medicare, potresti avere diritto a richiedere la Medicare Levy Exemption.\n\nUna volta inviata la domanda, mandami uno screenshot e includeremo l'esenzione nella tua dichiarazione dei redditi.\n\nSe Services Australia non la approva, la Medicare Levy resta dovuta e dovrai pagarla.",
+  pt: 'Como não estavas coberto pelo Medicare, é possível que possas pedir a Medicare Levy Exemption.\n\nAssim que tiveres enviado o pedido, manda-me uma captura de ecrã e incluiremos a isenção na tua declaração de impostos.\n\nSe a Services Australia não a aprovar, a Medicare Levy continua a aplicar-se e terás de a pagar.',
+};
+
+export function medicareMessage(lang?: string | null): string {
+  const key = (lang && lang in MEDICARE_MSG ? lang : 'en') as Lang;
+  return MEDICARE_MSG[key];
+}
+
+/** Library key (and Meta template name) for this language's Medicare message:
+ *  `medicare` for English, `medicare_<lang>` for the rest. */
+export function medicareTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in MEDICARE_MSG ? lang : 'en') as Lang;
+  return key === 'en' ? 'medicare' : `medicare_${key}`;
 }

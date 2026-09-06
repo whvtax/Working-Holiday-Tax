@@ -492,6 +492,11 @@
   box-shadow:0 6px 22px rgba(30,32,40,.14);
 }
 .crm-scope .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Kept in step with .will-scope .toast.long (Dashboard.tsx's say()) so that if
+   this scope ever grows a toast, a long refusal wraps and stays readable
+   instead of a fixed nowrap line racing off a phone-width screen, same as the
+   WhatsApp panel (audit, 5 Sep). */
+.crm-scope .toast.long{white-space:normal;text-align:center;max-width:calc(100vw - 24px);width:max-content}
 
 /* ── Focus: visible for keyboards, invisible for mice ─────────────────────*/
 .crm-scope :focus-visible{outline:2px solid var(--brand1);outline-offset:2px;border-radius:6px}
@@ -524,4 +529,11 @@
 }
 @media(hover:none),(pointer:coarse){
   .crm-scope .rowcard:hover,.crm-scope .kpi.clickable:hover{transform:none;box-shadow:0 1px 2px rgba(30,32,40,.03)}
+  /* The In-Progress checkbox is a 16x16 box sitting inside a task card whose
+   * whole surface opens the task on click(); on a phone a near-miss on the
+   * checkbox opened the task instead of toggling it. An invisible pseudo
+   * grows the hit area to ~36px without moving the visible box, so the tap
+   * target matches the guideline while the tick still looks the same size
+   * (audit, 5 Sep). */
+  .crm-scope .tinprog::before{content:'';position:absolute;inset:-10px}
 }

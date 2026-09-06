@@ -33,6 +33,43 @@ export interface AfterReply {
   tasksResolved: number;
 }
 
+// afterHumanReply below still resolves tasks via `listTasks().filter(...)` —
+// every open task plus the recent resolved ones, contexts included — to find
+// the handful for one customer. The store already grew an indexed
+// `listOpenTasksForCustomer` for exactly this call (store.ts, audit 5 Sep),
+// but nothing was ever switched over to it. This is that switch, kept as a
+// separate export (the "actions" lane's send paths call it instead of
+// afterHumanReply) so nothing outside that lane has to change today
+// (audit3, 5 Sep). Same contract, same best-effort/never-throw shape.
+//
+// It also used to pull the customer's full MESSAGE_WINDOW (up to 1,000 rows)
+// just to find the two or three still-pending drafts to discard — the other
+// half of this same finding. `listPendingOutbound` is the filtered read for
+// exactly that slice, so every human reply stops dragging the whole
+// conversation through the connection to close one customer's task (audit3,
+// 5 Sep).
+export async function afterHumanReplyIndexed(store: Store, customerId: string): Promise<AfterReply> {
+  try {
+    await store.markCustomerRead(customerId);
+  } catch {
+    // The badge is bookkeeping. The message is already delivered.
+  }
+  try {
+    const stale = await store.listPendingOutbound(customerId);
+    await Promise.all(stale.map((m) => store.setMessageStatus(m.id, 'DISCARDED').catch(() => { /* per message */ })));
+  } catch {
+    // Best effort: a leftover draft is a nuisance, never a reason to fail a
+    // reply that has already been delivered.
+  }
+  try {
+    const open = await store.listOpenTasksForCustomer(customerId);
+    await Promise.all(open.map((t) => store.resolveTask(t.id).catch(() => { /* per task */ })));
+    return { tasksResolved: open.length };
+  } catch {
+    return { tasksResolved: 0 };
+  }
+}
+
 export async function afterHumanReply(store: Store, customerId: string): Promise<AfterReply> {
   try {
     await store.markCustomerRead(customerId);

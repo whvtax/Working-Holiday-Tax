@@ -5,9 +5,9 @@ import path from 'path';
 import { randomUUID } from 'crypto';
 import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
-  LostAnalysisRow,
+  LostAnalysisRow, DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS,
 } from './store';
-import { CustomerState } from './state-machine';
+import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { phoneCandidates } from './phone-candidates';
 import { seedCustomers, seedTemplates } from './seed';
 
@@ -76,6 +76,11 @@ async function load(): Promise<Db> {
  *  instead of the app silently pretending writes succeeded). */
 export let lastPersistError: string | null = null;
 
+// (audit, 5 Sep) additive counterpart to store-supabase's clear, so the
+// health route can reset a stale error after its own probe succeeds instead
+// of leaving the dot red until an unrelated write happens to clear it.
+export function clearLastPersistError(): void { lastPersistError = null; }
+
 async function persist(): Promise<void> {
   const db = cache!;
   // .catch keeps the chain alive after a transient fs failure;
@@ -97,9 +102,6 @@ async function persist(): Promise<void> {
 }
 
 const now = () => new Date().toISOString();
-
-/** Most jobs a single tick will claim. Kept in step with the Supabase store. */
-const DUE_JOBS_BATCH = 50;
 
 /** Re-derive a customer's chat-list row (preview / direction / time) from the
  *  newest message that actually exists as far as the customer is concerned:
@@ -183,6 +185,11 @@ export class FileStore implements Store {
     return (await load()).customers.find((c) => c.id === id) ?? null;
   }
 
+  async listCustomersByIds(ids: string[]) {
+    const set = new Set(ids);
+    return (await load()).customers.filter((c) => set.has(c.id));
+  }
+
   async getMessageById(id: string) {
     return (await load()).messages.find((m) => m.id === id) ?? null;
   }
@@ -230,7 +237,8 @@ export class FileStore implements Store {
     if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(to)) c.previousState = c.state;
     c.state = to;
     c.stateChangedAt = now();
-    if (to === 'PAID') c.paid = true;
+    // Any post-payment stage means they paid; see store-supabase.setState.
+    if (POST_PAYMENT_STATES.includes(to)) c.paid = true;
     await persist();
     return true;
   }
@@ -282,9 +290,26 @@ export class FileStore implements Store {
     return (await load()).messages.filter((m) => m.customerId === customerId);
   }
 
+  // Counterpart of the Supabase filtered read (audit3, 5 Sep); the file store
+  // is small, so a filter is the whole job.
+  async listPendingOutbound(customerId: string): Promise<MessageRow[]> {
+    return (await load()).messages.filter(
+      (m) => m.customerId === customerId && m.direction === 'OUT' &&
+        (m.status === 'PENDING_APPROVAL' || m.status === 'QUEUED'),
+    );
+  }
+
   // Admin export only; the file store is small and in-memory, so no paging.
   async allCustomers() { return (await load()).customers; }
   async allMessages() { return (await load()).messages; }
+  // (audit, 5 Sep) the file store is small and in-memory, so this is just a
+  // filter — the real saving is in store-supabase.ts, which no longer reads
+  // every message row to compute the same slice.
+  async humanOutMessages() {
+    return (await load()).messages.filter(
+      (m) => m.author === 'HUMAN' && m.direction === 'OUT' && m.status !== 'DISCARDED' && m.status !== 'BLOCKED',
+    );
+  }
   async allJobs() { return (await load()).jobs; }
 
   async listInboundBetween(startIso: string, endIso: string, limit = 5000) {
@@ -417,6 +442,20 @@ export class FileStore implements Store {
     return db.tasks.find((x) => x.customerId === customerId && x.status === 'OPEN') ?? null;
   }
 
+  // Counterparts of the Supabase single-row / per-customer task reads
+  // (audit, 5 Sep); the file store is small, so a filter is the whole job.
+  async getTaskById(id: string): Promise<TaskRow | null> {
+    const db = await load();
+    return db.tasks.find((x) => x.id === id) ?? null;
+  }
+
+  async listOpenTasksForCustomer(customerId: string): Promise<TaskRow[]> {
+    const db = await load();
+    return db.tasks
+      .filter((x) => x.customerId === customerId && x.status === 'OPEN')
+      .sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0));
+  }
+
   async updateTask(id: string, patch: Partial<Pick<TaskRow, 'reason' | 'context' | 'suggestedReply' | 'severity'>>): Promise<void> {
     const db = await load();
     const t = db.tasks.find((x) => x.id === id);
@@ -494,17 +533,26 @@ export class FileStore implements Store {
     return row;
   }
 
-  /** Oldest-due first and capped, matching the Supabase store so the tick loop
-   *  behaves identically on both. */
+  /** Customer-facing kinds first, then the rest, each oldest-due first and the
+   *  whole thing capped, matching the Supabase store so the tick loop behaves
+   *  identically on both (audit3 core 12, 5 Sep: see CUSTOMER_FACING_JOB_KINDS). */
   async dueJobs(nowDate: Date) {
     const db = await load();
-    return db.jobs
+    const due = db.jobs
       .filter((j) => j.status === 'SCHEDULED' && new Date(j.runAt) <= nowDate)
-      .sort((a, b) => a.runAt.localeCompare(b.runAt))
-      .slice(0, DUE_JOBS_BATCH);
+      .sort((a, b) => a.runAt.localeCompare(b.runAt));
+    const facing = due.filter((j) => CUSTOMER_FACING_JOB_KINDS.includes(j.kind));
+    const rest = due.filter((j) => !CUSTOMER_FACING_JOB_KINDS.includes(j.kind));
+    return facing.concat(rest).slice(0, DUE_JOBS_BATCH);
   }
 
   async listJobs() { return (await load()).jobs; }
+
+  async listScheduledFollowUps() {
+    return (await load()).jobs
+      .filter((j) => j.kind === 'FOLLOW_UP' && j.status === 'SCHEDULED')
+      .sort((a, b) => a.runAt.localeCompare(b.runAt) || a.id.localeCompare(b.id));
+  }
 
   async listJobsForCustomer(customerId: string, kinds?: JobRow['kind'][]) {
     return (await load()).jobs.filter(
@@ -627,6 +675,10 @@ export class FileStore implements Store {
     const db = await load();
     return [...(db.lostAnalyses ?? [])].sort((a, b) => (a.analysedAt < b.analysedAt ? 1 : -1));
   }
+  async getLostAnalysis(customerId: string): Promise<LostAnalysisRow | null> {
+    const db = await load();
+    return (db.lostAnalyses ?? []).find((r) => r.customerId === customerId) ?? null;
+  }
   /** Keyed by customerId: re-running the nightly job replaces the row rather
    *  than adding a second post-mortem for the same lead. */
   async upsertLostAnalysis(row: LostAnalysisRow): Promise<void> {
@@ -668,11 +720,41 @@ export class FileStore implements Store {
     return removed;
   }
 
+  async listScheduledJobs() {
+    return (await load()).jobs
+      .filter((j) => j.status === 'SCHEDULED')
+      .sort((a, b) => a.runAt.localeCompare(b.runAt) || a.id.localeCompare(b.id));
+  }
+
+  // Same rule as the Supabase store (audit3 sched 54, 5 Sep): finished rows
+  // older than the cutoff go, except DONE FOLLOW_UP, which the cadence counts.
+  async purgeFinishedJobs(olderThanMs: number): Promise<number> {
+    const db = await load();
+    const cutoff = Date.now() - olderThanMs;
+    const before = db.jobs.length;
+    db.jobs = db.jobs.filter((j) => {
+      if (new Date(j.createdAt).getTime() >= cutoff) return true;
+      if (j.status === 'CANCELLED' || j.status === 'FAILED') return false;
+      if (j.status === 'DONE' && j.kind !== 'FOLLOW_UP') return false;
+      return true;
+    });
+    const removed = before - db.jobs.length;
+    if (removed > 0) await persist();
+    return removed;
+  }
+
   async listAudit(limit = 200): Promise<AuditRow[]> {
     const db = await load();
     return db.audit
       .slice(-limit)
       .reverse()
       .map((a) => ({ id: (a as { id?: string }).id ?? '', actor: a.actor, action: a.action, detail: a.detail, at: a.at }));
+  }
+
+  /** The file store writes audit rows in the same persist() as everything
+   *  else, so if the log were broken nothing else would work either. Always
+   *  healthy here; the real check lives in the Supabase store (audit, 5 Sep). */
+  async checkAuditLog(): Promise<{ ok: true } | { ok: false; error: string }> {
+    return { ok: true };
   }
 }

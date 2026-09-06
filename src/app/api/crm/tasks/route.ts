@@ -67,6 +67,20 @@ export async function POST(req: NextRequest) {
       reviewerNote: '',
       reviewedAt:   '',
     })
+    // A task typed by hand here only reached Will through the DB trigger's
+    // exact-digit phone match (migration 038), which a normally-formatted
+    // local number ("0412 345 678") never satisfies against the stored
+    // "61412345678" — so the customer kept getting questionnaire reminders
+    // for a form the operator had already entered. This is the same
+    // best-effort call the public form routes make; it runs the real
+    // candidate matching and raises the "no chat matches this number" task
+    // when nobody does (audit, 5 Sep).
+    try {
+      const { notifyFormReceived } = await import('@/lib/will/form-link')
+      await notifyFormReceived(task.whatsapp, task.email, task.taskType as 'tax-return' | 'super' | 'tfn' | 'abn')
+    } catch (err) {
+      console.error('[crm/tasks] notifyFormReceived failed after the task was saved:', err)
+    }
     return NextResponse.json({ ok:true, task })
   } catch (err) {
     console.error('[POST tasks]', err)

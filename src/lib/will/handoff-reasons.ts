@@ -23,9 +23,18 @@
 //   that card on 27 Aug; nothing rendered them any more.
 //
 // The strings matched here are the reason text written where the task is
-// raised (service.ts, engine.ts, scheduler.ts, actions/route.ts). Matching is
-// on a PREFIX, which is what survives the report route's truncation of the
-// reason to 60 characters.
+// raised (service.ts, engine.ts, scheduler.ts, channel.ts, store-supabase.ts,
+// document-drop.ts, actions/route.ts, webhook/route.ts). Matching is on a
+// PREFIX, which is what survives the report route's truncation of the reason
+// to 60 characters.
+//
+// (audit, 5 Sep) The reason strings had drifted away from this list: three
+// rules matched text nothing writes any more, and fifteen live reasons (voice
+// notes, failed sends, every payment task, the Medicare and review holds) fell
+// through to the FALLBACK, so the card told Jo to add a Library answer for a
+// WhatsApp outage. The test in __tests__/handoff-reasons.test.ts now reads the
+// literal `reason:` strings straight out of those source files, so the next
+// drift fails CI instead of the card.
 // ============================================================
 
 export type HandoffKind =
@@ -83,11 +92,18 @@ const RULES: Rule[] = [
     prevent: 'Nothing to add to the Library. There is no question to answer until a person opens the file. Asking for documents through the form instead of WhatsApp is what actually reduces this.',
   },
   {
-    match: /^Customer sent a message Will cannot read/i,
+    match: /^Customer sent a voice note/i,
     kind: 'unreadable',
     label: 'A voice note or sticker',
     because: 'they sent a voice note or another message with no text in it',
     prevent: 'Nothing to add to the Library. A template cannot answer a voice note. This is the cost of customers who would rather talk than type.',
+  },
+  {
+    match: /^WhatsApp delivered an event with no readable text/i,
+    kind: 'unreadable',
+    label: 'Something WhatsApp could not read',
+    because: 'WhatsApp delivered something with no readable text in it, which may not be a message from them at all',
+    prevent: 'Nothing to add to the Library. Open WhatsApp and see what it was. If it keeps happening from one number, it is most likely an automated sender.',
   },
   {
     match: /^Customer asked whether they are talking to a bot/i,
@@ -97,21 +113,17 @@ const RULES: Rule[] = [
     prevent: 'Nothing to change. This one is a rule doing its job. It only matters if it happens to a large share of your leads, which would say something about how Will’s replies read.',
   },
   {
-    match: /^Customer sent \d+ messages before paying|messages before paying/i,
+    // Two spellings of the same rule in service.ts: the loop detector ("the
+    // same message keeps arriving") and the absolute ceiling, which is
+    // MAX_INBOUND_BEFORE_PAYMENT there (80, not the twenty this used to say).
+    match: /^The same message keeps arriving|^Customer sent \d+ messages before paying|messages before paying/i,
     kind: 'policy',
     label: 'A conversation that is stuck',
-    because: 'they have written more than twenty times before paying, which is not a conversation any more but something looping',
+    because: 'the same message kept arriving, or they have written more than eighty times before paying, which is not a conversation any more but something looping',
     prevent: 'Open the chat and read it end to end. This is not a sales problem. The same thing is going round, or an automated sender is on the other end. It should be rare; if it is not, tell me and we will find what is looping.',
   },
   {
-    match: /^An existing chat sent a message|^A previous customer messaged again/i,
-    kind: 'policy',
-    label: 'A returning customer',
-    because: 'they are an existing or previously closed chat, and Will only handles brand-new leads',
-    prevent: 'Nothing to change while Will is set to new leads only. Moving this number means changing that policy. A decision, not a template.',
-  },
-  {
-    match: /^WhatsApp send failed/i,
+    match: /^WhatsApp send failed|^Will's reply was not delivered|^WhatsApp did not deliver this message|^The Medicare exemption message was not delivered|^The Google review ask (?:could|was) not (?:be )?delivered|^PAID, BUT THEY HAVE NOT BEEN TOLD|^A reply may not have reached|^A scheduled .* failed three times/i,
     kind: 'delivery',
     label: 'WhatsApp refused the send',
     because: 'WhatsApp itself refused to deliver the message, so they received nothing at all',
@@ -125,6 +137,13 @@ const RULES: Rule[] = [
     prevent: 'Raise the daily AI budget if this is real traffic. If it runs out on a quiet day, something is calling the model far more often than the conversations justify.',
   },
   {
+    match: /^Will could not answer this chat automatically|^A WhatsApp message could not be processed/i,
+    kind: 'capacity',
+    label: 'Will hit an error',
+    because: 'something went wrong while Will was working on this chat, so he stopped rather than guess',
+    prevent: 'Reply to the customer by hand. The error text is in the task. If the same one shows up on several chats in a row, send it over, it is a fault on our side and not a Library gap.',
+  },
+  {
     match: /^Draft is stale/i,
     kind: 'guard',
     label: 'The draft went stale',
@@ -132,11 +151,25 @@ const RULES: Rule[] = [
     prevent: 'Approve drafts sooner, or switch the stages you trust to Autopilot. Holding it was correct. Nobody was told something untrue.',
   },
   {
-    match: /^Customer sent proof of payment/i,
+    match: /^Customer confirmed payment|^They paid \(|^Payment screenshot does not match/i,
     kind: 'system',
     label: 'Payment proof arrived',
-    because: 'they sent a payment screenshot, and money always gets a person’s eyes on it',
+    because: 'they said they had paid, and money always gets a person’s eyes on it',
     prevent: 'Nothing to change. This is Will doing exactly what it should.',
+  },
+  {
+    match: /^Paid customer sent/i,
+    kind: 'system',
+    label: 'Documents from a paid customer',
+    because: 'they have already paid and sent the files we asked for, so there is nothing to answer',
+    prevent: 'Nothing to change. Collect the files and mark it done.',
+  },
+  {
+    match: /^Medicare exemption message held by the Policy Guard|^Review request held by the Policy Guard/i,
+    kind: 'guard',
+    label: 'A rule refused Will’s message',
+    because: 'Will had the scheduled message ready and one of the hard rules refused to let it go out',
+    prevent: 'Check the Library entry the task names and send it by hand. If the text is fine and the rule still refuses it, the rule is too broad. That is a code change, so send it over.',
   },
   {
     match: /^Nightly consistency check/i,
@@ -146,7 +179,7 @@ const RULES: Rule[] = [
     prevent: 'Open the customers it named and correct the stage. If it keeps happening, a stage is being set somewhere without the matching paid flag.',
   },
   {
-    match: /^Model proposed invalid transition/i,
+    match: /^Model proposed invalid transition|^Model proposed .* -> PAID but/i,
     kind: 'guard',
     label: 'An impossible stage move',
     because: 'Will wanted to move them to a stage they cannot reach from where they are',

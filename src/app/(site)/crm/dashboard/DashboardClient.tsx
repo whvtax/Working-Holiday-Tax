@@ -121,6 +121,19 @@ async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs =
   }
 }
 
+// Wrapper for mutating CRM writes: an expired session or a server error used
+// to come back as a plain fetch() that nobody checked, so the note/task/client
+// edit was dropped while the UI kept showing it as saved. This throws on any
+// non-2xx response (redirecting to login first on a 401) so every call site
+// below can roll back its optimistic update the same way finishTask already
+// does (audit, 5 Sep).
+async function crmFetch(url: string, init?: RequestInit): Promise<Response> {
+  const res = await fetch(url, init)
+  if (res.status === 401) { window.location.replace('/crm'); throw new Error('session_expired') }
+  if (!res.ok) throw new Error(`http_${res.status}`)
+  return res
+}
+
 // ── Client status (Active / Filed / Needs Super) ──────────────────────────
 // Stored in notes as: `📋 Status: filed-this-year:2025-26` or `📋 Status: needs-super:2025-26`
 // The `:YYYY-YY` suffix is the AU tax year when the status was set; on 1 July of
@@ -395,13 +408,18 @@ export default function DashboardClient() {
   // marked done AFTER WhatsApp accepts it: if the send fails, nothing is wiped
   // and the button can simply be pressed again.
   const [doneFor, setDoneFor]           = useState<Task|null>(null)
-  const [doneLink, setDoneLink]         = useState<{id:string;name:string|null;waId:string;state:string;stage:string|null}|null>(null)
+  const [doneLink, setDoneLink]         = useState<{id:string;name:string|null;waId:string;state:string;stage:string|null;estimatedRefundCents?:number|null}|null>(null)
   const [doneTemplate, setDoneTemplate] = useState('')
   const [doneLooking, setDoneLooking]   = useState(false)
   const [doneAmt, setDoneAmt]           = useState('')
   const [doneInvoice, setDoneInvoice]   = useState('')
   const [doneBusy, setDoneBusy]         = useState(false)
   const [doneErr, setDoneErr]           = useState<string|null>(null)
+  // Tasks whose estimate has already gone out but whose "done" PATCH failed.
+  // Pressing Done again on one of these must NOT reopen the send form:
+  // send_estimate has no idempotency, so a retry would message the customer
+  // twice. The remembered amount is what finishTask records (audit, 5 Sep).
+  const [estimateSent, setEstimateSent] = useState<Record<string,{amount:number}>>({})
   const doneReq = useRef<string|null>(null)
   const _currentTaxYear = currentTaxYear()
   const [newClient, setNewClient]       = useState({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:_currentTaxYear as string})
@@ -518,11 +536,36 @@ export default function DashboardClient() {
             last = v.token
           }
         } catch { changed = true }
-        if (changed) await Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()])
+        // (audit, 5 Sep) Something moved: the Done cards' signature state is
+        // re-read too, so the card matches what actually went out.
+        if (changed) { sigFetched.current.clear(); await Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()]) }
       } finally { inFlight = false }
     }, 20_000)
     return ()=> clearInterval(id)
   },[loadTasks, loadClients, loadArchived, loadStats])
+
+  // (audit, 5 Sep) The Done-card signature lookup used to be cached once per
+  // task for the life of the page, so a "ready for signature" sent from the
+  // Will chat panel (or another tab) left the card still offering "Send for
+  // Signature", and a single failed lookup hid the buttons until a full
+  // reload. The cache now empties when the tab regains focus or becomes
+  // visible (throttled), when the version poll sees a change, and on a
+  // failed lookup, so the next render re-asks the server.
+  const sigFetched = useRef<Set<string>>(new Set())
+  const [sigTick, setSigTick] = useState(0)
+  useEffect(()=>{
+    let lastRevalidate = Date.now()
+    const revalidate = () => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return
+      if (Date.now() - lastRevalidate < 15_000) return
+      lastRevalidate = Date.now()
+      sigFetched.current.clear()
+      setSigTick(n => n + 1)
+    }
+    window.addEventListener('focus', revalidate)
+    document.addEventListener('visibilitychange', revalidate)
+    return ()=>{ window.removeEventListener('focus', revalidate); document.removeEventListener('visibilitychange', revalidate) }
+  },[])
 
   // Sync taskNotes when activeTask updates from auto-refresh (e.g. reviewer added a note)
   useEffect(()=>{
@@ -646,12 +689,18 @@ export default function DashboardClient() {
     const parts = (task.notes || '').split(' | ').filter(p => p !== '🔶 In Progress')
     if (!inProgress) parts.push('🔶 In Progress')
     const newNotes = parts.join(' | ').trim()
+    const prevTasks = tasks
     setTasks(prev => prev.map(t => t.id === task.id ? { ...t, notes: newNotes } : t))
     if (activeTask?.id === task.id) setActiveTask(prev => prev ? { ...prev, notes: newNotes } : prev)
     try {
-      await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:newNotes})})
+      await crmFetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:newNotes})})
     } catch (err) {
       console.error('[toggleInProgress]', err)
+      // The write did not land (expired session, server error): put the flag
+      // back so the board does not show a change that was never saved
+      // (audit, 5 Sep).
+      setTasks(prevTasks)
+      if (activeTask?.id === task.id) setActiveTask(prev => prev ? { ...prev, notes: task.notes } : prev)
     }
   }
 
@@ -661,13 +710,19 @@ export default function DashboardClient() {
   // stale internal note lingering on a finished client.
   async function saveReviewerNote(taskId: string, note: string) {
     const trimmed = note.trim()
+    const prevTasks = tasks
+    const prevNote = prevTasks.find(t => t.id === taskId)?.reviewerNote ?? ''
     setTasks(prev => prev.map(t => t.id === taskId ? { ...t, reviewerNote: trimmed } : t))
     if (activeTask?.id === taskId) setActiveTask(prev => prev ? { ...prev, reviewerNote: trimmed } : prev)
     setEditingNoteId(null)
     try {
-      await fetch(`/api/crm/tasks/${taskId}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'reviewerNote',reviewerNote:trimmed})})
+      await crmFetch(`/api/crm/tasks/${taskId}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'reviewerNote',reviewerNote:trimmed})})
     } catch (err) {
       console.error('[saveReviewerNote]', err)
+      // Same reason as toggleInProgress: don't leave a note on screen that the
+      // server never actually stored (audit, 5 Sep).
+      setTasks(prevTasks)
+      if (activeTask?.id === taskId) setActiveTask(prev => prev ? { ...prev, reviewerNote: prevNote } : prev)
     }
   }
 
@@ -681,7 +736,11 @@ export default function DashboardClient() {
     // here that could send an estimate to the wrong person.
     doneReq.current = task.id
     setDoneFor(task); setDoneLink(null); setDoneTemplate('')
-    setDoneAmt(''); setDoneInvoice(''); setDoneErr(null); setDoneLooking(true)
+    setDoneAmt(''); setDoneInvoice(''); setDoneErr(null)
+    // Estimate already sent on an earlier attempt: no lookup, no send form.
+    // The modal only offers to finish the task (audit, 5 Sep).
+    if (estimateSent[task.id]) { setDoneLooking(false); return }
+    setDoneLooking(true)
     try {
       const r = await fetch(`/api/will/link?phone=${encodeURIComponent(task.whatsapp || '')}`)
       const j = await r.json()
@@ -730,14 +789,17 @@ export default function DashboardClient() {
       return
     }
     const id = doneFor.id
+    // Remember the send BEFORE trying to mark done. If the PATCH below fails,
+    // the next Done on this task finishes without sending again (audit, 5 Sep).
+    setEstimateSent(prev => ({ ...prev, [id]: { amount } }))
     closeDone()
     // The same figure that just went to the customer is recorded on the task,
     // so the client card built from it carries the refund instead of $0
     // (audit, 4 Sep).
-    await finishTask(id, amount)
+    await finishTask(id, amount, { estimateSent: true })
   }
 
-  async function finishTask(id:string, refundAmount?:number) {
+  async function finishTask(id:string, refundAmount?:number, opts?: { estimateSent?: boolean }) {
     const prevTasks = tasks
     setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], reviewerNote:''} : t))
     setActiveTask(null)
@@ -745,18 +807,33 @@ export default function DashboardClient() {
     try {
       const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done', refundAmount})})
       if (!res.ok) throw new Error('server_error')
+      setEstimateSent(prev => { if (!(id in prev)) return prev; const next = { ...prev }; delete next[id]; return next })
     } catch (err) {
       console.error('[finishTask]', err)
       // Restore state on failure so admin knows it didn't save
       setTasks(prevTasks)
-      alert('Failed to mark as done. Please try again.')
+      // When the estimate already left, say so: the retry must not resend it
+      // (audit, 5 Sep).
+      alert(opts?.estimateSent
+        ? 'The estimate was sent to the customer, but marking the task done failed. Press Done again and it will finish without sending anything twice.'
+        : 'Failed to mark as done. Please try again.')
     }
   }
 
   async function transferToClients(task: Task) {
+    const prevTasks = tasks
     setTasks(prev => prev.filter(t => t.id !== task.id))
     setActiveTask(null); setTaskView('list')
-    await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
+    try {
+      await crmFetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
+    } catch (err) {
+      // The task never actually moved server-side: put it back rather than
+      // let it vanish from the board while nothing was saved (audit, 5 Sep).
+      console.error('[transferToClients]', err)
+      setTasks(prevTasks)
+      alert('Could not move this to Clients. Please try again.')
+      return
+    }
     // Trigger badge explicitly - user is on Tasks tab, client was added to Clients
     setNewClientsCount(n => n + 1)
     await Promise.all([loadClients(), loadArchived()])
@@ -764,9 +841,16 @@ export default function DashboardClient() {
 
   async function deleteTaskPermanently(id: string) {
     setConfirmPermDelete(null)
+    const prevTasks = tasks
     setTasks(prev => prev.filter(t => t.id !== id))
     setActiveTask(null); setTaskView('list')
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_permanent'})})
+    try {
+      await crmFetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_permanent'})})
+    } catch (err) {
+      console.error('[deleteTaskPermanently]', err)
+      setTasks(prevTasks)
+      alert('Could not delete this task. Please try again.')
+    }
   }
 
   async function saveTaskNotes() {
@@ -784,28 +868,42 @@ export default function DashboardClient() {
     const merged = taskNotes.trim()
       ? [...structuredParts, taskNotes.trim()].join(' | ')
       : structuredParts.join(' | ')
-    await fetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:merged})})
+    try {
+      await crmFetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:merged})})
+    } catch (err) {
+      console.error('[saveTaskNotes]', err)
+      alert('Could not save this note. Please try again.')
+    }
   }
 
   async function deleteTask(id:string, refundData?:{amount:number;type:'refund'|'owed';superAmount:number;year:string;clientId:string}) {
-    // If refund data provided, save to client timeline first
-    if (refundData && refundData.clientId && refundData.year) {
-      if (refundData.amount > 0) {
-        await fetch(`/api/crm/clients/${refundData.clientId}/tax-returns`, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({year: refundData.year, refundAmount: refundData.amount, type: refundData.type})
-        })
+    // If refund data provided, save to client timeline first. Both writes and
+    // the delete must all land before the task disappears: if any fails
+    // (expired session, server error) stop here so the refund figure is never
+    // silently dropped along with the task (audit, 5 Sep).
+    try {
+      if (refundData && refundData.clientId && refundData.year) {
+        if (refundData.amount > 0) {
+          await crmFetch(`/api/crm/clients/${refundData.clientId}/tax-returns`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({year: refundData.year, refundAmount: refundData.amount, type: refundData.type})
+          })
+        }
+        if (refundData.superAmount > 0) {
+          await crmFetch(`/api/crm/clients/${refundData.clientId}/tax-returns`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({year: refundData.year, superAmount: refundData.superAmount, isSuper: true, refundAmount: 0, type: 'refund'})
+          })
+        }
       }
-      if (refundData.superAmount > 0) {
-        await fetch(`/api/crm/clients/${refundData.clientId}/tax-returns`, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({year: refundData.year, superAmount: refundData.superAmount, isSuper: true, refundAmount: 0, type: 'refund'})
-        })
-      }
+      await crmFetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
+    } catch (err) {
+      console.error('[deleteTask]', err)
+      alert('Could not save this. Please try again.')
+      return
     }
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
     setActiveTask(null); setTaskView('list'); setConfirmDelete(null); setCaptureRefund(null)
     setCaptureRefundAmt(''); setCaptureSuperAmt(''); setCaptureRefundType('refund')
     await Promise.all([loadTasks(),loadClients(),loadArchived()])
@@ -813,13 +911,26 @@ export default function DashboardClient() {
 
   async function saveClientNotes() {
     if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:clientNotes})})
+    try {
+      await crmFetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:clientNotes})})
+    } catch (err) {
+      console.error('[saveClientNotes]', err)
+      alert('Could not save this note. Please try again.')
+    }
   }
 
   async function deleteClient(id:string) {
+    const prevArchived = archivedClients
     setArchivedClients(prev => prev.filter(c => c.id !== id))
     setActiveClient(null); setView('archive'); setConfirmDeleteClient(null)
-    await fetch(`/api/crm/clients/${id}`,{method:'DELETE'})
+    try {
+      await crmFetch(`/api/crm/clients/${id}`,{method:'DELETE'})
+    } catch (err) {
+      console.error('[deleteClient]', err)
+      setArchivedClients(prevArchived)
+      alert('Could not delete this client. Please try again.')
+      return
+    }
     await loadClients()
   }
 
@@ -1293,10 +1404,11 @@ export default function DashboardClient() {
   // customer moved to Signature. From the card the owner sends the "ready for
   // signature" notice, then marks it lodged, without opening the chat. Which of
   // the two buttons shows is driven by the linked Will customer, fetched lazily
-  // per card (by phone) and cached so a card is looked up only once.
+  // per card (by phone) and cached until the cache is invalidated (see
+  // sigFetched above: focus, visibility, version change, failed lookup).
   const [sigLinks, setSigLinks] = useState<Record<string, {id:string;state:string;signatureReadySent:boolean}|null>>({})
-  const sigFetched = useRef<Set<string>>(new Set())
   const [sigBusy, setSigBusy] = useState<string|null>(null)
+  const toSigLink = (j: any) => j?.customer ? { id:String(j.customer.id), state:String(j.customer.state), signatureReadySent:!!j.customer.signatureReadySent } : null // eslint-disable-line @typescript-eslint/no-explicit-any
   useEffect(() => {
     const pending = doneTasks.filter(t => t.whatsapp && !sigFetched.current.has(t.id))
     if (!pending.length) return
@@ -1308,12 +1420,17 @@ export default function DashboardClient() {
           const r = await fetch(`/api/will/link?phone=${encodeURIComponent(t.whatsapp||'')}`)
           const j = await r.json()
           if (cancelled) return
-          setSigLinks(prev => ({ ...prev, [t.id]: j?.customer ? { id:j.customer.id, state:j.customer.state, signatureReadySent:!!j.customer.signatureReadySent } : null }))
-        } catch { if (!cancelled) setSigLinks(prev => ({ ...prev, [t.id]: null })) }
+          setSigLinks(prev => ({ ...prev, [t.id]: toSigLink(j) }))
+        } catch {
+          // (audit, 5 Sep) A transient failure is not "no Will customer": drop
+          // the id so the next render retries instead of hiding the buttons
+          // until a full reload. The previous value (if any) is kept.
+          sigFetched.current.delete(t.id)
+        }
       }
     })()
     return () => { cancelled = true }
-  }, [doneTasks])
+  }, [doneTasks, sigTick])
   async function sendSignatureFromCard(taskId: string, willId: string, name: string) {
     // Jo, 4 Sep: no confirm. The button says what it does and the card shows
     // "Sent" straight after, so the extra dialog was one click of friction on
@@ -1321,6 +1438,20 @@ export default function DashboardClient() {
     void name
     setSigBusy(taskId)
     try {
+      // (audit, 5 Sep) Re-read the linked customer first: if the notice already
+      // went out from the chat panel or another tab, the card just flips to
+      // "Mark Lodged" and nothing is sent twice. The server does not gate this.
+      try {
+        const task = tasks.find(x => x.id === taskId)
+        if (task?.whatsapp) {
+          const fresh = toSigLink(await fetch(`/api/will/link?phone=${encodeURIComponent(task.whatsapp)}`).then(r => r.json()))
+          if (fresh && (fresh.signatureReadySent || fresh.state === 'SIGNED' || fresh.state === 'LODGED' || fresh.state === 'COMPLETED')) {
+            setSigLinks(prev => ({ ...prev, [taskId]: fresh }))
+            setSigBusy(null)
+            return
+          }
+        }
+      } catch { /* lookup failed: send as before, the click was deliberate */ }
       const r = await fetch('/api/will/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_signature',customerId:willId})})
       const j = await r.json().catch(()=>null)
       if (r.ok && j?.ok) setSigLinks(prev => ({ ...prev, [taskId]: prev[taskId] ? { ...prev[taskId]!, signatureReadySent:true } : prev[taskId] }))
@@ -1642,10 +1773,11 @@ export default function DashboardClient() {
                   return (
                   <div key={t.id} className={`task${wasLastViewed?' seen':''}`} style={{alignItems:'center',cursor:'pointer', ...(inProgress?{background:'var(--surface2)'}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
                     <button
+                      className="tinprog"
                       onClick={e=>{e.stopPropagation();toggleInProgress(t)}}
                       title={inProgress ? 'Remove "In Progress" mark' : 'Mark "In Progress" - moves to the bottom of the queue'}
                       aria-label={inProgress ? 'Unmark in progress' : 'Mark in progress'}
-                      style={{width:16,height:16,borderRadius:5,border:`1.5px solid ${inProgress?'var(--good)':'var(--line2)'}`,background:inProgress?'var(--good)':'var(--surface)',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',padding:0}}
+                      style={{width:16,height:16,borderRadius:5,border:`1.5px solid ${inProgress?'var(--good)':'var(--line2)'}`,background:inProgress?'var(--good)':'var(--surface)',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',padding:0,position:'relative'}}
                     >
                       {inProgress && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{color:'var(--surface)'}}><polyline points="20 6 9 17 4 12"/></svg>}
                     </button>
@@ -1915,8 +2047,12 @@ export default function DashboardClient() {
                   is what pushes this view past the fold, the horizontal one is
                   what keeps the two columns readable as separate cards. No
                   marginBottom — this is the last thing in .pbody, and its own
-                  bottom padding already holds the record off the pinned .pfoot. */}
-              <div style={{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',columnGap:12,rowGap:9}}>
+                  bottom padding already holds the record off the pinned .pfoot.
+                  auto-fit (not a fixed 2-col split) so a panel never gets
+                  squeezed below ~280px — under ~600px it drops to one column,
+                  which is what keeps the 110px .fk label readable next to the
+                  value (TFN, bank details, etc) on a phone (audit, 5 Sep). */}
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',columnGap:12,rowGap:9}}>
 
 
 
@@ -2549,26 +2685,54 @@ export default function DashboardClient() {
         const preview = (doneTemplate || '')
           .replaceAll('{{AMOUNT}}', amountStr)
           .replaceAll('{{INVOICE_LINK}}', doneInvoice.trim() || 'https://in.xero.com/...')
+        // Estimate went out on an earlier attempt and only the "done" save
+        // failed: no send form, just finish with the remembered amount
+        // (audit, 5 Sep).
+        const alreadySent = estimateSent[doneFor.id]
+        const finishAlreadySent = () => { const id = doneFor.id; const amt = alreadySent?.amount; closeDone(); finishTask(id, amt, { estimateSent: true }) }
+        // The in-memory note above dies with a page reload. Will's own record
+        // (state at Signature or later, or an estimate figure on file) says the
+        // same thing and survives it, so on that evidence the primary button
+        // finishes without sending and the send form is kept only as a
+        // secondary "Send again" for genuine corrections (audit, 5 Sep).
+        const sentPerWill = !alreadySent && !!doneLink && (
+          doneLink.estimatedRefundCents != null ||
+          ['SIGNATURE_PENDING','SIGNED','LODGED','COMPLETED'].includes(doneLink.state)
+        )
+        const sentPerWillAmt = doneLink?.estimatedRefundCents != null ? doneLink.estimatedRefundCents / 100 : undefined
+        const finishSentPerWill = () => { const id = doneFor.id; closeDone(); finishTask(id, sentPerWillAmt, { estimateSent: true }) }
         return (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget && !doneBusy) closeDone()}}>
           <div className="modal" style={{maxWidth:460}}>
             <div style={{fontSize:21,marginBottom:8,textAlign:'center'}}>✅</div>
             <div className="mh" style={{textAlign:'center'}}><b>Finish {doneFor.clientName}</b></div>
 
-            {doneLooking && (
+            {alreadySent && (
+              <div className="msub" style={{textAlign:'center'}}>
+                Estimate already sent ✓ ${alreadySent.amount.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2})}<br/>
+                Only marking the task done is left. Nothing will be sent again.
+              </div>
+            )}
+
+            {!alreadySent && doneLooking && (
               <div className="msub" style={{textAlign:'center'}}>Looking for their WhatsApp chat...</div>
             )}
 
-            {!doneLooking && !doneLink && (
+            {!alreadySent && !doneLooking && !doneLink && (
               <div className="msub" style={{textAlign:'center'}}>
                 No WhatsApp conversation found for {doneFor.whatsapp || 'this number'}.<br/>
                 The task can still be marked done, and nothing will be sent.
               </div>
             )}
 
-            {!doneLooking && doneLink && (<>
+            {!alreadySent && !doneLooking && doneLink && (<>
               <div className="msub" style={{textAlign:'center'}}>
-                Sends the estimate and the invoice on WhatsApp, then moves them to Signature.
+                {sentPerWill ? (<>
+                  Estimate{sentPerWillAmt != null ? ` of $${sentPerWillAmt.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2})}` : ''} was already sent to this customer.<br/>
+                  Mark as done only finishes the task. Send again is for a correction.
+                </>) : (
+                  'Sends the estimate and the invoice on WhatsApp, then moves them to Signature.'
+                )}
               </div>
 
               <div style={{marginBottom:12}}>
@@ -2603,7 +2767,19 @@ export default function DashboardClient() {
 
             <div className="mfoot">
               <button className="btn quiet lg" disabled={doneBusy} onClick={closeDone}>Cancel</button>
-              {doneLink ? (<>
+              {alreadySent ? (
+                <button className="btn take lg" disabled={doneBusy} onClick={finishAlreadySent}>
+                  ✓ Mark as done
+                </button>
+              ) : doneLink && sentPerWill ? (<>
+                <button className="btn quiet lg" disabled={doneBusy || !amountOk || !linkOk}
+                  onClick={sendEstimateThenDone}>
+                  {doneBusy ? 'Sending...' : 'Send again'}
+                </button>
+                <button className="btn take lg" disabled={doneBusy} onClick={finishSentPerWill}>
+                  ✓ Mark as done
+                </button>
+              </>) : doneLink ? (<>
                 <button className="btn quiet lg" disabled={doneBusy}
                   onClick={()=>{ const id = doneFor.id; closeDone(); finishTask(id) }}>
                   Done without sending

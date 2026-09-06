@@ -17,6 +17,11 @@
 // A suggestion is a DRAFT FOR A HUMAN. It is never transmitted by itself: the
 // send path runs the policy guard as usual.
 import { APPROVED } from './approved-messages';
+import {
+  documentsReceivedMessage, documentsReceivedTemplateKey,
+  handoffHoldingMessage, handoffHoldingTemplateKey,
+  paymentReceivedMessage, paymentReceivedTemplateKey,
+} from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { CustomerRow, getStore } from './store';
 
@@ -69,6 +74,31 @@ const REASON_TEMPLATE_KEYS: Record<HandoffReason, string> = {
   generic: 'handoff_holding',
 };
 
+/** The reasons whose proposed reply is the neutral holding line. The holding
+ *  line has a Library row per language (handoff_holding_<lang>, i18n.ts) and the
+ *  scheduler already sends THAT one half an hour after a handoff; but the task
+ *  itself proposed the English row, so one click on "Send Reply" put English
+ *  into a German thread while waiting would have sent German (audit, 5 Sep).
+ *  Same text for English customers, the customer's own row for the others. */
+const HOLDING_REASONS: ReadonlySet<HandoffReason> = new Set(['guard_blocked', 'draft_invalid', 'budget', 'send_failed', 'generic']);
+
+/** The operator note suggestReply puts above an English Library answer for a
+ *  customer who writes in another language. It is for the owner's eyes only;
+ *  `stripOperatorNote` takes it off before anything is transmitted, so the
+ *  bracketed line can be shown in the task and still never reach the customer
+ *  (audit, 5 Sep). */
+const OPERATOR_NOTE_RE = /^\s*\[Library answer, in English\.[^\]\n]*\]\s*\n*/;
+
+export function operatorNote(lang: string): string {
+  return `[Library answer, in English. The customer writes in ${lang}. Translate before sending, or edit.]`;
+}
+
+/** Remove a leading operator note from a draft about to be sent. Anything
+ *  else is returned unchanged. */
+export function stripOperatorNote(body: string): string {
+  return body.replace(OPERATOR_NOTE_RE, '');
+}
+
 /** Which Library entry carries the message this pipeline stage calls for. */
 const STATE_TEMPLATE_KEYS: Partial<Record<CustomerRow['state'], string>> = {
   NEW_LEAD: 'opening',
@@ -79,7 +109,7 @@ const STATE_TEMPLATE_KEYS: Partial<Record<CustomerRow['state'], string>> = {
 
 /** Where the customer is in the pipeline decides what they are most likely
  *  waiting to hear. Only messages that are already approved are used. */
-function byState(c: Pick<CustomerRow, 'state' | 'income' | 'paid'>): string | null {
+function byState(c: Pick<CustomerRow, 'state' | 'income' | 'paid' | 'lang'>): string | null {
   switch (c.state) {
     case 'NEW_LEAD':
       return APPROVED.opening;
@@ -96,7 +126,8 @@ function byState(c: Pick<CustomerRow, 'state' | 'income' | 'paid'>): string | nu
       return APPROVED.objections.o11_think_about_it;
     case 'PAID':
     case 'FORM_PENDING':
-      return APPROVED.payment_received;
+      // Per-language copy, the same one the payment path sends (audit, 5 Sep).
+      return paymentReceivedMessage(c.lang);
     case 'SIGNATURE_PENDING':
       return APPROVED.signature_ready;
     default:
@@ -104,12 +135,14 @@ function byState(c: Pick<CustomerRow, 'state' | 'income' | 'paid'>): string | nu
   }
 }
 
-function stateTemplateKey(c: Pick<CustomerRow, 'state' | 'income'>): string | null {
+function stateTemplateKey(c: Pick<CustomerRow, 'state' | 'income' | 'lang'>): string | null {
   if (c.state === 'QUALIFIED') {
     if (c.income === 'TFN_ABN') return 'price_tfn_abn';
     if (c.income === 'TFN') return 'price_tfn';
     return 'opening';
   }
+  // The payment confirmation has a Library row per language (audit, 5 Sep).
+  if (c.state === 'PAID' || c.state === 'FORM_PENDING') return paymentReceivedTemplateKey(c.lang);
   return STATE_TEMPLATE_KEYS[c.state] ?? null;
 }
 
@@ -154,10 +187,13 @@ export async function suggestReply(
   // another language the answer is still the right ANSWER, but it is not the
   // right MESSAGE: pressing "Send Reply" put an English paragraph into a German
   // or Japanese thread (audit, 4 Sep). It is offered with a line saying so, so
-  // the owner sends it knowingly or has Will rewrite it.
+  // the owner sends it knowingly or has Will rewrite it. The line is an
+  // operator note, not part of the message: the send path strips it
+  // (stripOperatorNote), so clicking "Send Reply" without editing no longer
+  // puts the bracketed English note into the customer's thread (audit, 5 Sep).
   const foreign = !!customer?.lang && customer.lang !== 'en';
   const label = (answer: string) => (foreign
-    ? `[Library answer, in English. The customer writes in ${customer?.lang}. Translate before sending, or edit.]\n\n${answer}`
+    ? `${operatorNote(customer!.lang!)}\n\n${answer}`
     : answer);
   if (customerMessage && customerMessage.trim()) {
     try {
@@ -175,5 +211,19 @@ export async function suggestReply(
   }
 
   // 3. Always something.
-  return (await libraryBody(REASON_TEMPLATE_KEYS[reason])) ?? BY_REASON[reason] ?? HOLDING;
+  // The paid customer's document acknowledgement is sent automatically on
+  // Autopilot (service.ts), so unlike the other reasons it is not a draft a
+  // person reads first. It was the one post-payment auto-send with no language
+  // variant, so a German or Japanese customer got "Perfect, got it all" in
+  // English mid-conversation (audit, 5 Sep). Their language's Library row
+  // first, then the code copy in that language; English customers see no change.
+  if (reason === 'documents_after_payment') {
+    return (await libraryBody(documentsReceivedTemplateKey(customer?.lang))) ?? documentsReceivedMessage(customer?.lang);
+  }
+  if (HOLDING_REASONS.has(reason)) {
+    return (await libraryBody(handoffHoldingTemplateKey(customer?.lang))) ?? handoffHoldingMessage(customer?.lang);
+  }
+  // The remaining handoff rows have no language variants yet, so a foreign
+  // customer's task carries the same operator note as a Library answer.
+  return label((await libraryBody(REASON_TEMPLATE_KEYS[reason])) ?? BY_REASON[reason] ?? HOLDING);
 }

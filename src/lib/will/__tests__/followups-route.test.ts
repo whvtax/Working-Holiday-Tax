@@ -14,10 +14,24 @@ jest.mock('@/lib/will/auth', () => ({ sessionValid: async () => sessionValid() }
 let jobs: Record<string, unknown>[] = [];
 let customers: Record<string, unknown>[] = [];
 let templates: Record<string, unknown>[] = [];
+// The whole-table reads the route used to make. They stay on the mock only so
+// a test can assert they are never called again (audit, 5 Sep).
+const listJobs = jest.fn(async () => jobs);
+const listCustomers = jest.fn(async () => customers);
+const listCustomersByIds = jest.fn(async (ids: string[]) => {
+  const set = new Set(ids);
+  return customers.filter((c) => set.has(c.id as string));
+});
 jest.mock('@/lib/will/store', () => ({
   getStore: () => ({
-    listJobs: async () => jobs,
-    listCustomers: async () => customers,
+    // Mirrors what the DB-side filter returns: scheduled follow-ups only,
+    // soonest first. The route must not rely on anything more than that.
+    listScheduledFollowUps: async () => jobs
+      .filter((j) => j.kind === 'FOLLOW_UP' && j.status === 'SCHEDULED')
+      .sort((a, b) => (a.runAt as string).localeCompare(b.runAt as string)),
+    listJobs: (...a: unknown[]) => listJobs(...(a as [])),
+    listCustomers: (...a: unknown[]) => listCustomers(...(a as [])),
+    listCustomersByIds: (ids: string[]) => listCustomersByIds(ids),
     listTemplates: async () => templates,
     // The route also reads the one-time retro status from settings; not what
     // these tests pin, so a plain no-op that returns nothing is enough.
@@ -44,6 +58,9 @@ beforeEach(() => {
     { key: 'fu_form_6h', title: 'Form · 6h', body: 'Hi {{1}}, your form is still waiting for you.' },
   ];
   jobs = [];
+  listJobs.mockClear();
+  listCustomers.mockClear();
+  listCustomersByIds.mockClear();
 });
 
 async function body() {
@@ -133,4 +150,26 @@ it('treats an empty Library body as nothing to preview', async () => {
 it('drops a job whose customer no longer exists', async () => {
   jobs = [job({ id: 'orphan', customerId: 'gone' }), job({ id: 'ok' })];
   expect((await body()).rows.map((r: { jobId: string }) => r.jobId)).toEqual(['ok']);
+});
+
+// ── Scale (audit, 5 Sep) ──────────────────────────────────────────────────
+// will_jobs is never purged, so reading every job and every customer to find
+// the live queue grew without bound and the 20 s poll piled up on itself. The
+// route now asks the store for scheduled follow-ups only and loads just the
+// customers those jobs reach. Same rows out, a fraction of the reads.
+
+it('never reads the whole job table or the whole customer table', async () => {
+  jobs = [job({ id: 'j1' }), job({ id: 'j2', customerId: 'c2' })];
+  await body();
+  expect(listJobs).not.toHaveBeenCalled();
+  expect(listCustomers).not.toHaveBeenCalled();
+});
+
+it('loads only the customers the scheduled follow-ups reach', async () => {
+  customers.push({ id: 'c3', waId: '+61400000003', name: 'Unrelated', state: 'NEW_LEAD', lang: null });
+  jobs = [job({ id: 'j1', customerId: 'c1' }), job({ id: 'j2', customerId: 'c1' }), job({ id: 'nightly', kind: 'NIGHTLY', customerId: null, payload: {} })];
+  const b = await body();
+  expect(listCustomersByIds).toHaveBeenCalledTimes(1);
+  expect(listCustomersByIds.mock.calls[0][0]).toEqual(['c1', 'c1']);
+  expect(b.rows.map((r: { customerId: string }) => r.customerId)).toEqual(['c1', 'c1']);
 });

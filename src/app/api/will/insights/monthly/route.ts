@@ -15,9 +15,10 @@ export async function GET() {
   const [customers, history, messages] = await Promise.all([
     store.listCustomers(),
     store.allHistory(),
-    // Only HUMAN-authored rows matter (the "Will did it all" share); the whole
-    // list is read because the store has no author filter.
-    store.allMessages().catch(() => []),
+    // Only HUMAN-authored rows matter (the "Will did it all" share); the
+    // store now filters this in the database instead of paging through every
+    // message ever sent (audit, 5 Sep).
+    store.humanOutMessages().catch(() => []),
   ]);
   return NextResponse.json({
     ok: true,

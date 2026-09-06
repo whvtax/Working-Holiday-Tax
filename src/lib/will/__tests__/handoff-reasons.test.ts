@@ -18,7 +18,9 @@
  */
 import { explainHandoffReason, isTemplateShaped } from '@/lib/will/handoff-reasons';
 
-// Every reason the codebase raises, as it reaches the card.
+// Every reason the codebase raises, as it reaches the card. (audit, 5 Sep) This
+// list had gone stale and hid the drift it exists to catch; it is now the live
+// strings, and audit3-core-4.test.ts reads them out of the source directly.
 const REAL_REASONS: [string, string][] = [
   ['engine.ts', 'Policy Guard blocked reply'],
   ['scheduler.ts (autopilot)', 'Autopilot reply blocked before sending'],
@@ -26,15 +28,30 @@ const REAL_REASONS: [string, string][] = [
   ['actions (approval)', 'Draft became invalid before approval'],
   ['actions (stale)', 'Draft is stale'],
   ['service.ts (media)', 'Customer sent an attachment Will cannot read. Open the chat t'],
-  ['service.ts (voice)', 'Customer sent a message Will cannot read (voice note or unsupp'],
+  ['service.ts (voice)', 'Customer sent a voice note. Open WhatsApp to listen and reply.'],
+  ['service.ts (undecoded)', 'WhatsApp delivered an event with no readable text (type=unkno'],
   ['service.ts (identity)', 'Customer asked whether they are talking to a bot, needs a huma'],
-  ['service.ts (chatty)', 'Customer sent 5 messages before paying — needs a person, not m'],
-  ['service.ts (existing)', 'An existing chat sent a message, needs a human'],
-  ['service.ts (returning)', 'A previous customer messaged again, needs a human'],
-  ['scheduler.ts (send)', 'WhatsApp send failed'],
+  ['service.ts (loop)', 'The same message keeps arriving in this chat, so it is loopin'],
+  ['service.ts (ceiling)', 'Customer sent 81 messages before paying — this conversation i'],
+  ['service.ts (send)', "Will's reply was not delivered"],
+  ['channel.ts (send)', 'WhatsApp send failed'],
+  ['webhook (status)', 'WhatsApp did not deliver this message'],
+  ['webhook (dead letter)', 'A WhatsApp message could not be processed after 3 attempts an'],
+  ['scheduler.ts (auto-reply)', 'Will could not answer this chat automatically (boom). Please '],
+  ['scheduler.ts (stuck send)', 'A reply may not have reached this customer — it got stuck whi'],
+  ['scheduler.ts (medicare guard)', 'Medicare exemption message held by the Policy Guard'],
+  ['scheduler.ts (medicare send)', 'The Medicare exemption message was not delivered'],
+  ['scheduler.ts (review guard)', 'Review request held by the Policy Guard'],
+  ['store-supabase.ts (job)', 'A scheduled follow up failed three times and has been given u'],
   ['service.ts (budget)', 'Daily AI limit reached, please reply to this customer manually'],
   ['engine.ts (transition)', 'Model proposed invalid transition PRICE_SENT -> LODGED; reply '],
-  ['service.ts (payment)', 'Customer sent proof of payment (bank transfer receipt)'],
+  ['engine.ts (paid)', 'Model proposed PRICE_SENT -> PAID but the customer did not rep'],
+  ['service.ts (payment mismatch)', 'Payment screenshot does not match'],
+  ['service.ts (payment drafted)', 'Customer confirmed payment (a screenshot).  A "payment receive'],
+  ['service.ts (payment, Will off)', 'They paid (a screenshot) and are moved to Paid, but Will is s'],
+  ['service.ts (payment, send failed)', 'PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed '],
+  ['service.ts (payment auto)', 'Customer confirmed payment (a screenshot). Moved to Paid autom'],
+  ['document-drop.ts', 'Paid customer sent 2 files. Nothing to answer, just collect th'],
   ['scheduler.ts (nightly)', 'Nightly consistency check found 2 issue(s)'],
 ];
 
@@ -62,9 +79,12 @@ describe('explainHandoffReason', () => {
   it('does not tell you to write a template for something a template cannot fix', () => {
     const notTemplateShaped = [
       'Customer sent an attachment Will cannot read. Open the chat t',
-      'Customer sent a message Will cannot read (voice note or unsupp',
+      'Customer sent a voice note. Open WhatsApp to listen and reply.',
       'Policy Guard blocked reply',
       'WhatsApp send failed',
+      "Will's reply was not delivered",
+      'WhatsApp did not deliver this message',
+      'Customer confirmed payment (a screenshot).',
       'Customer asked whether they are talking to a bot, needs a huma',
     ];
     for (const r of notTemplateShaped) {

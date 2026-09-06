@@ -65,6 +65,13 @@ export interface MessageRow {
      *  quiet for a day or more and free text is rejected outside the 24h
      *  window. Absent on ordinary conversation replies, which go as text. */
     waTemplate?: { name: string; params: string[]; lang?: string | null };
+    /** A deterministic line Will sent on its own trigger, as free text
+     *  (payment received confirmation, the documents acknowledgement): not an
+     *  answer to what the customer wrote. The deferred reply reads this flag,
+     *  or `waTemplate`, instead of matching the text against the code
+     *  constants, so a Library rewording never makes a confirmation pass for
+     *  a real answer and swallow the question next to it (audit3 core 52, 5 Sep). */
+    system?: boolean;
     /** An attachment the customer sent. Meta keeps the file for 30 days behind
      *  an authenticated endpoint, so only the id is stored; the dashboard asks
      *  /api/will/media/[id] for the bytes when it renders the thread. `meta` is
@@ -104,12 +111,32 @@ export interface TemplateRow {
   updatedAt: string;
 }
 
+/** Most jobs a single tick claims; shared by both stores so they page alike. */
+export const DUE_JOBS_BATCH = 50;
+
+/** Jobs that are a customer waiting for an answer: the Autopilot timer, the
+ *  questionnaire acknowledgement and the holding line. dueJobs puts these in
+ *  the batch FIRST. Every follow-up that comes due during the day is re-queued
+ *  to exactly 19:00, so the 19:00 pile could fill the whole 50-row batch and
+ *  the two-minute timer of someone who wrote at 18:58 was not even fetched
+ *  until the nudges to silent leads had all gone out (audit3 core 12, 5 Sep).
+ *  Nothing about what is sent or when a follow-up is allowed changes; only
+ *  which rows a busy tick sees first. */
+export const CUSTOMER_FACING_JOB_KINDS: ReadonlyArray<JobRow['kind']> = ['AUTO_REPLY', 'FORM_RECEIVED', 'HANDOFF_ACK'];
+
 export interface JobRow {
   id: string;
   customerId: string | null;
-  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'REVIEW_REQUEST';
+  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'REVIEW_REQUEST' | 'MEDICARE_INFO';
   payload: {
     templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
+    /** MEDICARE_INFO: how many times this job has already stood aside for the
+     *  ABN questions, so it can be capped and always go out eventually. */
+    attempt?: number;
+    /** FORM_RECEIVED, replay shape (audit, 5 Sep): the customer is already
+     *  FORM_COMPLETE and only this one message (the acknowledgement or the
+     *  ABN questions) is still owed because Meta throttled the first send. */
+    resend?: 'ack' | 'abn';
     /** AUTO_REPLY, older shape: the QUEUED message this job will transmit.
      *  Only jobs armed before the 3 Sep change carry it; kept so a reply that
      *  was already queued at deploy time still goes out. */
@@ -220,6 +247,11 @@ export interface Store {
   findCustomerByPhone(phone: string): Promise<CustomerRow | null>;
   /** PERF-01/02: PK lookup instead of scanning listCustomers(). */
   getCustomerById(id: string): Promise<CustomerRow | null>;
+  /** A specific set of customers by id, in bounded chunks, for a screen that
+   *  needs the rows a handful of tasks or drafts point at without pulling the
+   *  whole table (audit, 5 Sep). Unknown ids are simply absent; order is not
+   *  guaranteed. */
+  listCustomersByIds(ids: string[]): Promise<CustomerRow[]>;
   createCustomer(c: Partial<CustomerRow> & { waId: string }): Promise<CustomerRow>;
   updateCustomer(id: string, patch: Partial<CustomerRow>): Promise<void>;
   /** Returns whether this call performed the transition. false = no-op (already
@@ -234,6 +266,12 @@ export interface Store {
 
   addMessage(m: Omit<MessageRow, 'id' | 'createdAt'>): Promise<MessageRow>;
   listMessages(customerId: string): Promise<MessageRow[]>;
+  /** This customer's own still-live outbound drafts (PENDING_APPROVAL/QUEUED)
+   *  only — what afterHumanReplyIndexed discards once the owner has answered
+   *  in person. Same rows the listMessages(customerId) filter produced,
+   *  without dragging the whole 1,000-row conversation window through the
+   *  connection on every reply (audit3, 5 Sep). */
+  listPendingOutbound(customerId: string): Promise<MessageRow[]>;
   /** SCALE: every customer and every message, fetched in pages, for the admin
    *  export ONLY. `listCustomers()` silently truncates at PostgREST's 1,000-row
    *  cap and the export used to fire one listMessages() per customer in
@@ -242,6 +280,12 @@ export interface Store {
    *  on a request-serving path. */
   allCustomers(): Promise<CustomerRow[]>;
   allMessages(): Promise<MessageRow[]>;
+  /** Only the HUMAN-authored, outbound, non-discarded/blocked messages —
+   *  everything monthlyConversion's "Will did it all" share actually looks at.
+   *  Filtered in the database instead of reading every message row in the
+   *  system (audit, 5 Sep): the Learning tab used to page through the whole
+   *  will_messages table just to keep this tiny slice. */
+  humanOutMessages(): Promise<MessageRow[]>;
   /** Every job, paged past PostgREST's 1,000-row cap. For the one place a
    *  partial read would be WRONG rather than just incomplete: orphan-job cleanup
    *  cancels jobs whose customer is missing, so it must see every job or it would
@@ -327,6 +371,15 @@ export interface Store {
   /** The single OPEN task for this customer, if one exists — used to fold a
    *  burst of messages/attachments into ONE task instead of one per message. */
   findOpenTaskForCustomer(customerId: string): Promise<TaskRow | null>;
+  /** One task by id, any status. The Tasks tab's send/resolve/link actions
+   *  used to `listTasks().find(...)`, i.e. read every open task plus the
+   *  recent resolved ones (two queries, contexts included) to look at one
+   *  row (audit, 5 Sep). Indexed single-row read instead. */
+  getTaskById(id: string): Promise<TaskRow | null>;
+  /** Every OPEN task for one customer, newest first: the rows afterHumanReply
+   *  closes once the owner has answered. Same rows the listTasks() filter
+   *  produced, without the whole-table read (audit, 5 Sep). */
+  listOpenTasksForCustomer(customerId: string): Promise<TaskRow[]>;
   /** Patch an existing task in place (reason/context/suggestedReply/severity)
    *  rather than creating a new one — how a burst of messages consolidates. */
   updateTask(id: string, patch: Partial<Pick<TaskRow, 'reason' | 'context' | 'suggestedReply' | 'severity'>>): Promise<void>;
@@ -340,8 +393,13 @@ export interface Store {
   deleteTemplate(id: string): Promise<void>;
 
   // ── Lost-lead post-mortems (migration 031) ──
-  /** Every stored post-mortem, newest first. Read-only for the UI. */
+  /** Every stored post-mortem, newest first. Read-only for the UI.
+   *  Must be COMPLETE, never capped: the nightly job uses it as the set of
+   *  leads already analysed (audit, 5 Sep). */
   listLostAnalyses(): Promise<LostAnalysisRow[]>;
+  /** One lead's post-mortem, or null when it has not been assessed. Use this
+   *  for a single lookup (Win-back) instead of scanning the whole list. */
+  getLostAnalysis(customerId: string): Promise<LostAnalysisRow | null>;
   /** Insert or replace the post-mortem for one customer. Keyed by customerId,
    *  so re-running the nightly job is idempotent rather than duplicating. */
   upsertLostAnalysis(row: LostAnalysisRow): Promise<void>;
@@ -349,6 +407,11 @@ export interface Store {
   audit(actor: string, action: string, detail?: unknown): Promise<void>;
   /** Most recent audit rows, newest first (decision log for review). */
   listAudit(limit?: number): Promise<AuditRow[]>;
+  /** Optional: is the decision log actually being written? audit() never
+   *  throws, so a broken will_audit table used to look exactly like a quiet
+   *  system. The diagnostics call this so an empty log is reported as a fault
+   *  rather than as "all clear" (audit, 5 Sep). */
+  checkAuditLog?(): Promise<{ ok: true } | { ok: false; error: string }>;
 
   // Atomic inbound idempotency (RACE-01/REL-02/WILL-WH-01).
   /** Atomically claim a Meta message id. Returns true if THIS caller won the
@@ -372,8 +435,17 @@ export interface Store {
   deleteKnowledge(id: string): Promise<void>;
 
   addJob(j: Omit<JobRow, 'id' | 'createdAt' | 'status'>): Promise<JobRow>;
+  /** The due batch, capped at DUE_JOBS_BATCH. A waiting customer's job
+   *  (CUSTOMER_FACING_JOB_KINDS) is always in it, ahead of everything else;
+   *  the rest fill the remainder oldest-due first (audit3 core 12, 5 Sep). */
   dueJobs(now: Date): Promise<JobRow[]>;
   listJobs(): Promise<JobRow[]>;
+  /** Every SCHEDULED FOLLOW_UP job, soonest first, filtered in the database.
+   *  The Scheduled Follow-ups view used to call `listJobs()` and filter in JS:
+   *  will_jobs is never purged, so that paged the whole history of DONE and
+   *  CANCELLED rows every 20 seconds to find a few hundred live ones
+   *  (audit, 5 Sep). */
+  listScheduledFollowUps(): Promise<JobRow[]>;
   /** PERF-02: jobs for one customer (optionally filtered by kind), pushed to the DB. */
   listJobsForCustomer(customerId: string, kinds?: JobRow['kind'][]): Promise<JobRow[]>;
   /** The set of customerIds that currently have a SCHEDULED FOLLOW_UP job, for
@@ -415,6 +487,19 @@ export interface Store {
    *  conversations are never touched by this. */
   purgeAudit?(olderThanMs: number): Promise<number>;
 
+  /** Optional: every SCHEDULED job of any kind, filtered in the database. The
+   *  nightly orphan sweep only ever cancels SCHEDULED rows, so it does not
+   *  need to page the whole (never purged) history through `allJobs()`
+   *  (audit3 sched 54, 5 Sep). */
+  listScheduledJobs?(): Promise<JobRow[]>;
+
+  /** Optional: delete finished job rows older than the cutoff: CANCELLED and
+   *  FAILED of any kind, plus DONE rows of every kind EXCEPT FOLLOW_UP. DONE
+   *  FOLLOW_UP rows are kept for good: reconcileSchedule counts them to resume
+   *  a cadence at the right step. Nothing SCHEDULED or CLAIMED is touched.
+   *  Returns the number of rows removed (audit3 sched 54, 5 Sep). */
+  purgeFinishedJobs?(olderThanMs: number): Promise<number>;
+
   /** Optional: atomically claim one slot against a counted daily limit.
    *
    *  Returns true when the limit is ALREADY spent (caller must not proceed) and
@@ -438,6 +523,14 @@ import { SupabaseStore, lastPersistError as sbErr } from './store-supabase';
 
 /** Surface whichever active store last failed to persist (M9), for /api/health. */
 export function getLastPersistError(): string | null { return sbErr ?? fileErr; }
+
+import { clearLastPersistError as clearSbErr } from './store-supabase';
+import { clearLastPersistError as clearFileErr } from './store-file';
+
+// (audit, 5 Sep) Reset both stores' recorded error once the health route's own
+// reachability probe has reported it, so a one-off read failure does not read
+// as a live outage indefinitely — see clearLastPersistError in each store.
+export function clearLastPersistError(): void { clearSbErr(); clearFileErr(); }
 
 // Production uses the CRM's Supabase (data lives on your server, like the rest
 // of the CRM). With no Supabase env configured we fall back to the local

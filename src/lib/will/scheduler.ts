@@ -4,20 +4,27 @@
 // Hardened after audit: single-flight mutex, claim-before-send,
 // seq resume (no restart-forever), kill switch, quiet hours.
 // ============================================================
-import { getStore, CustomerRow } from './store';
+import { getStore, CustomerRow, JobRow, Store } from './store';
 import { cleanFirstName, firstNameOf } from './text-normalize';
-import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts } from './config';
+import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts, SIGNATURE_AFTER_NOTICE } from './config';
 import { policyGuard, registerLibraryBodies } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
+import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, medicareMessage, medicareTemplateKey } from './i18n';
 import { deliverOut, sendWhatsAppText } from './channel';
+import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
 import { runLostLeadAnalysis } from './lost-analysis';
+import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
+// One open task per customer (audit, 5 Sep): every task the scheduler raises
+// for a customer goes through the shared fold, so a repeat of the same failure
+// grows the open card instead of adding one per step. Same reason, severity
+// and suggested reply as before; only the stacking is gone.
+import { raiseOrUpdateTask, raiseOrFoldSystemTask, resolveSystemTasks } from './tasks';
 
 
 /**
@@ -55,10 +62,57 @@ export function greetingName(customer: CustomerRow): string {
 }
 
 
-export async function scheduleFollowUp(customerId: string, flow: Flow, seq: number): Promise<void> {
+/** Set by "Send for Signature" (the ISO time of the notice). While it stands,
+ *  the signature nudges are measured from the notice (24h / 3d / 7d), not from
+ *  the Done click plus the three-day prep offset. See signatureNoticeStands. */
+export const signatureNoticeSentKey = (customerId: string) => `signature_notice_sent:${customerId}`;
+
+/**
+ * Does the "ready for signature" notice still govern this customer's cadence?
+ * It does when the marker is set AND the customer has not re-entered Signature
+ * since it was written: a customer who left the stage and came back through
+ * Done is on the prep-offset path again, and the stale marker must not follow
+ * them. Judged off the state history rather than cleared on every stage move,
+ * so nothing outside this file has to remember to clear it (audit, 5 Sep).
+ */
+export async function signatureNoticeStands(customerId: string, history?: { to: CustomerState; createdAt: string }[]): Promise<boolean> {
   const store = getStore();
+  const raw = await store.getSetting(signatureNoticeSentKey(customerId));
+  if (typeof raw !== 'string' || !raw) return false;
+  const noticeAt = new Date(raw).getTime();
+  if (!Number.isFinite(noticeAt)) return false;
+  try {
+    const rows = history ?? await store.history(customerId);
+    const lastEntry = rows
+      .filter((h) => h.to === 'SIGNATURE_PENDING')
+      .map((h) => new Date(h.createdAt).getTime())
+      .reduce((a, b) => Math.max(a, b), 0);
+    // The route moves them to Signature BEFORE the marker is written, so an
+    // entry later than the marker can only be a fresh arrival via Done.
+    return lastEntry <= noticeAt;
+  } catch { return true; /* no history: the marker is the best evidence */ }
+}
+
+export async function scheduleFollowUp(customerId: string, flow: Flow, seq: number, opts?: { afterNotice?: boolean }): Promise<void> {
+  const store = getStore();
+  // "Stop chasing" is honoured HERE, not only in reconcileSchedule (audit,
+  // 5 Sep). The tick arms the next step straight through this function after
+  // a send, a missing template, a guard block or a crash, so a press of the
+  // button while that customer's nudge was mid-send re-armed the cadence Jo had
+  // just switched off. One indexed settings read; nothing about the cadence
+  // itself changes for a customer whose follow-ups are on.
+  if ((await store.getSetting(followupsOffKey(customerId))) === true) return;
   const cfg = schedulerConfig();
-  const delays = cfg[flow];
+  // The signature flow has two clocks. "Send for Signature" armed nudge 1 at
+  // 24h from the notice, but the very next reconcileSchedule (any customer
+  // reply, a toggle) cancelled that job and re-armed from here with the Done
+  // path's prep offset, so "great, thanks" to the notice pushed nudge 1 to four
+  // days out (audit, 5 Sep). Every arming of the signature flow now asks which
+  // clock applies; the numbers themselves are unchanged.
+  const afterNotice = flow === 'signature'
+    ? (opts?.afterNotice ?? await signatureNoticeStands(customerId))
+    : false;
+  const delays = afterNotice ? SIGNATURE_AFTER_NOTICE : cfg[flow];
   if (seq >= delays.length) {
     if (flow === 'prePayment') {
       await store.addJob({
@@ -78,17 +132,18 @@ export async function scheduleFollowUp(customerId: string, flow: Flow, seq: numb
 /**
  * The "ready for signature" notice has just gone out, so the three signature
  * nudges are measured from NOW (24h / 3d / 7d), not from the Done click three
- * days earlier. Cancels whatever was armed and re-arms the first one.
+ * days earlier. Records the notice, then arms through reconcileSchedule so the
+ * cadence resumes at the high-water mark (a second press does not re-send
+ * nudge 1 once it has gone) and the notice clock survives every later
+ * reconcile (audit, 5 Sep: it used to hard-code seq 0 and lose the clock on
+ * the customer's first reply).
  */
 export async function restartSignatureCadenceFromNotice(customerId: string): Promise<void> {
   const store = getStore();
-  const { SIGNATURE_AFTER_NOTICE } = await import('./config');
-  await store.cancelJobsFor(customerId, ['FOLLOW_UP', 'AUTO_CLOSE']);
-  await store.addJob({
-    customerId, kind: 'FOLLOW_UP',
-    payload: { templateKey: FLOW_TEMPLATES.signature[0], seq: 0, flow: 'signature' },
-    runAt: new Date(Date.now() + SIGNATURE_AFTER_NOTICE[0] * 1000).toISOString(),
-  });
+  await store.setSetting(signatureNoticeSentKey(customerId), new Date().toISOString());
+  const customer = await store.getCustomerById(customerId);
+  if (!customer) return;
+  await reconcileSchedule(customer);
 }
 
 /**
@@ -138,8 +193,10 @@ export async function reconcileSchedule(customer: CustomerRow): Promise<void> {
   // whole life of the customer, exactly as before.
   const jobs = await store.listJobsForCustomer(customer.id, ['FOLLOW_UP']);
   let since = 0;
+  let history: Awaited<ReturnType<typeof store.history>> | undefined;
   try {
-    const reopened = (await store.history(customer.id))
+    history = await store.history(customer.id);
+    const reopened = history
       .filter((h) => h.from != null && CLOSED_STATES.includes(h.from) && !CLOSED_STATES.includes(h.to))
       .map((h) => new Date(h.createdAt).getTime());
     if (reopened.length) since = Math.max(...reopened);
@@ -147,7 +204,10 @@ export async function reconcileSchedule(customer: CustomerRow): Promise<void> {
   const doneCount = jobs.filter(
     (j) => j.status === 'DONE' && j.payload.flow === flow && new Date(j.createdAt).getTime() >= since,
   ).length;
-  await scheduleFollowUp(customer.id, flow, doneCount);
+  // Signature: the history just read decides which clock applies, so the
+  // notice clock is honoured after a reply as well as before (audit, 5 Sep).
+  const afterNotice = flow === 'signature' ? await signatureNoticeStands(customer.id, history) : false;
+  await scheduleFollowUp(customer.id, flow, doneCount, { afterNotice });
 }
 
 /**
@@ -196,8 +256,14 @@ export async function backfillFollowupSchedules(): Promise<void> {
 }
 
 /** The per-customer "do not chase this one" switch, as a setting key so it
- *  needs no column. Read by reconcileSchedule, written by the CRM button. */
+ *  needs no column. Read by reconcileSchedule, scheduleFollowUp and the
+ *  FOLLOW_UP send path; written by the CRM button. */
 export const followupsOffKey = (customerId: string) => `followups_off:${customerId}`;
+
+/** Set while a TFN + ABN customer has been asked the three ABN questions and
+ *  has not answered yet. While it is set, the "we've received your
+ *  questionnaire" acknowledgement is still owed (Jo, 4 Sep). */
+export const abnAnswersPendingKey = (customerId: string) => `abn_answers_pending:${customerId}`;
 
 /** Ensure exactly one nightly maintenance job is queued (idempotent). */
 export async function ensureNightly(): Promise<void> {
@@ -279,22 +345,123 @@ export async function ensureLostAnalysisSoon(): Promise<void> {
 /** The holding line in the CUSTOMER'S language: their Library row first
  *  (handoff_holding / handoff_holding_<lang>), then the code copy for that
  *  language, then English. Before 4 Sep this was English for everyone. */
-async function ackBody(lang?: string | null): Promise<{ body: string; key: string }> {
+async function ackBody(
+  lang?: string | null,
+  // Optional so a caller inside a tick can hand in the once-per-tick read
+  // instead of paying for another full Library table fetch (audit3 sched 76,
+  // 5 Sep: HANDOFF_ACK was one of several kinds still reading the Library on
+  // every job even after FOLLOW_UP was fixed to read it once per tick).
+  getTemplates: () => Promise<Awaited<ReturnType<Store['listTemplates']>>> = () => getStore().listTemplates(),
+): Promise<{ body: string; key: string }> {
   const key = handoffHoldingTemplateKey(lang);
   try {
-    const templates = await getStore().listTemplates();
+    const templates = await getTemplates();
     const t = templates.find((x) => x.key === key) ?? (key !== 'handoff_holding' ? templates.find((x) => x.key === 'handoff_holding') : undefined);
     if (t?.body?.trim()) return { body: t.body, key };
   } catch { /* the constant is the honest fallback */ }
   return { body: handoffHoldingMessage(lang), key };
 }
 
-export interface TickResult { processed: number; sent: string[]; closed: string[]; deferred: number }
+export interface TickResult {
+  processed: number; sent: string[]; closed: string[]; deferred: number;
+  /** Follow-ups WhatsApp refused for good (template missing, bad params, dead
+   *  token). Optional so older readers of the tick JSON see no change (audit, 5 Sep). */
+  failed?: string[];
+}
 
 /** How long one tick will keep claiming jobs before it stops and leaves the rest
  *  for the next run. Deliberately under the route's `maxDuration = 60`, so the
  *  loop ends on its own terms rather than being killed mid-job. */
 const TICK_BUDGET_MS = 45_000;
+
+/** The route's `maxDuration = 60`, less a margin for the bookkeeping writes
+ *  that end a job. Nothing is STARTED that could not finish before this. */
+const TICK_WALL_MS = 58_000;
+
+/**
+ * How long a job of this kind may still need once it has been claimed, so the
+ * loop does not start what it cannot finish (audit, 5 Sep).
+ *
+ * The 45s budget above only asked "is there time left", not "is there enough
+ * for THIS job". An Autopilot timer claimed at second 44 is one model call of
+ * up to 25s plus a WhatsApp send of up to 15s; the invocation was killed at
+ * 60s mid-call, the job stayed CLAIMED with its attempt already spent, the
+ * two-minute lease released it and the next five-minute tick paid for the
+ * model call again. Three of those in a row dead-lettered the job. So a
+ * model-calling job is only claimed while a normal slow run of it still fits
+ * before the wall; a follow-up or a state change is a single short write and
+ * keeps the plain budget. The order of the batch and what is sent are
+ * untouched: a timer that does not fit is left SCHEDULED for the next tick
+ * exactly as an over-budget one always was.
+ */
+export function tickReservationMs(kind: JobRow['kind']): number {
+  return kind === 'AUTO_REPLY' ? 30_000 : 5_000;
+}
+
+/** True while a job of this kind can still be claimed `elapsedMs` into a tick. */
+export function tickCanStart(kind: JobRow['kind'], elapsedMs: number): boolean {
+  return elapsedMs <= TICK_BUDGET_MS && elapsedMs + tickReservationMs(kind) <= TICK_WALL_MS;
+}
+
+/** How many Autopilot two-minute timers a tick answers at the same time. Each
+ *  is one model call for one customer; four in flight keeps a busy evening
+ *  inside the promised 2 to 10 minutes without piling up model calls. Follow-ups
+ *  and every other job stay one after another (audit, 5 Sep). */
+const AUTO_REPLY_CONCURRENCY = 4;
+
+/**
+ * AUTO_REPLY, current shape (Jo, 3 Sep): the two-minute timer. Nothing was
+ * written when the message arrived; now that the customer has been quiet for
+ * the delay, Will reads everything they wrote since our last message and
+ * answers it once. The service owns the decision (history, guard, state, send);
+ * it is imported lazily because service.ts imports this file, and a static
+ * import here would close that cycle.
+ *
+ * The job is already CLAIMED by the caller. Loads the customer when the caller
+ * has not, and ends the job exactly as the loop body always did: CANCELLED for
+ * a missing or opted-out customer or a superseded timer, DONE when answered,
+ * FAILED (with an URGENT task) when the decision itself threw.
+ */
+async function runAutoReplyTimer(store: Store, job: JobRow, result: TickResult, known?: CustomerRow): Promise<void> {
+  if (!job.customerId) { await store.setJobStatus(job.id, 'CANCELLED'); return; }
+  const customer = known ?? await store.getCustomerById(job.customerId);
+  if (!customer || customer.optedOut) { await store.setJobStatus(job.id, 'CANCELLED'); return; }
+  try {
+    const { runDeferredAutoReply } = await import('./service');
+    const what = await runDeferredAutoReply(customer, job);
+    if (what === 'sent') result.sent.push(`${customer.name ?? customer.waId} · autopilot reply`);
+    await store.setJobStatus(job.id, what === 'superseded' ? 'CANCELLED' : 'DONE');
+  } catch (e) {
+    // The customer is waiting on this one, and the model's own failures
+    // already end as a task inside the decision (fallbackTask). Anything
+    // that still throws here is the store or the network, and it must not
+    // vanish into a job status: the chat becomes a task with what they
+    // wrote, so a person answers instead of nobody.
+    const error = e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200);
+    await store.audit('assistant', 'auto_reply_failed', { customerId: customer.id, error })
+      .catch(() => { /* the store is a likely thing to have failed */ });
+    // (audit3 sched 72, 5 Sep) This used to raise the task with context: null,
+    // so the Decision Log had no "what arrived" line at all and the exception
+    // text sat where the reason usually explains itself — Jo had to open the
+    // chat just to find out what was even asked. burstText gives back what the
+    // customer wrote since this timer's anchor, the same text
+    // runDeferredAutoReply itself would have answered; the error goes after a
+    // "Reviewer:" line, the same shape service.ts already uses for a second
+    // pair of eyes, rather than living in the reason.
+    let context: string | null = null;
+    try {
+      const { burstText } = await import('./service');
+      const msgs = await store.listMessages(customer.id);
+      const text = burstText(msgs);
+      context = text ? `${text}\n\nReviewer: ${error}` : null;
+    } catch { /* the store just failed once already; a missing burst is not worth a second one */ }
+    await raiseOrUpdateTask(store, customer, {
+      reason: `Will could not answer this chat automatically (${error}). Please reply by hand.`,
+      severity: 'URGENT', newContext: context, suggestedReply: null,
+    }).catch(() => { /* same */ });
+    await store.setJobStatus(job.id, 'FAILED').catch(() => { /* same */ });
+  }
+}
 
 // Single-flight lock: overlapping ticks (multiple tabs / external cron)
 // must not double-process jobs.
@@ -312,25 +479,82 @@ async function doProcess(): Promise<TickResult> {
   // leased the job for too long (lease = 2 minutes).
   await store.reclaimStaleJobs(2 * 60 * 1000);
   if ((await store.getSetting('kill_switch')) === true) {
+    // (audit, 5 Sep) This early return used to skip the heartbeat write at the
+    // bottom of doProcess entirely, so pausing Will made the scheduler health
+    // dot go red 15 minutes later — "THE SCHEDULER HAS NOT RUN" — even though
+    // the tick is running fine and correctly doing nothing. The tick DID run;
+    // record that, the same way a normal tick does, so Pause Will cannot be
+    // mistaken for a dead scheduler.
+    try { await store.setSetting('last_tick_at', new Date().toISOString()); } catch { /* */ }
     return { processed: 0, sent: [], closed: [], deferred: 0 };
   }
-  const due = await store.dueJobs(new Date());
+  const batch = await store.dueJobs(new Date());
   const result: TickResult = { processed: 0, sent: [], closed: [], deferred: 0 };
   const startedAt = Date.now();
+  // Per kind, not one number: a job is only claimed while its own worst
+  // normal run still fits before the route's wall, see tickReservationMs.
+  const overBudget = (kind: JobRow['kind']) => !tickCanStart(kind, Date.now() - startedAt);
+  // Time budget. The tick runs as one serverless invocation with a hard
+  // ceiling (`maxDuration`); a busy morning used to run past it and be killed
+  // mid-job, which burned an `attempts` on every reclaim until the job hit a
+  // permanent FAILED and the cadence died silently. Stopping deliberately
+  // leaves the remainder SCHEDULED for the next tick, and says so out loud.
+  const auditBudget = async (remaining: number) => {
+    await store.audit('scheduler', 'tick_budget_exhausted', {
+      processed: result.processed, remaining,
+      note: `Stopped after ${Math.round((Date.now() - startedAt) / 1000)}s with ${remaining} due job(s) not yet processed; they remain SCHEDULED and run on the next tick.`,
+    }).catch(() => { /* never let the bookkeeping write end the tick */ });
+  };
+
+  // ── A WAITING CUSTOMER GOES BEFORE A NUDGE TO A SILENT ONE (audit, 5 Sep) ──
+  //
+  // The batch used to run strictly in run_at order. Every follow-up that comes
+  // due during the day is re-queued to exactly 19:00, so at 19:00 dozens of
+  // FOLLOW_UP rows sort ahead of the two-minute timer of anyone who wrote at
+  // 18:58, and the reply promised in 2 to 10 minutes went out after every
+  // reminder had. Nothing about what is sent changes here, only the order:
+  // the customer-facing jobs (the Autopilot timer, the questionnaire
+  // acknowledgement, the holding line) run first, and the rest keep their
+  // run_at order behind them. The timers also run a few at a time: each is one
+  // independent per-customer model call of 5 to 25 seconds, already claimed
+  // atomically and already checked for a newer message inside the service, so
+  // waiting for one customer's answer before starting the next only made
+  // everybody wait.
+  const timers = batch.filter((j) => j.kind === 'AUTO_REPLY' && j.payload.debounce);
+  const due = batch.filter((j) => !(j.kind === 'AUTO_REPLY' && j.payload.debounce));
+  const replyFirst = (j: JobRow) => (j.kind === 'FORM_RECEIVED' || j.kind === 'HANDOFF_ACK' || j.kind === 'AUTO_REPLY') ? 0 : 1;
+  due.sort((a, b) => replyFirst(a) - replyFirst(b) || (a.runAt < b.runAt ? -1 : a.runAt > b.runAt ? 1 : 0));
+
+  let timersNotStarted = 0;
+  let nextTimer = 0;
+  const timerWorker = async () => {
+    while (nextTimer < timers.length) {
+      if (overBudget('AUTO_REPLY')) { timersNotStarted += timers.length - nextTimer; nextTimer = timers.length; return; }
+      const job = timers[nextTimer++];
+      if (!(await store.claimJob(job.id))) continue;
+      result.processed++;
+      await runAutoReplyTimer(store, job, result);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(AUTO_REPLY_CONCURRENCY, timers.length) }, timerWorker));
+  // Timers stop earlier than the short jobs now (their reservation is bigger),
+  // so the rest of the batch may well run to the end: the ones left behind are
+  // still said out loud, once, after the loop (audit, 5 Sep).
+  let budgetAudited = false;
+
+  // The Library and the mode are read ONCE per tick for the follow-ups rather
+  // than once per job: a hundred follow-ups at 19:00 were a hundred identical
+  // reads before the first customer reply got a turn (audit, 5 Sep).
+  let templatesOnce: Promise<Awaited<ReturnType<typeof store.listTemplates>>> | null = null;
+  const tickTemplates = () => (templatesOnce ??= store.listTemplates());
+  let approvalOnce: Promise<boolean> | null = null;
+  const tickApprovalMode = () => (approvalOnce ??= inApprovalMode());
 
   for (let i = 0; i < due.length; i++) {
     const job = due[i];
-    // Time budget. The tick runs as one serverless invocation with a hard
-    // ceiling (`maxDuration`); a busy morning used to run past it and be killed
-    // mid-job, which burned an `attempts` on every reclaim until the job hit a
-    // permanent FAILED and the cadence died silently. Stopping deliberately
-    // leaves the remainder SCHEDULED for the next tick, and says so out loud.
-    if (Date.now() - startedAt > TICK_BUDGET_MS) {
-      const remaining = due.length - i;
-      await store.audit('scheduler', 'tick_budget_exhausted', {
-        processed: result.processed, remaining,
-        note: `Stopped after ${Math.round((Date.now() - startedAt) / 1000)}s with ${remaining} due job(s) not yet processed; they remain SCHEDULED and run on the next tick.`,
-      }).catch(() => { /* never let the bookkeeping write end the tick */ });
+    if (overBudget(job.kind)) {
+      await auditBudget(due.length - i + timersNotStarted);
+      budgetAudited = true;
       break;
     }
     // Atomic claim: only one caller wins; a crash mid-job leaves it CLAIMED and
@@ -361,7 +585,7 @@ async function doProcess(): Promise<TickResult> {
               m.direction === 'OUT' && m.status === 'SENT'
               && new Date(m.createdAt).getTime() > new Date(job.createdAt ?? job.runAt).getTime());
             if (open && !answered) {
-              const { body, key: ackKey } = await ackBody(c.lang);
+              const { body, key: ackKey } = await ackBody(c.lang, tickTemplates);
               // Inside the window by construction (the long message arrived
               // half an hour ago), but the same template-or-text shape as the
               // other system lines, so a Library {{PLACEHOLDER}} slip is
@@ -435,9 +659,14 @@ async function doProcess(): Promise<TickResult> {
             customerId: null, kind: 'LOST_ANALYSIS', payload: {},
             runAt: new Date(Date.now() + 3 * 60 * 1000).toISOString(),
           });
-        } else {
-          await ensureLostAnalysisSoon();
         }
+        // Every other outcome ends here. This branch used to call
+        // ensureLostAnalysisSoon() unconditionally: the job just finished is
+        // DONE, so the existence check saw nothing and queued another run two
+        // minutes out, which returned 'already_run' and queued the next, about
+        // 720 no-op will_jobs rows a day for ever. A close (reconcileSchedule)
+        // and the nightly job already queue a run whenever one is needed, so
+        // nothing is lost by stopping (audit, 5 Sep).
         continue;
       }
       if (!job.customerId) { await store.setJobStatus(job.id, 'CANCELLED'); continue; }
@@ -459,6 +688,143 @@ async function doProcess(): Promise<TickResult> {
       // the confirmation in the customer's language. Idempotent: only acts if the
       // customer is still waiting on the form.
       if (job.kind === 'FORM_RECEIVED') {
+        // ── THE TWO SENDS, AND WHAT HAPPENS WHEN META THROTTLES ONE (audit, 5 Sep)
+        //
+        // deliverOut answers a Meta 429 with {ok:false, retryable:true} and
+        // deliberately raises no task for it ("try again later"). The FOLLOW_UP
+        // handler honours that by re-queueing the step; here the result was
+        // simply dropped, the customer was already FORM_COMPLETE and the job
+        // DONE, so a throttled acknowledgement or ABN questions were lost for
+        // good with no card on the board. Worse for a TFN + ABN customer: the
+        // acknowledgement was recorded as owed for a question they never got,
+        // and the Medicare line stood aside for two hours waiting on an answer
+        // that could not come. So each send is now a small helper that reports
+        // whether it went; a throttled one is replayed as a FORM_RECEIVED job
+        // with payload {resend} that skips the state gate and sends just that
+        // one message, 30 minutes on (next evening window on Meta's daily
+        // marketing limit 131049, as FOLLOW_UP does). Same message, same
+        // wording, only later instead of never. A non-retryable failure
+        // already raised its task in deliverOut, so nothing changes there.
+        const resend = job.payload.resend === 'ack' || job.payload.resend === 'abn' ? job.payload.resend : null;
+        const requeueThrottled = async (what: 'ack' | 'abn', error: string | undefined) => {
+          const marketingLimit = /131049/.test(error ?? '');
+          const retryAt = marketingLimit
+            ? deferToMorning(new Date())
+            : new Date(Date.now() + 30 * 60 * 1000);
+          await store.addJob({
+            customerId: customer.id, kind: 'FORM_RECEIVED', payload: { resend: what },
+            runAt: retryAt.toISOString(),
+          }).catch(() => { /* audited below; nothing else can be done inside the tick */ });
+          await store.audit('scheduler', 'form_received_throttled_requeued', {
+            customerId: customer.id, resend: what,
+            reason: marketingLimit ? 'meta_marketing_limit_131049' : 'rate_limited',
+            retryAt: retryAt.toISOString(),
+          }).catch(() => {});
+          result.deferred++;
+        };
+        // The confirmation now lives in the Library, one entry per language
+        // (seed.ts), so the owner can edit it without a deploy. The i18n
+        // constants stay as the fallback for a store that cannot be read.
+        const libraryCopy = async (lang: string | null) => {
+          try {
+            const key = formReceivedTemplateKey(lang);
+            // Once per tick, not once per FORM_RECEIVED job (audit3 sched 76, 5 Sep).
+            const t = (await tickTemplates()).find((x) => x.key === key);
+            return t && t.body.trim() ? t.body : null;
+          } catch { return null; }
+        };
+        /** The "we've received your questionnaire" line. Returns whether the
+         *  customer has it (or it is waiting for approval, which counts). */
+        const sendAck = async (): Promise<boolean> => {
+          let body = (await libraryCopy(customer.lang)) ?? formReceivedMessage(customer.lang);
+          const verdict = policyGuard(body, {
+            state: 'FORM_COMPLETE', paid: true, aiPaused: false, killSwitch: false,
+            optedOut: false, isLegacy: false,
+            lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
+            isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
+          });
+          if (!verdict.allowed) body = (await libraryCopy('en')) ?? formReceivedMessage('en'); // English is guard-safe
+          // Template named by the Library key when Jo has created it in
+          // Meta (works outside the 24h window), the same text as free text
+          // when he has not (works inside it). A web form arrives whenever
+          // the customer fills it, often days after their last WhatsApp
+          // message, so free text alone failed silently there (audit, 3 Sep).
+          const confirmTemplate = { name: formReceivedTemplateKey(customer.lang), params: [], lang: customer.lang, fallbackToText: true };
+          if (await inApprovalMode()) {
+            await store.addMessage({
+              customerId: customer.id, direction: 'OUT', author: 'AI',
+              status: 'PENDING_APPROVAL', body, meta: { waTemplate: confirmTemplate },
+            });
+            return true;
+          }
+          const out = await deliverOut(customer, body, 'AI', { waTemplate: confirmTemplate }, confirmTemplate);
+          if (!out.ok && out.retryable) await requeueThrottled('ack', out.error);
+          return out.ok;
+        };
+        /** The ABN questions, for a TFN + ABN customer. Returns whether they
+         *  went (or are waiting for approval). Leaves the "acknowledgement
+         *  owed" flag unset while a throttled send is still to be replayed: a
+         *  question the customer has not received cannot be owed an answer. */
+        const sendAbn = async (): Promise<boolean> => {
+          // In the customer's language: Library key req_abn (English) or
+          // req_abn_<lang>, code copy as the fallback (audit, 3 Sep: these
+          // went out in English to everyone).
+          const abnKey = requestAbnTemplateKey(customer.lang);
+          let abnBody: string = requestAbnMessage(customer.lang);
+          try {
+            // Once per tick, not once per FORM_RECEIVED job (audit3 sched 76, 5 Sep).
+            const t = (await tickTemplates()).find((x) => x.key === abnKey);
+            if (t && t.body.trim()) abnBody = t.body;
+          } catch { /* fall back to the code copy */ }
+          const abnVerdict = policyGuard(abnBody, {
+            state: 'FORM_COMPLETE', paid: true, aiPaused: false, killSwitch: false,
+            optedOut: false, isLegacy: false,
+            lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
+            isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
+          });
+          if (!abnVerdict.allowed) return false;
+          const abnTemplate = { name: abnKey, params: [], lang: customer.lang, fallbackToText: true };
+          if (await inApprovalMode()) {
+            await store.addMessage({
+              customerId: customer.id, direction: 'OUT', author: 'AI',
+              status: 'PENDING_APPROVAL', body: abnBody, meta: { waTemplate: abnTemplate },
+            });
+          } else {
+            const out = await deliverOut(customer, abnBody, 'AI', { waTemplate: abnTemplate }, abnTemplate);
+            if (!out.ok && out.retryable) {
+              // The replay owns the flag: it is set when the questions
+              // actually go. A refusal for good falls through as before:
+              // deliverOut raised the task, Jo sends the questions by hand,
+              // and the answer still triggers the owed acknowledgement.
+              await requeueThrottled('abn', out.error);
+              return false;
+            }
+          }
+          await store.audit('system', 'abn_questions_sent', { customerId: customer.id });
+          // The acknowledgement is now OWED, and goes the moment they
+          // answer (service.ts, sendOwedFormAck). Recorded as a setting
+          // so it survives restarts and needs no column.
+          await store.setSetting(abnAnswersPendingKey(customer.id), true);
+          return true;
+        };
+
+        if (resend) {
+          // A replay of one throttled message. No state change, no chaser
+          // cancelling, no Medicare replay: all of that was done by the job
+          // that won the transition. Only while the customer is still where
+          // that job left them; a chat a person has since moved on, paused or
+          // that opted out gets nothing, exactly as the first attempt would.
+          if (customer.state === 'FORM_COMPLETE' && !customer.optedOut && !customer.aiPaused && !customer.isLegacy
+              && !(resend === 'abn' && (await store.getSetting(abnAnswersPendingKey(customer.id))) === true)) {
+            const went = resend === 'ack' ? await sendAck() : await sendAbn();
+            if (went) result.sent.push(`${customer.name ?? customer.waId} · ${resend === 'ack' ? 'questionnaire received' : 'ABN questions'} (resent)`);
+          } else {
+            await store.audit('scheduler', 'form_received_resend_skipped', { customerId: customer.id, resend, state: customer.state }).catch(() => {});
+          }
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
+
         // setState reports whether THIS call made the move. Two FORM_RECEIVED
         // jobs can exist (the DB trigger and form-link.ts both enqueue) and be
         // claimed on overlapping ticks; only the one that wins the transition
@@ -467,77 +833,141 @@ async function doProcess(): Promise<TickResult> {
             && await store.setState(customer.id, 'FORM_COMPLETE', 'SYSTEM')) {
           await store.updateCustomer(customer.id, { formComplete: true });
           await store.cancelJobsFor(customer.id, ['FOLLOW_UP']);
-          if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
-            // The confirmation now lives in the Library, one entry per language
-            // (seed.ts), so the owner can edit it without a deploy. The i18n
-            // constants stay as the fallback for a store that cannot be read.
-            const libraryCopy = async (lang: string | null) => {
-              try {
-                const key = formReceivedTemplateKey(lang);
-                const t = (await store.listTemplates()).find((x) => x.key === key);
-                return t && t.body.trim() ? t.body : null;
-              } catch { return null; }
-            };
-            let body = (await libraryCopy(customer.lang)) ?? formReceivedMessage(customer.lang);
-            const verdict = policyGuard(body, {
-              state: 'FORM_COMPLETE', paid: true, aiPaused: false, killSwitch: false,
-              optedOut: false, isLegacy: false,
-              lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
-              isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
-            });
-            if (!verdict.allowed) body = (await libraryCopy('en')) ?? formReceivedMessage('en'); // English is guard-safe
-            // Template named by the Library key when Jo has created it in
-            // Meta (works outside the 24h window), the same text as free text
-            // when he has not (works inside it). A web form arrives whenever
-            // the customer fills it, often days after their last WhatsApp
-            // message, so free text alone failed silently there (audit, 3 Sep).
-            const confirmTemplate = { name: formReceivedTemplateKey(customer.lang), params: [], lang: customer.lang, fallbackToText: true };
-            if (await inApprovalMode()) {
-              await store.addMessage({
-                customerId: customer.id, direction: 'OUT', author: 'AI',
-                status: 'PENDING_APPROVAL', body, meta: { waTemplate: confirmTemplate },
+          // A questionnaire that arrived BEFORE payment carried its Medicare
+          // "No" here as a setting (form-link.ts), because the replayed
+          // FORM_RECEIVED job the Paid cascade queues has no answer on it.
+          // Queue the exemption message now, 15 minutes after this
+          // acknowledgement, exactly as a post-payment form would have, and
+          // clear the setting so it goes once (audit, 5 Sep). Only the job
+          // that won the transition gets here, so two replays cannot both
+          // queue it.
+          try {
+            if ((await store.getSetting(medicareNoKey(customer.id))) === true) {
+              await store.setSetting(medicareNoKey(customer.id), false);
+              await store.addJob({
+                customerId: customer.id,
+                kind: 'MEDICARE_INFO',
+                payload: { attempt: 0 },
+                runAt: new Date(Date.now() + MEDICARE_DELAY_MS).toISOString(),
               });
-            } else {
-              await deliverOut(customer, body, 'AI', { waTemplate: confirmTemplate }, confirmTemplate);
+              await store.audit('system', 'medicare_info_queued', { customerId: customer.id, rememberedBeforePayment: true });
+            }
+          } catch (e) {
+            await store.audit('system', 'medicare_no_replay_failed', {
+              customerId: customer.id,
+              error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+            }).catch(() => { /* the store is the likely thing that just failed */ });
+          }
+          if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
+            // ── WHICH MESSAGE GOES FIRST (Jo, 4 Sep) ────────────────────
+            //
+            // For a TFN customer the questionnaire IS everything, so the
+            // acknowledgement goes now: "we've received it, we'll go through
+            // everything and get back to you."
+            //
+            // For a TFN + ABN customer it is not. We still need the ABN answers
+            // before anyone can start, and telling them "we'll now go through
+            // everything and get back to you soon" while we are still waiting
+            // on them is simply untrue, and it makes the ABN questions that
+            // follow read as an afterthought. So they get the ABN questions
+            // FIRST, on their own, and the acknowledgement waits until they
+            // have actually sent the answers (service.ts sends it then).
+            const abnPending = customer.income === 'TFN_ABN';
+
+            if (!abnPending) {
+              await sendAck();
             }
 
-            // A TFN + ABN customer gets a SECOND message straight after the
-            // confirmation: the ABN questions the business schedule needs
-            // (Jo, 3 Sep). Same Library lookup (req_abn, editable without a
-            // deploy) with the code copy as fallback, and the same
-            // approval-or-send path as everything else the scheduler says.
-            if (customer.income === 'TFN_ABN') {
-              // In the customer's language: Library key req_abn (English) or
-              // req_abn_<lang>, code copy as the fallback (audit, 3 Sep: these
-              // went out in English to everyone).
-              const abnKey = requestAbnTemplateKey(customer.lang);
-              let abnBody: string = requestAbnMessage(customer.lang);
-              try {
-                const t = (await store.listTemplates()).find((x) => x.key === abnKey);
-                if (t && t.body.trim()) abnBody = t.body;
-              } catch { /* fall back to the code copy */ }
-              const abnVerdict = policyGuard(abnBody, {
-                state: 'FORM_COMPLETE', paid: true, aiPaused: false, killSwitch: false,
-                optedOut: false, isLegacy: false,
-                lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
-                isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
-              });
-              if (abnVerdict.allowed) {
-                const abnTemplate = { name: abnKey, params: [], lang: customer.lang, fallbackToText: true };
-                if (await inApprovalMode()) {
-                  await store.addMessage({
-                    customerId: customer.id, direction: 'OUT', author: 'AI',
-                    status: 'PENDING_APPROVAL', body: abnBody, meta: { waTemplate: abnTemplate },
-                  });
-                } else {
-                  await deliverOut(customer, abnBody, 'AI', { waTemplate: abnTemplate }, abnTemplate);
-                }
-                await store.audit('system', 'abn_questions_sent', { customerId: customer.id });
-              }
+            if (abnPending) {
+              await sendAbn();
             }
           }
           await store.audit('system', 'form_received_confirmed', { customerId: customer.id });
           result.sent.push(`${customer.name ?? customer.waId} · questionnaire received`);
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
+      // MEDICARE_INFO: the questionnaire said "No" to "Do you have access to
+      // Medicare in Australia?", so this person can apply for the Medicare Levy
+      // Exemption. Queued by form-link.ts for 15 minutes after the form arrives
+      // (Jo, 4 Sep) so it lands after the questionnaire acknowledgement rather
+      // than on top of it, and so nobody has to remember to send it by hand.
+      if (job.kind === 'MEDICARE_INFO') {
+        // A TFN+ABN customer has been asked the ABN questions and nothing else
+        // yet; dropping the Medicare message in while we are waiting on that
+        // answer buries it. Stand aside for another 15 minutes, up to 8 times
+        // (2 hours), then send regardless — the message must not be lost
+        // because a customer never answered.
+        const attempt = job.payload.attempt ?? 0;
+        const abnPending = (await store.getSetting(abnAnswersPendingKey(customer.id))) === true;
+        if (abnPending && attempt < 8) {
+          await store.addJob({
+            customerId: customer.id,
+            kind: 'MEDICARE_INFO',
+            payload: { attempt: attempt + 1 },
+            runAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+          });
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
+
+        if (!customer.optedOut && !customer.isLegacy) {
+          // The Library entry is the owner's copy and is what he edits; the
+          // code constant is the fallback for a store that cannot be read.
+          // In the customer's language: Library key `medicare` (English, the
+          // key Jo knows) or medicare_<lang>, the same-language code copy as
+          // the fallback (audit, 5 Sep: this was the last post-form auto-send
+          // that went out in English to everyone, and it is the one asking
+          // them to go and DO something). English stays APPROVED verbatim.
+          const medicareKey = medicareTemplateKey(customer.lang);
+          let body: string | null = null;
+          try {
+            // Once per tick, not once per MEDICARE_INFO job (audit3 sched 76, 5 Sep).
+            const t = (await tickTemplates()).find((x) => x.key === medicareKey);
+            body = t && t.body.trim() ? t.body : null;
+          } catch { /* the Library is a bonus; the constant is the fallback */ }
+          body = body ?? (medicareKey === 'medicare' ? APPROVED.medicare_exemption : medicareMessage(customer.lang));
+          const verdict = policyGuard(body, {
+            state: customer.state, paid: true, aiPaused: false, killSwitch: false,
+            optedOut: false, isLegacy: false,
+            lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
+            isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
+          });
+          if (!verdict.allowed) {
+            await raiseOrUpdateTask(store, customer, {
+              reason: `Medicare exemption message held by the Policy Guard: ${verdict.violations.join(', ')}. Check the Library entry "${medicareKey}" and send it by hand.`,
+              severity: 'REVIEW', newContext: body.slice(0, 300), suggestedReply: body,
+            });
+            await store.setJobStatus(job.id, 'DONE');
+            continue;
+          }
+          // 15 minutes after a web form is usually well outside the 24h window,
+          // so this goes as the approved template named by the Library key
+          // (`medicare` or medicare_<lang>) when Jo has it in Meta and as the
+          // same text when he does not.
+          const medicareTemplate = { name: medicareKey, params: [], lang: customer.lang, fallbackToText: true };
+          if (await inApprovalMode()) {
+            await store.addMessage({
+              customerId: customer.id, direction: 'OUT', author: 'AI',
+              status: 'PENDING_APPROVAL', body, meta: { waTemplate: medicareTemplate },
+            });
+            await store.audit('system', 'medicare_info_sent', { customerId: customer.id, approval: true });
+            result.sent.push(`${customer.name ?? customer.waId} · Medicare exemption`);
+          } else {
+            const out = await deliverOut(customer, body, 'AI', { waTemplate: medicareTemplate }, medicareTemplate);
+            if (out.ok) {
+              await store.audit('system', 'medicare_info_sent', { customerId: customer.id });
+              result.sent.push(`${customer.name ?? customer.waId} · Medicare exemption`);
+            } else {
+              await raiseOrUpdateTask(store, customer, {
+                reason: `The Medicare exemption message was not delivered: ${out.error ?? 'WhatsApp rejected it'}. If it needs the approved template, create "${medicareKey}" in WhatsApp Manager (no variables) and it sends itself next time.`,
+                severity: 'REVIEW', newContext: body.slice(0, 300), suggestedReply: body,
+              });
+              await store.audit('system', 'medicare_info_failed', { customerId: customer.id, error: out.error ?? null });
+            }
+          }
         }
         await store.setJobStatus(job.id, 'DONE');
         continue;
@@ -554,7 +984,8 @@ async function doProcess(): Promise<TickResult> {
           let body: string | null = null;
           try {
             const key = reviewRequestTemplateKey(customer.lang);
-            const t = (await store.listTemplates()).find((x) => x.key === key);
+            // Once per tick, not once per REVIEW_REQUEST job (audit3 sched 76, 5 Sep).
+            const t = (await tickTemplates()).find((x) => x.key === key);
             body = t && t.body.trim() ? t.body : null;
           } catch { /* the Library is a bonus; the constant is the fallback */ }
           body = body ?? reviewRequestMessage(customer.lang);
@@ -568,10 +999,9 @@ async function doProcess(): Promise<TickResult> {
             isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
           });
           if (!verdict.allowed) {
-            await store.addTask({
-              customerId: customer.id, customerName: customer.name ?? customer.waId,
+            await raiseOrUpdateTask(store, customer, {
               reason: `Review request held by the Policy Guard: ${verdict.violations.join(', ')}. Check the Library entry and send it by hand.`,
-              severity: 'REVIEW', context: body.slice(0, 200), suggestedReply: body,
+              severity: 'REVIEW', newContext: body.slice(0, 200), suggestedReply: body,
             });
             await store.setJobStatus(job.id, 'DONE');
             continue;
@@ -600,13 +1030,12 @@ async function doProcess(): Promise<TickResult> {
               // nothing to fix in the conversation. What is missing is the
               // template. The task now says exactly that, and names it.
               const missingTemplate = /131047|24|window|template/i.test(out.error ?? '');
-              await store.addTask({
-                customerId: customer.id, customerName: customer.name ?? customer.waId,
+              await raiseOrUpdateTask(store, customer, {
                 reason: missingTemplate
                   ? `The Google review ask could not be delivered: ${customer.name?.split(/\s+/)[0] ?? 'this customer'} has not written for over a day, so it needs the approved WhatsApp template "${reviewTemplate.name}", which does not exist yet in WhatsApp Manager. Create it there (no variables) and this sends itself next time.`
                   : `The Google review ask was not delivered: ${out.error ?? 'WhatsApp rejected it'}.`,
                 severity: 'REVIEW',
-                context: body.slice(0, 300),
+                newContext: body.slice(0, 300),
                 suggestedReply: body,
               });
               await store.audit('system', 'review_request_failed', { customerId: customer.id, error: out.error ?? null, template: reviewTemplate.name });
@@ -617,35 +1046,12 @@ async function doProcess(): Promise<TickResult> {
         continue;
       }
 
-      // AUTO_REPLY, current shape (Jo, 3 Sep): the two-minute timer. Nothing
-      // was written when the message arrived; now that the customer has been
-      // quiet for the delay, Will reads everything they wrote since our last
-      // message and answers it once. The service owns the decision (history,
-      // guard, state, send); it is imported lazily because service.ts imports
-      // this file, and a static import here would close that cycle.
+      // AUTO_REPLY, current shape (Jo, 3 Sep): the two-minute timer. Timers
+      // are pulled out of the batch and run first, a few at a time, see
+      // runAutoReplyTimer above the loop. Kept here as a guard so a timer can
+      // never fall through to the older messageId branch below.
       if (job.kind === 'AUTO_REPLY' && job.payload.debounce) {
-        if (customer.optedOut) { await store.setJobStatus(job.id, 'CANCELLED'); continue; }
-        try {
-          const { runDeferredAutoReply } = await import('./service');
-          const what = await runDeferredAutoReply(customer, job);
-          if (what === 'sent') result.sent.push(`${customer.name ?? customer.waId} · autopilot reply`);
-          await store.setJobStatus(job.id, what === 'superseded' ? 'CANCELLED' : 'DONE');
-        } catch (e) {
-          // The customer is waiting on this one, and the model's own failures
-          // already end as a task inside the decision (fallbackTask). Anything
-          // that still throws here is the store or the network, and it must not
-          // vanish into a job status: the chat becomes a task with what they
-          // wrote, so a person answers instead of nobody.
-          const error = e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200);
-          await store.audit('assistant', 'auto_reply_failed', { customerId: customer.id, error })
-            .catch(() => { /* the store is a likely thing to have failed */ });
-          await store.addTask({
-            customerId: customer.id, customerName: customer.name ?? customer.waId,
-            reason: `Will could not answer this chat automatically (${error}). Please reply by hand.`,
-            severity: 'URGENT', context: null, suggestedReply: null,
-          }).catch(() => { /* same */ });
-          await store.setJobStatus(job.id, 'FAILED').catch(() => { /* same */ });
-        }
+        await runAutoReplyTimer(store, job, result, customer);
         continue;
       }
 
@@ -674,7 +1080,8 @@ async function doProcess(): Promise<TickResult> {
         // Re-run the guard against the customer as they are NOW, not as they
         // were when the reply was written. Four minutes is long enough for a
         // payment to land and for a sales line to become the wrong thing to say.
-        try { registerLibraryBodies((await store.listTemplates()).map((t) => t.body)); } catch { /* best effort */ }
+        // Once per tick, not once per legacy AUTO_REPLY job (audit3 sched 76, 5 Sep).
+        try { registerLibraryBodies((await tickTemplates()).map((t) => t.body)); } catch { /* best effort */ }
         const verdict = policyGuard(msg.body, {
           state: customer.state, paid: customer.paid, aiPaused: customer.aiPaused, killSwitch: false,
           optedOut: customer.optedOut, isLegacy: customer.isLegacy,
@@ -683,10 +1090,9 @@ async function doProcess(): Promise<TickResult> {
         });
         if (!verdict.allowed) {
           await store.setMessageStatus(msg.id, 'BLOCKED');
-          await store.addTask({
-            customerId: customer.id, customerName: customer.name ?? customer.waId,
+          await raiseOrUpdateTask(store, customer, {
             reason: `Autopilot reply blocked before sending: ${verdict.violations.join(', ')}`,
-            severity: 'REVIEW', context: msg.body.slice(0, 200),
+            severity: 'REVIEW', newContext: msg.body.slice(0, 200),
             suggestedReply: await suggestReply('', customer, 'guard_blocked', msg.body),
           });
           await store.setJobStatus(job.id, 'DONE');
@@ -727,10 +1133,9 @@ async function doProcess(): Promise<TickResult> {
           result.sent.push(`${customer.name ?? customer.waId} · autopilot reply`);
         } else {
           await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });
-          await store.addTask({
-            customerId: customer.id, customerName: customer.name ?? customer.waId,
+          await raiseOrUpdateTask(store, customer, {
             reason: `WhatsApp send failed: ${res.error ?? 'unknown error'}`,
-            severity: 'REVIEW', context: msg.body.slice(0, 200), suggestedReply: msg.body,
+            severity: 'REVIEW', newContext: msg.body.slice(0, 200), suggestedReply: msg.body,
           });
         }
         await store.setJobStatus(job.id, 'DONE');
@@ -740,8 +1145,13 @@ async function doProcess(): Promise<TickResult> {
       // FOLLOW_UP
       const flow = job.payload.flow as Flow;
       const seq = job.payload.seq ?? 0;
+      // The per-customer off switch is checked at fire time too (audit, 5 Sep):
+      // a job that was already SCHEDULED, deferred to the evening or re-queued
+      // after a throttle when Jo pressed "Stop chasing" is cancelled here
+      // rather than sent.
       if (!FLOW_ELIGIBLE_STATES[flow]?.includes(customer.state) || customer.optedOut || customer.aiPaused || customer.isLegacy
-          || (flow === 'prePayment' && customer.paid)) {
+          || (flow === 'prePayment' && customer.paid)
+          || (await store.getSetting(followupsOffKey(customer.id))) === true) {
         await store.setJobStatus(job.id, 'CANCELLED');
         continue;
       }
@@ -751,10 +1161,20 @@ async function doProcess(): Promise<TickResult> {
         result.deferred++;
         continue;
       }
-      const template = (await store.listTemplates()).find((t) => t.key === job.payload.templateKey);
+      const template = (await tickTemplates()).find((t) => t.key === job.payload.templateKey);
       // H6: one bad step must not kill the whole cadence. Skip this message but
       // still schedule the next one in the sequence.
       if (!template) {
+        // This is the other half of the delete_template fix (route.ts,
+        // audit, 5 Sep): a step can also go missing without anyone deleting
+        // it here (a bad Sync from file, a renamed key). Write the same
+        // `follow_up_template_missing` row system-report.ts already looks
+        // for, so the System card catches this case too instead of only the
+        // owner-initiated delete (audit, 5 Sep).
+        await store.audit('scheduler', 'follow_up_template_missing', {
+          customerId: customer.id, templateKey: job.payload.templateKey,
+          note: `Follow-up step "${job.payload.templateKey}" is not in the Library. Every customer due that step is skipped until it is restored with Sync library from file.`,
+        });
         await store.setJobStatus(job.id, 'FAILED');
         await scheduleFollowUp(customer.id, flow, seq + 1);
         continue;
@@ -768,10 +1188,12 @@ async function doProcess(): Promise<TickResult> {
       });
       if (!verdict.allowed) {
         await store.setJobStatus(job.id, 'FAILED');
-        await store.addTask({
-          customerId: customer.id, customerName: customer.name ?? customer.waId,
+        // With a bad Library placeholder this fires on every cadence step for
+        // every customer in the flow; the fold keeps it to one card each
+        // (audit, 5 Sep).
+        await raiseOrUpdateTask(store, customer, {
           reason: `Follow-up blocked by Policy Guard: ${verdict.violations.join(', ')}`,
-          severity: 'REVIEW', context: template.title,
+          severity: 'REVIEW', newContext: template.title,
           // Show the follow-up that was refused, so it can be corrected and sent
           // rather than rewritten from scratch.
           suggestedReply: await suggestReply('', customer, 'guard_blocked', template.body),
@@ -804,7 +1226,7 @@ async function doProcess(): Promise<TickResult> {
 
       const meta = { waTemplate };
 
-      if (await inApprovalMode()) {
+      if (await tickApprovalMode()) {
         // Approval mode means approval for EVERYTHING. A scheduled follow-up
         // used to be the one thing that went out on its own, which quietly
         // broke the promise the mode makes.
@@ -827,16 +1249,63 @@ async function doProcess(): Promise<TickResult> {
         // skipped — and no "send failed" task is raised (deliverOut suppressed it
         // for a retryable send). This job was already marked DONE above, so a
         // fresh job for the same step is added.
-        await store.addJob({
-          customerId: customer.id, kind: 'FOLLOW_UP', payload: job.payload,
-          runAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
-        }).catch(() => { /* dueJobs will pick up the next tick regardless */ });
-        await store.audit('scheduler', 'follow_up_throttled_requeued', { customerId: customer.id, template: template.key, seq });
+        // HOW LONG TO WAIT DEPENDS ON WHICH LIMIT WE HIT.
+        //
+        // An app or pair rate limit clears in minutes, so 30 minutes is right.
+        // Meta's per-person MARKETING limit (131049, Momo 4 Sep) does not: it
+        // resets on a daily cycle, so retrying in 30 minutes just fails again
+        // and burns the step. That one waits for the next evening window, which
+        // is when a follow-up is allowed to go out anyway.
+        const marketingLimit = /131049/.test(sent.error ?? '');
+        const retryAt = marketingLimit
+          ? deferToMorning(new Date())
+          : new Date(Date.now() + 30 * 60 * 1000);
+        // This job was already flipped to DONE above (REL-02) so a crash
+        // between send and status-write cannot double-send. But that also
+        // means reconcileSchedule's doneCount (line ~204) now counts THIS step
+        // as delivered even though nothing went out. If the requeue below
+        // succeeds, flip the original back to CANCELLED so it drops out of
+        // that count and the retry is the only record of the step; if the
+        // insert itself throws, leave it DONE (so nothing resends) but audit
+        // the loss instead of the old silent catch, which claimed a requeue
+        // that never happened (audit, 5 Sep).
+        try {
+          await store.addJob({
+            customerId: customer.id, kind: 'FOLLOW_UP', payload: job.payload,
+            runAt: retryAt.toISOString(),
+          });
+          await store.setJobStatus(job.id, 'CANCELLED');
+          await store.audit('scheduler', 'follow_up_throttled_requeued', {
+            customerId: customer.id, template: template.key, seq,
+            reason: marketingLimit ? 'meta_marketing_limit_131049' : 'rate_limited',
+            retryAt: retryAt.toISOString(),
+          });
+        } catch (requeueErr) {
+          const requeueMessage = requeueErr instanceof Error ? requeueErr.message : String(requeueErr);
+          await store.audit('scheduler', 'follow_up_requeue_failed', {
+            customerId: customer.id, template: template.key, seq,
+            reason: marketingLimit ? 'meta_marketing_limit_131049' : 'rate_limited',
+            error: requeueMessage.slice(0, 300),
+          }).catch(() => { /* audit is best effort here */ });
+        }
         result.deferred++;
         continue;
       }
-      await store.audit('scheduler', 'follow_up_sent', { customerId: customer.id, template: template.key, seq });
-      result.sent.push(`${customer.name ?? customer.waId} · ${template.title}`);
+      if (sent.ok) {
+        await store.audit('scheduler', 'follow_up_sent', { customerId: customer.id, template: template.key, seq });
+        result.sent.push(`${customer.name ?? customer.waId} · ${template.title}`);
+      } else {
+        // A send Meta refused for good (template missing, wrong param count,
+        // expired token) used to fall through here and be audited and listed
+        // as SENT, while deliverOut had already marked the message FAILED and
+        // raised the task. An evening of failed nudges then read as a good
+        // evening. Report the truth; the cadence still advances below (H6:
+        // one bad step must not kill the sequence) (audit, 5 Sep).
+        await store.audit('scheduler', 'follow_up_failed', {
+          customerId: customer.id, template: template.key, seq, error: sent.error ?? null,
+        });
+        result.failed = (result.failed ?? []).concat(`${customer.name ?? customer.waId} · ${template.title}`);
+      }
       await scheduleFollowUp(customer.id, flow, seq + 1);
     } catch (e) {
       const message = e instanceof Error ? e.message : String(e);
@@ -864,6 +1333,7 @@ async function doProcess(): Promise<TickResult> {
       }
     }
   }
+  if (timersNotStarted > 0 && !budgetAudited) await auditBudget(timersNotStarted);
   // A HEARTBEAT, SO A DEAD SCHEDULER IS VISIBLE.
   //
   // The scheduler health dot was hardcoded `ok: true`, so every one of the
@@ -876,6 +1346,27 @@ async function doProcess(): Promise<TickResult> {
   // never be the reason a tick that otherwise worked is reported as failed.
   try { await store.setSetting('last_tick_at', new Date().toISOString()); } catch { /* */ }
   return result;
+}
+
+/**
+ * One line per affected customer, `id|name|text`, then a `---` separator and
+ * the plain sentence the owner reads today (unchanged). Read by
+ * parseNightlyIssueLine below (audit3 sched 62, 5 Sep): the nightly
+ * consistency card has customerId: null, so it was printed as if the names in
+ * it were something a customer typed, with no way to open the chat it named.
+ * Encoding the real customer id per line lets that card's UI resolve each
+ * name to a chat without changing the sentence the owner already reads.
+ */
+export function buildNightlyIssueContext(rows: { id: string; name: string; text: string }[], issues: string[]): string {
+  const parseable = rows.map((r) => `${r.id}|${r.name}|${r.text}`).join('\n');
+  return `${parseable}\n---\n${issues.join(' | ')}`;
+}
+
+/** The inverse of buildNightlyIssueContext, one machine-readable line at a time. */
+export function parseNightlyIssueLine(line: string): { id: string; name: string; text: string } | null {
+  const [id, name, ...rest] = line.split('|');
+  if (!id || rest.length === 0) return null;
+  return { id, name: name ?? '', text: rest.join('|') };
 }
 
 /** Nightly maintenance: consistency checks + morning summary. */
@@ -891,11 +1382,46 @@ export async function runNightly(): Promise<void> {
   const closedStates: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
   const issues: string[] = [];
 
+  // ── REPAIR, DON'T REPORT (audit, 5 Sep) ──────────────────────────────────
+  //
+  // "in SIGNED but not marked paid" listed 38 customers in ONE night, and would
+  // have listed the same 38 every night after: it is not something the owner can
+  // usefully act on 38 times. The cause is fixed at the source (setState now
+  // sets `paid` for ANY post-payment stage), but the rows that already drifted
+  // stay wrong until something corrects them, and `paid` is what keeps the SALES
+  // follow-ups away from a paying customer.
+  //
+  // A customer who has reached a post-payment stage HAS paid; the stage is the
+  // evidence. So the flag is repaired here and the correction is audited, and
+  // only what cannot be repaired is reported as an issue: "paid but in a sales
+  // state" is the genuinely ambiguous direction (it can mean a wrong stage OR a
+  // wrong flag) and is left for a person, exactly as before.
+  let repaired = 0;
+  // affectedCustomers pairs each unresolved issue with the actual customer it
+  // is about (audit3 sched 62, 5 Sep): the card this task ends up on has no
+  // customer of its own (see below), so this is what lets that card's
+  // context carry a real id per name instead of only the printed sentence.
+  const affectedCustomers: { customer: CustomerRow; text: string }[] = [];
   for (const c of customers) {
-    if (c.paid && salesStates.includes(c.state)) issues.push(`${c.name ?? c.waId}: paid but in sales state ${c.state}`);
-    if (!c.paid && !salesStates.includes(c.state) && !closedStates.includes(c.state)) {
-      issues.push(`${c.name ?? c.waId}: in ${c.state} but not marked paid`);
+    if (c.paid && salesStates.includes(c.state)) {
+      const text = `paid but in sales state ${c.state}`;
+      issues.push(`${c.name ?? c.waId}: ${text}`);
+      affectedCustomers.push({ customer: c, text });
     }
+    if (!c.paid && !salesStates.includes(c.state) && !closedStates.includes(c.state)) {
+      try {
+        await store.updateCustomer(c.id, { paid: true });
+        repaired++;
+      } catch {
+        // Only if the repair itself failed does it become something to look at.
+        const text = `in ${c.state} but not marked paid`;
+        issues.push(`${c.name ?? c.waId}: ${text}`);
+        affectedCustomers.push({ customer: c, text });
+      }
+    }
+  }
+  if (repaired) {
+    await store.audit('system', 'paid_flag_repaired', { count: repaired }).catch(() => { /* diagnostics */ });
   }
   // Went-cold reactivation now happens the moment a closed customer messages
   // again (service.ts, handleIncoming) — event-triggered, not time-based, per
@@ -906,7 +1432,15 @@ export async function runNightly(): Promise<void> {
   // at 1,000 rows would leave real orphans uncancelled AND, more importantly,
   // pairs with a complete customer set so the cancellation below only ever fires
   // on a genuinely missing customer, never on one that simply was not read.
-  const jobs = await store.allJobs();
+  //
+  // Only SCHEDULED rows can be orphans, so the sweep reads just those when the
+  // store can filter server-side (audit3 sched 54, 5 Sep): will_jobs keeps
+  // every finished auto-reply timer and hourly LOST_ANALYSIS row, and paging
+  // all of it every night to find a handful of live jobs got slower each week.
+  // The complete-set guarantee is unchanged, it is still paged, just filtered.
+  const jobs = typeof store.listScheduledJobs === 'function'
+    ? await store.listScheduledJobs()
+    : await store.allJobs();
   // PERF-01: O(jobs) with a Set instead of O(jobs x customers) via .some().
   const customerIds = new Set(customers.map((c) => c.id));
   const orphans = jobs.filter((j) => j.status === 'SCHEDULED' && j.customerId && !customerIds.has(j.customerId));
@@ -937,10 +1471,9 @@ export async function runNightly(): Promise<void> {
         if (m.customerId && !flagged.has(m.customerId)) {
           flagged.add(m.customerId);
           const c = customers.find((x) => x.id === m.customerId);
-          await store.addTask({
-            customerId: m.customerId, customerName: c?.name ?? c?.waId ?? null,
+          await raiseOrUpdateTask(store, { id: m.customerId, name: c?.name ?? null, waId: c?.waId ?? null }, {
             reason: 'A reply may not have reached this customer — it got stuck while sending. Check the chat and resend if needed.',
-            severity: 'URGENT', context: m.body.slice(0, 200), suggestedReply: m.body,
+            severity: 'URGENT', newContext: m.body.slice(0, 200), suggestedReply: m.body,
           }).catch(() => {});
         }
       }
@@ -965,17 +1498,41 @@ export async function runNightly(): Promise<void> {
     ? await store.purgeAudit(90 * 24 * 60 * 60 * 1000).catch(() => 0)
     : 0;
 
+  // will_jobs was never purged (audit3 sched 54, 5 Sep): every text on
+  // Autopilot leaves about three finished rows, every quiet-hours defer one
+  // more, and the LOST_ANALYSIS loop 720 a day, so the table only ever grew.
+  // Finished rows older than 30 days go: CANCELLED, FAILED, and DONE of every
+  // kind EXCEPT FOLLOW_UP. A DONE FOLLOW_UP is the cadence's memory, it is
+  // what reconcileSchedule counts to resume at the right step, so those stay.
+  // Nothing SCHEDULED or CLAIMED is ever touched, so nothing due changes.
+  const jobsPurged = typeof store.purgeFinishedJobs === 'function'
+    ? await store.purgeFinishedJobs(30 * 24 * 60 * 60 * 1000).catch(() => 0)
+    : 0;
+
+  // Folded, not stacked (audit3 sched 60, 5 Sep): "paid but in sales state" is
+  // the one issue the repair above cannot fix on its own, so it persists until
+  // someone moves the stage, and a plain addTask here opened a fresh
+  // customer-less card every night for the same names. This refreshes the one
+  // open card instead of stacking, and closes it once the condition clears.
+  const isNightlyCheckTask = (t: { reason: string }) => t.reason.startsWith('Nightly consistency check');
   if (issues.length) {
-    await store.addTask({
-      customerId: null, customerName: null,
+    await raiseOrFoldSystemTask(store, {
+      match: isNightlyCheckTask,
       reason: `Nightly consistency check found ${issues.length} issue(s)`,
-      severity: 'REVIEW', context: issues.join(' | '), suggestedReply: null,
+      severity: 'REVIEW',
+      context: buildNightlyIssueContext(
+        affectedCustomers.map(({ customer, text }) => ({ id: customer.id, name: customer.name ?? customer.waId ?? '', text })),
+        issues,
+      ),
+      suggestedReply: null,
     });
+  } else {
+    await resolveSystemTasks(store, isNightlyCheckTask);
   }
   // The monthly "what customers wrote" email is gone — replaced by the
   // DAILY_DIGEST job (daily-digest.ts), scheduled separately for 8am
   // Melbourne so its delivery time doesn't depend on when this nightly run
   // happens to fire.
 
-  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged, auditPurged });
+  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged, auditPurged, jobsPurged });
 }

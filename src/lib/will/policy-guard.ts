@@ -96,11 +96,58 @@ export function registerLibraryBodies(bodies: readonly string[]): void {
     for (const sent of splitSentences(b)) next.add(norm(sent));
   }
   LIBRARY_SENTENCES = next;
+  const cores = new Set<string>();
+  for (const n of next) for (const [core] of openingVariants(n)) cores.add(core);
+  LIBRARY_CORES = cores;
 }
-const isApprovedSentence = (sentence: string) => {
+/**
+ * An approved sentence with an ADAPTED OPENING (audit, 5 Sep).
+ *
+ * The playbook tells the model to pick the one matching objection and "adapt
+ * its opening to what they actually wrote". On the most common objection that
+ * opening is the sentence carrying the content trigger ("Yes, absolutely, you
+ * can lodge your tax return yourself through myGov"), so the moment the model
+ * did what it was told ("Yes Sarah, you can lodge your tax return yourself
+ * through myGov.") the sentence stopped matching the corpus verbatim and was
+ * refused as a do-it-yourself instruction: an URGENT task with no fallback on
+ * objection #4, and the same for o9's worked example and o1/o2's "we refund
+ * you the difference" whenever they got a name in front. Verified 5 Sep.
+ *
+ * So a leading acknowledgement or vocative ("Yes Sarah,", "No problem Marco!",
+ * "Of course,") is peeled off both sides before comparing. Returns the model's
+ * OWN part of the sentence: '' when the sentence is approved as-is, the peeled
+ * opening when the remainder is verbatim approved, and null when the sentence
+ * is not approved at all. The peeled opening is NOT exempt: the caller checks
+ * it like any other improvised wording, so a determination or an amount
+ * smuggled into those 25 characters is still caught. Nothing that did not
+ * already pass at save time is let through: the remainder is approved text.
+ */
+const OPENING_ACK = /^(?:yes|no|hey|hi|hello|of course|absolutely|no problem|sure|thanks|thank you)\b[^,.!?]{0,25}[,!]\s*/;
+/** The sentence and, when it starts with an acknowledgement, the same sentence
+ *  with up to two of them peeled off ("Yes, absolutely, you can..." carries
+ *  two). Each entry is [remainder, peeled opening]. */
+function openingVariants(n: string): Array<[string, string]> {
+  const out: Array<[string, string]> = [[n, '']];
+  let cur = n;
+  for (let i = 0; i < 2; i++) {
+    const next = cur.replace(OPENING_ACK, '');
+    if (next === cur || !next) break;
+    out.push([next, n.slice(0, n.length - next.length).trim()]);
+    cur = next;
+  }
+  return out;
+}
+const APPROVED_CORES = new Set<string>();
+for (const n of APPROVED_SENTENCES) for (const [core] of openingVariants(n)) APPROVED_CORES.add(core);
+let LIBRARY_CORES = new Set<string>();
+function ownOpening(sentence: string): string | null {
   const n = norm(sentence);
-  return APPROVED_SENTENCES.has(n) || LIBRARY_SENTENCES.has(n);
-};
+  if (APPROVED_SENTENCES.has(n) || LIBRARY_SENTENCES.has(n)) return '';
+  for (const [core, opening] of openingVariants(n)) {
+    if (APPROVED_CORES.has(core) || LIBRARY_CORES.has(core)) return opening;
+  }
+  return null;
+}
 
 /** Ceiling on the model's OWN prose in one reply, in characters.
  *
@@ -241,7 +288,18 @@ const LOOKS_LIKE_YEAR = /^(19|20)\d{2}$/;
  * quantity unit ("5,000 kilometres", "5000km") the number is not money. Either
  * way the bare-price matcher must not treat it as a dollar figure.
  */
-const NON_MONEY_UNIT = /^(?:\d|[.,]\d|\s*(?:kms?|kilomet(?:re|er)s?|litres?|liters?|kg|grams?)\b)/i;
+// (audit, 5 Sep) A number followed by a COUNT noun is a count, not a price:
+// "in total we need 2 more documents", "a total of 5 payslips", "send me 2
+// things: your payslip and a passport photo", "send us 1 screenshot of the
+// transfer" were all read as $2 / $5 / $1 and became URGENT tasks in replies
+// that were asking for documents. Applied to the bare-price AND pay-me nets;
+// a bare number with no noun ("pay us 50 and we get started") still fires.
+const COUNT_NOUN =
+  'things?|documents?|docs?|payslips?|pay ?slips?|screenshots?|photos?|pictures?|pics?|files?|copies|copy|pages?|forms?|receipts?|invoices?|statements?|jobs?|employers?|payment summar(?:y|ies)|returns?|tax returns?|instalments?|installments?';
+const NON_MONEY_UNIT = new RegExp(
+  `^(?:\\d|[.,]\\d|\\s*(?:kms?|kilomet(?:re|er)s?|litres?|liters?|kg|grams?|(?:more\\s+)?(?:${COUNT_NOUN}))\\b)`,
+  'i',
+);
 
 /**
  * "Pay us 50" — a demand for money with no fee/price word in front of it.
@@ -274,7 +332,14 @@ const WORD_AMOUNT_RE = new RegExp(
   // "one hundred dollars" / "fifty bucks"
   `\\b${NUM_WORD}(?:[\\s-]+(?:and[\\s-]+)?${NUM_WORD})*\\s+(?:${CURRENCY_WORDS})\\b` +
   // or "the fee is one hundred" / "price: fifty"
-  `|\\b(?:fee|fees|price|priced|cost|costs|total|charge|charges|quote|quoted|rate)\\b[^.!?]{0,24}?\\b${NUM_WORD}(?:[\\s-]+(?:and[\\s-]+)?${NUM_WORD})*\\b`,
+  // (audit, 5 Sep) A bare "one" near fee/price/cost is the article, not a
+  // number: "the fee is a one-off payment", "the price covers one full tax
+  // return" both came back as written-in-words and became URGENT tasks in
+  // replies restating the fixed fee. "one" only counts when it starts a larger
+  // number ("one hundred", "one fifty"), and no number word counts when the
+  // next word is a count noun ("covers two returns"). "The fee is fifty for
+  // you" still fires.
+  `|\\b(?:fee|fees|price|priced|cost|costs|total|charge|charges|quote|quoted|rate)\\b[^.!?]{0,24}?\\b(?!one\\b(?![\\s-]+${NUM_WORD}))${NUM_WORD}(?:[\\s-]+(?:and[\\s-]+)?${NUM_WORD})*\\b(?![\\s-]+(?:off|${COUNT_NOUN})\\b)`,
   'i',
 );
 /** "a hundred percent sure" is emphasis, not money. */
@@ -320,6 +385,9 @@ function amountsInCents(text: string): number[] {
   for (const m of text.matchAll(PAY_ME_RE)) {
     const raw = (m[1] ?? m[2] ?? '').trim();
     if (LOOKS_LIKE_YEAR.test(raw)) continue;
+    // (audit, 5 Sep) "send me 2 things", "send us 1 screenshot" are requests
+    // for documents, not money. Same tail test as the bare-price net.
+    if (NON_MONEY_UNIT.test(text.slice(m.index! + m[0].length))) continue;
     const c = toCents(raw);
     if (c != null) out.push(c);
   }
@@ -379,15 +447,26 @@ const TAX_DETERMINATION: RegExp[] = [
   // WILL-AI-01: broadened residency qualifiers — the old group only covered
   // "australian/tax/non- resident" and let "foreign / temporary / permanent /
   // working-holiday resident" (the most common real determinations) through.
-  /you(?:'re| are|'d be| would be| will be)(?: probably| definitely| likely)?(?: considered)?(?: an?| a)?\s*(?:australian |tax |non-?|foreign |temporary |permanent |working[ -]?holiday |non[ -]?)*resident/i,
+  //
+  // (audit, 5 Sep) Same gap the "you can claim" rule closed on 27 Aug (see the
+  // note above that rule): "checking whether you're a resident for tax
+  // purposes", "we work out if you are a resident or not" is the service
+  // describing what it works out, which is exactly the line the playbook
+  // prescribes, and it was refused as a determination. Before payment the
+  // customer silently got objection #7 instead; after payment Jo got an URGENT
+  // task. A residency claim introduced by whether / if / what / which is a
+  // relative clause and determines nothing; everything else still fires, the
+  // negative form included.
+  /(?<!\b(?:whether|if|what|which)\s)you(?:'re| are|'d be| would be| will be)(?: probably| definitely| likely)?(?: considered)?(?: an?| a)?\s*(?:australian |tax |non-?|foreign |temporary |permanent |working[ -]?holiday |non[ -]?)*resident/i,
   // A determination directed at the customer ("you're a foreign resident"),
   // NOT a neutral mention of the concept ("who is considered a resident...").
-  /\byou(?:'re| are|'d be| would be| count as| qualify as)[^.!?]{0,30}\b(?:foreign|temporary|non)[ -]?resident\b/i,
+  /(?<!\b(?:whether|if|what|which)\s)\byou(?:'re| are|'d be| would be| count as| qualify as)[^.!?]{0,30}\b(?:foreign|temporary|non)[ -]?resident\b/i,
   // 4 Sep audit: "You are NOT a resident", "You do not need to pay the Medicare
   // levy", "You are not required to pay it", "You will definitely get a refund"
   // and "your boots are deductible" all walked past the list. A negative
-  // determination is a determination.
-  /you(?:'re| are|'d be| would be| will be)(?: probably| definitely| likely)?(?: not| never)?(?: considered)?(?: an?| a)?\s*(?:australian |tax |non-?|foreign |temporary |permanent |working[ -]?holiday |non[ -]?)*resident/i,
+  // determination is a determination. (audit, 5 Sep) Same relative-clause
+  // carve-out as the rule above: "we work out if you are a resident or not".
+  /(?<!\b(?:whether|if|what|which)\s)you(?:'re| are|'d be| would be| will be)(?: probably| definitely| likely)?(?: not| never)?(?: considered)?(?: an?| a)?\s*(?:australian |tax |non-?|foreign |temporary |permanent |working[ -]?holiday |non[ -]?)*resident/i,
   /you(?:'re| are)? (?:probably |definitely )?(?:do(?:n'?t| not)? |don'?t |are(?: not)? |aren'?t |will(?: not)? |won'?t )?(?:need to pay|have to pay|required to pay|qualify|exempt(?:ed)?|eligible)[^.!?]{0,40}medicare/i,
   /\byour\s+[\w' -]{2,30}\s+(?:is|are)\s+(?:fully\s+|partly\s+|not\s+)?(?:tax[- ])?deductible\b/i,
   // "You can claim your boots" is a determination and must never send.
@@ -421,18 +500,45 @@ const TAX_DETERMINATION: RegExp[] = [
   // customer, and blocking it would turn routine progress updates into manual
   // tasks. "Your refund will be around 1800" is still caught: "around" is not
   // in this list.
-  /your (?:estimated |expected )?refund (?:will|would|should|is going to|is likely|is about|is around)(?!\s+(?:be\s+)?(?:paid|deposited|transferred|sent|processed|issued|released|go|land|arrive|show|take|hit|come)\b)/i,
-  /you(?:'ll| will|'re going to| are going to)(?: probably| definitely| certainly| surely| likely)? (?:get|receive|be getting)[^.!?]{0,25}(?:refund|\$|back)/i,
+  //
+  // (audit, 5 Sep) The carve-out was too narrow and its two neighbours had none
+  // at all. "Your refund will usually land within 14 business days", "Your
+  // refund should be with you in about two weeks", "you'll get your refund
+  // straight into your bank account" (the playbook's own myGov reassurance) and
+  // "You should receive the email from Xero" were all read as determinations,
+  // so before payment the customer got objection #7 instead of the answer and
+  // after payment Jo got an URGENT task for a routine line. None of them carries
+  // a figure, a hedge or a promise word. So: an optional adverb and the "be in
+  // your account / with you / there" shapes are process here; "refund" in the
+  // two patterns below is only a determination when what follows is NOT a
+  // purely locational/temporal continuation (straight into, within, once, ...)
+  // and the sentence has no promise adverb (definitely, certainly ...); and
+  // "you should get/receive/expect" needs a money object (refund, back, $, a
+  // figure) rather than an email or a return to sign. "You will definitely get
+  // a refund", "you should get around 3,800 back" and "Your refund will be
+  // around a thousand dollars" still fire.
+  /your (?:estimated |expected )?refund (?:will|would|should|is going to|is likely|is about|is around)(?!\s+(?:(?:usually|normally|typically|then|simply|also|just)\s+)?(?:be\s+)?(?:paid|deposited|transferred|sent|processed|issued|released|go|land|arrive|show|take|hit|come|in your|in the account|with you|there|on its way)\b)/i,
+  /you(?:'ll| will|'re going to| are going to)(?:(?: probably| definitely| certainly| surely| likely) (?:get|receive|be getting)[^.!?]{0,25}(?:refund|\$|back)| (?:get|receive|be getting)[^.!?]{0,25}(?:refund(?!\s+(?:straight|directly|into|in|to your|within|once|when|after|as soon as|from the ATO|by|paid|deposited)\b)|\$|back))/i,
   // WILL-AI-01: bare-number refund/return estimates (no $ sign, so the currency
   // guard misses them). Excludes the two fixed prices 220/385.
-  /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b)\d{3,6}\b/i,
-  /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|385\b)\d{3,6}\b/i,
+  //
+  // (audit, 5 Sep) ... and a tax year. BARE_PRICE_RE has skipped years since
+  // day one (LOOKS_LIKE_YEAR: "the fee for 2024" is not a $2,024 price) but the
+  // bare-figure patterns here and in the six-language set did not, so "Yes, we
+  // can do your tax return for 2024 as well" and "Your tax return for 2024 has
+  // been lodged" were determinations: objection #7 instead of a plain yes before
+  // payment, an URGENT task for a lodged confirmation after it. A refund of
+  // exactly 2024 still needs a $ sign or a hedge, which the currency and
+  // around/about rules already catch.
+  /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
+  /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
   // The phrasings a model actually reaches for when it is hedging, all of which
   // walked straight past the list above. Verified passes before these existed:
   //   "Based on your payslips you should get around 3,800 back."
   //   "You are entitled to the Medicare exemption for your whole stay."
   //   "Your visa means you're taxed as a resident from day one."
-  /\byou\s+should\s+(?:get|receive|be getting|be entitled|expect)\b/i,
+  // (audit, 5 Sep) needs a money object, see the note above line 424.
+  /\byou\s+should\s+(?:be\s+entitled\b|(?:get|receive|be getting|expect)\b[^.!?]{0,25}(?:\brefund\b(?!\s+(?:straight|directly|into|in|to your|within|once|when|after|as soon as|from the ATO|by|paid|deposited)\b)|\bback\b|\$|\b\d{3,6}\b))/i,
   // "entitled to" only counts when it names an ACTUAL entitlement. A bare
   // "entitled to" is the sales language of the approved corpus — "so nothing
   // you're entitled to is missed", "every dollar you're entitled to" — and
@@ -443,7 +549,7 @@ const TAX_DETERMINATION: RegExp[] = [
   /\byour\s+(?:visa|situation|case|circumstances)\s+means\b/i,
   // A hedge is still a determination: "roughly", "around", "ballpark" attached
   // to a refund is the number the customer will hold us to.
-  /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
+  /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
 ];
 
 // ---------- the same content rules in the six other languages ----------
@@ -457,10 +563,17 @@ const TAX_DETERMINATION: RegExp[] = [
 const TAX_DETERMINATION_ML: RegExp[] = [
   // "you are (not) a resident / non-resident" — DE, ES, FR, IT, PT, JA
   /\b(?:du|sie)\s+(?:bist|sind|wärst|wären|giltst|gelten)\b[^.!?]{0,40}\b(?:steuer(?:lich)?[ -]?)?(?:nicht[ -]?)?ans[äa]ssig|\b(?:du|sie)\s+(?:bist|sind)\b[^.!?]{0,30}\b(?:steuer)?(?:in|aus)l[äa]nder\b|\bnicht[ -]?ans[äa]ssig\b[^.!?]{0,20}\b(?:bist du|sind sie)\b/i,
-  /(?<![A-Za-zÀ-ÿ])(?:eres|es|ser[ií]as|ser[ií]a|te consideran|cuentas como|calificas como)(?![A-Za-zÀ-ÿ])[^.!?]{0,30}(?<![A-Za-zÀ-ÿ])(?:no[ -]?)?residente(?![A-Za-zÀ-ÿ])/i,
-  /(?<![A-Za-zÀ-ÿ])(?:tu es|vous [êe]tes|tu serais|vous seriez|tu comptes comme)(?![A-Za-zÀ-ÿ])[^.!?]{0,30}(?<![A-Za-zÀ-ÿ])(?:non[ -]?)?r[ée]sident/i,
-  /(?<![A-Za-zÀ-ÿ])(?:sei|lei [èe]|tu [èe]|[èe]|saresti|sarebbe|conti come|risulti)(?![A-Za-zÀ-ÿ])[^.!?]{0,30}(?<![A-Za-zÀ-ÿ])(?:non[ -]?)?residente(?![A-Za-zÀ-ÿ])/i,
-  /(?<![A-Za-zÀ-ÿ])(?:[ée]s|voc[êe] [ée]|serias|seria|contas como)(?![A-Za-zÀ-ÿ])[^.!?]{0,30}(?<![A-Za-zÀ-ÿ])(?:n[ãa]o[ -]?)?residente(?![A-Za-zÀ-ÿ])/i,
+  // (audit, 5 Sep) "comprobar si eres residente fiscal", "vérifier si vous êtes
+  // résident", "capire se sei residente", "ver se és residente": the same
+  // relative-clause carve-out as the English residency rules (si / se = whether).
+  // The bare "es" / "è" alternatives can start earlier in the sentence ("la
+  // revisión ES comprobar si eres residente"), so the gap before "residente"
+  // must not cross a si / se either. Both words are excluded in all four rules
+  // because the verb forms overlap (Spanish "es" is also Portuguese "és").
+  /(?<!\b(?:si|se)\s)(?<![A-Za-zÀ-ÿ])(?:eres|es|ser[ií]as|ser[ií]a|te consideran|cuentas como|calificas como)(?![A-Za-zÀ-ÿ])(?:(?!\b(?:si|se)\b)[^.!?]){0,30}(?<![A-Za-zÀ-ÿ])(?:no[ -]?)?residente(?![A-Za-zÀ-ÿ])/i,
+  /(?<!\b(?:si|se)\s)(?<![A-Za-zÀ-ÿ])(?:tu es|vous [êe]tes|tu serais|vous seriez|tu comptes comme)(?![A-Za-zÀ-ÿ])(?:(?!\b(?:si|se)\b)[^.!?]){0,30}(?<![A-Za-zÀ-ÿ])(?:non[ -]?)?r[ée]sident/i,
+  /(?<!\b(?:si|se)\s)(?<![A-Za-zÀ-ÿ])(?:sei|lei [èe]|tu [èe]|[èe]|saresti|sarebbe|conti come|risulti)(?![A-Za-zÀ-ÿ])(?:(?!\b(?:si|se)\b)[^.!?]){0,30}(?<![A-Za-zÀ-ÿ])(?:non[ -]?)?residente(?![A-Za-zÀ-ÿ])/i,
+  /(?<!\b(?:si|se)\s)(?<![A-Za-zÀ-ÿ])(?:[ée]s|voc[êe] [ée]|serias|seria|contas como)(?![A-Za-zÀ-ÿ])(?:(?!\b(?:si|se)\b)[^.!?]){0,30}(?<![A-Za-zÀ-ÿ])(?:n[ãa]o[ -]?)?residente(?![A-Za-zÀ-ÿ])/i,
   /(?:あなた|お客様)[はが][^。！？]{0,20}(?:非)?居住者(?:です|になります|とみなされ|に該当|扱い)|(?:非)?居住者(?:です|になります|とみなされます|に該当します)/,
   // Medicare: "you (don't) have to pay / are exempt" — DE, ES, FR, IT, PT, JA
   /\b(?:du|sie)\s+(?:musst|müssen|brauchst|bist|sind)\b[^.!?]{0,40}\bmedicare/i,
@@ -488,21 +601,26 @@ const TAX_DETERMINATION_ML: RegExp[] = [
   /\b(?:n[ãa]o )?(?:vais|ter[áa]s que|dever[áa]s)\s+(?:pagar|dever)\b[^.!?]{0,20}\bimpostos?\b/i,
   /(?:納税|追徴|支払い)(?:は)?(?:必要ありません|不要です|ありません|になります|が必要です)/,
   // a refund figure in words of prediction — DE, ES, FR, IT, PT, JA
-  /\b(?:ungef[äa]hr|etwa|rund|circa|ca\.|um die|so um)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:zur[üu]ck|r[üu]ckerstattung|erstattung|erstattet)/i,
-  /\b(?:unos|unas|aproximadamente|alrededor de|cerca de|m[áa]s o menos)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de vuelta|reembolso|devoluci[óo]n)/i,
-  /\b(?:environ|à peu près|autour de|dans les)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de retour|remboursement|rembours[ée])/i,
-  /\b(?:circa|all'incirca|intorno a|pi[ùu] o meno)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:indietro|rimborso|rimborsat)/i,
-  /\b(?:cerca de|aproximadamente|uns|umas|mais ou menos)\b[^.!?]{0,15}\b(?!220\b|385\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de volta|reembolso|restitui)/i,
-  /(?:約|およそ|だいたい|ほぼ)\s?(?!220|385)\d[\d,]{2,}[^。！？]{0,15}(?:還付|戻|返金|返っ)/,
-  /(?:還付|戻っ|返っ)[^。！？]{0,15}(?:約|およそ|だいたい)?\s?(?!220|385)\d[\d,]{2,}/,
+  /\b(?:ungef[äa]hr|etwa|rund|circa|ca\.|um die|so um)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:zur[üu]ck|r[üu]ckerstattung|erstattung|erstattet)/i,
+  /\b(?:unos|unas|aproximadamente|alrededor de|cerca de|m[áa]s o menos)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de vuelta|reembolso|devoluci[óo]n)/i,
+  /\b(?:environ|à peu près|autour de|dans les)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de retour|remboursement|rembours[ée])/i,
+  /\b(?:circa|all'incirca|intorno a|pi[ùu] o meno)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:indietro|rimborso|rimborsat)/i,
+  /\b(?:cerca de|aproximadamente|uns|umas|mais ou menos)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de volta|reembolso|restitui)/i,
+  /(?:約|およそ|だいたい|ほぼ)\s?(?!220|385|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}[^。！？]{0,15}(?:還付|戻|返金|返っ)/,
+  /(?:還付|戻っ|返っ)[^。！？]{0,15}(?:約|およそ|だいたい)?\s?(?<![\d,])(?!220|385|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}/,
   // 4 Sep: a BARE figure next to the refund word, with no hedge ("Deine
   // Rückerstattung beträgt 1.800", "tu reembolso es de 1.800"). English is
   // covered above; these six were not, so the figure sent on Autopilot.
-  /(?<![A-Za-zÀ-ÿ])(?:r[üu]ckerstattung|erstattung|steuerr[üu]ckzahlung)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:reembolso|devoluci[óo]n|reintegro)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:remboursement|restitution)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:rimborso|restituzione)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:reembolso|restitui[çc][ãa]o)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?!220\b|385\b)\d[\d.,]{2,}/i,
+  // (audit, 5 Sep) A tax year is not a figure here either, same as the English
+  // rules above ("Deine Rückerstattung für das Steuerjahr 2024 wurde
+  // eingereicht", "Tu devolución de 2024 ya está presentada" were refused). The
+  // lookbehind stops the matcher restarting inside a number, which would have
+  // read "024" out of "2024" and made the exclusion meaningless.
+  /(?<![A-Za-zÀ-ÿ])(?:r[üu]ckerstattung|erstattung|steuerr[üu]ckzahlung)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:reembolso|devoluci[óo]n|reintegro)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:remboursement|restitution)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:rimborso|restituzione)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:reembolso|restitui[çc][ãa]o)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
 ];
 
 // myGov / ATO walkthroughs in the other languages: the site name is the same,
@@ -524,7 +642,12 @@ const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (dea
 // ("refund your payment", "refund you $220", "money back", "cancel") but NOT on
 // the noun ("eligible for a refund", "your tax refund", "super refund") nor on
 // the approved guarantee ("refund the difference" / "refund you the difference").
-const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b|refund\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|full|amount|\$?\d)))\b(?!\s+the\s+difference)/i;
+// (audit, 5 Sep) "payment ... back" is a return of MONEY, not of contact: "once
+// we receive your payment, we'll get back to you" / "come back to you with the
+// form" was tripping it and sending an URGENT task at the moment of paying. The
+// lookahead lets "back to / back with / back in touch" through; the reversed
+// "give/send/transfer/pay ... back ... payment" order is now caught as well.
+const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b(?!\s+(?:to|with|in touch)\b)|(?:give|send|transfer|pay)[^.!?]{0,10}\bback\b[^.!?]{0,10}\bpayment|refund\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|full|amount|\$?\d)))\b(?!\s+the\s+difference)/i;
 // "never out of pocket" / "not out of pocket" — the exact over-promise that
 // broke the Indigo conversation (a customer who owes was told they would get
 // the fee back). It is now banned from every message, so any improvised reply
@@ -551,7 +674,13 @@ const GUARANTEE_CONTEXT = /差額|\bthe difference\b|\bdie differenz\b|\bla dife
 // A FULL refund is a promise whatever the context.
 const FULL_REFUND_WORDS = /全額|\bfull\s+refund\b|\bmoney\s?back\b|\bvolle\b|\bgeld\s+zur|\bcompleto\b|\btotal\b|\b[íi]ntegro\b|\bint[ée]gral\b|\bcomplet\b|\btotale\b|\bintegrale\b|\bde\s+vuelta\b/i;
 const POST_PAYMENT_SALES = /(\bfee\b|\bprice\b|\bcost\b|\bdiscount\b|guarantee|out of pocket|cover the (gap|difference)|refund the difference)/i;
-const DIY_INSTRUCTIONS = /(do it yourself|lodge (it |your (tax )?return )?(yourself|on your own)|step[- ]by[- ]step|log ?in ?to mygov[^.!?]{0,40}(link|lodge|submit))/i;
+// The negated form is the reassurance the team gives every day ("you don't
+// have to lodge it yourself, we do all of that for you", "no need to do it
+// yourself"), so "do it yourself" / "lodge it yourself" carry a negation guard
+// like FEE_REFUNDABLE_PASSIVE does; without it both were refused as
+// do-it-yourself instructions (audit, 5 Sep). The positive ("if you prefer you
+// can lodge it yourself next year") still fires.
+const DIY_INSTRUCTIONS = /((?<!\b(?:not|never|don[’']t|do not|won[’']t|without|no need to)\s(?:have to |need to |want to )?)(?<!\brather than\s|\binstead of\s)(?:do it yourself|lodge (it |your (tax )?return )?(yourself|on your own))|step[- ]by[- ]step|log ?in ?to mygov[^.!?]{0,40}(link|lodge|submit))/i;
 // myGov / ATO ACCESS (the team's single biggest problem): Will must never
 // troubleshoot or instruct a customer on myGov, the ATO portal, myGovID /
 // Digital ID, IHI, the Medicare Entitlement Statement, account linking or
@@ -575,6 +704,18 @@ const MYGOV_REASSURANCE = /\b(?:do(?:n'?t| not)|does(?:n'?t| not)|no need|never|
 // stays caught below, because the clause is re-tested for a step cue AFTER this
 // exact phrase is stripped out.
 const MYGOV_BENIGN = /\btry\s+(?:again\s+|it\s+again\s+)?(?:on|using|with|from|in)\s+(?:a\s+|an\s+|your\s+|another\s+|a\s+different\s+|the\s+)?(?:computer|laptop|desktop|pc|mac|browser|different\s+device|another\s+device|other\s+device)\b/i;
+// (audit, 5 Sep) Our OWN next step is not a portal step. The playbook's myGov
+// reply is "reassurance, then the next step for their stage", and that next
+// step is "submit the form", "open the link", "choose which option suits you",
+// "enter your details in the form". Those verbs sit in MYGOV_STEP_CUE because
+// they are also how a myGov walkthrough reads, so the whole reply was refused
+// and became an URGENT task. Same shape as MYGOV_BENIGN: strip exactly these
+// phrases (our form, link, questionnaire, option, payment details), then a
+// clause is instructing only if a real portal step survives. Applied ONLY to a
+// clause that names no myGov/ATO term itself, so "select the option Australian
+// Taxation Office" still fires, and so does any clause that keeps "log in",
+// "tap", "click", "go to", "enter your TFN", "link your account".
+const OUR_NEXT_STEP = /\b(?:enter your details (?:in|on|into)|open|submit|fill (?:in|out)|complete|choose|select|pick|enter)\s+(?:the |your |our |a |which |whichever )?(?:online )?(?:form|link|questionnaire|option|payment details?)\b/gi;
 // Prices are AUD, shown with the $ sign only. Any non-dollar currency next to a
 // number is a hard violation, even if the number itself matches an allowed price
 // (e.g. "220 euros" is a wrong-currency conversion and must never be sent).
@@ -611,6 +752,15 @@ const SENSITIVE_LEAK = /(password|api.?key|access token|secret key|admin (access
 // (even next to the word Xero) is still caught by SENSITIVE_LEAK below.
 const XERO_SIGNING = /\bxero\b/i;
 const XERO_BENIGN_PWD = /\b(?:if it (?:asks|is asking) for a password|try\s+\d{4,}|forgot password|reset (?:your |the )?password)\b/gi;
+// (audit, 5 Sep) Mirror of the Xero carve-out for the myGov reassurance. A
+// customer's login problem is literally about a password, and the playbook's
+// answer is "you won't need your myGov password at all, we deal with the ATO
+// directly" / "we never need your myGov login or credentials". SENSITIVE_LEAK
+// refused every one of them. Only when the message names myGov/ATO, strip the
+// NEGATED "don't/never need (or ask for) ... password/login/credentials" phrase
+// before the check. "Your password is hunter2" and "reset your password" carry
+// no negation and stay blocked.
+const MYGOV_BENIGN_PWD = /\b(?:don'?t|do not|won'?t|will not|never|no|not)\s+(?:need|ask(?:ing)?(?: you)? for|require)\b[^.!?]{0,30}\b(?:password|login|credentials)\b(?:\s+(?:or|and)\s+(?:password|login|credentials)\b)?/gi;
 // ── THE RETIRED GUARANTEE LINE (Jo, 3 Sep; enforced 4 Sep) ────────────────
 // "so our fee never costs you more than the refund you get back" was removed
 // from every approved message because it is not true: a customer who OWES tax
@@ -721,7 +871,9 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // Only in the Xero signing context, strip the approved benign password phrases
   // before the sensitive check, so the portal support message sends while any
   // other credential leak stays blocked.
-  const sensText = XERO_SIGNING.test(text) ? text.replace(XERO_BENIGN_PWD, ' ') : text;
+  let sensText = XERO_SIGNING.test(text) ? text.replace(XERO_BENIGN_PWD, ' ') : text;
+  // (audit, 5 Sep) same for the negated myGov password reassurance, see MYGOV_BENIGN_PWD.
+  if (MYGOV_TERMS.test(text)) sensText = sensText.replace(MYGOV_BENIGN_PWD, ' ');
   if (SENSITIVE_LEAK.test(sensText)) violations.push('SENSITIVE_CONTENT');
   if (DASHES.test(text)) violations.push('EM_DASH_FORBIDDEN');
   // The retired line is banned everywhere, including in an "approved" template:
@@ -756,7 +908,11 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
       // Strip the one allowed benign device hint, then a clause is instructing
       // only if a REAL portal step still survives. So "try again on a computer"
       // clears, but "log in on a computer" or "try logging in again" do not.
-      const stripped = c.replace(MYGOV_BENIGN, ' ');
+      // (audit, 5 Sep) and our own next step ("submit the form", "open the
+      // link"), but only in a clause that names no portal, see OUR_NEXT_STEP.
+      const stripped = MYGOV_TERMS.test(c)
+        ? c.replace(MYGOV_BENIGN, ' ')
+        : c.replace(MYGOV_BENIGN, ' ').replace(OUR_NEXT_STEP, ' ');
       // A step in another language counts only in a clause that also names
       // the portal: the verbs are ordinary words ("open", "select") in their
       // own languages, so on their own they must not fire.
@@ -779,8 +935,11 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   //         "Our fee:\n50"
   //     became two sentences, neither of which could match a pattern that needs
   //     the money word and the number together.
+  // An approved sentence with an adapted opening counts only its opening
+  // (see ownOpening, audit 5 Sep): the remainder is corpus text.
   const improvised = splitSentences(text)
-    .filter((s) => !isApprovedSentence(s))
+    .map((s) => ownOpening(s) ?? s)
+    .filter(Boolean)
     .join(' ');
 
   if (!ctx.isApprovedTemplate) {
@@ -819,14 +978,20 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     violations.push('FORBIDDEN_AMOUNT:written-in-words');
   }
 
-  for (const sentence of splitSentences(text)) {
+  for (const written of splitSentences(text)) {
     // Approved sentences skip the CONTENT-pattern checks, but the CONTEXTUAL
     // post-payment-sales gate still applies (H2/H4: never re-send sales content
     // to a paid customer, even if the wording is approved).
-    if (isApprovedSentence(sentence)) {
-      if (paid && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
-      continue;
+    const opening = ownOpening(written);
+    if (opening != null) {
+      if (paid && (POST_PAYMENT_SALES.test(written) || POST_PAYMENT_SALES_ML.test(written))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
+      if (opening === '') continue;
     }
+    // An approved sentence with an adapted opening ("Yes Sarah, you can lodge
+    // your tax return yourself through myGov."): the remainder is corpus text
+    // and exempt, the opening is the model's own and checked below like any
+    // other sentence (audit, 5 Sep).
+    const sentence = opening || written;
 
     // Amount check is language-agnostic (currency symbols + words in many languages).
     const sentenceAmounts = amountsInCents(sentence);

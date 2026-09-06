@@ -259,8 +259,14 @@ describe('a fully verified screenshot in Autopilot', () => {
     assessPaymentProofImage.mockResolvedValue(wise220);
     deliverOut.mockResolvedValueOnce({ ok: false, error: 'outside the 24h window' });
     await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
-    expect(addTask).toHaveBeenCalledTimes(1);
-    expect(addTask.mock.calls[0][0].severity).toBe('URGENT');
+    // (audit, 5 Sep) The task is deliverOut's own, written with the caller's
+    // onFailure wording, so the caller adds nothing itself: two cards for one
+    // silence was the friction. deliverOut is mocked here, so the assertion
+    // is on what it was handed.
+    expect(addTask).not.toHaveBeenCalled();
+    const opts = deliverOut.mock.calls[0][5] as { onFailure: { reason: (e?: string) => string; severity: string } };
+    expect(opts.onFailure.severity).toBe('URGENT');
+    expect(opts.onFailure.reason('outside the 24h window')).toContain('PAID, BUT THEY HAVE NOT BEEN TOLD');
   });
 });
 

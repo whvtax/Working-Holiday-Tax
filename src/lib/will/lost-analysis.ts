@@ -320,11 +320,19 @@ export async function runLostLeadAnalysis(
       };
       summary.failed++;
     }
+    let stored = true;
     await store.upsertLostAnalysis(row).catch(async (e) => {
+      stored = false;
       await store.audit('nightly', 'lost_analysis_store_failed', {
         customerId: customer.id, error: (e as Error).message?.slice(0, 200),
       }).catch(() => {});
     });
+    // (audit, 5 Sep) upsertLostAnalysis now throws instead of swallowing a
+    // Supabase error, so a bad migration or an RLS misconfiguration shows up
+    // here on the very first lead of the pass. Stop the batch rather than
+    // burn the rest of tonight's paid model calls on verdicts that cannot be
+    // stored anyway; 'incomplete' resumes the same leads on the next tick.
+    if (!stored) { summary.incomplete = true; break; }
   }
 
   summary.remaining = Math.max(0, queue.length - summary.analysed - summary.failed);

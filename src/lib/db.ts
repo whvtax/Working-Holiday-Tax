@@ -476,13 +476,35 @@ export async function archiveTaskByPhone(whatsapp: string): Promise<string | nul
     const candidates = phoneCandidates(whatsapp)
     if (!candidates.length) return null
     const sb = getSupabase()
-    const { data } = await sb.from('crm_tasks').select('id, whatsapp, done, created_at').order('created_at', { ascending: false }).limit(500)
     const digits = (v: unknown) => String(v ?? '').replace(/\D/g, '')
     const wanted = new Set(candidates.map(digits))
-    const match = (data ?? []).find((t) => wanted.has(digits(t.whatsapp)))
-    if (!match) return null
-    await deleteTaskAndArchive(match.id as string)
-    return match.id as string
+    // Audit, 5 Sep: this used to read only the newest 500 tasks and take the
+    // first phone match regardless of done. In season the table passes 500
+    // rows, so an older card was silently not filed; and a newer PENDING task
+    // for the same person (a super claim after the tax return) was the one
+    // archived, filing a "done" super entry that never happened. crm_tasks has
+    // no wa_norm column and the number is stored as typed, so the match still
+    // happens on digits here; but the scan now walks the WHOLE table in pages,
+    // done cards first (newest first), pending only when no done card exists.
+    const PAGE = 500
+    const findMatch = async (done: boolean) => {
+      for (let from = 0; ; from += PAGE) {
+        const { data, error } = await sb.from('crm_tasks')
+          .select('id, whatsapp, done, created_at')
+          .eq('done', done)
+          .order('created_at', { ascending: false })
+          .range(from, from + PAGE - 1)
+        if (error) throw error
+        const rows = data ?? []
+        const hit = rows.find((t) => wanted.has(digits(t.whatsapp)))
+        if (hit) return hit.id as string
+        if (rows.length < PAGE) return null
+      }
+    }
+    const matchId = (await findMatch(true)) ?? (await findMatch(false))
+    if (!matchId) return null
+    await deleteTaskAndArchive(matchId)
+    return matchId
   } catch {
     return null
   }

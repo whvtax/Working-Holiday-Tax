@@ -3,18 +3,22 @@
 // message, shared by the simulator and the future WhatsApp
 // webhook. Persists everything to the store.
 // ============================================================
-import { getStore, CustomerRow, CustomerState, Store, MessageRow } from './store';
+import { getStore, CustomerRow, CustomerState, Store, MessageRow, JobRow } from './store';
 import { reopenTarget } from './state-machine';
 import { runEngine, AiMode, EngineOutcome } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
-import { reconcileSchedule } from './scheduler';
-import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, paymentReceivedMessage, paymentReceivedTemplateKey } from './i18n';
+import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
+import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, formReceivedMessage, formReceivedTemplateKey, isPaymentReceivedDraft } from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut, fetchWaMedia } from './channel';
-import { AUTOPILOT_REPLY_DELAY_SECONDS } from './config';
+import { autopilotReplyDelaySeconds } from './config';
 import { isIdentityQuestion } from './identity-question';
-import { firstNameOf, cleanFirstName } from './text-normalize';
+import { firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
+// Moved to text-normalize.ts so the engine can use it too without importing this
+// file (service.ts imports the engine; a static import back would be a cycle).
+// Re-exported here because this is where every caller and test already looks.
+export { isCourtesyLine };
 import { suggestReply } from './suggest';
 import { assessPaymentProofImage, describeAttachment, PaymentProofCheck } from './claude';
 import { verifyProofDetails, isNotOurPayment, describeProof } from './payment-proof';
@@ -23,6 +27,7 @@ import { claimsPayment } from './payment-claim';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
+import { bumpCounterUnavailable, lastPersistError as sbLastPersistError } from './store-supabase';
 import { isLongComplicatedMessage, HANDOFF_ACK_DELAY_MS } from './long-message';
 
 export interface HandleResult {
@@ -49,6 +54,10 @@ const SALES_STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'P
 // is regenerated against everything sent so far rather than only the latest
 // message. Only opens a new task when none is open yet.
 const MAX_TASK_CONTEXT = 2000;
+// Same order the dashboard sorts by (Dashboard.tsx SEV_RANK): URGENT is the
+// most severe, then CONFLICT, then REVIEW, then anything else.
+const SEVERITY_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
+const severityRank = (s: string) => SEVERITY_RANK[s] ?? 3;
 async function raiseOrUpdateTask(
   store: ReturnType<typeof getStore>,
   customer: Pick<CustomerRow, 'id' | 'name' | 'waId'>,
@@ -64,6 +73,17 @@ async function raiseOrUpdateTask(
     fold?: (existing: string | null) => string;
     /** The reason line, when it depends on the folded context (a count). */
     reasonFor?: (context: string) => string;
+    /**
+     * (audit, 5 Sep) A folded caller passing `suggestedReply: null` used to wipe
+     * out a perfectly usable draft the existing task already had — e.g. a
+     * document-drop task with an acknowledgement drafted, folded into by an
+     * unrelated null-reply caller, left with no draft and Send Reply disabled.
+     * The one caller that MUST wipe it (the "are you a bot" question, which by
+     * owner rule may never carry a draft even when it folds into a task that
+     * had one) sets this flag; every other null just means "I have nothing new
+     * to suggest", so the existing draft is kept.
+     */
+    forceNullSuggestedReply?: boolean;
   },
 ): Promise<void> {
   const existing = await store.findOpenTaskForCustomer(customer.id);
@@ -72,11 +92,27 @@ async function raiseOrUpdateTask(
       ? opts.fold(existing.context)
       : existing.context ? `${existing.context}\n---\n${opts.newContext}` : opts.newContext;
     const context = merged.length > MAX_TASK_CONTEXT ? merged.slice(merged.length - MAX_TASK_CONTEXT) : merged;
+    const newReason = opts.reasonFor ? opts.reasonFor(context) : opts.reason;
+    // (audit, 5 Sep) Folding a later message in used to overwrite severity and
+    // reason unconditionally: a customer waiting on an URGENT "reply was not
+    // delivered" task who then sent a photo got quietly downgraded to an amber
+    // REVIEW headlined about the attachment, with the "they are waiting" reason
+    // gone. Keep the more severe of the two, and when the reason actually
+    // changes, keep the earlier one as a second line instead of dropping it
+    // (reasonFor computes its own line from the full context already, so it is
+    // left as-is).
+    const reason = !opts.reasonFor && existing.reason && existing.reason !== newReason
+      ? `${newReason}\n(earlier: ${existing.reason})`.slice(0, MAX_TASK_CONTEXT)
+      : newReason;
+    const severity = severityRank(existing.severity) <= severityRank(opts.severity) ? existing.severity : opts.severity;
+    const suggestedReply = opts.suggestedReply !== null
+      ? opts.suggestedReply
+      : opts.forceNullSuggestedReply ? null : (existing.suggestedReply ?? null);
     await store.updateTask(existing.id, {
-      reason: opts.reasonFor ? opts.reasonFor(context) : opts.reason,
-      severity: opts.severity,
+      reason,
+      severity,
       context,
-      suggestedReply: opts.suggestedReply,
+      suggestedReply,
     });
     return;
   }
@@ -225,6 +261,21 @@ async function handleIncomingInner(
     return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } }, customer: c2 ?? customer };
   }
 
+  // ── THE ACKNOWLEDGEMENT A TFN + ABN CUSTOMER IS STILL OWED (Jo, 4 Sep) ────
+  //
+  // They filled the questionnaire and were sent the three ABN questions on
+  // their own, without "we've received your questionnaire" in front of them:
+  // that line says we are going through everything now, and while we are
+  // waiting on their ABN answers it is not true yet. This is where it becomes
+  // true. The moment they send the answers, the acknowledgement goes.
+  //
+  // Best effort and out of the way of everything else: it never blocks the
+  // reply, and a courtesy line ("ok!", "👍") is not an answer, so it does not
+  // trigger it.
+  if (!opts?.alreadyStored && !isCourtesyLine(text)) {
+    await sendOwedFormAck(store, customer, text).catch(() => { /* the reply matters more */ });
+  }
+
   // ============================================================
   // WILL HANDLES EXISTING CHATS TOO (owner decision, Jo 30 Aug):
   // The old rule routed EVERY pre-existing / imported chat straight to a human,
@@ -293,6 +344,7 @@ async function handleIncomingInner(
       // sent. This answer has to be a person's own words. Folded into the one
       // open task per customer (raiseOrUpdateTask) so asking twice never stacks.
       severity: 'REVIEW', newContext: text.slice(0, 200), suggestedReply: null,
+      forceNullSuggestedReply: true,
     });
     await store.audit('policy_guard', 'identity_question_handoff', { customerId: customer.id });
     // Cancel any Autopilot timer already armed for this customer. Without this
@@ -448,6 +500,11 @@ export interface DecideOpts {
   /** The AUTO_REPLY job this run belongs to, so the supersession check does not
    *  read the run's own claimed row as a rival timer. */
   jobId?: string;
+  /** Its run_at, so only a STRICTLY newer timer counts as a rival (audit3
+   *  core 32, 5 Sep). */
+  jobRunAt?: string;
+  /** Its created_at, the second tie-break (audit3 core 39, 5 Sep). */
+  jobCreatedAt?: string | null;
 }
 
 /**
@@ -460,6 +517,40 @@ export interface DecideOpts {
  * when they first wrote, how much has been said, whether they went cold or said
  * no and came back, and whether they have already paid.
  */
+/**
+ * Send the "we've received your questionnaire" line that a TFN + ABN customer
+ * has been owed since they were asked the ABN questions (Jo, 4 Sep).
+ *
+ * Fires on their first real answer, whatever it says: they have now sent what
+ * we were waiting for, so the acknowledgement is finally true. Sent once, then
+ * the flag is cleared. A message that is only courtesy never gets here (the
+ * caller checks), and neither does a paused, legacy or opted-out chat.
+ */
+async function sendOwedFormAck(store: Store, customer: CustomerRow, text: string): Promise<void> {
+  if (customer.income !== 'TFN_ABN') return;
+  if (customer.optedOut || customer.aiPaused || customer.isLegacy) return;
+  const key = abnAnswersPendingKey(customer.id);
+  if ((await store.getSetting(key)) !== true) return;
+  // Clear FIRST: two messages landing on two instances must not both send it.
+  await store.setSetting(key, false);
+
+  const ackKey = formReceivedTemplateKey(customer.lang);
+  let body = formReceivedMessage(customer.lang);
+  try {
+    const t = (await store.listTemplates()).find((x) => x.key === ackKey);
+    if (t?.body?.trim()) body = t.body;
+  } catch { /* the code copy is the fallback */ }
+  if (/\{\{[^}]{1,40}\}\}/.test(body)) {
+    await store.audit('system', 'form_ack_held', { customerId: customer.id, reason: 'placeholder left in the Library text' });
+    return;
+  }
+  const template = { name: ackKey, params: [], lang: customer.lang, fallbackToText: true };
+  const out = await deliverOut(customer, body, 'AI', { waTemplate: template }, template);
+  await store.audit('system', out.ok ? 'form_ack_sent_after_abn' : 'form_ack_failed_after_abn', {
+    customerId: customer.id, error: out.ok ? undefined : out.error, answered: text.slice(0, 120),
+  });
+}
+
 /** Customer text quoted into the profile block: prompt structure stripped, and
  *  capped. Same idea as playbook.sanitize, with room for a sentence. */
 const quoteForPrompt = (v: string): string =>
@@ -524,12 +615,23 @@ export async function decideAndAct(
   // COST-01: daily global cap on paid AI decisions. When the budget is spent,
   // hand the conversation to a human instead of calling the model.
   if (await aiBudgetExhausted()) {
+    // (audit, 5 Sep) Read this BEFORE raiseOrUpdateTask runs — that call makes
+    // its own store round-trips, which overwrite lastPersistError with their
+    // own (usually successful, null-ing) result. Distinguishing "the RPC
+    // that guards the budget is unreachable" from "the budget is really
+    // spent" only works if it is captured right here.
+    const unavailable = bumpCounterUnavailable();
+    const rpcError = unavailable ? sbLastPersistError : null;
     await raiseOrUpdateTask(store, customer, {
       reason: 'Daily AI limit reached, please reply to this customer manually',
       severity: 'REVIEW', newContext: text.slice(0, 200),
       suggestedReply: await suggestReply(text, customer, 'budget'),
     });
-    await store.audit('policy_guard', 'ai_budget_exhausted', { customerId: customer.id });
+    await store.audit(
+      'policy_guard',
+      unavailable ? 'ai_budget_unavailable' : 'ai_budget_exhausted',
+      unavailable ? { customerId: customer.id, error: rpcError } : { customerId: customer.id },
+    );
     return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } } };
   }
 
@@ -606,6 +708,20 @@ export async function decideAndAct(
     await store.audit('system', 'payment_claim_advanced_stage', {
       customerId: customer.id, from: customer.state, lang: customer.lang ?? null,
     }).catch(() => {});
+    // The forced move exists for the case where the model answered
+    // conversationally ("Danke! Ich sage dem Team Bescheid") without the form.
+    // Paid cascades to Form Pending and arms the form reminders, so a reply
+    // with no form link left the customer chased for a form they never got.
+    // The screenshot route always sends the approved payment received body;
+    // this route now does the same when the model's reply lacks the link
+    // (audit, 5 Sep). Same Library first helper, same text, nothing new.
+    const withForm = withPaymentReceivedIfNoForm(outcome.replyText, await paymentReceivedBody(store, customer.lang));
+    if (withForm !== outcome.replyText) {
+      outcome.replyText = withForm;
+      await store.audit('system', 'payment_received_appended', {
+        customerId: customer.id, lang: customer.lang ?? null,
+      }).catch(() => {});
+    }
   }
 
   // ── Second set of eyes: REMOVED ──────────────────────────────────────────
@@ -643,7 +759,7 @@ export async function decideAndAct(
   // an older version of the conversation. The newer message armed its own
   // timer, so drop this one rather than talk past them.
   if (opts.sendNow && outcome.kind === 'queued') {
-    if (await supersededByNewerTimer(store, customer.id, opts.jobId)) {
+    if (await supersededByNewerTimer(store, customer.id, { id: opts.jobId, runAt: opts.jobRunAt, createdAt: opts.jobCreatedAt })) {
       await store.audit('assistant', 'auto_reply_superseded', { customerId: customer.id, anchorAt: opts.anchorAt ?? null });
       return { outcome: { kind: 'silent', decision: outcome.decision } };
     }
@@ -651,19 +767,25 @@ export async function decideAndAct(
   }
 
   if (outcome.kind === 'sent' && outcome.replyText) {
-    // apply state + income ONLY when actually sent
-    if (outcome.newState) {
-      await store.setState(customer.id, outcome.newState, 'AI');
-      if (outcome.newState === 'PAID') await autoAdvanceToForm(customer.id, bank);
-    }
-    const inc = inferIncome(outcome.replyText);
-    if (inc) await store.updateCustomer(customer.id, { income: inc });
+    // apply state + income ONLY when actually sent, which means AFTER
+    // deliverOut reports ok, not before it is attempted (audit, 5 Sep): the
+    // stage and income used to move here first, so a send Meta rejected left
+    // the board a step ahead of what the customer had actually received. The
+    // queued path in the scheduler already applies them after the send; this
+    // branch now does the same.
     // deliverOut REPORTS a rejection, it does not throw. Discarding that made a
     // throttled or refused autopilot send read as "· autopilot reply" on the
-    // tick while the customer got nothing (audit, 4 Sep). A rejection that
-    // deliverOut itself did not turn into a task (the retryable ones) becomes
-    // one here, with the text ready to send in a click.
-    const out = await deliverOut(customer, outcome.replyText, 'AI');
+    // tick while the customer got nothing (audit, 4 Sep). A non-retryable
+    // rejection is deliverOut's one task, written here in Will's words
+    // (audit, 5 Sep: this used to raiseOrUpdateTask AFTER deliverOut had
+    // already opened its own card, which overwrote that card's reason; the
+    // retryable case never reaches a task at all, it re-arms below).
+    const out = await deliverOut(customer, outcome.replyText, 'AI', undefined, undefined, {
+      onFailure: {
+        reason: (e) => `Will's reply was not delivered: ${e ?? 'WhatsApp rejected it'}. They are waiting with no answer.`,
+        severity: 'URGENT', context: text.slice(0, 200),
+      },
+    });
     if (!out.ok) {
       await store.audit('channel', 'auto_reply_send_failed', {
         customerId: customer.id, error: out.error ?? 'unknown error', retryable: !!out.retryable,
@@ -677,12 +799,14 @@ export async function decideAndAct(
         await store.audit('assistant', 'auto_reply_rearmed_after_throttle', { customerId: customer.id }).catch(() => {});
         return { outcome: { ...outcome, kind: 'silent' } };
       }
-      await raiseOrUpdateTask(store, customer, {
-        reason: `Will's reply was not delivered: ${out.error ?? 'WhatsApp rejected it'}. They are waiting with no answer.`,
-        severity: 'URGENT', newContext: text.slice(0, 200), suggestedReply: outcome.replyText,
-      }).catch(() => { /* never let the bookkeeping hide the failure */ });
       return { outcome: { ...outcome, kind: 'human_task' } };
     }
+    if (outcome.newState) {
+      await store.setState(customer.id, outcome.newState, 'AI');
+      if (outcome.newState === 'PAID') await autoAdvanceToForm(customer.id, bank);
+    }
+    const inc = inferIncome(outcome.replyText);
+    if (inc) await store.updateCustomer(customer.id, { income: inc });
   } else if (outcome.kind === 'queued' && outcome.replyText) {
     // Autopilot with a human pause. The reply is finished and correct now, but
     // it does not leave for AUTOPILOT_REPLY_DELAY_SECONDS: an instant answer
@@ -701,7 +825,7 @@ export async function decideAndAct(
     });
     await store.addJob({
       customerId: customer.id, kind: 'AUTO_REPLY', payload: { messageId: m.id },
-      runAt: new Date(Date.now() + AUTOPILOT_REPLY_DELAY_SECONDS * 1000).toISOString(),
+      runAt: new Date(Date.now() + autopilotReplyDelaySeconds() * 1000).toISOString(),
     });
     pendingMessageId = m.id;
   } else if (outcome.kind === 'pending_approval' && outcome.replyText) {
@@ -712,10 +836,32 @@ export async function decideAndAct(
     // stranded above messages it never read.
     try {
       const prior = await store.listMessages(customer.id);
-      for (const pm of prior) {
-        if (pm.direction === 'OUT' && pm.status === 'PENDING_APPROVAL') {
-          await store.setMessageStatus(pm.id, 'DISCARDED');
+      const pendingDrafts = prior.filter((pm) => pm.direction === 'OUT' && pm.status === 'PENDING_APPROVAL');
+      // One of those drafts is not stale: the "payment received" confirmation
+      // the screenshot path drafted in Approval mode (proposedState PAID). It
+      // answers the receipt, not the customer's question, so the customer
+      // typing "when will I hear back?" after the receipt produced a second
+      // draft that discarded it silently: Jo approved the visible answer, the
+      // customer stayed unpaid at PRICE_SENT and the open payment task pointed
+      // at a draft that no longer existed (audit, 5 Sep). Fold it into the new
+      // draft instead: PAID is carried forward and the identical confirmation
+      // is appended when the reply lacks the form link, the same helper the
+      // typed "I paid" route already uses. One draft, one approval, and the
+      // customer receives exactly the same words on it.
+      if (!customer.paid && outcome.newState !== 'PAID') {
+        const confirmation = await paymentReceivedBody(store, customer.lang);
+        const carried = pendingDrafts.find((pm) => isPaymentReceivedDraft(pm, [confirmation]));
+        if (carried) {
+          outcome.newState = 'PAID';
+          outcome.stateChanged = true;
+          outcome.replyText = withPaymentReceivedIfNoForm(outcome.replyText, confirmation);
+          await store.audit('system', 'payment_received_carried_forward', {
+            customerId: customer.id, from: carried.id,
+          }).catch(() => {});
         }
+      }
+      for (const pm of pendingDrafts) {
+        await store.setMessageStatus(pm.id, 'DISCARDED');
       }
     } catch { /* non-blocking: worst case a stale draft lingers, never a wrong send */ }
     // Defer the state/income change until the owner approves (stored on the message).
@@ -785,37 +931,48 @@ export async function decideAndAct(
  *  inbound message too, and reading those as supersession dropped the reply
  *  with nothing to replace it, so the question was never answered (audit,
  *  3 Sep). Only a text arms a timer, so only a newer timer supersedes. */
-async function supersededByNewerTimer(store: Store, customerId: string, selfJobId?: string): Promise<boolean> {
+async function supersededByNewerTimer(
+  store: Store, customerId: string, self?: { id?: string; runAt?: string; createdAt?: string | null },
+): Promise<boolean> {
   try {
     const jobs = await store.listJobsForCustomer(customerId, ['AUTO_REPLY']);
     // CLAIMED counts too (audit, 4 Sep). Two ticks can run at once — the Vercel
     // cron and the dashboard's own tick, or two warm instances — and each can
     // claim one of two timers armed a moment apart. Looking only for SCHEDULED
     // meant neither run saw the other, both called the model, and the customer
-    // got two replies to the same burst. `selfJobId` keeps a run from reading
+    // got two replies to the same burst. `self.id` keeps a run from reading
     // its own claimed row as a rival.
+    //
+    // STRICTLY newer, not merely "another" (audit3 core 32, 5 Sep). With two
+    // CLAIMED timers and no ordering, each run saw the other as its rival,
+    // both stood aside, both rows went CANCELLED, and the burst was never
+    // answered: no reply, no task, two audit lines nobody reads. Ordering by
+    // run_at (then created_at, then id as the last tie-break) means exactly
+    // one of the two survives. A rival with no run_at is treated as newer, the
+    // same as before.
+    //
+    // created_at sits between run_at and id (audit3 core 39, 5 Sep): ids are
+    // random UUIDs, so with equal run_at (two webhook invocations in the same
+    // second) the id alone picked a winner at random. The later-created timer
+    // is the one the later message armed, so it is the one that should answer.
+    // Both orderings still leave exactly one survivor.
+    const stamp = (s?: string | null) => (s ? new Date(s).getTime() : NaN);
+    const selfRunAt = stamp(self?.runAt);
+    const selfCreatedAt = stamp(self?.createdAt);
+    const isNewer = (j: JobRow) => {
+      if (Number.isNaN(selfRunAt) || !j.runAt) return true;
+      const t = stamp(j.runAt);
+      if (Number.isNaN(t) || t > selfRunAt) return true;
+      if (t < selfRunAt) return false;
+      const c = stamp(j.createdAt);
+      if (!Number.isNaN(c) && !Number.isNaN(selfCreatedAt) && c !== selfCreatedAt) return c > selfCreatedAt;
+      return !self?.id || j.id > self.id;
+    };
     return jobs.some((j) => (j.status === 'SCHEDULED' || j.status === 'CLAIMED')
-      && !!j.payload.debounce && j.id !== selfJobId);
+      && !!j.payload.debounce && j.id !== self?.id && isNewer(j));
   } catch {
     return false; // a store hiccup must not silence a reply that is ready
   }
-}
-
-/** A message that is purely an acknowledgement: "thanks", "ok", "yes all good",
- *  "perfect 👍", and the same in the languages Will speaks. Nothing in it asks
- *  for anything, so it never needs a person (Jo, 4 Sep). Deliberately short-only:
- *  the words are common, and inside a longer sentence they mean nothing. */
-export function isCourtesyLine(text: string | null | undefined): boolean {
-  const t = (text ?? '').trim();
-  if (!t) return true;
-  if (t.length > 60) return false;
-  if (t.includes('?') || t.includes('？')) return false;
-  const stripped = t.toLowerCase().replace(/[^\p{L}\p{N}\s]+/gu, ' ').replace(/\s+/g, ' ').trim();
-  if (!stripped) return true; // emoji only
-  const words = stripped.split(' ').filter(Boolean);
-  if (words.length > 8) return false;
-  const COURTESY = /^(?:yes|yeah|yep|ok|okay|okey|k|sure|all|good|great|perfect|lovely|nice|cool|thanks|thank|you|thankyou|cheers|much|appreciate|it|awesome|amazing|got|received|noted|understood|fine|no|worries|problem|super|danke|dir|vielen|dank|alles|klar|passt|perfekt|super|gracias|muchas|vale|genial|perfecto|todo|bien|merci|beaucoup|parfait|nickel|super|grazie|mille|perfetto|va|bene|tutto|ottimo|obrigad[oa]|muito|perfeito|tudo|bem|certo|ありがとう|ありがとうございます|了解|承知|わかりました|大丈夫|はい)$/u;
-  return words.every((w) => COURTESY.test(w));
 }
 
 /** The text a deferred reply answers: everything the customer wrote since we
@@ -846,7 +1003,8 @@ export async function armAutoReply(store: Store, customer: CustomerRow): Promise
   try { await store.cancelJobsFor(customer.id, ['AUTO_REPLY']); } catch { /* a stale timer is dropped at fire time anyway */ }
   const fresh = await store.getCustomerById(customer.id);
   const anchorAt = fresh?.lastCustomerMsgAt ? new Date(fresh.lastCustomerMsgAt).toISOString() : null;
-  const runAt = new Date(Date.now() + AUTOPILOT_REPLY_DELAY_SECONDS * 1000).toISOString();
+  // Each reply waits its own length; see autopilotReplyDelaySeconds.
+  const runAt = new Date(Date.now() + autopilotReplyDelaySeconds() * 1000).toISOString();
   await store.addJob({
     customerId: customer.id, kind: 'AUTO_REPLY', payload: { debounce: true, anchorAt }, runAt,
   });
@@ -869,7 +1027,7 @@ export async function runDeferredAutoReply(
   const store = getStore();
   const anchorAt = job.payload.anchorAt ?? null;
   if (customer.optedOut) return 'skipped';
-  if (await supersededByNewerTimer(store, customer.id, job.id)) {
+  if (await supersededByNewerTimer(store, customer.id, { id: job.id, runAt: job.runAt, createdAt: job.createdAt })) {
     await store.audit('assistant', 'auto_reply_superseded', { customerId: customer.id, anchorAt });
     return 'superseded';
   }
@@ -881,17 +1039,50 @@ export async function runDeferredAutoReply(
   // not the customer's question: "here you go, just paid, and how long until
   // the money lands?" plus a screenshot used to end with only "Payment
   // received", the question dropped silently with no task (audit, 4 Sep).
-  const SYSTEM_LINES = [...Object.values(PAYMENT_RECEIVED_MSG), ...Object.values(FORM_RECEIVED_MSG)]
-    .map((t) => t.slice(0, 40).toLowerCase());
-  const isSystemLine = (body: string) => SYSTEM_LINES.some((p) => body.slice(0, 40).toLowerCase() === p);
+  //
+  // Recognised by how it was SENT, not by its words (audit3 core 52, 5 Sep).
+  // The text match compared the row against the code constants, but what
+  // actually goes out is the Library row for the customer's language, so the
+  // moment Jo reworded one variant that language's confirmation stopped
+  // matching, counted as a real reply, and "sent the form, also when will I
+  // get the money?" was answered with the acknowledgement alone. Every
+  // deterministic send now carries `meta.waTemplate` (the Library-keyed
+  // sends) or `meta.system` (the two free-text ones), so any language and any
+  // wording is seen for what it is. The text match stays only for rows
+  // written before this deploy, widened to the ABN and holding lines. A human
+  // send is always a real answer, whatever meta it carries.
+  const SYSTEM_LINES = [
+    ...Object.values(PAYMENT_RECEIVED_MSG), ...Object.values(FORM_RECEIVED_MSG),
+    ...Object.values(REQUEST_ABN_MSG), ...Object.values(HANDOFF_HOLDING_MSG),
+  ].map((t) => t.slice(0, 40).toLowerCase());
+  const isSystemLine = (m: MessageRow) => m.author !== 'HUMAN'
+    && (!!m.meta?.waTemplate || m.meta?.system === true
+      || SYSTEM_LINES.some((p) => (m.body ?? '').slice(0, 40).toLowerCase() === p));
   const answered = msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT'
-    && new Date(m.createdAt).getTime() >= since && !isSystemLine(m.body ?? ''));
+    && new Date(m.createdAt).getTime() >= since && !isSystemLine(m));
   if (answered) {
     await store.audit('assistant', 'auto_reply_already_answered', { customerId: customer.id, anchorAt });
     return 'answered';
   }
   const text = burstText(msgs);
   if (!text.trim()) return 'skipped';
+  // A screenshot payment confirms instantly and this timer still fires two
+  // minutes later on the same burst. burstText falls back to the photo's own
+  // caption when nothing followed it, so a burst that is nothing but the
+  // payment report ("paid!", the receipt's caption) reached decideAndAct and
+  // spent a model call answering a question nobody asked, landing a second,
+  // redundant bubble right under the confirmation. Only a pure report is
+  // skipped here: a "?" anywhere in the burst still falls through to the
+  // model as before (audit3 core 57, 5 Sep).
+  const PAYMENT_RECEIVED_PREFIXES = Object.values(PAYMENT_RECEIVED_MSG).map((t) => t.slice(0, 40).toLowerCase());
+  const paymentConfirmationSent = msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT'
+    && m.author !== 'HUMAN' && new Date(m.createdAt).getTime() >= since
+    && (m.meta?.waTemplate?.name?.startsWith('payment_received')
+      || PAYMENT_RECEIVED_PREFIXES.some((p) => (m.body ?? '').slice(0, 40).toLowerCase() === p)));
+  if (paymentConfirmationSent && !/[?？]/.test(text) && claimsPayment(text, { hasAttachment: true })) {
+    await store.audit('assistant', 'auto_reply_already_answered', { customerId: customer.id, anchorAt, reason: 'payment_report_only' });
+    return 'answered';
+  }
   // The owner's absolute rule, re-checked on the WHOLE burst: no answer to
   // "am I talking to a bot?" may exist, not even as a draft. At ingest it is
   // checked per message; here it is checked on everything the customer wrote
@@ -901,13 +1092,14 @@ export async function runDeferredAutoReply(
     await raiseOrUpdateTask(store, customer, {
       reason: 'Customer asked whether they are talking to a bot, needs a human reply',
       severity: 'REVIEW', newContext: text.slice(0, 200), suggestedReply: null,
+      forceNullSuggestedReply: true,
     });
     await store.audit('policy_guard', 'identity_question_handoff', { customerId: customer.id, from: 'burst' });
     return 'decided';
   }
   const mode = resolveAiMode(await store.getSetting('ai_mode'));
   const killSwitch = (await store.getSetting('kill_switch')) === true;
-  const { outcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: mode === 'FULL_AUTO', anchorAt, jobId: job.id });
+  const { outcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: mode === 'FULL_AUTO', anchorAt, jobId: job.id, jobRunAt: job.runAt, jobCreatedAt: job.createdAt });
   // The stage may have just moved (a price sent, a payment confirmed and the
   // form requested), and the follow-up cadence belongs to the NEW stage: a
   // customer who was just asked for the form needs the form reminders, not
@@ -1022,12 +1214,44 @@ export async function handleInboundNote(
   // one small task with a count, and a short acknowledgement so they are not
   // left on read while the owner works through the pile.
   if (meta?.media && isAfterPayment(customer.state)) {
+    const ack = await suggestReply('', customer, 'documents_after_payment');
     await raiseOrUpdateTask(store, customer, {
       reason: documentDropReason(1), severity: 'REVIEW', newContext: body,
       fold: (existing) => foldDocumentDrop(existing, body),
       reasonFor: (context) => documentDropReason(documentDropCount(context)),
-      suggestedReply: await suggestReply('', customer, 'documents_after_payment'),
+      suggestedReply: ack,
     });
+    // ── AND ACTUALLY SAY IT (Hannah, +44 7944 741456, 4 Sep) ────────────────
+    //
+    // The acknowledgement was written, attached to the task, and then waited
+    // for Jo to click it. So a customer who did exactly what we asked — sent
+    // their documents — sat on read until somebody was at the CRM, which on
+    // that night meant overnight. There is nothing in this line to get wrong:
+    // no amount, no tax, no promise, no next step of theirs. On Autopilot it
+    // goes on its own; the task still opens, because the files themselves do
+    // need collecting.
+    //
+    // ONCE PER DROP, not once per file: fifty invoices are one arrival. A
+    // timestamp in settings is enough — no column, and it survives a restart.
+    if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy && ack) {
+      try {
+        const killSwitch = (await store.getSetting('kill_switch')) === true;
+        const autopilot = !requiresApproval(await store.getSetting('ai_mode'));
+        const key = `doc_ack_at:${customer.id}`;
+        const last = Number((await store.getSetting(key)) ?? 0);
+        const fresh = Date.now() - last > 2 * 60 * 60 * 1000;
+        if (!killSwitch && autopilot && fresh) {
+          // Written BEFORE the send, so two files arriving at once cannot both
+          // pass the check and acknowledge twice.
+          await store.setSetting(key, Date.now());
+          // `system`: this answers the files, not a question sent with them;
+          // the deferred reply must not read it as "already answered"
+          // (audit3 core 52, 5 Sep).
+          await deliverOut(customer, ack, 'AI', { system: true });
+          await store.audit('system', 'documents_acknowledged', { customerId: customer.id });
+        }
+      } catch { /* the task is already open; the courtesy line is a bonus */ }
+    }
     const paidFresh = await store.getCustomerByWaId(waId);
     return paidFresh ?? customer;
   }
@@ -1179,6 +1403,22 @@ export function paymentClaimForcesPaid(opts: {
     && claimsPayment(opts.text);
 }
 
+/** The form link every "payment received" confirmation carries. */
+const TAX_FORM_URL_RE = /workingholidaytax\.com\.au\/tax-form/i;
+
+/** When the Paid move is forced onto a reply the model wrote itself, that reply
+ *  must carry the form link, because Paid cascades to Form Pending and the form
+ *  reminders start. If the link is missing, the customer's own approved
+ *  payment received body (the one the screenshot route sends) is appended after
+ *  the model's words; if it is already there, the reply is returned untouched
+ *  (audit, 5 Sep). Pure so it can be pinned in a test. */
+export function withPaymentReceivedIfNoForm(replyText: string | undefined, confirmation: string): string {
+  const reply = (replyText ?? '').trim();
+  if (TAX_FORM_URL_RE.test(reply)) return replyText ?? '';
+  if (!reply) return confirmation;
+  return `${reply}\n\n${confirmation}`;
+}
+
 /** Owner's rule: we trust the customer — but only once the attachment is
  *  actually confirmed to show a payment. A photo or document sent while a
  *  price is outstanding is looked at by Claude's vision (assessPaymentProofImage)
@@ -1213,7 +1453,7 @@ export function handlePaymentProofMedia(
 /** The "payment received" confirmation for THIS customer: their language's
  *  Library row first, then the English row, then the code copy. Was hardcoded
  *  English and ignored the Library entirely (audit, 4 Sep). */
-async function paymentReceivedBody(store: Store, lang?: string | null): Promise<string> {
+export async function paymentReceivedBody(store: Store, lang?: string | null): Promise<string> {
   const key = paymentReceivedTemplateKey(lang);
   try {
     const templates = await store.listTemplates();
@@ -1435,7 +1675,18 @@ async function handlePaymentProofMediaInner(
     await store.audit('system', 'payment_received_not_sent', { customerId: customer.id, reason: killSwitch ? 'kill_switch' : customer.aiPaused ? 'ai_paused' : 'legacy' });
     return (await store.getCustomerByWaId(waId)) ?? customer;
   }
-  const out = await deliverOut(customer, confirmation, 'AI');
+  // The rejected-send task is deliverOut's, in these words (audit, 5 Sep: it
+  // was added a second time below, so Jo had two cards for one silence).
+  // `system`: the confirmation answers the payment, not a question sent with
+  // the screenshot; without the flag the deferred reply read a reworded
+  // Library variant as a real answer and dropped the question (audit3 core
+  // 52, 5 Sep).
+  const out = await deliverOut(customer, confirmation, 'AI', { system: true }, undefined, {
+    onFailure: {
+      reason: (e) => `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${e ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
+      severity: 'URGENT', context: body,
+    },
+  });
   if (!out.ok) {
     await store.audit('channel', 'payment_received_send_failed', {
       customerId: customer.id, error: out.error ?? 'unknown error',
@@ -1453,14 +1704,24 @@ async function handlePaymentProofMediaInner(
   // it again was the task he did not want. Only a payment taken on trust, with
   // something the picture could not show, gets the heads-up, and the heads-up
   // says what that something was.
-  if (!out.ok) {
-    await store.addTask({
-      customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-      reason: `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
-      severity: 'URGENT',
-      context: body,
-      suggestedReply: confirmation,
-    });
+  // A throttled or transient rejection (429/5xx) is not a person's job to
+  // retype: deliverOut raises no task for it (channel.ts) on the assumption
+  // that "the caller reschedules" — which nothing here ever did (audit3 core
+  // 55, 5 Sep). The confirmation sat FAILED with no retry and no card at all,
+  // which is worse than the double-card bug this file already fixed. It is
+  // resent the same way the text-autopilot path resents a throttled reply:
+  // parked as QUEUED again and picked up by the existing AUTO_REPLY{messageId}
+  // job the scheduler already knows how to run (scheduler.ts). That attempt
+  // raises its own task if it fails again, so nothing is silently dropped.
+  if (!out.ok && out.retryable && out.messageId) {
+    await store.setMessageStatus(out.messageId, 'QUEUED', { restamp: true }).catch(() => { /* the resend job re-checks status anyway */ });
+    await store.addJob({
+      customerId: customer.id, kind: 'AUTO_REPLY', payload: { messageId: out.messageId },
+      runAt: new Date(Date.now() + autopilotReplyDelaySeconds() * 1000).toISOString(),
+    }).catch(() => { /* the FAILED message is still visible in the thread as a backstop */ });
+    await store.audit('assistant', 'payment_received_send_rearmed', { customerId: customer.id }).catch(() => {});
+  } else if (!out.ok) {
+    // Already on the board: deliverOut raised it with the wording above.
   } else if (!verification.verified) {
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,

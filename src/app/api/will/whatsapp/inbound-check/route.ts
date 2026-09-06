@@ -99,6 +99,17 @@ export async function GET(req: Request) {
     nextSteps.push('Lower WILL_MIN_MESSAGE_TS, or unset it entirely.');
   }
 
+  // Everything below is read from will_audit. If the log itself is not being
+  // written, "no inbound webhook recorded" would send Jo off to re-check Meta
+  // when the webhook is fine and the log is what is broken (audit, 5 Sep).
+  const auditLog = typeof store.checkAuditLog === 'function'
+    ? await store.checkAuditLog().catch((e: Error) => ({ ok: false as const, error: e.message }))
+    : { ok: true as const };
+  if (!auditLog.ok) {
+    findings.push(`The decision log is not being written (${auditLog.error}). Every line below that reads "nothing recorded" is about the log, not about Meta: the webhook may be working perfectly.`);
+    nextSteps.push('Fix will_audit first (open the table in Supabase and read the error above), then reload this page before touching the Meta webhook configuration.');
+  }
+
   if (!lastReceived) {
     findings.push('No inbound webhook has been recorded at all. Either nothing has arrived since this diagnostic was deployed, or Meta is not delivering to this URL.');
     nextSteps.push('Send yourself a WhatsApp message and reload this page. If still nothing, re-check the Webhooks configuration on the Meta app — the callback URL must be https://workingholidaytax.com.au/api/will/webhook and the "messages" field must be subscribed.');
@@ -142,6 +153,7 @@ export async function GET(req: Request) {
     ok: true,
     config,
     blockTable,
+    auditLog,
     askedAbout: askedAbout || null,
     askedBlocked,
     counts: {

@@ -95,12 +95,28 @@ Once paid, send us a screenshot and we'll get started.`,
   },
 
   followups_pre_payment: {
-    h24: `Hi {{1}}, still want us to take a look at your tax situation? If anything about how the review works is unclear, just ask and I'll happily explain.`,
-    // 4 Sep: this used to end with "if you get a refund and it's less than the
-    // fee, we top up the difference" — half the guarantee, without the owing
-    // half, in a message that is not the price message. The guarantee is stated
-    // once, in full, where the customer is about to pay, and nowhere else.
-    d3: `Hi {{1}}, the part most people miss on their own is what they're actually entitled to claim. That's exactly what our team goes through with you.`,
+    // Jo, 4 Sep. The old line was "still want us to take a look at your tax
+    // situation? If anything about how the review works is unclear, just ask and
+    // I'll happily explain." Two problems: "still" plants the doubt and invites
+    // "actually, no", and the second half is the polite scaffolding the playbook
+    // bans, which invites another round of questions instead of a decision.
+    h24: `Hi {{1}}, just checking in about your tax return. Any questions? Otherwise, just say the word and we'll get started.`,
+    // Jo, 4 Sep, his wording, after working through it line by line.
+    //
+    // WHO THIS IS FOR. Whoever is still here on day three is almost always the
+    // customer who came NOT intending to pay and is weighing up doing it alone;
+    // the one who came to pay has already paid. So it uses the single lever
+    // that moves that person: not comfort, not thoroughness, but what they
+    // stand to lose by doing it themselves, said without blaming them for
+    // considering it ("most people", not "you").
+    //
+    // The guarantee is deliberately NOT here. It is said in full, both halves,
+    // in the price message, at the moment they are about to pay. Half of it in
+    // a nudge is the thing that went wrong before.
+    //
+    // Three nudges, three angles, no overlap: 24h is availability, this is
+    // value, 7d is the door left open.
+    d3: `Hi {{1}}, most people doing it alone miss things they could have claimed. That's exactly what our team helps you with.\n\nWant me to get you started?`,
     d7: `Hi {{1}}, last message from me 😊 If you want your tax looked at later, just text me any time.`,
   },
 
@@ -113,9 +129,29 @@ https://workingholidaytax.com.au/tax-form
 Once you've submitted it, we'll go through everything and get back to you within 24 hours.`,
 
   followups_form: {
-    h6: `Hi {{1}}, we haven't got your form yet 😊 It only takes about 5 minutes and we can start as soon as it's in.`,
-    d3: `Hi {{1}}, your review is waiting on your form. If any question in it is confusing, tell me which one and I'll walk you through it 😊`,
-    d7: `Hi {{1}}, still waiting on your form to get started. Send it through whenever you can 😊`,
+    // Jo, 4 Sep: no number. The form is two steps, ten or so fields, a residency
+    // declaration and two document uploads; anyone who has to find their TFN or
+    // photograph a passport is well past five minutes, let alone two. Promising
+    // a number we break at minute four, at exactly the point people abandon a
+    // form, costs more than the friction it saves. "Quick to fill in" carries
+    // the same message and cannot be held against us.
+    h6: `Hi {{1}}, we haven't got your form yet. It's quick to fill in and we can start as soon as it's in.`,
+    // Jo, 4 Sep: "if any question is confusing" opened the door to only ONE of
+    // the three reasons a paid customer has not filled the form in. The others
+    // are not having a document to hand and simply not getting to it, and
+    // "anything is holding you up" catches all three in fewer words.
+    d3: `Hi {{1}}, your review is waiting on your form. If anything in it is holding you up, tell me what and I'll sort it 😊`,
+    // Jo, 4 Sep: the last one CLOSES the conversation rather than asking a third
+    // time. Three variations of "we still need your form" is not a cadence, it
+    // is nagging, and after this nothing else is scheduled.
+    //
+    // NOTHING MOVES IN THE PIPELINE. This customer has PAID, and Jo closes the
+    // card himself when he decides to; the message says we have stopped chasing,
+    // the stage says what is actually true. And because they paid, the door is
+    // left genuinely open: a customer who sends the form in three weeks is
+    // picked up where they left off, which is both the right service and the
+    // right answer if they ever say they paid and got nothing.
+    d7: `Hi {{1}}, I haven't heard back, so I'll leave it here for now. Whenever you send your form, just text me and we'll pick it straight back up.`,
   },
 
   // Sent automatically to a TFN + ABN customer right after their form comes in
@@ -132,11 +168,23 @@ Once you've submitted it, we'll go through everything and get back to you within
 
   request_missing_doc: `Hey! I've gone through everything and we're just missing your {{DOCUMENT}}. Could you please send it here on WhatsApp? Once we have it, we can continue with your tax return.`,
 
-  medicare_exemption: `Hey! Since you weren't covered by Medicare, you can apply for a Medicare Levy Exemption. It only takes a few minutes. Here's a quick guide:
+  // Jo, 4 Sep. Three paragraphs, word for word the Meta template `medicare`,
+  // so what the customer receives and what the chat shows are the same text.
+  //
+  // WHAT CHANGED AND WHY. "you can apply" became "you may be eligible to apply":
+  // the exemption is not everyone's, and the playbook already forbids pushing it
+  // at somebody who probably is not entitled. The guide link moved out of the
+  // body and onto a "Watch the guide" button on the template. And the last line,
+  // which is the one that protects us, now names WHO decides and what it costs
+  // THEM: "If Services Australia doesn't approve it, the levy still applies and
+  // you'll need to pay it." The old "the Medicare Levy will still apply" was
+  // passive and easy to skim, and this is the sentence a customer quotes back
+  // when the ATO charges them the levy after we lodged with the exemption.
+  medicare_exemption: `Since you weren't covered by Medicare, you may be eligible to apply for a Medicare Levy Exemption.
 
-https://youtu.be/oj7ZSOHAxJk?si=KDMFlLoR0jYdpulB
+Once you've submitted your application, send me a screenshot and we'll include the exemption in your tax return.
 
-Once you've applied, send me a screenshot of the application and we'll include the exemption in your tax return. If the application isn't approved, the Medicare Levy will still apply.`,
+If Services Australia doesn't approve it, the levy still applies and you'll need to pay it.`,
 
   estimate_ready: `Hey! We've now gone through all your details and completed the review of your tax situation. Based on everything we've checked, your estimated tax refund is {{AMOUNT}}.
 
@@ -148,9 +196,25 @@ We'll now send everything for final review. Once approved, I'll send it to you f
 I've emailed it to you for review and signature.`,
 
   followups_signature: {
-    h24: `Hi {{1}}, your tax return is ready and just needs your signature before we can lodge it. Let me know if it didn't reach you 😊`,
-    d3: `Hi {{1}}, once you sign, we lodge it with the ATO. If anything in it looks off, tell me and I'll check it 😊`,
-    d7: `Hi {{1}}, your return is still waiting on your signature. Send it through when you can and we'll lodge it 😊`,
+    // Jo, 4 Sep. The old line repeated the signature notice he had had a day
+    // earlier almost word for word; he already knows it is ready. What he needs
+    // is how close he is ("we're good to lodge") and the way out of the single
+    // most common reason nobody signs: the email went to spam or to the wrong
+    // address, which is why it names the EMAIL rather than a vague "it".
+    h24: `Hi {{1}}, we just need your signature and we're good to lodge. Let me know if the email didn't reach you`,
+    // Jo, 4 Sep. The angle moves with the likely reason: at 24h the guess is the
+    // email never arrived, by day three he has seen it and something in it is
+    // holding him back. Naming that, and offering to look, is what unblocks
+    // somebody who is unsure rather than uninterested, and it says that signing
+    // is not a point of no return.
+    d3: `Hi {{1}}, once you sign, we lodge it with the ATO. If anything in it looks off, tell me and I'll check it.`,
+    // Jo, 4 Sep. This is the most valuable stuck customer in the system: they
+    // have paid, the return is finished and sitting there, and one signature is
+    // all that stands between them and their money. "Still waiting on your
+    // signature. Send it through when you can" was a third variation of the same
+    // request with nothing new in it, and it gave away that fact. This says the
+    // work is DONE and names the consequence plainly, without pressure.
+    d7: `Hi {{1}}, your return is finished and ready to go, it just needs your signature.\n\nNothing gets lodged until it's signed, so send it through whenever you're ready.`,
   },
 
   lodged: `Your tax return has been lodged successfully! 🎉 Your refund should arrive in your bank account within 14 business days.`,

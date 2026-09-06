@@ -56,7 +56,26 @@ jest.mock('@/lib/will/store', () => ({
   }),
 }));
 jest.mock('@/lib/will/channel', () => ({
-  deliverOut: (...a: unknown[]) => deliverOut(...a),
+  // Mirrors the real deliverOut's contract (audit, 5 Sep): a non-retryable
+  // rejection is deliverOut's ONE task, written with the caller's onFailure
+  // wording. The caller raises nothing of its own any more.
+  deliverOut: async (...a: unknown[]) => {
+    const res = await deliverOut(...a) as { ok: boolean; error?: string; retryable?: boolean };
+    const [c, body, , , , opts] = a as [
+      { id: string; name?: string; waId: string }, string, unknown, unknown, unknown,
+      { onFailure?: { reason: string | ((e: string | undefined) => string); severity?: string; context?: string } } | undefined,
+    ];
+    if (!res.ok && !res.retryable) {
+      const r = opts?.onFailure?.reason;
+      await addTask({
+        customerId: c.id, customerName: c.name ?? c.waId,
+        reason: typeof r === 'function' ? r(res.error) : r ?? `WhatsApp send failed: ${res.error ?? 'unknown error'}`,
+        severity: opts?.onFailure?.severity ?? 'REVIEW',
+        context: opts?.onFailure?.context ?? body.slice(0, 200), suggestedReply: body,
+      });
+    }
+    return res;
+  },
   fetchWaMedia: jest.fn().mockResolvedValue({ ok: false, error: 'not needed' }),
 }));
 

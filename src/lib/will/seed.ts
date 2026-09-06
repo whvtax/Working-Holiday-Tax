@@ -13,7 +13,8 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, PAYMENT_RECEIVED_MSG } from './i18n';
+import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey } from './i18n';
+import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -102,6 +103,11 @@ export function seedTemplates(): TemplateRow[] {
     t('req_expenses', 'Post-payment & Service', 'Request expense receipts', APPROVED.request_expenses),
     t('req_doc', 'Post-payment & Service', 'Request missing document', APPROVED.request_missing_doc),
     t('medicare', 'Post-payment & Service', 'Medicare exemption guide', APPROVED.medicare_exemption),
+    // The same message in the other six languages, so the automatic Medicare
+    // line (15 minutes after the questionnaire) does not arrive in English
+    // right after a confirmation in the customer's own language (audit, 5 Sep).
+    ...(Object.keys(MEDICARE_MSG) as Lang[]).filter((l) => l !== 'en').map((lang) =>
+      t(medicareTemplateKey(lang), 'Post-payment & Service', `Medicare exemption guide · ${LANG_LABELS[lang]}`, MEDICARE_MSG[lang])),
     t('estimate', 'Post-payment & Service', 'Estimate ready', APPROVED.estimate_ready),
     t('signature', 'Post-payment & Service', 'Ready for signature', APPROVED.signature_ready),
     t('lodged', 'Post-payment & Service', 'Lodged confirmation (older wording)', APPROVED.lodged),
@@ -137,6 +143,10 @@ export function seedTemplates(): TemplateRow[] {
     t('handoff_returning_customer', 'Handoff suggestions', 'Handoff · a previous customer wrote in again', APPROVED.handoff.returning_customer),
     t('handoff_many_questions', 'Handoff suggestions', 'Handoff · more than 3 messages before paying', APPROVED.handoff.many_questions),
     t('handoff_documents_after_payment', 'Handoff suggestions', 'Handoff · paid customer sent their documents', APPROVED.handoff.documents_after_payment),
+    // The same acknowledgement per language (audit, 5 Sep): it goes out on its
+    // own on Autopilot, and a German or Japanese customer got the English one.
+    ...(Object.keys(DOCUMENTS_RECEIVED_MSG).filter((l) => l !== 'en') as Lang[]).map((l) =>
+      t(documentsReceivedTemplateKey(l), 'Handoff suggestions', `Handoff · paid customer sent their documents (${l})`, DOCUMENTS_RECEIVED_MSG[l])),
   ];
 }
 
@@ -150,7 +160,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-09-04-abn-and-holding-languages';
+export const TEMPLATE_BACKFILL_VERSION = '2026-09-05-medicare-languages';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

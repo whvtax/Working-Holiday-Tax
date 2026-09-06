@@ -7,9 +7,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
+import { LANGS } from '@/lib/will/i18n';
 import { explainHandoffReason, summariseArrivals } from '@/lib/will/handoff-reasons';
+import { describeViolations } from '@/lib/will/send-errors';
 import type { MonthConversion } from '@/lib/will/monthly-conversion';
 import type { AiUsage, SystemFault } from '@/lib/will/system-report';
+import LinkFormTask from './LinkFormTask';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/min'  // /min: the full metadata set is ~29KB gz of country data for formatting AU and EU numbers;
 
 // The Simulator was removed on Jo's instruction, 25 Aug: with real WhatsApp
@@ -276,9 +279,46 @@ const phoneOf = (waId: string) => {
   return raw;
 };
 
-async function act(body: Record<string, unknown>) {
-  const res = await fetch('/api/will/actions', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
-  return res.json().catch(() => ({}));
+/** Every button's `r?.error` toast path relies on this resolving, never
+ *  rejecting. A dropped connection used to reject the promise, so `.then`
+ *  never ran, no toast showed and the operator could not tell whether the
+ *  message went (audit, 5 Sep). Exported for the test only. */
+export async function act(body: Record<string, unknown>) {
+  try {
+    const res = await fetch('/api/will/actions', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+    // An expired session (same 8h CRM session as refresh()/loadChat() above)
+    // makes this route answer {ok:false,error:'unauthorized'} too; without this
+    // check every button's toast read that literally as "Not sent: unauthorized"
+    // instead of sending the operator back to log in (audit, 5 Sep).
+    if (res.status === 401) { window.location.href = '/crm'; return { ok: false, error: 'Session expired.' }; }
+    return await res.json().catch(() => ({}));
+  } catch {
+    return { ok: false, error: 'Could not reach the server. Nothing was sent.' };
+  }
+}
+
+/** Double-fire guard for the Approve / Discard / Send Reply / follow-up buttons.
+ *  The key is added to `acted` before the action runs so a second click is a
+ *  no-op. When the action succeeds the key STAYS until the row disappears on
+ *  refresh, so nothing can double-send. When it does not succeed (`fn` returns
+ *  false, or throws) the key is released again (audit, 5 Sep): before, a refusal
+ *  such as "outside the 24h window", an unfilled placeholder or a WhatsApp 502
+ *  showed a red toast and then left every button on the card disabled until a
+ *  full page reload, so the operator could not fix the text and try again. */
+export async function runOnce(
+  acted: Set<string>,
+  setActed: (upd: (s: Set<string>) => Set<string>) => void,
+  key: string,
+  fn: () => Promise<boolean | void>,
+): Promise<void> {
+  if (acted.has(key)) return;
+  setActed((s) => new Set(s).add(key));
+  let ok = false;
+  try {
+    ok = (await fn()) !== false;
+  } finally {
+    if (!ok) setActed((s) => { const n = new Set(s); n.delete(key); return n; });
+  }
 }
 
 // "Quick fill" #5 used to be payment_received — redundant now that payment
@@ -287,6 +327,178 @@ async function act(body: Record<string, unknown>) {
 // confirmation for their stage), so it was removed rather than left as a
 // second, manual way to do the same thing.
 const QUICK_TEMPLATES = ['req_abn', 'req_expenses', 'req_doc', 'medicare'];
+
+/** The Quick-fill key whose Library body the compose box still holds, word for
+ *  word, or null once Jo has edited it away (audit, 5 Sep). A Quick-fill chip
+ *  loads its text into the box so it can be read and edited, but until now the
+ *  text always left as free text, which Meta refuses once the customer has been
+ *  quiet for a day. Medicare in particular is sent days after the questionnaire,
+ *  so the most common day-3 manual send failed with a red toast while the 24h
+ *  banner pointed at the very buttons that failed. Matching on the body rather
+ *  than remembering which chip was clicked means a hand-typed copy behaves the
+ *  same and an edited one honestly falls back to free text. */
+export function quickTemplateKeyFor(text: string, templates: ReadonlyArray<{ key: string; body: string }>): string | null {
+  const t = text.trim();
+  if (!t) return null;
+  // The English row or any seeded language variant (req_abn_de and so on), so
+  // a chip loaded in the customer's language still leaves as that template
+  // outside the 24h window rather than as free text (audit, 5 Sep).
+  for (const key of QUICK_TEMPLATES) {
+    const tpl = templates.find((x) => (x.key === key || isLangVariantOf(x.key, key)) && x.body.trim() === t);
+    if (tpl) return tpl.key;
+  }
+  return null;
+}
+
+function isLangVariantOf(key: string, base: string): boolean {
+  return key.startsWith(base + '_') && /^[a-z]{2}$/.test(key.slice(base.length + 1));
+}
+
+/** Owner-facing names for the language codes in the chat header. */
+const LANG_LABELS: Record<string, string> = {
+  en: 'English', de: 'German', ja: 'Japanese', es: 'Spanish', fr: 'French', it: 'Italian', pt: 'Portuguese',
+};
+
+/** The Library row a Quick-fill chip loads for this customer: `<base>_<lang>`
+ *  when the customer's language is not English AND that row is seeded, else
+ *  the English base row. Same choice the scheduler makes for the automatic
+ *  send (requestAbnTemplateKey and friends), so pressing "1" in a German chat
+ *  no longer drops the English ABN questions into the box while req_abn_de sits
+ *  unused in the Library (audit, 5 Sep). Null when even the base row is missing. */
+export function quickTemplateFor<T extends { key: string }>(base: string, lang: string | null | undefined, templates: ReadonlyArray<T>): T | null {
+  if (lang && lang !== 'en') {
+    const variant = templates.find((x) => x.key === `${base}_${lang}`);
+    if (variant) return variant;
+  }
+  return templates.find((x) => x.key === base) ?? null;
+}
+
+/** Meta's free-text window: 24 hours since the customer last wrote. Same rule
+ *  as the banner above the composer, so the two never disagree. */
+export function outside24hWindow(lastCustomerMsgAt: string | null | undefined, now = Date.now()): boolean {
+  const last = lastCustomerMsgAt ? new Date(lastCustomerMsgAt).getTime() : 0;
+  return now - last > 24 * 60 * 60 * 1000;
+}
+
+/** Which stage-action button the chat shows, keyed on the PIPELINE GROUP the
+ *  badge shows rather than on individual sub-states (audit, 5 Sep).
+ *
+ *  "Send for Signature" used to appear only at ESTIMATE_READY / FINAL_REVIEW
+ *  and "Mark Lodged" only at SIGNATURE_PENDING. Nothing moves a customer to
+ *  those first two states any more (the questionnaire lands them at
+ *  FORM_COMPLETE, send_estimate jumps straight to Signature), and the badge
+ *  menu's "Completed" lands on SIGNED, so the badge said Review / Completed and
+ *  the matching button was missing. The server has accepted send_signature from
+ *  any stage and send_lodged from SIGNED since 4 Sep; the buttons now follow
+ *  STAGE_GROUPS so they and the badge can never disagree again. Same two
+ *  actions, same wording, same transitions. */
+const statesOfGroup = (id: string): readonly CustomerState[] =>
+  (STAGE_GROUPS.find((sg) => sg.id === id)?.states ?? []) as readonly CustomerState[];
+export function showSendForSignature(state: CustomerState): boolean {
+  return statesOfGroup('rev').includes(state);
+}
+export function showMarkLodged(state: CustomerState): boolean {
+  // The Signature group, plus SIGNED (already marked signed some other way,
+  // e.g. the badge menu's "Completed"): the server explicitly accepts both.
+  return statesOfGroup('sig').includes(state) || state === 'SIGNED';
+}
+
+/** What the Library save toast should say, and whether the modal may close
+ *  (audit, 5 Sep). Both save handlers used to check only `blocked` and then
+ *  said "Saved, live" for every other outcome: a 400 (text over 5000 chars),
+ *  an expired session, a 500, a dropped connection, or an update_template on
+ *  a row another tab or Sync had already removed (the server answers ok with
+ *  `version: null` in that case, because it found nothing to bump). Jo
+ *  closed the modal believing the wording was live while Will kept sending
+ *  the old text. Now anything that is not a confirmed save keeps the modal
+ *  open with the text intact and says so. Guard blocks read exactly as before. */
+export function templateSaveOutcome(
+  r: { ok?: boolean; blocked?: string[]; error?: string; version?: number | null } | null | undefined,
+  kind: 'update' | 'add',
+  // Meta template key, when this row is `requiresMeta` (audit3 sched, 5 Sep):
+  // saving here only ever changes the CRM's own copy (transcript log and
+  // Follow-ups preview) — the customer keeps receiving whatever body is
+  // still approved in WhatsApp Manager under that name. The plain "Saved,
+  // live" line said otherwise, so the two copies could drift silently.
+  // Optional and defaulted so every other caller is unchanged.
+  metaKey?: string | null,
+): { saved: boolean; message: string } {
+  // Guard codes read as what to change, not as identifiers (audit, 5 Sep):
+  // "Blocked: EM_DASH_FORBIDDEN, NON_DOLLAR_CURRENCY" gave Jo no hint which
+  // sentence to fix. describeViolations is the same owner-facing map the
+  // Approve and follow-up toasts already get from the server (`blockedText`);
+  // the codes stay in the toast so the wording still matches the audit rows.
+  // Guard rules and outcomes are untouched: only the sentence changes.
+  if (r?.blocked?.length) return { saved: false, message: 'Blocked: ' + describeViolations(r.blocked) };
+  if (!r?.ok) return { saved: false, message: `❌ Not saved: ${r?.error ?? 'connection problem, try again'}` };
+  if (kind === 'update' && r.version === null) {
+    return { saved: false, message: '❌ Not saved: this message is no longer in the Library. Reload the page and try again.' };
+  }
+  if (kind === 'update' && metaKey) {
+    return { saved: true, message: `Saved. Remember to update template ${metaKey} in WhatsApp Manager, or customers will keep getting the old wording.` };
+  }
+  return { saved: true, message: kind === 'update' ? 'Saved, live for all new conversations ✓' : 'New message added ✓' };
+}
+
+/** Toast line for the one-click actions that used to ignore the server's
+ *  answer: Dismiss / Resolved, Discard, Take Over, Delete message and the
+ *  kill switch (audit, 5 Sep). Each said its success line whatever came back,
+ *  so an expired session, a 500 or a dropped connection read as "Dismissed",
+ *  "Draft discarded" or "Will fully stopped" while nothing had changed. The
+ *  success wording is exactly what each button said before; only a failed
+ *  call now says so. Every action route answers `{ ok: true }` on success, so
+ *  a missing `ok` is a failure (the `act` fallback and an HTML error page).
+ *  The Learning tab's knowledge base modal called fetch() directly and never
+ *  even parsed the response, so it had the identical bug for Save & Go Live,
+ *  Approve & Go Live and Delete; it now parses the JSON and runs it through
+ *  this same helper (audit, 5 Sep). */
+export function actionToast(r: { ok?: boolean; error?: string } | null | undefined, successLine: string): { ok: boolean; message: string } {
+  if (r?.ok) return { ok: true, message: successLine };
+  return { ok: false, message: `❌ ${r?.error ?? 'connection problem, try again'}` };
+}
+
+/** Library rows flagged `requiresMeta` leave as a WhatsApp Manager template
+ *  whose name is the row's `key` (scheduler / send_template). That key was
+ *  never shown anywhere in the CRM, and the "META ✓" chip is a seed flag, not
+ *  a probe, so when the template was missing or renamed at Meta every failed
+ *  send became a task with nothing on screen saying which name to create.
+ *  Now the card and the modal print the exact name with a copy button, and
+ *  the chip says what the flag really means (audit, 5 Sep). */
+export const META_TEMPLATE_CHIP_TIP = 'Sent through a WhatsApp Manager template of this exact name; it must exist and be approved there';
+export function metaTemplateLabel(t: { key: string; requiresMeta?: boolean }): string | null {
+  return t.requiresMeta ? `WhatsApp Manager template: ${t.key}` : null;
+}
+
+/** For a `requiresMeta` row, Meta sends the body approved in WhatsApp
+ *  Manager and only fills {{1}} — editing the text here changes the CRM's
+ *  own transcript log and the Follow-ups preview, not what the customer
+ *  gets, until the same wording is also updated at Meta (audit3 sched, 5 Sep).
+ *  Returns null for a Custom (non-Meta) row, which is unaffected. */
+export function metaEditNotice(t: { key: string; requiresMeta?: boolean }): string | null {
+  if (!t.requiresMeta) return null;
+  return `Outside the 24h window this goes out as WhatsApp Manager template ${t.key}. After saving here, update that template to match, or customers will keep getting the previous wording.`;
+}
+
+function MetaTemplateName({ t, say }: { t: { key: string; requiresMeta?: boolean }; say: (m: string) => void }) {
+  const label = metaTemplateLabel(t);
+  if (!label) return null;
+  return (
+    <div className="tmeta" style={{ fontSize: 11, color: 'var(--ink3)', display: 'flex', alignItems: 'center', gap: 6, margin: '2px 0 4px' }} onClick={(e) => e.stopPropagation()}>
+      <span>{label}</span>
+      <button
+        type="button"
+        className="btn ghost"
+        style={{ fontSize: 10, padding: '0 6px', lineHeight: '18px' }}
+        title="Copy the template name"
+        onClick={async (e) => {
+          e.stopPropagation();
+          try { await navigator.clipboard.writeText(t.key); say('Template name copied ✓'); }
+          catch { say(`Template name: ${t.key}`); }
+        }}
+      >Copy</button>
+    </div>
+  );
+}
 
 /** What the customer actually sent, shown inside the message bubble.
  *
@@ -407,6 +619,7 @@ export default function Dashboard() {
   const [clearArmed, setClearArmed] = useState(false);
   const [tplText, setTplText] = useState('');
   const [toast, setToast] = useState('');
+  const [toastLong, setToastLong] = useState(false);
   // NOT local state any more. This used to be a useState that the two mode
   // buttons set and nothing else ever read, so the dashboard displayed the last
   // thing clicked in this tab rather than the mode the system was actually in —
@@ -437,13 +650,59 @@ export default function Dashboard() {
   const chatOffsetRef = useRef(0);
   const chatPagesRef = useRef(0);
   const chatBusyRef = useRef(false);
+  // Manual reply in flight (see sendManual): ref for the guard, state for the button.
+  const sendingRef = useRef(false);
+  const [sending, setSending] = useState(false);
   const chatListElRef = useRef<HTMLDivElement | null>(null);
   // Chat-list filter chip: 'all' | 'unread' | a pipeline stage-group id.
   const [chatFilter, setChatFilter] = useState('all');
   // Whether the chat-header stage badge dropdown (manual stage move) is open.
   const [stageMenuOpen, setStageMenuOpen] = useState(false);
+  // Stage action ("Send for Signature" / "Mark Lodged") in flight for this
+  // customer id (audit, 5 Sep). The button is rendered from chatSel.state,
+  // which only changes after refresh() resolves, so during the multi-second
+  // send it stayed clickable and the server has no gate for either action:
+  // a second click + confirm sent the notice to the customer twice and
+  // re-armed the signature cadence. Same sigBusy pattern as the CRM card.
+  // Ref for the guard (a click can land before React re-renders), state for
+  // the button.
+  const stageActionRef = useRef<string | null>(null);
+  const [stageActionBusy, setStageActionBusy] = useState<string | null>(null);
+  const runStageAction = async (action: 'send_signature' | 'send_lodged', customerId: string, done: string) => {
+    if (stageActionRef.current) return;
+    stageActionRef.current = customerId;
+    setStageActionBusy(customerId);
+    try {
+      const r = await act({ action, customerId });
+      if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
+      // send_lodged returns filedUnderClients: whether the matching CRM card
+      // was found and filed under Clients (audit3 #31, 5 Sep). Before, this
+      // always said "moved to Completed" even on a miss, so a miss sat in
+      // Done with no signal that the CRM card still needed filing by hand.
+      const msg = action === 'send_lodged' && r && typeof r === 'object' && 'filedUnderClients' in r && !r.filedUnderClients
+        ? 'Sent, moved to Completed. No CRM card found to file; open the CRM to file it'
+        : done;
+      say(msg); loadChat(customerId); await refresh();
+    } finally {
+      stageActionRef.current = null;
+      setStageActionBusy(null);
+    }
+  };
   const [, setClock] = useState(0);
   const msgsRef = useRef<HTMLDivElement>(null);
+  // The compose box grows with its text. It used to grow only inside onChange,
+  // so a Quick-fill template dropped in with setComposer showed as a one-line
+  // strip the operator had to scroll inside to read, and a click on ➤ left a
+  // tall empty box after sending. Fitting it from an effect on the value means
+  // every path (typing, quick-fill, either send) sizes it (audit, 5 Sep).
+  const composerRef = useRef<HTMLTextAreaElement>(null);
+  const fitComposer = () => {
+    const el = composerRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+  };
+  useEffect(() => { fitComposer(); }, [composer]);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const latestChatReq = useRef<string | null>(null);
 
@@ -490,8 +749,14 @@ export default function Dashboard() {
 
   const say = (m: string) => {
     setToast(m);
+    // The longer refusals (unfilled placeholder, outside-24h-window, etc.) are
+    // full sentences that used to vanish nowrap in 2.6s before anyone could
+    // read them; give a long message room to wrap and time to be read, same
+    // wording either way (audit, 5 Sep).
+    const long = m.length > 60;
+    setToastLong(long);
     clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(''), 2600);
+    toastTimer.current = setTimeout(() => setToast(''), long ? 8000 : 2600);
   };
 
   const refresh = useCallback(async () => {
@@ -576,7 +841,24 @@ export default function Dashboard() {
     if (asstDone[p.id] || asstRunning[p.id]) return;
     let body: Record<string, unknown> | null = null;
     if (p.kind === 'move_stage' && p.toState) {
-      body = { action: 'set_state', customerId: p.customerId, state: p.toState, force: true };
+      // Same safety as the chat-header stage badge (audit, 5 Sep). This used
+      // to force every move, so one click on a card could put a PAID customer
+      // back in the sales cadence with no second look, while the badge asked
+      // first. Now: force only when the target is not a valid next step (so a
+      // one-step proposal goes through the guarded server path), and ask the
+      // identical question before a forced move of a paid customer into a
+      // sales stage. If the customer is not in the loaded list we cannot
+      // check either, so the old forced move stands.
+      const cust = data.customers.find((c) => c.id === p.customerId);
+      let force = true;
+      if (cust) {
+        const nextStates = TRANSITIONS[cust.state] ?? [];
+        force = !nextStates.includes(p.toState);
+        const SALES = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
+        if (force && cust.paid && SALES.includes(p.toState)
+          && !confirm(`${cust.name ?? 'This customer'} has PAID. Moving them back to ${stageLabelOf(p.toState)} puts them in the sales stages again. Are you sure?`)) return;
+      }
+      body = { action: 'set_state', customerId: p.customerId, state: p.toState, force };
     } else if (p.kind === 'send_reply') {
       const msg = (asstEdit[p.id] ?? p.message ?? '').trim();
       if (!msg) return;
@@ -596,7 +878,7 @@ export default function Dashboard() {
     setAsstDone((d) => ({ ...d, [p.id]: 'approved' }));
     say(p.kind === 'send_reply' ? 'Message sent ✓' : p.kind === 'move_stage' ? `Moved to ${p.toStateLabel} ✓` : 'Task opened ✓');
     refresh();
-  }, [asstDone, asstRunning, asstEdit, refresh]);
+  }, [asstDone, asstRunning, asstEdit, refresh, data.customers]);
 
   // One action-card renderer, shared by the Open-tasks column (agent 1) and the
   // chat's own inline cards (agent 2), so both look and behave identically.
@@ -945,29 +1227,47 @@ export default function Dashboard() {
     return acc;
   }, {});
 
-  const once = async (key: string, fn: () => Promise<void>) => {
-    if (acted.has(key)) return;
-    setActed((s) => new Set(s).add(key));
-    try { await fn(); } finally { /* keep acted to prevent double fire */ }
-  };
+  const once = (key: string, fn: () => Promise<boolean | void>) => runOnce(acted, setActed, key, fn);
 
   /** Returns true only when WhatsApp accepted the message, so the composer can
    *  KEEP what was typed when it did not (audit, 4 Sep: the box was cleared
    *  before the result, so a refusal outside the 24h window silently threw away
    *  a message Jo had just written). */
-  const sendManual = async (customerId: string, text: string): Promise<boolean> => {
+  const sendManual = async (customerId: string, text: string, opts?: { lastCustomerMsgAt?: string | null }): Promise<boolean> => {
     if (!text.trim()) return false;
-    const r = await act({ action: 'manual_reply', customerId, body: text });
-    // The server now reports whether WhatsApp actually accepted the message.
-    // Reporting "Sent" on a failure is how a lost message looked delivered.
-    if (r?.ok) {
-      say(`Sent ✓ ${ASSISTANT_NAME} stays active on this chat`);
-    } else {
-      say(`❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`);
+    // In-flight guard (audit, 5 Sep): a Meta send takes a few seconds and the
+    // box only clears once the server answers, so a second Enter or click in
+    // that gap fired a second manual_reply with the same text and the customer
+    // got it twice (the server does not dedupe manual replies). The ref blocks
+    // the second call at once; the state greys the ➤ button meanwhile.
+    if (sendingRef.current) return false;
+    sendingRef.current = true;
+    setSending(true);
+    try {
+      // A Quick-fill body that is still word for word the Library text, sent to
+      // someone outside Meta's 24h window, goes through `send_template` so it
+      // leaves as the approved template of that key (fallbackToText keeps the
+      // same wording if Meta has no such template yet). Inside the window, or
+      // once Jo has edited the text, it is the plain manual reply it always was,
+      // so the customer sees the same message either way (audit, 5 Sep).
+      const tplKey = opts && outside24hWindow(opts.lastCustomerMsgAt) ? quickTemplateKeyFor(text, data.templates) : null;
+      const r = tplKey
+        ? await act({ action: 'send_template', customerId, id: tplKey })
+        : await act({ action: 'manual_reply', customerId, body: text });
+      // The server now reports whether WhatsApp actually accepted the message.
+      // Reporting "Sent" on a failure is how a lost message looked delivered.
+      if (r?.ok) {
+        say(`Sent ✓ ${ASSISTANT_NAME} stays active on this chat`);
+      } else {
+        say(`❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`);
+      }
+      refresh();
+      if (chatSelId === customerId) loadChat(customerId);
+      return !!r?.ok;
+    } finally {
+      sendingRef.current = false;
+      setSending(false);
     }
-    refresh();
-    if (chatSelId === customerId) loadChat(customerId);
-    return !!r?.ok;
   };
 
   return (
@@ -989,7 +1289,11 @@ export default function Dashboard() {
         </div>
       </aside>
 
-      <header>
+      <header style={notifOpen ? { zIndex: 80 } : undefined}>
+        {/* z-index bumped above aside.side's 70 only while the notif popover is
+            open (audit, 5 Sep): header is its own stacking context (z-index:60
+            in will-scoped.css), so the popover's own z-index could never lift
+            it above the side rail without this. */}
         <div className="hrow">
           <div className="modebar" style={{ padding: 0 }}>
             <span className="modelabel">{ASSISTANT_NAME} Mode</span>
@@ -1043,7 +1347,9 @@ export default function Dashboard() {
             {notifOpen && (
               <>
                 <div onClick={() => setNotifOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 998 }} />
-                <div style={{ position: 'absolute', top: 34, right: 0, width: 320, maxHeight: 420, overflowY: 'auto', background: 'var(--surface)', border: '1px solid var(--line2)', borderRadius: 14, boxShadow: '0 12px 40px rgba(20,22,30,.18)', zIndex: 999, padding: 6 }}>
+                {/* width capped to the viewport minus the side rail so the panel
+                    never runs its left edge under aside.side on a phone (audit, 5 Sep) */}
+                <div style={{ position: 'absolute', top: 34, right: 0, width: 'min(320px, calc(100vw - 70px))', maxHeight: 420, overflowY: 'auto', background: 'var(--surface)', border: '1px solid var(--line2)', borderRadius: 14, boxShadow: '0 12px 40px rgba(20,22,30,.18)', zIndex: 999, padding: 6 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 10px 6px' }}>
                     <span style={{ fontWeight: 700, fontSize: 12.5 }}>Notifications</span>
                     <span style={{ fontSize: 11, color: 'var(--ink3)' }}>{notifTasks.length} open</span>
@@ -1078,8 +1384,11 @@ export default function Dashboard() {
             )}
           </div>
           <button className={`kill ${killSwitch ? 'paused' : ''}`} onClick={async () => {
-            await act({ action: 'set_kill_switch', value: !killSwitch });
-            say(killSwitch ? `${ASSISTANT_NAME} resumed from saved states ✓` : `🛑 ${ASSISTANT_NAME} fully stopped. Every chat is yours.`);
+            const r = await act({ action: 'set_kill_switch', value: !killSwitch });
+            // A failed call used to say "fully stopped" anyway (audit, 5 Sep); see actionToast.
+            const t = actionToast(r, killSwitch ? `${ASSISTANT_NAME} resumed from saved states ✓` : `🛑 ${ASSISTANT_NAME} fully stopped. Every chat is yours.`);
+            say(t.message);
+            if (!t.ok) return;
             setHealth((h) => h ? { ...h, killSwitch: !killSwitch } : h);
           }}>
             {killSwitch ? `⏻ ${ASSISTANT_NAME.toUpperCase()} STOPPED` : `⏻ Pause ${ASSISTANT_NAME}`}
@@ -1347,10 +1656,36 @@ export default function Dashboard() {
                               </>
                             )}
                           </div>
+                          {/* The language this chat is locked to. It drives every
+                              deterministic message and the model's conversation
+                              language, and one clear foreign hit is enough to set
+                              it ("Perfecto, gracias" locks an English customer to
+                              Spanish). It was only ever visible as a two-letter
+                              suffix on handoff cards, so the owner saw Will answer
+                              in the wrong language with no way to tell why or fix
+                              it (audit, 5 Sep). Now it sits next to the stage and
+                              can be corrected in one click. */}
+                          <select
+                            className="langpick"
+                            title="The language Will writes to this customer in. Change it if Will has picked the wrong one."
+                            value={chatSel.lang ?? ''}
+                            onChange={async (e) => {
+                              const v = e.target.value || null;
+                              const r = await act({ action: 'set_lang', customerId: chatSel.id, lang: v });
+                              say(r?.ok ? (v ? `Language set to ${LANG_LABELS[v] ?? v}` : 'Language cleared, Will will detect it again') : `❌ ${r?.error ?? 'could not change language'}`);
+                              loadChat(chatSel.id); refresh();
+                            }}
+                          >
+                            <option value="">Language: not set</option>
+                            {LANGS.map((l) => <option key={l} value={l}>{LANG_LABELS[l]}</option>)}
+                          </select>
                         </div>
                       </div>
                       <div className={`aitoggle ${chatSel.aiPaused ? 'off' : ''}`} onClick={async () => {
-                        await act({ action: 'toggle_ai', id: chatSel.id, value: chatSel.aiPaused });
+                        const r = await act({ action: 'toggle_ai', id: chatSel.id, value: chatSel.aiPaused });
+                        // A refused toggle used to toast success anyway, so the
+                        // label lied until the next poll (audit, 5 Sep).
+                        if (r?.ok === false) { say(`❌ ${r.error ?? 'could not change'}`); refresh(); return; }
                         say(chatSel.aiPaused ? `${ASSISTANT_NAME} resumed from current state` : `${ASSISTANT_NAME} paused, you have the wheel`);
                         refresh();
                       }}>
@@ -1406,46 +1741,57 @@ export default function Dashboard() {
                           does NOT send. It drops the text into the compose box so
                           you can read it, edit it, and send it yourself. */}
                       {QUICK_TEMPLATES.map((key, i) => {
-                        const t = data.templates.find((x) => x.key === key);
+                        // The customer's language variant when seeded (audit,
+                        // 5 Sep); the tooltip carries the code so the operator
+                        // can see which row loaded.
+                        const t = quickTemplateFor(key, chatSel.lang, data.templates);
                         if (!t) return null;
-                        const label = t.title.replace(/ \(.*\)/, '');
-                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label}. Edit and send`); }}>{i + 1}</button>;
+                        const label = t.title.replace(/ \(.*\)/, '') + (t.key !== key ? ` (${t.key.slice(key.length + 1)})` : '');
+                        {/* data-label carries the same tooltip text so a coarse
+                            pointer (no hover) can show it as a visible caption
+                            instead of relying on `title` (audit, 5 Sep). */}
+                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} data-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label}. Edit and send`); }}>{i + 1}</button>;
                       })}
                       {/* Estimate-stage action: once the return has actually been
                           sent to the customer to sign, one click sends the "ready
                           for signature" confirmation and moves them on to
-                          Signature. Only shown during Estimate. */}
-                      {(chatSel.state === 'ESTIMATE_READY' || chatSel.state === 'FINAL_REVIEW') && (
+                          Signature. Shown for the whole Review group (audit,
+                          5 Sep: the old ESTIMATE_READY/FINAL_REVIEW gate hid it
+                          from every real customer, who sit at FORM_COMPLETE). */}
+                      {showSendForSignature(chatSel.state) && (
                         <button
                           type="button"
                           className="btn save"
                           style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
-                          onClick={async () => {
+                          disabled={stageActionBusy === chatSel.id}
+                          onClick={() => {
+                            if (stageActionRef.current) return;
                             if (!confirm(`Send the "ready for signature" message to ${phoneOf(chatSel.waId)} and move them to Signature?`)) return;
-                            const r = await act({ action: 'send_signature', customerId: chatSel.id });
-                            if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
-                            say('Sent, moved to Signature ✓'); loadChat(chatSel.id); refresh();
+                            runStageAction('send_signature', chatSel.id, 'Sent, moved to Signature ✓');
                           }}
                         >
-                          ✍️ Send for Signature
+                          {stageActionBusy === chatSel.id ? '…' : '✍️ Send for Signature'}
                         </button>
                       )}
                       {/* Signature-stage action: once they've signed, one click
                           sends the lodged + review-request message and moves them
-                          on to Completed. Only shown during Signature. */}
-                      {chatSel.state === 'SIGNATURE_PENDING' && (
+                          on to Completed. Shown during Signature and at SIGNED
+                          (audit, 5 Sep: the badge menu's "Completed" lands on
+                          SIGNED, where the server accepts send_lodged but the
+                          button was missing). */}
+                      {showMarkLodged(chatSel.state) && (
                         <button
                           type="button"
                           className="btn save"
                           style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
-                          onClick={async () => {
+                          disabled={stageActionBusy === chatSel.id}
+                          onClick={() => {
+                            if (stageActionRef.current) return;
                             if (!confirm(`Send the "lodged successfully" message to ${phoneOf(chatSel.waId)} and move them to Completed?`)) return;
-                            const r = await act({ action: 'send_lodged', customerId: chatSel.id });
-                            if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
-                            say('Sent, moved to Completed ✓'); loadChat(chatSel.id); refresh();
+                            runStageAction('send_lodged', chatSel.id, 'Sent, moved to Completed ✓');
                           }}
                         >
-                          ✅ Mark Lodged
+                          {stageActionBusy === chatSel.id ? '…' : '✅ Mark Lodged'}
                         </button>
                       )}
                       {/* The nudges for this customer's stage, so a follow-up can be
@@ -1473,10 +1819,14 @@ export default function Dashboard() {
                                   title={preview}
                                   disabled={acted.has(key + chatSel.id)}
                                   onClick={() => once(key + chatSel.id, async () => {
-                                    if (!confirm(`Send this to ${chatSel.name ?? phoneOf(chatSel.waId)} now?\n\n${preview}`)) return;
+                                    // Cancel in the confirm returns false so runOnce releases the
+                                    // key: before, pressing Cancel greyed the chip out for the rest
+                                    // of the session with nothing sent (audit, 5 Sep).
+                                    if (!confirm(`Send this to ${chatSel.name ?? phoneOf(chatSel.waId)} now?\n\n${preview}`)) return false;
                                     const r = await act({ action: 'send_followup', customerId: chatSel.id, id: key });
-                                    say(r?.ok ? 'Follow-up sent ✓' : `❌ ${r?.error ?? (r?.blocked?.length ? r.blocked.join(', ') : 'not sent')}`);
+                                    say(r?.ok ? 'Follow-up sent ✓' : `❌ ${r?.error ?? (r?.blocked?.length ? describeViolations(r.blocked) : 'not sent')}`);
                                     loadChat(chatSel.id); refresh();
+                                    return !!r?.ok;
                                   })}
                                 >{short}</button>
                               );
@@ -1571,8 +1921,8 @@ export default function Dashboard() {
                                 {m.meta?.review && <div className="reviewnote">👁 {m.meta.review}</div>}
                                 <div className="mt"><span className="ai">✎ awaiting your approval</span></div>
                                 <div className="abtns" style={{ marginTop: 8 }}>
-                                  <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${r.blocked.join(', ')}` : 'Draft blocked: situation changed')); loadChat(chatSel.id); refresh(); })}>✓ Approve</button>
-                                  <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { await act({ action: 'discard_message', id: m.id }); say('Draft discarded'); loadChat(chatSel.id); refresh(); })}>✕ Discard</button>
+                                  <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${describeViolations(r.blocked)}` : 'Draft blocked: situation changed')); loadChat(chatSel.id); refresh(); return !!r?.ok; })}>✓ Approve</button>
+                                  <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'discard_message', id: m.id }); say(actionToast(r, 'Draft discarded').message); loadChat(chatSel.id); refresh(); return !!r?.ok; })}>✕ Discard</button>
                                 </div>
                               </div>,
                             );
@@ -1621,14 +1971,15 @@ export default function Dashboard() {
                         here would fail on send with an error the owner has to
                         read to understand. Saying it up front, next to the
                         template buttons that DO work, is the honest version
-                        (audit, 4 Sep). */}
+                        (audit, 4 Sep). The numbered Quick-fills now count: an
+                        unedited one leaves via send_template as the approved
+                        Meta template of that key (audit, 5 Sep). */}
                     {(() => {
                       const last = chatSel.lastCustomerMsgAt ? new Date(chatSel.lastCustomerMsgAt).getTime() : 0;
-                      const outside = Date.now() - last > 24 * 60 * 60 * 1000;
-                      if (!outside) return null;
+                      if (!outside24hWindow(chatSel.lastCustomerMsgAt)) return null;
                       return (
                         <div className="win24" role="status">
-                          ⏳ Outside WhatsApp&apos;s 24 hour window: {chatSel.name?.split(/\s+/)[0] || 'they'} last wrote {last ? timeAgo(new Date(last).toISOString()) + ' ago' : 'a while ago'}. A typed message will be refused by WhatsApp. Use one of the template buttons above.
+                          ⏳ Outside WhatsApp&apos;s 24 hour window: {chatSel.name?.split(/\s+/)[0] || 'they'} last wrote {last ? timeAgo(new Date(last).toISOString()) + ' ago' : 'a while ago'}. A typed message will be refused by WhatsApp. Use a numbered Quick-fill (sent unedited) or a Follow-up chip above.
                         </div>
                       );
                     })()}
@@ -1639,20 +1990,22 @@ export default function Dashboard() {
                           Enter sends, Shift+Enter adds a new line. */}
                       <textarea
                         placeholder={`Reply as yourself (${ASSISTANT_NAME} stays active, use the toggle above to take over)…`}
+                        ref={composerRef}
                         value={composer}
                         rows={1}
-                        onChange={(e) => { setComposer(e.target.value); const el = e.target as HTMLTextAreaElement; el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 140) + 'px'; }}
+                        onChange={(e) => setComposer(e.target.value)}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
                             e.preventDefault();
-                            const el = e.target as HTMLTextAreaElement;
                             const text = composer;
-                            sendManual(chatSel.id, text).then((sent) => {
-                              if (sent) { setComposer(''); el.style.height = 'auto'; }
+                            sendManual(chatSel.id, text, { lastCustomerMsgAt: chatSel.lastCustomerMsgAt }).then((sent) => {
+                              // The box re-fits from the effect on `composer`,
+                              // so both send paths shrink it back the same way.
+                              if (sent) setComposer('');
                             });
                           }
                         }} />
-                      <button className="send" onClick={() => { const text = composer; sendManual(chatSel.id, text).then((sent) => { if (sent) setComposer(''); }); }}>➤</button>
+                      <button className="send" disabled={sending} onClick={() => { const text = composer; sendManual(chatSel.id, text, { lastCustomerMsgAt: chatSel.lastCustomerMsgAt }).then((sent) => { if (sent) setComposer(''); }); }}>{sending ? '…' : '➤'}</button>
                     </div>
                   </>
                 ) : <div className="sysline" style={{ margin: 20 }}>Select a conversation</div>}
@@ -1719,8 +2072,8 @@ export default function Dashboard() {
                   <div className="obbody">{m.body}</div>
                   {m.meta?.review && <div className="reviewnote">👁 {m.meta.review}</div>}
                   <div className="obbtns">
-                    <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${r.blocked.join(', ')}` : 'Draft blocked: situation changed')); refresh(); })}>✓ Approve & send</button>
-                    <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { await act({ action: 'discard_message', id: m.id }); say('Draft discarded'); refresh(); })}>✕ Discard</button>
+                    <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${describeViolations(r.blocked)}` : 'Draft blocked: situation changed')); refresh(); return !!r?.ok; })}>✓ Approve & send</button>
+                    <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'discard_message', id: m.id }); say(actionToast(r, 'Draft discarded').message); refresh(); return !!r?.ok; })}>✕ Discard</button>
                     <button className="btn ghost" onClick={() => { setView('chats'); openChat(m.customerId); }}>Open chat →</button>
                   </div>
                 </div>
@@ -1748,7 +2101,7 @@ export default function Dashboard() {
                           chat) rather than the profile name. */}
                       <span className="tmeta">{(() => { const c = custById(t.customerId); const w = c?.waId ?? t.waId; return w ? phoneOf(w) : 'System'; })()} · {timeAgo(t.createdAt)} ago</span>
                       <button className="tdismiss" title="Dismiss, I am not answering this"
-                        onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Dismissed'); refresh(); }}>✕</button>
+                        onClick={async () => { const r = await act({ action: 'resolve_task', id: t.id }); say(actionToast(r, 'Dismissed').message); refresh(); }}>✕</button>
                     </div>
                     {/* One line. You are scanning for what this person wants, not
                         reading an essay; the full text is on hover. */}
@@ -1762,7 +2115,7 @@ export default function Dashboard() {
                       </div>
                     )}
                     <div className="tbtns">
-                      {t.customerId && <button className="btn take" disabled={acted.has(t.id) || !draft.trim()} onClick={() => once(t.id, async () => { const r = await act({ action: 'send_task_reply', id: t.id, body: draft }); say(r?.ok ? 'Reply sent & task resolved ✓' : `❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`); refresh(); })}>➤ Send Reply</button>}
+                      {t.customerId && <button className="btn take" disabled={acted.has(t.id) || !draft.trim()} onClick={() => once(t.id, async () => { const r = await act({ action: 'send_task_reply', id: t.id, body: draft }); say(r?.ok ? 'Reply sent & task resolved ✓' : `❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`); refresh(); return !!r?.ok; })}>➤ Send Reply</button>}
                       {/* Open Chat OPENS the chat. It used to resolve the task on
                           the way, so a task opened and then left (a phone call, a
                           second thought) was closed with the customer still
@@ -1771,7 +2124,9 @@ export default function Dashboard() {
                           did (afterHumanReply); the ✕ is there to dismiss one
                           deliberately. */}
                       {t.customerId && <button className="btn ghost" onClick={() => { setView('chats'); openChat(t.customerId!); }}>Open Chat</button>}
-                      {!t.customerId && <button className="btn ghost" onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Marked resolved ✓'); refresh(); }}>Mark Resolved</button>}
+                      {!t.customerId && <button className="btn ghost" onClick={async () => { const r = await act({ action: 'resolve_task', id: t.id }); say(actionToast(r, 'Marked resolved ✓').message); refresh(); }}>Mark Resolved</button>}
+                      {/* Unmatched questionnaire: link it to the right chat and Will does the rest (audit, 5 Sep). Renders nothing for any other task. */}
+                      {!t.customerId && <LinkFormTask task={t} phoneOf={phoneOf} act={act} say={say} refresh={refresh} />}
                     </div>
                   </div>
                 </div>
@@ -1803,7 +2158,8 @@ export default function Dashboard() {
                   {items.map((t) => (
                     <div key={t.id} className="tpl" onClick={() => { setTpl(t); setTplText(t.body); }}>
                       <span className="pencil">✎</span>
-                      <div className="tn">{t.title}{t.requiresMeta && <span className="chip" style={{ fontSize: 9 }} title="Requires Meta template approval">META ✓</span>}</div>
+                      <div className="tn">{t.title}{t.requiresMeta && <span className="chip" style={{ fontSize: 9 }} title={META_TEMPLATE_CHIP_TIP}>META ✓</span>}</div>
+                      <MetaTemplateName t={t} say={say} />
                       <div className="tv">{t.body}</div>
                       <div className="tf"><span className="edited">● live</span><span>v{t.versions} · {timeAgo(t.updatedAt)} ago</span></div>
                     </div>
@@ -2098,12 +2454,25 @@ export default function Dashboard() {
                       meaning: 'Will is not properly connected to WhatsApp. Messages are not being sent, not being received, or both.',
                       action: 'Open the WhatsApp pill in the header (or /crm/whatsapp/connect) and reconnect. The exact fault is in the error line above.',
                     },
+                    // (audit, 5 Sep) The header dot for this check has existed since
+                    // health/route.ts started reporting it, but with no entry here it
+                    // fell out of the `.filter((x) => !!x.info)` below: a red Cadence
+                    // dot in the header with nothing in this panel to explain it, next
+                    // to a "Nothing is failing" line that was simply wrong.
+                    cadence: {
+                      name: 'Follow-up timing',
+                      meaning: 'Demo timing is switched on: follow-ups fire in seconds at any hour and leads auto-close a minute after the last message.',
+                      action: 'Remove FOLLOWUP_MODE and FOLLOWUP_STEPS from the Vercel environment and redeploy.',
+                    },
                   };
                   const entries = Object.entries(health?.checks ?? {});
                   const live = entries
                     .filter(([, v]) => !v.ok)
-                    .map(([k, v]) => ({ key: k, info: CHECK_INFO[k], detail: v.detail }))
-                    .filter((x) => !!x.info);
+                    // (audit, 5 Sep) A check with no entry above used to vanish here
+                    // silently — a red dot in the header with nothing in this panel
+                    // to explain it. Any future check the API adds now falls back to
+                    // a generic card instead of disappearing.
+                    .map(([k, v]) => ({ key: k, info: CHECK_INFO[k] ?? { name: k, meaning: v.detail, action: 'See the message above.' }, detail: v.detail }));
                   const past = system?.faults ?? [];
                   if (!health && system === null) return <div className="mini" style={{ marginTop: 0 }}>Checking…</div>;
                   if (live.length === 0 && past.length === 0) {
@@ -2542,7 +2911,7 @@ export default function Dashboard() {
                             <div className="hoff-actions">
                               <button
                                 className="hoff-open hoff-done-btn"
-                                onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Resolved'); refresh(); }}
+                                onClick={async () => { const r = await act({ action: 'resolve_task', id: t.id }); say(actionToast(r, 'Resolved').message); refresh(); }}
                               >✓ Resolved</button>
                               {t.customerId && (
                                 <button className="hoff-open" onClick={() => { setView('chats'); openChat(t.customerId!); }}>
@@ -2771,6 +3140,7 @@ export default function Dashboard() {
                                       ? `Draft is waiting in Tasks. Nothing has been sent.`
                                       : `❌ ${res?.error ?? 'could not create the task'}`);
                                     refresh();
+                                    return !!res?.ok;
                                   })}
                                 >➤ Send this to Tasks as a draft</button>
                               )}
@@ -2813,12 +3183,19 @@ export default function Dashboard() {
                 <div className="field"><span className="fk">{ASSISTANT_NAME}</span><span className="fvv">{drawer.aiPaused ? 'Paused ✋' : 'Active'}</span></div>
                 <div className="field"><span className="fk">Time in stage</span><span className="fvv">{timeAgo(drawer.stateChangedAt)}</span></div>
                 {nextJob && <div className="field"><span className="fk">Next follow-up</span><span className="fvv">{nextJob.kind === 'AUTO_CLOSE' ? 'auto-close' : `#${(nextJob.payload.seq ?? 0) + 1}`} in {secs}s</span></div>}
-                <div className="mlabel">Quick reply (sends now, pauses {ASSISTANT_NAME})</div>
+                {/* Label says what the server does: manual_reply has not paused
+                    the assistant since 31 Aug (actions/route.ts), so "pauses"
+                    here told the operator Will was off while he was still
+                    answering. And the box only clears once WhatsApp accepts,
+                    same as the main composer: a refused send (outside the 24h
+                    window, kill switch) used to wipe the text and leave only a
+                    red toast (audit, 5 Sep). */}
+                <div className="mlabel">Quick reply (sends now, {ASSISTANT_NAME} stays active)</div>
                 <div className="composer" style={{ padding: '6px 0', borderTop: 'none', background: 'transparent' }}>
                   <input placeholder="Type and press Enter…" value={drawerReply}
                     onChange={(e) => setDrawerReply(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter' && !e.nativeEvent.isComposing) { sendManual(drawer.id, drawerReply); setDrawerReply(''); } }} />
-                  <button className="send" onClick={() => { sendManual(drawer.id, drawerReply); setDrawerReply(''); }}>➤</button>
+                    onKeyDown={(e) => { if (e.key === 'Enter' && !e.nativeEvent.isComposing) { sendManual(drawer.id, drawerReply).then((sent) => { if (sent) setDrawerReply(''); }); } }} />
+                  <button className="send" disabled={sending} onClick={() => { sendManual(drawer.id, drawerReply).then((sent) => { if (sent) setDrawerReply(''); }); }}>{sending ? '…' : '➤'}</button>
                 </div>
                 <div className="mlabel">Journey</div>
                 <div className="timeline">
@@ -2831,7 +3208,7 @@ export default function Dashboard() {
                 </div>
                 <div className="dbtns">
                   <button className="btn take" onClick={() => { setView('chats'); openChat(drawer.id); setDrawerId(null); }}>💬 Open Chat</button>
-                  <button className="btn ghost" onClick={async () => { await act({ action: 'toggle_ai', id: drawer.id, value: drawer.aiPaused }); say(drawer.aiPaused ? `${ASSISTANT_NAME} resumed` : `${ASSISTANT_NAME} paused, you have the wheel`); refresh(); }}>✋ {drawer.aiPaused ? `Resume ${ASSISTANT_NAME}` : 'Take Over'}</button>
+                  <button className="btn ghost" onClick={async () => { const r = await act({ action: 'toggle_ai', id: drawer.id, value: drawer.aiPaused }); say(actionToast(r, drawer.aiPaused ? `${ASSISTANT_NAME} resumed` : `${ASSISTANT_NAME} paused, you have the wheel`).message); refresh(); }}>✋ {drawer.aiPaused ? `Resume ${ASSISTANT_NAME}` : 'Take Over'}</button>
                 </div>
               </div>
             </>
@@ -2843,17 +3220,22 @@ export default function Dashboard() {
         {tpl && (
           <div className="modal">
             <div className="mh"><b>{tpl.title}</b><button className="x" onClick={() => setTpl(null)}>✕</button></div>
+            <MetaTemplateName t={tpl} say={say} />
+            {metaEditNotice(tpl) && <div className="sysline" style={{ margin: '2px 0 8px' }}>{metaEditNotice(tpl)}</div>}
             <div className="mlabel">Message text</div>
             <textarea className="edit" value={tplText} onChange={(e) => setTplText(e.target.value)} />
             <div className="mlabel">How the customer sees it</div>
             <div className="wapreview"><div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{tplText}</div></div>
             <div className="mfoot">
-              <span className="vhist" style={{ cursor: 'pointer', color: 'var(--crit)' }} onClick={async () => { if (confirm('Delete this message?')) { await act({ action: 'delete_template', id: tpl.id }); say('Message deleted'); setTpl(null); refresh(); } }}>🗑 Delete</span>
+              <span className="vhist" style={{ cursor: 'pointer', color: 'var(--crit)' }} onClick={async () => { if (confirm('Delete this message?')) { const r = await act({ action: 'delete_template', id: tpl.id }); const t = actionToast(r, 'Message deleted'); say(t.message); if (!t.ok) return; setTpl(null); refresh(); } }}>🗑 Delete</span>
               <button className="btn ghost" onClick={() => setTpl(null)}>Cancel</button>
               <button className="btn save" onClick={async () => {
                 const r = await act({ action: 'update_template', id: tpl.id, body: tplText });
-                if (r.blocked) { say('Blocked: ' + r.blocked.join(', ')); return; }
-                say('Saved, live for all new conversations ✓'); setTpl(null); refresh();
+                // Only a confirmed save closes the modal (audit, 5 Sep); see templateSaveOutcome.
+                const o = templateSaveOutcome(r, 'update', tpl.requiresMeta ? tpl.key : null);
+                say(o.message);
+                if (!o.saved) return;
+                setTpl(null); refresh();
               }}>Save & Go Live</button>
             </div>
           </div>
@@ -2876,20 +3258,41 @@ export default function Dashboard() {
             <div className="mfoot">
               <span className="vhist" style={{ cursor: 'pointer', color: 'var(--crit)' }} onClick={async () => {
                 if (!confirm('Delete this learned answer?')) return;
-                await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'delete', id: know.id }) });
-                say('Learned answer deleted'); setKnow(null); loadKnowledge(); refresh();
+                // Same rule as the Library modals: a failed call must not read
+                // as done (audit, 5 Sep). This route can also 422 on a guard
+                // violation, which used to be ignored (the response was never
+                // parsed at all) and the modal closed as if it had gone live.
+                const res = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'delete', id: know.id }) });
+                const r = await res.json().catch(() => null);
+                const t = actionToast(r, 'Learned answer deleted');
+                say(t.message);
+                if (!t.ok) return;
+                setKnow(null); loadKnowledge(); refresh();
               }}>🗑 Delete</span>
               <button className="btn ghost" onClick={() => setKnow(null)}>Cancel</button>
               {knowledge.drafts.some((d) => d.id === know.id) && (
                 <button className="btn approve" onClick={async () => {
-                  if (knowText !== know.answer) await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: know.id, answer: knowText }) });
-                  await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'approve', id: know.id }) });
-                  say('Learned ✓'); setKnow(null); loadKnowledge(); refresh();
+                  if (knowText !== know.answer) {
+                    const res = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: know.id, answer: knowText }) });
+                    const r = await res.json().catch(() => null);
+                    const t = actionToast(r, 'Learned ✓');
+                    if (!t.ok) { say(t.message); return; }
+                  }
+                  const res2 = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'approve', id: know.id }) });
+                  const r2 = await res2.json().catch(() => null);
+                  const t2 = actionToast(r2, 'Learned ✓');
+                  say(t2.message);
+                  if (!t2.ok) return;
+                  setKnow(null); loadKnowledge(); refresh();
                 }}>✓ Approve & Go Live</button>
               )}
               <button className="btn save" onClick={async () => {
-                await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: know.id, answer: knowText }) });
-                say('Saved, live for all new conversations ✓'); setKnow(null); loadKnowledge(); refresh();
+                const res = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: know.id, answer: knowText }) });
+                const r = await res.json().catch(() => null);
+                const t = actionToast(r, 'Saved, live for all new conversations ✓');
+                say(t.message);
+                if (!t.ok) return;
+                setKnow(null); loadKnowledge(); refresh();
               }}>Save & Go Live</button>
             </div>
           </div>
@@ -2914,15 +3317,18 @@ export default function Dashboard() {
               <button className="btn save" onClick={async () => {
                 if (!newTpl.body.trim()) { say('Write the message first'); return; }
                 const r = await act({ action: 'add_template', title: newTpl.title, category: newTpl.category, body: newTpl.body });
-                if (r.blocked) { say('Blocked: ' + r.blocked.join(', ')); return; }
-                say('New message added ✓'); setNewTpl(null); refresh();
+                // Only a confirmed save closes the modal (audit, 5 Sep); see templateSaveOutcome.
+                const o = templateSaveOutcome(r, 'add');
+                say(o.message);
+                if (!o.saved) return;
+                setNewTpl(null); refresh();
               }}>Save Message</button>
             </div>
           </div>
         )}
       </div>
 
-      <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
+      <div className={`toast ${toast ? 'show' : ''} ${toastLong ? 'long' : ''}`}>{toast}</div>
     </>
   );
 }

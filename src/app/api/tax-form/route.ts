@@ -8,15 +8,13 @@ import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 import { validateIntake, safeAmount } from '@/lib/intake-validate'
 import { isValidSupabaseStorageUrl } from '@/lib/supabase'
+import { normalisePhone } from '@/lib/leads'
 import crypto from 'crypto'
 import { notifyFormReceived } from '@/lib/will/form-link'
 
 export async function POST(req: NextRequest) {
   try {
     const ip = getClientIp(req)
-    if (await isRateLimited(ip, 'tax-form')) {
-      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
-    }
 
     const formData  = await req.formData()
     const email     = sanitiseShort(formData.get('email'))
@@ -27,6 +25,22 @@ export async function POST(req: NextRequest) {
     // unactionable - reject it instead of creating an empty CRM task.
     if (!fullName || !email || !whatsapp) {
       return NextResponse.json({ ok: false, error: 'missing_required_fields' }, { status: 400 })
+    }
+
+    // Keyed on IP + person, not IP alone (audit, 5 Sep). A hostel or farm
+    // bunkhouse shares one IP behind carrier-grade NAT, so a room full of
+    // customers filling this in one after another used to trip the same
+    // 5-per-15-minute limit meant for one abuser - the sixth person's
+    // submit failed with "too many requests" right after their upload
+    // succeeded, and the only report that reached Jo was "the form is
+    // broken". The per-IP ceiling is kept, just raised in line with the
+    // upload route's own limit, so a single abuser is still capped.
+    const person = normalisePhone(whatsapp) || email
+    if (await isRateLimited(`${ip}:${person}`, 'tax-form')) {
+      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
+    }
+    if (await isRateLimited(ip, 'tax-form-ip', 30)) {
+      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
 
     // Format validation, server-side. The shared validators were previously
@@ -145,7 +159,9 @@ export async function POST(req: NextRequest) {
     // and the cost is specific and bad — the lead is in the CRM, the customer
     // is told it failed, and they fill the whole form in again.
     try {
-      await notifyFormReceived(whatsapp, email)
+      // The Medicare answer travels with it: "No" (not covered) is what queues
+      // the Medicare Levy Exemption message 15 minutes from now.
+      await notifyFormReceived(whatsapp, email, 'tax-return', sanitiseShort(formData.get('hasMedicare')))
     } catch (err) {
       // console.error on Vercel is a log nobody reads, and the consequence here
       // is specific: the customer's form reminders keep chasing them for

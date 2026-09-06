@@ -23,7 +23,17 @@ import { destroySession, validateSession } from '@/lib/crm-store'
 // ─────────────────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   const authorised = validateSession(req.cookies.get('crm_session')?.value)
-  if (authorised) await destroySession()
+  // (audit, 5 Sep) An idle-timeout logout must only drop THIS browser's
+  // session, not every device at once: a background tab's 30-minute timer
+  // was bumping the global revoked-before epoch, which also logged out an
+  // active tab elsewhere (or a laptop left open while Jo works on his
+  // phone). The explicit Lock & Exit button sends no body and still revokes
+  // every session as before; only { reason: 'idle' } skips the global
+  // revoke. The cookie below is still cleared either way, so the idle
+  // browser is logged out regardless.
+  let reason: unknown
+  try { reason = (await req.json())?.reason } catch {}
+  if (authorised && reason !== 'idle') await destroySession()
 
   const res = NextResponse.json({ ok: true })
   // Clear with identical flags to the set - browsers require flag parity to

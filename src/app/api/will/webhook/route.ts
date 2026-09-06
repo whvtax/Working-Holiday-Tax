@@ -12,7 +12,10 @@ import { createHmac, timingSafeEqual } from 'crypto';
 import { handleIncoming, handleInboundNote, handlePaymentProofMedia } from '@/lib/will/service';
 import { isEditMessage, editFrom, applyInboundEdits } from '@/lib/will/inbound-edit';
 import { suggestReply } from '@/lib/will/suggest';
-import { afterHumanReply } from '@/lib/will/after-reply';
+// Indexed variant (customer_id, status lookup) rather than afterHumanReply's
+// whole-table listTasks() scan: every phone echo used to pay for that scan
+// too, on top of the actions route's sends (audit3, 5 Sep).
+import { afterHumanReplyIndexed as afterHumanReply } from '@/lib/will/after-reply';
 import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
 import { isRateLimited, getRedis } from '@/lib/rate-limit';
@@ -482,7 +485,7 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
  * phone. Requires the app to be subscribed to the `smb_message_echoes` webhook
  * field in Meta. Extracted here and handled in POST.
  */
-function extractEchoes(payload: unknown): {
+export function extractEchoes(payload: unknown): {
   echoes: { to: string; id: string; body: string }[];
   revokes: string[];
 } {
@@ -494,14 +497,20 @@ function extractEchoes(payload: unknown): {
         if ((ch as { field?: string }).field !== 'smb_message_echoes') continue;
         const val = (ch as { value?: { message_echoes?: unknown[] } }).value ?? {};
         for (const raw of (val.message_echoes ?? [])) {
-          const m = raw as {
-            type?: string; to?: string; id?: string; text?: { body?: string };
-            revoke?: { original_message_id?: string };
-          };
+          const m = raw as WaMessage & { to?: string; revoke?: { original_message_id?: string } };
           if (m.type === 'revoke' && m.revoke?.original_message_id) {
             revokes.push(m.revoke.original_message_id);
           } else if (m.type === 'text' && m.text?.body && m.to && m.id) {
             echoes.push({ to: m.to, id: m.id, body: m.text.body });
+          } else if (m.type && m.type !== 'text' && m.to && m.id) {
+            // (audit, 5 Sep) A phone reply that is a photo/PDF/voice note used to be
+            // dropped here (only `type === 'text'` was mirrored), so the task never
+            // closed and a pending draft was never discarded, letting a later
+            // "Approve & send" double up on an answer the owner already gave by
+            // hand. Mirror it with the same placeholder text the inbound side
+            // already shows for a bodiless message, so every phone reply — not
+            // just typed ones — settles the conversation.
+            echoes.push({ to: m.to, id: m.id, body: placeholderFor(m) });
           }
         }
       }

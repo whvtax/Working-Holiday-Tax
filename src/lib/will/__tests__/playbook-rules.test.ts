@@ -68,3 +68,22 @@ describe('all Australian income is declared', () => {
     expect(stable).toMatch(/By the fifth message TWO LINES is the normal answer/);
   });
 });
+
+// ── Nicky (+44 7794, 4 Sep) asked outright whether she was talking to an AI,
+// after three exchanges in which nothing was wrong. Jo: the task was the right
+// outcome and stays; what has to change is the shape that provoked the
+// question — the metronome timing (config.ts), the form-shaped answers, and the
+// same cheerful opener on every message.
+describe('not sounding like a machine', () => {
+  it('answers the main thing rather than every sub-question', () => {
+    expect(stable).toMatch(/ANSWER THE MAIN THING, NOT EVERY THING/);
+    expect(stable).toMatch(/is a form, not a message/);
+    expect(stable).toMatch(/Never number or bullet your answers/);
+  });
+
+  it('bans the repeated enthusiasm opener', () => {
+    expect(stable).toMatch(/DO NOT OPEN EVERY MESSAGE THE SAME WAY/);
+    expect(stable).toMatch(/"Perfect!"/);
+    expect(stable).toMatch(/ONCE in a conversation, at most/);
+  });
+});

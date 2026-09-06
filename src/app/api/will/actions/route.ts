@@ -6,23 +6,34 @@ import { sessionValid } from '@/lib/will/auth';
 import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
-import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES } from '@/lib/will/service';
+import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES, paymentReceivedBody } from '@/lib/will/service';
+import { paymentReceivedTemplateKey, LANGS, Lang } from '@/lib/will/i18n';
 import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
 import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/channel';
 import { resolveAiMode } from '@/lib/will/mode';
-import { suggestReply } from '@/lib/will/suggest';
+import { stripOperatorNote, suggestReply } from '@/lib/will/suggest';
 import { APPROVED } from '@/lib/will/approved-messages';
 import { stateAfterEstimate, composeEstimate } from '@/lib/will/estimate-send';
-import { afterHumanReply } from '@/lib/will/after-reply';
+// afterHumanReplyIndexed resolves this customer's open tasks via the store's
+// indexed listOpenTasksForCustomer instead of afterHumanReply's whole-table
+// listTasks().filter(...): every send path here (Send Reply, manual, template,
+// estimate/signature/lodged) was paying that scan on top of the read
+// send_task_reply already fixed at getTaskById, above (audit3, 5 Sep).
+import { afterHumanReplyIndexed as afterHumanReply } from '@/lib/will/after-reply';
+import { applyFormReceived, parseUnmatchedFormTask } from '@/lib/will/form-link';
+import { explainSendError, describeViolations } from '@/lib/will/send-errors';
 
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups';
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received'
+  | 'set_lang';
+  /** set_lang only: one of the seven i18n codes, or null to clear it. */
+  lang?: string | null;
   id?: string;
   customerId?: string;
   body?: string;
@@ -42,9 +53,27 @@ interface ActionBody {
   force?: boolean;
   /** create_task only: the task headline. `body`, if present, is its suggested reply. */
   reason?: string;
+  /** mark_form_received only: the unmatched-questionnaire task being linked. */
+  taskId?: string;
 }
 
 const bad = (msg: string, code = 400) => NextResponse.json({ error: msg }, { status: code });
+
+/** "not a pending draft" said nothing about WHY (audit, 5 Sep): the usual
+ *  reason is that the draft was already approved from another tab, or
+ *  discarded, and the owner was left guessing whether the customer got it.
+ *  Same refusal, same 400; the status is named. */
+const DRAFT_STATUS_TEXT: Record<string, string> = {
+  SENT: 'this draft was already sent',
+  QUEUED: 'this draft is already being sent',
+  SENDING: 'this draft is already being sent',
+  DISCARDED: 'this draft was already discarded',
+  BLOCKED: 'this draft was blocked by the Policy Guard; use Retry to put it back in the queue',
+  FAILED: 'WhatsApp already rejected this draft; see the task on the board',
+};
+const notPendingDraft = (m: { direction: string; status: string }) => m.direction !== 'OUT'
+  ? 'not a pending draft: this is a message from the customer, not a draft'
+  : `not a pending draft: ${DRAFT_STATUS_TEXT[m.status] ?? `its status is ${m.status}`}`;
 
 /**
  * The guard verdict, minus the two things that are only meaningful at SEND time.
@@ -102,6 +131,9 @@ async function humanSend(
   rawBody: string,
   opts: { templateBacked?: boolean } = {},
 ): Promise<{ error?: string; body?: string; outsideWindow?: boolean }> {
+  // A task's suggested reply may open with the "[Library answer, in English ...]"
+  // operator note. It is for the owner, never the customer (audit, 5 Sep).
+  rawBody = stripOperatorNote(rawBody);
   const store = getStore();
   if (customer.optedOut) return { error: 'customer opted out' };
   if ((await store.getSetting('kill_switch')) === true) return { error: 'kill switch is on' };
@@ -118,6 +150,150 @@ async function humanSend(
   if (/(password|api.?key|access token|secret key|credentials)/i.test(body)) return { error: 'message looks like it contains a secret' };
   return { body: body.slice(0, 4000), outsideWindow };
 }
+
+/** The seven manual send buttons answered a Meta rejection with the raw
+ *  string ("meta 404: (#132001) Template name does not exist in the
+ *  translation"), which the Done modal and the card alerts print as-is, and
+ *  the guard branches answered with bare codes ("SALES_CONTENT_AFTER_PAYMENT,
+ *  EM_DASH_FORBIDDEN") that the toast joins with commas (audit, 5 Sep).
+ *  explainSendError keeps the raw text and adds what to do (the scheduler's
+ *  own "create it in WhatsApp Manager" sentence for a missing template);
+ *  the guard branches keep their `blocked` codes (the hand-off card and the
+ *  tests key off them) and add `blockedText` next to them. Owner-facing only;
+ *  nothing here reaches a customer and nothing is sent differently. */
+const notAccepted = (error: string | undefined, templateName?: string) =>
+  bad(`WhatsApp did not accept the message: ${explainSendError(error, templateName)}`, 502);
+// `error` carries the same sentence because the existing Approve and
+// follow-up toasts show `error` when present and only fall back to joining
+// the codes: the wording changes in the toast without touching the client.
+const guardBlocked = (violations: string[], status?: number) => {
+  const blockedText = describeViolations(violations);
+  return NextResponse.json(
+    { ok: false, blocked: violations, blockedText, error: blockedText },
+    status ? { status } : undefined,
+  );
+};
+
+/** The Library entry a human draft IS, if it is one: the trimmed text equals a
+ *  Library body exactly, either as written or with {{1}} filled with the
+ *  customer's greeting name (the shape the scheduler's follow-up tasks carry).
+ *  Returns the Meta template of that key, ready for deliverOut.
+ *
+ *  Almost every task the scheduler raises (Medicare held or not delivered,
+ *  review ask, follow-up held by the guard, the webhook's "did not deliver"
+ *  card) is by construction outside the 24h window and carries the exact
+ *  Library body as its suggested reply with "send it by hand". The Send Reply
+ *  button then went through humanSend as free text and was refused for the
+ *  window, and the chat composer refused for the same reason, so the one card
+ *  the system asked the owner to act on could not be acted on from the board
+ *  (audit, 5 Sep). When the draft is a Library body it now leaves exactly as
+ *  send_template already sends it: plain text inside the window (unchanged),
+ *  the approved template of that key with text fallback outside it. Same
+ *  words reach the customer either way; an edited draft is still free text
+ *  and still refused outside the window, as before. */
+const squash = (s: string) => s.replace(/\s+/g, ' ').trim();
+async function libraryTemplateFor(
+  customer: CustomerRow,
+  draft: string,
+): Promise<{ name: string; params: string[]; lang: CustomerRow['lang']; fallbackToText: true } | null> {
+  let templates: Array<{ key: string; body: string }> = [];
+  try { templates = await getStore().listTemplates(); } catch { return null; }
+  const want = squash(draft);
+  if (!want) return null;
+  const firstName = greetingName(customer);
+  for (const t of templates) {
+    if (!t.body.trim()) continue;
+    const raw = squash(t.body);
+    if (raw === want) {
+      return { name: t.key, params: [], lang: customer.lang, fallbackToText: true };
+    }
+    if (/\{\{1\}\}/.test(t.body) && squash(t.body.replace(/\{\{1\}\}/g, firstName)) === want) {
+      return { name: t.key, params: [firstName], lang: customer.lang, fallbackToText: true };
+    }
+  }
+  return null;
+}
+
+/** Marking a customer Paid BY HAND (the stage badge, or the "mark them Paid"
+ *  instruction on a payment task) used to run only the Paid -> Form Pending
+ *  cascade: the form reminders were armed but the form link itself was never
+ *  sent, so six hours later the customer was chased for a form they had not
+ *  been given (audit, 5 Sep). Every automatic path sends the approved
+ *  "payment received" line at this moment; this makes the manual path do the
+ *  same, with the same silenced rules the screenshot path honours (kill
+ *  switch / AI paused / legacy / opted out -> a one-click task instead of a
+ *  send). A customer who already has the link in a SENT message (e.g. the
+ *  approve_message path, or the model's own reply carried it) gets nothing
+ *  twice. The owner may be marking Paid a day after the customer last wrote,
+ *  so it goes as the Library-keyed template with text fallback, exactly like
+ *  the other "may or may not have written recently" system lines. */
+const FORM_LINK_RE = /workingholidaytax\.com\.au\/tax-form/i;
+async function sendPaymentConfirmationIfMissing(customer: CustomerRow): Promise<void> {
+  const store = getStore();
+  const alreadyTold = (await store.listMessages(customer.id)).some((m) =>
+    m.direction === 'OUT' && m.status === 'SENT' && FORM_LINK_RE.test(m.body ?? ''));
+  if (alreadyTold) return;
+  const confirmation = await paymentReceivedBody(store, customer.lang);
+  const killSwitch = (await store.getSetting('kill_switch')) === true;
+  const silenced = killSwitch || customer.aiPaused || customer.isLegacy || customer.optedOut;
+  const why = killSwitch ? ' (kill switch)' : customer.aiPaused ? ' (AI paused)' : customer.isLegacy ? ' (legacy chat)' : customer.optedOut ? ' (opted out)' : '';
+  const raise = async (reason: string) => {
+    // One card per customer: deliverOut may already have raised its generic
+    // "WhatsApp send failed" task for this same send, so enrich it.
+    const open = await store.findOpenTaskForCustomer(customer.id);
+    if (open) {
+      await store.updateTask(open.id, { reason, severity: 'URGENT', suggestedReply: confirmation });
+    } else {
+      await store.addTask({
+        customerId: customer.id, customerName: customer.name ?? customer.waId,
+        reason, severity: 'URGENT', context: 'Marked Paid by hand.', suggestedReply: confirmation,
+      });
+    }
+  };
+  if (silenced) {
+    await raise(`Marked Paid by hand, but Will is switched off on this chat${why}, so the confirmation with the form link was not sent. Send it yourself.`);
+    await store.audit('owner', 'payment_received_not_sent', { customerId: customer.id, reason: killSwitch ? 'kill_switch' : customer.aiPaused ? 'ai_paused' : customer.isLegacy ? 'legacy' : 'opted_out', via: 'set_state' });
+    return;
+  }
+  const out = await deliverOut(customer, confirmation, 'AI', undefined, {
+    name: paymentReceivedTemplateKey(customer.lang), params: [], lang: customer.lang, fallbackToText: true,
+  });
+  if (!out.ok) {
+    await store.audit('channel', 'payment_received_send_failed', { customerId: customer.id, error: out.error ?? 'unknown error', via: 'set_state' }).catch(() => {});
+    await raise(`PAID, BUT THEY HAVE NOT BEEN TOLD. Marked Paid by hand, but WhatsApp rejected the confirmation with the form link: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`);
+    return;
+  }
+  await store.audit('owner', 'payment_received_sent_on_manual_paid', { customerId: customer.id }).catch(() => {});
+}
+
+/** Owner-facing, never sent to a customer: the toast when the message reached
+ *  WhatsApp but a CRM write after it failed. */
+const SENT_BOOKKEEPING_WARNING = 'Sent. The CRM could not finish updating the chat; refresh to check the stage and task.';
+
+/** Bookkeeping that runs AFTER WhatsApp accepted a message (mark read, close
+ *  the task, move the stage, re-arm the cadence, audit). Once the customer has
+ *  the message the response must say so: these writes used to run bare, so a
+ *  store hiccup here escaped to the POST wrapper and the dashboard printed
+ *  "Not sent: action failed" for a message that had been delivered, and the
+ *  natural reaction was to press send again, which is the duplicate the wrapper
+ *  exists to prevent (audit, 5 Sep). Nothing here changes what is sent or
+ *  written: the same steps run in the same order; a failure is audited with the
+ *  step that broke and the send is still reported as sent, with a warning the
+ *  dashboard can show. Returns the warning, or undefined when all went well. */
+async function afterSend(customerId: string, step: string, fn: () => Promise<void>): Promise<string | undefined> {
+  try {
+    await fn();
+    return undefined;
+  } catch (e) {
+    const error = e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300);
+    await getStore().audit('owner', 'post_send_bookkeeping_failed', { customerId, step, error }).catch(() => { /* the message is out either way */ });
+    return SENT_BOOKKEEPING_WARNING;
+  }
+}
+/** `{ ok: true, warning }` only when there is one, so every existing reader of
+ *  the plain `{ ok: true }` shape is unchanged. */
+const sentJson = (warning: string | undefined, extra: Record<string, unknown> = {}) =>
+  NextResponse.json(warning ? { ok: true, ...extra, warning } : { ok: true, ...extra });
 
 /** Every owner action goes through this endpoint, including the ones that send a
  *  message. An unhandled throw here returns Next's raw HTML 500, which the
@@ -160,7 +336,7 @@ async function handlePost(req: Request) {
       const msg = await store.getMessageById(b.id);
       const customer = msg ? await store.getCustomerById(msg.customerId) : null;
       if (!msg || !customer) return bad('message not found', 404);
-      if (msg.direction !== 'OUT' || msg.status !== 'PENDING_APPROVAL') return bad('not a pending draft');
+      if (msg.direction !== 'OUT' || msg.status !== 'PENDING_APPROVAL') return bad(notPendingDraft(msg));
 
       // Re-run the guard against the customer's CURRENT reality (audit finding:
       // the world may have changed since the draft was written).
@@ -193,14 +369,16 @@ async function handlePost(req: Request) {
         await store.setMessageStatus(msg.id, 'BLOCKED');
         await store.addTask({
           customerId: customer.id, customerName: customer.name ?? customer.waId,
-          reason: `Draft became invalid before approval: ${verdict.violations.join(', ')}`,
+          // Codes first (the hand-off card keys off this prefix), then what
+          // each one means, so the card says what to change (audit, 5 Sep).
+          reason: `Draft became invalid before approval: ${verdict.violations.join(', ')}. ${describeViolations(verdict.violations)}`,
           severity: 'REVIEW', context: msg.body.slice(0, 200),
           // The blocked text itself is the most useful thing to show: the fix is
           // usually one sentence, and editing it beats writing a reply from
           // nothing. It is only a draft — sending it runs the guard again.
           suggestedReply: await suggestReply('', customer, 'draft_invalid', msg.body),
         });
-        return NextResponse.json({ ok: false, blocked: verdict.violations });
+        return guardBlocked(verdict.violations);
       }
 
       // M4: if the draft presupposed a state change that is no longer valid
@@ -225,7 +403,7 @@ async function handlePost(req: Request) {
           reason: `Draft is stale: it assumed ${proposed} but the customer is now ${customer.state}`,
           severity: 'REVIEW', context: msg.body.slice(0, 200), suggestedReply: msg.body,
         });
-        return NextResponse.json({ ok: false, blocked: ['STALE_DRAFT'] });
+        return guardBlocked(['STALE_DRAFT']);
       }
 
       // RACE-02: atomically claim the draft (PENDING_APPROVAL -> QUEUED) so a
@@ -250,10 +428,70 @@ async function handlePost(req: Request) {
         tx = await sendWhatsAppText(customer.waId, msg.body);
       }
       if (!tx.ok) {
+        // Meta throttling is "try again later", not a failure (audit, 5 Sep).
+        // channel.ts marks 429 / 4 / 80007 / 131056 / 130429 / 131049 as
+        // retryable and the scheduler re-queues its own sends on exactly these;
+        // this branch marked the draft FAILED, which retry_blocked never
+        // revives and which raises no task, so a follow-up approved in a busy
+        // morning was simply gone (Momo, per-person marketing limit 131049,
+        // 4 Sep). Put the draft back in the queue instead, so the operator
+        // approves it again when the limit clears. Nothing is sent, nothing
+        // is worded differently.
+        if (tx.retryable) {
+          await store.setMessageStatus(msg.id, 'PENDING_APPROVAL');
+          await store.audit('channel', 'send_throttled', { id: msg.id, customerId: customer.id, error: tx.error });
+          const marketingLimit = /131049/.test(tx.error ?? '');
+          return NextResponse.json({
+            ok: false, retryable: true,
+            error: marketingLimit
+              ? 'WhatsApp has hit this customer’s daily marketing limit; the draft is still in the queue, approve it again tomorrow evening'
+              : 'WhatsApp is throttling right now; the draft is still in the queue, approve it again in a few minutes',
+          });
+        }
         await store.setMessageStatus(msg.id, 'FAILED');
-        await store.audit('channel', 'send_failed', { id: msg.id, error: tx.error });
-        return NextResponse.json({ ok: false, blocked: ['SEND_FAILED'], error: tx.error });
+        // customerId + template so the System card's "WhatsApp send" row can
+        // say whom it concerned (audit, 5 Sep); `id` kept for older readers.
+        await store.audit('channel', 'send_failed', {
+          id: msg.id, messageId: msg.id, customerId: customer.id, template: wa?.name ?? null, error: tx.error,
+        });
+        const explained = explainSendError(tx.error, wa?.name);
+        // A real rejection: the same one-per-customer "WhatsApp send failed"
+        // task deliverOut raises, so the text is on the board with the reason
+        // and can be sent from there. Before, the only trace was a red toast.
+        // A rejected "payment received" draft is the auto path's failed send
+        // in Approval mode (audit, 5 Sep): the owner's Approve IS the payment
+        // confirmation, so the deferred PAID step is applied exactly as
+        // handlePaymentProof keeps its state changes on a rejected send, and
+        // the card is the same URGENT "PAID, BUT THEY HAVE NOT BEEN TOLD" one
+        // with the confirmation ready to send. Before, the customer stayed
+        // unpaid, the pre-payment nudges kept going, and the open payment task
+        // still read "drafted and waiting for your approval".
+        const paymentDraft = proposed === 'PAID' && proposed !== customer.state && allowedStep(proposed);
+        if (paymentDraft) {
+          await store.setState(customer.id, 'PAID', 'HUMAN');
+          await autoAdvanceToForm(customer.id, await getBank());
+          const fresh = await store.getCustomerById(customer.id);
+          if (fresh) await reconcileSchedule(fresh);
+          await store.audit('channel', 'payment_received_send_failed', { customerId: customer.id, error: tx.error ?? 'unknown error', via: 'approve_message' }).catch(() => {});
+        }
+        const failReason = paymentDraft
+          ? `PAID, BUT THEY HAVE NOT BEEN TOLD. You approved the payment and they are moved to Paid, but WhatsApp rejected the confirmation: ${explained}. Send it yourself, they are sitting in silence after paying.`
+          : `WhatsApp send failed: ${explained}`;
+        const severity = paymentDraft ? 'URGENT' : 'REVIEW';
+        const open = await store.findOpenTaskForCustomer(customer.id);
+        if (open) {
+          await store.updateTask(open.id, { reason: failReason, severity, suggestedReply: msg.body });
+        } else {
+          await store.addTask({
+            customerId: customer.id, customerName: customer.name ?? customer.waId,
+            reason: failReason, severity, context: msg.body.slice(0, 200), suggestedReply: msg.body,
+          });
+        }
+        // The toast shows `error` verbatim: with the hint it says what to do.
+        return NextResponse.json({ ok: false, blocked: ['SEND_FAILED'], error: explained });
       }
+      // From here the customer HAS the message: see afterSend (audit, 5 Sep).
+      const warning = await afterSend(customer.id, 'approve_message', async () => {
       // restamp: the draft may have waited minutes or hours for approval. The
       // customer receives it NOW, so its shown time must be now — otherwise it
       // displays the old draft time and sits above newer customer messages.
@@ -280,8 +518,11 @@ async function handlePost(req: Request) {
       if (msg.meta?.income) await store.updateCustomer(customer.id, { income: msg.meta.income });
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
-      await store.audit('owner', 'draft_approved', { id: b.id });
-      return NextResponse.json({ ok: true });
+      // customerId on every owner row, so the audit trail can be followed by
+      // person and not only by message id (audit, 5 Sep).
+      await store.audit('owner', 'draft_approved', { id: b.id, customerId: customer.id, template: wa?.name ?? null });
+      });
+      return sentJson(warning);
     }
 
     case 'send_followup': {
@@ -316,11 +557,13 @@ async function handlePost(req: Request) {
         lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
         isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
       });
-      if (!verdict.allowed) return NextResponse.json({ ok: false, blocked: verdict.violations }, { status: 422 });
+      if (!verdict.allowed) return guardBlocked(verdict.violations, 422);
 
       const waTemplate = { name: template.key, params: [firstName], lang: customer.lang };
       const out = await deliverOut(customer, body, 'HUMAN', { waTemplate }, waTemplate);
-      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      if (!out.ok) return notAccepted(out.error, waTemplate?.name);
+      // From here the customer HAS the message: see afterSend (audit, 5 Sep).
+      const warning = await afterSend(customer.id, 'send_followup', async () => {
       await afterHumanReply(store, customer.id);
       // A nudge sent by hand IS that step of the cadence, so it is recorded as
       // a delivered step and the sequence continues from the next one. It used
@@ -330,7 +573,7 @@ async function handlePost(req: Request) {
       // one-pending-follow-up index would otherwise hand back that row.
       try {
         await store.cancelJobsFor(customer.id, ['FOLLOW_UP', 'AUTO_CLOSE']);
-        const seq = allowed.indexOf(b.id);
+        const seq = allowed.indexOf(template.key);
         const done = await store.addJob({
           customerId: customer.id, kind: 'FOLLOW_UP',
           payload: { templateKey: template.key, seq, flow: flow ?? undefined },
@@ -346,7 +589,8 @@ async function handlePost(req: Request) {
         }).catch(() => { /* the message is out either way */ });
       }
       await store.audit('owner', 'followup_sent_manually', { customerId: customer.id, template: template.key });
-      return NextResponse.json({ ok: true });
+      });
+      return sentJson(warning);
     }
 
     case 'retry_blocked': {
@@ -375,9 +619,9 @@ async function handlePost(req: Request) {
       if (!b.id) return bad('id required');
       const m = await store.getMessageById(b.id);
       if (!m) return bad('message not found', 404);
-      if (m.direction !== 'OUT' || m.status !== 'PENDING_APPROVAL') return bad('not a pending draft');
+      if (m.direction !== 'OUT' || m.status !== 'PENDING_APPROVAL') return bad(notPendingDraft(m));
       await store.setMessageStatus(m.id, 'DISCARDED');
-      await store.audit('owner', 'draft_discarded', { id: b.id });
+      await store.audit('owner', 'draft_discarded', { id: b.id, customerId: m.customerId });
       return NextResponse.json({ ok: true });
     }
 
@@ -386,23 +630,49 @@ async function handlePost(req: Request) {
       // without opening the chat. Sent as the owner (HUMAN), so guard content
       // rules don't apply, but hard gates do.
       if (!b.id || typeof b.body !== 'string' || !b.body.trim()) return bad('id and body required');
-      const task = (await store.listTasks()).find((t) => t.id === b.id);
-      if (!task || task.status !== 'OPEN' || !task.customerId) return bad('task not open', 404);
+      // One indexed row, not listTasks() (every open task plus the recent
+      // resolved ones, contexts included) scanned for one id: that read was
+      // part of the wait behind the greyed Send Reply button (audit, 5 Sep).
+      // Same rule as before: only an OPEN task with a customer can be answered.
+      const task = await store.getTaskById(b.id);
+      // Say WHY it is not open (audit, 5 Sep): the card is usually closed
+      // because the customer was answered from the chat, and the reply typed
+      // on it is lost on the next refresh, so the owner needs to know where
+      // to send it instead. Same rule, same 404.
+      if (!task || task.status !== 'OPEN' || !task.customerId) {
+        return bad(!task
+          ? 'task not open: this task no longer exists'
+          : task.status !== 'OPEN'
+            ? 'task not open: this task is already closed (answered from the chat, or dismissed); open the chat to send this'
+            : 'task not open: this task has no customer to reply to', 404);
+      }
       const customer = await store.getCustomerById(task.customerId);
       if (!customer) return bad('customer gone', 404);
-      const send = await humanSend(customer, b.body.trim());
+      // A draft that IS a Library body goes the way send_template goes (see
+      // libraryTemplateFor): outside the window as the approved template of
+      // that key, so the scheduler's own "send it by hand" tasks can be sent
+      // from the board (audit, 5 Sep). Anything else is free text, as before.
+      const draft = b.body.trim();
+      const library = await libraryTemplateFor(customer, draft);
+      const send = await humanSend(customer, draft, { templateBacked: !!library });
       if (send.error) return bad(send.error);
+      const waTemplate = library && send.outsideWindow ? library : undefined;
       // Only resolve the task if the message actually went out. Before this the
       // send result was ignored, so a failed send still closed the task and the
       // customer was left unanswered with no trace on the board.
-      const out = await deliverOut(customer, send.body!, 'HUMAN');
-      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
+      if (!out.ok) return notAccepted(out.error, waTemplate?.name);
       // Not only THIS task: everything open for this customer, and the unread
       // badge with it. Two tasks for one person answered by one message is one
       // conversation settled, not one and a half.
-      await afterHumanReply(store, customer.id);
-      await store.audit('owner', 'task_reply_sent', { taskId: task.id });
-      return NextResponse.json({ ok: true });
+      // From here the customer HAS the message: see afterSend (audit, 5 Sep).
+      const warning = await afterSend(customer.id, 'send_task_reply', async () => {
+        await afterHumanReply(store, customer.id);
+        // customerId alongside taskId: a task id alone cannot be traced back to
+        // a person once the task is resolved (audit3, 5 Sep).
+        await store.audit('owner', 'task_reply_sent', { taskId: task.id, customerId: customer.id });
+      });
+      return sentJson(warning);
     }
 
     case 'manual_reply': {
@@ -419,20 +689,34 @@ async function handlePost(req: Request) {
       if (!b.customerId || typeof b.body !== 'string' || !b.body.trim()) return bad('customerId and body required');
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
-      const send = await humanSend(customer, b.body.trim());
+      // Same rule as send_task_reply (audit, 5 Sep): the Quick-fill chips drop
+      // the exact Library body (req_abn, req_expenses, req_doc, medicare) into
+      // the composer and it left here as free text, so the 24h banner's own
+      // advice ("use one of the template buttons above") was refused by the
+      // very buttons it pointed at. A composer text that IS a Library body now
+      // goes the way send_template goes: unchanged plain text inside the
+      // window, the approved template of that key (text fallback) outside it.
+      // Edited text is still free text and is still refused outside the window.
+      const draft = b.body.trim();
+      const library = await libraryTemplateFor(customer, draft);
+      const send = await humanSend(customer, draft, { templateBacked: !!library });
       if (send.error) return bad(send.error);
+      const waTemplate = library && send.outsideWindow ? library : undefined;
       // The send can fail at Meta (outside the 24h window, a bad token, a
       // rejected number). Before this check the result was ignored and the UI
       // reported success regardless, so a message that never reached the
       // customer looked sent. Now the real outcome is returned.
-      const out = await deliverOut(customer, send.body!, 'HUMAN');
-      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
+      if (!out.ok) return notAccepted(out.error, waTemplate?.name);
       // Answering from the chat is the same signal as answering via the Tasks
       // screen: the customer has a reply now, so mark the chat read and close
       // any open task for them — WITHOUT pausing Will.
-      await afterHumanReply(store, customer.id);
-      await store.audit('owner', 'manual_reply', { customerId: customer.id });
-      return NextResponse.json({ ok: true, aiPaused: customer.aiPaused });
+      // From here the customer HAS the message: see afterSend (audit, 5 Sep).
+      const warning = await afterSend(customer.id, 'manual_reply', async () => {
+        await afterHumanReply(store, customer.id);
+        await store.audit('owner', 'manual_reply', { customerId: customer.id });
+      });
+      return sentJson(warning, { aiPaused: customer.aiPaused });
     }
 
     case 'send_template': {
@@ -444,15 +728,28 @@ async function handlePost(req: Request) {
       if (!customer) return bad('customer not found', 404);
       const template = (await store.listTemplates()).find((t) => t.id === b.id || t.key === b.id);
       if (!template) return bad('template not found', 404);
-      const send = await humanSend(customer, template.body);
+      // templateBacked: a Library message is one Jo has (or can have) as an
+      // approved Meta template under the SAME key, so it must not be refused
+      // just because the customer last wrote more than 24 hours ago — `medicare`
+      // in particular is sent days after the questionnaire (Jo, 4 Sep). Outside
+      // the window it goes as the approved template of that name; if no such
+      // template exists in Meta yet, fallbackToText re-sends the same wording as
+      // free text, so a key Jo has not created costs nothing.
+      const send = await humanSend(customer, template.body, { templateBacked: true });
       if (send.error) return bad(send.error);
-      const out = await deliverOut(customer, send.body!, 'HUMAN');
-      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      const waTemplate = send.outsideWindow
+        ? { name: template.key, params: [], lang: customer.lang, fallbackToText: true }
+        : undefined;
+      const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
+      if (!out.ok) return notAccepted(out.error, waTemplate?.name);
       // The case Jo hit: sending the very template Will proposed, from the
       // chat, used to leave its task open in the Tasks tab.
-      await afterHumanReply(store, customer.id);
-      await store.audit('owner', 'template_sent_manually', { customerId: customer.id, template: template.key });
-      return NextResponse.json({ ok: true });
+      // From here the customer HAS the message: see afterSend (audit, 5 Sep).
+      const warning = await afterSend(customer.id, 'send_template', async () => {
+        await afterHumanReply(store, customer.id);
+        await store.audit('owner', 'template_sent_manually', { customerId: customer.id, template: template.key });
+      });
+      return sentJson(warning);
     }
 
     case 'recover_lead': {
@@ -517,10 +814,40 @@ async function handlePost(req: Request) {
       return NextResponse.json({ ok: true });
     }
 
+    case 'mark_form_received': {
+      // "Link to chat" on an unmatched-questionnaire task (audit, 5 Sep). The
+      // task used to say "mark their form complete by hand" and the CRM had no
+      // such control: moving the stage badge only moved the badge. This runs
+      // the SAME path an automatic phone match runs (applyFormReceived): form
+      // complete, reminders cancelled, confirmation or ABN questions in the
+      // customer's language, and the Medicare message if the form said "No".
+      // Nothing new is said to the customer; the owner just picks the chat.
+      if (!b.customerId) return bad('customerId required');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      // Single-row read; see send_task_reply (audit, 5 Sep).
+      const task = b.taskId ? (await store.getTaskById(b.taskId)) ?? undefined : undefined;
+      const submitted = parseUnmatchedFormTask(task?.context);
+      const outcome = await applyFormReceived(customer, {
+        email: submitted?.email ?? null,
+        hasMedicare: submitted?.hasMedicare ?? null,
+        matchedOn: 'owner-link',
+      });
+      if (task && task.status === 'OPEN') await store.resolveTask(task.id);
+      await store.audit('owner', 'form_linked_by_hand', {
+        customerId: customer.id, taskId: task?.id ?? null, outcome, state: customer.state,
+      });
+      return NextResponse.json({ ok: true, outcome });
+    }
+
     case 'resolve_task':
       if (!b.id) return bad('id required');
       await store.resolveTask(b.id);
-      await store.audit('owner', 'task_resolved', { id: b.id });
+      // The row used to carry only the task id (audit, 5 Sep); the customer
+      // is looked up best effort so the trail can be read by person.
+      // Single-row read, not the whole task table (audit, 5 Sep).
+      const resolvedFor = await store.getTaskById(b.id).then((t) => t?.customerId ?? null).catch(() => null);
+      await store.audit('owner', 'task_resolved', { id: b.id, customerId: resolvedFor });
       return NextResponse.json({ ok: true });
 
     case 'mark_read':
@@ -551,6 +878,26 @@ async function handlePost(req: Request) {
       if (c && b.value) await reconcileSchedule(c);
       await store.audit('owner', b.value ? 'assistant_resumed' : 'assistant_paused', { customerId: b.id });
       return NextResponse.json({ ok: true });
+    }
+
+    // Owner sets (or clears) the language a chat is locked to (audit, 5 Sep).
+    // `customer.lang` drives every deterministic message and the model's
+    // conversation-language line, and one clear foreign hit is enough to set
+    // it when none is stored: an English customer signing off "Perfecto,
+    // gracias" was locked to Spanish and the operator could see Will answering
+    // in the wrong language with no way to fix it short of the database. Only
+    // the seven i18n codes (or null) are accepted; detection, thresholds and
+    // the prompt are untouched, and the audit row mirrors the automatic one.
+    case 'set_lang': {
+      if (!b.customerId) return bad('customerId required');
+      if (b.lang != null && !LANGS.includes(b.lang as Lang)) return bad('unknown language');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      const to = (b.lang ?? null) as Lang | null;
+      if (to === customer.lang) return NextResponse.json({ ok: true, lang: to });
+      await store.updateCustomer(customer.id, { lang: to });
+      await store.audit('owner', 'language_set', { customerId: customer.id, from: customer.lang, to, by: 'owner' });
+      return NextResponse.json({ ok: true, lang: to });
     }
 
     // The Approval / Autopilot switch. It previously changed nothing but React
@@ -618,7 +965,23 @@ async function handlePost(req: Request) {
         // automatic path does, so the form reminders exist for this customer
         // too (audit, 3 Sep: a customer marked Paid from the stage menu sat in
         // Paid with no reminder ever sent).
-        if (target === 'PAID') await autoAdvanceToForm(customer.id, await getBank());
+        //
+        // Only for a FIRST payment though (audit, 5 Sep): a customer moved
+        // BACK to Paid from a later stage (Review -> Paid to correct a badge)
+        // has already been through this cascade. Running it again pushed them
+        // on to Form Pending, and with the questionnaire already in, queued a
+        // second FORM_RECEIVED: the customer got the "received" line or the
+        // ABN questions twice and the badge read "Review" again on refresh
+        // instead of the "Paid" the owner chose. The stage badge itself is
+        // still honoured for these customers; the confirmation-if-missing
+        // check stays because it is already idempotent.
+        if (target === 'PAID') {
+          if (!POST_PAYMENT_STATES.includes(customer.state)) {
+            await autoAdvanceToForm(customer.id, await getBank());
+          }
+          // The form link goes with it, as on every automatic path (audit, 5 Sep).
+          await sendPaymentConfirmationIfMissing(customer);
+        }
         const f = await store.getCustomerById(customer.id);
         if (f) await reconcileSchedule(f);
         return NextResponse.json({ ok: true });
@@ -638,7 +1001,10 @@ async function handlePost(req: Request) {
         return bad('that stage jump is not allowed; move one stage at a time');
       }
       await store.setState(customer.id, target, 'HUMAN');
-      if (target === 'PAID') await autoAdvanceToForm(customer.id, await getBank());
+      if (target === 'PAID') {
+        await autoAdvanceToForm(customer.id, await getBank());
+        await sendPaymentConfirmationIfMissing(customer);
+      }
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
       return NextResponse.json({ ok: true });
@@ -718,20 +1084,23 @@ async function handlePost(req: Request) {
         ? { name: 'estimate_invoice', params: [formatAUD(amountCents), invoiceUrl.toString()], lang: customer.lang }
         : undefined;
       const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
-      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      if (!out.ok) return notAccepted(out.error, waTemplate?.name);
 
       // Will is never auto-paused (Jo, 31 Aug): the estimate goes out but Will
       // stays active on the chat and keeps handling the customer.
-      await store.updateCustomer(customer.id, { estimatedRefundCents: amountCents });
-      const nextState = stateAfterEstimate(customer.state);
-      if (nextState) {
-        await store.setState(customer.id, nextState, 'HUMAN');
-        const fresh = await store.getCustomerById(customer.id);
-        if (fresh) await reconcileSchedule(fresh);
-      }
-      await afterHumanReply(store, customer.id);
-      await store.audit('owner', 'estimate_sent', { customerId: customer.id, amountCents, invoiceLink: invoiceUrl.toString() });
-      return NextResponse.json({ ok: true });
+      // From here the customer HAS the message: see afterSend (audit, 5 Sep).
+      const warning = await afterSend(customer.id, 'send_estimate', async () => {
+        await store.updateCustomer(customer.id, { estimatedRefundCents: amountCents });
+        const nextState = stateAfterEstimate(customer.state);
+        if (nextState) {
+          await store.setState(customer.id, nextState, 'HUMAN');
+          const fresh = await store.getCustomerById(customer.id);
+          if (fresh) await reconcileSchedule(fresh);
+        }
+        await afterHumanReply(store, customer.id);
+        await store.audit('owner', 'estimate_sent', { customerId: customer.id, amountCents, invoiceLink: invoiceUrl.toString() });
+      });
+      return sentJson(warning);
     }
 
     case 'send_signature': {
@@ -761,23 +1130,26 @@ async function handlePost(req: Request) {
       // variables). Inside it: the Library wording as free text.
       const waTemplate = send.outsideWindow ? { name: 'signature', params: [], lang: customer.lang } : undefined;
       const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
-      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      if (!out.ok) return notAccepted(out.error, waTemplate?.name);
       // Will is never auto-paused (Jo, 31 Aug): the "ready for signature" note
       // goes out but Will stays active on the chat.
       // Only move if they were still upstream; a customer already at Signature
       // stays put so the pipeline position does not change on this click.
-      if (customer.state !== 'SIGNATURE_PENDING') await store.setState(customer.id, 'SIGNATURE_PENDING', 'HUMAN');
-      await store.audit('owner', 'signature_stage_forced', { customerId: customer.id, from: customer.state });
-      const fresh = await store.getCustomerById(customer.id);
-      if (fresh) await reconcileSchedule(fresh);
-      await afterHumanReply(store, customer.id);
-      // LAST, because reconcileSchedule above re-arms the signature cadence with
-      // the three-day prep offset that belongs to the Done path. The customer has
-      // the return in their inbox NOW, so the nudges run 24h / 3d / 7d from this
-      // click (audit, 4 Sep: nudge one landed four days after the notice).
-      await restartSignatureCadenceFromNotice(customer.id).catch(() => { /* the notice is what matters */ });
-      await store.audit('owner', 'signature_sent', { customerId: customer.id });
-      return NextResponse.json({ ok: true });
+      // From here the customer HAS the message: see afterSend (audit, 5 Sep).
+      const warning = await afterSend(customer.id, 'send_signature', async () => {
+        if (customer.state !== 'SIGNATURE_PENDING') await store.setState(customer.id, 'SIGNATURE_PENDING', 'HUMAN');
+        await store.audit('owner', 'signature_stage_forced', { customerId: customer.id, from: customer.state });
+        const fresh = await store.getCustomerById(customer.id);
+        if (fresh) await reconcileSchedule(fresh);
+        await afterHumanReply(store, customer.id);
+        // LAST, because reconcileSchedule above re-arms the signature cadence with
+        // the three-day prep offset that belongs to the Done path. The customer has
+        // the return in their inbox NOW, so the nudges run 24h / 3d / 7d from this
+        // click (audit, 4 Sep: nudge one landed four days after the notice).
+        await restartSignatureCadenceFromNotice(customer.id).catch(() => { /* the notice is what matters */ });
+        await store.audit('owner', 'signature_sent', { customerId: customer.id });
+      });
+      return sentJson(warning);
     }
 
     case 'send_lodged': {
@@ -798,31 +1170,34 @@ async function handlePost(req: Request) {
       // `lodged_confirmation` (no variables). Inside it: free text.
       const waTemplate = send.outsideWindow ? { name: 'lodged_confirmation', params: [], lang: customer.lang } : undefined;
       const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
-      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
+      if (!out.ok) return notAccepted(out.error, waTemplate?.name);
       // Will is never auto-paused (Jo, 31 Aug): the lodged note goes out but
       // Will stays active on the chat.
-      await store.setState(customer.id, 'LODGED', 'HUMAN');
-      // Ask for a Google review 1 hour later, as its own warmer message (Jo, 31
-      // Aug): the lodgement note no longer carries the ask; the REVIEW_REQUEST
-      // job sends it once, a little after the good news lands.
-      await store.addJob({
-        customerId: customer.id, kind: 'REVIEW_REQUEST', payload: {},
-        runAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-      }).catch(() => { /* never let the review nudge block marking lodged */ });
-      const fresh = await store.getCustomerById(customer.id);
-      if (fresh) await reconcileSchedule(fresh);
-      await afterHumanReply(store, customer.id);
-      // Lodged IS the end of the job, from whichever button it was pressed
-      // (Jo, 3 Sep). From the CRM card the client transfer happened in the
-      // browser; pressed inside Will's chat it did not happen at all, so the
-      // card stayed in Done (audit, 4 Sep). Filing it here covers both.
+      // From here the customer HAS the message: see afterSend (audit, 5 Sep).
       let filedUnderClients = false;
-      try {
-        const { archiveTaskByPhone } = await import('@/lib/db');
-        filedUnderClients = !!(await archiveTaskByPhone(customer.waId));
-      } catch { /* never let the CRM half block marking lodged */ }
-      await store.audit('owner', 'lodged_sent', { customerId: customer.id, filedUnderClients });
-      return NextResponse.json({ ok: true, filedUnderClients });
+      const warning = await afterSend(customer.id, 'send_lodged', async () => {
+        await store.setState(customer.id, 'LODGED', 'HUMAN');
+        // Ask for a Google review 1 hour later, as its own warmer message (Jo, 31
+        // Aug): the lodgement note no longer carries the ask; the REVIEW_REQUEST
+        // job sends it once, a little after the good news lands.
+        await store.addJob({
+          customerId: customer.id, kind: 'REVIEW_REQUEST', payload: {},
+          runAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+        }).catch(() => { /* never let the review nudge block marking lodged */ });
+        const fresh = await store.getCustomerById(customer.id);
+        if (fresh) await reconcileSchedule(fresh);
+        await afterHumanReply(store, customer.id);
+        // Lodged IS the end of the job, from whichever button it was pressed
+        // (Jo, 3 Sep). From the CRM card the client transfer happened in the
+        // browser; pressed inside Will's chat it did not happen at all, so the
+        // card stayed in Done (audit, 4 Sep). Filing it here covers both.
+        try {
+          const { archiveTaskByPhone } = await import('@/lib/db');
+          filedUnderClients = !!(await archiveTaskByPhone(customer.waId));
+        } catch { /* never let the CRM half block marking lodged */ }
+        await store.audit('owner', 'lodged_sent', { customerId: customer.id, filedUnderClients });
+      });
+      return sentJson(warning, { filedUnderClients });
     }
 
     case 'add_template': {
@@ -834,16 +1209,33 @@ async function handlePost(req: Request) {
         isApprovedTemplate: false, estimateFromTeam: null,
       });
       const cv = saveTimeViolations(verdict.violations);
-      if (cv.length) return NextResponse.json({ ok: false, blocked: cv }, { status: 422 });
+      if (cv.length) return guardBlocked(cv, 422);
       const row = await store.addTemplate({ category: b.category ?? 'Custom', title: b.title ?? 'Untitled message', body: b.body });
       await store.audit('owner', 'template_added', { id: row.id });
       return NextResponse.json({ ok: true, id: row.id });
     }
-    case 'delete_template':
+    case 'delete_template': {
       if (!b.id) return bad('id required');
+      // Deleting stays possible, but a follow-up step must not vanish quietly
+      // (audit, 5 Sep): when a FOLLOW_UP job finds no template the scheduler
+      // skips that step (H6) and nothing else says so, so every customer in
+      // that flow silently misses the nudge until someone runs Sync library
+      // from file. The audit row now names the key, a follow-up key also
+      // writes a row the System card turns into a warning, and the reply
+      // tells the caller which step it just removed. Nothing the customer
+      // sees changes; the gap is just visible now.
+      const doomed = (await store.listTemplates()).find((t) => t.id === b.id) ?? null;
+      const followUpStep = !!doomed && Object.values(FLOW_TEMPLATES).some((keys) => keys.includes(doomed.key));
       await store.deleteTemplate(b.id);
-      await store.audit('owner', 'template_deleted', { id: b.id });
-      return NextResponse.json({ ok: true });
+      await store.audit('owner', 'template_deleted', { id: b.id, key: doomed?.key ?? null, title: doomed?.title ?? null, followUpStep });
+      if (followUpStep && doomed) {
+        await store.audit('owner', 'follow_up_template_deleted', {
+          id: b.id, key: doomed.key, title: doomed.title,
+          note: `Follow-up step "${doomed.key}" (${doomed.title}) was deleted from the Library. Every customer due that step is skipped until it is restored with Sync library from file.`,
+        });
+      }
+      return NextResponse.json({ ok: true, key: doomed?.key ?? null, followUpStep });
+    }
 
 
     case 'set_goal':
@@ -865,11 +1257,24 @@ async function handlePost(req: Request) {
       });
       const contentViolations = saveTimeViolations(verdict.violations);
       if (contentViolations.length) {
-        return NextResponse.json({ ok: false, blocked: contentViolations }, { status: 422 });
+        return guardBlocked(contentViolations, 422);
       }
+      // Keep the wording being replaced (audit, 5 Sep): the store overwrites
+      // `body` in place and only bumps the version counter, so after a
+      // mistaken edit, or after Sync reverts an owner edit to the code copy,
+      // the previous text was gone and had to be retyped from memory. The
+      // audit row now carries before/after (and the key, so a follow-up step
+      // can be found without the id); the Library modal can list these and
+      // restore one by calling update_template again, through the same
+      // save-time guard above. Storage, sends and rules are unchanged.
+      const current = (await store.listTemplates()).find((t) => t.id === b.id) ?? null;
       await store.updateTemplate(b.id, b.body);
-      await store.audit('owner', 'template_updated', { id: b.id });
-      return NextResponse.json({ ok: true });
+      const version = current ? current.versions + 1 : null;
+      await store.audit('owner', 'template_updated', {
+        id: b.id, key: current?.key ?? null, title: current?.title ?? null,
+        before: current?.body ?? null, after: b.body, version,
+      });
+      return NextResponse.json({ ok: true, key: current?.key ?? null, version });
     }
   }
   return bad('bad action');

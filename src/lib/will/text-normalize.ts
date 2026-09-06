@@ -264,3 +264,43 @@ export function normaliseWillText(
   if (!opts.firstMessage && opts.firstName) s = stripNameAddress(s, opts.firstName);
   return s;
 }
+/** A message that is purely an acknowledgement: "thanks", "ok", "yes all good",
+ *  "perfect 👍", and the same in the languages Will speaks. Nothing in it asks
+ *  for anything, so it never needs a person (Jo, 4 Sep). Deliberately short-only:
+ *  the words are common, and inside a longer sentence they mean nothing. */
+export function isCourtesyLine(text: string | null | undefined): boolean {
+  const t = (text ?? '').trim();
+  if (!t) return true;
+  if (t.length > 60) return false;
+  if (t.includes('?') || t.includes('？')) return false;
+  const stripped = t.toLowerCase().replace(/[^\p{L}\p{N}\s]+/gu, ' ').replace(/\s+/g, ' ').trim();
+  if (!stripped) return true; // emoji only
+  const words = stripped.split(' ').filter(Boolean);
+  if (words.length > 8) return false;
+  const COURTESY = /^(?:yes|yeah|yep|ok|okay|okey|k|sure|all|good|great|perfect|lovely|nice|cool|thanks|thank|you|thankyou|cheers|much|appreciate|it|awesome|amazing|got|received|noted|understood|fine|no|worries|problem|super|danke|dir|vielen|dank|alles|klar|passt|perfekt|super|gracias|muchas|vale|genial|perfecto|todo|bien|merci|beaucoup|parfait|nickel|super|grazie|mille|perfetto|va|bene|tutto|ottimo|obrigad[oa]|muito|perfeito|tudo|bem|certo|ありがとう|ありがとうございます|了解|承知|わかりました|大丈夫|はい)$/u;
+  return words.every((w) => COURTESY.test(w));
+}
+
+
+/**
+ * ONE LINE IS THE WHOLE ANSWER TO "okay thank you" (Jo, 4 Sep).
+ *
+ * Millie (+61 424 909 473) wrote "okay thank you" after a long explanation
+ * about her ATO review. Will answered: "No worries at all, Millie! I know the
+ * wait can be frustrating, but you're in good hands. Just sit tight and we'll
+ * keep an eye on it for you." Jo deleted it from the phone and sent "No worries
+ * at all!" instead. Three warm sentences at somebody who is just closing the
+ * conversation is not warmth, it is a machine filling space — and it is one of
+ * the clearest tells that nobody is typing.
+ *
+ * So: keep the first sentence, drop the rest. Returns the input unchanged when
+ * there is nothing to cut.
+ */
+export function firstSentenceOnly(text: string): string {
+  const line = text.split('\n').map((l) => l.trim()).find(Boolean) ?? '';
+  // Terminator followed by whitespace, or one of the full-width ones (Japanese
+  // has no space after 。). The terminator itself is kept.
+  const m = line.match(/^[\s\S]*?(?:[.!?](?=\s)|[。！？])/u);
+  const first = (m ? m[0] : line).trim();
+  return first || text.trim();
+}

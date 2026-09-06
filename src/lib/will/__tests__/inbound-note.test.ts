@@ -64,3 +64,28 @@ it('a second attachment while a task is already open UPDATES it instead of creat
   expect(patch.context).toContain('first invoice photo');
   expect(patch.context).toContain('📷 [Photo]');
 });
+
+// audit3 core 71, 5 Sep: an attachment arriving on top of an already-open
+// URGENT task ("reply was not delivered, they are waiting") used to silently
+// downgrade it to REVIEW and throw away the reason that said the customer was
+// waiting with no answer.
+it('an attachment on top of an open URGENT task does not downgrade it, and keeps the earlier reason', async () => {
+  findOpenTaskForCustomer.mockResolvedValue({
+    id: 'existing-task',
+    context: 'Will\'s reply was not delivered',
+    reason: 'Will\'s reply was not delivered to the customer. They are waiting with no answer.',
+    severity: 'URGENT',
+    suggestedReply: null,
+  });
+  await handleInboundNote('61400000001', '📷 [Photo]', {
+    media: { id: '56', kind: 'image', mime: 'image/jpeg' },
+  });
+  expect(updateTask).toHaveBeenCalledTimes(1);
+  const [id, patch] = updateTask.mock.calls[0];
+  expect(id).toBe('existing-task');
+  expect(patch.severity).toBe('URGENT');
+  // The new headline still leads (shortReason reads the first sentence)...
+  expect(patch.reason.split('\n')[0]).toMatch(/cannot read/);
+  // ...but the fact the customer is still waiting is not thrown away.
+  expect(patch.reason).toContain('waiting with no answer');
+});

@@ -6,11 +6,29 @@ import { STAGE_GROUPS } from '@/lib/will/state-machine';
 
 export const dynamic = 'force-dynamic';
 
+/** How many conversations the `customers` array carries, newest first.
+ *
+ *  This route is re-fetched by every open tab on every change tick (about
+ *  every 15 s during the day), on every tab switch and after every action.
+ *  Since 4 Sep `listCustomers()` pages the WHOLE table (5+ sequential 1,000-row
+ *  reads at 5,000 customers, 2-3 MB of JSON) because the reports need every
+ *  row; the dashboard never did. It only uses this array for id lookups, the
+ *  default chat selection and a fallback count, and the chat list is already
+ *  paged through /api/will/chats. So this is one indexed range query for the
+ *  newest conversations, the same rows and order the chat list shows, plus the
+ *  handful of customers an open task or draft points at (audit, 5 Sep).
+ *
+ *  1,000 is the window the dashboard was designed around (the PostgREST cap the
+ *  old ordered select had). It can drop to a few hundred once the client's
+ *  selected-chat lookup (Dashboard chatSel/drawer) also looks in its own
+ *  loaded chat pages, which it does not yet. */
+const CUSTOMER_WINDOW = 1000;
+
 export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const store = getStore();
-  const [customers, tasks, templates, pending, followupIds, autoReplyIds, total, groupCountArr] = await Promise.all([
-    store.listCustomers(),
+  const [recent, tasks, templates, pending, followupIds, autoReplyIds, total, groupCountArr] = await Promise.all([
+    store.listChatPage(0, CUSTOMER_WINDOW),
     store.listTasks(),
     store.listTemplates(),
     store.pendingApprovals(),
@@ -38,9 +56,20 @@ export async function GET() {
   // WAS the name. A profile name is whatever the person typed into WhatsApp:
   // it is not unique, it is not searchable, and two "Ami"s are indistinguishable.
   //
-  // So the number is attached here, once, from the customers already fetched
-  // above — no extra query, no migration, and the UI never has to fall back to
-  // a name again.
+  // So the number is attached here, once, from the customers fetched above.
+  // A task or draft can point at a customer older than the window (an old
+  // handoff, a paid customer who went quiet): those rows are fetched by id in
+  // one targeted lookup and added to `customers`, so no card ever loses its
+  // number and the Tasks screen, drawer and chat header keep resolving them
+  // exactly as when the whole table was sent (audit, 5 Sep).
+  const have = new Set(recent.map((c) => c.id));
+  const referenced = [...new Set(
+    [...tasks, ...pending]
+      .map((r) => r.customerId)
+      .filter((id): id is string => !!id && !have.has(id)),
+  )];
+  const extra = referenced.length ? await store.listCustomersByIds(referenced).catch(() => []) : [];
+  const customers = [...recent, ...extra];
   const waById = new Map(customers.map((c) => [c.id, c.waId]));
   const withWaId = <T extends { customerId: string | null }>(row: T) => ({
     ...row,

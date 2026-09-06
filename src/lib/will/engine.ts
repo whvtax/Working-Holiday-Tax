@@ -12,7 +12,7 @@ import { claimsPayment } from './payment-claim';
 import { professionalQuestionMessage } from './i18n';
 import { canTransition, CustomerState } from './state-machine';
 import { resolveAiMode, type AiMode } from './mode';
-import { normaliseWillText, firstNameOf } from './text-normalize';
+import { normaliseWillText, firstNameOf, isCourtesyLine, firstSentenceOnly } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -305,6 +305,35 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   let text = applyBankRule(
     fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
   );
+
+  // ── "okay thank you" GETS ONE LINE BACK (Jo, 4 Sep) ───────────────────────
+  //
+  // Millie (+61 424 909 473) closed a long ATO-review explanation with "okay
+  // thank you". Will answered with three warm sentences: "No worries at all,
+  // Millie! I know the wait can be frustrating, but you're in good hands. Just
+  // sit tight and we'll keep an eye on it for you." Jo deleted it from the
+  // phone and sent "No worries at all!" himself. At the end of a conversation
+  // three sentences of reassurance is not warmth, it is padding, and padding is
+  // one of the clearest tells that nobody is typing.
+  //
+  // WHEN IT APPLIES, narrowly — "yes" is also a courtesy line, and "yes" to
+  // "shall we get started?" must still get the whole payment message:
+  //   - everything they wrote since our last message is pure courtesy, AND
+  //   - the reply carries nothing structural: no digits (a price, an amount, a
+  //     BSB, an account, a year), no link, and no question of our own, AND
+  //   - it is actually long: over 120 characters.
+  // Anything with substance in it is left exactly as the model wrote it.
+  const courtesyClose = isCourtesyLine(customerBurst)
+    && text.length > 120
+    && !/\d/.test(text)
+    && !/https?:\/\//i.test(text)
+    && !text.includes('?')
+    && !text.includes('？');
+  if (courtesyClose) {
+    const oneLine = firstSentenceOnly(text);
+    if (oneLine && oneLine.length < text.length) text = oneLine;
+  }
+
   let verdict = policyGuard(text, guardCtx);
   let rewriteNote: string | undefined;
 
