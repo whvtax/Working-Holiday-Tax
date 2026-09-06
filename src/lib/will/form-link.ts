@@ -23,6 +23,26 @@ export const MEDICARE_DELAY_MS = 15 * 60 * 1000;
 export const medicareNoKey = (customerId: string) => `medicare_no:${customerId}`;
 
 /**
+ * Setting key: this customer answered "No" to Medicare on their questionnaire,
+ * so the exemption message APPLIES to them. Set once, true forever, the moment
+ * that answer is first recorded — unlike medicareNoKey (which flips back to
+ * false once the MEDICARE_INFO job is queued/replayed), this one stays true so
+ * later code can always tell "the exemption message applies to this person"
+ * apart from "it doesn't apply." Paired with medicareInfoSentKey below (Jo,
+ * 6 Sep: auto-pause Will once Review is reached with everything actually
+ * sent — needs to tell "not applicable" apart from "applicable, not sent yet").
+ */
+export const medicareAppliesKey = (customerId: string) => `medicare_applies:${customerId}`;
+
+/**
+ * Setting key: true only once the MEDICARE_INFO job has genuinely delivered
+ * the exemption message (deliverOut reported ok, or it went in Approval mode).
+ * Never inferred from a pipeline stage or from a job merely being queued —
+ * only from the actual send succeeding (Jo, 6 Sep).
+ */
+export const medicareInfoSentKey = (customerId: string) => `medicare_info_sent_flag:${customerId}`;
+
+/**
  * True when the questionnaire says this person was NOT covered by Medicare.
  *
  * Deliberately strict: only an explicit "no" qualifies. The field arrives as
@@ -140,6 +160,7 @@ export async function applyFormReceived(
       // and queues MEDICARE_INFO with the same 15 minute spacing.
       if (noMedicare(hasMedicare)) {
         await store.setSetting(medicareNoKey(customer.id), true);
+        await store.setSetting(medicareAppliesKey(customer.id), true);
         await store.audit('system', 'medicare_no_remembered', { customerId: customer.id });
       }
       await store.audit('system', 'form_received_before_payment', {
@@ -188,6 +209,9 @@ export async function applyFormReceived(
   // remembered by hand. 15 minutes, not immediately: the questionnaire
   // acknowledgement (or, for a TFN+ABN customer, the ABN questions) goes out
   // on the next tick, and two messages landing together read as a blast.
+  if (noMedicare(hasMedicare)) {
+    await store.setSetting(medicareAppliesKey(customer.id), true);
+  }
   if (noMedicare(hasMedicare) && medicareEverQueued) {
     await store.audit('system', 'medicare_info_already_queued', { customerId: customer.id });
   } else if (noMedicare(hasMedicare)) {

@@ -2047,12 +2047,8 @@ export default function DashboardClient() {
                   is what pushes this view past the fold, the horizontal one is
                   what keeps the two columns readable as separate cards. No
                   marginBottom — this is the last thing in .pbody, and its own
-                  bottom padding already holds the record off the pinned .pfoot.
-                  auto-fit (not a fixed 2-col split) so a panel never gets
-                  squeezed below ~280px — under ~600px it drops to one column,
-                  which is what keeps the 110px .fk label readable next to the
-                  value (TFN, bank details, etc) on a phone (audit, 5 Sep). */}
-              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',columnGap:12,rowGap:9}}>
+                  bottom padding already holds the record off the pinned .pfoot. */}
+              <div style={{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',columnGap:12,rowGap:9}}>
 
 
 

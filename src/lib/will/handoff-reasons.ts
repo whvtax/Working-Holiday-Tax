@@ -78,6 +78,20 @@ const RULES: Rule[] = [
     prevent: 'Nothing to fix. This is Will keeping out of a chat you took over. He comes back when you switch him on again in the chat header.',
   },
   {
+    // A NEW inbound message arriving while Will is switched off for this one
+    // customer — either paused by hand, or paused automatically once they
+    // reached Review with everything (form, ABN, Medicare where owed)
+    // genuinely sent (Jo, 6 Sep). Distinct from the rule above: that one is
+    // the general "Policy Guard blocked reply: AI_PAUSED_FOR_CUSTOMER" line
+    // raised wherever a draft was refused; this one has no draft at all — it
+    // is raised straight off the inbound message, folded per customer.
+    match: /wrote in while Will is switched off for them/i,
+    kind: 'policy',
+    label: 'They wrote in while Will is off for them',
+    because: 'Will is switched off for this customer (by hand, or automatically once Review was reached with everything sent), so nothing was drafted',
+    prevent: 'Reply to them yourself. Switch Will back on for this customer in the chat header whenever you want him handling it again.',
+  },
+  {
     match: /^Policy Guard blocked reply|^Autopilot reply blocked before sending|^Follow-up blocked by Policy Guard|^Draft became invalid before approval/i,
     kind: 'guard',
     label: 'A rule refused Will’s message',

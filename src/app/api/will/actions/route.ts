@@ -7,8 +7,9 @@ import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES, paymentReceivedBody } from '@/lib/will/service';
-import { paymentReceivedTemplateKey, LANGS, Lang } from '@/lib/will/i18n';
+import { paymentReceivedTemplateKey } from '@/lib/will/i18n';
 import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
+import { maybeAutoOffWill } from '@/lib/will/review-auto-off';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
@@ -30,10 +31,7 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received'
-  | 'set_lang';
-  /** set_lang only: one of the seven i18n codes, or null to clear it. */
-  lang?: string | null;
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received';
   id?: string;
   customerId?: string;
   body?: string;
@@ -880,26 +878,6 @@ async function handlePost(req: Request) {
       return NextResponse.json({ ok: true });
     }
 
-    // Owner sets (or clears) the language a chat is locked to (audit, 5 Sep).
-    // `customer.lang` drives every deterministic message and the model's
-    // conversation-language line, and one clear foreign hit is enough to set
-    // it when none is stored: an English customer signing off "Perfecto,
-    // gracias" was locked to Spanish and the operator could see Will answering
-    // in the wrong language with no way to fix it short of the database. Only
-    // the seven i18n codes (or null) are accepted; detection, thresholds and
-    // the prompt are untouched, and the audit row mirrors the automatic one.
-    case 'set_lang': {
-      if (!b.customerId) return bad('customerId required');
-      if (b.lang != null && !LANGS.includes(b.lang as Lang)) return bad('unknown language');
-      const customer = await store.getCustomerById(b.customerId);
-      if (!customer) return bad('customer not found', 404);
-      const to = (b.lang ?? null) as Lang | null;
-      if (to === customer.lang) return NextResponse.json({ ok: true, lang: to });
-      await store.updateCustomer(customer.id, { lang: to });
-      await store.audit('owner', 'language_set', { customerId: customer.id, from: customer.lang, to, by: 'owner' });
-      return NextResponse.json({ ok: true, lang: to });
-    }
-
     // The Approval / Autopilot switch. It previously changed nothing but React
     // state, so the dashboard showed a mode the system had never been told
     // about — and approval mode held only because the settings row happened to
@@ -1007,6 +985,10 @@ async function handlePost(req: Request) {
       }
       const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
+      // Reaching Review with the questionnaire, ABN (if owed) and Medicare
+      // (if owed) all genuinely done switches Will off for this customer for
+      // good (Jo, 6 Sep) — see review-auto-off.ts for the exact condition.
+      if (fresh) await maybeAutoOffWill(store, fresh).catch(() => { /* best effort: the stage move itself must not fail */ });
       return NextResponse.json({ ok: true });
     }
 

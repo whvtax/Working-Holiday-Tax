@@ -7,8 +7,7 @@
 // ============================================================
 
 export type Lang = 'en' | 'de' | 'ja' | 'es' | 'fr' | 'it' | 'pt';
-/** The seven codes a chat can be locked to, for the owner's language picker
- *  and the set_lang action (audit, 5 Sep). Same set as `Lang`, nothing new. */
+/** The seven supported codes as a runtime list. Same set as `Lang`, nothing new. */
 export const LANGS: readonly Lang[] = ['en', 'de', 'ja', 'es', 'fr', 'it', 'pt'];
 
 // Distinctive keyword lists per language, English included. English used to be

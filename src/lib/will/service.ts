@@ -9,6 +9,7 @@ import { runEngine, AiMode, EngineOutcome } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
+import { maybeAutoOffWill } from './review-auto-off';
 import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, formReceivedMessage, formReceivedTemplateKey, isPaymentReceivedDraft } from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut, fetchWaMedia } from './channel';
@@ -549,6 +550,14 @@ async function sendOwedFormAck(store: Store, customer: CustomerRow, text: string
   await store.audit('system', out.ok ? 'form_ack_sent_after_abn' : 'form_ack_failed_after_abn', {
     customerId: customer.id, error: out.ok ? undefined : out.error, answered: text.slice(0, 120),
   });
+  if (out.ok) {
+    // The ABN answers just genuinely went through — if they had already
+    // reached Review and Medicare (if owed) had already sent, this is the
+    // piece that was missing, so re-check now rather than waiting for
+    // another trigger that may never come (Jo, 6 Sep).
+    const fresh = await store.getCustomerById(customer.id);
+    if (fresh) await maybeAutoOffWill(store, fresh).catch(() => { /* best effort */ });
+  }
 }
 
 /** Customer text quoted into the profile block: prompt structure stripped, and
@@ -881,6 +890,17 @@ export async function decideAndAct(
       newContext: taskContext, suggestedReply: outcome.task.suggestedReply ?? null,
     });
     await store.audit('assistant', 'human_task_created', { reason: outcome.task.reason });
+  } else if (outcome.kind === 'silent' && outcome.guardViolations?.includes('AI_PAUSED_FOR_CUSTOMER')) {
+    // Will is switched off for this customer — either Jo took the wheel by
+    // hand, or the auto-off-at-Review rule fired (Jo, 6 Sep). Either way the
+    // message is already stored above like any other; Will stays completely
+    // silent (no draft, no auto-reply of any kind) and a task opens (or
+    // folds into the one already open) so Jo sees it and picks it up himself.
+    await raiseOrUpdateTask(store, customer, {
+      reason: `${customer.name ?? customer.waId} wrote in while Will is switched off for them — reply by hand.`,
+      severity: 'REVIEW', newContext: text.slice(0, 300), suggestedReply: null,
+    });
+    await store.audit('assistant', 'message_while_ai_paused', { customerId: customer.id });
   }
 
   // ── The long message that is now waiting on a person ─────────────────────

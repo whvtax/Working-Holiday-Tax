@@ -213,7 +213,15 @@ export class SupabaseStore implements Store {
       // failed every message to a human task. Probe it under a dedicated key
       // with a limit high enough it can never report the real day spent, so
       // this check never competes with the actual budget it protects.
-      ['will_bump_counter', () => this.sb().rpc('will_bump_counter', { p_key: 'schema_probe', p_limit: Number.MAX_SAFE_INTEGER })],
+      //
+      // (found 6 Sep, chasing a permanently red "Schema" dot with every real
+      // migration genuinely applied): p_limit is declared `integer` in SQL
+      // (max 2,147,483,647), and this sent Number.MAX_SAFE_INTEGER
+      // (9,007,199,254,740,991) — far outside that range, so Postgres could
+      // not resolve an `integer` overload and reported the function itself as
+      // "does not exist", exactly as a genuinely missing migration would.
+      // Postgres' actual `integer` max is the honest ceiling to send here.
+      ['will_bump_counter', () => this.sb().rpc('will_bump_counter', { p_key: 'schema_probe', p_limit: 2147483647 })],
       // Migration 031's will_lost_analysis is deliberately NOT probed here.
       // /api/will/health renders any miss in this list as "NEW CUSTOMERS ARE
       // BEING DROPPED", which is true of the four above and false of that one:

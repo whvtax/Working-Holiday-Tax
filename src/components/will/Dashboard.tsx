@@ -7,7 +7,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
-import { LANGS } from '@/lib/will/i18n';
 import { explainHandoffReason, summariseArrivals } from '@/lib/will/handoff-reasons';
 import { describeViolations } from '@/lib/will/send-errors';
 import type { MonthConversion } from '@/lib/will/monthly-conversion';
@@ -354,11 +353,6 @@ function isLangVariantOf(key: string, base: string): boolean {
   return key.startsWith(base + '_') && /^[a-z]{2}$/.test(key.slice(base.length + 1));
 }
 
-/** Owner-facing names for the language codes in the chat header. */
-const LANG_LABELS: Record<string, string> = {
-  en: 'English', de: 'German', ja: 'Japanese', es: 'Spanish', fr: 'French', it: 'Italian', pt: 'Portuguese',
-};
-
 /** The Library row a Quick-fill chip loads for this customer: `<base>_<lang>`
  *  when the customer's language is not English AND that row is seeded, else
  *  the English base row. Same choice the scheduler makes for the automatic
@@ -606,13 +600,10 @@ export default function Dashboard() {
   // Everyone scheduled to receive a follow-up. Kept current while the view is
   // open: this is a live queue, not a report you regenerate.
   const [followups, setFollowups] = useState<FollowUpRow[] | null>(null);
-  // Status of the one-time retro that reconciled every existing chat.
-  type Backfill = { done: boolean; processed: number; total: number | null; at: string | null; started: boolean };
-  const [followupBackfill, setFollowupBackfill] = useState<Backfill | null>(null);
   const loadFollowups = useCallback(async () => {
     try {
       const r = await fetch('/api/will/followups').then((x) => x.json());
-      if (r.ok) { setFollowups(r.rows ?? []); setFollowupBackfill(r.backfill ?? null); }
+      if (r.ok) { setFollowups(r.rows ?? []); }
     } catch { /* keep whatever is on screen */ }
   }, []);
   // Two-click arming for "clear the log" (see the Decision Log panel).
@@ -1656,29 +1647,6 @@ export default function Dashboard() {
                               </>
                             )}
                           </div>
-                          {/* The language this chat is locked to. It drives every
-                              deterministic message and the model's conversation
-                              language, and one clear foreign hit is enough to set
-                              it ("Perfecto, gracias" locks an English customer to
-                              Spanish). It was only ever visible as a two-letter
-                              suffix on handoff cards, so the owner saw Will answer
-                              in the wrong language with no way to tell why or fix
-                              it (audit, 5 Sep). Now it sits next to the stage and
-                              can be corrected in one click. */}
-                          <select
-                            className="langpick"
-                            title="The language Will writes to this customer in. Change it if Will has picked the wrong one."
-                            value={chatSel.lang ?? ''}
-                            onChange={async (e) => {
-                              const v = e.target.value || null;
-                              const r = await act({ action: 'set_lang', customerId: chatSel.id, lang: v });
-                              say(r?.ok ? (v ? `Language set to ${LANG_LABELS[v] ?? v}` : 'Language cleared, Will will detect it again') : `❌ ${r?.error ?? 'could not change language'}`);
-                              loadChat(chatSel.id); refresh();
-                            }}
-                          >
-                            <option value="">Language: not set</option>
-                            {LANGS.map((l) => <option key={l} value={l}>{LANG_LABELS[l]}</option>)}
-                          </select>
                         </div>
                       </div>
                       <div className={`aitoggle ${chatSel.aiPaused ? 'off' : ''}`} onClick={async () => {
@@ -2018,7 +1986,6 @@ export default function Dashboard() {
         {view === 'tasks' && (
           <section className="view active">
             <h2 className="vt">Tasks</h2>
-            <div className="vsub">Everything that needs your attention, in one place.</div>
 
             {/* Pull the whole history out as one document. Jo, 28 Aug: he
                 reads it through and sends back the answers worth adding to the
@@ -2222,18 +2189,6 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-
-            {/* Retro status: shows Jo that the one-time pass over every existing
-                chat has run and covered everyone, or how far it has got. */}
-            {followupBackfill && followupBackfill.started && (
-              <div className={`retrobar ${followupBackfill.done ? 'done' : 'run'}`}>
-                {followupBackfill.done ? (
-                  <span>✓ Retro complete. Went over all {followupBackfill.total ?? ''} chats and set follow-ups where needed{followupBackfill.at ? ` on ${new Date(followupBackfill.at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Melbourne' })}` : ''}.</span>
-                ) : (
-                  <span>⏳ Retro in progress. Reviewed {followupBackfill.processed}{followupBackfill.total ? ` of ${followupBackfill.total}` : ''} chats so far. It finishes on its own within a few minutes.</span>
-                )}
-              </div>
-            )}
 
             {followups === null && <div className="sysline" style={{ margin: '20px 0' }}>Loading the queue…</div>}
             {followups !== null && followups.length === 0 && (

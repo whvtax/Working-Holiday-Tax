@@ -284,10 +284,6 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 /* Normal weight, the way WhatsApp shows a contact. */
 .will-scope .chtitle .chnum{font-size:15px;font-weight:400;color:var(--ink);display:block;line-height:1.15}
 .will-scope .chtitle .st{display:flex;gap:6px;margin-top:1px;align-items:center;line-height:1.35;padding-left:9px}
-/* The language picker beside the stage (audit, 5 Sep): styled as quiet text
-   like the stage button so it reads as part of the same line, not a form. */
-.will-scope .chtitle .langpick{border:none;background:none;font-family:inherit;font-size:12px;color:var(--ink3);padding:1px 4px;border-radius:6px;cursor:pointer;line-height:1.35}
-.will-scope .chtitle .langpick:hover{background:var(--surface2);color:var(--ink)}
 /* The leading "+" of the number is boxed to exactly the padding above, so the
    number's first digit and the stage label share one left edge. */
 .will-scope .chtitle .numpfx{display:inline-block;width:9px}
@@ -1104,12 +1100,6 @@ aside.side{
 .will-scope .fubtn.on:hover{background:rgba(74,168,114,.16)}
 .will-scope .fubtn.off:hover{border-color:var(--brand1);color:var(--brand1)}
 .will-scope .fubtn:active{transform:scale(.97)}
-
-/* Retro (one-time backfill) status bar in the Follow-ups view. Green when done,
-   amber while it is still going over the chats. */
-.will-scope .retrobar{margin:14px 0 4px;padding:9px 13px;border-radius:10px;font-size:12px;font-weight:600;line-height:1.5}
-.will-scope .retrobar.done{color:var(--done);background:color-mix(in srgb,var(--done) 8%, transparent);border:1px solid color-mix(in srgb,var(--done) 26%, transparent)}
-.will-scope .retrobar.run{color:#b5820f;background:#fff6e6;border:1px solid #f0dcae}
 
 /* Two-column cockpit (Jo, 30 Aug): tasks as a vertical list on the LEFT, chat
    on the RIGHT. The body fills the panel under the header; each column scrolls
