@@ -1,11 +1,15 @@
 /**
- * audit3 ui-50 (5 Sep): the numbered Quick-fill chips load the customer's
- * language variant of the Library row (req_abn_de and so on) when it is seeded,
- * else the English row, and an unedited variant body still routes through
- * send_template outside the 24h window.
+ * audit3 ui-50 (5 Sep): quickTemplateFor/quickTemplateKeyFor resolve the
+ * customer's language variant of a Library row (req_abn_de and so on) when
+ * it is seeded, else the English row, and an unedited variant body still
+ * routes through send_template outside the 24h window.
+ *
+ * (Jo, 6 Sep: the numbered "1 2 3 4" Quick-fill chips that used to call
+ * quickTemplateFor from the chat panel were removed entirely — Will already
+ * sends these automatically. quickTemplateKeyFor is still live, used by the
+ * composer's outside-24h-window template match; quickTemplateFor itself is
+ * now unused in the UI but kept, and tested, as a pure function.)
  */
-import fs from 'fs';
-import path from 'path';
 import { quickTemplateFor, quickTemplateKeyFor } from '@/components/will/Dashboard';
 
 const templates = [
@@ -37,14 +41,5 @@ describe('quickTemplateKeyFor with language variants', () => {
   it('does not match unrelated keys that merely share a prefix', () => {
     const t = [...templates, { key: 'req_abn_reminder', title: 'x', body: 'Reminder body.' }];
     expect(quickTemplateKeyFor('Reminder body.', t)).toBeNull();
-  });
-});
-
-describe('Dashboard wiring', () => {
-  const src = fs.readFileSync(path.join(process.cwd(), 'src/components/will/Dashboard.tsx'), 'utf8');
-  it('the Quick-fill chips resolve the row against the chat language and show the code in the tooltip', () => {
-    const block = src.slice(src.indexOf('{QUICK_TEMPLATES.map((key, i) => {'), src.indexOf('className="chipbtn qsnum"'));
-    expect(block).toContain('quickTemplateFor(key, chatSel.lang, data.templates)');
-    expect(block).toContain("t.key !== key ? ` (${t.key.slice(key.length + 1)})` : ''");
   });
 });

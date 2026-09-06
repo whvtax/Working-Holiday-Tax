@@ -1694,26 +1694,12 @@ export default function Dashboard() {
                         doesn't fit rather than wrapping, same as Quick fill
                         always did. */}
                     <div className="tplchips">
-                      {/* Quick send: numbered buttons instead of long labels, so the
-                          row never overflows and needs no sideways scroll. Always
-                          first/leftmost, before the stage action button and
-                          Follow-up. A fixed anchor so "1-4" is always in the same
-                          place regardless of what else is showing. Hover a number
-                          to see the full text (native tooltip). Clicking a number
-                          does NOT send. It drops the text into the compose box so
-                          you can read it, edit it, and send it yourself. */}
-                      {QUICK_TEMPLATES.map((key, i) => {
-                        // The customer's language variant when seeded (audit,
-                        // 5 Sep); the tooltip carries the code so the operator
-                        // can see which row loaded.
-                        const t = quickTemplateFor(key, chatSel.lang, data.templates);
-                        if (!t) return null;
-                        const label = t.title.replace(/ \(.*\)/, '') + (t.key !== key ? ` (${t.key.slice(key.length + 1)})` : '');
-                        {/* data-label carries the same tooltip text so a coarse
-                            pointer (no hover) can show it as a visible caption
-                            instead of relying on `title` (audit, 5 Sep). */}
-                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} data-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label}. Edit and send`); }}>{i + 1}</button>;
-                      })}
+                      {/* Jo, 6 Sep, removed entirely: the "1 2 3 4" Quick-fill
+                          buttons. They just dropped canned text (ABN request,
+                          expenses, doc request, Medicare) into the compose box
+                          for a manual send — but Will already sends these on
+                          its own automatically, so there was no real use case
+                          left for the manual version. */}
                       {/* Jo, 6 Sep, removed entirely: "Send for Signature" and
                           "Mark Lodged". Both stage actions belong to the
                           signature/lodgement side of the process, which Jo
@@ -2103,7 +2089,7 @@ export default function Dashboard() {
                       flashes a stale or zero number while the fetch is in
                       flight. */}
                   {followups && followups.length > 0 && (
-                    <strong style={{ color: 'var(--ink)', fontWeight: 650 }}> ({followups.length})</strong>
+                    <strong style={{ color: 'var(--ink)', fontWeight: 650, fontSize: '0.7em' }}> ({followups.length})</strong>
                   )}
                 </h2>
               </div>

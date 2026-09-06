@@ -561,8 +561,10 @@ aside.side{
    * on a pointer that doesn't exist here. */
   .will-scope .tdismiss{opacity:1}
   .will-scope .ttitle{white-space:normal}
-  .will-scope .chipbtn.qsnum{width:auto;display:inline-flex;align-items:center;gap:5px;padding:0 10px}
-  .will-scope .chipbtn.qsnum::after{content:attr(data-label);font-weight:500;font-size:10.5px}
+  /* Jo, 6 Sep: the two .chipbtn.qsnum rules that used to live here (visible
+     caption from data-label on a coarse pointer) were removed along with the
+     "1 2 3 4" Quick-fill chips themselves — Will already sends these
+     automatically, so the manual chip had no use case left. */
   /* Same complaint, different shape: the stage badge, the filter chips, the
    * follow-up/quick-fill chips and the task dismiss were all well under the
    * ~44px touch guideline, so a near-miss on a phone missed the control
@@ -657,8 +659,10 @@ aside.side{
 .will-scope .obbody{font-size:12.5px;color:var(--ink);background:var(--wa-out,#eafce8);border-radius:10px;padding:9px 12px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
 .will-scope .obbtns{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
 
-/* Quick-send as compact numbered buttons (hover shows the full label). */
-.will-scope .chipbtn.qsnum{min-width:26px;height:26px;padding:0 6px;border-radius:8px;font-weight:700;font-size:12.5px;text-align:center;flex:none}
+/* Jo, 6 Sep: the .chipbtn.qsnum rule for the "1 2 3 4" Quick-send numbered
+   buttons that used to live here was removed along with the buttons — Will
+   already sends these automatically, so the manual chip had no use case
+   left. */
 
 /* ── The conversation is set in WhatsApp's typeface, the app around it is not ──
  *
@@ -703,7 +707,12 @@ aside.side{
    rate against the fixed 100% target, the percent, and the raw paid/leads
    so a 100% month built on two leads reads as what it is.
    ============================================================ */
-.will-scope .monthhist{margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+/* Jo, 6 Sep: the top margin/padding/border here existed to separate this
+   table from the "Your Goal" header that used to sit above it in the panel.
+   That header is gone, so a bare .panel with nothing else in it was leaving
+   an empty band up top with a border floating over nothing. Zeroed out —
+   the panel's own padding is enough spacing now. */
+.will-scope .monthhist{margin-top:0;padding-top:0;border-top:none}
 /* The heading is now the question itself (Jo, 27 Aug), so it is no longer a
    two-part row with a description on the right — and no longer uppercased,
    because a question in small caps reads as a label rather than a question. */

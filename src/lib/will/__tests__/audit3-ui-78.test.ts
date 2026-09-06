@@ -55,11 +55,9 @@ describe('chat composer fits its text on every path', () => {
     expect(clears.length).toBe(2);
   });
 
-  it('quick-fill still only loads the text into the box, never sends', () => {
-    const chip = between('className="chipbtn qsnum"', '</button>');
-    expect(chip).toContain('setComposer(t.body)');
-    expect(chip).not.toContain('sendManual');
-  });
+  // Jo, 6 Sep: the numbered "1 2 3 4" Quick-fill chips (className="chipbtn
+  // qsnum") that this used to pin were removed entirely — Will already
+  // sends these automatically, so the manual chip had no use case left.
 });
 
 describe('Will Active/Paused toggle reports what the server did', () => {

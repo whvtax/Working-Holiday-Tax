@@ -1,10 +1,13 @@
 /**
  * Task ✕ and the full handoff reason were hover-only, so on a phone (no
- * hover) the dismiss button was invisible, the reason was clipped to 8 words
- * with no way to see the rest, and the numbered quick-fill chips were bare
- * digits with only a tooltip saying what they were (audit, 5 Sep). Same
- * task set, same wording, same actions: only what a coarse pointer can see
- * changes.
+ * hover) the dismiss button was invisible and the reason was clipped to 8
+ * words with no way to see the rest (audit, 5 Sep). Same task set, same
+ * wording, same actions: only what a coarse pointer can see changes.
+ *
+ * (Jo, 6 Sep: this file used to also pin the numbered quick-fill chips'
+ * coarse-pointer caption — the chips themselves were removed entirely along
+ * with their CSS, since Will already sends these automatically. Those two
+ * assertions are gone; the task-list assertions below are unaffected.)
  */
 import fs from 'fs';
 import path from 'path';
@@ -14,7 +17,6 @@ describe('task list is usable on touch, not just on hover', () => {
     path.join(process.cwd(), 'src/app/(site)/crm/whatsapp/will-scoped.css'),
     'utf8'
   );
-  const src = fs.readFileSync(path.join(process.cwd(), 'src/components/will/Dashboard.tsx'), 'utf8');
 
   const coarseBlockMatch = css.match(/@media\(hover:none\),\(pointer:coarse\)\{([\s\S]*?)\n\}/);
 
@@ -33,14 +35,5 @@ describe('task list is usable on touch, not just on hover', () => {
   it('lets the full handoff reason wrap instead of staying a clipped nowrap line', () => {
     expect(css).toMatch(/\.will-scope \.ttitle\{[^}]*white-space:nowrap/);
     expect(coarseBlock).toMatch(/\.will-scope \.ttitle\{white-space:normal\}/);
-  });
-
-  it('gives the numbered quick-fill chips a visible caption on a coarse pointer', () => {
-    expect(coarseBlock).toMatch(/\.will-scope \.chipbtn\.qsnum\{[^}]*display:inline-flex/);
-    expect(coarseBlock).toMatch(/\.will-scope \.chipbtn\.qsnum::after\{content:attr\(data-label\)/);
-  });
-
-  it('the quick-fill chip carries its label as a data attribute for that caption to read', () => {
-    expect(src).toMatch(/data-label=\{label\}/);
   });
 });
