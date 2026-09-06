@@ -73,11 +73,13 @@ describe('Dashboard wiring', () => {
     expect(src).not.toContain('/* keep acted to prevent double fire */');
   });
   it('every send-type button reports the server result back to once()', () => {
-    // Approve (chat + Tasks), Discard (chat + Tasks), Send Reply, follow-up chip, recover.
+    // Approve (chat + Tasks), Discard (chat + Tasks), Send Reply, recover.
+    // (Jo, 6 Sep: the manual 24h/3d/7d follow-up nudge chip — send_followup
+    // from the UI — was removed entirely; the scheduler's own automatic
+    // cadence covers it, so there is no longer a matching assertion here.)
     expect(src.match(/return !!r\?\.ok; \}\)\}>✓ Approve/g)?.length).toBe(2);
     expect(src.match(/return !!r\?\.ok; \}\)\}>✕ Discard/g)?.length).toBe(2);
     expect(src).toContain("return !!r?.ok; })}>➤ Send Reply</button>");
-    expect(src).toContain("action: 'send_followup'");
     expect(src).toContain('return !!res?.ok;');
   });
 });

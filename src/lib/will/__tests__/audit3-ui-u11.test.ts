@@ -45,7 +45,10 @@ describe('Dashboard wiring', () => {
   it('no toast joins raw guard codes any more', () => {
     expect(src).toMatch(/import \{ describeViolations \} from '@\/lib\/will\/send-errors'/);
     expect(src.match(/blocked\.join\(/)).toBeNull();
-    // the two Approve buttons and the follow-up button all go through the map
-    expect(src.match(/describeViolations\(r\.blocked\)/g)?.length).toBe(4);
+    // The two Approve buttons and the Send Reply button all go through the
+    // map. (Jo, 6 Sep: the follow-up chip that used to be the fourth caller
+    // was removed entirely, replaced by nothing — the scheduler's automatic
+    // cadence already covers it.)
+    expect(src.match(/describeViolations\(r\.blocked\)/g)?.length).toBe(3);
   });
 });

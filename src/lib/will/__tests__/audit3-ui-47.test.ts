@@ -1,15 +1,19 @@
 /**
- * Cancelling the follow-up confirm no longer greys the chip out (audit, 5 Sep).
+ * Cancelling a confirm() inside once() no longer greys the button out
+ * (audit, 5 Sep) — originally written against the follow-up nudge chip
+ * (24h/3d/7d), which Jo removed entirely on 6 Sep (the scheduler's automatic
+ * cadence already covers it). The runOnce semantics below are general and
+ * still apply to every other once()-wrapped button, so they stay; only the
+ * chip-specific "Dashboard wiring" assertions, which no longer have anything
+ * to match against, were removed.
  *
- * The follow-up chips run `once(key, async () => { if (!confirm(...)) return; ... })`.
- * Because `once` added the key before running the action and only released it on
- * a false/throw result, a bare `return` on Cancel counted as "done" and the chip
- * stayed disabled for the rest of the session with nothing sent. The chip now
- * returns false on Cancel, so the key is released and the chip is clickable again.
- * A confirmed and successful send still locks the chip as before.
+ * `once(key, async () => { if (!confirm(...)) return; ... })` used to add the
+ * key before running the action and only release it on a false/throw result,
+ * so a bare `return` on Cancel counted as "done" and the button stayed
+ * disabled for the rest of the session with nothing sent. Returning false on
+ * Cancel releases the key so the button is clickable again; a confirmed and
+ * successful send still locks it as before.
  */
-import fs from 'fs';
-import path from 'path';
 import { runOnce } from '@/components/will/Dashboard';
 
 function harness() {
@@ -46,17 +50,5 @@ describe('follow-up chip: Cancel in confirm', () => {
     const send = jest.fn(async () => ({ ok: false, error: 'outside the 24h window' }));
     await runOnce(h.get(), h.setActed, 'fu1-cust', chipAction(true, send));
     expect(h.get().has('fu1-cust')).toBe(false);
-  });
-});
-
-describe('Dashboard wiring', () => {
-  const src = fs.readFileSync(path.join(process.cwd(), 'src/components/will/Dashboard.tsx'), 'utf8');
-  it('the follow-up chip returns false when the confirm is cancelled', () => {
-    expect(src).toMatch(/if \(!confirm\(`Send this to \$\{chatSel\.name[^\n]*\)\) return false;/);
-    // No once() callback still uses the old bare `return` that counted Cancel as
-    // done (plain onClick handlers outside once() may keep a bare return).
-    const onceBodies = src.match(/once\([^\n]*async \(\) => \{[\s\S]*?\n\s*\}\)\}/g) ?? [];
-    expect(onceBodies.length).toBeGreaterThan(0);
-    for (const body of onceBodies) expect(body).not.toMatch(/if \(!confirm\([^\n]*\)\) return;/);
   });
 });

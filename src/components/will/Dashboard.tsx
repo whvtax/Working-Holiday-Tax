@@ -4,7 +4,7 @@
 // one-click service templates, deep report.
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, FLOW_TEMPLATES, flowForState, CustomerState } from '@/lib/will/state-machine';
+import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
 import { explainHandoffReason, summariseArrivals } from '@/lib/will/handoff-reasons';
@@ -394,6 +394,15 @@ export function showSendForSignature(state: CustomerState): boolean {
 export function showMarkLodged(state: CustomerState): boolean {
   // The Signature group, plus SIGNED (already marked signed some other way,
   // e.g. the badge menu's "Completed"): the server explicitly accepts both.
+  // Jo, 6 Sep: SIGNED is exactly the real-world moment this button exists
+  // for (Will detected a signed document and moved them there automatically;
+  // send_lodged is what's actually still outstanding), so the trigger stays.
+  // What was genuinely wrong is the badge itself: STAGE_GROUPS used to lump
+  // SIGNED in with LODGED/COMPLETED under one label, "Completed" — so the
+  // badge already said "Completed" while this button was still showing,
+  // which reads as a contradiction. That's fixed at the source: SIGNED now
+  // gets its own group/label ("Signed"), so the badge no longer claims
+  // "Completed" before send_lodged has actually gone out.
   return statesOfGroup('sig').includes(state) || state === 'SIGNED';
 }
 
@@ -653,32 +662,10 @@ export default function Dashboard() {
   // customer id (audit, 5 Sep). The button is rendered from chatSel.state,
   // which only changes after refresh() resolves, so during the multi-second
   // send it stayed clickable and the server has no gate for either action:
-  // a second click + confirm sent the notice to the customer twice and
-  // re-armed the signature cadence. Same sigBusy pattern as the CRM card.
-  // Ref for the guard (a click can land before React re-renders), state for
-  // the button.
-  const stageActionRef = useRef<string | null>(null);
-  const [stageActionBusy, setStageActionBusy] = useState<string | null>(null);
-  const runStageAction = async (action: 'send_signature' | 'send_lodged', customerId: string, done: string) => {
-    if (stageActionRef.current) return;
-    stageActionRef.current = customerId;
-    setStageActionBusy(customerId);
-    try {
-      const r = await act({ action, customerId });
-      if (!r?.ok) { say(`❌ ${r?.error ?? 'could not send'}`); return; }
-      // send_lodged returns filedUnderClients: whether the matching CRM card
-      // was found and filed under Clients (audit3 #31, 5 Sep). Before, this
-      // always said "moved to Completed" even on a miss, so a miss sat in
-      // Done with no signal that the CRM card still needed filing by hand.
-      const msg = action === 'send_lodged' && r && typeof r === 'object' && 'filedUnderClients' in r && !r.filedUnderClients
-        ? 'Sent, moved to Completed. No CRM card found to file; open the CRM to file it'
-        : done;
-      say(msg); loadChat(customerId); await refresh();
-    } finally {
-      stageActionRef.current = null;
-      setStageActionBusy(null);
-    }
-  };
+  // Jo, 6 Sep: runStageAction (send_signature / send_lodged) removed along
+  // with its two call sites, "Send for Signature" and "Mark Lodged" — Jo
+  // handles the signature/lodgement side of the process himself, inside the
+  // CRM/manually, not through these one-click send buttons.
   const [, setClock] = useState(0);
   const msgsRef = useRef<HTMLDivElement>(null);
   // The compose box grows with its text. It used to grow only inside onChange,
@@ -1050,7 +1037,9 @@ export default function Dashboard() {
   // fetch cost a full customers + tasks + history read on every Insights open
   // and threw the answer away. The route stays for direct use.
   useEffect(() => { if (view === 'learning' || view === 'library') { loadKnowledge(); } }, [view, loadKnowledge]);
-  useEffect(() => { if (view === 'learning') { loadMonthly(); } }, [view, loadMonthly]);
+  // Jo, 6 Sep: the "Your Goal" card that reads this moved from Learning to
+  // System & Costs, so the fetch now fires on that view instead.
+  useEffect(() => { if (view === 'insights') { loadMonthly(); } }, [view, loadMonthly]);
   useEffect(() => { if (view === 'insights') loadSystem(); }, [view, loadSystem]);
   // Fetched on open, not polled: these rows only change once a night.
   useEffect(() => { if (view === 'lost') loadLost(); }, [view, loadLost]);
@@ -1312,7 +1301,12 @@ export default function Dashboard() {
           </div>
           <div className="hspacer" />
           <div className="health">
-            {health && Object.entries(health.checks).filter(([k]) => k !== 'whatsapp').map(([k, v]) => (
+            {/* Jo, 6 Sep: hid the CronTick and Cron dots from the header row — the
+                least load-bearing of the nine. Both checks still run server-side
+                (visible via the System Faults card if either ever actually
+                fails); a real failure there also shows up as Scheduler going
+                red, since the scheduler tick itself goes stale too. */}
+            {health && Object.entries(health.checks).filter(([k]) => k !== 'whatsapp' && k !== 'cronTick' && k !== 'cron').map(([k, v]) => (
               <span key={k} className="hdot" title={v.detail}>
                 <span className="dot" style={{ background: v.ok ? undefined : 'var(--crit)' }} />
                 <span className="hlabel">{k[0].toUpperCase() + k.slice(1)}</span>
@@ -1720,88 +1714,21 @@ export default function Dashboard() {
                             instead of relying on `title` (audit, 5 Sep). */}
                         return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} data-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label}. Edit and send`); }}>{i + 1}</button>;
                       })}
-                      {/* Estimate-stage action: once the return has actually been
-                          sent to the customer to sign, one click sends the "ready
-                          for signature" confirmation and moves them on to
-                          Signature. Shown for the whole Review group (audit,
-                          5 Sep: the old ESTIMATE_READY/FINAL_REVIEW gate hid it
-                          from every real customer, who sit at FORM_COMPLETE). */}
-                      {showSendForSignature(chatSel.state) && (
-                        <button
-                          type="button"
-                          className="btn save"
-                          style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
-                          disabled={stageActionBusy === chatSel.id}
-                          onClick={() => {
-                            if (stageActionRef.current) return;
-                            if (!confirm(`Send the "ready for signature" message to ${phoneOf(chatSel.waId)} and move them to Signature?`)) return;
-                            runStageAction('send_signature', chatSel.id, 'Sent, moved to Signature ✓');
-                          }}
-                        >
-                          {stageActionBusy === chatSel.id ? '…' : '✍️ Send for Signature'}
-                        </button>
-                      )}
-                      {/* Signature-stage action: once they've signed, one click
-                          sends the lodged + review-request message and moves them
-                          on to Completed. Shown during Signature and at SIGNED
-                          (audit, 5 Sep: the badge menu's "Completed" lands on
-                          SIGNED, where the server accepts send_lodged but the
-                          button was missing). */}
-                      {showMarkLodged(chatSel.state) && (
-                        <button
-                          type="button"
-                          className="btn save"
-                          style={{ padding: '5px 12px', fontSize: 11.5, flex: 'none' }}
-                          disabled={stageActionBusy === chatSel.id}
-                          onClick={() => {
-                            if (stageActionRef.current) return;
-                            if (!confirm(`Send the "lodged successfully" message to ${phoneOf(chatSel.waId)} and move them to Completed?`)) return;
-                            runStageAction('send_lodged', chatSel.id, 'Sent, moved to Completed ✓');
-                          }}
-                        >
-                          {stageActionBusy === chatSel.id ? '…' : '✅ Mark Lodged'}
-                        </button>
-                      )}
-                      {/* The nudges for this customer's stage, so a follow-up can be
-                          sent after reading the conversation rather than only on the
-                          scheduler's timer. Which three appear is decided by the
-                          stage, so there is nothing to choose wrongly. Unlike Quick
-                          fill these cannot go through the composer: the customer has
-                          been quiet, so the message is outside Meta's 24h window and
-                          has to leave as the approved template, word for word. */}
-                      {(() => {
-                        const flow = flowForState(chatSel.state);
-                        if (!flow) return null;
-                        const keys = FLOW_TEMPLATES[flow];
-                        return (
-                          <>
-                            {keys.map((key) => {
-                              const t = data.templates.find((x) => x.key === key);
-                              if (!t) return null;
-                              const short = t.title.split('·').pop()?.trim() ?? t.title;
-                              const preview = t.body.replace(/\{\{1\}\}/g, chatSel.name?.split(/\s+/)[0] || 'there');
-                              return (
-                                <button
-                                  key={key}
-                                  className="chipbtn"
-                                  title={preview}
-                                  disabled={acted.has(key + chatSel.id)}
-                                  onClick={() => once(key + chatSel.id, async () => {
-                                    // Cancel in the confirm returns false so runOnce releases the
-                                    // key: before, pressing Cancel greyed the chip out for the rest
-                                    // of the session with nothing sent (audit, 5 Sep).
-                                    if (!confirm(`Send this to ${chatSel.name ?? phoneOf(chatSel.waId)} now?\n\n${preview}`)) return false;
-                                    const r = await act({ action: 'send_followup', customerId: chatSel.id, id: key });
-                                    say(r?.ok ? 'Follow-up sent ✓' : `❌ ${r?.error ?? (r?.blocked?.length ? describeViolations(r.blocked) : 'not sent')}`);
-                                    loadChat(chatSel.id); refresh();
-                                    return !!r?.ok;
-                                  })}
-                                >{short}</button>
-                              );
-                            })}
-                          </>
-                        );
-                      })()}
+                      {/* Jo, 6 Sep, removed entirely: "Send for Signature" and
+                          "Mark Lodged". Both stage actions belong to the
+                          signature/lodgement side of the process, which Jo
+                          handles inside the CRM/manually, not through these
+                          one-click send buttons. showSendForSignature and
+                          showMarkLodged stay exported (state-shape helpers,
+                          harmless if unused) but nothing in the UI calls them
+                          any more. */}
+                      {/* Jo, 6 Sep, removed entirely: the manual 24h/3d/7d
+                          follow-up nudge buttons. These fired the exact same
+                          send_followup templates the scheduler already sends
+                          automatically on its own timer — this row was only a
+                          "push it right now instead of waiting" override, and
+                          Jo confirmed he doesn't need that; the automatic
+                          cadence alone is enough. */}
                     </div>
                     <div className="msgs" ref={msgsRef}>
                       {(() => {
@@ -2168,14 +2095,17 @@ export default function Dashboard() {
           <section className="view active">
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ flex: 1 }}>
-                <h2 className="vt">Scheduled Follow-ups</h2>
-                {/* The count, in bold, because it is the fact Jo scans for: how
-                    many are about to go out. Rendered only once the list has
-                    loaded, so it never flashes a stale or zero number while
-                    the fetch is in flight. */}
-                {followups && followups.length > 0 && (
-                  <div className="vsub"><strong style={{ color: 'var(--ink)', fontWeight: 650 }}>({followups.length})</strong></div>
-                )}
+                <h2 className="vt">
+                  Scheduled Follow-ups
+                  {/* The count, in bold, inline with the heading (Jo, 6 Sep) —
+                      it is the fact Jo scans for: how many are about to go
+                      out. Rendered only once the list has loaded, so it never
+                      flashes a stale or zero number while the fetch is in
+                      flight. */}
+                  {followups && followups.length > 0 && (
+                    <strong style={{ color: 'var(--ink)', fontWeight: 650 }}> ({followups.length})</strong>
+                  )}
+                </h2>
               </div>
             </div>
 
@@ -2245,6 +2175,64 @@ export default function Dashboard() {
           <section className="view active">
             <h2 className="vt">System &amp; Costs</h2>
             <div className="vsub">Live from the system.</div>
+
+            {/* Jo, 6 Sep: moved here from the Learning view — "Your Goal", the
+                month-by-month conversion history and the Will-alone rate.
+                Same card, same data (monthly), unchanged; only its home moved. */}
+            <div className="panel" style={{ marginBottom: 12 }}>
+              {/* Jo, 6 Sep: removed the "Your Goal: the best version of Will" /
+                  "Will keeps testing and improving..." header entirely — the
+                  month-by-month table below speaks for itself. */}
+              {/* Jo, 27 Aug: the "12% → 100% · your target · fixed" pair and the
+                  "88 points to go" line were both removed. All three said the
+                  same thing three ways. The headline rate, the constant it is
+                  measured against, and the subtraction between them. And none
+                  of it was anything he could act on. The month-by-month bars
+                  directly below survive untouched on his instruction: that is
+                  the part that actually shows movement. */}
+
+              {/* Month by month, so July can be compared with August. Every bar
+                  is recomputed from the state history on each load. There is no
+                  running number being reset on the 1st, which is why a past
+                  month can never silently change or be lost.
+                  A month's number is: of the leads that FIRST appeared that
+                  month, how many ever went on to pay. Paying in a later month
+                  still counts for the month they arrived in. */}
+              <div className="monthhist">
+                {/* Jo, 27 Aug: the question IS the heading. "Month by month"
+                    described the shape of the table, which the table was
+                    already showing; the question it answers was in the small
+                    grey text on the right, where headings do not live. They
+                    swapped, and the description went. */}
+                <div className="mhhead">
+                  <span>How many leads ended up paying?</span>
+                  <span className="mhsub">and how many of those paid and sent the questionnaire with Will alone</span>
+                </div>
+                {monthly === null && <div className="mini">Loading the history…</div>}
+                {monthly !== null && monthly.every((m) => m.leads === 0) && (
+                  <div className="mini">No leads recorded in the last 12 months yet.</div>
+                )}
+                {monthly !== null && monthly.some((m) => m.leads > 0) && (
+                  <div className="mhrows">
+                    {monthly.map((m) => (
+                      <div key={m.month} className={`mhrow ${m.leads === 0 ? 'empty' : ''}`}>
+                        <span className="mhlabel">{m.label}</span>
+                        <span className="mhbar"><span className="mhfill" style={{ width: `${Math.min(100, m.rate)}%` }} /></span>
+                        <span className="mhrate">{m.leads === 0 ? '·' : `${m.rate}%`}</span>
+                        <span className="mhcount">{m.leads === 0 ? 'no leads' : `${m.paid}/${m.leads}`}</span>
+                        {/* Jo, 4 Sep: of those who paid, how many paid AND sent the
+                            questionnaire with Will alone, nobody from the team
+                            having written in the chat up to that point. */}
+                        <span className="mhwill" title="Of the paying customers this month, the share who paid and completed the questionnaire with Will alone, with no message from the team up to that point">
+                          {m.paid === 0 ? '' : `${m.willOnlyRate ?? 0}% Will alone (${m.willOnly ?? 0}/${m.paid})`}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className="igrid">
               {/* ────────────────────────────────────────────────────────────
                   "Why Will Handed Chats To You" was removed here on 27 Aug,
@@ -2434,9 +2422,10 @@ export default function Dashboard() {
                     // its working.
                     return (
                       <>
-                        <div className="mini" style={{ marginTop: 0 }}>
-                          Nothing is failing, and nothing has failed in the last {system?.auditRowsRead ?? 0} recorded actions.
-                        </div>
+                        {/* Jo, 6 Sep: removed the two explanatory "mini" lines
+                            here (the "Nothing is failing..." summary and the
+                            "Each one is a live probe..." footer) — the
+                            checkmark list below speaks for itself. */}
                         <div className="okchecks">
                           {entries.map(([k, v]) => (
                             <span key={k} className="okcheck" title={v.detail}>
@@ -2444,7 +2433,6 @@ export default function Dashboard() {
                             </span>
                           ))}
                         </div>
-                        <div className="mini">Each one is a live probe, re-run every 45 seconds. the database is read, Meta is asked whether the number really works, and a known bad message is put through the guard to confirm it still blocks.</div>
                       </>
                     );
                   }
@@ -2509,7 +2497,7 @@ export default function Dashboard() {
         {view === 'learning' && (
           <section className="view active">
             <h2 className="vt">Learning</h2>
-            <div className="vsub">{ASSISTANT_NAME} improves from every conversation. Approve what works, and watch it get better over time.</div>
+            <div className="vsub">Snap and send</div>
 
             {/* Sync the live library (the DB Will reads) to the bundled seed file
                 after a deploy. Updates existing answers in place and adds new
@@ -2530,7 +2518,7 @@ export default function Dashboard() {
                   loadKnowledge();
                 } else say('Sync failed. Please try again.');
               }}>Sync library from file</button>
-              <span className="psub" style={{ margin: 0 }}>Run once after a deploy to apply the latest bundled answers and message wording.</span>
+              <span className="psub" style={{ margin: 0 }}>Run once after library change.</span>
             </div>
 
             {/* "Download every conversation" (transcript/JSON export) and the
@@ -2539,58 +2527,9 @@ export default function Dashboard() {
                 digest (scheduler.ts's DAILY_DIGEST job), which already does
                 the analysis automatically instead of a manual download. */}
 
-            <div className="panel" style={{ marginBottom: 12 }}>
-              <h3>Your Goal: the best version of {ASSISTANT_NAME}</h3>
-              <div className="psub">{ASSISTANT_NAME} keeps testing and improving until every lead converts.</div>
-              {/* Jo, 27 Aug: the "12% → 100% · your target · fixed" pair and the
-                  "88 points to go" line were both removed. All three said the
-                  same thing three ways. The headline rate, the constant it is
-                  measured against, and the subtraction between them. And none
-                  of it was anything he could act on. The month-by-month bars
-                  directly below survive untouched on his instruction: that is
-                  the part that actually shows movement. */}
-
-              {/* Month by month, so July can be compared with August. Every bar
-                  is recomputed from the state history on each load. There is no
-                  running number being reset on the 1st, which is why a past
-                  month can never silently change or be lost.
-                  A month's number is: of the leads that FIRST appeared that
-                  month, how many ever went on to pay. Paying in a later month
-                  still counts for the month they arrived in. */}
-              <div className="monthhist">
-                {/* Jo, 27 Aug: the question IS the heading. "Month by month"
-                    described the shape of the table, which the table was
-                    already showing; the question it answers was in the small
-                    grey text on the right, where headings do not live. They
-                    swapped, and the description went. */}
-                <div className="mhhead">
-                  <span>How many leads ended up paying?</span>
-                  <span className="mhsub">and how many of those paid and sent the questionnaire with Will alone</span>
-                </div>
-                {monthly === null && <div className="mini">Loading the history…</div>}
-                {monthly !== null && monthly.every((m) => m.leads === 0) && (
-                  <div className="mini">No leads recorded in the last 12 months yet.</div>
-                )}
-                {monthly !== null && monthly.some((m) => m.leads > 0) && (
-                  <div className="mhrows">
-                    {monthly.map((m) => (
-                      <div key={m.month} className={`mhrow ${m.leads === 0 ? 'empty' : ''}`}>
-                        <span className="mhlabel">{m.label}</span>
-                        <span className="mhbar"><span className="mhfill" style={{ width: `${Math.min(100, m.rate)}%` }} /></span>
-                        <span className="mhrate">{m.leads === 0 ? '·' : `${m.rate}%`}</span>
-                        <span className="mhcount">{m.leads === 0 ? 'no leads' : `${m.paid}/${m.leads}`}</span>
-                        {/* Jo, 4 Sep: of those who paid, how many paid AND sent the
-                            questionnaire with Will alone, nobody from the team
-                            having written in the chat up to that point. */}
-                        <span className="mhwill" title="Of the paying customers this month, the share who paid and completed the questionnaire with Will alone, with no message from the team up to that point">
-                          {m.paid === 0 ? '' : `${m.willOnlyRate ?? 0}% Will alone (${m.willOnly ?? 0}/${m.paid})`}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+            {/* Jo, 6 Sep: the "Your Goal" card (month-by-month conversion +
+                Will-alone rate) moved to System & Costs — see the top of that
+                view's .igrid below. */}
 
             <div className="igrid">
               {/* The old "Suggestions to Approve" panel (recurring-escalation
@@ -2758,7 +2697,7 @@ export default function Dashboard() {
                     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
                   const SHOWN = 25;
                   if (handoffs.length === 0) {
-                    return <div className="mini">Nothing waiting. When {ASSISTANT_NAME} can&rsquo;t finish something, a card appears with everything needed to understand why. Screenshot it, send it over, and mark it Resolved.</div>;
+                    return <div className="mini">Nothing waiting. When {ASSISTANT_NAME} can&rsquo;t finish something, a card appears with everything needed to understand why.</div>;
                   }
                   return (
                     <>
