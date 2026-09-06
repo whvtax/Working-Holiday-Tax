@@ -12,7 +12,7 @@ import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { aiCallsKeyFor, aiCallsKeyPrefix, resolveAiDailyBudget } from '@/lib/will/service';
-import { summariseAiUsage, faultsFromAudit } from '@/lib/will/system-report';
+import { summariseAiUsage, faultsFromAudit, applyFaultDismissals, faultDismissedKey } from '@/lib/will/system-report';
 
 export const dynamic = 'force-dynamic';
 
@@ -76,11 +76,22 @@ export async function GET() {
     });
   }
 
+  // Dismissed faults (Jo, 6 Sep): "I've dealt with this" clears the card until
+  // it happens again — a fresh occurrence (a newer lastAt than the dismissal)
+  // reappears on its own, so nothing dismissed can hide a genuinely new
+  // failure. One settings read per fault key actually present; small and
+  // best-effort, never worth failing the whole card over.
+  const dismissedAt: Record<string, string | null | undefined> = {};
+  await Promise.all(faults.map(async (f) => {
+    dismissedAt[f.key] = (await store.getSetting(faultDismissedKey(f.key)).catch(() => null)) as string | null;
+  }));
+  const visibleFaults = applyFaultDismissals(faults, dismissedAt);
+
   return NextResponse.json({
     ok: true,
     generatedAt: new Date().toISOString(),
     usage,
-    faults,
+    faults: visibleFaults,
     faultWindow: AUDIT_FETCH_LIMIT,
     faultWindowDays: AUDIT_WINDOW_DAYS,
     auditRowsRead: audit.length,

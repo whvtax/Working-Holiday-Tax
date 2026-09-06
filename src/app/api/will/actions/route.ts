@@ -26,12 +26,15 @@ import { stateAfterEstimate, composeEstimate } from '@/lib/will/estimate-send';
 import { afterHumanReplyIndexed as afterHumanReply } from '@/lib/will/after-reply';
 import { applyFormReceived, parseUnmatchedFormTask } from '@/lib/will/form-link';
 import { explainSendError, describeViolations } from '@/lib/will/send-errors';
+import { faultDismissedKey } from '@/lib/will/system-report';
 
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received';
+  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault';
+  /** dismiss_fault only: the fault's stable key (SystemFault.key). */
+  faultKey?: string;
   id?: string;
   customerId?: string;
   body?: string;
@@ -898,6 +901,18 @@ async function handlePost(req: Request) {
       await store.setSetting('kill_switch', b.value === true);
       await store.audit('owner', b.value ? 'kill_switch_on' : 'kill_switch_off');
       return NextResponse.json({ ok: true });
+
+    // Dismiss a System Faults card (Jo, 6 Sep): "I've dealt with this, clear
+    // it". Not a delete — there is no row to delete, the card is a live
+    // grouping of recent audit rows — so this records WHEN it was dismissed.
+    // A fresh occurrence of the same fault after that time has a newer
+    // lastAt and reappears on its own; see applyFaultDismissals.
+    case 'dismiss_fault': {
+      if (!b.faultKey) return bad('faultKey required');
+      await store.setSetting(faultDismissedKey(b.faultKey), new Date().toISOString());
+      await store.audit('owner', 'fault_dismissed', { faultKey: b.faultKey });
+      return NextResponse.json({ ok: true });
+    }
 
     case 'set_followups': {
       // Per-customer follow-up switch (Jo, 29 Aug). Turn the follow-up cadence

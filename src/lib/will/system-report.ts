@@ -343,3 +343,32 @@ export function faultsFromAudit(rows: AuditRow[]): SystemFault[] {
     }))
     .sort((a, b) => SEV_RANK[a.severity] - SEV_RANK[b.severity] || b.lastAt.localeCompare(a.lastAt));
 }
+
+// ────────────────────────────────────────────────────────────
+// Dismissing a fault card (Jo, 6 Sep): "I've dealt with this, let me clear it"
+// ────────────────────────────────────────────────────────────
+
+/** Setting key: when this fault key was last dismissed by the owner. A fault
+ *  is a live grouping of recent audit rows, not a row of its own, so there is
+ *  nothing to delete — dismissing it means "hide this UNTIL IT HAPPENS AGAIN",
+ *  recorded as a timestamp and compared against the fault's own `lastAt` on
+ *  every read. A fresh occurrence after the dismissal has a newer `lastAt`
+ *  than the dismissal time, so it reappears on its own; nothing dismissed
+ *  can ever hide a genuinely new failure. */
+export const faultDismissedKey = (key: string) => `fault_dismissed:${key}`;
+
+/**
+ * Drop any fault whose most recent occurrence is at or before when the owner
+ * last dismissed it. `dismissedAt` is keyed by fault `key`, ISO strings or
+ * null/undefined for "never dismissed".
+ */
+export function applyFaultDismissals(
+  faults: SystemFault[],
+  dismissedAt: Record<string, string | null | undefined>,
+): SystemFault[] {
+  return faults.filter((f) => {
+    const at = dismissedAt[f.key];
+    if (!at) return true;
+    return new Date(f.lastAt).getTime() > new Date(at).getTime();
+  });
+}

@@ -1985,7 +1985,18 @@ export default function Dashboard() {
 
         {view === 'tasks' && (
           <section className="view active">
-            <h2 className="vt">Tasks</h2>
+            {/* The count of drafts awaiting approval sits right in the heading
+                (Jo, 6 Sep: it used to be a bare badge on its own line below the
+                Download button, floating with nothing to anchor it to). The
+                accessible name and hover title still spell out what it counts. */}
+            <h2 className="vt">
+              Tasks{' '}
+              <span
+                className={`pcount ${pendingDrafts.length ? 'on' : ''}`}
+                title={`${pendingDrafts.length} ${pendingDrafts.length === 1 ? 'draft is' : 'drafts are'} awaiting your approval`}
+                aria-label={`${pendingDrafts.length} ${pendingDrafts.length === 1 ? 'draft' : 'drafts'} awaiting your approval`}
+              >({pendingDrafts.length})</span>
+            </h2>
 
             {/* Pull the whole history out as one document. Jo, 28 Aug: he
                 reads it through and sends back the answers worth adding to the
@@ -2003,25 +2014,6 @@ export default function Dashboard() {
               ⬇ Download every conversation
             </a>
 
-            {/* This was a separate Outbox tab. It counted the drafts awaiting
-                approval PLUS the subset of these same tasks whose reason was a
-                blocked or failed send, so those items were listed twice with two
-                badges and there was no single answer to "what is left for me".
-                The drafts moved here; the blocked ones were already here. */}
-            {/* Jo, 26 Aug: "lose the label, keep the number". He watches this
-                go 0 -> 1 -> 2 and the six words in front of it were noise on a
-                screen he reads twenty times a day. The words survive as the
-                accessible name and the hover title, where they cost nothing.
-                27 Aug: the ✎ mark that stood in for the label went too. It
-                marked nothing the badge does not already say, and next to a
-                bare count it read as an edit affordance that is not there. */}
-            <div className="secthead">
-              <span
-                className={`pcount ${pendingDrafts.length ? 'on' : ''}`}
-                title={`${pendingDrafts.length} ${pendingDrafts.length === 1 ? 'draft is' : 'drafts are'} awaiting your approval`}
-                aria-label={`${pendingDrafts.length} ${pendingDrafts.length === 1 ? 'draft' : 'drafts'} awaiting your approval`}
-              >{pendingDrafts.length}</span>
-            </div>
             {pendingDrafts.map((m) => {
               const c = custById(m.customerId);
               return (
@@ -2177,16 +2169,13 @@ export default function Dashboard() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ flex: 1 }}>
                 <h2 className="vt">Scheduled Follow-ups</h2>
-                <div className="vsub">
-                  {/* The count leads, in bold, because it is the fact Jo scans
-                      for. How many are about to go out. It is rendered only
-                      once the list has loaded, so the line never flashes a
-                      stale or zero number while the fetch is in flight. */}
-                  {followups && followups.length > 0 && (
-                    <strong style={{ color: 'var(--ink)', fontWeight: 650 }}>({followups.length}) </strong>
-                  )}
-                  Everyone is queued for a nudge.
-                </div>
+                {/* The count, in bold, because it is the fact Jo scans for: how
+                    many are about to go out. Rendered only once the list has
+                    loaded, so it never flashes a stale or zero number while
+                    the fetch is in flight. */}
+                {followups && followups.length > 0 && (
+                  <div className="vsub"><strong style={{ color: 'var(--ink)', fontWeight: 650 }}>({followups.length})</strong></div>
+                )}
               </div>
             </div>
 
@@ -2481,6 +2470,21 @@ export default function Dashboard() {
                             <span className="fault-when" title={new Date(f.lastAt).toLocaleString('en-AU', { timeZone: MEL_TZ })}>
                               last {timeAgo(f.lastAt)} ago
                             </span>
+                            {/* Dismiss (Jo, 6 Sep): "I've dealt with this" clears
+                                the card until it happens again. Not a delete —
+                                a fresh occurrence (a newer lastAt) reappears on
+                                its own, so this can never hide a genuinely new
+                                failure. */}
+                            <button
+                              className="fault-x"
+                              title="I've dealt with this — hide it until it happens again"
+                              aria-label="Dismiss this fault"
+                              onClick={async () => {
+                                setSystem((s) => s ? { ...s, faults: s.faults.filter((x) => x.key !== f.key) } : s);
+                                const r = await act({ action: 'dismiss_fault', faultKey: f.key });
+                                if (!r?.ok) { say(`❌ ${r?.error ?? 'could not dismiss'}`); loadSystem(); }
+                              }}
+                            >✕</button>
                           </div>
                           <div className="fault-err">{f.error}</div>
                           <div className="fault-mean">{f.meaning}</div>
