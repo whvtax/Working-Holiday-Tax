@@ -133,3 +133,41 @@ describe('successes that mention the mechanics still count', () => {
     it(`is a claim: ${t}`, () => expect(claimsPayment(t)).toBe(true));
   }
 });
+
+// ── Jo, 7 Sep: a Medicare (MES) screenshot wrongly treated as payment proof ─
+//
+// A real customer, still pre-payment, was asked for proof their MES
+// application had been submitted (unrelated to paying us). She sent a
+// screenshot of the MES confirmation with a Japanese caption asking whether
+// it was enough — "こちらの写真では難しいでしょうか？これ以外には証明する
+// ものが無く…" ("is this photo not enough? I have nothing else to prove
+// it...") — and the system moved her straight to Paid and sent the tax form.
+// Two independent bugs, both here: 'こちら' ("this"/"here") is one of the
+// most generic words in Japanese and matched WITH_ATTACHMENT_CONFIRM on
+// almost anything with a photo attached, and the question-mark guard only
+// checked the LAST character of the message, so a ？ in the middle of the
+// sentence (followed by more text and an ellipsis) went unnoticed.
+describe('a Japanese question about an unrelated screenshot is never a claim (Jo, 7 Sep)', () => {
+  it('the real customer message that triggered this', () => {
+    expect(claimsPayment(
+      'こちらの写真では難しいでしょうか？これ以外には証明するものが無く…',
+      { hasAttachment: true },
+    )).toBe(false);
+  });
+
+  it('"こちら" alone no longer matches — it is too generic a word to mean "here is my payment"', () => {
+    expect(claimsPayment('こちらの書類です', { hasAttachment: true })).toBe(false);
+    expect(claimsPayment('こちらでいいですか？', { hasAttachment: true })).toBe(false);
+  });
+
+  it('a mid-sentence full-width question mark (？) is caught, not just a trailing one', () => {
+    expect(claimsPayment('大丈夫でしょうか？教えてください', { hasAttachment: true })).toBe(false);
+    expect(claimsPayment('did that work？ let me know', { hasAttachment: true })).toBe(false);
+  });
+
+  it('the more specific Japanese attachment phrases still work', () => {
+    expect(claimsPayment('これです', { hasAttachment: true })).toBe(true);
+    expect(claimsPayment('領収書です', { hasAttachment: true })).toBe(true);
+    expect(claimsPayment('スクリーンショットです', { hasAttachment: true })).toBe(true);
+  });
+});

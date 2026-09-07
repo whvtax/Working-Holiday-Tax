@@ -609,15 +609,11 @@ aside.side{
 .will-scope /* friend-style pipeline row cards */
 .stagepill{margin-left:auto;flex:none;font-size:9.5px;font-weight:600;padding:2px 9px;border-radius:99px;background:color-mix(in srgb,var(--pc) 12%, #fff);color:var(--pc);white-space:nowrap}
 .will-scope .cphone{font-size:10.5px;color:var(--ink3);margin-top:3px;font-variant-numeric:tabular-nums}
-.will-scope /* quick template chips above chat */
-/* Quick-send row: there are more chips than fit, so SHOW the horizontal
-   scrollbar (it used to be hidden, which is why the extra chips felt lost). */
-.tplchips{display:flex;gap:6px;align-items:center;padding:7px 12px 9px;border-bottom:1px solid var(--line);background:var(--surface);overflow-x:auto;scrollbar-width:thin}
-.will-scope .tplchips::-webkit-scrollbar{height:6px}
-.will-scope .tplchips-label{font-size:10px;color:var(--ink3);font-weight:600;flex:none}
-.will-scope .chipbtn{flex:none;font-size:10.5px;font-weight:500;padding:4px 10px;border-radius:99px;border:1px solid var(--line2);background:var(--surface2);color:var(--ink2);cursor:pointer;transition:transform 140ms var(--ease-out),border-color 150ms var(--ease-out),color 150ms var(--ease-out)}
-.will-scope .chipbtn:hover{border-color:var(--brand1);color:var(--brand1)}
-.will-scope .chipbtn:active{transform:scale(.96)}
+/* Jo, 7 Sep: .tplchips / .tplchips-label / .chipbtn removed. That row (stage
+   action button, Quick-fill 1-4, 24h/3d/7d follow-up nudges) was removed
+   entirely on 6 Sep, which left an empty div here showing as a bare strip of
+   padding above the messages — the div is gone now too, so this CSS has
+   nothing left to style. */
 .will-scope /* task suggested reply */
 .taskreply textarea.edit{font-size:12px}
 .will-scope .btn:disabled{opacity:.5;cursor:default}

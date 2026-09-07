@@ -153,18 +153,18 @@ export function formatAUD(cents: number): string {
 
 /** How long Autopilot waits before a reply actually leaves, in seconds.
  *
- *  Set to 2 minutes on Jo's instruction, 3 Sep (was 3, before that 4). Until
- *  Autopilot had a delay it answered the instant the webhook landed, which reads
- *  as a machine: nobody types a considered answer about someone's tax in two
- *  seconds.
+ *  Set to 1 minute on Jo's instruction, 7 Sep (was 2 minutes from 3 Sep, was
+ *  3 before that, before that 4). Until Autopilot had a delay it answered the
+ *  instant the webhook landed, which reads as a machine: nobody types a
+ *  considered answer about someone's tax in two seconds.
  *
  *  The reply is written immediately and parked as QUEUED, so it is visible in
  *  the chat and can still be discarded; the scheduler transmits it once this
  *  delay has passed. The tick runs every 5 minutes (vercel.json), so the real
- *  gap lands between 2 and 7 minutes, still within the human range.
+ *  gap lands between 1 and 6 minutes, still within the human range.
  *
  *  Approval mode is unaffected: there the owner's click is the delay. */
-export const AUTOPILOT_REPLY_DELAY_SECONDS = 120;
+export const AUTOPILOT_REPLY_DELAY_SECONDS = 60;
 
 /**
  * How long THIS particular reply waits: the delay above, with a human amount of
@@ -176,17 +176,17 @@ export const AUTOPILOT_REPLY_DELAY_SECONDS = 120;
  * every time, whatever the message. Nobody answers like that. A person replies
  * in one minute, then in forty, then when they get back to their desk.
  *
- * So each reply picks its own wait, anywhere between two and ten minutes (Jo,
- * 4 Sep). The floor stays at two minutes because an instant answer reads as a
- * machine; the ceiling is ten because past that a customer who is sitting there
- * waiting starts to feel ignored.
+ * So each reply picks its own wait, anywhere between one and five minutes
+ * (Jo, 7 Sep — narrowed from two-to-ten). The floor stays at one minute
+ * because an instant answer reads as a machine; the ceiling is five because
+ * past that a customer who is sitting there waiting starts to feel ignored.
  *
  * The scatter is per reply, not per customer: the same person waiting twice
  * gets two different gaps, which is the whole idea.
  */
 export function autopilotReplyDelaySeconds(rand: () => number = Math.random): number {
-  const base = AUTOPILOT_REPLY_DELAY_SECONDS;   // 2 minutes, the floor
-  const ceiling = 10 * 60;                      // 10 minutes, Jo's ceiling (4 Sep)
+  const base = AUTOPILOT_REPLY_DELAY_SECONDS;   // 1 minute, the floor
+  const ceiling = 5 * 60;                       // 5 minutes, Jo's ceiling (7 Sep)
   return Math.round(base + rand() * (ceiling - base));
 }
 

@@ -1688,34 +1688,12 @@ export default function Dashboard() {
                         }}
                       >✕</button>
                     </div>
-                    {/* One combined row: the stage action button (if any), Quick
-                        fill numbers, and Follow-up nudges all inline together,
-                        rather than three stacked rows. Scrolls sideways if it
-                        doesn't fit rather than wrapping, same as Quick fill
-                        always did. */}
-                    <div className="tplchips">
-                      {/* Jo, 6 Sep, removed entirely: the "1 2 3 4" Quick-fill
-                          buttons. They just dropped canned text (ABN request,
-                          expenses, doc request, Medicare) into the compose box
-                          for a manual send — but Will already sends these on
-                          its own automatically, so there was no real use case
-                          left for the manual version. */}
-                      {/* Jo, 6 Sep, removed entirely: "Send for Signature" and
-                          "Mark Lodged". Both stage actions belong to the
-                          signature/lodgement side of the process, which Jo
-                          handles inside the CRM/manually, not through these
-                          one-click send buttons. showSendForSignature and
-                          showMarkLodged stay exported (state-shape helpers,
-                          harmless if unused) but nothing in the UI calls them
-                          any more. */}
-                      {/* Jo, 6 Sep, removed entirely: the manual 24h/3d/7d
-                          follow-up nudge buttons. These fired the exact same
-                          send_followup templates the scheduler already sends
-                          automatically on its own timer — this row was only a
-                          "push it right now instead of waiting" override, and
-                          Jo confirmed he doesn't need that; the automatic
-                          cadence alone is enough. */}
-                    </div>
+                    {/* Jo, 7 Sep: the .tplchips row that used to live here (the
+                        stage action button, Quick-fill 1-4, and the 24h/3d/7d
+                        follow-up nudges) is gone — all three were removed
+                        entirely on 6 Sep, which left this row empty and
+                        showing as a bare strip of padding above the messages.
+                        Removed along with them. */}
                     <div className="msgs" ref={msgsRef}>
                       {(() => {
                         const visible = [...chatMsgs].filter((m) => m.status !== 'DISCARDED' && m.status !== 'BLOCKED')

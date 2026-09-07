@@ -13,8 +13,8 @@
 import { AUTOPILOT_REPLY_DELAY_SECONDS } from '@/lib/will/config';
 
 describe('the configured delay', () => {
-  it('is the two minutes Jo asked for (3 Sep)', () => {
-    expect(AUTOPILOT_REPLY_DELAY_SECONDS).toBe(120);
+  it('is the one minute Jo asked for (7 Sep, narrowed from the two minutes of 3 Sep)', () => {
+    expect(AUTOPILOT_REPLY_DELAY_SECONDS).toBe(60);
   });
 
   it('is long enough to read as a person, short enough not to lose the lead', () => {
@@ -45,7 +45,7 @@ describe('the queued reply is held, not sent', () => {
     // plus at most one tick. Documented here so a future change to either
     // number is a deliberate one.
     const worstCaseMinutes = (AUTOPILOT_REPLY_DELAY_SECONDS + 5 * 60) / 60;
-    expect(worstCaseMinutes).toBeLessThanOrEqual(10);
+    expect(worstCaseMinutes).toBeLessThanOrEqual(6);
   });
 });
 
@@ -57,14 +57,14 @@ describe('the queued reply is held, not sent', () => {
 describe('autopilotReplyDelaySeconds', () => {
   const { autopilotReplyDelaySeconds, AUTOPILOT_REPLY_DELAY_SECONDS } = jest.requireActual('@/lib/will/config');
 
-  it('never replies faster than the owner\'s two minutes', () => {
+  it('never replies faster than the owner\'s one minute (Jo, 7 Sep)', () => {
     for (let i = 0; i < 500; i++) {
       expect(autopilotReplyDelaySeconds()).toBeGreaterThanOrEqual(AUTOPILOT_REPLY_DELAY_SECONDS);
     }
   });
 
-  it('never waits longer than ten minutes', () => {
-    for (let i = 0; i < 500; i++) expect(autopilotReplyDelaySeconds()).toBeLessThanOrEqual(10 * 60);
+  it('never waits longer than five minutes (Jo, 7 Sep)', () => {
+    for (let i = 0; i < 500; i++) expect(autopilotReplyDelaySeconds()).toBeLessThanOrEqual(5 * 60);
   });
 
   it('is different from one reply to the next', () => {
@@ -72,9 +72,9 @@ describe('autopilotReplyDelaySeconds', () => {
     expect(seen.size).toBeGreaterThan(20);
   });
 
-  it('spreads across the whole two-to-ten-minute band', () => {
+  it('spreads across the whole one-to-five-minute band', () => {
     const all = Array.from({ length: 3000 }, () => autopilotReplyDelaySeconds());
-    expect(all.filter((s) => s < 4 * 60).length).toBeGreaterThan(300);   // short ones happen
-    expect(all.filter((s) => s > 8 * 60).length).toBeGreaterThan(300);   // long ones happen
+    expect(all.filter((s) => s < 2 * 60).length).toBeGreaterThan(300);   // short ones happen
+    expect(all.filter((s) => s > 4 * 60).length).toBeGreaterThan(300);   // long ones happen
   });
 });

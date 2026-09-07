@@ -403,14 +403,14 @@ export function tickCanStart(kind: JobRow['kind'], elapsedMs: number): boolean {
   return elapsedMs <= TICK_BUDGET_MS && elapsedMs + tickReservationMs(kind) <= TICK_WALL_MS;
 }
 
-/** How many Autopilot two-minute timers a tick answers at the same time. Each
+/** How many Autopilot delay timers a tick answers at the same time. Each
  *  is one model call for one customer; four in flight keeps a busy evening
- *  inside the promised 2 to 10 minutes without piling up model calls. Follow-ups
- *  and every other job stay one after another (audit, 5 Sep). */
+ *  inside the promised 1 to 5 minutes (Jo, 7 Sep) without piling up model
+ *  calls. Follow-ups and every other job stay one after another (audit, 5 Sep). */
 const AUTO_REPLY_CONCURRENCY = 4;
 
 /**
- * AUTO_REPLY, current shape (Jo, 3 Sep): the two-minute timer. Nothing was
+ * AUTO_REPLY, current shape (Jo, 3 Sep): the reply-delay timer. Nothing was
  * written when the message arrived; now that the customer has been quiet for
  * the delay, Will reads everything they wrote since our last message and
  * answers it once. The service owns the decision (history, guard, state, send);
@@ -510,9 +510,9 @@ async function doProcess(): Promise<TickResult> {
   //
   // The batch used to run strictly in run_at order. Every follow-up that comes
   // due during the day is re-queued to exactly 19:00, so at 19:00 dozens of
-  // FOLLOW_UP rows sort ahead of the two-minute timer of anyone who wrote at
-  // 18:58, and the reply promised in 2 to 10 minutes went out after every
-  // reminder had. Nothing about what is sent changes here, only the order:
+  // FOLLOW_UP rows sort ahead of the reply-delay timer of anyone who wrote at
+  // 18:58, and the reply promised in 1 to 5 minutes (Jo, 7 Sep) went out after
+  // every reminder had. Nothing about what is sent changes here, only the order:
   // the customer-facing jobs (the Autopilot timer, the questionnaire
   // acknowledgement, the holding line) run first, and the rest keep their
   // run_at order behind them. The timers also run a few at a time: each is one

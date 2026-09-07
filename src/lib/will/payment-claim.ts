@@ -65,7 +65,15 @@ const WITH_ATTACHMENT_CONFIRM = new RegExp([
   'aqui (?:est[áa]|tens)', 'o comprovativo', 'o recibo', 'o comprovante',
   'hier (?:ist|hast du|bitte)', 'der beleg', 'die quittung', 'der screenshot', 'nachweis',
   'ecco', 'la ricevuta', 'lo screenshot', 'la prova',
-  'こちら', 'これです', '領収書', '明細', 'スクショ', 'スクリーンショット',
+  // Jo, 7 Sep: 'こちら' ("this one" / "here") removed — it is one of the most
+  // generic demonstrative words in Japanese, used constantly in sentences
+  // that have nothing to do with payment ("こちらの写真では..." = "in/with
+  // this photo..."). A customer sending an unrelated screenshot (Medicare
+  // proof, an ID, anything) with a Japanese caption that merely starts with
+  // "this" matched here and was wrongly treated as a payment confirmation.
+  // The remaining entries are specific enough to keep: "this is it", receipt,
+  // statement, screenshot.
+  'これです', '領収書', '明細', 'スクショ', 'スクリーンショット',
 ].join('|'), 'i');
 
 /** A payment word inside a report of TROUBLE is not a confirmation.
@@ -156,7 +164,15 @@ export function claimsPayment(
   // A question about paying is never a claim, however many payment words it
   // contains. Checked first so it can override both patterns below.
   if (NOT_A_CLAIM.test(t) || NOT_A_CLAIM_ML.test(t)) return false;
-  if (t.endsWith('?')) return false;
+  // Jo, 7 Sep: was `t.endsWith('?')` — only caught a question mark as the very
+  // last character. "こちらの写真では難しいでしょうか？これ以外には証明する
+  // ものが無く…" (real customer message, a Medicare screenshot, asking "is
+  // this photo not enough? I have nothing else") has its ？ mid-sentence,
+  // followed by more text and an ellipsis, so the trailing check missed it
+  // entirely and the message fell through to WITH_ATTACHMENT_CONFIRM. A
+  // question mark ANYWHERE in the message — half-width or full-width — is
+  // now enough: a genuine payment report essentially never contains one.
+  if (/[?？]/.test(t)) return false;
 
   if (EXPLICIT.test(t)) return true;
   if (opts?.hasAttachment && WITH_ATTACHMENT_CONFIRM.test(t)) return true;
