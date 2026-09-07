@@ -714,6 +714,27 @@ export default function DashboardClient() {
     }
   }
 
+  /** Jo, 8 Sep: opening a task's folder here (and ONLY here — not the Will
+   *  screen, not a phone reply) pauses Will for the matching WhatsApp
+   *  customer, so working through a client's return does not race an
+   *  automated reply. Best-effort and fire-and-forget: a lookup miss (old
+   *  lead, mistyped number, came in by email) or a network hiccup must never
+   *  block opening the folder. Resumed specifically by finishTask below. */
+  function pauseWillForTaskFolder(phone: string) {
+    if (!phone.trim()) return
+    fetch(`/api/will/link?phone=${encodeURIComponent(phone)}`)
+      .then(r => r.json())
+      .then(j => {
+        const willId = j?.customer?.id
+        if (!willId) return
+        return fetch('/api/will/actions', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ action: 'toggle_ai', id: willId, value: false }),
+        })
+      })
+      .catch(() => { /* best effort: opening the folder must never fail on this */ })
+  }
+
   /** Open the Done flow: look up the WhatsApp conversation behind this task.
    *  No match is normal (an old lead, a mistyped number, someone who came in by
    *  email) and simply gives the plain Done this button has always had. */
@@ -777,6 +798,7 @@ export default function DashboardClient() {
       return
     }
     const id = doneFor.id
+    const phone = doneFor.whatsapp
     // Remember the send BEFORE trying to mark done. If the PATCH below fails,
     // the next Done on this task finishes without sending again (audit, 5 Sep).
     setEstimateSent(prev => ({ ...prev, [id]: { amount } }))
@@ -784,10 +806,30 @@ export default function DashboardClient() {
     // The same figure that just went to the customer is recorded on the task,
     // so the client card built from it carries the refund instead of $0
     // (audit, 4 Sep).
-    await finishTask(id, amount, { estimateSent: true })
+    await finishTask(id, amount, { estimateSent: true }, phone)
   }
 
-  async function finishTask(id:string, refundAmount?:number, opts?: { estimateSent?: boolean }) {
+  /** Jo, 8 Sep: the other half of pauseWillForTaskFolder. Resumes Will for
+   *  the matching WhatsApp customer on ANY Done for this task — whether or
+   *  not this particular press sent a fresh estimate (an already-sent retry
+   *  and a plain "Done without sending" both count, same as sending one
+   *  now). Best-effort and fire-and-forget, same reasoning as the pause. */
+  function resumeWillForTaskFolder(phone: string) {
+    if (!phone.trim()) return
+    fetch(`/api/will/link?phone=${encodeURIComponent(phone)}`)
+      .then(r => r.json())
+      .then(j => {
+        const willId = j?.customer?.id
+        if (!willId) return
+        return fetch('/api/will/actions', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ action: 'toggle_ai', id: willId, value: true }),
+        })
+      })
+      .catch(() => { /* best effort */ })
+  }
+
+  async function finishTask(id:string, refundAmount?:number, opts?: { estimateSent?: boolean }, phone?: string) {
     const prevTasks = tasks
     setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], reviewerNote:''} : t))
     setActiveTask(null)
@@ -796,6 +838,7 @@ export default function DashboardClient() {
       const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done', refundAmount})})
       if (!res.ok) throw new Error('server_error')
       setEstimateSent(prev => { if (!(id in prev)) return prev; const next = { ...prev }; delete next[id]; return next })
+      if (phone) resumeWillForTaskFolder(phone)
     } catch (err) {
       console.error('[finishTask]', err)
       // Restore state on failure so admin knows it didn't save
@@ -1694,7 +1737,7 @@ export default function DashboardClient() {
                   // shows as a soft tint instead, and the BORDER follows the
                   // pointer — see .task:hover in crm-design.css.
                   return (
-                  <div key={t.id} className={`task${wasLastViewed?' seen':''}`} style={{alignItems:'center',cursor:'pointer', ...(inProgress?{background:'var(--surface2)'}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
+                  <div key={t.id} className={`task${wasLastViewed?' seen':''}`} style={{alignItems:'center',cursor:'pointer', ...(inProgress?{background:'var(--surface2)'}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail');pauseWillForTaskFolder(t.whatsapp)}}>
                     <button
                       className="tinprog"
                       onClick={e=>{e.stopPropagation();toggleInProgress(t)}}
@@ -2608,7 +2651,7 @@ export default function DashboardClient() {
         // failed: no send form, just finish with the remembered amount
         // (audit, 5 Sep).
         const alreadySent = estimateSent[doneFor.id]
-        const finishAlreadySent = () => { const id = doneFor.id; const amt = alreadySent?.amount; closeDone(); finishTask(id, amt, { estimateSent: true }) }
+        const finishAlreadySent = () => { const id = doneFor.id; const amt = alreadySent?.amount; const phone = doneFor.whatsapp; closeDone(); finishTask(id, amt, { estimateSent: true }, phone) }
         // The in-memory note above dies with a page reload. Will's own record
         // (state at Signature or later, or an estimate figure on file) says the
         // same thing and survives it, so on that evidence the primary button
@@ -2619,7 +2662,7 @@ export default function DashboardClient() {
           ['SIGNATURE_PENDING','SIGNED','LODGED','COMPLETED'].includes(doneLink.state)
         )
         const sentPerWillAmt = doneLink?.estimatedRefundCents != null ? doneLink.estimatedRefundCents / 100 : undefined
-        const finishSentPerWill = () => { const id = doneFor.id; closeDone(); finishTask(id, sentPerWillAmt, { estimateSent: true }) }
+        const finishSentPerWill = () => { const id = doneFor.id; const phone = doneFor.whatsapp; closeDone(); finishTask(id, sentPerWillAmt, { estimateSent: true }, phone) }
         return (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget && !doneBusy) closeDone()}}>
           <div className="modal" style={{maxWidth:460}}>
@@ -2700,7 +2743,7 @@ export default function DashboardClient() {
                 </button>
               </>) : doneLink ? (<>
                 <button className="btn quiet lg" disabled={doneBusy}
-                  onClick={()=>{ const id = doneFor.id; closeDone(); finishTask(id) }}>
+                  onClick={()=>{ const id = doneFor.id; const phone = doneFor.whatsapp; closeDone(); finishTask(id, undefined, undefined, phone) }}>
                   Done without sending
                 </button>
                 <button className="btn take lg" disabled={doneBusy || !amountOk || !linkOk}
@@ -2709,7 +2752,7 @@ export default function DashboardClient() {
                 </button>
               </>) : (
                 <button className="btn take lg" disabled={doneBusy || doneLooking}
-                  onClick={()=>{ const id = doneFor.id; closeDone(); finishTask(id) }}>
+                  onClick={()=>{ const id = doneFor.id; const phone = doneFor.whatsapp; closeDone(); finishTask(id, undefined, undefined, phone) }}>
                   ✓ Mark as done
                 </button>
               )}

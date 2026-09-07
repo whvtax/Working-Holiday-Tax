@@ -59,28 +59,32 @@ beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockClear();
 });
 
-describe('mark_read pauses Will on CRM open', () => {
-  it('calls markCustomerRead as before, then pauses Will for that customer', async () => {
-    const res = await POST(req({ action: 'mark_read', id: 'c1' }));
-    expect(res.status).toBe(200);
-    expect(store.markCustomerRead).toHaveBeenCalledWith('c1');
-    expect(store.updateCustomer).toHaveBeenCalledWith('c1', { aiPaused: true });
-    expect(store.audit).toHaveBeenCalledWith('system', 'will_auto_paused_on_crm_open', { customerId: 'c1' });
-  });
-
-  it('is a no-op pause when the customer is already paused, but mark_read still succeeds', async () => {
-    Object.assign(customer, { aiPaused: true });
+// (Jo, 8 Sep) Reversal of the 6 Sep rule: opening/reading a chat, from the
+// CRM or the phone, must never by itself switch Will off any more. aiPaused
+// is now touched ONLY by the explicit toggle_ai action (Take Over / Resume
+// Will). mark_read is back to being badge-clearing only.
+describe('mark_read no longer pauses Will on CRM open', () => {
+  it('calls markCustomerRead but never pauses the customer', async () => {
     const res = await POST(req({ action: 'mark_read', id: 'c1' }));
     expect(res.status).toBe(200);
     expect(store.markCustomerRead).toHaveBeenCalledWith('c1');
     expect(store.updateCustomer).not.toHaveBeenCalled();
+    expect(store.audit).not.toHaveBeenCalledWith('system', 'will_auto_paused_on_crm_open', expect.anything());
+  });
+
+  it('leaves an already-active customer active', async () => {
+    Object.assign(customer, { aiPaused: false });
+    const res = await POST(req({ action: 'mark_read', id: 'c1' }));
+    expect(res.status).toBe(200);
+    expect(store.updateCustomer).not.toHaveBeenCalled();
+    expect(customer.aiPaused).toBe(false);
   });
 
   it('does not depend on stage, payment, or form status', async () => {
     Object.assign(customer, { state: 'NEW_LEAD', paid: false, formComplete: false, aiPaused: false });
     const res = await POST(req({ action: 'mark_read', id: 'c1' }));
     expect(res.status).toBe(200);
-    expect(store.updateCustomer).toHaveBeenCalledWith('c1', { aiPaused: true });
+    expect(store.updateCustomer).not.toHaveBeenCalled();
   });
 });
 

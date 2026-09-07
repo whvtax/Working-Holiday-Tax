@@ -47,7 +47,7 @@ describe('Done modal when Will already records the estimate as sent', () => {
 
   it('finishing is primary and passes the recorded amount; sending is a secondary "Send again"', () => {
     const modal = between('{doneFor && (()=>{', '{captureRefund && (');
-    expect(modal).toContain('finishTask(id, sentPerWillAmt, { estimateSent: true })');
+    expect(modal).toContain('finishTask(id, sentPerWillAmt, { estimateSent: true }, phone)');
     const branch = between(') : doneLink && sentPerWill ? (<>', ') : doneLink ? (<>');
     const again = branch.indexOf("'Send again'");
     const done = branch.indexOf('✓ Mark as done');

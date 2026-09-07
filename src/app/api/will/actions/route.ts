@@ -24,7 +24,6 @@ import { stateAfterEstimate, composeEstimate } from '@/lib/will/estimate-send';
 // send_task_reply already fixed at getTaskById, above (audit3, 5 Sep).
 import { afterHumanReplyIndexed as afterHumanReply } from '@/lib/will/after-reply';
 import { applyFormReceived, parseUnmatchedFormTask } from '@/lib/will/form-link';
-import { pauseWillOnCrmOpen } from '@/lib/will/review-auto-off';
 import { explainSendError, describeViolations } from '@/lib/will/send-errors';
 import { faultDismissedKey } from '@/lib/will/system-report';
 
@@ -854,16 +853,11 @@ async function handlePost(req: Request) {
     case 'mark_read': {
       if (!b.id) return bad('id required');
       await store.markCustomerRead(b.id);
-      // Opening the chat is Jo taking the wheel (Jo, 6 Sep): Will switches
-      // off for this customer right here, every time, no matter the stage.
-      // Reuses aiPaused, so the manual Take Over / Resume Will toggle keeps
-      // working exactly as before on top of this.
-      //
-      // ONLY the explicit-open path (Dashboard.tsx openChat, a real click on a
-      // customer's card) sends this action. See mark_read_silent below for the
-      // other caller this used to share a name with.
-      const opened = await store.getCustomerById(b.id);
-      if (opened) await pauseWillOnCrmOpen(store, opened).catch(() => { /* best effort: mark_read itself must not fail */ });
+      // Badge-clearing ONLY (Jo, 8 Sep: reversing the 6 Sep "opening the chat
+      // pauses Will" rule — viewing a conversation, from the CRM or the
+      // phone, must never by itself switch Will off). aiPaused is now touched
+      // ONLY by the explicit Take Over / Resume Will toggle (`toggle_ai`),
+      // never by opening or reading a chat.
       return NextResponse.json({ ok: true });
     }
 

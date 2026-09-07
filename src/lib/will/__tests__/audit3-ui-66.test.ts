@@ -34,7 +34,7 @@ describe('Done flow after a successful estimate send', () => {
     expect(src).toContain("useState<Record<string,{amount:number}>>({})");
     const fn = between('async function sendEstimateThenDone', 'async function finishTask');
     const remember = fn.indexOf('setEstimateSent(prev => ({ ...prev, [id]: { amount } }))');
-    const finish = fn.indexOf('await finishTask(id, amount, { estimateSent: true })');
+    const finish = fn.indexOf('await finishTask(id, amount, { estimateSent: true }, phone)');
     expect(remember).toBeGreaterThan(-1);
     expect(finish).toBeGreaterThan(remember);
     // still sends first: the remember/finish lines come after the send_estimate POST
@@ -62,7 +62,7 @@ describe('Done flow after a successful estimate send', () => {
   it('the modal hides the send form and finishes with the remembered amount', () => {
     const modal = between('{doneFor && (()=>{', '✓ Mark as done');
     expect(modal).toContain('const alreadySent = estimateSent[doneFor.id]');
-    expect(modal).toContain('finishTask(id, amt, { estimateSent: true })');
+    expect(modal).toContain('finishTask(id, amt, { estimateSent: true }, phone)');
     expect(modal).toContain('Estimate already sent ✓ $');
     expect(modal).toContain('{!alreadySent && !doneLooking && doneLink && (<>');
     expect(modal).toContain('{alreadySent ? (');
