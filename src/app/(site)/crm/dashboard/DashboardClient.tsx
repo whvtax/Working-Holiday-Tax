@@ -273,18 +273,6 @@ export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
   const [referralPartners, setReferralPartners] = useState<{id:string;name:string}[]>([])
-  // Dismissed birthday reminders - persisted so 'Done' survives reloads (keyed per client+occurrence)
-  const [dismissedBdays, setDismissedBdays] = useState<Set<string>>(new Set())
-  useEffect(() => {
-    try { setDismissedBdays(new Set(JSON.parse(localStorage.getItem('whv_dismissed_bdays') || '[]'))) } catch { /* ignore */ }
-  }, [])
-  const dismissBday = useCallback((bkey: string) => {
-    setDismissedBdays(prev => {
-      const next = new Set(prev); next.add(bkey)
-      try { localStorage.setItem('whv_dismissed_bdays', JSON.stringify([...next])) } catch {}
-      return next
-    })
-  }, [])
   const [taskView, setTaskView]   = useState<'list'|'detail'>('list')
   const [tasks, setTasks]         = useState<Task[]>([])
   const [clients, setClients]     = useState<Client[]>([])
@@ -1624,10 +1612,10 @@ export default function DashboardClient() {
                   Refresh
                 </button>
               </div>
-              {/* Title and actions only. The tiles, the birthday panel and the
-                  search box used to live up here too, which made the header
-                  four times the height of Will's; they scroll with the content
-                  now, which is where Will keeps its equivalents. */}
+              {/* Title and actions only. The tiles and the search box used to
+                  live up here too, which made the header four times the
+                  height of Will's; they scroll with the content now, which is
+                  where Will keeps its equivalents. */}
               </div>
 
               <div
@@ -1667,71 +1655,6 @@ export default function DashboardClient() {
                     )})}
                   </div>
                 </>)
-              })()}
-
-              {/* Birthday Reminders - clients with birthdays in next 7 days */}
-              {(()=>{
-                const today = new Date()
-                // Normalize to start of day to avoid timezone issues
-                today.setHours(0, 0, 0, 0)
-                const upcoming = clients.map(c => {
-                  if (!c.dob) return null
-                  const parts = c.dob.includes('/') ? c.dob.split('/') : c.dob.split('-')
-                  if (parts.length !== 3) return null
-                  let day, month
-                  if (c.dob.includes('/')) { day = parseInt(parts[0], 10); month = parseInt(parts[1], 10) }
-                  else { day = parseInt(parts[2], 10); month = parseInt(parts[1], 10) }
-                  if (!day || !month || month < 1 || month > 12 || day < 1 || day > 31) return null
-                  const thisYear = today.getFullYear()
-                  let bday = new Date(thisYear, month-1, day)
-                  bday.setHours(0, 0, 0, 0)
-                  // If birthday already passed this year (more than 1 day ago), move to next year
-                  const daysSincePassed = Math.floor((today.getTime() - bday.getTime()) / 86400000)
-                  if (daysSincePassed > 1) {
-                    bday = new Date(thisYear+1, month-1, day)
-                    bday.setHours(0, 0, 0, 0)
-                  }
-                  const days = Math.round((bday.getTime() - today.getTime()) / 86400000)
-                  if (days < -1 || days > 7) return null
-                  const bkey = `${c.id}:${bday.getFullYear()}-${month}-${day}`
-                  if (dismissedBdays.has(bkey)) return null
-                  return { client: c, days, bkey }
-                }).filter((x): x is {client: Client, days: number, bkey: string} => x !== null)
-                  .sort((a,b) => a.days - b.days)
-                if (upcoming.length === 0) return null
-                const fmtDays = (d:number) => d===0 ? 'today! 🎉' : d===1 ? 'tomorrow' : d===-1 ? 'yesterday' : `in ${d} days`
-                return (
-                  <div className="panel" style={{marginBottom:12,display:'flex',alignItems:'flex-start',gap:12}}>
-                    <div style={{fontSize:21,flexShrink:0}}>🎂</div>
-                    <div style={{flex:1,minWidth:0}}>
-                      <h3>{upcoming.length} birthday{upcoming.length!==1?'s':''} this week</h3>
-                      <div style={{display:'flex',flexDirection:'column' as const,gap:6,marginTop:8}}>
-                        {upcoming.map(({client:c,days,bkey})=>{
-                          const sanitized = (c.whatsapp||'').replace(/[^0-9+]/g,'')
-                          const firstName = c.fullName.split(' ')[0] || 'there'
-                          const msg = `Happy birthday ${firstName}! 🎉🎂 Wishing you an amazing year ahead - Working Holiday Tax`
-                          return (
-                            <div key={c.id} style={{display:'flex',alignItems:'center',gap:8,background:'var(--surface2)',padding:'6px 10px',borderRadius:8}}>
-                              <span className="cname" style={{flex:1,minWidth:0,overflow:'hidden',textOverflow:'ellipsis' as const,whiteSpace:'nowrap' as const}}>{displayName(c.fullName)}</span>
-                              <span className="chip">{fmtDays(days)}</span>
-                              {sanitized && (
-                                <a className="btn sm" href={`https://wa.me/${sanitized}?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener noreferrer"
-                                  // #25D366 is WhatsApp's own brand green and stays literal:
-                                  // this link opens wa.me, so it wears that product's colour.
-                                  style={{background:'#25D366',color:'#fff',textDecoration:'none'}}>
-                                  🎁 Send wish
-                                </a>
-                              )}
-                              <button type="button" className="btn quiet sm" onClick={()=>dismissBday(bkey)} title="Mark as done - dismiss this reminder">
-                                ✓ Done
-                              </button>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )
               })()}
 
               {/* Name search */}

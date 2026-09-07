@@ -31,7 +31,7 @@ import { faultDismissedKey } from '@/lib/will/system-report';
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
-  action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
+  action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'mark_read_silent' | 'toggle_ai' | 'resume_all_leads'
   | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault';
   /** dismiss_fault only: the fault's stable key (SystemFault.key). */
   faultKey?: string;
@@ -858,8 +858,28 @@ async function handlePost(req: Request) {
       // off for this customer right here, every time, no matter the stage.
       // Reuses aiPaused, so the manual Take Over / Resume Will toggle keeps
       // working exactly as before on top of this.
+      //
+      // ONLY the explicit-open path (Dashboard.tsx openChat, a real click on a
+      // customer's card) sends this action. See mark_read_silent below for the
+      // other caller this used to share a name with.
       const opened = await store.getCustomerById(b.id);
       if (opened) await pauseWillOnCrmOpen(store, opened).catch(() => { /* best effort: mark_read itself must not fail */ });
+      return NextResponse.json({ ok: true });
+    }
+
+    // Badge-clearing ONLY — no pause. (Jo, 7 Sep: "וויל נכבה רק כשלוחצים על
+    // הכרטיס, לא סתם ככה".) Dashboard.tsx's poll-driven effect clears the
+    // unread badge on whichever chat happens to already be selected the
+    // moment a new message lands — that is NOT Jo opening a card, it is a
+    // background refresh, and it used to call the same 'mark_read' action
+    // that also pauses Will. Result: any customer who simply stayed the
+    // selected chat while Jo browsed elsewhere in the CRM got auto-paused
+    // the next time they texted, with no click involved — "half the chats
+    // have Will off" for no visible reason. This action clears the badge
+    // exactly like before and touches aiPaused not at all.
+    case 'mark_read_silent': {
+      if (!b.id) return bad('id required');
+      await store.markCustomerRead(b.id);
       return NextResponse.json({ ok: true });
     }
 
@@ -886,6 +906,27 @@ async function handlePost(req: Request) {
       if (c && b.value) await reconcileSchedule(c);
       await store.audit('owner', b.value ? 'assistant_resumed' : 'assistant_paused', { customerId: b.id });
       return NextResponse.json({ ok: true });
+    }
+
+    // One-off bulk resume for every customer currently in the Lead group
+    // (NEW_LEAD/QUALIFIED/PRICE_SENT/PAYMENT_PENDING). Jo, 7 Sep: the mark_read
+    // bug above (see mark_read_silent) had been silently pausing Will on chats
+    // Jo never actually opened, and he wants every Lead-stage chat switched
+    // back on right now rather than resumed one at a time by hand. Same
+    // resume path as the single toggle_ai(value:true): clears aiPaused and
+    // re-arms that customer's follow-up cadence.
+    case 'resume_all_leads': {
+      const LEAD_STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
+      const all = await store.listCustomers();
+      const targets = all.filter((c) => c.aiPaused && LEAD_STATES.includes(c.state));
+      let resumed = 0;
+      for (const c of targets) {
+        await store.updateCustomer(c.id, { aiPaused: false });
+        await reconcileSchedule({ ...c, aiPaused: false });
+        resumed++;
+      }
+      await store.audit('owner', 'assistant_resumed_bulk_leads', { count: resumed });
+      return NextResponse.json({ ok: true, resumed });
     }
 
     // The Approval / Autopilot switch. It previously changed nothing but React

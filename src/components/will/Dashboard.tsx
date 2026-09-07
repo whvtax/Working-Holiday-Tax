@@ -656,6 +656,9 @@ export default function Dashboard() {
   const chatListElRef = useRef<HTMLDivElement | null>(null);
   // Chat-list filter chip: 'all' | 'unread' | a pipeline stage-group id.
   const [chatFilter, setChatFilter] = useState('all');
+  // One-off bulk resume for the mark_read pause bug (Jo, 7 Sep) — see
+  // resume_all_leads in actions/route.ts.
+  const [resumeLeadsBusy, setResumeLeadsBusy] = useState(false);
   // Whether the chat-header stage badge dropdown (manual stage move) is open.
   const [stageMenuOpen, setStageMenuOpen] = useState(false);
   // Stage action ("Send for Signature" / "Mark Lodged") in flight for this
@@ -1025,9 +1028,16 @@ export default function Dashboard() {
     // one you're actively looking at is implicitly read — it must never go
     // bold behind your own open conversation. Self-limiting: once cleared,
     // unreadCount is 0 and this is a no-op on the next poll.
+    //
+    // 'mark_read_silent', NOT 'mark_read' (Jo, 7 Sep). This effect is a
+    // background poll reaction, not Jo opening a card — it used to share the
+    // 'mark_read' action with openChat() below, so it silently paused Will
+    // for whichever customer's chat merely happened to still be selected
+    // when they texted again, with no click from Jo at all. Badge-clearing
+    // must never carry the pause; only an explicit open (openChat) does.
     const openCustomer = data.customers.find((c) => c.id === chatSelId);
     if (openCustomer && openCustomer.unreadCount > 0) {
-      act({ action: 'mark_read', id: chatSelId }).then(() => refresh());
+      act({ action: 'mark_read_silent', id: chatSelId }).then(() => refresh());
     }
     /* eslint-disable-next-line */
   }, [data]);
@@ -1504,6 +1514,18 @@ export default function Dashboard() {
                     {STAGE_GROUPS.filter((sg) => sg.id === 'onb' || sg.id === 'rev' || sg.id === 'sig').map((sg) => (
                       <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(chatFilter === sg.id ? 'all' : sg.id)}>{sg.label}</button>
                     ))}
+                    <button
+                      className="cfchip"
+                      disabled={resumeLeadsBusy}
+                      title="Turn Will back on for every Lead-stage chat that got auto-paused"
+                      onClick={async () => {
+                        setResumeLeadsBusy(true);
+                        const r = await act({ action: 'resume_all_leads' });
+                        setResumeLeadsBusy(false);
+                        say(r?.ok ? `Will resumed on ${r.resumed} lead${r.resumed === 1 ? '' : 's'}.` : (r?.error || 'Could not resume.'));
+                        refresh();
+                      }}
+                    >{resumeLeadsBusy ? 'Resuming…' : '▶ Resume Will on Leads'}</button>
                   </div>
                 </div>
                 {/* WhatsApp-real: the scrollbar belongs to the chat list only —
