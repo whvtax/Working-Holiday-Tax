@@ -10,8 +10,8 @@
 // This is the missing link. It is deliberately best-effort: a form submission
 // must NEVER fail because Will could not be updated.
 // ============================================================
-import { getStore, CustomerRow } from './store';
-import { raiseOrFoldSystemTask } from './tasks';
+import { getStore, CustomerRow, Store } from './store';
+import { raiseOrFoldSystemTask, openSystemTasks } from './tasks';
 export { unmatchedFormTaskContext, parseUnmatchedFormTask } from './form-link-task';
 import { unmatchedFormTaskContext, parseUnmatchedFormTask } from './form-link-task';
 
@@ -208,6 +208,40 @@ export async function applyFormReceived(
     matchedOn: opts.matchedOn ?? 'phone-tail-9',
   });
   return 'queued';
+}
+
+/**
+ * Retry every open unmatched-questionnaire task against a customer who has
+ * just been created, or is being seen for the first time.
+ *
+ * Before this, a form submitted moments before someone's first WhatsApp
+ * message sat as an open "Link to chat" task forever: nothing ever went back
+ * and matched it once the very thing the task was waiting for — a WhatsApp
+ * chat with that number — actually showed up a few minutes later (audit,
+ * 10 Sept: Gracie's questionnaire logged 4 minutes before her first WhatsApp
+ * message and the task was still open hours later, needing a manual click).
+ *
+ * Runs the exact same path "Link to chat" runs (applyFormReceived), so
+ * nothing is said to the customer that a person matching it by hand would not
+ * also have said. Best-effort: a brand-new customer must never fail to be
+ * created because this lookup or replay failed.
+ */
+export async function resolvePendingFormLinkOnNewCustomer(store: Store, customer: CustomerRow): Promise<void> {
+  try {
+    const open = await openSystemTasks(store, (t) => {
+      const submitted = parseUnmatchedFormTask(t.context);
+      return !!submitted && samePhone(customer.waId, submitted.waNumber);
+    });
+    for (const t of open) {
+      const submitted = parseUnmatchedFormTask(t.context);
+      if (!submitted) continue;
+      await applyFormReceived(customer, {
+        email: submitted.email, hasMedicare: submitted.hasMedicare, matchedOn: 'auto-relink',
+      });
+      await store.resolveTask(t.id);
+      await store.audit('system', 'form_linked_automatically', { customerId: customer.id, taskId: t.id }).catch(() => {});
+    }
+  } catch { /* a brand-new customer must never fail to be created over this */ }
 }
 
 /**

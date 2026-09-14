@@ -558,3 +558,36 @@ describe('the guarantee survives translation', () => {
     expect(v.some((x) => x.startsWith('FORBIDDEN_AMOUNT') || x === 'SALES_CONTENT_AFTER_PAYMENT')).toBe(true);
   });
 });
+
+describe('myGov reassurance is recognised in non-English languages too', () => {
+  // (audit, 10 Sep) MYGOV_REASSURANCE was English-only while MYGOV_STEP_CUE_ML
+  // understands German/Spanish/French/Italian/Portuguese/Japanese step verbs.
+  // A genuine reassurance clause in one of those languages had no way to be
+  // excused, so it fell through to the step-cue check on its own words. The
+  // real case: German "Login-Daten" (the NOUN, "login credentials") is enough
+  // on its own to match the English "log ?in" step cue, so a pure reassurance
+  // sentence about never sharing login details was refused as an instruction
+  // to log in (+49 173 1532890 Thomas, real Decision Log entry).
+  it('ALLOWS the exact German reply that was wrongly refused', () => {
+    const r = policyGuard(
+      'Klar, gerne erkläre ich dir das. Wir arbeiten unter einem registrierten Tax Agent, und der hat direkten Zugang zum ATO-System. Du brauchst keinerlei myGov-Zugang und gibst uns auch niemals Login-Daten weiter. Nach der Zahlung füllst du ein kurzes, sicheres Formular aus, und wir kümmern uns dann direkt mit dem ATO um alles Weitere.',
+      ctx(),
+    );
+    expect(r.violations).not.toContain('MYGOV_TROUBLESHOOTING');
+  });
+
+  it.each([
+    ['de', 'Du brauchst keinerlei myGov-Zugang, wir kümmern uns um alles mit dem ATO.'],
+    ['es', 'No necesitas tu cuenta de myGov, nosotros nos encargamos de todo con el ATO.'],
+    ['fr', "Tu n'as pas besoin de myGov, nous nous occupons de tout avec l'ATO."],
+    ['it', 'Non hai bisogno del tuo myGov, ci pensiamo noi con l\u2019ATO.'],
+    ['pt', 'N\u00e3o precisas da tua conta myGov, n\u00f3s tratamos disso com o ATO.'],
+    ['ja', 'myGov\u306f\u4e0d\u8981\u3067\u3059\u3002ATO\u3068\u306e\u3084\u308a\u3068\u308a\u306f\u5f0a\u793e\u304c\u5bfe\u5fdc\u3057\u307e\u3059\u3002'],
+  ])('ALLOWS the same reassurance shape in %s', (_lang, t) => {
+    expect(has(t, 'MYGOV_TROUBLESHOOTING')).toBe(false);
+  });
+
+  it('still blocks a real German myGov walkthrough, reassurance patterns notwithstanding', () => {
+    expect(has('Geh auf myGov, logge dich ein und klicke auf ATO verkn\u00fcpfen.', 'MYGOV_TROUBLESHOOTING')).toBe(true);
+  });
+});

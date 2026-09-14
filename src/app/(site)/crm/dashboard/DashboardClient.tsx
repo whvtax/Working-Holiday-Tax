@@ -1490,8 +1490,7 @@ export default function DashboardClient() {
     } catch { alert('Could not reach the server. Nothing was sent.') }
     setSigBusy(null)
   }
-  async function markLodgedFromCard(taskId: string, willId: string, name: string) {
-    if (!confirm(`Send the "lodged" message to ${name}, move them to Completed and file them under Clients?`)) return
+  async function markLodgedFromCard(taskId: string, willId: string) {
     setSigBusy(taskId)
     let lodged = false
     try {
@@ -1875,7 +1874,7 @@ export default function DashboardClient() {
                       return (
                         <div style={{flex:1,display:'flex',justifyContent:'center'}}>
                           {readySent
-                            ? <button disabled={busy} onClick={e=>{e.stopPropagation();markLodgedFromCard(t.id, link.id, displayName(t.clientName))}} className="btn take sm">{busy ? '…' : '✅ Mark Lodged'}</button>
+                            ? <button disabled={busy} onClick={e=>{e.stopPropagation();markLodgedFromCard(t.id, link.id)}} className="btn take sm">{busy ? '…' : '✅ Mark Lodged'}</button>
                             : <button disabled={busy} onClick={e=>{e.stopPropagation();sendSignatureFromCard(t.id, link.id, displayName(t.clientName))}} className="btn take sm">{busy ? '…' : '✍️ Send for Signature'}</button>}
                         </div>
                       )

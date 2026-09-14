@@ -103,7 +103,7 @@ export interface FoldSystemTaskOpts {
   suggestedReply: string | null;
 }
 
-async function openSystemTasks(store: Pick<Store, 'listTasks'>, match: (t: TaskRow) => boolean): Promise<TaskRow[]> {
+export async function openSystemTasks(store: Pick<Store, 'listTasks'>, match: (t: TaskRow) => boolean): Promise<TaskRow[]> {
   const all = await store.listTasks();
   return all.filter((t) => t.status === 'OPEN' && t.customerId == null && match(t));
 }

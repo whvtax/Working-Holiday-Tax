@@ -240,8 +240,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   // Files
   const [bankStatement, setBankStatement] = useState<UploadState>({ file: null, preview: null })
   const [selfiePassport, setSelfiePassport] = useState<UploadState>({ file: null, preview: null })
-  // Work-related expense invoices. Optional, capped, and never a reason for the
-  // submission to fail: see uploadInvoices in submit-tax-form.ts.
+  // Work-related expense invoices. Required once "Yes" is chosen above (Jo,
+  // 10 Sep); before that it was optional and never blocked submission — see
+  // uploadInvoices in submit-tax-form.ts for how the files themselves upload,
+  // which is unchanged, only the "at least one" gate is new.
   const [invoices, setInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
 
   const [hasExpenses, setHasExpenses] = useState<'yes'|'no'|''>('')
@@ -436,6 +438,16 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (declared === 'no')    e.declared       = 'You must agree to submit'
     if (!howHeard.trim())     e.howHeard       = T('required')
     if (!hasExpenses)         e.hasExpenses    = T('required')
+    // Jo, 10 Sep: someone answering "Yes" to work expenses with zero receipts
+    // attached used to sail straight through to the residency page — the
+    // upload was optional on purpose (audit, before today) so a missing file
+    // could never fail the whole submission. That is still true for a "No"
+    // answer, where the section is not even shown. But a "Yes" with nothing
+    // uploaded is not a lesser case of the same thing, it is the answer
+    // silently doing nothing: the team has no invoice to work from and the
+    // claim never gets made. So "Yes" now gates on at least one file, exactly
+    // like every other required field on this step — "No" is unaffected.
+    if (hasExpenses === 'yes' && invoices.files.length === 0) e.invoices = T('invoicesRequired')
     return e
   }
 
@@ -739,16 +751,17 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             {/* Expenses: upload the receipts here instead of being told to send
                 them to a WhatsApp number, which meant they arrived detached
                 from the person who sent them and had to be matched up by hand.
-                Optional on purpose. Nothing here can fail the submission. */}
+                Required once "Yes" is chosen above (Jo, 10 Sep) — see the
+                comment on the invoicesRequired check in validate(). */}
             {hasExpenses === 'yes' && (
               <div style={{ marginTop: 10 }}>
-                <Field label={T('invoicesLabel')} hint={T('invoicesHint')}>
+                <Field label={T('invoicesLabel')} required hint={T('invoicesHint')} error={errors.invoices}>
                   <MultiFileUpload
                     id="invoices"
                     label={T('uploadInvoices')}
                     accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
                     value={invoices}
-                    onChange={setInvoices}
+                    onChange={(v) => { setInvoices(v); setErrors(p => ({...p, invoices: ''})) }}
                     maxFiles={MAX_INVOICES}
                   />
                 </Field>

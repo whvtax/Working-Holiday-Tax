@@ -32,7 +32,6 @@ Which option suits you?`,
   // for the chosen track and gives the bank details. Same shape for both
   // tracks; only the amount differs.
   price_tfn: `Perfect! Here are the payment details for the $220:
-Account Name: Simple Tax Services
 BSB: 062692
 Account Number: 81049952
 
@@ -41,7 +40,6 @@ If your refund is less than our fee, we'll refund the difference. If you owe mon
 Once you've made the payment, just send us a screenshot and we'll get started!`,
 
   price_tfn_abn: `Perfect! Here are the payment details for the $385:
-Account Name: Simple Tax Services
 BSB: 062692
 Account Number: 81049952
 
@@ -60,7 +58,6 @@ Once you've made the payment, just send us a screenshot and we'll get started!`,
 
 Since it's already been lodged, this is a review rather than a fresh tax return, so the refund guarantee doesn't apply here. The fee is $220 and is non-refundable.
 
-Account Name: Simple Tax Services
 BSB: 062692
 Account Number: 81049952
 
@@ -70,7 +67,6 @@ Once paid, send us a screenshot and we'll get started.`,
 
 Since it's already been lodged, this is a review rather than a fresh tax return, so the refund guarantee doesn't apply here. The fee is $385 and is non-refundable.
 
-Account Name: Simple Tax Services
 BSB: 062692
 Account Number: 81049952
 

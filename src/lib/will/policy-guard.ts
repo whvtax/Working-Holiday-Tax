@@ -695,6 +695,31 @@ const DIY_INSTRUCTIONS = /((?<!\b(?:not|never|don[’']t|do not|won[’']t|witho
 const MYGOV_TERMS = /\b(my ?gov|my\.gov(?:\.au)?|mygov ?id|ato (?:online|portal|account|login|app|website)|australian taxation office|\bato\b|digital id|myid|centrelink|services australia|ihi|individual healthcare identifier|medicare entitlement statement|\bmes\b)\b/i;
 const MYGOV_STEP_CUE = /\b(?:log ?in|logging in|sign ?in|signing in|go to|head to|click|tap|press|select|choose|enter (?:your|the)|type in|open (?:the |your )?(?:app|link|page|site|portal|account)|create (?:an? )?(?:account|id|my ?gov ?id|digital id|profile)|set up (?:an? )?(?:account|id)|reset (?:your )?password|apply for (?:an? )?(?:ihi|mes|medicare entitlement|exemption|digital id)|link(?:ing)? (?:your|the) (?:my ?gov|ato|account)|connect (?:your|the) (?:my ?gov|ato)|verify your|follow (?:these|the|this) (?:steps|guide|link)|you (?:need|have|'ll need|will need) to (?:log|sign|go|click|create|apply|link|enter|select|open|reset|submit|set up|verify|connect)|try (?:logging|signing) in|try (?:again|it again)|submit (?:the )?(?:form|application|statement))\b/i;
 const MYGOV_REASSURANCE = /\b(?:do(?:n'?t| not)|does(?:n'?t| not)|no need|never|without|won'?t|will not|you'?ll never|nothing to)\b[^.!?]{0,45}\b(?:need|have to|require|use|access|log ?in|sign ?in|worry|touch|deal with)\b|\b(?:we|our team|i)\b[^.!?]{0,45}\b(?:handle|take care of|takes care of|access|manage|deal with|look after|sort out|do (?:it |everything |all )?for you|on your behalf|through the ato)\b|leave (?:it|that|the my ?gov|everything)[^.!?]{0,25}\b(?:to us|with us|to me)\b/i;
+// The same reassurance shape as MYGOV_REASSURANCE, in the other languages
+// MYGOV_STEP_CUE_ML understands. Without this, a genuine "you don't need
+// myGov" / "we handle it" sentence in German, Spanish, French, Italian,
+// Portuguese or Japanese has no way to be excused, so it falls through to the
+// step-cue check on its own words — and German "Login-Daten" (the NOUN,
+// "login credentials", used in "you never share login details with us") is
+// enough on its own to match the English "log ?in" step cue. That refused a
+// verbatim-safe German reply as MYGOV_TROUBLESHOOTING (audit, 10 Sep,
+// +49 173 1532890 Thomas: "Du brauchst keinerlei myGov-Zugang und gibst uns
+// auch niemals Login-Daten weiter" — pure reassurance, no instruction at all).
+const MYGOV_REASSURANCE_ML = new RegExp([
+  // German
+  '\\bbrauchst? (?:du )?keine(?:n|r|s|rlei)?\\b', '\\bmusst du nicht\\b', '\\bniemals\\b', '\\bnicht n[öo]tig\\b',
+  '\\bwir\\b[^.!?]{0,45}\\b(?:k[üu]mmern uns|erledigen (?:das|es)|[üu]bernehmen (?:das|es)|machen das f[üu]r dich)\\b',
+  // Spanish
+  '\\bno necesitas\\b', '\\bnunca (?:tienes que|necesitas)\\b', '\\bnosotros\\b[^.!?]{0,45}\\b(?:nos encargamos|nos ocupamos|lo hacemos)\\b',
+  // French
+  "\\btu n'as pas besoin\\b", '\\bjamais\\b', '\\bnous\\b[^.!?]{0,45}\\b(?:nous occupons|g[ée]rons|faisons)\\b',
+  // Italian
+  '\\bnon hai bisogno\\b', '\\bci pensiamo noi\\b', '\\bce ne occupiamo noi\\b',
+  // Portuguese
+  '\\bn[ãa]o precisas\\b', '\\bn[óo]s tratamos disso\\b', '\\bcuidamos disso\\b',
+  // Japanese
+  '不要です', 'する必要はありません', '必要ありません', '弊社が(?:対応|代行)', '私たちが(?:対応|代行)',
+].join('|'), 'i');
 // A benign device hint ("try again on a computer/laptop") is NOT portal
 // troubleshooting: it names no site, no login and no step through a service, it
 // only suggests a different device. Owner-approved for the Services Australia
@@ -904,7 +929,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   if (MYGOV_TERMS.test(text) && (MYGOV_STEP_CUE.test(text) || MYGOV_STEP_CUE_ML.test(text))) {
     const clauses = text.split(/[.!?\n。！？]+|,\s+|、|\s+but\s+/i).map((c) => c.trim()).filter(Boolean);
     const instructing = clauses.some((c) => {
-      if (MYGOV_REASSURANCE.test(c)) return false;
+      if (MYGOV_REASSURANCE.test(c) || MYGOV_REASSURANCE_ML.test(c)) return false;
       // Strip the one allowed benign device hint, then a clause is instructing
       // only if a REAL portal step still survives. So "try again on a computer"
       // clears, but "log in on a computer" or "try logging in again" do not.

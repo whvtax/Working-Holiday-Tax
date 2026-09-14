@@ -135,9 +135,10 @@ export const formStrings = {
   refPrefix:           { en: 'reference ', de: 'Referenz ', ja: '参照番号 ' },
   // The expense-invoice picker (Jo, 28 Aug). Optional, so the wording never
   // implies the form cannot be sent without them.
-  invoicesLabel:       { en: 'Receipts or invoices (optional)', de: 'Belege oder Rechnungen (optional)', ja: '領収書または請求書（任意）' },
+  invoicesLabel:       { en: 'Receipts or invoices', de: 'Belege oder Rechnungen', ja: '領収書または請求書' },
   invoicesHint:        { en: 'Add up to 10 invoices for free.', de: 'Bis zu 10 Rechnungen kostenlos hinzufügen.', ja: '請求書は無料で最大10件まで追加できます。' },
   uploadInvoices:      { en: 'Upload receipts', de: 'Belege hochladen', ja: '領収書をアップロード' },
+  invoicesRequired:    { en: 'Please upload at least one receipt or invoice, or change your answer to No above.', de: 'Bitte lade mindestens einen Beleg oder eine Rechnung hoch, oder ändere deine Antwort oben auf Nein.', ja: '少なくとも1件の領収書または請求書をアップロードするか、上の回答を「いいえ」に変更してください。' },
   fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：' },
   // The real client-side ceiling is MAX_UPLOAD_BYTES in compress-image.ts = 4MB.
   // This said 10MB while `fileTooLarge` directly below said 4 MB, so the two

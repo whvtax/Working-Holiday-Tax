@@ -13,6 +13,7 @@ import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MS
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut, fetchWaMedia } from './channel';
 import { autopilotReplyDelaySeconds } from './config';
+import { resolvePendingFormLinkOnNewCustomer } from './form-link';
 import { isIdentityQuestion } from './identity-question';
 import { firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
 // Moved to text-normalize.ts so the engine can use it too without importing this
@@ -211,6 +212,7 @@ async function handleIncomingInner(
   if (!customer) {
     customer = await store.createCustomer({ waId, name: meta?.name ?? null, flag: meta?.flag ?? '💬' });
     await store.audit('system', 'customer_created', { waId });
+    await resolvePendingFormLinkOnNewCustomer(store, customer);
   }
 
   if (!opts?.alreadyStored) {
@@ -1173,6 +1175,7 @@ export async function handleInboundNote(
     try {
       customer = await store.createCustomer({ waId, name: meta?.name ?? null, flag: '💬' });
       await store.audit('system', 'customer_created', { waId });
+      await resolvePendingFormLinkOnNewCustomer(store, customer);
     } catch {
       // This path runs outside the per-customer mutex, so a text message for the
       // same brand-new number can create the row a moment earlier and win the

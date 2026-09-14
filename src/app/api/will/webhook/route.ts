@@ -20,6 +20,7 @@ import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
 import { isRateLimited, getRedis } from '@/lib/rate-limit';
 import { resolveAiMode } from '@/lib/will/mode';
+import { deferToMorning } from '@/lib/will/config';
 
 // REL-01: allow the function up to 60s so a Claude call (30s x up to 2 attempts)
 // completes BEFORE the platform can kill it mid-processing — the atomic
@@ -355,6 +356,37 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
         });
         if (!customer) continue;
         const outsideWindow = code != null && WINDOW_ERROR_CODES.has(code);
+        // Meta's per-person marketing limit (131049) is known to clear on its
+        // own on a daily cycle — the synchronous send path already treats it
+        // as retryable and defers to the next morning rather than raising a
+        // task (channel.ts / scheduler.ts). This is the SAME error reported
+        // the other way: Meta accepted the send (200 + wamid) and only later,
+        // through this status webhook, said it did not actually go through.
+        // It used to skip straight to an immediate URGENT "send it by hand"
+        // task every time, with no retry at all — the async report got worse
+        // treatment than the exact same failure reported synchronously
+        // (audit, 10 Sep: three of these in one day's Decision Log — Patrick,
+        // Matthew, Soleil — for a limit that resolves itself within a day).
+        // RESEND_MESSAGE (scheduler.ts) retries up to 3 times before it
+        // finally raises a task, so the owner only hears about this if it
+        // truly could not self-heal.
+        if (code === 131049) {
+          await store.addJob({
+            customerId: customer.id, kind: 'RESEND_MESSAGE',
+            payload: { messageId: msg.id, attempt: 0 },
+            runAt: deferToMorning(new Date()).toISOString(),
+          }).catch(async () => {
+            // Queueing itself failed: fall back to the old immediate task
+            // rather than silently losing the message.
+            await store.addTask({
+              customerId: customer.id, customerName: customer.name ?? customer.waId,
+              reason: `WhatsApp did not deliver this message: ${error}. It shows as failed in the chat.`,
+              severity: 'URGENT', context: msg.body.slice(0, 200), suggestedReply: msg.body,
+            });
+          });
+          await store.audit('channel', 'delivery_failed_131049_requeued', { customerId: customer.id, messageId: msg.id });
+          continue;
+        }
         await store.addTask({
           customerId: customer.id, customerName: customer.name ?? customer.waId,
           reason: outsideWindow

@@ -973,6 +973,49 @@ async function doProcess(): Promise<TickResult> {
         continue;
       }
 
+      // RESEND_MESSAGE: a message Meta initially accepted (200 + wamid) but
+      // later reported FAILED through the async status webhook, for an error
+      // we know clears on its own — right now just Meta's per-person
+      // marketing limit (131049, applyDeliveryStatuses in webhook/route.ts).
+      // Same "defer to the next morning" idea FOLLOW_UP and FORM_RECEIVED
+      // already use for the SAME error code when it shows up synchronously;
+      // this is that error reported the other way, a status webhook instead
+      // of an immediate rejection, so it gets the same treatment instead of
+      // an immediate manual task. Capped at 3 attempts, matching
+      // MEDICARE_INFO's stand-aside cap: after that, one task, not a loop
+      // (audit, 10 Sep: Patrick / Matthew / Soleil — three URGENT "resend it
+      // by hand" tasks in the Decision Log for a limit that clears on its own).
+      if (job.kind === 'RESEND_MESSAGE') {
+        const attempt = job.payload.attempt ?? 0;
+        const messageId = job.payload.messageId;
+        const original = messageId ? await store.getMessageById(messageId) : null;
+        if (!original) {
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
+        const out = await deliverOut(
+          customer, original.body, original.author === 'HUMAN' ? 'HUMAN' : 'AI',
+          { system: true, resendOf: messageId }, original.meta?.waTemplate,
+        );
+        if (out.ok) {
+          await store.audit('scheduler', 'resend_message_succeeded', { customerId: customer.id, messageId, attempt });
+        } else if (out.retryable && attempt < 3) {
+          await store.addJob({
+            customerId: customer.id, kind: 'RESEND_MESSAGE',
+            payload: { messageId, attempt: attempt + 1 },
+            runAt: deferToMorning(new Date()).toISOString(),
+          }).catch(() => { /* the task below is the backstop if this itself cannot be queued */ });
+          await store.audit('scheduler', 'resend_message_deferred', { customerId: customer.id, messageId, attempt: attempt + 1 });
+        } else {
+          await raiseOrUpdateTask(store, customer, {
+            reason: `WhatsApp did not deliver this message: Meta's marketing limit held it back and it could not be resent automatically after ${attempt + 1} attempt(s) (${out.error ?? 'unknown error'}). Send it by hand from the chat.`,
+            severity: 'REVIEW', newContext: original.body.slice(0, 200), suggestedReply: original.body,
+          });
+          await store.audit('scheduler', 'resend_message_gave_up', { customerId: customer.id, messageId, attempt, error: out.error ?? null });
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
       // REVIEW_REQUEST: 1 hour after a customer is marked lodged, ask for a
       // Google review as its OWN warmer message (Jo, 31 Aug). The lodgement note
       // no longer carries the ask; this does, once, a little after the good news

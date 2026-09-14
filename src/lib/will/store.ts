@@ -122,12 +122,12 @@ export const DUE_JOBS_BATCH = 50;
  *  until the nudges to silent leads had all gone out (audit3 core 12, 5 Sep).
  *  Nothing about what is sent or when a follow-up is allowed changes; only
  *  which rows a busy tick sees first. */
-export const CUSTOMER_FACING_JOB_KINDS: ReadonlyArray<JobRow['kind']> = ['AUTO_REPLY', 'FORM_RECEIVED', 'HANDOFF_ACK'];
+export const CUSTOMER_FACING_JOB_KINDS: ReadonlyArray<JobRow['kind']> = ['AUTO_REPLY', 'FORM_RECEIVED', 'HANDOFF_ACK', 'RESEND_MESSAGE'];
 
 export interface JobRow {
   id: string;
   customerId: string | null;
-  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'REVIEW_REQUEST' | 'MEDICARE_INFO';
+  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'REVIEW_REQUEST' | 'MEDICARE_INFO' | 'RESEND_MESSAGE';
   payload: {
     templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
     /** MEDICARE_INFO: how many times this job has already stood aside for the
