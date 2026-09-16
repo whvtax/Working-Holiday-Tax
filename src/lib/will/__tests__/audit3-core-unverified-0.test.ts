@@ -64,3 +64,38 @@ describe('extractEchoes: non-text coexistence echoes', () => {
     expect(echoes).toHaveLength(0);
   });
 });
+
+describe('extractEchoes: reaction echoes carry structured data (audit, 14 Sep)', () => {
+  // A heart Jo taps ON THE PHONE, on a customer's message, used to fall into
+  // the generic non-text branch above and keep only placeholderFor's plain
+  // string ("❤️  reacted to your message"). Dashboard.tsx paints a reaction
+  // as a small badge on its TARGET bubble, but it can only do that from the
+  // structured { emoji, to } shape — the same shape a customer's own reaction
+  // already carries via the main `messages` field. Without it, an owner's
+  // phone reaction always rendered as a standalone floating line, never
+  // attached to anything, exactly what the structured path exists to avoid.
+  it('carries emoji and the target message id, not just a placeholder body', () => {
+    const { echoes } = extractEchoes(payloadWithEchoes([
+      { type: 'reaction', to: '61400000005', id: 'wamid.REACT1', reaction: { emoji: '❤️', message_id: 'wamid.TARGET1' } },
+    ]));
+    expect(echoes).toHaveLength(1);
+    expect(echoes[0]).toMatchObject({ to: '61400000005', id: 'wamid.REACT1' });
+    expect(echoes[0].body).toBe('❤️  reacted to your message');
+    expect(echoes[0].reaction).toEqual({ emoji: '❤️', to: 'wamid.TARGET1' });
+  });
+
+  it('carries a removed reaction (no emoji) the same way', () => {
+    const { echoes } = extractEchoes(payloadWithEchoes([
+      { type: 'reaction', to: '61400000006', id: 'wamid.REACT2', reaction: { message_id: 'wamid.TARGET2' } },
+    ]));
+    expect(echoes[0].body).toBe('removed their reaction');
+    expect(echoes[0].reaction).toEqual({ emoji: null, to: 'wamid.TARGET2' });
+  });
+
+  it('drops a reaction echo with no `to` or `id` rather than throwing', () => {
+    const { echoes } = extractEchoes(payloadWithEchoes([
+      { type: 'reaction', reaction: { emoji: '👍', message_id: 'wamid.TARGET3' } },
+    ]));
+    expect(echoes).toHaveLength(0);
+  });
+});

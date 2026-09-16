@@ -292,6 +292,37 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "lang": "en"
   },
   {
+    "intent": "tax residency question (already paid, form submitted)",
+    "question": "Unsure if I should put Australian tax resident or working holiday? I've already paid and sent in the form.",
+    "examples": [
+      "I already paid, but I'm not sure if I should have selected resident or working holiday maker on the form",
+      "now that I've submitted everything, was I meant to put Australian tax resident or WHM?",
+      "I'm a paying client, which residency option applies to me?"
+    ],
+    "answer": "This is a very important question and can make a big difference to your tax refund. It depends on your individual circumstances, so we check it carefully rather than guess.\n\nYou'll find the criteria explained on page three of the tax return form you submitted. That's the best place to check first.",
+    "keywords": [
+      "resident",
+      "residency",
+      "tax",
+      "purposes",
+      "australian",
+      "whm",
+      "holiday",
+      "maker",
+      "which",
+      "select",
+      "paid",
+      "submitted",
+      "page three"
+    ],
+    "tags": [
+      "tax-question",
+      "residency",
+      "paid"
+    ],
+    "lang": "en"
+  },
+  {
     "intent": "tax residency question",
     "question": "Am I an Australian resident for tax purposes? Which option should I choose on the form?",
     "examples": [
@@ -726,6 +757,31 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "lang": "en"
   },
   {
+    "intent": "asked for the account name before paying",
+    "question": "What's the account name please?",
+    "examples": [
+      "do you need any more information before I send it over? what's the account name please",
+      "what name is the bank account under?",
+      "my bank is asking for the account name to send the payment"
+    ],
+    "answer": "The account name is The Accounting Academy.\n\nNo other information needed before you pay. Once the payment goes through, just send us a screenshot and we'll send you the form to get started!",
+    "keywords": [
+      "account",
+      "name",
+      "bank",
+      "transfer",
+      "payment",
+      "before",
+      "pay"
+    ],
+    "tags": [
+      "pricing",
+      "process",
+      "payment"
+    ],
+    "lang": "en"
+  },
+  {
     "intent": "bank transfer shows a different account name",
     "question": "The account name doesn't match when I try to transfer the payment. Is that right?",
     "examples": [
@@ -1059,6 +1115,33 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "tags": [
       "pricing",
       "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "when will the signature document arrive",
+    "question": "When will I get the document to sign so it can be sent out?",
+    "examples": [
+      "when do I get the document to sign?",
+      "how long until I can sign and it gets lodged?",
+      "when will you send the signature form?",
+      "wann bekomme ich das Dokument zum Unterschreiben?"
+    ],
+    "answer": "The team is preparing your document to sign and will send it as soon as it's ready.",
+    "keywords": [
+      "signature",
+      "sign",
+      "document",
+      "when",
+      "arrive",
+      "send",
+      "lodge",
+      "ready"
+    ],
+    "tags": [
+      "process",
+      "timing",
+      "signature"
     ],
     "lang": "en"
   },

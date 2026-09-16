@@ -15,6 +15,7 @@
  *     instead of the old silent swallow.
  */
 const store = {
+  listMessages: jest.fn().mockResolvedValue([]),
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
   dueJobs: jest.fn(),
@@ -65,6 +66,7 @@ const auditKinds = () => store.audit.mock.calls.map((c) => c[1] as string);
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.listMessages.mockResolvedValue([]);
   deliver.mockReset();
   store.reclaimStaleJobs.mockResolvedValue(0);
   store.getSetting.mockImplementation(async (k: string) => (k === 'ai_mode' ? 'FULL_AUTO' : false));

@@ -591,3 +591,32 @@ describe('myGov reassurance is recognised in non-English languages too', () => {
     expect(has('Geh auf myGov, logge dich ein und klicke auf ATO verkn\u00fcpfen.', 'MYGOV_TROUBLESHOOTING')).toBe(true);
   });
 });
+
+describe('the ordinary English word "difference" no longer trips SALES_CONTENT_AFTER_PAYMENT', () => {
+  // (audit, 14 Sep) POST_PAYMENT_SALES_ML's French pattern used [ée] so it
+  // could match either the accented or unaccented spelling — but the
+  // unaccented spelling is not a variant of French "différence", it is the
+  // ordinary English word "difference". Any post-payment sentence using it
+  // ("can make a big difference to your tax refund") tripped the guard.
+  // Real case: Meg Righton (paid, +44 7460 010170) asked about tax residency;
+  // Will's reply opened "...can make a big difference to your tax refund"
+  // and was refused as sales content.
+  it('ALLOWS the exact sentence that was wrongly refused', () => {
+    expect(has(
+      'This is a very important question and can make a big difference to your tax refund. It depends on your individual circumstances, so we check it carefully rather than guess.',
+      'SALES_CONTENT_AFTER_PAYMENT', { paid: true, state: 'PAID' },
+    )).toBe(false);
+  });
+
+  it('ALLOWS "difference" in other ordinary post-payment sentences', () => {
+    expect(has("It won't make a difference to your Medicare exemption either way.", 'SALES_CONTENT_AFTER_PAYMENT', { paid: true, state: 'PAID' })).toBe(false);
+  });
+
+  it('still BLOCKS the French sales phrase the pattern exists for', () => {
+    expect(has('Nous vous remboursons la différence si nécessaire.', 'SALES_CONTENT_AFTER_PAYMENT', { paid: true, state: 'PAID' })).toBe(true);
+  });
+
+  it('still BLOCKS every other post-payment sales word, unaffected by this fix', () => {
+    expect(has('Remember our fee is $220 and we refund the difference if your refund is lower.', 'SALES_CONTENT_AFTER_PAYMENT', { paid: true, state: 'PAID' })).toBe(true);
+  });
+});

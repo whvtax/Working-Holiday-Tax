@@ -12,6 +12,7 @@
  *   - retryable failure: unchanged, re-queued and counted as deferred.
  */
 const store = {
+  listMessages: jest.fn().mockResolvedValue([]),
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
   dueJobs: jest.fn(),
@@ -74,6 +75,7 @@ beforeEach(() => {
   store.findOpenTaskForCustomer.mockResolvedValue(null);
   store.audit.mockResolvedValue(undefined);
   store.getJob.mockResolvedValue(null);
+  store.listMessages.mockResolvedValue([]);
   store.listTemplates.mockResolvedValue([
     { key: 'fu_pre_24h', title: 'Pre 24h', body: 'Hi {{1}}, still keen to get your tax sorted?' },
   ]);

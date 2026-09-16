@@ -171,3 +171,37 @@ describe('a Japanese question about an unrelated screenshot is never a claim (Jo
     expect(claimsPayment('スクリーンショットです', { hasAttachment: true })).toBe(true);
   });
 });
+
+// ── Jo, 14 Sep: "I will get the payment sent over" wrongly counted as paid ──
+//
+// A real customer explained their bank needed up to 4 days to verify them
+// before they could even access their app, and that ONCE that was sorted
+// they would send the payment. EXPLICIT matched the literal substring
+// "payment sent" inside "I will get the payment sent over" with no regard
+// for tense, and NOT_A_CLAIM's fixed phrase list ("will pay", "going to
+// pay") is built around "pay" as the verb, not this passive "get/send the
+// payment" construction — so the message sailed through to Paid and the
+// customer was wrongly told "Payment received!" before sending a cent.
+describe('a future/conditional "the payment sent" is never a claim (Jo, 14 Sep)', () => {
+  it('the real customer message that triggered this', () => {
+    expect(claimsPayment(
+      "I understand they're going to reach out to call me at some point over the next 4 days to verify me then let me back into my app once that is done I will get the payment sent over.I will let you know when all sorted and can send the payment over,I understand security but always annoying when you can't access your own accounts due to security reasons 😂",
+    )).toBe(false);
+  });
+
+  it.each([
+    'I will get the payment sent over once my bank sorts me out',
+    'once verified, I can send the payment over',
+    "I'll have the payment sent to you tomorrow",
+    'I need to get the money transferred first, give me a day',
+  ])('is still not a claim: %s', (t) => {
+    expect(claimsPayment(t)).toBe(false);
+  });
+
+  it('does not weaken a genuine PAST-tense confirmation using the same words', () => {
+    expect(claimsPayment('Payment sent!')).toBe(true);
+    expect(claimsPayment('I have sent the payment')).toBe(true);
+    expect(claimsPayment('The payment has been sent')).toBe(true);
+    expect(claimsPayment('transferred it just now')).toBe(true);
+  });
+});

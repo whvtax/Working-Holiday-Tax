@@ -27,7 +27,7 @@ const store = {
   cancelJobsFor: jest.fn(),
   getMessageById: jest.fn(),
   findOpenTaskForCustomer: jest.fn(),
-  listMessages: jest.fn(),
+  listMessages: jest.fn().mockResolvedValue([]),
 };
 jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
 
@@ -35,6 +35,7 @@ const deliverOut = jest.fn(async (..._args: unknown[]) => ({ ok: true }));
 jest.mock('@/lib/will/channel', () => ({
   deliverOut: (...a: unknown[]) => (deliverOut as unknown as (...x: unknown[]) => unknown)(...a),
   sendWhatsAppText: jest.fn().mockResolvedValue({ ok: true }),
+  wasAlreadySentVerbatim: jest.fn().mockResolvedValue(false),
 }));
 jest.mock('@/lib/will/service', () => ({ runDeferredAutoReply: jest.fn() }));
 

@@ -534,15 +534,33 @@ async function handlePost(req: Request) {
       // because the customer has been quiet, so it is always outside Meta's 24h
       // window and free-form text is refused there. It goes as the approved
       // WhatsApp template, exactly as the scheduler sends it.
-      if (!b.customerId || !b.id) return bad('customerId and template key required');
+      if (!b.customerId) return bad('customerId required');
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
 
       const flow = flowForState(customer.state);
       const allowed = flow ? FLOW_TEMPLATES[flow] : [];
-      if (!allowed.includes(b.id)) return bad('that follow-up does not belong to this stage');
+      if (!flow || allowed.length === 0) return bad('this customer is not at a stage that has a follow-up cadence right now');
 
-      const template = (await store.listTemplates()).find((t) => t.key === b.id);
+      // b.id omitted: figure out "whatever should currently be due" instead of
+      // requiring the caller to already know the template key. Jo, 15 Sep —
+      // pausing Will (the kill switch) freezes every follow-up clock; on
+      // resume the scheduler works through the backlog a few jobs per tick,
+      // so a customer who was due Saturday might not actually be reached for
+      // a while. This is the "just send it now, whatever step they're on"
+      // button: prefer the job already armed for them (that IS "their stage"
+      // — reconcileSchedule set its seq the last time anything about this
+      // customer changed), and only fall back to the start of the sequence
+      // when nothing is armed at all (follow-ups were off, or never armed).
+      let templateKey = b.id;
+      if (!templateKey) {
+        const pending = (await store.listJobsForCustomer(customer.id, ['FOLLOW_UP']))
+          .find((j) => j.status === 'SCHEDULED' && j.payload.flow === flow);
+        templateKey = pending?.payload.templateKey ?? allowed[0];
+      }
+      if (!allowed.includes(templateKey)) return bad('that follow-up does not belong to this stage');
+
+      const template = (await store.listTemplates()).find((t) => t.key === templateKey);
       if (!template) return bad('template not found', 404);
 
       if (customer.optedOut) return bad('customer opted out');

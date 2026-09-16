@@ -14,7 +14,7 @@ import { suggestReply } from './suggest';
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
 import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, medicareMessage, medicareTemplateKey } from './i18n';
-import { deliverOut, sendWhatsAppText } from './channel';
+import { deliverOut, sendWhatsAppText, wasAlreadySentVerbatim } from './channel';
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
@@ -757,6 +757,10 @@ async function doProcess(): Promise<TickResult> {
             });
             return true;
           }
+          if (await wasAlreadySentVerbatim(store, customer.id, body)) {
+            await store.audit('scheduler', 'form_received_ack_skipped_already_sent', { customerId: customer.id });
+            return true;
+          }
           const out = await deliverOut(customer, body, 'AI', { waTemplate: confirmTemplate }, confirmTemplate);
           if (!out.ok && out.retryable) await requeueThrottled('ack', out.error);
           return out.ok;
@@ -790,6 +794,10 @@ async function doProcess(): Promise<TickResult> {
               status: 'PENDING_APPROVAL', body: abnBody, meta: { waTemplate: abnTemplate },
             });
           } else {
+            if (await wasAlreadySentVerbatim(store, customer.id, abnBody)) {
+              await store.audit('scheduler', 'form_received_abn_skipped_already_sent', { customerId: customer.id });
+              return true;
+            }
             const out = await deliverOut(customer, abnBody, 'AI', { waTemplate: abnTemplate }, abnTemplate);
             if (!out.ok && out.retryable) {
               // The replay owns the flag: it is set when the questions
@@ -956,6 +964,11 @@ async function doProcess(): Promise<TickResult> {
             await store.audit('system', 'medicare_info_sent', { customerId: customer.id, approval: true });
             result.sent.push(`${customer.name ?? customer.waId} · Medicare exemption`);
           } else {
+            if (await wasAlreadySentVerbatim(store, customer.id, body)) {
+              await store.audit('system', 'medicare_info_skipped_already_sent', { customerId: customer.id });
+              await store.setJobStatus(job.id, 'DONE');
+              continue;
+            }
             const out = await deliverOut(customer, body, 'AI', { waTemplate: medicareTemplate }, medicareTemplate);
             if (out.ok) {
               await store.audit('system', 'medicare_info_sent', { customerId: customer.id });
@@ -990,6 +1003,15 @@ async function doProcess(): Promise<TickResult> {
         const messageId = job.payload.messageId;
         const original = messageId ? await store.getMessageById(messageId) : null;
         if (!original) {
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
+        // The whole reason this job exists is ambiguity: Meta said the
+        // original send failed, but that report is not always reliable (this
+        // job kind exists BECAUSE of a case where it was not). Check the
+        // chat itself before trusting the failure and sending a second copy.
+        if (await wasAlreadySentVerbatim(store, customer.id, original.body)) {
+          await store.audit('scheduler', 'resend_message_skipped_already_sent', { customerId: customer.id, messageId, attempt });
           await store.setJobStatus(job.id, 'DONE');
           continue;
         }
@@ -1142,6 +1164,19 @@ async function doProcess(): Promise<TickResult> {
           continue;
         }
 
+        // Same ambiguity as RESEND_MESSAGE and the FORM_RECEIVED/MEDICARE_INFO
+        // resends: the row is QUEUED because an earlier attempt was reported
+        // as failed, but that report is not always reliable. Check the chat
+        // before trusting it and sending a second copy (audit, 14 Sep: this
+        // exact path, via payment_received_send_rearmed, produced two
+        // "Zahlung erhalten!" confirmations three minutes apart).
+        if (await wasAlreadySentVerbatim(store, customer.id, msg.body)) {
+          await store.setMessageStatus(msg.id, 'DISCARDED');
+          await store.audit('scheduler', 'auto_reply_skipped_already_sent', { customerId: customer.id, messageId: msg.id });
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
+
         // THE POINT OF NO RETURN, CLAIMED ATOMICALLY.
         //
         // Without this, a crash between the send and the status write left the
@@ -1188,13 +1223,27 @@ async function doProcess(): Promise<TickResult> {
       // FOLLOW_UP
       const flow = job.payload.flow as Flow;
       const seq = job.payload.seq ?? 0;
+      // Defense in depth for the prePayment flow specifically: customer.paid
+      // and customer.state SHOULD already rule this out (below), but a real
+      // case got through anyway — a paid, FORM_PENDING customer (Samantha,
+      // 14 Sep) still received the "most people doing it alone miss things"
+      // sales nudge nine hours after paying. Whatever left the flags stale
+      // for that one customer, the CHAT ITSELF is the harder truth to fake:
+      // any canned system confirmation (payment received, documents
+      // acknowledged) already sent is independent proof they are past being
+      // a fresh lead, so check for one before trusting the flags alone.
+      const alreadyPastLeadStage = flow === 'prePayment'
+        && (await store.listMessages(customer.id)).some((m) => m.direction === 'OUT' && m.meta?.system === true);
       // The per-customer off switch is checked at fire time too (audit, 5 Sep):
       // a job that was already SCHEDULED, deferred to the evening or re-queued
       // after a throttle when Jo pressed "Stop chasing" is cancelled here
       // rather than sent.
       if (!FLOW_ELIGIBLE_STATES[flow]?.includes(customer.state) || customer.optedOut || customer.aiPaused || customer.isLegacy
-          || (flow === 'prePayment' && customer.paid)
+          || (flow === 'prePayment' && customer.paid) || alreadyPastLeadStage
           || (await store.getSetting(followupsOffKey(customer.id))) === true) {
+        if (alreadyPastLeadStage && !customer.paid) {
+          await store.audit('scheduler', 'follow_up_cancelled_stale_paid_flag', { customerId: customer.id }).catch(() => {});
+        }
         await store.setJobStatus(job.id, 'CANCELLED');
         continue;
       }

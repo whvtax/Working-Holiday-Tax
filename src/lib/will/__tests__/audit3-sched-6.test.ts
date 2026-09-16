@@ -12,6 +12,7 @@
  *     next step armed).
  */
 const store = {
+  listMessages: jest.fn().mockResolvedValue([]),
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
   dueJobs: jest.fn(),
@@ -73,6 +74,7 @@ const timer = (id: string, runAt: string) => ({
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.listMessages.mockResolvedValue([]);
   events.length = 0; inFlight = 0; peakInFlight = 0;
   runDeferredAutoReply.mockClear();
   deliverOut.mockClear();

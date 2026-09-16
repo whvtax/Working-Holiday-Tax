@@ -12,6 +12,7 @@
  *   - a store double without findOpenTaskForCustomer behaves as before.
  */
 const store = {
+  listMessages: jest.fn().mockResolvedValue([]),
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
   dueJobs: jest.fn(),
@@ -60,6 +61,7 @@ const followUp = (id: string, seq: number) => ({
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.listMessages.mockResolvedValue([]);
   store.reclaimStaleJobs.mockResolvedValue(0);
   store.getSetting.mockImplementation(async (k: string) => (k === 'ai_mode' ? 'FULL_AUTO' : false));
   store.claimJob.mockResolvedValue(true);

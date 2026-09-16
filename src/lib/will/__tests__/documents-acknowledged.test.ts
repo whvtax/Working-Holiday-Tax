@@ -51,6 +51,35 @@ it('and a failure here never costs the task', () => {
   expect(block).toMatch(/\} catch \{ \/\* the task is already open; the courtesy line is a bonus \*\/ \}/);
 });
 
+// (Jo, 15 Sep) A success-confirmation screenshot (Medicare exemption, MES,
+// myGov, etc) should not need a person to open it — see
+// assessSuccessConfirmationImage.test.ts for the vision check itself.
+describe('a confirmed success-confirmation screenshot skips the task', () => {
+  it('checks the vision result before deciding whether to raise the task', () => {
+    expect(block).toMatch(/const confirmation = await assessSuccessConfirmationImage\(/);
+    expect(block).toMatch(/skipTask = confirmation\.isConfirmation;/);
+    expect(block).toMatch(/if \(!skipTask\) \{/);
+  });
+
+  it('is gated by the daily AI budget, same as the payment-proof check', () => {
+    expect(block).toMatch(/if \(!\(await aiBudgetExhausted\(\)\)\) \{/);
+  });
+
+  it('never runs when the media cannot be downloaded, and defaults to raising the task', () => {
+    expect(block).toMatch(/const fetched = await fetchWaMedia\(meta\.media\.id\);/);
+    expect(block).toMatch(/if \(fetched\.ok\) \{/);
+    // skipTask starts false and is only ever set true inside the fetched.ok
+    // branch, so any failure along the way (budget, download, exception)
+    // leaves it false and the ordinary task still opens.
+    expect(block).toMatch(/let skipTask = false;/);
+  });
+
+  it('audits the check either way, and still sends the acknowledgement even when the task is skipped', () => {
+    expect(block).toMatch(/await store\.audit\('system', 'success_confirmation_checked', \{/);
+    expect(block).toMatch(/taskSkipped: skipTask/);
+  });
+});
+
 describe('the two handoffs that should never have been handoffs', () => {
   const playbook = readFileSync(join(process.cwd(), 'src/lib/will/playbook.ts'), 'utf8');
 

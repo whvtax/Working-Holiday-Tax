@@ -333,6 +333,85 @@ export async function assessPaymentProofImage(bytes: ArrayBuffer, mime: string):
   }
 }
 
+export interface SuccessConfirmationCheck {
+  isConfirmation: boolean;
+  reason?: string;
+}
+
+const CONFIRMATION_TOOL = {
+  name: 'assess',
+  description: 'Your assessment of whether this attachment is a success confirmation for something the customer applied for or submitted.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      is_confirmation: {
+        type: 'boolean',
+        description: 'true if this clearly shows that an application, form, or request the customer submitted (to a government service, an employer, a bank, anywhere) went through successfully — a "Success" banner, a confirmation/application/reference ID, "your application has been submitted" or "received" wording, a green checkmark or tick, or similar. The FINAL outcome (e.g. actually approved/rejected) does not need to be known yet — confirmation that the submission itself succeeded is enough. false for an error, a failure, a form still being filled in, a request for more information, anything that looks incomplete or unclear, or any attachment that is not this kind of confirmation at all (an invoice, a payslip, an ID, an unrelated photo, a payment screenshot).',
+      },
+      reason: { type: 'string', description: 'One short factual sentence on what the attachment actually shows.' },
+    },
+    required: ['is_confirmation', 'reason'],
+  },
+} as const;
+
+const CONFIRMATION_SYSTEM = `You are checking a single attachment a customer sent on WhatsApp to a tax-return business, to decide whether it is a success confirmation for something they applied for or submitted — a Medicare Levy Exemption application, an MES (Medicare Entitlement Statement), a myGov / Services Australia form, or anything similar.
+
+TRUE for a screenshot that clearly shows the submission itself succeeded: a "Success" status, a confirmation or application ID, "your application has been submitted" / "received" / "we have your application" wording, a green checkmark or tick. The customer does not need to have heard the FINAL outcome yet (approved vs rejected) — proof that the submission went through is enough on its own.
+
+FALSE for:
+- an error, a failure, a rejection, or a "we need more information" request;
+- a form that is still being filled in, not yet submitted;
+- anything unclear, cropped, or too ambiguous to tell;
+- an attachment that is not this kind of confirmation at all — a payment screenshot, an invoice, a payslip, an ID photo, a bank statement, or an unrelated document.
+
+When in doubt, say false — an uncertain case is confirmed by a person instead. Answer only by calling the assess tool.`;
+
+/** Returns { isConfirmation: false } on any failure (no key, network error,
+ *  bad response, unreadable format) — never assume a confirmation when
+ *  uncertain; the caller falls back to the ordinary document-drop task. */
+export async function assessSuccessConfirmationImage(bytes: ArrayBuffer, mime: string): Promise<SuccessConfirmationCheck> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return { isConfirmation: false, reason: 'no API key configured' };
+
+  const base64 = Buffer.from(bytes).toString('base64');
+  const normalizedMime = (mime || '').split(';')[0].trim().toLowerCase();
+  const isImage = normalizedMime.startsWith('image/');
+  const isPdf = normalizedMime === 'application/pdf';
+  if (!isImage && !isPdf) return { isConfirmation: false, reason: `unsupported file type for verification (${normalizedMime || 'unknown'})` };
+
+  const content = isImage
+    ? [{ type: 'image', source: { type: 'base64', media_type: normalizedMime, data: base64 } }]
+    : [{ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }];
+
+  const body = JSON.stringify({
+    model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
+    max_tokens: 300,
+    system: CONFIRMATION_SYSTEM,
+    tools: [CONFIRMATION_TOOL],
+    tool_choice: { type: 'tool', name: 'assess' },
+    messages: [{ role: 'user', content: [...content, { type: 'text', text: 'Is this a success confirmation for something the customer submitted?' }] }],
+  });
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      signal: AbortSignal.timeout(20_000),
+      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body,
+    });
+    if (!res.ok) return { isConfirmation: false, reason: `vision check failed (${res.status})` };
+    const data = await res.json();
+    const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
+      ?.find((bl) => bl.type === 'tool_use' && bl.name === 'assess');
+    const input = tool?.input as { is_confirmation?: unknown; reason?: unknown } | undefined;
+    if (!input || typeof input.is_confirmation !== 'boolean') return { isConfirmation: false, reason: 'model returned no assessment' };
+    const reason = typeof input.reason === 'string' ? input.reason : undefined;
+    return { isConfirmation: input.is_confirmation, reason };
+  } catch (e) {
+    return { isConfirmation: false, reason: e instanceof Error ? e.message : 'vision check unreachable' };
+  }
+}
+
 // ============================================================
 // General attachment reading: a customer sends a photo or document that is NOT
 // a payment (a payslip, a bank document with their account details, a receipt,

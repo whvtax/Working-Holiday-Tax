@@ -14,6 +14,7 @@
  *     branches right above it, which both schedule the next step.
  */
 const store = {
+  listMessages: jest.fn().mockResolvedValue([]),
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
   dueJobs: jest.fn(),
@@ -69,6 +70,7 @@ const JOB = {
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.listMessages.mockResolvedValue([]);
   deliverOut.mockReset();
 
   store.reclaimStaleJobs.mockResolvedValue(0);

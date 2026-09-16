@@ -438,6 +438,20 @@ export class SupabaseStore implements Store {
     return merged;
   }
 
+  async searchMessages(q: string, limit = 30): Promise<Array<Pick<MessageRow, 'id' | 'customerId' | 'direction' | 'body' | 'createdAt'>>> {
+    const raw = (q ?? '').trim();
+    if (!raw) return [];
+    const esc = (s: string) => s.replace(/[\\%_]/g, (ch) => '\\' + ch);
+    const { data } = await this.sb().from('will_messages').select('id, customer_id, direction, body, created_at')
+      .ilike('body', `%${esc(raw)}%`)
+      .order('created_at', { ascending: false })
+      .limit(Math.min(limit, 100));
+    return (data ?? []).map((r: Record<string, unknown>) => ({
+      id: r.id as string, customerId: r.customer_id as string, direction: r.direction as MessageRow['direction'],
+      body: r.body as string, createdAt: r.created_at as string,
+    }));
+  }
+
   async getCustomerByWaId(waId: string): Promise<CustomerRow | null> {
     const { data } = await this.sb().from('will_customers').select('*').eq('wa_id', waId).limit(1).maybeSingle();
     return data ? toCustomer(data) : null;
@@ -606,12 +620,17 @@ export class SupabaseStore implements Store {
     }
     if (m.direction === 'IN') {
       patch.last_customer_msg_at = row.created_at;
-      patch.unread = true;
-      // Increment the unread badge. Inbound messages from one customer are
-      // serialized (idempotency-gated), so read-then-write is safe here.
-      const { data: cur } = await this.sb().from('will_customers')
-        .select('unread_count').eq('id', m.customerId).maybeSingle();
-      patch.unread_count = ((cur?.unread_count as number) ?? 0) + 1;
+      // A reaction (heart, thumbs up, etc.) on one of our messages is not
+      // something waiting on a reply — it should not bold the chat in the
+      // list the way an actual message does.
+      if (!m.meta?.reaction) {
+        patch.unread = true;
+        // Increment the unread badge. Inbound messages from one customer are
+        // serialized (idempotency-gated), so read-then-write is safe here.
+        const { data: cur } = await this.sb().from('will_customers')
+          .select('unread_count').eq('id', m.customerId).maybeSingle();
+        patch.unread_count = ((cur?.unread_count as number) ?? 0) + 1;
+      }
     }
     if (Object.keys(patch).length) {
       // The message row is already committed at this point, so a failure here

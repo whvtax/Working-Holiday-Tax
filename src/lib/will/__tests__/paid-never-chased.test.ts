@@ -23,6 +23,7 @@ const store = {
   setJobStatus: jest.fn().mockResolvedValue(undefined),
   listTemplates: jest.fn().mockResolvedValue([]),
   getJob: jest.fn().mockResolvedValue(null),
+  listMessages: jest.fn().mockResolvedValue([]),
 };
 jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
 jest.mock('@/lib/will/channel', () => ({
@@ -76,6 +77,45 @@ describe('firing', () => {
     store.listTemplates.mockResolvedValue([{ id: 't', key: 'fu_pre_24h', category: 'x', title: 'x', body: 'Hi {{1}}, still keen?' }]);
     await processDueJobs();
     expect(store.setJobStatus).toHaveBeenCalledWith('j9', 'CANCELLED');
+  });
+
+  // (audit, 14 Sep) The real failure: Samantha paid, got "Payment received!
+  // Please fill out this quick form...", and nine hours later STILL got the
+  // "most people doing it alone miss things" prePayment sales nudge. The
+  // flag-based guard above should have caught this, so whatever went wrong
+  // left customer.paid stale for that one customer — this is the second,
+  // independent line of defence: the chat itself.
+  it('is ALSO cancelled when paid/state are somehow stale, because a system confirmation is already in the chat', async () => {
+    store.dueJobs.mockResolvedValue([{
+      id: 'j10', customerId: 'c1', kind: 'FOLLOW_UP',
+      payload: { templateKey: 'fu_pre_24h', seq: 0, flow: 'prePayment' },
+      runAt: new Date(Date.now() - 1000).toISOString(), status: 'SCHEDULED', createdAt: new Date().toISOString(),
+    }]);
+    // Flags say unpaid lead (the stale-flag scenario) ...
+    store.getCustomerById.mockResolvedValue({ ...base, state: 'PRICE_SENT', paid: false });
+    // ... but the chat itself already has the payment confirmation.
+    store.listMessages.mockResolvedValue([
+      { id: 'm1', customerId: 'c1', direction: 'OUT', author: 'AI', status: 'SENT', body: 'Payment received! 🎉', meta: { system: true }, createdAt: new Date().toISOString() },
+    ]);
+    store.listTemplates.mockResolvedValue([{ id: 't', key: 'fu_pre_24h', category: 'x', title: 'x', body: 'Hi {{1}}, still keen?' }]);
+    await processDueJobs();
+    expect(store.setJobStatus).toHaveBeenCalledWith('j10', 'CANCELLED');
+    expect(store.audit).toHaveBeenCalledWith('scheduler', 'follow_up_cancelled_stale_paid_flag', { customerId: 'c1' });
+  });
+
+  it('does NOT fire the safety net for an ordinary unpaid lead with no system confirmation in the chat', async () => {
+    store.dueJobs.mockResolvedValue([{
+      id: 'j11', customerId: 'c1', kind: 'FOLLOW_UP',
+      payload: { templateKey: 'fu_pre_24h', seq: 0, flow: 'prePayment' },
+      runAt: new Date(Date.now() - 1000).toISOString(), status: 'SCHEDULED', createdAt: new Date().toISOString(),
+    }]);
+    store.getCustomerById.mockResolvedValue({ ...base, state: 'PRICE_SENT', paid: false });
+    store.listMessages.mockResolvedValue([
+      { id: 'm1', customerId: 'c1', direction: 'OUT', author: 'AI', status: 'SENT', body: 'Here is our pricing...', createdAt: new Date().toISOString() },
+    ]);
+    store.listTemplates.mockResolvedValue([{ id: 't', key: 'fu_pre_24h', category: 'x', title: 'x', body: 'Hi {{1}}, still keen?' }]);
+    await processDueJobs();
+    expect(store.setJobStatus).not.toHaveBeenCalledWith('j11', 'CANCELLED');
   });
 });
 

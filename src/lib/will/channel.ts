@@ -10,7 +10,7 @@
 // system, Simulator and dashboard behave exactly as before, but nothing leaves
 // the building. Adding the two env vars flips it live with no code change.
 // ============================================================
-import { getStore, CustomerRow } from './store';
+import { getStore, CustomerRow, Store } from './store';
 import { reopenTarget } from './state-machine';
 
 const GRAPH_VERSION = process.env.WHATSAPP_GRAPH_VERSION || 'v21.0';
@@ -330,6 +330,41 @@ export async function sendWhatsAppTemplate(
   if (first.ok || first.skipped || wanted === TEMPLATE_LANG) return first;
   if (!/does not exist|not exist|132001|template/i.test(first.error ?? '')) return first;
   return attempt(TEMPLATE_LANG);
+}
+
+/** Loose-equality normaliser for the dedup check below: case, punctuation-
+ *  adjacent whitespace, and blank-line differences should not matter, since a
+ *  template body can be re-rendered with slightly different line spacing
+ *  between attempts and still be "the same message". */
+function normalizeForDedup(s: string): string {
+  return s.toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Was this exact automatic message already delivered to this customer?
+ *
+ * Every canned/system send (payment received, questionnaire received,
+ * Medicare exemption, lodged confirmation, and any retry of one of these)
+ * must check this FIRST and skip the send if it comes back true — never send
+ * the same automatic message twice. This is the general fix for a real,
+ * recurring failure mode: a retry mechanism believes an earlier attempt
+ * failed (a throttle error, an ambiguous timeout, Meta reporting failure for
+ * a message it actually delivered) and resends the identical text, and the
+ * customer ends up with two copies (audit, 14 Sep: "ist überwiesen" produced
+ * two "Zahlung erhalten!" confirmations three minutes apart).
+ *
+ * Deliberately narrow: this checks for the SAME body already SENT, nothing
+ * more. It does not, and must not, stop Will from sending this same canned
+ * text again when the CUSTOMER explicitly asks for it a second time (e.g.
+ * "can you send the payment confirmation again") — that is a fresh reply
+ * written by the model or a human, not an automatic resend, and callers on
+ * that path do not call this check.
+ */
+export async function wasAlreadySentVerbatim(store: Store, customerId: string, body: string): Promise<boolean> {
+  const wanted = normalizeForDedup(body);
+  if (!wanted) return false;
+  const msgs = await store.listMessages(customerId);
+  return msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT' && normalizeForDedup(m.body) === wanted);
 }
 
 /**

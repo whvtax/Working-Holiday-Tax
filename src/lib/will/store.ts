@@ -225,6 +225,14 @@ export interface Store {
    *  or last-message preview. Powers the dashboard search box so a number finds
    *  its customer however old the conversation is. Bounded by `limit`. */
   searchCustomers(q: string, limit?: number): Promise<CustomerRow[]>;
+  /** Full-text search across every customer's ENTIRE message history (not
+   *  just their last-message preview, which is all searchCustomers reaches).
+   *  Returns matching messages, most recent first, each carrying its own
+   *  customerId so the caller can look the customer up. Used by the Ask Will
+   *  copilot for "who did I say X to" / "find the chat where Y was mentioned"
+   *  style questions, which searchCustomers alone could not answer (audit,
+   *  14 Sep: the copilot told Jo outright that it could not do this). */
+  searchMessages(q: string, limit?: number): Promise<Array<Pick<MessageRow, 'id' | 'customerId' | 'direction' | 'body' | 'createdAt'>>>;
   /** Accurate COUNT of customers in a set of states (head-only), for pipeline
    *  totals that stay true past the 1,000-row window. */
   countInStates(states: CustomerState[]): Promise<number>;

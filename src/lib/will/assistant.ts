@@ -70,6 +70,18 @@ const TOOLS = [
     },
   },
   {
+    name: 'search_all_messages',
+    description: 'Full-text search across EVERY customer\'s ENTIRE conversation history, not just their last message. Use this for "who did I say X to", "find the chat where Y was mentioned", "who asked about Z", or anything that needs looking through what was actually said, not just who someone is. Returns matching messages (who sent them, when, the text), most recent first. Follow up with get_conversation on a customer_id to read the full thread around a hit.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'The word or phrase to search for, e.g. "$1000" or "myGov".' },
+        limit: { type: 'number', description: 'Max matches to return (default 30, max 100).' },
+      },
+      required: ['query'],
+    },
+  },
+  {
     name: 'get_conversation',
     description: 'Read the recent WhatsApp conversation with one customer, plus their current stage, language, paid status and refund estimate. Use this before advising on how to answer someone or before proposing a reply, so your advice fits what was actually said.',
     input_schema: {
@@ -272,7 +284,7 @@ function customerBrief(c: CustomerRow, followupSet?: Set<string>): Record<string
 // Read-tool execution. Each returns a small JSON-able object. Any error is
 // caught and returned as { error } so the loop keeps going.
 // ────────────────────────────────────────────────────────────
-async function runReadTool(name: string, input: Record<string, unknown>, followupSet: Set<string>): Promise<unknown> {
+export async function runReadTool(name: string, input: Record<string, unknown>, followupSet: Set<string>): Promise<unknown> {
   const store = getStore();
   try {
     switch (name) {
@@ -281,6 +293,28 @@ async function runReadTool(name: string, input: Record<string, unknown>, followu
         if (!q) return { error: 'empty query' };
         const rows = await store.searchCustomers(q, 20);
         return { count: rows.length, customers: rows.map((c) => customerBrief(c, followupSet)) };
+      }
+      case 'search_all_messages': {
+        const q = String(input.query ?? '').trim();
+        if (!q) return { error: 'empty query' };
+        const limit = Math.min(Math.max(Number(input.limit) || 30, 1), 100);
+        const hits = await store.searchMessages(q, limit);
+        const customers = await store.listCustomersByIds([...new Set(hits.map((h) => h.customerId))]);
+        const byId = new Map(customers.map((c) => [c.id, c]));
+        return {
+          count: hits.length,
+          matches: hits.map((h) => {
+            const c = byId.get(h.customerId);
+            return {
+              customer_id: h.customerId,
+              customer: c ? phoneLabel(c) : h.customerId,
+              stage: c ? STATE_LABELS[c.state] : null,
+              from: h.direction === 'IN' ? 'customer' : 'us',
+              text: h.body?.slice(0, 400) ?? '',
+              at: h.createdAt,
+            };
+          }),
+        };
       }
       case 'get_conversation': {
         const id = String(input.customer_id ?? '');

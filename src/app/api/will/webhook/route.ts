@@ -518,10 +518,10 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
  * field in Meta. Extracted here and handled in POST.
  */
 export function extractEchoes(payload: unknown): {
-  echoes: { to: string; id: string; body: string }[];
+  echoes: { to: string; id: string; body: string; reaction?: { emoji: string | null; to?: string } }[];
   revokes: string[];
 } {
-  const echoes: { to: string; id: string; body: string }[] = [];
+  const echoes: { to: string; id: string; body: string; reaction?: { emoji: string | null; to?: string } }[] = [];
   const revokes: string[] = [];
   try {
     for (const e of ((payload as { entry?: unknown[] }).entry ?? [])) {
@@ -534,6 +534,19 @@ export function extractEchoes(payload: unknown): {
             revokes.push(m.revoke.original_message_id);
           } else if (m.type === 'text' && m.text?.body && m.to && m.id) {
             echoes.push({ to: m.to, id: m.id, body: m.text.body });
+          } else if (m.type === 'reaction' && m.to && m.id) {
+            // A heart/thumbs-up Jo taps ON THE PHONE is an echo too, and it
+            // used to fall into the generic non-text branch below, which only
+            // keeps placeholderFor's plain string — the structured emoji/target
+            // that Dashboard.tsx needs to paint it on the right bubble (instead
+            // of a standalone "reacted to your message" line) was silently
+            // dropped. Carrying it through here is the other half of that same
+            // fix; a customer's reaction already carried it (webhook route,
+            // the main `messages` field, below).
+            echoes.push({
+              to: m.to, id: m.id, body: placeholderFor(m),
+              reaction: { emoji: m.reaction?.emoji ?? null, to: m.reaction?.message_id },
+            });
           } else if (m.type && m.type !== 'text' && m.to && m.id) {
             // (audit, 5 Sep) A phone reply that is a photo/PDF/voice note used to be
             // dropped here (only `type === 'text'` was mirrored), so the task never
@@ -816,7 +829,7 @@ export async function POST(req: Request) {
       if (!customer) continue;
       await store.addMessage({
         customerId: customer.id, direction: 'OUT', author: 'HUMAN', status: 'SENT',
-        body: echo.body, meta: { providerId: echo.id, channel: 'app' },
+        body: echo.body, meta: { providerId: echo.id, channel: 'app', reaction: echo.reaction },
       });
       // The owner just answered this customer from the WhatsApp app (phone or
       // desktop, does not matter). Settle the conversation exactly as answering

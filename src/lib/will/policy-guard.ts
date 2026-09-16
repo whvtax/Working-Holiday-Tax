@@ -848,7 +848,7 @@ const FEE_REFUNDABLE_PASSIVE = new RegExp(
 // ── POST-PAYMENT SALES CONTENT, IN EVERY LANGUAGE ─────────────────────────
 // 4 Sep audit: the gate was English-only, so after payment the fee, the price
 // and the guarantee could be talked about again in the six other languages.
-const POST_PAYMENT_SALES_ML = /\b(?:geb[üu]hr|preis|kosten|rabatt|garantie|tarifa|precio|coste|costo|descuento|garant[íi]a|frais|prix|co[ûu]t|remise|garantie|tariffa|prezzo|sconto|garanzia|taxa|pre[çc]o|custo|desconto|garantia)\b|料金|費用|値段|割引|保証|差額|\bdifferenz\b|\bdiferencia\b|\bdiff[ée]rence\b|\bdifferenza\b|\bdiferen[çc]a\b/i;
+const POST_PAYMENT_SALES_ML = /\b(?:geb[üu]hr|preis|kosten|rabatt|garantie|tarifa|precio|coste|costo|descuento|garant[íi]a|frais|prix|co[ûu]t|remise|garantie|tariffa|prezzo|sconto|garanzia|taxa|pre[çc]o|custo|desconto|garantia)\b|料金|費用|値段|割引|保証|差額|\bdifferenz\b|\bdiferencia\b|\bdiff\u00e9rence\b|\bdifferenza\b|\bdiferen[çc]a\b/i;
 
 /** Mask amounts that are legitimately allowed in this sentence, so a permitted
  *  figure (the team's estimate, the guarantee's worked example) cannot trip the

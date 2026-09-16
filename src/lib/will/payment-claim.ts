@@ -113,6 +113,19 @@ const TROUBLE = new RegExp([
  *  "I paid attention", "when do I pay?", "how do I pay?", "I will pay tomorrow". */
 const NOT_A_CLAIM = /\b(attention|visit|mind|off|how (?:do|can|should) i|when (?:do|should) i|where (?:do|can) i|can i pay|will pay|going to pay|about to pay|need to pay|have to pay|haven'?t paid|not paid|before i pay|once i pay|after i pay|if i pay)\b/i;
 
+/** The same future/conditional shape as NOT_A_CLAIM, but for the passive
+ *  "get/have the payment sent" construction rather than the verb "pay"
+ *  directly. Real case: "once that is done I will get the payment sent
+ *  over... I will let you know when all sorted and can send the payment
+ *  over" — payment had NOT happened, was waiting on a multi-day bank
+ *  verification, yet contains the literal substring "payment sent", which
+ *  EXPLICIT matches with no notion of tense (audit, 14 Sep). NOT_A_CLAIM's
+ *  fixed phrase list is built around "pay" as the verb ("will pay", "going
+ *  to pay") and does not cover "will get the payment sent" / "can send the
+ *  payment" at all. General future-modal + send-verb + payment-noun shape
+ *  instead of another fixed phrase, since people phrase this many ways. */
+const FUTURE_PAYMENT_INTENT = /\b(?:will|'ll|can|could|going to|about to|need to|have to|hope to|plan to)\b[^.!?]{0,25}\b(?:get|send|make|sort|transfer|have)\b[^.!?]{0,20}\b(?:payment|money|it|funds|transfer)\b/i;
+
 /** The same "I have NOT paid / I am ABOUT to pay" shapes in the other six
  *  languages. English had them from the start; the others did not, so
  *  "Ich habe noch nicht bezahlt", "non ho ancora pagato", "todavía no he
@@ -163,7 +176,7 @@ export function claimsPayment(
 
   // A question about paying is never a claim, however many payment words it
   // contains. Checked first so it can override both patterns below.
-  if (NOT_A_CLAIM.test(t) || NOT_A_CLAIM_ML.test(t)) return false;
+  if (NOT_A_CLAIM.test(t) || NOT_A_CLAIM_ML.test(t) || FUTURE_PAYMENT_INTENT.test(t)) return false;
   // Jo, 7 Sep: was `t.endsWith('?')` — only caught a question mark as the very
   // last character. "こちらの写真では難しいでしょうか？これ以外には証明する
   // ものが無く…" (real customer message, a Medicare screenshot, asking "is

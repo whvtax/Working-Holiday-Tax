@@ -165,6 +165,16 @@ export class FileStore implements Store {
     return out.slice(0, limit);
   }
 
+  async searchMessages(q: string, limit = 30) {
+    const raw = (q ?? '').trim().toLowerCase();
+    if (!raw) return [];
+    const hits = (await load()).messages
+      .filter((m) => (m.body ?? '').toLowerCase().includes(raw))
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, Math.min(limit, 100));
+    return hits.map((m) => ({ id: m.id, customerId: m.customerId, direction: m.direction, body: m.body, createdAt: m.createdAt }));
+  }
+
   async getCustomerByWaId(waId: string) {
     return (await load()).customers.find((c) => c.waId === waId) ?? null;
   }
@@ -267,7 +277,13 @@ export class FileStore implements Store {
         c.lastMessageDirection = m.direction;
         c.lastMessageAt = row.createdAt;
       }
-      if (m.direction === 'IN') { c.lastCustomerMsgAt = row.createdAt; c.unread = true; c.unreadCount = (c.unreadCount ?? 0) + 1; }
+      if (m.direction === 'IN') {
+        c.lastCustomerMsgAt = row.createdAt;
+        // A reaction (heart, thumbs up, etc.) on one of our messages is not
+        // something waiting on a reply — it should not bold the chat in the
+        // list the way an actual message does.
+        if (!m.meta?.reaction) { c.unread = true; c.unreadCount = (c.unreadCount ?? 0) + 1; }
+      }
     }
     await persist();
     return row;

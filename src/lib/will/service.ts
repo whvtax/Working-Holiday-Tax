@@ -21,7 +21,7 @@ import { firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
 // Re-exported here because this is where every caller and test already looks.
 export { isCourtesyLine };
 import { suggestReply } from './suggest';
-import { assessPaymentProofImage, describeAttachment, PaymentProofCheck } from './claude';
+import { assessPaymentProofImage, assessSuccessConfirmationImage, describeAttachment, PaymentProofCheck } from './claude';
 import { verifyProofDetails, isNotOurPayment, describeProof } from './payment-proof';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
@@ -1229,12 +1229,39 @@ export async function handleInboundNote(
   // left on read while the owner works through the pile.
   if (meta?.media && isAfterPayment(customer.state)) {
     const ack = await suggestReply('', customer, 'documents_after_payment');
-    await raiseOrUpdateTask(store, customer, {
-      reason: documentDropReason(1), severity: 'REVIEW', newContext: body,
-      fold: (existing) => foldDocumentDrop(existing, body),
-      reasonFor: (context) => documentDropReason(documentDropCount(context)),
-      suggestedReply: ack,
-    });
+
+    // Jo, 15 Sep: a paid customer sending proof that something they applied
+    // for (a Medicare exemption, an MES, any myGov/Services Australia form)
+    // went through does not need a person to open it — Claude can see a
+    // "Success" screen as well as a person can. Real case: an MES
+    // application-submitted screenshot opened a "Paid customer sent a file"
+    // REVIEW card for something that needed no review at all. Gated the same
+    // way the payment-proof check is: never on a budget-exhausted day, never
+    // when the media cannot be downloaded, and an uncertain/failed answer
+    // from the model falls straight through to the ordinary task below —
+    // this only ever REMOVES a task, never invents a reason to skip one.
+    let skipTask = false;
+    try {
+      if (!(await aiBudgetExhausted())) {
+        const fetched = await fetchWaMedia(meta.media.id);
+        if (fetched.ok) {
+          const confirmation = await assessSuccessConfirmationImage(fetched.body, fetched.mime || meta.media.mime || '');
+          await store.audit('system', 'success_confirmation_checked', {
+            customerId: customer.id, isConfirmation: confirmation.isConfirmation, reason: confirmation.reason ?? null,
+          });
+          skipTask = confirmation.isConfirmation;
+        }
+      }
+    } catch { /* the ordinary document-drop task below is the fallback */ }
+
+    if (!skipTask) {
+      await raiseOrUpdateTask(store, customer, {
+        reason: documentDropReason(1), severity: 'REVIEW', newContext: body,
+        fold: (existing) => foldDocumentDrop(existing, body),
+        reasonFor: (context) => documentDropReason(documentDropCount(context)),
+        suggestedReply: ack,
+      });
+    }
     // ── AND ACTUALLY SAY IT (Hannah, +44 7944 741456, 4 Sep) ────────────────
     //
     // The acknowledgement was written, attached to the task, and then waited
@@ -1242,8 +1269,8 @@ export async function handleInboundNote(
     // their documents — sat on read until somebody was at the CRM, which on
     // that night meant overnight. There is nothing in this line to get wrong:
     // no amount, no tax, no promise, no next step of theirs. On Autopilot it
-    // goes on its own; the task still opens, because the files themselves do
-    // need collecting.
+    // goes on its own; the task still opens (unless skipTask above), because
+    // the files themselves do need collecting.
     //
     // ONCE PER DROP, not once per file: fifty invoices are one arrival. A
     // timestamp in settings is enough — no column, and it survives a restart.
@@ -1259,10 +1286,10 @@ export async function handleInboundNote(
           // pass the check and acknowledge twice.
           await store.setSetting(key, Date.now());
           // `system`: this answers the files, not a question sent with them;
-          // the deferred reply must not read it as "already answered"
+          // the deferred reply must not read it as \"already answered\"
           // (audit3 core 52, 5 Sep).
           await deliverOut(customer, ack, 'AI', { system: true });
-          await store.audit('system', 'documents_acknowledged', { customerId: customer.id });
+          await store.audit('system', 'documents_acknowledged', { customerId: customer.id, taskSkipped: skipTask });
         }
       } catch { /* the task is already open; the courtesy line is a bonus */ }
     }

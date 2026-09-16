@@ -15,6 +15,7 @@
  * follow-ups are on is untouched: same template, same delay, same next step.
  */
 const store = {
+  listMessages: jest.fn().mockResolvedValue([]),
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
   setSetting: jest.fn(),
@@ -70,6 +71,7 @@ const settings: Record<string, unknown> = {};
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.listMessages.mockResolvedValue([]);
   deliverOut.mockReset();
   for (const k of Object.keys(settings)) delete settings[k];
   settings['ai_mode'] = 'FULL_AUTO';
