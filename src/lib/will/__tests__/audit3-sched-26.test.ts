@@ -26,7 +26,7 @@ const store = {
   findOpenTaskForCustomer: jest.fn(),
   audit: jest.fn(),
   listTemplates: jest.fn(),
-  setSetting: jest.fn(),
+  setSetting: jest.fn().mockResolvedValue(undefined),
   getMessageById: jest.fn(),
 };
 jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
@@ -61,6 +61,7 @@ const followUp = (id: string, seq: number) => ({
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.setSetting.mockResolvedValue(undefined);
   store.listMessages.mockResolvedValue([]);
   store.reclaimStaleJobs.mockResolvedValue(0);
   store.getSetting.mockImplementation(async (k: string) => (k === 'ai_mode' ? 'FULL_AUTO' : false));

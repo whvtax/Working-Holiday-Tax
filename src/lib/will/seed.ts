@@ -13,7 +13,7 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey } from './i18n';
+import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
 import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
@@ -110,6 +110,11 @@ export function seedTemplates(): TemplateRow[] {
       t(medicareTemplateKey(lang), 'Post-payment & Service', `Medicare exemption guide · ${LANG_LABELS[lang]}`, MEDICARE_MSG[lang])),
     t('estimate', 'Post-payment & Service', 'Estimate ready', APPROVED.estimate_ready),
     t('signature', 'Post-payment & Service', 'Ready for signature', APPROVED.signature_ready),
+    // German and Japanese only (Jo, 17 Sep: same principle as estimate_invoice),
+    // so the "ready for signature" notice does not land in English right after
+    // everything else has been in the customer's own language.
+    ...(Object.keys(SIGNATURE_MSG) as ('en' | 'de' | 'ja')[]).filter((l) => l !== 'en').map((lang) =>
+      t(signatureTemplateKey(lang), 'Post-payment & Service', `Ready for signature · ${LANG_LABELS[lang]}`, SIGNATURE_MSG[lang])),
     t('lodged', 'Post-payment & Service', 'Lodged confirmation (older wording)', APPROVED.lodged),
     t('legitimacy', 'FAQ · Operational', 'Is this legit / registered?', APPROVED.legitimacy),
 
@@ -117,8 +122,20 @@ export function seedTemplates(): TemplateRow[] {
     // Sent by the "Send Estimate + Invoice" button. {{AMOUNT}} and
     // {{INVOICE_LINK}} are filled from what the team types in that dialog.
     t('estimate_invoice', 'Post-payment & Service', 'Estimate + invoice ("Send Estimate" button)', APPROVED.estimate_invoice),
+    // German and Japanese only (Jo, 17 Sep: "same principle" as medicare, but
+    // not extended to the other four languages this time), so a German or
+    // Japanese customer's refund estimate does not arrive in English right
+    // after everything else has been in their own language.
+    ...(Object.keys(ESTIMATE_INVOICE_MSG) as ('en' | 'de' | 'ja')[]).filter((l) => l !== 'en').map((lang) =>
+      t(estimateInvoiceTemplateKey(lang), 'Post-payment & Service', `Estimate + invoice ("Send Estimate" button) · ${LANG_LABELS[lang]}`, ESTIMATE_INVOICE_MSG[lang])),
     // Sent by the "Mark Lodged" button.
     t('lodged_confirmation', 'Post-payment & Service', 'Lodged confirmation ("Mark Lodged" button)', APPROVED.lodged_confirmation),
+    // German and Japanese only (Jo, 17 Sep: same principle as estimate_invoice
+    // and signature), so the "your return has been lodged" notice does not
+    // land in English right after everything else has been in the customer's
+    // own language.
+    ...(Object.keys(LODGED_CONFIRMATION_MSG) as ('en' | 'de' | 'ja')[]).filter((l) => l !== 'en').map((lang) =>
+      t(lodgedConfirmationTemplateKey(lang), 'Post-payment & Service', `Lodged confirmation ("Mark Lodged" button) · ${LANG_LABELS[lang]}`, LODGED_CONFIRMATION_MSG[lang])),
     // The Google review request, sent 1 hour after lodgement by the REVIEW_REQUEST
     // job, one entry per language (the scheduler picks the customer's language and
     // falls back to English), same shape as the questionnaire confirmation.
@@ -140,6 +157,7 @@ export function seedTemplates(): TemplateRow[] {
       t(`handoff_holding_${l}`, 'Handoff suggestions', `Handoff · holding reply (${l})`, HANDOFF_HOLDING_MSG[l])),
     t('handoff_attachment', 'Handoff suggestions', 'Handoff · customer sent a file Will cannot read', APPROVED.handoff.attachment),
     t('handoff_unreadable', 'Handoff suggestions', 'Handoff · voice note or unreadable message', APPROVED.handoff.unreadable),
+    t('handoff_revoked', 'Handoff suggestions', 'Handoff · customer deleted their message before it could be read', APPROVED.handoff.revoked),
     t('handoff_returning_customer', 'Handoff suggestions', 'Handoff · a previous customer wrote in again', APPROVED.handoff.returning_customer),
     t('handoff_many_questions', 'Handoff suggestions', 'Handoff · more than 3 messages before paying', APPROVED.handoff.many_questions),
     t('handoff_documents_after_payment', 'Handoff suggestions', 'Handoff · paid customer sent their documents', APPROVED.handoff.documents_after_payment),
@@ -160,7 +178,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-09-05-medicare-languages';
+export const TEMPLATE_BACKFILL_VERSION = '2026-09-17-lodged-signature-revoked';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

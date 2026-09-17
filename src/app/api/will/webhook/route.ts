@@ -208,6 +208,14 @@ function placeholderFor(m: WaMessage): string {
     case 'sticker': note = '💟 [Sticker]'; break;
     case 'location': note = '📍 [Location]'; break;
     case 'contacts': note = '👤 [Contact card]'; break;
+    // The customer deleted a message they sent (WhatsApp "Delete for
+    // everyone"), so a message genuinely arrived — it just isn't there to
+    // read any more. Distinct from the generic default below: that one means
+    // WhatsApp sent something we could not decode at all, which "may not be
+    // a message from them" (channel.ts / handoff-reasons.ts); this one is
+    // unambiguously the customer, and saying so avoids the team asking them
+    // "did you mean to message us?" about a message they deleted on purpose.
+    case 'revoke': note = '🗑️ [Message deleted by sender]'; break;
     // A plain hyphen, not an em-dash: the owner's no-dash rule applies to
     // everything the system writes, and this string is shown in the CRM chat.
     default: note = '📎 [Message - open WhatsApp to view]';

@@ -1003,6 +1003,28 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     violations.push('FORBIDDEN_AMOUNT:written-in-words');
   }
 
+  // The tax-form link is the reward for paying, not a step on the way there.
+  // It belongs exclusively to the post-payment "Payment received!" message
+  // (payment_received / payment_received_template). Sent to someone who has
+  // not paid, it reverses the required order — "fill this out, then I'll show
+  // you how to pay" — and a customer can walk away thinking they are already
+  // "in progress" without ever having paid. Real case (Jo, 16 Sep, Kazuki): a
+  // long message covering Tax Return, DASP and a visa switch at once ended
+  // with the form link instead of the payment step. Checked on the raw text,
+  // not the approved-sentence-skipping loop below: this is a fact about the
+  // whole message, not a wording nuance.
+  //
+  // EXEMPT when the message IS the payment-received confirmation itself,
+  // recognised by its own opening line in each of the site's languages —
+  // that message legitimately carries the link, and is checked here while
+  // customer.paid is still false, because sending it is what flips paid to
+  // true a moment later. Without this, approving the very confirmation draft
+  // that is supposed to send the link would itself be refused.
+  if (!paid && /workingholidaytax\.com\.au\/tax-form/i.test(text)
+      && !/payment received|zahlung erhalten|お支払いを確認しました|pago recibido|paiement bien reçu|pagamento ricevuto|pagamento recebido/i.test(text)) {
+    violations.push('FORM_LINK_BEFORE_PAYMENT');
+  }
+
   for (const written of splitSentences(text)) {
     // Approved sentences skip the CONTENT-pattern checks, but the CONTEXTUAL
     // post-payment-sales gate still applies (H2/H4: never re-send sales content

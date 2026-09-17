@@ -40,6 +40,7 @@ const store = {
   }),
   findOpenTaskForCustomer: jest.fn(async (customerId: string) =>
     tasks.find((t) => t.customerId === customerId && t.status === 'OPEN') ?? null),
+  listMessages: jest.fn().mockResolvedValue([]),
 };
 jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
 

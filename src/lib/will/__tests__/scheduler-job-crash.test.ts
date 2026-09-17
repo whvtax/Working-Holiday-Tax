@@ -17,6 +17,7 @@ const store = {
   listMessages: jest.fn().mockResolvedValue([]),
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
+  setSetting: jest.fn().mockResolvedValue(undefined),
   dueJobs: jest.fn(),
   claimJob: jest.fn(),
   getCustomerById: jest.fn(),
@@ -70,6 +71,7 @@ const JOB = {
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.setSetting.mockResolvedValue(undefined);
   store.listMessages.mockResolvedValue([]);
   deliverOut.mockReset();
 

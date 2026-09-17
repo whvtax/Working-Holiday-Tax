@@ -19,7 +19,7 @@
 const store = {
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
-  setSetting: jest.fn(),
+  setSetting: jest.fn().mockResolvedValue(undefined),
   dueJobs: jest.fn(),
   claimJob: jest.fn(),
   getCustomerById: jest.fn(),
@@ -63,6 +63,7 @@ const requeued = () => store.addJob.mock.calls.map(([j]) => j).filter((j) => j.k
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.setSetting.mockResolvedValue(undefined);
   deliverOut.mockReset();
   jest.useFakeTimers().setSystemTime(new Date('2026-09-05T09:00:00.000Z'));
   store.reclaimStaleJobs.mockResolvedValue(0);

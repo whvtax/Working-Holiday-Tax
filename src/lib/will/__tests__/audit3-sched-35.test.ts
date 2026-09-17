@@ -90,10 +90,20 @@ describe('the Library', () => {
 });
 
 describe('the health panel knows the new template names', () => {
-  it.each(LANGS)('lists %s as optional (text fallback inside the window)', (lang) => {
+  // Jo, 17 Sep (metaTemplateLang): approving a Meta template is per-language
+  // admin work, so the health panel only expects English/German/Japanese for
+  // medicare_<lang> — not the other four the Library itself still supports.
+  it.each(['en', 'de', 'ja'] as const)('lists %s as optional (text fallback inside the window)', (lang) => {
     const t = EXPECTED_META_TEMPLATES.find((x) => x.name === medicareTemplateKey(lang));
     expect(t).toEqual({ name: medicareTemplateKey(lang), params: 0, optional: true });
   });
+
+  it.each(LANGS.filter((l) => l !== 'en' && l !== 'de' && l !== 'ja') as Lang[])(
+    'never expects medicare_%s: that language is never asked of Meta, only sent as free text in the customer\'s own words',
+    (lang) => {
+      expect(EXPECTED_META_TEMPLATES.find((x) => x.name === medicareTemplateKey(lang))).toBeUndefined();
+    },
+  );
 });
 
 describe('the scheduler handler', () => {
@@ -110,13 +120,14 @@ describe('the scheduler handler', () => {
     expect(handler).not.toMatch(/x\.key === 'medicare'/);
   });
 
-  it('sends it as the template of that name, text fallback on', () => {
-    expect(handler).toMatch(/name: medicareKey, params: \[\], lang: customer\.lang, fallbackToText: true/);
+  it('sends it as the template of that name, text fallback on, capped to the three Meta-approved languages', () => {
+    expect(handler).toMatch(/const medicareMetaName = medicareTemplateKey\(metaTemplateLang\(customer\.lang\)\)/);
+    expect(handler).toMatch(/name: medicareMetaName, params: \[\], lang: customer\.lang, fallbackToText: true/);
     expect(handler).not.toMatch(/name: 'medicare'/);
   });
 
-  it('the two human tasks name the language key so Jo knows which row / Meta template to look at', () => {
+  it('the two human tasks name the right key each: the full-language Library row to edit, the Meta-capped name to create', () => {
     expect(handler).toMatch(/Check the Library entry "\$\{medicareKey\}" and send it by hand/);
-    expect(handler).toMatch(/create "\$\{medicareKey\}" in WhatsApp Manager \(no variables\)/);
+    expect(handler).toMatch(/create "\$\{medicareMetaName\}" in WhatsApp Manager \(no variables\)/);
   });
 });

@@ -78,6 +78,27 @@ export function detectLanguage(text: string): { lang: Lang | null; confident: bo
   return { lang: topLang, confident, enoughToSet: confident || clearForeign };
 }
 
+/** Which language a WhatsApp template is actually CREATED for in Meta, for
+ *  the six system messages that name their Meta template per language
+ *  (form_received_<lang>, review_request_<lang>, req_abn_<lang>,
+ *  medicare_<lang>, payment_received_<lang>, handoff_holding_<lang>).
+ *
+ *  Approving a template in WhatsApp Manager is a manual step, per language,
+ *  per template name — real ongoing admin work that does not scale the way
+ *  editing a Library row does. Jo, 17 Sep: keep that cost to the three
+ *  languages that matter (English, German, Japanese) — the same "German and
+ *  Japanese, everyone else English" rule already used for estimate_invoice /
+ *  signature / lodged_confirmation. Every other detected language still gets
+ *  its own native wording everywhere that does NOT require Meta's approval
+ *  (the live model reply, and any of these six sent as free text inside the
+ *  24h window or edited in the Library) — this only narrows which template
+ *  NAME a send outside the window tries against Meta, so a French, Spanish,
+ *  Italian or Portuguese customer gets the English template there instead of
+ *  a send that fails outright because e.g. "medicare_fr" was never created. */
+export function metaTemplateLang(lang?: string | null): 'en' | 'de' | 'ja' {
+  return lang === 'de' || lang === 'ja' ? lang : 'en';
+}
+
 /** "We've received your questionnaire" confirmation, per language (Jo's
  *  wording, 3 Sep: two lines, one emoji, "soon" rather than a 24-hour promise).
  *  No prices, no currency, no dashes: passes the policy guard unchanged. */
@@ -162,15 +183,26 @@ export const PROFESSIONAL_QUESTION_MSG: Record<Lang, string> = {
  *  wording, no emoji). The automatic confirmation used to go out in English to
  *  everyone, in the middle of a German or Japanese conversation, at the single
  *  moment the customer is most invested (audit, 4 Sep). English lives under the
- *  Library key `payment_received`, the others under payment_received_<lang>. */
+ *  Library key `payment_received`, the others under payment_received_<lang>.
+ *
+ *  Jo, 17 Sep: reworded to three short paragraphs, no exclamation mark and no
+ *  dash (matches the Meta-approved `payment_received` template word for word
+ *  for en/de/ja, so the customer gets the identical wording inside and outside
+ *  the 24h window). The link is kept on its own line here so a customer who
+ *  gets this as free text (always the case inside the window, and outside it
+ *  for anyone whose language falls back to English) still has something to
+ *  tap: the approved Meta template carries the SAME link as a "Start Here"
+ *  URL button instead, since a plain WhatsApp text message can never include
+ *  an interactive button. Same destination either way, just two different
+ *  ways WhatsApp lets a link be tapped. */
 export const PAYMENT_RECEIVED_MSG: Record<Lang, string> = {
-  en: 'Payment received!\n\nPlease fill out this quick form so we can start reviewing your situation:\n\nhttps://workingholidaytax.com.au/tax-form\n\nOnce you\'ve submitted it, we\'ll go through everything and get back to you within 24 hours.',
-  de: 'Zahlung erhalten!\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation starten können:\n\nhttps://workingholidaytax.com.au/tax-form\n\nSobald du es abgeschickt hast, gehen wir alles durch und melden uns innerhalb von 24 Stunden bei dir.',
-  ja: 'お支払いを確認しました。\n\nご状況の確認を始められるよう、こちらの簡単なフォームにご記入ください:\n\nhttps://workingholidaytax.com.au/tax-form\n\nご送信いただいたら、すべて確認のうえ24時間以内にご連絡します。',
-  es: '¡Pago recibido!\n\nRellena este formulario rápido para que podamos empezar a revisar tu situación:\n\nhttps://workingholidaytax.com.au/tax-form\n\nEn cuanto lo envíes, revisamos todo y te respondemos en 24 horas.',
-  fr: 'Paiement bien reçu !\n\nRemplis ce court formulaire pour que nous puissions commencer à examiner ta situation :\n\nhttps://workingholidaytax.com.au/tax-form\n\nDès que tu l\'as envoyé, nous passons tout en revue et revenons vers toi sous 24 heures.',
-  it: 'Pagamento ricevuto!\n\nCompila questo breve modulo così possiamo iniziare a esaminare la tua situazione:\n\nhttps://workingholidaytax.com.au/tax-form\n\nUna volta inviato, controlliamo tutto e ti rispondiamo entro 24 ore.',
-  pt: 'Pagamento recebido!\n\nPreenche este formulário rápido para podermos começar a analisar a tua situação:\n\nhttps://workingholidaytax.com.au/tax-form\n\nAssim que o enviares, vemos tudo e respondemos dentro de 24 horas.',
+  en: `Payment received.\n\nPlease fill out this quick form so we can start reviewing your situation.\n\nOnce you've submitted it, we'll go through everything and get back to you within 24 hours.\n\nhttps://workingholidaytax.com.au/tax-form`,
+  de: 'Zahlung erhalten.\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation starten können.\n\nSobald du es abgeschickt hast, gehen wir alles durch und melden uns innerhalb von 24 Stunden bei dir.\n\nhttps://workingholidaytax.com.au/tax-form',
+  ja: 'お支払いを確認しました。\n\nご状況の確認を始められるよう、こちらの簡単なフォームにご記入ください。\n\nご送信いただいたら、すべて確認のうえ24時間以内にご連絡します。\n\nhttps://workingholidaytax.com.au/tax-form',
+  es: 'Pago recibido.\n\nRellena este formulario rápido para que podamos empezar a revisar tu situación.\n\nEn cuanto lo envíes, revisamos todo y te respondemos en 24 horas.\n\nhttps://workingholidaytax.com.au/tax-form',
+  fr: 'Paiement bien reçu.\n\nRemplis ce court formulaire pour que nous puissions commencer à examiner ta situation.\n\nDès que tu l\'as envoyé, nous passons tout en revue et revenons vers toi sous 24 heures.\n\nhttps://workingholidaytax.com.au/tax-form',
+  it: 'Pagamento ricevuto.\n\nCompila questo breve modulo così possiamo iniziare a esaminare la tua situazione.\n\nUna volta inviato, controlliamo tutto e ti rispondiamo entro 24 ore.\n\nhttps://workingholidaytax.com.au/tax-form',
+  pt: 'Pagamento recebido.\n\nPreenche este formulário rápido para podermos começar a analisar a tua situação.\n\nAssim que o enviares, vemos tudo e respondemos dentro de 24 horas.\n\nhttps://workingholidaytax.com.au/tax-form',
 };
 
 export function paymentReceivedMessage(lang?: string | null): string {
@@ -322,4 +354,82 @@ export function medicareMessage(lang?: string | null): string {
 export function medicareTemplateKey(lang?: string | null): string {
   const key = (lang && lang in MEDICARE_MSG ? lang : 'en') as Lang;
   return key === 'en' ? 'medicare' : `medicare_${key}`;
+}
+
+/** The "Send Estimate + Invoice" message (Review stage), per language. Only
+ *  en/de/ja are translated (Jo, 17 Sep: "German and Japanese, everyone else
+ *  gets English" — same principle as MEDICARE_MSG above, deliberately not
+ *  extended to es/fr/it/pt this time). {{AMOUNT}} and {{INVOICE_LINK}} are
+ *  filled by composeEstimate at send time, same placeholders in every
+ *  language. English lives under the Library key `estimate_invoice` (the key
+ *  Jo already knows), the others under estimate_invoice_<lang>. */
+export const ESTIMATE_INVOICE_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Your estimated tax refund is {{AMOUNT}}.\n\nHere is your invoice:\n{{INVOICE_LINK}}\n\nI'll send it for final review and then for your signature.`,
+  de: 'Deine geschätzte Steuerrückerstattung beträgt {{AMOUNT}}.\n\nHier ist deine Rechnung:\n{{INVOICE_LINK}}\n\nIch schicke sie zur finalen Prüfung und dann zur Unterschrift.',
+  ja: 'あなたの推定還付金額は{{AMOUNT}}です。\n\nこちらが請求書です:\n{{INVOICE_LINK}}\n\n最終確認後、署名のためにお送りします。',
+};
+
+export function estimateInvoiceMessage(lang?: string | null): string {
+  const key = (lang && lang in ESTIMATE_INVOICE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return ESTIMATE_INVOICE_MSG[key];
+}
+
+/** Library key (and Meta template name) for this language's estimate message:
+ *  `estimate_invoice` for English, `estimate_invoice_<lang>` for German and
+ *  Japanese. Anything else falls back to English, same as medicareTemplateKey. */
+export function estimateInvoiceTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in ESTIMATE_INVOICE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return key === 'en' ? 'estimate_invoice' : `estimate_invoice_${key}`;
+}
+
+/** The "Ready for signature" message (return emailed for review/signature),
+ *  per language. Only en/de/ja are translated (Jo, 17 Sep: same "German and
+ *  Japanese, everyone else gets English" principle as MEDICARE_MSG and
+ *  ESTIMATE_INVOICE_MSG above). English lives under the Library key
+ *  `signature` (the key Jo already knows), the others under
+ *  signature_<lang>. Same Meta template names. */
+export const SIGNATURE_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Your tax return is ready! 🎉\nI've emailed it to you for review and signature.`,
+  de: 'Deine Steuererklärung ist fertig! 🎉\nIch habe sie dir per E-Mail zur Prüfung und Unterschrift geschickt.',
+  ja: 'あなたの確定申告書の準備ができました！🎉\nご確認と署名のため、メールでお送りしました。',
+};
+
+export function signatureMessage(lang?: string | null): string {
+  const key = (lang && lang in SIGNATURE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return SIGNATURE_MSG[key];
+}
+
+/** Library key (and Meta template name) for this language's signature-ready
+ *  message: `signature` for English, `signature_<lang>` for German and
+ *  Japanese. Anything else falls back to English, same as
+ *  medicareTemplateKey / estimateInvoiceTemplateKey. */
+export function signatureTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in SIGNATURE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return key === 'en' ? 'signature' : `signature_${key}`;
+}
+
+/** The "Mark Lodged" confirmation (return lodged with the ATO), per language.
+ *  Only en/de/ja are translated (Jo, 17 Sep: same "German and Japanese,
+ *  everyone else gets English" principle as MEDICARE_MSG, ESTIMATE_INVOICE_MSG
+ *  and SIGNATURE_MSG above). English lives under the Library key
+ *  `lodged_confirmation` (the key Jo already knows), the others under
+ *  lodged_confirmation_<lang>. Same Meta template names. */
+export const LODGED_CONFIRMATION_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Your tax return has been lodged successfully! ✅\nYour refund should arrive in your bank account within 14 business days.`,
+  de: 'Deine Steuererklärung wurde erfolgreich eingereicht! ✅\nDeine Rückerstattung sollte innerhalb von 14 Werktagen auf deinem Bankkonto eingehen.',
+  ja: 'あなたの確定申告書の提出が完了しました！✅\n還付金は14営業日以内にご登録の銀行口座に入金される予定です。',
+};
+
+export function lodgedConfirmationMessage(lang?: string | null): string {
+  const key = (lang && lang in LODGED_CONFIRMATION_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return LODGED_CONFIRMATION_MSG[key];
+}
+
+/** Library key (and Meta template name) for this language's lodged
+ *  confirmation: `lodged_confirmation` for English, `lodged_confirmation_<lang>`
+ *  for German and Japanese. Anything else falls back to English, same as
+ *  medicareTemplateKey / estimateInvoiceTemplateKey / signatureTemplateKey. */
+export function lodgedConfirmationTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in LODGED_CONFIRMATION_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return key === 'en' ? 'lodged_confirmation' : `lodged_confirmation_${key}`;
 }

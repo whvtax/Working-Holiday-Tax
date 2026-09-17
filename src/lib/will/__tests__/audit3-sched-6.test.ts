@@ -24,7 +24,7 @@ const store = {
   addTask: jest.fn(),
   audit: jest.fn(),
   listTemplates: jest.fn(),
-  setSetting: jest.fn(),
+  setSetting: jest.fn().mockResolvedValue(undefined),
   getMessageById: jest.fn(),
 };
 jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
@@ -74,6 +74,7 @@ const timer = (id: string, runAt: string) => ({
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.setSetting.mockResolvedValue(undefined);
   store.listMessages.mockResolvedValue([]);
   events.length = 0; inFlight = 0; peakInFlight = 0;
   runDeferredAutoReply.mockClear();

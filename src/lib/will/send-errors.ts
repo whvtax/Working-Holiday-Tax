@@ -61,6 +61,7 @@ const VIOLATION_TEXT: Record<string, string> = {
   NON_DOLLAR_CURRENCY: 'the text quotes a price in a currency other than Australian dollars',
   AI_IDENTITY_ANSWER: 'the text answers whether Will is a human or an AI; that is for you to answer',
   MYGOV_TROUBLESHOOTING: 'the text walks the customer through myGov steps; that is done by hand, not by message',
+  FORM_LINK_BEFORE_PAYMENT: 'the tax-form link is going to someone who has not paid; it only ever comes after payment',
   PRICE_NEGOTIATION: 'the text negotiates the price; the price is fixed',
   TAX_DETERMINATION: 'the text gives a personal tax determination (residency, refund amount, what is deductible); only the fixed estimate message may do that',
   DIY_INSTRUCTIONS: 'the text tells the customer how to lodge on their own',

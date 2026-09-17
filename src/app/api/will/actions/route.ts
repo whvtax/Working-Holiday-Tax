@@ -7,10 +7,10 @@ import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES, paymentReceivedBody } from '@/lib/will/service';
-import { paymentReceivedTemplateKey } from '@/lib/will/i18n';
+import { paymentReceivedTemplateKey, estimateInvoiceMessage, estimateInvoiceTemplateKey, signatureMessage, signatureTemplateKey, lodgedConfirmationMessage, lodgedConfirmationTemplateKey, metaTemplateLang } from '@/lib/will/i18n';
 import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
-import { formatAUD } from '@/lib/will/config';
+import { formatAUD, deferToMorning } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
 import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/channel';
 import { resolveAiMode } from '@/lib/will/mode';
@@ -256,8 +256,38 @@ async function sendPaymentConfirmationIfMissing(customer: CustomerRow): Promise<
     return;
   }
   const out = await deliverOut(customer, confirmation, 'AI', undefined, {
-    name: paymentReceivedTemplateKey(customer.lang), params: [], lang: customer.lang, fallbackToText: true,
+    // Meta template NAME capped to English/German/Japanese (metaTemplateLang,
+    // Jo, 17 Sep); paymentReceivedBody above already used the customer's full
+    // language for the Library text itself, so this only narrows which
+    // approved template a send outside the 24h window is tried against.
+    name: paymentReceivedTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true,
   });
+  // Jo, 17 Sep: payment_received is now a MARKETING-category template (the
+  // "Start Here" button forced that choice in WhatsApp Manager, since a
+  // static URL button is not offered under Utility). Meta's per-person
+  // marketing limit (131049) is known to clear on its own the next day, and
+  // deliverOut already knows this: on a retryable rejection (131049, and a
+  // few other throttling codes) it does NOT raise a task, it returns
+  // `retryable: true` with the id of the message it just recorded, exactly so
+  // a caller with a fixed body to resend can hand it to the scheduler instead
+  // of losing it (channel.ts). This caller used to ignore that and raise its
+  // own URGENT task on ANY failure, so a marketing-limit hold that clears
+  // itself by morning got the same "send it by hand" alarm as a real
+  // rejection (the same loop already fixed for FOLLOW_UP/FORM_RECEIVED,
+  // audit, 10 Sep). RESEND_MESSAGE (scheduler.ts) is the existing job for
+  // exactly this: it re-sends the stored message's own body and waTemplate,
+  // retrying up to 3 times before it finally raises a task.
+  if (!out.ok && out.retryable && out.messageId) {
+    await store.addJob({
+      customerId: customer.id, kind: 'RESEND_MESSAGE',
+      payload: { messageId: out.messageId, attempt: 0 },
+      runAt: deferToMorning(new Date()).toISOString(),
+    }).catch(async () => {
+      await raise(`PAID, BUT THEY HAVE NOT BEEN TOLD. Marked Paid by hand, but WhatsApp held the confirmation back (${out.error ?? 'throttled'}), and it could not be queued to retry tomorrow morning. Send it yourself.`);
+    });
+    await store.audit('channel', 'payment_received_send_throttled_requeued', { customerId: customer.id, error: out.error ?? null, via: 'set_state' }).catch(() => {});
+    return;
+  }
   if (!out.ok) {
     await store.audit('channel', 'payment_received_send_failed', { customerId: customer.id, error: out.error ?? 'unknown error', via: 'set_state' }).catch(() => {});
     await raise(`PAID, BUT THEY HAVE NOT BEEN TOLD. Marked Paid by hand, but WhatsApp rejected the confirmation with the form link: ${out.error ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`);
@@ -1122,19 +1152,27 @@ async function handlePost(req: Request) {
       // Filled here rather than in humanSend: the amount comes from this
       // request, and the customer's stored estimate is only written further
       // down, once the send has actually succeeded.
+      // Language-keyed, same pattern as medicare/payment_received (Jo, 17 Sep):
+      // German and Japanese get their own wording and their own Meta template
+      // name (estimate_invoice_de / estimate_invoice_ja); everyone else gets
+      // the English `estimate_invoice` Library entry and template.
+      const estimateKey = estimateInvoiceTemplateKey(customer.lang);
       const body = composeEstimate(
-        await libraryBody('estimate_invoice', APPROVED.estimate_invoice),
+        await libraryBody(estimateKey, estimateKey === 'estimate_invoice' ? APPROVED.estimate_invoice : estimateInvoiceMessage(customer.lang)),
         amountCents,
         invoiceUrl.toString(),
       );
 
       const send = await humanSend(customer, body, { templateBacked: true });
       if (send.error) return bad(send.error);
-      // Outside the 24h window this goes as the pre-approved Meta template
-      // `estimate_invoice` ({{1}} = amount, {{2}} = invoice link); inside it,
-      // the Library wording goes as free text. Same text either way.
+      // Outside the 24h window this goes as the approved Meta template named
+      // by estimateKey ({{1}} = amount, {{2}} = invoice link) when Jo has it
+      // in Meta, and as the same text when he does not — fallbackToText is
+      // needed here now that the language lives in the template NAME rather
+      // than a language code on the same name, so a not-yet-approved German
+      // or Japanese variant does not just fail outright.
       const waTemplate = send.outsideWindow
-        ? { name: 'estimate_invoice', params: [formatAUD(amountCents), invoiceUrl.toString()], lang: customer.lang }
+        ? { name: estimateKey, params: [formatAUD(amountCents), invoiceUrl.toString()], lang: customer.lang, fallbackToText: true }
         : undefined;
       const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
       if (!out.ok) return notAccepted(out.error, waTemplate?.name);
@@ -1176,12 +1214,18 @@ async function handlePost(req: Request) {
       // The old stage gate refused the click for anyone not already at the
       // estimate stage, which meant the message Jo had just sent by hand and
       // the pipeline disagreed.
-      const sigBody = await libraryBody('signature', APPROVED.signature_ready);
+      // Language-keyed, same pattern as medicare/estimate_invoice/payment_received
+      // (Jo, 17 Sep): German and Japanese get their own wording and their own
+      // Meta template name (signature_de / signature_ja); everyone else gets
+      // the English `signature` Library entry and template.
+      const sigKey = signatureTemplateKey(customer.lang);
+      const sigBody = await libraryBody(sigKey, sigKey === 'signature' ? APPROVED.signature_ready : signatureMessage(customer.lang));
       const send = await humanSend(customer, sigBody, { templateBacked: true });
       if (send.error) return bad(send.error);
-      // Outside the 24h window: the pre-approved Meta template `signature` (no
-      // variables). Inside it: the Library wording as free text.
-      const waTemplate = send.outsideWindow ? { name: 'signature', params: [], lang: customer.lang } : undefined;
+      // Outside the 24h window: the pre-approved Meta template named by
+      // sigKey (no variables), when Jo has it in Meta, and the same text
+      // when he does not.
+      const waTemplate = send.outsideWindow ? { name: sigKey, params: [], lang: customer.lang } : undefined;
       const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
       if (!out.ok) return notAccepted(out.error, waTemplate?.name);
       // Will is never auto-paused (Jo, 31 Aug): the "ready for signature" note
@@ -1216,12 +1260,19 @@ async function handlePost(req: Request) {
       // Same rule as the signature button (Jo, 4 Sep): the click is the truth.
       // A customer moved to Completed by hand, or still at Estimate when the
       // return was lodged, could not be marked lodged at all before this.
-      const body = await libraryBody('lodged_confirmation', APPROVED.lodged_confirmation);
+      // Language-keyed, same pattern as medicare/estimate_invoice/signature
+      // (Jo, 17 Sep): German and Japanese get their own wording and their own
+      // Meta template name (lodged_confirmation_de / lodged_confirmation_ja);
+      // everyone else gets the English `lodged_confirmation` Library entry and
+      // template.
+      const lodgedKey = lodgedConfirmationTemplateKey(customer.lang);
+      const body = await libraryBody(lodgedKey, lodgedKey === 'lodged_confirmation' ? APPROVED.lodged_confirmation : lodgedConfirmationMessage(customer.lang));
       const send = await humanSend(customer, body, { templateBacked: true });
       if (send.error) return bad(send.error);
-      // Outside the 24h window: the pre-approved Meta template
-      // `lodged_confirmation` (no variables). Inside it: free text.
-      const waTemplate = send.outsideWindow ? { name: 'lodged_confirmation', params: [], lang: customer.lang } : undefined;
+      // Outside the 24h window: the pre-approved Meta template named by
+      // lodgedKey (no variables), when Jo has it in Meta, and the same text
+      // when he does not.
+      const waTemplate = send.outsideWindow ? { name: lodgedKey, params: [], lang: customer.lang } : undefined;
       const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
       if (!out.ok) return notAccepted(out.error, waTemplate?.name);
       // Will is never auto-paused (Jo, 31 Aug): the lodged note goes out but

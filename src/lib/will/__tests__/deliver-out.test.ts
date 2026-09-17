@@ -20,6 +20,7 @@ const store = {
   audit: jest.fn(),
   addTask: jest.fn(),
   getSetting: jest.fn().mockResolvedValue(undefined),
+  listMessages: jest.fn().mockResolvedValue([]),
 };
 jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
 
@@ -38,6 +39,7 @@ beforeEach(() => {
   store.markCustomerRead.mockResolvedValue(undefined);
   store.audit.mockResolvedValue(undefined);
   store.addTask.mockResolvedValue({ id: 't1' });
+  store.listMessages.mockResolvedValue([]);
   store.getSetting.mockResolvedValue(undefined);
   // No credentials in the test env, so postMessage returns { ok: true, skipped: true }
   delete process.env.WHATSAPP_TOKEN;
@@ -132,5 +134,45 @@ describe('a successful send clears the unread marker, whoever wrote it', () => {
     await deliverOut(customer(), 'hello', 'AI');
     // A task here is what makes the operator send it a second time.
     expect(store.addTask).not.toHaveBeenCalled();
+  });
+});
+
+// (Jo, 17 Sep) The master duplicate guard: every AI-authored send passes
+// through deliverOut, so checking here catches every way the same automatic
+// message could go out twice — not just the individual retry paths that
+// already check this before calling deliverOut. Real case: a customer's
+// payment was detected twice, independently and both for the first time
+// (once from her wording, once from her screenshot), each its own fresh call
+// to deliverOut with no retry involved, so a retry-only guard would have
+// missed it entirely.
+describe('the master duplicate guard (deliverOut itself)', () => {
+  it('skips a second identical AI send, reports ok:true, and never re-records it', async () => {
+    store.listMessages.mockResolvedValue([
+      { id: 'm0', customerId: 'c1', direction: 'OUT', author: 'AI', status: 'SENT', body: 'Payment received! 🎉', createdAt: new Date().toISOString() },
+    ]);
+    const res = await deliverOut(customer(), 'Payment received! 🎉', 'AI');
+    expect(res.ok).toBe(true);
+    expect(store.addMessage).not.toHaveBeenCalled();
+    expect(store.audit).toHaveBeenCalledWith(
+      'channel', 'send_blocked_already_sent_verbatim', expect.objectContaining({ customerId: 'c1' }),
+    );
+  });
+
+  it('does NOT skip a second identical HUMAN send — a person may want to repeat it on purpose', async () => {
+    store.listMessages.mockResolvedValue([
+      { id: 'm0', customerId: 'c1', direction: 'OUT', author: 'HUMAN', status: 'SENT', body: 'Same text', createdAt: new Date().toISOString() },
+    ]);
+    const res = await deliverOut(customer(), 'Same text', 'HUMAN');
+    expect(res.ok).toBe(true);
+    expect(store.addMessage).toHaveBeenCalled();
+  });
+
+  it('does not skip a genuinely different message', async () => {
+    store.listMessages.mockResolvedValue([
+      { id: 'm0', customerId: 'c1', direction: 'OUT', author: 'AI', status: 'SENT', body: 'Payment received! 🎉', createdAt: new Date().toISOString() },
+    ]);
+    const res = await deliverOut(customer(), "Great, we've received your questionnaire! ✅", 'AI');
+    expect(res.ok).toBe(true);
+    expect(store.addMessage).toHaveBeenCalled();
   });
 });

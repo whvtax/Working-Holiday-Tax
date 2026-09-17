@@ -620,3 +620,47 @@ describe('the ordinary English word "difference" no longer trips SALES_CONTENT_A
     expect(has('Remember our fee is $220 and we refund the difference if your refund is lower.', 'SALES_CONTENT_AFTER_PAYMENT', { paid: true, state: 'PAID' })).toBe(true);
   });
 });
+
+describe('the tax-form link never goes to someone who has not paid (Jo, 16 Sep, Kazuki)', () => {
+  // Real case: a long first message covering Tax Return, Superannuation
+  // (DASP) and a visa switch at once ended with "please fill out the form
+  // first, then I'll show you how to pay" — backwards. The form link is the
+  // reward for paying, never a step on the way there.
+  it('BLOCKS the exact message that was wrongly sent', () => {
+    expect(has(
+      'myGovへのログインは必要ありません。料金はTFN税務申告が$220です。まずはこちらの2分ほどのフォームにご入力いただけますか？\n\nhttps://workingholidaytax.com.au/tax-form\n\nフォームを送信いただいた後、お支払い方法をご案内します。',
+      'FORM_LINK_BEFORE_PAYMENT', { paid: false, state: 'NEW_LEAD' },
+    )).toBe(true);
+  });
+
+  it('BLOCKS a plain English version of the same mistake', () => {
+    expect(has(
+      "Could you fill out this quick form first? https://workingholidaytax.com.au/tax-form Once you've submitted it I'll send payment details.",
+      'FORM_LINK_BEFORE_PAYMENT', { paid: false, state: 'PRICE_SENT' },
+    )).toBe(true);
+  });
+
+  it('ALLOWS the genuine payment_received confirmation, in every site language, even though paid is still false at the moment it is checked', () => {
+    const openings = [
+      "Payment received!\n\nPlease fill out this quick form so we can start reviewing your situation:\n\nhttps://workingholidaytax.com.au/tax-form\n\nOnce you've submitted it, we'll go through everything and get back to you within 24 hours.",
+      'Zahlung erhalten!\n\nBitte füll dieses kurze Formular aus:\n\nhttps://workingholidaytax.com.au/tax-form',
+      'お支払いを確認しました。\n\nこちらのフォームにご記入ください:\n\nhttps://workingholidaytax.com.au/tax-form',
+      '¡Pago recibido!\n\nRellena este formulario:\n\nhttps://workingholidaytax.com.au/tax-form',
+      "Paiement bien reçu !\n\nRemplis ce formulaire :\n\nhttps://workingholidaytax.com.au/tax-form",
+      'Pagamento ricevuto!\n\nCompila questo modulo:\n\nhttps://workingholidaytax.com.au/tax-form',
+      'Pagamento recebido!\n\nPreenche este formulário:\n\nhttps://workingholidaytax.com.au/tax-form',
+    ];
+    for (const t of openings) expect(has(t, 'FORM_LINK_BEFORE_PAYMENT', { paid: false, state: 'PAYMENT_PENDING' })).toBe(false);
+  });
+
+  it('ALLOWS the form link once the customer has actually paid', () => {
+    expect(has(
+      "Payment received! Here's the form: https://workingholidaytax.com.au/tax-form",
+      'FORM_LINK_BEFORE_PAYMENT', { paid: true, state: 'FORM_PENDING' },
+    )).toBe(false);
+  });
+
+  it('does not fire at all when the message has no form link', () => {
+    expect(has('The fee is $220. Once paid, send us a screenshot.', 'FORM_LINK_BEFORE_PAYMENT', { paid: false, state: 'PRICE_SENT' })).toBe(false);
+  });
+});

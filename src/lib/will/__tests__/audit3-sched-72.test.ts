@@ -11,6 +11,7 @@
 const store = {
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
+  setSetting: jest.fn().mockResolvedValue(undefined),
   dueJobs: jest.fn(),
   claimJob: jest.fn(),
   getCustomerById: jest.fn(),
@@ -57,6 +58,7 @@ const TIMER = {
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.setSetting.mockResolvedValue(undefined);
   runDeferredAutoReply.mockReset();
   store.reclaimStaleJobs.mockResolvedValue(0);
   store.getSetting.mockImplementation(async (k: string) => (k === 'ai_mode' ? 'FULL_AUTO' : false));

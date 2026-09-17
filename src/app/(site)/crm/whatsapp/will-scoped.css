@@ -946,12 +946,12 @@ aside.side{
    "nothing was checked" — which is the exact shape of the worst outage this
    system has had (a missing migration dropped 105 leads while every dot on the
    dashboard stayed green). */
-.will-scope .okchecks{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0 2px}
+.will-scope .okchecks{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:4px;margin:7px 0 2px}
 .will-scope .okcheck{
-  font-size:10.5px;font-weight:600;color:var(--done);
+  font-size:9px;font-weight:600;color:var(--done);
   background:color-mix(in srgb,var(--done) 9%, transparent);
   border:1px solid color-mix(in srgb,var(--done) 22%, transparent);
-  padding:2px 8px;border-radius:999px;white-space:nowrap;cursor:default;
+  padding:1px 6px;border-radius:999px;white-space:nowrap;cursor:default;flex:none;
 }
 
 /* A message the SYSTEM wrote into the thread, described rather than quoted:

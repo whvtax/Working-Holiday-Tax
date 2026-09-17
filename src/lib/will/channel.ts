@@ -423,6 +423,24 @@ export async function deliverOut(
     return { ok: false, error: 'customer opted out' };
   }
 
+  // The master duplicate guard: every AI-authored send passes through here,
+  // so this is the one place that can catch EVERY way the same automatic
+  // message could go out twice, not just the retry paths that already check
+  // this individually before calling deliverOut (RESEND_MESSAGE,
+  // FORM_RECEIVED, MEDICARE_INFO, the AUTO_REPLY rearm). Real case (Jo,
+  // 17 Sep): a customer's payment was detected TWICE, independently and
+  // both for the first time — once from her wording, once from her screenshot,
+  // moments apart — each its own fresh call to deliverOut, neither a retry
+  // of the other, so none of the individual retry-path guards ever saw it.
+  // HUMAN sends are never touched here: a person may legitimately want to
+  // send the same words twice, on purpose.
+  if (author === 'AI' && await wasAlreadySentVerbatim(store, customer.id, body)) {
+    await store.audit('channel', 'send_blocked_already_sent_verbatim', {
+      customerId: customer.id, preview: body.slice(0, 120),
+    });
+    return { ok: true, error: 'already sent, skipped' };
+  }
+
   // REL-03 outbox: record the intended message as QUEUED FIRST, so if the send
   // succeeds but a later write throws, the fact that we messaged the customer is
   // already durable (never a silent double-send on retry). Then send, then
@@ -633,10 +651,10 @@ export async function fetchWaMedia(
 // ------------------------------------------------------------------
 import { FLOW_TEMPLATES } from './state-machine';
 import {
-  FORM_RECEIVED_MSG, formReceivedTemplateKey, reviewRequestTemplateKey,
+  formReceivedTemplateKey, reviewRequestTemplateKey,
   requestAbnTemplateKey, handoffHoldingTemplateKey, paymentReceivedTemplateKey,
 } from './i18n';
-import { medicareTemplateKey } from './i18n'; // medicare_<lang> (audit, 5 Sep)
+import { medicareTemplateKey, estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey } from './i18n'; // medicare_<lang>, estimate_invoice_<lang>, signature_<lang>, lodged_confirmation_<lang> (audit, 5 Sep / 17 Sep)
 
 export interface ExpectedMetaTemplate {
   /** Exact template name in WhatsApp Manager. */
@@ -650,7 +668,14 @@ export interface ExpectedMetaTemplate {
   optional: boolean;
 }
 
-const EXPECTED_LANGS = Object.keys(FORM_RECEIVED_MSG);
+// The six system-line families above name their Meta template PER LANGUAGE
+// (medicare_<lang>, form_received_<lang>, ...), but the send paths only ever
+// ask Meta for English/German/Japanese (metaTemplateLang, Jo, 17 Sep) — every
+// other detected language still gets native wording as free text, just never
+// its own approved template, since creating one is real per-language admin
+// work in WhatsApp Manager. So the verification list below only expects
+// these three, not the full seven the Library itself supports.
+const META_LANGS = ['en', 'de', 'ja'] as const;
 
 /** Built from the same constants the send paths use, so a renamed key here
  *  and in the sender cannot drift apart (a test pins every literal). */
@@ -663,14 +688,17 @@ export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
   { name: 'lodged_confirmation', params: 0, optional: false },
   // System lines with a free-text fallback inside the window.
   { name: 'medicare', params: 0, optional: true },
-  ...EXPECTED_LANGS.flatMap((lang) => [
+  ...META_LANGS.flatMap((lang) => [
     { name: formReceivedTemplateKey(lang), params: 0, optional: true },
     { name: reviewRequestTemplateKey(lang), params: 0, optional: true },
     { name: requestAbnTemplateKey(lang), params: 0, optional: true },
     { name: handoffHoldingTemplateKey(lang), params: 0, optional: true },
     { name: paymentReceivedTemplateKey(lang), params: 0, optional: true },
     { name: medicareTemplateKey(lang), params: 0, optional: true },
+    { name: signatureTemplateKey(lang), params: 0, optional: true },
+    { name: lodgedConfirmationTemplateKey(lang), params: 0, optional: true },
   ]),
+  ...META_LANGS.map((lang) => ({ name: estimateInvoiceTemplateKey(lang), params: 2, optional: true })),
 ].filter((t, i, all) => all.findIndex((o) => o.name === t.name) === i);
 
 export interface TemplateVerification {

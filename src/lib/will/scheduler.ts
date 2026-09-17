@@ -13,7 +13,7 @@ import { suggestReply } from './suggest';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, medicareMessage, medicareTemplateKey } from './i18n';
+import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, medicareMessage, medicareTemplateKey, metaTemplateLang } from './i18n';
 import { deliverOut, sendWhatsAppText, wasAlreadySentVerbatim } from './channel';
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
@@ -467,6 +467,49 @@ async function runAutoReplyTimer(store: Store, job: JobRow, result: TickResult, 
 // must not double-process jobs.
 let running: Promise<TickResult> | null = null;
 
+/** Job kinds that never send anything to a customer — everything else in the
+ *  due batch either sends a message or is a debounce timer that resolves to
+ *  one, so this is easier to keep accurate as a short exclude list than to
+ *  duplicate the (much longer, easier to fall out of date) list of kinds
+ *  that DO send. */
+const NON_SENDING_JOB_KINDS: ReadonlySet<JobRow['kind']> = new Set(['NIGHTLY', 'DAILY_DIGEST', 'LOST_ANALYSIS', 'AUTO_CLOSE']);
+
+const SEND_RATE_LIMIT = 10;
+const SEND_RATE_WINDOW_MS = 20_000;
+
+/**
+ * Best-effort pacing for outbound customer-facing sends: at most
+ * SEND_RATE_LIMIT in any rolling SEND_RATE_WINDOW_MS, across every job kind
+ * that sends and both the debounce-timer pool and the main due-job loop.
+ *
+ * Jo, 16 Sep: the WhatsApp Business account itself was restricted by Meta
+ * for "spam, automated or bulk messaging" — most plausibly a backlog of due
+ * jobs sending up to DUE_JOBS_BATCH messages back to back, every tick. That
+ * cap alone smooths the size of one BURST; this caps the actual RATE,
+ * independent of how often the tick runs or how large a batch is, which is
+ * the more direct fix for what Meta's abuse detection watches. Started at
+ * 8/minute; loosened the same day to 10 per 20 seconds (~30/minute) once
+ * that felt overcautious for the size of the backlog being worked through.
+ *
+ * A refusal here leaves the job SCHEDULED (the caller must not claim it),
+ * so nothing is lost, only delayed to a later tick — the same "spread over
+ * more, smaller bursts" idea DUE_JOBS_BATCH already uses.
+ *
+ * Not perfectly atomic under concurrency (a settings read-then-write race
+ * between the timer-worker pool and the main loop could let a couple of
+ * extra sends through in rare cases) — an accepted trade-off matching every
+ * other settings-based soft counter in this file (doc_ack_at, the medicare
+ * once-per-drop key): the goal is smoothing a burst, not an exact quota.
+ */
+export async function trySendBudget(store: Store): Promise<boolean> {
+  const now = Date.now();
+  const raw = await store.getSetting('send_rate_window').catch(() => undefined) as { startedAt: number; count: number } | undefined;
+  const window = raw && now - raw.startedAt < SEND_RATE_WINDOW_MS ? raw : { startedAt: now, count: 0 };
+  if (window.count >= SEND_RATE_LIMIT) return false;
+  await store.setSetting('send_rate_window', { startedAt: window.startedAt, count: window.count + 1 }).catch(() => { /* best effort: a write failure here should not itself block a send */ });
+  return true;
+}
+
 export function processDueJobs(): Promise<TickResult> {
   if (running) return running;
   running = doProcess().finally(() => { running = null; });
@@ -530,6 +573,7 @@ async function doProcess(): Promise<TickResult> {
   const timerWorker = async () => {
     while (nextTimer < timers.length) {
       if (overBudget('AUTO_REPLY')) { timersNotStarted += timers.length - nextTimer; nextTimer = timers.length; return; }
+      if (!(await trySendBudget(store))) { timersNotStarted += timers.length - nextTimer; nextTimer = timers.length; return; }
       const job = timers[nextTimer++];
       if (!(await store.claimJob(job.id))) continue;
       result.processed++;
@@ -557,6 +601,7 @@ async function doProcess(): Promise<TickResult> {
       budgetAudited = true;
       break;
     }
+    if (!NON_SENDING_JOB_KINDS.has(job.kind) && !(await trySendBudget(store))) continue;
     // Atomic claim: only one caller wins; a crash mid-job leaves it CLAIMED and
     // it is reclaimed to SCHEDULED next tick (up to 3 attempts), never lost.
     if (!(await store.claimJob(job.id))) continue;
@@ -585,7 +630,7 @@ async function doProcess(): Promise<TickResult> {
               m.direction === 'OUT' && m.status === 'SENT'
               && new Date(m.createdAt).getTime() > new Date(job.createdAt ?? job.runAt).getTime());
             if (open && !answered) {
-              const { body, key: ackKey } = await ackBody(c.lang, tickTemplates);
+              const { body } = await ackBody(c.lang, tickTemplates);
               // Inside the window by construction (the long message arrived
               // half an hour ago), but the same template-or-text shape as the
               // other system lines, so a Library {{PLACEHOLDER}} slip is
@@ -595,7 +640,12 @@ async function doProcess(): Promise<TickResult> {
                 await store.setJobStatus(job.id, 'DONE');
                 continue;
               }
-              const ackTemplate = { name: ackKey, params: [], lang: c.lang, fallbackToText: true };
+              // The Library text stays fully per-language (handoffHoldingTemplateKey
+              // above); the Meta TEMPLATE NAME this actually attempts is capped to
+              // English/German/Japanese (Jo, 17 Sep — metaTemplateLang), since a
+              // template Meta has never seen fails outright rather than falling
+              // back, and creating one per language is real, ongoing admin work.
+              const ackTemplate = { name: handoffHoldingTemplateKey(metaTemplateLang(c.lang)), params: [], lang: c.lang, fallbackToText: true };
               const out = await deliverOut(c, body, 'AI', { waTemplate: ackTemplate }, ackTemplate);
               await store.audit('assistant', out.ok ? 'handoff_ack_sent' : 'handoff_ack_failed', {
                 customerId: c.id, error: out.ok ? undefined : out.error,
@@ -744,12 +794,15 @@ async function doProcess(): Promise<TickResult> {
             isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
           });
           if (!verdict.allowed) body = (await libraryCopy('en')) ?? formReceivedMessage('en'); // English is guard-safe
-          // Template named by the Library key when Jo has created it in
-          // Meta (works outside the 24h window), the same text as free text
-          // when he has not (works inside it). A web form arrives whenever
-          // the customer fills it, often days after their last WhatsApp
-          // message, so free text alone failed silently there (audit, 3 Sep).
-          const confirmTemplate = { name: formReceivedTemplateKey(customer.lang), params: [], lang: customer.lang, fallbackToText: true };
+          // Template named by the Meta-only language (English/German/Japanese —
+          // metaTemplateLang, Jo, 17 Sep) when Jo has created it in Meta (works
+          // outside the 24h window), the same text as free text when he has not
+          // (works inside it). The Library lookup above stays keyed by the
+          // customer's own full language; only the template NAME Meta is asked
+          // for is capped. A web form arrives whenever the customer fills it,
+          // often days after their last WhatsApp message, so free text alone
+          // failed silently there (audit, 3 Sep).
+          const confirmTemplate = { name: formReceivedTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true };
           if (await inApprovalMode()) {
             await store.addMessage({
               customerId: customer.id, direction: 'OUT', author: 'AI',
@@ -787,7 +840,10 @@ async function doProcess(): Promise<TickResult> {
             isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
           });
           if (!abnVerdict.allowed) return false;
-          const abnTemplate = { name: abnKey, params: [], lang: customer.lang, fallbackToText: true };
+          // Meta template NAME capped to English/German/Japanese (metaTemplateLang,
+          // Jo, 17 Sep); the Library lookup above (abnKey) stays the customer's
+          // full language, so an edited translation is still used as free text.
+          const abnTemplate = { name: requestAbnTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true };
           if (await inApprovalMode()) {
             await store.addMessage({
               customerId: customer.id, direction: 'OUT', author: 'AI',
@@ -865,6 +921,13 @@ async function doProcess(): Promise<TickResult> {
               customerId: customer.id,
               error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
             }).catch(() => { /* the store is the likely thing that just failed */ });
+            // Jo, 17 Sep: same guarantee as the after-payment path in
+            // form-link.ts — a "No" to Medicare must never just disappear
+            // into an audit line nobody actively watches.
+            await raiseOrUpdateTask(store, customer, {
+              reason: 'Medicare exemption message (answered before payment) could not be queued. Send it by hand from the Library entry.',
+              severity: 'URGENT', newContext: null, suggestedReply: null,
+            });
           }
           if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
             // ── WHICH MESSAGE GOES FIRST (Jo, 4 Sep) ────────────────────
@@ -921,7 +984,7 @@ async function doProcess(): Promise<TickResult> {
           continue;
         }
 
-        if (!customer.optedOut && !customer.isLegacy) {
+        if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
           // The Library entry is the owner's copy and is what he edits; the
           // code constant is the fallback for a store that cannot be read.
           // In the customer's language: Library key `medicare` (English, the
@@ -952,10 +1015,13 @@ async function doProcess(): Promise<TickResult> {
             continue;
           }
           // 15 minutes after a web form is usually well outside the 24h window,
-          // so this goes as the approved template named by the Library key
-          // (`medicare` or medicare_<lang>) when Jo has it in Meta and as the
-          // same text when he does not.
-          const medicareTemplate = { name: medicareKey, params: [], lang: customer.lang, fallbackToText: true };
+          // so this goes as the approved template named by the Meta-only
+          // language (English/German/Japanese — metaTemplateLang, Jo, 17 Sep)
+          // when Jo has it in Meta and as the same text when he does not. The
+          // Library lookup above stays keyed by medicareKey, the customer's
+          // full language, so an edited translation is still used.
+          const medicareMetaName = medicareTemplateKey(metaTemplateLang(customer.lang));
+          const medicareTemplate = { name: medicareMetaName, params: [], lang: customer.lang, fallbackToText: true };
           if (await inApprovalMode()) {
             await store.addMessage({
               customerId: customer.id, direction: 'OUT', author: 'AI',
@@ -975,7 +1041,7 @@ async function doProcess(): Promise<TickResult> {
               result.sent.push(`${customer.name ?? customer.waId} · Medicare exemption`);
             } else {
               await raiseOrUpdateTask(store, customer, {
-                reason: `The Medicare exemption message was not delivered: ${out.error ?? 'WhatsApp rejected it'}. If it needs the approved template, create "${medicareKey}" in WhatsApp Manager (no variables) and it sends itself next time.`,
+                reason: `The Medicare exemption message was not delivered: ${out.error ?? 'WhatsApp rejected it'}. If it needs the approved template, create "${medicareMetaName}" in WhatsApp Manager (no variables) and it sends itself next time.`,
                 severity: 'REVIEW', newContext: body.slice(0, 300), suggestedReply: body,
               });
               await store.audit('system', 'medicare_info_failed', { customerId: customer.id, error: out.error ?? null });
@@ -1071,7 +1137,7 @@ async function doProcess(): Promise<TickResult> {
             await store.setJobStatus(job.id, 'DONE');
             continue;
           }
-          const reviewTemplate = { name: reviewRequestTemplateKey(customer.lang), params: [], lang: customer.lang, fallbackToText: true };
+          const reviewTemplate = { name: reviewRequestTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true };
           if (await inApprovalMode()) {
             await store.addMessage({
               customerId: customer.id, direction: 'OUT', author: 'AI',

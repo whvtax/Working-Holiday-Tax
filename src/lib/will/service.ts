@@ -9,7 +9,7 @@ import { runEngine, AiMode, EngineOutcome } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
-import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, formReceivedMessage, formReceivedTemplateKey, isPaymentReceivedDraft } from './i18n';
+import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, formReceivedMessage, formReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang } from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut, fetchWaMedia } from './channel';
 import { autopilotReplyDelaySeconds } from './config';
@@ -546,7 +546,7 @@ async function sendOwedFormAck(store: Store, customer: CustomerRow, text: string
     await store.audit('system', 'form_ack_held', { customerId: customer.id, reason: 'placeholder left in the Library text' });
     return;
   }
-  const template = { name: ackKey, params: [], lang: customer.lang, fallbackToText: true };
+  const template = { name: formReceivedTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true };
   const out = await deliverOut(customer, body, 'AI', { waTemplate: template }, template);
   await store.audit('system', out.ok ? 'form_ack_sent_after_abn' : 'form_ack_failed_after_abn', {
     customerId: customer.id, error: out.ok ? undefined : out.error, answered: text.slice(0, 120),
@@ -1340,17 +1340,26 @@ export async function handleInboundNote(
     ? [u.type ? `type=${u.type}` : null, u.errorCode ? `error=${u.errorCode}` : null, u.errorTitle]
       .filter(Boolean).join(' ')
     : '';
+  // The customer deleted a message before it could be read (WhatsApp "Delete
+  // for everyone", Meta's `type: 'revoke'`). Unlike the generic undecoded
+  // case below — which is honestly unsure whether a message from the customer
+  // arrived at all — this one is certain one did, so neither the task's
+  // reason nor the suggested reply should claim otherwise ("may not be a
+  // message from them", "it didn't come through on my end").
+  const revoked = u?.type === 'revoke';
   await raiseOrUpdateTask(store, customer, {
     reason: meta?.media
       ? 'Customer sent an attachment Will cannot read. Open the chat to view it and reply.'
-      : meta?.undecoded
-        ? `WhatsApp delivered an event with no readable text${metaDetail ? ` (${metaDetail})` : ''}. It may not be a message from the customer at all. Open WhatsApp to check.`
-        : 'Customer sent a voice note. Open WhatsApp to listen and reply.',
+      : revoked
+        ? 'Customer sent a message, then deleted it before Will (or anyone) could read it. Open WhatsApp if you want to see whether it is still visible on your end.'
+        : meta?.undecoded
+          ? `WhatsApp delivered an event with no readable text${metaDetail ? ` (${metaDetail})` : ''}. It may not be a message from the customer at all. Open WhatsApp to check.`
+          : 'Customer sent a voice note. Open WhatsApp to listen and reply.',
     severity: 'REVIEW', newContext: body,
     // Even here there is something worth proposing: an acknowledgement that the
     // attachment arrived, so the customer is not left on read while the owner
     // opens it.
-    suggestedReply: await suggestReply('', customer, meta?.media ? 'attachment' : 'unreadable'),
+    suggestedReply: await suggestReply('', customer, meta?.media ? 'attachment' : revoked ? 'revoked' : 'unreadable'),
   });
   const fresh = await store.getCustomerByWaId(waId);
   // A voice note or an unreadable attachment is still the customer talking:

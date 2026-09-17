@@ -111,8 +111,19 @@ export interface TemplateRow {
   updatedAt: string;
 }
 
-/** Most jobs a single tick claims; shared by both stores so they page alike. */
-export const DUE_JOBS_BATCH = 50;
+/** Most jobs a single tick claims; shared by both stores so they page alike.
+ *
+ *  Was 50. Lowered (Jo, 16 Sep) after the WhatsApp Business account itself
+ *  was restricted by Meta for "spam, automated or bulk messaging" — the most
+ *  plausible cause is a backlog of due jobs (a paused Will, or several
+ *  same-day fixes freeing up messages that had been stuck) sending up to 50
+ *  customer-facing messages back to back, every ~15s the dashboard is open.
+ *  That burst shape is exactly what Meta's abuse detection watches for: high
+ *  volume, near-identical template content, sent fast. A lower cap does not
+ *  drop anything — whatever does not fit in one tick stays SCHEDULED and goes
+ *  out on the next tick instead, which IS the pacing: the same backlog, spread
+ *  over more, smaller bursts rather than one large one. */
+export const DUE_JOBS_BATCH = 15;
 
 /** Jobs that are a customer waiting for an answer: the Autopilot timer, the
  *  questionnaire acknowledgement and the holding line. dueJobs puts these in

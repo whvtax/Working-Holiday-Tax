@@ -1778,7 +1778,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I did a few shifts under my ABN then moved to TFN, does that small bit count?",
       "Can we leave the ABN part off?"
     ],
-    "answer": "All income earned in Australia must be declared, including ABN income, even if it was a small amount or only a few weeks of work. Your TFN and ABN income are included in one return.\n\nPlease send us your full ABN earnings reports, such as Uber or delivery reports, plus any related expenses. We'll make sure everything is included correctly.",
+    "answer": "Unfortunately we can't do that. You're required to declare all your income, from every source, within your tax return, however small the ABN amount was. That means the TFN + ABN option ($385) is the one that applies here, not the TFN-only option.\n\nPlease send us your full ABN earnings reports, such as Uber or delivery reports, plus any related expenses. We'll make sure everything is included correctly.",
     "keywords": ["abn","declare","all income","tfn only","small","5000","uber","385","must report","leave off"],
     "tags": ["abn","process","pricing"],
     "lang": "en"

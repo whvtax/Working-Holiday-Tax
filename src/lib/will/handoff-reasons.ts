@@ -113,6 +113,13 @@ const RULES: Rule[] = [
     prevent: 'Nothing to add to the Library. A template cannot answer a voice note. This is the cost of customers who would rather talk than type.',
   },
   {
+    match: /^Customer sent a message, then deleted it/i,
+    kind: 'unreadable',
+    label: 'They deleted their own message',
+    because: 'they sent a message and deleted it (WhatsApp "Delete for everyone") before anyone could read it, so there is genuinely nothing left to answer',
+    prevent: 'Nothing to add to the Library. This is not a missing answer or a broken connection, just a customer changing their mind about something they typed. Open WhatsApp only if you are curious what it was.',
+  },
+  {
     match: /^WhatsApp delivered an event with no readable text/i,
     kind: 'unreadable',
     label: 'Something WhatsApp could not read',
@@ -135,6 +142,13 @@ const RULES: Rule[] = [
     label: 'A conversation that is stuck',
     because: 'the same message kept arriving, or they have written more than eighty times before paying, which is not a conversation any more but something looping',
     prevent: 'Open the chat and read it end to end. This is not a sales problem. The same thing is going round, or an automated sender is on the other end. It should be rare; if it is not, tell me and we will find what is looping.',
+  },
+  {
+    match: /^Medicare exemption message \(answered before payment\)/i,
+    kind: 'delivery',
+    label: 'The Medicare exemption message could not be scheduled',
+    because: 'the customer said No to Medicare before paying, and remembering to send the exemption message once they paid failed — nothing about WhatsApp itself was involved',
+    prevent: 'Send the "medicare" Library entry to this customer by hand, in their language. This should be rare; if it keeps happening, something is wrong with the database writes themselves, not with WhatsApp.',
   },
   {
     match: /^WhatsApp send failed|^Will's reply was not delivered|^WhatsApp did not deliver this message|^The Medicare exemption message was not delivered|^The Google review ask (?:could|was) not (?:be )?delivered|^PAID, BUT THEY HAVE NOT BEEN TOLD|^A reply may not have reached|^A scheduled .* failed three times/i,

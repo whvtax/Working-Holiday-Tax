@@ -29,7 +29,7 @@ const store = {
   findOpenTaskForCustomer: jest.fn(),
   audit: jest.fn(),
   listTemplates: jest.fn(),
-  setSetting: jest.fn(),
+  setSetting: jest.fn().mockResolvedValue(undefined),
   getMessageById: jest.fn(),
 };
 jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
@@ -66,6 +66,7 @@ const auditKinds = () => store.audit.mock.calls.map((c) => c[1] as string);
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.setSetting.mockResolvedValue(undefined);
   store.listMessages.mockResolvedValue([]);
   deliver.mockReset();
   store.reclaimStaleJobs.mockResolvedValue(0);

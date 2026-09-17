@@ -2,8 +2,9 @@
  * The rules Jo set from the Decision Log are in the live prompt.
  * 3 Sep: the registered agent / TPB question is answered from [legitimacy].
  * 4 Sep: a detailed tax story before payment gets the short three-line shape and
- * is never a task; the customer chooses TFN even with ABN income; a myGov
- * login problem gets the reassurance, not a task.
+ * is never a task; a myGov login problem gets the reassurance, not a task.
+ * 16 Sep: ABN income means TFN + ABN, no choice — this REVERSES the 4 Sep rule
+ * that used to let the customer choose TFN only despite ABN income.
  */
 import { buildSystemPrompt } from '@/lib/will/playbook';
 
@@ -24,9 +25,10 @@ it('gives every detailed tax story the same short shape and never hands it over'
   expect(stable).toMatch(/never a human_task/);
 });
 
-it('lets the customer choose TFN only even with ABN income', () => {
-  expect(stable).toMatch(/THE CUSTOMER CHOOSES THE TRACK, EVEN WITH ABN INCOME/);
-  expect(stable).toMatch(/do NOT raise a human_task/);
+it('declines TFN-only for a customer with ABN income — no choice, TFN + ABN applies', () => {
+  expect(stable).toMatch(/ABN INCOME MEANS TFN \+ ABN, NO CHOICE/);
+  expect(stable).toMatch(/decline the TFN-only package/);
+  expect(stable).not.toMatch(/THE CUSTOMER CHOOSES THE TRACK, EVEN WITH ABN INCOME/);
 });
 
 it('reads the two kinds of customer and adapts, without answering either', () => {

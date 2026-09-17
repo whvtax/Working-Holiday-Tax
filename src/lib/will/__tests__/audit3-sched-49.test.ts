@@ -9,7 +9,7 @@
 const store = {
   reclaimStaleJobs: jest.fn(),
   getSetting: jest.fn(),
-  setSetting: jest.fn(),
+  setSetting: jest.fn().mockResolvedValue(undefined),
   dueJobs: jest.fn(),
   claimJob: jest.fn(),
   getCustomerById: jest.fn(),
@@ -62,6 +62,7 @@ function runTickAt(elapsedMs: number) {
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.setSetting.mockResolvedValue(undefined);
   runDeferredAutoReply.mockReset().mockResolvedValue('sent');
   store.reclaimStaleJobs.mockResolvedValue(0);
   store.getSetting.mockResolvedValue(false);

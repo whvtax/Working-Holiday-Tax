@@ -25,6 +25,12 @@ jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
 
 import { EXPECTED_META_TEMPLATES, compareTemplates, verifyTemplates, WA_WABA_KEY } from '@/lib/will/channel';
 import { FLOW_TEMPLATES } from '@/lib/will/state-machine';
+import {
+  LANGS, formReceivedTemplateKey, reviewRequestTemplateKey, requestAbnTemplateKey,
+  handoffHoldingTemplateKey, paymentReceivedTemplateKey, medicareTemplateKey,
+  estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey,
+  metaTemplateLang,
+} from '@/lib/will/i18n';
 
 const root = path.join(__dirname, '..', '..', '..', '..');
 const read = (p: string) => fs.readFileSync(path.join(root, p), 'utf8');
@@ -41,13 +47,48 @@ describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
   });
 
   it('has every literal template name passed to deliverOut in the send paths', () => {
+    // A send path can name its template two ways: a bare string literal
+    // (`{ name: 'medicare', ... }`), or a variable built just above it from
+    // one of the *TemplateKey helpers (`const sigKey = signatureTemplateKey(
+    // customer.lang); ... { name: sigKey, ... }`) — the pattern every
+    // language-keyed message (medicare/estimate_invoice/signature/
+    // lodged_confirmation/...) now uses, so a customer gets their own
+    // wording and their own Meta template name instead of always English.
+    // Both forms are checked: a literal must be a known name directly, and a
+    // helper call must only ever be able to PRODUCE a known name (checked
+    // below, across every supported language) rather than a bespoke,
+    // unchecked one.
     const sources = ['src/lib/will/scheduler.ts', 'src/app/api/will/actions/route.ts', 'src/lib/will/service.ts'];
     const literals = new Set<string>();
+    const usesHelperKeys = sources.some((f) => /name:\s*[a-zA-Z][a-zA-Z0-9]*Key\b/.test(read(f)));
     for (const f of sources) {
       for (const m of read(f).matchAll(/\{\s*name:\s*'([a-z0-9_]+)'/g)) literals.add(m[1]);
     }
-    expect(literals.size).toBeGreaterThan(0);
+    expect(literals.size + Number(usesHelperKeys)).toBeGreaterThan(0);
     for (const l of literals) expect(names.has(l)).toBe(true);
+  });
+
+  it('every *TemplateKey helper the send paths use can only name a template EXPECTED_META_TEMPLATES knows about, once wrapped in metaTemplateLang', () => {
+    // The six per-language system lines (form_received/review_request/req_abn/
+    // handoff_holding/payment_received/medicare) now pass metaTemplateLang(lang)
+    // into their *TemplateKey helper, not the customer's raw language, so the
+    // Meta template NAME they ask for is always English/German/Japanese even
+    // when the Library text itself (looked up separately, unaffected) is one
+    // of the other four languages.
+    const helpers = [
+      formReceivedTemplateKey, reviewRequestTemplateKey, requestAbnTemplateKey,
+      handoffHoldingTemplateKey, paymentReceivedTemplateKey, medicareTemplateKey,
+    ];
+    for (const fn of helpers) {
+      for (const lang of LANGS) expect(names.has(fn(metaTemplateLang(lang)))).toBe(true);
+    }
+    // estimate_invoice/signature/lodged_confirmation are already en/de/ja-only
+    // at the source (their MSG constants have no es/fr/it/pt entries at all),
+    // so every language they can be called with already resolves correctly
+    // with no wrapper needed.
+    for (const fn of [estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey]) {
+      for (const lang of LANGS) expect(names.has(fn(lang))).toBe(true);
+    }
   });
 
   it('knows estimate_invoice carries two variables (amount and invoice link)', () => {
@@ -56,11 +97,24 @@ describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
   });
 
   it('lists the per language system keys as optional (text fallback inside 24h)', () => {
-    for (const n of ['form_received_en', 'form_received_de', 'review_request_pt', 'req_abn', 'req_abn_ja', 'handoff_holding', 'handoff_holding_fr', 'payment_received', 'medicare']) {
+    for (const n of ['form_received_en', 'form_received_de', 'review_request_ja', 'req_abn', 'req_abn_ja', 'handoff_holding', 'handoff_holding_de', 'payment_received', 'medicare']) {
       const t = EXPECTED_META_TEMPLATES.find((x) => x.name === n);
       expect(t?.optional).toBe(true);
     }
     expect(new Set(EXPECTED_META_TEMPLATES.map((t) => t.name)).size).toBe(EXPECTED_META_TEMPLATES.length);
+  });
+
+  it('never expects a Meta template outside English/German/Japanese for the six per-language system lines (Jo, 17 Sep: creating one is per-language admin work in WhatsApp Manager, kept to the three languages that matter)', () => {
+    for (const n of [
+      'form_received_es', 'form_received_fr', 'form_received_it', 'form_received_pt',
+      'review_request_es', 'review_request_fr', 'review_request_it', 'review_request_pt',
+      'req_abn_es', 'req_abn_fr', 'req_abn_it', 'req_abn_pt',
+      'handoff_holding_es', 'handoff_holding_fr', 'handoff_holding_it', 'handoff_holding_pt',
+      'payment_received_es', 'payment_received_fr', 'payment_received_it', 'payment_received_pt',
+      'medicare_es', 'medicare_fr', 'medicare_it', 'medicare_pt',
+    ]) {
+      expect(names.has(n)).toBe(false);
+    }
   });
 });
 

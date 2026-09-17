@@ -21,6 +21,7 @@ const store = {
   audit: jest.fn(),
   addTask: jest.fn(),
   getSetting: jest.fn(),
+  listMessages: jest.fn().mockResolvedValue([]),
 };
 jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
 
@@ -39,6 +40,7 @@ const realFetch = global.fetch;
 
 beforeEach(() => {
   for (const fn of Object.values(store)) (fn as jest.Mock).mockReset();
+  store.listMessages.mockResolvedValue([]);
   store.addMessage.mockResolvedValue({ id: 'm1' });
   store.setMessageStatus.mockResolvedValue(undefined);
   store.attachProviderId.mockResolvedValue(undefined);

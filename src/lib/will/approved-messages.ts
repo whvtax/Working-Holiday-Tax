@@ -116,13 +116,13 @@ Once paid, send us a screenshot and we'll get started.`,
     d7: `Hi {{1}}, last message from me 😊 If you want your tax looked at later, just text me any time.`,
   },
 
-  payment_received: `Payment received!
+  payment_received: `Payment received.
 
-Please fill out this quick form so we can start reviewing your situation:
+Please fill out this quick form so we can start reviewing your situation.
 
-https://workingholidaytax.com.au/tax-form
+Once you've submitted it, we'll go through everything and get back to you within 24 hours.
 
-Once you've submitted it, we'll go through everything and get back to you within 24 hours.`,
+https://workingholidaytax.com.au/tax-form`,
 
   followups_form: {
     // Jo, 4 Sep: no number. The form is two steps, ten or so fields, a residency
@@ -267,6 +267,14 @@ Your refund should arrive in your bank account within 14 business days.`,
      *  back: it confirms the pile arrived and buys the time to work through it.
      *  Jo, 28 Aug. */
     documents_after_payment: `Perfect, got it all, thank you 😊 Let me work through everything and I'll come back to you soon.`,
+    /** The customer deleted a message they sent before anyone (or Will) could
+     *  read it (WhatsApp "Delete for everyone", Meta's `type: 'revoke'`). This
+     *  is NOT the generic "no readable text" case (approved-messages.ts
+     *  `unreadable`, above): that one is honestly unsure whether a message from
+     *  the customer arrived at all; this one knows one did, so the reply does
+     *  not claim otherwise ("it didn't come through") — it only offers to help
+     *  if they still want to send whatever it was. */
+    revoked: `No worries 😊 Looks like that got deleted before I could see it. Happy to help if you still want to send it.`,
   },
 } as const;
 

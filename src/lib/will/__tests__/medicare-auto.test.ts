@@ -117,8 +117,9 @@ describe('the scheduler handler', () => {
     expect(handler).toMatch(/medicareMessage\(customer\.lang\)/);
   });
 
-  it('goes as the approved template, falling back to text', () => {
-    expect(handler).toMatch(/name: medicareKey, params: \[\], lang: customer\.lang, fallbackToText: true/);
+  it('goes as the approved template, falling back to text, capped to the three Meta-approved languages', () => {
+    expect(handler).toMatch(/const medicareMetaName = medicareTemplateKey\(metaTemplateLang\(customer\.lang\)\)/);
+    expect(handler).toMatch(/name: medicareMetaName, params: \[\], lang: customer\.lang, fallbackToText: true/);
   });
 
   it('runs through the Policy Guard and hands a violation to a human', () => {
@@ -132,8 +133,8 @@ describe('the scheduler handler', () => {
     expect(handler).toMatch(/attempt: attempt \+ 1/);
   });
 
-  it('respects opt-out, legacy imports and Approval mode', () => {
-    expect(handler).toMatch(/!customer\.optedOut && !customer\.isLegacy/);
+  it('respects opt-out, aiPaused, legacy imports and Approval mode (Jo, 17 Sep: aiPaused was missing)', () => {
+    expect(handler).toMatch(/!customer\.optedOut && !customer\.aiPaused && !customer\.isLegacy/);
     expect(handler).toMatch(/if \(await inApprovalMode\(\)\)/);
   });
 

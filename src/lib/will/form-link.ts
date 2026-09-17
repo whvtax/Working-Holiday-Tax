@@ -191,13 +191,30 @@ export async function applyFormReceived(
   if (noMedicare(hasMedicare) && medicareEverQueued) {
     await store.audit('system', 'medicare_info_already_queued', { customerId: customer.id });
   } else if (noMedicare(hasMedicare)) {
-    await store.addJob({
-      customerId: customer.id,
-      kind: 'MEDICARE_INFO',
-      payload: { attempt: 0 },
-      runAt: new Date(Date.now() + MEDICARE_DELAY_MS).toISOString(),
-    });
-    await store.audit('system', 'medicare_info_queued', { customerId: customer.id });
+    // Jo, 17 Sep: "there cannot be a case where someone said No to Medicare
+    // and nothing goes out" — so this specific addJob gets its OWN try/catch,
+    // separate from the caller's blanket best-effort one (the form submission
+    // itself must still succeed even if this fails, but that catch only ever
+    // wrote an audit line nobody actively watches for this one failure mode).
+    // A failure here raises a task naming the customer, so it is never just
+    // a line in a log — someone has to see it and can send the message by
+    // hand from the Library entry.
+    try {
+      await store.addJob({
+        customerId: customer.id,
+        kind: 'MEDICARE_INFO',
+        payload: { attempt: 0 },
+        runAt: new Date(Date.now() + MEDICARE_DELAY_MS).toISOString(),
+      });
+      await store.audit('system', 'medicare_info_queued', { customerId: customer.id });
+    } catch (e) {
+      await store.addTask({
+        customerId: customer.id, customerName: customer.name ?? customer.waId,
+        reason: 'Medicare exemption message could not be queued after the form arrived. Send it by hand from the Library entry.',
+        severity: 'URGENT', context: null, suggestedReply: null,
+      }).catch(() => { /* the store is the likely thing that just failed; the outer catch in the route still audits it */ });
+      throw e;
+    }
   }
 
   await store.audit('system', 'form_received_queued', {

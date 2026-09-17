@@ -33,6 +33,7 @@ export type HandoffReason =
   | 'draft_invalid'      // an approved draft went stale before it was sent
   | 'attachment'         // a photo or document Will cannot read
   | 'unreadable'         // a voice note or a message type with no text
+  | 'revoked'            // the customer deleted a message before it could be read
   | 'returning_customer' // a previous / pre-existing chat wrote in
   | 'budget'             // the daily AI limit was reached
   | 'send_failed'        // WhatsApp rejected the send
@@ -49,6 +50,7 @@ const BY_REASON: Record<HandoffReason, string> = {
   draft_invalid: HOLDING,
   attachment: APPROVED.handoff.attachment,
   unreadable: APPROVED.handoff.unreadable,
+  revoked: APPROVED.handoff.revoked,
   returning_customer: APPROVED.handoff.returning_customer,
   budget: HOLDING,
   send_failed: HOLDING,
@@ -66,6 +68,7 @@ const REASON_TEMPLATE_KEYS: Record<HandoffReason, string> = {
   draft_invalid: 'handoff_holding',
   attachment: 'handoff_attachment',
   unreadable: 'handoff_unreadable',
+  revoked: 'handoff_revoked',
   returning_customer: 'handoff_returning_customer',
   budget: 'handoff_holding',
   send_failed: 'handoff_holding',
