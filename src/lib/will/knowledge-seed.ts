@@ -762,7 +762,14 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "examples": [
       "do you need any more information before I send it over? what's the account name please",
       "what name is the bank account under?",
-      "my bank is asking for the account name to send the payment"
+      "my bank is asking for the account name to send the payment",
+      "what do I write as the account name?",
+      "what should I put for the name?",
+      "what name do I use for the transfer?",
+      "what do I write in the name field?",
+      "should I write Working Holiday Tax or something else?",
+      "what's the recipient name?",
+      "what name should show up on my end?"
     ],
     "answer": "The account name is The Accounting Academy.\n\nNo other information needed before you pay. Once the payment goes through, just send us a screenshot and we'll send you the form to get started!",
     "keywords": [

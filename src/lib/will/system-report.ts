@@ -198,10 +198,10 @@ const FAULT_RULES: FaultRule[] = [
   {
     key: 'daily_digest_failed',
     match: (a, b) => a === 'nightly' && (b === 'daily_digest_failed' || b === 'daily_digest_crashed' || b === 'daily_digest_mine_failed'),
-    component: 'Daily digest email (8am)',
+    component: 'Nightly knowledge mining',
     severity: 'warning',
-    meaning: 'The overnight job that mines yesterday’s conversations for new Library answers, and emails them, did not complete. No customer is affected. The drafts simply were not produced.',
-    action: 'Check RESEND_API_KEY and CRM_ADMIN_EMAIL are set, then read the error below. The Knowledge Base panel still works without the email.',
+    meaning: 'The overnight job that mines yesterday’s conversations for new Library answers did not complete. No customer is affected. The drafts simply were not produced for that day.',
+    action: 'Read the error below for the cause. The Knowledge Base panel and everything already in the Library are unaffected either way.',
   },
   {
     key: 'payment_proof_check_skipped',
