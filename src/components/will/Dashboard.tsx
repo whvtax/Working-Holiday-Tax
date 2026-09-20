@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
-import { explainHandoffReason, summariseArrivals } from '@/lib/will/handoff-reasons';
+import { explainHandoffReason, summariseArrivals, isNightlyCheckReason, parseNightlyIssues, describeNightlyIssue } from '@/lib/will/handoff-reasons';
 import { describeViolations } from '@/lib/will/send-errors';
 import type { MonthConversion } from '@/lib/will/monthly-conversion';
 import type { AiUsage, SystemFault } from '@/lib/will/system-report';
@@ -2677,12 +2677,19 @@ export default function Dashboard() {
                       {handoffs.slice(0, SHOWN).map((t) => {
                         const c = custById(t.customerId);
                         const e = explainHandoffReason(t.reason);
+                        // The nightly consistency card names several customers
+                        // at once and has no customer of its own; its context
+                        // carries a machine line per customer (id|name|text).
+                        // Rendered as one row per customer with its own
+                        // "Open chat" button, never as a quote (Jo, 18 Sep: the
+                        // raw uuid line was shown as if Miu had typed it).
+                        const nightlyIssues = isNightlyCheckReason(t.reason) ? parseNightlyIssues(t.context) : [];
                         // EVERY message in the burst, not just the last one.
                         // A burst folds into one task joined by "---", and the
                         // question is as often in the second message as the
                         // first ("I was on a WHM visa from July 2025…" / "…so
                         // can I still claim the tax-free threshold?").
-                        const wrote = (t.context ?? '')
+                        const wrote = nightlyIssues.length > 0 ? [] : (t.context ?? '')
                           .split(/\n?---\n?/)
                           .map((x) => x.trim())
                           .filter(Boolean);
@@ -2713,6 +2720,26 @@ export default function Dashboard() {
                                 {new Date(t.createdAt).toLocaleString('en-AU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: MEL_TZ })}
                               </span>
                             </div>
+
+                            {nightlyIssues.length > 0 && (
+                              <div className="hoff-block">
+                                <div className="hoff-k">Who it found</div>
+                                {nightlyIssues.map((issue) => {
+                                  const ic = custById(issue.id);
+                                  const who = ic?.waId ? phoneOf(ic.waId) : issue.name;
+                                  return (
+                                    <div key={issue.id} className="hoff-event" style={{ display: 'flex', gap: 10, alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                                      <span>
+                                        <b>{who}</b>{ic?.name && ic.waId ? ` ${ic.name}` : ''}{ic ? ` · ${stageLabelOf(ic.state)}${ic.lang ? ` · ${ic.lang}` : ''}` : ''} {describeNightlyIssue(issue.text)}
+                                      </span>
+                                      <button className="hoff-open" onClick={() => { setView('chats'); openChat(issue.id); }}>
+                                        Open this chat →
+                                      </button>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
 
                             {wrote.length > 0 && (() => {
                               // Stand-ins the webhook wrote are counted and named

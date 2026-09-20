@@ -1044,6 +1044,23 @@ async function handlePost(req: Request) {
       // action from the CRM, so the step-by-step guardrails below are bypassed.
       if (b.force === true) {
         await store.setState(customer.id, target, 'HUMAN');
+        // Moving a PAID customer back into a sales stage by hand (Jo, 18 Sep,
+        // Miu): setState only ever sets `paid` on the way FORWARD (reaching a
+        // post-payment stage is the proof), so a backward badge move left the
+        // flag standing. The result was a customer at NEW_LEAD with paid=true:
+        // the nightly consistency check listed her every night as "paid but in
+        // sales state" with nothing but Jo's hand able to fix it, and the sales
+        // cadence was suppressed by the flag while the stage said she was a
+        // lead. The badge is the owner's explicit override, so it is honoured
+        // both ways: back into sales means "not a paying client right now",
+        // and the flag follows the stage, audited. The Samantha guard at fire
+        // time (scheduler.ts, alreadyPastLeadStage) still refuses a sales
+        // follow-up to anyone who ever received the payment confirmation, so a
+        // misclick here does not chase a real customer for money.
+        if (customer.paid && isSalesState(target)) {
+          await store.updateCustomer(customer.id, { paid: false });
+          await store.audit('owner', 'paid_flag_cleared_by_stage_move', { customerId: customer.id, from: customer.state, to: target }).catch(() => {});
+        }
         // Paid by hand is paid: the same Paid -> Form Pending cascade every
         // automatic path does, so the form reminders exist for this customer
         // too (audit, 3 Sep: a customer marked Paid from the stage menu sat in

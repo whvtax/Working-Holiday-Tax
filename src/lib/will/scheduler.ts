@@ -13,8 +13,8 @@ import { suggestReply } from './suggest';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, medicareMessage, medicareTemplateKey, metaTemplateLang } from './i18n';
-import { deliverOut, sendWhatsAppText, wasAlreadySentVerbatim } from './channel';
+import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
+import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
@@ -342,6 +342,27 @@ export async function ensureLostAnalysisSoon(): Promise<void> {
 /** The owner's CURRENT wording for the holding line, falling back to the
  *  approved constant. It is in the Library like every other sendable message,
  *  so he can reword it without a deploy. */
+/** Jo, 17 Sep: "I want the button every time, always" — a payment confirmation
+ *  queued by the Autopilot delay (proposedState 'PAID') now tries the
+ *  Meta-approved template first (English/German/Japanese, metaTemplateLang),
+ *  so the "Start Here" button shows here too, not only from the manual "Mark
+ *  Paid" click. `msg.body` is whatever the model actually composed for this
+ *  reply (queued from outcome.replyText, service.ts) — kept as the fallback
+ *  if the template attempt fails, so a template that is not yet approved for
+ *  this language never loses the message outright, it just loses the button.
+ *  KNOWN TRADE-OFF, on Jo's instruction: when the template DOES succeed, the
+ *  customer receives Meta's fixed approved wording, not whatever else the
+ *  model may have added to this same reply (answering another question
+ *  alongside the confirmation, for instance) — that extra content is not
+ *  lost from the chat record (msg.body still holds it), only from what
+ *  actually reaches the customer's phone this time. */
+async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; meta?: Record<string, unknown> | null }) {
+  if (msg.meta?.proposedState !== 'PAID') return sendWhatsAppText(customer.waId, msg.body);
+  const name = paymentReceivedTemplateKey(metaTemplateLang(customer.lang));
+  const templated = await sendWhatsAppTemplate(customer.waId, name, [], customer.lang);
+  return templated.ok ? templated : sendWhatsAppText(customer.waId, msg.body);
+}
+
 /** The holding line in the CUSTOMER'S language: their Library row first
  *  (handoff_holding / handoff_holding_<lang>), then the code copy for that
  *  language, then English. Before 4 Sep this was English for everyone. */
@@ -1254,7 +1275,7 @@ async function doProcess(): Promise<TickResult> {
           await store.setJobStatus(job.id, 'DONE');
           continue;
         }
-        const res = await sendWhatsAppText(customer.waId, msg.body);
+        const res = await sendPaidAwareText(customer, msg);
         await store.setMessageStatus(msg.id, res.ok ? 'SENT' : 'FAILED', { restamp: true });
         if (res.ok) {
           // Only now does the world move: the state and income this reply
@@ -1520,12 +1541,11 @@ export function buildNightlyIssueContext(rows: { id: string; name: string; text:
   return `${parseable}\n---\n${issues.join(' | ')}`;
 }
 
-/** The inverse of buildNightlyIssueContext, one machine-readable line at a time. */
-export function parseNightlyIssueLine(line: string): { id: string; name: string; text: string } | null {
-  const [id, name, ...rest] = line.split('|');
-  if (!id || rest.length === 0) return null;
-  return { id, name: name ?? '', text: rest.join('|') };
-}
+/** The inverse of buildNightlyIssueContext, one machine-readable line at a
+ *  time. Defined in handoff-reasons.ts (client-safe, the Dashboard reads it to
+ *  put an "Open this chat" button on each name); re-exported here so nothing
+ *  that imported it from the scheduler moves. */
+export { parseNightlyIssueLine } from './handoff-reasons';
 
 /** Nightly maintenance: consistency checks + morning summary. */
 export async function runNightly(): Promise<void> {

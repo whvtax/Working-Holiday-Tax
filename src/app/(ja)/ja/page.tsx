@@ -186,7 +186,7 @@ const FAQS = [
   },
   {
     question: 'サービスの料金はいくらですか？',
-    answer: '料金は定額制で、還付金に対する歩合ではありません。\n\n作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。還付金が当社の料金を下回った場合は、差額を返金します。逆に納税が必要になった場合、料金は当社の確認作業の費用となり、返金はできません。',
+    answer: '料金は定額制で、還付金に対する歩合ではありません。\n\n作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。料金は、当社チームによる確定申告の全面的な確認作業に対するものであり、結果によって変わることはありません。還付や課税額はATOが決定するため、料金の返金はできません。',
   },
   {
     question: 'ワーキングホリデーメーカーの税率はいくらですか？',
@@ -443,13 +443,13 @@ export default async function JapaneseHomePage() {
         </div>
       </section>
 
-      {/* ── 4. 保証 ──────────────────────────────────────────────────────── */}
+      {/* ── 4. 料金 ──────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>料金に含まれるもの</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 29px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
-            還付金が当社の料金を下回った場合は、差額を返金します。逆に納税が必要になった場合、料金は当社の確認作業の費用となり、返金はできません。
+            料金は、当社チームによる確定申告の全面的な確認作業に対するものであり、結果によって変わることはありません。還付や課税額はATOが決定するため、料金の返金はできません。
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
             料金は定額で、戻ってくる金額に対する歩合ではありません。

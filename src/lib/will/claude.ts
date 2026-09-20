@@ -260,7 +260,7 @@ const PROOF_TOOL = {
       recipient_is_us: {
         type: 'string',
         enum: ['yes', 'no', 'unknown'],
-        description: '"yes" if the recipient is Simple Tax Services, Working Holiday Tax, BSB 062692 or account 81049952. "no" if a DIFFERENT recipient is clearly shown. "unknown" if no recipient is visible.',
+        description: '"yes" if the recipient is The Accounting Academy, Simple Tax Services, Working Holiday Tax, BSB 062692 or account 81049952. "no" if a DIFFERENT recipient is clearly shown. "unknown" if no recipient is visible.',
       },
       status: {
         type: 'string',
@@ -284,7 +284,7 @@ Say FALSE for everything else, and in particular for these look-alikes, which ar
 
 A statement that lists transactions or shows a balance is the single most common false positive: it looks financial but proves no payment to us was made. When in doubt, say false — a real payment is confirmed by a person instead.
 
-When it IS a payment, also read off the details, in any language the app is in (German "erhielt", Japanese "受取", Spanish "recibe" all mean the recipient received): the AUD amount the recipient gets (prefer that over the amount sent, which may include fees or be in another currency), the recipient exactly as shown, whether that recipient is us (Simple Tax Services / Working Holiday Tax / BSB 062692 / account 81049952), and the status. Report only what is visible; use null / "unknown" rather than guessing. Answer only by calling the assess tool.`;
+When it IS a payment, also read off the details, in any language the app is in (German "erhielt", Japanese "受取", Spanish "recibe" all mean the recipient received): the AUD amount the recipient gets (prefer that over the amount sent, which may include fees or be in another currency), the recipient exactly as shown, whether that recipient is us (The Accounting Academy / Simple Tax Services / Working Holiday Tax / BSB 062692 / account 81049952), and the status. Report only what is visible; use null / "unknown" rather than guessing. Answer only by calling the assess tool.`;
 
 /** Returns { isProof: false } on any failure (no key, network error, bad
  *  response, unreadable format) — never assume proof when uncertain; the
@@ -533,7 +533,7 @@ Your job: extract each distinct customer question/topic, and for each recurring 
 CRITICAL RULES FOR THE ANSWERS:
 - Do NOT copy or imitate the human agent's wording, tone, or approach. The old replies are often rushed, impatient or informal — that is exactly what we are replacing. Produce the OPPOSITE: warm, patient, professional, polite, genuinely helpful, concise.
 - The company's approved messages, boundaries and prices always take precedence over anything in these old conversations. If an old reply conflicts with the boundaries below, ignore the old reply entirely.
-- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). Guarantee (all customers, TFN and TFN + ABN): if the customer GETS a refund smaller than the fee, we refund the difference. It applies ONLY when there is an actual refund; if the customer owes tax or gets no refund, the fee is non-refundable and you must NEVER promise to refund it or say they are "never out of pocket". Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
+- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). The fee is for the review (Jo, 20 Sep): it does not depend on the outcome and is non-refundable in every case. There is NO refund-shortfall guarantee any more: NEVER say we refund the difference, NEVER promise to refund the fee, NEVER promise a refund, and NEVER say they are "never out of pocket". Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
 - Write answers in English.
 - Merge duplicate questions into one entry; set examples to the real phrasings seen; set keywords to the important searchable words; set a short intent label.
 - Only include genuine, reusable questions (skip one-off logistics tied to a single person).

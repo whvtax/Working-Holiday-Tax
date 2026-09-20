@@ -57,7 +57,7 @@ const VIOLATION_TEXT: Record<string, string> = {
   REPLY_TOO_LONG: 'the text is longer than Will is allowed to send; shorten it',
   PROMPT_ECHO: 'the text repeats internal instructions that must not reach a customer',
   SENSITIVE_CONTENT: 'the text looks like it contains a password or another secret',
-  RETIRED_GUARANTEE_LINE: 'the text uses the retired guarantee line; that wording is no longer sent',
+  RETIRED_GUARANTEE_LINE: 'the text promises the old refund-shortfall guarantee (refund the difference); the fee is for the review and that wording is no longer sent',
   NON_DOLLAR_CURRENCY: 'the text quotes a price in a currency other than Australian dollars',
   AI_IDENTITY_ANSWER: 'the text answers whether Will is a human or an AI; that is for you to answer',
   MYGOV_TROUBLESHOOTING: 'the text walks the customer through myGov steps; that is done by hand, not by message',

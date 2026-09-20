@@ -67,8 +67,7 @@ const sections: Section[] = [
     items: [
       'Steuererklärung, nur TFN-Einkünfte (AUD 220 $, inkl. GST): die vollständige Beauftragung, die die Prüfung deiner Situation sowie die Vorbereitung und Einreichung deiner Steuererklärung umfasst.',
       'Steuererklärung, TFN- und ABN-Einkünfte (AUD 385 $, inkl. GST): wie oben, wenn du zusätzlich Einkünfte unter einer Australian Business Number erhalten hast, was die Abstimmung deiner Betriebseinnahmen und Betriebsausgaben und die Berücksichtigung deiner GST-Position erfordert.',
-      'Garantie bei zu geringer Rückzahlung: wird dir eine Rückzahlung ausgezahlt und fällt sie geringer aus als die von dir gezahlte Gebühr, erstatten wir dir die Differenz. Die Garantie gilt nur, wenn tatsächlich eine Rückzahlung ausgezahlt wird. Steht dir keine Rückzahlung zu oder musst du Steuern nachzahlen, wird die Gebühr für die durchgeführte Prüfung berechnet und nicht erstattet.',
-      'Die Gebühr wird für die erbrachte fachliche Arbeit berechnet. Sie ist ein fester Betrag und wird nie als Prozentsatz deiner Rückzahlung berechnet.',
+      'Die Gebühr wird für die Prüfung und die erbrachte fachliche Arbeit berechnet. Sie ist ein fester Betrag, wird nie als Prozentsatz deiner Rückzahlung berechnet und hängt nicht vom Ergebnis ab: ob eine Rückzahlung ausgezahlt wird, wie hoch sie ausfällt oder ob du Steuern nachzahlen musst, entscheidet allein das ATO. Sobald die Prüfung begonnen hat, wird die Gebühr nicht erstattet, vorbehaltlich deiner Rechte nach dem Australian Consumer Law.',
       'Steuererklärung vorbereitet und zur Freigabe bereitgestellt: haben wir deine Steuererklärung fertiggestellt und dir zur Prüfung, Freigabe oder Unterschrift bereitgestellt, ist die Gebühr in voller Höhe fällig, unabhängig davon, ob du uns anschließend zur Einreichung ermächtigst. Zu diesem Zeitpunkt ist die Arbeit erbracht und übergeben; offen ist nur noch die Einreichung als administrativer Schritt. Dies gilt nicht, wenn du zurücktrittst, weil wir den Service nicht mit der gebotenen Sorgfalt und Fachkunde erbracht oder die Verbrauchergarantien nach dem Australian Consumer Law nicht erfüllt haben.',
       'Arbeiten außerhalb des Umfangs einer üblichen Einkommensteuererklärung (zum Beispiel Erklärungen für Vorjahre, zusätzliche Geschäftsanlagen oder Korrekturen bereits eingereichter Erklärungen) werden vor Arbeitsbeginn separat angeboten und schriftlich vereinbart.',
       'Nichts in dieser Klausel beschränkt, schließt aus oder ändert Rechte oder Ansprüche, die dir nach dem Australian Consumer Law zustehen.',
@@ -76,7 +75,7 @@ const sections: Section[] = [
   },
   {
     title: '7. Zahlungsbedingungen',
-    body: 'Die Gebühr ist im Voraus zahlbar. Sobald die Zahlung eingegangen ist, senden wir dir den vollständigen Fragebogen und beginnen mit der Arbeit. Die Zahlung beeinflusst oder garantiert weder deine Rückzahlung noch das ATO-Ergebnis und unterliegt der Garantie bei zu geringer Rückzahlung nach Klausel 6.',
+    body: 'Die Gebühr ist im Voraus zahlbar. Sobald die Zahlung eingegangen ist, senden wir dir den vollständigen Fragebogen und beginnen mit der Arbeit. Die Zahlung beeinflusst oder garantiert weder deine Rückzahlung noch das ATO-Ergebnis, und die Gebühr wird gemäß Klausel 6 nicht erstattet.',
   },
   {
     title: '8. Haftungsbeschränkung',
@@ -175,7 +174,7 @@ const sections: Section[] = [
     body: 'Deine Rückzahlung wird vom ATO geleistet, nicht vom Anbieter. Bitte beachte:',
     items: [
       'Das ATO kann deine Rückzahlung kürzen oder einbehalten, um bestehende Schulden zu verrechnen - etwa Steuerschulden, HELP-Studienschulden, Unterhaltsverpflichtungen oder Schulden bei einer anderen Behörde.',
-      'Eine solche Verrechnung ändert nichts an der nach Klausel 6 fälligen Gebühr und löst die Garantie bei zu geringer Rückzahlung nicht aus, da der verrechnete Betrag auf eine von dir geschuldete Verbindlichkeit angerechnet und nicht verloren wurde. Die Gebühr wird für die erbrachte fachliche Arbeit berechnet und nicht für die Höhe der letztlich erhaltenen Rückzahlung.',
+      'Eine solche Verrechnung ändert nichts an der nach Klausel 6 fälligen Gebühr, da der verrechnete Betrag auf eine von dir geschuldete Verbindlichkeit angerechnet und nicht verloren wurde. Die Gebühr wird für die erbrachte fachliche Arbeit berechnet und nicht für die Höhe der letztlich erhaltenen Rückzahlung.',
       'Die Rückzahlung geht direkt auf das von dir angegebene Bankkonto. Der Anbieter erhält, verwahrt oder verrechnet keine Gebühren aus deiner Rückzahlung.',
       'Du bist für die Richtigkeit der angegebenen Bankdaten verantwortlich. Der Anbieter haftet nicht für eine Rückzahlung auf ein falsches Konto, wenn die Daten von dir stammen.',
       'Bei einem ausländischen Konto richten sich Zahlungsdauer und Bankgebühren nach dem ATO und den beteiligten Banken.',
@@ -216,7 +215,7 @@ export default function GermanClientAgreementPage() {
         kicker="Rechtliches"
         title="Mandantenvereinbarung"
         titleEm=""
-        sub="Zuletzt aktualisiert: August 2026. Durch die Nutzung unserer Dienstleistungen stimmst du diesen Bedingungen zu."
+        sub="Zuletzt aktualisiert: September 2026. Durch die Nutzung unserer Dienstleistungen stimmst du diesen Bedingungen zu."
         breadcrumbs={[{ label: 'Startseite', href: '/de' }, { label: 'Mandantenvereinbarung' }]}
       />
 

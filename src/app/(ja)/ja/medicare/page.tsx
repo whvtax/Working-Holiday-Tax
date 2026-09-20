@@ -377,7 +377,7 @@ export default function JapaneseMedicarePage() {
 
             <div className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1.5px solid #C8EAE0', margin: '20px 0' }}>
               <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.7, marginBottom: '8px' }}>
-                還付金が当社の料金を下回った場合は、差額を返金します。逆に納税が必要になった場合、料金は当社の確認作業の費用となり、返金はできません。
+                料金は、当社チームによる確定申告の全面的な確認作業に対するものであり、結果によって変わることはありません。還付や課税額はATOが決定するため、料金の返金はできません。
               </p>
               <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#4C6459' }}>
                 ATOへ提出する前に、登録税理士が確認して承認します。

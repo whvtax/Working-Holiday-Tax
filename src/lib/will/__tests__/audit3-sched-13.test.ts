@@ -18,10 +18,10 @@ it('no longer asks for the guarantee before the number', () => {
   expect(stable).not.toMatch(/so the fee lands as low-risk/);
 });
 
-it('points price questions at the menu and the price message, where the guarantee already lives', () => {
+it('points price questions at the menu and the price message, where the fee line already lives', () => {
   expect(stable).toMatch(/When price comes up, the answer is the \[opening\] menu or the matching price message/);
-  expect(stable).toMatch(/never add a guarantee sentence of your own before the number/);
-  // The decided rule it now defers to is still present and unchanged.
-  expect(stable).toMatch(/DO NOT REPEAT THE GUARANTEE in ordinary replies/);
+  expect(stable).toMatch(/never add a fee or guarantee sentence of your own before the number/);
+  // The decided rule it now defers to is still present (20 Sep: the fee line replaced the guarantee).
+  expect(stable).toMatch(/DO NOT REPEAT the fee line in ordinary replies/);
   expect(stable).toMatch(/That is the ONE place it is said/);
 });

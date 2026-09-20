@@ -44,7 +44,10 @@ it('a myGov login problem gets the reassurance, not a task', () => {
 });
 
 it('the prompt forbids the retired guarantee paraphrase and no approved message carries it', () => {
-  expect(stable).toMatch(/Never write "our fee never costs you more than the refund you get back"/);
+  expect(stable).toMatch(/never write "if your refund is less than our fee we refund the difference", "our fee never costs you more than the refund you get back"/);
+  expect(stable).toMatch(/THE OLD GUARANTEE IS GONE/);
+  expect(stable).not.toContain("If your refund is less than our fee, we'll refund the difference.");
+  expect(stable).not.toMatch(/Guarantee \(applies to ALL customers/);
   const { APPROVED } = jest.requireActual('@/lib/will/approved-messages');
   expect(JSON.stringify(APPROVED)).not.toMatch(/never costs you more than the refund/i);
 });
@@ -87,5 +90,63 @@ describe('not sounding like a machine', () => {
     expect(stable).toMatch(/DO NOT OPEN EVERY MESSAGE THE SAME WAY/);
     expect(stable).toMatch(/"Perfect!"/);
     expect(stable).toMatch(/ONCE in a conversation, at most/);
+  });
+});
+
+// Jo, 17 Sep: "found it cheaper" / "prefers someone else" used to get the
+// same "one objection response then stop" treatment as every other clear no.
+// Now that specific case gets up to two extra, genuinely relevant re-engaging
+// questions (residency status, then Medicare exemption eligibility) before
+// Will lets them go — every OTHER kind of "no" (not interested, did it
+// myself, angry, budget) keeps the original one-response-then-stop rule
+// unchanged.
+describe('comparing providers gets two extra tries before Will lets them go (12a)', () => {
+  it('states the two-question sequence and the condition for trying the second one', () => {
+    expect(stable).toMatch(/COMPARING PROVIDERS/);
+    expect(stable).toMatch(/checked their tax residency status/);
+    expect(stable).toMatch(/eligibility for the Medicare Levy Exemption/);
+    expect(stable).toMatch(/only the next one if the previous one did not bring them back/);
+  });
+
+  it('still respects 11a: the Medicare question is never assumed or pushed as certain', () => {
+    expect(stable).toMatch(/same as 11a: only if it plausibly applies to them, phrased as a genuine question, never assumed or pushed as certain/);
+  });
+
+  it('caps it at two and forbids repeating a question already asked', () => {
+    expect(stable).toMatch(/Never use more than these two extra questions, and never repeat one already asked in this conversation/);
+  });
+
+  it('leaves the general one-response-then-stop rule in place for every other clear no', () => {
+    expect(stable).toMatch(/one reasonable objection response maximum, then stop pushing, EXCEPT the comparing-providers case in 12a below/);
+  });
+});
+
+// Jo, 17 Sep — Noel (+49 162 4252824): he mentioned ABN income in his second
+// message, and Will skipped straight from that to the bank details, having
+// never shown him [opening] at all. Too fast a sale. Now the very first reply
+// is always [opening], whatever detail the customer's first message already
+// contains; "stating facts is also choosing" only skips the repeat "which
+// option?" question AFTER [opening] has actually been sent once.
+describe('the very first reply is always [opening], even when income is already described (17 Sep, Noel)', () => {
+  it('says the first reply is always [opening] and never skips straight to a price message', () => {
+    expect(stable).toMatch(/The very first reply in a NEW_LEAD conversation is ALWAYS \[opening\]/);
+    expect(stable).toMatch(/Never skip from a first message straight to a price message/);
+  });
+
+  it('only treats describing income as choosing once [opening] has already gone out', () => {
+    expect(stable).toMatch(/Only AFTER \[opening\] has actually gone out once in this conversation does describing income also count as choosing/);
+  });
+
+  it('still avoids repeating "which option" once they have already answered it', () => {
+    expect(stable).toMatch(/Do NOT ask "which option would you like to go with\?" again once \[opening\] has been sent/);
+  });
+});
+
+describe('surprised to owe tax after the estimate (19 Sep, Khrystea)', () => {
+  it('gets empathy and the team walk-through, never an explanation of the cause', () => {
+    expect(stable).toMatch(/"WHY DO I OWE MONEY\?" AFTER THE ESTIMATE/);
+    expect(stable).toMatch(/go through exactly what was entered with them before anything is lodged/);
+    expect(stable).toMatch(/You NEVER explain WHY they owe/);
+    expect(stable).toMatch(/do not raise a human_task by default/);
   });
 });

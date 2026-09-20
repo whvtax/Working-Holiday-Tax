@@ -15,6 +15,7 @@ const markDeliveryFailedByProviderId = jest.fn();
 const markDeliveryReceiptByProviderId = jest.fn().mockResolvedValue(undefined);
 const addTask = jest.fn().mockResolvedValue({ id: 't1' });
 const addJob = jest.fn().mockResolvedValue({ id: 'j1' });
+const cancelJobsFor = jest.fn().mockResolvedValue(0);
 const audit = jest.fn().mockResolvedValue(undefined);
 const getSetting = jest.fn().mockResolvedValue(undefined);
 jest.mock('@/lib/will/store', () => ({
@@ -22,7 +23,7 @@ jest.mock('@/lib/will/store', () => ({
     markDeliveryFailedByProviderId: (...a: unknown[]) => markDeliveryFailedByProviderId(...a),
     markDeliveryReceiptByProviderId: (...a: unknown[]) => markDeliveryReceiptByProviderId(...a),
     getCustomerById: jest.fn().mockResolvedValue({ id: 'c1', waId: '61400000001', name: 'Alex' }),
-    addTask, addJob, audit, getSetting,
+    addTask, addJob, cancelJobsFor, audit, getSetting,
     claimInbound: jest.fn().mockResolvedValue(true), releaseInbound: jest.fn(),
     isBlockedContact: jest.fn().mockResolvedValue(false),
   }),
@@ -45,8 +46,7 @@ function post(value: Record<string, unknown>) {
 beforeAll(() => { process.env.META_APP_SECRET = SECRET; });
 beforeEach(() => {
   markDeliveryFailedByProviderId.mockReset(); markDeliveryReceiptByProviderId.mockClear();
-  addTask.mockClear(); addJob.mockClear(); audit.mockClear();
-});
+  addTask.mockClear(); addJob.mockClear(); cancelJobsFor.mockClear(); cancelJobsFor.mockResolvedValue(0); audit.mockClear();});
 
 it('a failed 131047 status flips our message to FAILED and raises one task that names the window', async () => {
   markDeliveryFailedByProviderId.mockResolvedValue({ id: 'm1', customerId: 'c1', body: 'Perfect, we have received your questionnaire!' });
@@ -116,4 +116,46 @@ it('falls back to the old immediate task if queueing the 131049 retry itself fai
   expect(res.status).toBe(200);
   expect(addTask).toHaveBeenCalledTimes(1);
   expect(addTask.mock.calls[0][0].severity).toBe('URGENT');
+});
+
+/**
+ * 131026 (Jo, 17 Sep): the number itself cannot receive WhatsApp at all
+ * (blocked the business, or was never on WhatsApp) — permanent, and not a
+ * missing template or the 24h window, so no later retry will ever succeed
+ * either. David and Kazuki (17 Sept, real Decision Log entries) each failed
+ * this way once per scheduled follow-up, with more of the same series still
+ * queued behind them. Now this cancels the remaining FOLLOW_UP jobs for that
+ * customer and raises one REVIEW (not URGENT) task explaining why, instead of
+ * the generic "WhatsApp refused the send, check WhatsApp Manager" URGENT card
+ * — there is nothing to create in Meta for a number that cannot receive
+ * WhatsApp at all.
+ */
+it('a failed 131026 status (number cannot receive WhatsApp at all) cancels remaining follow-ups and raises a REVIEW task, not URGENT', async () => {
+  markDeliveryFailedByProviderId.mockResolvedValue({ id: 'm4', customerId: 'c1', body: 'Hi David, most people doing it alone miss things they could have claimed.' });
+  cancelJobsFor.mockResolvedValue(2);
+  const res = await post({
+    statuses: [{ id: 'wamid.OUT4', status: 'failed', errors: [{ code: 131026, title: 'Message Undeliverable' }] }],
+  });
+  expect(res.status).toBe(200);
+  expect(cancelJobsFor).toHaveBeenCalledWith('c1', ['FOLLOW_UP']);
+  expect(addJob).not.toHaveBeenCalled(); // not retryable like 131049 — there is nowhere for a retry to succeed
+  expect(addTask).toHaveBeenCalledTimes(1);
+  const task = addTask.mock.calls[0][0];
+  expect(task.severity).toBe('REVIEW');
+  expect(task.reason).toMatch(/cannot receive messages at all/);
+  expect(task.reason).toMatch(/Cancelled 2 pending follow-ups/);
+  expect(task.reason).not.toMatch(/create.*template|WhatsApp Manager/i); // nothing to create in Meta for this one
+  expect(audit).toHaveBeenCalledWith('channel', 'delivery_failed_131026_unreachable', { customerId: 'c1', messageId: 'm4', cancelledFollowUps: 2 });
+});
+
+it('the 131026 task reason is singular when exactly one follow-up was cancelled, and omits the sentence at zero', async () => {
+  markDeliveryFailedByProviderId.mockResolvedValue({ id: 'm5', customerId: 'c1', body: 'hi' });
+  cancelJobsFor.mockResolvedValueOnce(1);
+  await post({ statuses: [{ id: 'wamid.OUT5', status: 'failed', errors: [{ code: 131026 }] }] });
+  expect(addTask.mock.calls[0][0].reason).toMatch(/Cancelled 1 pending follow-up to this number so/);
+
+  addTask.mockClear();
+  cancelJobsFor.mockResolvedValueOnce(0);
+  await post({ statuses: [{ id: 'wamid.OUT5', status: 'failed', errors: [{ code: 131026 }] }] });
+  expect(addTask.mock.calls[0][0].reason).not.toMatch(/Cancelled/);
 });

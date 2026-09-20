@@ -77,8 +77,7 @@ const sections: Section[] = [
     items: [
       'Tax return, TFN income only (AUD $220, GST inclusive): the full engagement, covering the Review of your circumstances and the preparation and lodgment of your Tax Return.',
       'Tax return, TFN and ABN income (AUD $385, GST inclusive): as above, where you also received income under an Australian Business Number, which requires your business income and expenses to be reconciled and your GST position considered.',
-      'Refund shortfall guarantee: if a Refund is paid to you and it is less than the fee you paid, we refund the difference. The guarantee applies only where a Refund is actually paid. Where no Refund is payable to you, or you owe tax, the fee is charged for the Review we carried out and is not refundable.',
-      'The fee is charged for the professional work performed. It is a fixed amount and is never calculated as a percentage of your Refund.',
+      'The fee is charged for the Review and the professional work performed. It is a fixed amount, is never calculated as a percentage of your Refund, and does not depend on the outcome: whether a Refund is paid, how large it is, or whether you owe tax is determined solely by the ATO. Once the Review has begun, the fee is not refundable, subject only to your rights under the Australian Consumer Law.',
       'Return prepared and awaiting your approval: if we have completed your Tax Return and made it available to you for review, approval or signature, the fee is payable in full, whether or not you subsequently authorise us to lodge it. At that point the work has been performed and delivered; only lodgment, which is an administrative step, remains outstanding. This does not apply where you withdraw because we have failed to provide the Service with due care and skill, or otherwise failed to meet the consumer guarantees under the Australian Consumer Law.',
       'Work outside the scope of a standard individual return (for example prior-year returns, additional business schedules, or amendments to a previously lodged return) will be separately quoted and agreed in writing before that work begins.',
       'Nothing in this clause limits, excludes or modifies any right or remedy you may have under the Australian Consumer Law.',
@@ -86,7 +85,7 @@ const sections: Section[] = [
   },
   {
     title: '7. Payment Terms',
-    body: 'The fee is payable in advance. Once payment has been received we send you the full questionnaire and begin work. Payment does not affect or guarantee your Refund or ATO outcome, and is subject to the refund shortfall guarantee in clause 6.',
+    body: 'The fee is payable in advance. Once payment has been received we send you the full questionnaire and begin work. Payment does not affect or guarantee your Refund or ATO outcome, and the fee is not refundable as set out in clause 6.',
   },
   {
     title: '8. Limitation of Liability',
@@ -185,7 +184,7 @@ const sections: Section[] = [
     body: 'Your Refund is paid by the ATO, not by the Provider. You should be aware that:',
     items: [
       'The ATO may reduce or withhold your Refund to offset an existing debt, including a tax debt, a Higher Education Loan Program (HELP) debt, a Child Support liability, or a debt owed to another government agency.',
-      'An offset of this kind does not change the fee payable under clause 6, and does not trigger the refund shortfall guarantee, because the amount offset has been applied to a debt you owed rather than lost. The fee is charged for the professional work performed, not for the size of the Refund you ultimately receive.',
+      'An offset of this kind does not change the fee payable under clause 6, because the amount offset has been applied to a debt you owed rather than lost. The fee is charged for the professional work performed, not for the size of the Refund you ultimately receive.',
       'The Refund is paid directly into the bank account you nominate. The Provider does not receive, hold or deduct fees from your Refund.',
       'You are responsible for the accuracy of the bank account details you provide. The Provider is not liable for a Refund paid to an incorrect account where those details were supplied by you.',
       'Where you nominate an overseas account, payment timing and any bank charges are determined by the ATO and the financial institutions involved.',
@@ -226,7 +225,7 @@ export default function ClientAgreementPage() {
         kicker="Legal"
         title="Client Agreement"
         titleEm=""
-        sub="Last updated: August 2026. By using our services you agree to these terms."
+        sub="Last updated: September 2026. By using our services you agree to these terms."
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Client Agreement' }]}
       />
 

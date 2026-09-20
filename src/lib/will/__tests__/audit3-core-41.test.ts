@@ -87,6 +87,36 @@ it('folds the pending payment received draft into the new draft instead of losin
   expect(audit).toHaveBeenCalledWith('system', 'payment_received_carried_forward', expect.objectContaining({ customerId: 'c1', from: 'pay1' }));
 });
 
+/**
+ * Jo, 17 Sep: "I want the button every time, always" — a PENDING_APPROVAL
+ * draft now carries meta.waTemplate whenever it is the payment confirmation
+ * (proposedState PAID), so the EXISTING approve action (actions/route.ts,
+ * which already knew how to send a draft's meta.waTemplate) picks it up with
+ * no changes needed there. Same metaTemplateLang capping as every other
+ * language-suffixed template family.
+ */
+it('a PAID draft carries the Meta template in its meta, so approving it sends the button too', async () => {
+  runEngine.mockResolvedValue({
+    kind: 'pending_approval', replyText: 'We will get back to you within 24 hours.',
+    decision: { action: 'reply', confidence: 1 },
+  });
+  const { store, added } = fakeStore([receipt, paymentDraft, question]);
+  await decideAndAct(store, customer, 'when will I hear back?', 'SUPERVISED', { killSwitch: false });
+  const draft = added[0] as { meta: { proposedState?: string; waTemplate?: { name: string; params: string[]; lang: string | null; fallbackToText: boolean } } };
+  expect(draft.meta.waTemplate).toEqual({ name: 'payment_received', params: [], lang: 'en', fallbackToText: true });
+});
+
+it('a German customer\'s PAID draft carries the German template name', async () => {
+  runEngine.mockResolvedValue({
+    kind: 'pending_approval', replyText: 'Wir melden uns innerhalb von 24 Stunden.',
+    decision: { action: 'reply', confidence: 1 },
+  });
+  const { store, added } = fakeStore([receipt, paymentDraft, question]);
+  await decideAndAct(store, { ...customer, lang: 'de' } as CustomerRow, 'wann höre ich von euch?', 'SUPERVISED', { killSwitch: false });
+  const draft = added[0] as { meta: { waTemplate?: { name: string; lang: string | null } } };
+  expect(draft.meta.waTemplate).toMatchObject({ name: 'payment_received_de', lang: 'de' });
+});
+
 it('leaves an ordinary stale draft to be discarded with no PAID carried onto the new one', async () => {
   runEngine.mockResolvedValue({
     kind: 'pending_approval', replyText: 'Sure, the fee is $220.',
@@ -97,8 +127,9 @@ it('leaves an ordinary stale draft to be discarded with no PAID carried onto the
 
   await decideAndAct(store, customer, 'how much?', 'SUPERVISED', { killSwitch: false });
 
-  const draft = added[0] as { body: string; meta: { proposedState?: string } };
+  const draft = added[0] as { body: string; meta: { proposedState?: string; waTemplate?: unknown } };
   expect(draft.meta.proposedState).toBeUndefined();
+  expect(draft.meta.waTemplate).toBeUndefined();
   expect(draft.body).toBe('Sure, the fee is $220.');
   expect(setMessageStatus).toHaveBeenCalledWith('old1', 'DISCARDED');
   expect(audit).not.toHaveBeenCalledWith('system', 'payment_received_carried_forward', expect.anything());
@@ -111,8 +142,9 @@ it('does not carry PAID onto a customer who is already paid', async () => {
   });
   const { store, added } = fakeStore([paymentDraft, question]);
   await decideAndAct(store, { ...customer, paid: true, state: 'FORM_PENDING' } as CustomerRow, 'and?', 'SUPERVISED', { killSwitch: false });
-  const draft = added[0] as { body: string; meta: { proposedState?: string } };
+  const draft = added[0] as { body: string; meta: { proposedState?: string; waTemplate?: unknown } };
   expect(draft.meta.proposedState).toBeUndefined();
+  expect(draft.meta.waTemplate).toBeUndefined();
   expect(draft.body).toBe('The team is on it.');
 });
 

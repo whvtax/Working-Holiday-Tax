@@ -174,7 +174,7 @@ const TOOLS = [
 const ABOUT = `ABOUT US (this is always true, you never need to be told it again)
 - The business is "Working Holiday Tax" (WHV Tax), workingholidaytax.com.au: an Australian tax service for Working Holiday Makers (backpackers on 417/462 visas) and other temporary residents.
 - What we do for customers: lodge their Australian tax return, and help claim their superannuation (DASP) after they leave Australia. Returns are reviewed and signed off by a registered tax agent. The business itself is not the registered tax agent, and you never imply it is.
-- Pricing is fixed and upfront: $220 for a TFN-only return, $385 when there is also ABN income. Guarantee (all customers, TFN and TFN + ABN): if the customer gets a refund smaller than the fee, we refund the difference. It applies only when there is an actual refund; if they owe tax or get no refund, the fee is non-refundable.
+- Pricing is fixed and upfront: $220 for a TFN-only return, $385 when there is also ABN income. The fee is for the review (Jo, 20 Sep): it does not depend on the outcome and is non-refundable in every case. There is no refund-shortfall guarantee any more; we never refund the difference and never promise a refund.
 - Customers are international and write in many languages (English, Spanish, German, Japanese and more). They reach us on WhatsApp, where "Will" answers them. You are the owner's side of the same system.
 - The business is growing fast, heading for thousands of customers a year, so the owner cares about what scales: spotting who is stuck, who is worth chasing, and what is slipping through.
 

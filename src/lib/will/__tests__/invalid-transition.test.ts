@@ -196,7 +196,7 @@ describe('a model-proposed PAID without a payment report', () => {
 // objection #7. Will now sends it, in the customer's language, and the chat
 // keeps moving. Anything else the guard refuses is still a task.
 describe('a pre-payment determination falls back to the approved #7', () => {
-  const advice = "That's a great question! Whether you'll get a refund depends on your situation. Since you weren't covered by Medicare, you can apply for a Medicare Levy Exemption, which would save you around 2% of your income. We'll guide you through that once we get started. And remember, if your refund is less than our fee, we refund you the difference. Which option suits you, TFN or TFN + ABN?";
+  const advice = "That's a great question! Whether you'll get a refund depends on your situation. Since you weren't covered by Medicare, you can apply for a Medicare Levy Exemption, which would save you around 2% of your income. We'll guide you through that once we get started. Which option suits you, TFN or TFN + ABN?";
 
   it('sends #7 on Autopilot instead of opening a task', async () => {
     decideMock.mockResolvedValue({ action: 'reply', reply_text: advice, confidence: 0.9 });
@@ -212,6 +212,13 @@ describe('a pre-payment determination falls back to the approved #7', () => {
     const out = await runEngine(input({ ctx: { ...input().ctx, state: 'QUALIFIED', lang: 'de' } }));
     expect(out.kind).toBe('pending_approval');
     expect(out.replyText).toMatch(/^Das können wir auf jeden Fall für dich prüfen/);
+  });
+
+  it('is a task, not #7, when the draft also reaches for the retired guarantee (Jo, 20 Sep)', async () => {
+    decideMock.mockResolvedValue({ action: 'reply', reply_text: advice + ' And remember, if your refund is less than our fee, we refund you the difference.', confidence: 0.9 });
+    const out = await runEngine(input({ mode: 'FULL_AUTO', ctx: { ...input().ctx, state: 'QUALIFIED', lang: 'en' } }));
+    expect(out.kind).toBe('human_task');
+    expect(out.guardViolations).toContain('RETIRED_GUARANTEE_LINE');
   });
 
   it('is still a task after payment, when the team is the one to answer', async () => {

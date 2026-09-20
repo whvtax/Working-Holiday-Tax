@@ -395,6 +395,26 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
           await store.audit('channel', 'delivery_failed_131049_requeued', { customerId: customer.id, messageId: msg.id });
           continue;
         }
+        // 131026: the number itself cannot receive WhatsApp at all (blocked
+        // the business, or was never on WhatsApp) — permanent, not a template
+        // or a 24h-window problem, so nothing to create in Meta and no later
+        // retry will ever succeed either. Every remaining scheduled follow-up
+        // to this same number would just fail the same way and raise its own
+        // URGENT task (audit, 17 Sep: David and Kazuki each failed once here,
+        // with more of the same series still queued behind them) — so those
+        // are cancelled now, and the one task raised says why, rather than
+        // grouping this with the "create the template" cases above, which do
+        // have something to fix.
+        if (code === 131026) {
+          const cancelled = await store.cancelJobsFor(customer.id, ['FOLLOW_UP']).catch(() => 0);
+          await store.addTask({
+            customerId: customer.id, customerName: customer.name ?? customer.waId,
+            reason: `WhatsApp says this number cannot receive messages at all (blocked, or never on WhatsApp), not a template or window problem, so there is nothing to create in Meta.${cancelled ? ` Cancelled ${cancelled} pending follow-up${cancelled === 1 ? '' : 's'} to this number so they don't keep failing the same way.` : ''} Double-check the number is typed correctly; if it is, this lead cannot be reached on WhatsApp.`,
+            severity: 'REVIEW', context: msg.body.slice(0, 200), suggestedReply: msg.body,
+          });
+          await store.audit('channel', 'delivery_failed_131026_unreachable', { customerId: customer.id, messageId: msg.id, cancelledFollowUps: cancelled });
+          continue;
+        }
         await store.addTask({
           customerId: customer.id, customerName: customer.name ?? customer.waId,
           reason: outsideWindow

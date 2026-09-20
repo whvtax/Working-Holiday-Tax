@@ -176,32 +176,9 @@ const MAX_IMPROVISED_CHARS = 450;
  *  else: every content rule below still reads every sentence in every language. */
 const TRANSLATED_SCRIPT_ALLOWANCE = Math.ceil(LONGEST_APPROVED_CHARS * 1.3);
 
-/**
- * The guarantee's worked example, in any language.
- *
- * Objection #9 is approved with a worked example: "if your refund was only $100
- * and our fee was $220, we'd refund you $120". In English it passes because the
- * sentence is in the corpus. Rendered in German or Japanese it is the model's
- * own sentence, and $100 and $120 are not on the allow-list, so every non-
- * English "what if I owe / get no refund?" became an URGENT task (audit, 3 Sep).
- * The example is recognisable without reading the language: a fee is named and
- * the other two amounts add up to it exactly. Only that arithmetic shape is
- * exempt, and only before payment (after payment the whole sentence is sales
- * content anyway). "$100" on its own, or "$150" next to "$220", stays blocked.
- */
-function guaranteeExampleAmounts(cents: number[], fees: readonly number[]): Set<number> {
-  const out = new Set<number>();
-  const have = new Set(cents);
-  for (const fee of fees) {
-    if (!have.has(fee)) continue;
-    for (const a of have) {
-      if (a >= fee || a <= 0) continue;
-      const b = fee - a;
-      if (have.has(b)) { out.add(a); out.add(b); }
-    }
-  }
-  return out;
-}
+// (Jo, 20 Sep) The refund-shortfall guarantee is retired, and with it the
+// worked example ("we'd refund you $120") that used to exempt its arithmetic
+// from the amount check. Every improvised figure is now checked as written.
 
 // ---------- money (currency-symbol / currency-word agnostic across languages) ----------
 // The only prices that may leave the building: $220 (TFN), $385 (TFN + ABN) and
@@ -629,8 +606,8 @@ const TAX_DETERMINATION_ML: RegExp[] = [
 const MYGOV_STEP_CUE_ML = /\b(?:melde dich|logge dich|einloggen|anmelden|geh(?:e)? (?:auf|zu)|klick(?:e)? (?:auf)?|tipp(?:e)? (?:auf)?|w[äa]hl(?:e)? (?:aus)?|gib .{0,20}ein|[öo]ffne|erstell(?:e)? (?:ein|eine|einen)|setz(?:e)? .{0,10}zur[üu]ck|verkn[üu]pf(?:e)?|verbind(?:e)?|du musst dich|inicia sesi[óo]n|iniciar sesi[óo]n|entra (?:en|a)|ve a|haz clic|pulsa|selecciona|introduce|abre|crea (?:una|un)|restablece|vincula|conecta|tienes que (?:entrar|iniciar|crear|vincular|introducir|seleccionar|abrir)|connecte-toi|connectez-vous|va (?:sur|dans)|allez (?:sur|dans)|clique|cliquez|s[ée]lectionne|saisis|saisissez|ouvre|ouvrez|cr[ée]e (?:un|une)|r[ée]initialise|lie ton|liez votre|tu dois (?:te connecter|aller|cr[ée]er|lier|saisir)|accedi|effettua l'accesso|vai (?:su|in)|clicca|seleziona|inserisci|apri|crea (?:un|una)|reimposta|collega|devi (?:accedere|andare|creare|collegare|inserire)|inicia sess[ãa]o|entra (?:em|no|na)|vai (?:a|em|ao)|clica|seleciona|insere|abre|cria (?:um|uma)|redefine|liga (?:a|o) teu|tens de (?:entrar|iniciar|criar|ligar|inserir)|ログイン|サインイン|にアクセス|をクリック|をタップ|を選択|を入力|を開い|を作成|リセット|をリンク|を連携|してください)/i;
 
 // A promise to refund the FEE / the payment / to cancel, in the other five
-// Latin languages (English and Japanese are covered above). Same carve-out as
-// REFUND_PROMISE: "the difference" is the guarantee, not a promise.
+// Latin languages (English and Japanese are covered above). The "difference"
+// lookaheads are historical; that sentence is caught by RETIRED_GUARANTEE_LINE.
 const REFUND_PROMISE_ML = /\b(?:wir|ich)\b[^.!?]{0,30}\b(?:erstatten|zur[üu]ckzahlen|zur[üu]ckerstatten|zur[üu]ck[üu]berweisen|stornieren)\b[^.!?]{0,20}\b(?:die geb[üu]hr|deine zahlung|ihre zahlung|das geld|dein geld|ihr geld|den betrag|die zahlung)\b(?![^.!?]{0,15}\bdifferenz\b)|\b(?:dir|ihnen)\s+(?:die geb[üu]hr|das geld|die zahlung|den betrag)\s+(?:zur[üu]ck|erstatten)(?![^.!?]{0,15}\bdifferenz\b)|\b(?:te|le)\s+(?:devolvemos|devolver[ée]|devolveremos|reembolsamos|reembolsaremos)\s+(?:el pago|la tarifa|el dinero|el importe|la cuota|lo pagado)\b(?![^.!?]{0,15}\bdiferencia\b)|\b(?:on te|nous te|nous vous|je te|je vous)\s+(?:rembourse|rembourserons|remboursons|remboursera)\s+(?:les frais|le paiement|l'argent|le montant|la somme)\b(?![^.!?]{0,15}\bdiff[ée]rence\b)|\b(?:ti|le|vi)\s+(?:rimborsiamo|rimborseremo|restituiamo|restituiremo)\s+(?:la tariffa|il pagamento|i soldi|l'importo|la somma|le spese)\b(?![^.!?]{0,15}\bdifferenza\b)|\b(?:devolvemos|devolveremos|reembolsamos|reembolsaremos)(?:-te|-lhe)?\s+(?:a taxa|o pagamento|o dinheiro|o valor|o montante)\b(?![^.!?]{0,15}\bdiferen[çc]a\b)|\bcancel(?:amos|aremos|lamos|leremo|ons|lerons)\b[^.!?]{0,20}\b(?:pago|pagamento|paiement|pagamento|pedido|commande|ordine|servicio|service|servizio|servi[çc]o)\b/i;
 
 // DIY lodgement in the other languages.
@@ -640,14 +617,16 @@ const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (dea
 // Blocks Will from unilaterally promising to refund the customer's PAYMENT or to
 // cancel. Precise on purpose: it must fire on transitive payment-refund promises
 // ("refund your payment", "refund you $220", "money back", "cancel") but NOT on
-// the noun ("eligible for a refund", "your tax refund", "super refund") nor on
-// the approved guarantee ("refund the difference" / "refund you the difference").
+// the noun ("eligible for a refund", "your tax refund", "super refund").
+// "refund the difference" used to be carved out as the guarantee; that
+// guarantee is retired (Jo, 20 Sep) and the phrase is now banned outright
+// (see RETIRED_GUARANTEE_LINE).
 // (audit, 5 Sep) "payment ... back" is a return of MONEY, not of contact: "once
 // we receive your payment, we'll get back to you" / "come back to you with the
 // form" was tripping it and sending an URGENT task at the moment of paying. The
 // lookahead lets "back to / back with / back in touch" through; the reversed
 // "give/send/transfer/pay ... back ... payment" order is now caught as well.
-const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b(?!\s+(?:to|with|in touch)\b)|(?:give|send|transfer|pay)[^.!?]{0,10}\bback\b[^.!?]{0,10}\bpayment|refund\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|full|amount|\$?\d)))\b(?!\s+the\s+difference)/i;
+const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b(?!\s+(?:to|with|in touch)\b)|(?:give|send|transfer|pay)[^.!?]{0,10}\bback\b[^.!?]{0,10}\bpayment|refund\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|full|amount|difference|\$?\d)))\b/i;
 // "never out of pocket" / "not out of pocket" — the exact over-promise that
 // broke the Indigo conversation (a customer who owes was told they would get
 // the fee back). It is now banned from every message, so any improvised reply
@@ -659,20 +638,10 @@ const OUT_OF_POCKET_PROMISE = /\bout of pocket\b|\baus eigener tasche\b|\bde (?:
 // deterministic English phrases above do not (Jo, 1 Sep: all rules, every
 // language). The bare noun ("a refund", "reembolso", "Erstattung") is fine; only
 // a FULL / total money-back promise trips it. Approved templates are exempt.
-// Japanese: 返金します ("we refund") is exactly how the guarantee itself reads
-// in Japanese ("差額を返金します", we refund the DIFFERENCE), so the check below
-// lets a guarantee sentence through (GUARANTEE_CONTEXT / the worked example)
-// unless it promises a FULL refund. Without that every Japanese menu opening
-// was refused and every Japanese lead on Autopilot waited for a person
-// (audit, 3 Sep).
+// Japanese: 返金します ("we refund") used to be let through when it refunded
+// the DIFFERENCE, because that was the guarantee. The guarantee is retired
+// (Jo, 20 Sep), so "we refund" is a promise in every context now.
 const MONEY_BACK_ML = /\b(?:money\s?back|full\s+refund)\b|\bgeld\s+zur(?:ü|ue)ck\b|\bvolle\s+(?:r[üue]ck)?erstattung\b|\bdinero\s+de\s+vuelta\b|\breembolso\s+(?:completo|total|íntegro|integro)\b|\bremboursement\s+(?:complet|total|int[ée]gral)\b|\brimborso\s+(?:completo|totale|integrale)\b|全額(?:を)?返金|返金します/i;
-// The guarantee talks about refunding THE DIFFERENCE, in every language, and
-// its worked example says "we'd refund you $120". Neither is a money-back
-// promise. A sentence that names the difference, or carries the worked
-// example's arithmetic (fee = refund + amount returned), is the guarantee.
-const GUARANTEE_CONTEXT = /差額|\bthe difference\b|\bdie differenz\b|\bla diferencia\b|\bla diff[ée]rence\b|\bla differenza\b|\ba diferen[çc]a\b/i;
-// A FULL refund is a promise whatever the context.
-const FULL_REFUND_WORDS = /全額|\bfull\s+refund\b|\bmoney\s?back\b|\bvolle\b|\bgeld\s+zur|\bcompleto\b|\btotal\b|\b[íi]ntegro\b|\bint[ée]gral\b|\bcomplet\b|\btotale\b|\bintegrale\b|\bde\s+vuelta\b/i;
 const POST_PAYMENT_SALES = /(\bfee\b|\bprice\b|\bcost\b|\bdiscount\b|guarantee|out of pocket|cover the (gap|difference)|refund the difference)/i;
 // The negated form is the reassurance the team gives every day ("you don't
 // have to lodge it yourself, we do all of that for you", "no need to do it
@@ -786,15 +755,40 @@ const XERO_BENIGN_PWD = /\b(?:if it (?:asks|is asking) for a password|try\s+\d{4
 // before the check. "Your password is hunter2" and "reset your password" carry
 // no negation and stay blocked.
 const MYGOV_BENIGN_PWD = /\b(?:don'?t|do not|won'?t|will not|never|no|not)\s+(?:need|ask(?:ing)?(?: you)? for|require)\b[^.!?]{0,30}\b(?:password|login|credentials)\b(?:\s+(?:or|and)\s+(?:password|login|credentials)\b)?/gi;
-// ── THE RETIRED GUARANTEE LINE (Jo, 3 Sep; enforced 4 Sep) ────────────────
-// "so our fee never costs you more than the refund you get back" was removed
-// from every approved message because it is not true: a customer who OWES tax
-// gets no refund of the fee. It was only ever a prompt rule, so the model could
-// still reach for it (and did, in the Kay conversation). It is now blocked
-// outright, in every language, template or not, together with the family of
-// paraphrases that say the same untrue thing.
+// ── THE RETIRED GUARANTEE (Jo, 3 Sep; enforced 4 Sep; whole guarantee 20 Sep)
+// 3 Sep: "so our fee never costs you more than the refund you get back" was
+// removed because it was not true for a customer who owes tax.
+// 20 Sep: the refund-shortfall guarantee itself is gone. The fee is for the
+// review and is non-refundable whatever the outcome. So "if your refund is
+// less than our fee we refund the difference", in any language, is now a
+// promise Will must never make, template or not: a stale Library row that
+// still carries it is held exactly like an improvised sentence.
 const RETIRED_GUARANTEE_LINE = new RegExp(
   [
+    // the refund-shortfall guarantee, every language
+    'refund(?:s|ed|ing)? (?:you |them )?the (?:difference|shortfall|gap)',
+    'top(?:s|ped|ping)? up the difference',
+    '(?:difference|shortfall) back',
+    '(?:less|lower|smaller) than (?:our|the) fee',
+    'refund shortfall',
+    '(?:erstatt|zur[üu]ck)\\w*[^.!?]{0,30}die differenz',
+    'die differenz[^.!?]{0,30}(?:erstatt|zur[üu]ck)',
+    '(?:weniger|geringer|niedriger) als (?:unsere|die) geb[üu]hr',
+    '(?:devolv|reembols)\\w*[^.!?]{0,30}la diferencia',
+    'la diferencia[^.!?]{0,30}(?:devolv|reembols)',
+    '(?:menor|inferior) (?:que|a) (?:nuestra|la) tarifa',
+    'rembours\\w*[^.!?]{0,30}la diff[ée]rence',
+    'la diff[ée]rence[^.!?]{0,30}rembours',
+    'inf[ée]rieur[e]? [àa] (?:nos|notre|les) frais',
+    '(?:rimbors|restitu)\\w*[^.!?]{0,30}la differenza',
+    'la differenza[^.!?]{0,30}(?:rimbors|restitu)',
+    'inferiore alla (?:nostra )?tariffa',
+    '(?:devolv|reembols)\\w*[^.!?]{0,30}a diferen[çc]a',
+    'a diferen[çc]a[^.!?]{0,30}(?:devolv|reembols)',
+    '(?:menor|inferior) (?:que|a|à) (?:a nossa|a) taxa',
+    '差額[^。]{0,15}返金',
+    '返金[^。]{0,15}差額',
+    '(?:料金|手数料)(?:より|を下回)',
     'never costs? you (?:any )?more than',
     "(?:never|won'?t|will not|can'?t|cannot) (?:pay|be) (?:any )?more than (?:your|the) refund",
     'never (?:lose|be out of pocket|end up out)',
@@ -988,7 +982,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // Money, re-checked across the flattened improvised text so a line break
   // cannot hide a price. Same allow-list as the per-sentence pass.
   const improvisedAmounts = amountsInCents(improvised);
-  const exampleAmounts = paid ? new Set<number>() : guaranteeExampleAmounts(improvisedAmounts, FIXED_PRICES_CENTS.slice(0, 2));
+  const exampleAmounts = new Set<number>();
   for (const cents of improvisedAmounts) {
     // The $300 substantiation threshold is a deduction/record-keeping fact, so
     // it is only allowed AFTER payment: before payment we give no personalised
@@ -1042,7 +1036,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
 
     // Amount check is language-agnostic (currency symbols + words in many languages).
     const sentenceAmounts = amountsInCents(sentence);
-    const sentenceExample = paid ? new Set<number>() : guaranteeExampleAmounts(sentenceAmounts, FIXED_PRICES_CENTS.slice(0, 2));
+    const sentenceExample = new Set<number>();
     for (const cents of sentenceAmounts) {
       if (!allowedCents.has(cents) && !sentenceExample.has(cents) && !(paid && isBenignThreshold(cents, sentence))) {
         violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
@@ -1062,10 +1056,10 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // before payment" — the determination is the team's to make, and after
     // payment it is worth MORE, not less. Nothing is lost by holding these: a
     // blocked reply becomes a task carrying the text, for a human to send.
-    // The team's own estimate and the guarantee's worked example are permitted
-    // figures; mask them before the determination patterns so a legitimate
-    // sentence is not refused for carrying a number it is allowed to carry
-    // (4 Sep). Everything else in the sentence is still read as written.
+    // The team's own estimate is a permitted figure; mask it before the
+    // determination patterns so a legitimate sentence is not refused for
+    // carrying a number it is allowed to carry (4 Sep). Everything else in
+    // the sentence is still read as written.
     const maskable: number[] = [...sentenceExample];
     if (ctx.estimateFromTeam != null) maskable.push(ctx.estimateFromTeam);
     // Inside a worked example the fee itself is part of the arithmetic.
@@ -1083,9 +1077,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     if (REFUND_PROMISE_ML.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
     if (FEE_REFUNDABLE_PASSIVE.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
     if (paid && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
-    const moneyBack = MONEY_BACK_ML.test(sentence)
-      && (FULL_REFUND_WORDS.test(sentence)
-        || !(GUARANTEE_CONTEXT.test(sentence) || guaranteeExampleAmounts(sentenceAmounts, FIXED_PRICES_CENTS.slice(0, 2)).size > 0));
+    const moneyBack = MONEY_BACK_ML.test(sentence);
     if (!ctx.isApprovedTemplate && (REFUND_PROMISE.test(sentence) || OUT_OF_POCKET_PROMISE.test(sentence) || moneyBack)) violations.push('REFUND_OR_CANCEL_PROMISE');
 
     // H5: a non-approved sentence in a language the English patterns can't cover.

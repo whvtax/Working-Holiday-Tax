@@ -506,8 +506,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Absenden kann jeder. Die Arbeit passiert davor.
           </h2>
           <p className="mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.7, marginBottom: '10px', maxWidth: '46ch' }}>
-            Schick uns deine Zahlen und wir sagen dir, was in deinem Jahr drin ist. Wenn deine
-            Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz.
+            Schick uns deine Zahlen und wir sagen dir, was in deinem Jahr drin ist. Die Gebühr deckt die vollständige Prüfung deiner Steuererklärung durch unser Team ab und hängt nicht vom Ergebnis ab. Über Rückerstattungen und Steuerbescheide entscheidet das ATO, daher wird die Gebühr nicht erstattet.
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '22px', maxWidth: '46ch' }}>
             Von einem registrierten Steueragenten geprüft und freigegeben,

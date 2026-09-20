@@ -151,6 +151,13 @@ const RULES: Rule[] = [
     prevent: 'Send the "medicare" Library entry to this customer by hand, in their language. This should be rare; if it keeps happening, something is wrong with the database writes themselves, not with WhatsApp.',
   },
   {
+    match: /^WhatsApp says this number cannot receive messages at all/i,
+    kind: 'delivery',
+    label: 'This number cannot receive WhatsApp at all',
+    because: 'the number itself is unreachable on WhatsApp (blocked the business, or was never on WhatsApp), not a missing template or the 24h window — nothing in WhatsApp Manager fixes this one',
+    prevent: 'Nothing to create in Meta. Double-check the number was typed correctly; if it was, this lead cannot be reached on WhatsApp and any remaining scheduled follow-ups to them have already been cancelled automatically.',
+  },
+  {
     match: /^WhatsApp send failed|^Will's reply was not delivered|^WhatsApp did not deliver this message|^The Medicare exemption message was not delivered|^The Google review ask (?:could|was) not (?:be )?delivered|^PAID, BUT THEY HAVE NOT BEEN TOLD|^A reply may not have reached|^A scheduled .* failed three times/i,
     kind: 'delivery',
     label: 'WhatsApp refused the send',
@@ -368,4 +375,52 @@ export function summariseArrivals(lines: string[]): ArrivalSummary {
       : `They sent ${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}`;
 
   return { events, quotes, captions };
+}
+
+// ── The nightly consistency card ─────────────────────────────────────────────
+//
+// That card has customerId: null (it is about several customers at once), so
+// runNightly (scheduler.ts) encodes the real customer id per issue into the
+// task's context, one machine-readable `id|name|text` line each, above a
+// `---` and the plain sentence list (audit3 sched 62, 5 Sep). That encoding
+// was only ever half finished: the Decision Log never parsed it, so Jo saw the
+// raw "99320275-...|Miu|paid but in sales state NEW_LEAD" line quoted as if a
+// customer had typed it, and had no button to open Miu's chat (Jo, 18 Sep).
+// The parser lives here, not in scheduler.ts, because this module is the one
+// the Dashboard (a client component) already imports; scheduler.ts pulls in
+// the store and cannot be bundled into the browser.
+
+export const NIGHTLY_CHECK_REASON = /^Nightly consistency check/i;
+
+export function isNightlyCheckReason(reason: string): boolean {
+  return NIGHTLY_CHECK_REASON.test(reason);
+}
+
+/** The inverse of buildNightlyIssueContext (scheduler.ts), one line at a time. */
+export function parseNightlyIssueLine(line: string): { id: string; name: string; text: string } | null {
+  const [id, name, ...rest] = line.split('|');
+  if (!id || rest.length === 0) return null;
+  return { id, name: name ?? '', text: rest.join('|') };
+}
+
+/** Every affected customer named on a nightly card, from its context. The
+ *  plain-sentence block after `---` is ignored here: it repeats the same
+ *  facts without ids and only exists for the task table's own display. */
+export function parseNightlyIssues(context: string | null | undefined): { id: string; name: string; text: string }[] {
+  const head = (context ?? '').split(/\n?---\n?/)[0] ?? '';
+  return head.split('\n').map((l) => parseNightlyIssueLine(l.trim())).filter((x): x is { id: string; name: string; text: string } => x !== null);
+}
+
+/** "paid but in sales state NEW_LEAD" → what it means and what to check, in
+ *  the words Jo reads on the card. Unknown texts fall through unchanged. */
+export function describeNightlyIssue(text: string): string {
+  const m = /^paid but in sales state (\w+)$/i.exec(text);
+  if (m) {
+    return `is marked as paid, but sits at the ${m[1].replace(/_/g, ' ').toLowerCase()} stage, which is before payment. One of the two is wrong: if they really paid, move them to the stage they are actually at; if they never paid, this flag was set by mistake. Until it is fixed no sales follow-up reaches them (the paid flag stops those), and the nightly check will keep listing them.`;
+  }
+  const n = /^in (\w+) but not marked paid$/i.exec(text);
+  if (n) {
+    return `is at the ${n[1].replace(/_/g, ' ').toLowerCase()} stage, which is after payment, but is not marked as paid, and the automatic repair of that flag failed. Check the customer and mark them paid by hand.`;
+  }
+  return text;
 }

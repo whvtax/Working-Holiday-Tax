@@ -37,8 +37,8 @@ describe('no longer refused (the reply is correct and must send)', () => {
     expect(allows('Your estimated tax refund is $1,234.00.', { estimateFromTeam: 123400 })).toBe(true);
     expect(allows('推定還付金は$1,234です。', { estimateFromTeam: 123400 })).toBe(true);
   });
-  it("objection #9's worked example in Japanese", () => {
-    expect(allows('例えば還付金が$100で料金が$220なら、$120を返金します。')).toBe(true);
+  it("objection #9's old worked example in Japanese is refused since the guarantee was retired (20 Sep)", () => {
+    expect(allows('例えば還付金が$100で料金が$220なら、$120を返金します。')).toBe(false);
   });
   it('the approved corpus itself', () => {
     const fill = (b: string) => b.replace(/\{\{BSB\}\}/g, '062692').replace(/\{\{ACCOUNT\}\}/g, '81049952');

@@ -38,7 +38,7 @@ export interface ProofDetails {
   amountAud: number | null;
   /** Recipient exactly as displayed, for the audit trail and the task text. */
   recipient: string | null;
-  /** Whether the recipient is us (Simple Tax Services / BSB 062692 / account
+  /** Whether the recipient is us (The Accounting Academy / Simple Tax Services / BSB 062692 / account
    *  81049952). 'no' means a DIFFERENT recipient is clearly shown. */
   recipientIsUs: RecipientMatch;
   status: ProofStatus;
@@ -81,7 +81,7 @@ export function verifyProofDetails(d: ProofDetails): ProofVerification {
 export function describeProof(d: ProofDetails): string {
   const parts: string[] = [];
   parts.push(d.amountAud != null ? formatAud(d.amountAud) : 'an amount not shown in AUD');
-  if (d.recipientIsUs === 'yes') parts.push('to Simple Tax Services');
+  if (d.recipientIsUs === 'yes') parts.push('to our account');
   else if (d.recipient) parts.push(`to ${d.recipient}`);
   if (d.status === 'completed') parts.push('completed');
   else if (d.status !== 'unknown') parts.push(d.status);

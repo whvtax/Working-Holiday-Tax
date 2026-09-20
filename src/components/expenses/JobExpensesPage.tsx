@@ -439,7 +439,7 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
           </section>
         ))}
 
-        {/* GUARANTEE + CTA */}
+        {/* FEE LINE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
             <h2 style={{ ...h2s, color: '#fff', marginBottom: '16px' }}>{c.UI.guaranteeHeading}</h2>

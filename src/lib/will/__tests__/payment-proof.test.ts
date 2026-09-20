@@ -78,7 +78,10 @@ describe('not ours', () => {
 
 describe('the one-line description', () => {
   it('reads like the receipt', () => {
-    expect(describeProof(ours())).toBe('$220, to Simple Tax Services, completed');
+    // "to our account", not a company name: the bank shows The Accounting
+    // Academy since 19 Sep, the receipt wording is whatever the customer's
+    // app printed, and this line is Jo's own summary of the check.
+    expect(describeProof(ours())).toBe('$220, to our account, completed');
     expect(describeProof(ours({ amountAud: 227.16, recipientIsUs: 'unknown', recipient: 'S T SERVICES', status: 'unknown' })))
       .toBe('$227.16, to S T SERVICES');
     expect(describeProof(ours({ amountAud: null, recipient: null, recipientIsUs: 'unknown', status: 'pending' })))

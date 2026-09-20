@@ -269,15 +269,19 @@ export function handoffHoldingTemplateKey(lang?: string | null): string {
  *  3 and 4 Sep, so a customer just thanked in German for their questionnaire
  *  sent payslips and got "Perfect, got it all" back in English (audit, 5 Sep).
  *  English lives under the Library key `handoff_documents_after_payment`, the
- *  others under handoff_documents_after_payment_<lang>. */
+ *  others under handoff_documents_after_payment_<lang>.
+ *  Jo, 18 Sep: cut to the acknowledgement alone. The second sentence ("Let me
+ *  work through everything and I'll come back to you soon") was too long for
+ *  what is, in the chat, a one-line receipt; it also went out even when Jo
+ *  had just asked for the file himself and was about to reply in person. */
 export const DOCUMENTS_RECEIVED_MSG: Record<Lang, string> = {
-  en: `Perfect, got it all, thank you 😊 Let me work through everything and I'll come back to you soon.`,
-  de: 'Perfekt, alles angekommen, danke dir 😊 Ich gehe alles durch und melde mich bald wieder bei dir.',
-  ja: '完璧です、すべて受け取りました、ありがとうございます 😊 全部確認して、近いうちにご連絡しますね。',
-  es: 'Perfecto, lo tengo todo, gracias 😊 Lo reviso todo y te respondo pronto.',
-  fr: "Parfait, j'ai tout reçu, merci 😊 Je passe tout en revue et je reviens vers toi bientôt.",
-  it: 'Perfetto, ho ricevuto tutto, grazie 😊 Controllo tutto e ti rispondo presto.',
-  pt: 'Perfeito, recebi tudo, obrigado 😊 Vou ver tudo com atenção e respondo em breve.',
+  en: `Perfect, got it all, thank you 😊`,
+  de: 'Perfekt, alles angekommen, danke dir 😊',
+  ja: '完璧です、すべて受け取りました、ありがとうございます 😊',
+  es: 'Perfecto, lo tengo todo, gracias 😊',
+  fr: "Parfait, j'ai tout reçu, merci 😊",
+  it: 'Perfetto, ho ricevuto tutto, grazie 😊',
+  pt: 'Perfeito, recebi tudo, obrigado 😊',
 };
 
 export function documentsReceivedMessage(lang?: string | null): string {

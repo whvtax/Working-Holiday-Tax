@@ -69,10 +69,11 @@ describe('stripBankBlock (never repeat the bank details)', () => {
     });
   });
 
-  test('the guarantee and the owing line live in the price messages; the opening is short', () => {
+  test('the fee line lives in the price messages; the opening is short', () => {
     for (const msg of [APPROVED.price_tfn, APPROVED.price_tfn_abn]) {
-      expect(msg).toContain("If your refund is less than our fee, we'll refund the difference.");
-      expect(msg).toContain('the fee covers the work completed and is non-refundable');
+      expect(msg).toContain('The fee covers the full review of your tax return by our team and is not dependent on the outcome.');
+      expect(msg).toContain('so the fee is non-refundable');
+      expect(msg).not.toMatch(/refund the difference/i);
     }
     expect(APPROVED.opening).not.toContain('refund the difference');
     expect(APPROVED.opening).toContain('$220');

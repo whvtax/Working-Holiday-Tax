@@ -103,7 +103,7 @@ const faqs = [
   },
   {
     question: 'What happens if there is no refund at the end of it?',
-    answer: 'If you get a refund and it comes to less than our fee, we refund the difference. If you owe tax instead, the fee covers our review and is not refundable. Not every working holiday year produces one, and we would rather tell you early than take the work on and hope.',
+    answer: 'The fee covers a full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable. Not every working holiday year produces one, and we would rather tell you early than take the work on and hope.',
   },
 ]
 
@@ -283,7 +283,7 @@ export default function AboutPage() {
 
             <div className="rounded-2xl" style={{ marginTop: '28px', padding: '20px', background: '#F2FAF7', border: '1.5px solid #C8EAE0' }}>
               <p className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.35, marginBottom: '8px' }}>
-                If you get a refund and it comes to less than our fee, we refund the difference. If you owe tax instead, the fee covers our review and is not refundable.
+                The fee covers a full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.
               </p>
               <p style={{ ...bodyStyle, fontSize: '15px' }}>
                 Not every working holiday year produces a refund, and we will tell you if yours is unlikely to.

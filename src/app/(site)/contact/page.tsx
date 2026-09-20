@@ -104,7 +104,7 @@ const FAQS = [
   },
   {
     question: 'What if I do not get a refund?',
-    answer: 'If you get a refund and it comes to less than our fee, we refund the difference. If you owe tax instead, the fee covers our review and is not refundable. Not every working holiday year produces a refund, and where yours looks unlikely we would rather say so early than take the work on and hope.',
+    answer: 'The fee covers a full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable. Not every working holiday year produces a refund, and where yours looks unlikely we would rather say so early than take the work on and hope.',
   },
   {
     question: 'Can you help me from the UK, Germany or Japan?',

@@ -63,8 +63,8 @@ export function seedTemplates(): TemplateRow[] {
     t('opening', 'Opening & Qualification', 'Opening message', APPROVED.opening),
     t('price_tfn', 'Pricing', 'Price: TFN only ($220)', APPROVED.price_tfn),
     t('price_tfn_abn', 'Pricing', 'Price: TFN + ABN ($385)', APPROVED.price_tfn_abn),
-    t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($220, no guarantee)', APPROVED.price_tfn_review),
-    t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($385, no guarantee)', APPROVED.price_tfn_abn_review),
+    t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($220)', APPROVED.price_tfn_review),
+    t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($385)', APPROVED.price_tfn_abn_review),
     t('obj_1', 'Objections', '#1 Refund amount before paying', o.o1_refund_before_pay),
     t('obj_2', 'Objections', '#2 Why pay before knowing', o.o2_why_pay_first),
     t('obj_3', 'Objections', '#3 Thought the check was free', o.o3_thought_free),
@@ -178,7 +178,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-09-17-lodged-signature-revoked';
+export const TEMPLATE_BACKFILL_VERSION = '2026-09-20-fee-for-review';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

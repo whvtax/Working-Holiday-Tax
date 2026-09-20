@@ -153,8 +153,13 @@ describe('no negotiation, no invented promises', () => {
     expect(has("So you're never out of pocket.", 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
     expect(has('That way you are not out of pocket for our service.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
   });
-  it('still allows the real guarantee "refund the difference"', () => {
-    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'REFUND_OR_CANCEL_PROMISE')).toBe(false);
+  it('the old guarantee "refund the difference" is a promise now (Jo, 20 Sep)', () => {
+    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'RETIRED_GUARANTEE_LINE')).toBe(true);
+    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
+  });
+  it('the new fee line sends', () => {
+    expect(policyGuard('The fee covers the full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.', ctx({ state: 'PRICE_SENT' })).allowed).toBe(true);
+    expect(policyGuard('The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.', ctx({ state: 'PRICE_SENT' })).allowed).toBe(true);
   });
 });
 
@@ -517,25 +522,35 @@ describe('REPLY_TOO_LONG: replies must read like a person texting', () => {
 });
 
 // ── The guarantee in translation (audit, 3 Sep) ─────────────────────────────
-//
-// Two rules that only ever saw English wording refused the approved guarantee
-// once it was rendered in another language: the money-back ban matched the
-// Japanese "差額を返金します" (we refund THE DIFFERENCE), so every Japanese menu
-// opening became a task; and objection #9's worked example ($100 refund, $220
-// fee, $120 back) tripped FORBIDDEN_AMOUNT in German, Spanish, French and
-// Japanese because only the English sentence is in the corpus.
-describe('the guarantee survives translation', () => {
-  it('lets the Japanese opening guarantee through', () => {
-    expect(has('どちらの場合も、還付金が料金より少ない場合は差額を返金します。', 'REFUND_OR_CANCEL_PROMISE')).toBe(false);
+// The refund-shortfall guarantee is retired (Jo, 20 Sep). Its sentence and
+// its worked example are refund promises in every language now, and the
+// arithmetic exemption that let $100/$120 through is gone.
+describe('the retired guarantee is caught in every language', () => {
+  it('the Japanese guarantee sentence', () => {
+    expect(has('どちらの場合も、還付金が料金より少ない場合は差額を返金します。', 'RETIRED_GUARANTEE_LINE')).toBe(true);
   });
 
-  it('lets the worked example through in German and Japanese', () => {
+  it('the worked example in German and Japanese', () => {
     const de = 'Wenn deine Rückerstattung also nur $100 wäre und unsere Gebühr $220, würden wir dir $120 erstatten.';
     const ja = '例えば還付金が$100で料金が$220なら、$120を返金します。';
     for (const t of [de, ja]) {
       const v = policyGuard(t, ctx({ state: 'PRICE_SENT' })).violations;
-      expect([t, v.filter((x) => x.startsWith('FORBIDDEN_AMOUNT') || x === 'REFUND_OR_CANCEL_PROMISE')]).toEqual([t, []]);
+      expect([t, v.some((x) => x.startsWith('FORBIDDEN_AMOUNT'))]).toEqual([t, true]);
     }
+  });
+
+  it('the sentence in the Latin languages', () => {
+    for (const t of [
+      'Wenn deine Rückerstattung geringer als unsere Gebühr ist, erstatten wir dir die Differenz.',
+      'Si tu reembolso es menor que nuestra tarifa, te devolvemos la diferencia.',
+      'Si ton remboursement est inférieur à nos frais, nous te remboursons la différence.',
+      'Se il tuo rimborso è inferiore alla nostra tariffa, ti rimborsiamo la differenza.',
+      'Se o teu reembolso for menor que a nossa taxa, devolvemos a diferença.',
+    ]) expect([t, has(t, 'RETIRED_GUARANTEE_LINE')]).toEqual([t, true]);
+  });
+
+  it('"the difference is that myGov only lodges" is not the guarantee', () => {
+    expect(has("The difference is that myGov is just where you lodge it. It won't review your situation.", 'RETIRED_GUARANTEE_LINE')).toBe(false);
   });
 
   it('is only the exact arithmetic: a made-up pair is still a forbidden amount', () => {

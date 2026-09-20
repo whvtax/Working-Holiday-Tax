@@ -99,10 +99,12 @@ const BANK_LINE_RE = new RegExp([
   'una volta (?:che hai )?pagato', 'mandaci (?:uno )?screenshot',
   'assim que (?:tiveres )?pago', 'envia[- ]nos (?:uma )?captura',
   'お支払い(?:が)?完了(?:し)?たら', 'スクリーンショット(?:を)?(?:送|お送り)',
-  // The guarantee line belongs to the price message and goes with it. Left
-  // behind, the "repeat" became a message consisting of nothing but the
-  // guarantee, tacked onto a conversation that was about something else, which
-  // is precisely what Jo banned on 3 Sep (audit, 4 Sep).
+  // The fee line belongs to the price message and goes with it. Left behind,
+  // the "repeat" became a message consisting of nothing but that line, tacked
+  // onto a conversation that was about something else, which is precisely
+  // what Jo banned on 3 Sep (audit, 4 Sep). The old guarantee phrasings stay
+  // in the list so a Library copy that was not synced yet is still caught.
+  'the fee covers the full review', 'not dependent on the outcome', 'decided by the ato',
   'if your refund is less than', 'refund the difference', 'if you owe money to the ato',
   'wenn deine r[üu]ckerstattung', 'differenz', 'falls du dem ato',
   'si tu reembolso es (?:menor|inferior)', 'la diferencia', 'si le debes',

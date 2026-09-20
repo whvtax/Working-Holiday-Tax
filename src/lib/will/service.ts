@@ -782,12 +782,33 @@ export async function decideAndAct(
     // (audit, 5 Sep: this used to raiseOrUpdateTask AFTER deliverOut had
     // already opened its own card, which overwrote that card's reason; the
     // retryable case never reaches a task at all, it re-arms below).
-    const out = await deliverOut(customer, outcome.replyText, 'AI', undefined, undefined, {
-      onFailure: {
-        reason: (e) => `Will's reply was not delivered: ${e ?? 'WhatsApp rejected it'}. They are waiting with no answer.`,
-        severity: 'URGENT', context: text.slice(0, 200),
-      },
-    });
+    //
+    // Jo, 17 Sep: "I want the button every time, always" — when this reply is
+    // the payment confirmation (outcome.newState === 'PAID'), it now also
+    // tries the Meta-approved template (metaTemplateLang: English/German/
+    // Japanese), same as the manual "Mark Paid" button and the trusted
+    // auto-detect path (handlePaymentProofMedia, further down this file).
+    // fallbackToText keeps this exactly as safe as before when the template
+    // is not yet approved for this language: deliverOut still sends
+    // outcome.replyText as free text. KNOWN TRADE-OFF, on Jo's instruction:
+    // outcome.replyText here is the model's own live reply, which can
+    // legitimately combine the confirmation with an answer to something else
+    // the customer asked in the same breath — when the template attempt DOES
+    // succeed, the customer receives Meta's fixed confirmation wording only,
+    // not that extra content. It is not lost from the chat record (still
+    // logged as this message's body), only from what reaches their phone
+    // this send.
+    const isPaymentConfirmation = outcome.newState === 'PAID';
+    const out = await deliverOut(customer, outcome.replyText, 'AI', undefined,
+      isPaymentConfirmation
+        ? { name: paymentReceivedTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true }
+        : undefined,
+      {
+        onFailure: {
+          reason: (e) => `Will's reply was not delivered: ${e ?? 'WhatsApp rejected it'}. They are waiting with no answer.`,
+          severity: 'URGENT', context: text.slice(0, 200),
+        },
+      });
     if (!out.ok) {
       await store.audit('channel', 'auto_reply_send_failed', {
         customerId: customer.id, error: out.error ?? 'unknown error', retryable: !!out.retryable,
@@ -868,10 +889,22 @@ export async function decideAndAct(
     } catch { /* non-blocking: worst case a stale draft lingers, never a wrong send */ }
     // Defer the state/income change until the owner approves (stored on the message).
     const inc = inferIncome(outcome.replyText);
+    // Jo, 17 Sep: "I want the button every time, always" — the approve action
+    // (actions/route.ts) already knows how to send a draft's meta.waTemplate
+    // when present, exactly like a scheduled system line; it was simply never
+    // given one for this draft, so a Jo-approved payment confirmation always
+    // went out as plain text. Same metaTemplateLang capping, same
+    // fallbackToText safety net, same KNOWN TRADE-OFF as the live-send branch
+    // above (outcome.replyText can combine the confirmation with an answer to
+    // something else the customer asked; a successful template send only
+    // delivers Meta's fixed confirmation wording, not that extra content).
+    const waTemplate = outcome.newState === 'PAID'
+      ? { name: paymentReceivedTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true }
+      : undefined;
     const m = await store.addMessage({
       customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL',
       body: outcome.replyText,
-      meta: { proposedState: outcome.newState, income: inc ?? undefined, review: outcome.reviewNote },
+      meta: { proposedState: outcome.newState, income: inc ?? undefined, review: outcome.reviewNote, waTemplate },
     });
     pendingMessageId = m.id;
   } else if (outcome.kind === 'human_task' && outcome.task) {
@@ -1731,7 +1764,14 @@ async function handlePaymentProofMediaInner(
   // the screenshot; without the flag the deferred reply read a reworded
   // Library variant as a real answer and dropped the question (audit3 core
   // 52, 5 Sep).
-  const out = await deliverOut(customer, confirmation, 'AI', { system: true }, undefined, {
+  // Jo, 17 Sep, "the button every time": confirmation is always the exact
+  // canonical text (paymentReceivedBody above), never a model-composed
+  // combined reply, so attaching the Meta template here (metaTemplateLang,
+  // fallbackToText) has none of the "loses extra content" risk that applies
+  // to the live-reply branch elsewhere in this file — safe in every case.
+  const out = await deliverOut(customer, confirmation, 'AI', { system: true }, {
+    name: paymentReceivedTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true,
+  }, {
     onFailure: {
       reason: (e) => `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${e ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
       severity: 'URGENT', context: body,

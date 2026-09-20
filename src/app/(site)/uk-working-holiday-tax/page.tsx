@@ -548,11 +548,11 @@ export default function UKWorkingHolidayTaxPage() {
           </div>
         </section>
 
-        {/* GUARANTEE + CTA */}
+        {/* FEE LINE + CTA */}
         <section style={{ background: '#0B5240', padding: '38px 0' }}>
           <div style={wrap}>
             <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>
-              If you get a refund and it comes to less than our fee, we refund the difference. If you owe tax instead, the fee covers our review and is not refundable.
+              The fee covers a full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
               Working holiday tax is the only thing we do. Your return is reviewed and signed off by a
