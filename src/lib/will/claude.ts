@@ -1,3 +1,4 @@
+import { recordAiUsage } from './ai-usage';
 // ============================================================
 // Claude API client: one structured "decide" call per incoming
 // customer message. Hardened: timeout, full error containment
@@ -224,6 +225,7 @@ export async function decide(ctx: CustomerContext, history: Turn[], opts: Decide
       }
       if (!res.ok) return fallbackTask(`Claude API error ${res.status}`);
       const data = await res.json();
+      recordAiUsage('decide', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
       if (data.stop_reason === 'max_tokens') return fallbackTask('Model response truncated');
       const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
         ?.find((bl) => bl.type === 'tool_use' && bl.name === 'decide');
@@ -339,6 +341,7 @@ export async function assessPaymentProofImage(bytes: ArrayBuffer, mime: string):
     });
     if (!res.ok) return { isProof: false, reason: `vision check failed (${res.status})` };
     const data = await res.json();
+    recordAiUsage('vision', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
     const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
       ?.find((bl) => bl.type === 'tool_use' && bl.name === 'assess');
     const input = tool?.input as { is_payment_proof?: unknown; reason?: unknown } | undefined;
@@ -419,6 +422,7 @@ export async function assessSuccessConfirmationImage(bytes: ArrayBuffer, mime: s
     });
     if (!res.ok) return { isConfirmation: false, reason: `vision check failed (${res.status})` };
     const data = await res.json();
+    recordAiUsage('vision', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
     const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
       ?.find((bl) => bl.type === 'tool_use' && bl.name === 'assess');
     const input = tool?.input as { is_confirmation?: unknown; reason?: unknown } | undefined;
@@ -493,6 +497,7 @@ export async function describeAttachment(bytes: ArrayBuffer, mime: string): Prom
     });
     if (!res.ok) return null;
     const data = await res.json();
+    recordAiUsage('vision', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
     const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
       ?.find((bl) => bl.type === 'tool_use' && bl.name === 'describe');
     const input = tool?.input as { description?: unknown } | undefined;
@@ -599,6 +604,7 @@ export async function mineKnowledge(
       });
       if (!res.ok) { if (res.status === 429 || res.status >= 500) { await sleep(800); } continue; }
       const data = await res.json();
+      recordAiUsage('mining', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
       const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
         ?.find((bl) => bl.type === 'tool_use' && bl.name === 'knowledge_entries');
       const entries = (tool?.input as { entries?: MinedEntry[] } | undefined)?.entries;
@@ -722,6 +728,8 @@ The should_have_done field is where the thinking goes. Do not summarise: go thro
 
 The recovery_message field is a message that a person will read on their phone. Write it as one, not as a description of one. It has to sound like the same person who was already talking to them, pick up where that conversation actually stopped, and give them a reason to answer that is about their situation rather than about our sales process. Somebody who asked us to stop, or who has nothing to lodge, gets no message at all: set recoverable to NO and leave it out.
 
+BE STRICT ABOUT "recoverable" (Jo, 24 Sep: 104 of 111 came back YES or MAYBE, which is not a judgement, it is a default). YES means they engaged after seeing the price, or asked a real question that never got a proper answer, or gave a reason (timing, a document, a doubt) that one message can address. MAYBE means there is a plausible hook but no sign they cared. NO is the right answer when they never wrote anything after the opening, when they have been silent for 60 days or more with no question on the table, when they said no more than once, when they went to someone else and said so, or when they have nothing to lodge. If you cannot name the specific thing the message would pick up, it is NO.
+
 Answer only by calling the post_mortem tool.`;
 
 /** Returns the validated analysis, or `{ error }` on any failure — no key, a
@@ -777,6 +785,7 @@ export async function analyseLostLead(
       }
       if (!res.ok) return { error: `Claude API error ${res.status}` };
       const data = await res.json();
+      recordAiUsage('lost_leads', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
       if (data.stop_reason === 'max_tokens') return { error: 'Model response truncated' };
       const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
         ?.find((bl) => bl.type === 'tool_use' && bl.name === 'post_mortem');
@@ -882,4 +891,69 @@ function mockDecide(ctx: CustomerContext, history: Turn[]): Decision {
     task_severity: 'REVIEW',
     suggested_reply: "Thanks for your message! Let me double check this for you and get back to you shortly 😊",
   });
+}
+
+// ============================================================
+// Google review ask: is this the moment, and what is the one personal line?
+// (Jo, 24 Sep.) Reads the conversation and answers two things: whether to
+// ask at all (someone who owed tax, complained, argued, or barely spoke gets
+// no ask), and ONE opening sentence written to this person. Never throws:
+// without a key or on any failure it returns ask=true with no opener, and
+// the caller uses the language's default line.
+// ============================================================
+export interface ReviewAskDecision { ask: boolean; opener: string | null; reason: string; measured: boolean }
+
+const REVIEW_ASK_TOOL = {
+  name: 'review_ask',
+  description: 'Decide whether to ask this customer for a Google review now, and write the opening line.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      ask: { type: 'boolean', description: 'true only when the customer is plainly satisfied and the moment is right.' },
+      reason: { type: 'string', description: 'One sentence for the owner: why ask now, or why not.' },
+      opener: { type: 'string', description: 'If ask=true: ONE sentence, in the customer\'s language, that picks up something specific from THEIR conversation (the refund landing, the thing we sorted for them, where they are heading next). Warm, no exclamation marks, no emoji (the template adds one), no "we" bragging, no dashes. Under 140 characters. It is inserted after "Hi <name> 😊" and before the review ask, so it must read naturally there.' },
+    },
+    required: ['ask', 'reason'],
+  },
+} as const;
+
+const REVIEW_ASK_SYSTEM = `You work at Working Holiday Tax, an Australian tax service for backpackers. A customer's return has been lodged. You decide whether to ask them for a Google review right now, and if so you write the one personal sentence that opens the ask.
+
+ASK when the conversation shows a satisfied customer: the refund arrived, they thanked us, the process went smoothly, a problem was solved for them.
+DO NOT ASK when: they ended up owing tax, they complained or were frustrated at any point, there was an argument about the fee, a message of ours went unanswered for days, they asked for a refund of the fee, they barely spoke (no real conversation to be pleased about), or anything is still unresolved. When in doubt, do not ask: a review request to an unhappy customer produces a bad review.
+
+The opener must be about THEM, specific and short, in their language. Good: "Great to hear the refund landed before your flight to Bali." "Glad the Medicare exemption came through in the end." Bad: "Thank you for choosing us." "We hope you enjoyed our service."
+
+Answer only by calling the review_ask tool.`;
+
+export async function decideReviewAsk(input: { lang: string | null; transcript: string; trigger: string }): Promise<ReviewAskDecision> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return { ask: true, opener: null, reason: 'no model key: default ask', measured: false };
+  const body = JSON.stringify({
+    model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
+    max_tokens: 400,
+    system: REVIEW_ASK_SYSTEM,
+    tools: [REVIEW_ASK_TOOL],
+    tool_choice: { type: 'tool', name: 'review_ask' },
+    messages: [{ role: 'user', content: `Trigger: ${input.trigger}. Customer language: ${input.lang ?? 'unknown'}.\n\nConversation (oldest first):\n${input.transcript.slice(0, 40000)}` }],
+  });
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', signal: AbortSignal.timeout(25_000),
+      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body,
+    });
+    if (!res.ok) return { ask: true, opener: null, reason: `model error ${res.status}: default ask`, measured: false };
+    const data = await res.json();
+    recordAiUsage('other', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
+    const tool = (data.content as Array<{ type: string; name?: string; input?: Record<string, unknown> }> | undefined)
+      ?.find((bl) => bl.type === 'tool_use' && bl.name === 'review_ask');
+    const d = tool?.input ?? {};
+    const ask = d.ask === true;
+    const opener = typeof d.opener === 'string' ? stripDashes(d.opener).replace(/\s+/g, ' ').trim().slice(0, 160) : null;
+    const reason = typeof d.reason === 'string' ? d.reason.slice(0, 300) : '';
+    return { ask, opener: ask && opener ? opener : null, reason, measured: true };
+  } catch (e) {
+    return { ask: true, opener: null, reason: `model unavailable (${(e as Error).message}): default ask`, measured: false };
+  }
 }

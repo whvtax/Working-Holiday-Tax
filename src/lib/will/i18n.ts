@@ -437,3 +437,120 @@ export function lodgedConfirmationTemplateKey(lang?: string | null): string {
   const key = (lang && lang in LODGED_CONFIRMATION_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
   return key === 'en' ? 'lodged_confirmation' : `lodged_confirmation_${key}`;
 }
+
+// ── Win-back (Jo, 24 Sep) ────────────────────────────────────────────────
+// A lost lead has been silent for days, so the win-back can only reach them
+// as an approved Meta template. The frame is the minimum Meta needs ({{1}}
+// first name and a fixed opener); {{2}} is the WHOLE message the post-mortem
+// wrote for this person, picking up where their conversation stopped, in
+// their language (or the campaign line). Jo, 24 Sep: personal, not a shell.
+// The fixed closing line exists because Meta refuses a variable at the end.
+export const WINBACK_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Hi {{1}}, it's the team at Working Holiday Tax 😊
+
+{{2}}
+
+Just reply here and we'll pick it up.`,
+  de: `Hi {{1}}, hier ist das Team von Working Holiday Tax 😊
+
+{{2}}
+
+Antworte einfach hier und wir machen weiter.`,
+  ja: `{{1}}さん、Working Holiday Taxのチームです 😊
+
+{{2}}
+
+このままここに返信していただければ、続きから対応します。`,
+};
+export function winbackTemplateKey(lang?: string | null): string {
+  const key = lang && lang in WINBACK_MSG ? lang : 'en';
+  return `winback_${key}`;
+}
+export function winbackMessage(lang: string | null | undefined, firstName: string, hook: string): string {
+  const key = (lang && lang in WINBACK_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return WINBACK_MSG[key].replace('{{1}}', firstName).replace('{{2}}', hook.trim());
+}
+
+// ── Google review ask (Jo, 24 Sep) ───────────────────────────────────────
+// {{1}} first name, {{2}} one personal opening line Will writes from the
+// conversation ("Great to hear the refund landed"). The ask and the link are
+// fixed. Outside the window this is the Meta template review_ask_{lang}; the
+// same text goes as free text when the customer has just written.
+export const REVIEW_ASK_MSG: Record<Lang, string> = {
+  en: `Hi {{1}} 😊 {{2}}
+
+If you have a minute, would you leave us a quick Google review? It really helps other backpackers find us:
+${REVIEW_LINK}
+
+Thanks so much!`,
+  de: `Hi {{1}} 😊 {{2}}
+
+Hättest du kurz Zeit für eine Google-Bewertung? Sie hilft anderen Backpackern sehr, uns zu finden:
+${REVIEW_LINK}
+
+Vielen Dank!`,
+  ja: `{{1}}さん 😊 {{2}}
+
+もしお時間があれば、Googleに短いレビューをいただけませんか？他のワーホリの方が私たちを見つける大きな助けになります：
+${REVIEW_LINK}
+
+ありがとうございます！`,
+  es: `Hola {{1}} 😊 {{2}}
+
+Si tienes un minuto, ¿nos dejarías una breve reseña en Google? Ayuda mucho a que otros backpackers nos encuentren:
+${REVIEW_LINK}
+
+¡Muchas gracias!`,
+  fr: `Salut {{1}} 😊 {{2}}
+
+Si tu as une minute, tu nous laisserais un petit avis Google ? Ça aide beaucoup d'autres backpackers à nous trouver :
+${REVIEW_LINK}
+
+Merci beaucoup !`,
+  it: `Ciao {{1}} 😊 {{2}}
+
+Se hai un minuto, ci lasceresti una breve recensione su Google? Aiuta molto altri backpacker a trovarci:
+${REVIEW_LINK}
+
+Grazie mille!`,
+  pt: `Olá {{1}} 😊 {{2}}
+
+Se tiveres um minuto, deixas-nos uma breve avaliação no Google? Ajuda muito outros backpackers a encontrar-nos:
+${REVIEW_LINK}
+
+Muito obrigado!`,
+};
+export function reviewAskTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in REVIEW_ASK_MSG ? lang : 'en') as Lang;
+  return `review_ask_${key}`;
+}
+export function reviewAskMessage(lang: string | null | undefined, firstName: string, opener: string): string {
+  const key = (lang && lang in REVIEW_ASK_MSG ? lang : 'en') as Lang;
+  return REVIEW_ASK_MSG[key].replace('{{1}}', firstName).replace('{{2}}', opener.trim());
+}
+/** The opener used when the model is unavailable. */
+export const REVIEW_ASK_DEFAULT_OPENER: Record<Lang, string> = {
+  en: 'Hope everything is sorted now that your tax return is done.',
+  de: 'Ich hoffe, jetzt, wo deine Steuererklärung erledigt ist, ist alles gut gelaufen.',
+  ja: '確定申告が完了して、すべて順調であることを願っています。',
+  es: 'Espero que todo esté en orden ahora que tu declaración está hecha.',
+  fr: "J'espère que tout est en ordre maintenant que ta déclaration est faite.",
+  it: 'Spero che sia tutto a posto ora che la tua dichiarazione è fatta.',
+  pt: 'Espero que esteja tudo em ordem agora que a tua declaração está feita.',
+};
+
+// ── Referral (Jo, 24 Sep): one line after a positive reply to the review ask.
+export const REFERRAL_MSG: Record<Lang, string> = {
+  en: 'Thank you! 🙏 And if you know anyone else on a working holiday who needs their tax done, feel free to send them our number 😊',
+  de: 'Danke dir! 🙏 Und falls du jemanden auf Working Holiday kennst, der seine Steuererklärung machen muss, gib gerne unsere Nummer weiter 😊',
+  ja: 'ありがとうございます！🙏 もし他にワーホリで確定申告が必要な方がいれば、ぜひこの番号を教えてあげてください 😊',
+  es: '¡Gracias! 🙏 Y si conoces a alguien de working holiday que necesite hacer su declaración, pásale nuestro número 😊',
+  fr: "Merci ! 🙏 Et si tu connais quelqu'un en working holiday qui doit faire sa déclaration, n'hésite pas à lui passer notre numéro 😊",
+  it: 'Grazie! 🙏 E se conosci qualcuno in working holiday che deve fare la dichiarazione, passagli pure il nostro numero 😊',
+  pt: 'Obrigado! 🙏 E se conheceres alguém em working holiday que precise de fazer a declaração, passa-lhe o nosso número 😊',
+};
+export function referralMessage(lang?: string | null): string {
+  const key = (lang && lang in REFERRAL_MSG ? lang : 'en') as Lang;
+  return REFERRAL_MSG[key];
+}
+

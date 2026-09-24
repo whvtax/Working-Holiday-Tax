@@ -5,6 +5,7 @@
 // data lives on your server exactly like the rest of the CRM.
 // ============================================================
 import { randomUUID } from 'crypto';
+import type { AiUsageRow } from './ai-usage';
 import { phoneCandidates } from './phone-candidates';
 import { getSupabase } from '@/lib/supabase';
 import {
@@ -1045,6 +1046,25 @@ export class SupabaseStore implements Store {
     return (data ?? [])
       .map((r) => ({ key: String(r.key), value: Number(r.value) }))
       .filter((r) => Number.isFinite(r.value));
+  }
+
+  async addAiUsage(row: AiUsageRow): Promise<void> {
+    await this.sb().from('will_ai_usage').insert({
+      at: row.at, feature: row.feature, model: row.model,
+      input_tokens: row.inputTokens, output_tokens: row.outputTokens,
+      cache_write_tokens: row.cacheWriteTokens, cache_read_tokens: row.cacheReadTokens,
+      cost_usd: row.costUsd, customer_id: row.customerId ?? null,
+    });
+  }
+
+  async listAiUsage(sinceIso: string): Promise<AiUsageRow[]> {
+    const { data } = await this.sb().from('will_ai_usage').select('*').gte('at', sinceIso).order('at', { ascending: true }).limit(20000);
+    return (data ?? []).map((r) => ({
+      id: String(r.id), at: String(r.at), feature: String(r.feature), model: String(r.model),
+      inputTokens: Number(r.input_tokens) || 0, outputTokens: Number(r.output_tokens) || 0,
+      cacheWriteTokens: Number(r.cache_write_tokens) || 0, cacheReadTokens: Number(r.cache_read_tokens) || 0,
+      costUsd: r.cost_usd == null ? null : Number(r.cost_usd), customerId: r.customer_id ? String(r.customer_id) : null,
+    }));
   }
 
   /** Atomic slot claim against a daily limit (migration 029).

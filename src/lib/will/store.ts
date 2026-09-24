@@ -148,6 +148,8 @@ export interface JobRow {
      *  FORM_COMPLETE and only this one message (the acknowledgement or the
      *  ABN questions) is still owed because Meta throttled the first send. */
     resend?: 'ack' | 'abn';
+    /** REVIEW_REQUEST: what pulled the Google review ask forward (Jo, 24 Sep). */
+    trigger?: 'timer' | 'refund_received' | 'manual';
     /** AUTO_REPLY, older shape: the QUEUED message this job will transmit.
      *  Only jobs armed before the 3 Sep change carry it; kept so a reply that
      *  was already queued at deploy time still goes out. */
@@ -535,8 +537,14 @@ export interface Store {
    *  has been asked to think. Anthropic's billing is not connected to it, so
    *  what comes back is a call count, never a measured dollar amount. */
   listCounters?(prefix: string): Promise<{ key: string; value: number }[]>;
+
+  /** Exact Claude usage ledger (migration 042, Jo 24 Sep): one row per paid
+   *  call with the token counts Anthropic returned and the cost at list price. */
+  addAiUsage?(row: AiUsageRow): Promise<void>;
+  listAiUsage?(sinceIso: string): Promise<AiUsageRow[]>;
 }
 
+import type { AiUsageRow } from './ai-usage';
 import { FileStore, lastPersistError as fileErr } from './store-file';
 import { SupabaseStore, lastPersistError as sbErr } from './store-supabase';
 

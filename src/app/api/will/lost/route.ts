@@ -17,9 +17,10 @@ import { getStore } from '@/lib/will/store';
 import { STATE_LABELS } from '@/lib/will/state-machine';
 import {
   selectLostLeads, aggregateCategories, SILENCE_DAYS_UNTIL_LOST,
-  CATEGORY_LABELS, TRIGGER_LABELS, LostCategory, LostTrigger,
+  CATEGORY_LABELS, TRIGGER_LABELS, LostCategory, LostTrigger, priorityScore, PREVENTION_HINTS,
 } from '@/lib/will/lost-leads';
 import { LOST_RUN_SETTING, LostRunSummary } from '@/lib/will/lost-analysis';
+import { readWinbacks, winbackStatus, WINBACK_GIVE_UP_DAYS } from '@/lib/will/winbacks';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,11 +28,13 @@ export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
 
-  const [customers, analyses, lastRun] = await Promise.all([
+  const [customers, analyses, lastRun, winbacks] = await Promise.all([
     store.listCustomers(),
     store.listLostAnalyses().catch(() => []),
     store.getSetting(LOST_RUN_SETTING).catch(() => null),
+    readWinbacks(store),
   ]);
+  const now = new Date();
 
   // Who is lost is recomputed live from the customer rows, never read from the
   // stored analysis: a lead who came back to life must drop off this report the
@@ -53,6 +56,13 @@ export async function GET() {
       triggerLabel: verdict.trigger ? TRIGGER_LABELS[verdict.trigger as LostTrigger] : null,
       quietDays: verdict.quietDays,
       lostBecause: verdict.why,
+      // Jo, 24 Sep: what happened after the win-back button, if it was pressed.
+      winback: winbackStatus(winbacks[customer.id], customer.lastCustomerMsgAt, now),
+      priority: priorityScore({
+        state: customer.state, quietDays: verdict.quietDays, lang: customer.lang,
+        trigger: verdict.trigger as LostTrigger | null,
+        recoverable: a && a.status === 'OK' ? (a.recoverable as 'YES' | 'MAYBE' | 'NO') : null,
+      }),
       // null = the nightly job has not reached this lead yet.
       analysis: a && a.status === 'OK' ? {
         reason: a.reason,
@@ -73,8 +83,18 @@ export async function GET() {
       failure: a && a.status === 'ERROR' ? { error: a.error, attempts: a.attempts } : null,
     };
   })
-    // Longest-lost last: the newest losses are the ones still worth acting on.
-    .sort((x, y) => x.quietDays - y.quietDays);
+    // Best bet first (Jo, 24 Sep): priority score, then the most recent loss.
+    .sort((x, y) => (y.priority - x.priority) || (x.quietDays - y.quietDays));
+
+  // The work queue: the ten best bets that have not had a win-back yet.
+  const untouched = rows.filter((r) => r.priority > 0 && r.winback.kind === 'none');
+  const top = untouched.slice(0, 10).map((r) => r.customerId);
+  // Deadline campaign: everyone winnable who went quiet since the tax year
+  // began (1 July). "Right service, wrong moment" is exactly who a deadline
+  // brings back.
+  const fyStart = new Date(Date.UTC(now.getUTCMonth() >= 6 ? now.getUTCFullYear() : now.getUTCFullYear() - 1, 6, 1));
+  const daysSinceFy = Math.floor((now.getTime() - fyStart.getTime()) / 86400000);
+  const campaign = untouched.filter((r) => r.quietDays <= daysSinceFy).map((r) => r.customerId);
 
   // The aggregate counts only leads that are lost RIGHT NOW and have a usable
   // analysis — a post-mortem for someone who has since come back would inflate
@@ -86,9 +106,43 @@ export async function GET() {
     fault: a.fault as 'OURS' | 'PARTLY_OURS' | 'NOT_OURS',
   })));
 
+  // Won back: a win-back went out and the person wrote again. They are no
+  // longer lost (the live definition drops them), so they are listed here,
+  // on their own, as the one number that says whether this tab earns money.
+  const lostIds = new Set(rows.map((r) => r.customerId));
+  const wonBack = customers
+    .filter((c) => !lostIds.has(c.id) && winbacks[c.id]?.sentAt)
+    .map((c) => ({ c, st: winbackStatus(winbacks[c.id], c.lastCustomerMsgAt, now) }))
+    .filter((x) => x.st.kind === 'won_back')
+    .map(({ c, st }) => ({
+      customerId: c.id, waId: c.waId, name: c.name, flag: c.flag, state: c.state,
+      stateLabel: STATE_LABELS[c.state] ?? c.state, paid: c.paid,
+      sentAt: (st as { sentAt: string }).sentAt, repliedAt: (st as { repliedAt: string }).repliedAt,
+    }))
+    .sort((a, b) => (a.repliedAt < b.repliedAt ? 1 : -1));
+  const sentTotal = Object.values(winbacks).filter((w) => w.sentAt).length;
+
+  // Prevention: the categories that are on us, most frequent first, each with
+  // the lever to pull in Will.
+  const prevention = categories
+    .filter((c) => c.ourFault > 0)
+    .sort((a, b) => b.ourFault - a.ourFault)
+    .slice(0, 3)
+    .map((c) => ({ category: c.category, label: c.label, ourFault: c.ourFault, fix: PREVENTION_HINTS[c.category as LostCategory] ?? '' }));
+
   return NextResponse.json({
     ok: true,
     generatedAt: new Date().toISOString(),
+    top,
+    campaign: { customerIds: campaign, since: fyStart.toISOString().slice(0, 10) },
+    prevention,
+    winbacks: {
+      giveUpDays: WINBACK_GIVE_UP_DAYS,
+      sent: sentTotal,
+      waiting: rows.filter((r) => r.winback.kind === 'waiting').length,
+      gaveUp: rows.filter((r) => r.winback.kind === 'gave_up').length,
+      wonBack,
+    },
     /** The definition, sent to the UI so the screen and the code can never
      *  disagree about what "lost" means. */
     definition: {

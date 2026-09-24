@@ -1,3 +1,4 @@
+import { recordAiUsage } from './ai-usage';
 // ============================================================
 // The in-CRM copilot ("Ask Will").
 //
@@ -29,7 +30,7 @@ export interface AssistantTurn { role: 'user' | 'assistant'; text: string }
 export interface Proposal {
   /** Stable id so the UI can track which proposals were acted on. */
   id: string;
-  kind: 'move_stage' | 'send_reply' | 'open_task';
+  kind: 'move_stage' | 'send_reply' | 'open_task' | 'add_library';
   customerId: string;
   /** A human label for the card, e.g. the phone number and what will happen. */
   customerLabel: string;
@@ -42,6 +43,9 @@ export interface Proposal {
   message?: string;
   /** open_task */
   reason?: string;
+  /** add_library: the question and answer to add to the Library (Jo, 24 Sep). */
+  question?: string;
+  answer?: string;
   /** The model's one-line justification, shown under the card. */
   why?: string;
 }
@@ -164,6 +168,19 @@ const TOOLS = [
       required: ['customer_id', 'reason'],
     },
   },
+  {
+    name: 'propose_library_answer',
+    description: 'Propose a NEW Library answer (a learned Q&A Will may reuse), typically after reading an open task whose "Why Will handed this over" block ends with "FIX: add a Library answer for: ...". This does NOT add it; it shows a card with the question and answer and a one-click Add button. Only for questions Will is allowed to answer (process, what we need, what the fee is for, logistics); never a tax determination.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        question: { type: 'string', description: 'The customer question, in the customer\'s own words.' },
+        answer: { type: 'string', description: 'The answer Will should send next time: 2 to 4 sentences, warm, WhatsApp-natural, no dashes, no bold, no "non-refundable".' },
+        reason: { type: 'string', description: 'One line: which task or conversation showed the gap.' },
+      },
+      required: ['question', 'answer'],
+    },
+  },
 ] as const;
 
 // The permanent, baked-in profile of the business and the owner. This is in
@@ -227,7 +244,8 @@ BUSINESS RULES YOU MUST RESPECT (they apply to anything you propose sending a cu
 
 STYLE, AND THIS MATTERS A LOT
 - Reply in the SAME LANGUAGE the owner writes to you in. The owner usually writes Hebrew, so reply in Hebrew unless he writes to you in another language.
-- THE ACTION CARDS ARE THE ANSWER, NOT YOUR TEXT. When something can be done, do NOT describe it in prose. Turn it into a propose_* card (propose_reply, propose_move_stage, propose_open_task) so the owner sees a small box with the ready result and a one-click Send / Move / Open button. "Send this message to Nick, [Send]" as a card beats a paragraph explaining that Nick is waiting.
+- THE ACTION CARDS ARE THE ANSWER, NOT YOUR TEXT. When something can be done, do NOT describe it in prose. Turn it into a propose_* card (propose_reply, propose_move_stage, propose_open_task, propose_library_answer) so the owner sees a small box with the ready result and a one-click Send / Move / Open / Add button.
+- FIXING HANDOFFS (Jo, 24 Sep). Every open task carries a "Why Will handed this over" block (the "why" field from list_open_tasks) that ends with a FIX line. When it says "FIX: add a Library answer for: <question>", read the conversation, write the answer within the rules, and propose it with propose_library_answer. When it says "the team's call", do not propose an answer; say so in one line. When asked "what should I fix" or "why did Will hand this over", this is the job. "Send this message to Nick, [Send]" as a card beats a paragraph explaining that Nick is waiting.
 - Keep your written text to ONE short line, or none at all when the cards speak for themselves. No essays, no walls of text, no recap of what you read.
 - PLAIN TEXT ONLY. Never use markdown: no asterisks for bold, no bullet lists, no headings, no numbered lists. Just plain short sentences. The owner's screen shows your text raw, so markdown looks like broken punctuation.
 - If there is nothing to act on, say so in one short reassuring line (for example "הכל על המסלול, אין משהו דחוף כרגע") and stop. Do not invent work to fill space.
@@ -358,6 +376,9 @@ export async function runReadTool(name: string, input: Record<string, unknown>, 
           tasks: tasks.slice(0, 40).map((t) => ({
             id: t.id, customer_id: t.customerId, customer: t.customerName,
             reason: t.reason, severity: t.severity, suggested_reply: t.suggestedReply ?? null,
+            // Jo, 24 Sep: the "Why Will handed this over" block, so the copilot
+            // can propose the fix (a Library answer) instead of restating the task.
+            why: t.context ? t.context.slice(0, 1500) : null,
           })),
         };
       }
@@ -406,10 +427,20 @@ async function runProposeTool(
   idCounter: { n: number },
 ): Promise<unknown> {
   const store = getStore();
+  const pid = `p${++idCounter.n}`;
+  if (name === 'propose_library_answer') {
+    const question = stripDashes(String(input.question ?? '').trim()).slice(0, 400);
+    const answer = stripDashes(String(input.answer ?? '').trim()).slice(0, 2000);
+    if (!question || !answer) return { error: 'question and answer are both required' };
+    proposals.push({
+      id: pid, kind: 'add_library', customerId: '', customerLabel: 'Library', customerPhone: '',
+      question, answer, why: stripDashes(String(input.reason ?? '')),
+    });
+    return { proposed: true, note: 'Shown to the owner as a Library card with a one-click Add button.' };
+  }
   const id = String(input.customer_id ?? '');
   const c = id ? await store.getCustomerById(id) : null;
   if (!c) return { error: 'customer not found; search first and use the exact id' };
-  const pid = `p${++idCounter.n}`;
   if (name === 'propose_move_stage') {
     const to = String(input.to_state ?? '') as CustomerState;
     if (!ALL_STATES.includes(to)) return { error: 'unknown state' };
@@ -444,7 +475,7 @@ async function runProposeTool(
   return { error: 'unknown tool' };
 }
 
-const PROPOSE_NAMES = new Set(['propose_move_stage', 'propose_reply', 'propose_open_task']);
+const PROPOSE_NAMES = new Set(['propose_move_stage', 'propose_reply', 'propose_open_task', 'propose_library_answer']);
 
 type ApiMessage = { role: 'user' | 'assistant'; content: unknown };
 
@@ -475,7 +506,9 @@ async function callApi(key: string, system: string, messages: ApiMessage[]): Pro
         return { ok: false, error: `Claude API error ${res.status}` };
       }
       if (!res.ok) return { ok: false, error: `Claude API error ${res.status}` };
-      return { ok: true, data: await res.json() };
+      const data = await res.json();
+      recordAiUsage('assistant', MODEL(), data);
+      return { ok: true, data };
     } catch {
       if (attempt === 0) { await sleep(500 + Math.random() * 500); continue; }
       return { ok: false, error: 'Claude API unreachable' };
@@ -557,6 +590,7 @@ export async function runAssistant(history: AssistantTurn[]): Promise<AssistantR
     });
     if (res.ok) {
       const data = await res.json() as { content?: ContentBlock[] };
+      recordAiUsage('assistant', MODEL(), data);
       const text = (data.content ?? []).filter((b) => b.type === 'text').map((b) => b.text ?? '').join('\n').trim();
       if (text) return { ok: true, reply: plainText(stripDashes(text)), proposals };
     }

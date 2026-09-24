@@ -12,6 +12,10 @@ import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { aiCallsKeyFor, aiCallsKeyPrefix, resolveAiDailyBudget } from '@/lib/will/service';
+import { summariseUsage } from '@/lib/will/ai-usage';
+import { fetchCostReport } from '@/lib/will/cost-report';
+import { readReviewAsks, REVIEWS_RECEIVED_SETTING } from '@/lib/will/review-asks';
+import { STAGE_GROUPS } from '@/lib/will/state-machine';
 import { summariseAiUsage, faultsFromAudit, applyFaultDismissals, faultDismissedKey } from '@/lib/will/system-report';
 
 export const dynamic = 'force-dynamic';
@@ -55,6 +59,60 @@ export async function GET() {
     usingMock: !process.env.ANTHROPIC_API_KEY,
   });
 
+  // EXACT COST (Jo, 24 Sep). Two sources, both returned:
+  //   ledger: every paid call with Anthropic's own token counts, priced at the
+  //           published list (last 92 days, enough for a three-month chart);
+  //   bill:   the organisation cost report from the Admin API, when the key is
+  //           set. That is the invoice number; it covers the whole account.
+  const since = new Date(Date.now() - 92 * 24 * 60 * 60 * 1000);
+  const [ledgerRows, bill] = await Promise.all([
+    typeof store.listAiUsage === 'function' ? store.listAiUsage(since.toISOString()).catch(() => []) : Promise.resolve([]),
+    fetchCostReport(new Date(Date.UTC(since.getUTCFullYear(), since.getUTCMonth(), 1)).toISOString()).catch((e: Error) => ({ available: false, days: [], totalUsd: 0, fetchedAt: new Date().toISOString(), error: e.message })),
+  ]);
+  const ledger = summariseUsage(ledgerRows);
+
+  // GOOGLE REVIEWS (Jo, 24 Sep): asked / skipped / referral, and the count
+  // the owner ticks by hand when a review actually shows up on Google.
+  const [asks, receivedRaw, customersAll] = await Promise.all([
+    readReviewAsks(store),
+    store.getSetting(REVIEWS_RECEIVED_SETTING).catch(() => 0),
+    typeof store.listCustomers === 'function' ? store.listCustomers().catch(() => []) : Promise.resolve([]),
+  ]);
+  const askRows = Object.values(asks);
+  const reviews = {
+    asked: askRows.filter((a) => a.askedAt).length,
+    askedOnRefund: askRows.filter((a) => a.askedAt && a.trigger === 'refund_received').length,
+    skipped: askRows.filter((a) => a.skippedAt && !a.askedAt).length,
+    skipReasons: askRows.filter((a) => a.skippedAt && !a.askedAt && a.skipReason).map((a) => a.skipReason as string).slice(-5),
+    referrals: askRows.filter((a) => a.referralAt).length,
+    received: Number(receivedRaw) || 0,
+  };
+
+  // AUTOPILOT COVERAGE BY HOUR (Jo, 24 Sep): of every decision Will made in
+  // the audit window, how many were answered by Will alone vs handed to a
+  // person, by Melbourne hour. The hours with the most hand-offs are where
+  // the owner is the bottleneck.
+  const hourFmt = new Intl.DateTimeFormat('en-AU', { hour: 'numeric', hour12: false, timeZone: 'Australia/Melbourne' });
+  const coverage = Array.from({ length: 24 }, (_, h) => ({ hour: h, auto: 0, human: 0 }));
+  for (const r of audit) {
+    if (r.action !== 'decision') continue;
+    const d = r.detail as { action?: string } | null;
+    const kind = d?.action;
+    if (!kind) continue;
+    const h = Number(hourFmt.format(new Date(r.at))) % 24;
+    if (kind === 'queued') coverage[h].auto++;
+    else if (kind === 'human_task' || kind === 'pending_approval') coverage[h].human++;
+  }
+
+  // STUCK IN REVIEW (Jo, 24 Sep): paid customers sitting in the Review group
+  // longer than a week, oldest first. These are the ones waiting on us.
+  const reviewStates = new Set<string>(STAGE_GROUPS.find((g) => g.id === 'rev')?.states ?? []);
+  const stuck = customersAll
+    .filter((c) => reviewStates.has(c.state) && c.stateChangedAt)
+    .map((c) => ({ customerId: c.id, waId: c.waId, name: c.name, flag: c.flag, state: c.state, days: Math.floor((Date.now() - new Date(c.stateChangedAt as string).getTime()) / 86400000) }))
+    .filter((c) => c.days >= 7)
+    .sort((a, b) => b.days - a.days);
+
   // Every fault above is read FROM will_audit. If that table itself cannot be
   // written, the card would say "nothing is failing" precisely when everything
   // is invisible. So probe the log once and report it as a fault of its own
@@ -89,6 +147,7 @@ export async function GET() {
 
   return NextResponse.json({
     ok: true,
+    ledger, bill, reviews, coverage, stuck,
     generatedAt: new Date().toISOString(),
     usage,
     faults: visibleFaults,

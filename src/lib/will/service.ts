@@ -13,6 +13,8 @@ import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MS
 import { retrieveKnowledge, nearestKnowledge } from './knowledge';
 import { buildHandoffDiagnostic, taskContextWithDiagnostic } from './handoff-diagnostic';
 import { deliverOut, fetchWaMedia } from './channel';
+import { readReviewAsks, patchReviewAsk, saysRefundLanded, isPositiveAck, REFERRAL_WINDOW_DAYS } from './review-asks';
+import { referralMessage } from './i18n';
 import { autopilotReplyDelaySeconds } from './config';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
 import { isIdentityQuestion } from './identity-question';
@@ -614,6 +616,45 @@ export async function decideAndAct(
       // where the owner has already stepped in (Jo, 31 Aug).
       author: m.direction === 'OUT' ? (m.author === 'HUMAN' ? ('HUMAN' as const) : ('AI' as const)) : undefined,
     }));
+
+  // ── After lodgement (Jo, 24 Sep): two moments handled without the model ──
+  // 1. "The refund landed" pulls the Google review ask forward to now (it
+  //    was scheduled 14 days out as a fallback). Will still answers the
+  //    message normally below; the ask itself goes out from the scheduler a
+  //    few minutes later, after Will has judged the conversation.
+  // 2. A short positive reply to the ask ("done", "sure", 👍) gets the one
+  //    referral line, once, inside the window. That IS the reply, so it
+  //    returns here rather than calling the model for a second answer.
+  if (['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state) && !customer.optedOut && !customer.isLegacy && !killSwitch) {
+    try {
+      const rec = (await readReviewAsks(store))[customer.id];
+      if (!rec?.askedAt && !rec?.skippedAt && saysRefundLanded(text)) {
+        await store.cancelJobsFor(customer.id, ['REVIEW_REQUEST']).catch(() => 0);
+        await store.addJob({
+          customerId: customer.id, kind: 'REVIEW_REQUEST', payload: { trigger: 'refund_received' },
+          runAt: new Date(Date.now() + 3 * 60 * 1000).toISOString(),
+        });
+        await store.audit('system', 'review_ask_pulled_forward', { customerId: customer.id });
+      }
+      if (rec?.askedAt && !rec.referralAt && isPositiveAck(text)
+          && Date.now() - new Date(rec.askedAt).getTime() < REFERRAL_WINDOW_DAYS * 24 * 60 * 60 * 1000) {
+        const body = referralMessage(customer.lang);
+        if (mode === 'FULL_AUTO') {
+          const out = await deliverOut(customer, body, 'AI', { system: true });
+          if (out.ok) await patchReviewAsk(store, customer.id, { referralAt: new Date().toISOString() });
+          await store.audit('system', 'referral_sent', { customerId: customer.id, ok: out.ok });
+          return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } } };
+        }
+        const m = await store.addMessage({
+          customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL', body,
+          meta: { review: 'Referral line after a positive reply to the review ask (Jo, 24 Sep).' },
+        });
+        await patchReviewAsk(store, customer.id, { referralAt: new Date().toISOString() });
+        await store.audit('system', 'referral_drafted', { customerId: customer.id });
+        return { outcome: { kind: 'pending_approval', decision: { action: 'reply', reply_text: body, confidence: 1 }, replyText: body }, pendingMessageId: m.id };
+      }
+    } catch { /* the review ask is a bonus; never block the reply */ }
+  }
 
   // COST-01: daily global cap on paid AI decisions. When the budget is spent,
   // hand the conversation to a human instead of calling the model.

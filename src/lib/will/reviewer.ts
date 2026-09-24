@@ -1,3 +1,4 @@
+import { recordAiUsage } from './ai-usage';
 // ============================================================
 // The reviewer: a second set of eyes over Will's decision, on the SAME rules
 // Will works by, as an extra layer of protection (Jo, 29 Aug).
@@ -163,6 +164,7 @@ export async function reviewDraft(input: ReviewInput): Promise<ReviewResult> {
       }
       if (!res.ok) return PASS;
       const data = await res.json();
+      recordAiUsage('reviewer', MODEL(), data);
       const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
         ?.find((b) => b.type === 'tool_use' && b.name === 'review');
       const out = tool?.input as { verdict?: unknown; revised?: unknown; note?: unknown } | undefined;

@@ -13,12 +13,15 @@ import { suggestReply } from './suggest';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { formReceivedMessage, formReceivedTemplateKey, reviewRequestMessage, reviewRequestTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
+import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
 import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
 import { runLostLeadAnalysis } from './lost-analysis';
+import { readReviewAsks, patchReviewAsk } from './review-asks';
+import { decideReviewAsk } from './claude';
+import { reviewAskMessage, reviewAskTemplateKey, REVIEW_ASK_DEFAULT_OPENER } from './i18n';
 import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
 // One open task per customer (audit, 5 Sep): every task the scheduler raises
 // for a customer goes through the shared fold, so a repeat of the same failure
@@ -1125,25 +1128,35 @@ async function doProcess(): Promise<TickResult> {
         await store.setJobStatus(job.id, 'DONE');
         continue;
       }
-      // REVIEW_REQUEST: 1 hour after a customer is marked lodged, ask for a
-      // Google review as its OWN warmer message (Jo, 31 Aug). The lodgement note
-      // no longer carries the ask; this does, once, a little after the good news
-      // has landed. Skip anyone who opted out or is a legacy import, and only
-      // send to someone still in the done stage (signed/lodged/completed).
+      // REVIEW_REQUEST (rewritten, Jo 24 Sep): the Google review ask. It is
+      // scheduled 14 days after lodgement as a fallback and pulled forward to
+      // "now" the moment the customer says the refund landed (service.ts).
+      // Before anything goes out, Will reads the conversation and decides
+      // whether this person should be asked at all, and writes the one
+      // personal opening line. One ask per customer, ever. See review-asks.ts.
       if (job.kind === 'REVIEW_REQUEST') {
+        const asks = await readReviewAsks(store);
+        const prior = asks[customer.id];
+        if (prior?.askedAt || prior?.skippedAt) { await store.setJobStatus(job.id, 'DONE'); continue; }
         if (!customer.optedOut && !customer.isLegacy
           && ['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state)) {
-          let body: string | null = null;
-          try {
-            const key = reviewRequestTemplateKey(customer.lang);
-            // Once per tick, not once per REVIEW_REQUEST job (audit3 sched 76, 5 Sep).
-            const t = (await tickTemplates()).find((x) => x.key === key);
-            body = t && t.body.trim() ? t.body : null;
-          } catch { /* the Library is a bonus; the constant is the fallback */ }
-          body = body ?? reviewRequestMessage(customer.lang);
-          // Through the guard like everything else Will says (a Library edit
-          // can leave a {{PLACEHOLDER}} behind; audit, 3 Sep), as the system
-          // message it is: the window is Meta's call, see fallbackToText.
+          const trigger = (job.payload as { trigger?: string } | null)?.trigger === 'refund_received' ? 'refund_received' : 'timer';
+          const msgs = await store.listMessages(customer.id).catch(() => []);
+          const transcript = msgs
+            .filter((m) => m.status === 'SENT' || m.direction === 'IN')
+            .map((m) => `${m.direction === 'IN' ? 'Customer' : 'Us'}: ${(m.body ?? '').replace(/\s+/g, ' ').slice(0, 400)}`)
+            .join('\n');
+          const verdictAsk = await decideReviewAsk({ lang: customer.lang, transcript, trigger });
+          if (!verdictAsk.ask) {
+            await patchReviewAsk(store, customer.id, { skippedAt: new Date().toISOString(), skipReason: verdictAsk.reason });
+            await store.audit('system', 'review_ask_skipped', { customerId: customer.id, reason: verdictAsk.reason });
+            await store.setJobStatus(job.id, 'DONE');
+            continue;
+          }
+          const langKey = (customer.lang && customer.lang in REVIEW_ASK_DEFAULT_OPENER ? customer.lang : 'en') as keyof typeof REVIEW_ASK_DEFAULT_OPENER;
+          const opener = verdictAsk.opener ?? REVIEW_ASK_DEFAULT_OPENER[langKey];
+          const firstName = greetingName(customer);
+          const body = reviewAskMessage(customer.lang, firstName, opener);
           const verdict = policyGuard(body, {
             state: customer.state, paid: true, aiPaused: false, killSwitch: false,
             optedOut: false, isLegacy: false,
@@ -1152,39 +1165,32 @@ async function doProcess(): Promise<TickResult> {
           });
           if (!verdict.allowed) {
             await raiseOrUpdateTask(store, customer, {
-              reason: `Review request held by the Policy Guard: ${verdict.violations.join(', ')}. Check the Library entry and send it by hand.`,
+              reason: `Review ask held by the Policy Guard: ${verdict.violations.join(', ')}. Send it by hand.`,
               severity: 'REVIEW', newContext: body.slice(0, 200), suggestedReply: body,
             });
             await store.setJobStatus(job.id, 'DONE');
             continue;
           }
-          const reviewTemplate = { name: reviewRequestTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true };
+          const reviewTemplate = { name: reviewAskTemplateKey(metaTemplateLang(customer.lang)), params: [firstName, opener], lang: customer.lang, fallbackToText: true };
           if (await inApprovalMode()) {
             await store.addMessage({
               customerId: customer.id, direction: 'OUT', author: 'AI',
               status: 'PENDING_APPROVAL', body, meta: { waTemplate: reviewTemplate },
             });
-            await store.audit('system', 'review_request_sent', { customerId: customer.id });
-            result.sent.push(`${customer.name ?? customer.waId} · review request`);
+            await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString(), trigger, opener });
+            await store.audit('system', 'review_ask_sent', { customerId: customer.id, trigger, opener, judged: verdictAsk.measured });
+            result.sent.push(`${customer.name ?? customer.waId} · review ask`);
           } else {
             const out = await deliverOut(customer, body, 'AI', { waTemplate: reviewTemplate }, reviewTemplate);
             if (out.ok) {
-              await store.audit('system', 'review_request_sent', { customerId: customer.id });
-              result.sent.push(`${customer.name ?? customer.waId} · review request`);
+              await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString(), trigger, opener });
+              await store.audit('system', 'review_ask_sent', { customerId: customer.id, trigger, opener, judged: verdictAsk.measured });
+              result.sent.push(`${customer.name ?? customer.waId} · review ask`);
             } else {
-              // THE REVIEW REQUEST IS ALMOST ALWAYS OUTSIDE THE WINDOW.
-              //
-              // It goes an hour after lodgement, and by then the customer has
-              // usually not written for days, so free text is refused by Meta
-              // and only an approved template can reach them. Mads, 4 Sep: the
-              // ask failed in the chat and the card said "WhatsApp did not
-              // deliver this message", which is true and useless — there is
-              // nothing to fix in the conversation. What is missing is the
-              // template. The task now says exactly that, and names it.
               const missingTemplate = /131047|24|window|template/i.test(out.error ?? '');
               await raiseOrUpdateTask(store, customer, {
                 reason: missingTemplate
-                  ? `The Google review ask could not be delivered: ${customer.name?.split(/\s+/)[0] ?? 'this customer'} has not written for over a day, so it needs the approved WhatsApp template "${reviewTemplate.name}", which does not exist yet in WhatsApp Manager. Create it there (no variables) and this sends itself next time.`
+                  ? `The Google review ask could not be delivered: ${firstName || 'this customer'} has not written for over a day, so it needs the approved WhatsApp template ${reviewTemplate.name} (create it in WhatsApp Manager), or send it by hand.`
                   : `The Google review ask was not delivered: ${out.error ?? 'WhatsApp rejected it'}.`,
                 severity: 'REVIEW',
                 newContext: body.slice(0, 300),

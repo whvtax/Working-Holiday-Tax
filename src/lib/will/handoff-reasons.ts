@@ -200,7 +200,7 @@ const RULES: Rule[] = [
     prevent: 'Nothing to change. Collect the files and mark it done.',
   },
   {
-    match: /^Medicare exemption message held by the Policy Guard|^Review request held by the Policy Guard/i,
+    match: /^Medicare exemption message held by the Policy Guard|^Review (?:request|ask) held by the Policy Guard/i,
     kind: 'guard',
     label: 'A rule refused Will’s message',
     because: 'Will had the scheduled message ready and one of the hard rules refused to let it go out',

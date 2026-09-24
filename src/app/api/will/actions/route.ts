@@ -2,6 +2,10 @@
 // preconditions on message status, approval-time re-guard,
 // template save-time guard, real kill switch, quick manual replies.
 import { NextResponse } from 'next/server';
+import { readWinbacks, markWinbackQueued, markWinbackSent, winbackStatus, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
+import { winbackMessage } from '@/lib/will/i18n';
+import { REVIEW_ASK_FALLBACK_DAYS, REVIEWS_RECEIVED_SETTING } from '@/lib/will/review-asks';
+
 import { sessionValid } from '@/lib/will/auth';
 import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
@@ -31,12 +35,16 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'mark_read_silent' | 'toggle_ai' | 'resume_all_leads'
-  | 'update_template' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault';
+  | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault';
   /** dismiss_fault only: the fault's stable key (SystemFault.key). */
   faultKey?: string;
   id?: string;
   customerId?: string;
   body?: string;
+  /** recover_lead: a campaign line for the win-back's {{2}} (Jo, 24 Sep). */
+  hook?: string;
+  /** reviews_received: +1 / -1. */
+  delta?: number;
   value?: boolean;
   /** Approval / Autopilot. Separate from `value` because it is not a boolean. */
   mode?: string;
@@ -209,6 +217,21 @@ async function libraryTemplateFor(
     }
     if (/\{\{1\}\}/.test(t.body) && squash(t.body.replace(/\{\{1\}\}/g, firstName)) === want) {
       return { name: t.key, params: [firstName], lang: customer.lang, fallbackToText: true };
+    }
+    // Jo, 24 Sep: a body with several placeholders (the win-back has {{1}}
+    // name and {{2}} hook). Each placeholder becomes a capture, the rest is
+    // matched literally, and the captures are the params in order.
+    const slots = [...t.body.matchAll(/\{\{(\d+)\}\}/g)].map((m) => Number(m[1]));
+    if (slots.length >= 2) {
+      const pattern = squash(t.body).split(/\{\{\d+\}\}/).map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('([\\s\\S]+?)');
+      const m = new RegExp(`^${pattern}$`).exec(want);
+      if (m) {
+        const params: string[] = [];
+        slots.forEach((n, i) => { params[n - 1] = m[i + 1].trim(); });
+        if (params.every((v) => typeof v === 'string' && v.length > 0)) {
+          return { name: t.key, params, lang: customer.lang, fallbackToText: true };
+        }
+      }
     }
   }
   return null;
@@ -719,6 +742,10 @@ async function handlePost(req: Request) {
         // customerId alongside taskId: a task id alone cannot be traced back to
         // a person once the task is resolved (audit3, 5 Sep).
         await store.audit('owner', 'task_reply_sent', { taskId: task.id, customerId: customer.id });
+        if (task.reason.startsWith(WINBACK_REASON_PREFIX)) {
+          await markWinbackSent(store, customer.id).catch(() => undefined);
+          await store.audit('owner', 'win_back_sent', { customerId: customer.id });
+        }
       });
       return sentJson(warning);
     }
@@ -819,8 +846,20 @@ async function handlePost(req: Request) {
       const analysis = (await store.listLostAnalyses()).find((r) => r.customerId === customer.id);
       if (!analysis || analysis.status !== 'OK') return bad('this lead has not been assessed yet');
       if (analysis.recoverable === 'NO') return bad('the assessment says this lead cannot be recovered');
-      const draft = analysis.recoveryMessage?.trim();
-      if (!draft) return bad('the assessment did not write a message for this lead');
+      // Jo, 24 Sep: the win-back goes out as the Meta template (the lead has
+      // been silent for days, free text cannot reach them). {{2}} is the whole
+      // personal message the post-mortem wrote for THIS person, or the
+      // campaign line when one is given. Meta caps a variable at 1024 chars.
+      const hook = typeof b.hook === 'string' && b.hook.trim()
+        ? b.hook.trim().slice(0, 700)
+        : (analysis.recoveryMessage ?? '').trim().slice(0, 700);
+      if (!hook) return bad('the assessment did not write a message for this lead');
+      const draft = winbackMessage(customer.lang, greetingName(customer), hook);
+      // One win-back per person (Jo, 24 Sep). Once it has gone out, the card
+      // shows what happened instead of offering the button again.
+      const prior = winbackStatus((await readWinbacks(store))[customer.id], customer.lastCustomerMsgAt);
+      if (prior.kind === 'waiting') return bad(`a win-back already went out ${prior.days} day${prior.days === 1 ? '' : 's'} ago; wait for a reply`);
+      if (prior.kind === 'gave_up') return bad('a win-back already went out and got no reply; this lead is not messaged again');
 
       const existing = await store.findOpenTaskForCustomer(customer.id);
       const reason = 'Win-back: the assessment says this lead is still worth a message. Read it, change anything you want, send it.';
@@ -834,6 +873,7 @@ async function handlePost(req: Request) {
           reason, severity: 'REVIEW', context, suggestedReply: draft,
         });
       }
+      await markWinbackQueued(store, customer.id).catch(() => undefined);
       await store.audit('owner', 'lost_lead_recovery_queued', { customerId: customer.id });
       return NextResponse.json({ ok: true });
     }
@@ -979,6 +1019,18 @@ async function handlePost(req: Request) {
     // Only the two known values are accepted, and anything else is refused
     // rather than stored, because every reader treats an unrecognised value as
     // "ask the owner" and a stored typo would be a mode nobody chose.
+    case 'reviews_received': {
+      // Jo, 24 Sep: the one number Google does not push to us. He ticks it
+      // when a review appears; delta is +1 or -1.
+      const delta = Number(b.delta);
+      if (delta !== 1 && delta !== -1) return bad('delta must be 1 or -1');
+      const cur = Number(await store.getSetting(REVIEWS_RECEIVED_SETTING).catch(() => 0)) || 0;
+      const next = Math.max(0, cur + delta);
+      await store.setSetting(REVIEWS_RECEIVED_SETTING, next);
+      await store.audit('owner', 'reviews_received_set', { value: next });
+      return NextResponse.json({ ok: true, value: next });
+    }
+
     case 'set_ai_mode': {
       if (b.mode !== 'SUPERVISED' && b.mode !== 'FULL_AUTO') return bad('unknown mode');
       const mode = resolveAiMode(b.mode);
@@ -1301,9 +1353,12 @@ async function handlePost(req: Request) {
         // Ask for a Google review 1 hour later, as its own warmer message (Jo, 31
         // Aug): the lodgement note no longer carries the ask; the REVIEW_REQUEST
         // job sends it once, a little after the good news lands.
+        // Jo, 24 Sep: the fallback. The ask is pulled forward to the moment
+        // the customer says the refund landed (service.ts); this only fires
+        // if they never do. See review-asks.ts.
         await store.addJob({
-          customerId: customer.id, kind: 'REVIEW_REQUEST', payload: {},
-          runAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+          customerId: customer.id, kind: 'REVIEW_REQUEST', payload: { trigger: 'timer' },
+          runAt: new Date(Date.now() + REVIEW_ASK_FALLBACK_DAYS * 24 * 60 * 60 * 1000).toISOString(),
         }).catch(() => { /* never let the review nudge block marking lodged */ });
         const fresh = await store.getCustomerById(customer.id);
         if (fresh) await reconcileSchedule(fresh);

@@ -26,7 +26,7 @@ jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
 import { EXPECTED_META_TEMPLATES, compareTemplates, verifyTemplates, WA_WABA_KEY } from '@/lib/will/channel';
 import { FLOW_TEMPLATES } from '@/lib/will/state-machine';
 import {
-  LANGS, formReceivedTemplateKey, reviewRequestTemplateKey, requestAbnTemplateKey,
+  LANGS, formReceivedTemplateKey, reviewAskTemplateKey, requestAbnTemplateKey,
   handoffHoldingTemplateKey, paymentReceivedTemplateKey, medicareTemplateKey,
   estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey,
   metaTemplateLang,
@@ -76,7 +76,7 @@ describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
     // when the Library text itself (looked up separately, unaffected) is one
     // of the other four languages.
     const helpers = [
-      formReceivedTemplateKey, reviewRequestTemplateKey, requestAbnTemplateKey,
+      formReceivedTemplateKey, reviewAskTemplateKey, requestAbnTemplateKey,
       handoffHoldingTemplateKey, paymentReceivedTemplateKey, medicareTemplateKey,
     ];
     for (const fn of helpers) {
@@ -97,11 +97,17 @@ describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
   });
 
   it('lists the per language system keys as optional (text fallback inside 24h)', () => {
-    for (const n of ['form_received_en', 'form_received_de', 'review_request_ja', 'req_abn', 'req_abn_ja', 'handoff_holding', 'handoff_holding_de', 'payment_received', 'medicare']) {
+    for (const n of ['form_received_en', 'form_received_de', 'req_abn', 'req_abn_ja', 'handoff_holding', 'handoff_holding_de', 'payment_received', 'medicare']) {
       const t = EXPECTED_META_TEMPLATES.find((x) => x.name === n);
       expect(t?.optional).toBe(true);
     }
     expect(new Set(EXPECTED_META_TEMPLATES.map((t) => t.name)).size).toBe(EXPECTED_META_TEMPLATES.length);
+  });
+
+  it('the review ask (24 Sep) is required, two variables: name and the personal line', () => {
+    for (const n of ['review_ask_en', 'review_ask_de', 'review_ask_ja']) {
+      expect(EXPECTED_META_TEMPLATES.find((x) => x.name === n)).toEqual({ name: n, params: 2, optional: false });
+    }
   });
 
   it('never expects a Meta template outside English/German/Japanese for the six per-language system lines (Jo, 17 Sep: creating one is per-language admin work in WhatsApp Manager, kept to the three languages that matter)', () => {

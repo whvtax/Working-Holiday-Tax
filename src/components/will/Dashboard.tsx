@@ -11,6 +11,9 @@ import { explainHandoffReason, summariseArrivals, isNightlyCheckReason, parseNig
 import { describeViolations } from '@/lib/will/send-errors';
 import type { MonthConversion } from '@/lib/will/monthly-conversion';
 import type { AiUsage, SystemFault } from '@/lib/will/system-report';
+import type { UsageSummary } from '@/lib/will/ai-usage';
+import type { CostReport } from '@/lib/will/cost-report';
+import CostCards from './CostCards';
 import LinkFormTask from './LinkFormTask';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/min'  // /min: the full metadata set is ~29KB gz of country data for formatting AU and EU numbers;
 
@@ -58,13 +61,21 @@ interface LostRow {
   lostBecause: string;
   analysis: LostAnalysisView | null;
   failure: { error: string | null; attempts: number } | null;
+  winback: { kind: 'none' } | { kind: 'draft'; queuedAt: string } | { kind: 'waiting'; sentAt: string; days: number }
+    | { kind: 'gave_up'; sentAt: string; days: number } | { kind: 'won_back'; sentAt: string; repliedAt: string };
+  priority: number;
 }
+interface WonBackRow { customerId: string; waId: string; name: string | null; flag: string; state: CustomerState; stateLabel: string; paid: boolean; sentAt: string; repliedAt: string }
 interface LostReport {
   generatedAt: string;
   definition: { silenceDays: number; text: string };
   counts: { lost: number; analysed: number; pending: number; failed: number; recoverable: number; ourFault: number };
   categories: { category: string; label: string; n: number; share: number; recoverable: number; ourFault: number }[];
   rows: LostRow[];
+  winbacks: { giveUpDays: number; sent: number; waiting: number; gaveUp: number; wonBack: WonBackRow[] };
+  top: string[];
+  campaign: { customerIds: string[]; since: string };
+  prevention: { category: string; label: string; ourFault: number; fix: string }[];
   lastRun: { day: string; ranAt: string; analysed: number; failed: number; remaining: number; budgetExhausted: boolean; incomplete: boolean } | null;
 }
 /** How firmly the model committed, in the same three words the report uses. */
@@ -579,11 +590,16 @@ export default function Dashboard() {
   // and the rows behind it are untouched — this dropped the reader, not the
   // record.
   // Claude usage + the real system faults, for the System & Costs card.
-  const [system, setSystem] = useState<{ usage: AiUsage; faults: SystemFault[]; faultWindow: number; auditRowsRead: number } | null>(null);
+  const [system, setSystem] = useState<{
+    usage: AiUsage; faults: SystemFault[]; faultWindow: number; auditRowsRead: number; ledger?: UsageSummary; bill?: CostReport;
+    reviews?: { asked: number; askedOnRefund: number; skipped: number; skipReasons: string[]; referrals: number; received: number };
+    coverage?: { hour: number; auto: number; human: number }[];
+    stuck?: { customerId: string; waId: string; name: string | null; flag: string; state: CustomerState; days: number }[];
+  } | null>(null);
   const loadSystem = useCallback(async () => {
     try {
       const r = await fetch('/api/will/system').then((x) => x.json());
-      if (r.ok) setSystem({ usage: r.usage, faults: r.faults ?? [], faultWindow: r.faultWindow ?? 0, auditRowsRead: r.auditRowsRead ?? 0 });
+      if (r.ok) setSystem({ usage: r.usage, faults: r.faults ?? [], faultWindow: r.faultWindow ?? 0, auditRowsRead: r.auditRowsRead ?? 0, ledger: r.ledger, bill: r.bill, reviews: r.reviews, coverage: r.coverage, stuck: r.stuck });
     } catch { /* keep whatever is on screen */ }
   }, []);
   // Month-by-month lead → paid, computed server-side from the state history.
@@ -691,7 +707,7 @@ export default function Dashboard() {
   // actions; every proposal is a one-click button that goes through
   // /api/will/actions, so nothing here mutates without an explicit press.
   interface AsstProposal {
-    id: string; kind: 'move_stage' | 'send_reply' | 'open_task';
+    id: string; kind: 'move_stage' | 'send_reply' | 'open_task' | 'add_library'; question?: string; answer?: string;
     customerId: string; customerLabel: string; customerPhone?: string;
     toState?: CustomerState; toStateLabel?: string; message?: string; reason?: string; why?: string;
   }
@@ -845,6 +861,19 @@ export default function Dashboard() {
       body = { action: 'manual_reply', customerId: p.customerId, body: msg };
     } else if (p.kind === 'open_task') {
       body = { action: 'create_task', customerId: p.customerId, reason: p.reason, body: p.message };
+    } else if (p.kind === 'add_library') {
+      // Jo, 24 Sep: the copilot proposes a Library answer; this adds it, active.
+      const answer = (asstEdit[p.id] ?? p.answer ?? '').trim();
+      if (!answer || !p.question) return;
+      setAsstRunning((s) => ({ ...s, [p.id]: true }));
+      const res = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'add', question: p.question, answer }) });
+      const r = await res.json().catch(() => null);
+      setAsstRunning((s) => { const n = { ...s }; delete n[p.id]; return n; });
+      if (!r?.ok) { say(r?.error ?? 'could not add to the Library'); return; }
+      setAsstDone((d) => ({ ...d, [p.id]: 'approved' }));
+      say('Added to the Library ✓');
+      loadKnowledge();
+      return;
     }
     if (!body) return;
     // Show the spinner while the action actually runs, then mark it done.
@@ -858,7 +887,7 @@ export default function Dashboard() {
     setAsstDone((d) => ({ ...d, [p.id]: 'approved' }));
     say(p.kind === 'send_reply' ? 'Message sent ✓' : p.kind === 'move_stage' ? `Moved to ${p.toStateLabel} ✓` : 'Task opened ✓');
     refresh();
-  }, [asstDone, asstRunning, asstEdit, refresh, data.customers]);
+  }, [asstDone, asstRunning, asstEdit, refresh, data.customers, loadKnowledge]);
 
   // One action-card renderer, shared by the Open-tasks column (agent 1) and the
   // chat's own inline cards (agent 2), so both look and behave identically.
@@ -881,6 +910,18 @@ export default function Dashboard() {
         )}
         {p.kind === 'open_task' && p.message && (
           <div className="asst-prop-draft">Draft: “{p.message}”</div>
+        )}
+        {p.kind === 'add_library' && (
+          <>
+            <div className="asst-prop-draft">Q: {p.question}</div>
+            <textarea
+              className="asst-prop-text"
+              value={asstEdit[p.id] ?? p.answer ?? ''}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => setAsstEdit((d) => ({ ...d, [p.id]: e.target.value }))}
+              rows={3}
+            />
+          </>
         )}
         {running ? (
           <div className="asst-prop-running"><span className="asst-spin" aria-hidden="true" />Working…</div>
@@ -1049,7 +1090,7 @@ export default function Dashboard() {
   // Jo, 6 Sep: the "Your Goal" card that reads this moved from Learning to
   // System & Costs, so the fetch now fires on that view instead.
   useEffect(() => { if (view === 'insights') { loadMonthly(); } }, [view, loadMonthly]);
-  useEffect(() => { if (view === 'insights') loadSystem(); }, [view, loadSystem]);
+  useEffect(() => { if (view === 'insights' || view === 'tasks') loadSystem(); }, [view, loadSystem]);
   // Fetched on open, not polled: these rows only change once a night.
   useEffect(() => { if (view === 'lost') loadLost(); }, [view, loadLost]);
   // The follow-up queue moves on its own (the scheduler sends, cancels and
@@ -1263,7 +1304,7 @@ export default function Dashboard() {
     <>
       <aside className="side">
         <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
-        {(['pipeline', 'chats', 'tasks', 'library', 'followups', 'insights', 'lost', 'learning'] as View[]).map((v) => (
+        {(['pipeline', 'chats', 'tasks', 'followups', 'library', 'lost', 'learning', 'insights'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
             <span className="nl">{VIEW_LABELS[v] ?? v[0].toUpperCase() + v.slice(1)}</span>
@@ -1898,21 +1939,28 @@ export default function Dashboard() {
               >({pendingDrafts.length})</span>
             </h2>
 
-            {/* Pull the whole history out as one document. Jo, 28 Aug: he
-                reads it through and sends back the answers worth adding to the
-                Library. The Library was written from what we EXPECTED people
-                to ask; this is what they actually asked.
-                A plain link, not a fetch: the browser streams the download
-                straight to disk, so a year of conversations never has to fit
-                in the page's memory first. */}
-            <a
-              className="btn ghost"
-              href="/api/will/export"
-              style={{ alignSelf: 'flex-start', margin: '2px 0 14px', textDecoration: 'none' }}
-              title="Download every conversation in Will as one markdown file"
-            >
-              ⬇ Download every conversation
-            </a>
+            {/* The "Download every conversation" link that sat here (28 Aug)
+                was removed on Jo's instruction, 24 Sep. The /api/will/export
+                route still exists for a direct download if ever needed. */}
+
+            {/* Jo, 24 Sep: paid customers waiting on US. A week in Review with
+                no movement is the thing to look at before any new lead. */}
+            {system?.stuck && system.stuck.length > 0 && (
+              <div className="panel" style={{ margin: '2px 0 14px' }}>
+                <h3>Waiting on us: in Review over 7 days</h3>
+                <div className="psub">Paid, form in, and nothing has moved. Oldest first.</div>
+                {system.stuck.map((c) => (
+                  <div key={c.customerId} className="qitem">
+                    <span className="qn">{c.days}d</span>
+                    <span className="qwrap">
+                      <span className="qlabel">{c.flag} {phoneOf(c.waId)}{c.name ? ` · ${c.name}` : ''}</span>
+                      <span className="qwhy">{STATE_LABELS[c.state] ?? c.state}</span>
+                    </span>
+                    <button className="btn ghost" onClick={() => { setView('chats'); openChat(c.customerId); }}>Open chat →</button>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {pendingDrafts.map((m) => {
               const c = custById(m.customerId);
@@ -1996,13 +2044,13 @@ export default function Dashboard() {
 
         {view === 'library' && (
           <section className="view active">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ flex: 1 }}>
-                <h2 className="vt">Message Library</h2>
-                <div className="vsub">Every automated message lives here. Tap to edit.</div>
-              </div>
+            {/* Jo, 24 Sep: the button sits on the title's own line, not
+                centred against title + subtitle (it floated below the title). */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+              <h2 className="vt" style={{ margin: 0 }}>Message Library</h2>
               <button className="btn save" onClick={() => setNewTpl({ title: '', category: 'Custom', body: '' })}>+ New Message</button>
             </div>
+            <div className="vsub">Every automated message lives here. Tap to edit.</div>
             {/* The old crude "recurring unanswered question" suggestions box
                 was removed: the daily Library-suggestions digest (8am
                 Melbourne) does this properly now. It checks the actual
@@ -2066,8 +2114,6 @@ export default function Dashboard() {
             customer's chat, which is what you want next. */}
         {view === 'followups' && (
           <section className="view active">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ flex: 1 }}>
                 <h2 className="vt">
                   Scheduled Follow-ups
                   {/* The count, in bold, inline with the heading (Jo, 6 Sep) —
@@ -2079,8 +2125,6 @@ export default function Dashboard() {
                     <strong style={{ color: 'var(--ink)', fontWeight: 650, fontSize: '0.7em' }}> ({followups.length})</strong>
                   )}
                 </h2>
-              </div>
-            </div>
 
             {followups === null && <div className="sysline" style={{ margin: '20px 0' }}>Loading the queue…</div>}
             {followups !== null && followups.length === 0 && (
@@ -2147,7 +2191,7 @@ export default function Dashboard() {
         {view === 'insights' && (
           <section className="view active">
             <h2 className="vt">System &amp; Costs</h2>
-            <div className="vsub">Live from the system.</div>
+            <div className="vsub">Live from the system</div>
 
             {/* Jo, 6 Sep: moved here from the Learning view — "Your Goal", the
                 month-by-month conversion history and the Will-alone rate.
@@ -2272,36 +2316,60 @@ export default function Dashboard() {
                 <div className="costrow"><span>Auto-resolved by {ASSISTANT_NAME}</span><b>{(() => { const total = data.customers.length; if (!total) return '-'; const escalatedIds = new Set(data.tasks.filter((t) => t.customerId).map((t) => t.customerId)); const never = total - escalatedIds.size; return Math.round((never / total) * 100) + '%'; })()}</b></div>
                 <div className="costrow"><span>Messages in library</span><b>{data.templates.length}</b></div>
 
-                {/* Jo, 27 Aug: the money sits with the other headline facts,
-                    directly under the Library count. Not two headings further
-                    down. It is the number he actually came to this panel for,
-                    and it was below the fold of his own screenshot.
+                {/* Jo, 24 Sep: exact money, Console style. Replaces the
+                    "≈ estimate only" row that multiplied a call count by an
+                    assumed rate (it said $22 the day the Console said $59).
+                    See CostCards.tsx, ai-usage.ts and cost-report.ts. */}
+                {system?.ledger && system?.bill && <CostCards ledger={system.ledger} bill={system.bill} />}
 
-                    THE FLAG IS NOT DECORATION. There is no billing feed wired
-                    into this system. The only record of paid usage is the daily
-                    counter migration 029 added, and it counts DECISIONS, not
-                    dollars. So this is decisions × an assumed rate
-                    (ASSUMED_USD_PER_DECISION in lib/will/system-report.ts) and
-                    it says so on the row, in the caveat under it, and in the
-                    hover. A dollar figure on a dashboard gets quoted; this one
-                    must never be quoted as a bill. */}
-                {system?.usage && (
-                  <>
-                    <div className="costrow">
-                      <span>Spend <span className="estflag">estimate only</span></span>
-                      <b title="Not a bill. Counted decisions times an assumed per-decision rate. The real number is in the Anthropic console.">
-                        {system.usage.callsTotal === 0 ? '-' : `≈ US$${system.usage.estimatedUsd.toFixed(2)}`}
-                      </b>
+                {/* Jo, 24 Sep: Google reviews, measured. */}
+                {system?.reviews && (
+                  <div className="costcards" style={{ marginTop: 4 }}>
+                    <div className="costcard">
+                      <div className="cc-head"><span>Google review asks</span><span className="cc-pill">{system.reviews.askedOnRefund} on &quot;refund landed&quot;</span></div>
+                      <div className="cc-big">{system.reviews.asked}</div>
+                      <div className="cc-sub">sent · {system.reviews.skipped} skipped by Will&apos;s judgement · {system.reviews.referrals} referral lines</div>
+                      {system.reviews.skipReasons.length > 0 && <div className="cc-sub" title={system.reviews.skipReasons.join('\n')}>last skip: {system.reviews.skipReasons[system.reviews.skipReasons.length - 1]}</div>}
                     </div>
-                    {/* The long "not a bill" paragraph was removed here on
-                        27 Aug. The caveat itself is NOT optional. A dollar
-                        figure on a dashboard gets quoted, and this one is
-                        counted decisions times an assumed rate, not a bill. It
-                        survives where it cannot be skimmed past: the ESTIMATE
-                        ONLY flag on the row, and the full explanation on the
-                        number's hover. What went was six lines of small grey
-                        text under a single number. */}
-                  </>
+                    <div className="costcard">
+                      <div className="cc-head"><span>Reviews on Google</span><span className="cc-pill">you tick this</span></div>
+                      <div className="cc-big" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        {system.reviews.received}
+                        <button className="btn ghost" style={{ padding: '2px 10px' }} onClick={async () => { const r = await act({ action: 'reviews_received', delta: 1 }); if (r?.ok) loadSystem(); }}>+1</button>
+                        <button className="btn ghost" style={{ padding: '2px 10px' }} onClick={async () => { const r = await act({ action: 'reviews_received', delta: -1 }); if (r?.ok) loadSystem(); }}>−1</button>
+                      </div>
+                      <div className="cc-sub">{system.reviews.asked > 0 ? `${Math.round((system.reviews.received / system.reviews.asked) * 100)}% of asks became a review` : 'press +1 when a review appears on Google'}</div>
+                    </div>
+                    <div className="costcard">
+                      <div className="cc-head"><span>Autopilot coverage by hour</span><span className="cc-pill">Melbourne time</span></div>
+                      {(() => {
+                        const cov = system.coverage ?? [];
+                        const total = cov.reduce((s, h) => s + h.auto + h.human, 0);
+                        const auto = cov.reduce((s, h) => s + h.auto, 0);
+                        const worst = [...cov].sort((a, b) => b.human - a.human)[0];
+                        const max = Math.max(1, ...cov.map((h) => h.auto + h.human));
+                        return (
+                          <>
+                            <div className="cc-big">{total ? Math.round((auto / total) * 100) : 0}%</div>
+                            <div className="cc-sub">answered by Will alone{worst && worst.human > 0 ? ` · most hand-offs at ${String(worst.hour).padStart(2, '0')}:00` : ''}</div>
+                            <div className="cc-spark" style={{ position: 'static', marginTop: 8 }}>
+                              <svg width={24 * 9} height={36} aria-hidden>
+                                {cov.map((h) => {
+                                  const tot = h.auto + h.human; const hh = Math.round((tot / max) * 32); const ha = tot ? Math.round((h.auto / tot) * hh) : 0;
+                                  return (
+                                    <g key={h.hour}>
+                                      <rect x={h.hour * 9} y={36 - hh} width={7} height={hh - ha} fill="#e0a23a" />
+                                      <rect x={h.hour * 9} y={36 - ha} width={7} height={ha} fill="#1f8a5b" />
+                                    </g>
+                                  );
+                                })}
+                              </svg>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
                 )}
 
                 {/* The "Claude usage" rows. Decisions today, decisions counted
@@ -2879,7 +2947,129 @@ export default function Dashboard() {
                   <div className="kpi"><div className="kl">Assessed</div><div className="kv">{lost.counts.analysed}</div></div>
                   <div className="kpi"><div className="kl">Still winnable</div><div className="kv">{lost.counts.recoverable}</div><div className="kd">a message is ready to send</div></div>
                   <div className="kpi"><div className="kl">On us</div><div className="kv">{lost.counts.ourFault}</div><div className="kd">the rest could not have been converted</div></div>
+                  <div className="kpi"><div className="kl">Won back</div><div className="kv">{lost.winbacks?.wonBack.length ?? 0}</div><div className="kd">{lost.winbacks ? `of ${lost.winbacks.sent} win-backs sent · ${lost.winbacks.waiting} waiting · ${lost.winbacks.gaveUp} gave up` : ''}</div></div>
                 </div>
+
+                {/* Jo, 24 Sep: the win-backs that are out and unanswered, on top,
+                    so what he is waiting on is one glance and never re-sent. */}
+                {lost.winbacks && (lost.winbacks.waiting > 0 || lost.winbacks.wonBack.length > 0) && (
+                  <div className="panel" style={{ marginBottom: 10 }}>
+                    <h3>Win-backs</h3>
+                    {lost.winbacks.wonBack.length > 0 && (
+                      <>
+                        <div className="psub">Came back after the win-back</div>
+                        {lost.winbacks.wonBack.map((w) => (
+                          <div key={w.customerId} className="qitem">
+                            <span className="qn">✓</span>
+                            <span className="qwrap">
+                              <span className="qlabel">{w.flag} {phoneOf(w.waId)} · now {w.stateLabel}{w.paid ? ' · paid' : ''}</span>
+                              <span className="qwhy">replied {new Date(w.repliedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}, {Math.max(0, Math.round((new Date(w.repliedAt).getTime() - new Date(w.sentAt).getTime()) / 86400000))}d after the win-back</span>
+                            </span>
+                            <button className="btn ghost" onClick={() => { setView('chats'); openChat(w.customerId); }}>Open chat →</button>
+                          </div>
+                        ))}
+                      </>
+                    )}
+                    {lost.winbacks.waiting > 0 && (
+                      <>
+                        <div className="psub" style={{ marginTop: lost.winbacks.wonBack.length ? 10 : 0 }}>Waiting for a reply (given up after {lost.winbacks.giveUpDays} days)</div>
+                        {lost.rows.filter((r) => r.winback.kind === 'waiting').map((r) => (
+                          <div key={r.customerId} className="qitem">
+                            <span className="qn">{(r.winback as { days: number }).days}d</span>
+                            <span className="qwrap">
+                              <span className="qlabel">{r.flag} {phoneOf(r.waId)}</span>
+                              <span className="qwhy">win-back sent {new Date((r.winback as { sentAt: string }).sentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}, no reply yet</span>
+                            </span>
+                            <button className="btn ghost" onClick={() => { setView('chats'); openChat(r.customerId); }}>Open chat →</button>
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {/* Jo, 24 Sep: the work queue. Ten best bets, one button. Each
+                    queue puts the templated win-back in Tasks as a draft; the
+                    send still goes through a person and the guard. */}
+                {lost.top && lost.top.length > 0 && (
+                  <div className="panel" style={{ marginBottom: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+                      <div>
+                        <h3 style={{ margin: 0 }}>Best to try today</h3>
+                        <div className="psub">Ranked by how far they got, how recently they went quiet, and how firm the assessment is. One win-back per person, ever.</div>
+                      </div>
+                      <button
+                        className="btn take"
+                        disabled={acted.has('queue-top')}
+                        onClick={() => once('queue-top', async () => {
+                          let ok = 0;
+                          for (const id of lost.top) { const r = await act({ action: 'recover_lead', customerId: id }); if (r?.ok) ok++; }
+                          say(`${ok} of ${lost.top.length} win-backs are waiting in Tasks as drafts. Nothing has been sent.`);
+                          refresh();
+                          return ok > 0;
+                        })}
+                      >➤ Queue all {lost.top.length} as drafts</button>
+                    </div>
+                    {lost.top.map((id, i) => {
+                      const r = lost.rows.find((x) => x.customerId === id); if (!r) return null;
+                      return (
+                        <div key={id} className="qitem">
+                          <span className="qn">{i + 1}</span>
+                          <span className="qwrap">
+                            <span className="qlabel">{r.flag} {phoneOf(r.waId)} · {r.stateLabel} · quiet {r.quietDays}d</span>
+                            <span className="qwhy">{r.analysis?.recoveryAction ?? r.analysis?.reason ?? ''}</span>
+                          </span>
+                          <button className="btn ghost" onClick={() => { setView('chats'); openChat(r.customerId); }}>Open chat →</button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* The deadline campaign: everyone winnable who went quiet this
+                    tax year, with the 31 October line as the hook. */}
+                {lost.campaign && lost.campaign.customerIds.length > 0 && (
+                  <div className="panel" style={{ marginBottom: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+                      <div>
+                        <h3 style={{ margin: 0 }}>31 October deadline campaign</h3>
+                        <div className="psub">{lost.campaign.customerIds.length} winnable lead{lost.campaign.customerIds.length === 1 ? '' : 's'} went quiet since {lost.campaign.since} and have not had a win-back. The hook: &quot;The 31 October lodgement deadline is coming up, and there is still time to get yours in.&quot;</div>
+                      </div>
+                      <button
+                        className="btn take"
+                        disabled={acted.has('queue-campaign')}
+                        onClick={() => once('queue-campaign', async () => {
+                          if (!window.confirm(`Queue ${lost.campaign.customerIds.length} deadline win-backs as drafts in Tasks? Nothing is sent until you send each one.`)) return false;
+                          let ok = 0;
+                          for (const id of lost.campaign.customerIds) {
+                            const r = await act({ action: 'recover_lead', customerId: id, hook: 'The 31 October lodgement deadline is coming up, and there is still time to get yours in.' });
+                            if (r?.ok) ok++;
+                          }
+                          say(`${ok} deadline win-backs are waiting in Tasks as drafts.`);
+                          refresh();
+                          return ok > 0;
+                        })}
+                      >➤ Queue the campaign</button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Prevention: the categories that are on us, and the lever. */}
+                {lost.prevention && lost.prevention.length > 0 && (
+                  <div className="panel" style={{ marginBottom: 10 }}>
+                    <h3>Fix in Will</h3>
+                    <div className="psub">The reasons we lose people that are ours to fix, most frequent first.</div>
+                    {lost.prevention.map((p) => (
+                      <div key={p.category} className="qitem qitem-why">
+                        <span className="qn">×{p.ourFault}</span>
+                        <span className="qwrap">
+                          <span className="qlabel">{p.label}</span>
+                          <span className="qwhy">{p.fix}</span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 {/* The aggregate. Eleven leads in one bucket is a thing to fix;
                     eleven separate stories are not. */}
@@ -2956,6 +3146,9 @@ export default function Dashboard() {
                             </div>
                           </div>
                           <div className="rc-side">
+                            {r.winback?.kind === 'waiting' && <span className="stagepill" style={{ ['--pc' as string]: '#2a6fd6' }}>Win-back sent · {r.winback.days}d</span>}
+                            {r.winback?.kind === 'gave_up' && <span className="stagepill" style={{ ['--pc' as string]: '#8a8f98' }}>Gave up</span>}
+                            {r.winback?.kind === 'draft' && <span className="stagepill" style={{ ['--pc' as string]: '#c98a1f' }}>Draft in Tasks</span>}
                             <span className="stagepill" style={{ ['--pc' as string]: color }}>{a ? a.categoryLabel : r.stateLabel}</span>
                             <span className="rc-time">{r.quietDays}d</span>
                           </div>
@@ -3028,7 +3221,10 @@ export default function Dashboard() {
                               </div>
                             )}
                             <div className="tbtns">
-                              {a?.recoveryMessage && (
+                              {r.winback?.kind === 'waiting' && <span className="mini" style={{ marginTop: 0 }}>Win-back sent {new Date(r.winback.sentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}. Waiting for a reply; nothing more is sent.</span>}
+                              {r.winback?.kind === 'gave_up' && <span className="mini" style={{ marginTop: 0 }}>A win-back went out on {new Date(r.winback.sentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })} and got no reply. This lead is not messaged again.</span>}
+                              {r.winback?.kind === 'draft' && <span className="mini" style={{ marginTop: 0 }}>The draft is waiting in Tasks.</span>}
+                              {a?.recoveryMessage && (!r.winback || r.winback.kind === 'none') && (
                                 <button
                                   className="btn take"
                                   disabled={acted.has('recover-' + r.customerId)}

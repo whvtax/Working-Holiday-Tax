@@ -14,7 +14,7 @@ import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
 import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
-import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey } from './i18n';
+import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey, WINBACK_MSG, REVIEW_ASK_MSG, reviewAskTemplateKey, REFERRAL_MSG } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -130,6 +130,11 @@ export function seedTemplates(): TemplateRow[] {
       t(estimateInvoiceTemplateKey(lang), 'Post-payment & Service', `Estimate + invoice ("Send Estimate" button) · ${LANG_LABELS[lang]}`, ESTIMATE_INVOICE_MSG[lang])),
     // Sent by the "Mark Lodged" button.
     t('lodged_confirmation', 'Post-payment & Service', 'Lodged confirmation ("Mark Lodged" button)', APPROVED.lodged_confirmation),
+    // Win-back (Jo, 24 Sep): sent from the Lost Leads tab, always outside the
+    // 24h window, so each language needs the matching Meta template.
+    t('winback_en', 'Follow-ups', 'Win-back for a lost lead (EN, Meta template winback_en, {{1}} name {{2}} the personal message)', WINBACK_MSG.en, true),
+    t('winback_de', 'Follow-ups', 'Win-back for a lost lead (DE, Meta template winback_de)', WINBACK_MSG.de, true),
+    t('winback_ja', 'Follow-ups', 'Win-back for a lost lead (JA, Meta template winback_ja)', WINBACK_MSG.ja, true),
     // German and Japanese only (Jo, 17 Sep: same principle as estimate_invoice
     // and signature), so the "your return has been lodged" notice does not
     // land in English right after everything else has been in the customer's
@@ -140,7 +145,14 @@ export function seedTemplates(): TemplateRow[] {
     // job, one entry per language (the scheduler picks the customer's language and
     // falls back to English), same shape as the questionnaire confirmation.
     ...(Object.keys(REVIEW_REQUEST_MSG) as Lang[]).map((lang) =>
-      t(reviewRequestTemplateKey(lang), 'Post-payment & Service', `Google review request (1h after lodged) · ${LANG_LABELS[lang]}`, REVIEW_REQUEST_MSG[lang])),
+      t(reviewRequestTemplateKey(lang), 'Post-payment & Service', `Google review request (older wording, no longer sent) · ${LANG_LABELS[lang]}`, REVIEW_REQUEST_MSG[lang])),
+    // Jo, 24 Sep: the review ask that replaced it. {{1}} name, {{2}} the one
+    // personal line Will writes. Sent when the refund lands, or 14 days after
+    // lodgement. Meta template review_ask_{lang} for en/de/ja.
+    ...(Object.keys(REVIEW_ASK_MSG) as Lang[]).map((lang) =>
+      t(reviewAskTemplateKey(lang), 'Post-payment & Service', `Google review ask ({{1}} name, {{2}} personal line) · ${LANG_LABELS[lang]}`, REVIEW_ASK_MSG[lang], lang === 'en' || lang === 'de' || lang === 'ja')),
+    ...(Object.keys(REFERRAL_MSG) as Lang[]).map((lang) =>
+      t(`referral_${lang}`, 'Post-payment & Service', `Referral line after a positive reply to the review ask · ${LANG_LABELS[lang]}`, REFERRAL_MSG[lang])),
 
     // The questionnaire-received confirmation, one entry per language the
     // scheduler can send it in. Will picks the row matching the customer's
@@ -178,7 +190,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-09-24-opening-price-rewrite';
+export const TEMPLATE_BACKFILL_VERSION = '2026-09-24-review-ask';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

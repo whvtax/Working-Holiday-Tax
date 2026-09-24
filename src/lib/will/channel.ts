@@ -651,7 +651,7 @@ export async function fetchWaMedia(
 // ------------------------------------------------------------------
 import { FLOW_TEMPLATES } from './state-machine';
 import {
-  formReceivedTemplateKey, reviewRequestTemplateKey,
+  formReceivedTemplateKey, reviewAskTemplateKey,
   requestAbnTemplateKey, handoffHoldingTemplateKey, paymentReceivedTemplateKey,
 } from './i18n';
 import { medicareTemplateKey, estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey } from './i18n'; // medicare_<lang>, estimate_invoice_<lang>, signature_<lang>, lodged_confirmation_<lang> (audit, 5 Sep / 17 Sep)
@@ -686,11 +686,14 @@ export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
   { name: 'estimate_invoice', params: 2, optional: false },
   { name: 'signature', params: 0, optional: false },
   { name: 'lodged_confirmation', params: 0, optional: false },
+  // Win-back from the Lost Leads tab (Jo, 24 Sep): {{1}} name, {{2}} the hook.
+  ...META_LANGS.map((lang) => ({ name: `winback_${lang}`, params: 2, optional: false })),
   // System lines with a free-text fallback inside the window.
   { name: 'medicare', params: 0, optional: true },
   ...META_LANGS.flatMap((lang) => [
     { name: formReceivedTemplateKey(lang), params: 0, optional: true },
-    { name: reviewRequestTemplateKey(lang), params: 0, optional: true },
+    // Jo, 24 Sep: review_ask ({{1}} name, {{2}} personal line) replaced review_request.
+    { name: reviewAskTemplateKey(lang), params: 2, optional: false },
     { name: requestAbnTemplateKey(lang), params: 0, optional: true },
     { name: handoffHoldingTemplateKey(lang), params: 0, optional: true },
     { name: paymentReceivedTemplateKey(lang), params: 0, optional: true },

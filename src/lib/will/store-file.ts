@@ -3,6 +3,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
+import type { AiUsageRow } from './ai-usage';
 import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
   LostAnalysisRow, DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS,
@@ -531,6 +532,20 @@ export class FileStore implements Store {
     const db = await load();
     db.settings[key] = value;
     await persist();
+  }
+
+  async addAiUsage(row: AiUsageRow): Promise<void> {
+    const db = await load();
+    const list = (db.settings['__ai_usage'] as AiUsageRow[] | undefined) ?? [];
+    list.push({ ...row, id: randomUUID() });
+    db.settings['__ai_usage'] = list.slice(-5000);
+    await persist();
+  }
+
+  async listAiUsage(sinceIso: string): Promise<AiUsageRow[]> {
+    const db = await load();
+    const list = (db.settings['__ai_usage'] as AiUsageRow[] | undefined) ?? [];
+    return list.filter((r) => r.at >= sinceIso);
   }
 
   async listCounters(prefix: string): Promise<{ key: string; value: number }[]> {

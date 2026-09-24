@@ -98,7 +98,9 @@ it('reads the Library once per tick across a mixed batch, not once per job', asy
   expect(bodies).toEqual(expect.arrayContaining([
     'Got your form, thanks.',
     'Medicare exemption info.',
-    'Could you leave us a review?',
+    // Jo, 24 Sep: the review ask is composed (name + Will's line + the fixed
+    // ask), not read from the Library, so it is the template text here.
+    expect.stringMatching(/^Hi Ana 😊 /),
     'Hang tight, we are on it.',
   ]));
 });

@@ -38,6 +38,6 @@ describe('assistant Move card (approveProposal)', () => {
   });
 
   it('is rebuilt when the customer list changes, so the check reads the current stage', () => {
-    expect(approveBody).toMatch(/\}, \[asstDone, asstRunning, asstEdit, refresh, data\.customers\]\);/);
+    expect(approveBody).toMatch(/\}, \[asstDone, asstRunning, asstEdit, refresh, data\.customers, loadKnowledge\]\);/);
   });
 });

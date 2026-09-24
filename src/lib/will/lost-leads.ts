@@ -422,3 +422,44 @@ export function aggregateCategories(analyses: Pick<LostAnalysis, 'category' | 'r
     }))
     .sort((a, b) => b.n - a.n || a.category.localeCompare(b.category));
 }
+
+// ── Who to try first (Jo, 24 Sep) ────────────────────────────────────────
+// 104 "winnable" cards in one list is not a work queue. The score says who
+// is most likely to answer a win-back TODAY: how far they got before going
+// quiet (someone who saw the price is warmer than someone who said hello),
+// how recently they went quiet, how firm the assessment is, and whether a
+// Meta template exists in their language (it does for en/de/ja).
+export interface PriorityInput {
+  state: string;
+  quietDays: number;
+  recoverable: 'YES' | 'MAYBE' | 'NO' | null;
+  lang: string | null;
+  trigger: LostTrigger | null;
+}
+export function priorityScore(x: PriorityInput): number {
+  if (!x.recoverable || x.recoverable === 'NO' || x.trigger === 'opted_out') return 0;
+  let s = x.recoverable === 'YES' ? 30 : 15;
+  s += x.state === 'PRICE_SENT' ? 30 : x.state === 'QUALIFIED' ? 20 : x.state === 'NEW_LEAD' ? 8 : 12;
+  s += x.quietDays <= 14 ? 30 : x.quietDays <= 45 ? 20 : x.quietDays <= 90 ? 10 : 3;
+  if (x.lang === 'en' || x.lang === 'de' || x.lang === 'ja') s += 10;
+  if (x.trigger === 'declined') s -= 10; // a plain "no" is colder than silence
+  return s;
+}
+
+/** What to change in Will when a category keeps coming up "on us". The
+ *  categories are the model's; the fixes are the owner's levers. */
+export const PREVENTION_HINTS: Record<LostCategory, string> = {
+  price: 'The price is fixed, so the lever is what comes before it: the opening must land the review (residency, Medicare, deductions) before the number. Check the opening and o5.',
+  silence_after_price: 'The price message is the last thing they read. Check its wording, and that the 24h / day 3 / day 7 follow-ups actually went out (Follow-ups tab, Meta templates).',
+  wanted_estimate_first: 'o1 and "estimate before paying" in the Library answer this; if it keeps losing people, the wording is not convincing. Rewrite them.',
+  trust: 'The legitimacy answer (agent details, reviews, client agreement) should go out on the first hesitation, not after three messages. Check the "is this legit" entry.',
+  diy: 'The o4 / "why use an agency" answers need one concrete thing DIY misses. Vague "we review everything" does not move this group.',
+  competitor: 'The comparing-providers rule (12a) has two questions; check they are being asked. Otherwise nothing to fix: some people shop on price.',
+  not_eligible: 'Nothing to fix. Make sure Will does not chase these.',
+  we_were_slow: 'This is the one that is purely on us: a reply that took hours. Check task turnaround and Autopilot coverage for that day.',
+  confusing: 'Find the message they got confused on (open the chat). Usually a long reply where two lines would do. Shorten the Library entry involved.',
+  timing: 'Right service, wrong moment: these are the ones a deadline campaign (31 Oct, 1 Jul) brings back. No wording fix.',
+  never_engaged: 'They said hello and left. The opening is all they saw; if this group is large, test a shorter opening.',
+  unclear: 'Open the chat. If the conversation truly says nothing, there is nothing to learn here.',
+};
+
