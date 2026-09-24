@@ -3184,14 +3184,21 @@ export default function Dashboard() {
                   setKnow(null); loadKnowledge(); refresh();
                 }}>✓ Approve & Go Live</button>
               )}
-              <button className="btn save" onClick={async () => {
-                const res = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: know.id, answer: knowText }) });
-                const r = await res.json().catch(() => null);
-                const t = actionToast(r, 'Saved, live for all new conversations ✓');
-                say(t.message);
-                if (!t.ok) return;
-                setKnow(null); loadKnowledge(); refresh();
-              }}>Save & Go Live</button>
+              {/* Jo, 24 Sep: on a DRAFT, "Save" only edited the text and left it
+                  a draft, which its label ("Go Live") did not say, so an edited
+                  draft looked approved and was not. One button per state now:
+                  a draft gets Approve (saves the edit, then approves), an active
+                  entry gets Save. */}
+              {!knowledge.drafts.some((d) => d.id === know.id) && (
+                <button className="btn save" onClick={async () => {
+                  const res = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: know.id, answer: knowText }) });
+                  const r = await res.json().catch(() => null);
+                  const t = actionToast(r, 'Saved, live for all new conversations ✓');
+                  say(t.message);
+                  if (!t.ok) return;
+                  setKnow(null); loadKnowledge(); refresh();
+                }}>Save & Go Live</button>
+              )}
             </div>
           </div>
         )}

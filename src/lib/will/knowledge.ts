@@ -63,6 +63,26 @@ export async function retrieveKnowledge(message: string, opts?: { lang?: string;
   return scored.map(({ e, score }) => ({ intent: e.intent, question: e.question, answer: e.answer, score }));
 }
 
+/** The single closest active entry, with its score, even when it is below the
+ *  live threshold. For the handoff diagnostic only (Jo, 24 Sep): "the nearest
+ *  Library answer was X at 0.21, threshold 0.35" tells the owner whether the
+ *  fix is a new entry or better keywords on an existing one. */
+export async function nearestKnowledge(message: string, opts?: { lang?: string }): Promise<{ intent: string; question: string; score: number } | null> {
+  const tokens = new Set([...tokenize(message), ...bridgeTokens(message).flatMap((t) => (t.includes(' ') ? t.split(' ') : [t]))]);
+  if (tokens.size === 0) return null;
+  let entries: KnowledgeRow[];
+  try { entries = await getStore().listKnowledge('active'); } catch { return null; }
+  const lang = opts?.lang;
+  let best: { intent: string; question: string; score: number } | null = null;
+  for (const e of entries) {
+    if (lang && e.lang !== lang && e.lang !== 'en') continue;
+    const score = scoreEntry(e, tokens);
+    if (score > 0 && (!best || score > best.score)) best = { intent: e.intent, question: e.question, score };
+  }
+  return best;
+}
+export const KNOWLEDGE_THRESHOLD = 0.35;
+
 /** Cheap keyword extractor for storing entries (used by the mining pipeline). */
 export function extractKeywords(text: string, max = 12): string[] {
   const counts = new Map<string, number>();

@@ -10,7 +10,8 @@ import { CustomerContext } from './playbook';
 import { Turn } from './claude';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
 import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, formReceivedMessage, formReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang } from './i18n';
-import { retrieveKnowledge } from './knowledge';
+import { retrieveKnowledge, nearestKnowledge } from './knowledge';
+import { buildHandoffDiagnostic, taskContextWithDiagnostic } from './handoff-diagnostic';
 import { deliverOut, fetchWaMedia } from './channel';
 import { autopilotReplyDelaySeconds } from './config';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
@@ -908,14 +909,24 @@ export async function decideAndAct(
     });
     pendingMessageId = m.id;
   } else if (outcome.kind === 'human_task' && outcome.task) {
-    // Carry the reviewer's note into the task context so the owner sees what the
-    // second set of eyes noticed, alongside the message that triggered the task.
-    const taskContext = outcome.reviewNote ? `${text}\n\nReviewer: ${outcome.reviewNote}` : text;
+    // WHY (Jo, 24 Sep): the task carries a full account of why Will could not
+    // answer, so a screenshot of it is enough to fix the cause. See
+    // handoff-diagnostic.ts. The reviewer's note rides inside it.
+    const decision = outcome.decision;
+    const modelChose = decision.action === 'human_task' && !outcome.guardViolations?.length;
+    const nearest = knowledge.length ? null : await Promise.resolve().then(() => nearestKnowledge(text, { lang: customer.lang ?? undefined })).catch(() => null);
+    const diagnostic = buildHandoffDiagnostic({
+      customerText: text, lang: customer.lang, state: customer.state, paid: customer.paid, income: customer.income,
+      decision, knowledgeUsed: knowledge.map((k) => k.intent), nearest,
+      guardViolations: outcome.guardViolations, reviewNote: outcome.reviewNote,
+      engineReason: modelChose ? undefined : outcome.task.reason,
+    });
+    const taskContext = taskContextWithDiagnostic(text, diagnostic);
     await raiseOrUpdateTask(store, customer, {
       reason: outcome.task.reason, severity: outcome.task.severity,
       newContext: taskContext, suggestedReply: outcome.task.suggestedReply ?? null,
     });
-    await store.audit('assistant', 'human_task_created', { reason: outcome.task.reason });
+    await store.audit('assistant', 'human_task_created', { reason: outcome.task.reason, diagnostic });
   } else if (outcome.kind === 'silent' && outcome.guardViolations?.includes('AI_PAUSED_FOR_CUSTOMER')) {
     // Will is switched off for this customer — either Jo took the wheel by
     // hand, or the auto-off-at-Review rule fired (Jo, 6 Sep). Either way the

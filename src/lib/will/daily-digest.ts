@@ -25,8 +25,88 @@ import { extractKeywords } from './knowledge';
 import { mineKnowledge, MinedEntry } from './claude';
 import { redactSensitive, shortLabel } from './digest';
 import { localMidnightUtc } from './config';
+import { APPROVED } from './approved-messages';
+import {
+  FORM_RECEIVED_MSG, REVIEW_REQUEST_MSG, PROFESSIONAL_QUESTION_MSG, PAYMENT_RECEIVED_MSG,
+  HANDOFF_HOLDING_MSG, DOCUMENTS_RECEIVED_MSG, REQUEST_ABN_MSG, MEDICARE_MSG,
+  ESTIMATE_INVOICE_MSG, SIGNATURE_MSG, LODGED_CONFIRMATION_MSG,
+} from './i18n';
 
 const MELBOURNE = 'Australia/Melbourne';
+
+// ── WHAT IS NOT WORTH MINING (Jo, 24 Sep) ──────────────────────────────────
+// 100 drafts piled up in the Learning tab and most of them were the same
+// thing: "Option 1" / a payment screenshot / "yes please" followed by the
+// approved price message or the payment-received message, mined into yet
+// another "payment_details" or "next_steps_after_payment". Nothing was
+// learned from any of them, because the reply was a script Will already has.
+// Three filters, all before the model is even called:
+
+/** A customer message that is not a question: a media placeholder, a reaction,
+ *  or a one-word acknowledgement. There is no question to learn an answer to. */
+export function isTrivialCustomerText(text: string): boolean {
+  const t = (text || '').trim();
+  if (!t) return true;
+  if (/^[📷📎🎤🎥📄🎵🗑️]/u.test(t)) return true;
+  if (/^\[?(?:photo|image|document|video|audio|sticker|voice|message)\b/i.test(t)) return true;
+  if (/reacted to your message/i.test(t)) return true;
+  if (/open whatsapp to view/i.test(t)) return true;
+  if (t.length < 4) return true;
+  // "yes", "ok", "option 1", "thanks", "done", "sure", "paid", in a few languages
+  if (/^(?:yes|yes please|yeah|yep|ok(?:ay)?|sure|sounds good|thanks?|thank you|thx|no thanks|done|paid|sent|option ?[12](?: please)?|[12]|tfn|abn|tfn ?\+ ?abn|great|perfect|cool|good|no|nope|ja|nein|danke|si|sí|gracias|oui|merci|non|hai|はい|いいえ|ありがとう(?:ございます)?)[\s!.:)😊👍]*$/iu.test(t)) return true;
+  return false;
+}
+
+const norm = (s: string) => (s || '').toLowerCase().replace(/https?:\S+/g, ' ').replace(/\{\{\d+\}\}/g, ' ').replace(/[^a-z0-9à-ÿ\u3040-\u30ff\u4e00-\u9fff]+/gi, ' ').trim();
+
+function flattenApproved(): string[] {
+  const out: string[] = [];
+  const walk = (v: unknown) => {
+    if (typeof v === 'string') out.push(v);
+    else if (v && typeof v === 'object') for (const x of Object.values(v as Record<string, unknown>)) walk(x);
+  };
+  walk(APPROVED);
+  for (const m of [FORM_RECEIVED_MSG, REVIEW_REQUEST_MSG, PROFESSIONAL_QUESTION_MSG, PAYMENT_RECEIVED_MSG,
+    HANDOFF_HOLDING_MSG, DOCUMENTS_RECEIVED_MSG, REQUEST_ABN_MSG, MEDICARE_MSG, ESTIMATE_INVOICE_MSG,
+    SIGNATURE_MSG, LODGED_CONFIRMATION_MSG]) walk(m);
+  return out;
+}
+
+/** The distinctive part of each approved message: everything after its first
+ *  line (the first line carries the greeting / name / amount and varies), or
+ *  the whole thing when it is one line. Only signatures long enough to be
+ *  unmistakable are kept. */
+let approvedSignatures: string[] | null = null;
+function signatures(): string[] {
+  if (approvedSignatures) return approvedSignatures;
+  const sigs: string[] = [];
+  for (const body of flattenApproved()) {
+    const lines = body.split('\n').map((l) => l.trim()).filter(Boolean);
+    const core = lines.length > 1 ? lines.slice(1).join(' ') : body;
+    const n = norm(core);
+    // 40 characters of Latin text, or 15 of Japanese, is unmistakable
+    if (n.length >= 40 || (n.length >= 15 && /[\u3040-\u30ff\u4e00-\u9fff]/.test(n))) sigs.push(n);
+    // the price messages: the bank block alone is a signature too
+    if (/account name/i.test(body)) sigs.push(norm('Account Name: The Accounting Academy BSB: 062692 Account Number: 81049952'));
+  }
+  approvedSignatures = [...new Set(sigs)];
+  return approvedSignatures;
+}
+
+/** True when the reply that went out IS one of the approved messages (or the
+ *  Library-edited copy of one): the opening, a price message, the payment
+ *  confirmation, the form link. A script is not something to learn from. */
+export function isApprovedScriptReply(reply: string): boolean {
+  const r = norm(reply);
+  if (!r) return true;
+  for (const sig of signatures()) {
+    if (r.includes(sig) || sig.includes(r)) return true;
+  }
+  // The payment-received family in every wording: form link + "get back to you"
+  if (/workingholidaytax\.com\.au\/tax-form/i.test(reply) && /(?:payment|paid|received|thank|zahlung|pago|paiement|pagamento|お支払い|入金)/i.test(reply)) return true;
+  return false;
+}
+
 
 export interface DigestCandidate {
   question: string;
@@ -55,9 +135,10 @@ export async function findDailyCandidates(startIso: string, endIso: string): Pro
       const m = sorted[i];
       if (m.direction !== 'IN') continue;
       const text = (m.body ?? '').trim();
-      if (!text) continue;
+      if (!text || isTrivialCustomerText(text)) continue; // a photo, a reaction, "option 1": no question here
       const reply = sorted.slice(i + 1).find((x) => x.direction === 'OUT' && x.status === 'SENT' && (x.author === 'HUMAN' || x.author === 'AI'));
       if (!reply || !(reply.body ?? '').trim()) continue;
+      if (isApprovedScriptReply(reply.body ?? '')) continue; // the answer was a script Will already has
       const hits = await retrieveKnowledge(text).catch(() => []);
       if (hits.length > 0) continue; // already covered — nothing new to learn here
       candidates.push({
@@ -122,9 +203,14 @@ export async function runDailyDigest(nowMs: number): Promise<'mined' | 'already_
       const conversations = candidates.map((c) => ({
         messages: [{ role: 'customer', text: c.question }, { role: 'assistant', text: c.answer }],
       }));
-      const mined = await mineKnowledge(conversations);
-
+      // The model is handed every question the Library already holds, active
+      // AND draft, and told not to produce a variant of any of them. A
+      // keyword score cannot tell "how do I pay?" from "what are the payment
+      // details?" reliably in either direction (tried, 24 Sep: it matched
+      // "TFN only price" to "help registering an ABN"); the model can.
       const existing = await store.listKnowledge();
+      const mined = await mineKnowledge(conversations, existing.map((e) => `${e.intent}: ${e.question}`));
+
       const seen = new Set(existing.map((e) => normQ(e.question)));
       for (const e of mined) {
         const k = normQ(e.question);

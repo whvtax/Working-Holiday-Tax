@@ -31,6 +31,10 @@ export interface Decision {
   suggested_reply?: string; // draft for the human when action=human_task
   new_state?: CustomerState;
   task_reason?: string;
+  /** For the owner only (Jo, 24 Sep): why exactly Will could not answer, in
+   *  enough detail to fix the cause: the rule that stopped it, what it would
+   *  have needed, and whether a Library answer would let it answer next time. */
+  task_detail?: string;
   task_severity?: 'URGENT' | 'REVIEW' | 'CONFLICT';
   confidence: number;
   mock?: boolean;
@@ -56,6 +60,19 @@ const DECIDE_TOOL = {
           + 'included", "Wants refund after paying", "Confused about myGov login". Never a '
           + 'paragraph, never your reasoning, never a summary of the conversation. Put any detail '
           + 'in suggested_reply instead.',
+      },
+      task_detail: {
+        type: 'string',
+        description:
+          'If action=human_task: for the OWNER only, never sent to the customer. Three to five '
+          + 'sentences that let him fix the cause so it never becomes a task again. State precisely: '
+          + '(1) what the customer is actually asking, in plain words; (2) WHICH rule or gap stopped you '
+          + '(name it: "MASTER RULE, not confident", "professional determination: residency", "no '
+          + 'approved answer covers X", "myGov troubleshooting", "refund/complaint", "conflicting '
+          + 'instructions between A and B"); (3) what you would have needed to answer it yourself; '
+          + '(4) end with exactly one line "FIX: " followed by one of: "add a Library answer for: <the '
+          + 'question in the customer\'s words>", "the team\'s call, no Library answer can cover this", '
+          + 'or "clarify the rule: <which>". Be concrete, never generic.',
       },
       task_severity: { type: 'string', enum: ['URGENT', 'REVIEW', 'CONFLICT'] },
       confidence: { type: 'number', description: '0..1. Below 0.8 you must choose human_task.' },
@@ -98,6 +115,7 @@ function validateDecision(raw: unknown): Decision {
     suggested_reply: typeof d.suggested_reply === 'string' ? stripDashes(d.suggested_reply) : undefined,
     new_state: newState,
     task_reason: typeof d.task_reason === 'string' ? d.task_reason : undefined,
+    task_detail: typeof d.task_detail === 'string' ? d.task_detail.slice(0, 1200) : undefined,
     task_severity: d.task_severity === 'URGENT' || d.task_severity === 'CONFLICT' ? d.task_severity : 'REVIEW',
     confidence: conf,
   };
@@ -524,32 +542,43 @@ const MINE_TOOL = {
   },
 } as const;
 
-const MINE_SYSTEM = `You are building a knowledge base for "Working Holiday Tax", an Australian tax service for Working Holiday Makers (backpackers), from real WhatsApp conversations.
+const MINE_SYSTEM = `You are curating the Library of "Working Holiday Tax", an Australian tax service for Working Holiday Makers (backpackers), from real WhatsApp conversations. The Library is the set of learned answers Will (the WhatsApp assistant) may reuse. The owner reviews every entry you propose by hand, so a bad or duplicate proposal costs him time. Jo, 24 Sep: 100 proposals were reviewed and 98 were deleted. MOST NIGHTS THE RIGHT OUTPUT IS ZERO ENTRIES. Propose an entry only when you are confident it passes every test below.
 
-These conversations are the business owner's OLD way of working. They are useful for ONE thing only: to see the distinct QUESTIONS and topics that CUSTOMERS raise. They are NOT a model for how to answer. Learn WHAT customers ask, never HOW the old agent replied.
+WHAT GOES IN THE LIBRARY (all of these must be true):
+1. A real customer QUESTION or situation, in the customer's own words, that a future customer will plausibly ask again.
+2. The Library does not already have it. If a list of questions ALREADY IN THE LIBRARY is provided, an entry that asks the same thing in other words is a duplicate: skip it.
+3. It is not one of Will's approved scripts. Never propose: the two-option price menu / "what are your prices", payment details / "how do I pay", "I've paid, what happens next", "form received", "documents received", "your return has been lodged", "when will my refund arrive", the Google review request, the signature request, "I'm not interested", "I'll think about it", the myGov reassurance, the Medicare exemption instructions. Will already sends all of these.
+4. It is something Will is ALLOWED to answer: our process, what we need from the customer and how to send it, what the fee is for, where things stand, practical logistics (address, phone number, paying from overseas, closed bank account), and referrals to the right outside service (Fair Work, TIS National). Good examples of entries worth adding: "work-from-home expenses, what do I need to provide" (a diary of hours), "my employer won't pay my wages" (Fair Work referral), "I had an ABN but no income through it", "I lost my ABN invoices, what now" (bank statement), "my refund is delayed by an ATO review", "where are you based".
+5. It is NOT a professional determination. Never propose an answer that decides or explains a customer's tax residency, tax rate, threshold, Medicare levy, what they can or cannot claim, whether a receipt is eligible, their refund amount, or why they owe. Those are the team's calls. If the customer asked one of these, the correct Will answer already exists ("that is exactly what the team checks in the review"): skip it.
+6. It is not one-off logistics tied to one person, not Will's own question to the customer, and not a message with no question in it (a photo, a reaction, "yes", "option 1", "thanks").
 
-Your job: extract each distinct customer question/topic, and for each recurring or important one, write ONE excellent answer to send in future.
-
-CRITICAL RULES FOR THE ANSWERS:
-- Do NOT copy or imitate the human agent's wording, tone, or approach. The old replies are often rushed, impatient or informal — that is exactly what we are replacing. Produce the OPPOSITE: warm, patient, professional, polite, genuinely helpful, concise.
-- The company's approved messages, boundaries and prices always take precedence over anything in these old conversations. If an old reply conflicts with the boundaries below, ignore the old reply entirely.
-- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). The fee is for the review (Jo, 20 Sep): it does not depend on the outcome and is non-refundable in every case. There is NO refund-shortfall guarantee any more: NEVER say we refund the difference, NEVER promise to refund the fee, NEVER promise a refund, and NEVER say they are "never out of pocket". Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
+HOW TO WRITE THE ANSWER:
+- Warm, short, WhatsApp-natural. Two to four sentences. No headings, no bullet lists, no bold (**), no em dash or en dash, no "Great question!".
+- Say what to do and where to send it ("send it to me here"), then stop. Do not add "we'll guide you through the process" or "let me know if you have questions".
+- Do NOT copy the human agent's wording or tone from the conversation; only learn WHAT was asked and what the correct business answer is.
+- Business facts that never change: fixed prices $220 (TFN only) and $385 (TFN + ABN), paid upfront. The fee is for our team's review of the customer's situation, so it stays the same whatever the result; say it that way, in the positive, never "non-refundable". There is NO refund-shortfall guarantee: never say we refund the difference, never promise a refund, never "never out of pocket". Bank details: Account Name The Accounting Academy, BSB 062692, Account Number 81049952, never any other name. Returns are reviewed and signed off by a registered tax agent; never write "we are registered tax agents". Never claim to be a bot or AI. Never give myGov / ATO login steps. No dollar amount other than $220 and $385.
 - Write answers in English.
 - Merge duplicate questions into one entry; set examples to the real phrasings seen; set keywords to the important searchable words; set a short intent label.
-- Only include genuine, reusable questions (skip one-off logistics tied to a single person).
 
-Output strictly by calling the knowledge_entries tool.`;
+Output strictly by calling the knowledge_entries tool. An empty entries list is a correct and common result.`;
 
 export async function mineKnowledge(
   conversations: { messages: { role: string; text: string }[]; converted?: boolean }[],
+  /** Every question the Library already holds (active and draft). The model
+   *  is told not to produce a variant of any of them (Jo, 24 Sep). */
+  existingQuestions: string[] = [],
 ): Promise<MinedEntry[]> {
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key || conversations.length === 0) return [];
   const out: MinedEntry[] = [];
   const BATCH = 12;
+  const existingBlock = existingQuestions.length
+    ? `ALREADY IN THE LIBRARY (do not produce an entry for any of these, or a close variant of one):\n` +
+      existingQuestions.slice(0, 400).map((q) => `- ${q.replace(/\s+/g, ' ').slice(0, 160)}`).join('\n') + '\n\n'
+    : '';
   for (let i = 0; i < conversations.length; i += BATCH) {
     const batch = conversations.slice(i, i + BATCH);
-    const convText = batch.map((c, idx) =>
+    const convText = existingBlock + batch.map((c, idx) =>
       `--- Conversation ${idx + 1}${c.converted ? ' (CONVERTED: customer paid)' : ''} ---\n` +
       c.messages.map((m) => `${m.role === 'customer' ? 'Customer' : 'Agent'}: ${m.text}`).join('\n'),
     ).join('\n\n');
@@ -559,7 +588,7 @@ export async function mineKnowledge(
       system: MINE_SYSTEM,
       tools: [MINE_TOOL],
       tool_choice: { type: 'tool', name: 'knowledge_entries' },
-      messages: [{ role: 'user', content: convText.slice(0, 60000) }],
+      messages: [{ role: 'user', content: convText.slice(0, 100000) }],
     });
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
