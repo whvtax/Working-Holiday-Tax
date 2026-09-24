@@ -178,7 +178,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-09-20-fee-for-review';
+export const TEMPLATE_BACKFILL_VERSION = '2026-09-24-opening-price-rewrite';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

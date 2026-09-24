@@ -71,14 +71,14 @@ describe('stripBankBlock (never repeat the bank details)', () => {
 
   test('the fee line lives in the price messages; the opening is short', () => {
     for (const msg of [APPROVED.price_tfn, APPROVED.price_tfn_abn]) {
-      expect(msg).toContain('The fee covers the full review of your tax return by our team and is not dependent on the outcome.');
-      expect(msg).toContain('so the fee is non-refundable');
+      expect(msg).toContain("The fee covers our team's full review, preparation and lodgment of your tax return.");
+      expect(msg).not.toMatch(/non-refundable|not dependent on the outcome/i);
       expect(msg).not.toMatch(/refund the difference/i);
     }
     expect(APPROVED.opening).not.toContain('refund the difference');
     expect(APPROVED.opening).toContain('$220');
     expect(APPROVED.opening).toContain('$385');
-    expect(APPROVED.opening).toMatch(/Which option suits you\?$/);
+    expect(APPROVED.opening).toMatch(/Which option works best for you\?$/);
     // The amount is stated in the price message, next to the details the
     // customer copies into their bank app, and it is what the system reads
     // the chosen track from.

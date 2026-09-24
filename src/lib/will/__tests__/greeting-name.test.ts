@@ -74,7 +74,7 @@ describe('the menu opening', () => {
     expect(APPROVED.opening.startsWith('Hey!')).toBe(true);
     expect(APPROVED.opening).toContain('TFN: $220');
     expect(APPROVED.opening).toContain('TFN + ABN: $385');
-    expect(APPROVED.opening).toContain('Which option suits you?');
+    expect(APPROVED.opening).toContain('Which option works best for you?');
   });
 
   it('keeps its paragraph breaks (blank lines between blocks)', () => {

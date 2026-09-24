@@ -104,7 +104,7 @@ const BANK_LINE_RE = new RegExp([
   // onto a conversation that was about something else, which is precisely
   // what Jo banned on 3 Sep (audit, 4 Sep). The old guarantee phrasings stay
   // in the list so a Library copy that was not synced yet is still caught.
-  'the fee covers the full review', 'not dependent on the outcome', 'decided by the ato',
+  "the fee covers our team's full review", 'the fee covers the full review', 'not dependent on the outcome', 'decided by the ato',
   'if your refund is less than', 'refund the difference', 'if you owe money to the ato',
   'wenn deine r[üu]ckerstattung', 'differenz', 'falls du dem ato',
   'si tu reembolso es (?:menor|inferior)', 'la diferencia', 'si le debes',

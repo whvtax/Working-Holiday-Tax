@@ -15,41 +15,47 @@ export const APPROVED = {
   // first name dynamically ("Hey Sarah! 😊") when a clean one is known; see
   // greetingName() and the NEW_LEAD branch in claude.ts. Paragraphs are
   // separated by blank lines on purpose: WhatsApp renders them as blocks.
-  opening: `Hey! 😊 Of course, we'd be happy to help.
+  // 24 Sep (Jo): shorter opener, "don't miss anything you're entitled to"
+  // instead of "maximise your refund" (no implied refund promise now that the
+  // fee is for the review), and "works best for you" as the closing question.
+  opening: `Hey! 😊 Happy to help.
 
 We have two options, depending on your situation:
 
 *TFN: $220*
-Our team will fully review your tax return, including your tax residency, Medicare and all eligible deductions, to maximise your refund.
+Our team fully reviews your tax return, including your tax residency, Medicare and all eligible deductions, to make sure you don't miss anything you're entitled to.
 
 *TFN + ABN: $385*
-This includes everything in the TFN option, plus a full business schedule covering your ABN income and expenses, all in one tax return.
+Everything in the TFN option, plus a full business schedule covering your ABN income and expenses, all in one tax return.
 
-Which option suits you?`,
+Which option works best for you?`,
 
   // Sent once the customer has chosen a track (Jo, 3 Sep). The prices already
   // went out in the opening, so this only confirms the total for the chosen
-  // track, gives the bank details and states what the fee is for (Jo, 20 Sep:
-  // the fee is for the review, it does not depend on the outcome, and there
-  // is no refund-shortfall guarantee any more). Same shape for both
+  // track, gives the bank details and says in one line what the fee is for
+  // (Jo, 24 Sep: "review, preparation and lodgment", nothing about outcomes or
+  // refunds at the moment of paying; "non-refundable" is said only when a
+  // customer asks, in the objections and the Library). Same shape for both
   // tracks; only the amount differs.
-  price_tfn: `Perfect! Here are the payment details for the $220:
+  price_tfn: `Great! Here are the payment details for the $220:
+
 Account Name: The Accounting Academy
 BSB: 062692
 Account Number: 81049952
 
-The fee covers the full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.
+The fee covers our team's full review, preparation and lodgment of your tax return.
 
-Once you've made the payment, just send us a screenshot and we'll get started!`,
+Just send us a screenshot of your payment and we'll get started!`,
 
-  price_tfn_abn: `Perfect! Here are the payment details for the $385:
+  price_tfn_abn: `Great! Here are the payment details for the $385:
+
 Account Name: The Accounting Academy
 BSB: 062692
 Account Number: 81049952
 
-The fee covers the full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.
+The fee covers our team's full review, preparation and lodgment of your tax return.
 
-Once you've made the payment, just send us a screenshot and we'll get started!`,
+Just send us a screenshot of your payment and we'll get started!`,
 
   // For a customer who already lodged their return themselves (or through
   // someone else) and wants it checked/reviewed — a genuinely different
@@ -57,7 +63,7 @@ Once you've made the payment, just send us a screenshot and we'll get started!`,
   // service, matched to what they mention (TFN only vs TFN + ABN).
   price_tfn_review: `No problem, we can review a return you've already lodged.
 
-Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $220 and is non-refundable.
+Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $220 and is for the review itself, whatever the result.
 
 Account Name: The Accounting Academy
 BSB: 062692
@@ -67,7 +73,7 @@ Once paid, send us a screenshot and we'll get started.`,
 
   price_tfn_abn_review: `No problem, we can review a return you've already lodged.
 
-Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $385 and is non-refundable.
+Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $385 and is for the review itself, whatever the result.
 
 Account Name: The Accounting Academy
 BSB: 062692
@@ -76,21 +82,21 @@ Account Number: 81049952
 Once paid, send us a screenshot and we'll get started.`,
 
   objections: {
-    o1_refund_before_pay: `Absolutely 😊 Working out your expected refund is part of the review. We need to go through your full situation first before we can give you an accurate estimate, which is why we start the review once payment is made. The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.`,
-    o2_why_pay_first: `I completely understand. The reason payment comes first is that reviewing your situation and working out what you're entitled to is the main part of the service. The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.`,
-    o3_thought_free: `I understand. We previously offered a free eligibility check, but we've changed how the service works. We now focus on giving you a proper review and personal guidance based on your situation, rather than just a quick eligibility check. That's why the service is paid upfront. The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.`,
+    o1_refund_before_pay: `Absolutely 😊 Working out your expected refund is part of the review. We need to go through your full situation first before we can give you an accurate estimate, which is why we start the review once payment is made. The fee is for our team's review of your situation, so it stays the same whatever the result.`,
+    o2_why_pay_first: `I completely understand. The reason payment comes first is that reviewing your situation and working out what you're entitled to is the main part of the service. The fee is for our team's review of your situation, so it stays the same whatever the result.`,
+    o3_thought_free: `I understand. We previously offered a free eligibility check, but we've changed how the service works. We now focus on giving you a proper review and personal guidance based on your situation, rather than just a quick eligibility check. That's why the service is paid upfront. The fee is for our team's review of your situation, so it stays the same whatever the result.`,
     o4_mygov: `Yes, absolutely, you can lodge your tax return yourself through myGov. The difference is that myGov is just where you lodge it. It won't review your situation, guide you on your tax residency, Medicare, or what you can claim, and make sure everything is correct. That's part of what we do, so you know everything has been properly reviewed and you're not left figuring it all out on your own.`,
-    o5_too_expensive: `I understand. The fee covers the full review and personal guidance, so you're not left trying to work everything out on your own. The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.`,
-    o6_pay_after_refund: `Payment is made upfront because the review and personal guidance are the main part of the service, and that's where our work starts. Once payment is received, we can start going through your situation properly. The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.`,
+    o5_too_expensive: `I understand. The fee covers the full review and personal guidance, so you're not left trying to work everything out on your own. The fee is for our team's review of your situation, so it stays the same whatever the result.`,
+    o6_pay_after_refund: `Payment is made upfront because the review and personal guidance are the main part of the service, and that's where our work starts. Once payment is received, we can start going through your situation properly. The fee is for our team's review of your situation, so it stays the same whatever the result.`,
     o7_professional_question: `That's definitely something we can check for you. It depends on your individual situation, so we'd need to review your details properly before giving you an accurate answer. That's all included as part of the service once we get started.`,
     o8_simple_return: `I understand. Even with just one job, there's more to check than the income on your payslip. Your tax residency, Medicare, and what you're entitled to claim can still make a difference. Our fee is based on reviewing your situation properly and guiding you through it, not on how many jobs or payslips you've had.`,
-    o9_no_refund: `No problem. The fee is for the work our team does on your return, so it stays the same regardless of the size of the refund, and it is non-refundable. What the review makes sure of is that nothing you are entitled to is missed.`,
+    o9_no_refund: `No problem. The fee is for our team's review of your situation, so it is the same whether you end up with a refund or an amount to pay. What the review makes sure of is that nothing you're entitled to is missed.`,
     o10a_why_not_accountant: `Of course, you can use an accountant. The difference is that we focus specifically on Working Holiday Makers and deal with situations like yours every day. Our team knows the common issues backpackers run into, things like tax residency, Medicare, ABN income, and work-related expenses, so the whole service is built around people in your situation.`,
     o10b_found_cheaper: `No worries, I completely understand. Just make sure you're comparing the same level of service. With us, you're not just paying to submit a tax return. Your situation is properly reviewed and you get personal guidance throughout the process. If you've found someone cheaper, just make sure you know exactly what's included before you decide.`,
     o11_think_about_it: `Of course, no problem. Before you go, is there anything you're unsure about or anything you'd like me to clarify for you? Happy to answer any questions before you decide.`,
     o12_ask_partner: `Of course, no problem. If there's anything you or your partner are unsure about, just let me know and I'm happy to clarify it before you decide.`,
     o13_one_question: `Of course, if it's a general question, I'm happy to help. It depends on your individual situation, we'd need to review your details properly before giving you an accurate answer, and that's included as part of the service. What would you like to know?`,
-    o14_check_eligible_first: `Yes, that's exactly what we'll check as part of your review. Eligibility can depend on your individual situation, so we need to go through your details properly before giving you an answer. That's why the review starts once payment is made. The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.`,
+    o14_check_eligible_first: `Yes, that's exactly what we'll check as part of your review. Eligibility can depend on your individual situation, so we need to go through your details properly before giving you an answer. That's why the review starts once payment is made. The fee is for our team's review of your situation, so it stays the same whatever the result.`,
   },
 
   followups_pre_payment: {

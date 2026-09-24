@@ -23,7 +23,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I'd like to know how much I'm likely to get back before paying you any money",
       "can you give me a rough idea of my refund first?"
     ],
-    "answer": "That’s a really fair question!\n\nTo give you an estimate, we first need to review your full situation with the ATO, which is the main part of our service.\n\nThe fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable. 😊",
+    "answer": "That’s a really fair question!\n\nTo give you an estimate, we first need to review your full situation with the ATO, which is the main part of our service.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result. 😊",
     "keywords": [
       "estimate",
       "before",
@@ -103,7 +103,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "how much do you charge for each tax return?",
       "is it a flat fee or %?"
     ],
-    "answer": "Our fee is fixed, never a percentage of your refund.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nThe fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.",
+    "answer": "Our fee is fixed, never a percentage of your refund.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result.",
     "keywords": [
       "price",
       "pricing",
@@ -128,7 +128,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what if my refund is not even that much, might not be worth it",
       "do I pay 220 automatically?"
     ],
-    "answer": "The fee is for the work our team does on your return, so it stays the same regardless of the size of the refund, and it is non-refundable. What the review makes sure of is that nothing you are entitled to is missed.",
+    "answer": "The fee is for our team's review of your situation, so it is the same whether you end up with a refund or an amount to pay. What the review makes sure of is that nothing you're entitled to is missed.",
     "keywords": [
       "fee",
       "small",
@@ -180,7 +180,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "is it not possible to pay after I receive my tax return?",
       "can I do the payment after the tax return is in?"
     ],
-    "answer": "Payment is made upfront because the review and personal guidance are the main part of the service, and that's where our work starts. Once payment is received, we can start going through your situation properly. The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.",
+    "answer": "Payment is made upfront because the review and personal guidance are the main part of the service, and that's where our work starts. Once payment is received, we can start going through your situation properly. The fee is for our team's review of your situation, so it stays the same whatever the result.",
     "keywords": [
       "pay",
       "after",
@@ -542,7 +542,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I want to know if I'm eligible and then lodge it myself",
       "can I just get an estimate then do it myself?"
     ],
-    "answer": "No problem, and we appreciate you being upfront 😊\n\nIt’s completely your call. With us, a specialist reviews your residency, deductions and Medicare, then prepares and lodges everything for you, all online.\n\nThe fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable. If you want peace of mind that everything is done properly, we’d be happy to help.",
+    "answer": "No problem, and we appreciate you being upfront 😊\n\nIt’s completely your call. With us, a specialist reviews your residency, deductions and Medicare, then prepares and lodges everything for you, all online.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result. If you want peace of mind that everything is done properly, we’d be happy to help.",
     "keywords": [
       "myself",
       "lodge",
@@ -589,7 +589,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "why would I pay before I know the amount?",
       "is this the full fee or are there extra charges?"
     ],
-    "answer": "The $220 covers your TFN only return from start to finish. A specialist reviews your full situation, checks that nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.",
+    "answer": "The $220 covers your TFN only return from start to finish. A specialist reviews your full situation, checks that nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. The fee is for our team's review of your situation, so it stays the same whatever the result.",
     "keywords": [
       "upfront",
       "pay",
@@ -615,7 +615,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what's the benefit of using you rather than doing it myself?",
       "can't I just do this myself for free?"
     ],
-    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nThe fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.",
+    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result.",
     "keywords": [
       "why",
       "agency",
@@ -641,7 +641,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "any chance of a discount?",
       "can you do it cheaper?"
     ],
-    "answer": "Completely understand wanting the best value 😊 The fee is fixed at $220 for a TFN only return and is the same for everyone, so we can’t reduce it.\n\nThe fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.",
+    "answer": "Completely understand wanting the best value 😊 The fee is fixed at $220 for a TFN only return and is the same for everyone, so we can’t reduce it.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result.",
     "keywords": [
       "discount",
       "cheaper",
@@ -693,7 +693,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I started it myself and I'm not sure I filled it in correctly",
       "I already did it on my own but something looks wrong"
     ],
-    "answer": "No problem, we can look at it. It depends on where it's up to:\n\nIf you only started it and haven't lodged, we simply prepare and lodge it for you as a normal tax return: $220 (TFN only) or $385 (TFN + ABN), which covers the full review and is non-refundable.\n\nIf it's already been lodged, we review it and fix anything that was missed. The fee is the same ($220 TFN only, $385 with ABN income) and is non-refundable regardless of the outcome.\n\nWhich one is it for you?",
+    "answer": "No problem, we can look at it. It depends on where it's up to:\n\nIf you only started it and haven't lodged, we simply prepare and lodge it for you as a normal tax return: $220 (TFN only) or $385 (TFN + ABN), which covers our team's full review.\n\nIf it's already been lodged, we review it and fix anything that was missed. The fee is the same ($220 TFN only, $385 with ABN income) and is for the review itself, whatever the result.\n\nWhich one is it for you?",
     "keywords": [
       "already",
       "myself",
@@ -884,7 +884,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I have an ABN and I owe the ATO, do I get the fee back?",
       "if after the check I still can't get a refund, is the money I paid gone?"
     ],
-    "answer": "If it turns out you owe money instead of getting a refund, whether to lodge is your decision. Lodging is your own legal obligation and responsibility, but if you decide not to go ahead, we won’t lodge it for you.\n\nEither way, the service fee, $220 or $385, covers the review we carry out and is non-refundable.",
+    "answer": "If it turns out you owe money instead of getting a refund, whether to lodge is your decision. Lodging is your own legal obligation, but if you decide not to go ahead, we won’t lodge it for you.\n\nEither way, the fee, $220 or $385, is for the review our team has already carried out, so it stays the same.",
     "keywords": [
       "owe",
       "payable",
@@ -937,7 +937,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "can you check whether my return was done correctly?",
       "another agent did it and I think it's wrong, can it be amended?"
     ],
-    "answer": "Absolutely! We’ll review your return, check the calculation and see whether anything needs to be amended.\n\nThe review fee is $220 and is non-refundable.",
+    "answer": "Absolutely! We’ll review your return, check the calculation and see whether anything needs to be amended.\n\nThe review fee is $220 and is for the review itself, whatever the result.",
     "keywords": [
       "amend",
       "amendment",
@@ -1169,7 +1169,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I got a free check link from a video about you",
       "your site said free eligibility test"
     ],
-    "answer": "Sorry for the confusion. We no longer offer free eligibility checks. We now provide a full review with personal guidance for $220.\n\nThe fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.",
+    "answer": "Sorry for the confusion. We no longer offer free eligibility checks. We now provide a full review with personal guidance for $220.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result.",
     "keywords": [
       "free",
       "eligibility",
@@ -1734,7 +1734,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "My friend paid less than that last year, why is mine more?",
       "I saw a lower number somewhere, which one is right?"
     ],
-    "answer": "I can see where the confusion might have come from. The current fee for a TFN only return is $220.\n\nThat covers the whole return from start to finish, a proper review of your situation and lodging everything with the ATO. The fee is for the review and is non-refundable.",
+    "answer": "I can see where the confusion might have come from. The current fee for a TFN only return is $220.\n\nThat covers the whole return from start to finish: a proper review of your situation, then preparing and lodging everything with the ATO.",
     "keywords": [
       "price",
       "fee",
