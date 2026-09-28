@@ -161,23 +161,27 @@ export function reviewRequestTemplateKey(lang?: string | null): string {
   return `review_request_${key}`;
 }
 
-/** Objection #7 ("that's something we check as part of the review"), per
- *  language. This is the SAFE ANSWER to any pre-payment question that invites
- *  a personal tax determination (residency, Medicare, deductions, "will I get
- *  money back?"). When the model's own draft slips into advice and the guard
- *  stops it, the engine sends this instead of opening a task (Jo, 3 Sep: the
- *  Kay case, "so you think there is a big chance I will get money back?").
- *  English is the approved wording verbatim; the others are faithful
- *  renderings, no prices, no figures, no dashes, guard-clean. */
-export const PROFESSIONAL_QUESTION_MSG: Record<Lang, string> = {
-  en: "That's definitely something we can check for you. It depends on your individual situation, so we'd need to review your details properly before giving you an accurate answer. That's all included as part of the service once we get started.",
-  de: 'Das können wir auf jeden Fall für dich prüfen. Es hängt von deiner individuellen Situation ab, deshalb müssen wir deine Angaben erst richtig durchgehen, bevor wir dir eine genaue Antwort geben können. Das ist alles Teil des Service, sobald wir loslegen.',
-  ja: 'それはもちろん確認できます。個々の状況によって異なるため、正確なお答えをするには、まずお客様の詳細をきちんと確認する必要があります。それはすべて、開始後のサービスに含まれています。',
-  es: 'Eso es algo que sin duda podemos revisar por ti. Depende de tu situación individual, así que necesitamos revisar bien tus datos antes de darte una respuesta precisa. Todo eso está incluido en el servicio una vez que empecemos.',
-  fr: "C'est tout à fait quelque chose que nous pouvons vérifier pour toi. Cela dépend de ta situation personnelle, donc nous devons d'abord examiner tes informations correctement avant de te donner une réponse précise. Tout cela fait partie du service une fois que nous commençons.",
-  it: 'È sicuramente qualcosa che possiamo verificare per te. Dipende dalla tua situazione individuale, quindi dobbiamo prima esaminare bene i tuoi dati prima di darti una risposta precisa. È tutto incluso nel servizio una volta che iniziamo.',
-  pt: 'Isso é algo que podemos verificar para ti, sem dúvida. Depende da tua situação individual, por isso precisamos de analisar bem os teus dados antes de te dar uma resposta exata. Está tudo incluído no serviço assim que começarmos.',
+/** THE ONE LINE THAT ANSWERS ALMOST EVERYTHING BEFORE PAYMENT (Jo, 25 Sep,
+ *  Rose: "am I taxed as a resident or a working holiday maker?" got three
+ *  paragraphs and "Great question!"). Before payment we do not want to give
+ *  information that lets someone lodge alone. So any "am I / can I / will I /
+ *  how much" question before payment gets this line, warm and short, then
+ *  the next step for their stage. It is also the SAFE ANSWER the engine sends
+ *  when the model's own draft slips into advice and the guard stops it.
+ *  English is Jo's wording verbatim; the others are faithful renderings, no
+ *  prices, no figures, no dashes, guard-clean. */
+export const PRE_PAYMENT_CHECK_MSG: Record<Lang, string> = {
+  en: "Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us. 😊",
+  de: 'Ja, das ist auf jeden Fall eines der vielen Dinge, die wir prüfen, bevor wir deine Steuererklärung einreichen. Überlass das ruhig uns. 😊',
+  ja: 'はい、それは確定申告を提出する前に私たちが確認するたくさんの項目のひとつです。安心してお任せください 😊',
+  es: 'Sí, eso es sin duda una de las muchas cosas que revisamos antes de presentar tu declaración de impuestos, así que déjalo en nuestras manos. 😊',
+  fr: "Oui, c'est tout à fait l'une des nombreuses choses que nous vérifions avant de déposer ta déclaration d'impôts, donc laisse-nous nous en occuper. 😊",
+  it: 'Sì, è sicuramente una delle tante cose che controlliamo prima di presentare la tua dichiarazione dei redditi, quindi lascia fare a noi. 😊',
+  pt: 'Sim, isso é sem dúvida uma das muitas coisas que verificamos antes de entregar a tua declaração de impostos, por isso deixa isso connosco. 😊',
 };
+/** Kept under its old name for the engine and the corpus: the stand-in for a
+ *  blocked pre-payment determination IS the line above. */
+export const PROFESSIONAL_QUESTION_MSG: Record<Lang, string> = PRE_PAYMENT_CHECK_MSG;
 
 /** "Payment received" + the questionnaire link, per language (Jo's English
  *  wording, no emoji). The automatic confirmation used to go out in English to
@@ -553,4 +557,11 @@ export function referralMessage(lang?: string | null): string {
   const key = (lang && lang in REFERRAL_MSG ? lang : 'en') as Lang;
   return REFERRAL_MSG[key];
 }
+
+/** Every translated system line, for the policy guard's approved corpus. */
+export const SYSTEM_MESSAGE_FAMILIES = {
+  FORM_RECEIVED_MSG, REVIEW_REQUEST_MSG, PRE_PAYMENT_CHECK_MSG, PAYMENT_RECEIVED_MSG, HANDOFF_HOLDING_MSG,
+  DOCUMENTS_RECEIVED_MSG, REQUEST_ABN_MSG, MEDICARE_MSG, ESTIMATE_INVOICE_MSG, SIGNATURE_MSG, LODGED_CONFIRMATION_MSG,
+  WINBACK_MSG, REVIEW_ASK_MSG, REFERRAL_MSG,
+};
 

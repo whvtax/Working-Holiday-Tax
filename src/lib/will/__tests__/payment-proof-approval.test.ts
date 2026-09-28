@@ -19,6 +19,8 @@ jest.mock('@/lib/will/store', () => ({
     getCustomerByWaId: jest.fn().mockResolvedValue(customer),
     getCustomerById: jest.fn().mockResolvedValue(customer),
     addMessage, addTask, setState, getSetting, audit,
+    // Jo, 25 Sep: the confirmation is parked QUEUED and sent by a delayed job.
+    addJob: (...a: unknown[]) => addJob(...a),
     // The AI daily budget is consulted before the vision check now. Without
     // these the budget lookup throws and the whole handler dies.
     setSetting: jest.fn().mockResolvedValue(undefined),
@@ -27,6 +29,9 @@ jest.mock('@/lib/will/store', () => ({
 }));
 
 const bumpCounter = jest.fn().mockResolvedValue(false); // false = a slot was reserved
+const addJob = jest.fn().mockResolvedValue({ id: 'j1' });
+/** The queued confirmation rows (Jo, 25 Sep: sent by the scheduler a minute or more later). */
+const queuedConfirmations = () => addMessage.mock.calls.filter((c) => c[0].status === 'QUEUED' && c[0].meta?.paymentConfirmation === true);
 const fetchWaMedia = jest.fn().mockResolvedValue({ ok: true, body: new ArrayBuffer(4), mime: 'image/jpeg' });
 const deliverOut = jest.fn().mockResolvedValue({ ok: true });
 jest.mock('@/lib/will/channel', () => ({
@@ -47,7 +52,7 @@ import { handlePaymentProofMedia } from '@/lib/will/service';
 const media = { id: 'm1', kind: 'image', mime: 'image/jpeg' };
 
 beforeEach(() => {
-  addMessage.mockClear(); addTask.mockClear(); setState.mockClear();
+  addMessage.mockClear(); addTask.mockClear(); setState.mockClear(); addJob.mockClear();
   deliverOut.mockClear(); audit.mockClear(); assessPaymentProofImage.mockClear();
   getSetting.mockResolvedValue('SUPERVISED');
   customer.optedOut = false;
@@ -72,11 +77,17 @@ it('SUPERVISED: drafts the confirmation and does NOT send or move the stage', as
   expect(setState).not.toHaveBeenCalled();
 });
 
-it('FULL_AUTO: sends immediately and moves the stage', async () => {
+it('FULL_AUTO: moves the stage now and queues the confirmation with the usual reply delay (Jo, 25 Sep)', async () => {
   getSetting.mockResolvedValue('FULL_AUTO');
   await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
 
-  expect(deliverOut).toHaveBeenCalledTimes(1);
+  // Not sent on the spot any more: parked QUEUED, sent by AUTO_REPLY{messageId}
+  // one to five minutes later, like every other Will reply.
+  expect(deliverOut).not.toHaveBeenCalled();
+  expect(queuedConfirmations()).toHaveLength(1);
+  const job = addJob.mock.calls.find((c) => c[0].kind === 'AUTO_REPLY')?.[0];
+  expect(job.payload.messageId).toBe('msg1');
+  expect(new Date(job.runAt).getTime() - Date.now()).toBeGreaterThanOrEqual(55_000);
   expect(setState).toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
   // No PENDING_APPROVAL draft in this mode.
   expect(addMessage).not.toHaveBeenCalledWith(expect.objectContaining({ status: 'PENDING_APPROVAL' }));
@@ -241,7 +252,7 @@ describe('a fully verified screenshot in Autopilot', () => {
     await handlePaymentProofMedia('61400000001', '📷 [Photo] Erledigt :)', { media: { ...media, caption: 'Erledigt :)' } });
 
     expect(setState).toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
-    expect(deliverOut).toHaveBeenCalledTimes(1);
+    expect(queuedConfirmations()).toHaveLength(1);
     expect(addTask).not.toHaveBeenCalled();
     expect(audit).toHaveBeenCalledWith('system', 'auto_paid_from_media', expect.objectContaining({ verified: true }));
     // Paid -> Form Pending just happened, so the form reminders are armed for
@@ -255,18 +266,15 @@ describe('a fully verified screenshot in Autopilot', () => {
     expect(addTask).not.toHaveBeenCalled();
   });
 
-  it('still raises the URGENT task when WhatsApp rejects the confirmation', async () => {
+  it('the queued confirmation carries the Meta template with the Start Here button', async () => {
     assessPaymentProofImage.mockResolvedValue(wise220);
-    deliverOut.mockResolvedValueOnce({ ok: false, error: 'outside the 24h window' });
     await handlePaymentProofMedia('61400000001', '📷 [Photo]', { media });
-    // (audit, 5 Sep) The task is deliverOut's own, written with the caller's
-    // onFailure wording, so the caller adds nothing itself: two cards for one
-    // silence was the friction. deliverOut is mocked here, so the assertion
-    // is on what it was handed.
+    const row = queuedConfirmations()[0][0];
+    expect(row.meta.waTemplate.name).toBe('payment_received');
+    expect(row.meta.system).toBe(true);
+    // The "paid but not told" URGENT task now belongs to the scheduler's send
+    // (delayed-payment-confirmation.test.ts), not to this handler.
     expect(addTask).not.toHaveBeenCalled();
-    const opts = deliverOut.mock.calls[0][5] as { onFailure: { reason: (e?: string) => string; severity: string } };
-    expect(opts.onFailure.severity).toBe('URGENT');
-    expect(opts.onFailure.reason('outside the 24h window')).toContain('PAID, BUT THEY HAVE NOT BEEN TOLD');
   });
 });
 

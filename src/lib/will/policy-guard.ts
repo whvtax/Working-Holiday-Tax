@@ -7,6 +7,7 @@
 // ============================================================
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { APPROVED } from './approved-messages';
+import { SYSTEM_MESSAGE_FAMILIES } from './i18n';
 
 export interface GuardContext {
   state: CustomerState;
@@ -65,6 +66,12 @@ let LONGEST_APPROVED_CHARS = 0;
 {
   const bodies: string[] = [];
   collectStrings(APPROVED, bodies);
+  // The translated system lines (form received, Medicare, payment received,
+  // review ask, win-back and the rest, in every language) are approved
+  // wording too. Without them a Japanese or German system line was read as
+  // the model's own prose and could trip a content rule that the English
+  // original, sitting in APPROVED, never does (25 Sep, medicare_ja).
+  collectStrings(SYSTEM_MESSAGE_FAMILIES, bodies);
   for (const b of bodies) {
     APPROVED_SENTENCES.add(norm(b));
     LONGEST_APPROVED_CHARS = Math.max(LONGEST_APPROVED_CHARS, norm(b).length);
@@ -161,6 +168,9 @@ function ownOpening(sentence: string): string | null {
  *  sits well above that on purpose: the playbook shapes the normal case, and
  *  this only catches replies that have clearly turned into essays. */
 const MAX_IMPROVISED_CHARS = 450;
+/** Own prose allowed around the price message (one reassuring line + a short opener). */
+const MAX_PROSE_AROUND_PRICE = 170;
+const BANK_DETAILS_PRESENT = /\bBSB\b|062692|81049952/;
 
 /** Extra room on the length rule for a reply that is NOT in English.
  *
@@ -607,26 +617,35 @@ const MYGOV_STEP_CUE_ML = /\b(?:melde dich|logge dich|einloggen|anmelden|geh(?:e
 
 // A promise to refund the FEE / the payment / to cancel, in the other five
 // Latin languages (English and Japanese are covered above). The "difference"
-// lookaheads are historical; that sentence is caught by RETIRED_GUARANTEE_LINE.
+// lookaheads let the translated guarantee through (back since 27 Sep).
 const REFUND_PROMISE_ML = /\b(?:wir|ich)\b[^.!?]{0,30}\b(?:erstatten|zur[üu]ckzahlen|zur[üu]ckerstatten|zur[üu]ck[üu]berweisen|stornieren)\b[^.!?]{0,20}\b(?:die geb[üu]hr|deine zahlung|ihre zahlung|das geld|dein geld|ihr geld|den betrag|die zahlung)\b(?![^.!?]{0,15}\bdifferenz\b)|\b(?:dir|ihnen)\s+(?:die geb[üu]hr|das geld|die zahlung|den betrag)\s+(?:zur[üu]ck|erstatten)(?![^.!?]{0,15}\bdifferenz\b)|\b(?:te|le)\s+(?:devolvemos|devolver[ée]|devolveremos|reembolsamos|reembolsaremos)\s+(?:el pago|la tarifa|el dinero|el importe|la cuota|lo pagado)\b(?![^.!?]{0,15}\bdiferencia\b)|\b(?:on te|nous te|nous vous|je te|je vous)\s+(?:rembourse|rembourserons|remboursons|remboursera)\s+(?:les frais|le paiement|l'argent|le montant|la somme)\b(?![^.!?]{0,15}\bdiff[ée]rence\b)|\b(?:ti|le|vi)\s+(?:rimborsiamo|rimborseremo|restituiamo|restituiremo)\s+(?:la tariffa|il pagamento|i soldi|l'importo|la somma|le spese)\b(?![^.!?]{0,15}\bdifferenza\b)|\b(?:devolvemos|devolveremos|reembolsamos|reembolsaremos)(?:-te|-lhe)?\s+(?:a taxa|o pagamento|o dinheiro|o valor|o montante)\b(?![^.!?]{0,15}\bdiferen[çc]a\b)|\bcancel(?:amos|aremos|lamos|leremo|ons|lerons)\b[^.!?]{0,20}\b(?:pago|pagamento|paiement|pagamento|pedido|commande|ordine|servicio|service|servizio|servi[çc]o)\b/i;
 
 // DIY lodgement in the other languages.
 const DIY_INSTRUCTIONS_ML = /\b(?:selbst (?:einreichen|abgeben|machen)|selber (?:einreichen|abgeben|machen)|schritt f[üu]r schritt|hazlo t[úu] mismo|preséntala t[úu] mismo|presentarla t[úu] mismo|paso a paso|fais-le toi-m[êe]me|d[ée]pose-la toi-m[êe]me|[ée]tape par [ée]tape|fallo da solo|presentala da solo|passo dopo passo|faz tu mesmo|entrega tu mesmo|passo a passo)\b|自分で(?:申告|提出|ロッジ)|ステップバイステップ|手順(?:は|を)(?:次の|以下の)/i;
 
+// The Medicare exemption script, in the languages Will speaks. Only checked
+// before payment (see the call site).
+/** 25 Sep (Rose, +44 7931): a pre-payment "am I a resident?" got three
+ *  paragraphs of hedge and compliment. Jo: before payment the answer is one
+ *  line, "that's one of the many things we check before we lodge, so leave
+ *  that with us", never "it depends on your individual circumstances" and
+ *  never "great question". The hedge sentences are blocked before payment
+ *  (and the engine sends the line instead); after payment they are fine. */
+const PRE_PAYMENT_HEDGE = /\b(?:great question|this is a (?:very )?important question|you're absolutely right that it makes|depends on your (?:individual |own |personal )?(?:circumstances|situation)|we check it carefully rather than guess|that's exactly what our team reviews)|h[äa]ngt von deiner (?:individuellen |pers[öo]nlichen )?situation|個々の状況によって|depende de tu situaci[óo]n|d[ée]pend de ta situation|dipende dalla tua situazione|depende da tua situa[çc][ãa]o/i;
+const PRE_PAYMENT_MEDICARE_SCRIPT = /\b(?:apply|applying|application|submit|eligible)\b[^.!?]{0,40}\bmedicare (?:levy )?exemption\b|\bmedicare (?:levy )?exemption\b[^.!?]{0,40}\b(?:apply|application|submit|screenshot|services australia)\b|befreiung von der medicare|medicare[- ]befreiung[^.!?]{0,30}beantrag|exenci[óo]n (?:del|de la) (?:tasa )?medicare|exemption (?:de la )?(?:taxe )?medicare[^.!?]{0,30}(?:demande|faire)|esenzione (?:dal|della) (?:tassa )?medicare|isen[çc][ãa]o (?:da|do) (?:taxa )?medicare|メディケア(?:税|レビー)?(?:の)?免除[^。]{0,20}(?:申請|手続)/i;
 const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (deal|price|offer)|just for you[^.!?]{0,15}\d|one.time (deal|price|offer)|rabatt|nachlass|descuento|oferta especial|r[ée]duction|remise|rabais|sconto|desconto|割引|値引き)/i;
 // Blocks Will from unilaterally promising to refund the customer's PAYMENT or to
 // cancel. Precise on purpose: it must fire on transitive payment-refund promises
 // ("refund your payment", "refund you $220", "money back", "cancel") but NOT on
 // the noun ("eligible for a refund", "your tax refund", "super refund").
-// "refund the difference" used to be carved out as the guarantee; that
-// guarantee is retired (Jo, 20 Sep) and the phrase is now banned outright
-// (see RETIRED_GUARANTEE_LINE).
+// "refund the difference" is the guarantee (retired 20 Sep, back 27 Sep) and
+// is not a promise to refund the payment, so it is not in the alternation.
 // (audit, 5 Sep) "payment ... back" is a return of MONEY, not of contact: "once
 // we receive your payment, we'll get back to you" / "come back to you with the
 // form" was tripping it and sending an URGENT task at the moment of paying. The
 // lookahead lets "back to / back with / back in touch" through; the reversed
 // "give/send/transfer/pay ... back ... payment" order is now caught as well.
-const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b(?!\s+(?:to|with|in touch)\b)|(?:give|send|transfer|pay)[^.!?]{0,10}\bback\b[^.!?]{0,10}\bpayment|refund\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|full|amount|difference|\$?\d)))\b/i;
+const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b(?!\s+(?:to|with|in touch)\b)|(?:give|send|transfer|pay)[^.!?]{0,10}\bback\b[^.!?]{0,10}\bpayment|refund\s+(?:you(?!\s+the\s+difference)|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|full|amount|\$?\d)))\b/i;
 // "never out of pocket" / "not out of pocket" — the exact over-promise that
 // broke the Indigo conversation (a customer who owes was told they would get
 // the fee back). It is now banned from every message, so any improvised reply
@@ -734,6 +753,22 @@ const AI_IDENTITY_DENIAL =
   /\b(?:not|no)\b[^.!?]{0,15}\b(?:a )?(?:bot|robot|ai|machine|chatbot|computer|automated)\b|\b(?:real|actual|genuine) (?:person|human)\s+here\b|\b(?:i'?m|i am) (?:definitely |totally |absolutely )?(?:real|human)\b/i;
 
 const PLACEHOLDER_LEFTOVER = /\{\{[A-Z_]+\}\}/;
+/** 25 Sep (the injection-defence suite found this gap): a manipulated draft
+ *  could carry SOMEBODY ELSE'S bank details. The only BSB and account number
+ *  that may ever appear in an outgoing message are ours. Any other BSB-shaped
+ *  or account-number-shaped figure next to those words is WRONG_BANK_DETAILS. */
+const OUR_BSB = '062692';
+const OUR_ACCOUNT = '81049952';
+const BSB_FIGURE = /\bBSB\b[^0-9]{0,12}(\d{3})[ -]?(\d{3})\b/gi;
+const ACCOUNT_FIGURE = /\b(?:account|acct|acc)\.? ?(?:number|no|nr|#)?\b[^0-9]{0,12}(\d[\d ]{5,12}\d)\b/gi;
+function hasForeignBankDetails(text: string): boolean {
+  for (const m of text.matchAll(BSB_FIGURE)) if (m[1] + m[2] !== OUR_BSB) return true;
+  for (const m of text.matchAll(ACCOUNT_FIGURE)) {
+    const digits = m[1].replace(/\s+/g, '');
+    if (digits.length >= 6 && digits !== OUR_ACCOUNT && digits !== OUR_BSB) return true;
+  }
+  return false;
+}
 const PROMPT_ECHO = /(master rule|operating rules|non-negotiable boundar|system prompt|objection library|approved messages|# current customer)/i;
 const SENSITIVE_LEAK = /(password|api.?key|access token|secret key|admin (access|panel)|credentials)/i;
 // Owner-approved exception (Jo, 31 Aug): the Xero document-signing link is a
@@ -755,44 +790,23 @@ const XERO_BENIGN_PWD = /\b(?:if it (?:asks|is asking) for a password|try\s+\d{4
 // before the check. "Your password is hunter2" and "reset your password" carry
 // no negation and stay blocked.
 const MYGOV_BENIGN_PWD = /\b(?:don'?t|do not|won'?t|will not|never|no|not)\s+(?:need|ask(?:ing)?(?: you)? for|require)\b[^.!?]{0,30}\b(?:password|login|credentials)\b(?:\s+(?:or|and)\s+(?:password|login|credentials)\b)?/gi;
-// ── THE RETIRED GUARANTEE (Jo, 3 Sep; enforced 4 Sep; whole guarantee 20 Sep)
+// ── THE RETIRED OVER-PROMISE (Jo, 3 Sep; enforced 4 Sep) ─────────────────
 // 3 Sep: "so our fee never costs you more than the refund you get back" was
 // removed because it was not true for a customer who owes tax.
-// 20 Sep: the refund-shortfall guarantee itself is gone. The fee is for the
-// review and is non-refundable whatever the outcome. So "if your refund is
-// less than our fee we refund the difference", in any language, is now a
-// promise Will must never make, template or not: a stale Library row that
-// still carries it is held exactly like an improvised sentence.
+// 20 Sep: the refund-shortfall guarantee was retired with it.
+// 27 Sep (Jo): the guarantee is BACK, in its exact approved wording: "If your
+// tax refund is less than our fee, we'll refund the difference. If there's no
+// refund, our full fee applies." That sentence, and Will's translation of it,
+// is allowed. What stays banned everywhere, template or not, is the wider
+// over-promise: "never costs you more than your refund", "you can't lose",
+// "no risk to you", "never out of pocket", in every language. Those say more
+// than the guarantee does (a customer who owes tax does pay the fee).
 const RETIRED_GUARANTEE_LINE = new RegExp(
   [
-    // the refund-shortfall guarantee, every language
-    'refund(?:s|ed|ing)? (?:you |them )?the (?:difference|shortfall|gap)',
-    'top(?:s|ped|ping)? up the difference',
-    '(?:difference|shortfall) back',
-    '(?:less|lower|smaller) than (?:our|the) fee',
-    'refund shortfall',
-    '(?:erstatt|zur[üu]ck)\\w*[^.!?]{0,30}die differenz',
-    'die differenz[^.!?]{0,30}(?:erstatt|zur[üu]ck)',
-    '(?:weniger|geringer|niedriger) als (?:unsere|die) geb[üu]hr',
-    '(?:devolv|reembols)\\w*[^.!?]{0,30}la diferencia',
-    'la diferencia[^.!?]{0,30}(?:devolv|reembols)',
-    '(?:menor|inferior) (?:que|a) (?:nuestra|la) tarifa',
-    'rembours\\w*[^.!?]{0,30}la diff[ée]rence',
-    'la diff[ée]rence[^.!?]{0,30}rembours',
-    'inf[ée]rieur[e]? [àa] (?:nos|notre|les) frais',
-    '(?:rimbors|restitu)\\w*[^.!?]{0,30}la differenza',
-    'la differenza[^.!?]{0,30}(?:rimbors|restitu)',
-    'inferiore alla (?:nostra )?tariffa',
-    '(?:devolv|reembols)\\w*[^.!?]{0,30}a diferen[çc]a',
-    'a diferen[çc]a[^.!?]{0,30}(?:devolv|reembols)',
-    '(?:menor|inferior) (?:que|a|à) (?:a nossa|a) taxa',
-    '差額[^。]{0,15}返金',
-    '返金[^。]{0,15}差額',
-    '(?:料金|手数料)(?:より|を下回)',
     'never costs? you (?:any )?more than',
     "(?:never|won'?t|will not|can'?t|cannot) (?:pay|be) (?:any )?more than (?:your|the) refund",
-    'never (?:lose|be out of pocket|end up out)',
-    "you can'?t lose",
+    'never (?:lose|(?:be |end up )?out of pocket)',
+    "(?:you )?can'?t lose",
     'no risk to you',
     'nie mehr als (?:deine|ihre) (?:r[üu]ckerstattung|erstattung)',
     'kostet dich (?:die geb[üu]hr )?nie mehr',
@@ -887,6 +901,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // --- whole-message checks (never exempt) ---
   if (PLACEHOLDER_LEFTOVER.test(text)) violations.push('PLACEHOLDER_LEFTOVER');
   if (PROMPT_ECHO.test(text)) violations.push('PROMPT_ECHO');
+  if (hasForeignBankDetails(text)) violations.push('WRONG_BANK_DETAILS');
   // Only in the Xero signing context, strip the approved benign password phrases
   // before the sensitive check, so the portal support message sends while any
   // other credential leak stays blocked.
@@ -895,9 +910,9 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   if (MYGOV_TERMS.test(text)) sensText = sensText.replace(MYGOV_BENIGN_PWD, ' ');
   if (SENSITIVE_LEAK.test(sensText)) violations.push('SENSITIVE_CONTENT');
   if (DASHES.test(text)) violations.push('EM_DASH_FORBIDDEN');
-  // The retired line is banned everywhere, including in an "approved" template:
-  // it was deleted from all of them, so anything carrying it is either a stale
-  // Library row or the model reaching for wording Jo retired (4 Sep).
+  // The retired over-promise is banned everywhere, including in an "approved"
+  // template: it was deleted from all of them, so anything carrying it is
+  // either a stale Library row or the model reaching for wording Jo retired.
   if (RETIRED_GUARANTEE_LINE.test(text)) violations.push('RETIRED_GUARANTEE_LINE');
   if (NON_DOLLAR_CURRENCY.test(text)) violations.push('NON_DOLLAR_CURRENCY');
   if (AI_IDENTITY_CLAIM.test(text) || AI_IDENTITY_DENIAL.test(text)) {
@@ -966,9 +981,15 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // wording, so what is left really is the model's own prose. Any other
     // language: the subtraction cannot see a translated script, so allow one
     // (see TRANSLATED_SCRIPT_ALLOWANCE) before calling the reply an essay.
-    const ceiling = isConfidentlyEnglish(improvised)
+    let ceiling = isConfidentlyEnglish(improvised)
       ? MAX_IMPROVISED_CHARS
       : MAX_IMPROVISED_CHARS + TRANSLATED_SCRIPT_ALLOWANCE;
+    // 25 Sep (+49 1520): a question and a choice in one message got a whole
+    // Library answer glued on top of the whole price message. Jo: when the
+    // bank details go out, the ONLY thing allowed around them is one short
+    // reassuring line. So with the bank details present and payment not yet
+    // made, the room for Will's own prose is a single line, not an essay.
+    if (!(ctx.paid || POST_PAYMENT_STATES.includes(ctx.state)) && BANK_DETAILS_PRESENT.test(text)) ceiling = Math.min(ceiling, MAX_PROSE_AROUND_PRICE);
     if (improvised.length > ceiling) violations.push('REPLY_TOO_LONG');
   }
 
@@ -1023,6 +1044,17 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // Approved sentences skip the CONTENT-pattern checks, but the CONTEXTUAL
     // post-payment-sales gate still applies (H2/H4: never re-send sales content
     // to a paid customer, even if the wording is approved).
+    // BEFORE PAYMENT, the Medicare exemption script is advice, approved wording
+    // or not (Jo, 25 Sep, +44 7592: a UK lead chose TFN and asked about the 2%
+    // levy; the reply was the price message with the whole approved "apply for
+    // a Medicare Levy Exemption, send me a screenshot" script glued on. The
+    // script is approved for AFTER the form, sent by the MEDICARE_INFO job as a
+    // template, and never to a UK citizen who is entitled to Medicare anyway).
+    // A contextual gate like the post-payment sales one: it reads the approved
+    // sentence too. The engine treats the code like a determination, so the
+    // approved "that is exactly what the team checks" stand-in goes instead.
+    if (!paid && !ctx.isApprovedTemplate && PRE_PAYMENT_MEDICARE_SCRIPT.test(written)) violations.push('PRE_PAYMENT_MEDICARE_SCRIPT');
+    if (!paid && !ctx.isApprovedTemplate && PRE_PAYMENT_HEDGE.test(written)) violations.push('PRE_PAYMENT_HEDGE');
     const opening = ownOpening(written);
     if (opening != null) {
       if (paid && (POST_PAYMENT_SALES.test(written) || POST_PAYMENT_SALES_ML.test(written))) violations.push('SALES_CONTENT_AFTER_PAYMENT');

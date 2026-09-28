@@ -126,10 +126,12 @@ describe('the three call sites are wired that way', () => {
     expect(review).not.toContain('store.addTask(');
   });
 
-  it('service: the payment confirmation raises through onFailure only', () => {
-    const i = service.indexOf('PAID, BUT THEY HAVE NOT BEEN TOLD');
+  it('the payment confirmation raises its URGENT task through raiseOrUpdateTask only (it is queued now, so the scheduler owns the failure)', () => {
+    expect(service).not.toContain('PAID, BUT THEY HAVE NOT BEEN TOLD');
+    const i = scheduler.indexOf('PAID, BUT THEY HAVE NOT BEEN TOLD');
     expect(i).toBeGreaterThan(0);
-    expect(service.slice(i - 400, i)).toContain('onFailure');
-    expect(service.split('PAID, BUT THEY HAVE NOT BEEN TOLD').length).toBe(2);
+    expect(scheduler.slice(i - 400, i)).toContain('raiseOrUpdateTask(store, customer, {');
+    expect(scheduler.slice(i - 400, i)).not.toContain('store.addTask(');
+    expect(scheduler.split('PAID, BUT THEY HAVE NOT BEEN TOLD').length).toBe(2);
   });
 });

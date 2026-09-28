@@ -415,10 +415,10 @@ export default function TaxReturnPage() {
       {/* ── 5. THE FEE ─────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>What the fee covers</p>
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Our guarantee</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '22ch' }}>
-            The fee covers a full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.
+            Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Nothing is ever taken out of what the ATO sends you. The amount is settled with you on WhatsApp before step

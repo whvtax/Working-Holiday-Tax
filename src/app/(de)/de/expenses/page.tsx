@@ -66,7 +66,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Absetzbare Kosten in 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Die Gebühr deckt die vollständige Prüfung deiner Steuererklärung durch unser Team ab und hängt nicht vom Ergebnis ab. Über Rückerstattungen und Steuerbescheide entscheidet das ATO, daher wird die Gebühr nicht erstattet.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
   "guaranteeBody": "Working-Holiday-Steuer ist das Einzige, was wir machen. Deine Steuererklärung wird vor der Einreichung beim ATO von einem registrierten Steueragenten geprüft und freigegeben.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",

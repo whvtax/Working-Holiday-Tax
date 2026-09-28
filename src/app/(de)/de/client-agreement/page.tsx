@@ -67,7 +67,9 @@ const sections: Section[] = [
     items: [
       'Steuererklärung, nur TFN-Einkünfte (AUD 220 $, inkl. GST): die vollständige Beauftragung, die die Prüfung deiner Situation sowie die Vorbereitung und Einreichung deiner Steuererklärung umfasst.',
       'Steuererklärung, TFN- und ABN-Einkünfte (AUD 385 $, inkl. GST): wie oben, wenn du zusätzlich Einkünfte unter einer Australian Business Number erhalten hast, was die Abstimmung deiner Betriebseinnahmen und Betriebsausgaben und die Berücksichtigung deiner GST-Position erfordert.',
-      'Die Gebühr wird für die Prüfung und die erbrachte fachliche Arbeit berechnet. Sie ist ein fester Betrag, wird nie als Prozentsatz deiner Rückzahlung berechnet und hängt nicht vom Ergebnis ab: ob eine Rückzahlung ausgezahlt wird, wie hoch sie ausfällt oder ob du Steuern nachzahlen musst, entscheidet allein das ATO. Sobald die Prüfung begonnen hat, wird die Gebühr nicht erstattet, vorbehaltlich deiner Rechte nach dem Australian Consumer Law.',
+      'Die Gebühr wird für die Prüfung und die erbrachte fachliche Arbeit berechnet. Sie ist ein fester Betrag und wird nie als Prozentsatz deiner Rückzahlung berechnet. Ob eine Rückzahlung ausgezahlt wird, wie hoch sie ausfällt oder ob du Steuern nachzahlen musst, entscheidet allein das ATO.',
+      'Rückzahlungsgarantie: Zahlt dir das ATO eine Rückzahlung aus, die geringer ist als die von dir gezahlte Gebühr, erstattet dir der Anbieter die Differenz zwischen Gebühr und Rückzahlung, sobald das ATO deinen Steuerbescheid (Notice of Assessment) erlassen hat. Die Garantie gilt für die Steuererklärung, für die die Gebühr gezahlt wurde, und für die vom ATO festgesetzte Rückzahlung vor einer Verrechnung nach Klausel 22.',
+      'Wird keine Rückzahlung ausgezahlt, auch wenn das ATO feststellt, dass du Steuern nachzahlen musst, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet, vorbehaltlich deiner Rechte nach dem Australian Consumer Law. Nach Beginn der Prüfung wird die Gebühr ebenfalls nicht erstattet, außer im Rahmen der obigen Garantie.',
       'Steuererklärung vorbereitet und zur Freigabe bereitgestellt: haben wir deine Steuererklärung fertiggestellt und dir zur Prüfung, Freigabe oder Unterschrift bereitgestellt, ist die Gebühr in voller Höhe fällig, unabhängig davon, ob du uns anschließend zur Einreichung ermächtigst. Zu diesem Zeitpunkt ist die Arbeit erbracht und übergeben; offen ist nur noch die Einreichung als administrativer Schritt. Dies gilt nicht, wenn du zurücktrittst, weil wir den Service nicht mit der gebotenen Sorgfalt und Fachkunde erbracht oder die Verbrauchergarantien nach dem Australian Consumer Law nicht erfüllt haben.',
       'Arbeiten außerhalb des Umfangs einer üblichen Einkommensteuererklärung (zum Beispiel Erklärungen für Vorjahre, zusätzliche Geschäftsanlagen oder Korrekturen bereits eingereichter Erklärungen) werden vor Arbeitsbeginn separat angeboten und schriftlich vereinbart.',
       'Nichts in dieser Klausel beschränkt, schließt aus oder ändert Rechte oder Ansprüche, die dir nach dem Australian Consumer Law zustehen.',
@@ -75,7 +77,7 @@ const sections: Section[] = [
   },
   {
     title: '7. Zahlungsbedingungen',
-    body: 'Die Gebühr ist im Voraus zahlbar. Sobald die Zahlung eingegangen ist, senden wir dir den vollständigen Fragebogen und beginnen mit der Arbeit. Die Zahlung beeinflusst oder garantiert weder deine Rückzahlung noch das ATO-Ergebnis, und die Gebühr wird gemäß Klausel 6 nicht erstattet.',
+    body: 'Die Gebühr ist im Voraus zahlbar. Sobald die Zahlung eingegangen ist, senden wir dir den vollständigen Fragebogen und beginnen mit der Arbeit. Die Zahlung beeinflusst oder garantiert weder deine Rückzahlung noch das ATO-Ergebnis. Die Gebühr wird nur im Rahmen der Rückzahlungsgarantie nach Klausel 6 erstattet.',
   },
   {
     title: '8. Haftungsbeschränkung',

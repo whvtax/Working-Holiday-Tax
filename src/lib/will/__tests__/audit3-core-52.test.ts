@@ -142,7 +142,9 @@ describe('the free text deterministic sends carry the flag', () => {
   const src = fs.readFileSync(path.join(__dirname, '..', 'service.ts'), 'utf8');
 
   it('the payment received confirmation and the documents acknowledgement pass system: true', () => {
-    expect(src).toContain("deliverOut(customer, confirmation, 'AI', { system: true }");
+    // The confirmation is a queued row since 25 Sep (same 1 to 5 minute delay as
+    // every Will reply); the flag travels on the row and the scheduler sends it.
+    expect(src).toContain('system: true, paymentConfirmation: true, trustedBecause');
     expect(src).toContain("deliverOut(customer, ack, 'AI', { system: true })");
   });
 

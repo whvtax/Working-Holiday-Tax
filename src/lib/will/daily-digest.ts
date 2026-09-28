@@ -88,6 +88,7 @@ function signatures(): string[] {
     if (n.length >= 40 || (n.length >= 15 && /[\u3040-\u30ff\u4e00-\u9fff]/.test(n))) sigs.push(n);
     // the price messages: the bank block alone is a signature too
     if (/account name/i.test(body)) sigs.push(norm('Account Name: The Accounting Academy BSB: 062692 Account Number: 81049952'));
+    if (/\bBSB\b/i.test(body)) sigs.push(norm('BSB: 062692 Account Number: 81049952'));
   }
   approvedSignatures = [...new Set(sigs)];
   return approvedSignatures;

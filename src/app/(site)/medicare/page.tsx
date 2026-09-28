@@ -394,7 +394,7 @@ export default function MedicarePage() {
 
             <div className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1.5px solid #C8EAE0', margin: '20px 0' }}>
               <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
-                The fee covers a full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.
+                Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
               </p>
               <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
                 Reviewed and signed off by a registered tax agent before it is lodged

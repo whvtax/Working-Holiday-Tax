@@ -43,12 +43,15 @@ it('a myGov login problem gets the reassurance, not a task', () => {
   expect(stable).toMatch(/is NOT a human_task \(Jo, 4 Sep, Nick\)/);
 });
 
-it('the prompt forbids the retired guarantee paraphrase and no approved message carries it', () => {
-  expect(stable).toMatch(/never write "if your refund is less than our fee we refund the difference", "our fee never costs you more than the refund you get back"/);
-  expect(stable).toMatch(/THE OLD GUARANTEE IS GONE/);
-  expect(stable).not.toContain("If your refund is less than our fee, we'll refund the difference.");
-  expect(stable).not.toMatch(/Guarantee \(applies to ALL customers/);
+it('the guarantee is back in its exact wording (27 Sep) and the over-promise stays retired', () => {
+  const G = "If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.";
+  expect(stable).toMatch(/THE GUARANTEE LINE/);
+  expect(stable).toContain(G);
+  expect(stable).toMatch(/never write "our fee never costs you more than the refund you get back", "never out of pocket"/);
+  expect(stable).not.toMatch(/THE OLD GUARANTEE IS GONE/);
   const { APPROVED } = jest.requireActual('@/lib/will/approved-messages');
+  expect(APPROVED.price_tfn).toContain(G);
+  expect(APPROVED.price_tfn_abn).toContain(G);
   expect(JSON.stringify(APPROVED)).not.toMatch(/never costs you more than the refund/i);
 });
 

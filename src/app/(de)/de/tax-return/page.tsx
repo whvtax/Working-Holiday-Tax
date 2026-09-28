@@ -417,10 +417,10 @@ export default function TaxReturnPageDE() {
       {/* ── 5. GEBÜHR ──────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Was die Gebühr abdeckt</p>
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Die Gebühr deckt die vollständige Prüfung deiner Steuererklärung durch unser Team ab und hängt nicht vom Ergebnis ab. Über Rückerstattungen und Steuerbescheide entscheidet das ATO, daher wird die Gebühr nicht erstattet.
+            Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Von dem, was das ATO überweist, wird nie etwas abgezogen. Der Betrag wird vor Schritt 01 auf WhatsApp mit dir

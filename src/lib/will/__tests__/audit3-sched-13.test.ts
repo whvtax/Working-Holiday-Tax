@@ -22,6 +22,6 @@ it('points price questions at the menu and the price message, where the fee line
   expect(stable).toMatch(/When price comes up, the answer is the \[opening\] menu or the matching price message/);
   expect(stable).toMatch(/never add a fee or guarantee sentence of your own before the number/);
   // The decided rule it now defers to is still present (20 Sep: the fee line replaced the guarantee).
-  expect(stable).toMatch(/DO NOT REPEAT the fee line in ordinary replies/);
+  expect(stable).toMatch(/DO NOT REPEAT the guarantee in ordinary replies/);
   expect(stable).toMatch(/That is the ONE place it is said/);
 });

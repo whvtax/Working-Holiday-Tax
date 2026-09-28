@@ -99,7 +99,7 @@ const faqs = [
   },
   {
     question: 'Was ist, wenn am Ende keine Rückerstattung herauskommt?',
-    answer: 'Die Gebühr deckt die vollständige Prüfung deiner Steuererklärung durch unser Team ab und hängt nicht vom Ergebnis ab. Über Rückerstattungen und Steuerbescheide entscheidet das ATO, daher wird die Gebühr nicht erstattet. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wir sagen dir das lieber vorher, als den Auftrag anzunehmen und zu hoffen.',
+    answer: 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wir sagen dir das lieber vorher, als den Auftrag anzunehmen und zu hoffen.',
   },
 ]
 
@@ -271,7 +271,7 @@ export default function GermanAboutPage() {
 
             <div className="rounded-2xl" style={{ marginTop: '28px', padding: '20px', background: '#F2FAF7', border: '1.5px solid #C8EAE0' }}>
               <p className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.35, marginBottom: '8px' }}>
-                Die Gebühr deckt die vollständige Prüfung deiner Steuererklärung durch unser Team ab und hängt nicht vom Ergebnis ab. Über Rückerstattungen und Steuerbescheide entscheidet das ATO, daher wird die Gebühr nicht erstattet.
+                Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
               </p>
               <p style={{ ...bodyStyle, fontSize: '15px' }}>
                 Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das.

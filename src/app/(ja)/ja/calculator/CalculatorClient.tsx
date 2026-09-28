@@ -498,7 +498,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             提出は誰でもできます。仕事はその前にあります。
           </h2>
           <p className="mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.85, marginBottom: '10px', maxWidth: '34ch' }}>
-            試算した数字をお送りください。あなたの1年で何が効くのかをお伝えします。料金は、当社チームによる確定申告の全面的な確認作業に対するものであり、結果によって変わることはありません。還付や課税額はATOが決定するため、料金の返金はできません。
+            試算した数字をお送りください。あなたの1年で何が効くのかをお伝えします。当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: '22px', maxWidth: '34ch' }}>
             申告書は、ATOへ提出する前に登録税理士が確認して承認します。

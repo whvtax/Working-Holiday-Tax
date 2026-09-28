@@ -1821,19 +1821,29 @@ async function handlePaymentProofMediaInner(
   // combined reply, so attaching the Meta template here (metaTemplateLang,
   // fallbackToText) has none of the "loses extra content" risk that applies
   // to the live-reply branch elsewhere in this file — safe in every case.
-  const out = await deliverOut(customer, confirmation, 'AI', { system: true }, {
-    name: paymentReceivedTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true,
-  }, {
-    onFailure: {
-      reason: (e) => `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${trustedBecause}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${e ?? 'unknown error'}. Send it yourself, they are sitting in silence after paying.`,
-      severity: 'URGENT', context: body,
+  // NOT INSTANTLY (Jo, 25 Sep, +81 90: the receipt landed at 13:41 and the
+  // "Payment received" answer showed 13:41, like a robot). The confirmation
+  // waits the same one-to-five minutes every other Will reply waits
+  // (autopilotReplyDelaySeconds), parked QUEUED and sent by the existing
+  // AUTO_REPLY{messageId} job. The stage moved already (above); only the
+  // words wait. The scheduler knows this row is the payment confirmation
+  // (meta.paymentConfirmation): it never discards it as stale when the
+  // customer writes again in the meantime, sends it through the Meta
+  // template with the Start Here button, and raises the URGENT "paid but not
+  // told" task itself if the send fails.
+  const queued = await store.addMessage({
+    customerId: customer.id, direction: 'OUT', author: 'AI', status: 'QUEUED', body: confirmation,
+    meta: {
+      system: true, paymentConfirmation: true, trustedBecause,
+      waTemplate: { name: paymentReceivedTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang },
     },
   });
-  if (!out.ok) {
-    await store.audit('channel', 'payment_received_send_failed', {
-      customerId: customer.id, error: out.error ?? 'unknown error',
-    }).catch(() => { /* the store is a likely thing to have just failed */ });
-  }
+  await store.addJob({
+    customerId: customer.id, kind: 'AUTO_REPLY', payload: { messageId: queued.id },
+    runAt: new Date(Date.now() + autopilotReplyDelaySeconds() * 1000).toISOString(),
+  });
+  await store.audit('system', 'payment_received_queued', { customerId: customer.id, messageId: queued.id }).catch(() => {});
+  const out = { ok: true as const, retryable: false as const, messageId: queued.id as string | undefined, error: undefined as string | undefined };
 
   // The task, and when there is none.
   //

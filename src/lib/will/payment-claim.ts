@@ -124,6 +124,30 @@ const NOT_A_CLAIM = /\b(attention|visit|mind|off|how (?:do|can|should) i|when (?
  *  to pay") and does not cover "will get the payment sent" / "can send the
  *  payment" at all. General future-modal + send-verb + payment-noun shape
  *  instead of another fixed phrase, since people phrase this many ways. */
+/** CONDITIONAL / FUTURE PERFECT (Jo, 25 Sep, +61 481: "I'll be in touch next
+ *  week once I've made the payment" was moved to Paid and sent the form). The
+ *  literal "made the payment" is there, in the future: "once/when/after/as
+ *  soon as/before/until/if ... I've made/paid/sent/transferred". EXPLICIT has
+ *  no notion of tense; this catches the tense marker in front of it, in the
+ *  languages Will speaks, and is checked before EXPLICIT like the others. */
+const CONDITIONAL_PAYMENT = new RegExp([
+  // en: "once I've made the payment", "when I have paid", "as soon as I transfer", "before I pay", "until I've sent it"
+  "\\b(?:once|when|after|as soon as|before|until|till|if|whenever)\\b[^.!?]{0,20}\\b(?:i|we)(?:'ve|'ll| have| will| can| get)?\\b[^.!?]{0,12}\\b(?:made|make|paid|pay|sent|send|transferred|transfer|done|do|complete[d]?)\\b",
+  // de: "sobald ich bezahlt habe", "wenn ich überwiesen habe", "nachdem ich bezahlt habe"
+  '\\b(?:sobald|wenn|nachdem|bevor|falls)\\b[^.!?]{0,20}\\b(?:ich|wir)\\b[^.!?]{0,20}\\b(?:bezahl|überw|zahl)',
+  // es / pt / it / fr
+  '\\b(?:cuando|una vez que|en cuanto|despu[ée]s de que|antes de que|si)\\b[^.!?]{0,20}\\b(?:haya|hayamos|tenga|pueda)?\\s?(?:pag|transfer|envi)',
+  '\\b(?:quando|assim que|depois de|antes de|se)\\b[^.!?]{0,20}\\b(?:tiver |eu |n[óo]s )?(?:pag|transfer|envi)',
+  '\\b(?:quando|appena|non appena|dopo che|prima di|se)\\b[^.!?]{0,20}\\b(?:avr[òo]|abbia|avremo)?\\s?(?:pag|bonific|invi)',
+  "\\b(?:quand|une fois que|d[èe]s que|apr[èe]s que|avant de|si)\\b[^.!?]{0,20}\\b(?:j'aurai|j'ai|je|nous)\\b[^.!?]{0,12}\\b(?:pay|vir|envoy|fait)",
+  // ja: "支払ったら", "振り込んだら", "送金したら", "支払い次第"
+  '(?:支払|振り込|振込|送金|入金)(?:っ|ん|し)?(?:たら|だら|次第|後に|てから)',
+].join('|'), 'i');
+
+/** A stated future time next to a payment word, with no attachment, is a plan,
+ *  not a report: "I'll pay next week", "payment tomorrow", "after payday". */
+const FUTURE_TIME = /\b(?:next (?:week|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|tomorrow|later (?:today|this week|in the week)|in a (?:few|couple of) days|(?:on|by) (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)|after payday|when i get paid|once i get paid|n[äa]chste woche|morgen|la semana que viene|ma[ñn]ana|semana que vem|amanh[ãa]|la settimana prossima|domani|la semaine prochaine|demain|来週|明日|給料日)\b/i;
+
 const FUTURE_PAYMENT_INTENT = /\b(?:will|'ll|can|could|going to|about to|need to|have to|hope to|plan to)\b[^.!?]{0,25}\b(?:get|send|make|sort|transfer|have)\b[^.!?]{0,20}\b(?:payment|money|it|funds|transfer)\b/i;
 
 /** The same "I have NOT paid / I am ABOUT to pay" shapes in the other six
@@ -177,6 +201,10 @@ export function claimsPayment(
   // A question about paying is never a claim, however many payment words it
   // contains. Checked first so it can override both patterns below.
   if (NOT_A_CLAIM.test(t) || NOT_A_CLAIM_ML.test(t) || FUTURE_PAYMENT_INTENT.test(t)) return false;
+  if (CONDITIONAL_PAYMENT.test(t)) return false;
+  // A future time in the same message, with no receipt attached, is a plan.
+  // With a receipt the picture decides ("paid, will send the rest tomorrow").
+  if (!opts?.hasAttachment && FUTURE_TIME.test(t)) return false;
   // Jo, 7 Sep: was `t.endsWith('?')` — only caught a question mark as the very
   // last character. "こちらの写真では難しいでしょうか？これ以外には証明する
   // ものが無く…" (real customer message, a Medicare screenshot, asking "is

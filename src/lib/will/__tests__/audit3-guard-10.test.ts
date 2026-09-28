@@ -51,7 +51,8 @@ describe('audit3 guard[10]: "payment ... back to you" is a return of contact, no
     }
   });
 
-  it('the retired guarantee wording is a promise now (Jo, 20 Sep)', () => {
-    expect(has('If it is less than the fee, we refund you the difference.')).toBe(true);
+  it('the guarantee wording is not a payment-refund promise (back 27 Sep); refunding the fee still is', () => {
+    expect(has('If it is less than the fee, we refund you the difference.')).toBe(false);
+    expect(has('If you owe, we refund you the full fee.')).toBe(true);
   });
 });

@@ -95,7 +95,7 @@ const FAQS = [
   },
   {
     question: 'Was ist, wenn ich keine Rückerstattung bekomme?',
-    answer: 'Die Gebühr deckt die vollständige Prüfung deiner Steuererklärung durch unser Team ab und hängt nicht vom Ergebnis ab. Über Rückerstattungen und Steuerbescheide entscheidet das ATO, daher wird die Gebühr nicht erstattet. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das früh, statt den Auftrag anzunehmen und zu hoffen.',
+    answer: 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das früh, statt den Auftrag anzunehmen und zu hoffen.',
   },
   {
     question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',

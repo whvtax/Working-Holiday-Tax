@@ -388,10 +388,10 @@ export default function ABNPageJA() {
       {/* ── 5. 料金 ──────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>料金に含まれるもの</p>
+          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 28px)', lineHeight: 1.6, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
-            料金は、当社チームによる確定申告の全面的な確認作業に対するものであり、結果によって変わることはありません。還付や課税額はATOが決定するため、料金の返金はできません。
+            当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
             料金は定額制で、還付額に対する歩合ではありません。

@@ -153,9 +153,12 @@ describe('no negotiation, no invented promises', () => {
     expect(has("So you're never out of pocket.", 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
     expect(has('That way you are not out of pocket for our service.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
   });
-  it('the old guarantee "refund the difference" is a promise now (Jo, 20 Sep)', () => {
-    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'RETIRED_GUARANTEE_LINE')).toBe(true);
-    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'REFUND_OR_CANCEL_PROMISE')).toBe(true);
+  it('the guarantee "refund the difference" is allowed again (Jo, 27 Sep); the over-promise is not', () => {
+    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'RETIRED_GUARANTEE_LINE')).toBe(false);
+    expect(has('If you get a refund and it is less than the fee, we refund you the difference.', 'REFUND_OR_CANCEL_PROMISE')).toBe(false);
+    expect(has('So our fee never costs you more than the refund you get back.', 'RETIRED_GUARANTEE_LINE')).toBe(true);
+    expect(has("You can't lose with us.", 'RETIRED_GUARANTEE_LINE')).toBe(true);
+    expect(has('There is no risk to you at all.', 'RETIRED_GUARANTEE_LINE')).toBe(true);
   });
   it('the new fee line sends', () => {
     expect(policyGuard('The fee covers the full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.', ctx({ state: 'PRICE_SENT' })).allowed).toBe(true);
@@ -521,16 +524,16 @@ describe('REPLY_TOO_LONG: replies must read like a person texting', () => {
   });
 });
 
-// ── The guarantee in translation (audit, 3 Sep) ─────────────────────────────
-// The refund-shortfall guarantee is retired (Jo, 20 Sep). Its sentence and
-// its worked example are refund promises in every language now, and the
-// arithmetic exemption that let $100/$120 through is gone.
-describe('the retired guarantee is caught in every language', () => {
-  it('the Japanese guarantee sentence', () => {
-    expect(has('どちらの場合も、還付金が料金より少ない場合は差額を返金します。', 'RETIRED_GUARANTEE_LINE')).toBe(true);
+// ── The guarantee in translation (audit, 3 Sep; back 27 Sep) ─────────────
+// The guarantee sentence is allowed in every language Will speaks (he
+// translates the price message). The worked example with invented figures is
+// still a FORBIDDEN_AMOUNT, and the wider over-promise is still retired.
+describe('the guarantee in every language', () => {
+  it('the Japanese guarantee sentence passes', () => {
+    expect(has('どちらの場合も、還付金が料金より少ない場合は差額を返金します。', 'RETIRED_GUARANTEE_LINE')).toBe(false);
   });
 
-  it('the worked example in German and Japanese', () => {
+  it('the worked example in German and Japanese is still a forbidden amount', () => {
     const de = 'Wenn deine Rückerstattung also nur $100 wäre und unsere Gebühr $220, würden wir dir $120 erstatten.';
     const ja = '例えば還付金が$100で料金が$220なら、$120を返金します。';
     for (const t of [de, ja]) {
@@ -539,13 +542,23 @@ describe('the retired guarantee is caught in every language', () => {
     }
   });
 
-  it('the sentence in the Latin languages', () => {
+  it('the sentence in the Latin languages passes', () => {
     for (const t of [
       'Wenn deine Rückerstattung geringer als unsere Gebühr ist, erstatten wir dir die Differenz.',
       'Si tu reembolso es menor que nuestra tarifa, te devolvemos la diferencia.',
       'Si ton remboursement est inférieur à nos frais, nous te remboursons la différence.',
       'Se il tuo rimborso è inferiore alla nostra tariffa, ti rimborsiamo la differenza.',
       'Se o teu reembolso for menor que a nossa taxa, devolvemos a diferença.',
+    ]) expect([t, policyGuard(t, ctx({ state: 'PRICE_SENT' })).allowed]).toEqual([t, true]);
+  });
+
+  it('the over-promise is still caught in the other languages', () => {
+    for (const t of [
+      'Die Gebühr kostet dich nie mehr als deine Rückerstattung.',
+      'Nunca te cuesta más que tu reembolso.',
+      'Cela ne te coûte jamais plus que ton remboursement.',
+      'Non ti costa mai più del tuo rimborso.',
+      'Nunca te custa mais do que o teu reembolso.',
     ]) expect([t, has(t, 'RETIRED_GUARANTEE_LINE')]).toEqual([t, true]);
   });
 

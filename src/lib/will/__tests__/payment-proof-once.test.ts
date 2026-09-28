@@ -24,6 +24,9 @@ const addTask = jest.fn().mockResolvedValue({ id: 't1' });
 const addMessage = jest.fn().mockResolvedValue({ id: 'm1' });
 const audit = jest.fn().mockResolvedValue(undefined);
 const deliverOut = jest.fn().mockResolvedValue({ ok: true });
+const addJob = jest.fn().mockResolvedValue({ id: 'j1' });
+/** Jo, 25 Sep: the confirmation is a QUEUED row plus a delayed AUTO_REPLY job, not an instant send. */
+const queuedConfirmations = () => addMessage.mock.calls.filter((c) => c[0].status === 'QUEUED' && c[0].meta?.paymentConfirmation === true);
 
 /** Mutated by setState, so the "already paid" gate behaves like the real store. */
 const customer: Record<string, unknown> = {
@@ -52,7 +55,7 @@ jest.mock('@/lib/will/store', () => ({
     findOpenTaskForCustomer: jest.fn().mockResolvedValue(null),
     cancelJobsFor: jest.fn().mockResolvedValue(undefined),
     listJobsForCustomer: jest.fn().mockResolvedValue([]),
-    addJob: jest.fn().mockResolvedValue({ id: 'j1' }),
+    addJob: (...a: unknown[]) => addJob(...a),
   }),
 }));
 jest.mock('@/lib/will/channel', () => ({
@@ -87,7 +90,7 @@ const photo = (id: string) => ({
 });
 
 beforeEach(() => {
-  setState.mockClear(); addTask.mockClear(); addMessage.mockClear(); audit.mockClear();
+  setState.mockClear(); addTask.mockClear(); addMessage.mockClear(); audit.mockClear(); addJob.mockClear();
   deliverOut.mockClear().mockResolvedValue({ ok: true });
   customer.state = 'PRICE_SENT'; customer.paid = false; customer.optedOut = false;
 });
@@ -99,64 +102,36 @@ describe('two attachments in one delivery', () => {
       handlePaymentProofMedia('61400000001', 'paid!', photo('a')),
       handlePaymentProofMedia('61400000001', 'receipt', photo('b')),
     ]);
-    const confirmations = deliverOut.mock.calls.filter(
-      (c) => c[1] === APPROVED.payment_received,
-    );
+    const confirmations = queuedConfirmations().filter((c) => c[0].body === APPROVED.payment_received);
     expect(confirmations).toHaveLength(1);
+    expect(addJob.mock.calls.filter((c) => c[0].kind === 'AUTO_REPLY')).toHaveLength(1);
     expect(setState.mock.calls.filter((c) => c[1] === 'PAID')).toHaveLength(1);
   });
 
   it('the second one returns without doing anything', async () => {
     await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    deliverOut.mockClear(); addTask.mockClear();
+    addMessage.mockClear(); addTask.mockClear();
     const second = await handlePaymentProofMedia('61400000001', 'receipt', photo('b'));
     expect(second).toBeNull();
-    expect(deliverOut).not.toHaveBeenCalled();
+    expect(queuedConfirmations()).toHaveLength(0);
     expect(addTask).not.toHaveBeenCalled();
   });
 
   it('still confirms a single payment normally', async () => {
     await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    expect(deliverOut).toHaveBeenCalledTimes(1);
+    expect(queuedConfirmations()).toHaveLength(1);
+    expect(deliverOut).not.toHaveBeenCalled();
     expect(customer.paid).toBe(true);
   });
 });
 
-describe('when WhatsApp rejects the confirmation', () => {
-  it('says so on the task instead of claiming it went', async () => {
-    deliverOut.mockResolvedValue({ ok: false, error: 'outside the 24h window' });
-    await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    const task = addTask.mock.calls[0][0];
-    expect(task.reason).toContain('PAID, BUT THEY HAVE NOT BEEN TOLD');
-    expect(task.reason).toContain('outside the 24h window');
-    expect(task.reason).not.toContain('worth a glance');
-  });
-
-  it('marks it urgent and attaches the message to send', async () => {
-    // Somebody who paid and heard nothing is the most urgent thing on the
-    // board, and the reply should be one click, not retyped.
-    deliverOut.mockResolvedValue({ ok: false, error: 'rejected' });
-    await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    const task = addTask.mock.calls[0][0];
-    expect(task.severity).toBe('URGENT');
-    expect(task.suggestedReply).toBe(APPROVED.payment_received);
-  });
-
-  it('records the failure where it can be found', async () => {
-    deliverOut.mockResolvedValue({ ok: false, error: 'rejected' });
-    await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    expect(audit.mock.calls.some((c) => c[1] === 'payment_received_send_failed')).toBe(true);
-  });
-
+describe('the heads-up task (the send itself is the scheduler\'s job now, Jo 25 Sep)', () => {
   it('still moves them to Paid, because they did pay', async () => {
-    // The money is real whether or not our message got through. Rolling the
-    // state back would be the wrong correction.
-    deliverOut.mockResolvedValue({ ok: false, error: 'rejected' });
     await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
     expect(setState.mock.calls.some((c) => c[1] === 'PAID')).toBe(true);
   });
 
-  it('keeps the ordinary wording when the send succeeded', async () => {
+  it('keeps the ordinary wording for a payment taken on trust', async () => {
     await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
     const task = addTask.mock.calls[0][0];
     expect(task.reason).toContain('Worth a glance');

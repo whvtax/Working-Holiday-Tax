@@ -84,7 +84,7 @@ const BANK_DETAILS_RE = /\b0?62\s?692\b|\b81049952\b/;
 const BANK_LINE_RE = new RegExp([
   '\\b0?62\\s?692\\b', '\\b81049952\\b',
   // the labels, in every language
-  'payment details', 'bank details', 'account name\\s*:', '^\\s*bsb\\b', '^\\s*account\\s*:',
+  'payment details', 'bank details', 'account name\\s*:', '^\\s*bsb\\b', '^\\s*account\\s*:', '^\\s*amount\\s*:\\s*\\$?\\d',
   'zahlungsdetails', 'bankverbindung', 'kontoinhaber', 'kontonummer', '^\\s*blz\\b',
   'datos de pago', 'datos bancarios', 'titular de la cuenta', 'n[úu]mero de cuenta',
   'coordonn[ée]es bancaires', 'd[ée]tails de paiement', 'titulaire du compte', 'num[ée]ro de compte',
@@ -105,7 +105,7 @@ const BANK_LINE_RE = new RegExp([
   // what Jo banned on 3 Sep (audit, 4 Sep). The old guarantee phrasings stay
   // in the list so a Library copy that was not synced yet is still caught.
   "the fee covers our team's full review", 'the fee covers the full review', 'not dependent on the outcome', 'decided by the ato',
-  'if your refund is less than', 'refund the difference', 'if you owe money to the ato',
+  'if your (?:tax )?refund is less than', 'refund the difference', 'if you owe money to the ato', "if there'?s no refund", 'our full fee applies',
   'wenn deine r[üu]ckerstattung', 'differenz', 'falls du dem ato',
   'si tu reembolso es (?:menor|inferior)', 'la diferencia', 'si le debes',
   'si ton remboursement est', 'la diff[ée]rence', 'si tu dois de l',
@@ -353,8 +353,11 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // task (post-payment) follow.
   const LENGTH_ONLY = new Set(['REPLY_TOO_LONG', 'AI_PAUSED_FOR_CUSTOMER', 'CUSTOMER_OPTED_OUT', 'LEGACY_CHAT_AI_DISABLED', 'KILL_SWITCH_ACTIVE']);
   if (!verdict.allowed && verdict.violations.includes('REPLY_TOO_LONG') && verdict.violations.every((v) => LENGTH_ONLY.has(v))) {
+    const aroundPrice = /\bBSB\b|062692|81049952/.test(decision.reply_text);
     const retry = await decide(ctx, history, {
-      rewriteHint: `Your previous reply was refused because it was TOO LONG. Send the SAME answer again, rewritten to at most 3 short lines plus one closing line with the next step: a first line that shows you read what they wrote, one line that says it is exactly what our review covers (no explanation of how, no teaching, no examples, no dates, no second scenario, no list), then the next step for their current stage. Under 60 words. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`,
+      rewriteHint: aroundPrice
+        ? `Your previous reply was refused because it was TOO LONG around the price message. Send the approved price message for their chosen option EXACTLY as approved, with at most ONE short reassuring line before it ("Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us."). Nothing else: no Library answer, no explanation, no second paragraph. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`
+        : `Your previous reply was refused because it was TOO LONG. Send the SAME answer again, rewritten to at most 3 short lines plus one closing line with the next step: a first line that shows you read what they wrote, one line that says it is exactly what our review covers (no explanation of how, no teaching, no examples, no dates, no second scenario, no list), then the next step for their current stage. Under 60 words. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`,
       timeoutMs: 12_000,
     });
     if (retry.action === 'reply' && retry.reply_text) {
@@ -419,9 +422,9 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     // too long after the rewrite above. Jo: before payment the answer to any
     // detailed tax story is the same, "that is exactly what our review
     // covers", so a long draft is not worth a task either.
-    const DETERMINATION_ONLY = new Set(['TAX_DETERMINATION', 'REPLY_TOO_LONG']);
+    const DETERMINATION_ONLY = new Set(['TAX_DETERMINATION', 'REPLY_TOO_LONG', 'PRE_PAYMENT_MEDICARE_SCRIPT', 'PRE_PAYMENT_HEDGE']);
     if (!ctx.paid
-        && (verdict.violations.includes('TAX_DETERMINATION') || verdict.violations.includes('REPLY_TOO_LONG'))
+        && (verdict.violations.includes('TAX_DETERMINATION') || verdict.violations.includes('REPLY_TOO_LONG') || verdict.violations.includes('PRE_PAYMENT_MEDICARE_SCRIPT') || verdict.violations.includes('PRE_PAYMENT_HEDGE'))
         && verdict.violations.every((v) => DETERMINATION_ONLY.has(v) || NOT_A_FAULT.has(v))) {
       const safe = professionalQuestionMessage(ctx.lang);
       const safeVerdict = policyGuard(safe, guardCtx);

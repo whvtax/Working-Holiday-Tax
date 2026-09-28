@@ -20,7 +20,7 @@ const decideMock = decide as jest.MockedFunction<typeof decide>;
 const ESSAY = [
   'Hi Helena!',
   'Yes, absolutely. Assessing your tax residency and whether you are entitled to be treated as an Australian resident (rather than automatically under the 15% WHM rate) is exactly what we do as part of the review. The Addy case is one of the factors our tax agent considers when reviewing UK citizens in your situation.',
-  'Your residency depends on your individual circumstances, including things like your length of stay, intention, living arrangements and ties to Australia, so it is reviewed properly rather than assumed.',
+  'Your residency is worked out from things like your length of stay, intention, living arrangements and ties to Australia, so it is reviewed properly rather than assumed.',
   'That assessment happens once we start the review (after payment), and you will get the outcome before anything is lodged, so you know exactly how you are being treated and why.',
   'It is also worth knowing that the review covers your Medicare position and every deduction you are entitled to, and that the whole process is handled online so you do not need to be in Australia for any of it.',
   'Would you like me to talk you through how the service works?',
@@ -68,7 +68,7 @@ it('pre-payment, a rewrite that is still too long falls to the approved review l
   const out = await runEngine(input());
   expect(out.kind).toBe('queued');
   expect(out.task).toBeUndefined();
-  expect(out.replyText).toMatch(/review/i);
+  expect(out.replyText).toMatch(/one of the many things we check before we lodge/);
   expect(out.guardViolations).toContain('REPLY_TOO_LONG');
 });
 

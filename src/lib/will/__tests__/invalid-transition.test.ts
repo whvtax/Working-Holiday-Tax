@@ -202,7 +202,7 @@ describe('a pre-payment determination falls back to the approved #7', () => {
     decideMock.mockResolvedValue({ action: 'reply', reply_text: advice, confidence: 0.9 });
     const out = await runEngine(input({ mode: 'FULL_AUTO', ctx: { ...input().ctx, state: 'QUALIFIED', lang: 'en' } }));
     expect(out.kind).toBe('queued');
-    expect(out.replyText).toMatch(/^That's definitely something we can check for you/);
+    expect(out.replyText).toMatch(/^Yes, that's definitely one of the many things we check before we lodge/);
     expect(out.task).toBeUndefined();
     expect(out.guardViolations).toContain('TAX_DETERMINATION');
   });
@@ -211,11 +211,11 @@ describe('a pre-payment determination falls back to the approved #7', () => {
     decideMock.mockResolvedValue({ action: 'reply', reply_text: advice, confidence: 0.9 });
     const out = await runEngine(input({ ctx: { ...input().ctx, state: 'QUALIFIED', lang: 'de' } }));
     expect(out.kind).toBe('pending_approval');
-    expect(out.replyText).toMatch(/^Das können wir auf jeden Fall für dich prüfen/);
+    expect(out.replyText).toMatch(/^Ja, das ist auf jeden Fall eines der vielen Dinge/);
   });
 
-  it('is a task, not #7, when the draft also reaches for the retired guarantee (Jo, 20 Sep)', async () => {
-    decideMock.mockResolvedValue({ action: 'reply', reply_text: advice + ' And remember, if your refund is less than our fee, we refund you the difference.', confidence: 0.9 });
+  it('is a task, not #7, when the draft also reaches for the retired over-promise (Jo, 20 Sep; guarantee itself back 27 Sep)', async () => {
+    decideMock.mockResolvedValue({ action: 'reply', reply_text: advice + ' And remember, our fee never costs you more than the refund you get back.', confidence: 0.9 });
     const out = await runEngine(input({ mode: 'FULL_AUTO', ctx: { ...input().ctx, state: 'QUALIFIED', lang: 'en' } }));
     expect(out.kind).toBe('human_task');
     expect(out.guardViolations).toContain('RETIRED_GUARANTEE_LINE');

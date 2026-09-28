@@ -69,11 +69,10 @@ describe('stripBankBlock (never repeat the bank details)', () => {
     });
   });
 
-  test('the fee line lives in the price messages; the opening is short', () => {
+  test('the guarantee lives in the price messages; the opening is short', () => {
     for (const msg of [APPROVED.price_tfn, APPROVED.price_tfn_abn]) {
-      expect(msg).toContain("The fee covers our team's full review, preparation and lodgment of your tax return.");
+      expect(msg).toContain("If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.");
       expect(msg).not.toMatch(/non-refundable|not dependent on the outcome/i);
-      expect(msg).not.toMatch(/refund the difference/i);
     }
     expect(APPROVED.opening).not.toContain('refund the difference');
     expect(APPROVED.opening).toContain('$220');
@@ -82,7 +81,7 @@ describe('stripBankBlock (never repeat the bank details)', () => {
     // The amount is stated in the price message, next to the details the
     // customer copies into their bank app, and it is what the system reads
     // the chosen track from.
-    expect(APPROVED.price_tfn).toContain('for the $220:');
-    expect(APPROVED.price_tfn_abn).toContain('for the $385:');
+    expect(APPROVED.price_tfn).toContain('Amount: $220');
+    expect(APPROVED.price_tfn_abn).toContain('Amount: $385');
   });
 });

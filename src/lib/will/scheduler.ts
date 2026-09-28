@@ -360,7 +360,7 @@ export async function ensureLostAnalysisSoon(): Promise<void> {
  *  lost from the chat record (msg.body still holds it), only from what
  *  actually reaches the customer's phone this time. */
 async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; meta?: Record<string, unknown> | null }) {
-  if (msg.meta?.proposedState !== 'PAID') return sendWhatsAppText(customer.waId, msg.body);
+  if (msg.meta?.proposedState !== 'PAID' && msg.meta?.paymentConfirmation !== true) return sendWhatsAppText(customer.waId, msg.body);
   const name = paymentReceivedTemplateKey(metaTemplateLang(customer.lang));
   const templated = await sendWhatsAppTemplate(customer.waId, name, [], customer.lang);
   return templated.ok ? templated : sendWhatsAppText(customer.waId, msg.body);
@@ -1226,7 +1226,11 @@ async function doProcess(): Promise<TickResult> {
         // said after this was drafted produced its own, better-informed reply,
         // so sending this one now would be answering a question that has been
         // overtaken. Drop it rather than talk past them.
-        const stale = customer.lastCustomerMsgAt != null
+        // The payment confirmation answers the payment, not a question, so a
+        // "here it is" or "did you get it?" typed while it waited does not make
+        // it stale (Jo, 25 Sep: it is delayed on purpose now, see service.ts).
+        const isPaymentConfirmation = msg.meta?.paymentConfirmation === true;
+        const stale = !isPaymentConfirmation && customer.lastCustomerMsgAt != null
           && new Date(customer.lastCustomerMsgAt).getTime() > new Date(msg.createdAt).getTime();
         // (The kill switch is handled above: it returns before any job runs.)
         if (stale || customer.optedOut || customer.aiPaused) {
@@ -1244,7 +1248,7 @@ async function doProcess(): Promise<TickResult> {
           state: customer.state, paid: customer.paid, aiPaused: customer.aiPaused, killSwitch: false,
           optedOut: customer.optedOut, isLegacy: customer.isLegacy,
           lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
-          isApprovedTemplate: false, estimateFromTeam: customer.estimatedRefundCents,
+          isApprovedTemplate: msg.meta?.system === true, estimateFromTeam: customer.estimatedRefundCents,
         });
         if (!verdict.allowed) {
           await store.setMessageStatus(msg.id, 'BLOCKED');
@@ -1302,6 +1306,12 @@ async function doProcess(): Promise<TickResult> {
             if (fresh) { try { await reconcileSchedule(fresh); } catch { /* best effort, the reply is out */ } }
           }
           result.sent.push(`${customer.name ?? customer.waId} · autopilot reply`);
+        } else if (isPaymentConfirmation) {
+          await store.audit('channel', 'payment_received_send_failed', { customerId: customer.id, error: res.error ?? 'unknown error' });
+          await raiseOrUpdateTask(store, customer, {
+            reason: `PAID, BUT THEY HAVE NOT BEEN TOLD. The payment was confirmed (${String(msg.meta?.trustedBecause ?? 'by the customer')}) and they are moved to Paid, but WhatsApp rejected the confirmation: ${res.error ?? 'unknown error'}. Send it by hand now.`,
+            severity: 'URGENT', newContext: msg.body.slice(0, 200), suggestedReply: msg.body,
+          });
         } else {
           await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });
           await raiseOrUpdateTask(store, customer, {

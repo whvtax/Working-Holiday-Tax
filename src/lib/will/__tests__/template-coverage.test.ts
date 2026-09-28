@@ -114,7 +114,7 @@ describe('every sendable message is in the Message Library', () => {
         // only mean something once a message is addressed to a real customer,
         // and the essay cap, which is for the model's prose, not the owner's.
         violations: policyGuard(t.body, saveTimeCtx).violations
-          .filter((v) => !v.startsWith('OUTSIDE_24H') && v !== 'PLACEHOLDER_LEFTOVER' && v !== 'REPLY_TOO_LONG'),
+          .filter((v) => !v.startsWith('OUTSIDE_24H') && v !== 'PLACEHOLDER_LEFTOVER' && v !== 'REPLY_TOO_LONG' && v !== 'PRE_PAYMENT_MEDICARE_SCRIPT'),
       }))
       .filter((x) => x.violations.length)
       .map((x) => `${x.key}: ${x.violations.join(',')}`);

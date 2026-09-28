@@ -43,7 +43,7 @@ export interface Decision {
 
 const STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'PAID', 'FORM_PENDING', 'FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
 
-const DECIDE_TOOL = {
+export const DECIDE_TOOL = {
   name: 'decide',
   description: 'Your single decision for this customer message.',
   input_schema: {
@@ -561,7 +561,7 @@ HOW TO WRITE THE ANSWER:
 - Warm, short, WhatsApp-natural. Two to four sentences. No headings, no bullet lists, no bold (**), no em dash or en dash, no "Great question!".
 - Say what to do and where to send it ("send it to me here"), then stop. Do not add "we'll guide you through the process" or "let me know if you have questions".
 - Do NOT copy the human agent's wording or tone from the conversation; only learn WHAT was asked and what the correct business answer is.
-- Business facts that never change: fixed prices $220 (TFN only) and $385 (TFN + ABN), paid upfront. The fee is for our team's review of the customer's situation, so it stays the same whatever the result; say it that way, in the positive, never "non-refundable". There is NO refund-shortfall guarantee: never say we refund the difference, never promise a refund, never "never out of pocket". Bank details: Account Name The Accounting Academy, BSB 062692, Account Number 81049952, never any other name. Returns are reviewed and signed off by a registered tax agent; never write "we are registered tax agents". Never claim to be a bot or AI. Never give myGov / ATO login steps. No dollar amount other than $220 and $385.
+- Business facts that never change: fixed prices $220 (TFN only) and $385 (TFN + ABN), paid upfront. The guarantee (Jo, 27 Sep), in its exact wording: "If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies." It lives in the price messages; never widen it (no "never out of pocket", "you can't lose", "no risk"), never promise a refund will happen, never "non-refundable" unless the customer asks point-blank. Bank details: Account Name The Accounting Academy, BSB 062692, Account Number 81049952, never any other name. Returns are reviewed and signed off by a registered tax agent; never write "we are registered tax agents". Never claim to be a bot or AI. Never give myGov / ATO login steps. No dollar amount other than $220 and $385.
 - Write answers in English.
 - Merge duplicate questions into one entry; set examples to the real phrasings seen; set keywords to the important searchable words; set a short intent label.
 

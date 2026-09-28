@@ -88,15 +88,23 @@ describe('deliverOut with onFailure', () => {
 describe('service.ts hands its wording to deliverOut instead of adding a second card', () => {
   const src = fs.readFileSync(path.join(__dirname, '..', 'service.ts'), 'utf8');
 
-  it('the payment confirmation passes its task through onFailure and does not addTask on a rejection', () => {
-    const i = src.indexOf('PAID, BUT THEY HAVE NOT BEEN TOLD');
+  it('the payment confirmation is queued with the 1 to 5 minute delay and its failure task is raised once, by the scheduler', () => {
+    // 25 Sep: the confirmation used to go out in the same minute as the receipt,
+    // which read as a robot. It is now a QUEUED row like every other Will reply;
+    // the scheduler transmits it and, on a rejection, raises the URGENT task
+    // through raiseOrUpdateTask (folds into any open card, never a second one).
+    expect(src).not.toContain('PAID, BUT THEY HAVE NOT BEEN TOLD');
+    const q = src.indexOf('paymentConfirmation: true, trustedBecause');
+    expect(q).toBeGreaterThan(0);
+    const after = src.slice(q, q + 600);
+    expect(after).toContain("kind: 'AUTO_REPLY'");
+    expect(after).toContain('autopilotReplyDelaySeconds()');
+    const sched = fs.readFileSync(path.join(__dirname, '..', 'scheduler.ts'), 'utf8');
+    const i = sched.indexOf('PAID, BUT THEY HAVE NOT BEEN TOLD');
     expect(i).toBeGreaterThan(0);
-    // The wording lives inside the deliverOut call.
-    const before = src.slice(Math.max(0, i - 400), i);
-    expect(before).toContain('deliverOut(customer, confirmation');
-    expect(before).toContain('onFailure');
-    // And only once in the file: no separate addTask with the same reason.
-    expect(src.split('PAID, BUT THEY HAVE NOT BEEN TOLD').length).toBe(2);
+    expect(sched.slice(i - 400, i)).toContain('raiseOrUpdateTask(store, customer, {');
+    expect(sched.slice(i - 400, i)).not.toContain('store.addTask(');
+    expect(sched.split('PAID, BUT THEY HAVE NOT BEEN TOLD').length).toBe(2);
   });
 
   it('the autopilot reply passes its task through onFailure and no longer overwrites the card', () => {

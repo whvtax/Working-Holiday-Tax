@@ -79,39 +79,31 @@ beforeEach(() => {
   customer.state = 'PRICE_SENT'; customer.paid = false; customer.optedOut = false;
 });
 
-describe('a throttled payment confirmation', () => {
-  it('raises no task at all (deliverOut already refuses one for a retryable send)', async () => {
-    deliverOut.mockResolvedValue({ ok: false, error: '429 too many requests', retryable: true, messageId: 'm1' });
+// Jo, 25 Sep: the confirmation is no longer sent from this handler at all. It
+// is parked QUEUED with an AUTO_REPLY{messageId} job from the start (the same
+// mechanism this audit added for the throttled case), so the throttle path
+// and the happy path are now the same path. What this file still pins: the
+// row is QUEUED, a job exists for it, the stage moved, and nothing here
+// raises a task for the send.
+describe('the payment confirmation is queued, not sent on the spot', () => {
+  it('parks the confirmation QUEUED and arms an AUTO_REPLY job on it', async () => {
     await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    expect(addTask).not.toHaveBeenCalled();
+    const queued = addMessage.mock.calls.find((c) => c[0].status === 'QUEUED' && c[0].meta?.paymentConfirmation === true);
+    expect(queued).toBeTruthy();
+    const job = addJob.mock.calls.find((c) => c[0].kind === 'AUTO_REPLY')?.[0];
+    expect(job.payload.messageId).toBe('m1');
+    expect(new Date(job.runAt).getTime() - Date.now()).toBeGreaterThanOrEqual(55_000);
+    expect(deliverOut).not.toHaveBeenCalled();
   });
 
-  it('is parked back as QUEUED instead of left FAILED with nothing to retry it', async () => {
-    deliverOut.mockResolvedValue({ ok: false, error: '429 too many requests', retryable: true, messageId: 'm1' });
+  it('raises no send task of its own (the scheduler does, if the send fails)', async () => {
     await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    expect(setMessageStatus).toHaveBeenCalledWith('m1', 'QUEUED', { restamp: true });
-  });
-
-  it('arms an AUTO_REPLY job on that message so the scheduler resends it', async () => {
-    deliverOut.mockResolvedValue({ ok: false, error: '429 too many requests', retryable: true, messageId: 'm1' });
-    await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    const job = addJob.mock.calls.find((c) => c[0].kind === 'AUTO_REPLY');
-    expect(job).toBeDefined();
-    expect(job![0].payload).toEqual({ messageId: 'm1' });
-    expect(job![0].customerId).toBe('c1');
+    expect(addTask.mock.calls.some((c) => /NOT BEEN TOLD|send failed/i.test(c[0].reason))).toBe(false);
   });
 
   it('still moves them to Paid, because they did pay', async () => {
-    deliverOut.mockResolvedValue({ ok: false, error: '429 too many requests', retryable: true, messageId: 'm1' });
     await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
     expect(customer.paid).toBe(true);
-  });
-
-  it('a non-retryable rejection still gets its one URGENT task, unchanged', async () => {
-    deliverOut.mockResolvedValue({ ok: false, error: 'rejected', messageId: 'm1' });
-    await handlePaymentProofMedia('61400000001', 'paid!', photo('a'));
-    expect(addTask).toHaveBeenCalledTimes(1);
-    expect(addTask.mock.calls[0][0].severity).toBe('URGENT');
-    expect(addJob.mock.calls.some((c) => c[0].kind === 'AUTO_REPLY')).toBe(false);
+    expect(customer.state).toBe('FORM_PENDING');
   });
 });

@@ -77,7 +77,9 @@ const sections: Section[] = [
     items: [
       'Tax return, TFN income only (AUD $220, GST inclusive): the full engagement, covering the Review of your circumstances and the preparation and lodgment of your Tax Return.',
       'Tax return, TFN and ABN income (AUD $385, GST inclusive): as above, where you also received income under an Australian Business Number, which requires your business income and expenses to be reconciled and your GST position considered.',
-      'The fee is charged for the Review and the professional work performed. It is a fixed amount, is never calculated as a percentage of your Refund, and does not depend on the outcome: whether a Refund is paid, how large it is, or whether you owe tax is determined solely by the ATO. Once the Review has begun, the fee is not refundable, subject only to your rights under the Australian Consumer Law.',
+      'The fee is charged for the Review and the professional work performed. It is a fixed amount and is never calculated as a percentage of your Refund. Whether a Refund is paid, how large it is, or whether you owe tax is determined solely by the ATO.',
+      'Refund guarantee: if the ATO pays you a Refund and that Refund is less than the fee you paid, the Provider will refund you the difference between the fee and the Refund, once the ATO has issued your Notice of Assessment. The guarantee applies to the tax return the fee was paid for and to the Refund as assessed by the ATO before any offset under clause 22.',
+      'If no Refund is paid, including where the ATO assesses that you owe money, the fee covers the work completed and is non-refundable, subject only to your rights under the Australian Consumer Law. The fee is likewise not refundable once the Review has begun, except under the guarantee above.',
       'Return prepared and awaiting your approval: if we have completed your Tax Return and made it available to you for review, approval or signature, the fee is payable in full, whether or not you subsequently authorise us to lodge it. At that point the work has been performed and delivered; only lodgment, which is an administrative step, remains outstanding. This does not apply where you withdraw because we have failed to provide the Service with due care and skill, or otherwise failed to meet the consumer guarantees under the Australian Consumer Law.',
       'Work outside the scope of a standard individual return (for example prior-year returns, additional business schedules, or amendments to a previously lodged return) will be separately quoted and agreed in writing before that work begins.',
       'Nothing in this clause limits, excludes or modifies any right or remedy you may have under the Australian Consumer Law.',
@@ -85,7 +87,7 @@ const sections: Section[] = [
   },
   {
     title: '7. Payment Terms',
-    body: 'The fee is payable in advance. Once payment has been received we send you the full questionnaire and begin work. Payment does not affect or guarantee your Refund or ATO outcome, and the fee is not refundable as set out in clause 6.',
+    body: 'The fee is payable in advance. Once payment has been received we send you the full questionnaire and begin work. Payment does not affect or guarantee your Refund or ATO outcome. The fee is refundable only under the refund guarantee in clause 6.',
   },
   {
     title: '8. Limitation of Liability',

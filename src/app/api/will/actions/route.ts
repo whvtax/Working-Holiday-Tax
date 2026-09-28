@@ -106,7 +106,7 @@ const notPendingDraft = (m: { direction: string; status: string }) => m.directio
  */
 function saveTimeViolations(violations: string[]): string[] {
   return violations.filter((v) =>
-    !v.startsWith('OUTSIDE_24H') && v !== 'PLACEHOLDER_LEFTOVER' && v !== 'REPLY_TOO_LONG');
+    !v.startsWith('OUTSIDE_24H') && v !== 'PLACEHOLDER_LEFTOVER' && v !== 'REPLY_TOO_LONG' && v !== 'PRE_PAYMENT_MEDICARE_SCRIPT' && v !== 'PRE_PAYMENT_HEDGE');
 }
 
 /** The owner's current wording for a Library entry, falling back to the

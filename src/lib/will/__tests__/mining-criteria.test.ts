@@ -21,5 +21,6 @@ it('carries the current business facts and no retired wording', () => {
   expect(prompt).toMatch(/never "non-refundable"/);
   expect(prompt).toMatch(/never write "we are registered tax agents"/);
   expect(prompt).not.toMatch(/Simple Tax Services/);
-  expect(prompt).not.toMatch(/refund the difference"?\s*[.:]/);
+  expect(prompt).toMatch(/If your tax refund is less than our fee, we'll refund the difference\. If there's no refund, our full fee applies\./);
+  expect(prompt).not.toMatch(/never out of pocket"?\s*[.:]/);
 });

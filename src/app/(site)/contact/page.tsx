@@ -104,7 +104,7 @@ const FAQS = [
   },
   {
     question: 'What if I do not get a refund?',
-    answer: 'The fee covers a full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable. Not every working holiday year produces a refund, and where yours looks unlikely we would rather say so early than take the work on and hope.',
+    answer: 'Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable. Not every working holiday year produces a refund, and where yours looks unlikely we would rather say so early than take the work on and hope.',
   },
   {
     question: 'Can you help me from the UK, Germany or Japan?',

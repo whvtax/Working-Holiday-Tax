@@ -537,7 +537,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
             Anyone can press submit. The work happens before that.
           </h2>
           <p className="mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.7, marginBottom: '10px', maxWidth: '46ch' }}>
-            Send us your figures and we will tell you what is in play for your year. The fee covers a full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.
+            Send us your figures and we will tell you what is in play for your year. Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '22px', maxWidth: '46ch' }}>
             Reviewed and signed off by a registered tax agent before it is lodged

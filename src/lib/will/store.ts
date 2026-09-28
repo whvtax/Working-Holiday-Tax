@@ -84,6 +84,10 @@ export interface MessageRow {
      *  changed or flagged. Shown on the draft card so the owner sees why the
      *  wording differs from Will's first pass. */
     review?: string;
+    /** Jo, 25 Sep: the delayed "payment received" confirmation. Never stale,
+     *  sent through the Meta template, URGENT task on failure. */
+    paymentConfirmation?: boolean;
+    trustedBecause?: string;
   };
   createdAt: string;
 }

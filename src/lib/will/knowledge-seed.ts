@@ -23,7 +23,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I'd like to know how much I'm likely to get back before paying you any money",
       "can you give me a rough idea of my refund first?"
     ],
-    "answer": "That’s a really fair question!\n\nTo give you an estimate, we first need to review your full situation with the ATO, which is the main part of our service.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result. 😊",
+    "answer": "That’s a really fair question!\n\nTo give you an estimate, we first need to review your full situation with the ATO, which is the main part of our service.\n\nIf your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies. 😊",
     "keywords": [
       "estimate",
       "before",
@@ -103,7 +103,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "how much do you charge for each tax return?",
       "is it a flat fee or %?"
     ],
-    "answer": "Our fee is fixed, never a percentage of your refund.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result.",
+    "answer": "Our fee is fixed, never a percentage of your refund.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nIf your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
       "price",
       "pricing",
@@ -128,7 +128,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what if my refund is not even that much, might not be worth it",
       "do I pay 220 automatically?"
     ],
-    "answer": "The fee is for our team's review of your situation, so it is the same whether you end up with a refund or an amount to pay. What the review makes sure of is that nothing you're entitled to is missed.",
+    "answer": "If your tax refund is less than our fee, we'll refund the difference. If there's no refund at all, or you have an amount to pay, our full fee applies, as the work is the same. What the review makes sure of is that nothing you're entitled to is missed.",
     "keywords": [
       "fee",
       "small",
@@ -180,7 +180,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "is it not possible to pay after I receive my tax return?",
       "can I do the payment after the tax return is in?"
     ],
-    "answer": "Payment is made upfront because the review and personal guidance are the main part of the service, and that's where our work starts. Once payment is received, we can start going through your situation properly. The fee is for our team's review of your situation, so it stays the same whatever the result.",
+    "answer": "Payment is made upfront because the review and personal guidance are the main part of the service, and that's where our work starts. Once payment is received, we can start going through your situation properly. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
       "pay",
       "after",
@@ -246,7 +246,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what's the Medicare Levy Exemption?",
       "do you need my Medicare number?"
     ],
-    "answer": "Since you weren’t covered by Medicare, you can apply for a Medicare Levy Exemption.\n\nhttps://youtu.be/oj7ZSOHAxJk?si=KDMFlLoR0jYdpulB\n\nSend us a screenshot once submitted and we can lodge your return. Approval is decided by Services Australia, and if it isn’t approved, the levy may still apply.",
+    "answer": "Medicare is one of the things our team checks and handles as part of the review, so leave that with us. If an exemption may apply to you, we walk you through it once your return is underway.",
     "keywords": [
       "medicare",
       "levy",
@@ -330,7 +330,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "which should I select, Australian resident or working holiday maker?",
       "I'm unsure if I'm an aus tax resident"
     ],
-    "answer": "This is a very important question and can make a big difference to your tax refund. It depends on your individual circumstances, so we check it carefully rather than guess.\n\nThere’s a short explanation in the form to guide you, and we’ll confirm your tax residency after reviewing your full situation.",
+    "answer": "Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us. 😊",
     "keywords": [
       "resident",
       "residency",
@@ -542,7 +542,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I want to know if I'm eligible and then lodge it myself",
       "can I just get an estimate then do it myself?"
     ],
-    "answer": "No problem, and we appreciate you being upfront 😊\n\nIt’s completely your call. With us, a specialist reviews your residency, deductions and Medicare, then prepares and lodges everything for you, all online.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result. If you want peace of mind that everything is done properly, we’d be happy to help.",
+    "answer": "No problem, and we appreciate you being upfront 😊\n\nIt’s completely your call. With us, a specialist reviews your residency, deductions and Medicare, then prepares and lodges everything for you, all online.\n\nIf your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies. If you want peace of mind that everything is done properly, we’d be happy to help.",
     "keywords": [
       "myself",
       "lodge",
@@ -589,7 +589,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "why would I pay before I know the amount?",
       "is this the full fee or are there extra charges?"
     ],
-    "answer": "The $220 covers your TFN only return from start to finish. A specialist reviews your full situation, checks that nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. The fee is for our team's review of your situation, so it stays the same whatever the result.",
+    "answer": "The $220 covers your TFN only return from start to finish. A specialist reviews your full situation, checks that nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
       "upfront",
       "pay",
@@ -615,7 +615,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what's the benefit of using you rather than doing it myself?",
       "can't I just do this myself for free?"
     ],
-    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result.",
+    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIf your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
       "why",
       "agency",
@@ -641,7 +641,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "any chance of a discount?",
       "can you do it cheaper?"
     ],
-    "answer": "Completely understand wanting the best value 😊 The fee is fixed at $220 for a TFN only return and is the same for everyone, so we can’t reduce it.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result.",
+    "answer": "Completely understand wanting the best value 😊 The fee is fixed at $220 for a TFN only return and is the same for everyone, so we can’t reduce it.\n\nIf your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
       "discount",
       "cheaper",
@@ -693,7 +693,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I started it myself and I'm not sure I filled it in correctly",
       "I already did it on my own but something looks wrong"
     ],
-    "answer": "No problem, we can look at it. It depends on where it's up to:\n\nIf you only started it and haven't lodged, we simply prepare and lodge it for you as a normal tax return: $220 (TFN only) or $385 (TFN + ABN), which covers our team's full review.\n\nIf it's already been lodged, we review it and fix anything that was missed. The fee is the same ($220 TFN only, $385 with ABN income) and is for the review itself, whatever the result.\n\nWhich one is it for you?",
+    "answer": "No problem, we can look at it. It depends on where it's up to:\n\nIf you only started it and haven't lodged, we simply prepare and lodge it for you as a normal tax return: $220 (TFN only) or $385 (TFN + ABN), which covers our team's full review.\n\nIf it's already been lodged, we review it and fix anything that was missed. The fee is the same ($220 TFN only, $385 with ABN income), and the same guarantee applies: if your tax refund is less than our fee, we'll refund the difference.\n\nWhich one is it for you?",
     "keywords": [
       "already",
       "myself",
@@ -746,7 +746,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "does the $220 cover the Medicare exemption too?",
       "do you charge extra for the Medicare part?"
     ],
-    "answer": "Yes, it’s included at no extra charge. If a Medicare Levy Exemption may apply, we’ll let you know and guide you through the application as part of your return.",
+    "answer": "Yes, it’s included at no extra charge. If an exemption may apply to you, our team handles it as part of your return.",
     "keywords": [
       "medicare",
       "levy",
@@ -937,7 +937,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "can you check whether my return was done correctly?",
       "another agent did it and I think it's wrong, can it be amended?"
     ],
-    "answer": "Absolutely! We’ll review your return, check the calculation and see whether anything needs to be amended.\n\nThe review fee is $220 and is for the review itself, whatever the result.",
+    "answer": "Absolutely! We’ll review your return, check the calculation and see whether anything needs to be amended.\n\nThe review fee is $220. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
       "amend",
       "amendment",
@@ -1045,7 +1045,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "based on my situation, would I be treated as a resident?",
       "I'd like your opinion on my residency before I decide"
     ],
-    "answer": "Thanks for explaining everything so clearly. Tax residency depends on your individual circumstances, so we can’t confirm it from a short summary.\n\nIt’s one of the first things we check in the review, and we’ll confirm your status after reviewing your full situation.",
+    "answer": "Thanks for explaining everything so clearly. Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us. 😊",
     "keywords": [
       "resident",
       "residency",
@@ -1169,7 +1169,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I got a free check link from a video about you",
       "your site said free eligibility test"
     ],
-    "answer": "Sorry for the confusion. We no longer offer free eligibility checks. We now provide a full review with personal guidance for $220.\n\nThe fee is for our team's review of your situation, so it stays the same whatever the result.",
+    "answer": "Sorry for the confusion. We no longer offer free eligibility checks. We now provide a full review with personal guidance for $220.\n\nIf your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
       "free",
       "eligibility",
@@ -1580,7 +1580,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "My year-to-date income was $70,710.34, and my taxes were $14,193.00.",
       "I earned over the threshold this year, does that change anything?"
     ],
-    "answer": "That's definitely something we can check for you.\n\nIt depends on your individual circumstances, so we'll need to review your full details before confirming. It's all included in the service.",
+    "answer": "Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us. 😊",
     "keywords": [
       "how much tax",
       "owe",
@@ -1800,7 +1800,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I earned over $45,001, can I still claim the threshold?",
       "Am I entitled to the tax free threshold as a backpacker?"
     ],
-    "answer": "That's a great question!\n\nWhether the tax-free threshold applies depends on your tax residency and individual circumstances. That's exactly what we check in the review, and we'll confirm where you stand after reviewing your full situation.",
+    "answer": "Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us. 😊",
     "keywords": ["tax free threshold","18200","18k","threshold","resident","non resident","eligible","residency"],
     "tags": ["residency","tax-question"],
     "lang": "en"
