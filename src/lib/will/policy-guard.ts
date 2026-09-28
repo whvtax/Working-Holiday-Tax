@@ -989,7 +989,16 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // bank details go out, the ONLY thing allowed around them is one short
     // reassuring line. So with the bank details present and payment not yet
     // made, the room for Will's own prose is a single line, not an essay.
-    if (!(ctx.paid || POST_PAYMENT_STATES.includes(ctx.state)) && BANK_DETAILS_PRESENT.test(text)) ceiling = Math.min(ceiling, MAX_PROSE_AROUND_PRICE);
+    // 28 Sep (Maria, +49 176): the tighter ceiling was applied to a GERMAN
+    // price message, which is entirely "own prose" to the corpus check (the
+    // approved text is English), so every translated price message became
+    // REPLY_TOO_LONG and the customer who had just chosen a track got the
+    // "one of the many things we check" line instead of the bank details.
+    // A translated price message gets the same allowance as any translated
+    // script; the tight ceiling is for English prose glued around the price.
+    if (!(ctx.paid || POST_PAYMENT_STATES.includes(ctx.state)) && BANK_DETAILS_PRESENT.test(text)) {
+      ceiling = Math.min(ceiling, MAX_PROSE_AROUND_PRICE + (isConfidentlyEnglish(improvised) ? 0 : TRANSLATED_SCRIPT_ALLOWANCE));
+    }
     if (improvised.length > ceiling) violations.push('REPLY_TOO_LONG');
   }
 

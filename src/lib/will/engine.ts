@@ -10,6 +10,7 @@ import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
 import { claimsPayment } from './payment-claim';
 import { professionalQuestionMessage } from './i18n';
+import { APPROVED } from './approved-messages';
 import { canTransition, CustomerState } from './state-machine';
 import { resolveAiMode, type AiMode } from './mode';
 import { normaliseWillText, firstNameOf, isCourtesyLine, firstSentenceOnly } from './text-normalize';
@@ -426,17 +427,32 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     if (!ctx.paid
         && (verdict.violations.includes('TAX_DETERMINATION') || verdict.violations.includes('REPLY_TOO_LONG') || verdict.violations.includes('PRE_PAYMENT_MEDICARE_SCRIPT') || verdict.violations.includes('PRE_PAYMENT_HEDGE'))
         && verdict.violations.every((v) => DETERMINATION_ONLY.has(v) || NOT_A_FAULT.has(v))) {
-      const safe = professionalQuestionMessage(ctx.lang);
+      // 28 Sep (Maria, +49 176 41747743): she wrote "Die zweite, TFN und ABN"
+      // and got the "one of the many things we check" line, because Will's
+      // German price message was held for length and this stand-in went out.
+      // A draft that carries the bank details IS the price message: if it is
+      // held, the stand-in is the approved price message for the amount the
+      // draft named, never the one-line answer. The customer just chose.
+      const draftHasBank = /\bBSB\b|062692|81049952/.test(decision.reply_text ?? '');
+      const priceStandIn = draftHasBank
+        ? (/\$\s?385\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn_abn : /\$\s?220\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn : null)
+        : null;
+      const safe = priceStandIn ?? professionalQuestionMessage(ctx.lang);
       const safeVerdict = policyGuard(safe, guardCtx);
       if (safeVerdict.allowed) {
+        const priceState: CustomerState | undefined = priceStandIn
+          ? (decision.new_state === 'PRICE_SENT' || canTransition(ctx.state, 'PRICE_SENT') ? 'PRICE_SENT' : undefined)
+          : undefined;
         return {
           kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
           replyText: safe,
-          decision: { ...decision, reply_text: safe, new_state: undefined },
+          decision: { ...decision, reply_text: safe, new_state: priceState },
           guardViolations: verdict.violations,
-          reviewNote: `Will's own draft was held (${verdict.violations.join(', ')}); the approved "we check that as part of the review" answer went instead.`,
-          newState: undefined,
-          stateChanged: false,
+          reviewNote: priceStandIn
+            ? `Will's own price message was held (${verdict.violations.join(', ')}); the approved price message went instead.`
+            : `Will's own draft was held (${verdict.violations.join(', ')}); the approved "we check that as part of the review" answer went instead.`,
+          newState: priceState,
+          stateChanged: priceState != null && priceState !== ctx.state,
         };
       }
     }
