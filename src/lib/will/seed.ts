@@ -13,7 +13,7 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
+import { ESTIMATE_PAYABLE_MSG, estimatePayableTemplateKey, LODGED_PAYABLE_MSG, lodgedPayableTemplateKey, FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
 import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey, WINBACK_MSG, REVIEW_ASK_MSG, reviewAskTemplateKey, REFERRAL_MSG } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
@@ -41,6 +41,7 @@ export function seedCustomers(): CustomerRow[] {
     botOwned: true,
     optedOut: false,
     estimatedRefundCents: null,
+    outcome: null,
     lastCustomerMsgAt: hoursAgo(parseAge(c.time)),
     previousState: null,
     stateChangedAt: hoursAgo(parseAge(c.time)),
@@ -130,6 +131,13 @@ export function seedTemplates(): TemplateRow[] {
       t(estimateInvoiceTemplateKey(lang), 'Post-payment & Service', `Estimate + invoice ("Send Estimate" button) · ${LANG_LABELS[lang]}`, ESTIMATE_INVOICE_MSG[lang])),
     // Sent by the "Mark Lodged" button.
     t('lodged_confirmation', 'Post-payment & Service', 'Lodged confirmation ("Mark Lodged" button)', APPROVED.lodged_confirmation),
+    // Jo, 1 Oct: the "tax payable" variants, used when the chat's outcome
+    // toggle is set to payable (estimate wording and lodged wording), one
+    // per Meta language. Meta template names = these keys.
+    ...(Object.keys(ESTIMATE_PAYABLE_MSG) as ('en' | 'de' | 'ja')[]).map((lang) =>
+      t(estimatePayableTemplateKey(lang), 'Post-payment & Service', `Estimate, amount payable ("Send Estimate" with Tax payable) · ${LANG_LABELS[lang]}`, ESTIMATE_PAYABLE_MSG[lang])),
+    ...(Object.keys(LODGED_PAYABLE_MSG) as ('en' | 'de' | 'ja')[]).map((lang) =>
+      t(lodgedPayableTemplateKey(lang), 'Post-payment & Service', `Lodged confirmation, tax payable ("Mark Lodged" when outcome is payable) · ${LANG_LABELS[lang]}`, LODGED_PAYABLE_MSG[lang])),
     // Win-back (Jo, 24 Sep): sent from the Lost Leads tab, always outside the
     // 24h window, so each language needs the matching Meta template.
     t('winback_en', 'Follow-ups', 'Win-back for a lost lead (EN, Meta template winback_en, {{1}} name {{2}} the personal message)', WINBACK_MSG.en, true),
@@ -190,7 +198,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-10-01-handoffs';
+export const TEMPLATE_BACKFILL_VERSION = '2026-10-01-payable';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

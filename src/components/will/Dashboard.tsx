@@ -1704,6 +1704,25 @@ export default function Dashboard() {
                         <span className="lbl">{chatSel.aiPaused ? `${ASSISTANT_NAME} Paused` : `${ASSISTANT_NAME} Active`}</span>
                         <div className="switch" />
                       </div>
+                      {/* Jo, 1 Oct: the outcome of the return. Default refund;
+                          "Tax payable" switches every money message for this
+                          customer (estimate, lodged confirmation, review ask,
+                          Will's own replies) to the owing wording. */}
+                      {(chatSel.paid || chatSel.outcome === 'PAYABLE') && (
+                        <button
+                          className="btn ghost"
+                          title={chatSel.outcome === 'PAYABLE' ? 'This customer owes the ATO. Click to switch back to refund.' : 'Default: refund. Click if this customer owes the ATO; every message from then on uses the tax-payable wording.'}
+                          style={chatSel.outcome === 'PAYABLE' ? { borderColor: 'var(--crit)', color: 'var(--crit)', fontWeight: 700 } : undefined}
+                          onClick={async () => {
+                            const next = chatSel.outcome === 'PAYABLE' ? 'REFUND' : 'PAYABLE';
+                            const r = await act({ action: 'set_outcome', customerId: chatSel.id, outcome: next });
+                            if (r?.ok === false) { say(`❌ ${r.error ?? 'could not change'}`); return; }
+                            say(next === 'PAYABLE' ? 'Marked as tax payable: estimate, lodged note and replies now use the owing wording.' : 'Back to refund wording.');
+                            refresh();
+                          }}>
+                          {chatSel.outcome === 'PAYABLE' ? 'Tax payable' : 'Refund'}
+                        </button>
+                      )}
                       {/* Per-chat follow-up switch (Jo, 29 Aug): turn the follow-up
                           cadence on for THIS customer, e.g. a returning lead or
                           one you handled by hand and now want chased again. On =
@@ -1971,12 +1990,29 @@ export default function Dashboard() {
               );
             })}
 
+            {/* 1 Oct (72-hour audit): a handoff is a customer waiting. Anyone
+                waiting over four hours is counted here, in red, above the list,
+                and their cards come first. The bridge line told them a person
+                has it; this is the person being reminded. */}
+            {(() => {
+              const waiting = openTasks.filter((t) => t.customerId && Date.now() - new Date(t.createdAt).getTime() > 4 * 3600 * 1000);
+              return waiting.length > 0 ? (
+                <div className="panel" style={{ margin: '2px 0 12px', borderLeft: '4px solid var(--crit)' }}>
+                  <h3 style={{ color: 'var(--crit)' }}>{waiting.length} customer{waiting.length === 1 ? '' : 's'} waiting over 4 hours</h3>
+                  <div className="psub">They were told a person has it. Oldest first: {waiting.sort((a, b) => a.createdAt.localeCompare(b.createdAt)).slice(0, 6).map((t) => `${t.customerName ?? '?'} (${Math.floor((Date.now() - new Date(t.createdAt).getTime()) / 3600000)}h)`).join(' · ')}</div>
+                </div>
+              ) : null;
+            })()}
             {openTasks.length > 0 && pendingDrafts.length > 0 && (
               <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink2)', margin: '18px 0 8px', letterSpacing: '.02em' }}>
                 ⚠ Needs a decision ({openTasks.length})
               </div>
             )}
-            {openTasks.map((t) => {
+            {[...openTasks].sort((a, b) => {
+              const wa = Date.now() - new Date(a.createdAt).getTime() > 4 * 3600 * 1000 ? 1 : 0;
+              const wb = Date.now() - new Date(b.createdAt).getTime() > 4 * 3600 * 1000 ? 1 : 0;
+              return wb - wa || a.createdAt.localeCompare(b.createdAt);
+            }).map((t) => {
               const col = t.severity === 'URGENT' ? 'var(--crit)' : 'var(--warn)';
               // No icon: the severity chip already carries the colour and the
               // word, so an emoji next to it said the same thing twice.

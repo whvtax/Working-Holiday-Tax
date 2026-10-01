@@ -22,6 +22,12 @@ export interface CustomerRow {
   botOwned: boolean;   // true only for brand-new leads the bot originated
   optedOut: boolean;
   estimatedRefundCents: number | null;
+  /** Jo, 1 Oct: the OUTCOME of the return. Default refund (null = refund).
+   *  'PAYABLE' is set from the CRM (the small toggle on the chat, or the
+   *  estimate sent as "amount payable"), and from then on every message that
+   *  mentions money adapts: the estimate, the lodged confirmation, the
+   *  review ask, and Will's own replies (never "your refund will arrive"). */
+  outcome: 'REFUND' | 'PAYABLE' | null;
   lastCustomerMsgAt: string | null;
   previousState: CustomerState | null;
   stateChangedAt: string;
@@ -148,6 +154,9 @@ export interface JobRow {
     /** MEDICARE_INFO: how many times this job has already stood aside for the
      *  ABN questions, so it can be capped and always go out eventually. */
     attempt?: number;
+    /** FOLLOW_UP (1 Oct): how many times this step stood aside for a live or
+     *  unanswered conversation (conversationBusy), capped at 8. */
+    busyDefers?: number;
     /** FORM_RECEIVED, replay shape (audit, 5 Sep): the customer is already
      *  FORM_COMPLETE and only this one message (the acknowledgement or the
      *  ABN questions) is still owed because Meta throttled the first send. */

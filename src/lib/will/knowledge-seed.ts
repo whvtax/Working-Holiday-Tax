@@ -15,6 +15,114 @@ export interface SeedKnowledge {
 
 export const KNOWLEDGE_SEED: SeedKnowledge[] = [
   {
+    "intent": "ATO payment plan for tax owed",
+    "question": "Can I set up a payment plan with the ATO for the amount I owe?",
+    "examples": ["I presume I can set up a payment plan to repay this", "can I pay the ATO in instalments?", "I can't pay the whole amount at once"],
+    "answer": "Yes, the ATO offers payment plans. Once your Notice of Assessment arrives you can set one up in myGov or by calling the ATO, and the team can point you to it when it's time. \ud83d\ude0a",
+    "keywords": ["payment", "plan", "instalments", "owe", "ato", "repay", "afford"],
+    "tags": ["post-payment", "ato"],
+    "lang": "en"
+  },
+  {
+    "intent": "cancel after the estimate shows no refund and get the fee back",
+    "question": "If the estimate shows I'm not getting a refund, can I stop and get the $220 back?",
+    "examples": ["if the preliminary assessment shows no refund can I choose not to proceed and get a full refund of the fee?", "can I cancel if there's no refund?", "do I get my money back if I'm not entitled to anything?"],
+    "answer": "The guarantee works the other way round: if your refund is less than our fee, we refund the difference. If there's no refund, the full fee applies, because the review is the work. The team will walk you through the figures before anything is lodged. \ud83d\ude0a",
+    "keywords": ["cancel", "refund", "fee", "back", "no", "refund", "estimate", "proceed", "stop"],
+    "tags": ["pricing", "post-payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "when the ATO notice of assessment or email arrives after lodging",
+    "question": "When will I get the email or notice from the ATO after you've lodged my return?",
+    "examples": ["when should I receive an email?", "how long until I hear from the ATO?", "I haven't received anything since you lodged", "when does the notice of assessment come?"],
+    "answer": "After lodgment the ATO sends your Notice of Assessment to your myGov inbox, usually within about two weeks. If you owe tax, that notice has the payment details and due date. Message us when it lands and the team will guide you from there. \ud83d\ude0a",
+    "keywords": ["notice", "assessment", "email", "ato", "lodged", "when", "receive", "hear", "inbox"],
+    "tags": ["post-payment", "ato"],
+    "lang": "en"
+  },
+  {
+    "intent": "customer sent TFN or passport number in the chat",
+    "question": "Here is my TFN / passport number (sent in the chat)",
+    "examples": ["my TFN is 123 456 789", "here's my passport number", "do you need my TFN? it's..."],
+    "answer": "Thanks, but please don't share your TFN or passport details here in the chat. They go straight into the secure form, which is the only place we collect them. \ud83d\ude0a",
+    "keywords": ["tfn", "passport", "number", "chat", "secure", "form", "share", "send"],
+    "tags": ["security", "post-payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "tiny ABN income still means TFN + ABN",
+    "question": "I barely made anything on Uber / DoorDash, do I really need the TFN + ABN option?",
+    "examples": ["I only made two deliveries, does that count?", "my ABN income was like $20", "I don't have the app anymore, I made almost nothing on the ABN"],
+    "answer": "Yes, even a small amount of ABN income has to be declared, so your return is the TFN + ABN option ($385). If you've already paid for the TFN option, it's just a top-up of the difference to the same account. For the figures, the platform's website or support can send you an earnings summary for the year. \ud83d\ude0a",
+    "keywords": ["uber", "doordash", "abn", "small", "barely", "tiny", "top", "up", "165", "385", "declare"],
+    "tags": ["pricing", "abn"],
+    "lang": "en"
+  },
+  {
+    "intent": "what information do you need from me before paying",
+    "question": "What information do you need from me? Should I send my details now?",
+    "examples": ["what do you need from me to get started?", "should I send my payslips now?", "what details do you need before I pay?"],
+    "answer": "Nothing yet. \ud83d\ude0a Once the payment is through you get a short form that asks for everything we need, and you upload any documents there. If anything else comes up, we'll ask you here.",
+    "keywords": ["information", "need", "details", "documents", "send", "now", "before", "start", "form"],
+    "tags": ["process", "pre-payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "can I review the return before it is lodged and where does the refund go",
+    "question": "Can I check the return before you lodge it? Does the refund go to my own account?",
+    "examples": ["do I get to see the return before lodging?", "will you lodge without my approval?", "does the refund come to you or to me?"],
+    "answer": "Yes. You review and sign the return before we lodge anything, and the ATO pays your refund straight into your own Australian bank account, never through us. \ud83d\ude0a",
+    "keywords": ["review", "sign", "before", "lodge", "approval", "refund", "account", "own", "directly"],
+    "tags": ["process", "trust"],
+    "lang": "en"
+  },
+  {
+    "intent": "who prepares and signs the return, professional insurance",
+    "question": "Who actually prepares and signs my return? Are you insured?",
+    "examples": ["who signs off the return?", "do you have professional indemnity insurance?", "is a real accountant doing this?"],
+    "answer": "Your return is prepared by our team and reviewed and signed off under a registered tax agent (details and registration are in our client agreement: https://workingholidaytax.com.au/client-agreement). You see and sign it yourself before it's lodged. \ud83d\ude0a",
+    "keywords": ["who", "signs", "prepares", "insurance", "indemnity", "accountant", "registered", "agent"],
+    "tags": ["trust", "pre-payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "copy of the signed or lodged return",
+    "question": "Can you send me a copy of my signed / lodged return?",
+    "examples": ["can I get a copy of what was lodged?", "please send me the final return", "I'd like a copy of my tax return for my records"],
+    "answer": "Of course. I've passed this to the team and they'll send you the lodged return as a PDF here. \ud83d\ude0a",
+    "keywords": ["copy", "signed", "lodged", "return", "pdf", "records", "send"],
+    "tags": ["post-payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "refund has not arrived yet after lodgment",
+    "question": "My return was lodged but I still haven't received my refund",
+    "examples": ["it's been weeks and no refund", "where is my refund?", "the ATO hasn't paid me yet"],
+    "answer": "The ATO usually pays within about two weeks of lodgment, but it can take longer while they check things on their side. If it's past two weeks, send us a quick message and the team will check the status with the ATO for you. \ud83d\ude0a",
+    "keywords": ["refund", "not", "arrived", "received", "weeks", "where", "ato", "status", "waiting"],
+    "tags": ["post-payment", "ato"],
+    "lang": "en"
+  },
+  {
+    "intent": "is GST included in the fee",
+    "question": "Is GST included in the $220 / $385?",
+    "examples": ["does the price include GST?", "do I pay GST on top?", "is that inclusive of GST?"],
+    "answer": "Yes, the fee includes GST. $220 or $385 is the total, nothing on top. \ud83d\ude0a",
+    "keywords": ["gst", "included", "inclusive", "total", "on", "top", "price", "fee"],
+    "tags": ["pricing"],
+    "lang": "en"
+  },
+  {
+    "intent": "waiting for money before paying",
+    "question": "I'll pay once I get paid / I'm waiting on funds",
+    "examples": ["I'll pay next week when I get my wages", "waiting for money to come in, then I'll transfer", "I'm a bit short right now, can I pay later?"],
+    "answer": "No problem at all, there's no rush. Whenever you're ready, the details are above, and just send a screenshot once it's through. \ud83d\ude0a",
+    "keywords": ["pay", "later", "waiting", "money", "funds", "wages", "week", "short", "rush"],
+    "tags": ["pre-payment"],
+    "lang": "en"
+  },
+  {
     "intent": "can a Wise, Revolut or other digital bank account receive the refund",
     "question": "Would a Wise (or Revolut, Up, etc.) account work for my tax refund?",
     "examples": [

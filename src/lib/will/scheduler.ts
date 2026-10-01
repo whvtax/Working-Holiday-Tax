@@ -10,6 +10,7 @@ import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localP
 import { policyGuard, registerLibraryBodies } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
+import { formPromisedKey } from './promised-date';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
@@ -94,6 +95,38 @@ export async function signatureNoticeStands(customerId: string, history?: { to: 
     // entry later than the marker can only be a fresh arrival via Done.
     return lastEntry <= noticeAt;
   } catch { return true; /* no history: the marker is the best evidence */ }
+}
+
+/**
+ * 1 Oct (72-hour audit): scheduled templates fired blind into live
+ * conversations. The Medicare script landed 8 to 15 minutes into a live
+ * exchange with the team (Jan, Pancho, Flavia, Kris); sales nudges went to
+ * people whose last message was an unanswered question (Reece, Megan,
+ * Auro); nudges went out while a handoff was open (Sissi, Simon). Every
+ * scheduled, non-reply send now asks this first. It returns the reason the
+ * conversation is busy, or null when it is quiet enough to interrupt.
+ *
+ *  - anything exchanged in the last 30 minutes: wait;
+ *  - the customer wrote last and nobody has answered: wait (a nudge on top
+ *    of an unanswered question reads as not listening);
+ *  - a task is open for this customer: wait (a person is on it).
+ */
+export const BUSY_QUIET_MS = 30 * 60 * 1000;
+export async function conversationBusy(customer: { id: string }, opts: { tasks?: boolean } = {}): Promise<string | null> {
+  const store = getStore();
+  const msgs = await store.listMessages(customer.id);
+  const last = msgs.length ? msgs[msgs.length - 1] : null;
+  if (last) {
+    const age = Date.now() - new Date(last.createdAt).getTime();
+    if (age < BUSY_QUIET_MS) return 'a message was exchanged in the last 30 minutes';
+    if (last.direction === 'IN') return 'the customer wrote last and has not been answered';
+  }
+  if (opts.tasks !== false) {
+    try {
+      if (typeof store.findOpenTaskForCustomer === 'function' && await store.findOpenTaskForCustomer(customer.id)) return 'a task is open for this customer';
+    } catch { /* the task table is optional for this check */ }
+  }
+  return null;
 }
 
 export async function scheduleFollowUp(customerId: string, flow: Flow, seq: number, opts?: { afterNotice?: boolean }): Promise<void> {
@@ -997,7 +1030,14 @@ async function doProcess(): Promise<TickResult> {
         // because a customer never answered.
         const attempt = job.payload.attempt ?? 0;
         const abnPending = (await store.getSetting(abnAnswersPendingKey(customer.id))) === true;
-        if (abnPending && attempt < 8) {
+        // 1 Oct: the script also waits for a quiet chat (no message in 30 min,
+        // nothing of the customer's unanswered, no open task), up to the same
+        // cap. Jan got it 8 minutes into a live exchange with the team.
+        const busy = abnPending ? null : await conversationBusy(customer, { tasks: false });
+        if (busy && attempt < 8) {
+          await store.audit('scheduler', 'medicare_deferred_busy', { customerId: customer.id, reason: busy, attempt: attempt + 1 });
+        }
+        if ((abnPending || busy) && attempt < 8) {
           await store.addJob({
             customerId: customer.id,
             kind: 'MEDICARE_INFO',
@@ -1146,7 +1186,7 @@ async function doProcess(): Promise<TickResult> {
             .filter((m) => m.status === 'SENT' || m.direction === 'IN')
             .map((m) => `${m.direction === 'IN' ? 'Customer' : 'Us'}: ${(m.body ?? '').replace(/\s+/g, ' ').slice(0, 400)}`)
             .join('\n');
-          const verdictAsk = await decideReviewAsk({ lang: customer.lang, transcript, trigger });
+          const verdictAsk = await decideReviewAsk({ lang: customer.lang, transcript, trigger, outcome: customer.outcome ?? null });
           if (!verdictAsk.ask) {
             await patchReviewAsk(store, customer.id, { skippedAt: new Date().toISOString(), skipReason: verdictAsk.reason });
             await store.audit('system', 'review_ask_skipped', { customerId: customer.id, reason: verdictAsk.reason });
@@ -1355,6 +1395,37 @@ async function doProcess(): Promise<TickResult> {
         await store.addJob({ customerId: customer.id, kind: 'FOLLOW_UP', payload: job.payload, runAt: deferToMorning().toISOString() });
         result.deferred++;
         continue;
+      }
+      // 1 Oct (Laura): "I'll fill it in on Wednesday" pauses the form
+      // reminders until Wednesday has passed. The step is re-armed for then.
+      if (flow === 'form') {
+        const until = await store.getSetting(formPromisedKey(customer.id)).catch(() => null);
+        if (typeof until === 'string' && new Date(until).getTime() > Date.now()) {
+          await store.setJobStatus(job.id, 'CANCELLED');
+          await store.addJob({ customerId: customer.id, kind: 'FOLLOW_UP', payload: job.payload, runAt: until });
+          await store.audit('scheduler', 'form_reminder_deferred_promised_date', { customerId: customer.id, until, templateKey: job.payload.templateKey });
+          result.deferred++;
+          continue;
+        }
+      }
+      // 1 Oct: never nudge into a live or unanswered conversation. Wait two
+      // hours at a time, up to eight times; after that the step is dropped
+      // (not sent late into whatever is going on) and the cadence moves on.
+      {
+        const busy = await conversationBusy(customer);
+        if (busy) {
+          const defers = Number(job.payload.busyDefers ?? 0);
+          await store.setJobStatus(job.id, 'CANCELLED');
+          if (defers < 8) {
+            await store.addJob({ customerId: customer.id, kind: 'FOLLOW_UP', payload: { ...job.payload, busyDefers: defers + 1 }, runAt: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString() });
+            await store.audit('scheduler', 'follow_up_deferred_busy', { customerId: customer.id, templateKey: job.payload.templateKey, reason: busy, defers: defers + 1 });
+            result.deferred++;
+          } else {
+            await store.audit('scheduler', 'follow_up_dropped_busy', { customerId: customer.id, templateKey: job.payload.templateKey, reason: busy });
+            await scheduleFollowUp(customer.id, flow, seq + 1);
+          }
+          continue;
+        }
       }
       const template = (await tickTemplates()).find((t) => t.key === job.payload.templateKey);
       // H6: one bad step must not kill the whole cadence. Skip this message but

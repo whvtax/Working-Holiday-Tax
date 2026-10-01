@@ -398,6 +398,9 @@ export default function DashboardClient() {
   const [doneFor, setDoneFor]           = useState<Task|null>(null)
   const [doneLink, setDoneLink]         = useState<{id:string;name:string|null;waId:string;state:string;stage:string|null;estimatedRefundCents?:number|null}|null>(null)
   const [doneTemplate, setDoneTemplate] = useState('')
+  // Jo, 1 Oct: the estimate can be an amount payable to the ATO. Default refund.
+  const [doneTemplatePayable, setDoneTemplatePayable] = useState('')
+  const [doneOutcome, setDoneOutcome] = useState<'REFUND'|'PAYABLE'>('REFUND')
   const [doneLooking, setDoneLooking]   = useState(false)
   const [doneAmt, setDoneAmt]           = useState('')
   const [doneInvoice, setDoneInvoice]   = useState('')
@@ -744,7 +747,7 @@ export default function DashboardClient() {
     // customer's chat under another customer's name, which is the one mistake
     // here that could send an estimate to the wrong person.
     doneReq.current = task.id
-    setDoneFor(task); setDoneLink(null); setDoneTemplate('')
+    setDoneFor(task); setDoneLink(null); setDoneTemplate(''); setDoneTemplatePayable(''); setDoneOutcome('REFUND')
     setDoneAmt(''); setDoneInvoice(''); setDoneErr(null)
     // Estimate already sent on an earlier attempt: no lookup, no send form.
     // The modal only offers to finish the task (audit, 5 Sep).
@@ -754,7 +757,7 @@ export default function DashboardClient() {
       const r = await fetch(`/api/will/link?phone=${encodeURIComponent(task.whatsapp || '')}`)
       const j = await r.json()
       if (doneReq.current !== task.id) return
-      if (j?.customer) { setDoneLink(j.customer); setDoneTemplate(j.template || '') }
+      if (j?.customer) { setDoneLink(j.customer); setDoneTemplate(j.template || ''); setDoneTemplatePayable(j.templatePayable || ''); if (j.customer.outcome === 'PAYABLE') setDoneOutcome('PAYABLE') }
     } catch {
       // Will unreachable. The modal falls back to marking the task done only.
     }
@@ -772,7 +775,7 @@ export default function DashboardClient() {
   async function sendEstimateThenDone() {
     if (!doneFor || !doneLink) return
     const amount = parseFloat(doneAmt.replace(/[^0-9.]/g,''))
-    if (!Number.isFinite(amount) || amount <= 0) { setDoneErr('Enter the refund amount'); return }
+    if (!Number.isFinite(amount) || amount <= 0) { setDoneErr(doneOutcome === 'PAYABLE' ? 'Enter the amount payable' : 'Enter the refund amount'); return }
     let invoice = ''
     try {
       const u = new URL(doneInvoice.trim())
@@ -784,7 +787,7 @@ export default function DashboardClient() {
     try {
       const r = await fetch('/api/will/actions',{
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ action:'send_estimate', customerId: doneLink.id, amountCents: Math.round(amount*100), invoiceLink: invoice }),
+        body: JSON.stringify({ action:'send_estimate', customerId: doneLink.id, amountCents: Math.round(amount*100), invoiceLink: invoice, outcome: doneOutcome }),
       })
       const j = await r.json().catch(()=>null)
       if (!r.ok || !j?.ok) {
@@ -2643,7 +2646,7 @@ export default function DashboardClient() {
           : '$0.00'
         // The preview is the Library's CURRENT wording, fetched with the
         // lookup, so what is shown here is what actually gets sent.
-        const preview = (doneTemplate || '')
+        const preview = ((doneOutcome === 'PAYABLE' ? doneTemplatePayable : doneTemplate) || '')
           .replaceAll('{{AMOUNT}}', amountStr)
           .replaceAll('{{INVOICE_LINK}}', doneInvoice.trim() || 'https://in.xero.com/...')
         // Estimate went out on an earlier attempt and only the "done" save
@@ -2696,8 +2699,20 @@ export default function DashboardClient() {
                 )}
               </div>
 
+              {/* Jo, 1 Oct: default is a refund; "Tax payable" switches the
+                  wording of this estimate and of every later message for this
+                  customer (lodged confirmation, review ask, Will's replies). */}
+              <div style={{display:'flex', gap:6, marginBottom:10}}>
+                {(['REFUND','PAYABLE'] as const).map(o => (
+                  <button key={o} type="button" onClick={()=>{setDoneOutcome(o); setDoneErr(null)}}
+                    style={{flex:1, padding:'7px 8px', borderRadius:8, border:'1px solid #D9E2DE', fontWeight:700, fontSize:12,
+                      background: doneOutcome===o ? (o==='PAYABLE' ? '#B42318' : '#0B5240') : '#fff', color: doneOutcome===o ? '#fff' : '#1B2A26'}}>
+                    {o==='PAYABLE' ? 'Tax payable' : 'Refund'}
+                  </button>
+                ))}
+              </div>
               <div style={{marginBottom:12}}>
-                <div className="mlabel" style={{margin:'0 0 6px'}}>Estimated refund</div>
+                <div className="mlabel" style={{margin:'0 0 6px'}}>{doneOutcome==='PAYABLE' ? 'Amount payable to the ATO' : 'Estimated refund'}</div>
                 <input inputMode="decimal" autoFocus placeholder="e.g. 2036"
                   value={doneAmt} onChange={e=>{setDoneAmt(e.target.value); setDoneErr(null)}} />
               </div>

@@ -221,7 +221,7 @@ export class FileStore implements Store {
       id: randomUUID(), waId: c.waId, name: c.name ?? null, flag: c.flag ?? '💬',
       state: c.state ?? 'NEW_LEAD', income: c.income ?? 'UNKNOWN',
       paid: false, formComplete: false, missingDocs: [], aiPaused: false,
-      isLegacy: false, botOwned: true, optedOut: false, estimatedRefundCents: null,
+      isLegacy: false, botOwned: true, optedOut: false, estimatedRefundCents: null, outcome: null,
       lastCustomerMsgAt: null, previousState: null, stateChangedAt: now(), lastMessagePreview: null,
       lastMessageDirection: null, unread: false, unreadCount: 0, lastMessageAt: now(), lang: null, createdAt: now(),
     };

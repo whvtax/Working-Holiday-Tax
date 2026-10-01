@@ -61,17 +61,29 @@ it('an essay is rewritten short once and the short version goes out', async () =
   expect(out.reviewNote).toMatch(/rewrote it short/);
 });
 
-it('pre-payment, a rewrite that is still too long falls to the approved review line, not a task', async () => {
+it('pre-payment, a rewrite that is still too long (and longer than the first) is a task, never the stock line (1 Oct)', async () => {
+  // 72-hour audit: the stock "one of the many things we check" line answered
+  // rick's six questions and Simon's account-number question. A draft that is
+  // only too long is trimmed when the rewrite is shorter; when it is not, a
+  // person gets it with the draft attached, and the bridge line goes out.
   decideMock
     .mockResolvedValueOnce({ action: 'reply', reply_text: ESSAY, confidence: 0.9 })
     .mockResolvedValueOnce({ action: 'reply', reply_text: ESSAY + '\n\n' + ESSAY, confidence: 0.9 });
   const out = await runEngine(input());
-  expect(out.kind).toBe('queued');
-  expect(out.task).toBeUndefined();
-  expect(out.replyText).toMatch(/one of the many things we check before we lodge/);
+  expect(out.kind).toBe('human_task');
+  expect(out.replyText ?? '').not.toMatch(/one of the many things we check before we lodge/);
   expect(out.guardViolations).toContain('REPLY_TOO_LONG');
 });
 
+it('pre-payment, a rewrite that is shorter but still over the ceiling goes out as it is (1 Oct)', async () => {
+  decideMock
+    .mockResolvedValueOnce({ action: 'reply', reply_text: ESSAY + '\n\n' + ESSAY, confidence: 0.9 })
+    .mockResolvedValueOnce({ action: 'reply', reply_text: ESSAY, confidence: 0.9 });
+  const out = await runEngine(input());
+  expect(out.kind).toBe('queued');
+  expect(out.replyText).toContain('Addy case');
+  expect(out.reviewNote).toMatch(/still ran long but was otherwise clean/);
+});
 it('post-payment, a reply that stays too long after the rewrite is still a task', async () => {
   decideMock
     .mockResolvedValueOnce({ action: 'reply', reply_text: ESSAY, confidence: 0.9 })

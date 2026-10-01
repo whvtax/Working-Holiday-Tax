@@ -141,17 +141,17 @@ describe('scheduler: a guard-blocked follow-up folds into the open task', () => 
     // The cadence still advances, as before.
     expect(store.addJob).toHaveBeenCalledWith(expect.objectContaining({ kind: 'FOLLOW_UP', payload: expect.objectContaining({ seq: 1 }) }));
 
-    // Next step, the card from the first is still open: no second card.
+    // Next step, the card from the first is still open. 1 Oct (72-hour
+    // audit): a nudge never fires while a task is open for the customer, so
+    // the step is deferred two hours, no second card and no fold either.
     store.addTask.mockClear();
     store.findOpenTaskForCustomer.mockResolvedValue({ id: 'open-a', context: 'Pre 24h' });
     store.dueJobs.mockResolvedValue([followUp('a', 1)]);
     await processDueJobs();
     expect(store.addTask).not.toHaveBeenCalled();
-    expect(store.updateTask).toHaveBeenCalledTimes(1);
-    expect(store.updateTask.mock.calls[0][0]).toBe('open-a');
-    expect(store.updateTask.mock.calls[0][1]).toMatchObject({
-      reason: expect.stringContaining('Follow-up blocked by Policy Guard: '), severity: 'REVIEW',
-    });
+    expect(store.updateTask).not.toHaveBeenCalled();
+    expect(store.audit).toHaveBeenCalledWith('scheduler', 'follow_up_deferred_busy', expect.objectContaining({ customerId: 'a', reason: 'a task is open for this customer' }));
+    expect(store.addJob).toHaveBeenCalledWith(expect.objectContaining({ kind: 'FOLLOW_UP', payload: expect.objectContaining({ seq: 1, busyDefers: 1 }) }));
   });
 });
 

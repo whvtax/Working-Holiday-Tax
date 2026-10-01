@@ -11,7 +11,7 @@ import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES, paymentReceivedBody } from '@/lib/will/service';
-import { paymentReceivedTemplateKey, estimateInvoiceMessage, estimateInvoiceTemplateKey, signatureMessage, signatureTemplateKey, lodgedConfirmationMessage, lodgedConfirmationTemplateKey, metaTemplateLang } from '@/lib/will/i18n';
+import { paymentReceivedTemplateKey, estimateInvoiceMessage, estimateInvoiceTemplateKey, estimatePayableMessage, estimatePayableTemplateKey, signatureMessage, signatureTemplateKey, lodgedConfirmationMessage, lodgedConfirmationTemplateKey, lodgedPayableMessage, lodgedPayableTemplateKey, metaTemplateLang } from '@/lib/will/i18n';
 import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD, deferToMorning } from '@/lib/will/config';
@@ -34,7 +34,7 @@ import { faultDismissedKey } from '@/lib/will/system-report';
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
-  action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'mark_read_silent' | 'toggle_ai' | 'resume_all_leads'
+  action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'mark_read_silent' | 'toggle_ai' | 'resume_all_leads' | 'set_outcome'
   | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault';
   /** dismiss_fault only: the fault's stable key (SystemFault.key). */
   faultKey?: string;
@@ -56,6 +56,8 @@ interface ActionBody {
   amountCents?: number;
   /** send_estimate only. */
   invoiceLink?: string;
+  /** send_estimate / set_outcome (Jo, 1 Oct): 'REFUND' (default) or 'PAYABLE'. */
+  outcome?: 'REFUND' | 'PAYABLE';
   /** set_state only: owner manual override — move to any stage, bypassing the
    *  one-step-at-a-time guardrails. */
   force?: boolean;
@@ -251,6 +253,25 @@ async function libraryTemplateFor(
  *  so it goes as the Library-keyed template with text fallback, exactly like
  *  the other "may or may not have written recently" system lines. */
 const FORM_LINK_RE = /workingholidaytax\.com\.au\/tax-form/i;
+
+/** 1 Oct (72-hour audit, Naatt and Felix): the team sent "Payment received"
+ *  and the form link by hand, and the record still said "not paid / Payment
+ *  Pending" weeks later, so Will reasoned about the wrong stage in every
+ *  handoff and never asked the ABN questions. A human sending the payment
+ *  confirmation (the Library template, or any message carrying the form link)
+ *  to an unpaid customer IS the team marking them paid: the same cascade as
+ *  the stage menu runs, audited. */
+async function markPaidIfTeamConfirmed(customer: CustomerRow, body: string, templateName?: string): Promise<void> {
+  const store = getStore();
+  if (customer.paid || POST_PAYMENT_STATES.includes(customer.state)) return;
+  const confirms = (templateName ?? '').startsWith('payment_received') || FORM_LINK_RE.test(body);
+  if (!confirms) return;
+  await store.setState(customer.id, 'PAID', 'HUMAN');
+  await autoAdvanceToForm(customer.id, await getBank());
+  await store.audit('owner', 'paid_by_team_confirmation', { customerId: customer.id, template: templateName ?? null }).catch(() => {});
+  const f = await store.getCustomerById(customer.id);
+  if (f) await reconcileSchedule(f);
+}
 async function sendPaymentConfirmationIfMissing(customer: CustomerRow): Promise<void> {
   const store = getStore();
   const alreadyTold = (await store.listMessages(customer.id)).some((m) =>
@@ -739,6 +760,7 @@ async function handlePost(req: Request) {
       // From here the customer HAS the message: see afterSend (audit, 5 Sep).
       const warning = await afterSend(customer.id, 'send_task_reply', async () => {
         await afterHumanReply(store, customer.id);
+        await markPaidIfTeamConfirmed(customer, send.body!, waTemplate?.name ?? library?.name).catch(() => undefined);
         // customerId alongside taskId: a task id alone cannot be traced back to
         // a person once the task is resolved (audit3, 5 Sep).
         await store.audit('owner', 'task_reply_sent', { taskId: task.id, customerId: customer.id });
@@ -789,6 +811,7 @@ async function handlePost(req: Request) {
       // From here the customer HAS the message: see afterSend (audit, 5 Sep).
       const warning = await afterSend(customer.id, 'manual_reply', async () => {
         await afterHumanReply(store, customer.id);
+        await markPaidIfTeamConfirmed(customer, send.body!, waTemplate?.name ?? library?.name).catch(() => undefined);
         await store.audit('owner', 'manual_reply', { customerId: customer.id });
       });
       return sentJson(warning, { aiPaused: customer.aiPaused });
@@ -822,6 +845,7 @@ async function handlePost(req: Request) {
       // From here the customer HAS the message: see afterSend (audit, 5 Sep).
       const warning = await afterSend(customer.id, 'send_template', async () => {
         await afterHumanReply(store, customer.id);
+        await markPaidIfTeamConfirmed(customer, send.body!, template.key).catch(() => undefined);
         await store.audit('owner', 'template_sent_manually', { customerId: customer.id, template: template.key });
       });
       return sentJson(warning);
@@ -1178,6 +1202,19 @@ async function handlePost(req: Request) {
       return NextResponse.json({ ok: true });
     }
 
+    case 'set_outcome': {
+      // Jo, 1 Oct: the small toggle on the chat. Default is a refund; "tax
+      // payable" switches every money message for this customer (estimate,
+      // lodged confirmation, review ask, Will's replies) to the owing wording.
+      if (!b.customerId) return bad('customerId required');
+      if (b.outcome !== 'REFUND' && b.outcome !== 'PAYABLE') return bad('outcome must be REFUND or PAYABLE');
+      const customer = await store.getCustomerById(b.customerId);
+      if (!customer) return bad('customer not found', 404);
+      await store.updateCustomer(customer.id, { outcome: b.outcome });
+      await store.audit('owner', 'outcome_set', { customerId: customer.id, outcome: b.outcome, was: customer.outcome ?? null });
+      return NextResponse.json({ ok: true, outcome: b.outcome });
+    }
+
     case 'send_estimate': {
       // The "Send Estimate + Invoice" button on a Review chat, and the Done
       // button on a CRM task: one step instead of set_estimate + compose +
@@ -1225,9 +1262,16 @@ async function handlePost(req: Request) {
       // German and Japanese get their own wording and their own Meta template
       // name (estimate_invoice_de / estimate_invoice_ja); everyone else gets
       // the English `estimate_invoice` Library entry and template.
-      const estimateKey = estimateInvoiceTemplateKey(customer.lang);
+      // Jo, 1 Oct: the estimate can be an amount PAYABLE to the ATO. The
+      // request says which (the toggle next to the amount), or the customer
+      // already carries the outcome from the chat toggle. Either way the
+      // outcome is stored with the estimate so every later message adapts.
+      const outcome: 'REFUND' | 'PAYABLE' = b.outcome === 'PAYABLE' || (b.outcome == null && customer.outcome === 'PAYABLE') ? 'PAYABLE' : 'REFUND';
+      const estimateKey = outcome === 'PAYABLE' ? estimatePayableTemplateKey(customer.lang) : estimateInvoiceTemplateKey(customer.lang);
       const body = composeEstimate(
-        await libraryBody(estimateKey, estimateKey === 'estimate_invoice' ? APPROVED.estimate_invoice : estimateInvoiceMessage(customer.lang)),
+        await libraryBody(estimateKey, outcome === 'PAYABLE'
+          ? estimatePayableMessage(customer.lang)
+          : (estimateKey === 'estimate_invoice' ? APPROVED.estimate_invoice : estimateInvoiceMessage(customer.lang))),
         amountCents,
         invoiceUrl.toString(),
       );
@@ -1250,7 +1294,7 @@ async function handlePost(req: Request) {
       // stays active on the chat and keeps handling the customer.
       // From here the customer HAS the message: see afterSend (audit, 5 Sep).
       const warning = await afterSend(customer.id, 'send_estimate', async () => {
-        await store.updateCustomer(customer.id, { estimatedRefundCents: amountCents });
+        await store.updateCustomer(customer.id, { estimatedRefundCents: amountCents, outcome });
         const nextState = stateAfterEstimate(customer.state);
         if (nextState) {
           await store.setState(customer.id, nextState, 'HUMAN');
@@ -1258,7 +1302,7 @@ async function handlePost(req: Request) {
           if (fresh) await reconcileSchedule(fresh);
         }
         await afterHumanReply(store, customer.id);
-        await store.audit('owner', 'estimate_sent', { customerId: customer.id, amountCents, invoiceLink: invoiceUrl.toString() });
+        await store.audit('owner', 'estimate_sent', { customerId: customer.id, amountCents, outcome, invoiceLink: invoiceUrl.toString() });
       });
       return sentJson(warning);
     }
@@ -1334,8 +1378,13 @@ async function handlePost(req: Request) {
       // Meta template name (lodged_confirmation_de / lodged_confirmation_ja);
       // everyone else gets the English `lodged_confirmation` Library entry and
       // template.
-      const lodgedKey = lodgedConfirmationTemplateKey(customer.lang);
-      const body = await libraryBody(lodgedKey, lodgedKey === 'lodged_confirmation' ? APPROVED.lodged_confirmation : lodgedConfirmationMessage(customer.lang));
+      // Jo, 1 Oct: a customer marked "tax payable" never hears "your refund
+      // should arrive"; they get the Notice of Assessment wording instead.
+      const payable = customer.outcome === 'PAYABLE';
+      const lodgedKey = payable ? lodgedPayableTemplateKey(customer.lang) : lodgedConfirmationTemplateKey(customer.lang);
+      const body = await libraryBody(lodgedKey, payable
+        ? lodgedPayableMessage(customer.lang)
+        : (lodgedKey === 'lodged_confirmation' ? APPROVED.lodged_confirmation : lodgedConfirmationMessage(customer.lang)));
       const send = await humanSend(customer, body, { templateBacked: true });
       if (send.error) return bad(send.error);
       // Outside the 24h window: the pre-approved Meta template named by

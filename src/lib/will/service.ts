@@ -16,6 +16,7 @@ import { deliverOut, fetchWaMedia } from './channel';
 import { readReviewAsks, patchReviewAsk, saysRefundLanded, isPositiveAck, REFERRAL_WINDOW_DAYS } from './review-asks';
 import { referralMessage } from './i18n';
 import { autopilotReplyDelaySeconds } from './config';
+import { promisedUntil, formPromisedKey } from './promised-date';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
 import { isIdentityQuestion } from './identity-question';
 import { firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
@@ -264,6 +265,20 @@ async function handleIncomingInner(
     await store.audit('system', 'customer_opted_out', { customerId: customer.id });
     const c2 = await store.getCustomerByWaId(waId);
     return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } }, customer: c2 ?? customer };
+  }
+
+  // ── "I'LL FILL IT IN ON WEDNESDAY" (1 Oct, 72-hour audit, Laura) ─────────
+  //
+  // A customer at Form Pending who names a day is making a promise we accept;
+  // the form reminders stay quiet until that day has passed (scheduler.ts,
+  // the form flow). Deterministic, in the customer's own words; nothing else
+  // about the message changes.
+  if (!opts?.alreadyStored && customer.state === 'FORM_PENDING') {
+    const until = promisedUntil(text);
+    if (until) {
+      await store.setSetting(formPromisedKey(customer.id), until).catch(() => undefined);
+      await store.audit('system', 'form_reminders_paused_until', { customerId: customer.id, until }).catch(() => undefined);
+    }
   }
 
   // ── THE ACKNOWLEDGEMENT A TFN + ABN CUSTOMER IS STILL OWED (Jo, 4 Sep) ────
@@ -690,7 +705,7 @@ export async function decideAndAct(
     // deterministic opening uses.
     name: cleanFirstName(firstNameOf(customer.name)) || null, state: customer.state, income: customer.income,
     paid: customer.paid, formComplete: customer.formComplete,
-    missingDocs: customer.missingDocs, estimatedRefundCents: customer.estimatedRefundCents,
+    missingDocs: customer.missingDocs, estimatedRefundCents: customer.estimatedRefundCents, outcome: customer.outcome ?? null,
     lang: customer.lang,
     backstory: await buildBackstory(store, customer, msgs).catch(() => ''),
     knowledge,
@@ -992,9 +1007,22 @@ export async function decideAndAct(
   // him, and quietly making an exception to that would be the worst kind of
   // surprise. The job itself checks again at fire time that he has still not
   // replied, so answering in the first ten minutes cancels it in effect.
-  if ((outcome.kind === 'human_task' || outcome.kind === 'pending_approval')
-      && mode === 'FULL_AUTO'
-      && isLongComplicatedMessage(text)) {
+  //
+  // 1 Oct (72-hour audit): the courtesy was limited to long messages, so 30+
+  // customers whose question was handed to a person heard NOTHING for 2 to
+  // 70 hours (Naatt 41 h on an angry estimate dispute, Simon 23 h after
+  // paying, Reo 36 h on a first enquiry). On Autopilot, EVERY handoff now
+  // sends the bridge line, with the same 1 to 5 minute delay as a reply, so
+  // the customer knows a person has it. A long message handed off in
+  // Approval mode keeps the old half-hour courtesy.
+  if (outcome.kind === 'human_task' && mode === 'FULL_AUTO') {
+    try {
+      await store.addJob({
+        customerId: customer.id, kind: 'HANDOFF_ACK', payload: {},
+        runAt: new Date(Date.now() + autopilotReplyDelaySeconds() * 1000).toISOString(),
+      });
+    } catch { /* the task is raised either way; the acknowledgement is a courtesy */ }
+  } else if (outcome.kind === 'pending_approval' && mode === 'FULL_AUTO' && isLongComplicatedMessage(text)) {
     try {
       await store.addJob({
         customerId: customer.id, kind: 'HANDOFF_ACK', payload: {},
@@ -1160,6 +1188,16 @@ export async function runDeferredAutoReply(
     && new Date(m.createdAt).getTime() >= since && !isSystemLine(m));
   if (answered) {
     await store.audit('assistant', 'auto_reply_already_answered', { customerId: customer.id, anchorAt });
+    return 'answered';
+  }
+  // 1 Oct (72-hour audit, Laura +353 87): "Got it, thank you! The team will
+  // review all of these receipts" landed BETWEEN two messages the team was
+  // typing in a live conversation. When a person on our side has written in
+  // the last 30 minutes, the chat is theirs: Will stays out of it.
+  const teamActive = msgs.some((m) => m.direction === 'OUT' && m.author === 'HUMAN'
+    && Date.now() - new Date(m.createdAt).getTime() < 30 * 60 * 1000);
+  if (teamActive) {
+    await store.audit('assistant', 'auto_reply_skipped_team_active', { customerId: customer.id, anchorAt });
     return 'answered';
   }
   const text = burstText(msgs);

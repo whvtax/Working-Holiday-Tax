@@ -271,7 +271,7 @@ Your refund should arrive in your bank account within 14 business days.`,
    *  drafts for a human, but "Send Reply" transmits them verbatim in one click,
    *  so they are messages a customer can receive and belong in the Library. */
   handoff: {
-    holding: `Thanks for that 😊 Let me look into it properly and come straight back to you.`,
+    holding: `I've passed this on to the team and they'll come back to you shortly 😊`,
     attachment: `Got it, thanks for sending that through 😊 I'll go through it and come back to you shortly.`,
     unreadable: `Thanks for your message 😊 It didn't come through on my end, would you mind sending it again as text?`,
     returning_customer: `Hey, good to hear from you again 😊 What can I help you with?`,

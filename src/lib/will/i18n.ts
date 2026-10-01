@@ -246,13 +246,15 @@ export function paymentReceivedTemplateKey(lang?: string | null): string {
  *  German conversation (audit, 4 Sep). English lives under the Library key
  *  `handoff_holding`, the others under handoff_holding_<lang>. */
 export const HANDOFF_HOLDING_MSG: Record<Lang, string> = {
-  en: 'Thanks for that 😊 Let me look into it properly and come straight back to you.',
-  de: 'Danke dir 😊 Ich schaue mir das in Ruhe an und melde mich gleich bei dir.',
-  ja: 'ありがとうございます 😊 きちんと確認して、すぐにご連絡しますね。',
-  es: 'Gracias 😊 Lo reviso bien y te respondo enseguida.',
-  fr: 'Merci 😊 Je regarde ça correctement et je reviens vers toi tout de suite.',
-  it: 'Grazie 😊 Lo controllo per bene e ti rispondo subito.',
-  pt: 'Obrigado 😊 Vou ver isso com atenção e respondo-te já de seguida.',
+  // 1 Oct: "Thanks for that 😊" read as tone-deaf under "??????? Hello?"
+  // (Naatt). The line now says what is actually happening: a person has it.
+  en: "I've passed this on to the team and they'll come back to you shortly 😊",
+  de: 'Ich habe das an das Team weitergegeben, sie melden sich in Kürze bei dir 😊',
+  ja: 'こちらはチームに引き継ぎました。まもなくご連絡いたします 😊',
+  es: 'Se lo he pasado al equipo y te responderán en breve 😊',
+  fr: "J'ai transmis ça à l'équipe, ils reviennent vers toi très vite 😊",
+  it: "L'ho passato al team, ti risponderanno a breve 😊",
+  pt: 'Passei isto à equipa e eles respondem-te em breve 😊',
 };
 
 export function handoffHoldingMessage(lang?: string | null): string {
@@ -377,6 +379,23 @@ export const ESTIMATE_INVOICE_MSG: Record<'en' | 'de' | 'ja', string> = {
   ja: 'あなたの推定還付金額は{{AMOUNT}}です。\n\nこちらが請求書です:\n{{INVOICE_LINK}}\n\n最終確認後、署名のためにお送りします。',
 };
 
+/** Jo, 1 Oct: the estimate when the customer OWES the ATO. Same shape, the
+ *  amount is "payable", and no refund is ever mentioned. Library key
+ *  estimate_payable / estimate_payable_<lang>, same Meta template names. */
+export const ESTIMATE_PAYABLE_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Your return is ready. The estimated amount payable to the ATO is {{AMOUNT}}.\n\nHere is your invoice:\n{{INVOICE_LINK}}\n\nI'll send it for final review and then for your signature. The team will walk you through the ATO payment once it's lodged.`,
+  de: 'Deine Steuererklärung ist fertig. Der geschätzte an das ATO zu zahlende Betrag ist {{AMOUNT}}.\n\nHier ist deine Rechnung:\n{{INVOICE_LINK}}\n\nIch schicke sie zur finalen Prüfung und dann zur Unterschrift. Das Team erklärt dir die Zahlung an das ATO, sobald sie eingereicht ist.',
+  ja: '確定申告書の準備ができました。ATOへの推定納付額は{{AMOUNT}}です。\n\nこちらが請求書です:\n{{INVOICE_LINK}}\n\n最終確認後、署名のためにお送りします。提出後、ATOへの納付方法はチームがご案内します。',
+};
+export function estimatePayableMessage(lang?: string | null): string {
+  const key = (lang && lang in ESTIMATE_PAYABLE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return ESTIMATE_PAYABLE_MSG[key];
+}
+export function estimatePayableTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in ESTIMATE_PAYABLE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return key === 'en' ? 'estimate_payable' : `estimate_payable_${key}`;
+}
+
 export function estimateInvoiceMessage(lang?: string | null): string {
   const key = (lang && lang in ESTIMATE_INVOICE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
   return ESTIMATE_INVOICE_MSG[key];
@@ -427,6 +446,23 @@ export const LODGED_CONFIRMATION_MSG: Record<'en' | 'de' | 'ja', string> = {
   de: 'Deine Steuererklärung wurde erfolgreich eingereicht! ✅\nDeine Rückerstattung sollte innerhalb von 14 Werktagen auf deinem Bankkonto eingehen.',
   ja: 'あなたの確定申告書の提出が完了しました！✅\n還付金は14営業日以内にご登録の銀行口座に入金される予定です。',
 };
+
+/** Jo, 1 Oct: the lodged confirmation when the customer OWES the ATO (72-hour
+ *  audit: "your refund should arrive within 14 business days" went to two
+ *  customers with a tax bill). Library key lodged_payable / lodged_payable_<lang>. */
+export const LODGED_PAYABLE_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Your tax return has been lodged successfully! ✅\nThe ATO will send your Notice of Assessment to your myGov inbox, usually within about two weeks, with the payment details and due date. Message us when it arrives and we'll guide you through it.`,
+  de: 'Deine Steuererklärung wurde erfolgreich eingereicht! ✅\nDas ATO schickt dir den Steuerbescheid (Notice of Assessment) in dein myGov-Postfach, meist innerhalb von etwa zwei Wochen, mit den Zahlungsdetails und der Frist. Schreib uns, sobald er da ist, und wir begleiten dich dabei.',
+  ja: 'あなたの確定申告書の提出が完了しました！✅\nATOから課税通知書（Notice of Assessment）がmyGovの受信箱に届きます。通常2週間ほどで、納付方法と期限が記載されています。届いたらご連絡ください。手続きをご案内します。',
+};
+export function lodgedPayableMessage(lang?: string | null): string {
+  const key = (lang && lang in LODGED_PAYABLE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return LODGED_PAYABLE_MSG[key];
+}
+export function lodgedPayableTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in LODGED_PAYABLE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return key === 'en' ? 'lodged_payable' : `lodged_payable_${key}`;
+}
 
 export function lodgedConfirmationMessage(lang?: string | null): string {
   const key = (lang && lang in LODGED_CONFIRMATION_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
@@ -561,7 +597,7 @@ export function referralMessage(lang?: string | null): string {
 /** Every translated system line, for the policy guard's approved corpus. */
 export const SYSTEM_MESSAGE_FAMILIES = {
   FORM_RECEIVED_MSG, REVIEW_REQUEST_MSG, PRE_PAYMENT_CHECK_MSG, PAYMENT_RECEIVED_MSG, HANDOFF_HOLDING_MSG,
-  DOCUMENTS_RECEIVED_MSG, REQUEST_ABN_MSG, MEDICARE_MSG, ESTIMATE_INVOICE_MSG, SIGNATURE_MSG, LODGED_CONFIRMATION_MSG,
+  DOCUMENTS_RECEIVED_MSG, REQUEST_ABN_MSG, MEDICARE_MSG, ESTIMATE_INVOICE_MSG, ESTIMATE_PAYABLE_MSG, SIGNATURE_MSG, LODGED_CONFIRMATION_MSG, LODGED_PAYABLE_MSG,
   WINBACK_MSG, REVIEW_ASK_MSG, REFERRAL_MSG,
 };
 

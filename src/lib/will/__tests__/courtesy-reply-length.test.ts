@@ -59,12 +59,11 @@ describe('the engine only trims a genuine courtesy close', () => {
     expect(block).toMatch(/!text\.includes\('\?'\)/);
   });
 
-  it('only fires on a long reply', () => {
-    expect(block).toMatch(/text\.length > 120/);
-  });
-
-  it('and only ever shortens, never replaces', () => {
-    expect(block).toMatch(/if \(oneLine && oneLine\.length < text\.length\) text = oneLine;/);
+  it('fires on any length now, and the reply is silence (1 Oct, 72-hour audit)', () => {
+    // Twenty "You're very welcome!" bubbles in three days: a courtesy close
+    // whose reply carries nothing structural gets no reply at all.
+    expect(block).not.toMatch(/text\.length > 120/);
+    expect(block).toMatch(/kind: 'silent'/);
   });
 });
 
@@ -90,6 +89,6 @@ describe('what still gets the full answer', () => {
 
 it('the playbook tells Will to write it short in the first place', () => {
   const playbook = readFileSync(join(process.cwd(), 'src/lib/will/playbook.ts'), 'utf8');
-  expect(playbook).toMatch(/"THANKS" GETS ONE LINE BACK/);
+  expect(playbook).toMatch(/"THANKS" GETS NOTHING BACK/);
   expect(playbook).toMatch(/is not courtesy: that one gets the real next step/);
 });

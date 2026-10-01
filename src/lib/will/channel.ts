@@ -654,7 +654,7 @@ import {
   formReceivedTemplateKey, reviewAskTemplateKey,
   requestAbnTemplateKey, handoffHoldingTemplateKey, paymentReceivedTemplateKey,
 } from './i18n';
-import { medicareTemplateKey, estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey } from './i18n'; // medicare_<lang>, estimate_invoice_<lang>, signature_<lang>, lodged_confirmation_<lang> (audit, 5 Sep / 17 Sep)
+import { medicareTemplateKey, estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey, estimatePayableTemplateKey, lodgedPayableTemplateKey } from './i18n'; // medicare_<lang>, estimate_invoice_<lang>, signature_<lang>, lodged_confirmation_<lang> (audit, 5 Sep / 17 Sep)
 
 export interface ExpectedMetaTemplate {
   /** Exact template name in WhatsApp Manager. */
@@ -700,8 +700,10 @@ export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
     { name: medicareTemplateKey(lang), params: 0, optional: true },
     { name: signatureTemplateKey(lang), params: 0, optional: true },
     { name: lodgedConfirmationTemplateKey(lang), params: 0, optional: true },
+    { name: lodgedPayableTemplateKey(lang), params: 0, optional: true },
   ]),
   ...META_LANGS.map((lang) => ({ name: estimateInvoiceTemplateKey(lang), params: 2, optional: true })),
+  ...META_LANGS.map((lang) => ({ name: estimatePayableTemplateKey(lang), params: 2, optional: true })),
 ].filter((t, i, all) => all.findIndex((o) => o.name === t.name) === i);
 
 export interface TemplateVerification {

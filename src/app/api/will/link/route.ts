@@ -21,6 +21,7 @@ import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { STAGE_GROUPS } from '@/lib/will/state-machine';
 import { APPROVED } from '@/lib/will/approved-messages';
+import { ESTIMATE_PAYABLE_MSG } from '@/lib/will/i18n';
 import { signatureNoticeStands } from '@/lib/will/scheduler';
 
 export const dynamic = 'force-dynamic';
@@ -38,9 +39,14 @@ export async function GET(req: NextRequest) {
     // The CURRENT Library wording, so the preview in the CRM is the message
     // that will actually be sent and not a copy of it that drifted.
     let template: string = APPROVED.estimate_invoice;
+    // Jo, 1 Oct: the "tax payable" wording too, for the toggle on the Done card.
+    let templatePayable: string = ESTIMATE_PAYABLE_MSG.en;
     try {
-      const t = (await store.listTemplates()).find((x) => x.key === 'estimate_invoice');
+      const rows = await store.listTemplates();
+      const t = rows.find((x) => x.key === 'estimate_invoice');
       if (t?.body?.trim()) template = t.body;
+      const tp = rows.find((x) => x.key === 'estimate_payable');
+      if (tp?.body?.trim()) templatePayable = tp.body;
     } catch { /* the constant is the honest fallback */ }
     const stage = STAGE_GROUPS.find((g) => (g.states as readonly string[]).includes(c.state));
     // Has the "ready for signature" notice already gone out? The CRM Done card
@@ -69,9 +75,11 @@ export async function GET(req: NextRequest) {
         stage: stage?.label ?? null,
         paid: c.paid,
         estimatedRefundCents: c.estimatedRefundCents ?? null,
+        outcome: c.outcome ?? null,
         signatureReadySent,
       },
       template,
+      templatePayable,
     });
   } catch {
     // The CRM must stay usable when Will's store is down: no match, plain Done.

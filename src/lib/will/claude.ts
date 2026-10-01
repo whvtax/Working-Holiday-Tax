@@ -926,7 +926,7 @@ The opener must be about THEM, specific and short, in their language. Good: "Gre
 
 Answer only by calling the review_ask tool.`;
 
-export async function decideReviewAsk(input: { lang: string | null; transcript: string; trigger: string }): Promise<ReviewAskDecision> {
+export async function decideReviewAsk(input: { lang: string | null; transcript: string; trigger: string; outcome?: 'REFUND' | 'PAYABLE' | null }): Promise<ReviewAskDecision> {
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return { ask: true, opener: null, reason: 'no model key: default ask', measured: false };
   const body = JSON.stringify({
@@ -935,7 +935,7 @@ export async function decideReviewAsk(input: { lang: string | null; transcript: 
     system: REVIEW_ASK_SYSTEM,
     tools: [REVIEW_ASK_TOOL],
     tool_choice: { type: 'tool', name: 'review_ask' },
-    messages: [{ role: 'user', content: `Trigger: ${input.trigger}. Customer language: ${input.lang ?? 'unknown'}.\n\nConversation (oldest first):\n${input.transcript.slice(0, 40000)}` }],
+    messages: [{ role: 'user', content: `Trigger: ${input.trigger}. Customer language: ${input.lang ?? 'unknown'}.${input.outcome === 'PAYABLE' ? ' OUTCOME: this customer OWED the ATO (no refund). Only ask if the conversation shows they were clearly happy with the service despite the bill; never mention a refund.' : ''}\n\nConversation (oldest first):\n${input.transcript.slice(0, 40000)}` }],
   });
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {

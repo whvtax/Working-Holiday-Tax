@@ -13,7 +13,7 @@ import { professionalQuestionMessage } from './i18n';
 import { APPROVED } from './approved-messages';
 import { canTransition, CustomerState } from './state-machine';
 import { resolveAiMode, type AiMode } from './mode';
-import { normaliseWillText, firstNameOf, isCourtesyLine, firstSentenceOnly } from './text-normalize';
+import { normaliseWillText, firstNameOf, isCourtesyLine } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -136,6 +136,37 @@ const CUSTOMER_ASKED_PAYMENT_RE = new RegExp([
 const GUARANTEE_RE = /refund the difference|refund you the difference|die differenz|la diferencia|la diff[ée]rence|la differenza|a diferen[çc]a|差額/i;
 /** Remove the guarantee sentences (both of them) from a reply, tidying the
  *  blank lines they leave behind. Exported for the tests. */
+/** Drop a cheer-word opener ("Perfect!", "Great!", "No worries at all!",
+ *  "Happy to help!", "Absolutely!", "Of course!") from the start of a reply,
+ *  in the languages Will speaks, and re-capitalise what follows. Exported for
+ *  the tests. */
+const CHEER_OPENER = /^(?:(?:perfect|great|awesome|amazing|wonderful|brilliant|fantastic|absolutely|of course|no worries(?: at all)?|no problem(?: at all)?|happy to help|sure(?: thing)?|got it|perfekt|super|klar|gerne|kein problem|alles klar|perfecto|genial|claro|sin problema|parfait|super|bien sûr|pas de souci|perfetto|certo|nessun problema|ótimo|perfeito|claro|sem problema|かしこまりました|もちろん|了解です|承知しました)[!.,、。]?\s*)+/i;
+/** Replace whatever the model wrote from the first bank line onwards with the
+ *  approved price message for the amount it named, keeping at most one line
+ *  of the model's own before it. Returns the input unchanged when no fixed
+ *  amount can be read, or when the draft is already the approved text. */
+export function enforcePriceMessage(text: string): string {
+  const abn = /\$\s?385\b/.test(text);
+  const tfn = /\$\s?220\b/.test(text);
+  if (abn === tfn) return text;            // both or neither: ambiguous, leave it
+  const approved = abn ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
+  if (text.includes(approved)) return text;
+  const lines = text.split('\n');
+  const firstBank = lines.findIndex((l) => /\bBSB\b|062692|81049952|payment details/i.test(l));
+  const before = (firstBank > 0 ? lines.slice(0, firstBank) : []).map((l) => l.trim()).filter(Boolean);
+  // One line of the model's own, and only if it is not itself a stale price
+  // or guarantee sentence.
+  const lead = before.find((l) => !/refund|fee|guarantee|\$\s?\d/i.test(l) && l.length <= 160);
+  return lead ? `${lead}\n\n${approved}` : approved;
+}
+
+export function stripCheerOpener(text: string): string {
+  const stripped = text.replace(CHEER_OPENER, '');
+  if (!stripped.trim() || stripped === text) return text;
+  // "Perfect! here are..." -> "Here are..."
+  return stripped.charAt(0).toUpperCase() + stripped.slice(1);
+}
+
 export function stripGuarantee(text: string): string {
   return text
     .split(/\n{2,}/)
@@ -263,7 +294,13 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // because the reply then falsely confirms payment or lodgement. Those stay a
   // human CONFLICT task exactly as before.
   const UNVERIFIABLE_CONFIRM_STATES: CustomerState[] = ['PAID', 'SIGNED', 'LODGED', 'COMPLETED'];
-  if (invalidTransition && decision.new_state && UNVERIFIABLE_CONFIRM_STATES.includes(decision.new_state)) {
+  // 1 Oct (72-hour audit, Simon +61 425): he HAD paid and was at Form Pending;
+  // the model proposed PAID again, which is an invalid step, and the reply to
+  // "Done! / Helloo? / Hey?" was held as a CONFLICT four times over 23 hours.
+  // A proposed PAID for somebody already past payment confirms nothing new:
+  // the jump is dropped and the reply goes out like any other.
+  const alreadyConfirmed = decision.new_state === 'PAID' && ctx.paid;
+  if (invalidTransition && decision.new_state && UNVERIFIABLE_CONFIRM_STATES.includes(decision.new_state) && !alreadyConfirmed) {
     return {
       kind: 'human_task',
       decision,
@@ -324,6 +361,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     paid: ctx.paid,
     estimateFromTeam: ctx.estimatedRefundCents,
     isApprovedTemplate: false,
+    customerTextChars: customerBurst.length,
   };
   // The payment-confirmation turn may mention onboarding although paid flips now;
   // only relax when the customer was NOT already paid (audit finding).
@@ -332,6 +370,26 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   let text = applyBankRule(
     fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
   );
+  // 1 Oct (72-hour audit): "Perfect" opened 63 of Will's messages in three
+  // days, "Happy to help" 22, "No worries" 21. The prompt already says once
+  // per conversation; the code now enforces it. From Will's third message on,
+  // a cheer-word opener is dropped and the message starts with its content.
+  // The approved price message ("Great! Here are the payment details:") is
+  // left alone: its opener is Jo's, and it is the one place the word belongs.
+  const willTurns = history.filter((t) => t.role === 'assistant').length;
+  if (willTurns >= 2 && !/\bBSB\b|062692|81049952/.test(text)) {
+    text = stripCheerOpener(text);
+  }
+  // 1 Oct (72-hour audit): twenty price messages in three days came in four
+  // guarantee wordings and four account-name variants, because the model
+  // reproduces the price message from memory. For an English chat the price
+  // message is now pasted from the code, verbatim: the draft may keep ONE
+  // line of its own before it, nothing after. Other languages keep the
+  // model's translation (there is no approved text to paste).
+  if ((ctx.lang ?? 'en') === 'en' && !ctx.paid && /\bBSB\b|062692|81049952/.test(text)) {
+    const enforced = enforcePriceMessage(text);
+    if (enforced !== text) text = enforced;
+  }
 
   // ── "okay thank you" GETS ONE LINE BACK (Jo, 4 Sep) ───────────────────────
   //
@@ -348,17 +406,22 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   //   - everything they wrote since our last message is pure courtesy, AND
   //   - the reply carries nothing structural: no digits (a price, an amount, a
   //     BSB, an account, a year), no link, and no question of our own, AND
-  //   - it is actually long: over 120 characters.
+  //   (1 Oct: the "over 120 characters" condition is gone; a short "You're
+  //   very welcome!" is exactly the bubble the audit counted twenty of.)
   // Anything with substance in it is left exactly as the model wrote it.
   const courtesyClose = isCourtesyLine(customerBurst)
-    && text.length > 120
+    && customerBurst.trim().length > 0
     && !/\d/.test(text)
     && !/https?:\/\//i.test(text)
     && !text.includes('?')
     && !text.includes('？');
   if (courtesyClose) {
-    const oneLine = firstSentenceOnly(text);
-    if (oneLine && oneLine.length < text.length) text = oneLine;
+    // 1 Oct (72-hour audit): twenty "You're very welcome!" messages in three
+    // days, each a bubble the customer did not need, pushing the real content
+    // up the screen. A bare thank-you, "ok" or 👍 that our reply would answer
+    // with nothing structural now gets no reply at all. Jo, 4 Sep, wanted one
+    // line; the audit showed even one line reads as a machine filling space.
+    return { kind: 'silent', decision: { ...decision, action: 'wait', reply_text: undefined }, reviewNote: 'courtesy close: nothing to add, so nothing sent' };
   }
 
   let verdict = policyGuard(text, guardCtx);
@@ -382,7 +445,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     const retry = await decide(ctx, history, {
       rewriteHint: aroundPrice
         ? `Your previous reply was refused because it was TOO LONG around the price message. Send the approved price message for their chosen option EXACTLY as approved, with at most ONE short reassuring line before it ("Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us."). Nothing else: no Library answer, no explanation, no second paragraph. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`
-        : `Your previous reply was refused because it was TOO LONG. Send the SAME answer again, rewritten to at most 3 short lines plus one closing line with the next step: a first line that shows you read what they wrote, one line that says it is exactly what our review covers (no explanation of how, no teaching, no examples, no dates, no second scenario, no list), then the next step for their current stage. Under 60 words. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`,
+        : `Your previous reply was refused because it was TOO LONG. Send the SAME answer again, shorter. Rule: every OPERATIONAL question they asked (our process, documents, the fee, the bank account, myGov access, who signs, timing, registration, what we need from them) gets its own answer in ONE short line each, in the order they asked. Every TAX-OUTCOME question (residency result, refund amount, deductions, Medicare outcome) is covered by ONE line in total: "that's one of the many things we check before we lodge, so leave that with us". Then the next step for their stage. No greeting line, no "great question", no explanations of how tax works. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`,
       timeoutMs: 12_000,
     });
     if (retry.action === 'reply' && retry.reply_text) {
@@ -394,6 +457,16 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
         rewriteNote = `Will's first draft was held (${verdict.violations.join(', ')}); he rewrote it short and that version went.`;
         text = shorter;
         verdict = shorterVerdict;
+      } else if (shorter.trim() && shorter.length < text.length
+          && shorterVerdict.violations.every((v) => LENGTH_ONLY.has(v))) {
+        // 1 Oct (72-hour audit): a rewrite that is shorter and clean apart
+        // from length goes out. The alternative, swapping in the stock "one
+        // of the many things we check" line, answered rick's six questions,
+        // Simon's "which is the account number" and Laura's TPB question with
+        // a sentence about tax. Long and right beats short and wrong.
+        rewriteNote = `Will's first draft was held (${verdict.violations.join(', ')}); the shorter rewrite still ran long but was otherwise clean, so it went.`;
+        text = shorter;
+        verdict = { ...shorterVerdict, allowed: true, violations: [] };
       }
     }
   }
@@ -447,10 +520,20 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     // too long after the rewrite above. Jo: before payment the answer to any
     // detailed tax story is the same, "that is exactly what our review
     // covers", so a long draft is not worth a task either.
-    const DETERMINATION_ONLY = new Set(['TAX_DETERMINATION', 'REPLY_TOO_LONG', 'PRE_PAYMENT_MEDICARE_SCRIPT', 'PRE_PAYMENT_HEDGE']);
+    // 1 Oct: REPLY_TOO_LONG is no longer in this set. A long draft is trimmed
+    // above, never replaced by the stock line (72-hour audit: rick, Simon,
+    // Laura, Laurine all got a sentence about tax instead of their answer).
+    const DETERMINATION_ONLY = new Set(['TAX_DETERMINATION', 'PRE_PAYMENT_MEDICARE_SCRIPT', 'PRE_PAYMENT_HEDGE']);
+    const isDetermination = verdict.violations.includes('TAX_DETERMINATION') || verdict.violations.includes('PRE_PAYMENT_MEDICARE_SCRIPT') || verdict.violations.includes('PRE_PAYMENT_HEDGE');
+    // A held PRICE message (bank details, not yet sent) still gets the approved
+    // price message as its stand-in whatever held it, length included: the
+    // customer has just chosen (28 Sep, Maria). Everything else that is only
+    // too long is a task now, never the stock line.
+    const heldPrice = !bankAlreadySent && /\bBSB\b|062692|81049952/.test(decision.reply_text ?? '')
+      && verdict.violations.every((v) => v === 'REPLY_TOO_LONG' || DETERMINATION_ONLY.has(v) || NOT_A_FAULT.has(v));
     if (!ctx.paid
-        && (verdict.violations.includes('TAX_DETERMINATION') || verdict.violations.includes('REPLY_TOO_LONG') || verdict.violations.includes('PRE_PAYMENT_MEDICARE_SCRIPT') || verdict.violations.includes('PRE_PAYMENT_HEDGE'))
-        && verdict.violations.every((v) => DETERMINATION_ONLY.has(v) || NOT_A_FAULT.has(v))) {
+        && (isDetermination || heldPrice)
+        && verdict.violations.every((v) => DETERMINATION_ONLY.has(v) || NOT_A_FAULT.has(v) || (heldPrice && v === 'REPLY_TOO_LONG'))) {
       // 28 Sep (Maria, +49 176 41747743): she wrote "Die zweite, TFN und ABN"
       // and got the "one of the many things we check" line, because Will's
       // German price message was held for length and this stand-in went out.

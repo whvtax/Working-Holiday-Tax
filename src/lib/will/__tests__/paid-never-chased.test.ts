@@ -111,7 +111,9 @@ describe('firing', () => {
     }]);
     store.getCustomerById.mockResolvedValue({ ...base, state: 'PRICE_SENT', paid: false });
     store.listMessages.mockResolvedValue([
-      { id: 'm1', customerId: 'c1', direction: 'OUT', author: 'AI', status: 'SENT', body: 'Here is our pricing...', createdAt: new Date().toISOString() },
+      // Two hours old: a message in the last 30 minutes would make the chat
+      // "busy" and defer the nudge (1 Oct, conversationBusy).
+      { id: 'm1', customerId: 'c1', direction: 'OUT', author: 'AI', status: 'SENT', body: 'Here is our pricing...', createdAt: new Date(Date.now() - 2 * 3600 * 1000).toISOString() },
     ]);
     store.listTemplates.mockResolvedValue([{ id: 't', key: 'fu_pre_24h', category: 'x', title: 'x', body: 'Hi {{1}}, still keen?' }]);
     await processDueJobs();

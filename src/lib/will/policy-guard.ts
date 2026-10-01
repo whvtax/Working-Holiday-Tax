@@ -19,6 +19,11 @@ export interface GuardContext {
   lastCustomerMsgAt: Date | null;
   isApprovedTemplate: boolean;
   estimateFromTeam: number | null; // cents
+  /** 1 Oct: how much the customer wrote since our last message, in characters.
+   *  A six-question essay earns a longer answer than "TFN please"; the length
+   *  ceiling scales with it (see the length rule). Optional: callers that do
+   *  not know leave it out and get the flat ceiling. */
+  customerTextChars?: number;
 }
 
 export interface GuardResult {
@@ -1008,6 +1013,13 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // that mentions the BSB while answering a question about it.
     if (!(ctx.paid || POST_PAYMENT_STATES.includes(ctx.state)) && BANK_DETAILS_PRESENT.test(text) && PRICE_MESSAGE_SHAPE.test(text)) {
       ceiling = Math.min(ceiling, MAX_PROSE_AROUND_PRICE + (isConfidentlyEnglish(improvised) ? 0 : TRANSLATED_SCRIPT_ALLOWANCE));
+    }
+    // 1 Oct (72-hour audit, rick +81 90): a 300-word enquiry with six numbered
+    // questions got bare bank details, because the honest answer was "too
+    // long" against a flat ceiling. The room for an answer grows with the
+    // question (even around the price message): about three quarters of the customer's own length, up to 1,200 characters.
+    if (ctx.customerTextChars && ctx.customerTextChars > 500) {
+      ceiling = Math.max(ceiling, Math.min(1200, Math.round(100 + ctx.customerTextChars * 0.75)));
     }
     if (improvised.length > ceiling) violations.push('REPLY_TOO_LONG');
   }
