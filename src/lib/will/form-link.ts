@@ -104,10 +104,17 @@ export type FormReceivedOutcome = 'queued' | 'remembered' | 'ignored';
  */
 export async function applyFormReceived(
   customer: CustomerRow,
-  opts: { email?: string | null; hasMedicare?: string | null; matchedOn?: string } = {},
+  opts: { email?: string | null; hasMedicare?: string | null; matchedOn?: string; hasAbnIncome?: boolean } = {},
 ): Promise<FormReceivedOutcome> {
   const store = getStore();
   const { email, hasMedicare } = opts;
+  // ABN invoices on the questionnaire mean a TFN + ABN return, whatever the
+  // profile said until now (28 Sep, Laurine): the ABN questions must follow.
+  if (opts.hasAbnIncome && customer.income !== 'TFN_ABN') {
+    await store.updateCustomer(customer.id, { income: 'TFN_ABN' });
+    await store.audit('system', 'income_set_from_form', { customerId: customer.id, income: 'TFN_ABN' });
+    customer = { ...customer, income: 'TFN_ABN' };
+  }
 
   // ── What this check can and cannot do ───────────────────────────────────
   // The public forms are UNAUTHENTICATED and this acts on whatever phone
@@ -302,6 +309,8 @@ export async function notifyFormReceived(
    *  own, 15 minutes after the form arrives (Jo, 4 Sep). Anything else, and
    *  nothing is sent. */
   hasMedicare?: string | null,
+  /** True when the questionnaire carried at least one ABN invoice. */
+  hasAbnIncome?: boolean,
 ): Promise<{ matched: boolean }> {
   try {
     const customer = await findCustomerByPhone(waNumber);
@@ -342,7 +351,7 @@ export async function notifyFormReceived(
       return { matched: true };
     }
 
-    await applyFormReceived(customer, { email, hasMedicare });
+    await applyFormReceived(customer, { email, hasMedicare, hasAbnIncome });
     return { matched: true };
   } catch {
     // A website form must never fail because the CRM link failed.

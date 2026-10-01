@@ -1943,24 +1943,8 @@ export default function Dashboard() {
                 was removed on Jo's instruction, 24 Sep. The /api/will/export
                 route still exists for a direct download if ever needed. */}
 
-            {/* Jo, 24 Sep: paid customers waiting on US. A week in Review with
-                no movement is the thing to look at before any new lead. */}
-            {system?.stuck && system.stuck.length > 0 && (
-              <div className="panel" style={{ margin: '2px 0 14px' }}>
-                <h3>Waiting on us: in Review over 7 days</h3>
-                <div className="psub">Paid, form in, and nothing has moved. Oldest first.</div>
-                {system.stuck.map((c) => (
-                  <div key={c.customerId} className="qitem">
-                    <span className="qn">{c.days}d</span>
-                    <span className="qwrap">
-                      <span className="qlabel">{c.flag} {phoneOf(c.waId)}{c.name ? ` · ${c.name}` : ''}</span>
-                      <span className="qwhy">{STATE_LABELS[c.state] ?? c.state}</span>
-                    </span>
-                    <button className="btn ghost" onClick={() => { setView('chats'); openChat(c.customerId); }}>Open chat →</button>
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* Jo, 28 Sep: the "in Review over 7 days" panel was removed from
+                here; each of those customers already has a task with its own button. */}
 
             {pendingDrafts.map((m) => {
               const c = custById(m.customerId);
@@ -2562,11 +2546,17 @@ export default function Dashboard() {
               <span className="psub" style={{ margin: 0 }}>Run once after library change.</span>
             </div>
 
-            {/* "Download every conversation" (transcript/JSON export) and the
-                monthly "what customers wrote" email were removed per the
-                owner's request. Replaced by the daily Library-suggestions
-                digest (scheduler.ts's DAILY_DIGEST job), which already does
-                the analysis automatically instead of a manual download. */}
+            {/* Jo, 1 Oct: one file with everything from the last 72 hours, for
+                a deep read of how Will is talking: every conversation that
+                was active (in full), each of Will's lines with its template,
+                reviewer note and stage move, every handoff with its "Why Will
+                handed this over" block, and the decision log (guard verdicts,
+                Library answers used). The old "every conversation" link was
+                removed on 24 Sep; this one is scoped and much richer. */}
+            <div style={{ margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <a className="btn ghost" href="/api/will/export?hours=72" download>Download last 72 hours (everything)</a>
+              <span className="psub" style={{ margin: 0 }}>Conversations, Will&apos;s drafts and notes, handoffs, decision log. One text file.</span>
+            </div>
 
             {/* Jo, 6 Sep: the "Your Goal" card (month-by-month conversion +
                 Will-alone rate) moved to System & Costs — see the top of that

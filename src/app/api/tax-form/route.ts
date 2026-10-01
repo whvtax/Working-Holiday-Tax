@@ -161,7 +161,12 @@ export async function POST(req: NextRequest) {
     try {
       // The Medicare answer travels with it: "No" (not covered) is what queues
       // the Medicare Levy Exemption message 15 minutes from now.
-      await notifyFormReceived(whatsapp, email, 'tax-return', sanitiseShort(formData.get('hasMedicare')))
+      const hasAbnIncome = (() => {
+        const raw = formData.get('invoiceDetails')
+        if (!raw || typeof raw !== 'string') return false
+        try { const parsed: unknown = JSON.parse(raw); return Array.isArray(parsed) && parsed.some((i) => (i as { type?: string })?.type === 'abn') } catch { return false }
+      })()
+      await notifyFormReceived(whatsapp, email, 'tax-return', sanitiseShort(formData.get('hasMedicare')), hasAbnIncome)
     } catch (err) {
       // console.error on Vercel is a log nobody reads, and the consequence here
       // is specific: the customer's form reminders keep chasing them for

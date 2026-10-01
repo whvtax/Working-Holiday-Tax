@@ -474,6 +474,17 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
           try {
           // Drop messages older than the fresh-start cutoff (history sync / backfill).
           if (cutoff && m.timestamp && Number(m.timestamp) < cutoff) continue;
+          // ── NO SENDER, NO MESSAGE (28 Sep) ────────────────────────────────
+          // 24 Sep, 22:03: an event arrived with no `from` (Meta sends a few
+          // of these: system notices, some group and channel events). It went
+          // through the whole pipeline, hit the customers table with a null
+          // wa_id, failed three times and raised a "something went wrong" task
+          // for a customer who does not exist. A message with no sender has
+          // nobody to answer; log it and move on.
+          if (!m.from || typeof m.from !== 'string' || !/^\d{6,20}$/.test(m.from)) {
+            skipped.push({ id: (m as { id?: string }).id, type: (m as { type?: string }).type, error: 'no sender (from) on the event' });
+            continue;
+          }
           const name = nameByWa.get(m.from);
           // ── AN EDIT IS NOT A MESSAGE ──────────────────────────────────────
           //

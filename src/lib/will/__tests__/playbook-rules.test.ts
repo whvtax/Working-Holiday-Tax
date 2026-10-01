@@ -153,3 +153,12 @@ describe('surprised to owe tax after the estimate (19 Sep, Khrystea)', () => {
     expect(stable).toMatch(/do not raise a human_task by default/);
   });
 });
+
+describe('a question that contains one of the prices is a choice (29 Sep, +46 70)', () => {
+  it('sends that price message with a one-line clarification, never "which option?" again', () => {
+    expect(stable).toMatch(/A QUESTION THAT CONTAINS ONE OF THE PRICES IS ALSO A CHOICE/);
+    expect(stable).toMatch(/names exactly ONE of the two prices \(220 or 385\), they have picked that track/);
+    expect(stable).toMatch(/never ask "which option\?" again/);
+    expect(stable).toMatch(/Do not re-quote the guarantee/);
+  });
+});

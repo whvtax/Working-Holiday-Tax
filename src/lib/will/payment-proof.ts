@@ -52,6 +52,19 @@ export interface ProofVerification {
   unverified: string[];
 }
 
+/** 28 Sep (+33 7 81, Laurine): she paid $385, the payment proof was read
+ *  and accepted, and when her form arrived she got the plain acknowledgement
+ *  instead of the ABN questions, because her income type was still unknown:
+ *  it is only ever inferred from a price message Will himself sent, and she
+ *  had the bank details from elsewhere. The receipt is the strongest evidence
+ *  there is of which service was bought: $385 means TFN + ABN, $220 means TFN. */
+export function incomeFromAmount(amount: number | null): 'TFN' | 'TFN_ABN' | null {
+  if (amount == null || !Number.isFinite(amount)) return null;
+  if (Math.abs(amount - 385) <= AMOUNT_TOLERANCE_AUD) return 'TFN_ABN';
+  if (Math.abs(amount - 220) <= AMOUNT_TOLERANCE_AUD) return 'TFN';
+  return null;
+}
+
 export function amountMatchesFee(amount: number | null): boolean {
   if (amount == null || !Number.isFinite(amount)) return false;
   return FEES_AUD.some((fee) => Math.abs(amount - fee) <= AMOUNT_TOLERANCE_AUD);

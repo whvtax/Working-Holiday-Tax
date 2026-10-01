@@ -132,6 +132,22 @@ const CUSTOMER_ASKED_PAYMENT_RE = new RegExp([
 /** Remove only the bank-detail lines from a message, leaving any surrounding text
  *  (a greeting, an answer) intact. Used when the details were already sent and the
  *  customer did not ask for them again. */
+/** The guarantee, as sent (English and Will's translations). */
+const GUARANTEE_RE = /refund the difference|refund you the difference|die differenz|la diferencia|la diff[ée]rence|la differenza|a diferen[çc]a|差額/i;
+/** Remove the guarantee sentences (both of them) from a reply, tidying the
+ *  blank lines they leave behind. Exported for the tests. */
+export function stripGuarantee(text: string): string {
+  return text
+    .split(/\n{2,}/)
+    .map((para) => para
+      .split(/(?<=[.!?。])\s+/)
+      .filter((sent) => !GUARANTEE_RE.test(sent) && !/(?:no refund|keine r[üu]ckerstattung|還付(?:金)?がない)[^.。]{0,40}(?:full fee|volle geb[üu]hr|全額)/i.test(sent) && !/^(?:if there'?s no refund|our full fee applies)/i.test(sent))
+      .join(' '))
+    .filter((para) => para.trim().length > 0)
+    .join('\n\n')
+    .trim();
+}
+
 export function stripBankBlock(text: string): string {
   return text
     .split('\n')
@@ -165,8 +181,16 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     ? burstSinceOurs.join('\n')
     : ([...history].reverse().find((t) => t.role === 'customer')?.text ?? '');
   const suppressBankRepeat = bankAlreadySent && !CUSTOMER_ASKED_PAYMENT_RE.test(customerBurst);
-  const applyBankRule = (t: string): string =>
-    suppressBankRepeat && BANK_DETAILS_RE.test(t) ? stripBankBlock(t) : t;
+  // 29 Sep (+46 70): the guarantee went out with the price message, then
+  // again, word for word, in the next reply. The guarantee belongs to the
+  // price message: once it has been sent, a repeat of it in a reply that is
+  // NOT a price message is dropped in code, whatever the model wrote.
+  const guaranteeAlreadySent = history.some((t) => t.role === 'assistant' && GUARANTEE_RE.test(t.text));
+  const applyBankRule = (t: string): string => {
+    let out = suppressBankRepeat && BANK_DETAILS_RE.test(t) ? stripBankBlock(t) : t;
+    if (guaranteeAlreadySent && !BANK_DETAILS_RE.test(out) && GUARANTEE_RE.test(out)) out = stripGuarantee(out);
+    return out;
+  };
 
   const decision = await decide(ctx, history);
 
@@ -433,12 +457,21 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       // A draft that carries the bank details IS the price message: if it is
       // held, the stand-in is the approved price message for the amount the
       // draft named, never the one-line answer. The customer just chose.
-      const draftHasBank = /\bBSB\b|062692|81049952/.test(decision.reply_text ?? '');
+      // 28 Sep, 19:25 (+33 7 81): the customer had the bank details already
+      // and asked us to confirm them; Will's confirmation was held and this
+      // stand-in re-sent the whole price message. The price message is the
+      // stand-in ONLY while the bank details have never gone out, i.e. the
+      // customer is choosing now. Once they have them, a held draft is a task.
+      const draftMentionsBank = /\bBSB\b|062692|81049952/.test(decision.reply_text ?? '');
+      const draftHasBank = !bankAlreadySent && draftMentionsBank;
       const priceStandIn = draftHasBank
         ? (/\$\s?385\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn_abn : /\$\s?220\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn : null)
         : null;
       const safe = priceStandIn ?? professionalQuestionMessage(ctx.lang);
-      const safeVerdict = policyGuard(safe, guardCtx);
+      // A held draft about the bank details, for a customer who already has
+      // them, is a question about the ACCOUNT (is it official, which name, is
+      // the amount right). Neither stand-in answers that; a person does.
+      const safeVerdict = bankAlreadySent && draftMentionsBank ? { allowed: false } : policyGuard(safe, guardCtx);
       if (safeVerdict.allowed) {
         const priceState: CustomerState | undefined = priceStandIn
           ? (decision.new_state === 'PRICE_SENT' || canTransition(ctx.state, 'PRICE_SENT') ? 'PRICE_SENT' : undefined)

@@ -34,8 +34,12 @@ describe('dobInputRange agrees with isPlausibleDob', () => {
   });
 
   it('the day outside each bound is rejected by the validator', () => {
-    const dayBefore = new Date(min); dayBefore.setDate(dayBefore.getDate() - 1);
-    const dayAfter = new Date(max); dayAfter.setDate(dayAfter.getDate() + 1);
+    // UTC arithmetic: with TZ=Australia/Sydney, local setDate() across the
+    // DST change (first Sunday of October) landed on the SAME ISO date and
+    // the test failed once a year, on 1 October (seen 1 Oct 2026).
+    const shift = (iso: string, days: number) => { const d = new Date(iso); d.setUTCDate(d.getUTCDate() + days); return d; };
+    const dayBefore = shift(min, -1);
+    const dayAfter = shift(max, 1);
     expect(isPlausibleDob(dayBefore.toISOString().slice(0, 10))).toBe(false);
     expect(isPlausibleDob(dayAfter.toISOString().slice(0, 10))).toBe(false);
   });

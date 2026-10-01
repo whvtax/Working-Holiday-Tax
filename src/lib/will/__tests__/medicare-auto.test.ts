@@ -146,5 +146,5 @@ describe('the scheduler handler', () => {
 
 it('the tax-return form actually passes the answer through', () => {
   const route = readFileSync(join(process.cwd(), 'src/app/api/tax-form/route.ts'), 'utf8');
-  expect(route).toMatch(/notifyFormReceived\(whatsapp, email, 'tax-return', sanitiseShort\(formData\.get\('hasMedicare'\)\)\)/);
+  expect(route).toMatch(/notifyFormReceived\(whatsapp, email, 'tax-return', sanitiseShort\(formData\.get\('hasMedicare'\)\), hasAbnIncome\)/);
 });

@@ -71,3 +71,28 @@ it('a held price message falls back to the approved price message, never to the 
   expect(out.newState).toBe('PRICE_SENT');
   expect(out.reviewNote).toMatch(/approved price message went instead/);
 });
+
+describe('28 Sep, 19:25 (+33 7 81): "please confirm these are your official bank details"', () => {
+  const ASK = "Before I make the bank transfer, could you please confirm that the account details below are the official business account of The Accounting Academy and that the payment of AUD 385 is for my TFN + ABN tax return for the 2025-2026 financial year?\n\nAccount name: The Accounting Academy\nBSB: 062692\nAccount: 81049952\nAmount: AUD 385\n\nCould you also please confirm that this is the same account used by Working Holiday Tax for client payments?";
+  const CONFIRM = "Yes, confirmed. BSB 062692, account 81049952 is our business account, held under The Accounting Academy, our registered business name, and it's the account every Working Holiday Tax client pays into. The $385 covers your full TFN + ABN return for the 2025-26 year. Once it's through, just send a screenshot and we'll get started. 😊";
+
+  it('a confirmation that mentions the BSB is not measured with the price-message ceiling', () => {
+    expect(policyGuard(CONFIRM, { ...ctx, state: 'PRICE_SENT' }).allowed).toBe(true);
+  });
+
+  it('the price message is never re-sent as a stand-in once the bank details have gone out', async () => {
+    const glued = "That's definitely something we can check for you, and there are many other deductions and factors the team looks at as part of the service, so we go through every one with you before anything is lodged.\n\n" + APPROVED.price_tfn_abn;
+    decideMock.mockResolvedValue({ action: 'reply', reply_text: glued, confidence: 0.9 });
+    const out = await runEngine(input({
+      ctx: { ...input().ctx, lang: 'en', state: 'PRICE_SENT' },
+      history: [
+        { role: 'assistant', text: APPROVED.opening },
+        { role: 'customer', text: 'TFN + ABN please' },
+        { role: 'assistant', text: APPROVED.price_tfn_abn },
+        { role: 'customer', text: ASK },
+      ],
+    }));
+    expect(out.replyText ?? '').not.toContain('Great! Here are the payment details');
+    expect(out.kind).toBe('human_task');
+  });
+});

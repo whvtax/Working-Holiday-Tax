@@ -25,7 +25,7 @@ import { firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
 export { isCourtesyLine };
 import { suggestReply } from './suggest';
 import { assessPaymentProofImage, assessSuccessConfirmationImage, describeAttachment, PaymentProofCheck } from './claude';
-import { verifyProofDetails, isNotOurPayment, describeProof } from './payment-proof';
+import { verifyProofDetails, isNotOurPayment, describeProof, incomeFromAmount } from './payment-proof';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
@@ -1740,6 +1740,16 @@ async function handlePaymentProofMediaInner(
       customerId: customer.id, shown: shown ?? null, unverified: verification.unverified,
     });
     return (await store.getCustomerByWaId(waId)) ?? customer;
+  }
+
+  // The receipt says which service was bought (28 Sep, Laurine +33 7 81:
+  // $385 paid, income still unknown, form got the plain acknowledgement
+  // instead of the ABN questions). Set it from the amount read off the
+  // picture, before the stage moves, so the FORM_RECEIVED job sees it.
+  const boughtIncome = incomeFromAmount(check.details?.amountAud ?? null);
+  if (boughtIncome && customer.income !== boughtIncome && typeof store.updateCustomer === 'function') {
+    await store.updateCustomer(customer.id, { income: boughtIncome });
+    await store.audit('system', 'income_set_from_receipt', { customerId: customer.id, income: boughtIncome, amountAud: check.details?.amountAud ?? null });
   }
 
   // Same rule as every other AI-authored reply: SUPERVISED means nothing

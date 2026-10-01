@@ -171,6 +171,8 @@ const MAX_IMPROVISED_CHARS = 450;
 /** Own prose allowed around the price message (one reassuring line + a short opener). */
 const MAX_PROSE_AROUND_PRICE = 170;
 const BANK_DETAILS_PRESENT = /\bBSB\b|062692|81049952/;
+/** The price message shape: an Amount line (any language) or the "payment details" header. */
+const PRICE_MESSAGE_SHAPE = /^\s*(?:amount|betrag|importe|montant|importo|valor|金額)\s*[:：]/im;
 
 /** Extra room on the length rule for a reply that is NOT in English.
  *
@@ -198,6 +200,8 @@ const TRANSLATED_SCRIPT_ALLOWANCE = Math.ceil(LONGEST_APPROVED_CHARS * 1.3);
 // sent. Post-payment nothing is allowed at all (see `allowedCents` below), so a
 // consultation price can only ever appear before the customer has paid.
 const FIXED_PRICES_CENTS = [22000, 38500, 11000];
+/** A reply about ANOTHER tax return for a customer who already paid for one. */
+const ANOTHER_RETURN_CONTEXT = /\b(?:20\d\d\s?[-–/]\s?(?:20)?\d\d|financial year|tax year|(?:another|second|previous|prior|last|next|other|each|both|that|this) (?:year|return)s?\b|two returns|per (?:year|return)|steuerjahr|año fiscal|ann[ée]e fiscale|anno fiscale|ano fiscal|会計年度|年度)/i;
 
 // The ATO's $300 work-related-expense substantiation threshold. This is a fixed
 // public regulatory figure, NOT a price and NOT a refund, and the team needs to
@@ -996,14 +1000,28 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // "one of the many things we check" line instead of the bank details.
     // A translated price message gets the same allowance as any translated
     // script; the tight ceiling is for English prose glued around the price.
-    if (!(ctx.paid || POST_PAYMENT_STATES.includes(ctx.state)) && BANK_DETAILS_PRESENT.test(text)) {
+    // 28 Sep, 19:25 (+33 7 81): a customer quoted our bank details back and
+    // asked us to confirm they are official. Will's confirmation repeated the
+    // BSB, so the tight ceiling hit it, and the stand-in re-sent the price
+    // message as if she had just chosen a track. The tight ceiling is for the
+    // PRICE MESSAGE SHAPE (bank lines plus an Amount line), not for a sentence
+    // that mentions the BSB while answering a question about it.
+    if (!(ctx.paid || POST_PAYMENT_STATES.includes(ctx.state)) && BANK_DETAILS_PRESENT.test(text) && PRICE_MESSAGE_SHAPE.test(text)) {
       ceiling = Math.min(ceiling, MAX_PROSE_AROUND_PRICE + (isConfidentlyEnglish(improvised) ? 0 : TRANSLATED_SCRIPT_ALLOWANCE));
     }
     if (improvised.length > ceiling) violations.push('REPLY_TOO_LONG');
   }
 
   // --- sentence-level content checks with approved-corpus exemption ---
-  const paid = ctx.paid || POST_PAYMENT_STATES.includes(ctx.state);
+  const paidState = ctx.paid || POST_PAYMENT_STATES.includes(ctx.state);
+  // 1 Oct (Federica, +61 481): a PAID customer asked to lodge a second
+  // financial year, and "$220 for the 2024-25 year" plus the bank details was
+  // refused as a forbidden amount, because after payment no price is allowed.
+  // Another year is a NEW sale: when the reply is plainly about another
+  // return (a financial year, "second return", "each year"), the fixed
+  // prices and the sales wording are allowed again, exactly as before payment.
+  const anotherReturn = paidState && ANOTHER_RETURN_CONTEXT.test(text);
+  const paid = paidState && !anotherReturn;
   const allowedCents = new Set<number>(paid ? [] : FIXED_PRICES_CENTS);
   if (ctx.estimateFromTeam != null) allowedCents.add(ctx.estimateFromTeam);
 

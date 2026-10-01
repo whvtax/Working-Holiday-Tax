@@ -15,6 +15,92 @@ export interface SeedKnowledge {
 
 export const KNOWLEDGE_SEED: SeedKnowledge[] = [
   {
+    "intent": "can a Wise, Revolut or other digital bank account receive the refund",
+    "question": "Would a Wise (or Revolut, Up, etc.) account work for my tax refund?",
+    "examples": [
+      "can I use my Wise account for the refund?",
+      "does the ATO pay into Revolut?",
+      "I only have a Wise Australian account, is that ok for the form?",
+      "will a digital bank account work for the tax refund?"
+    ],
+    "answer": "Yes, as long as it's an Australian account in your name with a BSB and account number that can receive AUD, so a Wise Australian account works fine. Just put those details in the form and the refund goes straight there. 😊",
+    "keywords": ["wise", "revolut", "digital", "bank", "account", "refund", "bsb", "aud", "receive"],
+    "tags": ["form", "process", "post-payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "cannot or does not want to apply for the Medicare exemption",
+    "question": "I can't do the Medicare exemption application, is that a problem?",
+    "examples": [
+      "I can't do that",
+      "I won't be able to apply for the Medicare exemption",
+      "I don't have time for the Medicare thing, can we skip it?",
+      "the exemption application is too complicated for me"
+    ],
+    "answer": "No worries at all, that's completely fine. The team will factor it in when they prepare your return, so you don't need to do anything else. 😊",
+    "keywords": ["can't", "cannot", "medicare", "exemption", "apply", "skip", "won't", "unable"],
+    "tags": ["medicare", "post-payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "where to find the Medicare exemption form",
+    "question": "Where do I find the Medicare Levy Exemption form? Is it part of the tax return?",
+    "examples": [
+      "where do I apply for the Medicare exemption?",
+      "I've been searching all morning for the exemption form",
+      "is the Medicare exemption part of my tax return?",
+      "which website is the Medicare Entitlement Statement on?"
+    ],
+    "answer": "It's separate from the tax return. The Medicare Entitlement Statement is handled by Services Australia, not the ATO, and this is the page for it:\nhttps://www.servicesaustralia.gov.au/medicare-entitlement-statement\n\nOnce it's submitted, send us a screenshot and we'll include the exemption in your return. 😊",
+    "keywords": ["where", "find", "medicare", "exemption", "form", "entitlement", "statement", "services", "australia", "apply", "link"],
+    "tags": ["medicare", "post-payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "asks us to confirm the bank details are our official account before paying",
+    "question": "Before I transfer, can you confirm these bank details are the official account of The Accounting Academy and the same one Working Holiday Tax uses?",
+    "examples": [
+      "can you confirm the account details are official before I pay?",
+      "is BSB 062692 account 81049952 really your account?",
+      "please confirm this is the same account used by Working Holiday Tax for client payments",
+      "I want to make sure I'm paying the right account",
+      "is the payment of $385 for my TFN + ABN return for this financial year?"
+    ],
+    "answer": "Yes, confirmed. BSB 062692, account 81049952 is our business account, held under The Accounting Academy, our registered business name, and it's the account every Working Holiday Tax client pays into. The amount covers your full tax return for the year you're lodging. Once it's through, just send a screenshot and we'll get started. 😊",
+    "keywords": ["confirm", "official", "account", "bank", "details", "same", "accounting", "academy", "before", "transfer", "legit"],
+    "tags": ["payment", "trust"],
+    "lang": "en"
+  },
+  {
+    "intent": "worked across two financial years, two returns and two fees",
+    "question": "I worked across two financial years. Do I need two returns, and what's the fee?",
+    "examples": [
+      "I worked May to December, is that one return or two?",
+      "my work period straddles two tax years, do I need to lodge twice?",
+      "I already paid for one year but my income is split across two financial years",
+      "is there a discount if I lodge two years with you?",
+      "how much for two tax returns?"
+    ],
+    "answer": "The Australian financial year runs from 1 July to 30 June, so income on both sides of 30 June means one tax return for each year, and each year has its own fee: $220 for a TFN return, or $385 if that year also has ABN income. The fee is the same for every year, and the same guarantee applies to each return. Just let us know which years you worked and we'll take it from there. 😊",
+    "keywords": ["two", "financial", "years", "returns", "both", "split", "straddle", "second", "fee"],
+    "tags": ["pricing", "process"],
+    "lang": "en"
+  },
+  {
+    "intent": "no Australian phone number for the form",
+    "question": "I don't have an Australian phone number anymore. What do I put in the form, can I leave it blank?",
+    "examples": [
+      "I no longer have an Australian number, is it ok to leave the phone field empty?",
+      "which phone number should I put in the form, I'm back home now",
+      "my Australian SIM is gone, what number do I give you?",
+      "does the form need an Australian mobile?"
+    ],
+    "answer": "No problem at all, an Australian number isn't needed. Just put the number you use now, with the country code, so we can reach you if anything comes up. 😊",
+    "keywords": ["phone", "number", "australian", "mobile", "form", "blank", "country", "code", "overseas"],
+    "tags": ["form", "process"],
+    "lang": "en"
+  },
+  {
     "intent": "estimate before paying",
     "question": "Can you tell me how much I'll get back before I pay? Can I get a free estimate first?",
     "examples": [
@@ -693,7 +779,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I started it myself and I'm not sure I filled it in correctly",
       "I already did it on my own but something looks wrong"
     ],
-    "answer": "No problem, we can look at it. It depends on where it's up to:\n\nIf you only started it and haven't lodged, we simply prepare and lodge it for you as a normal tax return: $220 (TFN only) or $385 (TFN + ABN), which covers our team's full review.\n\nIf it's already been lodged, we review it and fix anything that was missed. The fee is the same ($220 TFN only, $385 with ABN income), and the same guarantee applies: if your tax refund is less than our fee, we'll refund the difference.\n\nWhich one is it for you?",
+    "answer": "No problem, we can look at it. It depends on where it's up to:\n\nIf you only started it and haven't lodged, we simply prepare and lodge it for you as a normal tax return: $220 (TFN only) or $385 (TFN + ABN), which covers our team's full review.\n\nIf it's already been lodged, we review it and fix anything that was missed. The fee is the same ($220 TFN only, $385 with ABN income) and is for the review itself, whatever the result.\n\nWhich one is it for you?",
     "keywords": [
       "already",
       "myself",
@@ -937,7 +1023,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "can you check whether my return was done correctly?",
       "another agent did it and I think it's wrong, can it be amended?"
     ],
-    "answer": "Absolutely! We’ll review your return, check the calculation and see whether anything needs to be amended.\n\nThe review fee is $220. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
+    "answer": "Absolutely! We’ll review your return, check the calculation and see whether anything needs to be amended.\n\nThe review fee is $220 and is for the review itself, whatever the result.",
     "keywords": [
       "amend",
       "amendment",

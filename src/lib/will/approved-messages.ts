@@ -63,27 +63,26 @@ Just send a screenshot once paid and we'll get started!`,
   // someone else) and wants it checked/reviewed — a genuinely different
   // service from a fresh return, not a decline. Same bank details, same fee amounts as the normal
   // service, matched to what they mention (TFN only vs TFN + ABN).
+  // NO GUARANTEE HERE (Jo, 29 Sep, Holly +61 409): a review of a return the
+  // customer already lodged is paid for the review, whatever the result. The
+  // refund-shortfall guarantee is for returns WE prepare and lodge only.
   price_tfn_review: `No problem, we can review a return you've already lodged.
 
-Since it's already been lodged, this is a review of an existing return rather than a fresh one.
+Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is for the review itself and is the same whatever the result.
 
 BSB: 062692
 Account: 81049952
 Amount: $220
 
-If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.
-
 Just send a screenshot once paid and we'll get started!`,
 
   price_tfn_abn_review: `No problem, we can review a return you've already lodged.
 
-Since it's already been lodged, this is a review of an existing return rather than a fresh one.
+Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is for the review itself and is the same whatever the result.
 
 BSB: 062692
 Account: 81049952
 Amount: $385
-
-If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.
 
 Just send a screenshot once paid and we'll get started!`,
 
