@@ -1561,6 +1561,22 @@ export class SupabaseStore implements Store {
     return count ?? 0;
   }
 
+  /** The whole decision log, oldest first. PostgREST caps a single read at
+   *  1,000 rows, so listAudit(5000) silently returned the newest 1,000; the
+   *  all-time export (Jo, 9 Oct) needs every row, keyset-paged like
+   *  allMessages. */
+  async allAudit(): Promise<AuditRow[]> {
+    try {
+      const rows = await this.pageAll<Record<string, unknown>>('will_audit', 'id');
+      return rows.map((r) => ({
+        id: String(r.id), actor: String(r.actor), action: String(r.action),
+        detail: r.detail ?? null, at: String(r.created_at),
+      }));
+    } catch {
+      return this.listAudit(5000);
+    }
+  }
+
   async listAudit(limit = 200): Promise<AuditRow[]> {
     try {
       const { data, error } = await this.sb()

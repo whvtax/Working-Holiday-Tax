@@ -441,6 +441,9 @@ export interface Store {
   audit(actor: string, action: string, detail?: unknown): Promise<void>;
   /** Most recent audit rows, newest first (decision log for review). */
   listAudit(limit?: number): Promise<AuditRow[]>;
+  /** Every audit row the store still holds, oldest first, paged. Optional:
+   *  the all-time export (9 Oct) falls back to listAudit when absent. */
+  allAudit?(): Promise<AuditRow[]>;
   /** Optional: is the decision log actually being written? audit() never
    *  throws, so a broken will_audit table used to look exactly like a quiet
    *  system. The diagnostics call this so an empty log is reported as a fault

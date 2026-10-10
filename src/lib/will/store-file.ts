@@ -774,6 +774,11 @@ export class FileStore implements Store {
     return removed;
   }
 
+  async allAudit(): Promise<AuditRow[]> {
+    const db = await load();
+    return db.audit.map((a) => ({ id: (a as { id?: string }).id ?? '', actor: a.actor, action: a.action, detail: a.detail, at: a.at }));
+  }
+
   async listAudit(limit = 200): Promise<AuditRow[]> {
     const db = await load();
     return db.audit

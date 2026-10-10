@@ -37,6 +37,13 @@ export async function GET(req: Request) {
   // block, and Will's decision log entries for those customers.
   const hours = Math.max(0, Math.min(24 * 90, Number(url.searchParams.get('hours') ?? 0) || 0));
   const since = hours > 0 ? Date.now() - hours * 3600 * 1000 : 0;
+  // Jo, 9 Oct: "a button that downloads ALL the conversations, everything
+  // from everything, from the day Will was born until today, into one file".
+  // ?all=1 is the 72-hour export with the window removed: every conversation
+  // ever, every message with its notes, every handoff and the whole decision
+  // log the store still holds (the log is purged at 90 days; messages never).
+  const all = url.searchParams.get('all') === '1';
+  const detailed = since > 0 || all;
   const store = getStore();
 
   // SCALE: two paged reads and an in-memory group-by, instead of listCustomers()
@@ -59,6 +66,9 @@ export async function GET(req: Request) {
     withMessages = withMessages.filter(({ messages }) => messages.some((m) => new Date(m.createdAt).getTime() >= since));
     // Most recent activity first inside a window.
     withMessages.sort((a, b) => String(b.messages[b.messages.length - 1]?.createdAt ?? '').localeCompare(String(a.messages[a.messages.length - 1]?.createdAt ?? '')));
+  } else if (all) {
+    // From Will's first conversation to today, in the order they started.
+    withMessages.sort((a, b) => String(a.messages[0]?.createdAt ?? a.customer.createdAt ?? '').localeCompare(String(b.messages[0]?.createdAt ?? b.customer.createdAt ?? '')));
   } else {
     // Busiest conversations first: those are the ones worth reading.
     withMessages.sort((a, b) => b.messages.length - a.messages.length);
@@ -68,7 +78,7 @@ export async function GET(req: Request) {
   // the plain transcript it always was).
   const tasksById = new Map<string, Awaited<ReturnType<typeof store.listTasks>>>();
   const auditById = new Map<string, { at: string; actor: string; action: string; detail: unknown }[]>();
-  if (since > 0) {
+  if (detailed) {
     try {
       for (const t of await store.listTasks()) {
         if (!t.customerId || !ids.has(t.customerId) || new Date(t.createdAt).getTime() < since) continue;
@@ -76,7 +86,8 @@ export async function GET(req: Request) {
       }
     } catch { /* tasks are optional in the export */ }
     try {
-      for (const a of await store.listAudit(5000)) {
+      const auditRows = all && typeof store.allAudit === 'function' ? await store.allAudit() : await store.listAudit(5000);
+      for (const a of auditRows) {
         if (new Date(a.at).getTime() < since) continue;
         const d = (a.detail ?? {}) as { customerId?: string };
         if (!d.customerId || !ids.has(d.customerId)) continue;
@@ -86,7 +97,7 @@ export async function GET(req: Request) {
     } catch { /* the decision log is optional in the export */ }
   }
 
-  const stamp = new Date().toISOString().slice(0, 10) + (hours > 0 ? `-last-${hours}h` : '');
+  const stamp = new Date().toISOString().slice(0, 10) + (hours > 0 ? `-last-${hours}h` : all ? '-everything' : '');
 
   if (format === 'json') {
     const conversations = withMessages.map((w) => ({ ...w, tasks: tasksById.get(w.customer.id) ?? [], decisions: auditById.get(w.customer.id) ?? [] }));
@@ -100,7 +111,7 @@ export async function GET(req: Request) {
 
   const totalMessages = withMessages.reduce((n, w) => n + w.messages.length, 0);
   const lines: string[] = [
-    `Will conversations, exported ${new Date().toISOString()}${hours > 0 ? ` (conversations active in the last ${hours} hours, shown in full)` : ''}`,
+    `Will conversations, exported ${new Date().toISOString()}${hours > 0 ? ` (conversations active in the last ${hours} hours, shown in full)` : all ? ' (everything, since the first message)' : ''}`,
     `${withMessages.length} conversations, ${totalMessages} messages`,
     '',
   ];
@@ -131,7 +142,7 @@ export async function GET(req: Request) {
       if (m.meta?.media) {
         lines.push(`    [attachment: ${m.meta.media.kind}${m.meta.media.filename ? ' — ' + m.meta.media.filename : ''}]`);
       }
-      if (since > 0) {
+      if (detailed) {
         // The machinery behind each of Will's lines, for the deep read.
         const notes: string[] = [];
         if (m.meta?.waTemplate?.name) notes.push(`template: ${m.meta.waTemplate.name}`);
@@ -143,7 +154,7 @@ export async function GET(req: Request) {
       }
       lines.push('');
     }
-    if (since > 0) {
+    if (detailed) {
       const tasks = tasksById.get(c.id) ?? [];
       if (tasks.length) {
         lines.push('  --- HANDOFFS (tasks) ---');

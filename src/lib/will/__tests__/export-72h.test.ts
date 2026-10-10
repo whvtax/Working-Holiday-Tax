@@ -54,3 +54,22 @@ it('without hours it is still the plain full transcript', async () => {
   expect(text).toContain('Old');
   expect(text).not.toContain('--- DECISION LOG ---');
 });
+
+/**
+ * Jo, 9 Oct: "a button that downloads all the conversations, everything from
+ * everything, from the day Will was born until today, into one file".
+ */
+it('?all=1 is the detailed export with no window: every conversation, oldest first, with the whole decision log', async () => {
+  const res = await GET(new Request('http://x/api/will/export?all=1'));
+  const text = await res.text();
+  expect(res.headers.get('content-disposition')).toMatch(/everything/);
+  expect(text).toContain('(everything, since the first message)');
+  expect(text).toContain('Old · 61400000002');
+  expect(text).toContain('Recent · 61400000001');
+  // Oldest conversation first: Old's only message is 30 days old, Recent's first is 14 days old.
+  expect(text.indexOf('Old · 61400000002')).toBeLessThan(text.indexOf('Recent · 61400000001'));
+  expect(text).toContain('{moves to: Price Sent · note: rewrote it short}');
+  expect(text).toContain('--- HANDOFFS (tasks) ---');
+  expect(text).toContain('--- DECISION LOG ---');
+  expect(text).toContain('GUARD: TAX_DETERMINATION');
+});

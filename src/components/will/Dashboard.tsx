@@ -2591,6 +2591,10 @@ export default function Dashboard() {
                 removed on 24 Sep; this one is scoped and much richer. */}
             <div style={{ margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               <a className="btn ghost" href="/api/will/export?hours=72" download>Download last 72 hours (everything)</a>
+              {/* Jo, 9 Oct: the same file with no window at all. Every
+                  conversation since Will's first message, in the order they
+                  started, with the same notes, handoffs and decision log. */}
+              <a className="btn ghost" href="/api/will/export?all=1" download>Download everything (all time)</a>
               <span className="psub" style={{ margin: 0 }}>Conversations, Will&apos;s drafts and notes, handoffs, decision log. One text file.</span>
             </div>
 
