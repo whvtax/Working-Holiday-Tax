@@ -96,7 +96,9 @@ it('on Autopilot the same exchange arms the two-minute timer instead of deciding
   const job = addJob.mock.calls[2][0];
   expect(job.kind).toBe('AUTO_REPLY');
   expect(job.payload.debounce).toBe(true);
-  expect(new Date(job.runAt).getTime()).toBeGreaterThan(Date.now() + 100 * 1000);
+  // The pause is 60 to 300 seconds (autopilotReplyDelaySeconds, random): at
+  // least the one-minute floor, never instant.
+  expect(new Date(job.runAt).getTime()).toBeGreaterThanOrEqual(Date.now() + 55 * 1000);
   expect(addTask).not.toHaveBeenCalled();
 });
 

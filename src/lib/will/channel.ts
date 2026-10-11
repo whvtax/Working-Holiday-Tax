@@ -682,6 +682,15 @@ const META_LANGS = ['en', 'de', 'ja'] as const;
 export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
   // Scheduled follow-ups: {{1}} is the first name (scheduler.ts, actions send_followup).
   ...Object.values(FLOW_TEMPLATES).flat().map((name) => ({ name, params: 1, optional: false })),
+  // 11 Oct (decision 9): the nudge for a lead who already holds the bank details.
+  { name: 'fu_price_sent', params: 1, optional: true },
+  // 11 Oct (review system): the day-10 refund check-in ({{1}} name), the one
+  // reminder ({{1}} name, {{2}} link) and the thank-you ({{1}} name).
+  ...META_LANGS.flatMap((lang) => [
+    { name: lang === 'en' ? 'refund_checkin' : `refund_checkin_${lang}`, params: 1, optional: true },
+    { name: lang === 'en' ? 'review_remind' : `review_remind_${lang}`, params: 1, optional: true },
+    { name: lang === 'en' ? 'review_thanks' : `review_thanks_${lang}`, params: 1, optional: true },
+  ]),
   // Owner actions outside the window (actions/route.ts).
   { name: 'estimate_invoice', params: 2, optional: false },
   { name: 'signature', params: 0, optional: false },
@@ -802,6 +811,22 @@ function describeTemplates(r: Omit<TemplateVerification, 'configured' | 'checked
  * approved. Cached like verifyChannel (5 min) and keyed on the credentials,
  * so a reconnect re-checks on its own. Read only; never throws.
  */
+/** 11 Oct (full audit, decision 9): is `name` approved in Meta for this
+ *  customer's language? Returns null when it cannot be known (no credentials,
+ *  verification not checked), true/false otherwise. A scheduled nudge never
+ *  goes out in another language than the customer's: 56 German and Japanese
+ *  leads got "Hi 波田慎太郎, just checking in" and none of them converted. */
+export async function templateApprovedFor(name: string, lang: string | null | undefined): Promise<boolean | null> {
+  let v: TemplateVerification;
+  try { v = await verifyTemplates(); } catch { return null; }
+  if (!v.configured || !v.checked) return null;
+  const approved = v.approvedLanguages[name];
+  if (!approved) return false;
+  const wanted = normalizeTemplateLang(lang).toLowerCase();
+  const base = wanted.split('_')[0];
+  return approved.some((code) => { const c = code.toLowerCase(); return c === wanted || c.split('_')[0] === base; });
+}
+
 export async function verifyTemplates(): Promise<TemplateVerification> {
   const base = { missing: [], missingOptional: [], notApproved: [], paramMismatch: [], approvedLanguages: {} };
   const { token } = await resolveWaCreds();

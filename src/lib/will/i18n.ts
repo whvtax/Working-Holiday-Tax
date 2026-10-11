@@ -133,7 +133,7 @@ export function formReceivedTemplateKey(lang?: string | null): string {
  *  not "I", and the review link on the line straight after the 🙏, exactly as
  *  Jo laid it out (evening version, shorter).
  *  No prices, no currency, no dashes: passes the policy guard unchanged. */
-const REVIEW_LINK = 'https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8';
+const REVIEW_LINK = 'https://g.page/r/CaWt4kV0UmY-EBM/review';
 export const REVIEW_REQUEST_MSG: Record<Lang, string> = {
   // Jo, 4 Sep: "If you have a minute," is filler, and the playbook bans filler.
   // Two lines, then the link on its own. The first two lines are word for word
@@ -248,14 +248,52 @@ export function paymentReceivedTemplateKey(lang?: string | null): string {
 export const HANDOFF_HOLDING_MSG: Record<Lang, string> = {
   // 1 Oct: "Thanks for that 😊" read as tone-deaf under "??????? Hello?"
   // (Naatt). The line now says what is actually happening: a person has it.
-  en: "I've passed this on to the team and they'll come back to you shortly 😊",
-  de: 'Ich habe das an das Team weitergegeben, sie melden sich in Kürze bei dir 😊',
-  ja: 'こちらはチームに引き継ぎました。まもなくご連絡いたします 😊',
-  es: 'Se lo he pasado al equipo y te responderán en breve 😊',
-  fr: "J'ai transmis ça à l'équipe, ils reviennent vers toi très vite 😊",
-  it: "L'ho passato al team, ti risponderanno a breve 😊",
-  pt: 'Passei isto à equipa e eles respondem-te em breve 😊',
+  // 11 Oct (full audit, decision 1): "shortly" was promised and then missed by
+  // 14 hours to 5 days (Tomeka, Kanna, Simon). The line now names a real
+  // horizon and invites the nudge, so a wait is a known wait.
+  en: "I've passed this to the team. They'll reply here, usually within one business day. If you don't hear back by then, just nudge me 😊",
+  de: 'Ich habe das ans Team weitergegeben. Die Antwort kommt hier, normalerweise innerhalb eines Werktags. Falls du bis dahin nichts hörst, stups mich einfach an 😊',
+  ja: 'チームに引き継ぎました。通常1営業日以内にこちらでご返信します。それまでに連絡がなければ、お気軽に声をかけてください 😊',
+  es: 'Se lo he pasado al equipo. Te responderán aquí, normalmente en un día hábil. Si para entonces no sabes nada, avísame 😊',
+  fr: "J'ai transmis ça à l'équipe. Ils te répondent ici, en général sous un jour ouvré. Si tu n'as rien d'ici là, fais-moi signe 😊",
+  it: "L'ho passato al team. Ti rispondono qui, di solito entro un giorno lavorativo. Se per allora non hai notizie, scrivimi pure 😊",
+  pt: 'Passei isto à equipa. Respondem-te aqui, normalmente dentro de um dia útil. Se até lá não souberes nada, dá-me um toque 😊',
 };
+
+/** The two escalation lines Will sends on his own when a handoff is still
+ *  open and unanswered (full audit, 11 Oct, decision 1): after 24 hours the
+ *  bump, after 48 hours the apology. Both are fixed text, never the model.
+ *  Library keys `handoff_bump` / `handoff_apology` (+ `_<lang>`). */
+export const HANDOFF_BUMP_MSG: Record<Lang, string> = {
+  en: "Still with the team, I've bumped it for you. Sorry for the wait.",
+  de: 'Liegt noch beim Team, ich habe es für dich nochmal angestoßen. Entschuldige die Wartezeit.',
+  ja: 'まだチームで確認中です。優先して対応するよう再度お願いしました。お待たせしてすみません。',
+  es: 'Sigue con el equipo, les he insistido por ti. Perdona la espera.',
+  fr: "C'est toujours chez l'équipe, je viens de relancer pour toi. Désolé pour l'attente.",
+  it: "È ancora dal team, ho sollecitato per te. Scusa l'attesa.",
+  pt: 'Ainda está com a equipa, voltei a insistir por ti. Desculpa a espera.',
+};
+
+export const HANDOFF_APOLOGY_MSG: Record<Lang, string> = {
+  en: "I'm sorry, the team is behind this week. You're flagged as a priority and they'll reply here as soon as they're back on it.",
+  de: 'Es tut mir leid, das Team hängt diese Woche hinterher. Du bist als Priorität markiert und bekommst hier eine Antwort, sobald sie wieder dran sind.',
+  ja: '申し訳ありません。今週はチームの対応が遅れています。優先案件として登録しましたので、対応でき次第こちらでご連絡します。',
+  es: 'Lo siento, el equipo va con retraso esta semana. Estás marcado como prioridad y te responderán aquí en cuanto retomen.',
+  fr: "Je suis désolé, l'équipe a du retard cette semaine. Tu es signalé comme prioritaire et ils te répondent ici dès qu'ils reprennent.",
+  it: 'Mi dispiace, il team è in ritardo questa settimana. Sei segnato come priorità e ti risponderanno qui appena riprendono.',
+  pt: 'Desculpa, a equipa está atrasada esta semana. Estás marcado como prioridade e respondem-te aqui assim que retomarem.',
+};
+
+export function handoffBumpMessage(stage: 1 | 2, lang?: string | null): string {
+  const key = (lang && lang in HANDOFF_BUMP_MSG ? lang : 'en') as Lang;
+  return stage === 1 ? HANDOFF_BUMP_MSG[key] : HANDOFF_APOLOGY_MSG[key];
+}
+
+export function handoffBumpTemplateKey(stage: 1 | 2, lang?: string | null): string {
+  const key = (lang && lang in HANDOFF_BUMP_MSG ? lang : 'en') as Lang;
+  const base = stage === 1 ? 'handoff_bump' : 'handoff_apology';
+  return key === 'en' ? base : `${base}_${key}`;
+}
 
 export function handoffHoldingMessage(lang?: string | null): string {
   const key = (lang && lang in HANDOFF_HOLDING_MSG ? lang : 'en') as Lang;
@@ -517,46 +555,50 @@ export function winbackMessage(lang: string | null | undefined, firstName: strin
 // fixed. Outside the window this is the Meta template review_ask_{lang}; the
 // same text goes as free text when the customer has just written.
 export const REVIEW_ASK_MSG: Record<Lang, string> = {
+  // 11 Oct (review system): "even one line is perfect" lowers the bar (people
+  // do not write because they think a review has to be an essay), and the
+  // link is the direct review box when the Place ID is set ({{3}} is filled
+  // by reviewAskMessage; the Meta template carries the Maps link).
   en: `Hi {{1}} 😊 {{2}}
 
-If you have a minute, would you leave us a quick Google review? It really helps other backpackers find us:
-${REVIEW_LINK}
+If you have a minute, would you leave us a quick Google review? Even one line about how it went is perfect, and it really helps other backpackers find us:
+{{3}}
 
 Thanks so much!`,
   de: `Hi {{1}} 😊 {{2}}
 
-Hättest du kurz Zeit für eine Google-Bewertung? Sie hilft anderen Backpackern sehr, uns zu finden:
-${REVIEW_LINK}
+Hättest du kurz Zeit für eine Google-Bewertung? Ein Satz dazu, wie es gelaufen ist, reicht völlig, und es hilft anderen Backpackern sehr, uns zu finden:
+{{3}}
 
 Vielen Dank!`,
-  ja: `{{1}}さん 😊 {{2}}
+  ja: `こんにちは、{{1}}さん 😊 {{2}}
 
-もしお時間があれば、Googleに短いレビューをいただけませんか？他のワーホリの方が私たちを見つける大きな助けになります：
-${REVIEW_LINK}
+もしお時間があれば、Googleに短いレビューをいただけませんか？一言だけでも十分です。他のワーホリの方が私たちを見つける大きな助けになります：
+{{3}}
 
 ありがとうございます！`,
   es: `Hola {{1}} 😊 {{2}}
 
-Si tienes un minuto, ¿nos dejarías una breve reseña en Google? Ayuda mucho a que otros backpackers nos encuentren:
-${REVIEW_LINK}
+Si tienes un minuto, ¿nos dejarías una breve reseña en Google? Con una sola línea sobre cómo te fue es perfecto, y ayuda mucho a que otros backpackers nos encuentren:
+{{3}}
 
 ¡Muchas gracias!`,
   fr: `Salut {{1}} 😊 {{2}}
 
-Si tu as une minute, tu nous laisserais un petit avis Google ? Ça aide beaucoup d'autres backpackers à nous trouver :
-${REVIEW_LINK}
+Si tu as une minute, tu nous laisserais un petit avis Google ? Une seule ligne sur comment ça s'est passé suffit, et ça aide beaucoup d'autres backpackers à nous trouver :
+{{3}}
 
 Merci beaucoup !`,
   it: `Ciao {{1}} 😊 {{2}}
 
-Se hai un minuto, ci lasceresti una breve recensione su Google? Aiuta molto altri backpacker a trovarci:
-${REVIEW_LINK}
+Se hai un minuto, ci lasceresti una breve recensione su Google? Anche una sola riga su com'è andata va benissimo, e aiuta molto altri backpacker a trovarci:
+{{3}}
 
 Grazie mille!`,
   pt: `Olá {{1}} 😊 {{2}}
 
-Se tiveres um minuto, deixas-nos uma breve avaliação no Google? Ajuda muito outros backpackers a encontrar-nos:
-${REVIEW_LINK}
+Se tiveres um minuto, deixas-nos uma breve avaliação no Google? Uma linha sobre como correu é perfeito, e ajuda muito outros backpackers a encontrar-nos:
+{{3}}
 
 Muito obrigado!`,
 };
@@ -564,9 +606,9 @@ export function reviewAskTemplateKey(lang?: string | null): string {
   const key = (lang && lang in REVIEW_ASK_MSG ? lang : 'en') as Lang;
   return `review_ask_${key}`;
 }
-export function reviewAskMessage(lang: string | null | undefined, firstName: string, opener: string): string {
+export function reviewAskMessage(lang: string | null | undefined, firstName: string, opener: string, link: string = REVIEW_LINK): string {
   const key = (lang && lang in REVIEW_ASK_MSG ? lang : 'en') as Lang;
-  return REVIEW_ASK_MSG[key].replace('{{1}}', firstName).replace('{{2}}', opener.trim());
+  return REVIEW_ASK_MSG[key].replace('{{1}}', firstName).replace('{{2}}', opener.trim()).replace('{{3}}', link);
 }
 /** The opener used when the model is unavailable. */
 export const REVIEW_ASK_DEFAULT_OPENER: Record<Lang, string> = {
@@ -596,7 +638,7 @@ export function referralMessage(lang?: string | null): string {
 
 /** Every translated system line, for the policy guard's approved corpus. */
 export const SYSTEM_MESSAGE_FAMILIES = {
-  FORM_RECEIVED_MSG, REVIEW_REQUEST_MSG, PRE_PAYMENT_CHECK_MSG, PAYMENT_RECEIVED_MSG, HANDOFF_HOLDING_MSG,
+  FORM_RECEIVED_MSG, REVIEW_REQUEST_MSG, PRE_PAYMENT_CHECK_MSG, PAYMENT_RECEIVED_MSG, HANDOFF_HOLDING_MSG, HANDOFF_BUMP_MSG, HANDOFF_APOLOGY_MSG,
   DOCUMENTS_RECEIVED_MSG, REQUEST_ABN_MSG, MEDICARE_MSG, ESTIMATE_INVOICE_MSG, ESTIMATE_PAYABLE_MSG, SIGNATURE_MSG, LODGED_CONFIRMATION_MSG, LODGED_PAYABLE_MSG,
   WINBACK_MSG, REVIEW_ASK_MSG, REFERRAL_MSG,
 };

@@ -75,9 +75,11 @@ describe('stripBankBlock (never repeat the bank details)', () => {
       expect(msg).not.toMatch(/non-refundable|not dependent on the outcome/i);
     }
     expect(APPROVED.opening).not.toContain('refund the difference');
-    expect(APPROVED.opening).toContain('$220');
-    expect(APPROVED.opening).toContain('$385');
-    expect(APPROVED.opening).toMatch(/Which option works best for you\?$/);
+    // 11 Oct: the opening asks the one question; the prices live in [prices].
+    expect(APPROVED.opening).not.toMatch(/\$\s?220|\$\s?385/);
+    expect(APPROVED.prices).toContain('$220');
+    expect(APPROVED.prices).toContain('$385');
+    expect(APPROVED.prices).toMatch(/Which option works best for you\?$/);
     // The amount is stated in the price message, next to the details the
     // customer copies into their bank app, and it is what the system reads
     // the chosen track from.

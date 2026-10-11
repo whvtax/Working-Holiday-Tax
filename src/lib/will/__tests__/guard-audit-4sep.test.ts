@@ -74,8 +74,8 @@ describe('now blocked (it was sending)', () => {
     ['Japanese full fee refund', '料金は全額お返しします。'],
   ])('%s', (_name, text) => expect(blocks(text)).toBe(true));
 
-  it('the honest owing line still sends', () => {
-    expect(allows('If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.')).toBe(true);
+  it('the honest owing line still sends (in the guarantee wording, 11 Oct)', () => {
+    expect(allows('If you owe money to the ATO instead, the fee covers the work completed.')).toBe(true);
   });
 
   it.each([

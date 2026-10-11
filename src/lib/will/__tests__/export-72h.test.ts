@@ -73,3 +73,11 @@ it('?all=1 is the detailed export with no window: every conversation, oldest fir
   expect(text).toContain('--- DECISION LOG ---');
   expect(text).toContain('GUARD: TAX_DETERMINATION');
 });
+
+it('?hours=720 is the 30-day window for the monthly check-up (Jo, 11 Oct)', async () => {
+  const res = await GET(new Request('http://x/api/will/export?hours=720'));
+  const text = await res.text();
+  expect(res.headers.get('content-disposition')).toMatch(/last-720h/);
+  expect(text).toContain('Recent');
+  expect(text).toContain('--- DECISION LOG ---');
+});

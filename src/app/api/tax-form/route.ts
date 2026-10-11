@@ -10,7 +10,7 @@ import { validateIntake, safeAmount } from '@/lib/intake-validate'
 import { isValidSupabaseStorageUrl } from '@/lib/supabase'
 import { normalisePhone } from '@/lib/leads'
 import crypto from 'crypto'
-import { notifyFormReceived } from '@/lib/will/form-link'
+import { notifyFormReceived, medicareAnswerFor } from '@/lib/will/form-link'
 
 export async function POST(req: NextRequest) {
   try {
@@ -166,7 +166,7 @@ export async function POST(req: NextRequest) {
         if (!raw || typeof raw !== 'string') return false
         try { const parsed: unknown = JSON.parse(raw); return Array.isArray(parsed) && parsed.some((i) => (i as { type?: string })?.type === 'abn') } catch { return false }
       })()
-      await notifyFormReceived(whatsapp, email, 'tax-return', sanitiseShort(formData.get('hasMedicare')), hasAbnIncome)
+      await notifyFormReceived(whatsapp, email, 'tax-return', medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), sanitiseShort(formData.get('taxStatus'))), hasAbnIncome)
     } catch (err) {
       // console.error on Vercel is a log nobody reads, and the consequence here
       // is specific: the customer's form reminders keep chasing them for

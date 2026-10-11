@@ -216,6 +216,24 @@ const respGap = (fromIso: string | null, toIso: string): string | null => {
 // WhatsApp-style date dividers in an open chat: "Today" / "Yesterday" / the
 // full date, all read in the business's own timezone so a message sent late
 // at night doesn't land on the wrong side of the divider.
+/** Decision 12 (11 Oct): team lines that cost a customer, each with why and
+ *  a calmer alternative. The check warns before a manual send; it never blocks. */
+const TONE_WARNINGS: { re: RegExp; why: string; instead: string }[] = [
+  { re: /^[.?!,]+$|^(?:no|nope|yes|ok|k)[.!]?$/i, why: 'A one-word or one-character reply reads as contempt (Daniel left after a bare "No!").', instead: "Yes, that's right, you can go ahead. Send me a screenshot once it's through." },
+  { re: /not the right fit|not a (?:good )?fit for/i, why: '"Not the right fit" ended five conversations; four were lost and one threatened public reviews. Jo decides these, not the chat.', instead: "Let me check this one properly with the team and come back to you here. Give me until tomorrow." },
+  { re: /fair to us|fair on us|is that fair/i, why: 'Asking the customer whether a refund is fair to us (Jette) turns a service question into a fight.', instead: "I understand. Here's where it stands: [the facts]. If you'd still like a refund, tell me and I'll take it to the team today." },
+  { re: /chargeable|my time is|our time is|wasted (?:our|my) time|spent (?:hours|time) on you/i, why: 'Charging for the conversation, or saying time was wasted, lost Millie and Ami.', instead: "Happy to go through it. Short version: [answer]. Anything else you're unsure about, ask away." },
+  { re: /remove(?:d)? you from|delete(?:d)? your (?:file|details|data)|you don'?t need to pay anything/i, why: 'Removing the customer from the portal as a comeback ended Niamh one message before payment.', instead: "No problem at all, take the time you need. The details are above whenever you're ready, and I'm here if anything is unclear." },
+  { re: /keep asking|same question|already (?:told|explained|answered)|as i said|like i said|read it carefully/i, why: 'Telling a customer they keep asking the same thing (Ami) ended in a refund.', instead: "Let me put it another way: [answer in one line]. Does that clear it up?" },
+  { re: /don'?t have time|too busy|not my problem|nothing (?:we|i) can do/i, why: 'A closed door with no next step. Customers who hear this leave and say so publicly.', instead: "I've flagged this as a priority. You'll hear back here by [day]." },
+];
+
+/** Decision 5 (11 Oct): the guarantee has one wording. These are the ways
+ *  the team has described it otherwise; a manual message matching one gets a
+ *  warning before it goes. */
+const GUARANTEE_LINE = "If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.";
+const GUARANTEE_VARIANT_RE = /full(?:y)? refund(?:ed)?|refunded (?:to you|in full)|the (?:full|whole|entire) (?:fee|\$?\d+) (?:would|will|is|gets)\b|refund (?:you )?(?:the )?(?:full|whole|entire) (?:fee|\$?\d+)|no risk|risk[- ]free|never out of pocket|can'?t lose|proportional|promotion|limited[- ]time|non[- ]?refundable|not refundable|money[- ]back|changed our pricing|no longer offer/i;
+
 const MEL_TZ = 'Australia/Melbourne';
 // ONE formatter, built once. `new Intl.DateTimeFormat(...)` is one of the more
 // expensive things in the browser and this was constructing a fresh one per
@@ -592,7 +610,7 @@ export default function Dashboard() {
   // Claude usage + the real system faults, for the System & Costs card.
   const [system, setSystem] = useState<{
     usage: AiUsage; faults: SystemFault[]; faultWindow: number; auditRowsRead: number; ledger?: UsageSummary; bill?: CostReport;
-    reviews?: { asked: number; askedOnRefund: number; skipped: number; skipReasons: string[]; referrals: number; received: number };
+    reviews?: { asked: number; askedOnRefund: number; skipped: number; skipReasons: string[]; referrals: number; received: number; checkins?: number; reminders?: number; matched?: number; placeIdSet?: boolean; reviewLink?: string };
     coverage?: { hour: number; auto: number; human: number }[];
     stuck?: { customerId: string; waId: string; name: string | null; flag: string; state: CustomerState; days: number }[];
   } | null>(null);
@@ -788,6 +806,33 @@ export default function Dashboard() {
     await loadChat(id);
     act({ action: 'mark_read', id }).then(() => refresh());
   }, [loadChat, refresh]);
+
+  // 11 Oct (full audit, decision 1): a customer's task cannot be closed while
+  // nothing has been sent to them. When the server refuses (no_reply_yet) the
+  // card shows two choices instead: reply first, or "no reply needed".
+  const [confirmDismiss, setConfirmDismiss] = useState<Set<string>>(new Set());
+  const [placeIdDraft, setPlaceIdDraft] = useState('');
+  const tryResolve = async (id: string, okMsg: string) => {
+    const r = await act({ action: 'resolve_task', id });
+    if (r && !r.ok && r.error === 'no_reply_yet') {
+      setConfirmDismiss((prev) => new Set(prev).add(id));
+      return;
+    }
+    say(actionToast(r, okMsg).message); refresh();
+  };
+  const resolveNoReply = async (id: string) => {
+    const r = await act({ action: 'resolve_task', id, noReplyNeeded: true });
+    setConfirmDismiss((prev) => { const n = new Set(prev); n.delete(id); return n; });
+    say(actionToast(r, 'Closed, no reply needed').message); refresh();
+  };
+  const DismissChooser = ({ taskId, customerId }: { taskId: string; customerId: string | null }) => confirmDismiss.has(taskId) ? (
+    <div className="tbtns" style={{ marginTop: 6, alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+      <span className="psub" style={{ margin: 0 }}>Nothing was sent to this customer yet.</span>
+      {customerId && <button className="btn take" onClick={() => { setView('chats'); openChat(customerId); }}>Reply first</button>}
+      <button className="btn ghost" onClick={() => resolveNoReply(taskId)}>No reply needed</button>
+      <button className="btn ghost" onClick={() => setConfirmDismiss((prev) => { const n = new Set(prev); n.delete(taskId); return n; })}>Cancel</button>
+    </div>
+  ) : null;
 
   // ── Overview copilot handlers. Defined after refresh/openChat because they
   // call them. Send one owner turn: the whole visible transcript goes each time
@@ -1265,6 +1310,23 @@ export default function Dashboard() {
    *  a message Jo had just written). */
   const sendManual = async (customerId: string, text: string, opts?: { lastCustomerMsgAt?: string | null }): Promise<boolean> => {
     if (!text.trim()) return false;
+    // 11 Oct (full audit, decision 5): seven guarantee wordings went out, most
+    // of them typed by hand ("full refund, no risk", "proportional refund",
+    // "we no longer offer this promotion", "non-refundable"). A manual
+    // message that describes the fee in other words gets one warning with
+    // the one wording that is the rule. It warns, it does not block.
+    // 11 Oct (decision 12): one-line warning for the sentences that lost
+    // customers (Niamh, Millie, Ami, Jette, Daniel, five "not the right fit"
+    // cases, four lost). Warns, does not block.
+    const tone = TONE_WARNINGS.find((w) => w.re.test(text.trim()));
+    if (tone && typeof window !== 'undefined'
+        && !window.confirm(`Before this goes out:\n\n${tone.why}\n\nTry instead:\n"${tone.instead}"\n\nSend it as written anyway?`)) {
+      return false;
+    }
+    if (GUARANTEE_VARIANT_RE.test(text) && typeof window !== 'undefined'
+        && !window.confirm(`This message describes the fee or the guarantee in different words.\n\nThe one wording that is the rule:\n"${GUARANTEE_LINE}"\n\nSend it anyway?`)) {
+      return false;
+    }
     // In-flight guard (audit, 5 Sep): a Meta send takes a few seconds and the
     // box only clears once the server answers, so a second Enter or click in
     // that gap fired a second manual_reply with the same text and the customer
@@ -1723,6 +1785,15 @@ export default function Dashboard() {
                           {chatSel.outcome === 'PAYABLE' ? 'Tax payable' : 'Refund'}
                         </button>
                       )}
+                      {/* 11 Oct (decision 13): a fee refund the team promised in
+                          this chat, read from the team's own words, until the
+                          team writes that it was sent. */}
+                      {chatSel.refundPromisedAt && !chatSel.refundSentAt && (
+                        <span className="btn ghost" title={`Promised on ${new Date(chatSel.refundPromisedAt).toLocaleDateString('en-AU', { timeZone: MEL_TZ })}. The review ask and every nudge are off until you write here that it was sent ("refund sent", "transferred the $220 today").`}
+                          style={{ borderColor: 'var(--crit)', color: 'var(--crit)', fontWeight: 700, cursor: 'default' }}>
+                          Refund owed{chatSel.refundAmountCents != null ? ` $${(chatSel.refundAmountCents / 100).toFixed(chatSel.refundAmountCents % 100 ? 2 : 0)}` : ''} · {Math.max(0, Math.round((Date.now() - new Date(chatSel.refundPromisedAt).getTime()) / 86400000))}d
+                        </span>
+                      )}
                       {/* Per-chat follow-up switch (Jo, 29 Aug): turn the follow-up
                           cadence on for THIS customer, e.g. a returning lead or
                           one you handled by hand and now want chased again. On =
@@ -2028,8 +2099,9 @@ export default function Dashboard() {
                           chat) rather than the profile name. */}
                       <span className="tmeta">{(() => { const c = custById(t.customerId); const w = c?.waId ?? t.waId; return w ? phoneOf(w) : 'System'; })()} · {timeAgo(t.createdAt)} ago</span>
                       <button className="tdismiss" title="Dismiss, I am not answering this"
-                        onClick={async () => { const r = await act({ action: 'resolve_task', id: t.id }); say(actionToast(r, 'Dismissed').message); refresh(); }}>✕</button>
+                        onClick={() => tryResolve(t.id, 'Dismissed')}>✕</button>
                     </div>
+                    <DismissChooser taskId={t.id} customerId={t.customerId} />
                     {/* One line. You are scanning for what this person wants, not
                         reading an essay; the full text is on hover. */}
                     <div className="ttitle" title={t.reason}>{shortReason(t.reason)}</div>
@@ -2352,13 +2424,24 @@ export default function Dashboard() {
                       {system.reviews.skipReasons.length > 0 && <div className="cc-sub" title={system.reviews.skipReasons.join('\n')}>last skip: {system.reviews.skipReasons[system.reviews.skipReasons.length - 1]}</div>}
                     </div>
                     <div className="costcard">
-                      <div className="cc-head"><span>Reviews on Google</span><span className="cc-pill">you tick this</span></div>
+                      <div className="cc-head"><span>Reviews on Google</span><span className="cc-pill">{system.reviews.matched ?? 0} matched automatically</span></div>
                       <div className="cc-big" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                         {system.reviews.received}
                         <button className="btn ghost" style={{ padding: '2px 10px' }} onClick={async () => { const r = await act({ action: 'reviews_received', delta: 1 }); if (r?.ok) loadSystem(); }}>+1</button>
                         <button className="btn ghost" style={{ padding: '2px 10px' }} onClick={async () => { const r = await act({ action: 'reviews_received', delta: -1 }); if (r?.ok) loadSystem(); }}>−1</button>
+                        <button className="btn ghost" style={{ padding: '2px 10px' }} title="Read the Google feed now and match new reviews to the customers we asked" onClick={async () => { const r = await act({ action: 'sync_reviews' }); say(r?.ok ? `Synced: ${r.matched ?? 0} new review${r.matched === 1 ? '' : 's'} matched` : 'Sync failed'); loadSystem(); }}>Sync now</button>
                       </div>
-                      <div className="cc-sub">{system.reviews.asked > 0 ? `${Math.round((system.reviews.received / system.reviews.asked) * 100)}% of asks became a review` : 'press +1 when a review appears on Google'}</div>
+                      <div className="cc-sub">{system.reviews.asked > 0 ? `${Math.round(((system.reviews.matched ?? 0) / system.reviews.asked) * 100)}% of asks became a matched review` : 'reviews are matched to asks by first name, nightly'}</div>
+                    </div>
+                    {/* 11 Oct (review system): the moment, the link, the reminder, the personal ask. */}
+                    <div className="costcard">
+                      <div className="cc-head"><span>Review system</span><span className="cc-pill">{system.reviews.placeIdSet ? 'direct review link' : 'Maps link (set Place ID)'}</span></div>
+                      <div className="cc-sub">{system.reviews.checkins ?? 0} refund check-ins · {system.reviews.reminders ?? 0} reminders</div>
+                      <div style={{ display: 'flex', gap: 6, marginTop: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                        <input className="edit" style={{ minHeight: 30, flex: '1 1 220px', padding: '4px 8px' }} placeholder="Place ID (ChIJ…) or the Business Profile review link (https://g.page/r/…/review)" value={placeIdDraft} onChange={(e) => setPlaceIdDraft(e.target.value)} />
+                        <button className="btn ghost" style={{ padding: '2px 10px' }} onClick={async () => { const r = await act({ action: 'set_google_place_id', body: placeIdDraft.trim() }); say(r?.ok ? `Saved. Review link: ${r.link}` : `❌ ${r?.error ?? 'not saved'}`); loadSystem(); }}>Save</button>
+                      </div>
+                      {system.reviews.reviewLink && <div className="cc-sub" style={{ marginTop: 6, wordBreak: 'break-all' }}>Link in the ask: {system.reviews.reviewLink}</div>}
                     </div>
                     <div className="costcard">
                       <div className="cc-head"><span>Autopilot coverage by hour</span><span className="cc-pill">Melbourne time</span></div>
@@ -2594,6 +2677,9 @@ export default function Dashboard() {
               {/* Jo, 9 Oct: the same file with no window at all. Every
                   conversation since Will's first message, in the order they
                   started, with the same notes, handoffs and decision log. */}
+              {/* Jo, 11 Oct: "in a month I'll send you this and you'll see
+                  what the changes did". The same detailed export, 30 days. */}
+              <a className="btn ghost" href="/api/will/export?hours=720" download>Download last 30 days (everything)</a>
               <a className="btn ghost" href="/api/will/export?all=1" download>Download everything (all time)</a>
               <span className="psub" style={{ margin: 0 }}>Conversations, Will&apos;s drafts and notes, handoffs, decision log. One text file.</span>
             </div>
@@ -2741,7 +2827,7 @@ export default function Dashboard() {
                         onClick={async () => {
                           if (!clearArmed) { setClearArmed(true); return; }
                           setClearArmed(false);
-                          await Promise.all(open.map((t) => act({ action: 'resolve_task', id: t.id })));
+                          await Promise.all(open.map((t) => act({ action: 'resolve_task', id: t.id, noReplyNeeded: true })));
                           say(`Cleared ${open.length}`);
                           refresh();
                         }}
@@ -2907,8 +2993,9 @@ export default function Dashboard() {
                             <div className="hoff-actions">
                               <button
                                 className="hoff-open hoff-done-btn"
-                                onClick={async () => { const r = await act({ action: 'resolve_task', id: t.id }); say(actionToast(r, 'Resolved').message); refresh(); }}
+                                onClick={() => tryResolve(t.id, 'Resolved')}
                               >✓ Resolved</button>
+                              <DismissChooser taskId={t.id} customerId={t.customerId} />
                               {t.customerId && (
                                 <button className="hoff-open" onClick={() => { setView('chats'); openChat(t.customerId!); }}>
                                   Open this chat →

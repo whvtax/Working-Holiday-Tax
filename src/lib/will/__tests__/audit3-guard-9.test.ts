@@ -57,6 +57,11 @@ describe('the negated myGov password reassurance is not a credential leak', () =
     "You don't need to give us your ATO password, we access everything through our agent portal.",
     'No need for your myGov password, leave that side to us.',
     'We will never ask for your myGov password.',
+    // 11 Oct (full audit, decision 6): the negation is not tied to myGov any
+    // more. Nathan asked whether he had to share a password; "you won't share
+    // any passwords with us" was refused as a leak.
+    "You won't need your password for this.",
+    "You won't share any passwords with us.",
   ])('sends: %p', (t) => {
     expect(has(t, 'SENSITIVE_CONTENT')).toBe(false);
   });
@@ -66,8 +71,6 @@ describe('the negated myGov password reassurance is not a credential leak', () =
     'Just reset your myGov password and log back in.',
     'For the ATO portal, here is the API key: sk_live_abc123.',
     "We don't need your myGov password. The admin panel password is hunter2.",
-    // no myGov/ATO term: the carve-out does not apply at all
-    "You won't need your password for this.",
   ])('still blocks: %p', (t) => {
     expect(has(t, 'SENSITIVE_CONTENT')).toBe(true);
   });

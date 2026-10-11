@@ -20,9 +20,17 @@ export const APPROVED = {
   // 24 Sep (Jo): shorter opener, "don't miss anything you're entitled to"
   // instead of "maximise your refund" (no implied refund promise now that the
   // fee is for the review), and "works best for you" as the closing question.
+  // 11 Oct (Jo, after the full audit of 386 conversations): the prices left
+  // the opening. One qualifying question first; the chosen track's price and
+  // the bank details follow in the next message. The two-price list lives
+  // under [prices] for whoever asks "how much?" outright.
   opening: `Hey! 😊 Happy to help.
 
-We have two options:
+Quick one so I point you to the right option: did you work for employers on a TFN only, or also on an ABN (Uber, delivery, contracting)?`,
+
+  // The two prices side by side. Only for a direct price question ("how much
+  // does it cost?"); never the reply to an opening, a story or a question.
+  prices: `We have two options:
 
 *TFN: $220*
 We review your tax residency, Medicare and deductions, then prepare and lodge your tax return, making sure you don't miss anything you're entitled to.
@@ -39,7 +47,7 @@ Which option works best for you?`,
   // refund -> full fee applies, said quietly). No account name line (27 Sep,
   // it confused people; whoever asks gets the Library answer). Same shape for
   // both tracks; only the amount differs.
-  price_tfn: `Great! Here are the payment details:
+  price_tfn: `Got it, so that's the TFN option, $220. We review your tax residency, Medicare and deductions, then prepare and lodge your tax return, making sure you don't miss anything you're entitled to.
 
 BSB: 062692
 Account: 81049952
@@ -49,7 +57,7 @@ If your tax refund is less than our fee, we'll refund the difference. If there's
 
 Just send a screenshot once paid and we'll get started!`,
 
-  price_tfn_abn: `Great! Here are the payment details:
+  price_tfn_abn: `Got it, so that's the TFN + ABN option, $385. We review your tax residency, Medicare and deductions, add a business schedule for your ABN income and expenses, then prepare and lodge your tax return, making sure you don't miss anything you're entitled to.
 
 BSB: 062692
 Account: 81049952
@@ -125,8 +133,16 @@ Just send a screenshot once paid and we'll get started!`,
     //
     // Three nudges, three angles, no overlap: 24h is availability, this is
     // value, 7d is the door left open.
-    d3: `Hi {{1}}, most people doing it alone miss things they could have claimed. That's exactly what our team helps you with.\n\nWant me to get you started?`,
+    // 11 Oct (full audit, decision 9): "most people doing it alone miss
+    // things" went out 46 times in one slice with zero conversions, and read
+    // as a dig at anyone who had said "I'll do it myself". The 3-day nudge
+    // now opens the door to a question instead.
+    d3: `Hi {{1}}, is there anything you're unsure about before you decide? Happy to clear it up 😊`,
     d7: `Hi {{1}}, last message from me 😊 If you want your tax looked at later, just text me any time.`,
+    // 11 Oct (decision 9): for a lead who already has the bank details, the
+    // 24h and 3d nudges above make no sense ("want me to get you started?"
+    // to someone holding the BSB). This one replaces them, once.
+    priceSent: `Hi {{1}}, whenever you're ready, the payment details are just above. Send me a screenshot once it's through and I'll get you started the same day 😊`,
   },
 
   payment_received: `Payment received.
@@ -271,7 +287,7 @@ Your refund should arrive in your bank account within 14 business days.`,
    *  drafts for a human, but "Send Reply" transmits them verbatim in one click,
    *  so they are messages a customer can receive and belong in the Library. */
   handoff: {
-    holding: `I've passed this on to the team and they'll come back to you shortly 😊`,
+    holding: `I've passed this to the team. They'll reply here, usually within one business day. If you don't hear back by then, just nudge me 😊`,
     attachment: `Got it, thanks for sending that through 😊 I'll go through it and come back to you shortly.`,
     unreadable: `Thanks for your message 😊 It didn't come through on my end, would you mind sending it again as text?`,
     returning_customer: `Hey, good to hear from you again 😊 What can I help you with?`,

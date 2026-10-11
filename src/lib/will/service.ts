@@ -4,21 +4,24 @@
 // webhook. Persists everything to the store.
 // ============================================================
 import { getStore, CustomerRow, CustomerState, Store, MessageRow, JobRow } from './store';
-import { reopenTarget } from './state-machine';
+import { reopenTarget, POST_PAYMENT_STATES } from './state-machine';
 import { runEngine, AiMode, EngineOutcome } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
-import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, formReceivedMessage, formReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang } from './i18n';
+import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, formReceivedMessage, formReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
 import { retrieveKnowledge, nearestKnowledge } from './knowledge';
 import { buildHandoffDiagnostic, taskContextWithDiagnostic } from './handoff-diagnostic';
 import { deliverOut, fetchWaMedia } from './channel';
-import { readReviewAsks, patchReviewAsk, saysRefundLanded, isPositiveAck, REFERRAL_WINDOW_DAYS } from './review-asks';
+import { readReviewAsks, patchReviewAsk, saysRefundLanded, isPositiveAck, REFERRAL_WINDOW_DAYS, saysRefundNotYet, refundNotYetMessage, REFUND_CHECKIN_RETRY_DAYS } from './review-asks';
 import { referralMessage } from './i18n';
 import { autopilotReplyDelaySeconds } from './config';
 import { promisedUntil, formPromisedKey } from './promised-date';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
 import { isIdentityQuestion } from './identity-question';
+import { detectChoice, priceMessageFor } from './instant-choice';
+import { isAccountNameQuestion, accountNameMessage } from './account-name';
+import { customerNotInterested, looksLikeVendor, salesPromisedKey } from './stage-sync';
 import { firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
 // Moved to text-normalize.ts so the engine can use it too without importing this
 // file (service.ts imports the engine; a static import back would be a cycle).
@@ -267,6 +270,47 @@ async function handleIncomingInner(
     return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } }, customer: c2 ?? customer };
   }
 
+  // ── THE CUSTOMER CLOSED THE DOOR, OR IS NOT A CUSTOMER (11 Oct, decision 8) ──
+  //
+  // "Not interested", "found someone cheaper", "did it myself", "scam",
+  // "don't write me": the stage moves to Not Interested and every scheduled
+  // nudge is cancelled (Abbas got a sales template after "Don't write me";
+  // julia, Aya and Sabrina the same). Will may still answer the message
+  // itself (an objection gets its approved answer), but nothing chases them.
+  // A vendor pitching us on their first message is Not Relevant and gets no
+  // reply at all (a social-media agency received four sales templates).
+  if (!opts?.alreadyStored && !customer.paid && SALES_STATES.includes(customer.state)) {
+    if (customerNotInterested(text)) {
+      try {
+        await store.setState(customer.id, 'NOT_INTERESTED', 'SYSTEM');
+        await store.cancelJobsFor(customer.id, ['FOLLOW_UP']);
+        await store.audit('system', 'closed_by_customer_words', { customerId: customer.id, text: text.slice(0, 120) });
+        const cNI = await store.getCustomerByWaId(waId);
+        if (cNI) customer = cNI;
+      } catch { /* the reply below still goes */ }
+    } else if (customer.state === 'NEW_LEAD' && looksLikeVendor(text)) {
+      const priorIn = (await store.listMessages(customer.id)).filter((m) => m.direction === 'IN');
+      if (priorIn.length <= 1) {
+        try {
+          await store.setState(customer.id, 'NOT_RELEVANT', 'SYSTEM');
+          await store.cancelJobsFor(customer.id);
+          await store.audit('system', 'vendor_marked_not_relevant', { customerId: customer.id, text: text.slice(0, 120) });
+        } catch { /* nothing else to do */ }
+        const cNR = await store.getCustomerByWaId(waId);
+        return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } }, customer: cNR ?? customer };
+      }
+    } else {
+      // "After payday", "in two weeks", "on the weekend": the sales nudges
+      // wait until the day after the date they named (the form flow has had
+      // this since 1 Oct; anti, Olivia and Hannah were nudged before theirs).
+      const until = promisedUntil(text);
+      if (until) {
+        await store.setSetting(salesPromisedKey(customer.id), until).catch(() => undefined);
+        await store.audit('system', 'sales_nudges_paused_until', { customerId: customer.id, until }).catch(() => undefined);
+      }
+    }
+  }
+
   // ── "I'LL FILL IT IN ON WEDNESDAY" (1 Oct, 72-hour audit, Laura) ─────────
   //
   // A customer at Form Pending who names a day is making a promise we accept;
@@ -453,6 +497,99 @@ async function handleIncomingInner(
   // armed (and re-armed by every further message), and when it fires Will
   // reads everything they wrote and answers it all, once. In Approval mode the
   // draft is still written now, because there the owner's click is the wait.
+  // ── THE ACCOUNT NAME, AT ONCE (11 Oct, full audit, decision 4) ───────────
+  //
+  // "What name do I put?" arrives while the customer is standing at the
+  // bank. Neta got "Simple Tax Services" from the model, Laura and Marta
+  // "Working Holiday Tax". The answer is fixed text in their language and
+  // goes out now, from the code, with no pause and no model.
+  if (mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.aiPaused && !customer.isLegacy && isAccountNameQuestion(text)) {
+    try {
+      const body = accountNameMessage(customer.lang);
+      const out = await deliverOut(customer, body, 'AI', undefined, undefined, {
+        onFailure: { reason: 'The account-name answer was not delivered. They are at the bank, waiting.', severity: 'URGENT', context: text.slice(0, 200) },
+      });
+      if (out.ok) {
+        try { await store.cancelJobsFor(customer.id, ['AUTO_REPLY']); } catch { /* nothing armed yet */ }
+        await store.audit('assistant', 'account_name_answered', { customerId: customer.id, lang: customer.lang ?? null }).catch(() => {});
+        const freshA = await store.getCustomerByWaId(waId);
+        return {
+          outcome: { kind: 'sent', replyText: body, decision: { action: 'reply', reply_text: body, confidence: 1 } },
+          customer: freshA ?? customer,
+        };
+      }
+    } catch (e) {
+      await store.audit('assistant', 'account_name_answer_failed', { customerId: customer.id, error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+    }
+  }
+
+  // ── THE CHOICE IS THE "YES": price message at once (11 Oct, decision 3) ──
+  //
+  // A short, clear answer to the opening question ("TFN", "also Uber", "yes")
+  // from an English-speaking lead who has not got the bank details yet is
+  // answered from the code, now, with the approved price message for that
+  // track. No model, no two-minute pause: Rochi and Jack were lost in that
+  // pause. Anything else goes through Will as before.
+  if (mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.paid && !customer.aiPaused && !customer.isLegacy
+      && SALES_STATES.includes(customer.state) && ((customer.lang ?? 'en') === 'en')) {
+    try {
+      const prior = await store.listMessages(customer.id);
+      const bankSent = prior.some((m) => m.direction === 'OUT' && m.status === 'SENT' && /\b0?62\s?692\b|\b81049952\b/.test(m.body ?? ''));
+      const lastWill = [...prior].reverse().find((m) => m.direction === 'OUT' && m.status === 'SENT')?.body ?? null;
+      const track = bankSent ? null : detectChoice(text, lastWill);
+      if (track) {
+        const price = priceMessageFor(track);
+        const out = await deliverOut(customer, price, 'AI', { proposedState: 'PRICE_SENT' }, undefined, {
+          onFailure: { reason: 'The price message was not delivered after the customer chose a track. They are waiting.', severity: 'URGENT', context: text.slice(0, 200) },
+        });
+        if (out.ok) {
+          try { await store.cancelJobsFor(customer.id, ['AUTO_REPLY']); } catch { /* nothing armed yet */ }
+          if (customer.state !== 'PRICE_SENT') await store.setState(customer.id, 'PRICE_SENT', 'AI').catch(() => false);
+          await store.updateCustomer(customer.id, { income: track }).catch(() => {});
+          await store.audit('assistant', 'instant_price_sent', { customerId: customer.id, track, choice: text.slice(0, 80) }).catch(() => {});
+          const fresh1 = await store.getCustomerByWaId(waId);
+          if (fresh1) {
+            try { await reconcileSchedule(fresh1); } catch (e) {
+              await store.audit('scheduler', 'reconcile_failed_after_send', { customerId: customer.id, error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200) }).catch(() => {});
+            }
+          }
+          return {
+            outcome: { kind: 'sent', replyText: price, newState: 'PRICE_SENT', stateChanged: customer.state !== 'PRICE_SENT', decision: { action: 'reply', reply_text: price, new_state: 'PRICE_SENT', confidence: 1 } },
+            customer: fresh1 ?? customer,
+          };
+        }
+      }
+    } catch (e) {
+      await store.audit('assistant', 'instant_price_failed', { customerId: customer.id, error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+    }
+  }
+
+  // ── Will is paused for everyone: the customer still hears something ──────
+  //
+  // 11 Oct (full audit, decision 1): with the kill switch on, the scheduler
+  // does nothing, so the timer armed below never fires and nothing else
+  // would ever reach the customer. 65 hours of zero output on 11 to 13 Sep
+  // lost nine of twelve leads. The holding line is fixed text, not the
+  // model: it goes out right here, at most once per customer per 12 hours,
+  // plus one task per customer so the team sees who is waiting.
+  if (killSwitch && mode === 'FULL_AUTO' && !opts?.alreadyStored && !customer.aiPaused && !customer.isLegacy && !isCourtesyLine(text)) {
+    try {
+      const key = `paused_ack_at:${customer.id}`;
+      const last = Number((await store.getSetting(key)) ?? 0);
+      if (Date.now() - last > 12 * 60 * 60 * 1000) {
+        await store.setSetting(key, Date.now());
+        const body = await paidHoldingBody(store, customer.lang);
+        const tpl = { name: handoffHoldingTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true };
+        const out = await deliverOut(customer, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+        await store.audit('assistant', out.ok ? 'paused_ack_sent' : 'paused_ack_failed', { customerId: customer.id, error: out.ok ? undefined : out.error }).catch(() => {});
+      }
+      await raiseOrUpdateTask(store, customer, {
+        reason: `${customer.name ?? customer.waId} wrote in while Will is paused (kill switch). Reply by hand.`,
+        severity: 'REVIEW', newContext: text.slice(0, 300), suggestedReply: null,
+      });
+    } catch { /* the message is stored either way */ }
+  }
+
   if (mode === 'FULL_AUTO') {
     const armed = await armAutoReply(store, customer);
     await store.audit('assistant', 'decision', {
@@ -525,6 +662,10 @@ export interface DecideOpts {
   jobRunAt?: string;
   /** Its created_at, the second tie-break (audit3 core 39, 5 Sep). */
   jobCreatedAt?: string | null;
+  /** 11 Oct: the burst being answered is nothing but attachments (their vision
+   *  descriptions). The documents path has already acknowledged those, so a
+   *  "wait" on them is not a paying customer left in silence. */
+  attachmentsOnly?: boolean;
 }
 
 /**
@@ -613,6 +754,30 @@ async function buildBackstory(store: Store, customer: CustomerRow, msgs: Message
   return parts.join('; ');
 }
 
+/** Decision 1 of the full audit (11 Oct): when a "silent" outcome must become
+ *  a task plus the holding line instead. Pure, so it is testable. */
+export function paidNeverSilent(a: {
+  outcomeKind: EngineOutcome['kind']; reviewNote?: string | null; mode: AiMode;
+  paid: boolean; state: CustomerState; optedOut: boolean; isLegacy: boolean; aiPaused: boolean; alreadyStored: boolean;
+}): boolean {
+  if (a.outcomeKind !== 'silent') return false;
+  if (a.mode !== 'FULL_AUTO') return false;
+  if (a.optedOut || a.isLegacy || a.aiPaused || a.alreadyStored) return false;
+  if (/^courtesy close/i.test(a.reviewNote ?? '')) return false;
+  const postPayment = a.paid || POST_PAYMENT_STATES.includes(a.state);
+  return postPayment;
+}
+
+async function paidHoldingBody(store: Store, lang?: string | null): Promise<string> {
+  const key = handoffHoldingTemplateKey(lang);
+  try {
+    const templates = await store.listTemplates();
+    const t = templates.find((x) => x.key === key) ?? templates.find((x) => x.key === 'handoff_holding');
+    if (t?.body?.trim() && !/\{\{[A-Z_]+\}\}/.test(t.body)) return t.body;
+  } catch { /* constant below */ }
+  return handoffHoldingMessage(lang);
+}
+
 export async function decideAndAct(
   store: Store,
   customer: CustomerRow,
@@ -643,6 +808,22 @@ export async function decideAndAct(
   if (['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state) && !customer.optedOut && !customer.isLegacy && !killSwitch) {
     try {
       const rec = (await readReviewAsks(store))[customer.id];
+      // 11 Oct (review system): "not yet" to the refund check-in gets one
+      // calm line and a second check-in four days later. That IS the reply.
+      if (rec?.checkinAt && !rec.askedAt && !rec.skippedAt && !saysRefundLanded(text) && saysRefundNotYet(text)) {
+        const body = refundNotYetMessage(customer.lang);
+        if ((rec.checkins ?? 0) < 2) {
+          await store.cancelJobsFor(customer.id, ['REFUND_CHECKIN']).catch(() => 0);
+          await store.addJob({ customerId: customer.id, kind: 'REFUND_CHECKIN', payload: { attempt: rec.checkins ?? 1 }, runAt: new Date(Date.now() + REFUND_CHECKIN_RETRY_DAYS * 86400000).toISOString() }).catch(() => {});
+        }
+        if (mode === 'FULL_AUTO') {
+          const out = await deliverOut(customer, body, 'AI', { system: true });
+          await store.audit('system', 'refund_checkin_not_yet', { customerId: customer.id, ok: out.ok }).catch(() => {});
+          return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } } };
+        }
+        const m = await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL', body, meta: { system: true } });
+        return { outcome: { kind: 'pending_approval', decision: { action: 'reply', reply_text: body, confidence: 1 }, replyText: body }, pendingMessageId: m.id };
+      }
       if (!rec?.askedAt && !rec?.skippedAt && saysRefundLanded(text)) {
         await store.cancelJobsFor(customer.id, ['REVIEW_REQUEST']).catch(() => 0);
         await store.addJob({
@@ -712,7 +893,7 @@ export async function decideAndAct(
   };
 
   const bank = await getBank();
-  const outcome = await runEngine({
+  let outcome = await runEngine({
     ctx, history, mode, bank,
     guard: {
       aiPaused: customer.aiPaused, killSwitch,
@@ -741,6 +922,36 @@ export async function decideAndAct(
       lastCustomerMsgAt: new Date(),
     },
   });
+
+  // ── A paying customer is never left in silence (11 Oct, full audit) ──────
+  //
+  // Decision 1 of the 386-conversation audit: Simon waited 23 hours after
+  // paying ("Done! Helloo? Hey? Hello?"), Tomeka five days, Ｓ and なる four
+  // and nine days, because Will decided "wait" (or was switched off) and no
+  // task was open, so nobody saw them. From now on a customer who has paid
+  // and writes anything that is not a bare thank-you gets, at minimum, a
+  // task for the team plus the holding line (HANDOFF_ACK, minutes later).
+  // "Thanks" / "ok" / 👍 keep their silence (Jo, 1 Oct: nothing to add,
+  // nothing sent). A vision description of an attachment is not a message
+  // that needs an answer here (the documents path acknowledges files).
+  if (paidNeverSilent({
+    outcomeKind: outcome.kind, reviewNote: outcome.reviewNote, mode,
+    paid: customer.paid, state: customer.state, optedOut: customer.optedOut, isLegacy: customer.isLegacy,
+    aiPaused: customer.aiPaused, alreadyStored: !!opts.attachmentsOnly,
+  })) {
+    await store.audit('assistant', 'paid_customer_silent_converted', {
+      customerId: customer.id, state: customer.state, violations: outcome.guardViolations ?? [],
+    }).catch(() => {});
+    outcome = {
+      ...outcome, kind: 'human_task',
+      task: {
+        reason: killSwitch
+          ? `${customer.name ?? customer.waId} (paid) wrote in while Will is paused. Reply by hand.`
+          : `${customer.name ?? customer.waId} (paid) wrote in and Will had nothing to say. Reply by hand.`,
+        severity: 'REVIEW', suggestedReply: undefined,
+      },
+    };
+  }
 
   // ── "They said they paid" — moves the stage in EVERY language. ────────────
   //
@@ -1104,16 +1315,20 @@ async function supersededByNewerTimer(
 /** The text a deferred reply answers: everything the customer wrote since we
  *  last said anything, oldest first, so a burst reads as one message. Falls
  *  back to the latest inbound line when the thread has no outbound at all. */
-export function burstText(msgs: MessageRow[]): string {
+export function burstMessages(msgs: MessageRow[]): MessageRow[] {
   const sent = msgs.filter((m) => m.status === 'SENT');
   let lastOut = -1;
   for (let i = sent.length - 1; i >= 0; i--) {
     if (sent[i].direction === 'OUT') { lastOut = i; break; }
   }
-  const burst = sent.slice(lastOut + 1).filter((m) => m.direction === 'IN').map((m) => m.body.trim()).filter(Boolean);
-  if (burst.length) return burst.join('\n');
+  const burst = sent.slice(lastOut + 1).filter((m) => m.direction === 'IN' && m.body.trim());
+  if (burst.length) return burst;
   const lastIn = [...sent].reverse().find((m) => m.direction === 'IN');
-  return lastIn?.body ?? '';
+  return lastIn ? [lastIn] : [];
+}
+
+export function burstText(msgs: MessageRow[]): string {
+  return burstMessages(msgs).map((m) => m.body.trim()).join('\n');
 }
 
 /**
@@ -1235,7 +1450,8 @@ export async function runDeferredAutoReply(
   }
   const mode = resolveAiMode(await store.getSetting('ai_mode'));
   const killSwitch = (await store.getSetting('kill_switch')) === true;
-  const { outcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: mode === 'FULL_AUTO', anchorAt, jobId: job.id, jobRunAt: job.runAt, jobCreatedAt: job.createdAt });
+  const attachmentsOnly = burstMessages(msgs).every((m) => !!m.meta?.media);
+  const { outcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: mode === 'FULL_AUTO', anchorAt, jobId: job.id, jobRunAt: job.runAt, jobCreatedAt: job.createdAt, attachmentsOnly });
   // The stage may have just moved (a price sent, a payment confirmed and the
   // form requested), and the follow-up cadence belongs to the NEW stage: a
   // customer who was just asked for the form needs the form reminders, not

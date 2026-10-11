@@ -2,9 +2,10 @@
 // preconditions on message status, approval-time re-guard,
 // template save-time guard, real kill switch, quick manual replies.
 import { NextResponse } from 'next/server';
+import { teamConfirmsPayment, teamSaysLodged, teamPromisesRefund, teamSentRefund, businessDaysFromNow } from '@/lib/will/stage-sync';
 import { readWinbacks, markWinbackQueued, markWinbackSent, winbackStatus, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
 import { winbackMessage } from '@/lib/will/i18n';
-import { REVIEW_ASK_FALLBACK_DAYS, REVIEWS_RECEIVED_SETTING } from '@/lib/will/review-asks';
+import { REVIEW_ASK_FALLBACK_DAYS, REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK } from '@/lib/will/review-asks';
 
 import { sessionValid } from '@/lib/will/auth';
 import { getStore, CustomerRow } from '@/lib/will/store';
@@ -12,7 +13,7 @@ import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES, paymentReceivedBody } from '@/lib/will/service';
 import { paymentReceivedTemplateKey, estimateInvoiceMessage, estimateInvoiceTemplateKey, estimatePayableMessage, estimatePayableTemplateKey, signatureMessage, signatureTemplateKey, lodgedConfirmationMessage, lodgedConfirmationTemplateKey, lodgedPayableMessage, lodgedPayableTemplateKey, metaTemplateLang } from '@/lib/will/i18n';
-import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName } from '@/lib/will/scheduler';
+import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName, syncGoogleReviews } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD, deferToMorning } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
@@ -35,7 +36,7 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'mark_read_silent' | 'toggle_ai' | 'resume_all_leads' | 'set_outcome'
-  | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault';
+  | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault' | 'set_google_place_id' | 'sync_reviews';
   /** dismiss_fault only: the fault's stable key (SystemFault.key). */
   faultKey?: string;
   id?: string;
@@ -58,6 +59,10 @@ interface ActionBody {
   invoiceLink?: string;
   /** send_estimate / set_outcome (Jo, 1 Oct): 'REFUND' (default) or 'PAYABLE'. */
   outcome?: 'REFUND' | 'PAYABLE';
+  /** resolve_task (11 Oct, full audit decision 1): closing a customer's task
+   *  when nothing has been sent to them since it opened needs this explicit
+   *  flag; without it the route refuses with error 'no_reply_yet'. */
+  noReplyNeeded?: boolean;
   /** set_state only: owner manual override — move to any stage, bypassing the
    *  one-step-at-a-time guardrails. */
   force?: boolean;
@@ -261,16 +266,63 @@ const FORM_LINK_RE = /workingholidaytax\.com\.au\/tax-form/i;
  *  confirmation (the Library template, or any message carrying the form link)
  *  to an unpaid customer IS the team marking them paid: the same cascade as
  *  the stage menu runs, audited. */
+/** 11 Oct (decision 13): the team's own words about a fee refund drive the
+ *  tracker. Promise -> recorded, nudges and the review ask stop, a reminder
+ *  fires after three business days. "Sent" -> closed, task resolved. */
+async function trackRefundFromTeamWords(customer: CustomerRow, body: string): Promise<void> {
+  const store = getStore();
+  if (teamSentRefund(body)) {
+    if (!customer.refundPromisedAt && !customer.refundSentAt) {
+      // Sent without a recorded promise: still worth the record.
+      await store.updateCustomer(customer.id, { refundPromisedAt: new Date().toISOString() }).catch(() => {});
+    }
+    if (!customer.refundSentAt) {
+      await store.updateCustomer(customer.id, { refundSentAt: new Date().toISOString() }).catch(() => {});
+      await store.cancelJobsFor(customer.id, ['REFUND_CHECK']).catch(() => 0);
+      const open = await store.findOpenTaskForCustomer(customer.id).catch(() => null);
+      if (open && /^REFUND OWED/.test(open.reason)) await store.resolveTask(open.id).catch(() => {});
+      await store.audit('owner', 'refund_sent_by_team_words', { customerId: customer.id, text: body.slice(0, 120) }).catch(() => {});
+    }
+    return;
+  }
+  const p = teamPromisesRefund(body);
+  if (p.promised && !customer.refundPromisedAt) {
+    await store.updateCustomer(customer.id, { refundPromisedAt: new Date().toISOString(), refundSentAt: null, refundAmountCents: p.amountCents }).catch(() => {});
+    await store.cancelJobsFor(customer.id, ['FOLLOW_UP', 'REVIEW_REQUEST', 'REFUND_CHECK']).catch(() => 0);
+    await store.addJob({ customerId: customer.id, kind: 'REFUND_CHECK', payload: {}, runAt: businessDaysFromNow(3).toISOString() }).catch(() => {});
+    await store.audit('owner', 'refund_promised_by_team_words', { customerId: customer.id, amountCents: p.amountCents, text: body.slice(0, 120) }).catch(() => {});
+  }
+}
+
 async function markPaidIfTeamConfirmed(customer: CustomerRow, body: string, templateName?: string): Promise<void> {
   const store = getStore();
+  await trackRefundFromTeamWords(customer, body).catch(() => {});
+  // 11 Oct (full audit, decision 8): a team line that says the return is
+  // lodged moves the stage to Lodged, whatever the wording (Johanna, em,
+  // Pippa, Kana were chased for a signature after being told it was lodged).
+  if (['PAID', 'FORM_PENDING', 'FORM_COMPLETE', 'SIGNATURE_PENDING', 'SIGNED'].includes(customer.state) && teamSaysLodged(body)) {
+    await store.setState(customer.id, 'LODGED', 'HUMAN').catch(() => false);
+    await store.audit('owner', 'lodged_by_team_message', { customerId: customer.id, from: customer.state }).catch(() => {});
+    const f = await store.getCustomerById(customer.id);
+    if (f) await reconcileSchedule(f).catch(() => {});
+    return;
+  }
   if (customer.paid || POST_PAYMENT_STATES.includes(customer.state)) return;
-  const confirms = (templateName ?? '').startsWith('payment_received') || FORM_LINK_RE.test(body);
+  // The approved confirmation (template or the form link) or, since 11 Oct,
+  // any team wording that says the payment arrived ("got your payment,
+  // thanks", "Zahlung erhalten"). Alex got 45 "stuck before paying" tasks
+  // because the team confirmed by hand and the stage never moved.
+  const byWording = !FORM_LINK_RE.test(body) && teamConfirmsPayment(body);
+  const confirms = (templateName ?? '').startsWith('payment_received') || FORM_LINK_RE.test(body) || byWording;
   if (!confirms) return;
   await store.setState(customer.id, 'PAID', 'HUMAN');
   await autoAdvanceToForm(customer.id, await getBank());
-  await store.audit('owner', 'paid_by_team_confirmation', { customerId: customer.id, template: templateName ?? null }).catch(() => {});
+  await store.audit('owner', 'paid_by_team_confirmation', { customerId: customer.id, template: templateName ?? null, byWording }).catch(() => {});
   const f = await store.getCustomerById(customer.id);
   if (f) await reconcileSchedule(f);
+  // A hand-typed "got it, thanks" carries no form link: the customer still
+  // needs the questionnaire, so the approved confirmation follows.
+  if (byWording && f) await sendPaymentConfirmationIfMissing(f).catch(() => {});
 }
 async function sendPaymentConfirmationIfMissing(customer: CustomerRow): Promise<void> {
   const store = getStore();
@@ -952,15 +1004,27 @@ async function handlePost(req: Request) {
       return NextResponse.json({ ok: true, outcome });
     }
 
-    case 'resolve_task':
+    case 'resolve_task': {
       if (!b.id) return bad('id required');
-      await store.resolveTask(b.id);
-      // The row used to carry only the task id (audit, 5 Sep); the customer
-      // is looked up best effort so the trail can be read by person.
       // Single-row read, not the whole task table (audit, 5 Sep).
-      const resolvedFor = await store.getTaskById(b.id).then((t) => t?.customerId ?? null).catch(() => null);
-      await store.audit('owner', 'task_resolved', { id: b.id, customerId: resolvedFor });
+      const taskRow = await store.getTaskById(b.id).catch(() => null);
+      const resolvedFor = taskRow?.customerId ?? null;
+      // 11 Oct (full audit, decision 1): Naomi, Megan, Cam, Yui and Momo had
+      // their handoffs "resolved" with nothing ever sent back. A customer's
+      // task now closes only after something reached them since it opened,
+      // or with an explicit "no reply needed" (which is audited as such).
+      const openedAt = taskRow?.createdAt ? new Date(taskRow.createdAt).getTime() : NaN;
+      if (resolvedFor && taskRow && !b.noReplyNeeded && !Number.isNaN(openedAt)) {
+        const replied = (await store.listMessages(resolvedFor).catch(() => []))
+          .some((m) => m.direction === 'OUT' && m.status === 'SENT' && !m.meta?.system && new Date(m.createdAt).getTime() >= openedAt);
+        if (!replied) {
+          return NextResponse.json({ ok: false, error: 'no_reply_yet', message: 'Nothing has been sent to this customer since the task opened. Reply first, or mark it "no reply needed".' }, { status: 409 });
+        }
+      }
+      await store.resolveTask(b.id);
+      await store.audit('owner', b.noReplyNeeded ? 'task_resolved_no_reply' : 'task_resolved', { id: b.id, customerId: resolvedFor });
       return NextResponse.json({ ok: true });
+    }
 
     case 'mark_read': {
       if (!b.id) return bad('id required');
@@ -1043,6 +1107,21 @@ async function handlePost(req: Request) {
     // Only the two known values are accepted, and anything else is refused
     // rather than stored, because every reader treats an unrecognised value as
     // "ask the owner" and a stored typo would be a mode nobody chose.
+    case 'set_google_place_id': {
+      // 11 Oct (review system): the Place ID turns the review link into the
+      // direct "write a review" box. Stored as a setting; empty clears it.
+      const id = String(b.body ?? '').trim();
+      if (id && reviewLinkFor(id) === MAPS_REVIEW_LINK) return bad('Paste a Google Place ID (ChIJ...), or the "Get more reviews" link from Google Business Profile (https://g.page/r/.../review).');
+      await store.setSetting(GOOGLE_PLACE_ID_SETTING, id || null);
+      await store.audit('owner', 'google_place_id_set', { set: !!id });
+      return NextResponse.json({ ok: true, link: reviewLinkFor(id) });
+    }
+
+    case 'sync_reviews': {
+      const r = await syncGoogleReviews().catch((e: Error) => ({ matched: 0, error: e.message }));
+      return NextResponse.json({ ok: true, ...r });
+    }
+
     case 'reviews_received': {
       // Jo, 24 Sep: the one number Google does not push to us. He ticks it
       // when a review appears; delta is +1 or -1.
@@ -1409,6 +1488,12 @@ async function handlePost(req: Request) {
           customerId: customer.id, kind: 'REVIEW_REQUEST', payload: { trigger: 'timer' },
           runAt: new Date(Date.now() + REVIEW_ASK_FALLBACK_DAYS * 24 * 60 * 60 * 1000).toISOString(),
         }).catch(() => { /* never let the review nudge block marking lodged */ });
+        // 11 Oct (review system): day 10, "has the refund landed yet?". A
+        // "yes" pulls the ask forward to that moment (service.ts).
+        await store.addJob({
+          customerId: customer.id, kind: 'REFUND_CHECKIN', payload: { attempt: 0 },
+          runAt: new Date(Date.now() + REFUND_CHECKIN_DAYS * 24 * 60 * 60 * 1000).toISOString(),
+        }).catch(() => {});
         const fresh = await store.getCustomerById(customer.id);
         if (fresh) await reconcileSchedule(fresh);
         await afterHumanReply(store, customer.id);

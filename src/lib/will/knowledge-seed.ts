@@ -145,7 +145,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I don't have time for the Medicare thing, can we skip it?",
       "the exemption application is too complicated for me"
     ],
-    "answer": "No worries at all, that's completely fine. The team will factor it in when they prepare your return, so you don't need to do anything else. 😊",
+    "answer": "No problem, we can go ahead without it. It just means the Medicare levy stays on your return. Is that ok with you?",
     "keywords": ["can't", "cannot", "medicare", "exemption", "apply", "skip", "won't", "unable"],
     "tags": ["medicare", "post-payment"],
     "lang": "en"
@@ -985,6 +985,21 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "lang": "en"
   },
   {
+    "intent": "refund to a family member or friend's bank account",
+    "question": "Can my refund go to my mum's / my friend's / my partner's account?",
+    "examples": [
+      "can the refund go to my mum's account?",
+      "I closed my account, can you send it to my friend's account instead?",
+      "can I use my partner's bank details for the refund?",
+      "kann die Rückerstattung auf das Konto meiner Mutter gehen?",
+      "還付金を友人の口座に振り込んでもらえますか？"
+    ],
+    "answer": "The refund has to go to an active Australian bank account in your own name, it can't be paid to someone else's account.\n\nIf you don't have one any more, a Wise Australian account in your name (with a BSB and account number) works. Those details go in the questionnaire and the refund lands there.",
+    "keywords": ["refund", "account", "mum", "mother", "friend", "partner", "family", "someone else", "name", "closed"],
+    "tags": ["payment", "process"],
+    "lang": "en"
+  },
+  {
     "intent": "Australian bank account is required",
     "question": "I've closed my Australian bank account / I don't have one any more. Can you still do my tax return?",
     "examples": [
@@ -992,7 +1007,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I've left Australia and shut my bank account",
       "do I need an Australian bank account?"
     ],
-    "answer": "An active Australian bank account in your name is required because any refund is paid directly into it by the ATO.\n\nIf your account is closed and you don’t have another Australian account, unfortunately we can’t assist.",
+    "answer": "An active Australian bank account in your own name is needed, because the refund is paid straight into it.\n\nIf yours is closed, a Wise Australian account in your name (with a BSB and account number) works too. Those details go in the questionnaire.",
     "keywords": [
       "bank",
       "account",
@@ -1025,7 +1040,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what's the recipient name?",
       "what name should show up on my end?"
     ],
-    "answer": "The account name is The Accounting Academy.\n\nNo other information needed before you pay. Once the payment goes through, just send us a screenshot and we'll send you the form to get started!",
+    "answer": "The account name is The Accounting Academy.\n\nBSB: 062692\nAccount: 81049952",
     "keywords": [
       "account",
       "name",
@@ -1050,7 +1065,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "my bank shows a different company name, is this the right account?",
       "the name doesn't match, should I still send it?"
     ],
-    "answer": "Yes, that’s the correct account. It’s registered under The Accounting Academy, which is why your bank shows that name.\n\nYou can go ahead with the transfer and send us a screenshot once it’s complete.",
+    "answer": "Yes, that's the correct account. The account name is The Accounting Academy.\n\nBSB: 062692\nAccount: 81049952",
     "keywords": [
       "account",
       "name",
@@ -1078,7 +1093,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I have an ABN and I owe the ATO, do I get the fee back?",
       "if after the check I still can't get a refund, is the money I paid gone?"
     ],
-    "answer": "If it turns out you owe money instead of getting a refund, whether to lodge is your decision. Lodging is your own legal obligation, but if you decide not to go ahead, we won’t lodge it for you.\n\nEither way, the fee, $220 or $385, is for the review our team has already carried out, so it stays the same.",
+    "answer": "If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.\n\nFor example: if your refund comes to less than the fee, you only end up paying what the refund was and we refund the rest. If you have tax to pay instead, the fee covers the work completed, and whether to lodge is then your decision.",
     "keywords": [
       "owe",
       "payable",
@@ -2247,6 +2262,321 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
           "objection"
       ],
       "lang": "en"
+  },
+  // ── 11 Oct 2026: from the full audit of 386 conversations (the 13 gaps that needed no new fact from Jo) ──
+  {
+    "intent": "what is an ABN, is it my super",
+    "question": "What is an ABN? Is that my super?",
+    "examples": [
+      "what's an ABN?",
+      "is ABN my superannuation?",
+      "I don't know if I have an ABN",
+      "what does ABN mean"
+    ],
+    "answer": "An ABN is an Australian Business Number, used for money you earned as a contractor or sole trader, like Uber, delivery apps or freelance work. It's not your super. If you only had wages from employers, you're TFN only.",
+    "keywords": [
+      "abn",
+      "what is",
+      "super",
+      "contractor",
+      "sole trader",
+      "uber"
+    ],
+    "tags": [
+      "pricing",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "my payslip shows an ABN",
+    "question": "My payslip has an ABN on it, does that mean I had ABN income?",
+    "examples": [
+      "there's an ABN number on my payslip",
+      "my employer's ABN is on the payslip, is that the ABN option?",
+      "payslip has ABN, which option am I"
+    ],
+    "answer": "The ABN on a payslip is your employer's number. If you got payslips and tax came out of your pay, you were on a TFN. ABN income is only when you invoiced someone yourself.",
+    "keywords": [
+      "payslip",
+      "abn",
+      "employer",
+      "tfn",
+      "which option"
+    ],
+    "tags": [
+      "pricing",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "transfer shows pending",
+    "question": "I sent the money but it shows pending, what now?",
+    "examples": [
+      "I paid but it says pending",
+      "the transfer is still processing",
+      "sent it, bank says pending until tomorrow",
+      "payment pending on my end"
+    ],
+    "answer": "Thanks, I can see it's on its way. Transfers can take up to a business day to clear. I'll send you the form the moment it lands, nothing else to do for now.",
+    "keywords": [
+      "pending",
+      "processing",
+      "transfer",
+      "sent",
+      "clear",
+      "on its way"
+    ],
+    "tags": [
+      "payment",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "paid more than the fee by mistake",
+    "question": "I paid $250 instead of $220, what happens to the extra?",
+    "examples": [
+      "I accidentally sent $250",
+      "I transferred too much",
+      "paid 240 instead of 220 by mistake",
+      "overpaid the fee"
+    ],
+    "answer": "No problem, the team will return the difference to the account you paid from. Send me the account name, BSB and number for it and we'll sort it, and your return starts as normal.",
+    "keywords": [
+      "overpaid",
+      "too much",
+      "extra",
+      "difference",
+      "mistake",
+      "250",
+      "240"
+    ],
+    "tags": [
+      "payment",
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "friend or partner got an estimate before paying, why did it change",
+    "question": "My friend got an estimate first and paid after, why is it different for me?",
+    "examples": [
+      "my partner got the estimate before paying last year",
+      "why did your business model change?",
+      "my friend didn't have to pay upfront",
+      "you used to do the estimate first"
+    ],
+    "answer": "You're right, we used to work that way. We changed it because the review itself is most of the work. What hasn't changed: if your refund is less than our fee, we refund the difference. So the result for you is the same. Shall we start?",
+    "keywords": [
+      "estimate first",
+      "friend",
+      "partner",
+      "before paying",
+      "changed",
+      "used to",
+      "upfront"
+    ],
+    "tags": [
+      "objection",
+      "pricing"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "the website calculator says I owe tax",
+    "question": "The calculator on your site says I owe money, is it worth lodging?",
+    "examples": [
+      "your calculator shows I owe $849",
+      "the calculator says $1 owing",
+      "calculator result is negative, should I still lodge?",
+      "your estimate tool says I have to pay"
+    ],
+    "answer": "The calculator is a rough guide. It doesn't know your residency, your Medicare position or your deductions, and that's usually where the number moves. The review looks at all of that properly, and you see the result before anything is lodged.",
+    "keywords": [
+      "calculator",
+      "owe",
+      "owing",
+      "negative",
+      "website",
+      "tool",
+      "estimate"
+    ],
+    "tags": [
+      "objection",
+      "pricing"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "is the estimate the final number",
+    "question": "Is the estimate the final amount I'll get?",
+    "examples": [
+      "is that the final number?",
+      "will the refund be exactly the estimate?",
+      "can the amount still change?",
+      "is the estimate definite"
+    ],
+    "answer": "The estimate is what the team calculated from your documents. It's confirmed when the return is reviewed and sent to you for signature, and the ATO issues the final figure after lodgement.",
+    "keywords": [
+      "estimate",
+      "final",
+      "exact",
+      "change",
+      "definite",
+      "amount"
+    ],
+    "tags": [
+      "process",
+      "post-payment"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "do you have someone who speaks my language",
+    "question": "Do you have someone who speaks French / German / Japanese?",
+    "examples": [
+      "can I write in German?",
+      "do you speak French?",
+      "is there someone Japanese on your team?",
+      "can we do this in Spanish?",
+      "puedo escribir en español?"
+    ],
+    "answer": "Of course, we can continue in your language right here. Everything is done by message and through the form, so just write the way that's easiest for you.",
+    "keywords": [
+      "speak",
+      "language",
+      "french",
+      "german",
+      "japanese",
+      "spanish",
+      "italian",
+      "write in"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "just arrived or about to start work, no return yet",
+    "question": "I just arrived / I'm about to start working, can I lodge now?",
+    "examples": [
+      "I just got to Australia, what do I do about tax?",
+      "I start my first job next week, can you do my tax return?",
+      "I don't have a TFN yet, can I lodge?",
+      "I only arrived last month"
+    ],
+    "answer": "Not yet, there's nothing to lodge until the tax year ends on 30 June. For now keep your payslips and receipts for work gear, and message us after 1 July and we'll take it from there.",
+    "keywords": [
+      "just arrived",
+      "about to start",
+      "first job",
+      "no tfn yet",
+      "new",
+      "lodge now"
+    ],
+    "tags": [
+      "process",
+      "not-yet"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "employer owes back-pay, wait or lodge",
+    "question": "My employer underpaid me and is paying it back, should I wait before lodging?",
+    "examples": [
+      "I'm getting back-pay next month, should we wait?",
+      "my boss still owes me wages, lodge now or later?",
+      "Fair Work is recovering my pay, what about my tax return?"
+    ],
+    "answer": "Yes, wait until the back-pay is through. It changes what your employer reports to the ATO, and lodging before that means an amendment later. Message me when it's paid and we start straight away.",
+    "keywords": [
+      "back-pay",
+      "backpay",
+      "underpaid",
+      "owes me",
+      "wait",
+      "fair work"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "UK or Irish citizen, Medicare exemption",
+    "question": "I'm a UK / Irish citizen, should I apply for the Medicare exemption?",
+    "examples": [
+      "I'm from the UK, does the Medicare exemption apply to me?",
+      "I'm Irish, wouldn't my Medicare exemption just be rejected?",
+      "UK passport, do I pay the Medicare levy?",
+      "reciprocal health agreement and the exemption"
+    ],
+    "answer": "Citizens of countries with a reciprocal health agreement with Australia, like the UK and Ireland, are usually covered by Medicare, so the exemption usually doesn't apply. The team confirms your position in the review, nothing for you to apply for unless they say so.",
+    "keywords": [
+      "uk",
+      "british",
+      "irish",
+      "ireland",
+      "medicare",
+      "exemption",
+      "reciprocal",
+      "levy"
+    ],
+    "tags": [
+      "medicare",
+      "post-payment"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "paid customer asks what to do now",
+    "question": "Did you do my taxes? What am I supposed to do now?",
+    "examples": [
+      "so what happens now?",
+      "is my tax return done?",
+      "what do I need to do next?",
+      "have you lodged it already?",
+      "what's the next step from me"
+    ],
+    "answer": "Nothing from you right now. Your return isn't lodged yet: the team finishes the review, you get the estimate here, then a document to sign by email, and only after your signature is it lodged.",
+    "keywords": [
+      "what now",
+      "next step",
+      "done",
+      "lodged",
+      "what do i do",
+      "nothing"
+    ],
+    "tags": [
+      "process",
+      "post-payment"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "customer changed phone number",
+    "question": "I changed my number, is my old chat gone?",
+    "examples": [
+      "this is my new number, my old one is cancelled",
+      "I'm writing from a new number, do you still have my details?",
+      "new sim, same person",
+      "my old WhatsApp number doesn't work anymore"
+    ],
+    "answer": "No problem at all. What was your old number? I'll link it so the team sees your whole history, and we carry on from here.",
+    "keywords": [
+      "new number",
+      "changed my number",
+      "old number",
+      "new sim",
+      "same person"
+    ],
+    "tags": [
+      "process"
+    ],
+    "lang": "en"
   }
 ];
 

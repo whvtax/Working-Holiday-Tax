@@ -104,7 +104,7 @@ describe('a paid customer re-proposed as PAID is not a conflict (Simon, +61 425)
 describe('the bridge line and the playbook', () => {
   it('the holding line says a person has it, in every language', () => {
     for (const v of Object.values(HANDOFF_HOLDING_MSG)) expect(v).not.toMatch(/^Thanks for that/);
-    expect(HANDOFF_HOLDING_MSG.en).toMatch(/passed this on to the team/);
+    expect(HANDOFF_HOLDING_MSG.en).toMatch(/passed this to the team/);
   });
   it('the playbook carries the audit rules', () => {
     const { stable } = buildSystemPrompt({ name: 'X', state: 'NEW_LEAD', income: 'UNKNOWN', paid: false, formComplete: false, missingDocs: [], estimatedRefundCents: null, lang: 'en' });

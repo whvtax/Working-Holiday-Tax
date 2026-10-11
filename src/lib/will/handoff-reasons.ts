@@ -78,6 +78,43 @@ const RULES: Rule[] = [
     prevent: 'Nothing to fix. This is Will keeping out of a chat you took over. He comes back when you switch him on again in the chat header.',
   },
   {
+    // 11 Oct (full audit, decision 13): a fee refund the team promised and
+    // has not yet written as sent.
+    match: /^REFUND OWED/i,
+    kind: 'policy',
+    label: 'A fee refund is overdue',
+    because: 'the team promised this customer a fee refund in the chat three or more business days ago and has not written that it was sent',
+    prevent: 'Make the transfer, then write it in the chat ("refund sent", "transferred the $220 today"): that closes this and switches the nudges and the review ask back on.',
+  },
+  {
+    // 11 Oct (full audit, decision 2): the draft was the menu or the bank
+    // block in reply to a real question, and neither the rewrite nor the
+    // trimmed draft left an answer worth sending.
+    match: /^Customer asked a question and Will only had the price list/i,
+    kind: 'policy',
+    label: 'They asked something and Will only had the prices',
+    because: 'the customer asked a real question and the only draft was the price list, which is never the answer to a question',
+    prevent: 'Answer what they asked in one or two lines, then the price. If the same question keeps coming, add the answer to the Library.',
+  },
+  {
+    // 11 Oct (full audit, decision 1): the kill switch no longer means zero
+    // output; the holding line went out and this task says who is waiting.
+    match: /wrote in while Will is paused \(kill switch\)/i,
+    kind: 'policy',
+    label: 'They wrote in while Will is paused',
+    because: 'the kill switch is on, so Will drafts nothing for anyone; the customer got the holding line and is waiting for a person',
+    prevent: 'Reply to them yourself, and switch Will back on (System tab) when the pause is over.',
+  },
+  {
+    // 11 Oct (full audit, decision 1): a paying customer is never left in
+    // silence. A "wait" decision on them becomes the holding line plus this.
+    match: /\(paid\) wrote in (and Will had nothing to say|while Will is paused)/i,
+    kind: 'policy',
+    label: 'A paying customer wrote in and Will stayed quiet',
+    because: 'Will decided to wait on a message from a customer who has already paid. Since 11 Oct that is never silence: the holding line went out and this task opened',
+    prevent: 'Reply to them yourself. If this keeps happening for the same kind of message, add the answer to the Library so Will can send it.',
+  },
+  {
     // A NEW inbound message arriving while Will is switched off for this one
     // customer — either paused by hand, or paused automatically once they
     // reached Review with everything (form, ABN, Medicare where owed)

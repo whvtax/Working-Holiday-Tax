@@ -64,9 +64,12 @@ describe('the day-3 pre-payment nudge specifically', () => {
   // message, in full, where the customer is about to pay; half of it here is
   // what went wrong before. What this nudge carries is the one lever that moves
   // somebody weighing up doing it alone, and an easy ask at the end.
-  test('is the value angle with an ask, and carries no guarantee', () => {
-    expect(body).toMatch(/miss things they could have claimed/i);
-    expect(body).toMatch(/Want me to get you started\?$/);
+  // 11 Oct (full audit, decision 9): the "doing it alone" line went out 46
+  // times with zero conversions and read as a dig; the nudge now opens the
+  // door to a question. Still no guarantee here.
+  test('opens the door to a question, and carries no guarantee', () => {
+    expect(body).toMatch(/anything you're unsure about before you decide/i);
+    expect(body).not.toMatch(/doing it alone|miss things/i);
     expect(body).not.toMatch(/top up the difference|refund the difference|less than the fee|never costs you more|out of pocket/i);
     // It does not trip REFUND_OR_CANCEL_PROMISE even as free-form, because the
     // sentence is in the approved corpus and is exempt at sentence level. The

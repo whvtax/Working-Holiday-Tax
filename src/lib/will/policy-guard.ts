@@ -6,6 +6,7 @@
 // and placeholder leak detection.
 // ============================================================
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
+import { namesAccountWrongly } from './account-name';
 import { APPROVED } from './approved-messages';
 import { SYSTEM_MESSAGE_FAMILIES } from './i18n';
 
@@ -24,6 +25,11 @@ export interface GuardContext {
    *  ceiling scales with it (see the length rule). Optional: callers that do
    *  not know leave it out and get the flat ceiling. */
   customerTextChars?: number;
+  /** 11 Oct (full audit, decision 6): what the customer wrote since our last
+   *  message. A figure they quoted themselves ("I earned $8,000", "the
+   *  calculator says $849 owing") may be echoed back without being read as
+   *  Will inventing a price or a refund. */
+  customerText?: string;
 }
 
 export interface GuardResult {
@@ -293,7 +299,7 @@ const LOOKS_LIKE_YEAR = /^(19|20)\d{2}$/;
 const COUNT_NOUN =
   'things?|documents?|docs?|payslips?|pay ?slips?|screenshots?|photos?|pictures?|pics?|files?|copies|copy|pages?|forms?|receipts?|invoices?|statements?|jobs?|employers?|payment summar(?:y|ies)|returns?|tax returns?|instalments?|installments?';
 const NON_MONEY_UNIT = new RegExp(
-  `^(?:\\d|[.,]\\d|\\s*(?:kms?|kilomet(?:re|er)s?|litres?|liters?|kg|grams?|(?:more\\s+)?(?:${COUNT_NOUN}))\\b)`,
+  `^(?:\\d|[.,]\\d|\\s*(?:kms?|kilomet(?:re|er)s?|litres?|liters?|kg|grams?|hours?|hrs?|minutes?|mins?|days?|weeks?|months?|business days?|plans?|options?|steps?|(?:more\\s+)?(?:${COUNT_NOUN}))\\b|つ|人|日|時間|週間|か月|ヶ月|年|回|件|枚|点|種類|プラン)`,
   'i',
 );
 
@@ -353,7 +359,32 @@ function toCents(raw: string): number | null {
   return Number.isNaN(n) ? null : Math.round(n * 100);
 }
 
-function amountsInCents(text: string): number[] {
+/** 11 Oct (decision 6, fix 3): what the money scan must never read as money.
+ *  Markdown emphasis around a figure ("**BSB: 062692**" read as $62,692 and
+ *  lost Kanna's $385), our own BSB and account number next to their labels,
+ *  and plain counts of hours, days, plans, people. Applied to the text BEFORE
+ *  amounts are collected. The BSB/account figures are replaced by their label
+ *  alone, so hasForeignBankDetails (which runs on the raw text) is unchanged. */
+export function stripNonMoneyFigures(text: string): string {
+  return text
+    .replace(/[*_`~]+/g, ' ')
+    .replace(/\b(?:BSB|account(?: number| no\.?| nr\.?)?|acct|acc\.?|konto(?:nummer)?|口座(?:番号)?|cuenta|compte|conto|conta)\b\s*[:：#]?\s*\d[\d \-]*/gi, (m) => m.replace(/\d[\d \-]*$/, ''))
+    .replace(/\b062\s?692\b|\b81049952\b/g, ' ');
+}
+
+/** Whole multiples of the two fixed prices, allowed only when the text is
+ *  plainly about several years, returns or people ("$440 for the two
+ *  years", "$1,155 for three returns"). Up to five. */
+const MULTIPLE_CONTEXT = /\b(?:years?|returns?|people|persons?|both|each|two|three|four|five|x\s?\d|\d\s?x)\b|jahre?|personen|beide|años?|personas|ans|personnes|anni|persone|anos|pessoas|年分|年度|人分|\d+人|両方/i;
+function allowedPriceMultiples(text: string): number[] {
+  if (!MULTIPLE_CONTEXT.test(text)) return [];
+  const out: number[] = [];
+  for (const base of [22000, 38500]) for (let n = 2; n <= 5; n++) out.push(base * n);
+  return out;
+}
+
+function amountsInCents(rawText: string): number[] {
+  const text = stripNonMoneyFigures(rawText);
   const out: number[] = [];
   for (const m of text.matchAll(AMOUNT_RE)) {
     const raw = m[1] ?? m[2] ?? m[3] ?? '';
@@ -671,6 +702,11 @@ const OUT_OF_POCKET_PROMISE = /\bout of pocket\b|\baus eigener tasche\b|\bde (?:
 // (Jo, 20 Sep), so "we refund" is a promise in every context now.
 const MONEY_BACK_ML = /\b(?:money\s?back|full\s+refund)\b|\bgeld\s+zur(?:ü|ue)ck\b|\bvolle\s+(?:r[üue]ck)?erstattung\b|\bdinero\s+de\s+vuelta\b|\breembolso\s+(?:completo|total|íntegro|integro)\b|\bremboursement\s+(?:complet|total|int[ée]gral)\b|\brimborso\s+(?:completo|totale|integrale)\b|全額(?:を)?返金|返金します/i;
 const POST_PAYMENT_SALES = /(\bfee\b|\bprice\b|\bcost\b|\bdiscount\b|guarantee|out of pocket|cover the (gap|difference)|refund the difference)/i;
+/** 11 Oct (decision 6, fix 5): after payment, a sentence about the fee the
+ *  customer ALREADY paid (Laurine "the $385 you paid us vs the $414 you owe"),
+ *  about where their own refund goes (Denise's Wise details), or about a
+ *  second service they are asking for (なる, DASP) is service, not sales. */
+const POST_PAYMENT_NOT_SALES = /\b(?:you(?:'ve| have)? (?:already )?paid|the fee you paid|fee (?:you )?(?:already )?paid|paid us|your payment|refund (?:goes|will go|is paid|gets paid|lands|arrives)|your (?:own )?(?:bank )?account|wise|revolut|iban|swift|bic|refund destination|dasp|superannuation|\bsuper\b)\b|支払(?:い|った)|お支払い済み|bereits bezahlt|hast (?:du )?(?:schon|bereits) bezahlt|ya (?:has )?pagado|déjà payé|già pagato|já pag(?:ou|aste)/i;
 // The negated form is the reassurance the team gives every day ("you don't
 // have to lodge it yourself, we do all of that for you", "no need to do it
 // yourself"), so "do it yourself" / "lodge it yourself" carry a negation guard
@@ -691,7 +727,7 @@ const DIY_INSTRUCTIONS = /((?<!\b(?:not|never|don[’']t|do not|won[’']t|witho
 // list only matched "ATO" when it was followed by online/portal/account/login.
 const MYGOV_TERMS = /\b(my ?gov|my\.gov(?:\.au)?|mygov ?id|ato (?:online|portal|account|login|app|website)|australian taxation office|\bato\b|digital id|myid|centrelink|services australia|ihi|individual healthcare identifier|medicare entitlement statement|\bmes\b)\b/i;
 const MYGOV_STEP_CUE = /\b(?:log ?in|logging in|sign ?in|signing in|go to|head to|click|tap|press|select|choose|enter (?:your|the)|type in|open (?:the |your )?(?:app|link|page|site|portal|account)|create (?:an? )?(?:account|id|my ?gov ?id|digital id|profile)|set up (?:an? )?(?:account|id)|reset (?:your )?password|apply for (?:an? )?(?:ihi|mes|medicare entitlement|exemption|digital id)|link(?:ing)? (?:your|the) (?:my ?gov|ato|account)|connect (?:your|the) (?:my ?gov|ato)|verify your|follow (?:these|the|this) (?:steps|guide|link)|you (?:need|have|'ll need|will need) to (?:log|sign|go|click|create|apply|link|enter|select|open|reset|submit|set up|verify|connect)|try (?:logging|signing) in|try (?:again|it again)|submit (?:the )?(?:form|application|statement))\b/i;
-const MYGOV_REASSURANCE = /\b(?:do(?:n'?t| not)|does(?:n'?t| not)|no need|never|without|won'?t|will not|you'?ll never|nothing to)\b[^.!?]{0,45}\b(?:need|have to|require|use|access|log ?in|sign ?in|worry|touch|deal with)\b|\b(?:we|our team|i)\b[^.!?]{0,45}\b(?:handle|take care of|takes care of|access|manage|deal with|look after|sort out|do (?:it |everything |all )?for you|on your behalf|through the ato)\b|leave (?:it|that|the my ?gov|everything)[^.!?]{0,25}\b(?:to us|with us|to me)\b/i;
+const MYGOV_REASSURANCE = /\b(?:do(?:n'?t| not)|does(?:n'?t| not)|no need|never|without|won'?t|will not|you'?ll never|nothing to)\b[^.!?]{0,45}\b(?:need|have to|require|use|access|log ?in|sign ?in|worry|touch|deal with|give us|share|send us)\b|\b(?:under|through|via) (?:our |a )?(?:registered )?tax agent\b|\b(?:we|our team|i)\b[^.!?]{0,45}\b(?:handle|take care of|takes care of|access|manage|deal with|look after|sort out|do (?:it |everything |all )?for you|on your behalf|through the ato)\b|leave (?:it|that|the my ?gov|everything)[^.!?]{0,25}\b(?:to us|with us|to me)\b/i;
 // The same reassurance shape as MYGOV_REASSURANCE, in the other languages
 // MYGOV_STEP_CUE_ML understands. Without this, a genuine "you don't need
 // myGov" / "we handle it" sentence in German, Spanish, French, Italian,
@@ -762,6 +798,17 @@ const AI_IDENTITY_DENIAL =
   /\b(?:not|no)\b[^.!?]{0,15}\b(?:a )?(?:bot|robot|ai|machine|chatbot|computer|automated)\b|\b(?:real|actual|genuine) (?:person|human)\s+here\b|\b(?:i'?m|i am) (?:definitely |totally |absolutely )?(?:real|human)\b/i;
 
 const PLACEHOLDER_LEFTOVER = /\{\{[A-Z_]+\}\}/;
+const INTERNAL_NOTE = /\[(?:TEAM|NOTE|TODO|INTERNAL|FIXME|DRAFT|PLACEHOLDER|INSERT|CHECK)\b[^\]]*\]|\bTODO\b|\bTBD\b|\bXXX\b|\[[^\]]*(?:確認してください|要確認|チーム)[^\]]*\]/;
+const ALLOWED_URL_HOSTS = /^(?:https?:\/\/)?(?:www\.)?(?:workingholidaytax\.com\.au|my\.gov\.au|ato\.gov\.au|servicesaustralia\.gov\.au|tpb\.gov\.au|abr\.business\.gov\.au|g\.page|maps\.app\.goo\.gl|search\.google\.com)(?:\/|$)/i;
+export function hasForeignUrl(text: string): boolean {
+  for (const m of text.matchAll(/\b(?:https?:\/\/|www\.)[^\s)>\]]+|\b[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|au|net|org|io|co)(?:\.[a-z]{2})?(?:\/[^\s)>\]]*)?/gi)) {
+    const u = m[0].replace(/[.,;:!?]+$/, '');
+    if (/^[\d.]+$/.test(u)) continue;
+    if (!ALLOWED_URL_HOSTS.test(u)) return true;
+  }
+  return false;
+}
+const NON_REFUNDABLE_WORDING = /non[- ]?refundable|not refundable|no refunds? (?:of|on) (?:the|our) fee|nicht (?:r[üu]ck)?erstatt(?:bar|ungsf[äa]hig)|keine r[üu]ckerstattung der geb[üu]hr|返金(?:は)?(?:不可|できません|いたしません|しません)|no (?:es |será )?reembolsable|non remboursable|non rimborsabile|n[ãa]o reembols[áa]vel/i;
 /** 25 Sep (the injection-defence suite found this gap): a manipulated draft
  *  could carry SOMEBODY ELSE'S bank details. The only BSB and account number
  *  that may ever appear in an outgoing message are ours. Any other BSB-shaped
@@ -798,6 +845,7 @@ const XERO_BENIGN_PWD = /\b(?:if it (?:asks|is asking) for a password|try\s+\d{4
 // NEGATED "don't/never need (or ask for) ... password/login/credentials" phrase
 // before the check. "Your password is hunter2" and "reset your password" carry
 // no negation and stay blocked.
+const NEGATED_PASSWORD = /\b(?:won'?t|will not|never|don'?t|do not|no need to|not|without|nobody|no one)\b[^.!?]{0,40}\b(?:passwords?|login(?: details| data)?|credentials)\b/gi;
 const MYGOV_BENIGN_PWD = /\b(?:don'?t|do not|won'?t|will not|never|no|not)\s+(?:need|ask(?:ing)?(?: you)? for|require)\b[^.!?]{0,30}\b(?:password|login|credentials)\b(?:\s+(?:or|and)\s+(?:password|login|credentials)\b)?/gi;
 // ── THE RETIRED OVER-PROMISE (Jo, 3 Sep; enforced 4 Sep) ─────────────────
 // 3 Sep: "so our fee never costs you more than the refund you get back" was
@@ -911,14 +959,25 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   if (PLACEHOLDER_LEFTOVER.test(text)) violations.push('PLACEHOLDER_LEFTOVER');
   if (PROMPT_ECHO.test(text)) violations.push('PROMPT_ECHO');
   if (hasForeignBankDetails(text)) violations.push('WRONG_BANK_DETAILS');
+  // 11 Oct (full audit, decision 4): the account is named one way only.
+  if (namesAccountWrongly(text)) violations.push('ACCOUNT_NAME_WRONG');
   // Only in the Xero signing context, strip the approved benign password phrases
   // before the sensitive check, so the portal support message sends while any
   // other credential leak stays blocked.
   let sensText = XERO_SIGNING.test(text) ? text.replace(XERO_BENIGN_PWD, ' ') : text;
   // (audit, 5 Sep) same for the negated myGov password reassurance, see MYGOV_BENIGN_PWD.
   if (MYGOV_TERMS.test(text)) sensText = sensText.replace(MYGOV_BENIGN_PWD, ' ');
+  // 11 Oct (decision 6, fix 6): the negation is not tied to myGov. "You won't
+  // share any passwords with us" (Nathan) is the reassurance, in any context.
+  sensText = sensText.replace(NEGATED_PASSWORD, ' ');
   if (SENSITIVE_LEAK.test(sensText)) violations.push('SENSITIVE_CONTENT');
   if (DASHES.test(text)) violations.push('EM_DASH_FORBIDDEN');
+  // 11 Oct (full audit, decision 6): Hiro received "料金総額は [TEAM: 正確な料金を
+  // 確認してください…] です。" An internal note is never customer text.
+  if (INTERNAL_NOTE.test(text)) violations.push('INTERNAL_NOTE_LEFT_IN');
+  // The form link was typed three times without ".au"; any link is either the
+  // fixed form link (always inserted by the code) or one of our site's pages.
+  if (!ctx.isApprovedTemplate && hasForeignUrl(text)) violations.push('TYPED_URL');
   // The retired over-promise is banned everywhere, including in an "approved"
   // template: it was deleted from all of them, so anything carrying it is
   // either a stale Library row or the model reaching for wording Jo retired.
@@ -1036,6 +1095,13 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   const paid = paidState && !anotherReturn;
   const allowedCents = new Set<number>(paid ? [] : FIXED_PRICES_CENTS);
   if (ctx.estimateFromTeam != null) allowedCents.add(ctx.estimateFromTeam);
+  // 11 Oct (full audit, decision 6, fixes 1 and 2): a figure the customer
+  // wrote themselves may be echoed back (James "$1100", Megan "$700", ひめか
+  // "$8,000"), and a whole multiple of a fixed price is fine when the text is
+  // about several years or people (Anika "$440 for the two years", Remi
+  // "$1,155 for three returns"). Neither is Will inventing a number.
+  for (const c of amountsInCents(ctx.customerText ?? '')) allowedCents.add(c);
+  if (!paid) for (const c of allowedPriceMultiples(text)) allowedCents.add(c);
 
   let unguardedLanguage = false;
 
@@ -1094,9 +1160,14 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // approved "that is exactly what the team checks" stand-in goes instead.
     if (!paid && !ctx.isApprovedTemplate && PRE_PAYMENT_MEDICARE_SCRIPT.test(written)) violations.push('PRE_PAYMENT_MEDICARE_SCRIPT');
     if (!paid && !ctx.isApprovedTemplate && PRE_PAYMENT_HEDGE.test(written)) violations.push('PRE_PAYMENT_HEDGE');
+    // 11 Oct (full audit, decision 5): "non-refundable" went out 27 times
+    // before payment; the week it replaced the guarantee converted 1 in 10.
+    // Before payment the fee is described in the positive, in the guarantee's
+    // own words. After payment, a direct question may be answered plainly.
+    if (!paid && !ctx.isApprovedTemplate && NON_REFUNDABLE_WORDING.test(written)) violations.push('NON_REFUNDABLE_WORDING');
     const opening = ownOpening(written);
     if (opening != null) {
-      if (paid && (POST_PAYMENT_SALES.test(written) || POST_PAYMENT_SALES_ML.test(written))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
+      if (paid && !POST_PAYMENT_NOT_SALES.test(written) && (POST_PAYMENT_SALES.test(written) || POST_PAYMENT_SALES_ML.test(written))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
       if (opening === '') continue;
     }
     // An approved sentence with an adapted opening ("Yes Sarah, you can lodge
@@ -1147,7 +1218,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     if (DIY_INSTRUCTIONS.test(sentence) || DIY_INSTRUCTIONS_ML.test(sentence)) violations.push('DIY_INSTRUCTIONS');
     if (REFUND_PROMISE_ML.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
     if (FEE_REFUNDABLE_PASSIVE.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
-    if (paid && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
+    if (paid && !POST_PAYMENT_NOT_SALES.test(sentence) && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
     const moneyBack = MONEY_BACK_ML.test(sentence);
     if (!ctx.isApprovedTemplate && (REFUND_PROMISE.test(sentence) || OUT_OF_POCKET_PROMISE.test(sentence) || moneyBack)) violations.push('REFUND_OR_CANCEL_PROMISE');
 

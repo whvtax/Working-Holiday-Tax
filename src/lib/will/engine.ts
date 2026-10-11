@@ -10,10 +10,17 @@ import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
 import { claimsPayment } from './payment-claim';
 import { professionalQuestionMessage } from './i18n';
+import { accountNameMessage } from './account-name';
+import { PAYMENT_RECEIVED_MSG } from './i18n';
+
+/** The first words of the approved confirmation in every language. */
+const PAYMENT_RECEIVED_PREFIX = new RegExp('^\\s*(?:' + Object.values(PAYMENT_RECEIVED_MSG).map((t) => t.split('\n')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'im');
+const FORM_LINK_IN_TEXT = /workingholidaytax\.com(?:\.au)?\/tax-form/i;
 import { APPROVED } from './approved-messages';
 import { canTransition, CustomerState } from './state-machine';
+import { detectChoice, PRICE_ASK_RE } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
-import { normaliseWillText, firstNameOf, isCourtesyLine } from './text-normalize';
+import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -85,7 +92,10 @@ const BANK_DETAILS_RE = /\b0?62\s?692\b|\b81049952\b/;
 const BANK_LINE_RE = new RegExp([
   '\\b0?62\\s?692\\b', '\\b81049952\\b',
   // the labels, in every language
-  'payment details', 'bank details', 'account name\\s*:', '^\\s*bsb\\b', '^\\s*account\\s*:', '^\\s*amount\\s*:\\s*\\$?\\d',
+  'payment details', 'bank details', 'account name\\s*:', '^\\s*bsb\\b',
+  // 11 Oct: the price message opens with the track and the amount; a repeat
+  // of the block takes that line with it too.
+  "^got it, so that'?s the tfn", '^\\s*account\\s*:', '^\\s*amount\\s*:\\s*\\$?\\d',
   'zahlungsdetails', 'bankverbindung', 'kontoinhaber', 'kontonummer', '^\\s*blz\\b',
   'datos de pago', 'datos bancarios', 'titular de la cuenta', 'n[úu]mero de cuenta',
   'coordonn[ée]es bancaires', 'd[ée]tails de paiement', 'titulaire du compte', 'num[ée]ro de compte',
@@ -189,6 +199,75 @@ export function stripBankBlock(text: string): string {
     .trim();
 }
 
+/** 11 Oct (full audit, decision 2): did the customer actually ask something?
+ *  A question mark, a long message (over 25 words) or a numbered list of
+ *  points. Exported for the tests. */
+export function customerAskedSomething(burst: string): boolean {
+  const t = (burst ?? '').trim();
+  if (!t) return false;
+  if (/[?？]/.test(t)) return true;
+  if (t.split(/\s+/).filter(Boolean).length > 25) return true;
+  const numbered = (t.match(/^\s*(?:\d+[.)]|[-•])\s+\S/gm) ?? []).length;
+  return numbered >= 2;
+}
+
+/** The question IS about the price, or the message already picks a track:
+ *  then the price message is the right answer, question mark or not. */
+const CHOICE_OR_PRICE_RE = new RegExp([
+  '\\b(?:tfn|abn|option|price|prices|cost|costs|fee|fees|how much|charge|pay|payment|bank|bsb)\\b',
+  '\\$\\s?(?:220|385)\\b', '\\b(?:220|385)\\b',
+  '^(?:yes|yep|yeah|sure|ok|okay|ja|sí|si|oui|sì|sim|はい|お願いします|よろしくお願いします)\\b',
+  'いくら', '料金', '費用', '値段', 'preis', 'kosten', 'kostet', 'precio', 'cu[áa]nto', 'prix', 'combien', 'prezzo', 'quanto', 'preço',
+].join('|'), 'im');
+export function isChoiceOrPriceAsk(burst: string): boolean {
+  return CHOICE_OR_PRICE_RE.test((burst ?? '').trim());
+}
+
+/** 11 Oct (decision 12): a message that reads as upset, worried or about a
+ *  refund. Multilingual, deliberately broad: the cost of a false positive is
+ *  one extra draft on a task. */
+export const UPSET_OR_REFUND = /\b(?:refund(?: me| my money| the fee)?|money back|chargeback|dispute|scam|fraud|unprofessional|ridiculous|unacceptable|disappointed|frustrat|angry|upset|furious|complain|review(?:s)? (?:online|on google)|lawyer|ombudsman|fair work|waste of|rip[- ]?off|ignored|no (?:one|body) (?:replies|answers|responds)|still waiting)\b|hello\?{2,}|\?{3,}|erstatt|geld zur[üu]ck|betrug|unversch[äa]mt|entt[äa]uscht|返金|詐欺|不満|がっかり|reembolso|estafa|decepcion|rembourse|arnaque|déçu|rimborso|truffa|delus|devolução|golpe/i;
+
+/** Both prices in one text = the menu (the opening or a re-pitch). */
+const MENU_RE = /\$\s?220\b[\s\S]*\$\s?385\b|\$\s?385\b[\s\S]*\$\s?220\b/;
+const BANK_RE = /\bBSB\b|062692|81049952/;
+
+/** Decision 2: a message that asks something (and is not itself about the
+ *  price or a choice) must be answered, not pitched. True when the draft is
+ *  the menu or the price block in reply to such a message. */
+export function menuAsAnswer(burst: string, draft: string, paid: boolean): boolean {
+  if (paid) return false;
+  if (!customerAskedSomething(burst) || isChoiceOrPriceAsk(burst)) return false;
+  return MENU_RE.test(draft) || BANK_RE.test(draft);
+}
+
+/** Drop the price lines and the bank block from a draft, keeping what answers. */
+export function stripMenuAndBank(text: string): string {
+  return text
+    .split('\n')
+    .filter((l) => !BANK_LINE_RE.test(l.trim()) && !/\$\s?(?:220|385)\b/.test(l) && !/which option/i.test(l))
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+/** 11 Oct (full audit, decision 16): in Approval mode a draft that is, word
+ *  for word, one of the fixed messages Jo approved (the opening question, the
+ *  two prices, a price message) has nothing to review: fifteen openings sat
+ *  in the approval queue in August and nobody approved them (Lou and Aaron
+ *  waited nine days). Those go out on the normal Autopilot timer. */
+export function isApprovedVerbatim(text: string, firstName?: string | null): boolean {
+  const norm = (t: string) => t.replace(/\s+/g, ' ').trim();
+  const t = norm(text);
+  const fixed = [APPROVED.opening, APPROVED.prices, APPROVED.price_tfn, APPROVED.price_tfn_abn];
+  const name = (firstName ?? '').trim();
+  for (const f of fixed) {
+    if (t === norm(f)) return true;
+    if (name && t === norm(f.replace(/^Hey!/, `Hey ${name}!`))) return true;
+  }
+  return false;
+}
+
 export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   const { ctx, history, mode, bank } = input;
 
@@ -238,7 +317,21 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     // Policy Guard; if the draft breaks a hard rule it is left as the raw draft
     // for the owner to fix by hand.
     let suggestedReply: string | undefined = decision.suggested_reply;
-    const draft = (decision.suggested_reply ?? '').trim();
+    let draft = (decision.suggested_reply ?? '').trim();
+    // 11 Oct (full audit, decision 12): an angry, worried or refund-asking
+    // customer ALWAYS gets a warm draft on the task. In every case the audit
+    // checked (Niamh, Fatima, Victoria, Masa, Tomeka) Will's draft was better
+    // than what was typed by hand; the team edits it, never starts blank.
+    if (!draft && UPSET_OR_REFUND.test(customerBurst)) {
+      try {
+        const again = await decide(ctx, history, {
+          rewriteHint: 'You chose human_task without a draft. This customer is upset, worried or asking about a refund, and the team will reply by editing YOUR draft, never from a blank box. Write suggested_reply now: calm, warm, never defensive or accusatory, one or two short sentences that acknowledge what they said and what happens next (a person is looking at it). No promises of money, no amounts, no apology for the company beyond "sorry for the wait". Keep action human_task.',
+          timeoutMs: 12_000,
+        });
+        if (again.suggested_reply?.trim()) draft = again.suggested_reply.trim();
+        else if (again.action === 'reply' && again.reply_text?.trim()) draft = again.reply_text.trim();
+      } catch { /* the task is raised either way */ }
+    }
     if (draft) {
       // Owner rules: no dashes ever, and at most one emoji (opening only). Applied
       // to the model's prose BEFORE placeholders are filled, so a URL/bank value
@@ -362,6 +455,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     estimateFromTeam: ctx.estimatedRefundCents,
     isApprovedTemplate: false,
     customerTextChars: customerBurst.length,
+    customerText: customerBurst,
   };
   // The payment-confirmation turn may mention onboarding although paid flips now;
   // only relax when the customer was NOT already paid (audit finding).
@@ -370,6 +464,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   let text = applyBankRule(
     fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
   );
+  let rewriteNote: string | undefined;
   // 1 Oct (72-hour audit): "Perfect" opened 63 of Will's messages in three
   // days, "Happy to help" 22, "No worries" 21. The prompt already says once
   // per conversation; the code now enforces it. From Will's third message on,
@@ -389,6 +484,87 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   if ((ctx.lang ?? 'en') === 'en' && !ctx.paid && /\bBSB\b|062692|81049952/.test(text)) {
     const enforced = enforcePriceMessage(text);
     if (enforced !== text) text = enforced;
+  }
+
+  // ── NO BANK DETAILS BEFORE AN EXCHANGE (11 Oct, full audit, decision 3) ──
+  //
+  // Zero of the 101 customers who paid did so off a bank block sent before
+  // they had chosen anything; Elsa gave her TFN and got an invoice sixty
+  // seconds later, and every "is this a scam?" started that way. Will's
+  // very first message is the opening question, unless the customer's own
+  // first message already picks a track or asks the price. The price message
+  // (with the bank details) follows their answer, immediately.
+  if (!ctx.paid && willTurns === 0 && BANK_RE.test(text) && !detectChoice(customerBurst, null) && !PRICE_ASK_RE.test(customerBurst)) {
+    const name = custFirstName ? cleanFirstName(custFirstName) : '';
+    text = name ? APPROVED.opening.replace(/^Hey!/, `Hey ${name}!`) : APPROVED.opening;
+    rewriteNote = 'The first draft sent the bank details before any exchange; the opening question went instead.';
+    newState = canTransition(ctx.state, 'QUALIFIED') ? 'QUALIFIED' : undefined;
+  }
+
+  // ── "PAYMENT RECEIVED" IS NEVER THE MODEL'S OWN WORDS (11 Oct, decision 8) ──
+  //
+  // Luke was moved to Paid and filled the form without ever paying, because
+  // Will glued "Payment received!" onto an empathy reply; Federica got "You're
+  // very welcome! Payment received" after saying she would pay next week.
+  // The confirmation and the form link belong to the code (the screenshot
+  // path, the typed "I paid" rule, the team's button). When the customer has
+  // not reported a payment, any confirmation or form link in the draft is
+  // removed and the proposed move to Paid is dropped.
+  if (!ctx.paid && (PAYMENT_RECEIVED_PREFIX.test(text) || FORM_LINK_IN_TEXT.test(text)) && !claimsPayment(customerBurst)) {
+    const cleaned = text
+      .split(/\n{2,}/)
+      .filter((para) => !PAYMENT_RECEIVED_PREFIX.test(para) && !FORM_LINK_IN_TEXT.test(para) && !/fill (?:out|in) (?:this|the) (?:quick )?form|questionnaire/i.test(para))
+      .join('\n\n')
+      .trim();
+    rewriteNote = 'The draft confirmed a payment the customer never reported; the confirmation was removed and the stage stays.';
+    if (newState === 'PAID') newState = undefined;
+    if (cleaned.length >= 20) {
+      text = cleaned;
+    } else {
+      return {
+        kind: 'human_task', decision, guardViolations: ['PAYMENT_CONFIRMED_WITHOUT_CLAIM'],
+        task: { reason: 'Will wanted to confirm a payment the customer never reported. Check the bank, then reply.', severity: 'REVIEW', suggestedReply: text },
+        newState: undefined, stateChanged: false,
+      };
+    }
+  }
+
+  // ── ANSWER FIRST, PITCH LATER (11 Oct, full audit, decision 2) ──────────
+  //
+  // Stephanie asked five questions and got "Great! Here are the payment
+  // details". Ten October leads opened with a real question and got the two
+  // prices; nine of them never wrote again. A message that asks something
+  // (a "?", more than 25 words, a numbered list) and is not itself about the
+  // price or a choice is answered in one to three lines plus one qualifying
+  // question. The prices or the bank block are never that answer; they come
+  // in the next message. "How much?", "TFN?", "220?" are about the price and
+  // get it.
+  if (menuAsAnswer(customerBurst, text, ctx.paid)) {
+    const retry = await decide(ctx, history, {
+      rewriteHint: 'Your previous reply was refused: the customer ASKED something and you answered with the prices or the bank details. Rewrite: answer what they asked FIRST, in one to three short lines (an operational question gets a real answer; a tax-outcome question gets the one line "that\'s one of the many things we check before we lodge, so leave that with us"), then ONE short qualifying question (TFN only, or also ABN income? still in Australia?). Do NOT include $220, $385, the BSB or the account number in this message. Same language, same action.\n\nPrevious reply, for reference only:\n"""\n' + decision.reply_text.slice(0, 1500) + '\n"""',
+      timeoutMs: 12_000,
+    });
+    const rewritten = retry.action === 'reply' && retry.reply_text
+      ? applyBankRule(fillPlaceholders(normaliseWillText(retry.reply_text, { firstMessage, firstName: custFirstName }), bank))
+      : '';
+    if (rewritten.trim() && !MENU_RE.test(rewritten) && !BANK_RE.test(rewritten)) {
+      rewriteNote = 'The first draft answered a question with the prices; Will rewrote it to answer first.';
+      text = rewritten;
+    } else {
+      const stripped = stripMenuAndBank(text);
+      if (stripped.length >= 40) {
+        rewriteNote = 'The first draft answered a question with the prices; the price lines were removed and the answer went.';
+        text = stripped;
+      } else {
+        return {
+          kind: 'human_task', decision, guardViolations: ['MENU_AS_ANSWER'],
+          task: { reason: 'Customer asked a question and Will only had the price list for it. Answer the question, then the price.', severity: 'URGENT', suggestedReply: text },
+          newState: undefined, stateChanged: false,
+        };
+      }
+    }
+    // A reply that no longer carries the prices cannot move them to Price Sent.
+    if (newState === 'PRICE_SENT') newState = undefined;
   }
 
   // ── "okay thank you" GETS ONE LINE BACK (Jo, 4 Sep) ───────────────────────
@@ -425,7 +601,6 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   }
 
   let verdict = policyGuard(text, guardCtx);
-  let rewriteNote: string | undefined;
 
   // ── TOO LONG IS NOT A REASON TO STOP (Jo, 4 Sep) ─────────────────────
   //
@@ -444,8 +619,8 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     const aroundPrice = /\bBSB\b|062692|81049952/.test(decision.reply_text);
     const retry = await decide(ctx, history, {
       rewriteHint: aroundPrice
-        ? `Your previous reply was refused because it was TOO LONG around the price message. Send the approved price message for their chosen option EXACTLY as approved, with at most ONE short reassuring line before it ("Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us."). Nothing else: no Library answer, no explanation, no second paragraph. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`
-        : `Your previous reply was refused because it was TOO LONG. Send the SAME answer again, shorter. Rule: every OPERATIONAL question they asked (our process, documents, the fee, the bank account, myGov access, who signs, timing, registration, what we need from them) gets its own answer in ONE short line each, in the order they asked. Every TAX-OUTCOME question (residency result, refund amount, deductions, Medicare outcome) is covered by ONE line in total: "that's one of the many things we check before we lodge, so leave that with us". Then the next step for their stage. No greeting line, no "great question", no explanations of how tax works. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`,
+        ? `Your previous reply was refused because it was TOO LONG around the price message. Send the approved price message for their chosen option EXACTLY as approved, with at most ONE short line before it that answers what they asked. Nothing else: no explanation, no second paragraph. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`
+        : `Your previous reply was refused because it was TOO LONG. Send the SAME answer again, shorter. Rule: every OPERATIONAL question they asked (our process, documents, the fee, the bank account, myGov access, who signs, timing, registration, what we need from them) gets its own answer in ONE short line each, in the order they asked (numbered, if the customer numbered their questions). Every TAX-OUTCOME question (residency result, refund amount, deductions, Medicare outcome) is covered by ONE line in total: "that's one of the many things we check before we lodge, so leave that with us". Then the next step for their stage. No greeting line, no "great question", no explanations of how tax works. Keep the same language, action and new_state.\n\nPrevious reply, for reference only:\n"""\n${decision.reply_text.slice(0, 1500)}\n"""`,
       timeoutMs: 12_000,
     });
     if (retry.action === 'reply' && retry.reply_text) {
@@ -502,6 +677,23 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       return { kind: 'silent', decision };
     }
 
+    // ── THE ACCOUNT NAME HAS ONE ANSWER (11 Oct, full audit, decision 4) ──
+    // A draft that names the account wrongly (or vaguely) is replaced by the
+    // fixed account-name answer in the customer's language, never a task:
+    // the customer is at the bank right now.
+    if (verdict.violations.includes('ACCOUNT_NAME_WRONG')
+        && verdict.violations.every((v) => v === 'ACCOUNT_NAME_WRONG' || v === 'REPLY_TOO_LONG' || NOT_A_FAULT.has(v))) {
+      const safe = accountNameMessage(ctx.lang);
+      return {
+        kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+        replyText: safe,
+        decision: { ...decision, reply_text: safe, new_state: undefined },
+        guardViolations: verdict.violations,
+        reviewNote: `Will named the account wrongly (${verdict.violations.join(', ')}); the fixed account-name answer went instead.`,
+        newState: undefined, stateChanged: false,
+      };
+    }
+
     // ── THE SAFE ANSWER INSTEAD OF A TASK (Jo, 3 Sep) ────────────────────
     //
     // Before payment, a customer asks the question every customer asks:
@@ -530,6 +722,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     // customer has just chosen (28 Sep, Maria). Everything else that is only
     // too long is a task now, never the stock line.
     const heldPrice = !bankAlreadySent && /\bBSB\b|062692|81049952/.test(decision.reply_text ?? '')
+      && !(customerAskedSomething(customerBurst) && !isChoiceOrPriceAsk(customerBurst))
       && verdict.violations.every((v) => v === 'REPLY_TOO_LONG' || DETERMINATION_ONLY.has(v) || NOT_A_FAULT.has(v));
     if (!ctx.paid
         && (isDetermination || heldPrice)
@@ -560,7 +753,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
           ? (decision.new_state === 'PRICE_SENT' || canTransition(ctx.state, 'PRICE_SENT') ? 'PRICE_SENT' : undefined)
           : undefined;
         return {
-          kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+          kind: resolveAiMode(mode) === 'FULL_AUTO' || isApprovedVerbatim(safe, custFirstName) ? 'queued' : 'pending_approval',
           replyText: safe,
           decision: { ...decision, reply_text: safe, new_state: priceState },
           guardViolations: verdict.violations,
@@ -607,7 +800,8 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   return {
     // Autopilot no longer answers instantly: 'queued' parks the finished reply
     // and the scheduler sends it a few minutes later (Jo, 25 Aug).
-    kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+    // 11 Oct (decision 16): a verbatim approved message needs no approval.
+    kind: resolveAiMode(mode) === 'FULL_AUTO' || isApprovedVerbatim(text, custFirstName) ? 'queued' : 'pending_approval',
     replyText: text,
     newState,
     stateChanged: !!newState,

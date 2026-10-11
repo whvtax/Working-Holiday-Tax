@@ -160,9 +160,9 @@ describe('no negotiation, no invented promises', () => {
     expect(has("You can't lose with us.", 'RETIRED_GUARANTEE_LINE')).toBe(true);
     expect(has('There is no risk to you at all.', 'RETIRED_GUARANTEE_LINE')).toBe(true);
   });
-  it('the new fee line sends', () => {
-    expect(policyGuard('The fee covers the full review of your tax return by our team and is not dependent on the outcome. Refunds and assessments are decided by the ATO, so the fee is non-refundable.', ctx({ state: 'PRICE_SENT' })).allowed).toBe(true);
-    expect(policyGuard('The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.', ctx({ state: 'PRICE_SENT' })).allowed).toBe(true);
+  it('the fee line sends in the guarantee wording; "non-refundable" before payment does not (11 Oct)', () => {
+    expect(policyGuard("The fee covers the review itself. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.", ctx({ state: 'PRICE_SENT' })).allowed).toBe(true);
+    expect(policyGuard('The fee covers the review itself, so it is the same whether the outcome is a refund or an amount owing, and it is non-refundable.', ctx({ state: 'PRICE_SENT' })).violations).toContain('NON_REFUNDABLE_WORDING');
   });
 });
 

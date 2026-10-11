@@ -28,6 +28,11 @@ export interface CustomerRow {
    *  mentions money adapts: the estimate, the lodged confirmation, the
    *  review ask, and Will's own replies (never "your refund will arrive"). */
   outcome: 'REFUND' | 'PAYABLE' | null;
+  /** 11 Oct (decision 13): a fee refund the team promised in the chat, read
+   *  from the team's own words, tracked until "refund sent" is written. */
+  refundPromisedAt?: string | null;
+  refundSentAt?: string | null;
+  refundAmountCents?: number | null;
   lastCustomerMsgAt: string | null;
   previousState: CustomerState | null;
   stateChangedAt: string;
@@ -148,7 +153,7 @@ export const CUSTOMER_FACING_JOB_KINDS: ReadonlyArray<JobRow['kind']> = ['AUTO_R
 export interface JobRow {
   id: string;
   customerId: string | null;
-  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'REVIEW_REQUEST' | 'MEDICARE_INFO' | 'RESEND_MESSAGE';
+  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'HANDOFF_BUMP' | 'REFUND_CHECK' | 'REFUND_CHECKIN' | 'REVIEW_REMIND' | 'REVIEW_REQUEST' | 'MEDICARE_INFO' | 'RESEND_MESSAGE';
   payload: {
     templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
     /** MEDICARE_INFO: how many times this job has already stood aside for the
@@ -161,8 +166,12 @@ export interface JobRow {
      *  FORM_COMPLETE and only this one message (the acknowledgement or the
      *  ABN questions) is still owed because Meta throttled the first send. */
     resend?: 'ack' | 'abn';
+    /** HANDOFF_BUMP (11 Oct): 1 = the 24h "still with the team" line, 2 = the
+     *  48h apology. The job fires only while the handoff is still open and
+     *  nothing has reached the customer since. */
+    stage?: 1 | 2;
     /** REVIEW_REQUEST: what pulled the Google review ask forward (Jo, 24 Sep). */
-    trigger?: 'timer' | 'refund_received' | 'manual';
+    trigger?: 'timer' | 'refund_received' | 'manual' | 'checkin';
     /** AUTO_REPLY, older shape: the QUEUED message this job will transmit.
      *  Only jobs armed before the 3 Sep change carry it; kept so a reply that
      *  was already queued at deploy time still goes out. */

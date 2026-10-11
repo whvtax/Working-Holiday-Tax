@@ -13,7 +13,7 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { ESTIMATE_PAYABLE_MSG, estimatePayableTemplateKey, LODGED_PAYABLE_MSG, lodgedPayableTemplateKey, FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
+import { ESTIMATE_PAYABLE_MSG, estimatePayableTemplateKey, LODGED_PAYABLE_MSG, lodgedPayableTemplateKey, FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, HANDOFF_BUMP_MSG, HANDOFF_APOLOGY_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
 import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey, WINBACK_MSG, REVIEW_ASK_MSG, reviewAskTemplateKey, REFERRAL_MSG } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
@@ -62,6 +62,7 @@ export function seedTemplates(): TemplateRow[] {
   const o = APPROVED.objections;
   return [
     t('opening', 'Opening & Qualification', 'Opening message', APPROVED.opening),
+    t('prices', 'Opening & Qualification', 'The two prices (only for a direct price question)', APPROVED.prices),
     t('price_tfn', 'Pricing', 'Price: TFN only ($220)', APPROVED.price_tfn),
     t('price_tfn_abn', 'Pricing', 'Price: TFN + ABN ($385)', APPROVED.price_tfn_abn),
     t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($220)', APPROVED.price_tfn_review),
@@ -84,6 +85,7 @@ export function seedTemplates(): TemplateRow[] {
     t('fu_pre_24h', 'Follow-ups', 'Pre-payment · 24h', APPROVED.followups_pre_payment.h24, true),
     t('fu_pre_3d', 'Follow-ups', 'Pre-payment · 3d', APPROVED.followups_pre_payment.d3, true),
     t('fu_pre_7d', 'Follow-ups', 'Pre-payment · 7d (final)', APPROVED.followups_pre_payment.d7, true),
+    t('fu_price_sent', 'Follow-ups', 'Pre-payment · they already have the bank details', APPROVED.followups_pre_payment.priceSent, true),
     t('fu_form_6h', 'Follow-ups', 'Form · 6h', APPROVED.followups_form.h6, true),
     t('fu_form_3d', 'Follow-ups', 'Form · 3d', APPROVED.followups_form.d3, true),
     t('fu_form_7d', 'Follow-ups', 'Form · 7d', APPROVED.followups_form.d7, true),
@@ -158,7 +160,7 @@ export function seedTemplates(): TemplateRow[] {
     // personal line Will writes. Sent when the refund lands, or 14 days after
     // lodgement. Meta template review_ask_{lang} for en/de/ja.
     ...(Object.keys(REVIEW_ASK_MSG) as Lang[]).map((lang) =>
-      t(reviewAskTemplateKey(lang), 'Post-payment & Service', `Google review ask ({{1}} name, {{2}} personal line) · ${LANG_LABELS[lang]}`, REVIEW_ASK_MSG[lang], lang === 'en' || lang === 'de' || lang === 'ja')),
+      t(reviewAskTemplateKey(lang), 'Post-payment & Service', `Google review ask ({{1}} name, {{2}} personal line) · ${LANG_LABELS[lang]}`, REVIEW_ASK_MSG[lang].replace('{{3}}', 'https://g.page/r/CaWt4kV0UmY-EBM/review'), lang === 'en' || lang === 'de' || lang === 'ja')),
     ...(Object.keys(REFERRAL_MSG) as Lang[]).map((lang) =>
       t(`referral_${lang}`, 'Post-payment & Service', `Referral line after a positive reply to the review ask · ${LANG_LABELS[lang]}`, REFERRAL_MSG[lang])),
 
@@ -175,6 +177,12 @@ export function seedTemplates(): TemplateRow[] {
     // on a person was sent the English one mid-conversation.
     ...(Object.keys(HANDOFF_HOLDING_MSG).filter((l) => l !== 'en') as (keyof typeof HANDOFF_HOLDING_MSG)[]).map((l) =>
       t(`handoff_holding_${l}`, 'Handoff suggestions', `Handoff · holding reply (${l})`, HANDOFF_HOLDING_MSG[l])),
+    // 11 Oct (full audit, decision 1): the 24h bump and the 48h apology Will
+    // sends on his own while a handoff stays unanswered.
+    ...(Object.keys(HANDOFF_BUMP_MSG) as (keyof typeof HANDOFF_BUMP_MSG)[]).map((l) =>
+      t(l === 'en' ? 'handoff_bump' : `handoff_bump_${l}`, 'Handoff suggestions', `Handoff · still waiting after 24h (${l})`, HANDOFF_BUMP_MSG[l])),
+    ...(Object.keys(HANDOFF_APOLOGY_MSG) as (keyof typeof HANDOFF_APOLOGY_MSG)[]).map((l) =>
+      t(l === 'en' ? 'handoff_apology' : `handoff_apology_${l}`, 'Handoff suggestions', `Handoff · apology after 48h (${l})`, HANDOFF_APOLOGY_MSG[l])),
     t('handoff_attachment', 'Handoff suggestions', 'Handoff · customer sent a file Will cannot read', APPROVED.handoff.attachment),
     t('handoff_unreadable', 'Handoff suggestions', 'Handoff · voice note or unreadable message', APPROVED.handoff.unreadable),
     t('handoff_revoked', 'Handoff suggestions', 'Handoff · customer deleted their message before it could be read', APPROVED.handoff.revoked),
@@ -198,7 +206,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-10-01-payable';
+export const TEMPLATE_BACKFILL_VERSION = '2026-10-11-opening-question';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

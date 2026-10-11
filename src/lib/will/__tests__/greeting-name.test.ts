@@ -69,18 +69,18 @@ describe('greetingName — profile first, then the message, else plain', () => {
   });
 });
 
-describe('the menu opening', () => {
-  it('starts with a plain "Hey!" the name slots into, and shows both tracks', () => {
+describe('the opening (11 Oct: one question, no prices)', () => {
+  it('starts with a plain "Hey!" the name slots into, and asks the one question', () => {
     expect(APPROVED.opening.startsWith('Hey!')).toBe(true);
-    expect(APPROVED.opening).toContain('TFN: $220');
-    expect(APPROVED.opening).toContain('TFN + ABN: $385');
-    expect(APPROVED.opening).toContain('Which option works best for you?');
+    expect(APPROVED.opening).not.toMatch(/\$\s?220|\$\s?385/);
+    expect(APPROVED.opening).toMatch(/TFN only, or also on an ABN/);
   });
 
-  it('keeps its paragraph breaks (blank lines between blocks)', () => {
-    // WhatsApp renders blank lines as separate blocks; the owner asked for the
-    // message to stay divided into paragraphs (Jo, 3 Sep).
-    expect(APPROVED.opening.split('\n\n').length).toBeGreaterThanOrEqual(5);
+  it('the two prices live under [prices], for a direct price question', () => {
+    expect(APPROVED.prices).toContain('TFN: $220');
+    expect(APPROVED.prices).toContain('TFN + ABN: $385');
+    expect(APPROVED.prices).toContain('Which option works best for you?');
+    expect(APPROVED.prices.split('\n\n').length).toBeGreaterThanOrEqual(4);
   });
 
   it('has no dashes', () => {

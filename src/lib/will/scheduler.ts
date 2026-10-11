@@ -11,16 +11,18 @@ import { policyGuard, registerLibraryBodies } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
 import { formPromisedKey } from './promised-date';
+import { salesPromisedKey, businessDaysFromNow } from './stage-sync';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
-import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
+import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, handoffBumpTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
+import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
 import { runLostLeadAnalysis } from './lost-analysis';
-import { readReviewAsks, patchReviewAsk } from './review-asks';
+import { readReviewAsks, patchReviewAsk, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, reviewRemindMessage, reviewRemindTemplateKey, reviewThanksMessage, matchReviewToAsk, REVIEW_REMIND_DAYS } from './review-asks';
+import { fetchGoogleReviews } from './google-reviews';
 import { decideReviewAsk } from './claude';
 import { reviewAskMessage, reviewAskTemplateKey, REVIEW_ASK_DEFAULT_OPENER } from './i18n';
 import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
@@ -402,6 +404,12 @@ async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; met
 /** The holding line in the CUSTOMER'S language: their Library row first
  *  (handoff_holding / handoff_holding_<lang>), then the code copy for that
  *  language, then English. Before 4 Sep this was English for everyone. */
+/** 11 Oct: how long an unanswered handoff may sit before Will bumps it (and,
+ *  the same again later, apologises). The holding line promises "usually
+ *  within one business day", so the bump lands exactly when that promise
+ *  would otherwise quietly break. */
+export const HANDOFF_BUMP_AFTER_MS = 24 * 60 * 60 * 1000;
+
 async function ackBody(
   lang?: string | null,
   // Optional so a caller inside a tick can hand in the once-per-tick read
@@ -707,6 +715,18 @@ async function doProcess(): Promise<TickResult> {
               await store.audit('assistant', out.ok ? 'handoff_ack_sent' : 'handoff_ack_failed', {
                 customerId: c.id, error: out.ok ? undefined : out.error,
               });
+              // 11 Oct (full audit, decision 1): the holding line promises a
+              // business day. If the handoff is still open and unanswered a
+              // day later, Will says so himself (HANDOFF_BUMP stage 1), and a
+              // day after that apologises (stage 2). One bump chain per
+              // handoff: any older chain for this customer is replaced.
+              if (out.ok) {
+                await store.cancelJobsFor(c.id, ['HANDOFF_BUMP']).catch(() => 0);
+                await store.addJob({
+                  customerId: c.id, kind: 'HANDOFF_BUMP', payload: { stage: 1 },
+                  runAt: new Date(Date.now() + HANDOFF_BUMP_AFTER_MS).toISOString(),
+                }).catch(() => { /* the task itself is the backstop */ });
+              }
             } else {
               await store.audit('assistant', 'handoff_ack_skipped', {
                 customerId: c.id, reason: answered ? 'already answered' : 'task closed',
@@ -717,6 +737,139 @@ async function doProcess(): Promise<TickResult> {
           await store.audit('assistant', 'handoff_ack_crashed', {
             error: (e as Error).message?.slice(0, 200),
           }).catch(() => {});
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
+      if (job.kind === 'HANDOFF_BUMP') {
+        try {
+          const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
+          const stage: 1 | 2 = job.payload.stage === 2 ? 2 : 1;
+          if (c && !c.optedOut && !c.aiPaused) {
+            const openTask = await store.findOpenTaskForCustomer(c.id);
+            const sinceAck = Date.now() - HANDOFF_BUMP_AFTER_MS;
+            const answered = (await store.listMessages(c.id)).some((m) =>
+              m.direction === 'OUT' && m.status === 'SENT' && !m.meta?.system
+              && !String(m.meta?.waTemplate?.name ?? '').startsWith('handoff_')
+              && new Date(m.createdAt).getTime() > sinceAck);
+            if (openTask && !answered) {
+              const body = handoffBumpMessage(stage, c.lang);
+              const tpl = { name: handoffBumpTemplateKey(stage, metaTemplateLang(c.lang)), params: [], lang: c.lang, fallbackToText: true };
+              const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+              await store.audit('assistant', out.ok ? 'handoff_bump_sent' : 'handoff_bump_failed', {
+                customerId: c.id, stage, error: out.ok ? undefined : out.error,
+              });
+              if (openTask.severity !== 'URGENT') {
+                await store.updateTask(openTask.id, {
+                  severity: 'URGENT',
+                  reason: openTask.reason.startsWith('WAITING ') ? openTask.reason : `WAITING ${stage === 1 ? '24h' : '48h'}: ${openTask.reason}`,
+                }).catch(() => {});
+              }
+              if (stage === 1) {
+                await store.addJob({
+                  customerId: c.id, kind: 'HANDOFF_BUMP', payload: { stage: 2 },
+                  runAt: new Date(Date.now() + HANDOFF_BUMP_AFTER_MS).toISOString(),
+                }).catch(() => {});
+              }
+            } else {
+              await store.audit('assistant', 'handoff_bump_skipped', {
+                customerId: c.id, stage, reason: answered ? 'already answered' : 'task closed',
+              });
+            }
+          }
+        } catch (e) {
+          await store.audit('assistant', 'handoff_bump_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
+      if (job.kind === 'REFUND_CHECKIN') {
+        // 11 Oct (review system): ten days after lodgement, "has the refund
+        // landed yet?" A service question; a "yes" is the moment the review
+        // ask goes out (service.ts, saysRefundLanded). "Not yet" re-asks once,
+        // four days later. Never for a customer who owes the ATO, is owed a
+        // refund by us, already got the ask, or was judged unhappy.
+        try {
+          const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
+          const asks = c ? await readReviewAsks(store) : {};
+          const rec = c ? asks[c.id] : undefined;
+          const attempt = Number((job.payload as { attempt?: number }).attempt ?? 0);
+          if (c && !c.optedOut && !c.isLegacy && !c.aiPaused && c.outcome !== 'PAYABLE'
+              && !(c.refundPromisedAt && !c.refundSentAt)
+              && ['SIGNED', 'LODGED', 'COMPLETED'].includes(c.state)
+              && !rec?.askedAt && !rec?.skippedAt && attempt < 2) {
+            const firstName = greetingName(c);
+            const body = refundCheckinMessage(c.lang, firstName);
+            const tpl = { name: refundCheckinTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: true };
+            const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+            await patchReviewAsk(store, c.id, { checkinAt: new Date().toISOString(), checkins: (rec?.checkins ?? 0) + 1 });
+            await store.audit('system', out.ok ? 'refund_checkin_sent' : 'refund_checkin_failed', { customerId: c.id, attempt, error: out.ok ? undefined : out.error }).catch(() => {});
+            if (out.ok) result.sent.push(`${c.name ?? c.waId} · refund check-in`);
+          } else {
+            await store.audit('system', 'refund_checkin_skipped', { customerId: c?.id ?? null, attempt }).catch(() => {});
+          }
+        } catch (e) {
+          await store.audit('scheduler', 'refund_checkin_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
+      if (job.kind === 'REVIEW_REMIND') {
+        // 11 Oct (review system): three days after an ask that got no reply
+        // and no review, one reminder with the link. Then never again.
+        try {
+          const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
+          const rec = c ? (await readReviewAsks(store))[c.id] : undefined;
+          if (c && rec?.askedAt && !rec.remindedAt && !rec.reviewedAt && !c.optedOut && !c.isLegacy && !c.aiPaused
+              && !(c.refundPromisedAt && !c.refundSentAt)) {
+            const askedAt = new Date(rec.askedAt).getTime();
+            const replied = (await store.listMessages(c.id)).some((m) => m.direction === 'IN' && new Date(m.createdAt).getTime() > askedAt);
+            if (!replied) {
+              const firstName = greetingName(c);
+              const link = await reviewLink(store);
+              const body = reviewRemindMessage(c.lang, firstName, link);
+              // The Meta template carries the link in its body; only the name is a parameter.
+              const tpl = { name: reviewRemindTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: true };
+              const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+              await patchReviewAsk(store, c.id, { remindedAt: new Date().toISOString() });
+              await store.audit('system', out.ok ? 'review_remind_sent' : 'review_remind_failed', { customerId: c.id, error: out.ok ? undefined : out.error }).catch(() => {});
+              if (out.ok) result.sent.push(`${c.name ?? c.waId} · review reminder`);
+            } else {
+              await patchReviewAsk(store, c.id, { remindedAt: new Date().toISOString() });
+              await store.audit('system', 'review_remind_skipped', { customerId: c.id, reason: 'they replied' }).catch(() => {});
+            }
+          }
+        } catch (e) {
+          await store.audit('scheduler', 'review_remind_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
+      if (job.kind === 'REFUND_CHECK') {
+        // 11 Oct (decision 13): three business days after the team promised
+        // a fee refund, and it has not been written as sent: URGENT task
+        // with the line to send, re-checked every two business days until
+        // the team writes that it went. Arnaud waited 25 days; Harry chased
+        // three times; Samantha got a review ask while owed $176.
+        try {
+          const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
+          if (c && c.refundPromisedAt && !c.refundSentAt) {
+            const since = Math.round((Date.now() - new Date(c.refundPromisedAt).getTime()) / 86400000);
+            const amt = c.refundAmountCents != null ? `$${(c.refundAmountCents / 100).toFixed(c.refundAmountCents % 100 ? 2 : 0)}` : 'the fee refund';
+            await raiseOrUpdateTask(store, c, {
+              reason: `REFUND OWED: ${amt} promised ${since} days ago and not yet written as sent. Transfer it, then tell them here.`,
+              severity: 'URGENT', newContext: `Promised on ${c.refundPromisedAt.slice(0, 10)}. Will keeps the review ask and every nudge off until you write that it was sent.`,
+              suggestedReply: `Hi ${greetingName(c)}, the ${amt} refund went out today to the account you gave us. It should show within 2 business days. Sorry it took this long.`,
+            });
+            await store.addJob({ customerId: c.id, kind: 'REFUND_CHECK', payload: {}, runAt: businessDaysFromNow(2).toISOString() }).catch(() => {});
+            await store.audit('scheduler', 'refund_overdue_flagged', { customerId: c.id, since }).catch(() => {});
+          }
+        } catch (e) {
+          await store.audit('scheduler', 'refund_check_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
         }
         await store.setJobStatus(job.id, 'DONE');
         continue;
@@ -1178,9 +1331,17 @@ async function doProcess(): Promise<TickResult> {
         const asks = await readReviewAsks(store);
         const prior = asks[customer.id];
         if (prior?.askedAt || prior?.skippedAt) { await store.setJobStatus(job.id, 'DONE'); continue; }
+        // 11 Oct (decision 13): never ask for a review while we owe them money.
+        if (customer.refundPromisedAt && !customer.refundSentAt) {
+          await store.audit('system', 'review_ask_deferred_refund_owed', { customerId: customer.id }).catch(() => {});
+          await store.setJobStatus(job.id, 'CANCELLED');
+          await store.addJob({ customerId: customer.id, kind: 'REVIEW_REQUEST', payload: job.payload, runAt: businessDaysFromNow(5).toISOString() }).catch(() => {});
+          continue;
+        }
         if (!customer.optedOut && !customer.isLegacy
           && ['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state)) {
-          const trigger = (job.payload as { trigger?: string } | null)?.trigger === 'refund_received' ? 'refund_received' : 'timer';
+          const rawTrigger = (job.payload as { trigger?: string } | null)?.trigger;
+          const trigger = rawTrigger === 'refund_received' ? 'refund_received' : rawTrigger === 'checkin' ? 'checkin' : 'timer';
           const msgs = await store.listMessages(customer.id).catch(() => []);
           const transcript = msgs
             .filter((m) => m.status === 'SENT' || m.direction === 'IN')
@@ -1196,7 +1357,8 @@ async function doProcess(): Promise<TickResult> {
           const langKey = (customer.lang && customer.lang in REVIEW_ASK_DEFAULT_OPENER ? customer.lang : 'en') as keyof typeof REVIEW_ASK_DEFAULT_OPENER;
           const opener = verdictAsk.opener ?? REVIEW_ASK_DEFAULT_OPENER[langKey];
           const firstName = greetingName(customer);
-          const body = reviewAskMessage(customer.lang, firstName, opener);
+          const link = await reviewLink(store);
+          const body = reviewAskMessage(customer.lang, firstName, opener, link);
           const verdict = policyGuard(body, {
             state: customer.state, paid: true, aiPaused: false, killSwitch: false,
             optedOut: false, isLegacy: false,
@@ -1226,6 +1388,8 @@ async function doProcess(): Promise<TickResult> {
               await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString(), trigger, opener });
               await store.audit('system', 'review_ask_sent', { customerId: customer.id, trigger, opener, judged: verdictAsk.measured });
               result.sent.push(`${customer.name ?? customer.waId} · review ask`);
+              // 11 Oct: one reminder, three days later, if nothing came back.
+              await store.addJob({ customerId: customer.id, kind: 'REVIEW_REMIND', payload: {}, runAt: new Date(Date.now() + REVIEW_REMIND_DAYS * 86400000).toISOString() }).catch(() => {});
             } else {
               const missingTemplate = /131047|24|window|template/i.test(out.error ?? '');
               await raiseOrUpdateTask(store, customer, {
@@ -1383,6 +1547,7 @@ async function doProcess(): Promise<TickResult> {
       // rather than sent.
       if (!FLOW_ELIGIBLE_STATES[flow]?.includes(customer.state) || customer.optedOut || customer.aiPaused || customer.isLegacy
           || (flow === 'prePayment' && customer.paid) || alreadyPastLeadStage
+          || (!!customer.refundPromisedAt && !customer.refundSentAt)
           || (await store.getSetting(followupsOffKey(customer.id))) === true) {
         if (alreadyPastLeadStage && !customer.paid) {
           await store.audit('scheduler', 'follow_up_cancelled_stale_paid_flag', { customerId: customer.id }).catch(() => {});
@@ -1398,12 +1563,13 @@ async function doProcess(): Promise<TickResult> {
       }
       // 1 Oct (Laura): "I'll fill it in on Wednesday" pauses the form
       // reminders until Wednesday has passed. The step is re-armed for then.
-      if (flow === 'form') {
-        const until = await store.getSetting(formPromisedKey(customer.id)).catch(() => null);
+      // 11 Oct (decision 8): the same for a date named before payment.
+      if (flow === 'form' || flow === 'prePayment') {
+        const until = await store.getSetting(flow === 'form' ? formPromisedKey(customer.id) : salesPromisedKey(customer.id)).catch(() => null);
         if (typeof until === 'string' && new Date(until).getTime() > Date.now()) {
           await store.setJobStatus(job.id, 'CANCELLED');
           await store.addJob({ customerId: customer.id, kind: 'FOLLOW_UP', payload: job.payload, runAt: until });
-          await store.audit('scheduler', 'form_reminder_deferred_promised_date', { customerId: customer.id, until, templateKey: job.payload.templateKey });
+          await store.audit('scheduler', flow === 'form' ? 'form_reminder_deferred_promised_date' : 'sales_nudge_deferred_promised_date', { customerId: customer.id, until, templateKey: job.payload.templateKey });
           result.deferred++;
           continue;
         }
@@ -1427,7 +1593,26 @@ async function doProcess(): Promise<TickResult> {
           continue;
         }
       }
-      const template = (await tickTemplates()).find((t) => t.key === job.payload.templateKey);
+      // 11 Oct (full audit, decision 9): a lead who already holds the bank
+      // details gets ONE "the details are above" nudge instead of the 24h
+      // and 3d sales nudges ("want me to get you started?" to someone with
+      // the BSB; 12 cases in one October week). The 7d door-closer stays.
+      let templateKey = job.payload.templateKey;
+      if (flow === 'prePayment' && (templateKey === 'fu_pre_24h' || templateKey === 'fu_pre_3d')) {
+        const outs = (await store.listMessages(customer.id)).filter((m) => m.direction === 'OUT' && m.status === 'SENT');
+        const hasBank = customer.state === 'PRICE_SENT' || outs.some((m) => /\b0?62\s?692\b|\b81049952\b/.test(m.body ?? ''));
+        if (hasBank) {
+          const alreadyNudged = outs.some((m) => m.meta?.waTemplate?.name === 'fu_price_sent');
+          if (alreadyNudged) {
+            await store.audit('scheduler', 'follow_up_skipped_price_sent_already_nudged', { customerId: customer.id, templateKey }).catch(() => {});
+            await store.setJobStatus(job.id, 'DONE');
+            await scheduleFollowUp(customer.id, flow, seq + 1);
+            continue;
+          }
+          templateKey = 'fu_price_sent';
+        }
+      }
+      const template = (await tickTemplates()).find((t) => t.key === templateKey);
       // H6: one bad step must not kill the whole cadence. Skip this message but
       // still schedule the next one in the sequence.
       if (!template) {
@@ -1480,8 +1665,22 @@ async function doProcess(): Promise<TickResult> {
       // exactly what the customer receives.
       const firstName = greetingName(customer);
       body = body.replace(/\{\{1\}\}/g, firstName);
-      // Their language when that translation is approved in WhatsApp Manager,
-      // English when it is not. channel.ts handles the fallback.
+      // 11 Oct (full audit, decision 9): their language or nothing. A nudge
+      // in English to a German or Japanese lead converted zero of 56; a step
+      // whose template Meta has not approved in the customer's language is
+      // skipped quietly (audited, no task), and the cadence moves on. Before
+      // this, fu_pre_3d with no Meta template at all went out as free text,
+      // failed outside the window, retried three days in a row and opened an
+      // URGENT task each time.
+      const approvedHere = typeof templateApprovedFor === 'function' ? await templateApprovedFor(template.key, customer.lang).catch(() => null) : null;
+      if (approvedHere === false) {
+        await store.audit('scheduler', 'follow_up_skipped_no_template_in_language', {
+          customerId: customer.id, template: template.key, lang: customer.lang ?? 'en', seq,
+        });
+        await store.setJobStatus(job.id, 'DONE');
+        await scheduleFollowUp(customer.id, flow, seq + 1);
+        continue;
+      }
       const waTemplate = { name: template.key, params: [firstName], lang: customer.lang };
 
       // REL-02: mark the job DONE BEFORE sending, so an at-least-once replay
@@ -1752,6 +1951,11 @@ export async function runNightly(): Promise<void> {
 
   // COST-02: purge inbound-idempotency markers older than 30 days so the table
   // does not grow forever (Meta never retries a message that old).
+  // 11 Oct (review system): read the Google feed, match new reviews to the
+  // customers we asked (first name + date), thank them, stop the reminder
+  // and count it. Best effort: a feed hiccup must never touch the rest.
+  await syncGoogleReviews().catch(() => {});
+
   const purged = await store.purgeProcessedMessages(30 * 24 * 60 * 60 * 1000).catch(() => 0);
 
   // The decision log answers "why did it do that?", which is worth days, not
@@ -1800,4 +2004,39 @@ export async function runNightly(): Promise<void> {
   // happens to fire.
 
   await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged, auditPurged, jobsPurged });
+}
+
+
+/** 11 Oct (review system): match the Google feed to the asks. Exported for
+ *  the tests and the manual "sync now" action. */
+export async function syncGoogleReviews(): Promise<{ matched: number }> {
+  const store = getStore();
+  const reviews = await fetchGoogleReviews();
+  if (!reviews.length) return { matched: 0 };
+  const asks = await readReviewAsks(store);
+  const since = Date.now() - 60 * 86400000;
+  const candidates: { customerId: string; firstName: string; askedAt: string }[] = [];
+  for (const [customerId, rec] of Object.entries(asks)) {
+    if (!rec.askedAt || rec.reviewedAt || new Date(rec.askedAt).getTime() < since) continue;
+    const c = await store.getCustomerById(customerId).catch(() => null);
+    const firstName = c ? greetingName(c) : '';
+    if (c && firstName) candidates.push({ customerId, firstName, askedAt: rec.askedAt });
+  }
+  const matches = matchReviewToAsk(reviews.map((r) => ({ reviewer: r.reviewer, createTime: r.createTime })), candidates);
+  for (const m of matches) {
+    const c = await store.getCustomerById(m.customerId).catch(() => null);
+    if (!c) continue;
+    await patchReviewAsk(store, c.id, { reviewedAt: new Date().toISOString(), reviewer: m.reviewer });
+    await store.cancelJobsFor(c.id, ['REVIEW_REMIND']).catch(() => 0);
+    await store.audit('system', 'google_review_matched', { customerId: c.id, reviewer: m.reviewer }).catch(() => {});
+    const rec = asks[c.id];
+    if (!rec?.referralAt && !c.optedOut && !c.aiPaused) {
+      const body = reviewThanksMessage(c.lang, greetingName(c));
+      const tpl = { name: metaTemplateLang(c.lang) === 'en' ? 'review_thanks' : `review_thanks_${metaTemplateLang(c.lang)}`, params: [greetingName(c)], lang: c.lang, fallbackToText: true };
+      const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+      if (out.ok) await patchReviewAsk(store, c.id, { referralAt: new Date().toISOString() });
+      await store.audit('system', out.ok ? 'review_thanks_sent' : 'review_thanks_failed', { customerId: c.id, error: out.ok ? undefined : out.error }).catch(() => {});
+    }
+  }
+  return { matched: matches.length };
 }

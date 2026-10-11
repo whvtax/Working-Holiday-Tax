@@ -40,9 +40,12 @@ describe('Dashboard wiring', () => {
     expect(calls).toBeGreaterThanOrEqual(8);
     expect(src).toMatch(/action: 'set_kill_switch'[\s\S]{0,200}actionToast\(/);
     expect(src).toMatch(/action: 'discard_message'[\s\S]{0,120}actionToast\(r, 'Draft discarded'\)/);
-    expect(src).toMatch(/action: 'resolve_task', id: t\.id \}\); say\(actionToast\(r, 'Dismissed'\)/);
+    // 11 Oct: the two customer-task resolve buttons go through tryResolve,
+    // which still ends in actionToast (and may show the "reply first" chooser).
+    expect(src).toMatch(/tryResolve\(t\.id, 'Dismissed'\)/);
     expect(src).toMatch(/action: 'resolve_task', id: t\.id \}\); say\(actionToast\(r, 'Marked resolved ✓'\)/);
-    expect(src).toMatch(/action: 'resolve_task', id: t\.id \}\); say\(actionToast\(r, 'Resolved'\)/);
+    expect(src).toMatch(/tryResolve\(t\.id, 'Resolved'\)/);
+    expect(src).toMatch(/say\(actionToast\(r, okMsg\)\.message\)/);
     expect(src).toMatch(/action: 'toggle_ai', id: drawer\.id[\s\S]{0,120}actionToast\(r, drawer\.aiPaused/);
     expect(src).toMatch(/action: 'delete_template'[\s\S]{0,150}actionToast\(r, 'Message deleted'\)/);
   });

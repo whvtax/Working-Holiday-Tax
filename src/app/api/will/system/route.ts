@@ -14,7 +14,7 @@ import { getStore } from '@/lib/will/store';
 import { aiCallsKeyFor, aiCallsKeyPrefix, resolveAiDailyBudget } from '@/lib/will/service';
 import { summariseUsage } from '@/lib/will/ai-usage';
 import { fetchCostReport } from '@/lib/will/cost-report';
-import { readReviewAsks, REVIEWS_RECEIVED_SETTING } from '@/lib/will/review-asks';
+import { readReviewAsks, REVIEWS_RECEIVED_SETTING, GOOGLE_PLACE_ID_SETTING, reviewLinkFor } from '@/lib/will/review-asks';
 import { STAGE_GROUPS } from '@/lib/will/state-machine';
 import { summariseAiUsage, faultsFromAudit, applyFaultDismissals, faultDismissedKey } from '@/lib/will/system-report';
 
@@ -73,11 +73,13 @@ export async function GET() {
 
   // GOOGLE REVIEWS (Jo, 24 Sep): asked / skipped / referral, and the count
   // the owner ticks by hand when a review actually shows up on Google.
-  const [asks, receivedRaw, customersAll] = await Promise.all([
+  const [asks, receivedRaw, customersAll, placeIdRaw] = await Promise.all([
     readReviewAsks(store),
     store.getSetting(REVIEWS_RECEIVED_SETTING).catch(() => 0),
     typeof store.listCustomers === 'function' ? store.listCustomers().catch(() => []) : Promise.resolve([]),
+    store.getSetting(GOOGLE_PLACE_ID_SETTING).catch(() => null),
   ]);
+
   const askRows = Object.values(asks);
   const reviews = {
     asked: askRows.filter((a) => a.askedAt).length,
@@ -86,6 +88,12 @@ export async function GET() {
     skipReasons: askRows.filter((a) => a.skippedAt && !a.askedAt && a.skipReason).map((a) => a.skipReason as string).slice(-5),
     referrals: askRows.filter((a) => a.referralAt).length,
     received: Number(receivedRaw) || 0,
+    // 11 Oct (review system)
+    checkins: askRows.filter((a) => a.checkinAt).length,
+    reminders: askRows.filter((a) => a.remindedAt).length,
+    matched: askRows.filter((a) => a.reviewedAt).length,
+    placeIdSet: typeof placeIdRaw === 'string' && placeIdRaw.length > 0 ? true : !!process.env.GOOGLE_PLACE_ID,
+    reviewLink: reviewLinkFor(typeof placeIdRaw === 'string' && placeIdRaw ? placeIdRaw : process.env.GOOGLE_PLACE_ID),
   };
 
   // AUTOPILOT COVERAGE BY HOUR (Jo, 24 Sep): of every decision Will made in

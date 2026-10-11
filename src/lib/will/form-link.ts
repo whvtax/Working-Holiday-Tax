@@ -34,6 +34,20 @@ export function noMedicare(raw: string | null | undefined): boolean {
   return typeof raw === 'string' && raw.trim().toLowerCase() === 'no';
 }
 
+/** 11 Oct (full audit, decision 15, Jo): a customer who ticked Working
+ *  Holiday Maker on the questionnaire is taxed at the WHM rate and needs no
+ *  Medicare levy exemption, so the exemption script is never sent to them,
+ *  whatever they answered about Medicare. A customer who ticked Australian
+ *  resident and has no Medicare gets it, whatever their country. The WHM
+ *  answer is folded into the Medicare answer here, so every downstream
+ *  reader (the queue, the replay, the unmatched-form task) sees "n/a". */
+export function medicareAnswerFor(hasMedicare: string | null | undefined, taxStatus: string | null | undefined): string | null {
+  const status = (taxStatus ?? '').trim().toLowerCase();
+  const whm = status === 'whm' || /working holiday|whm|whv|417|462/.test(status);
+  if (whm) return 'n/a (Working Holiday Maker)';
+  return hasMedicare ?? null;
+}
+
 /** Digits only, no country code assumptions. */
 function digits(v: string | null | undefined): string {
   return (v || '').replace(/\D/g, '');
