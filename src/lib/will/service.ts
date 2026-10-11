@@ -19,7 +19,7 @@ import { autopilotReplyDelaySeconds } from './config';
 import { promisedUntil, formPromisedKey } from './promised-date';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
 import { isIdentityQuestion } from './identity-question';
-import { detectChoice, priceMessageFor } from './instant-choice';
+import { detectChoice, priceMessageFor, firstContactPriceMessage } from './instant-choice';
 import { isAccountNameQuestion, accountNameMessage } from './account-name';
 import { customerNotInterested, looksLikeVendor, salesPromisedKey } from './stage-sync';
 import { firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
@@ -538,7 +538,10 @@ async function handleIncomingInner(
       const lastWill = [...prior].reverse().find((m) => m.direction === 'OUT' && m.status === 'SENT')?.body ?? null;
       const track = bankSent ? null : detectChoice(text, lastWill);
       if (track) {
-        const price = priceMessageFor(track);
+        // First contact (nothing from us yet): greeting + "looks like the TFN
+        // option is the right fit" (Jo, 11 Oct). Otherwise the plain price message.
+        const firstContact = !prior.some((m) => m.direction === 'OUT' && m.status === 'SENT');
+        const price = firstContact ? firstContactPriceMessage(track, cleanFirstName(firstNameOf(customer.name))) : priceMessageFor(track);
         const out = await deliverOut(customer, price, 'AI', { proposedState: 'PRICE_SENT' }, undefined, {
           onFailure: { reason: 'The price message was not delivered after the customer chose a track. They are waiting.', severity: 'URGENT', context: text.slice(0, 200) },
         });

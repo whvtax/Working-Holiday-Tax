@@ -47,8 +47,9 @@ describe('detectChoice: a short clear answer to the opening question', () => {
       expect(m).not.toMatch(/^Great!/);
       expect(policyGuard(m, { state: 'QUALIFIED', paid: false, aiPaused: false, killSwitch: false, optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(), isApprovedTemplate: false, estimateFromTeam: null }).allowed).toBe(true);
     }
-    expect(priceMessageFor('TFN')).toContain('Amount: $220');
-    expect(priceMessageFor('TFN_ABN')).toContain('Amount: $385');
+    expect(priceMessageFor('TFN')).toMatch(/\$220/);
+    expect(priceMessageFor('TFN')).not.toMatch(/Amount:/);
+    expect(priceMessageFor('TFN_ABN')).toMatch(/\$385/);
   });
 });
 
@@ -85,5 +86,28 @@ describe('the instant path in the service (source-pinned)', () => {
     expect(instant).toBeLessThan(arm);
     expect(src).toMatch(/instant_price_sent/);
     expect(src).toMatch(/const track = bankSent \? null : detectChoice/);
+  });
+});
+
+describe('first contact that already names the track (Jo, 11 Oct)', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { firstContactPriceMessage } = require('@/lib/will/instant-choice') as typeof import('@/lib/will/instant-choice');
+  it('TFN: greeting, "right fit", then the rest of the price message', () => {
+    const m = firstContactPriceMessage('TFN', 'Alex');
+    expect(m).toMatch(/^Hey Alex! 😊 Happy to help\.\n\nLooks like the TFN option is the right fit for you: \$220\. We review your tax residency/);
+    expect(m).toContain('BSB: 062692');
+    expect(m).toContain("we'll refund the difference");
+    expect(m).not.toMatch(/Got it, so that's/);
+    expect(policyGuard(m, { state: 'NEW_LEAD', paid: false, aiPaused: false, killSwitch: false, optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(), isApprovedTemplate: false, estimateFromTeam: null }).allowed).toBe(true);
+  });
+  it('ABN: the same shape with the TFN + ABN option', () => {
+    const m = firstContactPriceMessage('TFN_ABN', null);
+    expect(m).toMatch(/^Hey! 😊 Happy to help\.\n\nLooks like the TFN \+ ABN option is the right fit for you: \$385\./);
+    expect(m).toContain('business schedule');
+  });
+  it('the service uses it only when nothing has been sent yet', () => {
+    const src = readFileSync(join(__dirname, '..', 'service.ts'), 'utf8');
+    expect(src).toMatch(/const firstContact = !prior\.some\(\(m\) => m\.direction === 'OUT' && m\.status === 'SENT'\)/);
+    expect(src).toMatch(/firstContact \? firstContactPriceMessage\(track/);
   });
 });

@@ -18,7 +18,7 @@ const PAYMENT_RECEIVED_PREFIX = new RegExp('^\\s*(?:' + Object.values(PAYMENT_RE
 const FORM_LINK_IN_TEXT = /workingholidaytax\.com(?:\.au)?\/tax-form/i;
 import { APPROVED } from './approved-messages';
 import { canTransition, CustomerState } from './state-machine';
-import { detectChoice, PRICE_ASK_RE } from './instant-choice';
+import { detectChoice, PRICE_ASK_RE, firstContactPriceMessage } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
 import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
 
@@ -259,8 +259,9 @@ export function stripMenuAndBank(text: string): string {
 export function isApprovedVerbatim(text: string, firstName?: string | null): boolean {
   const norm = (t: string) => t.replace(/\s+/g, ' ').trim();
   const t = norm(text);
-  const fixed = [APPROVED.opening, APPROVED.prices, APPROVED.price_tfn, APPROVED.price_tfn_abn];
   const name = (firstName ?? '').trim();
+  const fixed = [APPROVED.opening, APPROVED.prices, APPROVED.price_tfn, APPROVED.price_tfn_abn,
+    firstContactPriceMessage('TFN', name), firstContactPriceMessage('TFN_ABN', name)];
   for (const f of fixed) {
     if (t === norm(f)) return true;
     if (name && t === norm(f.replace(/^Hey!/, `Hey ${name}!`))) return true;

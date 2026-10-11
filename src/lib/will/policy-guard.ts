@@ -182,8 +182,10 @@ const MAX_IMPROVISED_CHARS = 450;
 /** Own prose allowed around the price message (one reassuring line + a short opener). */
 const MAX_PROSE_AROUND_PRICE = 170;
 const BANK_DETAILS_PRESENT = /\bBSB\b|062692|81049952/;
-/** The price message shape: an Amount line (any language) or the "payment details" header. */
-const PRICE_MESSAGE_SHAPE = /^\s*(?:amount|betrag|importe|montant|importo|valor|金額)\s*[:：]/im;
+/** The price message shape: the BSB and Account lines as a block (11 Oct: the
+ *  Amount line left the price message, the amount is in the first sentence),
+ *  or an Amount line (any language), or the "payment details" header. */
+const PRICE_MESSAGE_SHAPE = /^\s*(?:amount|betrag|importe|montant|importo|valor|金額)\s*[:：]|^\s*BSB\s*[:：]\s*0?62\s?692\s*\n\s*(?:account|konto|口座)[^\n]{0,12}[:：]\s*81049952/im;
 
 /** Extra room on the length rule for a reply that is NOT in English.
  *

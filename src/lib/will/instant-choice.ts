@@ -51,3 +51,19 @@ export const PRICE_ASK_RE = /how much|what(?:'s| is| does it) (?:the )?(?:cost|p
 export function priceMessageFor(track: Track): string {
   return track === 'TFN_ABN' ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
 }
+
+/** Jo, 11 Oct: when the very FIRST message already says the track ("I worked
+ *  for employers on a TFN"), Will still opens like a person: the greeting,
+ *  then "looks like the TFN option is the right fit for you", then the rest
+ *  of the price message. "Got it, so that's..." is for a reply to the
+ *  opening question, not for a first contact. */
+export function firstContactPriceMessage(track: Track, firstName: string | null | undefined): string {
+  const name = (firstName ?? '').trim();
+  const greeting = name ? `Hey ${name}! 😊 Happy to help.` : 'Hey! 😊 Happy to help.';
+  const base = priceMessageFor(track);
+  const fit = track === 'TFN_ABN'
+    ? 'Looks like the TFN + ABN option is the right fit for you: $385.'
+    : 'Looks like the TFN option is the right fit for you: $220.';
+  const rest = base.replace(/^Got it, so that's the TFN(?: \+ ABN)? option, \$(?:220|385)\./, fit);
+  return `${greeting}\n\n${rest}`;
+}

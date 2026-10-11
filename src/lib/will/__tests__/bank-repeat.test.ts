@@ -83,7 +83,10 @@ describe('stripBankBlock (never repeat the bank details)', () => {
     // The amount is stated in the price message, next to the details the
     // customer copies into their bank app, and it is what the system reads
     // the chosen track from.
-    expect(APPROVED.price_tfn).toContain('Amount: $220');
-    expect(APPROVED.price_tfn_abn).toContain('Amount: $385');
+    // 11 Oct (Jo): the amount is said once, in the first sentence; no Amount line.
+    expect(APPROVED.price_tfn).toMatch(/TFN option, \$220\./);
+    expect(APPROVED.price_tfn).not.toMatch(/Amount:/);
+    expect(APPROVED.price_tfn_abn).toMatch(/\$385\./);
+    expect(APPROVED.price_tfn_abn).not.toMatch(/Amount:/);
   });
 });

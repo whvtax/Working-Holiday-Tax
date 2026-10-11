@@ -51,7 +51,6 @@ Which option works best for you?`,
 
 BSB: 062692
 Account: 81049952
-Amount: $220
 
 If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.
 
@@ -61,7 +60,6 @@ Just send a screenshot once paid and we'll get started!`,
 
 BSB: 062692
 Account: 81049952
-Amount: $385
 
 If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.
 
@@ -76,21 +74,19 @@ Just send a screenshot once paid and we'll get started!`,
   // refund-shortfall guarantee is for returns WE prepare and lodge only.
   price_tfn_review: `No problem, we can review a return you've already lodged.
 
-Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is for the review itself and is the same whatever the result.
+Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $220 for the review itself and is the same whatever the result.
 
 BSB: 062692
 Account: 81049952
-Amount: $220
 
 Just send a screenshot once paid and we'll get started!`,
 
   price_tfn_abn_review: `No problem, we can review a return you've already lodged.
 
-Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is for the review itself and is the same whatever the result.
+Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $385 for the review itself and is the same whatever the result.
 
 BSB: 062692
 Account: 81049952
-Amount: $385
 
 Just send a screenshot once paid and we'll get started!`,
 

@@ -19,7 +19,8 @@ it('the review-only price messages carry NO guarantee: the fee is for the review
   for (const m of [APPROVED.price_tfn_review, APPROVED.price_tfn_abn_review]) {
     expect(m).not.toMatch(/refund the difference/);
     expect(m).toMatch(/for the review itself and is the same whatever the result/);
-    expect(m).toMatch(/Amount: \$(220|385)/);
+    expect(m).toMatch(/The fee is \$(220|385) for the review itself/);
+    expect(m).not.toMatch(/Amount:/);
     expect(policyGuard(m, ctx(false)).allowed).toBe(true);
   }
 });
@@ -27,7 +28,8 @@ it('the review-only price messages carry NO guarantee: the fee is for the review
 it('the two normal price messages carry the guarantee, the amount, and no account name line', () => {
   for (const m of [APPROVED.price_tfn, APPROVED.price_tfn_abn]) {
     expect(m).toContain(G);
-    expect(m).toMatch(/Amount: \$(220|385)/);
+    expect(m).toMatch(/option, \$(220|385)\./);
+    expect(m).not.toMatch(/Amount:/);
     expect(m).not.toMatch(/Account Name/);
     expect(m).not.toMatch(/non-refundable|whatever the result/);
     expect(policyGuard(m, ctx(false)).allowed).toBe(true);
