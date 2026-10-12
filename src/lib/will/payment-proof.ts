@@ -86,8 +86,19 @@ export function verifyProofDetails(d: ProofDetails): ProofVerification {
   else if (!amountMatchesFee(d.amountAud)) unverified.push(`the amount is ${formatAud(d.amountAud)}, not $220 or $385`);
   if (d.status === 'failed') unverified.push('the transfer shows as failed');
   else if (d.status === 'pending') unverified.push('the transfer shows as pending, not completed');
-  else if (d.status === 'unknown') unverified.push('no completed status is visible');
+  // 12 Oct (+44 7854, Wise "Sent 220 AUD, Working Holiday Tax, We paid out
+  // your AUD"): no word "completed" on the screen is not a reason to doubt a
+  // receipt that shows our fee to us. Only pending or failed count.
   return { verified: unverified.length === 0, unverified };
+}
+
+/** 12 Oct: when may the PICTURE alone confirm a payment? When it shows our fee
+ *  ($220 / $385) and nothing on it contradicts that it is ours (a different
+ *  recipient, a failed transfer). A missing recipient or status moves the
+ *  stage on trust with a heads-up task; it no longer leaves a paying customer
+ *  with "I've passed this to the team". */
+export function pictureConfirmsPayment(d: ProofDetails): boolean {
+  return amountMatchesFee(d.amountAud) && !isNotOurPayment(d);
 }
 
 /** One line for the audit trail and the task: what the picture showed. */

@@ -266,7 +266,7 @@ const PROOF_TOOL = {
     properties: {
       is_payment_proof: {
         type: 'boolean',
-        description: 'true ONLY if this clearly shows a completed bank transfer / PayID / card payment confirmation with an amount and either a reference, a bank name, or a "successful/completed" status. false for anything else, including a photo of a problem, a document, an ID, a receipt for something unrelated, or an image too unclear to tell.',
+        description: 'true ONLY if this clearly shows a completed bank transfer / PayID / card payment confirmation with an amount and either a reference, a bank name, or a "successful/completed" status. ALWAYS true for a banking-app receipt showing "Paid $X" or "Sent" with our BSB 062692 or account 81049952 or a receipt number (CommBank: "Paid $220.00 to ... Receipt no ... We\'ll send this payment immediately"; Wise: "Sent 220 AUD"), whatever the payee nickname is. false for anything else, including a photo of a problem, a document, an ID, a receipt for something unrelated, or an image too unclear to tell.',
       },
       reason: { type: 'string', description: 'One short factual sentence on what the attachment actually shows.' },
       amount_aud: {
@@ -285,7 +285,7 @@ const PROOF_TOOL = {
       status: {
         type: 'string',
         enum: ['completed', 'pending', 'failed', 'unknown'],
-        description: 'The transfer status as shown: completed/successful/sent, pending/processing/scheduled, failed/declined/cancelled, or unknown if no status is visible.',
+        description: 'The transfer status as shown: completed/successful/sent, pending/processing/scheduled, failed/declined/cancelled, or unknown if no status is visible. A Wise, Revolut or bank-app screen headed "Sent", or a timeline ending "We paid out your AUD" / "paid out" / "money is on its way", is completed. CommBank\'s "We\'ll send this payment immediately" under "Paid $X" with a receipt number is completed, not pending.',
       },
     },
     required: ['is_payment_proof', 'amount_aud', 'recipient', 'recipient_is_us', 'status'],

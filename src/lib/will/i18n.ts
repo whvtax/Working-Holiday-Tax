@@ -489,9 +489,9 @@ export const LODGED_CONFIRMATION_MSG: Record<'en' | 'de' | 'ja', string> = {
  *  audit: "your refund should arrive within 14 business days" went to two
  *  customers with a tax bill). Library key lodged_payable / lodged_payable_<lang>. */
 export const LODGED_PAYABLE_MSG: Record<'en' | 'de' | 'ja', string> = {
-  en: `Your tax return has been lodged successfully! ✅\nThe ATO will send your Notice of Assessment to your myGov inbox, usually within about two weeks, with the payment details and due date. Message us when it arrives and we'll guide you through it.`,
-  de: 'Deine Steuererklärung wurde erfolgreich eingereicht! ✅\nDas ATO schickt dir den Steuerbescheid (Notice of Assessment) in dein myGov-Postfach, meist innerhalb von etwa zwei Wochen, mit den Zahlungsdetails und der Frist. Schreib uns, sobald er da ist, und wir begleiten dich dabei.',
-  ja: 'あなたの確定申告書の提出が完了しました！✅\nATOから課税通知書（Notice of Assessment）がmyGovの受信箱に届きます。通常2週間ほどで、納付方法と期限が記載されています。届いたらご連絡ください。手続きをご案内します。',
+  en: `Your tax return has been lodged successfully! ✅\nWe'll message you again in about two weeks and walk you through how to pay. Nothing to do until then 😊`,
+  de: 'Deine Steuererklärung wurde erfolgreich eingereicht! ✅\nWir melden uns in etwa zwei Wochen wieder bei dir und erklären dir, wie du bezahlst. Bis dahin musst du nichts tun 😊',
+  ja: 'あなたの確定申告書の提出が完了しました！✅\n約2週間後にこちらから改めてご連絡し、お支払い方法をご案内します。それまでは何もしていただく必要はありません😊',
 };
 export function lodgedPayableMessage(lang?: string | null): string {
   const key = (lang && lang in LODGED_PAYABLE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';

@@ -9,8 +9,7 @@
  */
 import {
   amountMatchesFee, verifyProofDetails, isNotOurPayment, describeProof, coerceProofDetails,
-  FEES_AUD, AMOUNT_TOLERANCE_AUD, ProofDetails,
-} from '@/lib/will/payment-proof';
+  FEES_AUD, AMOUNT_TOLERANCE_AUD, ProofDetails, pictureConfirmsPayment } from '@/lib/will/payment-proof';
 
 const ours = (over: Partial<ProofDetails> = {}): ProofDetails => ({
   amountAud: 220, recipient: 'Simple Tax Services', recipientIsUs: 'yes', status: 'completed', ...over,
@@ -39,6 +38,15 @@ describe('the amount', () => {
 });
 
 describe('verification', () => {
+  it('Wise "Sent 220 AUD, Working Holiday Tax" with no status word confirms (+44 7854, 12 Oct)', () => {
+    const d = { amountAud: 220, recipient: 'Working Holiday Tax', recipientIsUs: 'yes' as const, status: 'unknown' as const };
+    expect(verifyProofDetails(d).verified).toBe(true);
+    expect(pictureConfirmsPayment(d)).toBe(true);
+    expect(pictureConfirmsPayment({ ...d, recipientIsUs: 'unknown' })).toBe(true);
+    expect(pictureConfirmsPayment({ ...d, recipientIsUs: 'no', recipient: 'Someone Else' })).toBe(false);
+    expect(pictureConfirmsPayment({ ...d, status: 'failed' })).toBe(false);
+    expect(pictureConfirmsPayment({ ...d, amountAud: 150 })).toBe(false);
+  });
   it('passes the Wise case Jo sent: 220 AUD to Simple Tax Services, completed', () => {
     expect(verifyProofDetails(ours())).toEqual({ verified: true, unverified: [] });
   });
@@ -49,7 +57,6 @@ describe('verification', () => {
     expect(v.unverified).toEqual([
       'the recipient is not visible',
       'no AUD amount is visible',
-      'no completed status is visible',
     ]);
   });
 

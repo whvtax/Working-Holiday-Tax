@@ -20,7 +20,7 @@ import { APPROVED } from './approved-messages';
 import { canTransition, CustomerState } from './state-machine';
 import { detectChoice, PRICE_ASK_RE, firstContactPriceMessage } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
-import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
+import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, thanksReply } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -302,6 +302,30 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     if (guaranteeAlreadySent && !BANK_DETAILS_RE.test(out) && GUARANTEE_RE.test(out)) out = stripGuarantee(out);
     return out;
   };
+
+  // ── A THANK-YOU GETS ONE LINE BACK (Jo, 11 Oct) ────────────────────────
+  //
+  // Ivy (+61 409 870 288): "Thankyou! X" after her return was lodged. Jo's
+  // call: every thank-you gets a short English line, no model, no task. The
+  // line still passes the guard, so a paused, opted-out or legacy chat (and
+  // the kill switch) stays silent exactly as before. "ok" / "yes" / 👍 are not
+  // a thank-you and keep the old silence further down.
+  if (burstSinceOurs.length > 0 && isThanksLine(customerBurst)) {
+    const line = thanksReply(lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '');
+    const thanksDecision: Decision = { action: 'reply', reply_text: line, confidence: 1 };
+    const thanksGuard: GuardContext = {
+      ...input.guard, state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents,
+      isApprovedTemplate: true, customerTextChars: customerBurst.length, customerText: customerBurst,
+    };
+    const v = policyGuard(line, thanksGuard);
+    if (!v.allowed) return { kind: 'silent', decision: { ...thanksDecision, action: 'wait', reply_text: undefined }, guardViolations: v.violations };
+    return {
+      kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+      replyText: line, decision: thanksDecision,
+      reviewNote: 'thank-you: one fixed line back, no model call',
+      newState: undefined, stateChanged: false,
+    };
+  }
 
   const decision = await decide(ctx, history);
 

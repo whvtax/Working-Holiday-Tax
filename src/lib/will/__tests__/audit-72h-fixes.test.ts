@@ -51,7 +51,11 @@ describe('a long question earns a longer answer (rick, +81 90)', () => {
 describe('courtesy gets silence (Laura, Pancho, Kana, Holly, Pippa)', () => {
   it('"Thanks" with a reply that carries nothing is not sent', async () => {
     decideMock.mockResolvedValue({ action: 'reply', reply_text: "You're very welcome! Let us know if anything comes up.", confidence: 0.9 });
-    const out = await runEngine(base({ ctx: { ...base().ctx, state: 'FORM_PENDING', paid: true }, history: [{ role: 'assistant', text: 'Payment received. Please fill out the form.' }, { role: 'customer', text: 'Thanks!' }] }));
+    // 12 Oct (Jo): a thank-you now gets one fixed line from the code; "ok" stays silent.
+    const thanks = await runEngine(base({ ctx: { ...base().ctx, state: 'FORM_PENDING', paid: true }, history: [{ role: 'assistant', text: 'Payment received. Please fill out the form.' }, { role: 'customer', text: 'Thanks!' }] }));
+    expect(thanks.kind).toBe('queued');
+    expect(thanks.replyText).toBe("You're more than welcome! 😊");
+    const out = await runEngine(base({ ctx: { ...base().ctx, state: 'FORM_PENDING', paid: true }, history: [{ role: 'assistant', text: 'Payment received. Please fill out the form.' }, { role: 'customer', text: 'Perfect 👍' }] }));
     expect(out.kind).toBe('silent');
   });
   it('"yes" to "which option?" still gets the price', async () => {
@@ -109,7 +113,7 @@ describe('the bridge line and the playbook', () => {
   it('the playbook carries the audit rules', () => {
     const { stable } = buildSystemPrompt({ name: 'X', state: 'NEW_LEAD', income: 'UNKNOWN', paid: false, formComplete: false, missingDocs: [], estimatedRefundCents: null, lang: 'en' });
     expect(stable).toMatch(/OPERATIONAL QUESTIONS ARE ANSWERED\. TAX QUESTIONS GET THE ONE LINE\./);
-    expect(stable).toMatch(/"THANKS" GETS NOTHING BACK/);
+    expect(stable).toMatch(/"OK" GETS NOTHING BACK; "THANKS" IS HANDLED BY THE SYSTEM/);
     expect(stable).toMatch(/NEVER PROMISE WHAT YOU DO NOT CONTROL/);
     expect(stable).toMatch(/THE FIRST MESSAGE CAN ALREADY BE THE CHOICE/);
     expect(stable).toMatch(/NEVER write "Want me to send you the payment details\?"/);

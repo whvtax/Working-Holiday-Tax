@@ -37,7 +37,7 @@ describe('promisedUntil', () => {
 describe('the tax-payable outcome', () => {
   const ctx = { state: 'LODGED' as const, paid: true, aiPaused: false, killSwitch: false, optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(), isApprovedTemplate: true, estimateFromTeam: null };
   it('payable wordings never mention a refund arriving', () => {
-    for (const v of Object.values(LODGED_PAYABLE_MSG)) { expect(v).not.toMatch(/refund|Rückerstattung|還付金は/); expect(v).toMatch(/Notice of Assessment/); }
+    for (const v of Object.values(LODGED_PAYABLE_MSG)) { expect(v).not.toMatch(/refund|Rückerstattung|還付金は/); expect(v).not.toMatch(/myGov|Notice of Assessment/); }
     for (const v of Object.values(ESTIMATE_PAYABLE_MSG)) { expect(v).toContain('{{AMOUNT}}'); expect(v).toContain('{{INVOICE_LINK}}'); expect(v).not.toMatch(/refund/i); }
     expect(policyGuard(LODGED_PAYABLE_MSG.en, ctx).allowed).toBe(true);
   });

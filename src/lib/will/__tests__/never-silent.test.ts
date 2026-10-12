@@ -32,6 +32,12 @@ describe('1. a paying customer is never left in silence', () => {
   it('a courtesy close ("thanks") keeps its silence', () => {
     expect(paidNeverSilent({ ...base, outcomeKind: 'silent', reviewNote: 'courtesy close: nothing to add, so nothing sent' })).toBe(false);
   });
+  it('"Thankyou! X" after "your return is ready" gets no holding line, whatever the model said (Ivy, 11 Oct)', () => {
+    expect(paidNeverSilent({ ...base, state: 'LODGED', outcomeKind: 'silent', text: 'Thankyou! X' })).toBe(false);
+    expect(paidNeverSilent({ ...base, state: 'LODGED', outcomeKind: 'silent', text: 'Amazing thankyou !' })).toBe(false);
+    expect(paidNeverSilent({ ...base, state: 'LODGED', outcomeKind: 'silent', text: 'Brilliant, cheers mate xx' })).toBe(false);
+    expect(paidNeverSilent({ ...base, state: 'LODGED', outcomeKind: 'silent', text: 'Thanks! When will the refund land?' })).toBe(true);
+  });
   it('an attachment-only burst is not a question left hanging', () => {
     expect(paidNeverSilent({ ...base, outcomeKind: 'silent', alreadyStored: true })).toBe(false);
   });

@@ -277,7 +277,12 @@ export function isCourtesyLine(text: string | null | undefined): boolean {
   if (!stripped) return true; // emoji only
   const words = stripped.split(' ').filter(Boolean);
   if (words.length > 8) return false;
-  const COURTESY = /^(?:yes|yeah|yep|ok|okay|okey|k|sure|all|good|great|perfect|lovely|nice|cool|thanks|thank|you|thankyou|cheers|much|appreciate|it|awesome|amazing|got|received|noted|understood|fine|no|worries|problem|super|danke|dir|vielen|dank|alles|klar|passt|perfekt|super|gracias|muchas|vale|genial|perfecto|todo|bien|merci|beaucoup|parfait|nickel|super|grazie|mille|perfetto|va|bene|tutto|ottimo|obrigad[oa]|muito|perfeito|tudo|bem|certo|ありがとう|ありがとうございます|了解|承知|わかりました|大丈夫|はい)$/u;
+  // 11 Oct: "Thankyou! X" (Ivy, +61 409 870 288) was not recognised because of
+  // the kiss sign-off, so a paid customer's thank-you got the holding line.
+  // x / xx / xoxo, "ta", "brilliant", "legend", "wonderful", "fantastic",
+  // "excellent", "sweet", "mate", "will do", "sounds good", "bye" are all
+  // closers, not questions.
+  const COURTESY = /^(?:yes|yeah|yep|ok|okay|okey|k|sure|all|good|great|perfect|lovely|nice|cool|thanks|thank|you|thankyou|ta|cheers|much|so|appreciate|appreciated|it|awesome|amazing|brilliant|wonderful|fantastic|excellent|legend|sweet|mate|got|received|noted|understood|fine|no|worries|problem|super|will|do|sounds|that|s|bye|goodbye|x+|xoxo|danke|dir|vielen|dank|alles|klar|passt|perfekt|super|gracias|muchas|vale|genial|perfecto|todo|bien|merci|beaucoup|parfait|nickel|super|grazie|mille|perfetto|va|bene|tutto|ottimo|obrigad[oa]|muito|perfeito|tudo|bem|certo|ありがとう|ありがとうございます|了解|承知|わかりました|大丈夫|はい)$/u;
   return words.every((w) => COURTESY.test(w));
 }
 
@@ -296,6 +301,30 @@ export function isCourtesyLine(text: string | null | undefined): boolean {
  * So: keep the first sentence, drop the rest. Returns the input unchanged when
  * there is nothing to cut.
  */
+/**
+ * A THANK-YOU GETS ONE LINE BACK (Jo, 11 Oct).
+ *
+ * Ivy, +61 409 870 288: "Amazing thankyou !" then "Thankyou! X" after her
+ * return was lodged. Jo: "כן תגיב, תכתוב קצת באנגלית על כל התודות". So a
+ * message that is ONLY thanks (no question, nothing else) gets a short
+ * English line, always the same two, alternated. A bare "ok", "yes" or 👍
+ * is still courtesy with nothing to answer and stays silent.
+ */
+const THANKS_WORD = /^(?:thanks|thank|thankyou|thx|ta|cheers|appreciate|appreciated|danke|dank|gracias|merci|grazie|obrigad[oa]|ありがとう|ありがとうございます)$/u;
+export function isThanksLine(text: string | null | undefined): boolean {
+  const t = (text ?? '').trim();
+  if (!t || !isCourtesyLine(t)) return false;
+  const words = t.toLowerCase().replace(/[^\p{L}\p{N}\s]+/gu, ' ').split(/\s+/).filter(Boolean);
+  return words.some((w) => THANKS_WORD.test(w));
+}
+
+export const THANKS_REPLIES = ["You're more than welcome! 😊", 'Anytime! 😊'] as const;
+/** The line Will sends back to a thank-you, never the same one twice in a row. */
+export function thanksReply(lastWillText: string | null | undefined): string {
+  const last = (lastWillText ?? '').trim();
+  return last === THANKS_REPLIES[0] ? THANKS_REPLIES[1] : THANKS_REPLIES[0];
+}
+
 export function firstSentenceOnly(text: string): string {
   const line = text.split('\n').map((l) => l.trim()).find(Boolean) ?? '';
   // Terminator followed by whitespace, or one of the full-width ones (Japanese

@@ -29,7 +29,7 @@ import { firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
 export { isCourtesyLine };
 import { suggestReply } from './suggest';
 import { assessPaymentProofImage, assessSuccessConfirmationImage, describeAttachment, PaymentProofCheck } from './claude';
-import { verifyProofDetails, isNotOurPayment, describeProof, incomeFromAmount } from './payment-proof';
+import { verifyProofDetails, isNotOurPayment, pictureConfirmsPayment, describeProof, incomeFromAmount } from './payment-proof';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
@@ -762,11 +762,18 @@ async function buildBackstory(store: Store, customer: CustomerRow, msgs: Message
 export function paidNeverSilent(a: {
   outcomeKind: EngineOutcome['kind']; reviewNote?: string | null; mode: AiMode;
   paid: boolean; state: CustomerState; optedOut: boolean; isLegacy: boolean; aiPaused: boolean; alreadyStored: boolean;
+  text?: string | null;
 }): boolean {
   if (a.outcomeKind !== 'silent') return false;
   if (a.mode !== 'FULL_AUTO') return false;
   if (a.optedOut || a.isLegacy || a.aiPaused || a.alreadyStored) return false;
   if (/^courtesy close/i.test(a.reviewNote ?? '')) return false;
+  // 11 Oct: Ivy (+61 409 870 288) wrote "Thankyou! X" after "your tax return is
+  // ready" and got "I've passed this to the team". The model chose to wait (the
+  // right call) but without the courtesy note, so the silence was converted.
+  // Whatever the model said, a courtesy line gets no holding line: there is
+  // nothing to answer.
+  if (a.text !== undefined && a.text !== null && isCourtesyLine(a.text)) return false;
   const postPayment = a.paid || POST_PAYMENT_STATES.includes(a.state);
   return postPayment;
 }
@@ -940,7 +947,7 @@ export async function decideAndAct(
   if (paidNeverSilent({
     outcomeKind: outcome.kind, reviewNote: outcome.reviewNote, mode,
     paid: customer.paid, state: customer.state, optedOut: customer.optedOut, isLegacy: customer.isLegacy,
-    aiPaused: customer.aiPaused, alreadyStored: !!opts.attachmentsOnly,
+    aiPaused: customer.aiPaused, alreadyStored: !!opts.attachmentsOnly, text,
   })) {
     await store.audit('assistant', 'paid_customer_silent_converted', {
       customerId: customer.id, state: customer.state, violations: outcome.guardViolations ?? [],
@@ -1985,7 +1992,7 @@ async function handlePaymentProofMediaInner(
   // Only when the picture was actually READ and contradicts our payment. A
   // proof the model recognised but could not break down (no structured details
   // at all) keeps the old behaviour: trusted, with the heads-up task.
-  if (!said && check.details && !verification.verified) {
+  if (!said && check.details && !verification.verified && !pictureConfirmsPayment(check.details)) {
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
       reason: `Payment screenshot does not match: ${shown ?? 'nothing could be read off it'}. Nothing has been sent and they have NOT been moved to Paid.`,

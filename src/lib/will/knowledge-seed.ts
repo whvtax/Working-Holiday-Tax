@@ -18,7 +18,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "intent": "ATO payment plan for tax owed",
     "question": "Can I set up a payment plan with the ATO for the amount I owe?",
     "examples": ["I presume I can set up a payment plan to repay this", "can I pay the ATO in instalments?", "I can't pay the whole amount at once"],
-    "answer": "Yes, the ATO offers payment plans. Once your Notice of Assessment arrives you can set one up in myGov or by calling the ATO, and the team can point you to it when it's time. \ud83d\ude0a",
+    "answer": "Yes, the ATO offers payment plans. We'll message you in about two weeks and walk you through how to pay, including a plan if you need one. \ud83d\ude0a",
     "keywords": ["payment", "plan", "instalments", "owe", "ato", "repay", "afford"],
     "tags": ["post-payment", "ato"],
     "lang": "en"
@@ -36,7 +36,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "intent": "when the ATO notice of assessment or email arrives after lodging",
     "question": "When will I get the email or notice from the ATO after you've lodged my return?",
     "examples": ["when should I receive an email?", "how long until I hear from the ATO?", "I haven't received anything since you lodged", "when does the notice of assessment come?"],
-    "answer": "After lodgment the ATO sends your Notice of Assessment to your myGov inbox, usually within about two weeks. If you owe tax, that notice has the payment details and due date. Message us when it lands and the team will guide you from there. \ud83d\ude0a",
+    "answer": "The ATO usually processes it within about two weeks. If you're getting a refund, it goes straight to your bank account. If you owe tax, we'll message you around then and walk you through how to pay. Nothing to do on your side \ud83d\ude0a",
     "keywords": ["notice", "assessment", "email", "ato", "lodged", "when", "receive", "hear", "inbox"],
     "tags": ["post-payment", "ato"],
     "lang": "en"

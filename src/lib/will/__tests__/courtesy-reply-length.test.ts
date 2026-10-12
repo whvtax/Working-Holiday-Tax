@@ -89,6 +89,6 @@ describe('what still gets the full answer', () => {
 
 it('the playbook tells Will to write it short in the first place', () => {
   const playbook = readFileSync(join(process.cwd(), 'src/lib/will/playbook.ts'), 'utf8');
-  expect(playbook).toMatch(/"THANKS" GETS NOTHING BACK/);
+  expect(playbook).toMatch(/"OK" GETS NOTHING BACK; "THANKS" IS HANDLED BY THE SYSTEM/);
   expect(playbook).toMatch(/is not courtesy: that one gets the real next step/);
 });
