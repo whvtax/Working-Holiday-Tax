@@ -911,7 +911,7 @@ const REVIEW_ASK_TOOL = {
     properties: {
       ask: { type: 'boolean', description: 'true only when the customer is plainly satisfied and the moment is right.' },
       reason: { type: 'string', description: 'One sentence for the owner: why ask now, or why not.' },
-      opener: { type: 'string', description: 'If ask=true: ONE sentence, in the customer\'s language, that picks up something specific from THEIR conversation (the refund landing, the thing we sorted for them, where they are heading next). Warm, no exclamation marks, no emoji (the template adds one), no "we" bragging, no dashes. Under 140 characters. It is inserted after "Hi <name> 😊" and before the review ask, so it must read naturally there.' },
+      opener: { type: 'string', description: 'If ask=true: ONE sentence, in the customer\'s language, that picks up something specific from THEIR conversation (the refund landing, the thing we sorted for them, where they are heading next). Warm, no exclamation marks, no emoji (the template adds one), no "we" bragging, no dashes. Under 140 characters. It is inserted after "Hi <name> 😊" and before the review ask, so it must read naturally there. NEVER a number of any kind: no refund amount, no dollar figure, no tax outcome ("your refund of $1,454" is forbidden; "glad the refund is on its way" is fine).' },
     },
     required: ['ask', 'reason'],
   },
@@ -950,7 +950,10 @@ export async function decideReviewAsk(input: { lang: string | null; transcript: 
       ?.find((bl) => bl.type === 'tool_use' && bl.name === 'review_ask');
     const d = tool?.input ?? {};
     const ask = d.ask === true;
-    const opener = typeof d.opener === 'string' ? stripDashes(d.opener).replace(/\s+/g, ' ').trim().slice(0, 160) : null;
+    let opener = typeof d.opener === 'string' ? stripDashes(d.opener).replace(/\s+/g, ' ').trim().slice(0, 160) : null;
+    // 12 Oct (Jasmine, +61 437): "get your refund of $1454.70 on its way". No
+    // figure ever goes in the opener; with one, the default opener is used.
+    if (opener && /\d|\$/.test(opener)) opener = null;
     const reason = typeof d.reason === 'string' ? d.reason.slice(0, 300) : '';
     return { ask, opener: ask && opener ? opener : null, reason, measured: true };
   } catch (e) {

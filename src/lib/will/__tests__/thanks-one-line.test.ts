@@ -11,7 +11,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 describe('what counts as a thank-you', () => {
-  it.each(['Thankyou! X', 'Amazing thankyou !', 'thanks', 'Cheers mate', 'Danke dir!', 'Muchas gracias', 'ありがとうございます', 'Thank you so much xx'])('%s', (t) => {
+  it.each(['Thankyou! X', 'Amazing thankyou !', 'thanks', 'Cheers mate', 'Danke dir!', 'Muchas gracias', 'ありがとうございます', 'Thank you so much xx', 'Thank u', 'Perfect thanks', 'ty!', 'thx'])('%s', (t) => {
     expect(isThanksLine(t)).toBe(true);
   });
   it.each(['ok', 'Perfect', '👍', 'yes', 'Got it'])('%s is courtesy but not thanks', (t) => {
@@ -46,5 +46,18 @@ describe('engine wiring (source-pinned)', () => {
     expect(idx).toBeLessThan(decideIdx);
     expect(engine).toMatch(/const v = policyGuard\(line, thanksGuard\)/);
     expect(engine).toMatch(/if \(!v\.allowed\) return \{ kind: 'silent'/);
+  });
+});
+
+import { phoneCandidates } from '@/lib/will/phone-candidates';
+describe('a number typed without a country code still finds the chat (12 Oct)', () => {
+  it('Canadian "(289) 697-0800" also asks for 12896970800', () => {
+    expect(phoneCandidates('(289) 697-0800')).toContain('12896970800');
+  });
+  it('Australian mobile without the 0', () => {
+    expect(phoneCandidates('412 345 678')).toContain('61412345678');
+  });
+  it('a full international number is unchanged', () => {
+    expect(phoneCandidates('+61 412 345 678')[0]).toBe('61412345678');
   });
 });

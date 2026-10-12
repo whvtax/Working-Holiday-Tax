@@ -1022,6 +1022,13 @@ async function handlePost(req: Request) {
         }
       }
       await store.resolveTask(b.id);
+      // 12 Oct (Miu): a nightly-check card Jo closes stays closed. The issues
+      // on it are remembered and the nightly check skips them from then on.
+      if (taskRow && !resolvedFor && /^Nightly consistency check/.test(taskRow.reason ?? '')) {
+        const prev = ((await store.getSetting('nightly_acknowledged').catch(() => null)) as string[] | null) ?? [];
+        const lines = String(taskRow.context ?? '').split('\n').map((l) => l.trim()).filter((l) => /^[0-9a-f-]{36}\|/.test(l));
+        await store.setSetting('nightly_acknowledged', [...new Set([...prev, ...lines.map((l) => l.split('|')[0] + '|' + l.split('|').slice(-1)[0])])]).catch(() => {});
+      }
       await store.audit('owner', b.noReplyNeeded ? 'task_resolved_no_reply' : 'task_resolved', { id: b.id, customerId: resolvedFor });
       return NextResponse.json({ ok: true });
     }

@@ -1217,7 +1217,11 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
         if (p.test(determinationText)) { violations.push('TAX_DETERMINATION'); break; }
       }
     }
-    if (DIY_INSTRUCTIONS.test(sentence) || DIY_INSTRUCTIONS_ML.test(sentence)) violations.push('DIY_INSTRUCTIONS');
+    // 12 Oct (+61 402 077 188): "did you already lodge your tax return
+    // yourself, or are you still waiting to lodge it?" is a question about
+    // what THEY did, not an instruction. A question about their past is exempt.
+    const asksWhatTheyDid = /\b(?:did|have|had|were) you\b[^?]*\?/i.test(sentence);
+    if ((DIY_INSTRUCTIONS.test(sentence) || DIY_INSTRUCTIONS_ML.test(sentence)) && !asksWhatTheyDid) violations.push('DIY_INSTRUCTIONS');
     if (REFUND_PROMISE_ML.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
     if (FEE_REFUNDABLE_PASSIVE.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
     if (paid && !POST_PAYMENT_NOT_SALES.test(sentence) && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence))) violations.push('SALES_CONTENT_AFTER_PAYMENT');

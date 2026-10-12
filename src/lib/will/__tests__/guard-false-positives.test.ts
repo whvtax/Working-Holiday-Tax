@@ -90,3 +90,13 @@ describe('new: internal notes and typed links', () => {
     expect(policyGuard(APPROVED.price_tfn, pre()).violations).not.toContain('TYPED_URL');
   });
 });
+
+describe('asking whether they lodged is not DIY instructions (12 Oct)', () => {
+  it('the question passes, the instruction is still caught', () => {
+    const { policyGuard: pg } = jest.requireActual('@/lib/will/policy-guard') as typeof import('@/lib/will/policy-guard');
+    const ctx = { state: 'NEW_LEAD' as const, paid: false, aiPaused: false, killSwitch: false, optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(), isApprovedTemplate: false, estimateFromTeam: null };
+    const q = "Sorry to hear you're having trouble with that. Just to clarify: did you already lodge your tax return yourself (through myGov or with someone else), or are you still waiting to lodge it?";
+    expect(pg(q, ctx).violations).not.toContain('DIY_INSTRUCTIONS');
+    expect(pg('You can lodge your return yourself in myGov.', ctx).violations).toContain('DIY_INSTRUCTIONS');
+  });
+});

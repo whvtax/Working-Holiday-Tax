@@ -83,5 +83,21 @@ export function phoneCandidates(num: string | null | undefined): string[] {
     }
   }
 
+  // 12 Oct ("(289) 697-0800", a Canadian number typed with no country code,
+  // matched no chat): in countries with no trunk 0 the national number is
+  // typed bare. Ask for it with the country code in front too. Still an exact
+  // match, and an ambiguous one is a miss.
+  for (const { cc, nationalLen } of BARE) {
+    if (!norm.startsWith('0') && norm.length === nationalLen && !norm.startsWith(cc)) out.push(`${cc}${norm}`);
+  }
+  // An Australian mobile typed without its 0: "412 345 678".
+  if (norm.length === 9 && norm.startsWith('4')) out.push(`61${norm}`);
+
   return [...new Set(out)];
 }
+
+const BARE: { cc: string; nationalLen: number }[] = [
+  { cc: '1', nationalLen: 10 },   // US/CA "(289) 697-0800"
+  { cc: '39', nationalLen: 10 },  // IT "347 123 4567"
+  { cc: '34', nationalLen: 9 },   // ES "612 345 678"
+];

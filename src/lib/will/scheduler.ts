@@ -1355,16 +1355,26 @@ async function doProcess(): Promise<TickResult> {
             continue;
           }
           const langKey = (customer.lang && customer.lang in REVIEW_ASK_DEFAULT_OPENER ? customer.lang : 'en') as keyof typeof REVIEW_ASK_DEFAULT_OPENER;
-          const opener = verdictAsk.opener ?? REVIEW_ASK_DEFAULT_OPENER[langKey];
+          let opener = verdictAsk.opener ?? REVIEW_ASK_DEFAULT_OPENER[langKey];
           const firstName = greetingName(customer);
           const link = await reviewLink(store);
-          const body = reviewAskMessage(customer.lang, firstName, opener, link);
-          const verdict = policyGuard(body, {
+          const guardReview = (b: string) => policyGuard(b, {
             state: customer.state, paid: true, aiPaused: false, killSwitch: false,
             optedOut: false, isLegacy: false,
             lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
             isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
           });
+          let body = reviewAskMessage(customer.lang, firstName, opener, link);
+          let verdict = guardReview(body);
+          // 12 Oct (Jasmine, +61 437 298 488): the written opener carried her
+          // refund figure, the guard held it, and the whole ask became a task.
+          // The opener is the only part the model writes, so when the guard
+          // holds, the ask goes again with the default opener instead.
+          if (!verdict.allowed && opener !== REVIEW_ASK_DEFAULT_OPENER[langKey]) {
+            opener = REVIEW_ASK_DEFAULT_OPENER[langKey];
+            body = reviewAskMessage(customer.lang, firstName, opener, link);
+            verdict = guardReview(body);
+          }
           if (!verdict.allowed) {
             await raiseOrUpdateTask(store, customer, {
               reason: `Review ask held by the Policy Guard: ${verdict.violations.join(', ')}. Send it by hand.`,
@@ -1866,8 +1876,9 @@ export async function runNightly(): Promise<void> {
   // customer of its own (see below), so this is what lets that card's
   // context carry a real id per name instead of only the printed sentence.
   const affectedCustomers: { customer: CustomerRow; text: string }[] = [];
+  const acknowledged = new Set<string>(((await store.getSetting('nightly_acknowledged').catch(() => null)) as string[] | null) ?? []);
   for (const c of customers) {
-    if (c.paid && salesStates.includes(c.state)) {
+    if (c.paid && salesStates.includes(c.state) && !acknowledged.has(`${c.id}|paid but in sales state ${c.state}`)) {
       const text = `paid but in sales state ${c.state}`;
       issues.push(`${c.name ?? c.waId}: ${text}`);
       affectedCustomers.push({ customer: c, text });

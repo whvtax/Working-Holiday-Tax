@@ -94,3 +94,19 @@ describe('the 13 Library entries from the audit', () => {
     }
   });
 });
+
+describe('the review opener never carries a figure (Jasmine, 12 Oct)', () => {
+  const { readFileSync } = jest.requireActual('fs') as typeof import('fs');
+  const { join } = jest.requireActual('path') as typeof import('path');
+  const claudeSrc = readFileSync(join(__dirname, '..', 'claude.ts'), 'utf8');
+  const schedSrc = readFileSync(join(__dirname, '..', 'scheduler.ts'), 'utf8');
+  it('an opener with a digit or $ is dropped for the default one', () => {
+    expect(claudeSrc).toMatch(/if \(opener && \/\\d\|\\\$\/\.test\(opener\)\) opener = null;/);
+  });
+  it('a held ask is retried with the default opener before any task', () => {
+    const retry = schedSrc.indexOf('opener = REVIEW_ASK_DEFAULT_OPENER[langKey];');
+    const task = schedSrc.indexOf('Review ask held by the Policy Guard');
+    expect(retry).toBeGreaterThan(0);
+    expect(retry).toBeLessThan(task);
+  });
+});
