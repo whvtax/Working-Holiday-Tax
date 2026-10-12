@@ -123,3 +123,19 @@ describe('coercing what the model returned', () => {
     expect(coerceProofDetails({ recipient: 'x'.repeat(500) }).recipient?.length).toBe(120);
   });
 });
+
+describe('an ATO document sent with "receipt" is not a payment (+61 402 077 188, 12 Oct)', () => {
+  it('the words alone do not claim a payment', () => {
+    const { claimsPayment } = jest.requireActual('@/lib/will/payment-claim') as typeof import('@/lib/will/payment-claim');
+    expect(claimsPayment('Well I can send you the receipt I got and just tell me what this actually means', { hasAttachment: true })).toBe(false);
+    expect(claimsPayment('here is the receipt', { hasAttachment: true })).toBe(true);
+    expect(claimsPayment('here is the receipt')).toBe(false);
+    expect(claimsPayment('just paid, here is the receipt')).toBe(true);
+  });
+  it('a picture read as not-a-payment overrules weak words (source-pinned)', () => {
+    const { readFileSync } = jest.requireActual('fs') as typeof import('fs');
+    const { join } = jest.requireActual('path') as typeof import('path');
+    const src = readFileSync(join(__dirname, '..', 'service.ts'), 'utf8');
+    expect(src).toMatch(/if \(!check\.isProof && said && !saidExplicitly\)/);
+  });
+});

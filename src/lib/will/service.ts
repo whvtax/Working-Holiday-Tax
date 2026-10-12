@@ -1887,8 +1887,15 @@ async function handlePaymentProofMediaInner(
   // to read their picture.
   // The attachment is right here, so the caption is read with the lower bar:
   // "here you go" under a receipt is a payment report (Jo, 4 Sep).
-  const said = claimsPayment(meta.media.caption, { hasAttachment: true })
+  let said = claimsPayment(meta.media.caption, { hasAttachment: true })
     || claimsPayment(body, { hasAttachment: true });
+  // 12 Oct (+61 402 077 188): "I can send you the receipt I got and just tell
+  // me what this actually means" with her ATO lodgement PDF. "receipt" next to
+  // an attachment counted as "she says she paid", overrode the picture, and
+  // she got "Payment received". Weak words ("receipt", "here you go") only
+  // carry a payment when the picture could not be read; when it WAS read and
+  // is not a payment, only an explicit report ("paid", "transferred") does.
+  const saidExplicitly = claimsPayment(meta.media.caption) || claimsPayment(body);
   if (said) {
     await store.audit('system', 'payment_claimed_in_words', {
       customerId: customer.id, from: meta.media.caption ? 'caption' : 'body',
@@ -1941,6 +1948,10 @@ async function handlePaymentProofMediaInner(
       await store.audit('system', 'payment_proof_checked', {
         customerId: customer.id, isProof: check.isProof, reason: check.reason ?? null, details: check.details ?? null,
       });
+      if (!check.isProof && said && !saidExplicitly) {
+        await store.audit('system', 'payment_words_overruled_by_picture', { customerId: customer.id, reason: check.reason ?? null });
+        said = false;
+      }
       // A payment, but demonstrably not ours (another recipient) or not done
       // (failed): the picture alone must never confirm it. Their words still
       // can, and then the task carries this verdict so the mismatch is seen.

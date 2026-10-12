@@ -214,6 +214,8 @@ export function claimsPayment(
   // question mark ANYWHERE in the message — half-width or full-width — is
   // now enough: a genuine payment report essentially never contains one.
   if (/[?？]/.test(t)) return false;
+  // 12 Oct: asking us to explain a document is never a payment report.
+  if (/\b(?:what (?:this|it|that) (?:actually )?means|what does (?:this|it|that) mean|explain|tax lodg(?:e)?ment|lodg(?:e)?ment receipt|notice of assessment)\b/i.test(t)) return false;
 
   if (EXPLICIT.test(t)) return true;
   if (opts?.hasAttachment && WITH_ATTACHMENT_CONFIRM.test(t)) return true;
