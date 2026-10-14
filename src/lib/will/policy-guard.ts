@@ -212,7 +212,7 @@ const TRANSLATED_SCRIPT_ALLOWANCE = Math.ceil(LONGEST_APPROVED_CHARS * 1.3);
 // without it here the guard blocked the sentence and the answer could never be
 // sent. Post-payment nothing is allowed at all (see `allowedCents` below), so a
 // consultation price can only ever appear before the customer has paid.
-const FIXED_PRICES_CENTS = [22000, 38500, 11000];
+const FIXED_PRICES_CENTS = [22000, 38500, 11000, 33000, 49500]; // 330/495: foreign income (Jo, 12 Oct)
 /** A reply about ANOTHER tax return for a customer who already paid for one. */
 const ANOTHER_RETURN_CONTEXT = /\b(?:20\d\d\s?[-–/]\s?(?:20)?\d\d|financial year|tax year|(?:another|second|previous|prior|last|next|other|each|both|that|this) (?:year|return)s?\b|two returns|per (?:year|return)|steuerjahr|año fiscal|ann[ée]e fiscale|anno fiscale|ano fiscal|会計年度|年度)/i;
 
@@ -381,7 +381,7 @@ const MULTIPLE_CONTEXT = /\b(?:years?|returns?|people|persons?|both|each|two|thr
 function allowedPriceMultiples(text: string): number[] {
   if (!MULTIPLE_CONTEXT.test(text)) return [];
   const out: number[] = [];
-  for (const base of [22000, 38500]) for (let n = 2; n <= 5; n++) out.push(base * n);
+  for (const base of [22000, 38500, 33000, 49500]) for (let n = 2; n <= 5; n++) out.push(base * n);
   return out;
 }
 
@@ -559,8 +559,8 @@ const TAX_DETERMINATION: RegExp[] = [
   // payment, an URGENT task for a lodged confirmation after it. A refund of
   // exactly 2024 still needs a $ sign or a hedge, which the currency and
   // around/about rules already catch.
-  /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
-  /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
+  /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
+  /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
   // The phrasings a model actually reaches for when it is hedging, all of which
   // walked straight past the list above. Verified passes before these existed:
   //   "Based on your payslips you should get around 3,800 back."
@@ -578,7 +578,7 @@ const TAX_DETERMINATION: RegExp[] = [
   /\byour\s+(?:visa|situation|case|circumstances)\s+means\b/i,
   // A hedge is still a determination: "roughly", "around", "ballpark" attached
   // to a refund is the number the customer will hold us to.
-  /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
+  /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
 ];
 
 // ---------- the same content rules in the six other languages ----------
@@ -630,13 +630,13 @@ const TAX_DETERMINATION_ML: RegExp[] = [
   /\b(?:n[ãa]o )?(?:vais|ter[áa]s que|dever[áa]s)\s+(?:pagar|dever)\b[^.!?]{0,20}\bimpostos?\b/i,
   /(?:納税|追徴|支払い)(?:は)?(?:必要ありません|不要です|ありません|になります|が必要です)/,
   // a refund figure in words of prediction — DE, ES, FR, IT, PT, JA
-  /\b(?:ungef[äa]hr|etwa|rund|circa|ca\.|um die|so um)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:zur[üu]ck|r[üu]ckerstattung|erstattung|erstattet)/i,
-  /\b(?:unos|unas|aproximadamente|alrededor de|cerca de|m[áa]s o menos)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de vuelta|reembolso|devoluci[óo]n)/i,
-  /\b(?:environ|à peu près|autour de|dans les)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de retour|remboursement|rembours[ée])/i,
-  /\b(?:circa|all'incirca|intorno a|pi[ùu] o meno)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:indietro|rimborso|rimborsat)/i,
-  /\b(?:cerca de|aproximadamente|uns|umas|mais ou menos)\b[^.!?]{0,15}\b(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de volta|reembolso|restitui)/i,
-  /(?:約|およそ|だいたい|ほぼ)\s?(?!220|385|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}[^。！？]{0,15}(?:還付|戻|返金|返っ)/,
-  /(?:還付|戻っ|返っ)[^。！？]{0,15}(?:約|およそ|だいたい)?\s?(?<![\d,])(?!220|385|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}/,
+  /\b(?:ungef[äa]hr|etwa|rund|circa|ca\.|um die|so um)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:zur[üu]ck|r[üu]ckerstattung|erstattung|erstattet)/i,
+  /\b(?:unos|unas|aproximadamente|alrededor de|cerca de|m[áa]s o menos)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de vuelta|reembolso|devoluci[óo]n)/i,
+  /\b(?:environ|à peu près|autour de|dans les)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de retour|remboursement|rembours[ée])/i,
+  /\b(?:circa|all'incirca|intorno a|pi[ùu] o meno)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:indietro|rimborso|rimborsat)/i,
+  /\b(?:cerca de|aproximadamente|uns|umas|mais ou menos)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de volta|reembolso|restitui)/i,
+  /(?:約|およそ|だいたい|ほぼ)\s?(?!220|385|330|495|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}[^。！？]{0,15}(?:還付|戻|返金|返っ)/,
+  /(?:還付|戻っ|返っ)[^。！？]{0,15}(?:約|およそ|だいたい)?\s?(?<![\d,])(?!220|385|330|495|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}/,
   // 4 Sep: a BARE figure next to the refund word, with no hedge ("Deine
   // Rückerstattung beträgt 1.800", "tu reembolso es de 1.800"). English is
   // covered above; these six were not, so the figure sent on Autopilot.
@@ -645,11 +645,11 @@ const TAX_DETERMINATION_ML: RegExp[] = [
   // eingereicht", "Tu devolución de 2024 ya está presentada" were refused). The
   // lookbehind stops the matcher restarting inside a number, which would have
   // read "024" out of "2024" and made the exclusion meaningless.
-  /(?<![A-Za-zÀ-ÿ])(?:r[üu]ckerstattung|erstattung|steuerr[üu]ckzahlung)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:reembolso|devoluci[óo]n|reintegro)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:remboursement|restitution)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:rimborso|restituzione)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:reembolso|restitui[çc][ãa]o)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:r[üu]ckerstattung|erstattung|steuerr[üu]ckzahlung)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:reembolso|devoluci[óo]n|reintegro)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:remboursement|restitution)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:rimborso|restituzione)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:reembolso|restitui[çc][ãa]o)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
 ];
 
 // myGov / ATO walkthroughs in the other languages: the site name is the same,

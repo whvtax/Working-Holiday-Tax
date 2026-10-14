@@ -162,6 +162,8 @@ export interface JobRow {
     /** FOLLOW_UP (1 Oct): how many times this step stood aside for a live or
      *  unanswered conversation (conversationBusy), capped at 8. */
     busyDefers?: number;
+    /** 14 Oct: the one check-back on the day the customer named for the form. */
+    checkBack?: boolean;
     /** FORM_RECEIVED, replay shape (audit, 5 Sep): the customer is already
      *  FORM_COMPLETE and only this one message (the acknowledgement or the
      *  ABN questions) is still owed because Meta throttled the first send. */

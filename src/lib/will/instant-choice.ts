@@ -34,7 +34,7 @@ export function detectChoice(text: string, lastWillLine: string | null | undefin
   if (CARRIES_A_NUMBER_RE.test(t)) return null;
   if (YES_RE.test(t)) {
     const w = lastWillLine ?? '';
-    const abn = /\$\s?385\b/.test(w), tfn = /\$\s?220\b/.test(w);
+    const abn = /\$\s?(?:385|495)\b/.test(w), tfn = /\$\s?(?:220|330)\b/.test(w);
     if (abn && !tfn) return 'TFN_ABN';
     if (tfn && !abn) return 'TFN';
     return null;
@@ -48,7 +48,8 @@ export function detectChoice(text: string, lastWillLine: string | null | undefin
 /** A direct question about the price: the two prices are the right answer. */
 export const PRICE_ASK_RE = /how much|what(?:'s| is| does it) (?:the )?(?:cost|price|fee)|\bcost\b|\bprice\b|\bfees?\b|\bcharge\b|how (?:do|can) i pay|payment details|bank details|wie viel|was kostet|kosten|preis|cu[áa]nto|precio|combien|prix|quanto|prezzo|いくら|料金|費用/i;
 
-export function priceMessageFor(track: Track): string {
+export function priceMessageFor(track: Track, foreign = false): string {
+  if (foreign) return track === 'TFN_ABN' ? APPROVED.price_tfn_abn_foreign : APPROVED.price_tfn_foreign;
   return track === 'TFN_ABN' ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
 }
 
@@ -57,13 +58,13 @@ export function priceMessageFor(track: Track): string {
  *  then "looks like the TFN option is the right fit for you", then the rest
  *  of the price message. "Got it, so that's..." is for a reply to the
  *  opening question, not for a first contact. */
-export function firstContactPriceMessage(track: Track, firstName: string | null | undefined): string {
+export function firstContactPriceMessage(track: Track, firstName: string | null | undefined, foreign = false): string {
   const name = (firstName ?? '').trim();
   const greeting = name ? `Hey ${name}! 😊 Happy to help.` : 'Hey! 😊 Happy to help.';
-  const base = priceMessageFor(track);
-  const fit = track === 'TFN_ABN'
-    ? 'Looks like the TFN + ABN option is the right fit for you: $385.'
-    : 'Looks like the TFN option is the right fit for you: $220.';
-  const rest = base.replace(/^Got it, so that's the TFN(?: \+ ABN)? option, \$(?:220|385)\./, fit);
+  const base = priceMessageFor(track, foreign);
+  const label = track === 'TFN_ABN' ? 'TFN + ABN' : 'TFN';
+  const amount = foreign ? (track === 'TFN_ABN' ? 495 : 330) : (track === 'TFN_ABN' ? 385 : 220);
+  const fit = `Looks like the ${label} option${foreign ? ' with foreign income' : ''} is the right fit for you: $${amount}.`;
+  const rest = base.replace(/^Got it, so that's the TFN(?: \+ ABN)? option(?: with foreign income)?, \$(?:220|385|330|495)\./, fit);
   return `${greeting}\n\n${rest}`;
 }

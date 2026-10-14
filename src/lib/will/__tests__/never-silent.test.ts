@@ -37,6 +37,7 @@ describe('1. a paying customer is never left in silence', () => {
     expect(paidNeverSilent({ ...base, state: 'LODGED', outcomeKind: 'silent', text: 'Amazing thankyou !' })).toBe(false);
     expect(paidNeverSilent({ ...base, state: 'LODGED', outcomeKind: 'silent', text: 'Brilliant, cheers mate xx' })).toBe(false);
     expect(paidNeverSilent({ ...base, state: 'LODGED', outcomeKind: 'silent', text: 'Thanks! When will the refund land?' })).toBe(true);
+    expect(paidNeverSilent({ ...base, state: 'FORM_COMPLETE', outcomeKind: 'silent', text: '100% thank you' })).toBe(false);
   });
   it('an attachment-only burst is not a question left hanging', () => {
     expect(paidNeverSilent({ ...base, outcomeKind: 'silent', alreadyStored: true })).toBe(false);

@@ -78,3 +78,5 @@ export function promisedUntil(text: string, now: Date = new Date()): string | nu
 }
 
 export const formPromisedKey = (customerId: string) => `form_promised_until:${customerId}`;
+/** 14 Oct: the day the customer named to sign (last signature nudge). */
+export const signaturePromisedKey = (customerId: string) => `signature_promised_until:${customerId}`;

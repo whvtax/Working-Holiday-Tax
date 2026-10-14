@@ -93,7 +93,7 @@ it('a lead who already has the bank details gets "the details are above", once',
   store.dueJobs.mockResolvedValue([job('fu_pre_24h')]);
   await processDueJobs();
   expect(deliverOut).toHaveBeenCalledTimes(1);
-  expect(deliverOut.mock.calls[0][1]).toMatch(/payment details are just above/);
+  expect(deliverOut.mock.calls[0][1]).toMatch(/did the transfer go through on your end/);
   expect(deliverOut.mock.calls[0][4]).toEqual(expect.objectContaining({ name: 'fu_price_sent' }));
 
   // The 3d step: already nudged, so skipped.

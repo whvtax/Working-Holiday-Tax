@@ -51,10 +51,10 @@ describe('a long question earns a longer answer (rick, +81 90)', () => {
 describe('courtesy gets silence (Laura, Pancho, Kana, Holly, Pippa)', () => {
   it('"Thanks" with a reply that carries nothing is not sent', async () => {
     decideMock.mockResolvedValue({ action: 'reply', reply_text: "You're very welcome! Let us know if anything comes up.", confidence: 0.9 });
-    // 12 Oct (Jo): a thank-you now gets one fixed line from the code; "ok" stays silent.
+    // 12 Oct (Jo): a thank-you is answered by Will in his own words, one line; "ok" stays silent.
     const thanks = await runEngine(base({ ctx: { ...base().ctx, state: 'FORM_PENDING', paid: true }, history: [{ role: 'assistant', text: 'Payment received. Please fill out the form.' }, { role: 'customer', text: 'Thanks!' }] }));
     expect(thanks.kind).toBe('queued');
-    expect(thanks.replyText).toBe("You're more than welcome! 😊");
+    expect(thanks.replyText).toBe("You're very welcome! 😊");
     const out = await runEngine(base({ ctx: { ...base().ctx, state: 'FORM_PENDING', paid: true }, history: [{ role: 'assistant', text: 'Payment received. Please fill out the form.' }, { role: 'customer', text: 'Perfect 👍' }] }));
     expect(out.kind).toBe('silent');
   });

@@ -20,7 +20,7 @@
 
 /** Our two fees, in AUD. A phone consultation ($110) is not a fee for the
  *  return and never confirms a payment screenshot. */
-export const FEES_AUD = [220, 385] as const;
+export const FEES_AUD = [220, 385, 330, 495] as const; // 330/495: with foreign income (Jo, 12 Oct)
 
 /** How far the amount that lands may sit from the fee and still count. A
  *  transfer from overseas can lose a few dollars to an intermediary, and a
@@ -60,7 +60,8 @@ export interface ProofVerification {
  *  there is of which service was bought: $385 means TFN + ABN, $220 means TFN. */
 export function incomeFromAmount(amount: number | null): 'TFN' | 'TFN_ABN' | null {
   if (amount == null || !Number.isFinite(amount)) return null;
-  if (Math.abs(amount - 385) <= AMOUNT_TOLERANCE_AUD) return 'TFN_ABN';
+  if (Math.abs(amount - 385) <= AMOUNT_TOLERANCE_AUD || Math.abs(amount - 495) <= AMOUNT_TOLERANCE_AUD) return 'TFN_ABN';
+  if (Math.abs(amount - 330) <= AMOUNT_TOLERANCE_AUD) return 'TFN';
   if (Math.abs(amount - 220) <= AMOUNT_TOLERANCE_AUD) return 'TFN';
   return null;
 }

@@ -16,8 +16,8 @@ const ours = (over: Partial<ProofDetails> = {}): ProofDetails => ({
 });
 
 describe('the amount', () => {
-  it('is one of the two fees', () => {
-    expect(FEES_AUD).toEqual([220, 385]);
+  it('is one of the four fees (330/495 with foreign income)', () => {
+    expect(FEES_AUD).toEqual([220, 385, 330, 495]);
     expect(amountMatchesFee(220)).toBe(true);
     expect(amountMatchesFee(385)).toBe(true);
   });

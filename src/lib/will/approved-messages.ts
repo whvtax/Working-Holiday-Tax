@@ -65,6 +65,33 @@ If your tax refund is less than our fee, we'll refund the difference. If there's
 
 Just send a screenshot once paid and we'll get started!`,
 
+  // Jo, 12 Oct: income from outside Australia adds $110 (TFN $330, TFN +
+  // ABN $495). Same shape as the two above, WITHOUT the guarantee: it does
+  // not apply to a return with foreign income.
+  price_tfn_foreign: `Got it, so that's the TFN option with foreign income, $330. We review your tax residency, Medicare and deductions, include your foreign income, then prepare and lodge your tax return, making sure you don't miss anything you're entitled to.
+
+BSB: 062692
+Account: 81049952
+
+Just send a screenshot once paid and we'll get started!`,
+
+  price_tfn_abn_foreign: `Got it, so that's the TFN + ABN option with foreign income, $495. We review your tax residency, Medicare and deductions, add a business schedule for your ABN income and expenses, include your foreign income, then prepare and lodge your tax return, making sure you don't miss anything you're entitled to.
+
+BSB: 062692
+Account: 81049952
+
+Just send a screenshot once paid and we'll get started!`,
+
+  prices_foreign: `With foreign income to report, we have two options:
+
+*TFN: $330*
+We review your tax residency, Medicare and deductions, include your foreign income, then prepare and lodge your tax return, making sure you don't miss anything you're entitled to.
+
+*TFN + ABN: $495*
+Everything in the TFN option, plus a business schedule for your ABN income and expenses.
+
+Which option works best for you?`,
+
   // For a customer who already lodged their return themselves (or through
   // someone else) and wants it checked/reviewed — a genuinely different
   // service from a fresh return, not a decline. Same bank details, same fee amounts as the normal
@@ -114,7 +141,10 @@ Just send a screenshot once paid and we'll get started!`,
     // I'll happily explain." Two problems: "still" plants the doubt and invites
     // "actually, no", and the second half is the polite scaffolding the playbook
     // bans, which invites another round of questions instead of a decision.
-    h24: `Hi {{1}}, just checking in about your tax return. Any questions? Otherwise, just say the word and we'll get started.`,
+    // 14 Oct (Jo, chosen from five): a question about THEIR life, not our
+    // service. Any answer reopens the chat; "already left" gets "we can do
+    // everything from here, wherever you are".
+    h24: `Hi {{1}}, are you still in Australia or have you already left? 😊`,
     // Jo, 4 Sep, his wording, after working through it line by line.
     //
     // WHO THIS IS FOR. Whoever is still here on day three is almost always the
@@ -133,12 +163,18 @@ Just send a screenshot once paid and we'll get started!`,
     // things" went out 46 times in one slice with zero conversions, and read
     // as a dig at anyone who had said "I'll do it myself". The 3-day nudge
     // now opens the door to a question instead.
-    d3: `Hi {{1}}, is there anything you're unsure about before you decide? Happy to clear it up 😊`,
-    d7: `Hi {{1}}, last message from me 😊 If you want your tax looked at later, just text me any time.`,
+    // 14 Oct (Jo): a question that is safe to answer "no" to. "No, not yet!"
+    // is them saying out loud that they still want it.
+    d3: `Hi {{1}}, have you given up on your tax refund this year?`,
+    // 14 Oct (Jo): a warm goodbye about THEIR trip, door left open.
+    // 14 Oct (Jo): the last message gives a real reason to answer now. "No,
+    // wait" reopens; "yes" closes cleanly (Not Interested); silence closes anyway.
+    d7: `Hi {{1}}, should I close your file for now?`,
     // 11 Oct (decision 9): for a lead who already has the bank details, the
     // 24h and 3d nudges above make no sense ("want me to get you started?"
     // to someone holding the BSB). This one replaces them, once.
-    priceSent: `Hi {{1}}, whenever you're ready, the payment details are just above. Send me a screenshot once it's through and I'll get you started the same day 😊`,
+    // 14 Oct (Jo): assumes they are already on it; easy to answer.
+    priceSent: `Hi {{1}}, did the transfer go through on your end?`,
   },
 
   payment_received: `Payment received.
@@ -156,12 +192,14 @@ https://workingholidaytax.com.au/tax-form`,
     // a number we break at minute four, at exactly the point people abandon a
     // form, costs more than the friction it saves. "Quick to fill in" carries
     // the same message and cannot be held against us.
-    h6: `Hi {{1}}, we haven't got your form yet. It's quick to fill in and we can start as soon as it's in.`,
+    // 14 Oct (Jo): a short, easy question; "not yet" opens the door to help.
+    h6: `Hi {{1}}, did you get a chance to look at the form yet?`,
     // Jo, 4 Sep: "if any question is confusing" opened the door to only ONE of
     // the three reasons a paid customer has not filled the form in. The others
     // are not having a document to hand and simply not getting to it, and
     // "anything is holding you up" catches all three in fewer words.
-    d3: `Hi {{1}}, your review is waiting on your form. If anything in it is holding you up, tell me what and I'll sort it 😊`,
+    // 14 Oct (Jo): permission to say they are stuck.
+    d3: `Hi {{1}}, is anything in the form holding you up?`,
     // Jo, 4 Sep: the last one CLOSES the conversation rather than asking a third
     // time. Three variations of "we still need your form" is not a cadence, it
     // is nagging, and after this nothing else is scheduled.
@@ -172,7 +210,9 @@ https://workingholidaytax.com.au/tax-form`,
     // left genuinely open: a customer who sends the form in three weeks is
     // picked up where they left off, which is both the right service and the
     // right answer if they ever say they paid and got nothing.
-    d7: `Hi {{1}}, I haven't heard back, so I'll leave it here for now. Whenever you send your form, just text me and we'll pick it straight back up.`,
+    // 14 Oct (Jo): they name the day themselves (commitment), and the system
+    // keeps the promise: one check-back on that day (scheduleFollowUp).
+    d7: `Hi {{1}}, when do you think you'll have a moment for the form? I'll check back with you then 😊`,
   },
 
   // Sent automatically to a TFN + ABN customer right after their form comes in
@@ -217,26 +257,14 @@ We'll now send everything for final review. Once approved, I'll send it to you f
 I've emailed it to you for review and signature.`,
 
   followups_signature: {
-    // Jo, 4 Sep. The old line repeated the signature notice he had had a day
-    // earlier almost word for word; he already knows it is ready. What he needs
-    // is how close he is ("we're good to lodge") and the way out of the single
-    // most common reason nobody signs: the email went to spam or to the wrong
-    // address, which is why it names the EMAIL rather than a vague "it".
-    h24: `Hi {{1}}, we just need your signature and we're good to lodge. Let me know if the email didn't reach you`,
-    // Jo, 4 Sep. The angle moves with the likely reason: at 24h the guess is the
-    // email never arrived, by day three he has seen it and something in it is
-    // holding him back. Naming that, and offering to look, is what unblocks
-    // somebody who is unsure rather than uninterested, and it says that signing
-    // is not a point of no return.
-    d3: `Hi {{1}}, once you sign, we lodge it with the ATO. If anything in it looks off, tell me and I'll check it.`,
-    // Jo, 4 Sep. This is the most valuable stuck customer in the system: they
-    // have paid, the return is finished and sitting there, and one signature is
-    // all that stands between them and their money. "Still waiting on your
-    // signature. Send it through when you can" was a third variation of the same
-    // request with nothing new in it, and it gave away that fact. This says the
-    // work is DONE and names the consequence plainly, without pressure.
-    d7: `Hi {{1}}, your return is finished and ready to go, it just needs your signature.\n\nNothing gets lodged until it's signed, so send it through whenever you're ready.`,
+    // 14 Oct (Jo, all three together). Never "refund": these also go to a
+    // customer who owes tax.
+    h24: `Hi {{1}}, did the email with your tax return reach you okay?`,
+    d3: `Hi {{1}}, is there anything in your return you'd like me to explain before you sign?`,
+    // They name the day; the system checks back on it (scheduleFollowUp).
+    d7: `Hi {{1}}, your return is ready and waiting. When do you think you'll have a moment to sign it? I'll check back with you then 😊`,
   },
+
 
   lodged: `Your tax return has been lodged successfully! 🎉 Your refund should arrive in your bank account within 14 business days.`,
 

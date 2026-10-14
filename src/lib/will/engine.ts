@@ -20,7 +20,8 @@ import { APPROVED } from './approved-messages';
 import { canTransition, CustomerState } from './state-machine';
 import { detectChoice, PRICE_ASK_RE, firstContactPriceMessage } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
-import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, thanksReply } from './text-normalize';
+import { hasForeignIncome } from './foreign-income';
+import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, containsThanks, firstSentenceOnly, isClosingOnly, thanksReply } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -155,11 +156,17 @@ const CHEER_OPENER = /^(?:(?:perfect|great|awesome|amazing|wonderful|brilliant|f
  *  approved price message for the amount it named, keeping at most one line
  *  of the model's own before it. Returns the input unchanged when no fixed
  *  amount can be read, or when the draft is already the approved text. */
-export function enforcePriceMessage(text: string): string {
+export function enforcePriceMessage(text: string, foreign = false): string {
   const abn = /\$\s?385\b/.test(text);
   const tfn = /\$\s?220\b/.test(text);
-  if (abn === tfn) return text;            // both or neither: ambiguous, leave it
-  const approved = abn ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
+  const abnF = /\$\s?495\b/.test(text);
+  const tfnF = /\$\s?330\b/.test(text);
+  if ([abn, tfn, abnF, tfnF].filter(Boolean).length !== 1) return text; // ambiguous, leave it
+  // A customer who mentioned foreign income always gets the foreign price,
+  // even when the model wrote $220 / $385 (Jo, 12 Oct).
+  const approved = (abn || abnF) && (foreign || abnF) ? APPROVED.price_tfn_abn_foreign
+    : (tfn || tfnF) && (foreign || tfnF) ? APPROVED.price_tfn_foreign
+    : abn ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
   if (text.includes(approved)) return text;
   const lines = text.split('\n');
   const firstBank = lines.findIndex((l) => /\bBSB\b|062692|81049952|payment details/i.test(l));
@@ -170,9 +177,21 @@ export function enforcePriceMessage(text: string): string {
   return lead ? `${lead}\n\n${approved}` : approved;
 }
 
-export function stripCheerOpener(text: string): string {
-  const stripped = text.replace(CHEER_OPENER, '');
+export function stripCheerOpener(text: string, firstName?: string | null): string {
+  let stripped = text.replace(CHEER_OPENER, '');
   if (!stripped.trim() || stripped === text) return text;
+  // 13 Oct (Corey, +61 461): "No worries, Corey! Just send it through..."
+  // became "Corey. Just send it through...". The name that belonged to the
+  // stripped opener goes with it (and any "Hi"/"Hey" in front of it).
+  const name = (firstName ?? '').trim();
+  if (name) {
+    const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const rest = stripped.replace(new RegExp(`^(?:,\\s*)?${esc}\\s*[!.]+\\s*`, "i"), "");
+    if (rest !== stripped && rest.trim()) stripped = rest;
+  }
+  // Never start with a bare comma or full stop left behind.
+  stripped = stripped.replace(/^[\s,.!]+/, '');
+  if (!stripped.trim()) return text;
   // "Perfect! here are..." -> "Here are..."
   return stripped.charAt(0).toUpperCase() + stripped.slice(1);
 }
@@ -215,7 +234,7 @@ export function customerAskedSomething(burst: string): boolean {
  *  then the price message is the right answer, question mark or not. */
 const CHOICE_OR_PRICE_RE = new RegExp([
   '\\b(?:tfn|abn|option|price|prices|cost|costs|fee|fees|how much|charge|pay|payment|bank|bsb)\\b',
-  '\\$\\s?(?:220|385)\\b', '\\b(?:220|385)\\b',
+  '\\$\\s?(?:220|385|330|495)\\b', '\\b(?:220|385|330|495)\\b',
   '^(?:yes|yep|yeah|sure|ok|okay|ja|sí|si|oui|sì|sim|はい|お願いします|よろしくお願いします)\\b',
   'いくら', '料金', '費用', '値段', 'preis', 'kosten', 'kostet', 'precio', 'cu[áa]nto', 'prix', 'combien', 'prezzo', 'quanto', 'preço',
 ].join('|'), 'im');
@@ -229,7 +248,7 @@ export function isChoiceOrPriceAsk(burst: string): boolean {
 export const UPSET_OR_REFUND = /\b(?:refund(?: me| my money| the fee)?|money back|chargeback|dispute|scam|fraud|unprofessional|ridiculous|unacceptable|disappointed|frustrat|angry|upset|furious|complain|review(?:s)? (?:online|on google)|lawyer|ombudsman|fair work|waste of|rip[- ]?off|ignored|no (?:one|body) (?:replies|answers|responds)|still waiting)\b|hello\?{2,}|\?{3,}|erstatt|geld zur[üu]ck|betrug|unversch[äa]mt|entt[äa]uscht|返金|詐欺|不満|がっかり|reembolso|estafa|decepcion|rembourse|arnaque|déçu|rimborso|truffa|delus|devolução|golpe/i;
 
 /** Both prices in one text = the menu (the opening or a re-pitch). */
-const MENU_RE = /\$\s?220\b[\s\S]*\$\s?385\b|\$\s?385\b[\s\S]*\$\s?220\b/;
+const MENU_RE = /\$\s?(?:220|330)\b[\s\S]*\$\s?(?:385|495)\b|\$\s?(?:385|495)\b[\s\S]*\$\s?(?:220|330)\b/;
 const BANK_RE = /\bBSB\b|062692|81049952/;
 
 /** Decision 2: a message that asks something (and is not itself about the
@@ -245,7 +264,7 @@ export function menuAsAnswer(burst: string, draft: string, paid: boolean): boole
 export function stripMenuAndBank(text: string): string {
   return text
     .split('\n')
-    .filter((l) => !BANK_LINE_RE.test(l.trim()) && !/\$\s?(?:220|385)\b/.test(l) && !/which option/i.test(l))
+    .filter((l) => !BANK_LINE_RE.test(l.trim()) && !/\$\s?(?:220|385|330|495)\b/.test(l) && !/which option/i.test(l))
     .join('\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
@@ -261,7 +280,9 @@ export function isApprovedVerbatim(text: string, firstName?: string | null): boo
   const t = norm(text);
   const name = (firstName ?? '').trim();
   const fixed = [APPROVED.opening, APPROVED.prices, APPROVED.price_tfn, APPROVED.price_tfn_abn,
-    firstContactPriceMessage('TFN', name), firstContactPriceMessage('TFN_ABN', name)];
+    APPROVED.prices_foreign, APPROVED.price_tfn_foreign, APPROVED.price_tfn_abn_foreign,
+    firstContactPriceMessage('TFN', name), firstContactPriceMessage('TFN_ABN', name),
+    firstContactPriceMessage('TFN', name, true), firstContactPriceMessage('TFN_ABN', name, true)];
   for (const f of fixed) {
     if (t === norm(f)) return true;
     if (name && t === norm(f.replace(/^Hey!/, `Hey ${name}!`))) return true;
@@ -297,37 +318,60 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // price message: once it has been sent, a repeat of it in a reply that is
   // NOT a price message is dropped in code, whatever the model wrote.
   const guaranteeAlreadySent = history.some((t) => t.role === 'assistant' && GUARANTEE_RE.test(t.text));
+  // Jo, 12 Oct: foreign income means no guarantee, whatever the model wrote.
+  const foreignCustomer = hasForeignIncome(history.filter((t) => t.role === 'customer').map((t) => t.text));
   const applyBankRule = (t: string): string => {
     let out = suppressBankRepeat && BANK_DETAILS_RE.test(t) ? stripBankBlock(t) : t;
     if (guaranteeAlreadySent && !BANK_DETAILS_RE.test(out) && GUARANTEE_RE.test(out)) out = stripGuarantee(out);
+    if (foreignCustomer && GUARANTEE_RE.test(out)) out = stripGuarantee(out);
     return out;
   };
 
-  // ── A THANK-YOU GETS ONE LINE BACK (Jo, 11 Oct) ────────────────────────
+  // ── A THANK-YOU GETS "You're very welcome! 😊" (Jo, 13 Oct) ──────────────
   //
-  // Ivy (+61 409 870 288): "Thankyou! X" after her return was lodged. Jo's
-  // call: every thank-you gets a short English line, no model, no task. The
-  // line still passes the guard, so a paused, opted-out or legacy chat (and
-  // the kill switch) stays silent exactly as before. "ok" / "yes" / 👍 are not
-  // a thank-you and keep the old silence further down.
-  if (burstSinceOurs.length > 0 && isThanksLine(customerBurst)) {
+  // "When someone writes thanks after a refund, a service, a question, the
+  // answer a human gives is You're very welcome! 😊, and that is how Will has
+  // to behave." So it is not the model's choice: a message that is only a
+  // thank-you (any wording) gets that line, before the model is asked
+  // anything. Never the same line twice in a row ("Anytime! 😊" then). It
+  // still passes the guard, so a paused, opted-out or legacy chat and the
+  // kill switch stay silent.
+  if (burstSinceOurs.length > 0 && isClosingOnly(customerBurst) && containsThanks(customerBurst)) {
     const line = thanksReply(lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '');
     const thanksDecision: Decision = { action: 'reply', reply_text: line, confidence: 1 };
-    const thanksGuard: GuardContext = {
+    const v = policyGuard(line, {
       ...input.guard, state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents,
       isApprovedTemplate: true, customerTextChars: customerBurst.length, customerText: customerBurst,
-    };
-    const v = policyGuard(line, thanksGuard);
+    });
     if (!v.allowed) return { kind: 'silent', decision: { ...thanksDecision, action: 'wait', reply_text: undefined }, guardViolations: v.violations };
     return {
       kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
       replyText: line, decision: thanksDecision,
-      reviewNote: 'thank-you: one fixed line back, no model call',
+      reviewNote: "thank-you: You're very welcome! 😊 (Jo's rule, no model call)",
       newState: undefined, stateChanged: false,
     };
   }
 
   const decision = await decide(ctx, history);
+
+  // 13 Oct: the model handed a plain thank-you to the team ("Helllo, perfect
+  // thank you" got "I've passed this to the team"). A closing has nothing for
+  // a person to do: a thank-you gets one short line, anything else silence.
+  if (decision.action === 'human_task' && burstSinceOurs.length > 0 && isClosingOnly(customerBurst)) {
+    if (!containsThanks(customerBurst)) return { kind: 'silent', decision: { ...decision, action: 'wait' }, reviewNote: 'closing only: nothing to hand over' };
+    const line = thanksReply(lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '');
+    const v = policyGuard(line, {
+      ...input.guard, state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents,
+      isApprovedTemplate: true, customerTextChars: customerBurst.length, customerText: customerBurst,
+    });
+    if (!v.allowed) return { kind: 'silent', decision: { ...decision, action: 'wait' }, guardViolations: v.violations };
+    return {
+      kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+      replyText: line, decision: { ...decision, action: 'reply', reply_text: line },
+      reviewNote: 'thank-you only: Will wanted to hand it over; a short reply went instead',
+      newState: undefined, stateChanged: false,
+    };
+  }
 
   if (decision.action === 'human_task') {
     // TYPE 2 (Jo, 31 Aug): a human_task is a PROBLEM that needs a person — a
@@ -498,7 +542,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // left alone: its opener is Jo's, and it is the one place the word belongs.
   const willTurns = history.filter((t) => t.role === 'assistant').length;
   if (willTurns >= 2 && !/\bBSB\b|062692|81049952/.test(text)) {
-    text = stripCheerOpener(text);
+    text = stripCheerOpener(text, custFirstName);
   }
   // 1 Oct (72-hour audit): twenty price messages in three days came in four
   // guarantee wordings and four account-name variants, because the model
@@ -507,7 +551,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // line of its own before it, nothing after. Other languages keep the
   // model's translation (there is no approved text to paste).
   if ((ctx.lang ?? 'en') === 'en' && !ctx.paid && /\bBSB\b|062692|81049952/.test(text)) {
-    const enforced = enforcePriceMessage(text);
+    const enforced = enforcePriceMessage(text, foreignCustomer);
     if (enforced !== text) text = enforced;
   }
 
@@ -616,7 +660,15 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     && !/https?:\/\//i.test(text)
     && !text.includes('?')
     && !text.includes('？');
-  if (courtesyClose) {
+  // Jo, 12 Oct: "Will must think, not follow a closed template." A thank-you
+  // in any wording ("100% thank you", "thanks guys", "legends") is answered
+  // by Will in his own words, kept to one short line. Only a bare "ok" / 👍
+  // with no thanks in it stays silent.
+  const replyIsPlain = !/\d/.test(text) && !/https?:\/\//i.test(text) && !/[?？]/.test(text);
+  const thanksClose = containsThanks(customerBurst) && !customerAskedSomething(customerBurst) && customerBurst.trim().length <= 120;
+  if (thanksClose && replyIsPlain) {
+    text = firstSentenceOnly(text);
+  } else if (courtesyClose && !containsThanks(customerBurst)) {
     // 1 Oct (72-hour audit): twenty "You're very welcome!" messages in three
     // days, each a bubble the customer did not need, pushing the real content
     // up the screen. A bare thank-you, "ok" or 👍 that our reply would answer
@@ -766,7 +818,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       const draftMentionsBank = /\bBSB\b|062692|81049952/.test(decision.reply_text ?? '');
       const draftHasBank = !bankAlreadySent && draftMentionsBank;
       const priceStandIn = draftHasBank
-        ? (/\$\s?385\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn_abn : /\$\s?220\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn : null)
+        ? (/\$\s?495\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn_abn_foreign : /\$\s?330\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn_foreign : /\$\s?385\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn_abn : /\$\s?220\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn : null)
         : null;
       const safe = priceStandIn ?? professionalQuestionMessage(ctx.lang);
       // A held draft about the bank details, for a customer who already has

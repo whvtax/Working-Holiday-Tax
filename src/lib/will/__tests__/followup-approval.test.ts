@@ -68,7 +68,8 @@ describe('the day-3 pre-payment nudge specifically', () => {
   // times with zero conversions and read as a dig; the nudge now opens the
   // door to a question. Still no guarantee here.
   test('opens the door to a question, and carries no guarantee', () => {
-    expect(body).toMatch(/anything you're unsure about before you decide/i);
+    // 14 Oct (Jo): the day-3 nudge is now the no-oriented question.
+    expect(body).toMatch(/have you given up on your tax refund this year/i);
     expect(body).not.toMatch(/doing it alone|miss things/i);
     expect(body).not.toMatch(/top up the difference|refund the difference|less than the fee|never costs you more|out of pocket/i);
     // It does not trip REFUND_OR_CANCEL_PROMISE even as free-form, because the

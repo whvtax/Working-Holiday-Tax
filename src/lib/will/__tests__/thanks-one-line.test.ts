@@ -6,19 +6,19 @@
  * alternates so the same bubble never appears twice in a row, and a paused or
  * opted-out chat stays silent.
  */
-import { isThanksLine, thanksReply, THANKS_REPLIES, isCourtesyLine } from '@/lib/will/text-normalize';
+import { isThanksLine, thanksReply, THANKS_REPLIES, isCourtesyLine, containsThanks } from '@/lib/will/text-normalize';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
 describe('what counts as a thank-you', () => {
-  it.each(['Thankyou! X', 'Amazing thankyou !', 'thanks', 'Cheers mate', 'Danke dir!', 'Muchas gracias', 'ありがとうございます', 'Thank you so much xx', 'Thank u', 'Perfect thanks', 'ty!', 'thx'])('%s', (t) => {
+  it.each(['Thankyou! X', 'Amazing thankyou !', 'thanks', 'Cheers mate', 'Danke dir!', 'Muchas gracias', 'ありがとうございます', 'Thank you so much xx', 'Thank u', 'Perfect thanks', 'ty!', 'thx', 'Perfect thank you guys so much! :)', 'Thanks heaps for all your help', 'Thank you so much for everything, legends 🙏', 'Amazing, thanks team!'])('%s', (t) => {
     expect(isThanksLine(t)).toBe(true);
   });
   it.each(['ok', 'Perfect', '👍', 'yes', 'Got it'])('%s is courtesy but not thanks', (t) => {
     expect(isCourtesyLine(t)).toBe(true);
     expect(isThanksLine(t)).toBe(false);
   });
-  it.each(['Thanks! When will the refund land?', 'Thanks, I will pay tomorrow', 'thank you, here is my TFN 123 456 789'])('%s has substance and goes to the model', (t) => {
+  it.each(['Thanks! When will the refund land?', 'Thanks, I will pay tomorrow', 'thank you, here is my TFN 123 456 789', 'Thanks but I still have not received my refund', 'Thank you, I will send the form tomorrow'])('%s has substance and goes to the model', (t) => {
     expect(isThanksLine(t)).toBe(false);
   });
 });
@@ -37,15 +37,21 @@ describe('the line itself', () => {
   });
 });
 
-describe('engine wiring (source-pinned)', () => {
+describe("engine wiring: a thank-you always gets You're very welcome! 😊 (Jo, 13 Oct)", () => {
   const engine = readFileSync(join(__dirname, '..', 'engine.ts'), 'utf8');
-  it('answers before the model is called, through the guard, queued on Autopilot', () => {
-    const idx = engine.indexOf('isThanksLine(customerBurst)');
-    const decideIdx = engine.indexOf('const decision = await decide(ctx, history);');
-    expect(idx).toBeGreaterThan(0);
-    expect(idx).toBeLessThan(decideIdx);
-    expect(engine).toMatch(/const v = policyGuard\(line, thanksGuard\)/);
-    expect(engine).toMatch(/if \(!v\.allowed\) return \{ kind: 'silent'/);
+  const service = readFileSync(join(__dirname, '..', 'service.ts'), 'utf8');
+  it('answered from the code before the model is asked', () => {
+    const fixed = engine.indexOf('isClosingOnly(customerBurst) && containsThanks(customerBurst)');
+    expect(fixed).toBeGreaterThan(0);
+    expect(fixed).toBeLessThan(engine.indexOf('const decision = await decide(ctx, history);'));
+    expect(THANKS_REPLIES[0]).toBe("You're very welcome! 😊");
+  });
+  it('silence on a paid customer becomes a task only when they asked something', () => {
+    expect(service).toMatch(/!customerAskedSomething\(a\.text\)\) return false;/);
+  });
+  it('"100% thank you" is a thank-you', () => {
+    expect(containsThanks('100% thank you')).toBe(true);
+    expect(containsThanks('Perfect')).toBe(false);
   });
 });
 

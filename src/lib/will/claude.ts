@@ -561,7 +561,7 @@ HOW TO WRITE THE ANSWER:
 - Warm, short, WhatsApp-natural. Two to four sentences. No headings, no bullet lists, no bold (**), no em dash or en dash, no "Great question!".
 - Say what to do and where to send it ("send it to me here"), then stop. Do not add "we'll guide you through the process" or "let me know if you have questions".
 - Do NOT copy the human agent's wording or tone from the conversation; only learn WHAT was asked and what the correct business answer is.
-- Business facts that never change: fixed prices $220 (TFN only) and $385 (TFN + ABN), paid upfront. The guarantee (Jo, 27 Sep), in its exact wording: "If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies." It lives in the price messages; never widen it (no "never out of pocket", "you can't lose", "no risk"), never promise a refund will happen, never "non-refundable" unless the customer asks point-blank. Bank details: Account Name The Accounting Academy, BSB 062692, Account Number 81049952, never any other name. Returns are reviewed and signed off by a registered tax agent; never write "we are registered tax agents". Never claim to be a bot or AI. Never give myGov / ATO login steps. No dollar amount other than $220 and $385.
+- Business facts that never change: fixed prices $220 (TFN only) and $385 (TFN + ABN), paid upfront; with foreign income to report, $330 (TFN) and $495 (TFN + ABN). The guarantee (Jo, 27 Sep), in its exact wording: "If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies." It lives in the price messages; never widen it (no "never out of pocket", "you can't lose", "no risk"), never promise a refund will happen, never "non-refundable" unless the customer asks point-blank. Bank details: Account Name The Accounting Academy, BSB 062692, Account Number 81049952, never any other name. Returns are reviewed and signed off by a registered tax agent; never write "we are registered tax agents". Never claim to be a bot or AI. Never give myGov / ATO login steps. No dollar amount other than $220, $385, $330 and $495.
 - Write answers in English.
 - Merge duplicate questions into one entry; set examples to the real phrasings seen; set keywords to the important searchable words; set a short intent label.
 
@@ -958,5 +958,76 @@ export async function decideReviewAsk(input: { lang: string | null; transcript: 
     return { ask, opener: ask && opener ? opener : null, reason, measured: true };
   } catch (e) {
     return { ask: true, opener: null, reason: `model unavailable (${(e as Error).message}): default ask`, measured: false };
+  }
+}
+
+// ============================================================
+// BEFORE "I'VE PASSED THIS TO THE TEAM" (Jo, 13 Oct)
+//
+// "Every time Will wants to send the message that he is handing over, he
+// should read the chat and understand whether it fits at all, or whether the
+// customer just wrote thanks or ok." The holding line went to "No worrries
+// thanks", "100% thank you", "Helllo, perfect thank you". This reads the
+// conversation once more, at send time, and decides:
+//   HOLD     the customer is waiting on something only a person can give
+//   REPLY    one short line answers it (a thank-you, "I'll do it tomorrow")
+//   NOTHING  there is nothing to answer
+// Never throws. On any failure it says HOLD, i.e. the old behaviour.
+// ============================================================
+export interface HoldingJudgement { verdict: 'HOLD' | 'REPLY' | 'NOTHING'; reply: string | null; reason: string; measured: boolean }
+
+const HOLDING_TOOL = {
+  name: 'holding_check',
+  description: 'Decide whether "I\'ve passed this to the team" is the right message to send now.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      verdict: { type: 'string', enum: ['HOLD', 'REPLY', 'NOTHING'], description: 'HOLD: the customer asked or needs something only a person on the team can give, so the holding line fits. REPLY: what they last wrote needs only a short friendly line (a thank-you, an "ok, I will do it tomorrow", a "no worries"). NOTHING: there is nothing to answer at all (a bare ok, a thumbs up, an emoji).' },
+      reply: { type: 'string', description: 'Only for REPLY: the one short line to send, in the customer\'s language, under 100 characters, no numbers, no links, no promises, no question, at most one emoji. For a thank-you, prefer "You\'re very welcome! 😊" unless that exact line was already sent in this chat.' },
+      reason: { type: 'string', description: 'One sentence for the owner.' },
+    },
+    required: ['verdict', 'reason'],
+  },
+} as const;
+
+const HOLDING_SYSTEM = `You work at Working Holiday Tax, an Australian tax service for backpackers, and you are about to send a customer the message "I've passed this to the team. They'll reply here, usually within one business day."
+Read the conversation and decide whether that message actually fits what the customer LAST wrote (everything after our last message).
+HOLD only when they asked a real question or raised a real issue that needs a person (a complaint, a refund, something about their tax situation, a problem we cannot answer from the conversation).
+REPLY when they are closing politely, thanking, confirming, or telling us what they will do next ("I'll fill it in tomorrow", "no worries thanks", "sounds good"): a short friendly line is right, the holding line would be strange.
+NOTHING when there is nothing to answer at all.
+When in real doubt between HOLD and REPLY, choose HOLD. Answer only by calling the holding_check tool.`;
+
+export async function judgeHoldingLine(input: { transcript: string; lang: string | null }): Promise<HoldingJudgement> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return { verdict: 'HOLD', reply: null, reason: 'no model key', measured: false };
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', signal: AbortSignal.timeout(20_000),
+      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body: JSON.stringify({
+        model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
+        max_tokens: 300,
+        system: HOLDING_SYSTEM,
+        tools: [HOLDING_TOOL],
+        tool_choice: { type: 'tool', name: 'holding_check' },
+        messages: [{ role: 'user', content: `Customer language: ${input.lang ?? 'unknown'}.\n\nConversation (oldest first):\n${input.transcript.slice(-20000)}` }],
+      }),
+    });
+    if (!res.ok) return { verdict: 'HOLD', reply: null, reason: `model error ${res.status}`, measured: false };
+    const data = await res.json();
+    recordAiUsage('other', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
+    const tool = (data.content as Array<{ type: string; name?: string; input?: Record<string, unknown> }> | undefined)
+      ?.find((bl) => bl.type === 'tool_use' && bl.name === 'holding_check');
+    const d = tool?.input ?? {};
+    const verdict = d.verdict === 'REPLY' || d.verdict === 'NOTHING' ? d.verdict : 'HOLD';
+    let reply = typeof d.reply === 'string' ? stripDashes(d.reply).replace(/\s+/g, ' ').trim() : null;
+    // A reply that carries anything structural is not a "short line": hold instead.
+    if (verdict === 'REPLY' && (!reply || reply.length > 120 || /\d|https?:\/\/|[?？]/.test(reply))) {
+      return { verdict: 'HOLD', reply: null, reason: 'the suggested short reply was not plain enough', measured: true };
+    }
+    if (verdict !== 'REPLY') reply = null;
+    return { verdict, reply, reason: typeof d.reason === 'string' ? d.reason.slice(0, 300) : '', measured: true };
+  } catch (e) {
+    return { verdict: 'HOLD', reply: null, reason: `model unavailable (${(e as Error).message})`, measured: false };
   }
 }

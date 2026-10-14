@@ -5,12 +5,12 @@
 // seq resume (no restart-forever), kill switch, quiet hours.
 // ============================================================
 import { getStore, CustomerRow, JobRow, Store } from './store';
-import { cleanFirstName, firstNameOf } from './text-normalize';
+import { cleanFirstName, firstNameOf, isClosingOnly } from './text-normalize';
 import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts, SIGNATURE_AFTER_NOTICE } from './config';
 import { policyGuard, registerLibraryBodies } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
-import { formPromisedKey } from './promised-date';
+import { formPromisedKey, signaturePromisedKey } from './promised-date';
 import { salesPromisedKey, businessDaysFromNow } from './stage-sync';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
@@ -23,7 +23,7 @@ import { runDailyDigest } from './daily-digest';
 import { runLostLeadAnalysis } from './lost-analysis';
 import { readReviewAsks, patchReviewAsk, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, reviewRemindMessage, reviewRemindTemplateKey, reviewThanksMessage, matchReviewToAsk, REVIEW_REMIND_DAYS } from './review-asks';
 import { fetchGoogleReviews } from './google-reviews';
-import { decideReviewAsk } from './claude';
+import { decideReviewAsk, judgeHoldingLine } from './claude';
 import { reviewAskMessage, reviewAskTemplateKey, REVIEW_ASK_DEFAULT_OPENER } from './i18n';
 import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
 // One open task per customer (audit, 5 Sep): every task the scheduler raises
@@ -152,6 +152,22 @@ export async function scheduleFollowUp(customerId: string, flow: Flow, seq: numb
     : false;
   const delays = afterNotice ? SIGNATURE_AFTER_NOTICE : cfg[flow];
   if (seq >= delays.length) {
+    // 14 Oct (Jo): the last form nudge asks "when do you think you'll have a
+    // moment for the form? I'll check back with you then". When they name a
+    // day, that promise is kept: one check-back on that day, with the short
+    // "did you get a chance to look at the form yet?".
+    if (flow === 'form' || flow === 'signature') {
+      const until = await store.getSetting(flow === 'form' ? formPromisedKey(customerId) : signaturePromisedKey(customerId)).catch(() => null);
+      const at = typeof until === 'string' ? new Date(until).getTime() : NaN;
+      if (Number.isFinite(at) && at > Date.now()) {
+        await store.addJob({
+          customerId, kind: 'FOLLOW_UP',
+          payload: { templateKey: FLOW_TEMPLATES[flow][0], seq, flow, checkBack: true },
+          runAt: new Date(at).toISOString(),
+        });
+      }
+      return;
+    }
     if (flow === 'prePayment') {
       await store.addJob({
         customerId, kind: 'AUTO_CLOSE', payload: {},
@@ -691,9 +707,49 @@ async function doProcess(): Promise<TickResult> {
             // Anything that actually reached the customer since the handoff
             // means somebody got there first. A draft still sitting in
             // PENDING_APPROVAL does not count: nobody has seen it but us.
-            const answered = (await store.listMessages(c.id)).some((m) =>
+            const msgsNow = await store.listMessages(c.id);
+            const answered = msgsNow.some((m) =>
               m.direction === 'OUT' && m.status === 'SENT'
               && new Date(m.createdAt).getTime() > new Date(job.createdAt ?? job.runAt).getTime());
+            // 13 Oct: the last line of defence. If everything the customer
+            // wrote since our last message is a thank-you or a closing, the
+            // holding line does not go, whatever raised the task.
+            let lastOutIdx = -1;
+            msgsNow.forEach((m, i) => { if (m.direction === 'OUT' && m.status === 'SENT') lastOutIdx = i; });
+            const burstNow = msgsNow.slice(lastOutIdx + 1).filter((m) => m.direction === 'IN').map((m) => m.body ?? '').join('\n');
+            if (open && !answered && burstNow.trim() && isClosingOnly(burstNow)) {
+              await store.audit('assistant', 'handoff_ack_skipped', { customerId: c.id, reason: 'closing only (thanks / ok): nothing to hold' });
+              await store.setJobStatus(job.id, 'DONE');
+              continue;
+            }
+            // 13 Oct (Jo): before the holding line, Will reads the whole chat
+            // again and decides whether it fits at all.
+            if (open && !answered) {
+              const transcript = msgsNow.slice(-30)
+                .filter((m) => m.status === 'SENT' || m.direction === 'IN')
+                .map((m) => `${m.direction === 'IN' ? 'Customer' : 'Us'}: ${(m.body ?? '').replace(/\s+/g, ' ').slice(0, 500)}`)
+                .join('\n');
+              const judged = await judgeHoldingLine({ transcript, lang: c.lang });
+              if (judged.verdict !== 'HOLD') {
+                let sentReply = false;
+                if (judged.verdict === 'REPLY' && judged.reply) {
+                  const v = policyGuard(judged.reply, {
+                    state: c.state, paid: c.paid, aiPaused: c.aiPaused, killSwitch: false, optedOut: c.optedOut, isLegacy: c.isLegacy,
+                    lastCustomerMsgAt: c.lastCustomerMsgAt ? new Date(c.lastCustomerMsgAt) : null,
+                    isApprovedTemplate: true, estimateFromTeam: c.estimatedRefundCents,
+                  });
+                  if (v.allowed) {
+                    const out = await deliverOut(c, judged.reply, 'AI', { system: true });
+                    sentReply = out.ok;
+                  }
+                }
+                await store.audit('assistant', 'handoff_ack_skipped', {
+                  customerId: c.id, reason: `read the chat: ${judged.verdict}${sentReply ? ' (short reply sent)' : ''}. ${judged.reason}`,
+                });
+                await store.setJobStatus(job.id, 'DONE');
+                continue;
+              }
+            }
             if (open && !answered) {
               const { body } = await ackBody(c.lang, tickTemplates);
               // Inside the window by construction (the long message arrived

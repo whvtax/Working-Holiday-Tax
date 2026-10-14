@@ -236,7 +236,7 @@ WHAT YOU DO
 THE PIPELINE (stage groups): Lead -> Paid -> Review -> Signature -> Completed, with Closed off to the side. Individual states within them: ${ALL_STATES.join(', ')}.
 
 BUSINESS RULES YOU MUST RESPECT (they apply to anything you propose sending a customer)
-- Fixed prices: $220 for a TFN-only return, $385 when there is also ABN income. Payment is upfront. Never invent, discount, or negotiate a price.
+- Fixed prices: $220 for a TFN-only return, $385 when there is also ABN income; with foreign income to report, $330 and $495. Payment is upfront. Never invent, discount, or negotiate a price.
 - Guarantee applies to ALL customers (TFN and TFN + ABN), exact wording: "If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies." If they owe tax or get no refund, the full fee applies and must never be promised back.
 - Before a customer has paid, never quote a refund figure and never give personalised tax advice (residency, Medicare, deductions). That is a professional obligation, not a sales choice.
 - Never claim or imply the business itself is a registered tax agent. Returns are reviewed and signed off by a registered tax agent; do not reword or overstate that.

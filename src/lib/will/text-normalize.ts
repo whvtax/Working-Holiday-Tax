@@ -311,14 +311,44 @@ export function isCourtesyLine(text: string | null | undefined): boolean {
  * is still courtesy with nothing to answer and stays silent.
  */
 const THANKS_WORD = /^(?:thanks|thank|thankyou|thanku|ty|tysm|thx|tks|ta|cheers|appreciate|appreciated|danke|dank|gracias|merci|grazie|obrigad[oa]|ありがとう|ありがとうございます)$/u;
+// 12 Oct ("Perfect thank you guys so much! :)" got the holding line because
+// "guys" was not on the word list): a thank-you is recognised by shape, not by
+// a list of every word people add. Short, a thanks word in it, no question, no
+// digits, and none of the words that carry real content.
+const SUBSTANCE = /\b(?:but|when|how|what|where|why|which|can|could|will|would|should|need|needs|paid|pay|payment|send|sent|attach(?:ed)?|here is|here's|question|refund|tax|form|tfn|abn|tomorrow|later|wait|problem|issue|not|don'?t|didn'?t|can'?t|won'?t|still|also|another|cancel|wrong|mistake|email|document|receipt|invoice|myGov|ato)\b|help me/i;
+/** Any thank-you word anywhere in the message, in any wording around it. */
+export function containsThanks(text: string | null | undefined): boolean {
+  const words = (text ?? '').toLowerCase().replace(/[^\p{L}\p{N}\s]+/gu, ' ').split(/\s+/).filter(Boolean);
+  return words.some((w) => THANKS_WORD.test(w)) || /ありがとう|thank\s?you|thanku/i.test(text ?? '');
+}
+
+/**
+ * 13 Oct (Jo: "again it went to the team, do a proper job on this").
+ * "Helllo, perfect thank you", "100% thank you", "Thankyou! X", "ok 👍":
+ * nothing in it to answer, nothing for a person to do. This is the ONE test
+ * every path that could send "I've passed this to the team" now checks first.
+ */
+export function isClosingOnly(text: string | null | undefined): boolean {
+  const t = (text ?? '').trim();
+  if (!t) return false;
+  if (isCourtesyLine(t)) return true;
+  if (/[?？]/.test(t)) return false;
+  if (SUBSTANCE.test(t)) return false;
+  const words = t.split(/\s+/).filter(Boolean);
+  return containsThanks(t) && words.length <= 15;
+}
+
 export function isThanksLine(text: string | null | undefined): boolean {
   const t = (text ?? '').trim();
-  if (!t || !isCourtesyLine(t)) return false;
+  if (!t || t.length > 100) return false;
+  if (/[?？]/.test(t) || /\d/.test(t)) return false;
+  if (SUBSTANCE.test(t)) return false;
   const words = t.toLowerCase().replace(/[^\p{L}\p{N}\s]+/gu, ' ').split(/\s+/).filter(Boolean);
+  if (words.length === 0 || words.length > 12) return false;
   return words.some((w) => THANKS_WORD.test(w));
 }
 
-export const THANKS_REPLIES = ["You're more than welcome! 😊", 'Anytime! 😊'] as const;
+export const THANKS_REPLIES = ["You're very welcome! 😊", 'Anytime! 😊'] as const; // Jo, 13 Oct: shorter
 /** The line Will sends back to a thank-you, never the same one twice in a row. */
 export function thanksReply(lastWillText: string | null | undefined): string {
   const last = (lastWillText ?? '').trim();

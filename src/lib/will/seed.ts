@@ -66,6 +66,9 @@ export function seedTemplates(): TemplateRow[] {
     t('price_tfn', 'Pricing', 'Price: TFN only ($220)', APPROVED.price_tfn),
     t('price_tfn_abn', 'Pricing', 'Price: TFN + ABN ($385)', APPROVED.price_tfn_abn),
     t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($220)', APPROVED.price_tfn_review),
+    t('price_tfn_foreign', 'Pricing', 'Price: TFN with foreign income ($330)', APPROVED.price_tfn_foreign),
+    t('price_tfn_abn_foreign', 'Pricing', 'Price: TFN + ABN with foreign income ($495)', APPROVED.price_tfn_abn_foreign),
+    t('prices_foreign', 'Pricing', 'Both prices with foreign income ($330 / $495)', APPROVED.prices_foreign),
     t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($385)', APPROVED.price_tfn_abn_review),
     t('obj_1', 'Objections', '#1 Refund amount before paying', o.o1_refund_before_pay),
     t('obj_2', 'Objections', '#2 Why pay before knowing', o.o2_why_pay_first),
@@ -206,7 +209,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-10-11-opening-question';
+export const TEMPLATE_BACKFILL_VERSION = '2026-10-12-foreign-income';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.

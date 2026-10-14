@@ -5,7 +5,7 @@
 // ============================================================
 import { getStore, CustomerRow, CustomerState, Store, MessageRow, JobRow } from './store';
 import { reopenTarget, POST_PAYMENT_STATES } from './state-machine';
-import { runEngine, AiMode, EngineOutcome } from './engine';
+import { runEngine, AiMode, EngineOutcome, customerAskedSomething } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
@@ -16,13 +16,14 @@ import { deliverOut, fetchWaMedia } from './channel';
 import { readReviewAsks, patchReviewAsk, saysRefundLanded, isPositiveAck, REFERRAL_WINDOW_DAYS, saysRefundNotYet, refundNotYetMessage, REFUND_CHECKIN_RETRY_DAYS } from './review-asks';
 import { referralMessage } from './i18n';
 import { autopilotReplyDelaySeconds } from './config';
-import { promisedUntil, formPromisedKey } from './promised-date';
+import { promisedUntil, formPromisedKey, signaturePromisedKey } from './promised-date';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
 import { isIdentityQuestion } from './identity-question';
 import { detectChoice, priceMessageFor, firstContactPriceMessage } from './instant-choice';
+import { hasForeignIncome } from './foreign-income';
 import { isAccountNameQuestion, accountNameMessage } from './account-name';
 import { customerNotInterested, looksLikeVendor, salesPromisedKey } from './stage-sync';
-import { firstNameOf, cleanFirstName, isCourtesyLine } from './text-normalize';
+import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnly } from './text-normalize';
 // Moved to text-normalize.ts so the engine can use it too without importing this
 // file (service.ts imports the engine; a static import back would be a cycle).
 // Re-exported here because this is where every caller and test already looks.
@@ -324,6 +325,15 @@ async function handleIncomingInner(
       await store.audit('system', 'form_reminders_paused_until', { customerId: customer.id, until }).catch(() => undefined);
     }
   }
+  // 14 Oct (Jo): the same for the signature: "when do you think you'll have a
+  // moment to sign it? I'll check back with you then".
+  if (!opts?.alreadyStored && customer.state === 'SIGNATURE_PENDING') {
+    const until = promisedUntil(text);
+    if (until) {
+      await store.setSetting(signaturePromisedKey(customer.id), until).catch(() => undefined);
+      await store.audit('system', 'signature_check_back_set', { customerId: customer.id, until }).catch(() => undefined);
+    }
+  }
 
   // ── THE ACKNOWLEDGEMENT A TFN + ABN CUSTOMER IS STILL OWED (Jo, 4 Sep) ────
   //
@@ -541,7 +551,9 @@ async function handleIncomingInner(
         // First contact (nothing from us yet): greeting + "looks like the TFN
         // option is the right fit" (Jo, 11 Oct). Otherwise the plain price message.
         const firstContact = !prior.some((m) => m.direction === 'OUT' && m.status === 'SENT');
-        const price = firstContact ? firstContactPriceMessage(track, cleanFirstName(firstNameOf(customer.name))) : priceMessageFor(track);
+        // Foreign income anywhere in what they wrote: +$110 (Jo, 12 Oct).
+        const foreign = hasForeignIncome([...prior.filter((m) => m.direction === 'IN').map((m) => m.body), text]);
+        const price = firstContact ? firstContactPriceMessage(track, cleanFirstName(firstNameOf(customer.name)), foreign) : priceMessageFor(track, foreign);
         const out = await deliverOut(customer, price, 'AI', { proposedState: 'PRICE_SENT' }, undefined, {
           onFailure: { reason: 'The price message was not delivered after the customer chose a track. They are waiting.', severity: 'URGENT', context: text.slice(0, 200) },
         });
@@ -575,7 +587,7 @@ async function handleIncomingInner(
   // lost nine of twelve leads. The holding line is fixed text, not the
   // model: it goes out right here, at most once per customer per 12 hours,
   // plus one task per customer so the team sees who is waiting.
-  if (killSwitch && mode === 'FULL_AUTO' && !opts?.alreadyStored && !customer.aiPaused && !customer.isLegacy && !isCourtesyLine(text)) {
+  if (killSwitch && mode === 'FULL_AUTO' && !opts?.alreadyStored && !customer.aiPaused && !customer.isLegacy && !isCourtesyLine(text) && !isClosingOnly(text)) {
     try {
       const key = `paused_ack_at:${customer.id}`;
       const last = Number((await store.getSetting(key)) ?? 0);
@@ -773,7 +785,12 @@ export function paidNeverSilent(a: {
   // right call) but without the courtesy note, so the silence was converted.
   // Whatever the model said, a courtesy line gets no holding line: there is
   // nothing to answer.
-  if (a.text !== undefined && a.text !== null && isCourtesyLine(a.text)) return false;
+  if (a.text !== undefined && a.text !== null && (isCourtesyLine(a.text) || isThanksLine(a.text) || isClosingOnly(a.text))) return false;
+  // Jo, 12 Oct ("100% thank you" got the holding line): Will's own judgement
+  // that there is nothing to answer is trusted, unless the customer actually
+  // asked or wrote something substantial. Only then does silence become a
+  // task (and the holding line).
+  if (a.text !== undefined && a.text !== null && !customerAskedSomething(a.text)) return false;
   const postPayment = a.paid || POST_PAYMENT_STATES.includes(a.state);
   return postPayment;
 }
@@ -1024,8 +1041,8 @@ export async function decideAndAct(
   // If BOTH appear (e.g. a generic pricing explainer) it is ambiguous => null,
   // so we never mislabel income from a message that merely lists both prices.
   const inferIncome = (t: string): 'TFN' | 'TFN_ABN' | null => {
-    const has385 = /\$\s?385\b/.test(t);
-    const has220 = /\$\s?220\b/.test(t);
+    const has385 = /\$\s?(?:385|495)\b/.test(t);
+    const has220 = /\$\s?(?:220|330)\b/.test(t);
     if (has385 && !has220) return 'TFN_ABN';
     if (has220 && !has385) return 'TFN';
     return null;
@@ -1236,7 +1253,7 @@ export async function decideAndAct(
   // sends the bridge line, with the same 1 to 5 minute delay as a reply, so
   // the customer knows a person has it. A long message handed off in
   // Approval mode keeps the old half-hour courtesy.
-  if (outcome.kind === 'human_task' && mode === 'FULL_AUTO') {
+  if (outcome.kind === 'human_task' && mode === 'FULL_AUTO' && !isClosingOnly(text)) {
     try {
       await store.addJob({
         customerId: customer.id, kind: 'HANDOFF_ACK', payload: {},
