@@ -14,7 +14,7 @@ import { join } from 'path';
 
 const service = readFileSync(join(process.cwd(), 'src/lib/will/service.ts'), 'utf8');
 const block = (() => {
-  const start = service.indexOf("if (meta?.media && isAfterPayment(customer.state)) {");
+  const start = service.indexOf("if (meta?.media && isAfterPayment(customer.state) && !intakeActive) {");
   expect(start).toBeGreaterThan(-1);
   return service.slice(start, service.indexOf('const paidFresh = await store.getCustomerByWaId(waId);', start));
 })();

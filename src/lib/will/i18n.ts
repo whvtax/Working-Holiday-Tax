@@ -643,3 +643,24 @@ export const SYSTEM_MESSAGE_FAMILIES = {
   WINBACK_MSG, REVIEW_ASK_MSG, REFERRAL_MSG,
 };
 
+
+
+// ============================================================
+// RESIDENCY DOUBLE-CHECK (Jo, 16 Oct)
+//
+// A customer from the UK, Germany or Japan who ticked "Working Holiday Maker"
+// for tax may in fact qualify as an Australian tax resident (the first
+// $18,200 tax-free), which can change the refund a lot. After the form, Will
+// asks them once to re-read the residency page and confirm. Meta template
+// `residency_check` (Utility), {{1}} = first name, en / de / ja.
+// ============================================================
+export const RESIDENCY_CHECK_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Hi {{1}}, I went through your details and saw you marked yourself as a Working Holiday Maker for tax. Before we start on your return, could you double-check this page on who counts as an Australian tax resident? It can make a big difference to your refund.\nhttps://workingholidaytax.com.au/tax-residency\nIs your answer still correct?`,
+  de: `Hi {{1}}, ich habe deine Angaben durchgesehen und gesehen, dass du dich steuerlich als Working Holiday Maker eingetragen hast. Bevor wir mit deiner Steuererklärung anfangen, schau bitte noch einmal auf diese Seite, wer in Australien als steuerlich ansässig gilt. Das kann bei deiner Rückerstattung einen großen Unterschied machen.\nhttps://workingholidaytax.com.au/de/tax-residency\nIst deine Angabe noch richtig?`,
+  ja: `こんにちは、{{1}}さん。ご入力内容を確認したところ、税務上ワーキングホリデーメーカーを選択されていました。申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？還付額に大きく影響することがあります。\nhttps://workingholidaytax.com.au/ja/tax-residency\nご回答は正しいままでよろしいですか？`,
+};
+export const RESIDENCY_CHECK_TEMPLATE = 'residency_check';
+export function residencyCheckMessage(lang: string | null | undefined, firstName: string): string {
+  const key = (lang === 'de' || lang === 'ja' ? lang : 'en') as 'en' | 'de' | 'ja';
+  return RESIDENCY_CHECK_MSG[key].replace('{{1}}', firstName || 'there');
+}

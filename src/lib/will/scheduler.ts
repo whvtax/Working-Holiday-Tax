@@ -15,6 +15,8 @@ import { salesPromisedKey, businessDaysFromNow } from './stage-sync';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
+import { residencyCheckMessage, RESIDENCY_CHECK_TEMPLATE } from './i18n';
+import { residencyCheckKey, RESIDENCY_CHECK_DELAY_MS } from './form-link';
 import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, handoffBumpTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
 import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
 import { APPROVED } from './approved-messages';
@@ -905,6 +907,30 @@ async function doProcess(): Promise<TickResult> {
         continue;
       }
 
+      // PAYABLE_FOLLOWUP (Jo, 16 Oct): 14 days after Mark Lodged for a
+      // customer who owes tax. The lodged message promised "we'll message you
+      // again in about two weeks and walk you through how to pay"; the amount
+      // and due date come from the Notice of Assessment, so this is a task for
+      // the team, URGENT, with a ready opening line. Nothing is sent by itself.
+      if (job.kind === 'PAYABLE_FOLLOWUP') {
+        try {
+          const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
+          if (c && c.outcome === 'PAYABLE' && !c.optedOut) {
+            await raiseOrUpdateTask(store, c, {
+              reason: `ATO PAYMENT INSTRUCTIONS DUE: two weeks ago we told ${c.name ?? c.waId} we would message them now with how to pay the ATO. Send the amount, due date and payment details from their Notice of Assessment.`,
+              severity: 'URGENT',
+              newContext: 'Promised in the lodged message: "We\'ll message you again in about two weeks and walk you through how to pay."',
+              suggestedReply: `Hi ${greetingName(c)}, as promised, here's how to pay the ATO.\n\nAmount: \nDue date: \nHow to pay: \n\nAny questions, just ask 😊`,
+            });
+            await store.audit('scheduler', 'payable_followup_task_raised', { customerId: c.id }).catch(() => {});
+          }
+        } catch (e) {
+          await store.audit('scheduler', 'payable_followup_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
       if (job.kind === 'REFUND_CHECK') {
         // 11 Oct (decision 13): three business days after the team promised
         // a fee refund, and it has not been written as sent: URGENT task
@@ -1171,6 +1197,13 @@ async function doProcess(): Promise<TickResult> {
           // clear the setting so it goes once (audit, 5 Sep). Only the job
           // that won the transition gets here, so two replays cannot both
           // queue it.
+          // Jo, 16 Oct: the residency double-check remembered before payment.
+          try {
+            if ((await store.getSetting(residencyCheckKey(customer.id))) === true) {
+              await store.setSetting(residencyCheckKey(customer.id), false);
+              await store.addJob({ customerId: customer.id, kind: 'RESIDENCY_CHECK', payload: {}, runAt: new Date(Date.now() + RESIDENCY_CHECK_DELAY_MS).toISOString() });
+            }
+          } catch { /* best effort */ }
           try {
             if ((await store.getSetting(medicareNoKey(customer.id))) === true) {
               await store.setSetting(medicareNoKey(customer.id), false);
@@ -1221,6 +1254,45 @@ async function doProcess(): Promise<TickResult> {
           }
           await store.audit('system', 'form_received_confirmed', { customerId: customer.id });
           result.sent.push(`${customer.name ?? customer.waId} · questionnaire received`);
+        }
+        await store.setJobStatus(job.id, 'DONE');
+        continue;
+      }
+
+      // RESIDENCY_CHECK (Jo, 16 Oct): UK / Germany / Japan + "Working Holiday
+      // Maker" for tax. Once, after the form, in their language: re-read the
+      // residency page and confirm. Waits for a quiet chat like the Medicare
+      // message (up to 8 x 15 minutes), never twice.
+      if (job.kind === 'RESIDENCY_CHECK') {
+        const attempt = Number(job.payload.attempt ?? 0);
+        const busy = await conversationBusy(customer, { tasks: false });
+        if (busy && attempt < 8) {
+          await store.addJob({ customerId: customer.id, kind: 'RESIDENCY_CHECK', payload: { attempt: attempt + 1 }, runAt: new Date(Date.now() + 15 * 60 * 1000).toISOString() });
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
+        if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
+          const firstName = greetingName(customer);
+          const body = residencyCheckMessage(customer.lang, firstName);
+          const tpl = { name: RESIDENCY_CHECK_TEMPLATE, params: [firstName], lang: customer.lang, fallbackToText: true };
+          if (await wasAlreadySentVerbatim(store, customer.id, body)) {
+            await store.setJobStatus(job.id, 'DONE');
+            continue;
+          }
+          if (await inApprovalMode()) {
+            await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL', body, meta: { waTemplate: tpl } });
+          } else {
+            const out = await deliverOut(customer, body, 'AI', { waTemplate: tpl }, tpl);
+            if (out.ok) {
+              await store.audit('system', 'residency_check_sent', { customerId: customer.id });
+              result.sent.push(`${customer.name ?? customer.waId} · residency check`);
+            } else {
+              await raiseOrUpdateTask(store, customer, {
+                reason: `The residency double-check was not delivered: ${out.error ?? 'WhatsApp rejected it'}. Create "${RESIDENCY_CHECK_TEMPLATE}" in WhatsApp Manager ({{1}} = first name) or send it by hand.`,
+                severity: 'REVIEW', newContext: body.slice(0, 300), suggestedReply: body,
+              });
+            }
+          }
         }
         await store.setJobStatus(job.id, 'DONE');
         continue;

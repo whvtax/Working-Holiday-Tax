@@ -15,6 +15,15 @@ export interface SeedKnowledge {
 
 export const KNOWLEDGE_SEED: SeedKnowledge[] = [
   {
+    "intent": "bank warns the payee details are incorrect or pauses the transfer",
+    "question": "My bank says the bank details are incorrect / the name doesn't match and paused the transfer. What do I do?",
+    "examples": ["Not sure why it won't let me send", "my bank says the details are incorrect", "the transfer is paused, it says the name doesn't match", "it says account name mismatch", "my bank flagged the payment", "confirmation of payee warning"],
+    "answer": "No worries, those are definitely our details: The Accounting Academy, BSB 062692, account 81049952. Banks often show a warning or pause a first payment to a new payee as a security check, especially when the name typed doesn't match exactly. Make sure the account name is entered as The Accounting Academy, then you can go ahead. If your bank still holds it, they can release it for you in the app or by phone \ud83d\ude0a",
+    "keywords": ["bank", "incorrect", "details", "paused", "blocked", "name", "match", "mismatch", "warning", "transfer", "payee"],
+    "tags": ["pre-payment", "payment"],
+    "lang": "en"
+  },
+  {
     "intent": "ATO payment plan for tax owed",
     "question": "Can I set up a payment plan with the ATO for the amount I owe?",
     "examples": ["I presume I can set up a payment plan to repay this", "can I pay the ATO in instalments?", "I can't pay the whole amount at once"],

@@ -10,10 +10,15 @@
 // about a return already lodged, goes through Will as before.
 // ============================================================
 import { APPROVED } from './approved-messages';
+import { ALREADY_LODGED_RE as LODGED_RE_SHARED } from './already-checked';
 
 export type Track = 'TFN' | 'TFN_ABN';
 
 const ABN_RE = /\babn\b|\buber\b|deliver(?:y|oo)|door\s?dash|menulog|contract(?:or|ing)?\b|sole\s?trader|self[- ]?employed|freelanc|invoic|\bboth\b|option\s?2\b|\b2nd\b|second/i;
+// 16 Oct (Jo, Minami +61 478): German and Japanese say it their own way.
+const NO_ABN_ML_RE = /kein(?:e|en)?\s+abn|ohne\s+abn|nur\s+(?:mit\s+)?(?:der\s+)?tfn|nur\s+angestellt|abn\s*(?:は|が)?\s*(?:ありません|ない|なし|持っていません)|tfn\s*(?:のみ|だけ)/i;
+const ABN_ML_RE = /abn\s*(?:も|あり|を持って)|ウーバー|デリバリー|配達|個人事業|selbstst[äa]ndig|lieferdienst|freiberuf/i;
+const TFN_ML_RE = /雇用|従業員|給与明細|angestellt|arbeitgeber|lohnabrechnung/i;
 const NO_ABN_RE = /\b(?:no|not|don'?t have|without|never had|didn'?t have)\s+(?:an?\s+)?abn\b|only\s+(?:worked\s+)?(?:on\s+)?(?:a\s+)?tfn|just\s+(?:a\s+)?tfn|tfn\s+only|option\s?1\b|\b1st\b|\bfirst\b|employers?\s+only|only\s+employers?/i;
 const TFN_RE = /\btfn\b|employers?\b|employee|payslips?|cafe|hospitality|farm|casual/i;
 const ALREADY_LODGED_RE = /already\s+(?:lodged|filed|submitted|done)|lodged\s+it|filed\s+it|review\b|check\s+my\s+return/i;
@@ -30,7 +35,7 @@ export function detectChoice(text: string, lastWillLine: string | null | undefin
   const t = (text ?? '').trim();
   if (!t || t.length > 90) return null;
   if (/[?？]/.test(t)) return null;
-  if (ALREADY_LODGED_RE.test(t)) return null;
+  if (ALREADY_LODGED_RE.test(t) || LODGED_RE_SHARED.test(t)) return null;
   if (CARRIES_A_NUMBER_RE.test(t)) return null;
   if (YES_RE.test(t)) {
     const w = lastWillLine ?? '';
@@ -39,9 +44,9 @@ export function detectChoice(text: string, lastWillLine: string | null | undefin
     if (tfn && !abn) return 'TFN';
     return null;
   }
-  if (NO_ABN_RE.test(t)) return 'TFN';
-  if (ABN_RE.test(t)) return 'TFN_ABN';
-  if (TFN_RE.test(t)) return 'TFN';
+  if (NO_ABN_RE.test(t) || NO_ABN_ML_RE.test(t)) return 'TFN';
+  if (ABN_RE.test(t) || ABN_ML_RE.test(t)) return 'TFN_ABN';
+  if (TFN_RE.test(t) || TFN_ML_RE.test(t)) return 'TFN';
   return null;
 }
 
@@ -67,4 +72,53 @@ export function firstContactPriceMessage(track: Track, firstName: string | null 
   const fit = `Looks like the ${label} option${foreign ? ' with foreign income' : ''} is the right fit for you: $${amount}.`;
   const rest = base.replace(/^Got it, so that's the TFN(?: \+ ABN)? option(?: with foreign income)?, \$(?:220|385|330|495)\./, fit);
   return `${greeting}\n\n${rest}`;
+}
+
+
+// ============================================================
+// THE PRICE MESSAGE IN GERMAN AND JAPANESE (Jo, 16 Oct)
+//
+// Minami wrote in Japanese "I worked employed on TFN" and got "I've passed
+// this to the team", because the instant price message existed only in
+// English. These are the same two messages, same order, same guarantee in
+// its exact meaning, same bank details. Foreign income and the "already
+// checked" clause stay English-only for now: those go through Will.
+// ============================================================
+type PriceLang = 'de' | 'ja';
+const BANK = 'BSB: 062692\nAccount: 81049952';
+const PRICE_ML: Record<PriceLang, { tfn: string; abn: string; guarantee: string; screenshot: string; gotIt: (label: string, amount: number) => string; fit: (label: string, amount: number) => string; hello: (name: string) => string; tfnBody: string; abnBody: string }> = {
+  de: {
+    tfn: 'TFN', abn: 'TFN + ABN',
+    tfnBody: 'Wir prüfen deine steuerliche Ansässigkeit, Medicare und deine Abzüge und erstellen dann deine Steuererklärung und reichen sie ein, damit du nichts verpasst, was dir zusteht.',
+    abnBody: 'Wir prüfen deine steuerliche Ansässigkeit, Medicare und deine Abzüge, erstellen eine Aufstellung für deine ABN-Einnahmen und -Ausgaben und reichen dann deine Steuererklärung ein, damit du nichts verpasst, was dir zusteht.',
+    guarantee: 'Wenn deine Steuerrückerstattung niedriger ist als unsere Gebühr, erstatten wir dir die Differenz. Gibt es keine Rückerstattung, fällt die volle Gebühr an.',
+    screenshot: 'Schick mir einfach einen Screenshot, sobald du bezahlt hast, und wir legen los!',
+    gotIt: (label, amount) => `Alles klar, also die ${label}-Option, $${amount}.`,
+    fit: (label, amount) => `Die ${label}-Option passt wohl am besten zu dir: $${amount}.`,
+    hello: (name) => (name ? `Hey ${name}! 😊 Gerne helfe ich dir.` : 'Hey! 😊 Gerne helfe ich dir.'),
+  },
+  ja: {
+    tfn: 'TFNのみ', abn: 'TFN + ABN',
+    tfnBody: '税務上の居住区分、メディケア、控除を確認したうえで、タックスリターンを作成・提出します。受け取れるものを見逃さないようにしっかり確認します。',
+    abnBody: '税務上の居住区分、メディケア、控除を確認し、ABNの収入と経費の明細を作成したうえで、タックスリターンを作成・提出します。受け取れるものを見逃さないようにしっかり確認します。',
+    guarantee: '還付金が当社の料金より少ない場合は、その差額を返金いたします。還付がない場合は、料金全額をいただきます。',
+    screenshot: 'お支払い後、スクリーンショットを送っていただければすぐに始めます！',
+    gotIt: (label, amount) => `承知しました。${label}のプランで、$${amount}です。`,
+    fit: (label, amount) => `${label}のプランが合いそうです：$${amount}。`,
+    hello: (name) => (name ? `こんにちは、${name}さん😊 ご連絡ありがとうございます。` : 'こんにちは😊 ご連絡ありがとうございます。'),
+  },
+};
+
+export function hasPriceIn(lang: string | null | undefined): lang is PriceLang {
+  return lang === 'de' || lang === 'ja';
+}
+
+/** The price message in German or Japanese; firstName set = first contact. */
+export function priceMessageIn(lang: PriceLang, track: Track, firstContact: boolean, firstName?: string | null): string {
+  const L = PRICE_ML[lang];
+  const label = track === 'TFN_ABN' ? L.abn : L.tfn;
+  const amount = track === 'TFN_ABN' ? 385 : 220;
+  const body = track === 'TFN_ABN' ? L.abnBody : L.tfnBody;
+  const lead = firstContact ? `${L.hello((firstName ?? '').trim())}\n\n${L.fit(label, amount)}` : L.gotIt(label, amount);
+  return `${lead} ${body}\n\n${BANK}\n\n${L.guarantee}\n\n${L.screenshot}`;
 }

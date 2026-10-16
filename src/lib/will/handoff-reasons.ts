@@ -78,6 +78,24 @@ const RULES: Rule[] = [
     prevent: 'Nothing to fix. This is Will keeping out of a chat you took over. He comes back when you switch him on again in the chat header.',
   },
   {
+    // 16 Oct (Jo): Will collected a TFN + ABN customer's paperwork himself.
+    match: /^ABN PAPERWORK COLLECTED/i,
+    kind: 'policy',
+    label: 'ABN paperwork is in',
+    because: 'Will collected this customer\'s ABN income, expenses and documents step by step and they sent everything',
+    prevent: 'Nothing to fix. The summary below lists what came in; prepare the return.',
+  },
+  {
+    // 16 Oct (Jo): the lodged message to a customer who owes tax promises
+    // "we'll message you again in about two weeks and walk you through how to
+    // pay". Fourteen days after Mark Lodged, this task keeps that promise.
+    match: /^ATO PAYMENT INSTRUCTIONS DUE/i,
+    kind: 'policy',
+    label: 'Time to send the ATO payment instructions',
+    because: 'this customer owes tax, and two weeks ago we told them we would message them about now with how to pay',
+    prevent: 'Nothing to fix. Send them the amount, the due date and how to pay from their Notice of Assessment, then close this.',
+  },
+  {
     // 11 Oct (full audit, decision 13): a fee refund the team promised and
     // has not yet written as sent.
     match: /^REFUND OWED/i,
@@ -195,7 +213,7 @@ const RULES: Rule[] = [
     prevent: 'Nothing to create in Meta. Double-check the number was typed correctly; if it was, this lead cannot be reached on WhatsApp and any remaining scheduled follow-ups to them have already been cancelled automatically.',
   },
   {
-    match: /^WhatsApp send failed|^Will's reply was not delivered|^WhatsApp did not deliver this message|^The Medicare exemption message was not delivered|^The Google review ask (?:could|was) not (?:be )?delivered|^PAID, BUT THEY HAVE NOT BEEN TOLD|^A reply may not have reached|^A scheduled .* failed three times/i,
+    match: /^WhatsApp send failed|^Will's reply was not delivered|^WhatsApp did not deliver this message|^The Medicare exemption message was not delivered|^The residency double-check was not delivered|^The Google review ask (?:could|was) not (?:be )?delivered|^PAID, BUT THEY HAVE NOT BEEN TOLD|^A reply may not have reached|^A scheduled .* failed three times/i,
     kind: 'delivery',
     label: 'WhatsApp refused the send',
     because: 'WhatsApp itself refused to deliver the message, so they received nothing at all',

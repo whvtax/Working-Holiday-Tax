@@ -147,5 +147,5 @@ describe('the scheduler handler', () => {
 it('the tax-return form actually passes the answer through', () => {
   const route = readFileSync(join(process.cwd(), 'src/app/api/tax-form/route.ts'), 'utf8');
   // 11 Oct (decision 15): the tax status is folded in, so a WHM never gets the script.
-  expect(route).toMatch(/notifyFormReceived\(whatsapp, email, 'tax-return', medicareAnswerFor\(sanitiseShort\(formData\.get\('hasMedicare'\)\), sanitiseShort\(formData\.get\('taxStatus'\)\)\), hasAbnIncome\)/);
+  expect(route).toMatch(/notifyFormReceived\(whatsapp, email, 'tax-return', medicareAnswerFor\(sanitiseShort\(formData\.get\('hasMedicare'\)\), sanitiseShort\(formData\.get\('taxStatus'\)\)\), hasAbnIncome, \{ country: /);
 });

@@ -786,7 +786,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
 
             <Field label={T('bankStatements')} required error={errors.bankStatement} hint={T('bankStatementHint')}>
-              <FileUpload id="bankStatement" label={T('uploadBankStatement')} accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
+              <FileUpload id="bankStatement" label={T('uploadBankStatement')} accept=".pdf,application/pdf"
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} lang={lang} />
             </Field>
 

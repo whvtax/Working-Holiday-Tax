@@ -166,7 +166,7 @@ export async function POST(req: NextRequest) {
         if (!raw || typeof raw !== 'string') return false
         try { const parsed: unknown = JSON.parse(raw); return Array.isArray(parsed) && parsed.some((i) => (i as { type?: string })?.type === 'abn') } catch { return false }
       })()
-      await notifyFormReceived(whatsapp, email, 'tax-return', medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), sanitiseShort(formData.get('taxStatus'))), hasAbnIncome)
+      await notifyFormReceived(whatsapp, email, 'tax-return', medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), sanitiseShort(formData.get('taxStatus'))), hasAbnIncome, { country: sanitiseShort(formData.get('country')), taxStatus: sanitiseShort(formData.get('taxStatus')) })
     } catch (err) {
       // console.error on Vercel is a log nobody reads, and the consequence here
       // is specific: the customer's form reminders keep chasing them for

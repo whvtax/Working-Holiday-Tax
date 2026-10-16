@@ -153,7 +153,7 @@ export const CUSTOMER_FACING_JOB_KINDS: ReadonlyArray<JobRow['kind']> = ['AUTO_R
 export interface JobRow {
   id: string;
   customerId: string | null;
-  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'HANDOFF_BUMP' | 'REFUND_CHECK' | 'REFUND_CHECKIN' | 'REVIEW_REMIND' | 'REVIEW_REQUEST' | 'MEDICARE_INFO' | 'RESEND_MESSAGE';
+  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'HANDOFF_BUMP' | 'REFUND_CHECK' | 'REFUND_CHECKIN' | 'REVIEW_REMIND' | 'REVIEW_REQUEST' | 'MEDICARE_INFO' | 'RESEND_MESSAGE' | 'RESIDENCY_CHECK' | 'PAYABLE_FOLLOWUP';
   payload: {
     templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
     /** MEDICARE_INFO: how many times this job has already stood aside for the

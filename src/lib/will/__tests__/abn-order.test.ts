@@ -53,9 +53,11 @@ describe('when they answer', () => {
     expect(service).toMatch(/if \(\(await store\.getSetting\(key\)\) !== true\) return;/);
     // Cleared BEFORE sending, so two instances cannot both send it.
     const clearAt = service.indexOf('await store.setSetting(key, false);');
-    const sendAt = service.indexOf("const out = await deliverOut(customer, body, 'AI', { waTemplate: template }, template);");
+    // 16 Oct (Jo): the answers now START the ABN intake instead of sending the
+    // acknowledgement; Will's closing line is the acknowledgement.
+    const startAt = service.indexOf("await store.setSetting(abnIntakeKey(customer.id), { startedAt");
     expect(clearAt).toBeGreaterThan(-1);
-    expect(sendAt).toBeGreaterThan(clearAt);
+    expect(startAt).toBeGreaterThan(clearAt);
   });
 
   it('a courtesy line is not an answer', () => {

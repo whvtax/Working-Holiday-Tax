@@ -92,9 +92,15 @@ const PATTERNS: RegExp[] = [
  *  customer their answer AND loses the payment claim behind it. */
 const NOT_THE_QUESTION = /\b(?:paid|payment|transferred|sent (?:it|the|you)|screenshot|invoice|form|refund|bezahlt|überwiesen|gezahlt|pagado|pagu[ée]|transferido|pag(?:o|uei|amento)|pay[ée]|vir[ée]|virement|pagato|bonifico)\b|振込|支払|送金/i;
 
+/** 16 Oct (siti, +61 479 012 042): "are you a registered tax person? could
+ *  you share your id" was read as "are you a bot". A question about our
+ *  qualifications is the registered-agent question, answered by Will. */
+const CREDENTIALS_QUESTION = /\b(?:registered|qualified|certified|licen[cs]ed|accredited)\b|\btax\s+(?:person|agent|accountant|professional|practitioner)\b|\b(?:tpb|tan|abn)\s*(?:number|no\.?|id)?\b|\bagent\s+(?:number|id)\b/i;
+
 export function isIdentityQuestion(text: string): boolean {
   const t = (text || '').replace(/\s+/g, ' ').trim();
   if (!t || t.length > 400) return false; // long essays are not this question
   if (NOT_THE_QUESTION.test(t)) return false;
+  if (CREDENTIALS_QUESTION.test(t)) return false;
   return PATTERNS.some((p) => p.test(t));
 }

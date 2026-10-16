@@ -81,3 +81,19 @@ export function languageForCountry(raw: string | null | undefined): 'en' | 'de' 
   if (/チリ|\bchile\b/i.test(v)) return 'es'
   return 'en'
 }
+
+
+/**
+ * Jo, 16 Oct: the residency double-check after the form goes ONLY to these
+ * three (UK, Germany, Japan), not the whole NDA list.
+ */
+const RESIDENCY_CHECK_PATTERNS: RegExp[] = [
+  /\bgermany\b|\bdeutschland\b|\bgerman\b/i, /ドイツ/,
+  /\bjapan\b|\bnippon\b/i, /日本/,
+  /\b(united kingdom|u\.?k\.?|g\.?b\.?|england|scotland|wales|northern ireland|britain|great britain|gro(ß|ss)britannien|vereinigtes k[öo]nigreich)\b/i, /イギリス|英国/,
+]
+export function isResidencyCheckCountry(raw: string | null | undefined): boolean {
+  const v = (raw ?? '').replace(/\s+/g, ' ').trim()
+  if (!v) return false
+  return RESIDENCY_CHECK_PATTERNS.some(re => re.test(v))
+}

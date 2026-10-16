@@ -21,6 +21,7 @@ import { canTransition, CustomerState } from './state-machine';
 import { detectChoice, PRICE_ASK_RE, firstContactPriceMessage } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
 import { hasForeignIncome } from './foreign-income';
+import { alreadyCheckedReason, applyCheckedClause, CHECKED_CLAUSE, alreadyLodged } from './already-checked';
 import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, containsThanks, firstSentenceOnly, isClosingOnly, thanksReply } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
@@ -156,7 +157,7 @@ const CHEER_OPENER = /^(?:(?:perfect|great|awesome|amazing|wonderful|brilliant|f
  *  approved price message for the amount it named, keeping at most one line
  *  of the model's own before it. Returns the input unchanged when no fixed
  *  amount can be read, or when the draft is already the approved text. */
-export function enforcePriceMessage(text: string, foreign = false): string {
+export function enforcePriceMessage(text: string, foreign = false, reviewOfLodged = false): string {
   const abn = /\$\s?385\b/.test(text);
   const tfn = /\$\s?220\b/.test(text);
   const abnF = /\$\s?495\b/.test(text);
@@ -164,6 +165,17 @@ export function enforcePriceMessage(text: string, foreign = false): string {
   if ([abn, tfn, abnF, tfnF].filter(Boolean).length !== 1) return text; // ambiguous, leave it
   // A customer who mentioned foreign income always gets the foreign price,
   // even when the model wrote $220 / $385 (Jo, 12 Oct).
+  // 16 Oct (Siti): a return they already lodged is a REVIEW: its own price
+  // message, no guarantee.
+  if (reviewOfLodged) {
+    const review = (abn || abnF) ? APPROVED.price_tfn_abn_review : APPROVED.price_tfn_review;
+    if (text.includes(review)) return text;
+    const lines0 = text.split('\n');
+    const firstBank0 = lines0.findIndex((l) => /\bBSB\b|062692|81049952|payment details/i.test(l));
+    const lead0 = (firstBank0 > 0 ? lines0.slice(0, firstBank0) : []).map((l) => l.trim()).filter(Boolean)
+      .find((l) => !/refund|fee|guarantee|option|\$\s?\d/i.test(l) && l.length <= 80);
+    return lead0 ? `${lead0}\n\n${review}` : review;
+  }
   const approved = (abn || abnF) && (foreign || abnF) ? APPROVED.price_tfn_abn_foreign
     : (tfn || tfnF) && (foreign || tfnF) ? APPROVED.price_tfn_foreign
     : abn ? APPROVED.price_tfn_abn : APPROVED.price_tfn;
@@ -550,9 +562,25 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // message is now pasted from the code, verbatim: the draft may keep ONE
   // line of its own before it, nothing after. Other languages keep the
   // model's translation (there is no approved text to paste).
-  if ((ctx.lang ?? 'en') === 'en' && !ctx.paid && /\bBSB\b|062692|81049952/.test(text)) {
-    const enforced = enforcePriceMessage(text, foreignCustomer);
+  // 16 Oct (Megan): a price the TEAM quoted in this chat stands; the standard
+  // TFN / TFN + ABN message must not overwrite it with the wrong label.
+  const teamQuoted = history.some((t) => t.role === 'assistant' && t.author === 'HUMAN' && /\$\s?\d/.test(t.text));
+  if ((ctx.lang ?? 'en') === 'en' && !ctx.paid && !teamQuoted && /\bBSB\b|062692|81049952/.test(text)) {
+    const enforced = enforcePriceMessage(text, foreignCustomer, alreadyLodged(history.filter((t) => t.role === 'customer').map((t) => t.text)));
     if (enforced !== text) text = enforced;
+  }
+  // 16 Oct (Jo): they already checked their result: the guarantee in the
+  // price message becomes "our fee is non-refundable and covers our time and
+  // review", with the reason. Whatever the model wrote, in code.
+  if (!ctx.paid && /\bBSB\b|062692|81049952/.test(text)) {
+    const checked = alreadyCheckedReason(history.filter((t) => t.role === 'customer').map((t) => t.text));
+    // A review of a return already lodged already says the fee is the same
+    // whatever the result; nothing to add there.
+    if (checked && !/for the review itself/i.test(text)) {
+      if (GUARANTEE_RE.test(text)) text = stripGuarantee(text);
+      text = applyCheckedClause(text, checked);
+      if (!text.includes(CHECKED_CLAUSE[checked])) text = `${text.trim()}\n\n${CHECKED_CLAUSE[checked]}`;
+    }
   }
 
   // ── NO BANK DETAILS BEFORE AN EXCHANGE (11 Oct, full audit, decision 3) ──

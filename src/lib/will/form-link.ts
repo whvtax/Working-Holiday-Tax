@@ -10,6 +10,7 @@
 // This is the missing link. It is deliberately best-effort: a form submission
 // must NEVER fail because Will could not be updated.
 // ============================================================
+import { isResidencyCheckCountry } from '@/lib/nda-countries';
 import { getStore, CustomerRow, Store } from './store';
 import { raiseOrFoldSystemTask, openSystemTasks } from './tasks';
 export { unmatchedFormTaskContext, parseUnmatchedFormTask } from './form-link-task';
@@ -116,9 +117,19 @@ export type FormReceivedOutcome = 'queued' | 'remembered' | 'ignored';
  *    replays FORM_RECEIVED when they pay.
  *  - anything else: recorded and ignored.
  */
+/** Jo, 16 Oct: a UK / German / Japanese customer who ticked "Working Holiday
+ *  Maker" for tax gets the residency double-check after the form. */
+export const RESIDENCY_CHECK_DELAY_MS = 10 * 60 * 1000;
+export const residencyCheckKey = (customerId: string) => `residency_check_pending:${customerId}`;
+export function needsResidencyCheck(country: string | null | undefined, taxStatus: string | null | undefined): boolean {
+  const status = (taxStatus ?? '').trim().toLowerCase();
+  const whm = status === 'whm' || /working holiday/.test(status);
+  return whm && isResidencyCheckCountry(country);
+}
+
 export async function applyFormReceived(
   customer: CustomerRow,
-  opts: { email?: string | null; hasMedicare?: string | null; matchedOn?: string; hasAbnIncome?: boolean } = {},
+  opts: { email?: string | null; hasMedicare?: string | null; matchedOn?: string; hasAbnIncome?: boolean; country?: string | null; taxStatus?: string | null } = {},
 ): Promise<FormReceivedOutcome> {
   const store = getStore();
   const { email, hasMedicare } = opts;
@@ -159,6 +170,9 @@ export async function applyFormReceived(
       // 5 Sep). Remembered as a setting (no column needed); the scheduler's
       // FORM_RECEIVED handler reads it when the replay wins the transition
       // and queues MEDICARE_INFO with the same 15 minute spacing.
+      if (needsResidencyCheck(opts.country, opts.taxStatus)) {
+        await store.setSetting(residencyCheckKey(customer.id), true).catch(() => undefined);
+      }
       if (noMedicare(hasMedicare)) {
         await store.setSetting(medicareNoKey(customer.id), true);
         await store.audit('system', 'medicare_no_remembered', { customerId: customer.id });
@@ -236,6 +250,19 @@ export async function applyFormReceived(
       }).catch(() => { /* the store is the likely thing that just failed; the outer catch in the route still audits it */ });
       throw e;
     }
+  }
+
+  // ── Residency double-check (Jo, 16 Oct) ─────────────────────────────────
+  // UK / Germany / Japan + "Working Holiday Maker" for tax: ask once, ten
+  // minutes after the form, to re-read the residency page and confirm.
+  if (needsResidencyCheck(opts.country, opts.taxStatus)) {
+    try {
+      const prior = await store.listJobsForCustomer(customer.id, ['RESIDENCY_CHECK']);
+      if (!prior.length) {
+        await store.addJob({ customerId: customer.id, kind: 'RESIDENCY_CHECK', payload: {}, runAt: new Date(Date.now() + RESIDENCY_CHECK_DELAY_MS).toISOString() });
+        await store.audit('system', 'residency_check_queued', { customerId: customer.id, country: opts.country ?? null });
+      }
+    } catch { /* best effort: the team still sees the form */ }
   }
 
   await store.audit('system', 'form_received_queued', {
@@ -325,6 +352,9 @@ export async function notifyFormReceived(
   hasMedicare?: string | null,
   /** True when the questionnaire carried at least one ABN invoice. */
   hasAbnIncome?: boolean,
+  /** Jo, 16 Oct: home country and the tax-status answer, for the residency
+   *  double-check (UK / Germany / Japan who ticked Working Holiday Maker). */
+  residency?: { country?: string | null; taxStatus?: string | null },
 ): Promise<{ matched: boolean }> {
   try {
     const customer = await findCustomerByPhone(waNumber);
@@ -365,7 +395,7 @@ export async function notifyFormReceived(
       return { matched: true };
     }
 
-    await applyFormReceived(customer, { email, hasMedicare, hasAbnIncome });
+    await applyFormReceived(customer, { email, hasMedicare, hasAbnIncome, country: residency?.country, taxStatus: residency?.taxStatus });
     return { matched: true };
   } catch {
     // A website form must never fail because the CRM link failed.

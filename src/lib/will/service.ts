@@ -9,7 +9,7 @@ import { runEngine, AiMode, EngineOutcome, customerAskedSomething } from './engi
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
-import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, formReceivedMessage, formReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
+import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
 import { retrieveKnowledge, nearestKnowledge } from './knowledge';
 import { buildHandoffDiagnostic, taskContextWithDiagnostic } from './handoff-diagnostic';
 import { deliverOut, fetchWaMedia } from './channel';
@@ -19,8 +19,10 @@ import { autopilotReplyDelaySeconds } from './config';
 import { promisedUntil, formPromisedKey, signaturePromisedKey } from './promised-date';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
 import { isIdentityQuestion } from './identity-question';
-import { detectChoice, priceMessageFor, firstContactPriceMessage } from './instant-choice';
+import { detectChoice, priceMessageFor, firstContactPriceMessage, hasPriceIn, priceMessageIn } from './instant-choice';
 import { hasForeignIncome } from './foreign-income';
+import { abnIntakeKey, readIntake, ABN_INTAKE_DONE_RE, intakeSummary } from './abn-intake';
+import { alreadyCheckedReason, applyCheckedClause } from './already-checked';
 import { isAccountNameQuestion, accountNameMessage } from './account-name';
 import { customerNotInterested, looksLikeVendor, salesPromisedKey } from './stage-sync';
 import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnly } from './text-normalize';
@@ -541,7 +543,7 @@ async function handleIncomingInner(
   // track. No model, no two-minute pause: Rochi and Jack were lost in that
   // pause. Anything else goes through Will as before.
   if (mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.paid && !customer.aiPaused && !customer.isLegacy
-      && SALES_STATES.includes(customer.state) && ((customer.lang ?? 'en') === 'en')) {
+      && SALES_STATES.includes(customer.state) && ((customer.lang ?? 'en') === 'en' || hasPriceIn(customer.lang))) {
     try {
       const prior = await store.listMessages(customer.id);
       const bankSent = prior.some((m) => m.direction === 'OUT' && m.status === 'SENT' && /\b0?62\s?692\b|\b81049952\b/.test(m.body ?? ''));
@@ -553,7 +555,14 @@ async function handleIncomingInner(
         const firstContact = !prior.some((m) => m.direction === 'OUT' && m.status === 'SENT');
         // Foreign income anywhere in what they wrote: +$110 (Jo, 12 Oct).
         const foreign = hasForeignIncome([...prior.filter((m) => m.direction === 'IN').map((m) => m.body), text]);
-        const price = firstContact ? firstContactPriceMessage(track, cleanFirstName(firstNameOf(customer.name)), foreign) : priceMessageFor(track, foreign);
+        const checkedReason = alreadyCheckedReason([...prior.filter((m) => m.direction === 'IN').map((m) => m.body), text]);
+        // 16 Oct (Jo): German and Japanese get their own approved price
+        // message. Foreign income and "already checked" in those languages go
+        // through Will (null here), the English ones are adjusted in code.
+        const price: string | null = hasPriceIn(customer.lang)
+          ? (foreign || checkedReason ? null : priceMessageIn(customer.lang, track, firstContact, cleanFirstName(firstNameOf(customer.name))))
+          : applyCheckedClause(firstContact ? firstContactPriceMessage(track, cleanFirstName(firstNameOf(customer.name)), foreign) : priceMessageFor(track, foreign), checkedReason);
+        if (price) {
         const out = await deliverOut(customer, price, 'AI', { proposedState: 'PRICE_SENT' }, undefined, {
           onFailure: { reason: 'The price message was not delivered after the customer chose a track. They are waiting.', severity: 'URGENT', context: text.slice(0, 200) },
         });
@@ -572,6 +581,7 @@ async function handleIncomingInner(
             outcome: { kind: 'sent', replyText: price, newState: 'PRICE_SENT', stateChanged: customer.state !== 'PRICE_SENT', decision: { action: 'reply', reply_text: price, new_state: 'PRICE_SENT', confidence: 1 } },
             customer: fresh1 ?? customer,
           };
+        }
         }
       }
     } catch (e) {
@@ -710,21 +720,12 @@ async function sendOwedFormAck(store: Store, customer: CustomerRow, text: string
   // Clear FIRST: two messages landing on two instances must not both send it.
   await store.setSetting(key, false);
 
-  const ackKey = formReceivedTemplateKey(customer.lang);
-  let body = formReceivedMessage(customer.lang);
-  try {
-    const t = (await store.listTemplates()).find((x) => x.key === ackKey);
-    if (t?.body?.trim()) body = t.body;
-  } catch { /* the code copy is the fallback */ }
-  if (/\{\{[^}]{1,40}\}\}/.test(body)) {
-    await store.audit('system', 'form_ack_held', { customerId: customer.id, reason: 'placeholder left in the Library text' });
-    return;
-  }
-  const template = { name: formReceivedTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true };
-  const out = await deliverOut(customer, body, 'AI', { waTemplate: template }, template);
-  await store.audit('system', out.ok ? 'form_ack_sent_after_abn' : 'form_ack_failed_after_abn', {
-    customerId: customer.id, error: out.ok ? undefined : out.error, answered: text.slice(0, 120),
-  });
+  // 16 Oct (Jo): the ABN answers no longer end the conversation with "we've
+  // received your questionnaire". They START the ABN intake: Will now collects
+  // the income, expenses and documents step by step (abn-intake.ts), and the
+  // acknowledgement is his closing line once everything is in.
+  await store.setSetting(abnIntakeKey(customer.id), { startedAt: new Date().toISOString() });
+  await store.audit('system', 'abn_intake_started', { customerId: customer.id, answered: text.slice(0, 120) });
 }
 
 /** Customer text quoted into the profile block: prompt structure stripped, and
@@ -734,6 +735,10 @@ const quoteForPrompt = (v: string): string =>
 
 async function buildBackstory(store: Store, customer: CustomerRow, msgs: MessageRow[]): Promise<string> {
   const parts: string[] = [];
+  try {
+    const intake = readIntake(await store.getSetting(abnIntakeKey(customer.id)));
+    if (intake) parts.push(`ABN INTAKE IN PROGRESS (since ${intake.startedAt.slice(0, 10)}): collect their ABN paperwork step by step, as in "ABN INTAKE" in your instructions`);
+  } catch { /* no flag, no block */ }
   const sent = msgs.filter((m) => m.status === 'SENT');
   const inbound = sent.filter((m) => m.direction === 'IN');
   const first = sent[0];
@@ -961,6 +966,22 @@ export async function decideAndAct(
   // "Thanks" / "ok" / 👍 keep their silence (Jo, 1 Oct: nothing to add,
   // nothing sent). A vision description of an attachment is not a message
   // that needs an answer here (the documents path acknowledges files).
+  // 16 Oct (Jo): the ABN intake is complete when Will sends the closing line.
+  // The intake ends and the team gets one task with what came in.
+  if (outcome.replyText && ABN_INTAKE_DONE_RE.test(outcome.replyText)) {
+    try {
+      const intake = readIntake(await store.getSetting(abnIntakeKey(customer.id)));
+      if (intake) {
+        await store.setSetting(abnIntakeKey(customer.id), null);
+        await raiseOrUpdateTask(store, customer, {
+          reason: `ABN PAPERWORK COLLECTED: ${customer.name ?? customer.waId} has sent their ABN income, expenses and documents. Ready to prepare the return.`,
+          severity: 'REVIEW', newContext: intakeSummary(msgs, intake.startedAt), suggestedReply: null,
+        });
+        await store.audit('system', 'abn_intake_complete', { customerId: customer.id });
+      }
+    } catch { /* the closing line still goes; the team sees the chat */ }
+  }
+
   if (paidNeverSilent({
     outcomeKind: outcome.kind, reviewNote: outcome.reviewNote, mode,
     paid: customer.paid, state: customer.state, optedOut: customer.optedOut, isLegacy: customer.isLegacy,
@@ -1593,7 +1614,12 @@ export async function handleInboundNote(
   // under a reason that read like something had gone wrong. That collapses to
   // one small task with a count, and a short acknowledgement so they are not
   // left on read while the owner works through the pile.
-  if (meta?.media && isAfterPayment(customer.state)) {
+  // 16 Oct (Jo): during the ABN intake, a file is part of the conversation:
+  // Will reads it (below) and answers in context, acknowledging it and asking
+  // for the next missing thing, instead of the generic "got it all" + task.
+  let intakeActive = false;
+  try { intakeActive = !!readIntake(await store.getSetting(abnIntakeKey(customer.id))); } catch { intakeActive = false; }
+  if (meta?.media && isAfterPayment(customer.state) && !intakeActive) {
     const ack = await suggestReply('', customer, 'documents_after_payment');
 
     // Jo, 15 Sep: a paid customer sending proof that something they applied

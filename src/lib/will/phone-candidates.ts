@@ -92,6 +92,12 @@ export function phoneCandidates(num: string | null | undefined): string[] {
   }
   // An Australian mobile typed without its 0: "412 345 678".
   if (norm.length === 9 && norm.startsWith('4')) out.push(`61${norm}`);
+  // 16 Oct: a UK mobile typed without its 0 or +44: "7386284504".
+  if (norm.length === 10 && norm.startsWith('7')) out.push(`44${norm}`);
+  // 16 Oct: the country code AND the trunk 0: "+61 0403 289 551" -> 61403289551.
+  for (const { cc, nationalLen } of TRUNK) {
+    if (norm.startsWith(`${cc}0`) && norm.length === cc.length + 1 + nationalLen) out.push(`${cc}${norm.slice(cc.length + 1)}`);
+  }
 
   return [...new Set(out)];
 }

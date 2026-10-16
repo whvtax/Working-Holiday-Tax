@@ -1495,6 +1495,16 @@ async function handlePost(req: Request) {
           customerId: customer.id, kind: 'REVIEW_REQUEST', payload: { trigger: 'timer' },
           runAt: new Date(Date.now() + REVIEW_ASK_FALLBACK_DAYS * 24 * 60 * 60 * 1000).toISOString(),
         }).catch(() => { /* never let the review nudge block marking lodged */ });
+        // 16 Oct (Jo): a customer who owes tax was just told "we'll message
+        // you again in about two weeks". Fourteen days from now, the team
+        // gets an URGENT task to send the ATO payment instructions.
+        if (customer.outcome === 'PAYABLE') {
+          await store.cancelJobsFor(customer.id, ['PAYABLE_FOLLOWUP']).catch(() => 0);
+          await store.addJob({
+            customerId: customer.id, kind: 'PAYABLE_FOLLOWUP', payload: {},
+            runAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          }).catch(() => {});
+        }
         // 11 Oct (review system): day 10, "has the refund landed yet?". A
         // "yes" pulls the ask forward to that moment (service.ts).
         await store.addJob({

@@ -5,6 +5,7 @@
 // broadened patterns, numeric amount comparison, prompt-injection
 // and placeholder leak detection.
 // ============================================================
+import { isApprovedCheckedClause } from './already-checked';
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { namesAccountWrongly } from './account-name';
 import { APPROVED } from './approved-messages';
@@ -1166,7 +1167,9 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // before payment; the week it replaced the guarantee converted 1 in 10.
     // Before payment the fee is described in the positive, in the guarantee's
     // own words. After payment, a direct question may be answered plainly.
-    if (!paid && !ctx.isApprovedTemplate && NON_REFUNDABLE_WORDING.test(written)) violations.push('NON_REFUNDABLE_WORDING');
+    // 16 Oct (Jo): the one exception is the approved "since you've already
+    // checked your result, our fee is non-refundable" clause (already-checked.ts).
+    if (!paid && !ctx.isApprovedTemplate && NON_REFUNDABLE_WORDING.test(written) && !isApprovedCheckedClause(written)) violations.push('NON_REFUNDABLE_WORDING');
     const opening = ownOpening(written);
     if (opening != null) {
       if (paid && !POST_PAYMENT_NOT_SALES.test(written) && (POST_PAYMENT_SALES.test(written) || POST_PAYMENT_SALES_ML.test(written))) violations.push('SALES_CONTENT_AFTER_PAYMENT');

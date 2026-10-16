@@ -132,3 +132,51 @@ I'll send it for final review and then for your signature. The team will walk yo
 ### Library only (no Meta template needed, they answer within 24h)
 - `price_tfn_foreign` ($330), `price_tfn_abn_foreign` ($495), `prices_foreign`: foreign income, no guarantee.
 - Thank-you reply: `You're very welcome! 😊` (then `Anytime! 😊` if the first was already sent), from the code.
+
+---
+
+## E. Residency double-check (added 16 Oct)
+
+### `residency_check` · Utility · {{1}} = first name, sample `Sarah`
+Goes to: a customer from the UK, Germany or Japan who ticked "Working Holiday Maker" for tax, 10 minutes after the form (waits for a quiet chat).
+
+**English**
+```
+Hi {{1}}, I went through your details and saw you marked yourself as a Working Holiday Maker for tax. Before we start on your return, could you double-check this page on who counts as an Australian tax resident? It can make a big difference to your refund.
+https://workingholidaytax.com.au/tax-residency
+Is your answer still correct?
+```
+
+**German**
+```
+Hi {{1}}, ich habe deine Angaben durchgesehen und gesehen, dass du dich steuerlich als Working Holiday Maker eingetragen hast. Bevor wir mit deiner Steuererklärung anfangen, schau bitte noch einmal auf diese Seite, wer in Australien als steuerlich ansässig gilt. Das kann bei deiner Rückerstattung einen großen Unterschied machen.
+https://workingholidaytax.com.au/de/tax-residency
+Ist deine Angabe noch richtig?
+```
+
+**Japanese**
+```
+こんにちは、{{1}}さん。ご入力内容を確認したところ、税務上ワーキングホリデーメーカーを選択されていました。申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？還付額に大きく影響することがあります。
+https://workingholidaytax.com.au/ja/tax-residency
+ご回答は正しいままでよろしいですか？
+```
+
+Will's reply: "yes, correct" → "Great, thanks for checking! 😊". "No / I got it wrong" → asks them to fill in the form again, with the link. "Not sure" → handed to the team.
+
+---
+
+## F. Customer who owes tax: separate template NAME per language (added 16 Oct)
+
+| Name | Language | Variables | Text |
+|---|---|---|---|
+| `estimate_payable` | English | {{1}} amount `$2,160.71`, {{2}} link | Your return is ready. The estimated amount payable to the ATO is {{1}}. / Here is your invoice: / {{2}} / I'll send it for final review and then for your signature. The team will walk you through the ATO payment once it's lodged. |
+| `estimate_payable_de` | German | same | Deine Steuererklärung ist fertig. Der geschätzte an das ATO zu zahlende Betrag ist {{1}}. / Hier ist deine Rechnung: / {{2}} / Ich schicke sie zur finalen Prüfung und dann zur Unterschrift. Das Team erklärt dir die Zahlung an das ATO, sobald sie eingereicht ist. |
+| `estimate_payable_ja` | Japanese | same | 確定申告書の準備ができました。ATOへの推定納付額は{{1}}です。 / こちらが請求書です: / {{2}} / 最終確認後、署名のためにお送りします。提出後、ATOへの納付方法はチームがご案内します。 |
+| `lodged_payable` | English | none | Your tax return has been lodged successfully! ✅ / We'll message you again in about two weeks and walk you through how to pay. Nothing to do until then 😊 |
+| `lodged_payable_de` | German | none | Deine Steuererklärung wurde erfolgreich eingereicht! ✅ / Wir melden uns in etwa zwei Wochen wieder bei dir und erklären dir, wie du bezahlst. Bis dahin musst du nichts tun 😊 |
+| `lodged_payable_ja` | Japanese | none | あなたの確定申告書の提出が完了しました！✅ / 約2週間後にこちらから改めてご連絡し、お支払い方法をご案内します。それまでは何もしていただく必要はありません😊 |
+
+( / = new line)
+
+## G. Two weeks after Mark Lodged for a customer who owes tax (added 16 Oct)
+No template. An URGENT task opens for the team: "ATO PAYMENT INSTRUCTIONS DUE", with a ready opening line to fill in the amount, due date and how to pay from the Notice of Assessment.

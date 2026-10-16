@@ -376,9 +376,9 @@ export const formStrings = {
     ja: '銀行明細書をアップロード',
   },
   bankStatementHint: {
-    en: 'Upload an Australian bank statement showing your name, BSB and account number to ensure your refund goes to the correct account.',
-    de: 'Lade einen australischen Kontoauszug hoch, auf dem dein Name, deine BSB und deine Kontonummer zu sehen sind, damit deine Rückerstattung auf das richtige Konto geht.',
-    ja: '氏名・BSB・口座番号が記載されたオーストラリアの銀行明細書をアップロードしてください。還付金が正しい口座に振り込まれるようにするためです。',
+    en: 'Upload your Australian bank statement (PDF) with your name, BSB and account number so your refund reaches the correct account.',
+    de: 'Lade deinen australischen Kontoauszug (PDF) mit deinem Namen, deiner BSB und deiner Kontonummer hoch, damit deine Rückerstattung auf dem richtigen Konto ankommt.',
+    ja: '氏名・BSB・口座番号が記載されたオーストラリアの銀行明細書（PDF）をアップロードしてください。還付金が正しい口座に届くようにするためです。',
   },
   selfieHint: {
     en: 'This verifies your identity. Your photo is kept private and secure, and deleted immediately after verification.',

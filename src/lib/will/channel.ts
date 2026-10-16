@@ -684,6 +684,8 @@ export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
   ...Object.values(FLOW_TEMPLATES).flat().map((name) => ({ name, params: 1, optional: false })),
   // 11 Oct (decision 9): the nudge for a lead who already holds the bank details.
   { name: 'fu_price_sent', params: 1, optional: true },
+  // Jo, 16 Oct: the residency double-check (UK / Germany / Japan + WHM).
+  { name: 'residency_check', params: 1, optional: true },
   // 11 Oct (review system): the day-10 refund check-in ({{1}} name), the one
   // reminder ({{1}} name, {{2}} link) and the thank-you ({{1}} name).
   ...META_LANGS.flatMap((lang) => [
