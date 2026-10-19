@@ -211,7 +211,10 @@ async function postMessage(payload: Record<string, unknown>): Promise<SendResult
       // skipped. Meta's own error codes are still authoritative for 4xx.
       const code = err?.code;
       const retryable = res.status === 429 || res.status >= 500
-        || code === 4 || code === 80007 || code === 131056 || code === 130429 || code === 131049;
+        || code === 4 || code === 80007 || code === 131056 || code === 130429 || code === 131049
+        // 131042: the WhatsApp Business account has unsettled payments. Nothing
+        // was sent; the identical request works once Meta's bill is paid (19 Oct).
+        || code === 131042;
       return { ok: false, error: `meta ${res.status}: ${err?.message ?? JSON.stringify(data).slice(0, 200)}`, retryable };
     }
     const providerId = (data as { messages?: { id?: string }[] }).messages?.[0]?.id;

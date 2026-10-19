@@ -103,7 +103,10 @@ export function documentDropCount(context: string | null | undefined): number {
  * Written to read as housekeeping rather than as a fault, because that is what
  * it is: the customer did what we asked. The Decision Log renders this verbatim.
  */
-export function documentDropReason(count: number): string {
+export function documentDropReason(count: number, context?: string): string {
+  if ((context ?? '').split('\n').some((l) => /They wrote: ".*[?？]/.test(l))) {
+    return `Paid customer sent ${count} file${count === 1 ? '' : 's'} and asked something. Read the chat and answer the question; the files are collected.`;
+  }
   return count > 1
     ? `Paid customer sent ${count} files. Nothing to answer, just collect them.`
     : 'Paid customer sent a file. Nothing to answer, just collect it.';

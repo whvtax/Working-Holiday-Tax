@@ -25,7 +25,7 @@ import { abnIntakeKey, readIntake, ABN_INTAKE_DONE_RE, intakeSummary } from './a
 import { alreadyCheckedReason, applyCheckedClause } from './already-checked';
 import { isAccountNameQuestion, accountNameMessage } from './account-name';
 import { customerNotInterested, looksLikeVendor, salesPromisedKey } from './stage-sync';
-import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnly } from './text-normalize';
+import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnly, hasQuestionOrRequest } from './text-normalize';
 // Moved to text-normalize.ts so the engine can use it too without importing this
 // file (service.ts imports the engine; a static import back would be a cycle).
 // Re-exported here because this is where every caller and test already looks.
@@ -1619,6 +1619,10 @@ export async function handleInboundNote(
   // for the next missing thing, instead of the generic "got it all" + task.
   let intakeActive = false;
   try { intakeActive = !!readIntake(await store.getSetting(abnIntakeKey(customer.id))); } catch { intakeActive = false; }
+  // 20 Oct (Hannah, +49 176: four files, and a question about tax on her
+  // T-shirt and monthly fees). A file with a question in its caption is not
+  // paperwork alone, so it goes to the normal answer path instead of the drop.
+  if (meta?.media && hasQuestionOrRequest(body)) intakeActive = true; // a question with the file is answered, not dropped
   if (meta?.media && isAfterPayment(customer.state) && !intakeActive) {
     const ack = await suggestReply('', customer, 'documents_after_payment');
 
@@ -1739,11 +1743,26 @@ export async function handleInboundNote(
   // reason nor the suggested reply should claim otherwise ("may not be a
   // message from them", "it didn't come through on my end").
   const revoked = u?.type === 'revoke';
+  if (revoked) {
+    // A deleted message is only worth a task when the customer also has an
+    // earlier message still open (19 Oct, Hannah: a German question was never
+    // answered because the deletion was handled alone). With nothing open,
+    // Will stays silent: the customer changed their mind, there is nothing to answer.
+    const thread = await store.listMessages(customer.id);
+    let lastOut = -1;
+    for (let i = thread.length - 1; i >= 0; i--) if (thread[i].direction === 'OUT') { lastOut = i; break; }
+    const openIn = thread.slice(lastOut + 1).filter((m) =>
+      m.direction === 'IN' && !!m.body && !/\[Message deleted by sender\]/.test(m.body));
+    if (openIn.length === 0) {
+      await store.audit('system', 'revoked_nothing_open', { customerId: customer.id }).catch(() => {});
+      return customer;
+    }
+  }
   await raiseOrUpdateTask(store, customer, {
     reason: meta?.media
       ? 'Customer sent an attachment Will cannot read. Open the chat to view it and reply.'
       : revoked
-        ? 'Customer sent a message, then deleted it before Will (or anyone) could read it. Open WhatsApp if you want to see whether it is still visible on your end.'
+        ? 'Customer deleted a message, and an earlier one is still open: read the chat and reply to that.'
         : meta?.undecoded
           ? `WhatsApp delivered an event with no readable text${metaDetail ? ` (${metaDetail})` : ''}. It may not be a message from the customer at all. Open WhatsApp to check.`
           : 'Customer sent a voice note. Open WhatsApp to listen and reply.',
@@ -1751,7 +1770,10 @@ export async function handleInboundNote(
     // Even here there is something worth proposing: an acknowledgement that the
     // attachment arrived, so the customer is not left on read while the owner
     // opens it.
-    suggestedReply: await suggestReply('', customer, meta?.media ? 'attachment' : revoked ? 'revoked' : 'unreadable'),
+    // A deleted message gets no canned reply: the open message above needs the
+    // real answer, and an English placeholder for a German customer was the
+    // bug Hannah's chat showed.
+    suggestedReply: revoked ? null : await suggestReply('', customer, meta?.media ? 'attachment' : 'unreadable'),
   });
   const fresh = await store.getCustomerByWaId(waId);
   // A voice note or an unreadable attachment is still the customer talking:

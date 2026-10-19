@@ -2,7 +2,7 @@
 // preconditions on message status, approval-time re-guard,
 // template save-time guard, real kill switch, quick manual replies.
 import { NextResponse } from 'next/server';
-import { teamConfirmsPayment, teamSaysLodged, teamPromisesRefund, teamSentRefund, businessDaysFromNow } from '@/lib/will/stage-sync';
+import { teamConfirmsPayment, teamSaysLodged, teamPromisesRefund, teamSentRefund, businessDaysFromNow, teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { readWinbacks, markWinbackQueued, markWinbackSent, winbackStatus, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
 import { winbackMessage } from '@/lib/will/i18n';
 import { REVIEW_ASK_FALLBACK_DAYS, REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK } from '@/lib/will/review-asks';
@@ -297,6 +297,12 @@ async function trackRefundFromTeamWords(customer: CustomerRow, body: string): Pr
 async function markPaidIfTeamConfirmed(customer: CustomerRow, body: string, templateName?: string): Promise<void> {
   const store = getStore();
   await trackRefundFromTeamWords(customer, body).catch(() => {});
+  // 16 Oct (Jo): a hand-written estimate sets the outcome (payable / refund).
+  const outcome = teamOutcomeFromWords(body);
+  if (outcome && customer.outcome !== outcome) {
+    await store.updateCustomer(customer.id, { outcome }).catch(() => {});
+    await store.audit('owner', 'outcome_set_from_team_words', { customerId: customer.id, outcome, was: customer.outcome ?? null }).catch(() => {});
+  }
   // 11 Oct (full audit, decision 8): a team line that says the return is
   // lodged moves the stage to Lodged, whatever the wording (Johanna, em,
   // Pippa, Kana were chased for a signature after being told it was lodged).

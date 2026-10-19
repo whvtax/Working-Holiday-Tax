@@ -108,3 +108,24 @@ export function businessDaysFromNow(days: number, from: Date = new Date()): Date
   }
   return d;
 }
+
+
+/**
+ * 16 Oct (Jo): the team wrote the estimate by hand ("Estimated tax payable:
+ * $1,803.81") instead of through Send Estimate with the "Tax payable" toggle,
+ * so nothing knew this customer OWES, and Will told them to "call the ATO and
+ * request a payment plan". The team's own words now set the outcome, from
+ * the CRM and from the phone alike. Needs a dollar figure in the same message,
+ * so a general remark ("if you owe tax...") never flips it.
+ */
+const PAYABLE_WORDS = /\b(?:tax\s+payable|amount\s+payable|payable\s+to\s+the\s+ato|you(?:'ll|\s+will)?\s+(?:owe|need\s+to\s+pay)|owe\s+the\s+ato|tax\s+debt|tax\s+bill)\b/i;
+const REFUND_WORDS = /\b(?:estimated\s+(?:tax\s+)?refund|your\s+refund\s+(?:is|of|will\s+be)|tax\s+refund\s+of|refund\s+of)\b/i;
+export function teamOutcomeFromWords(text: string): 'PAYABLE' | 'REFUND' | null {
+  const t = text ?? '';
+  if (!/\$\s?\d/.test(t)) return null;
+  const payable = PAYABLE_WORDS.test(t);
+  const refund = REFUND_WORDS.test(t);
+  if (payable && !refund) return 'PAYABLE';
+  if (refund && !payable) return 'REFUND';
+  return null; // both (two years, one each) or neither: leave it to the toggle
+}

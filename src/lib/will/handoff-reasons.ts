@@ -168,6 +168,13 @@ const RULES: Rule[] = [
     prevent: 'Nothing to add to the Library. A template cannot answer a voice note. This is the cost of customers who would rather talk than type.',
   },
   {
+    match: /^Customer deleted a message, and an earlier one is still open/i,
+    kind: 'unreadable',
+    label: 'They deleted a message, and an earlier one is still open',
+    because: 'they deleted their latest message, but an earlier message of theirs has no answer yet, so the open question is the thing to reply to',
+    prevent: 'Nothing to add to the Library. Read the chat and answer the earlier message; the deletion itself needs no reply.',
+  },
+  {
     match: /^Customer sent a message, then deleted it/i,
     kind: 'unreadable',
     label: 'They deleted their own message',

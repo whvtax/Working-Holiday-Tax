@@ -302,6 +302,17 @@ export function isApprovedVerbatim(text: string, firstName?: string | null): boo
   return false;
 }
 
+/** A held draft must not confirm a payment, or send the form link, to someone
+ *  who has not been marked Paid. Only the verified payment step does that. Real
+ *  case (19 Oct, Paige, +44 7903): a lead who had not paid was offered "Since
+ *  you've paid, please fill out this quick form" as a draft. Those lines are
+ *  dropped; the team writes the rest. */
+export function scrubUnpaidDraft(text: string, paid: boolean): string {
+  if (paid) return text;
+  const PAID_LINE = /tax-form|fill out (this|the|our) (quick )?form|once you'?ve submitted|since you'?ve paid|you'?ve already paid|payment received|received your payment|thanks? for (your|the) payment/i;
+  return text.split('\n').filter((line) => !PAID_LINE.test(line)).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
 export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   const { ctx, history, mode, bank } = input;
 
@@ -483,7 +494,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
         reason: `Model proposed invalid transition ${ctx.state} -> ${decision.new_state}; reply held for review`,
         severity: 'CONFLICT',
         // Normalised, not raw: this is a one-click "Send Reply" (audit, 4 Sep).
-        suggestedReply: applyBankRule(fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank)),
+        suggestedReply: applyBankRule(fillPlaceholders(normaliseWillText(scrubUnpaidDraft(decision.reply_text, ctx.paid), { firstMessage, firstName: custFirstName }), bank)) || undefined,
       },
     };
   }
@@ -514,7 +525,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
         task: {
           reason: `Model proposed ${ctx.state} -> PAID but the customer did not report a payment; reply held for review`,
           severity: 'CONFLICT',
-          suggestedReply: applyBankRule(fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank)),
+          suggestedReply: applyBankRule(fillPlaceholders(normaliseWillText(scrubUnpaidDraft(decision.reply_text, ctx.paid), { firstMessage, firstName: custFirstName }), bank)) || undefined,
         },
       };
     }

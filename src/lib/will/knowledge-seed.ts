@@ -15,6 +15,15 @@ export interface SeedKnowledge {
 
 export const KNOWLEDGE_SEED: SeedKnowledge[] = [
   {
+    "intent": "when does the tax owed have to be paid",
+    "question": "When does the tax I owe have to be paid?",
+    "examples": ["When does that have to be paid by", "when do I need to pay the ATO", "what's the due date for the tax I owe", "how long do I have to pay it", "do I have to pay it now"],
+    "answer": "Nothing to pay yet \ud83d\ude0a The ATO sets the due date once your return is lodged, and it shows on your notice of assessment. We'll message you about two weeks after lodging with the amount, the due date and how to pay.",
+    "keywords": ["pay", "paid", "due", "date", "when", "owe", "ato", "deadline", "payable"],
+    "tags": ["post-payment", "ato", "payable"],
+    "lang": "en"
+  },
+  {
     "intent": "bank warns the payee details are incorrect or pauses the transfer",
     "question": "My bank says the bank details are incorrect / the name doesn't match and paused the transfer. What do I do?",
     "examples": ["Not sure why it won't let me send", "my bank says the details are incorrect", "the transfer is paused, it says the name doesn't match", "it says account name mismatch", "my bank flagged the payment", "confirmation of payee warning"],

@@ -223,7 +223,7 @@ const FAULT_RULES: FaultRule[] = [
     component: 'WhatsApp delivery (Meta status callbacks)',
     severity: 'critical',
     meaning: 'Meta accepted a message and then reported afterwards that it could not be delivered. This is the commonest way a message fails: it never shows as a send error, only as this callback. The message shows as failed in the chat and the customer received nothing.',
-    action: 'Read the error below. Code 131047 means the customer has been quiet more than 24 hours, so only an approved template may be sent (the estimate, signature and lodged buttons do that by themselves), which raises an urgent task. Code 131026 means the number is not on WhatsApp at all: nothing to create in Meta, so it raises a lower-priority review task instead and cancels that customer’s remaining scheduled follow-ups automatically (17 Sep).',
+    action: 'Read the error below. Code 131042 means the WhatsApp Business account has unsettled payments: pay the bill in Meta Business Manager. Nothing is lost; the held messages are requeued and resend by themselves, with one alert every 12 hours. Code 131047 means means the customer has been quiet more than 24 hours, so only an approved template may be sent (the estimate, signature and lodged buttons do that by themselves), which raises an urgent task. Code 131026 means the number is not on WhatsApp at all: nothing to create in Meta, so it raises a lower-priority review task instead and cancels that customer’s remaining scheduled follow-ups automatically (17 Sep).',
   },
   {
     key: 'will_reply_failed',

@@ -182,6 +182,9 @@ function ownOpening(sentence: string): string | null {
 const MAX_IMPROVISED_CHARS = 450;
 /** Own prose allowed around the price message (one reassuring line + a short opener). */
 const MAX_PROSE_AROUND_PRICE = 170;
+/** A promise that there is no lodgement deadline, or that a return can be lodged
+ *  "anytime". Both were written by the model (19 Oct, Takumi Harada). */
+const NO_DEADLINE_CLAIM = /\bno\s+(?:lodg(?:e)?ment\s+|tax\s+return\s+|filing\s+)?deadline\b|\bthere(?:'s| is)\s+no\s+(?:lodg(?:e)?ment\s+)?deadline\b|\byou can lodge\b[^.!?]{0,40}\banytime\b/i;
 const BANK_DETAILS_PRESENT = /\bBSB\b|062692|81049952/;
 /** The price message shape: the BSB and Account lines as a block (11 Oct: the
  *  Amount line left the price message, the amount is in the first sentence),
@@ -390,6 +393,11 @@ function amountsInCents(rawText: string): number[] {
   const text = stripNonMoneyFigures(rawText);
   const out: number[] = [];
   for (const m of text.matchAll(AMOUNT_RE)) {
+    // "1. $220" is a list number followed by a price, not "$1.00" (Jo, 19 Oct,
+    // Lisa Elliott: a numbered list of questions was refused as FORBIDDEN_AMOUNT
+    // 1.00 and 26.00). A number that ends in a full stop and comes before the
+    // currency sign is a list marker, never an amount.
+    if (!m[1] && !m[2] && /\.$/.test(m[3] ?? '')) continue;
     const raw = m[1] ?? m[2] ?? m[3] ?? '';
     let c = toCents(raw);
     // 万円: tens of thousands of yen. "18万円" is 180,000 yen, not 18.
@@ -1083,6 +1091,13 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     if (ctx.customerTextChars && ctx.customerTextChars > 500) {
       ceiling = Math.max(ceiling, Math.min(1200, Math.round(100 + ctx.customerTextChars * 0.75)));
     }
+    // 19 Oct (Takumi Harada, +61 401): one answer to four numbered questions was
+    // refused as REPLY_TOO_LONG. Each numbered question earns its own room, so
+    // a customer who asks four things gets four answers, not the shortest one.
+    const numberedQuestions = (ctx.customerText ?? '').match(/^\s*\d{1,2}[.)]\s/gm)?.length ?? 0;
+    if (numberedQuestions >= 3) {
+      ceiling = Math.max(ceiling, Math.min(1400, 300 + numberedQuestions * 150));
+    }
     if (improvised.length > ceiling) violations.push('REPLY_TOO_LONG');
   }
 
@@ -1170,6 +1185,11 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // 16 Oct (Jo): the one exception is the approved "since you've already
     // checked your result, our fee is non-refundable" clause (already-checked.ts).
     if (!paid && !ctx.isApprovedTemplate && NON_REFUNDABLE_WORDING.test(written) && !isApprovedCheckedClause(written)) violations.push('NON_REFUNDABLE_WORDING');
+    // 19 Oct (Takumi Harada): the model wrote "There's no lodgment deadline you
+    // need to worry about" and "you can lodge anytime". The Library says the
+    // deadline may be extended to 15 May when we lodge, and a self-lodger's
+    // 2025-26 date is 31 October. Neither "no deadline" nor "anytime" is ours to promise.
+    if (NO_DEADLINE_CLAIM.test(written)) violations.push('DEADLINE_CLAIM');
     const opening = ownOpening(written);
     if (opening != null) {
       if (paid && !POST_PAYMENT_NOT_SALES.test(written) && (POST_PAYMENT_SALES.test(written) || POST_PAYMENT_SALES_ML.test(written))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
@@ -1185,7 +1205,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     const sentenceAmounts = amountsInCents(sentence);
     const sentenceExample = new Set<number>();
     for (const cents of sentenceAmounts) {
-      if (!allowedCents.has(cents) && !sentenceExample.has(cents) && !(paid && isBenignThreshold(cents, sentence))) {
+      if (!allowedCents.has(cents) && !sentenceExample.has(cents) && !(paid && (isBenignThreshold(cents, sentence) || isBenignThreshold(cents, improvised)))) {
         violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
       }
     }

@@ -328,14 +328,30 @@ export function containsThanks(text: string | null | undefined): boolean {
  * nothing in it to answer, nothing for a person to do. This is the ONE test
  * every path that could send "I've passed this to the team" now checks first.
  */
+/**
+ * 19 Oct (Jo: "why does Will not answer a thank-you after I said the refund is
+ * being lodged"). SUBSTANCE is the list that means "this needs a real answer",
+ * but it also contained topic nouns: "refund", "tax", "form", "email",
+ * "document". So "Thank you, the refund is lodged" counted as a question, the
+ * thank-you path was skipped, and the model usually chose silence. Only words
+ * that ask for something, report a problem, or deliver something are blocking
+ * now. A thank-you that names a topic is still a thank-you.
+ */
+const REQUEST_OR_PROBLEM = /\b(?:but|when|how|what|where|why|which|can|could|will|would|should|need|needs|question|problem|issue|not|don'?t|didn'?t|can'?t|won'?t|still|also|another|cancel|wrong|mistake|wait|later|tomorrow|here is|here's|attach(?:ed)?|send|sent|paid|pay|payment|help me)\b/i;
+/** A question or a request (or a problem) in the text: something a reply must answer. */
+export function hasQuestionOrRequest(text: string | null | undefined): boolean {
+  const t = (text ?? '').trim();
+  return /[?？]/.test(t) || REQUEST_OR_PROBLEM.test(t);
+}
+
 export function isClosingOnly(text: string | null | undefined): boolean {
   const t = (text ?? '').trim();
   if (!t) return false;
   if (isCourtesyLine(t)) return true;
   if (/[?？]/.test(t)) return false;
-  if (SUBSTANCE.test(t)) return false;
+  if (REQUEST_OR_PROBLEM.test(t)) return false;
   const words = t.split(/\s+/).filter(Boolean);
-  return containsThanks(t) && words.length <= 15;
+  return containsThanks(t) && words.length <= 30;
 }
 
 export function isThanksLine(text: string | null | undefined): boolean {

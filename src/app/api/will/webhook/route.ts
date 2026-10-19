@@ -8,6 +8,7 @@
 //        run the existing engine pipeline (handleIncoming) and enqueue the
 //        outbound message as an OUT record.
 // ============================================================
+import { teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { createHmac, timingSafeEqual } from 'crypto';
 import { handleIncoming, handleInboundNote, handlePaymentProofMedia } from '@/lib/will/service';
 import { isEditMessage, editFrom, applyInboundEdits } from '@/lib/will/inbound-edit';
@@ -319,6 +320,7 @@ function inboundSnapshot(payload: unknown): Record<string, unknown> {
 // Delivered / read receipts are stamped on the message for the two ticks.
 const WINDOW_ERROR_CODES = new Set([131047]);
 const STATUS_ERROR_HINT: Record<number, string> = {
+  131042: 'the WhatsApp Business account has unsettled payments: pay the bill in Meta Business Manager; held messages resend by themselves once it clears',
   131047: 'outside the 24h window: the customer has not written for over a day, so only an approved template can reach them',
   131026: 'the number cannot receive WhatsApp messages (blocked, or not on WhatsApp)',
   131049: 'Meta held it back under its marketing message limit for this person',
@@ -389,10 +391,33 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
             await store.addTask({
               customerId: customer.id, customerName: customer.name ?? customer.waId,
               reason: `WhatsApp did not deliver this message: ${error}. It shows as failed in the chat.`,
-              severity: 'URGENT', context: msg.body.slice(0, 200), suggestedReply: msg.body,
+              severity: 'URGENT', context: msg.body.slice(0, 1500), suggestedReply: msg.body,
             });
           });
           await store.audit('channel', 'delivery_failed_131049_requeued', { customerId: customer.id, messageId: msg.id });
+          continue;
+        }
+        // 131042: Meta will not send anything until the WhatsApp Business
+        // account bill is paid (19 Oct: eleven customers, eleven URGENT tasks).
+        // The messages are requeued and resend by themselves once it clears, and
+        // the owner hears about it ONCE per 12 hours, not once per customer.
+        if (code === 131042) {
+          await store.addJob({
+            customerId: customer.id, kind: 'RESEND_MESSAGE',
+            payload: { messageId: msg.id, attempt: 0 },
+            runAt: new Date(Date.now() + 6 * 3600e3).toISOString(),
+          }).catch(() => { /* the alert below still tells the owner */ });
+          const last = await store.getSetting('meta_billing_alert_at').catch(() => null);
+          const lastMs = typeof last === 'string' ? Date.parse(last) : NaN;
+          if (Number.isNaN(lastMs) || Date.now() - lastMs > 12 * 3600e3) {
+            await store.setSetting('meta_billing_alert_at', new Date().toISOString()).catch(() => {});
+            await store.addTask({
+              customerId: customer.id, customerName: customer.name ?? customer.waId,
+              reason: 'Meta has stopped sending messages (error 131042): the WhatsApp Business account has unsettled payments. Pay the bill in Meta Business Manager. Held messages are queued and resend by themselves once it clears; no action per customer is needed.',
+              severity: 'URGENT', context: '', suggestedReply: null,
+            });
+          }
+          await store.audit('channel', 'delivery_failed_131042_billing_requeued', { customerId: customer.id, messageId: msg.id });
           continue;
         }
         // 131026: the number itself cannot receive WhatsApp at all (blocked
@@ -410,7 +435,7 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
           await store.addTask({
             customerId: customer.id, customerName: customer.name ?? customer.waId,
             reason: `WhatsApp says this number cannot receive messages at all (blocked, or never on WhatsApp), not a template or window problem, so there is nothing to create in Meta.${cancelled ? ` Cancelled ${cancelled} pending follow-up${cancelled === 1 ? '' : 's'} to this number so they don't keep failing the same way.` : ''} Double-check the number is typed correctly; if it is, this lead cannot be reached on WhatsApp.`,
-            severity: 'REVIEW', context: msg.body.slice(0, 200), suggestedReply: msg.body,
+            severity: 'REVIEW', context: msg.body.slice(0, 1500), suggestedReply: msg.body,
           });
           await store.audit('channel', 'delivery_failed_131026_unreachable', { customerId: customer.id, messageId: msg.id, cancelledFollowUps: cancelled });
           continue;
@@ -420,7 +445,7 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
           reason: outsideWindow
             ? `WhatsApp did not deliver this message: ${hint}. It shows as failed in the chat. Send it as an approved template (the estimate, signature and lodged buttons do that by themselves), or wait for the customer to write.`
             : `WhatsApp did not deliver this message: ${error}. It shows as failed in the chat.`,
-          severity: 'URGENT', context: msg.body.slice(0, 200), suggestedReply: msg.body,
+          severity: 'URGENT', context: msg.body.slice(0, 1500), suggestedReply: msg.body,
         });
       } else if (st.status === 'delivered' || st.status === 'read') {
         const at = st.timestamp ? new Date(Number(st.timestamp) * 1000).toISOString() : new Date().toISOString();
@@ -887,6 +912,14 @@ export async function POST(req: Request) {
       //      what prevents a duplicate answer; the "Will Active" toggle is the
       //      owner's explicit way to pause a chat if he wants to.
       await afterHumanReply(store, customer.id).catch(() => { /* badge/tasks are bookkeeping */ });
+      // 16 Oct (Jo): an estimate typed on the phone sets the outcome too.
+      try {
+        const outcome = teamOutcomeFromWords(echo.body);
+        if (outcome && customer.outcome !== outcome) {
+          await store.updateCustomer(customer.id, { outcome });
+          await store.audit('owner', 'outcome_set_from_team_words', { customerId: customer.id, outcome, via: 'phone' });
+        }
+      } catch { /* the toggle in the chat is the fallback */ }
       try {
         const msgs = await store.listMessages(customer.id);
         await Promise.all(

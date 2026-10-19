@@ -1432,11 +1432,14 @@ async function doProcess(): Promise<TickResult> {
         );
         if (out.ok) {
           await store.audit('scheduler', 'resend_message_succeeded', { customerId: customer.id, messageId, attempt });
-        } else if (out.retryable && attempt < 3) {
+        } else if (out.retryable && attempt < (/131042/.test(out.error ?? '') ? 20 : 3)) {
+          // Billing hold (131042) clears when the bill is paid: retry every 6h
+          // for about five days. Other retryable errors keep the morning retry.
+          const billing = /131042/.test(out.error ?? '');
           await store.addJob({
             customerId: customer.id, kind: 'RESEND_MESSAGE',
             payload: { messageId, attempt: attempt + 1 },
-            runAt: deferToMorning(new Date()).toISOString(),
+            runAt: billing ? new Date(Date.now() + 6 * 3600e3).toISOString() : deferToMorning(new Date()).toISOString(),
           }).catch(() => { /* the task below is the backstop if this itself cannot be queued */ });
           await store.audit('scheduler', 'resend_message_deferred', { customerId: customer.id, messageId, attempt: attempt + 1 });
         } else {
