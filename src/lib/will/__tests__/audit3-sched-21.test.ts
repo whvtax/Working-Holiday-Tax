@@ -105,7 +105,7 @@ describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
   });
 
   it('the review ask (24 Sep) is required, two variables: name and the personal line', () => {
-    for (const n of ['review_ask', 'review_ask_de', 'review_ask_ja']) {
+    for (const n of ['review_ask1', 'review_ask_de', 'review_ask_ja']) {
       expect(EXPECTED_META_TEMPLATES.find((x) => x.name === n)).toEqual({ name: n, params: 2, optional: false });
     }
   });
