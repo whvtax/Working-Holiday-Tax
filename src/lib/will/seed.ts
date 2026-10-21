@@ -329,6 +329,40 @@ export async function syncTemplatesFromCode(
  * edited is never overwritten and a deleted one does come back, which is the
  * right way round: the pack is the floor, his edits sit on top.
  */
+/** 21 Oct: answers Jo changed in the pack. The backfill above only ADDS a
+ *  question the Library does not hold, so an edited answer to an existing
+ *  question would never reach Will. Each fix updates the one row with that
+ *  question, once (marker), and leaves any other edit Jo made by hand alone. */
+const KNOWLEDGE_FIXES: { question: string; answer: string }[] = [
+  {
+    question: 'Can I set up a payment plan with the ATO for the amount I owe?',
+    answer: 'Once the ATO has issued your notice, you can ask them directly for a payment plan. You\'ll need to call the ATO yourself to request one. We\'ll message you in about two weeks with the amount and how to pay. \u{1F60A}',
+  },
+];
+export async function applyKnowledgeFixes(
+  store: Pick<Store, 'listKnowledge' | 'updateKnowledge' | 'getSetting' | 'setSetting'>,
+): Promise<number> {
+  try {
+    const marker = 'fix-21oct';
+    if ((await store.getSetting('knowledge_fix')) === marker) return 0;
+    const rows = await store.listKnowledge();
+    let fixed = 0;
+    for (const fix of KNOWLEDGE_FIXES) {
+      const want = fix.question.trim().toLowerCase();
+      for (const row of rows) {
+        if ((row.question || '').trim().toLowerCase() !== want) continue;
+        if (row.answer === fix.answer) continue;
+        await store.updateKnowledge(row.id, { answer: fix.answer });
+        fixed++;
+      }
+    }
+    await store.setSetting('knowledge_fix', marker);
+    return fixed;
+  } catch {
+    return 0;
+  }
+}
+
 export async function backfillKnowledgePack(
   store: Pick<Store, 'listKnowledge' | 'addKnowledge' | 'getSetting' | 'setSetting'>,
 ): Promise<number> {

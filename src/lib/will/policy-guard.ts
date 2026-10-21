@@ -230,7 +230,7 @@ const ANOTHER_RETURN_CONTEXT = /\b(?:20\d\d\s?[-–/]\s?(?:20)?\d\d|financial ye
 // other amount stays blocked. Deliberately one exact value, one direction.
 const SUBSTANTIATION_THRESHOLD_CENTS = 30000; // $300
 const SUBSTANTIATION_CTX =
-  /\b(?:receipts?|records?|record[- ]keeping|substantiat\w*|work[- ]related expenses?|work expenses?|claim(?:ed|ing|able)?)\b/i;
+  /\b(?:receipts?|records?|record[- ]keeping|substantiat\w*|work[- ]related expenses?|work expenses?|claim(?:ed|ing|able)?|bank statements?)\b/i;
 const REFUND_MONEY_CTX =
   /\b(?:refund|get\s+back|getting\s+back|back\s+to\s+you|you'?ll\s+get|you\s+would\s+get|you\s+will\s+get|owe[ds]?|owing|estimate)\b/i;
 /** True only for the exact $300 substantiation threshold stated in a pure record-keeping context. */

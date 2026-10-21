@@ -606,6 +606,8 @@ export function reviewAskTemplateKey(lang?: string | null): string {
   const key = (lang && lang in REVIEW_ASK_MSG ? lang : 'en') as Lang;
   // English keeps the bare name, like refund_checkin and review_remind: the
   // English template in WhatsApp Manager is "review_ask" (20 Oct, Meta list).
+  // 21 Oct: German was deleted and re-created as review_ask_de1 (Meta would not reuse the name).
+  if (key === 'de') return 'review_ask_de1';
   return key === 'en' ? 'review_ask1' : `review_ask_${key}`;
 }
 export function reviewAskMessage(lang: string | null | undefined, firstName: string, opener: string, link: string = REVIEW_LINK): string {

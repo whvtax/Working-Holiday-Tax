@@ -95,7 +95,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
   flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 .will-scope .view{display:none;animation:fade 220ms var(--ease-out)}
 /* A normal (non-chat) view scrolls inside itself and keeps main's padding. */
-.will-scope .view.active{display:block;flex:1;min-height:0;overflow-y:auto}
+.will-scope .view.active{display:block;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden}
 /* The chats view is a fixed frame: it fills main exactly and clips, so the
    only thing that scrolls is the message list inside .chatpane. The negative
    margins cancel main's padding so the frame reaches the edges like an app. */
@@ -399,7 +399,8 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .btn.take{background:var(--brand1);color:#fff}
 .will-scope .btn.take:hover{box-shadow:0 2px 8px rgba(14,92,66,.3)}
 .will-scope /* ---------- library ---------- */
-.libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:9px}
+.libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:9px;min-width:0}
+.will-scope .libgrid .tpl{min-width:0;overflow-wrap:anywhere}
 .will-scope .libcat{font-size:10.5px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--ink3);margin:18px 0 9px;display:flex;align-items:center;gap:8px}
 .will-scope .libcat:first-child{margin-top:0}
 .will-scope .libcat .n{background:rgba(30,32,40,.06);padding:1px 8px;border-radius:8px;font-size:10.5px}

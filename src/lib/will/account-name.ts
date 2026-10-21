@@ -34,7 +34,11 @@ export function accountNameMessage(lang?: string | null): string {
  *  with this inside it goes to Will, who answers it all (the guard still
  *  holds the name right). */
 const ACCOUNT_NAME_ASK = new RegExp([
-  'account[- ]?(?:holder|owner)?\\s*name', 'name (?:of|on|for) the (?:bank )?account', 'recipient(?:\'s)? name', 'payee(?:\'s)? name', 'beneficiary(?:\'s)? name',
+  'account[- ]?(?:holder|owner)?\\s*name', 'name (?:of|on|for) the (?:bank )?account',
+  // 21 Oct: "What's the name connected to this account?" went to Will's model, which
+  // answered "Simple Tax Services" (wrong). Any "name ... this account" is the fixed answer.
+  'name (?:connected|linked|attached|associated|registered|tied|listed) (?:to|with|on) (?:this|that|the|my|your)? ?account',
+  'name (?:on|for|with) (?:this|that|the) account', 'recipient(?:\'s)? name', 'payee(?:\'s)? name', 'beneficiary(?:\'s)? name',
   'what name', 'which name', 'whose name', 'name (?:do|should|can) i (?:put|use|write|enter|type)', 'name field', 'under what name', 'in whose name',
   'name (?:doesn\'?t|does not|didn\'?t|did not|don\'?t) match', 'different (?:company )?name', 'name (?:is|was) (?:not|different)', 'shows? (?:a )?different name', 'wrong name',
   'kontoname', 'kontoinhaber', 'empf[äa]nger(?:name)?', 'welcher name', 'auf welchen namen', 'name (?:stimmt|passt) nicht',
@@ -59,6 +63,10 @@ const THEIR_ACCOUNT = /\b(?:send (?:me|us)|your (?:own )?(?:bank )?(?:account|de
 export function namesAccountWrongly(text: string): boolean {
   const t = text || '';
   if (WRONG_NAME_NEAR_ACCOUNT.test(t)) return true;
+  // 21 Oct: "Simple Tax Services / Yes, those are the right details" slipped past the
+  // rule above because the account word was missing. In a payment reply, the old
+  // name is wrong whatever sentence it sits in, unless the correct name is there too.
+  if (/simple tax services/i.test(t) && !t.includes(ACCOUNT_NAME) && /\b(?:bsb|account|transfer|pay|payment|bank|details|correct|right)\b/i.test(t)) return true;
   if (!NAMES_THE_ACCOUNT.test(t)) return false;
   if (THEIR_ACCOUNT.test(t) && !/account name is\b/i.test(t)) return false;
   return !t.includes(ACCOUNT_NAME);

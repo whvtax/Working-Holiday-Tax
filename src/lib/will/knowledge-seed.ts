@@ -36,7 +36,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "intent": "ATO payment plan for tax owed",
     "question": "Can I set up a payment plan with the ATO for the amount I owe?",
     "examples": ["I presume I can set up a payment plan to repay this", "can I pay the ATO in instalments?", "I can't pay the whole amount at once"],
-    "answer": "Yes, the ATO offers payment plans. We'll message you in about two weeks and walk you through how to pay, including a plan if you need one. \ud83d\ude0a",
+    "answer": "Once the ATO has issued your notice, you can ask them directly for a payment plan. You'll need to call the ATO yourself to request one. We'll message you in about two weeks with the amount and how to pay. \ud83d\ude0a",
     "keywords": ["payment", "plan", "instalments", "owe", "ato", "repay", "afford"],
     "tags": ["post-payment", "ato"],
     "lang": "en"
@@ -2595,7 +2595,12 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "process"
     ],
     "lang": "en"
-  }
+  },
+  {"intent": "working from home expenses claim", "question": "Can I claim working from home for my job?", "examples": ["I worked from home", "home office expenses", "wfh deduction", "I did some work from home", "working from home hours"], "answer": "For a working from home claim, we need proof of the hours. Please send a timesheet or diary for the year showing the date, start and finish time, and what you did each time you worked from home. Once we have it, we'll check the claim with you.", "keywords": ["home", "wfh", "work from home", "home office", "hours", "diary", "timesheet", "claim"], "tags": ["process", "expenses"], "lang": "en"},
+  {"intent": "car expenses for work claim", "question": "Can I claim my car for work?", "examples": ["car expenses", "I used my car for work", "kilometres for work", "I drive for work", "claim the car", "logbook"], "answer": "We can help with a car claim, but only for work trips. Trips between home and your usual workplace don't count. Please send a log of your work trips with the date, where you went, why, and the kilometres for each trip, and tell us how you worked out the total. Please also send when you bought the car, the price, the make and model, and the registration number.", "keywords": ["car", "vehicle", "kilometres", "km", "logbook", "drive", "driving", "fuel", "petrol", "trip", "commute"], "tags": ["process", "expenses"], "lang": "en"},
+  {"intent": "rideshare or delivery app expenses", "question": "I drove for Uber or DoorDash. What do I send?", "examples": ["I drive for Uber", "DoorDash income", "Uber expenses", "delivery driver expenses", "Menulog earnings", "rideshare work"], "answer": "Please send your Uber, DoorDash or other app reports for the year here in the chat, and include the total kilometres you drove for the work. We'll check it against the expenses you're claiming.", "keywords": ["uber", "doordash", "deliveroo", "menulog", "rideshare", "delivery", "driver", "report", "kilometres", "km"], "tags": ["process", "expenses", "income"], "lang": "en"},
+  {"intent": "rental car used for work", "question": "I rented a car for work. What do I send?", "examples": ["I hired a car for work", "rental car", "car hire for work", "I rented a scooter for work", "rented a bike for work"], "answer": "Please send the rental invoice or receipt, along with the dates you hired it and what it was used for. We'll check that the work part is the part you're claiming.", "keywords": ["rent", "rental", "hire", "hired", "car hire", "scooter", "bike", "moped", "invoice", "receipt"], "tags": ["process", "expenses"], "lang": "en"},
+  {"intent": "no invoices or bank statements for work expenses", "question": "I don't have invoices or bank statements. Can I still claim my work expenses?", "examples": ["I have no invoices", "I don't have receipts", "no bank statements", "I lost my receipts", "I didn't keep records"], "answer": "We can look at your work expenses without invoices, up to $300 in total. Please list what you spent, roughly when, and what it was for, and we'll go from there. 😊", "keywords": ["invoice", "invoices", "receipt", "receipts", "records", "bank statement", "no proof", "lost", "300", "expenses"], "tags": ["process", "expenses"], "lang": "en"}
 ];
 
 
