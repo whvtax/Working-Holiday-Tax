@@ -100,7 +100,11 @@ const schemaOrg = {
       },
       currenciesAccepted: 'AUD',
       paymentAccepted: ['Cash', 'Credit Card', 'Bank Transfer'],
+      knowsLanguage: ['en', 'de', 'ja'],
       sameAs: [
+        // Facebook is linked from every footer but was missing here, so the
+        // entity graph AI search builds of the business had one profile fewer.
+        'https://www.facebook.com/workingholidaytax',
         'https://www.tiktok.com/@workingholidaytax',
         'https://instagram.com/workingholidaytax',
       ],
@@ -131,15 +135,17 @@ const schemaOrg = {
           telephone: '+61424513998',
           email: 'info@workingholidaytax.com.au',
           areaServed: 'AU',
-          availableLanguage: ['en', 'English'],
-          contactOption: 'TollFree',
+          // Replies are given in English, German and Japanese (see the /de and
+          // /ja sections). This said English only, and +61 424 513 998 is a
+          // mobile number, not a toll-free line, so contactOption is gone.
+          availableLanguage: ['English', 'German', 'Japanese'],
         },
         {
           '@type': 'ContactPoint',
           contactType: 'WhatsApp',
           telephone: '+61424513998',
           areaServed: 'AU',
-          availableLanguage: ['en', 'English'],
+          availableLanguage: ['English', 'German', 'Japanese'],
         },
       ],
       hasOfferCatalog: {

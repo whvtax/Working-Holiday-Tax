@@ -137,6 +137,7 @@ const ARTICLE_EMOJI: Record<string, string> = {
   'restaurant-industry-award-working-holiday': '🍝',
   'award-classifications-working-holiday-australia': '📚',
   'late-tax-return-penalty-working-holiday': '⏰',
+  'tax-return-deadline-31-october-working-holiday': '📅',
   'understating-income-ato-penalty-working-holiday': '🚨',
   'tools-equipment-under-300-instant-deduction-whv': '🔧',
   '1000-dollar-instant-deduction-rule-2026': '⚡',

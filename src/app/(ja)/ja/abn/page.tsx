@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
@@ -259,12 +259,14 @@ export default function ABNPageJA() {
             <span aria-current="page">ABN登録</span>
           </nav>
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
-            ワーキングホリデービザ 417・462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              ワーホリのABN登録｜417・462ビザ
+            </span>
             <span style={{ display: 'block' }}>ABNは仕事を変えません。</span>
             <span style={{ display: 'block', color: '#0B5240' }}>変えるのはタックスリターンです。</span>
           </h1>
@@ -431,7 +433,7 @@ export default function ABNPageJA() {
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
             だからこそ、同じABNの形を何度も見ています。ファームの請負契約、配達プラットフォーム、全員を下請け扱いにする建設現場。
           </p>
-          <GoogleReviews lang="ja" />
+          <GoogleReviewsServer lang="ja" />
         </div>
       </section>
 

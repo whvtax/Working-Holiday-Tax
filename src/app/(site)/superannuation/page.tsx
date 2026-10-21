@@ -107,6 +107,14 @@ const MYGOV = [
 
 const faqs = [
   {
+    // Added Oct 2026: the WHV-specific super queries ("417 visa super claim",
+    // "superannuation working holiday visa") sit at positions 25 to 29 with no
+    // question on the page phrased the way they are typed.
+    question: 'Can you claim super on a 417 or 462 working holiday visa?',
+    answer:
+      'Yes, once you have left Australia and your working holiday visa has ceased. You cannot claim it while you are still here on that visa. The claim is a Departing Australia Superannuation Payment (DASP), 65% of the taxed amount is withheld, and unlike a tax refund it can be paid to an account overseas.',
+  },
+  {
     question: 'Can I just claim my super myself?',
     answer:
       'You can, it is free, and with one fund and clean documents we will say so. It gets harder with super spread across several funds, a fund that wants certified copies from overseas, or a visa that has not ceased.',

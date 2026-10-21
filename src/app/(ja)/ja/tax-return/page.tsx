@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
@@ -128,6 +128,40 @@ const SEQUENCE = [
 ]
 
 /** 進める順番が変わる2つのルール。だから手順01より前に置いています。 */
+/**
+ * Where a working holiday refund comes from (Oct 2026). This page ranked around
+ * 30 for "working holiday tax return" with nothing on it that explained why a
+ * refund exists at all, which is the question the query carries. Every item is a
+ * mechanism already stated elsewhere on the site; no amount is promised. The one
+ * range sentence in the lede is the owner-approved wording.
+ */
+const REFUND_SOURCES = [
+  {
+    "label": "TFNが届く前に45%で取られていた期間",
+    "body": "TFNが雇用主に届いておらず、申請中であることを申告書で伝えていない場合、雇用主は15%ではなく45%で源泉徴収しなければなりません。その間の給与はすべて取られすぎで、戻ってくるのは申告を提出したときだけです。"
+  },
+  {
+    "label": "申告書を出していない2つ目の仕事",
+    "body": "雇用主ごとにTax File Number Declarationが必要です。2つ目の仕事で出していないと、誰も気づかないあいだ45%で源泉徴収され、数か月続くことも珍しくありません。"
+  },
+  {
+    "label": "ワーホリ雇用主として登録していない雇用主",
+    "body": "15%の税率は、雇用主がATOにワーキングホリデーメーカーの雇用主として登録していることが前提です。登録していなければ、1ドル目から30セントで始まる非居住者の税率で源泉徴収しなければなりませんでした。"
+  },
+  {
+    "label": "もともと払う必要のなかったメディケア税",
+    "body": "2%のメディケア税は既定で差し引かれます。日本を含め、メディケアの対象外のパスポートは多く、正しい証明書があれば免除されます。"
+  },
+  {
+    "label": "誰も申告していなかった仕事の経費",
+    "body": "靴、制服、道具、資格、現場間の移動などは、実際の仕事に関係していれば課税所得を減らせます。15%の税率なら、正当な控除100ドルごとに税額が15ドル下がります。"
+  },
+  {
+    "label": "パスポートとAddy判決",
+    "body": "イギリス、ドイツ、日本、フィンランド、ノルウェー、チリ、トルコの国籍で、税務上の居住者だった方は、Addy判決によりその年の非課税枠が戻る場合があります。"
+  }
+]
+
 const RULES = [
   {
     label: '還付金はオーストラリアの口座にしか入りません',
@@ -146,6 +180,11 @@ const FAQS = [
     question: 'タックスリターンはどれくらい時間がかかりますか。',
     answer:
       '質問票をいただいた日から、複雑でない1年であれば作成と確認に数日で、提出後はATOがおおむね14営業日で還付金を支払います。\n\n雇用主が5社ある年、ABNで請求した収入がある年、居住区分を根拠づける必要がある年は、当社側の作業が長くなります。どれに当たるのかは、こちらからお伝えします。',
+  },
+  {
+    question: 'タックスリターンの提出期限はいつですか。',
+    answer:
+      '自分で提出する場合は、会計年度終了後の10月31日です。2025-26年度の申告は2026年10月31日が期限で、今年は11月2日（月）までになります。期限を過ぎた年度も失われたわけではなく、いまからでも提出できます。',
   },
   {
     question: '給与明細は必要ですか。',
@@ -286,12 +325,14 @@ export default function TaxReturnPageJA() {
             <span aria-current="page">タックスリターン</span>
           </nav>
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
-            ワーキングホリデービザ 417・462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              タックスリターン代行｜申告書は登録税理士が確認して承認
+            </span>
             <span style={{ display: 'block' }}>必要な情報と、還付金の振込先だけ。</span>
             <span style={{ display: 'block', color: '#0B5240' }}>あとは当社が進めます。</span>
           </h1>
@@ -315,6 +356,32 @@ export default function TaxReturnPageJA() {
           <div className="flex" style={{ marginTop: '20px' }}>
             <GoogleRating variant="pill" lang="ja" />
           </div>
+        </div>
+      </section>
+
+      {/* ── 1b. WHERE A REFUND COMES FROM ─────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>還付金はどこから生まれるのか</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
+            ワーホリの多くがタックスリターンで還付を受けられる理由
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch', marginBottom: '26px' }}>
+            還付金はバックパッカーであることへのご褒美ではありません。雇用主が源泉徴収した額と、本来払うべきだった額の差で、ワーホリの1年ではその差はたいてい下のような場所から生まれます。当社のお客様の還付額は、どれが当てはまったかによって数百ドルから数千ドルまでさまざまです。
+          </p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {REFUND_SOURCES.map((r) => (
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
+                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '62ch' }}>
+            どれも自動ではなく、決めつけもしません。提出前に、ひとつずつATOの記録と照らし合わせて確認します。{' '}
+            <Link href="/ja/calculator" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>計算ツールで還付額の目安を見る</Link>.
+          </p>
         </div>
       </section>
 
@@ -459,7 +526,7 @@ export default function TaxReturnPageJA() {
             質問票も、確認する項目も、上の順序も、たった1種類のビザの1年のために組み立てたものです。
           </p>
 
-          <GoogleReviews lang="ja" />
+          <GoogleReviewsServer lang="ja" />
 
           <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>

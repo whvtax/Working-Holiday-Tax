@@ -2,10 +2,9 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { SITE_URL } from '@/lib/constants'
-import { getGoogleRating } from '@/lib/googleData'
 import { waUrl } from '@/lib/wa'
 import { WaLink } from '@/app/(site)/HomeWa'
 
@@ -214,7 +213,6 @@ const BODY: CSSProperties   = { fontSize: '15px', lineHeight: 1.8 }
 const LEDE: CSSProperties   = { fontSize: '16.5px', lineHeight: 1.8 }
 
 export default async function JapaneseHomePage() {
-  const gRating = await getGoogleRating()
 
   const webPageLd = {
     '@context': 'https://schema.org',
@@ -228,23 +226,11 @@ export default async function JapaneseHomePage() {
     about: { '@id': `${SITE_URL}/#business` },
   }
 
-  // Only built when gRating.live、see googleData.ts. Never emit a fabricated
-  // rating to Google as structured data.
-  const serviceLd = gRating.live ? {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    '@id': `${SITE_URL}/#business`,
-    name: 'Working Holiday Tax',
-    description: 'オーストラリアのワーキングホリデービザ保持者向けタックスリターン。',
-    url: SITE_URL,
-    inLanguage: 'ja',
-      // aggregateRating was removed here (28 Aug). Google has not shown review
-      // rich results for self-serving LocalBusiness/Organization ratings since
-      // 2019, and this was republishing Google's own aggregate back to Google.
-      // The visible GoogleRating pill and GoogleReviews components are
-      // untouched: the rating still shows to people, it just stops claiming a
-      // rich result that is never granted.
-  } : null
+  // The business is one Organization (@id /#business), declared in the root
+  // layout's graph. This block re-declared the same @id as a LocalBusiness,
+  // which handed search engines two different types for one entity. It held
+  // no data the graph lacks (its rating was removed on 28 Aug), so it is gone.
+  const serviceLd = null as Record<string, unknown> | null
 
   const faqLd = {
     '@context': 'https://schema.org',
@@ -269,7 +255,7 @@ export default async function JapaneseHomePage() {
   const organizationLd = {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
-    '@id': `${SITE_URL}/#organization`,
+    '@id': `${SITE_URL}/#business`,
     name: 'Working Holiday Tax',
     url: SITE_URL,
     telephone: '+61424513998',
@@ -325,12 +311,14 @@ export default async function JapaneseHomePage() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 pt-11 pb-11 lg:pt-14 lg:pb-14 text-center">
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '16px' }}>
-            ワーキングホリデービザ 417・462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(27px, 4.6vw, 40px)', lineHeight: 1.32, letterSpacing: '-0.01em', marginBottom: '16px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '16px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              オーストラリアのタックスリターン｜ワーホリ417・462ビザ専門
+            </span>
             <span style={{ display: 'block' }}>送信ボタンは誰でも押せます。</span>
             <span style={{ display: 'block', color: '#0B5240' }}>大事なのはその前です。</span>
           </h1>
@@ -589,7 +577,7 @@ export default async function JapaneseHomePage() {
             作成するタックスリターンはすべて417・462ビザの方のもので、登録タックスエージェントが確認・承認したうえでATOに提出されます。
           </p>
 
-          <GoogleReviews lang="ja" />
+          <GoogleReviewsServer lang="ja" />
 
           <div className="rounded-[12px] flex gap-3 mx-auto"
             style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A', width: 'fit-content', maxWidth: '100%' }}>

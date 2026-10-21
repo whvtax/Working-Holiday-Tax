@@ -187,7 +187,7 @@ export const deCategoryMeta: DeCategoryMeta[] = [
 export const dePostTranslations: Record<string, { title: string; description: string; body?: string }> = {
   'diy-tax-return-vs-tax-agent-working-holiday': {
     title: 'Selbst machen oder Steuerberater?',
-    description: 'Die eigene Erklärung einzureichen ist kostenlos. Was ein Working-Holiday-Jahr schwer richtig zu erwischen macht, die fünf Stellen, an denen Erstattungen verloren gehen, und was eine Prüfung umfasst.',
+    description: 'Selbst einreichen ist kostenlos. Was ein Working-Holiday-Jahr schwierig macht, die fünf Stellen, an denen Erstattungen verloren gehen, und was eine Prüfung umfasst.',
     body: `
 Deine australische Steuererklärung selbst einzureichen kostet nichts, und das sagen wir offen. Die Frage ist nicht, ob du ein Formular ausfüllen kannst, sondern ob in deinem Jahr eines der fünf Dinge steckt, die Working Holiday Maker still Geld kosten. Keines davon ist im Formular selbst zu erkennen.
 
@@ -1015,7 +1015,7 @@ Hast du beide Einkommensarten in einem Jahr, wird die Gesamtlage in der [Working
 
   'how-to-register-for-an-abn': {
     title: 'ABN registrieren, und wann besser nicht',
-    description: 'Die Registrierung selbst ist kostenlos. Wer zu einer ABN berechtigt ist, warum Sham Contracting das eigentliche Risiko ist, die GST-Grenze von 75.000 $, die 47-%-Einbehaltsregel und wann du sie beendest.',
+    description: 'Die Registrierung ist kostenlos. Wer eine ABN bekommt, warum Sham Contracting das eigentliche Risiko ist, die GST-Grenze von 75.000 $ und die 47-%-Regel.',
     body: `
 Die Registrierung beim Australian Business Register kostet keine Behördengebühr, und die meisten Anträge liefern die Nummer schnell. Ob deiner das tut, entscheidet die Berechtigungsfrage: Eine ABN geht nur an jemanden, der wirklich ein Unternehmen betreibt, und nicht an jeden, dem man gesagt hat, er solle sich eine besorgen. Die [ABN-Registrierung](/de/abn) übernehmen wir als Teil davon, diese Antwort richtig zu bekommen.
 
@@ -2171,7 +2171,7 @@ Das ist kein Kästchen, das man beim ersten Lesen zuversichtlich ankreuzt. Der W
   // Super
   'how-much-super-should-employer-pay': {
     title: 'Wie viel Super zahlt dein Arbeitgeber ein?',
-    description: 'Dein Arbeitgeber zahlt 12 % deines gewöhnlichen Verdienstes zusätzlich in einen Superfonds, mindestens quartalsweise. Woran du siehst, ob der Betrag angekommen ist, und was gilt, wenn nicht.',
+    description: 'Dein Arbeitgeber zahlt 12 % deines Verdienstes zusätzlich in einen Superfonds. Woran du siehst, ob das Geld angekommen ist, und was gilt, wenn nicht.',
     body: `
 Zwölf Prozent deiner regulären Arbeitseinkünfte, mindestens quartalsweise in einen Superfonds gezahlt, zusätzlich zu deinem Lohn und nicht daraus abgezogen. So ist der Satz seit dem 1. Juli 2025, und es ist die letzte gesetzlich vorgesehene Stufe. Bei 8.000 $ Verdienst im Quartal sollten 960 $ erscheinen.
 
@@ -3360,7 +3360,7 @@ Beide Einkommensströme werden in derselben [Steuererklärung als Working Holida
 
   'how-to-cancel-your-abn': {
     title: 'ABN kündigen, bevor du zurückfliegst',
-    description: 'Eine nach dem Rückflug offen gelassene ABN erzeugt weiter Abgabeerwartungen des ATO. Wann die Kündigung wirken sollte, was vorher zu klären ist und was trotzdem noch eingereicht werden muss.',
+    description: 'Eine nach dem Rückflug offene ABN lässt das ATO weiter Erklärungen erwarten. Wann du sie kündigst, was vorher zu klären ist und was trotzdem fällig bleibt.',
     body: `
 Eine ABN sollte beendet werden, wenn du aufhörst, auf Rechnung zu arbeiten, und nicht, wenn es dir zufällig einfällt. Eine Gebühr fällt dafür nicht an, und die Beendigung wirkt zu dem Datum, das du angibst, und nicht zu dem, an dem sie eingereicht wird. Eine offen gelassene ABN erzeugt Abgabeerwartungen, die du noch aus einem anderen Land beantworten wirst.
 
@@ -3609,7 +3609,7 @@ Das zweite ist die ABN selbst, die abgemeldet gehört, wenn das Contracting ende
   // ─── More Tax Return posts ─────────────────────────────────────────────────
   'amending-tax-return-australia': {
     title: 'Steuererklärung ändern: Fristen und Ablauf',
-    description: 'Eine eingereichte Erklärung lässt sich innerhalb von zwei Jahren nach dem Bescheid ändern, zu deinen Gunsten wie zu deinen Ungunsten. Für das ATO läuft dieselbe Zweijahresuhr.',
+    description: 'Eine eingereichte Erklärung lässt sich bis zwei Jahre nach dem Bescheid ändern, zu deinen Gunsten wie zu deinen Ungunsten. Für das ATO gilt dieselbe Frist.',
     body: `
 Eine australische Steuererklärung kann nach dem Bescheid berichtigt werden, in der Regel binnen zwei Jahren ab dem Datum des Steuerbescheids. Berichtigungen laufen in beide Richtungen: vergessene Abzüge und ausgelassenes Einkommen. Für das ATO gilt dieselbe Zweijahresuhr.
 
@@ -3689,7 +3689,7 @@ Das ATO stimmt in der Regel zu, wenn der Betrag verhältnismäßig ist, du eine 
 
 Es kostet den General Interest Charge, der täglich auf den offenen Saldo aufgezinst wird und deutlich über dem Leitzins liegt. Er läuft ab dem ursprünglichen Fälligkeitsdatum, nicht ab dem Start des Plans, die Uhr tickt also meist schon eine Weile.
 
-Für verspätete Abgabe gibt es eine eigene Strafe, getrennt von der verspäteten Zahlung. Die Failure-to-Lodge-Strafe wird mit einer Straf-Einheit für jeweils 28 Tage Verspätung berechnet, derzeit 330 $, gedeckelt bei fünf Einheiten oder 1.650 $. Sie hängt am Nichteinreichen: pünktlich einreichen und spät zahlen ist eine spürbar günstigere Position. Wann sie angewendet wird, steht in unserem Guide zu [Strafen bei verspäteter Abgabe](/de/blog/late-tax-return-penalty-working-holiday).
+Für verspätete Abgabe gibt es eine eigene Strafe, getrennt von der verspäteten Zahlung. Die Failure-to-Lodge-Strafe wird mit einer Straf-Einheit für jeweils 28 Tage Verspätung berechnet, seit dem 1. Juli 2026 364 $, gedeckelt bei fünf Einheiten oder 1.820 $. Sie hängt am Nichteinreichen: pünktlich einreichen und spät zahlen ist eine spürbar günstigere Position. Wann sie angewendet wird, steht in unserem Guide zu [Strafen bei verspäteter Abgabe](/de/blog/late-tax-return-penalty-working-holiday).
 
 ## Was passiert, wenn du einfach abreist?
 
@@ -3847,13 +3847,13 @@ Genau hier werden Jahre mit mehreren Arbeitgebern unnötig geändert. Anfang Jul
 
   'late-tax-return-penalty-working-holiday': {
     title: 'Steuererklärung zu spät: welche Strafe?',
-    description: 'Verspätete Steuererklärungen lösen Failure-to-Lodge-Strafen aus, die bis zu 1.650 $ erreichen können. Aktuelle Strafhöhen und wie du sie noch vermeidest.',
+    description: 'Verspätete Steuererklärungen lösen Failure-to-Lodge-Strafen aus, die bis zu 1.820 $ erreichen können. Aktuelle Strafhöhen und wie du sie noch vermeidest.',
     body: `
-Die Failure-to-Lodge-Strafe beträgt eine Straf-Einheit für jeweils 28 Tage, die eine [Steuererklärung](/de/tax-return) überfällig ist, gedeckelt bei fünf. Bei 330 $ je Einheit liegt das Maximum bei 1.650 $. Sie kann auch dann greifen, wenn das ATO dir Geld schuldet. Ob du sie zahlst, entscheidet deine Compliance-Historie.
+Die Failure-to-Lodge-Strafe beträgt eine Straf-Einheit für jeweils 28 Tage, die eine [Steuererklärung](/de/tax-return) überfällig ist, gedeckelt bei fünf. Bei 364 $ je Einheit, dem Wert seit dem 1. Juli 2026 (vorher 330 $), liegt das Maximum bei 1.820 $. Sie kann auch dann greifen, wenn das ATO dir Geld schuldet. Ob du sie zahlst, entscheidet deine Compliance-Historie.
 
 ## Wann ist die Erklärung tatsächlich fällig?
 
-Fällig ist sie am 31. Oktober nach Ende des Steuerjahres, wenn du selbst einreichst, eine Erklärung für 2024-25 also bis zum 31. Oktober 2025. Das Steuerjahr läuft vom 1. Juli bis 30. Juni, und die Frist verschiebt sich nicht dadurch, dass du das Land verlassen hast.
+Fällig ist sie am 31. Oktober nach Ende des Steuerjahres, wenn du selbst einreichst, eine Erklärung für 2024-25 also bis zum 31. Oktober 2025 und eine für 2025-26 bis zum 31. Oktober 2026. Die Daten für dieses Jahr stehen im [Guide zur Frist 2026](/de/blog/tax-return-deadline-31-october-working-holiday). Das Steuerjahr läuft vom 1. Juli bis 30. Juni, und die Frist verschiebt sich nicht dadurch, dass du das Land verlassen hast.
 
 Die Abgabe über einen registrierten Steuerberater verschiebt das Datum erheblich. Steuerberater arbeiten nach einem begünstigten Abgabeprogramm, das bis in den Mai des Folgejahres läuft, und die Verlängerung gilt, sofern du vor der regulären Oktoberfrist auf der Mandantenliste standest. Diese letzte Bedingung wird übersehen: Eine Anmeldung im Februar verlängert keine Frist rückwirkend, die im Oktober abgelaufen ist.
 
@@ -3861,11 +3861,11 @@ Die Abgabe über einen registrierten Steuerberater verschiebt das Datum erheblic
 
 In Schritten von 28 Tagen und nicht täglich: Zwischen zwei Tagen Verspätung und zwanzig liegt gar nichts. Jeder vollendete Zeitraum von 28 Tagen fügt eine weitere Straf-Einheit hinzu, bis zur Deckelung bei fünf, also etwas mehr als vier Monate.
 
-- 1 bis 28 Tage verspätet: 1 Einheit, 330 $
-- 29 bis 56 Tage: 2 Einheiten, 660 $
-- 57 bis 84 Tage: 3 Einheiten, 990 $
-- 85 bis 112 Tage: 4 Einheiten, 1.320 $
-- 113 Tage oder mehr: 5 Einheiten, 1.650 $, das Maximum
+- 1 bis 28 Tage verspätet: 1 Einheit, 364 $
+- 29 bis 56 Tage: 2 Einheiten, 728 $
+- 57 bis 84 Tage: 3 Einheiten, 1.092 $
+- 85 bis 112 Tage: 4 Einheiten, 1.456 $
+- 113 Tage oder mehr: 5 Einheiten, 1.820 $, das Maximum
 
 ## Gilt die Strafe auch, wenn dir eine Erstattung zusteht?
 
@@ -3902,6 +3902,64 @@ Auch die Reihenfolge zählt. Das älteste zuerst einzureichen setzt für jedes f
 Zwei verschiedene Verfahren mit zwei verschiedenen Fristen, ständig verwechselt. Verspätet einzureichen heißt, dass die Erklärung nie eingereicht wurde, und dafür gibt es keine Ausschlussfrist: Eine Erklärung für 2022-23 kann heute noch abgegeben werden.
 
 Eine Berichtigung heißt, dass eine Erklärung eingereicht wurde und etwas darin falsch war. Für Privatpersonen beträgt das übliche Berichtigungsfenster zwei Jahre ab Ergehen des Bescheids, danach ist die Position in der Regel fest. Deshalb kann eine schnell aber schlampig eingereichte Erklärung schlechter enden als eine spät aber richtig eingereichte: Die späte lässt sich noch richtig machen, die falsche irgendwann nicht mehr.
+`,
+  },
+
+  'tax-return-deadline-31-october-working-holiday': {
+    title: 'Steuererklärung Frist 2026: 31. Oktober',
+    description: 'Erklärung 2025-26 selbst einreichen? Fällig am 31. Oktober 2026, dieses Jahr also Montag, 2. November. Was gilt, wenn du sie verpasst oder schon zurück bist.',
+    body: `
+Wenn du sie selbst einreichst, ist deine australische Steuererklärung für 2025-26 am 31. Oktober 2026 fällig. Der Tag fällt dieses Jahr auf einen Samstag, und nach der Regel des ATO zum nächsten Werktag ist eine Erklärung, die am Montag, dem 2. November 2026, eingereicht wird, noch rechtzeitig. Das Steuerjahr läuft vom 1. Juli 2025 bis zum 30. Juni 2026, und die Frist gilt genauso, wenn du schon wieder zu Hause bist.
+
+## Welches Steuerjahr ist gerade fällig?
+
+Das Jahr 2025-26, also jeder Dollar, der dir zwischen dem 1. Juli 2025 und dem 30. Juni 2026 gezahlt wurde. Das australische Steuerjahr folgt nicht dem Kalender, deshalb entscheidet dein Ankunftsmonat, wie sich dein Work and Travel aufteilt.
+
+- November 2025 bis Mai 2026 gearbeitet: eine Erklärung, die für 2025-26, jetzt fällig.
+- März bis September 2026 gearbeitet: zwei Erklärungen. März bis Juni gehört zu 2025-26 und ist jetzt fällig, Juli bis September gehört zu 2026-27 und ist erst am 31. Oktober 2027 fällig.
+- Australien vor dem 1. Juli 2025 verlassen: Dieses Jahr war im Oktober 2025 fällig und kann trotzdem noch eingereicht werden.
+
+Der [Guide zum australischen Steuerjahr](/de/blog/australian-financial-year-dates) erklärt die Aufteilung genauer, auch die vorgezogene Erklärung für alle, die vor dem 30. Juni ausreisen.
+
+## Ist die Frist später, wenn ein registrierter Steueragent einreicht?
+
+Meistens ja. Die meisten registrierten Steueragenten haben ein Lodgement-Programm, mit dem sie für ihre Mandanten auch nach dem 31. Oktober einreichen dürfen, in der Regel bis in den folgenden Mai, vorausgesetzt, du standest vor dem 31. Oktober auf der Mandantenliste.
+
+Das ATO sagt ausdrücklich, dass das genaue Datum von deiner Situation abhängt und davon, wann du den Agenten beauftragt hast. Entscheidend ist also der Zeitpunkt: Wer erst nach Ablauf der Oktoberfrist auf eine Mandantenliste kommt, verlängert die Frist nicht rückwirkend. Der [Guide zu Steueragenten](/de/blog/what-is-a-tax-agent) erklärt, was sich sonst noch ändert.
+
+## Was passiert wirklich, wenn du den 31. Oktober verpasst?
+
+Am 3. November passiert gar nichts, und für die meisten Working Holiday Maker, denen Geld zusteht, kostet eine verspätete Erklärung vor allem Zeit und meist keine Strafe. Das ATO kann eine Failure-to-Lodge-Strafe von einer Straf-Einheit je angefangene 28 Tage Verspätung verhängen, höchstens fünf Einheiten. Seit dem 1. Juli 2026 beträgt eine Einheit 364 $, das Maximum also 1.820 $.
+
+Das ATO setzt diese Strafe selektiv ein. Eine erste verspätete Erklärung mit Erstattung wird ganz anders behandelt als mehrere offene Jahre oder eine Erklärung, die eine Steuerschuld ergibt. Der [Guide zur verspäteten Abgabe](/de/blog/late-tax-return-penalty-working-holiday) erklärt, wann die Strafe greift, wann Zinsen dazukommen und wie ein Erlass funktioniert.
+
+## Verfällt die Erstattung, wenn du nach der Frist einreichst?
+
+Nein. Für vergangene Jahre gibt es keinen Stichtag, und eine Erstattung aus der Erklärung 2025-26 wird auch nach dem 31. Oktober noch ausgezahlt. Selbst ein Work and Travel von vor zwei oder drei Jahren lässt sich heute noch einreichen.
+
+Was eine verspätete Erklärung dich kostet, ist der Zugriff auf dein eigenes Geld. Zu viel einbehaltene Steuer bleibt beim ATO, bis die Erklärung eingereicht und bearbeitet ist, und je länger die Erklärung wartet, desto länger wartet auch das Geld.
+
+## Du bist schon zurück. Ändert das etwas?
+
+Die Frist verschiebt sich nicht, weil du nach Hause geflogen bist, und die Erklärung bleibt dieselbe. Was sich ändert, ist praktisch, und ein Punkt erwischt jedes Jahr viele.
+
+Das ATO zahlt eine Steuererstattung nur auf ein australisches Bankkonto. Die Super über [DASP](/de/superannuation) kann ins Ausland gezahlt werden, eine Steuererstattung nicht. Ist dein australisches Konto noch offen, lass es offen, bis die Erstattung angekommen ist. Ist es schon geschlossen, kläre das vor der Einreichung, nicht danach.
+
+## Was solltest du diese Woche vor der Einreichung prüfen?
+
+Drei Dinge, denn eine hastig eingereichte Erklärung mit einem Fehler darin muss später berichtigt werden, und eine Berichtigung dauert länger, als es gleich richtig zu machen.
+
+- Jeder Arbeitgeber hat dein Income Statement abgeschlossen. Ein Arbeitgeber, der das noch nicht getan hat, kann in der Erklärung komplett fehlen.
+- Dein steuerlicher Wohnsitz für das Jahr. Er entscheidet, zu welchem Satz das ganze Jahr veranlagt wird, und ist die Frage, die am häufigsten falsch beantwortet wird.
+- Ob die Medicare Levy überhaupt deine war. Viele Pässe sind befreit, aber nur mit der richtigen Bescheinigung. Die [Medicare-Seite](/de/medicare) erklärt, wer infrage kommt.
+
+## Musst du überhaupt einreichen?
+
+In den meisten Fällen ja. Wenn du im Jahr in Australien gearbeitet hast und Steuer von deinem Lohn einbehalten wurde, ist die Erklärung der einzige Weg, das Jahr veranlagen zu lassen, und der einzige Weg, wie zu viel einbehaltene Steuer zurückkommt. Der [Guide für kurze Aufenthalte](/de/blog/do-you-need-to-lodge-tax-return-short-stay) behandelt die Ausnahmen.
+
+## Lieber nicht selbst machen?
+
+Schreib uns auf WhatsApp, ungefähr wo und wann du gearbeitet hast. Working-Holiday-Steuer ist das Einzige, was wir machen: Wir lesen deinen ATO-Datensatz, bereiten die [Steuererklärung](/de/tax-return) vor, und nichts wird eingereicht, bevor du sie gelesen und unterschrieben hast. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.
 `,
   },
 
@@ -4297,7 +4355,7 @@ Entscheidend ist der Zeitpunkt. Hörst du im Mai auf zu arbeiten und fliegst im 
 
   'dasp-documents-required': {
     title: 'DASP-Antrag: welche Dokumente du brauchst',
-    description: 'Identität, Nachweis über das beendete Visum und Nachweis der Ausreise, für jeden Fonds getrennt. An beglaubigten Kopien bleiben die meisten Anträge aus dem Ausland hängen.',
+    description: 'Identität, Nachweis über das beendete Visum und die Ausreise, für jeden Fonds getrennt. An beglaubigten Kopien scheitern die meisten Anträge aus dem Ausland.',
     body: `
 Drei Dinge, und zwar für jeden Fonds getrennt: Identitätsnachweis, Nachweis, dass dein Visum abgelaufen oder aufgehoben ist, und Nachweis, dass du Australien verlassen hast. Fehlende Unterlagen sind der Hauptgrund, warum aus einem Einmonatsantrag ein Sechsmonatsantrag wird, und an beglaubigten Kopien bleiben Anträge aus dem Ausland hängen.
 
@@ -6581,7 +6639,7 @@ Wer in Australien für Steuer- oder Superdienstleistungen Geld nimmt, muss im ö
 
   'dasp-rejected-what-to-do': {
     title: 'DASP abgelehnt? Die Gründe und die Lösung',
-    description: 'Ein abgelehnter DASP-Antrag ist kein verlorenes Geld. Fast immer steckt ein noch nicht aktualisierter Visumsdatensatz, eine Namensabweichung oder ein Fonds ohne dein Guthaben dahinter.',
+    description: 'Ein abgelehnter DASP-Antrag ist kein verlorenes Geld. Meist steckt ein nicht aktualisierter Visumsdatensatz, ein abweichender Name oder der falsche Fonds dahinter.',
     body: `
 Ein abgelehnter DASP ist kein verlorenes Geld. Das Guthaben bleibt im Fonds und der Antrag kann erneut gestellt werden, sobald die Ursache behoben ist. Fünf Dinge erklären fast jede Ablehnung, und vier davon sind Verwaltung statt Substanz.
 
@@ -7631,7 +7689,7 @@ Die Ausnahme macht vorsätzliche Auslassung zu einer anderen Risikokategorie. Wo
 
   '1000-dollar-instant-deduction-rule-2026': {
     title: 'Neuer 1.000-$-Sofortabzug ab 1. Juli 2026',
-    description: 'Ab 1. Juli 2026 können Working Holiday Maker eine Sofortabschreibung von 1.000 $ für arbeitsbezogene Ausgaben ohne Belege geltend machen. Wer profitiert, und wann die tatsächlichen Kosten mehr wert sind.',
+    description: 'Ab 1. Juli 2026 gibt es einen Pauschalabzug von 1.000 $ für Arbeitskosten ohne Belege. Wer profitiert und wann sich die tatsächlichen Kosten mehr lohnen.',
     body: `
 Ab dem 1. Juli 2026 kannst du pauschal 1.000 $ für berufsbezogene Ausgaben ohne Belege geltend machen oder deine tatsächlichen Kosten mit vollständigen Aufzeichnungen. Du wählst für das Jahr eines von beidem, nicht beides. Was besser ist, hängt davon ab, was dein Job dich hat kaufen lassen.
 
@@ -8809,13 +8867,13 @@ Eine Schuld von 1.000 $, ein Jahr liegen gelassen, sammelt rund 115 $ an. Diesel
 
 ## Was ist die Failure-to-Pay-Strafe?
 
-Eine von den Zinsen getrennte Belastung: eine Straf-Einheit von 330 $ für jeweils 28 Tage offener Schuld, gedeckelt bei fünf Einheiten. Anders als die Zinsen wird sie im Ermessen des ATO angewendet und nicht automatisch.
+Eine von den Zinsen getrennte Belastung: eine Straf-Einheit, seit dem 1. Juli 2026 364 $, für jeweils 28 Tage offener Schuld, gedeckelt bei fünf Einheiten. Anders als die Zinsen wird sie im Ermessen des ATO angewendet und nicht automatisch.
 
 Das Muster ist recht vorhersehbar: erhebliche Schulden, wiederholte Nichtzahlung und vor allem Schweigen. Wer sich mit dem ATO über eine Schuld auseinandergesetzt hat, steht anders da als jemand, der drei Bescheide ignoriert hat, und daran hängt das Ermessen.
 
 ## Wie unterscheidet sich das von der Strafe für verspätete Abgabe?
 
-Es sind unabhängige Systeme, die beide auf dasselbe Jahr wirken können. Failure to Lodge wird berechnet, wenn die Erklärung selbst zu spät ist, mit 330 $ je 28 Tage bis zu fünf Einheiten. Failure to Pay plus Zinsen wird berechnet, wenn das Geld nicht bis zum Fälligkeitsdatum gezahlt wird.
+Es sind unabhängige Systeme, die beide auf dasselbe Jahr wirken können. Failure to Lodge wird berechnet, wenn die Erklärung selbst zu spät ist, mit 364 $ je 28 Tage bis zu fünf Einheiten. Failure to Pay plus Zinsen wird berechnet, wenn das Geld nicht bis zum Fälligkeitsdatum gezahlt wird.
 
 Spät einzureichen und spät zu zahlen zieht beides nach sich, und die Gesamtsumme kann die ursprünglich geschuldete Steuer übersteigen. Wo Abgabestrafen tatsächlich greifen, erklärt unser Guide zu [Strafen bei verspäteten Erklärungen](/de/blog/late-tax-return-penalty-working-holiday).
 

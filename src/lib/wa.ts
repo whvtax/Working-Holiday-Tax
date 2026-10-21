@@ -28,6 +28,7 @@ export type WaTopic =
   | 'expenses'
   | 'guide'
   | 'uk'
+  | 'germany'
   | 'contact'
 
 type Phrases = Record<WaTopic, string>
@@ -44,6 +45,7 @@ const EN: Phrases = {
   expenses:    'Hi, I would like to ask what I can claim for the work I did.',
   guide:       'Hi, I was reading one of your guides and I have a question about my own situation.',
   uk:          'Hi, I am from the UK and I would like to ask about my Australian tax.',
+  germany:     'Hi, I am from Germany and I would like to ask about my Australian tax.',
   contact:     'Hi, I would like to ask a question about my Australian tax.',
 }
 
@@ -59,6 +61,7 @@ const DE: Phrases = {
   expenses:    'Hallo, ich habe eine Frage dazu, was ich für meine Arbeit absetzen kann.',
   guide:       'Hallo, ich habe einen eurer Ratgeber gelesen und habe eine Frage zu meiner eigenen Situation.',
   uk:          'Hallo, ich habe eine Frage zu meiner australischen Steuer.',
+  germany:     'Hallo, ich komme aus Deutschland und habe eine Frage zu meiner australischen Steuer.',
   contact:     'Hallo, ich habe eine Frage zu meiner australischen Steuer.',
 }
 
@@ -74,6 +77,7 @@ const JA: Phrases = {
   expenses:    'こんにちは。自分の仕事で何が控除できるのか相談したいです。',
   guide:       'こんにちは。ガイド記事を読みました。自分の状況について質問があります。',
   uk:          'こんにちは。オーストラリアの税金について相談したいです。',
+  germany:     'こんにちは。ドイツ国籍です。オーストラリアの税金について相談したいです。',
   contact:     'こんにちは。オーストラリアの税金について相談したいです。',
 }
 

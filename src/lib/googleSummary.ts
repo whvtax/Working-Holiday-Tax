@@ -43,12 +43,13 @@ function load(): Promise<GoogleData | null> {
   return cache
 }
 
-export function useGoogleData(): GoogleData | null {
-  const [d, setD] = useState<GoogleData | null>(null)
+export function useGoogleData(initial: GoogleData | null = null): GoogleData | null {
+  const [d, setD] = useState<GoogleData | null>(initial)
   useEffect(() => {
     let on = true
     load().then((v) => {
-      if (on) setD(v)
+      // Never replace server-rendered reviews with "nothing" on a failed fetch.
+      if (on && v) setD(v)
     })
     return () => {
       on = false

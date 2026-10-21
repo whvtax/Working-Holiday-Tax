@@ -2,10 +2,9 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { SITE_URL, EMAIL } from '@/lib/constants'
-import { getGoogleRating } from '@/lib/googleData'
 import { waUrl } from '@/lib/wa'
 import { WaLink } from './HomeWa'
 
@@ -202,7 +201,6 @@ const BODY: CSSProperties   = { fontSize: '15px', lineHeight: 1.58 }
 const LEDE: CSSProperties   = { fontSize: '16.5px', lineHeight: 1.62 }
 
 export default async function HomePage() {
-  const gRating = await getGoogleRating()
 
   // ─── Schema.org ───
   const webPageLd = {
@@ -218,22 +216,11 @@ export default async function HomePage() {
     primaryImageOfPage: `${SITE_URL}/og-image.png`,
   }
 
-  // Only built when gRating.live - see googleData.ts. Never emit a fabricated
-  // rating to Google as structured data.
-  const aggregateRatingLd = gRating.live ? {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    '@id': `${SITE_URL}/#business`,
-    name: 'Working Holiday Tax',
-    description: 'Working holiday tax return services for 417 and 462 visa holders in Australia.',
-    url: SITE_URL,
-      // aggregateRating was removed here (28 Aug). Google has not shown review
-      // rich results for self-serving LocalBusiness/Organization ratings since
-      // 2019, and this was republishing Google's own aggregate back to Google.
-      // The visible GoogleRating pill and GoogleReviews components are
-      // untouched: the rating still shows to people, it just stops claiming a
-      // rich result that is never granted.
-  } : null
+  // The business is one Organization (@id /#business), declared in the root
+  // layout's graph. This block re-declared the same @id as a LocalBusiness,
+  // which handed search engines two different types for one entity. It held
+  // no data the graph lacks (its rating was removed on 28 Aug), so it is gone.
+  const aggregateRatingLd = null as Record<string, unknown> | null
 
   const faqLd = {
     '@context': 'https://schema.org',
@@ -325,12 +312,14 @@ export default async function HomePage() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 pt-11 pb-11 lg:pt-14 lg:pb-14 text-center">
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '16px' }}>
-            Working holiday visas 417 &amp; 462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "Working holiday visas 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(31px, 5.4vw, 46px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '18px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '16px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              Working holiday tax returns&nbsp;&middot; 417 &amp; 462 visas
+            </span>
             <span style={{ display: 'block' }}>Anyone can press submit.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>The work happens before that.{' '}</span>
           </h1>
@@ -609,7 +598,7 @@ export default async function HomePage() {
             agent before being lodged with the ATO.
           </p>
 
-          <GoogleReviews lang="en" />
+          <GoogleReviewsServer lang="en" />
 
           <div className="rounded-[12px] flex gap-3 mx-auto"
             style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A', width: 'fit-content', maxWidth: '100%' }}>

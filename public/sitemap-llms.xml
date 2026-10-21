@@ -115,6 +115,12 @@
     <priority>0.70</priority>
   </url>
   <url>
+    <loc>https://workingholidaytax.com.au/german-working-holiday-tax</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
     <loc>https://workingholidaytax.com.au/de</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -1147,6 +1153,12 @@
     <priority>0.75</priority>
   </url>
   <url>
+    <loc>https://workingholidaytax.com.au/blog/tax-return-deadline-31-october-working-holiday</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
     <loc>https://workingholidaytax.com.au/blog/understating-income-ato-penalty-working-holiday</loc>
     <lastmod>2026-03-09</lastmod>
     <changefreq>monthly</changefreq>
@@ -1993,6 +2005,12 @@
     <priority>0.71</priority>
   </url>
   <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tax-return-deadline-31-october-working-holiday</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.71</priority>
+  </url>
+  <url>
     <loc>https://workingholidaytax.com.au/de/blog/understating-income-ato-penalty-working-holiday</loc>
     <lastmod>2026-03-09</lastmod>
     <changefreq>monthly</changefreq>
@@ -2835,6 +2853,12 @@
   <url>
     <loc>https://workingholidaytax.com.au/ja/blog/late-tax-return-penalty-working-holiday</loc>
     <lastmod>2026-03-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.71</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tax-return-deadline-31-october-working-holiday</loc>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.71</priority>
   </url>

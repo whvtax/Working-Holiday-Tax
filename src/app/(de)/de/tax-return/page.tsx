@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
@@ -131,6 +131,40 @@ const SEQUENCE = [
 ]
 
 /** Zwei Regeln, die die Reihenfolge ändern, deshalb stehen sie vor Schritt 01. */
+/**
+ * Where a working holiday refund comes from (Oct 2026). This page ranked around
+ * 30 for "working holiday tax return" with nothing on it that explained why a
+ * refund exists at all, which is the question the query carries. Every item is a
+ * mechanism already stated elsewhere on the site; no amount is promised. The one
+ * range sentence in the lede is the owner-approved wording.
+ */
+const REFUND_SOURCES = [
+  {
+    "label": "Wochen mit 45 %, bevor deine TFN da war",
+    "body": "Liegt deinem Arbeitgeber weder deine Steuernummer vor noch eine Erklärung, dass dein Antrag läuft, muss er 45 % statt 15 % einbehalten. Jede Lohnabrechnung in dieser Zeit war zu hoch besteuert, und das Geld kommt nur über eine eingereichte Erklärung zurück."
+  },
+  {
+    "label": "Ein zweiter Job ohne eigene Erklärung",
+    "body": "Jeder Arbeitgeber braucht seine eigene Tax File Number Declaration. Ein zweiter Job ohne sie behält 45 % ein, solange es niemand merkt, oft monatelang."
+  },
+  {
+    "label": "Ein Arbeitgeber ohne Registrierung für Working Holiday Maker",
+    "body": "Der Satz von 15 % setzt voraus, dass der Arbeitgeber beim ATO als Arbeitgeber von Working Holiday Makern registriert ist. War er es nicht, musste er zum Satz für ausländische Steuerpflichtige einbehalten, der bei 30 Cent pro Dollar beginnt."
+  },
+  {
+    "label": "Eine Medicare Levy, die nie deine war",
+    "body": "Die 2 % werden standardmäßig angesetzt. Viele Pässe haben keinen Anspruch auf Medicare, und mit der richtigen Bescheinigung fällt die Levy weg."
+  },
+  {
+    "label": "Arbeitskosten, die niemand angesetzt hat",
+    "body": "Schuhe, Arbeitskleidung, Werkzeug, Lizenzen und Fahrten zwischen Einsatzorten können dein steuerpflichtiges Einkommen senken, wenn sie mit deiner Arbeit zusammenhängen. Beim Satz von 15 % senkt jeder Dollar 100 an echten Abzügen die Steuer um 15 $."
+  },
+  {
+    "label": "Dein Pass und die Addy-Entscheidung",
+    "body": "Für Staatsangehörige aus Großbritannien, Deutschland, Japan, Finnland, Norwegen, Chile und der Türkei, die steuerlich ansässig waren, kann die Addy-Entscheidung den steuerfreien Grundbetrag für das Jahr zurückbringen."
+  }
+]
+
 const RULES = [
   {
     label: 'Die Rückerstattung geht nur auf ein australisches Konto',
@@ -150,6 +184,11 @@ const FAQS = [
     question: 'Wie lange dauert eine Steuererklärung für Working Holiday Maker?',
     answer:
       'Ab dem Tag, an dem dein Fragebogen da ist, brauchen Vorbereitung und Prüfung bei einem unkomplizierten Jahr wenige Tage, und das ATO zahlt die Rückerstattung meist etwa 14 Werktage nach der Einreichung aus.\n\nFünf Arbeitgeber, über eine ABN abgerechnetes Einkommen oder ein Wohnsitz, der begründet werden muss, dauern bei uns länger. Wir sagen dir, welcher Fall deiner ist.',
+  },
+  {
+    question: 'Bis wann muss die Steuererklärung eingereicht werden?',
+    answer:
+      'Wenn du selbst einreichst, bis zum 31. Oktober nach Ende des Steuerjahres. Eine Erklärung für 2025-26 ist also am 31. Oktober 2026 fällig, dieses Jahr Montag, der 2. November. Ein Jahr nach Fristablauf ist verspätet, aber nicht verloren, und kann weiterhin eingereicht werden.',
   },
   {
     question: 'Braucht ihr meine Payslips?',
@@ -290,12 +329,14 @@ export default function TaxReturnPageDE() {
             <span aria-current="page">Steuererklärung</span>
           </nav>
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
-            Working Holiday Visum 417 &amp; 462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "Working Holiday Visum 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(27px, 4.6vw, 41px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              Steuererklärung Australien&nbsp;&middot; Working Holiday Visum 417 &amp; 462
+            </span>
             <span style={{ display: 'block' }}>Deine Daten und wohin die Erstattung gehen soll.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>Den Rest übernehmen wir.{' '}</span>
           </h1>
@@ -320,6 +361,32 @@ export default function TaxReturnPageDE() {
           <div className="flex" style={{ marginTop: '20px' }}>
             <GoogleRating variant="pill" lang="de" />
           </div>
+        </div>
+      </section>
+
+      {/* ── 1b. WHERE A REFUND COMES FROM ─────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Woher eine Erstattung kommt</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
+            Warum Working Holiday Maker oft eine Steuererstattung bekommen
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch', marginBottom: '26px' }}>
+            Eine Erstattung ist keine Prämie fürs Backpacken. Sie ist die Lücke zwischen dem, was deine Arbeitgeber einbehalten haben, und dem, was du tatsächlich geschuldet hast, und in einem Working-Holiday-Jahr entsteht diese Lücke meist an den Stellen unten. Die Erstattungen unserer Kunden reichen von ein paar hundert bis zu mehreren tausend Dollar, je nachdem, was davon zutraf.
+          </p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {REFUND_SOURCES.map((r) => (
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
+                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '62ch' }}>
+            Nichts davon passiert automatisch, und nichts wird einfach angenommen. Jeder Punkt wird vor der Einreichung mit deinem ATO-Datensatz abgeglichen.{' '}
+            <Link href="/de/calculator" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Grobe Schätzung im Rechner ansehen</Link>.
+          </p>
         </div>
       </section>
 
@@ -466,7 +533,7 @@ export default function TaxReturnPageDE() {
             eingereicht wird.
           </p>
 
-          <GoogleReviews lang="de" />
+          <GoogleReviewsServer lang="de" />
 
           <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>

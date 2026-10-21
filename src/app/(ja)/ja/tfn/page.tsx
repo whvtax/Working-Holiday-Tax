@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
@@ -253,12 +253,14 @@ export default function TFNPageJA() {
             <span aria-current="page">TFN申請</span>
           </nav>
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
-            ワーキングホリデービザ 417・462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              TFN申請代行｜ワーホリ417・462ビザ
+            </span>
             <span style={{ display: 'block' }}>番号は無料です。</span>
             <span style={{ display: 'block', color: '#0B5240' }}>無料でないのは、それがない期間です。</span>
           </h1>
@@ -427,7 +429,7 @@ export default function TFNPageJA() {
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
             提出するTFN申請は、すべて417・462ビザの方のものです。タックスリターンは登録税理士が確認・承認したうえでATOに提出します。
           </p>
-          <GoogleReviews lang="ja" />
+          <GoogleReviewsServer lang="ja" />
         </div>
       </section>
 

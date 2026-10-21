@@ -4,9 +4,9 @@
 
 ## About this file
 
-Generated 2026-08-24 by scripts/generate-llms.mjs. Do not hand edit.
+Generated 2026-10-21 by scripts/generate-llms.mjs. Do not hand edit.
 
-This file is an index, not a dump of article bodies. It lists 141 English guides, 141 German translations and 141 Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted.
+This file is an index, not a dump of article bodies. It lists 142 English guides, 142 German translations and 142 Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted.
 
 Authoritative current figures, with effective dates and sources, are in https://workingholidaytax.com.au/llms.txt. Prefer that file for any rate or threshold.
 
@@ -37,11 +37,11 @@ Category: TFN
 Published: 7 July 2024
 Summary: A Tax File Number costs nothing. What an application depends on, why the address and the passport match decide the timing, the 28 day window, and the 45% rate.
 
-### How Long Does a TFN Take? 2 to 4 Weeks
+### How Long Does a TFN Take? And What If 28 Days Pass
 URL: https://workingholidaytax.com.au/blog/how-long-does-it-take-to-get-a-tfn
 Category: TFN
 Published: 20 July 2026
-Summary: Most TFNs arrive in about two weeks and the ATO's limit is 28 days. What decides whether the letter beats your first pay run, and what if it does not.
+Summary: Most arrive in about two weeks; 28 days is the ATO's limit. What decides if the letter beats your first pay at 45% tax, and what to do if day 28 passes.
 
 ### Work Without a TFN? Yes, You Have 28 Days
 URL: https://workingholidaytax.com.au/blog/can-you-start-work-without-a-tfn
@@ -89,7 +89,7 @@ Summary: A TFN is permanent, so a lost one is a retrieval rather than a new appl
 URL: https://workingholidaytax.com.au/blog/how-to-update-address-with-ato
 Category: TFN
 Published: 20 July 2026
-Summary: Your ATO address can be changed online, by phone or through a tax agent. What turns on it is your TFN letter, your refund and your super statements.
+Summary: Online, by phone on 13 28 61, or through a tax agent. Do it before your TFN letter, a refund notice or a super statement goes to an address you have left.
 
 ### What Is a TFN Reference Number For?
 URL: https://workingholidaytax.com.au/blog/tfn-reference-number-before-tfn-arrives
@@ -220,7 +220,7 @@ Category: ABN
 Published: 20 November 2025
 Summary: Rideshare needs GST registration from dollar one - delivery does not. Setting up correctly, quarterly BAS, and the deductions that cut your bill.
 
-## Category: Tax Return (34)
+## Category: Tax Return (35)
 Index: https://workingholidaytax.com.au/blog/category/tax-return
 
 ### The Australian Tax Year: 1 July to 30 June
@@ -301,11 +301,11 @@ Category: Tax Return
 Published: 5 June 2025
 Summary: A refund is the gap between what your employers withheld and what you owed. Most working holiday years are over withheld, because it assumes a full year.
 
-### How Long Does an ATO Tax Refund Take?
+### How Long Does a Tax Refund Take in Australia? (2026)
 URL: https://workingholidaytax.com.au/blog/how-long-does-tax-refund-take-australia
 Category: Tax Return
 Published: 29 July 2026
-Summary: Most electronically lodged refunds are paid 7 to 14 business days after lodgement. It runs longer in the July to September peak, longer again on paper.
+Summary: Most e-lodged refunds land 7 to 14 business days after lodgement. What stalls one for weeks in the July to September peak, and the checks that keep yours moving.
 
 ### Sending Money Home From Australia: Taxed?
 URL: https://workingholidaytax.com.au/blog/transferring-money-overseas-australia-tax
@@ -365,7 +365,13 @@ Summary: Extending to a second or third year changes nothing about your 15% rate
 URL: https://workingholidaytax.com.au/blog/late-tax-return-penalty-working-holiday
 Category: Tax Return
 Published: 3 March 2026
-Summary: Failure-to-lodge penalties start at $330 per 28 days - but are rarely applied when a refund is due. The real rules and how to catch up on old returns.
+Summary: Failure-to-lodge penalties start at $364 per 28 days, but are rarely applied when a refund is due. The real rules and how to catch up on old returns.
+
+### Tax Return Deadline 2026 for Working Holiday Makers
+URL: https://workingholidaytax.com.au/blog/tax-return-deadline-31-october-working-holiday
+Category: Tax Return
+Published: 21 October 2026
+Summary: Lodging your 2025-26 return yourself? It is due 31 October 2026, which this year means Monday 2 November. Missed it, or already left Australia? Here is what changes.
 
 ### Understating Income: What the ATO Charges
 URL: https://workingholidaytax.com.au/blog/understating-income-ato-penalty-working-holiday
@@ -413,7 +419,7 @@ Summary: How working holiday makers claim tax back in Australia: what decides th
 URL: https://workingholidaytax.com.au/blog/average-tax-refund-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: There is no average refund worth quoting. What comes back is decided by your withholding rate, your residency position and the deductions you can support.
+Summary: Refunds for our clients range from a few hundred dollars to several thousand. What decides yours: withholding, residency and the deductions you can support.
 
 ### 417 and 462 Visa Tax: Rates and Refunds
 URL: https://workingholidaytax.com.au/blog/working-holiday-visa-tax-guide-417-462
@@ -802,11 +808,11 @@ Category: Medicare & Other
 Published: 2 April 2025
 Summary: The residency and tax-free threshold questions decide your withholding rate. How working holiday makers complete the form correctly, line by line.
 
-### Tax Withheld on Your Payslip: What It Means
+### Tax Withheld on Your Payslip: Is 15% Right?
 URL: https://workingholidaytax.com.au/blog/what-does-tax-withheld-mean-payslip
 Category: Medicare & Other
 Published: 20 July 2026
-Summary: Tax withheld is what your employer sends the ATO before paying you. On a working holiday visa it should be about 15%. What each wrong percentage means.
+Summary: On a working holiday visa it should be about 15% of gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what went wrong and how it comes back.
 
 ### What Is an Income Statement in Australia?
 URL: https://workingholidaytax.com.au/blog/what-is-an-income-statement
@@ -887,7 +893,7 @@ Published: 21 February 2026
 Summary: Travel policies often exclude injuries at work - the reason many backpackers need OVHC instead. The differences, gaps, and how to combine them properly.
 
 # ============================================================
-# German / Deutsch (de) - 141 translated guides
+# German / Deutsch (de) - 142 translated guides
 # ============================================================
 
 ## Category: TFN (18)
@@ -1088,7 +1094,7 @@ Category: ABN
 Published: 20 November 2025
 Summary: Rideshare und Essenslieferung werden in Australien als Contracting behandelt. Du brauchst eine ABN, und keine Steuer wird einbehalten.
 
-## Category: Tax Return (34)
+## Category: Tax Return (35)
 Index: https://workingholidaytax.com.au/de/blog/category/tax-return
 
 ### Das australische Steuerjahr einfach erklärt
@@ -1233,7 +1239,13 @@ Summary: Am Steuersatz ändert ein zweites oder drittes Visum nichts. Deine TFN 
 URL: https://workingholidaytax.com.au/de/blog/late-tax-return-penalty-working-holiday
 Category: Tax Return
 Published: 3 March 2026
-Summary: Verspätete Steuererklärungen lösen Failure-to-Lodge-Strafen aus, die bis zu 1.650 $ erreichen können. Aktuelle Strafhöhen und wie du sie noch vermeidest.
+Summary: Verspätete Steuererklärungen lösen Failure-to-Lodge-Strafen aus, die bis zu 1.820 $ erreichen können. Aktuelle Strafhöhen und wie du sie noch vermeidest.
+
+### Steuererklärung Frist 2026: 31. Oktober
+URL: https://workingholidaytax.com.au/de/blog/tax-return-deadline-31-october-working-holiday
+Category: Tax Return
+Published: 21 October 2026
+Summary: Erklärung 2025-26 selbst einreichen? Fällig am 31. Oktober 2026, dieses Jahr also Montag, 2. November. Was gilt, wenn du sie verpasst oder schon zurück bist.
 
 ### Einkommen zu niedrig angegeben: ATO-Strafen
 URL: https://workingholidaytax.com.au/de/blog/understating-income-ato-penalty-working-holiday
@@ -1755,7 +1767,7 @@ Published: 21 February 2026
 Summary: Die Reiseversicherung deckt Reiserisiken und Notfälle, eine australische Krankenversicherung die laufende Behandlung. Was du ohne Medicare brauchst.
 
 # ============================================================
-# Japanese / 日本語 (ja) - 141 translated guides
+# Japanese / 日本語 (ja) - 142 translated guides
 # ============================================================
 
 ## Category: TFN (18)
@@ -1956,7 +1968,7 @@ Category: ABN
 Published: 20 November 2025
 Summary: 配車サービスやフードデリバリーは請負契約となるため、ABNが必須です。Uber・DoorDashで働くワーホリの税金ルールを解説します。
 
-## Category: Tax Return (34)
+## Category: Tax Return (35)
 Index: https://workingholidaytax.com.au/ja/blog/category/tax-return
 
 ### オーストラリアの会計年度（7月〜6月）の仕組み：日本との違い
@@ -2097,11 +2109,17 @@ Category: Tax Return
 Published: 24 November 2025
 Summary: セカンド・サードビザで戻ってきても税率は変わりません。会計年度の扱い、TFN、税務居住の判断について解説します。
 
-### タックスリターンの提出遅延ペナルティ：1件$330
+### タックスリターンの提出遅延ペナルティ：1件$364
 URL: https://workingholidaytax.com.au/ja/blog/late-tax-return-penalty-working-holiday
 Category: Tax Return
 Published: 3 March 2026
-Summary: 提出期限を過ぎるとFailure to Lodgeペナルティが課されます。1ペナルティユニット$330から。期限と回避方法を解説します。
+Summary: 提出期限を過ぎるとFailure to Lodgeペナルティが課されます。1ペナルティユニット$364から（2026年7月1日以降）。期限と回避方法を解説します。
+
+### タックスリターンはいつまで？2026年の提出期限
+URL: https://workingholidaytax.com.au/ja/blog/tax-return-deadline-31-october-working-holiday
+Category: Tax Return
+Published: 21 October 2026
+Summary: 2025-26年度のタックスリターンを自分で出すなら期限は2026年10月31日、今年は11月2日（月）まで。過ぎた場合や帰国後に変わることを解説します。
 
 ### 収入を少なく申告した場合のATOペナルティ：最大75%
 URL: https://workingholidaytax.com.au/ja/blog/understating-income-ato-penalty-working-holiday
@@ -2253,11 +2271,11 @@ Summary: 帰国時にDASP（65%の税金）で受け取るか、将来のため�
 ## Category: Work Rights (43)
 Index: https://workingholidaytax.com.au/ja/blog/category/work-rights
 
-### オーストラリアの最低賃金：時給26.44ドル（2026年7月〜）
+### オーストラリアの最低賃金2026：時給26.44ドル、カジュアル33.05ドル
 URL: https://workingholidaytax.com.au/ja/blog/minimum-wage-australia-2026-27
 Category: Work Rights
 Published: 29 July 2026
-Summary: 2026年7月1日から最低賃金が6%上がり時給26.44ドル（週1,004.90ドル）に。25%上乗せのカジュアルレート、アワードの引き上げ、権利を守る方法。
+Summary: 2026年7月1日から全国最低賃金は時給26.44ドル、カジュアルは33.05ドルでワーホリにも適用。ただし多くの仕事はアワードでさらに高く、自分の時給が正しいかの確かめ方も解説。
 
 ### ワーホリビザに労働時間の上限はない！ただし6ヶ月ルールに注意
 URL: https://workingholidaytax.com.au/ja/blog/how-many-hours-can-you-work-on-whv
@@ -2469,11 +2487,11 @@ Category: Work Rights
 Published: 15 April 2026
 Summary: レストラン・カフェのフロアサービスはワーホリで最も一般的な仕事の一つ。給料、ペナルティレート、勤務環境を解説します。
 
-### キッチンハンドの仕事：英語に自信がなくても始めやすい
+### キッチンハンドとは？仕事内容と時給、ワーホリで始めるコツ
 URL: https://workingholidaytax.com.au/ja/blog/kitchen-hand-working-holiday-australia
 Category: Work Rights
 Published: 19 April 2026
-Summary: キッチンハンドは飲食業で最も入りやすい職種。英語スキルや経験を問われず、ワーホリ初心者にも人気の仕事です。
+Summary: キッチンハンドとは、飲食店の厨房を支える仕事です。皿洗いや仕込みなどの具体的な仕事内容、アワードで決まる時給と割増賃金、英語に自信がなくても始めやすい理由を解説します。
 
 ### 建設業の労働者：高時給とWhite Card
 URL: https://workingholidaytax.com.au/ja/blog/construction-laborer-working-holiday-australia
@@ -2714,6 +2732,10 @@ Summary: Why the service exists and how a return is handled from start to lodgem
 ### UK Working Holiday Tax
 URL: https://workingholidaytax.com.au/uk-working-holiday-tax
 Summary: Australian tax for UK passport holders: the age-35 and three visa arrangements, why UK citizens are generally not entitled to the Medicare levy exemption, the Addy decision, and the UK and Australian tax year mismatch.
+
+### German Working Holiday Tax
+URL: https://workingholidaytax.com.au/german-working-holiday-tax
+Summary: Australian tax for German passport holders: why Germans are generally not entitled to Medicare and so can claim the levy exemption, the Addy decision, the age-35 change from 1 July 2026, and claiming super from Germany.
 
 ## Contact
 

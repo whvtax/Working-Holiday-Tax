@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
@@ -131,6 +131,40 @@ const SEQUENCE = [
 ]
 
 /** Two rules that change the order of operations, so they belong before step 01. */
+/**
+ * Where a working holiday refund comes from (Oct 2026). This page ranked around
+ * 30 for "working holiday tax return" with nothing on it that explained why a
+ * refund exists at all, which is the question the query carries. Every item is a
+ * mechanism already stated elsewhere on the site; no amount is promised. The one
+ * range sentence in the lede is the owner-approved wording.
+ */
+const REFUND_SOURCES = [
+  {
+    "label": "Weeks taxed at 45% before your TFN arrived",
+    "body": "Without your tax file number on file, and without a declaration recording that your application is in progress, your employer must withhold 45% instead of 15%. Every payslip in that gap was over-withheld, and it only comes back on a lodged return."
+  },
+  {
+    "label": "A second job without its own declaration",
+    "body": "Every employer needs its own Tax File Number Declaration. A second job running without one withholds at 45% for as long as nobody notices, often for months."
+  },
+  {
+    "label": "An employer not registered for working holiday makers",
+    "body": "The 15% rate needs the employer to be registered with the ATO as an employer of working holiday makers. If they were not, they had to withhold at the foreign resident rate, which starts at 30 cents in the dollar."
+  },
+  {
+    "label": "A Medicare levy that was never yours",
+    "body": "The 2% levy is applied by default. Many passports are not entitled to Medicare, and with the right certificate the levy comes off."
+  },
+  {
+    "label": "Work expenses nobody claimed",
+    "body": "Shoes, uniforms, tools, licences and travel between sites can reduce your taxable income where they relate to the work you did. At the 15% rate, every $100 of genuine deductions takes $15 off the tax."
+  },
+  {
+    "label": "Your passport and the Addy decision",
+    "body": "For nationals of the UK, Germany, Japan, Finland, Norway, Chile and Turkey who were residents for tax purposes, the Addy decision can restore the tax free threshold for the year."
+  }
+]
+
 const RULES = [
   {
     label: 'The refund can only go to an Australian account',
@@ -149,6 +183,11 @@ const FAQS = [
     question: 'How long does a working holiday tax return take?',
     answer:
       'From the day your questionnaire is in, a straightforward year takes a few days to prepare and check, and the ATO usually pays the refund about 14 business days after lodgement.\n\nFive employers, income invoiced under an ABN, or a residency position that has to be argued takes longer at our end, and we tell you which yours is.',
+  },
+  {
+    question: 'When is a working holiday tax return due?',
+    answer:
+      'If you lodge it yourself, 31 October after the financial year ends, so a 2025-26 return is due 31 October 2026, which this year means Monday 2 November. A year past its deadline is late rather than lost, and it can still be lodged.',
   },
   {
     question: 'Do you need my payslips?',
@@ -289,12 +328,14 @@ export default function TaxReturnPage() {
             <span aria-current="page">Tax return</span>
           </nav>
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
-            Working holiday visas 417 &amp; 462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "Working holiday visas 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(30px, 5vw, 43px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              Working holiday tax return&nbsp;&middot; 417 &amp; 462 visas
+            </span>
             <span style={{ display: 'block' }}>Your details and where to deposit your refund.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>We take it from there.{' '}</span>
           </h1>
@@ -319,6 +360,32 @@ export default function TaxReturnPage() {
           <div className="flex" style={{ marginTop: '20px' }}>
             <GoogleRating variant="pill" lang="en" />
           </div>
+        </div>
+      </section>
+
+      {/* ── 1b. WHERE A REFUND COMES FROM ─────────────────────────────── */}
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Where a refund comes from</p>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
+            Why working holiday makers are often owed a tax refund
+          </h2>
+          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch', marginBottom: '26px' }}>
+            A refund is not a bonus for being a backpacker. It is the gap between what your employers withheld and what you actually owed, and on a working holiday year that gap usually comes from the places below. Refunds for our clients range from a few hundred dollars to several thousand, depending on which of them applied.
+          </p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {REFUND_SOURCES.map((r) => (
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
+                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '62ch' }}>
+            None of these is automatic and none is assumed. Each one is checked against your ATO record before anything is lodged.{' '}
+            <Link href="/calculator" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>See an indicative estimate in the calculator</Link>.
+          </p>
         </div>
       </section>
 
@@ -463,7 +530,7 @@ export default function TaxReturnPage() {
             Reviewed and signed off by a registered tax agent before it is lodged with the ATO.
           </p>
 
-          <GoogleReviews lang="en" />
+          <GoogleReviewsServer lang="en" />
 
           <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>

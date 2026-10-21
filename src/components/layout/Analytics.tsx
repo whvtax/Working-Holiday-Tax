@@ -4,7 +4,7 @@ import Script from 'next/script'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 import { GA_MEASUREMENT_ID } from '@/lib/constants'
-import { trackDepth } from '@/lib/analytics'
+import { trackDepth, initAiAttribution } from '@/lib/analytics'
 
 /**
  * GA4, moved out of the root layout.
@@ -36,6 +36,14 @@ export function Analytics() {
   useEffect(() => {
     fired.current = false
   }, [pathname])
+
+  // AI search attribution. Deferred so gtag (afterInteractive) is usually
+  // ready; if it is not, the source is still stored and rides on later events.
+  useEffect(() => {
+    if (isAdminArea) return
+    const t = window.setTimeout(initAiAttribution, 1500)
+    return () => window.clearTimeout(t)
+  }, [isAdminArea])
 
   useEffect(() => {
     if (isAdminArea) return

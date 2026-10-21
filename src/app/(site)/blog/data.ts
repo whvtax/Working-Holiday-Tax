@@ -147,9 +147,9 @@ Anything over withheld during the wait is recovered through the [working holiday
  }, {
  slug: "how-long-does-it-take-to-get-a-tfn",
  title:
- "How Long Does a TFN Take? 2 to 4 Weeks",
+ "How Long Does a TFN Take? And What If 28 Days Pass",
  description:
- "Most TFNs arrive in about two weeks and the ATO's limit is 28 days. What decides whether the letter beats your first pay run, and what if it does not.",
+ "Most arrive in about two weeks; 28 days is the ATO's limit. What decides if the letter beats your first pay at 45% tax, and what to do if day 28 passes.",
  category: "TFN",
  date: "20 July 2026",
  readTime: 6,
@@ -186,7 +186,7 @@ Yes, and most people do. No law prevents you from being employed before your Tax
 
 No. There is no paid fast track, no priority processing and no online status tracker, whatever a third party site tells you. Anyone offering to expedite a TFN for a fee is selling something the ATO does not sell.
 
-What shortens it is removing the two causes of delay, both settled before an application is made: a postal address that will still reach you in a month, and passport details that match the document exactly.
+What shortens it is removing the two causes of delay, both settled before a [TFN application](/tfn) is made: a postal address that will still reach you in a month, and passport details that match the document exactly.
 
 ## What if 28 days pass and nothing has arrived?
 
@@ -409,7 +409,7 @@ Apply on day one and start work in week two, and the letter is very likely to ar
 
 ## What should be ready before you fly?
 
-Everything except the submission. The application is free, and the form is not the hard part.
+Everything except the submission. The application is free, and [the form is not the hard part](/tfn).
 
 - Your passport details, saved as a photo of the identity page. Details entered from memory are how applications end up in manual review.
 - Your visa grant notice, accessible offline.
@@ -3018,9 +3018,9 @@ Any over withholding is reconciled in the [working holiday tax return](/tax-retu
  }, {
  slug: "what-does-tax-withheld-mean-payslip",
  title:
- "Tax Withheld on Your Payslip: What It Means",
+ "Tax Withheld on Your Payslip: Is 15% Right?",
  description:
- "Tax withheld is what your employer sends the ATO before paying you. On a working holiday visa it should be about 15%. What each wrong percentage means.",
+ "On a working holiday visa it should be about 15% of gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what went wrong and how it comes back.",
  category: "Medicare & Other",
  date: "20 July 2026",
  readTime: 5,
@@ -3417,7 +3417,7 @@ A defensible position is reached by going through your year in full, weighing th
  title:
  "Change Your ATO Address: 3 Ways That Work",
  description:
- "Your ATO address can be changed online, by phone or through a tax agent. What turns on it is your TFN letter, your refund and your super statements.",
+ "Online, by phone on 13 28 61, or through a tax agent. Do it before your TFN letter, a refund notice or a super statement goes to an address you have left.",
  category: "TFN",
  date: "20 July 2026",
  readTime: 5,
@@ -3534,9 +3534,9 @@ Not aggressive claims, which come back at you, but a complete picture of a year 
  }, {
  slug: "how-long-does-tax-refund-take-australia",
  title:
- "How Long Does an ATO Tax Refund Take?",
+ "How Long Does a Tax Refund Take in Australia? (2026)",
  description:
- "Most electronically lodged refunds are paid 7 to 14 business days after lodgement. It runs longer in the July to September peak, longer again on paper.",
+ "Most e-lodged refunds land 7 to 14 business days after lodgement. What stalls one for weeks in the July to September peak, and the checks that keep yours moving.",
  category: "Tax Return",
  date: "29 July 2026",
  readTime: 4,
@@ -5108,7 +5108,7 @@ The ATO generally agrees where the amount is proportionate, you can show a genui
 
 The General Interest Charge compounds daily on the outstanding balance and is set well above the cash rate. It runs from the original due date, not from the date the plan starts.
 
-Lodging late is penalised separately from paying late. Failure to lodge is charged at one penalty unit for every 28 days a return is overdue, currently $330, capped at five units or $1,650. The penalty attaches to not lodging, so lodging on time and paying late is materially cheaper than doing neither. Our guide to [late lodgement penalties](/blog/late-tax-return-penalty-working-holiday) covers when it is applied.
+Lodging late is penalised separately from paying late. Failure to lodge is charged at one penalty unit for every 28 days a return is overdue, currently $364 from 1 July 2026, capped at five units or $1,820. The penalty attaches to not lodging, so lodging on time and paying late is materially cheaper than doing neither. Our guide to [late lodgement penalties](/blog/late-tax-return-penalty-working-holiday) covers when it is applied.
 
 ## What happens if you simply leave?
 
@@ -6956,7 +6956,7 @@ Australia has Reciprocal Health Care Agreements with eleven countries. There is 
 - Malta
 - Italy
 
-Germany is not on it, and neither are France, Spain, Austria, Switzerland, the United States, Canada or Japan. Our guide to [countries with a Medicare agreement](/blog/countries-with-medicare-agreement-australia) sets out what each agreement covers, because they are not identical.
+Germany is not on it, and neither are France, Spain, Austria, Switzerland, the United States, Canada or Japan. What that means for a German tax return is set out on our [page for German working holiday makers](/german-working-holiday-tax). Our guide to [countries with a Medicare agreement](/blog/countries-with-medicare-agreement-australia) sets out what each agreement covers, because they are not identical.
 
 ## What does that mean at a doctor's surgery?
 
@@ -7504,16 +7504,16 @@ Whatever was withheld across each job reconciles at the end of the financial yea
  slug: "late-tax-return-penalty-working-holiday",
  title: "Late Tax Return? The Penalty Rules",
  description:
-   "Failure-to-lodge penalties start at $330 per 28 days - but are rarely applied when a refund is due. The real rules and how to catch up on old returns.",
+   "Failure-to-lodge penalties start at $364 per 28 days, but are rarely applied when a refund is due. The real rules and how to catch up on old returns.",
  category: "Tax Return",
  date: "3 March 2026",
  readTime: 4,
  body: `
-The Failure to Lodge penalty is one penalty unit for each 28 days a [tax return](/tax-return) is overdue, capped at five. At $330 a unit the maximum is $1,650. It can apply even when the ATO owes you money. What decides whether you pay it is your compliance history.
+The Failure to Lodge penalty is one penalty unit for each 28 days a [tax return](/tax-return) is overdue, capped at five. At $364 a unit, the value from 1 July 2026 (it was $330 before), the maximum is $1,820. It can apply even when the ATO owes you money. What decides whether you pay it is your compliance history.
 
 ## When is the return actually due?
 
-31 October following the end of the financial year if you lodge it yourself, so a 2024-25 return is due by 31 October 2025. The financial year runs 1 July to 30 June, and the deadline does not move because you have left the country.
+31 October following the end of the financial year if you lodge it yourself, so a 2024-25 return was due by 31 October 2025 and a 2025-26 return by 31 October 2026. The [2026 deadline guide](/blog/tax-return-deadline-31-october-working-holiday) covers this year's dates. The financial year runs 1 July to 30 June, and the deadline does not move because you have left the country.
 
 Lodging through a registered tax agent changes the date substantially. Agents work to a concessional lodgement programme running into the following May, provided you were on the agent's client list before the standard October deadline. Signing up with an agent in February does not retrospectively extend a deadline that passed in October.
 
@@ -7521,11 +7521,11 @@ Lodging through a registered tax agent changes the date substantially. Agents wo
 
 In steps of 28 days, not daily, so two days late and twenty days late cost the same. Each completed period of 28 days adds another penalty unit until the cap of five, a little over four months.
 
-- 1 to 28 days late: 1 unit, $330
-- 29 to 56 days: 2 units, $660
-- 57 to 84 days: 3 units, $990
-- 85 to 112 days: 4 units, $1,320
-- 113 days or more: 5 units, $1,650, the maximum
+- 1 to 28 days late: 1 unit, $364
+- 29 to 56 days: 2 units, $728
+- 57 to 84 days: 3 units, $1,092
+- 85 to 112 days: 4 units, $1,456
+- 113 days or more: 5 units, $1,820, the maximum
 
 ## Does the penalty apply if you are owed a refund?
 
@@ -7562,6 +7562,67 @@ The order you deal with them in matters too. Lodging the oldest first establishe
 Two different processes with two different limits. Lodging late means the return was never filed, and there is no cut off date for filing it, which is why a 2022-23 return can still be lodged today.
 
 Amending means a return was filed and something in it was wrong. For individuals the standard amendment window is two years from the date the notice of assessment was issued, after which the position is generally fixed. So a return lodged quickly but carelessly can end up worse than one lodged late but correctly: the late one can still be got right, and the wrong one eventually cannot.
+`,
+ }, {
+ slug: "tax-return-deadline-31-october-working-holiday",
+ title: "Tax Return Deadline 2026 for Working Holiday Makers",
+ description:
+   "Lodging your 2025-26 return yourself? It is due 31 October 2026, which this year means Monday 2 November. Missed it, or already left Australia? Here is what changes.",
+ category: "Tax Return",
+ date: "21 October 2026",
+ readTime: 5,
+ body: `
+If you lodge it yourself, your 2025-26 Australian tax return is due on 31 October 2026. That date falls on a Saturday this year, and under the ATO's next business day rule a return lodged on Monday 2 November 2026 is still on time. The year it covers runs 1 July 2025 to 30 June 2026, and the deadline is the same whether you are still in Australia or already home.
+
+## Which tax year is due right now?
+
+The 2025-26 year, which is every dollar paid to you between 1 July 2025 and 30 June 2026. The Australian financial year does not follow the calendar, so the month you arrived decides how your working holiday splits.
+
+- Worked November 2025 to May 2026: one return, the 2025-26 one, due now.
+- Worked March to September 2026: two returns. March to June is 2025-26 and due now; July to September is 2026-27 and not due until 31 October 2027.
+- Left Australia before 1 July 2025: that year was due in October 2025, and it can still be lodged.
+
+The [Australian tax year guide](/blog/australian-financial-year-dates) walks through the split in more detail, including the early return for people leaving before 30 June.
+
+## Is the deadline later if a registered tax agent lodges it?
+
+Usually, yes. Most registered tax agents run a lodgement program that lets them lodge for their clients after 31 October, typically into the following May, provided the client was on the agent's list before 31 October.
+
+The ATO is explicit that the exact date depends on your own situation and on when you engaged the agent, so the condition that matters is timing. Joining an agent's client list after the October deadline has passed does not reach back and extend it. The [guide to tax agents](/blog/what-is-a-tax-agent) explains what else changes when an agent is involved.
+
+## What actually happens if you miss 31 October?
+
+Nothing happens on 3 November, and for most working holiday makers who are owed money, the larger cost of a late return is usually time rather than a fine. The ATO can apply a Failure to Lodge penalty of one penalty unit for each 28 days a return is overdue, capped at five units. From 1 July 2026 a penalty unit is $364, so the maximum is $1,820.
+
+The ATO applies that penalty selectively. A first late return that produces a refund is treated very differently from several unlodged years or a return that produces a debt. The [late lodgement guide](/blog/late-tax-return-penalty-working-holiday) covers when the penalty is applied, when interest is added, and how remission works.
+
+## Does a refund expire if you lodge after the deadline?
+
+No. There is no cut off date for lodging a past year, and a refund owed on a 2025-26 return is still payable after 31 October. A return from a working holiday two or three years ago can still be lodged today.
+
+What a late return does cost is access to your own money. Any tax over-withheld during the year stays with the ATO until the return is lodged and processed, and the longer the return waits, the longer the money does.
+
+## You have already left Australia. Does any of this change?
+
+The deadline does not move because you have gone home, and neither does the return. What changes is practical, and one point catches people out every year.
+
+The ATO pays a tax refund only into an Australian bank account. Superannuation through [DASP](/superannuation) can be paid overseas, but a tax refund cannot. If your Australian account is still open, keep it open until the refund has landed. If it is already closed, deal with that before the return is lodged, not after.
+
+## What should you check before lodging this week?
+
+Three things, because a return lodged in a hurry with one of them wrong has to be amended later, and an amendment takes longer than getting it right the first time.
+
+- Every employer has finalised your income statement. An employer that has not finalised can be missing from the return entirely.
+- Your residency position for the year. It decides the rate the whole year is assessed at, and it is the question most often answered wrongly.
+- Whether the Medicare levy was ever yours to pay. Many passports are exempt, but only with the right certificate. The [Medicare page](/medicare) explains who qualifies.
+
+## Do you even need to lodge?
+
+In most cases, yes. If you worked in Australia during the year and tax was withheld from your pay, lodging is the only way to have that year assessed, and it is the only way any over-withheld tax comes back. The [short stay guide](/blog/do-you-need-to-lodge-tax-return-short-stay) covers the exceptions.
+
+## Would you rather not do it yourself?
+
+Message us on WhatsApp with roughly where and when you worked. Working holiday tax is the only thing we do: we read your ATO record, prepare the [tax return](/tax-return), and nothing is lodged until you have read it and signed. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.
 `,
  }, {
  slug: "understating-income-ato-penalty-working-holiday",
@@ -8911,13 +8972,13 @@ A $1,000 debt left for a year gathers roughly $115. Left for three years it gath
 
 ## What is the Failure to Pay penalty?
 
-A separate charge from the interest, applied at one penalty unit of $330 for every 28 days the debt remains unpaid, capped at five units. Unlike the interest, it is applied at the ATO's discretion rather than automatically.
+A separate charge from the interest, applied at one penalty unit, $364 from 1 July 2026, for every 28 days the debt remains unpaid, capped at five units. Unlike the interest, it is applied at the ATO's discretion rather than automatically.
 
 It follows substantial debts, repeated non payment, and above all silence. Engaging with the ATO puts you in a very different position from ignoring three notices.
 
 ## How is this different from a late lodgement penalty?
 
-They are independent systems that can both apply to the same year. Failure to Lodge is charged when the return itself is late, at $330 per 28 days up to five units. Failure to Pay plus interest is charged when the money is not paid by the due date.
+They are independent systems that can both apply to the same year. Failure to Lodge is charged when the return itself is late, at $364 per 28 days up to five units. Failure to Pay plus interest is charged when the money is not paid by the due date.
 
 Lodging late and paying late attracts both, and the combined total can exceed the tax originally owed. Our guide to [late return penalties](/blog/late-tax-return-penalty-working-holiday) explains where lodgement penalties actually bite, which is rarely when a refund was due.
 
@@ -9021,7 +9082,7 @@ The [Departing Australia Superannuation Payment](/superannuation) becomes availa
  slug: "average-tax-refund-working-holiday",
  title: "How Much Tax Refund Do Backpackers Get?",
  description:
- "There is no average refund worth quoting. What comes back is decided by your withholding rate, your residency position and the deductions you can support.",
+ "Refunds for our clients range from a few hundred dollars to several thousand. What decides yours: withholding, residency and the deductions you can support.",
  category: "Tax Return",
  date: "29 July 2026",
  readTime: 8,

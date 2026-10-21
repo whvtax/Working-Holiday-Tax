@@ -60,6 +60,7 @@ const routes = [
   { url: '/about',                     priority: 0.6,  changeFrequency: 'monthly', translated: true  },
   // Informational pages
   { url: '/uk-working-holiday-tax',    priority: 0.7,  changeFrequency: 'monthly', translated: false },
+  { url: '/german-working-holiday-tax', priority: 0.7, changeFrequency: 'monthly', translated: false },
   // Legal pages (translated versions exist at /de and /ja)
   { url: '/client-agreement',          priority: 0.4,  changeFrequency: 'yearly',  translated: true  },
   { url: '/privacy',                   priority: 0.4,  changeFrequency: 'yearly',  translated: true  },

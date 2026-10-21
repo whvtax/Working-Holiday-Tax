@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
@@ -255,12 +255,14 @@ export default function TFNPageDE() {
             <span aria-current="page">TFN</span>
           </nav>
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
-            Working Holiday Visum 417 &amp; 462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "Working Holiday Visum 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(28px, 4.8vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              TFN beantragen&nbsp;&middot; Working Holiday Visum 417 &amp; 462
+            </span>
             <span style={{ display: 'block' }}>Die Nummer ist kostenlos.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>Die Wochen ohne sie nicht.{' '}</span>
           </h1>
@@ -432,7 +434,7 @@ export default function TFNPageDE() {
             Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Steuererklärungen werden von einem
             registrierten Steueragenten geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
           </p>
-          <GoogleReviews lang="de" />
+          <GoogleReviewsServer lang="de" />
         </div>
       </section>
 

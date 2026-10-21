@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { ReviewsGate } from '@/components/ui/ReviewsGate'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
@@ -318,7 +318,7 @@ export default function JapaneseAboutPage() {
                 ワーホリ参加者からのお声
               </h2>
             </div>
-            <GoogleReviews lang="ja" />
+            <GoogleReviewsServer lang="ja" />
           </div>
         </section>
       </ReviewsGate>

@@ -156,6 +156,9 @@ const DECISION_GUIDES: Record<string, string[]> = {
     'gst-and-abn-for-working-holiday-makers',
   ],
   'Tax Return': [
+    // Seasonal (Oct 2026): the lodgement deadline is the most time-sensitive
+    // decision in the category, so it leads the block on every Tax Return guide.
+    'tax-return-deadline-31-october-working-holiday',
     'diy-tax-return-vs-tax-agent-working-holiday',
     'tax-residency-working-holiday-makers',
     'tax-deductions-working-holiday-makers',
@@ -200,6 +203,12 @@ function getRelatedGuides(cfg: GuideLocaleConfig, current: { slug: string; categ
 }
 
 function calcReadTime(body: string) {
+  // Japanese has no spaces between words, so a whitespace word count turned
+  // every Japanese guide into a "1 minute read". CJK text is timed by
+  // characters instead (about 500 a minute); everything else stays at 200
+  // words a minute.
+  const cjk = (body.match(/[\u3040-\u30ff\u3400-\u9fff\uff66-\uff9f]/g) || []).length
+  if (cjk > 200) return Math.max(1, Math.round(cjk / 500))
   const words = body.trim().split(/\s+/).length
   return Math.max(1, Math.round(words / 200))
 }
@@ -849,7 +858,7 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
                           }}>
                             {cfg.catLabel(g.category)}
                           </span>
-                          <span style={{ fontSize: '13px', color: '#4C6459' }}>{cfg.readTimeLabel(g.readTime)}</span>
+                          <span style={{ fontSize: '13px', color: '#4C6459' }}>{cfg.readTimeLabel(g.body ? calcReadTime(g.body) : g.readTime)}</span>
                         </div>
                         <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: S.relatedTitleLineHeight }}>
                           {g.title}

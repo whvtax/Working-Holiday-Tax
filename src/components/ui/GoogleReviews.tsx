@@ -105,7 +105,7 @@ function ReviewCard({ r, idx, lang }: { r: RGReview; idx: number; lang: Lang }) 
         )}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: '#1F2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.reviewer.displayName}</div>
-          <div style={{ fontSize: 12, color: '#70757A' }}>{relativeDate(r.updateTime || r.createTime, lang)}</div>
+          <div style={{ fontSize: 12, color: '#70757A' }} suppressHydrationWarning>{relativeDate(r.updateTime || r.createTime, lang)}</div>
         </div>
         <GoogleG size={20} />
       </div>
@@ -170,8 +170,10 @@ function Carousel({ data, lang }: { data: GoogleData; lang: Lang }) {
   )
 }
 
-export function GoogleReviews({ lang = 'en' }: { lang?: Lang }) {
-  const data = useGoogleData()
+export function GoogleReviews({ lang = 'en', initial = null }: { lang?: Lang; initial?: GoogleData | null }) {
+  // `initial` comes from <GoogleReviewsServer/> so the reviews are in the static
+  // HTML; the client fetch still runs and simply replaces it with fresher data.
+  const data = useGoogleData(initial)
   if (!data || data.reviews.filter((r) => r.comment && r.comment.trim()).length === 0) return null
   return (
     <div className="reveal delay-1">

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
@@ -261,12 +261,14 @@ export default function ABNPage() {
             <span aria-current="page">ABN</span>
           </nav>
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
-            Working holiday visas 417 &amp; 462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "Working holiday visas 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(31px, 5.2vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              ABN on a working holiday visa&nbsp;&middot; 417 &amp; 462
+            </span>
             <span style={{ display: 'block' }}>An ABN does not change your job.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>It changes your tax return.{' '}</span>
           </h1>
@@ -443,7 +445,7 @@ export default function ABNPage() {
             Which means we see the same ABN arrangements over and over: the farm contract, the delivery platform, the
             site that pays everyone as a subcontractor.
           </p>
-          <GoogleReviews lang="en" />
+          <GoogleReviewsServer lang="en" />
         </div>
       </section>
 

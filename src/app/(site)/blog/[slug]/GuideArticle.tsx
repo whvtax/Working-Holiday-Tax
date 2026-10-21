@@ -73,12 +73,13 @@ function slugify(text: string) {
    not be an advert.                                                        */
 
 const INLINE_CTA_TOPIC: Record<string, WaTopic> = {
-  'TFN': 'tfn',
+  // See GuideCta: TFN and Work Rights readers are routed to the tax-return chat.
+  'TFN': 'tax-return',
   'ABN': 'abn',
   'Tax Return': 'tax-return',
   'Super': 'super',
   'Medicare & Other': 'medicare',
-  'Work Rights': 'guide',
+  'Work Rights': 'tax-return',
 }
 
 interface InlineCopy { body: string; cta: string }
@@ -86,8 +87,12 @@ interface InlineCopy { body: string; cta: string }
 const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
   en: {
     'TFN': {
-      body: 'Want to know what this leaves you with? Tell us where you worked and what came off your pay, and we will tell you what your year actually looks like.',
-      cta: 'Ask us on WhatsApp',
+      // Conversion (Oct 2026): the TFN cluster takes ~54k impressions a quarter and
+      // its reader is usually mid-problem, often already withheld at 45%. The copy
+      // names that moment and reuses the site's own line on over-withheld tax.
+      // No amount, no promise.
+      body: 'Taxed at 45% before your TFN reached payroll? Nothing is lost permanently, because over-withheld tax comes back when the return is lodged. Tell us where you worked and we will tell you where your year stands.',
+      cta: 'Check my year on WhatsApp',
     },
     'ABN': {
       body: 'If you invoiced under an ABN as well as working on a TFN, that split is what decides your return. Send us what you did and we will work out where you stand.',
@@ -112,8 +117,8 @@ const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
   },
   de: {
     'TFN': {
-      body: 'Du willst wissen, was das für dich bedeutet? Sag uns, wo du gearbeitet hast und was von deinem Lohn abgezogen wurde, und wir sagen dir, wie dein Jahr wirklich aussieht.',
-      cta: 'Frag uns auf WhatsApp',
+      body: 'Mit 45 % besteuert, bevor deine TFN bei der Lohnabrechnung war? Dauerhaft verloren ist nichts, denn zu viel einbehaltene Steuer kommt mit der Erklärung zurück. Sag uns, wo du gearbeitet hast, und wir sagen dir, wie dein Jahr aussieht.',
+      cta: 'Mein Jahr auf WhatsApp prüfen',
     },
     'ABN': {
       body: 'Wenn du neben der TFN auch über eine ABN abgerechnet hast, entscheidet genau diese Aufteilung über deine Steuererklärung. Schick uns, was du gemacht hast.',
@@ -138,8 +143,8 @@ const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
   },
   ja: {
     'TFN': {
-      body: 'これが自分にとって何を意味するか知りたい場合は、どこで働いたか、給与から何が引かれていたかを教えてください。あなたの1年が実際どうなっているかお伝えします。',
-      cta: 'WhatsAppで相談する',
+      body: 'TFNが雇用主に届く前に45%で源泉徴収されていませんか？取られすぎた税金は申告すれば戻ってくるので、失われたわけではありません。どこで働いたかを教えてください。あなたの1年がどうなっているかお伝えします。',
+      cta: 'WhatsAppで自分の1年を確認する',
     },
     'ABN': {
       body: 'TFNでの就労に加えてABNでも請求していた場合、その切り分けが申告内容を左右します。何をしたか送ってください。',
@@ -370,6 +375,12 @@ function getHeadings(body: string) {
 }
 
 function calcReadTime(body: string) {
+  // Japanese has no spaces between words, so a whitespace word count turned
+  // every Japanese guide into a "1 minute read". CJK text is timed by
+  // characters instead (about 500 a minute); everything else stays at 200
+  // words a minute.
+  const cjk = (body.match(/[\u3040-\u30ff\u3400-\u9fff\uff66-\uff9f]/g) || []).length
+  if (cjk > 200) return Math.max(1, Math.round(cjk / 500))
   const words = body.trim().split(/\s+/).length
   return Math.max(1, Math.round(words / 200))
 }

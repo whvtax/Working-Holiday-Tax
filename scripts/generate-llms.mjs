@@ -43,9 +43,9 @@ const ROOT = path.resolve(__dirname, '..')
 
 const SITE = 'https://workingholidaytax.com.au'
 
-const EN_DATA = path.join(ROOT, 'src/app/blog/data.ts')
-const DE_DATA = path.join(ROOT, 'src/app/de/blog/data.ts')
-const JA_DATA = path.join(ROOT, 'src/app/ja/blog/data.ts')
+const EN_DATA = path.join(ROOT, 'src/app/(site)/blog/data.ts')
+const DE_DATA = path.join(ROOT, 'src/app/(de)/de/blog/data.ts')
+const JA_DATA = path.join(ROOT, 'src/app/(ja)/ja/blog/data.ts')
 const NEXT_CONFIG = path.join(ROOT, 'next.config.js')
 
 const OUT_LLMS = path.join(ROOT, 'public/llms.txt')
@@ -189,6 +189,40 @@ const GUARANTEE =
 
 const SPECIALISM = 'Working holiday tax is the only thing we do.'
 
+// ── German and Japanese wording, verbatim from the live localised pages ──────
+const DE_INTRO = 'Wir kümmern uns um TFN, Steuererklärung, Super-Auszahlung und ABN für Working Holiday Maker in Australien.'
+const DE_SPECIALISM = 'Working-Holiday-Steuer ist das Einzige, was wir machen.'
+const DE_SUPERVISION = 'Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.'
+const DE_GUARANTEE = 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.'
+const DE_PAGES = [
+  ['Startseite', '/de'],
+  ['Steuererklärung', '/de/tax-return'],
+  ['Steuernummer (TFN)', '/de/tfn'],
+  ['Super-Auszahlung (DASP)', '/de/superannuation'],
+  ['ABN-Registrierung', '/de/abn'],
+  ['Medicare', '/de/medicare'],
+  ['Rückerstattung schätzen', '/de/calculator'],
+  ['Absetzbare Ausgaben', '/de/expenses'],
+  ['Blog', '/de/blog'],
+  ['Kontakt', '/de/contact'],
+]
+const JA_INTRO = 'オーストラリアでワーキングホリデーをする方のTFN申請、タックスリターン、スーパー受取、ABN登録をすべて代行します。'
+const JA_SPECIALISM = 'ワーキングホリデーの税金だけを専門にしています。'
+const JA_SUPERVISION = '申告書は、ATOへ提出する前に登録税理士が確認して承認します。'
+const JA_GUARANTEE = '当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。'
+const JA_PAGES = [
+  ['トップページ', '/ja'],
+  ['タックスリターン', '/ja/tax-return'],
+  ['TFN申請', '/ja/tfn'],
+  ['スーパー受取（DASP）', '/ja/superannuation'],
+  ['ABN登録', '/ja/abn'],
+  ['メディケア税免除', '/ja/medicare'],
+  ['還付額の目安', '/ja/calculator'],
+  ['経費・控除', '/ja/expenses'],
+  ['ブログ', '/ja/blog'],
+  ['お問い合わせ', '/ja/contact'],
+]
+
 const KEY_FACTS = [
   'Working holiday maker tax rate: 15% on the first $45,000, 30% on $45,001 to $135,000, 37% on $135,001 to $190,000, 45% above $190,000. Effective 1 July 2026, unchanged from 2025-26. Source: ATO',
   'Superannuation Guarantee rate: 12% of ordinary time earnings. Reached 12% on 1 July 2025, unchanged for 2026-27. From 1 July 2026 "Payday Super" requires most employers to pay it within days of each payday rather than quarterly. Source: ATO',
@@ -231,6 +265,7 @@ const SERVICE_PAGES = [
   { url: '/contact', priority: 0.7, freq: 'monthly', l10n: true, label: 'Contact', line: 'How to reach us about a specific situation.' },
   { url: '/about', priority: 0.6, freq: 'monthly', l10n: true, label: 'About', line: 'Why the service exists and how a return is handled from start to lodgement.' },
   { url: '/uk-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'UK Working Holiday Tax', line: 'Australian tax for UK passport holders: the age-35 and three visa arrangements, why UK citizens are generally not entitled to the Medicare levy exemption, the Addy decision, and the UK and Australian tax year mismatch.' },
+  { url: '/german-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'German Working Holiday Tax', line: 'Australian tax for German passport holders: why Germans are generally not entitled to Medicare and so can claim the levy exemption, the Addy decision, the age-35 change from 1 July 2026, and claiming super from Germany.' },
 ]
 
 const SOURCES = [
@@ -385,6 +420,27 @@ function buildLlms({ guides, groups, deCount, jaCount, generatedAt }) {
       'Japanese content keeps the terminology the community actually searches (タックスリターン, スーパー, TFN, ABN, DASP). ' +
       'We reply to each person in their own language.'
   )
+  p()
+  // Native-language summaries (Oct 2026). Answer engines asked in German or
+  // Japanese ground their answer in text in that language; until now the only
+  // German and Japanese here was a count. Every sentence below is copied from
+  // the live /de and /ja pages (footer intro, about page, approved supervision
+  // and guarantee wording), so nothing new is claimed in either language.
+  p('## Auf Deutsch')
+  p()
+  p(`${DE_INTRO} ${DE_SPECIALISM} ${DE_SUPERVISION}`)
+  p()
+  p(DE_GUARANTEE)
+  p()
+  for (const [label, url] of DE_PAGES) p(`- [${label}](${SITE}${url})`)
+  p()
+  p('## 日本語')
+  p()
+  p(`${JA_INTRO}${JA_SPECIALISM}${JA_SUPERVISION}`)
+  p()
+  p(JA_GUARANTEE)
+  p()
+  for (const [label, url] of JA_PAGES) p(`- [${label}](${SITE}${url})`)
   p()
   p('## Full content feed')
   p()

@@ -88,6 +88,11 @@ const MYGOV = [
 
 const faqs = [
   {
+    question: 'Kann man mit einem 417 oder 462 Working Holiday Visum die Super beantragen?',
+    answer:
+      'Ja, sobald du Australien verlassen hast und dein Working Holiday Visum erloschen ist. Solange du mit diesem Visum noch hier bist, geht es nicht. Der Antrag heißt Departing Australia Superannuation Payment (DASP), 65 % des versteuerten Betrags werden einbehalten, und anders als eine Steuererstattung kann sie auf ein Konto im Ausland gezahlt werden.',
+  },
+  {
     question: 'Kann ich meine Super einfach selbst beantragen?',
     answer:
       'Kannst du, es kostet nichts, und bei einem einzigen Fonds mit sauberen Unterlagen sagen wir dir das auch. Schwieriger wird es bei Super auf mehreren Fonds, bei einem Fonds, der beglaubigte Kopien aus dem Ausland verlangt, oder bei einem Visum, das noch läuft.',

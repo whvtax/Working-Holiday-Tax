@@ -250,6 +250,9 @@ const DECISION_GUIDES: Record<string, string[]> = {
     'gst-and-abn-for-working-holiday-makers',
   ],
   'Tax Return': [
+    // Seasonal (Oct 2026): the lodgement deadline is the most time-sensitive
+    // decision in the category, so it leads the block on every Tax Return guide.
+    'tax-return-deadline-31-october-working-holiday',
     'diy-tax-return-vs-tax-agent-working-holiday',
     'tax-residency-working-holiday-makers',
     'tax-deductions-working-holiday-makers',

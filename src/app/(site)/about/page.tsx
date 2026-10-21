@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { ReviewsGate } from '@/components/ui/ReviewsGate'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
@@ -331,7 +331,7 @@ export default function AboutPage() {
                 What working holiday makers say
               </h2>
             </div>
-            <GoogleReviews lang="en" />
+            <GoogleReviewsServer lang="en" />
           </div>
         </section>
       </ReviewsGate>

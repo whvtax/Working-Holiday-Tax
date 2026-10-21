@@ -170,12 +170,15 @@ const JA: Record<Category, Copy> = {
 const COPY: Record<WaLang, Record<Category, Copy>> = { en: EN, de: DE, ja: JA }
 
 const TOPIC: Record<Category, WaTopic> = {
-  'TFN': 'tfn',
+  // Oct 2026: the tax return is the core service, and a TFN or Work Rights
+  // reader who taps is almost always asking about a refund, so those chats
+  // open on the tax-return prefill.
+  'TFN': 'tax-return',
   'ABN': 'abn',
   'Tax Return': 'tax-return',
   'Super': 'super',
   'Medicare & Other': 'medicare',
-  'Work Rights': 'guide',
+  'Work Rights': 'tax-return',
 }
 
 export function GuideCta({

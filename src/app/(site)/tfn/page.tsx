@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
-import { GoogleReviews } from '@/components/ui/GoogleReviews'
+import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
@@ -258,12 +258,14 @@ export default function TFNPage() {
             <span aria-current="page">TFN</span>
           </nav>
 
-          <p className="hero-animate" style={{ ...KICKER, color: '#16775C', marginBottom: '14px' }}>
-            Working holiday visas 417 &amp; 462
-          </p>
-
+          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
+              query words people type. It renders exactly where and how the old kicker
+              did; the slogan below is unchanged. Was: "Working holiday visas 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(31px, 5.2vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+              TFN application&nbsp;&middot; working holiday visas 417 &amp; 462
+            </span>
             <span style={{ display: 'block' }}>The number is free.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>The weeks without it are not.{' '}</span>
           </h1>
@@ -432,7 +434,7 @@ export default function TFNPage() {
             Every TFN application we lodge belongs to somebody on a 417 or 462 visa. Returns are reviewed and signed
             off by a registered tax agent before they are lodged with the ATO.
           </p>
-          <GoogleReviews lang="en" />
+          <GoogleReviewsServer lang="en" />
         </div>
       </section>
 
