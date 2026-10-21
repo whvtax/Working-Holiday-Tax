@@ -120,5 +120,8 @@ export function priceMessageIn(lang: PriceLang, track: Track, firstContact: bool
   const amount = track === 'TFN_ABN' ? 385 : 220;
   const body = track === 'TFN_ABN' ? L.abnBody : L.tfnBody;
   const lead = firstContact ? `${L.hello((firstName ?? '').trim())}\n\n${L.fit(label, amount)}` : L.gotIt(label, amount);
-  return `${lead} ${body}\n\n${BANK}\n\n${L.guarantee}\n\n${L.screenshot}`;
+  // Jo, 21 Oct: no guarantee for a TFN + ABN return (abn-income.ts).
+  return track === 'TFN_ABN'
+    ? `${lead} ${body}\n\n${BANK}\n\n${L.screenshot}`
+    : `${lead} ${body}\n\n${BANK}\n\n${L.guarantee}\n\n${L.screenshot}`;
 }

@@ -303,6 +303,13 @@ export async function sendWhatsAppTemplate(
   name: string,
   params: string[] = [],
   languageCode?: string | null,
+  /** false: never swap to the English template. Used when the caller holds
+   *  the same message in the customer's own language and can send it as free
+   *  text instead (Jo, 21 Oct: a Japanese customer inside the 24h window got
+   *  the residency check in English because only the English template was
+   *  approved). Default true, which is the behaviour outside the window,
+   *  where an English template is the only thing that can reach them. */
+  opts?: { englishFallback?: boolean },
 ): Promise<SendResult> {
   const to = (toWaId || '').replace(/[^\d]/g, '');
   if (!to) return { ok: false, error: 'no recipient number' };
@@ -312,13 +319,15 @@ export async function sendWhatsAppTemplate(
     ? [{ type: 'body', parameters: params.map((p) => ({ type: 'text', text: sanitizeTemplateParam(p) })) }]
     : [];
 
-  const attempt = (code: string) => postMessage({
+  const attemptNamed = (tplName: string, code: string) => postMessage({
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
     to,
     type: 'template',
-    template: { name, language: { code }, ...(components.length ? { components } : {}) },
+    template: { name: tplName, language: { code }, ...(components.length ? { components } : {}) },
   });
+  const attempt = (code: string) => attemptNamed(name, code);
+  const missing = (r: SendResult) => /does not exist|not exist|132001|template/i.test(r.error ?? '');
 
   // Reach the customer in their own language when that translation has been
   // approved, and fall back to English when it has not.
@@ -331,7 +340,19 @@ export async function sendWhatsAppTemplate(
   const wanted = normalizeTemplateLang(languageCode);
   const first = await attempt(wanted);
   if (first.ok || first.skipped || wanted === TEMPLATE_LANG) return first;
-  if (!/does not exist|not exist|132001|template/i.test(first.error ?? '')) return first;
+  if (!missing(first)) return first;
+  // Two naming conventions live in WhatsApp Manager: one template with a
+  // translation per language (residency_check + ja), and one template per
+  // language (payment_received_ja, refund_checkin_ja). Jo, 21 Oct: Ruito got
+  // the residency check in English although a Japanese version existed,
+  // because it was asked for as residency_check + ja. So before giving up on
+  // their language, the same name with the language suffix is tried too.
+  const short = wanted.split('_')[0];
+  if (short && short !== TEMPLATE_LANG && !name.endsWith(`_${short}`) && !name.endsWith(`_${wanted}`)) {
+    const suffixed = await attemptNamed(`${name}_${short}`, wanted);
+    if (suffixed.ok || suffixed.skipped || !missing(suffixed)) return suffixed;
+  }
+  if (opts?.englishFallback === false) return first;
   return attempt(TEMPLATE_LANG);
 }
 
@@ -452,8 +473,16 @@ export async function deliverOut(
     customerId: customer.id, direction: 'OUT', author, status: 'QUEUED', body,
     meta: { ...(meta ?? {}) },
   });
+  // Inside the 24h window, a template that is missing in the customer's
+  // language must not turn into the ENGLISH template: the localized body we
+  // hold is sent as free text instead (fallback below). Outside the window the
+  // English template stays, because free text cannot arrive there at all.
+  const lastIn = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
+  const inWindow = lastIn > 0 && Date.now() - lastIn <= WINDOW_MS;
+  const templateLang = template?.lang ?? customer.lang;
+  const keepLanguage = !!template?.fallbackToText && inWindow && normalizeTemplateLang(templateLang) !== TEMPLATE_LANG;
   let res = template?.name
-    ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, template.lang ?? customer.lang)
+    ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, templateLang, keepLanguage ? { englishFallback: false } : undefined)
     : await sendWhatsAppText(customer.waId, body);
   if (!res.ok && template?.fallbackToText && /does not exist|not exist|132001|template/i.test(res.error ?? '')) {
     // Only fall back to free text when free text can actually arrive. (audit,

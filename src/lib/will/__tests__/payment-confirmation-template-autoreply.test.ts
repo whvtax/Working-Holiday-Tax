@@ -94,7 +94,8 @@ it('a queued payment confirmation tries the Meta template first, in the customer
   store.getMessageById.mockResolvedValue(paymentMsg());
   sendWhatsAppTemplate.mockResolvedValue({ ok: true });
   await processDueJobs();
-  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received_de', [], 'de');
+  // 21 Oct: a missing German translation falls back to the German text, not the English template.
+  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received_de', [], 'de', { englishFallback: false });
   expect(sendWhatsAppText).not.toHaveBeenCalled();
   expect(store.setMessageStatus).toHaveBeenCalledWith('m1', 'SENT', { restamp: true });
 });

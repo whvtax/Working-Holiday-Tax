@@ -51,7 +51,8 @@ it('the guarantee is back in its exact wording (27 Sep) and the over-promise sta
   expect(stable).not.toMatch(/THE OLD GUARANTEE IS GONE/);
   const { APPROVED } = jest.requireActual('@/lib/will/approved-messages');
   expect(APPROVED.price_tfn).toContain(G);
-  expect(APPROVED.price_tfn_abn).toContain(G);
+  // Jo, 21 Oct: TFN + ABN has no guarantee.
+  expect(APPROVED.price_tfn_abn).not.toContain('refund the difference');
   expect(JSON.stringify(APPROVED)).not.toMatch(/never costs you more than the refund/i);
 });
 

@@ -43,7 +43,8 @@ describe('detectChoice: a short clear answer to the opening question', () => {
     for (const t of ['TFN', 'TFN_ABN'] as const) {
       const m = priceMessageFor(t);
       expect(m).toMatch(/062692/);
-      expect(m).toMatch(/refund the difference/);
+      // Jo, 21 Oct: the guarantee is TFN-only.
+      if (t === 'TFN') expect(m).toMatch(/refund the difference/); else expect(m).not.toMatch(/refund the difference/);
       expect(m).not.toMatch(/^Great!/);
       expect(policyGuard(m, { state: 'QUALIFIED', paid: false, aiPaused: false, killSwitch: false, optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(), isApprovedTemplate: false, estimateFromTeam: null }).allowed).toBe(true);
     }

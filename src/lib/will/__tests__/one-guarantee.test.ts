@@ -33,7 +33,9 @@ describe('"non-refundable" before payment', () => {
 
 describe('every approved pre-payment text carries the rule, nothing else', () => {
   it('price messages and objections', () => {
-    for (const t of [APPROVED.price_tfn, APPROVED.price_tfn_abn, APPROVED.objections.o1_refund_before_pay, APPROVED.objections.o2_why_pay_first, APPROVED.objections.o5_too_expensive, APPROVED.objections.o6_pay_after_refund]) {
+    // Jo, 21 Oct: price_tfn_abn no longer carries it.
+    expect(APPROVED.price_tfn_abn).not.toContain(RULE);
+    for (const t of [APPROVED.price_tfn, APPROVED.objections.o1_refund_before_pay, APPROVED.objections.o2_why_pay_first, APPROVED.objections.o5_too_expensive, APPROVED.objections.o6_pay_after_refund]) {
       expect(t).toContain(RULE);
       expect(t).not.toMatch(/non[- ]?refundable|no risk|never out of pocket|full refund/i);
     }

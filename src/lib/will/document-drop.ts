@@ -111,3 +111,50 @@ export function documentDropReason(count: number, context?: string): string {
     ? `Paid customer sent ${count} files. Nothing to answer, just collect them.`
     : 'Paid customer sent a file. Nothing to answer, just collect it.';
 }
+
+// ============================================================
+// The payment burst (Jo, 21 Oct, +81 70 5498: Japanese customer).
+//
+// WHAT HAPPENED
+//   She sent two screenshots of ONE $220 payment (the CommBank email and the
+//   "Paid $220.00 to The Accounting Academy" receipt) and typed 送りました.
+//   The first screenshot was read, confirmed and moved her to Paid, and the
+//   "payment received" reply was parked for the usual one-to-five minute
+//   human-looking delay (service.ts, 25 Sep). The SECOND screenshot then
+//   arrived from a customer who was now Paid, so it was treated as paperwork:
+//   "完璧です、すべて受け取りました" went out on the spot, BEFORE the payment
+//   confirmation, and a "Paid customer sent a file" task opened. From her side
+//   (and Jo's) Will answered the receipt with "got it all" and never said the
+//   payment had arrived.
+//
+// WHAT HAPPENS NOW
+//   Anything she sends while the confirmation is still waiting to go, or in
+//   the first minutes after the move to Paid, is part of the same payment.
+//   The file stays in the thread, but there is no "got it all" and no task:
+//   the payment confirmation (with the form link) is the answer to all of it.
+// ============================================================
+
+/** How long after the move to Paid an attachment still counts as more of the
+ *  same payment (a second receipt, the bank email, a crop of the first). */
+export const PAYMENT_BURST_MS = 15 * 60 * 1000;
+
+export function isPaymentBurst(opts: {
+  /** This customer's still-live outbound rows (QUEUED / PENDING_APPROVAL). */
+  pendingOutbound?: Array<{ meta?: { paymentConfirmation?: boolean; proposedState?: string } | null }> | null;
+  /** This customer's state history. */
+  history?: Array<{ to: string; createdAt: string }> | null;
+  now?: number;
+}): boolean {
+  const now = opts.now ?? Date.now();
+  const waiting = (opts.pendingOutbound ?? []).some(
+    (m) => m?.meta?.paymentConfirmation === true || m?.meta?.proposedState === 'PAID',
+  );
+  if (waiting) return true;
+  let lastPaid = -1;
+  for (const h of opts.history ?? []) {
+    if (h?.to !== 'PAID') continue;
+    const t = new Date(h.createdAt).getTime();
+    if (Number.isFinite(t) && t > lastPaid) lastPaid = t;
+  }
+  return lastPaid >= 0 && now - lastPaid >= 0 && now - lastPaid <= PAYMENT_BURST_MS;
+}

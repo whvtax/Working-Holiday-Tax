@@ -31,7 +31,8 @@ describe('the message', () => {
   it('German reply to the opening question, TFN + ABN', () => {
     const m = priceMessageIn('de', 'TFN_ABN', false);
     expect(m.startsWith('Alles klar, also die TFN + ABN-Option, $385.')).toBe(true);
-    expect(m).toContain('die Differenz');
+    // Jo, 21 Oct: no guarantee for TFN + ABN.
+    expect(m).not.toContain('die Differenz');
     expect(m).not.toMatch(/[—–]/);
     expect(policyGuard(m, ctx).allowed).toBe(true);
   });

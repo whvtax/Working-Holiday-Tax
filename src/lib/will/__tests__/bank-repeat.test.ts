@@ -70,7 +70,9 @@ describe('stripBankBlock (never repeat the bank details)', () => {
   });
 
   test('the guarantee lives in the price messages; the opening is short', () => {
-    for (const msg of [APPROVED.price_tfn, APPROVED.price_tfn_abn]) {
+    // Jo, 21 Oct: TFN only; TFN + ABN carries no guarantee.
+    expect(APPROVED.price_tfn_abn).not.toContain('refund the difference');
+    for (const msg of [APPROVED.price_tfn]) {
       expect(msg).toContain("If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.");
       expect(msg).not.toMatch(/non-refundable|not dependent on the outcome/i);
     }

@@ -46,7 +46,8 @@ Which option works best for you?`,
   // customer confidence": refund below the fee -> we refund the difference; no
   // refund -> full fee applies, said quietly). No account name line (27 Sep,
   // it confused people; whoever asks gets the Library answer). Same shape for
-  // both tracks; only the amount differs.
+  // both tracks; only the amount differs. Jo, 21 Oct: the guarantee is
+  // TFN-only again; [price_tfn_abn] does not carry it (see abn-income.ts).
   price_tfn: `Got it, so that's the TFN option, $220. We review your tax residency, Medicare and deductions, then prepare and lodge your tax return, making sure you don't miss anything you're entitled to.
 
 BSB: 062692
@@ -60,8 +61,6 @@ Just send a screenshot once paid and we'll get started!`,
 
 BSB: 062692
 Account: 81049952
-
-If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.
 
 Just send a screenshot once paid and we'll get started!`,
 

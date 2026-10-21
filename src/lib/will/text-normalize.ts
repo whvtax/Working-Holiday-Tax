@@ -347,6 +347,7 @@ export function hasQuestionOrRequest(text: string | null | undefined): boolean {
 export function isClosingOnly(text: string | null | undefined): boolean {
   const t = (text ?? '').trim();
   if (!t) return false;
+  if (LEAVING_RE.test(t)) return false; // a goodbye from a lead is answered by Will, not the canned line
   if (isCourtesyLine(t)) return true;
   if (/[?？]/.test(t)) return false;
   if (REQUEST_OR_PROBLEM.test(t)) return false;
@@ -365,11 +366,48 @@ export function isThanksLine(text: string | null | undefined): boolean {
 }
 
 export const THANKS_REPLIES = ["You're very welcome! 😊", 'Anytime! 😊'] as const; // Jo, 13 Oct: shorter
-/** The line Will sends back to a thank-you, never the same one twice in a row. */
-export function thanksReply(lastWillText: string | null | undefined): string {
+
+/** The same two lines in the customer's language (Jo, 21 Oct, Eimi +81: a
+ *  Japanese "ありがとうございました" got "You're very welcome! 😊" in English). */
+export const THANKS_REPLIES_ML: Record<string, readonly [string, string]> = {
+  en: THANKS_REPLIES,
+  de: ['Sehr gerne! 😊', 'Jederzeit! 😊'],
+  ja: ['どういたしまして！😊', 'いつでもどうぞ！😊'],
+  es: ['¡De nada! 😊', '¡Cuando quieras! 😊'],
+  fr: ['Avec plaisir ! 😊', 'Quand tu veux ! 😊'],
+  it: ['Figurati! 😊', 'Quando vuoi! 😊'],
+  pt: ['De nada! 😊', 'Sempre que precisares! 😊'],
+};
+
+/** The line Will sends back to a thank-you, in their language, never the same
+ *  one twice in a row. */
+export function thanksReply(lastWillText: string | null | undefined, lang?: string | null): string {
+  const pair = THANKS_REPLIES_ML[(lang ?? 'en').toLowerCase().slice(0, 2)] ?? THANKS_REPLIES;
   const last = (lastWillText ?? '').trim();
-  return last === THANKS_REPLIES[0] ? THANKS_REPLIES[1] : THANKS_REPLIES[0];
+  return last === pair[0] ? pair[1] : pair[0];
 }
+
+/** "I decided to go with someone else / did it myself / don't need it any
+ *  more", in the languages Will speaks. A thank-you WITH one of these is a
+ *  goodbye from a lead, not a plain thank-you: it goes to Will, whose
+ *  playbook answers it ("No worries at all, all the best with it 😊") and
+ *  closes the lead. Jo, 21 Oct (Eimi +81: "他ですることにしたので大丈夫です
+ *  ありがとうございました" got the canned thank-you line and stayed open). */
+export const LEAVING_RE = new RegExp([
+  // en
+  'elsewhere', 'someone else', 'somebody else', 'another (?:company|accountant|agent|service|provider)', 'other (?:company|accountant|agent|service|provider)',
+  'decided (?:to|not)', 'not interested', 'no longer need', "don'?t need (?:it|your|the service)", '(?:did|do|done|doing|lodge[d]?|file[d]?) it (?:myself|on my own)',
+  'already (?:done|lodged|filed|sorted|did it)', 'my (?:own )?accountant', 'go(?:ing)? with',
+  // de
+  'woanders', 'jemand(?:em)? anderes?', 'anderen? (?:anbieter|steuerberater|firma)', 'selbst gemacht', 'schon erledigt', 'kein interesse', 'brauche (?:es|das) nicht mehr', 'entschieden',
+  // ja
+  '他(?:で|の(?:会社|業者|ところ|所|税理士|エージェント))', '別の(?:会社|業者|ところ|所|税理士)', '自分で', 'もう(?:済|終わ|大丈夫|必要)', '結構です', '必要(?:ありません|ないです|なくなり)', '不要', 'やめ(?:ます|ました|ておきます)', 'キャンセル', 'することにしました|することにした',
+  // es / pt / fr / it
+  'otra (?:empresa|persona|gestor)', 'con otro', 'ya lo hice', 'lo har[ée] (?:yo|por mi cuenta)', 'no me interesa', 'ya no (?:lo )?necesito',
+  'outra (?:empresa|pessoa)', 'j[áa] (?:fiz|resolvi)', 'n[ãa]o (?:tenho interesse|preciso mais)',
+  'ailleurs', "quelqu'un d'autre", 'autre (?:soci[ée]t[ée]|comptable)', 'je (?:l\'ai|vais le) fai(?:t|re) moi', 'plus besoin', 'pas int[ée]ress[ée]',
+  "qualcun altro", 'altra (?:azienda|persona)', "l'ho gi[àa] fatto", 'non mi interessa', 'non (?:ne )?ho pi[ùu] bisogno',
+].join('|'), 'i');
 
 export function firstSentenceOnly(text: string): string {
   const line = text.split('\n').map((l) => l.trim()).find(Boolean) ?? '';

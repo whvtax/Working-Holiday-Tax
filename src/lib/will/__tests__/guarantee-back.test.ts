@@ -27,7 +27,8 @@ it('the review-only price messages carry NO guarantee: the fee is for the review
 
 it('the two normal price messages carry the guarantee, the amount, and no account name line', () => {
   for (const m of [APPROVED.price_tfn, APPROVED.price_tfn_abn]) {
-    expect(m).toContain(G);
+    // Jo, 21 Oct: the guarantee is TFN-only.
+    if (m === APPROVED.price_tfn) expect(m).toContain(G); else expect(m).not.toContain('refund the difference');
     expect(m).toMatch(/option, \$(220|385)\./);
     expect(m).not.toMatch(/Amount:/);
     expect(m).not.toMatch(/Account Name/);

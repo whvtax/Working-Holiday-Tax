@@ -21,6 +21,8 @@ import { canTransition, CustomerState } from './state-machine';
 import { detectChoice, PRICE_ASK_RE, firstContactPriceMessage } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
 import { hasForeignIncome } from './foreign-income';
+import { hasAbnIncome, ABN_PRICE_RE } from './abn-income';
+import { detectLanguage } from './i18n';
 import { alreadyCheckedReason, applyCheckedClause, CHECKED_CLAUSE, alreadyLodged } from './already-checked';
 import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, containsThanks, firstSentenceOnly, isClosingOnly, thanksReply } from './text-normalize';
 
@@ -208,12 +210,21 @@ export function stripCheerOpener(text: string, firstName?: string | null): strin
   return stripped.charAt(0).toUpperCase() + stripped.slice(1);
 }
 
+/** The guarantee's second sentence ("If there's no refund, our full fee
+ *  applies") as Will writes it in his languages. It used to be matched in
+ *  English, German and Japanese only, so a French reply kept "S'il n'y a pas
+ *  de remboursement, nos frais complets s'appliquent" after the first
+ *  sentence was removed (Jo, 21 Oct). */
+const GUARANTEE_SECOND_RE = new RegExp([
+  "(?:no refund|keine r[üu]ckerstattung|pas de remboursement|aucun remboursement|no hay (?:ning[úu]n )?reembolso|sin reembolso|nessun rimborso|non c'[èe] (?:alcun |nessun )?rimborso|n[ãa]o (?:houver|h[áa]) reembolso|sem reembolso|還付(?:金)?が(?:ない|なければ|出ない))[^.。]{0,60}(?:fee|geb[üu]hr|frais|tarifa|honorarios|tariffa|compenso|taxa|honor[áa]rios|全額|料金)",
+].join('|'), 'i');
+
 export function stripGuarantee(text: string): string {
   return text
     .split(/\n{2,}/)
     .map((para) => para
       .split(/(?<=[.!?。])\s+/)
-      .filter((sent) => !GUARANTEE_RE.test(sent) && !/(?:no refund|keine r[üu]ckerstattung|還付(?:金)?がない)[^.。]{0,40}(?:full fee|volle geb[üu]hr|全額)/i.test(sent) && !/^(?:if there'?s no refund|our full fee applies)/i.test(sent))
+      .filter((sent) => !GUARANTEE_RE.test(sent) && !GUARANTEE_SECOND_RE.test(sent) && !/^(?:if there'?s no refund|our full fee applies)/i.test(sent))
       .join(' '))
     .filter((para) => para.trim().length > 0)
     .join('\n\n')
@@ -343,10 +354,16 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   const guaranteeAlreadySent = history.some((t) => t.role === 'assistant' && GUARANTEE_RE.test(t.text));
   // Jo, 12 Oct: foreign income means no guarantee, whatever the model wrote.
   const foreignCustomer = hasForeignIncome(history.filter((t) => t.role === 'customer').map((t) => t.text));
+  // Jo, 21 Oct (Norina, +33 7 62): ABN income means no guarantee either. Known
+  // from the profile, from anything the customer wrote, or from the reply
+  // itself quoting an ABN price ($385 / $495). See abn-income.ts.
+  const abnCustomer = ctx.income === 'TFN_ABN'
+    || hasAbnIncome(history.filter((t) => t.role === 'customer').map((t) => t.text));
   const applyBankRule = (t: string): string => {
     let out = suppressBankRepeat && BANK_DETAILS_RE.test(t) ? stripBankBlock(t) : t;
     if (guaranteeAlreadySent && !BANK_DETAILS_RE.test(out) && GUARANTEE_RE.test(out)) out = stripGuarantee(out);
     if (foreignCustomer && GUARANTEE_RE.test(out)) out = stripGuarantee(out);
+    if ((abnCustomer || ABN_PRICE_RE.test(out)) && GUARANTEE_RE.test(out)) out = stripGuarantee(out);
     return out;
   };
 
@@ -359,8 +376,11 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // anything. Never the same line twice in a row ("Anytime! 😊" then). It
   // still passes the guard, so a paused, opted-out or legacy chat and the
   // kill switch stay silent.
+  // Jo, 21 Oct: the thank-you line in THEIR language. The chat's language,
+  // or, when that is not known yet, the language of what they just wrote.
+  const thanksLang = ctx.lang ?? detectLanguage(customerBurst).lang ?? 'en';
   if (burstSinceOurs.length > 0 && isClosingOnly(customerBurst) && containsThanks(customerBurst)) {
-    const line = thanksReply(lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '');
+    const line = thanksReply(lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '', thanksLang);
     const thanksDecision: Decision = { action: 'reply', reply_text: line, confidence: 1 };
     const v = policyGuard(line, {
       ...input.guard, state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents,
@@ -382,7 +402,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // a person to do: a thank-you gets one short line, anything else silence.
   if (decision.action === 'human_task' && burstSinceOurs.length > 0 && isClosingOnly(customerBurst)) {
     if (!containsThanks(customerBurst)) return { kind: 'silent', decision: { ...decision, action: 'wait' }, reviewNote: 'closing only: nothing to hand over' };
-    const line = thanksReply(lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '');
+    const line = thanksReply(lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '', thanksLang);
     const v = policyGuard(line, {
       ...input.guard, state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents,
       isApprovedTemplate: true, customerTextChars: customerBurst.length, customerText: customerBurst,

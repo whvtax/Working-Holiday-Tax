@@ -25,7 +25,7 @@ import { abnIntakeKey, readIntake, ABN_INTAKE_DONE_RE, intakeSummary } from './a
 import { alreadyCheckedReason, applyCheckedClause } from './already-checked';
 import { isAccountNameQuestion, accountNameMessage } from './account-name';
 import { customerNotInterested, looksLikeVendor, salesPromisedKey } from './stage-sync';
-import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnly, hasQuestionOrRequest } from './text-normalize';
+import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnly, hasQuestionOrRequest, containsThanks } from './text-normalize';
 // Moved to text-normalize.ts so the engine can use it too without importing this
 // file (service.ts imports the engine; a static import back would be a cycle).
 // Re-exported here because this is where every caller and test already looks.
@@ -35,7 +35,7 @@ import { assessPaymentProofImage, assessSuccessConfirmationImage, describeAttach
 import { verifyProofDetails, isNotOurPayment, pictureConfirmsPayment, describeProof, incomeFromAmount } from './payment-proof';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
-import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason } from './document-drop';
+import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason, isPaymentBurst } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
 import { bumpCounterUnavailable, lastPersistError as sbLastPersistError } from './store-supabase';
@@ -1457,14 +1457,23 @@ export async function runDeferredAutoReply(
   // review all of these receipts" landed BETWEEN two messages the team was
   // typing in a live conversation. When a person on our side has written in
   // the last 30 minutes, the chat is theirs: Will stays out of it.
+  //
+  // Jo, 21 Oct (Janos +61 439): Jo sent "Your tax return has been lodged
+  // successfully!" himself, Janos answered "Thanks!" seven minutes later, and
+  // nobody replied: the 30-minute rule held Will back and opened no task. A
+  // plain thank-you is not a live conversation to stay out of. It gets Will's
+  // one short line (still after the usual delay, and still not if Jo answers
+  // it himself first: the "answered" check above). Anything with substance
+  // still waits for the team.
+  const text = burstText(msgs);
+  if (!text.trim()) return 'skipped';
+  const plainThanks = isClosingOnly(text) && containsThanks(text);
   const teamActive = msgs.some((m) => m.direction === 'OUT' && m.author === 'HUMAN'
     && Date.now() - new Date(m.createdAt).getTime() < 30 * 60 * 1000);
-  if (teamActive) {
+  if (teamActive && !plainThanks) {
     await store.audit('assistant', 'auto_reply_skipped_team_active', { customerId: customer.id, anchorAt });
     return 'answered';
   }
-  const text = burstText(msgs);
-  if (!text.trim()) return 'skipped';
   // A screenshot payment confirms instantly and this timer still fires two
   // minutes later on the same burst. burstText falls back to the photo's own
   // caption when nothing followed it, so a burst that is nothing but the
@@ -1624,6 +1633,23 @@ export async function handleInboundNote(
   // paperwork alone, so it goes to the normal answer path instead of the drop.
   if (meta?.media && hasQuestionOrRequest(body)) intakeActive = true; // a question with the file is answered, not dropped
   if (meta?.media && isAfterPayment(customer.state) && !intakeActive) {
+    // Jo, 21 Oct (+81 70 5498): a second screenshot of the SAME payment, sent
+    // while the "payment received" reply is still waiting its few minutes, is
+    // not paperwork. It used to get "完璧です、すべて受け取りました" at once,
+    // ahead of the payment confirmation, plus a "Paid customer sent a file"
+    // task. Now it is kept in the thread and nothing else: the confirmation
+    // (with the form link) answers it. See isPaymentBurst in document-drop.ts.
+    let burst = false;
+    try {
+      const pendingOutbound = typeof store.listPendingOutbound === 'function'
+        ? await store.listPendingOutbound(customer.id) : [];
+      const history = typeof store.history === 'function' ? await store.history(customer.id) : [];
+      burst = isPaymentBurst({ pendingOutbound, history });
+    } catch { burst = false; }
+    if (burst) {
+      await store.audit('system', 'payment_burst_media_absorbed', { customerId: customer.id, kind: meta.media.kind });
+      return (await store.getCustomerByWaId(waId)) ?? customer;
+    }
     const ack = await suggestReply('', customer, 'documents_after_payment');
 
     // Jo, 15 Sep: a paid customer sending proof that something they applied

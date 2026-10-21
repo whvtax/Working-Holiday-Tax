@@ -415,7 +415,14 @@ export async function ensureLostAnalysisSoon(): Promise<void> {
 async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; meta?: Record<string, unknown> | null }) {
   if (msg.meta?.proposedState !== 'PAID' && msg.meta?.paymentConfirmation !== true) return sendWhatsAppText(customer.waId, msg.body);
   const name = paymentReceivedTemplateKey(metaTemplateLang(customer.lang));
-  const templated = await sendWhatsAppTemplate(customer.waId, name, [], customer.lang);
+  // German / Japanese have their own template (payment_received_de / _ja).
+  // If that translation is missing, msg.body (already in their language) is
+  // sent as text, never the English template (Jo, 21 Oct). Other languages
+  // keep the English template with the button, as before (Jo, 17 Sep).
+  const ownTemplate = metaTemplateLang(customer.lang) !== 'en';
+  const templated = ownTemplate
+    ? await sendWhatsAppTemplate(customer.waId, name, [], customer.lang, { englishFallback: false })
+    : await sendWhatsAppTemplate(customer.waId, name, [], customer.lang);
   return templated.ok ? templated : sendWhatsAppText(customer.waId, msg.body);
 }
 

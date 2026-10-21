@@ -48,7 +48,14 @@ const EXPLICIT = new RegExp([
 
 /** Short confirmations that only count when the message is short. "done" in a
  *  four-word message is a confirmation; "done" inside a paragraph is a word. */
-const SHORT_CONFIRM = /\b(paid|done|sent it|sent|transferred|listo|hecho|fertig|fatto|完了|送りました)\b/i;
+const SHORT_CONFIRM = /\b(paid|done|sent it|sent|transferred|listo|hecho|fertig|fatto)\b/i;
+
+/** The Japanese short confirmations, matched WITHOUT \b (Jo, 21 Oct, +81 70
+ *  5498: "送りました" under a $220 receipt did not count). In a JavaScript
+ *  regex \b only knows ASCII letters, so there is no "word boundary" next to a
+ *  kanji or kana and \b(完了|送りました)\b could never match anything. The
+ *  same size limit applies (the whole message has to be the confirmation). */
+const SHORT_CONFIRM_JA = /(完了|送りました|払いました|済みです|済ませました)/;
 
 /** WITH A SCREENSHOT ATTACHED, the bar is lower on purpose (Jo, 4 Sep).
  *
@@ -225,5 +232,10 @@ export function claimsPayment(
   const hasSpaces = /\s/.test(t);
   const size = hasSpaces ? t.split(/\s+/).filter(Boolean).length : t.length;
   const limit = hasSpaces ? 5 : 12;
-  return size <= limit && SHORT_CONFIRM.test(t);
+  if (size > limit) return false;
+  if (SHORT_CONFIRM.test(t)) return true;
+  // Not yet / not done / when-it-is-done / will do / a question ending in か:
+  // "まだ完了していません", "完了したら連絡します", "送りましたか" are not reports.
+  if (/(まだ|ません|ない|なかった|たら|次第|予定|します|か[。.]*$)/.test(t)) return false;
+  return SHORT_CONFIRM_JA.test(t);
 }
