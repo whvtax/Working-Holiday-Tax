@@ -179,6 +179,18 @@ export const PRE_PAYMENT_CHECK_MSG: Record<Lang, string> = {
   it: 'Sì, è sicuramente una delle tante cose che controlliamo prima di presentare la tua dichiarazione dei redditi, quindi lascia fare a noi. 😊',
   pt: 'Sim, isso é sem dúvida uma das muitas coisas que verificamos antes de entregar a tua declaração de impostos, por isso deixa isso connosco. 😊',
 };
+/** [o15_when_no_refund] in the three site languages (Jo, 22 Oct). */
+export const NO_REFUND_CASES_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: "Usually when the tax taken from your pay during the year already matches what you owe, or when too little was taken (for example from a second job), so there's tax to pay instead. Whether that's the case for you is one of the things we check in the review 😊",
+  de: 'Meistens dann, wenn die Steuer, die während des Jahres von deinem Lohn abgezogen wurde, schon genau dem entspricht, was du schuldest, oder wenn zu wenig abgezogen wurde (zum Beispiel bei einem Zweitjob), sodass stattdessen Steuer zu zahlen ist. Ob das bei dir so ist, gehört zu den Dingen, die wir in der Prüfung checken 😊',
+  ja: '多くの場合、年間を通じてお給料から差し引かれた税金が、本来納めるべき税額とちょうど同じだったとき、または差し引かれた額が少なかったとき（例えば2つ目の仕事など）で、その場合は還付ではなく納税が必要になります。ご自身がそれに当たるかどうかは、レビューの中で確認します😊',
+};
+/** "In what cases would there be no refund?" and its siblings, in en/de/ja. */
+export const NO_REFUND_CASES_Q = /\b(?:in )?(?:what|which) (?:cases?|situations?|circumstances?)\b[^?？]{0,40}\bno refund|\bwhen (?:would|will|is|could|does) (?:there )?(?:be )?no refund|\bwhy would there (?:be )?no refund|\bwhat (?:do you mean by|does) ["“']?no refund|\bhow (?:could|would|can) there (?:be )?no refund|\bwhen (?:would|does|will) (?:the|your) full fee apply|in welchen f[äa]llen\b[^?]{0,40}keine r[üu]ckerstattung|wann gibt es keine r[üu]ckerstattung|wann (?:fällt|gilt) die volle geb[üu]hr|どんな(?:場合|時|とき)[^？?]{0,20}還付(?:が|は)?(?:ない|され(?:ない|ません)|ありません)|還付(?:が|は)?(?:ない|されない)(?:のは|場合)(?:どんな|どういう)/i;
+export function noRefundCasesMessage(lang?: string | null): string | null {
+  return lang === 'de' || lang === 'ja' ? NO_REFUND_CASES_MSG[lang] : (!lang || lang === 'en' ? NO_REFUND_CASES_MSG.en : null);
+}
+
 /** Kept under its old name for the engine and the corpus: the stand-in for a
  *  blocked pre-payment determination IS the line above. */
 export const PROFESSIONAL_QUESTION_MSG: Record<Lang, string> = PRE_PAYMENT_CHECK_MSG;

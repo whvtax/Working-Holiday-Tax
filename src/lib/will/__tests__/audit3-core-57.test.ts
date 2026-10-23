@@ -33,7 +33,7 @@ const addMessage = jest.fn().mockImplementation(async (m: Partial<MessageRow>) =
   return row;
 });
 const audit = jest.fn().mockResolvedValue(undefined);
-const getSetting = jest.fn().mockImplementation(async (k: string) => (k === 'ai_mode' ? 'FULL_AUTO' : undefined));
+const getSetting = jest.fn().mockImplementation(async (k: string) => (k === 'ai_mode' ? 'FULL_AUTO' : k === 'decision_mode' ? 'legacy' : undefined));
 jest.mock('@/lib/will/store', () => ({
   getStore: () => ({
     getCustomerByWaId: jest.fn().mockImplementation(async () => ({ ...customer })),

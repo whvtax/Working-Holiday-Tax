@@ -47,7 +47,7 @@ describe('the forced Paid block in decideAndAct uses it', () => {
   const src = readFileSync(join(process.cwd(), 'src/lib/will/service.ts'), 'utf8');
 
   it('appends the Library first payment received body and audits it', () => {
-    const start = src.indexOf('if (paymentClaimForcesPaid({');
+    const start = src.indexOf('paymentClaimForcesPaid({\n    paid: paidNow');
     expect(start).toBeGreaterThan(0);
     const block = src.slice(start, start + 2000);
     expect(block).toContain("outcome.newState = 'PAID'");

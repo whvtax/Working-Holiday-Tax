@@ -73,7 +73,6 @@ it('a normal qualifying exchange is never interrupted', async () => {
     'ok great',
     'sounds good',
   ]) {
-    // eslint-disable-next-line no-await-in-loop
     await handleIncoming('61400000001', t, 'SUPERVISED');
   }
   expect(runEngine).toHaveBeenCalledTimes(6); // every one reached the engine
@@ -86,7 +85,6 @@ it('on Autopilot the same exchange arms the two-minute timer instead of deciding
   // engine is NOT called when the message lands; a timer is (re)armed each
   // time, the previous one cancelled, and the decision runs when it fires.
   for (const t of ['hi', 'I have a question', 'about my tax return']) {
-    // eslint-disable-next-line no-await-in-loop
     const r = await handleIncoming('61400000001', t, 'FULL_AUTO');
     expect(r.outcome.kind).toBe('deferred');
   }
@@ -109,7 +107,6 @@ it('on Autopilot the same exchange arms the two-minute timer instead of deciding
 // her is the job. So volume is no longer the signal; a repeating line is.
 it('a long, engaged conversation before payment is never stopped', async () => {
   for (let i = 0; i < 40; i++) {
-    // eslint-disable-next-line no-await-in-loop
     await handleIncoming('61400000001', `a different question number ${i + 1}`, 'SUPERVISED');
   }
   expect(runEngine).toHaveBeenCalledTimes(40);
@@ -119,7 +116,6 @@ it('a long, engaged conversation before payment is never stopped', async () => {
 it('the SAME message arriving over and over is stopped and named, without pausing Will', async () => {
   // Five of the last six identical: an automated sender or a stuck loop.
   for (let i = 0; i < 5; i++) {
-    // eslint-disable-next-line no-await-in-loop
     await handleIncoming('61400000001', 'hello?', 'SUPERVISED');
   }
   addJob.mockClear();
@@ -139,7 +135,6 @@ it('the SAME message arriving over and over is stopped and named, without pausin
 it('a paid customer is never stopped by this rule, however many messages', async () => {
   Object.assign(customer, { paid: true, state: 'PAID' });
   for (const t of ['a', 'b', 'c', 'd', 'e']) {
-    // eslint-disable-next-line no-await-in-loop
     await handleIncoming('61400000001', t, 'SUPERVISED');
   }
   expect(runEngine).toHaveBeenCalledTimes(5);
@@ -148,7 +143,6 @@ it('a paid customer is never stopped by this rule, however many messages', async
 
 it('applies in SUPERVISED mode too, not just FULL_AUTO', async () => {
   for (let i = 0; i < 6; i++) {
-    // eslint-disable-next-line no-await-in-loop
     await handleIncoming('61400000001', 'is anyone there', 'SUPERVISED');
   }
   expect(addTask).toHaveBeenCalled();

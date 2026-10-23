@@ -85,6 +85,7 @@ export function seedTemplates(): TemplateRow[] {
     t('obj_12', 'Objections', '#12 Ask partner first', o.o12_ask_partner),
     t('obj_13', 'Objections', '#13 Just one question', o.o13_one_question),
     t('obj_14', 'Objections', '#14 Check eligibility first', o.o14_check_eligible_first),
+    t('obj_15', 'Objections', '#15 In what cases is there no refund', o.o15_when_no_refund),
     t('fu_pre_24h', 'Follow-ups', 'Pre-payment · 24h', APPROVED.followups_pre_payment.h24, true),
     t('fu_pre_3d', 'Follow-ups', 'Pre-payment · 3d', APPROVED.followups_pre_payment.d3, true),
     t('fu_pre_7d', 'Follow-ups', 'Pre-payment · 7d (final)', APPROVED.followups_pre_payment.d7, true),

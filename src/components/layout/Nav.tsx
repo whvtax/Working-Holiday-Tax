@@ -471,7 +471,6 @@ export function Nav() {
             and the registered tax agent seal. */}
         <div className="flex flex-row flex-wrap items-center justify-center gap-4 mt-5 pb-2">
           <GoogleReviewsBadge lang={locale} />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/assets/tpb-registered.png"
             alt={`${locale === 'de' ? 'Registrierter Steueragent' : locale === 'ja' ? '登録税理士' : 'Registered Tax Agent'} ${AGENT_TPB}`}

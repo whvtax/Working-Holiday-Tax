@@ -96,7 +96,6 @@ function ReviewCard({ r, idx, lang }: { r: RGReview; idx: number; lang: Lang }) 
     <div style={{ width: 300, flex: '0 0 auto', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: 18, boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
         {showPhoto ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={r.reviewer.profilePhotoUrl} alt="" referrerPolicy="no-referrer" onError={() => setImgOk(false)} style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flex: '0 0 auto' }} />
         ) : (
           <div style={{ width: 40, height: 40, borderRadius: '50%', flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontSize: 15, background: bg, color: fg }}>

@@ -161,7 +161,6 @@ describe('a model-proposed PAID without a payment report', () => {
   it('goes through when the customer did report the payment, in any language', async () => {
     for (const said of ['just paid it!', 'Ich habe bezahlt', '支払いました', 'ya pagué', 'done']) {
       decideMock.mockResolvedValue(paidDecision);
-      // eslint-disable-next-line no-await-in-loop
       const out = await runEngine(input({
         history: [
           { role: 'assistant', text: 'Perfect! The total is $220.' },

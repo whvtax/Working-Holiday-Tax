@@ -9,7 +9,7 @@ import { decide, Decision, Turn } from './claude';
 import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
 import { claimsPayment } from './payment-claim';
-import { professionalQuestionMessage } from './i18n';
+import { professionalQuestionMessage, NO_REFUND_CASES_Q, noRefundCasesMessage, PRE_PAYMENT_CHECK_MSG } from './i18n';
 import { accountNameMessage } from './account-name';
 import { PAYMENT_RECEIVED_MSG } from './i18n';
 
@@ -23,6 +23,11 @@ import { resolveAiMode, type AiMode } from './mode';
 import { hasForeignIncome } from './foreign-income';
 import { hasAbnIncome, ABN_PRICE_RE } from './abn-income';
 import { detectLanguage } from './i18n';
+import { isLaterPlan, laterPlanReply } from './later-plan';
+import { renderApproved, type DecisionMode } from './will-decides';
+import { looksLikePaymentConfirmation } from './payment-confirmation';
+import { paragraphise } from './layout';
+import { OTHER_INCOME_RE, CLEAR_ABN_RE } from './instant-choice';
 import { alreadyCheckedReason, applyCheckedClause, CHECKED_CLAUSE, alreadyLodged } from './already-checked';
 import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, containsThanks, firstSentenceOnly, isClosingOnly, thanksReply } from './text-normalize';
 
@@ -36,6 +41,11 @@ export interface EngineInput {
   history: Turn[];
   mode: AiMode;
   bank: { bsb: string; account: string };
+  /** Jo, 22 Oct: 'will' = Will decides everything (will-decides.ts). */
+  decisionMode?: DecisionMode;
+  /** The second check held Will's first reply: why, and that reply, so he
+   *  writes it again (service.ts, secondCheck). */
+  reviewHint?: string;
 }
 
 export interface EngineOutcome {
@@ -219,6 +229,22 @@ const GUARANTEE_SECOND_RE = new RegExp([
   "(?:no refund|keine r[üu]ckerstattung|pas de remboursement|aucun remboursement|no hay (?:ning[úu]n )?reembolso|sin reembolso|nessun rimborso|non c'[èe] (?:alcun |nessun )?rimborso|n[ãa]o (?:houver|h[áa]) reembolso|sem reembolso|還付(?:金)?が(?:ない|なければ|出ない))[^.。]{0,60}(?:fee|geb[üu]hr|frais|tarifa|honorarios|tariffa|compenso|taxa|honor[áa]rios|全額|料金)",
 ].join('|'), 'i');
 
+/** The stock line opens with "Yes," (Ja, はい, Sí, Oui, Sì, Sim), which only
+ *  fits a yes/no question. To a what / which / when / how / why question the
+ *  "Yes," goes (Jo, 22 Oct: "In what cases would there be no refund?" got
+ *  "Yes, that's definitely..."). Applies wherever the line appears. */
+const WH_QUESTION = /(?:^|[.!?\n]\s*)(?:in )?(?:what|which|when|how|why|where|who)\b|\b(?:was|welche[rsn]?|wann|wie|warum|wo)\b[^?]*\?|(?:qu[ée]|cu[áa]ndo|c[óo]mo|por qu[ée]|quoi|quand|comment|pourquoi|cosa|quando|come|perch[ée]|o que|como)\b[^?]*\?|(?:何|なぜ|どう|どんな|いつ|どこ)/i;
+const STOCK_YES = /^(?:Yes|Ja|はい|Sí|Oui|Sì|Sim)[,、]\s*/;
+export function fitStockLine(text: string, customerBurst: string): string {
+  if (!WH_QUESTION.test(customerBurst ?? '')) return text;
+  const stock = Object.values(PRE_PAYMENT_CHECK_MSG).map((m) => m.replace(STOCK_YES, ''));
+  return text.split('\n').map((line) => {
+    const rest = line.replace(STOCK_YES, '');
+    if (rest === line || !stock.some((m) => rest.startsWith(m.slice(0, 20)))) return line;
+    return rest.charAt(0).toUpperCase() + rest.slice(1);
+  }).join('\n');
+}
+
 export function stripGuarantee(text: string): string {
   return text
     .split(/\n{2,}/)
@@ -326,6 +352,7 @@ export function scrubUnpaidDraft(text: string, paid: boolean): string {
 
 export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   const { ctx, history, mode, bank } = input;
+  const willMode = input.decisionMode === 'will';
 
   // Owner emoji + name rules: at most one emoji and the customer's first name,
   // BOTH only in the opening message. This is the opening message when Will has
@@ -379,7 +406,9 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // Jo, 21 Oct: the thank-you line in THEIR language. The chat's language,
   // or, when that is not known yet, the language of what they just wrote.
   const thanksLang = ctx.lang ?? detectLanguage(customerBurst).lang ?? 'en';
-  if (burstSinceOurs.length > 0 && isClosingOnly(customerBurst) && containsThanks(customerBurst)) {
+  // Only once we have said something: a "thank you" in someone's FIRST
+  // message is politeness, not thanks for anything (Jo, 22 Oct, Nicole).
+  if (!willMode && lastAssistantIdx >= 0 && burstSinceOurs.length > 0 && isClosingOnly(customerBurst) && containsThanks(customerBurst)) {
     const line = thanksReply(lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '', thanksLang);
     const thanksDecision: Decision = { action: 'reply', reply_text: line, confidence: 1 };
     const v = policyGuard(line, {
@@ -395,12 +424,98 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     };
   }
 
-  const decision = await decide(ctx, history);
+  // ── "THANKS, I'LL DO IT AFTER WORK" GETS ONE LINE (Jo, 21 Oct) ───────────
+  // A plan to do the form or the payment later, with nothing else in it, is
+  // answered like a person would, in their language, by stage (later-plan.ts).
+  // It used to reach the model, which read it as a polite closing and waited.
+  if (!willMode && burstSinceOurs.length > 0 && isLaterPlan(customerBurst)) {
+    const line = laterPlanReply(ctx.state, thanksLang);
+    const lastOurs = lastAssistantIdx >= 0 ? history[lastAssistantIdx].text.trim() : '';
+    if (lastOurs !== line) {
+      const planDecision: Decision = { action: 'reply', reply_text: line, confidence: 1 };
+      const v = policyGuard(line, {
+        ...input.guard, state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents,
+        isApprovedTemplate: true, customerTextChars: customerBurst.length, customerText: customerBurst,
+      });
+      if (v.allowed) {
+        return {
+          kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+          replyText: line, decision: planDecision,
+          reviewNote: "later plan: one line by stage (Jo's rule, no model call)",
+          newState: undefined, stateChanged: false,
+        };
+      }
+    }
+  }
+
+  // ── "IN WHAT CASES WOULD THERE BE NO REFUND?" (Jo, 22 Oct, +44 7809) ──────
+  // A question about our guarantee's wording, not their tax. It used to get
+  // the stock "Yes, that's definitely one of the many things we check" line.
+  if (!willMode && burstSinceOurs.length > 0 && NO_REFUND_CASES_Q.test(customerBurst)) {
+    const line = noRefundCasesMessage(thanksLang);
+    if (line) {
+      const v = policyGuard(line, {
+        ...input.guard, state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents,
+        isApprovedTemplate: true, customerTextChars: customerBurst.length, customerText: customerBurst,
+      });
+      if (v.allowed) {
+        return {
+          kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+          replyText: line, decision: { action: 'reply', reply_text: line, confidence: 1 },
+          reviewNote: 'when is there no refund: [o15_when_no_refund] (no model call)',
+          newState: undefined, stateChanged: false,
+        };
+      }
+    }
+  }
+
+  const decision = await decide(ctx, history, input.reviewHint ? { rewriteHint: input.reviewHint } : undefined);
+
+  // ── WILL DECIDES (Jo, 22 Oct): his chosen approved message, Jo's wording ──
+  // In 'will' mode Will names the approved message (approved_key) and the
+  // exact text is filled in here, in the customer's language. With no exact
+  // version for this customer, Will's own reply_text stands.
+  let approvedRendered = false;
+  if (willMode && decision.action === 'reply' && decision.approved_key) {
+    // Two of Jo's rules are checked in code, whatever Will chose:
+    //  - any ABN income means the TFN + ABN price, never the TFN one;
+    //  - other income that is not clearly ABN (freelance, UGC, side work) is
+    //    never priced as TFN: it goes to the team (Jo, 22 Oct, Sydney);
+    //  - a first message is never answered with the thank-you line.
+    const customerTexts = history.filter((t) => t.role === 'customer').map((t) => t.text)
+      .map((t) => t.replace(/\b(?:no|not|without|don'?t have|do not have|never had|didn'?t have)\s+(?:an?\s+)?abn\b/gi, ' '));
+    if (decision.approved_key === 'price_tfn' && customerTexts.some((t) => CLEAR_ABN_RE.test(t))) decision.approved_key = 'price_tfn_abn';
+    else if (decision.approved_key === 'price_tfn' && customerTexts.some((t) => OTHER_INCOME_RE.test(t))) {
+      return {
+        kind: 'human_task', decision: { ...decision, action: 'human_task' },
+        task: {
+          reason: 'Mentioned income other than wages (freelance, UGC, side work); Will chose the TFN price. Check how they were paid before pricing.',
+          severity: 'REVIEW', suggestedReply: undefined,
+        },
+      };
+    }
+    if (decision.approved_key === 'thanks' && lastAssistantIdx < 0) decision.approved_key = undefined;
+  }
+  if (willMode && decision.action === 'reply' && decision.approved_key) {
+    const rendered = renderApproved(decision.approved_key, {
+      state: ctx.state, lang: ctx.lang ?? thanksLang, firstName: custFirstName ? cleanFirstName(custFirstName) : null,
+      firstContact: lastAssistantIdx < 0,
+      lastWillText: lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '',
+      foreign: hasForeignIncome(history.filter((t) => t.role === 'customer').map((t) => t.text)),
+    });
+    if (rendered) {
+      decision.reply_text = rendered;
+      approvedRendered = true;
+      if ((decision.approved_key === 'price_tfn' || decision.approved_key === 'price_tfn_abn') && !decision.new_state && canTransition(ctx.state, 'PRICE_SENT')) {
+        decision.new_state = 'PRICE_SENT';
+      }
+    }
+  }
 
   // 13 Oct: the model handed a plain thank-you to the team ("Helllo, perfect
   // thank you" got "I've passed this to the team"). A closing has nothing for
   // a person to do: a thank-you gets one short line, anything else silence.
-  if (decision.action === 'human_task' && burstSinceOurs.length > 0 && isClosingOnly(customerBurst)) {
+  if (!willMode && decision.action === 'human_task' && burstSinceOurs.length > 0 && isClosingOnly(customerBurst)) {
     if (!containsThanks(customerBurst)) return { kind: 'silent', decision: { ...decision, action: 'wait' }, reviewNote: 'closing only: nothing to hand over' };
     const line = thanksReply(lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '', thanksLang);
     const v = policyGuard(line, {
@@ -565,7 +680,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     state: ctx.state,
     paid: ctx.paid,
     estimateFromTeam: ctx.estimatedRefundCents,
-    isApprovedTemplate: false,
+    isApprovedTemplate: approvedRendered,
     customerTextChars: customerBurst.length,
     customerText: customerBurst,
   };
@@ -573,9 +688,11 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // only relax when the customer was NOT already paid (audit finding).
   if (newState === 'PAID' && !ctx.paid) guardCtx.paid = false;
 
-  let text = applyBankRule(
-    fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
-  );
+  let text = fitStockLine(applyBankRule(
+    // Jo's exact wording (approvedRendered) is not reshaped by the rules for
+    // Will's own prose (emoji position, openers); it is already approved.
+    fillPlaceholders(approvedRendered ? decision.reply_text : normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
+  ), customerBurst);
   let rewriteNote: string | undefined;
   // 1 Oct (72-hour audit): "Perfect" opened 63 of Will's messages in three
   // days, "Happy to help" 22, "No worries" 21. The prompt already says once
@@ -584,7 +701,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // The approved price message ("Great! Here are the payment details:") is
   // left alone: its opener is Jo's, and it is the one place the word belongs.
   const willTurns = history.filter((t) => t.role === 'assistant').length;
-  if (willTurns >= 2 && !/\bBSB\b|062692|81049952/.test(text)) {
+  if (!approvedRendered && willTurns >= 2 && !/\bBSB\b|062692|81049952/.test(text)) {
     text = stripCheerOpener(text, custFirstName);
   }
   // 1 Oct (72-hour audit): twenty price messages in three days came in four
@@ -638,6 +755,18 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // path, the typed "I paid" rule, the team's button). When the customer has
   // not reported a payment, any confirmation or form link in the draft is
   // removed and the proposed move to Paid is dropped.
+  // One payment, one confirmation (Jo, 23 Oct): already paid and already
+  // told, so a "payment received" paragraph in Will's draft is dropped.
+  if (ctx.paid && PAYMENT_RECEIVED_PREFIX.test(text)
+      && history.some((t) => t.role === 'assistant' && looksLikePaymentConfirmation(t.text))) {
+    // The confirmation runs from its first line to the end (title, the form
+    // request, the link), so everything from that paragraph on goes.
+    const paras = text.split(/\n{2,}/);
+    const at = paras.findIndex((para) => PAYMENT_RECEIVED_PREFIX.test(para));
+    const kept = paras.slice(0, at < 0 ? paras.length : at).join('\n\n').trim();
+    if (!kept) return { kind: 'silent', decision: { ...decision, action: 'wait' }, reviewNote: 'payment already confirmed: no second confirmation' };
+    text = kept;
+  }
   if (!ctx.paid && (PAYMENT_RECEIVED_PREFIX.test(text) || FORM_LINK_IN_TEXT.test(text)) && !claimsPayment(customerBurst)) {
     const cleaned = text
       .split(/\n{2,}/)
@@ -725,7 +854,10 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // with no thanks in it stays silent.
   const replyIsPlain = !/\d/.test(text) && !/https?:\/\//i.test(text) && !/[?？]/.test(text);
   const thanksClose = containsThanks(customerBurst) && !customerAskedSomething(customerBurst) && customerBurst.trim().length <= 120;
-  if (thanksClose && replyIsPlain) {
+  if (willMode) {
+    // Will read the whole chat and chose to reply; the keyword trims below
+    // second-guessed that from one message. His choice stands.
+  } else if (thanksClose && replyIsPlain) {
     text = firstSentenceOnly(text);
   } else if (courtesyClose && !containsThanks(customerBurst)) {
     // 1 Oct (72-hour audit): twenty "You're very welcome!" messages in three
@@ -879,7 +1011,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       const priceStandIn = draftHasBank
         ? (/\$\s?495\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn_abn_foreign : /\$\s?330\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn_foreign : /\$\s?385\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn_abn : /\$\s?220\b/.test(decision.reply_text ?? '') ? APPROVED.price_tfn : null)
         : null;
-      const safe = priceStandIn ?? professionalQuestionMessage(ctx.lang);
+      const safe = priceStandIn ?? fitStockLine(professionalQuestionMessage(ctx.lang), customerBurst);
       // A held draft about the bank details, for a customer who already has
       // them, is a question about the ACCOUNT (is it official, which name, is
       // the amount right). Neither stand-in answers that; a person does.
@@ -927,6 +1059,12 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // discounts) have been extended to the languages Will speaks, so a foreign
   // reply is now genuinely checked rather than merely held. `unguardedLanguage`
   // is still returned for the audit trail; it no longer gates the send.
+
+  // SHORT PARAGRAPHS (Jo, 23 Oct: "how it looks matters even more than what it
+  // says"). After the guard has passed it, a long block of Will's own prose is
+  // split into short paragraphs; not one word changes. Jo's exact wording is
+  // already laid out and is left as it is.
+  if (!approvedRendered) text = paragraphise(text);
 
   // FAIL SAFE: only the exact string 'FULL_AUTO' transmits. This used to read
   // `mode === 'SUPERVISED' ? 'pending_approval' : 'sent'`, which sent on every

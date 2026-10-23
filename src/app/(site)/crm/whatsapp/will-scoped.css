@@ -985,99 +985,6 @@ aside.side{
 .will-scope .view.active.overview-view{display:flex;flex-direction:column;overflow:hidden}
 .will-scope .overview-view .ov-summary{flex:none}
 
-/* No white container box (Jo, 30 Aug): Ask Will is transparent and its cards,
-   bubbles and composer float directly on the page's grey. */
-.will-scope .asst{
-  display:flex;flex-direction:column;
-  background:transparent;border:none;border-radius:0;
-  min-height:0;flex:1;
-}
-.will-scope .asst-head{
-  flex:none;position:relative;padding:6px 4px 12px;
-  background:transparent;display:flex;align-items:center;justify-content:flex-start;
-}
-.will-scope .asst-title{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:.2px}
-.will-scope .asst-dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 20%,transparent)}
-.will-scope .asst-refresh{
-  position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  width:30px;height:30px;border-radius:8px;border:1px solid var(--line2);background:var(--surface);
-  display:grid;place-items:center;cursor:pointer;color:var(--ink3);
-}
-.will-scope .asst-refresh:hover:not(:disabled){color:var(--brand1);border-color:var(--brand1)}
-.will-scope .asst-refresh:disabled{opacity:.5;cursor:default}
-
-.will-scope .asst-scroll{flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-
-.will-scope .asst-empty{color:var(--ink2);font-size:12.5px;line-height:1.6;margin:auto 0}
-.will-scope .asst-empty p{margin-bottom:12px}
-.will-scope .asst-chips{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-.will-scope .asst-chip{
-  text-align:left;font-family:inherit;font-size:12px;color:var(--ink);
-  background:var(--surface2);border:1px solid var(--line2);border-radius:10px;
-  padding:9px 13px;cursor:pointer;width:100%;transition:border-color 150ms,background 150ms;
-}
-.will-scope .asst-chip:hover{border-color:var(--brand1);background:color-mix(in srgb,var(--brand1) 5%,var(--surface2))}
-
-.will-scope .asst-msg{display:flex;flex-direction:column;gap:8px;max-width:88%}
-.will-scope .asst-msg.user{align-self:flex-end;align-items:flex-end}
-.will-scope .asst-msg.assistant{align-self:flex-start;align-items:flex-start}
-.will-scope .asst-bubble{
-  font-size:12.5px;line-height:1.6;padding:10px 14px;border-radius:18px;white-space:pre-wrap;word-break:break-word;
-}
-.will-scope .asst-msg.user .asst-bubble{background:var(--brand1);color:#fff;border-bottom-right-radius:6px}
-.will-scope .asst-msg.assistant .asst-bubble{background:var(--surface2);color:var(--ink);border:1px solid var(--line);border-bottom-left-radius:6px}
-.will-scope .asst-bubble.err{background:color-mix(in srgb,var(--crit) 8%,var(--surface2));border-color:color-mix(in srgb,var(--crit) 30%,transparent);color:var(--ink)}
-
-.will-scope .asst-typing{display:flex;gap:4px;align-items:center}
-.will-scope .asst-typing span{width:6px;height:6px;border-radius:50%;background:var(--ink3);opacity:.4;animation:asstblink 1.2s infinite ease-in-out}
-.will-scope .asst-typing span:nth-child(2){animation-delay:.2s}
-.will-scope .asst-typing span:nth-child(3){animation-delay:.4s}
-@keyframes asstblink{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:.9;transform:translateY(-2px)}}
-
-.will-scope .asst-props{display:flex;flex-direction:column;gap:8px;width:100%}
-.will-scope .asst-prop{
-  background:var(--surface);border:1px solid var(--line2);border-left:3px solid var(--brand1);
-  border-radius:10px;padding:11px 13px;display:flex;flex-direction:column;gap:7px;
-}
-.will-scope .asst-prop.approved{border-left-color:var(--good);opacity:.85}
-.will-scope .asst-prop.dismissed{opacity:.5}
-.will-scope .asst-prop-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.will-scope .asst-prop-kind{font-size:12px;font-weight:700;color:var(--ink)}
-.will-scope .asst-prop-who{font-size:11px;color:var(--ink3);white-space:nowrap}
-.will-scope .asst-prop-why{font-size:11.5px;color:var(--ink2);line-height:1.5}
-.will-scope .asst-prop-draft{font-size:11.5px;color:var(--ink2);line-height:1.5;font-style:italic}
-.will-scope .asst-prop-text{
-  font-family:inherit;font-size:12px;line-height:1.55;color:var(--ink);
-  background:var(--surface2);border:1px solid var(--line2);border-radius:8px;padding:8px 10px;resize:vertical;width:100%;
-}
-.will-scope .asst-prop-actions{display:flex;gap:7px;flex-wrap:wrap}
-.will-scope .asst-prop-status{font-size:11.5px;font-weight:600}
-.will-scope .asst-prop-status.approved{color:var(--good)}
-.will-scope .asst-prop-status.dismissed{color:var(--ink3)}
-
-/* ChatGPT-style floating composer (Jo, 30 Aug): a fully rounded pill that floats
-   above the bottom with a soft shadow, no attached grey bar, all corners round. */
-.will-scope .asst-composer{
-  flex:none;display:flex;gap:8px;align-items:flex-end;
-  padding:12px 16px 16px;border-top:none;background:transparent;
-}
-.will-scope .asst-composer textarea{
-  flex:1;font-family:inherit;font-size:12.5px;line-height:1.5;color:var(--ink);
-  background:var(--surface);border:1px solid var(--line2);border-radius:24px;
-  padding:11px 18px;resize:none;max-height:120px;min-height:44px;
-  box-shadow:0 1px 4px rgba(20,30,45,.06);
-}
-.will-scope .asst-composer textarea:focus{outline:none;border-color:var(--brand1);box-shadow:0 3px 16px rgba(14,92,66,.16)}
-.will-scope .asst-composer .asst-send{
-  flex:none;padding:0;width:44px;height:44px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;color:#fff;
-  background:var(--brand1);box-shadow:0 3px 14px rgba(14,92,66,.28);
-}
-/* Keep it clearly GREEN even while empty/disabled (Jo, 30 Aug): just slightly
-   softer, not the faded grey-green the default disabled opacity produced. */
-.will-scope .asst-composer .asst-send:disabled{opacity:1;background:color-mix(in srgb,var(--brand1) 78%, #fff);cursor:default;box-shadow:none}
-.will-scope .asst-composer .asst-send svg{display:block}
-
 /* The reviewer's note on a draft (second set of eyes): why the wording was
    adjusted, or why it was held for a person. Quiet, one line, under the draft. */
 .will-scope .reviewnote{
@@ -1090,17 +997,6 @@ aside.side{
 /* The response clock on a reply bubble: how long after the customer's message
    it went out. Sits inline in the message time row, quiet. */
 .will-scope .mt .respgap{color:var(--ink3);margin-right:5px;font-variant-numeric:tabular-nums}
-
-/* "Working…" state while an action Jo approved from the copilot actually runs,
-   with a small spinning loader so he can see it is in progress. */
-.will-scope .asst-prop-running{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--brand1)}
-.will-scope .asst-spin{
-  width:14px;height:14px;border-radius:50%;
-  border:2px solid color-mix(in srgb,var(--brand1) 25%,transparent);
-  border-top-color:var(--brand1);
-  animation:asstspin .7s linear infinite;flex:none;
-}
-@keyframes asstspin{to{transform:rotate(360deg)}}
 
 /* Per-chat follow-up switch in the chat header, beside the Will Active/Paused
    toggle. Green pill when this customer is being followed up, quiet outline
@@ -1116,65 +1012,6 @@ aside.side{
 .will-scope .fubtn.on:hover{background:rgba(74,168,114,.16)}
 .will-scope .fubtn.off:hover{border-color:var(--brand1);color:var(--brand1)}
 .will-scope .fubtn:active{transform:scale(.97)}
-
-/* Two-column cockpit (Jo, 30 Aug): tasks as a vertical list on the LEFT, chat
-   on the RIGHT. The body fills the panel under the header; each column scrolls
-   on its own so the composer and the task list never push each other around. */
-/* Transparent body (Jo, 30 Aug): the task cards float on the page grey on the
-   left, and the chat is its own rounded floating panel on the right, with a
-   small gap between them, exactly like the chat-list / chat-pane split in the
-   Chats tab. */
-.will-scope .asst-body{flex:1;display:flex;gap:14px;min-height:0;background:transparent}
-.will-scope .asst-tasks{
-  flex:0 0 34%;max-width:400px;min-width:250px;min-height:0;
-  display:flex;flex-direction:column;
-}
-.will-scope .asst-tasks-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 12px}
-.will-scope .asst-tasks-empty{margin:auto;color:var(--ink3);font-size:12px}
-.will-scope .asst-chatcol{
-  flex:1;display:flex;flex-direction:column;min-width:0;
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-  overflow:hidden;box-shadow:0 1px 3px rgba(30,32,40,.04);
-}
-.will-scope .asst-card{
-  flex:none;display:flex;flex-direction:column;gap:7px;
-  background:var(--surface);border:1px solid var(--line2);border-left:3px solid var(--brand1);
-  border-radius:11px;padding:11px 13px;box-shadow:0 1px 4px rgba(20,30,45,.07);
-}
-.will-scope .asst-tasks .asst-prop-text{min-height:56px}
-/* On a narrow screen the two columns stack: tasks on top, chat below. */
-@media (max-width:720px){
-  .will-scope .asst-body{flex-direction:column}
-  .will-scope .asst-tasks{flex:none;max-width:none;max-height:40%;border-right:none;border-bottom:1px solid var(--line)}
-}
-
-/* Card header now shows only the WhatsApp number in bold; the whole card is
-   clickable to open that chat (Jo, 30 Aug). */
-.will-scope .asst-card-num{font-size:13px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
-.will-scope .asst-card.clickable{cursor:pointer;transition:border-color 140ms,box-shadow 160ms}
-.will-scope .asst-card.clickable:hover{border-color:var(--brand1);box-shadow:0 4px 14px rgba(20,22,30,.08)}
-
-/* Small column titles (Jo, 30 Aug): "Open tasks" over the cards on the left,
-   "Ask Will" as a light header inside the chat panel on the right, both at the
-   same top so the two columns read as aligned. */
-.will-scope .asst-coltitle{flex:none;font-size:12.5px;font-weight:700;color:var(--ink);padding:4px 4px 10px;display:flex;align-items:center;gap:8px}
-.will-scope .asst-coltitle.in-chat{padding:12px 16px;border-bottom:1px solid var(--line);color:var(--ink)}
-
-/* Refresh button on the Open tasks title (Jo, 30 Aug): re-runs the sweep. */
-.will-scope .asst-taskrefresh{
-  margin-left:auto;width:28px;height:28px;border-radius:8px;flex:none;
-  border:1px solid var(--line2);background:var(--surface);color:var(--ink3);
-  display:grid;place-items:center;cursor:pointer;
-  transition:color 140ms,border-color 140ms;
-}
-.will-scope .asst-taskrefresh:hover:not(:disabled){color:var(--brand1);border-color:var(--brand1)}
-.will-scope .asst-taskrefresh:disabled{opacity:.5;cursor:default}
-
-/* Two-agent separation (Jo, 30 Aug): the chat's own action cards render inline
-   under its message; the refresh icon spins while the sweep runs. */
-.will-scope .asst-inline-cards{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:2px}
-.will-scope .asst-chat-empty{margin:auto 0;color:var(--ink3);font-size:12px;line-height:1.6;padding:8px 2px}
-.will-scope .asst-taskrefresh.spinning svg{animation:asstspin .8s linear infinite}
 
 /* ── Exact cost cards (Jo, 24 Sep) ─────────────────────────────────────── */
 .will-scope .costcards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0 6px}

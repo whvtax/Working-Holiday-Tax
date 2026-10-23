@@ -94,6 +94,6 @@ describe('"Amazing thank you" after the estimate gets the line even if the model
   it('source: the fixed line comes before the model call', () => {
     const engine = readFileSync(join(__dirname, '..', 'engine.ts'), 'utf8');
     expect(isClosingOnly('Amazing thank you')).toBe(true);
-    expect(engine.indexOf("thank-you: You're very welcome! 😊")).toBeLessThan(engine.indexOf('const decision = await decide(ctx, history);'));
+    expect(engine.indexOf("thank-you: You're very welcome! 😊")).toBeLessThan(engine.indexOf('const decision = await decide(ctx, history'));
   });
 });

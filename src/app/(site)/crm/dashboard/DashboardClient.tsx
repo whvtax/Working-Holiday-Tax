@@ -1442,7 +1442,7 @@ export default function DashboardClient() {
   // sigFetched above: focus, visibility, version change, failed lookup).
   const [sigLinks, setSigLinks] = useState<Record<string, {id:string;state:string;signatureReadySent:boolean}|null>>({})
   const [sigBusy, setSigBusy] = useState<string|null>(null)
-  const toSigLink = (j: any) => j?.customer ? { id:String(j.customer.id), state:String(j.customer.state), signatureReadySent:!!j.customer.signatureReadySent } : null // eslint-disable-line @typescript-eslint/no-explicit-any
+  const toSigLink = (j: any) => j?.customer ? { id:String(j.customer.id), state:String(j.customer.state), signatureReadySent:!!j.customer.signatureReadySent } : null
   useEffect(() => {
     const pending = doneTasks.filter(t => t.whatsapp && !sigFetched.current.has(t.id))
     if (!pending.length) return

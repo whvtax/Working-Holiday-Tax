@@ -91,7 +91,6 @@ describe('the instant path in the service (source-pinned)', () => {
 });
 
 describe('first contact that already names the track (Jo, 11 Oct)', () => {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { firstContactPriceMessage } = require('@/lib/will/instant-choice') as typeof import('@/lib/will/instant-choice');
   it('TFN: greeting, "right fit", then the rest of the price message', () => {
     const m = firstContactPriceMessage('TFN', 'Alex');

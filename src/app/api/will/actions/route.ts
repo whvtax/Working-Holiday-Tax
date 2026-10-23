@@ -1,6 +1,7 @@
 // Owner actions from the dashboard. Hardened after audit:
 // preconditions on message status, approval-time re-guard,
 // template save-time guard, real kill switch, quick manual replies.
+import { DECISION_MODE_KEY } from '@/lib/will/will-decides';
 import { NextResponse } from 'next/server';
 import { teamConfirmsPayment, teamSaysLodged, teamPromisesRefund, teamSentRefund, businessDaysFromNow, teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { readWinbacks, markWinbackQueued, markWinbackSent, winbackStatus, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
@@ -36,7 +37,7 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'mark_read_silent' | 'toggle_ai' | 'resume_all_leads' | 'set_outcome'
-  | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault' | 'set_google_place_id' | 'sync_reviews';
+  | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_ai_mode' | 'set_decision_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault' | 'set_google_place_id' | 'sync_reviews';
   /** dismiss_fault only: the fault's stable key (SystemFault.key). */
   faultKey?: string;
   id?: string;
@@ -1153,6 +1154,14 @@ async function handlePost(req: Request) {
       await store.setSetting('ai_mode', mode);
       await store.audit('owner', mode === 'FULL_AUTO' ? 'ai_mode_autopilot' : 'ai_mode_approval', { mode });
       return NextResponse.json({ ok: true, mode });
+    }
+
+    // Jo, 22 Oct: who decides what Will says (lib/will/will-decides.ts).
+    case 'set_decision_mode': {
+      if (b.mode !== 'legacy' && b.mode !== 'will') return bad('unknown decision mode');
+      await store.setSetting(DECISION_MODE_KEY, b.mode);
+      await store.audit('owner', b.mode === 'will' ? 'decision_mode_will' : 'decision_mode_legacy', { mode: b.mode });
+      return NextResponse.json({ ok: true, decisionMode: b.mode });
     }
 
     case 'set_kill_switch':

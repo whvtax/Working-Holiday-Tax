@@ -357,7 +357,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       // i.e. from step 2, so restoring it lands them back on step 2.
       setStep(2)
     } catch {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Final step of the form: everything is filled in, so hand the whole thing
@@ -592,7 +591,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             {step === 1 && (
               <div className="form-trust-row">
                 <GoogleReviewsBadge lang={lang} />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="form-trust-seal"
                   src="/assets/tpb-registered.png"

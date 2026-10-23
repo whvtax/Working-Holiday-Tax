@@ -2,6 +2,7 @@
 // Live dashboard. Two assistant modes (Approval / Autopilot), real health
 // checks, quick replies everywhere, suggested answers on every task,
 // one-click service templates, deep report.
+import MorningReport from './MorningReport';
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, CustomerState } from '@/lib/will/state-machine';
@@ -131,6 +132,8 @@ interface Health {
   killSwitch: boolean;
   /** The mode the SYSTEM is in, read from storage — not what this tab clicked. */
   aiMode?: 'SUPERVISED' | 'FULL_AUTO';
+  /** Jo, 22 Oct: 'will' = Will decides every message; 'legacy' = the rules answer first. */
+  decisionMode?: 'legacy' | 'will';
   usingMock: boolean;
   whatsappLive?: boolean;
   whatsappConfigured?: boolean;
@@ -557,7 +560,6 @@ function Attachment({ media }: { media: NonNullable<MessageRow['meta']>['media']
         // Opens full size in a new tab — the common case is a payment
         // screenshot that has to be read, not glanced at.
         <a href={src} target="_blank" rel="noreferrer">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt={media.caption || 'Photo from customer'} onError={() => setFailed(true)} />
         </a>
       ) : isVideo ? (
@@ -720,47 +722,6 @@ export default function Dashboard() {
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const latestChatReq = useRef<string | null>(null);
 
-  // ── Overview copilot ("Ask Will"): the owner-facing chat that replaced the
-  // recent-conversations list on the Overview. It reads the system and proposes
-  // actions; every proposal is a one-click button that goes through
-  // /api/will/actions, so nothing here mutates without an explicit press.
-  interface AsstProposal {
-    id: string; kind: 'move_stage' | 'send_reply' | 'open_task' | 'add_library'; question?: string; answer?: string;
-    customerId: string; customerLabel: string; customerPhone?: string;
-    toState?: CustomerState; toStateLabel?: string; message?: string; reason?: string; why?: string;
-  }
-  interface AsstMsg { role: 'user' | 'assistant'; text: string; proposals?: AsstProposal[]; error?: boolean }
-  const [asstMsgs, setAsstMsgs] = useState<AsstMsg[]>([]);
-  const [asstInput, setAsstInput] = useState('');
-  const [asstBusy, setAsstBusy] = useState(false);
-  // TWO SEPARATE AGENTS (Jo, 30 Aug). The left "Open tasks" column is its OWN
-  // agent: a sweep that scans the whole pipeline for ways to advance a sale and
-  // fills this list with action cards. The right "Ask Will" chat (asstMsgs) is
-  // the separate interactive agent Jo talks to. `taskProposals` is the sweep's
-  // output; `tasksBusy` is its own loading state so it never blocks the chat.
-  const [taskProposals, setTaskProposals] = useState<AsstProposal[]>([]);
-  const [tasksBusy, setTasksBusy] = useState(false);
-  const [tasksNote, setTasksNote] = useState('');
-  // Proposal ids already acted on (approved/dismissed), so a button cannot be
-  // pressed twice and the card shows its outcome.
-  const [asstDone, setAsstDone] = useState<Record<string, 'approved' | 'dismissed'>>({});
-  // Proposals currently being executed (an action Jo pressed), so the card can
-  // show a spinner while /api/will/actions runs (Jo, 29 Aug: "so I know it's working").
-  const [asstRunning, setAsstRunning] = useState<Record<string, boolean>>({});
-  // send_reply proposals are editable before sending; this holds the edited text.
-  const [asstEdit, setAsstEdit] = useState<Record<string, string>>({});
-  const asstScrollRef = useRef<HTMLDivElement>(null);
-  // The proactive opening ("like a secretary"): once per page load, when the
-  // Overview is first shown, the copilot scans the pipeline unprompted and
-  // greets Jo with what is worth his attention. This ref makes it fire once, not
-  // on every tab switch back to the Overview.
-  const asstKickedRef = useRef(false);
-  // Proposal ids come back as p1, p2… restarting each turn, so two briefings can
-  // collide. Remap every incoming proposal to a session-unique id before storing.
-  const propUidRef = useRef(0);
-  const remapProps = (ps: unknown): AsstProposal[] =>
-    (Array.isArray(ps) ? ps : []).map((p) => ({ ...(p as AsstProposal), id: `pp${++propUidRef.current}` }));
-
   const say = (m: string) => {
     setToast(m);
     // The longer refusals (unfilled placeholder, outside-24h-window, etc.) are
@@ -833,192 +794,6 @@ export default function Dashboard() {
       <button className="btn ghost" onClick={() => setConfirmDismiss((prev) => { const n = new Set(prev); n.delete(taskId); return n; })}>Cancel</button>
     </div>
   ) : null;
-
-  // ── Overview copilot handlers. Defined after refresh/openChat because they
-  // call them. Send one owner turn: the whole visible transcript goes each time
-  // (the server holds no session), and the answer plus any action proposals
-  // come back together.
-  const sendAsst = useCallback(async (raw: string) => {
-    const text = raw.trim();
-    if (!text || asstBusy) return;
-    const history = [...asstMsgs, { role: 'user' as const, text }];
-    setAsstMsgs(history);
-    setAsstInput('');
-    setAsstBusy(true);
-    try {
-      const res = await fetch('/api/will/assistant', {
-        method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ messages: history.map((m) => ({ role: m.role, text: m.text })) }),
-      });
-      const d = await res.json().catch(() => ({}));
-      // The chat stays text only. Any action proposals the turn produced go to
-      // the LEFT Open-tasks column, never into the conversation (Jo, 30 Aug:
-      // "למה בצאט?" — no cards in the chat). New proposals are appended so a
-      // card the owner asked for joins the sweep's cards rather than replacing
-      // them.
-      const newProps = remapProps(d.proposals);
-      if (newProps.length) {
-        setTaskProposals((prev) => [...newProps, ...prev]);
-        setTasksNote('');
-      }
-      setAsstMsgs((prev) => [...prev, {
-        role: 'assistant',
-        text: typeof d.reply === 'string' && d.reply.trim()
-          ? d.reply
-          : (newProps.length ? 'הוספתי את זה למשימות משמאל.' : 'Sorry, I could not answer that.'),
-        error: d.ok === false,
-      }]);
-    } catch {
-      setAsstMsgs((prev) => [...prev, { role: 'assistant', text: 'I could not reach the server. Please try again.', error: true }]);
-    } finally {
-      setAsstBusy(false);
-    }
-  }, [asstMsgs, asstBusy]);
-
-  // Approve one proposal: map it to the existing owner action and run it. The
-  // mutation path is /api/will/actions, exactly as if the owner had done it by
-  // hand elsewhere in the CRM.
-  const approveProposal = useCallback(async (p: AsstProposal) => {
-    if (asstDone[p.id] || asstRunning[p.id]) return;
-    let body: Record<string, unknown> | null = null;
-    if (p.kind === 'move_stage' && p.toState) {
-      // Same safety as the chat-header stage badge (audit, 5 Sep). This used
-      // to force every move, so one click on a card could put a PAID customer
-      // back in the sales cadence with no second look, while the badge asked
-      // first. Now: force only when the target is not a valid next step (so a
-      // one-step proposal goes through the guarded server path), and ask the
-      // identical question before a forced move of a paid customer into a
-      // sales stage. If the customer is not in the loaded list we cannot
-      // check either, so the old forced move stands.
-      const cust = data.customers.find((c) => c.id === p.customerId);
-      let force = true;
-      if (cust) {
-        const nextStates = TRANSITIONS[cust.state] ?? [];
-        force = !nextStates.includes(p.toState);
-        const SALES = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
-        if (force && cust.paid && SALES.includes(p.toState)
-          && !confirm(`${cust.name ?? 'This customer'} has PAID. Moving them back to ${stageLabelOf(p.toState)} puts them in the sales stages again. Are you sure?`)) return;
-      }
-      body = { action: 'set_state', customerId: p.customerId, state: p.toState, force };
-    } else if (p.kind === 'send_reply') {
-      const msg = (asstEdit[p.id] ?? p.message ?? '').trim();
-      if (!msg) return;
-      body = { action: 'manual_reply', customerId: p.customerId, body: msg };
-    } else if (p.kind === 'open_task') {
-      body = { action: 'create_task', customerId: p.customerId, reason: p.reason, body: p.message };
-    } else if (p.kind === 'add_library') {
-      // Jo, 24 Sep: the copilot proposes a Library answer; this adds it, active.
-      const answer = (asstEdit[p.id] ?? p.answer ?? '').trim();
-      if (!answer || !p.question) return;
-      setAsstRunning((s) => ({ ...s, [p.id]: true }));
-      const res = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'add', question: p.question, answer }) });
-      const r = await res.json().catch(() => null);
-      setAsstRunning((s) => { const n = { ...s }; delete n[p.id]; return n; });
-      if (!r?.ok) { say(r?.error ?? 'could not add to the Library'); return; }
-      setAsstDone((d) => ({ ...d, [p.id]: 'approved' }));
-      say('Added to the Library ✓');
-      loadKnowledge();
-      return;
-    }
-    if (!body) return;
-    // Show the spinner while the action actually runs, then mark it done.
-    setAsstRunning((s) => ({ ...s, [p.id]: true }));
-    const r = await act(body);
-    setAsstRunning((s) => { const n = { ...s }; delete n[p.id]; return n; });
-    if (r && r.ok === false) {
-      say(r.error || r.detail || 'That action did not go through.');
-      return;
-    }
-    setAsstDone((d) => ({ ...d, [p.id]: 'approved' }));
-    say(p.kind === 'send_reply' ? 'Message sent ✓' : p.kind === 'move_stage' ? `Moved to ${p.toStateLabel} ✓` : 'Task opened ✓');
-    refresh();
-  }, [asstDone, asstRunning, asstEdit, refresh, data.customers, loadKnowledge]);
-
-  // One action-card renderer, shared by the Open-tasks column (agent 1) and the
-  // chat's own inline cards (agent 2), so both look and behave identically.
-  const renderProposalCard = (p: AsstProposal) => {
-    const running = asstRunning[p.id];
-    return (
-      <div key={p.id} className={`asst-card${p.customerId ? ' clickable' : ''}`} onClick={() => { if (p.customerId) { setView('chats'); openChat(p.customerId); } }}>
-        <div className="asst-prop-head">
-          <span className="asst-card-num">{p.customerPhone ? phoneOf(p.customerPhone) : p.customerLabel}</span>
-        </div>
-        {(p.why || p.reason) && <div className="asst-prop-why">{p.why || p.reason}</div>}
-        {p.kind === 'send_reply' && (
-          <textarea
-            className="asst-prop-text"
-            value={asstEdit[p.id] ?? p.message ?? ''}
-            onClick={(e) => e.stopPropagation()}
-            onChange={(e) => setAsstEdit((d) => ({ ...d, [p.id]: e.target.value }))}
-            rows={3}
-          />
-        )}
-        {p.kind === 'open_task' && p.message && (
-          <div className="asst-prop-draft">Draft: “{p.message}”</div>
-        )}
-        {p.kind === 'add_library' && (
-          <>
-            <div className="asst-prop-draft">Q: {p.question}</div>
-            <textarea
-              className="asst-prop-text"
-              value={asstEdit[p.id] ?? p.answer ?? ''}
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => setAsstEdit((d) => ({ ...d, [p.id]: e.target.value }))}
-              rows={3}
-            />
-          </>
-        )}
-        {running ? (
-          <div className="asst-prop-running"><span className="asst-spin" aria-hidden="true" />Working…</div>
-        ) : (
-          <div className="asst-prop-actions">
-            <button className="btn take sm" onClick={(e) => { e.stopPropagation(); approveProposal(p); }}>
-              {p.kind === 'send_reply' ? 'Send' : p.kind === 'move_stage' ? 'Move' : 'Open task'}
-            </button>
-            <button className="btn quiet sm" onClick={(e) => { e.stopPropagation(); setAsstDone((d) => ({ ...d, [p.id]: 'dismissed' })); }}>Dismiss</button>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // AGENT 1: the Open-tasks sweep. Scans the whole pipeline for ways to move a
-  // sale forward and fills the LEFT column with action cards. Separate from the
-  // chat: it writes to taskProposals, never to the conversation. Fired once on
-  // open and by the refresh button on the Open tasks title.
-  const briefAsst = useCallback(async () => {
-    if (tasksBusy) return;
-    setTasksBusy(true);
-    const kickoff = 'אתה סוכן ההמרה של רשימת המשימות. המטרה היחידה שלך: להמיר לקוחות ללקוחות משלמים. סרוק שתי תחנות: (1) את כל הסגורים, השתמש בכלי list_recoverable_leads שכבר ניתח כל שיחה סגורה והחליט מי עוד ניתן להחזיר ועם איזו הודעה, ו-(2) את הלידים בפייפ שאין להם עדיין פולואפ מתוזמן (already_being_followed_up=false). לכל לקוח כזה, על סמך מה שקיים, החלט אם עוד אפשר להמיר אותו ללקוח משלם. אם כן, הבא כרטיס אחד עם הודעה מוכנה לשליחה שנועדה להמיר אותו. אם המסקנה שלך שאי אפשר להמיר אותו, אל תביא אותו בכלל, ואל תמציא לקוחות או סיבות. אל תיגע במי שכבר יש לו פולואפ מתוזמן. כל כרטיס חייב לכלול שני דברים: שורת סיבה קצרה אחת (למה הלקוח הזה ומה ההזדמנות להמיר), וההודעה המוכנה עצמה לשליחה (בכרטיס של פתיחת משימה, בשדה ההודעה המוצעת). אל תחזיר כרטיס בלי הודעה מוכנה ובלי סיבה. רק כרטיסים, בלי טקסט חופשי ובלי רשימה. אם אחרי שסרקת באמת אין אף לקוח שאפשר עוד להמיר, אל תחזיר כרטיסים, ובמקום זה כתוב משפט אחד בדיוק: סרקתי את כל הצ׳אטים בקלוזד ובלידים, אין כרגע לקוח שאפשר עוד להמיר.';
-    try {
-      const res = await fetch('/api/will/assistant', {
-        method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ messages: [{ role: 'user', text: kickoff }] }),
-      });
-      const d = await res.json().catch(() => ({}));
-      const ps = remapProps(d.proposals);
-      setTaskProposals(ps);
-      setTasksNote(ps.length ? '' : (typeof d.reply === 'string' && d.reply.trim() ? d.reply : 'הכל על המסלול, אין משימה פתוחה כרגע'));
-    } catch {
-      setTasksNote('לא הצלחתי לרענן משימות. נסה שוב.');
-    } finally {
-      setTasksBusy(false);
-    }
-  }, [tasksBusy]);
-
-  // Fire the sweep once, the first time the Overview is shown.
-  useEffect(() => {
-    if (view === 'pipeline' && !asstKickedRef.current && taskProposals.length === 0 && !tasksBusy) {
-      asstKickedRef.current = true;
-      briefAsst();
-    }
-  }, [view, taskProposals.length, tasksBusy, briefAsst]);
-
-  // Keep the copilot transcript pinned to the newest message.
-  useEffect(() => {
-    const el = asstScrollRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }, [asstMsgs, asstBusy]);
 
   useEffect(() => { refresh(); }, [refresh, view]);
   // Scroll to and briefly highlight a task opened from the notification bell.
@@ -1411,6 +1186,30 @@ export default function Dashboard() {
                 }}>Autopilot</button>
             </div>
           </div>
+          <div className="modebar" style={{ padding: 0, marginLeft: 12 }}>
+            <span className="modelabel">Decides</span>
+            <div className="modes">
+              <button className={`mode ${(health?.decisionMode ?? 'will') === 'legacy' ? 'active supervised' : ''}`}
+                title="As before: fixed rules answer some messages by their words before Will reads the chat."
+                onClick={async () => {
+                  if ((health?.decisionMode ?? 'will') === 'legacy') return;
+                  const r = await act({ action: 'set_decision_mode', mode: 'legacy' });
+                  if (!r?.ok) { say('Could not change it. Nothing was changed'); return; }
+                  setHealth((h) => h ? { ...h, decisionMode: 'legacy' } : h);
+                  say('Rules first, as before');
+                }}>Rules</button>
+              <button className={`mode ${(health?.decisionMode ?? 'will') === 'will' ? 'active autopilot' : ''}`}
+                title={`Every message reaches ${ASSISTANT_NAME}. He reads the whole chat and decides; approved messages still go out in your exact wording, and every hard rule still applies.`}
+                onClick={async () => {
+                  if ((health?.decisionMode ?? 'will') === 'will') return;
+                  if (!window.confirm(`${ASSISTANT_NAME} will read every message in context and decide what to answer. Approved messages keep your exact wording and the hard rules still apply.\n\nYou can switch back to Rules at any time.\n\nTurn it on?`)) return;
+                  const r = await act({ action: 'set_decision_mode', mode: 'will' });
+                  if (!r?.ok) { say('Could not change it. Nothing was changed'); return; }
+                  setHealth((h) => h ? { ...h, decisionMode: 'will' } : h);
+                  say(`${ASSISTANT_NAME} decides every message`);
+                }}>{ASSISTANT_NAME}</button>
+            </div>
+          </div>
           <div className="hspacer" />
           <div className="health">
             {/* Jo, 6 Sep: hid the CronTick and Cron dots from the header row — the
@@ -1523,66 +1322,12 @@ export default function Dashboard() {
             </div>
             </div>{/* end sticky summary */}
 
-            {/* The recent-conversations list used to sit here. Jo asked for the
-                copilot in its place (28 Aug): the pipeline strip above still
-                shows where everyone is, and this is where he now asks Will for
-                advice and to act. Nothing here sends or moves anyone on its own
-                — every action is a one-click button that runs through the same
-                guarded /api/will/actions path as the rest of the CRM. */}
-            <div className="asst">
-              {/* Two SEPARATE agents (Jo, 30 Aug). LEFT "Open tasks" is the sweep
-                  agent: it scans the whole pipeline for sales to advance and fills
-                  this column with action cards. RIGHT "Ask Will" is the separate
-                  interactive chat; it stays text only, and any card it produces
-                  is appended to this same LEFT column (Jo, 30 Aug: no cards in
-                  the chat). Every card lives here. */}
-              <div className="asst-body">
-                <div className="asst-tasks">
-                  <div className="asst-coltitle">
-                    <span>Open tasks</span>
-                    <button className={`asst-taskrefresh${tasksBusy ? ' spinning' : ''}`} title="רענן משימות" onClick={briefAsst} disabled={tasksBusy} aria-label="Refresh tasks">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
-                    </button>
-                  </div>
-                  <div className="asst-tasks-scroll">
-                  {(() => {
-                    const active = taskProposals.filter((p) => !asstDone[p.id]);
-                    if (active.length === 0) {
-                      return <div className="asst-tasks-empty">{tasksBusy ? 'סורק את הפייפ…' : (tasksNote || 'אין משימות פתוחות')}</div>;
-                    }
-                    return active.map(renderProposalCard);
-                  })()}
-                  </div>
-                </div>
-                <div className="asst-chatcol">
-                  <div className="asst-coltitle in-chat"><span className="asst-dot" />Ask {ASSISTANT_NAME}</div>
-                  <div className="asst-scroll" ref={asstScrollRef}>
-                    {asstMsgs.map((m, i) => (
-                      <div key={i} className={`asst-msg ${m.role}`}>
-                        <div className={`asst-bubble ${m.error ? 'err' : ''}`}>{m.text}</div>
-                      </div>
-                    ))}
-                    {asstBusy && (
-                      <div className="asst-msg assistant">
-                        <div className="asst-bubble asst-typing"><span /><span /><span /></div>
-                      </div>
-                    )}
-                  </div>
-                  <form className="asst-composer" onSubmit={(e) => { e.preventDefault(); sendAsst(asstInput); }}>
-                    <textarea
-                      value={asstInput}
-                      placeholder={`Ask ${ASSISTANT_NAME}, or tell me what to do…`}
-                      onChange={(e) => setAsstInput(e.target.value)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAsst(asstInput); } }}
-                      rows={1}
-                    />
-                    <button className="btn take asst-send" type="submit" disabled={asstBusy || !asstInput.trim()} aria-label="Send">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
+            {/* Jo, 22 Oct: the morning report replaces the "Open tasks" sweep
+                and the "Ask Will" chat (not used, and the sweep cost a model
+                call every time the Overview opened). One read of how the last
+                24 hours went: what Will handled alone, what came to the team
+                and why, who is waiting on us, who is stuck. */}
+            <MorningReport onOpenChat={(id) => { setView('chats'); openChat(id); }} />
           </section>
         )}
 

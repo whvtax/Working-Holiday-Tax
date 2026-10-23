@@ -16,6 +16,7 @@ import { salesPromisedKey, businessDaysFromNow } from './stage-sync';
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
 import { residencyCheckMessage, RESIDENCY_CHECK_TEMPLATE } from './i18n';
+import { confirmationAlreadyOut, looksLikePaymentConfirmation } from './payment-confirmation';
 import { residencyCheckKey, RESIDENCY_CHECK_DELAY_MS } from './form-link';
 import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, handoffBumpTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
 import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
@@ -1589,6 +1590,21 @@ async function doProcess(): Promise<TickResult> {
           await store.setMessageStatus(msg.id, 'DISCARDED');
           await store.setJobStatus(job.id, 'CANCELLED');
           continue;
+        }
+
+        // One payment, one confirmation (Jo, 23 Oct, +49 160): if another
+        // confirmation already reached them, in any wording, this one stays
+        // unsent. A reply that carries other content as well still goes.
+        if ((isPaymentConfirmation || msg.meta?.proposedState === 'PAID')
+            && (isPaymentConfirmation || looksLikePaymentConfirmation(msg.body))) {
+          let others: Awaited<ReturnType<typeof store.listMessages>> = [];
+          try { others = await store.listMessages(customer.id); } catch { others = []; }
+          if (confirmationAlreadyOut(others ?? [], { exceptId: msg.id })) {
+            await store.setMessageStatus(msg.id, 'DISCARDED');
+            await store.audit('scheduler', 'payment_confirmation_duplicate_skipped', { customerId: customer.id, messageId: msg.id });
+            await store.setJobStatus(job.id, 'DONE');
+            continue;
+          }
         }
 
         // Re-run the guard against the customer as they are NOW, not as they

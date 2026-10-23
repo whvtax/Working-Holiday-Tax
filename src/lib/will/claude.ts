@@ -11,6 +11,7 @@ import { CustomerState } from './state-machine';
 import { getStore } from './store';
 import { LostAnalysis, LOST_CATEGORIES, validateLostAnalysis } from './lost-leads';
 import { claimsPayment } from './payment-claim';
+import { APPROVED_KEYS, isApprovedKey, type ApprovedKey } from './will-decides';
 import { stripDashes } from './text';
 import { greetingName } from './text-normalize';
 import { registerLibraryBodies } from './policy-guard';
@@ -39,6 +40,9 @@ export interface Decision {
   task_severity?: 'URGENT' | 'REVIEW' | 'CONFLICT';
   confidence: number;
   mock?: boolean;
+  /** 'will' mode (Jo, 22 Oct): the approved message Will chose; the system
+   *  sends Jo's exact wording for it (will-decides.ts). */
+  approved_key?: ApprovedKey;
 }
 
 const STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'PAID', 'FORM_PENDING', 'FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
@@ -76,6 +80,7 @@ export const DECIDE_TOOL = {
           + 'or "clarify the rule: <which>". Be concrete, never generic.',
       },
       task_severity: { type: 'string', enum: ['URGENT', 'REVIEW', 'CONFLICT'] },
+      approved_key: { type: 'string', enum: [...APPROVED_KEYS], description: 'Only when the instructions list approved keys: the approved message that is exactly the right reply. The system sends its exact wording. Leave it out otherwise.' },
       confidence: { type: 'number', description: '0..1. Below 0.8 you must choose human_task.' },
     },
     required: ['action', 'confidence'],
@@ -119,6 +124,7 @@ function validateDecision(raw: unknown): Decision {
     task_detail: typeof d.task_detail === 'string' ? d.task_detail.slice(0, 1200) : undefined,
     task_severity: d.task_severity === 'URGENT' || d.task_severity === 'CONFLICT' ? d.task_severity : 'REVIEW',
     confidence: conf,
+    ...(d.action === 'reply' && isApprovedKey(d.approved_key) ? { approved_key: d.approved_key } : {}),
   };
 }
 

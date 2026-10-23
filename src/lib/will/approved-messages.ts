@@ -131,6 +131,10 @@ Just send a screenshot once paid and we'll get started!`,
     o11_think_about_it: `Of course, no problem. Before you go, is there anything you're unsure about or anything you'd like me to clarify for you? Happy to answer any questions before you decide.`,
     o12_ask_partner: `Of course, no problem. If there's anything you or your partner are unsure about, just let me know and I'm happy to clarify it before you decide.`,
     o13_one_question: `Of course, happy to help. Anything about your own situation is one of the many things we check before we lodge your tax return, so leave that with us. What would you like to know?`,
+    // Jo, 22 Oct (+44 7809): "In what cases would there be no refund?" right
+    // after the price message got the stock line. It is a question about OUR
+    // guarantee's wording, not about their tax: it gets a general answer.
+    o15_when_no_refund: `Usually when the tax taken from your pay during the year already matches what you owe, or when too little was taken (for example from a second job), so there's tax to pay instead. Whether that's the case for you is one of the things we check in the review 😊`,
     o14_check_eligible_first: `Yes, that's exactly what we'll check as part of your review. Eligibility can depend on your individual situation, so we need to go through your details properly before giving you an answer. That's why the review starts once payment is made. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
   },
 

@@ -255,6 +255,27 @@ const RULES: Rule[] = [
     prevent: 'Nothing to change. This is Will doing exactly what it should.',
   },
   {
+    match: /^Second check held Will's reply twice/i,
+    kind: 'guard',
+    label: 'The second check held Will’s reply',
+    because: 'the reviewer read Will’s reply against the rules, held it, Will wrote it again and the reviewer held that too',
+    prevent: 'Read the reason on the card and send the draft or your own reply. If the hold was wrong, send it over: the reviewer’s rules can be tuned.',
+  },
+  {
+    match: /^Mentioned income other than wages/i,
+    kind: 'system',
+    label: 'Other income before pricing',
+    because: 'the customer mentioned freelance, UGC or side work, and how it was paid decides the price',
+    prevent: 'Ask how they were paid (ABN invoices or not) and send the right price.',
+  },
+  {
+    match: /^Residency check in the chat/i,
+    kind: 'system',
+    label: 'Residency check: looks like a tax resident',
+    because: 'they answered Yes to at least 4 of the 5 residency questions in the chat, so Will asked them to fill out the questionnaire again as a resident',
+    prevent: 'Nothing to change. Check the new questionnaire when it arrives and lodge as a resident if it holds up.',
+  },
+  {
     match: /^Paid customer sent/i,
     kind: 'system',
     label: 'Documents from a paid customer',

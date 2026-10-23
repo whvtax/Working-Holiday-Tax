@@ -1,71 +1,21 @@
 # Working Holiday Tax
 
-Premium Next.js website for workingholidaytax.com.au  
-**Next.js 14 · TypeScript · Tailwind CSS · App Router**
+The website workingholidaytax.com.au (English, German, Japanese) and the CRM with **Will**,
+the AI WhatsApp assistant.
 
----
+**Next.js 16 · React 19 · TypeScript · Tailwind · Supabase · Vercel**
 
-## Deploy to Vercel via GitHub
-
-1. Push this repo to GitHub (public or private)
-2. Go to https://vercel.com/new → Import Git Repository
-3. Select this repo — Vercel auto-detects Next.js, no settings needed
-4. Click **Deploy** — live in ~60 seconds
-
-Every `git push` to `main` auto-deploys.
-
----
-
-## Local development
+Start with [`PROJECT_HANDOFF.md`](./PROJECT_HANDOFF.md): how everything works, the business
+rules, environment variables, migrations and how to run it.
 
 ```bash
-npm install
-npm run dev       # http://localhost:3000
-npm run build     # production build check
+npm ci
+npm run dev        # http://localhost:3000
+npm test
+npm run build      # or ./scripts/build-offline.sh without Google Fonts access
 ```
 
----
+Deploy: push to `main`; Vercel builds and deploys.
 
-## Project structure
-
-```
-src/
-├── app/
-│   ├── layout.tsx              Root layout (fonts, nav, footer)
-│   ├── globals.css             Tailwind + custom CSS
-│   ├── page.tsx                Homepage
-│   ├── tfn/                    TFN Application page
-│   ├── tax-return/             Tax Return (rates, deductions, residency)
-│   ├── superannuation/         Super claim guide + FAQs
-│   ├── abn/                    ABN Registration
-│   ├── calculator/             Interactive tax calculator (client component)
-│   ├── medicare/               Medicare eligibility guide
-│   ├── contact/                Contact + FAQs
-│   ├── client-agreement/       Terms of service
-│   └── privacy/                Privacy policy
-├── components/
-│   ├── layout/   Nav · Footer · StickyBar
-│   └── ui/       Cursor · RevealObserver · Accordion · CtaBand · PageHeader
-└── lib/
-    └── constants.ts   WA number, email, nav links, agent details
-```
-
----
-
-## Customise
-
-| What | Where |
-|---|---|
-| WhatsApp number | `src/lib/constants.ts` → `WA_NUMBER` |
-| Email address | `src/lib/constants.ts` → `EMAIL` |
-| Brand colours | `tailwind.config.ts` → `theme.extend.colors` |
-| Tax rates | `src/app/tax-return/page.tsx` + `src/app/calculator/CalculatorClient.tsx` |
-| Service fee | `src/app/client-agreement/page.tsx` → Section 2 |
-| Agent details | `src/lib/constants.ts` → `AGENT_*` |
-
----
-
-## Agent details
-
-Supervised by The Accounting Academy Pty Ltd  
-ABN 26 669 927 959 · Tax Agent Number 26233096
+Returns are reviewed and signed off by a registered tax agent (The Accounting Academy Pty Ltd,
+ABN 26 669 927 959, Tax Agent Number 26233096) before they are lodged with the ATO.

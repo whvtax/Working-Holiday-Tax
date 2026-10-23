@@ -43,7 +43,7 @@ describe("engine wiring: a thank-you always gets You're very welcome! 😊 (Jo, 
   it('answered from the code before the model is asked', () => {
     const fixed = engine.indexOf('isClosingOnly(customerBurst) && containsThanks(customerBurst)');
     expect(fixed).toBeGreaterThan(0);
-    expect(fixed).toBeLessThan(engine.indexOf('const decision = await decide(ctx, history);'));
+    expect(fixed).toBeLessThan(engine.indexOf('const decision = await decide(ctx, history'));
     expect(THANKS_REPLIES[0]).toBe("You're very welcome! 😊");
   });
   it('silence on a paid customer becomes a task only when they asked something', () => {

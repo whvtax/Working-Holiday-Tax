@@ -183,7 +183,6 @@ export function Footer() {
                 <div className="mt-6 flex flex-row flex-wrap items-center gap-x-4 gap-y-2"
                   style={{ transform: 'scale(0.92)', transformOrigin: 'left center' }}>
                   <GoogleReviewsBadge lang={locale === 'de' ? 'de' : locale === 'ja' ? 'ja' : 'en'} />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/assets/tpb-registered.png"
                     alt={`${locale === 'de' ? 'Registrierter Steueragent' : locale === 'ja' ? '登録税理士' : 'Registered Tax Agent'} ${AGENT_TPB}`}

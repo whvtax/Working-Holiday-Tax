@@ -20,6 +20,11 @@ const NO_ABN_ML_RE = /kein(?:e|en)?\s+abn|ohne\s+abn|nur\s+(?:mit\s+)?(?:der\s+)
 const ABN_ML_RE = /abn\s*(?:も|あり|を持って)|ウーバー|デリバリー|配達|個人事業|selbstst[äa]ndig|lieferdienst|freiberuf/i;
 const TFN_ML_RE = /雇用|従業員|給与明細|angestellt|arbeitgeber|lohnabrechnung/i;
 const NO_ABN_RE = /\b(?:no|not|don'?t have|without|never had|didn'?t have)\s+(?:an?\s+)?abn\b|only\s+(?:worked\s+)?(?:on\s+)?(?:a\s+)?tfn|just\s+(?:a\s+)?tfn|tfn\s+only|option\s?1\b|\b1st\b|\bfirst\b|employers?\s+only|only\s+employers?/i;
+/** Income that is not wages from an employer. Next to a TFN answer it means
+ *  the customer has more than one kind of income and the track is not clear. */
+/** Unmistakably ABN work: no need to ask how it was paid. */
+export const CLEAR_ABN_RE = /\babn\b|\buber\b|deliver(?:y|oo)|door\s?dash|menulog|sole\s?trader|self[- ]?employed/i;
+export const OTHER_INCOME_RE = /\babn\b|\buber\b|deliver(?:y|oo)|door\s?dash|menulog|contract(?:or|ing)\b|sole\s?trader|self[- ]?employed|freelanc|\bugc\b|content (?:creat|work)|influencer|brand (?:deal|work|collab)|sponsor|on the side|side (?:job|gig|hustle|income|work)|cash (?:job|work|in hand)|online (?:work|job|income)|invoic|selbstst[äa]ndig|freiberuf|nebenjob|副業|フリーランス/i;
 const TFN_RE = /\btfn\b|employers?\b|employee|payslips?|cafe|hospitality|farm|casual/i;
 const ALREADY_LODGED_RE = /already\s+(?:lodged|filed|submitted|done)|lodged\s+it|filed\s+it|review\b|check\s+my\s+return/i;
 const YES_RE = /^(?:(?:yes|yep|yeah|yup|sure|ok(?:ay)?|perfect|great|deal)(?:,?\s*(?:please|thanks|thank you|sure|let'?s do it|go ahead))?|sounds? (?:good|great)|let'?s (?:do it|go)|go ahead|please|i'?m in|i'?d like to (?:go ahead|proceed)|ja|ja gerne|sí|si|oui|sì|sim|はい|お願いします|よろしくお願いします)[\s!.😊👍]*$/i;
@@ -44,8 +49,21 @@ export function detectChoice(text: string, lastWillLine: string | null | undefin
     if (tfn && !abn) return 'TFN';
     return null;
   }
-  if (NO_ABN_RE.test(t) || NO_ABN_ML_RE.test(t)) return 'TFN';
-  if (ABN_RE.test(t) || ABN_ML_RE.test(t)) return 'TFN_ABN';
+  // Jo, 22 Oct (Sydney, +1 608): "Only on TFN however I did do some
+  // freelance UGC work on the side as well" got the TFN price message from
+  // the code: "only on TFN" matched first and the freelance work was never
+  // read. Any other income in the same message (freelance, UGC, side work,
+  // an ABN, cash, online work) makes it NOT a clear choice: Will asks how
+  // that money was paid before any price goes out (playbook, OTHER INCOME).
+  // "no ABN" / "kein ABN" / "ABNはない" names the ABN only to rule it out.
+  const withoutNegations = t.replace(new RegExp(NO_ABN_RE.source, 'gi'), ' ').replace(new RegExp(NO_ABN_ML_RE.source, 'gi'), ' ');
+  const other = OTHER_INCOME_RE.test(withoutNegations) || ABN_ML_RE.test(withoutNegations);
+  const noAbn = NO_ABN_RE.test(t) || NO_ABN_ML_RE.test(t);
+  if (other && noAbn) return null;                          // "only TFN, but some freelance work": ask
+  if (noAbn) return 'TFN';
+  if (CLEAR_ABN_RE.test(t) || ABN_ML_RE.test(t)) return 'TFN_ABN'; // an ABN, Uber, delivery: clear
+  if (other) return null;                                   // freelance / UGC / side work: ask how they were paid
+  if (ABN_RE.test(t)) return 'TFN_ABN';
   if (TFN_RE.test(t) || TFN_ML_RE.test(t)) return 'TFN';
   return null;
 }

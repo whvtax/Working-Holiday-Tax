@@ -1,5 +1,6 @@
 // Real health checks for the dashboard status dots: each component is
 // actually exercised, not assumed. Red dot = something is truly broken.
+import { DECISION_MODE_KEY, resolveDecisionMode } from '@/lib/will/will-decides';
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore, getLastPersistError, clearLastPersistError } from '@/lib/will/store';
@@ -238,9 +239,10 @@ export async function GET() {
   // tab, which was not necessarily the mode the system was actually in. It now
   // shows the stored truth, resolved by the same function every sender uses.
   const aiMode = resolveAiMode(await getStore().getSetting('ai_mode').catch(() => null));
+  const decisionMode = resolveDecisionMode(await getStore().getSetting(DECISION_MODE_KEY).catch(() => null));
   const allOk = Object.values(checks).every((c) => c.ok);
   return NextResponse.json({
-    ok: allOk, checks, killSwitch, aiMode, usingMock: !hasKey,
+    ok: allOk, checks, killSwitch, aiMode, decisionMode, usingMock: !hasKey,
     whatsappLive: wa.live && webhookSecretsSet,
     whatsappConfigured: wa.configured,
     whatsappDetail: checks.whatsapp.detail,

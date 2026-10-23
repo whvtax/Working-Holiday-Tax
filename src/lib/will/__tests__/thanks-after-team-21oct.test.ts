@@ -82,7 +82,27 @@ it('a real question right after a team message still waits for the team', async 
   );
   await runDeferredAutoReply(customer as never, job());
   expect(runEngine).not.toHaveBeenCalled();
-  expect(audit).toHaveBeenCalledWith('assistant', 'auto_reply_skipped_team_active', expect.anything());
+  // Jo, 22 Oct (Danielle): not dropped, re-armed for when the 30 minutes are up.
+  expect(audit).toHaveBeenCalledWith('assistant', 'auto_reply_deferred_team_active', expect.objectContaining({ runAt: new Date(now - 9 * 60_000 + 31 * 60_000).toISOString() }));
+});
+
+it('Danielle: the deferred timer, once the 30 minutes are up, answers the question', async () => {
+  thread.push(
+    msg({ id: '1', direction: 'OUT', author: 'HUMAN', body: "You don't need to contact the ATO.", createdAt: iso(40) }),
+    msg({ id: '2', body: 'Oh amazing. Is the eligibility check free?', createdAt: iso(18) }),
+  );
+  await runDeferredAutoReply(customer as never, { payload: { debounce: true, anchorAt: iso(18), attempt: 1 } as never, createdAt: iso(18), runAt: iso(0) });
+  expect(runEngine).toHaveBeenCalled();
+});
+
+it('Jo answering inside the window still means Will says nothing', async () => {
+  thread.push(
+    msg({ id: '1', direction: 'OUT', author: 'HUMAN', body: 'x', createdAt: iso(40) }),
+    msg({ id: '2', body: 'Is the eligibility check free?', createdAt: iso(18) }),
+    msg({ id: '3', direction: 'OUT', author: 'HUMAN', body: "It's part of the review, $220.", createdAt: iso(10) }),
+  );
+  await runDeferredAutoReply(customer as never, { payload: { debounce: true, anchorAt: iso(18), attempt: 1 } as never, createdAt: iso(18), runAt: iso(0) });
+  expect(runEngine).not.toHaveBeenCalled();
 });
 
 it('if Jo answered the thank-you himself, Will does not add a second one', async () => {

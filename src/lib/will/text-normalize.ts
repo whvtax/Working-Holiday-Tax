@@ -337,7 +337,10 @@ export function containsThanks(text: string | null | undefined): boolean {
  * that ask for something, report a problem, or deliver something are blocking
  * now. A thank-you that names a topic is still a thank-you.
  */
-const REQUEST_OR_PROBLEM = /\b(?:but|when|how|what|where|why|which|can|could|will|would|should|need|needs|question|problem|issue|not|don'?t|didn'?t|can'?t|won'?t|still|also|another|cancel|wrong|mistake|wait|later|tomorrow|here is|here's|attach(?:ed)?|send|sent|paid|pay|payment|help me)\b/i;
+// Jo, 22 Oct (Nicole +44 7500): "Hi I was looking to complete a free
+// eligibility check for my tax return. Thank you" got "You're very welcome!".
+// Words that state what they WANT are a request too.
+const REQUEST_OR_PROBLEM = /\b(?:looking (?:to|for)|would like|i'?d like|wanted? to|wanting to|hoping to|trying to|interested|enquir\w*|inquir\w*|complete|apply|eligib\w*|start(?:ed)?|sign up|get (?:my|a|the)|do my|file my|lodge my|but|when|how|what|where|why|which|can|could|will|would|should|need|needs|question|problem|issue|not|don'?t|didn'?t|can'?t|won'?t|still|also|another|cancel|wrong|mistake|wait|later|tomorrow|here is|here's|attach(?:ed)?|send|sent|paid|pay|payment|help me)\b/i;
 /** A question or a request (or a problem) in the text: something a reply must answer. */
 export function hasQuestionOrRequest(text: string | null | undefined): boolean {
   const t = (text ?? '').trim();

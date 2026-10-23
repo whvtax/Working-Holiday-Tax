@@ -4,15 +4,20 @@
 // webhook. Persists everything to the store.
 // ============================================================
 import { getStore, CustomerRow, CustomerState, Store, MessageRow, JobRow } from './store';
-import { reopenTarget, POST_PAYMENT_STATES } from './state-machine';
+import { reopenTarget, POST_PAYMENT_STATES, canTransition } from './state-machine';
 import { runEngine, AiMode, EngineOutcome, customerAskedSomething } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
+import { reviewDraft } from './reviewer';
+import { confirmationAlreadyOut } from './payment-confirmation';
+import { paragraphise } from './layout';
+import { policyGuard } from './policy-guard';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
 import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
 import { retrieveKnowledge, nearestKnowledge } from './knowledge';
 import { buildHandoffDiagnostic, taskContextWithDiagnostic } from './handoff-diagnostic';
 import { deliverOut, fetchWaMedia } from './channel';
+import { reviewLink } from './review-asks';
 import { readReviewAsks, patchReviewAsk, saysRefundLanded, isPositiveAck, REFERRAL_WINDOW_DAYS, saysRefundNotYet, refundNotYetMessage, REFUND_CHECKIN_RETRY_DAYS } from './review-asks';
 import { referralMessage } from './i18n';
 import { autopilotReplyDelaySeconds } from './config';
@@ -35,6 +40,8 @@ import { assessPaymentProofImage, assessSuccessConfirmationImage, describeAttach
 import { verifyProofDetails, isNotOurPayment, pictureConfirmsPayment, describeProof, incomeFromAmount } from './payment-proof';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
+import { DECISION_MODE_KEY, resolveDecisionMode, isFastLane, type DecisionMode } from './will-decides';
+import { residencyQuizKey, readQuiz, quizStep, quizAgain, quizIntro, quizLang, startsQuiz, isResidencyCheck, CHECK_WINDOW_MS as QUIZ_CHECK_WINDOW_MS, type QuizState } from './residency-quiz';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason, isPaymentBurst } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
@@ -282,8 +289,13 @@ async function handleIncomingInner(
   // itself (an objection gets its approved answer), but nothing chases them.
   // A vendor pitching us on their first message is Not Relevant and gets no
   // reply at all (a social-media agency received four sales templates).
+  // Jo, 22 Oct: in 'will' mode closing a lead (not interested, a vendor) is
+  // Will's decision from the whole chat (new_state); only the "after payday"
+  // date below is still read here, because it only moves a reminder.
+  let preMode: DecisionMode = 'legacy';
+  try { preMode = resolveDecisionMode(await store.getSetting(DECISION_MODE_KEY)); } catch { preMode = 'legacy'; }
   if (!opts?.alreadyStored && !customer.paid && SALES_STATES.includes(customer.state)) {
-    if (customerNotInterested(text)) {
+    if (preMode !== 'will' && customerNotInterested(text)) {
       try {
         await store.setState(customer.id, 'NOT_INTERESTED', 'SYSTEM');
         await store.cancelJobsFor(customer.id, ['FOLLOW_UP']);
@@ -291,7 +303,7 @@ async function handleIncomingInner(
         const cNI = await store.getCustomerByWaId(waId);
         if (cNI) customer = cNI;
       } catch { /* the reply below still goes */ }
-    } else if (customer.state === 'NEW_LEAD' && looksLikeVendor(text)) {
+    } else if (preMode !== 'will' && customer.state === 'NEW_LEAD' && looksLikeVendor(text)) {
       const priorIn = (await store.listMessages(customer.id)).filter((m) => m.direction === 'IN');
       if (priorIn.length <= 1) {
         try {
@@ -515,7 +527,11 @@ async function handleIncomingInner(
   // bank. Neta got "Simple Tax Services" from the model, Laura and Marta
   // "Working Holiday Tax". The answer is fixed text in their language and
   // goes out now, from the code, with no pause and no model.
-  if (mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.aiPaused && !customer.isLegacy && isAccountNameQuestion(text)) {
+  // Jo, 22 Oct: in 'will' mode none of the instant answers below decide what
+  // is said; Will does (an urgent message just skips the timer, further down).
+  let handleMode: DecisionMode = 'legacy';
+  try { handleMode = resolveDecisionMode(await store.getSetting(DECISION_MODE_KEY)); } catch { handleMode = 'legacy'; }
+  if (handleMode !== 'will' && mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.aiPaused && !customer.isLegacy && isAccountNameQuestion(text)) {
     try {
       const body = accountNameMessage(customer.lang);
       const out = await deliverOut(customer, body, 'AI', undefined, undefined, {
@@ -535,6 +551,64 @@ async function handleIncomingInner(
     }
   }
 
+  // ── THE RESIDENCY CHECK, IN THE CHAT (Jo, 22 Oct, Alexandra +44 7479) ────
+  // A question or doubt in reply to the residency double-check starts the
+  // same five Yes/No questions as the form; each answer gets the next one,
+  // and the fifth gets Jo's result line. See residency-quiz.ts.
+  if (mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.aiPaused && !customer.isLegacy && !customer.optedOut) {
+    try {
+      const qKey = residencyQuizKey(customer.id);
+      const quiz = readQuiz(await store.getSetting(qKey));
+      let reply: string | null = null;
+      let next: QuizState | null = quiz;
+      let done: { yes: number; answers: boolean[] } | null = null;
+      if (quiz) {
+        const step = quizStep(quiz, text);
+        if (step === 'not_an_answer') {
+          // A real question goes to Will and the quiz waits for the answer;
+          // anything short that is not Yes/No gets the question again.
+          if (!/[?？]/.test(text) && text.length <= 80) reply = quizAgain(quiz.lang, quiz.answers.length);
+        } else {
+          reply = step.reply; next = step.next; done = step.done ?? null;
+        }
+      } else if (handleMode !== 'will' && startsQuiz(text)) {
+        const recent = await store.listMessages(customer.id);
+        const lastOut = [...recent].reverse().find((m) => m.direction === 'OUT' && m.status === 'SENT');
+        if (lastOut && isResidencyCheck(lastOut.body) && Date.now() - new Date(lastOut.createdAt).getTime() <= QUIZ_CHECK_WINDOW_MS) {
+          const lang = quizLang(customer.lang);
+          reply = quizIntro(lang);
+          next = { step: 0, answers: [], startedAt: new Date().toISOString(), lang };
+        }
+      }
+      if (reply) {
+        const out = await deliverOut(customer, reply, 'AI', { system: true });
+        if (out.ok) {
+          await store.setSetting(qKey, next);
+          try { await store.cancelJobsFor(customer.id, ['AUTO_REPLY']); } catch { /* nothing armed */ }
+          await store.audit('assistant', done ? 'residency_quiz_done' : 'residency_quiz_step', {
+            customerId: customer.id, step: next?.step ?? 5, ...(done ? { yes: done.yes, answers: done.answers } : {}),
+          }).catch(() => {});
+          if (done && done.yes >= 4) {
+            await store.addTask({
+              customerId: customer.id, customerName: customer.name ?? waId,
+              reason: `Residency check in the chat: ${done.yes} of 5 Yes. Told they look like an Australian tax resident and asked to fill out the questionnaire again with the correct details.`,
+              severity: 'REVIEW',
+              context: done.answers.map((a, i) => `${i + 1}. ${a ? 'Yes' : 'No'}`).join('\n'),
+              suggestedReply: null,
+            }).catch(() => {});
+          }
+          const freshQ = await store.getCustomerByWaId(waId);
+          return {
+            outcome: { kind: 'sent', replyText: reply, decision: { action: 'reply', reply_text: reply, confidence: 1 } },
+            customer: freshQ ?? customer,
+          };
+        }
+      }
+    } catch (e) {
+      await store.audit('assistant', 'residency_quiz_failed', { customerId: customer.id, error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+    }
+  }
+
   // ── THE CHOICE IS THE "YES": price message at once (11 Oct, decision 3) ──
   //
   // A short, clear answer to the opening question ("TFN", "also Uber", "yes")
@@ -542,7 +616,7 @@ async function handleIncomingInner(
   // answered from the code, now, with the approved price message for that
   // track. No model, no two-minute pause: Rochi and Jack were lost in that
   // pause. Anything else goes through Will as before.
-  if (mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.paid && !customer.aiPaused && !customer.isLegacy
+  if (handleMode !== 'will' && mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.paid && !customer.aiPaused && !customer.isLegacy
       && SALES_STATES.includes(customer.state) && ((customer.lang ?? 'en') === 'en' || hasPriceIn(customer.lang))) {
     try {
       const prior = await store.listMessages(customer.id);
@@ -586,6 +660,27 @@ async function handleIncomingInner(
       }
     } catch (e) {
       await store.audit('assistant', 'instant_price_failed', { customerId: customer.id, error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+    }
+  }
+
+  // ── WILL DECIDES, AT ONCE, WHEN THEY ARE WAITING (Jo, 22 Oct) ──────────────
+  // 'will' mode: someone standing at the bank ("what name do I put?") or who
+  // just chose a track is not made to wait the 1-5 minutes. The words only
+  // decide WHEN Will is asked; what is said is Will's decision.
+  if (handleMode === 'will' && mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.aiPaused && !customer.isLegacy && !customer.optedOut) {
+    try {
+      const recentF = await store.listMessages(customer.id);
+      const lastWillF = [...recentF].reverse().find((m) => m.direction === 'OUT' && m.status === 'SENT')?.body ?? null;
+      if (isFastLane(text, lastWillF)) {
+        try { await store.cancelJobsFor(customer.id, ['AUTO_REPLY']); } catch { /* nothing armed yet */ }
+        await store.audit('assistant', 'will_fast_lane', { customerId: customer.id }).catch(() => {});
+        const { outcome: fastOutcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: true });
+        const freshF = await store.getCustomerByWaId(waId);
+        if (freshF) { try { await reconcileSchedule(freshF); } catch { /* best effort, the reply is out */ } }
+        return { outcome: fastOutcome, customer: freshF ?? customer };
+      }
+    } catch (e) {
+      await store.audit('assistant', 'will_fast_lane_failed', { customerId: customer.id, error: (e as Error).message?.slice(0, 200) }).catch(() => {});
     }
   }
 
@@ -810,6 +905,32 @@ async function paidHoldingBody(store: Store, lang?: string | null): Promise<stri
   return handoffHoldingMessage(lang);
 }
 
+/** One pass of the second check over an outcome. Mutates the outcome on a
+ *  usable revise (only if the revised text still passes the Policy Guard).
+ *  'hold' tells the caller to ask Will again. */
+async function secondCheck(
+  store: Store, customer: CustomerRow, history: Turn[], mode: AiMode, outcome: EngineOutcome, ctx: CustomerContext,
+): Promise<{ verdict: 'pass' | 'revised' | 'hold' | 'skip'; note?: string }> {
+  const r = await reviewDraft({
+    customer, history, draft: outcome.replyText ?? '',
+    mode: resolveAiMode(mode) === 'FULL_AUTO' ? 'FULL_AUTO' : 'SUPERVISED', isTask: false, willMode: true,
+  });
+  await store.audit('assistant', 'second_check', { customerId: customer.id, verdict: r.verdict, note: r.note ?? null }).catch(() => {});
+  if (r.verdict === 'revise' && r.revised) {
+    const v = policyGuard(r.revised, {
+      aiPaused: customer.aiPaused, killSwitch: false, optedOut: customer.optedOut, isLegacy: customer.isLegacy,
+      lastCustomerMsgAt: new Date(), state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents, isApprovedTemplate: false,
+    });
+    if (v.allowed) {
+      const laidOut = paragraphise(r.revised);
+      outcome.replyText = laidOut; if (outcome.decision) outcome.decision.reply_text = laidOut;
+      return { verdict: 'revised', note: r.note };
+    }
+    return { verdict: 'pass', note: r.note };
+  }
+  return { verdict: r.verdict === 'hold' ? 'hold' : 'pass', note: r.note };
+}
+
 export async function decideAndAct(
   store: Store,
   customer: CustomerRow,
@@ -840,9 +961,13 @@ export async function decideAndAct(
   if (['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state) && !customer.optedOut && !customer.isLegacy && !killSwitch) {
     try {
       const rec = (await readReviewAsks(store))[customer.id];
+      // 'will' mode: "not yet" and the referral line are Will's choice
+      // (approved keys refund_not_yet / referral, side effects below). The
+      // pull-forward of the review ask on "it landed" only moves a timer.
+      const lodgedWill = resolveDecisionMode(await store.getSetting(DECISION_MODE_KEY).catch(() => null)) === 'will';
       // 11 Oct (review system): "not yet" to the refund check-in gets one
       // calm line and a second check-in four days later. That IS the reply.
-      if (rec?.checkinAt && !rec.askedAt && !rec.skippedAt && !saysRefundLanded(text) && saysRefundNotYet(text)) {
+      if (!lodgedWill && rec?.checkinAt && !rec.askedAt && !rec.skippedAt && !saysRefundLanded(text) && saysRefundNotYet(text)) {
         const body = refundNotYetMessage(customer.lang);
         if ((rec.checkins ?? 0) < 2) {
           await store.cancelJobsFor(customer.id, ['REFUND_CHECKIN']).catch(() => 0);
@@ -864,7 +989,7 @@ export async function decideAndAct(
         });
         await store.audit('system', 'review_ask_pulled_forward', { customerId: customer.id });
       }
-      if (rec?.askedAt && !rec.referralAt && isPositiveAck(text)
+      if (!lodgedWill && rec?.askedAt && !rec.referralAt && isPositiveAck(text)
           && Date.now() - new Date(rec.askedAt).getTime() < REFERRAL_WINDOW_DAYS * 24 * 60 * 60 * 1000) {
         const body = referralMessage(customer.lang);
         if (mode === 'FULL_AUTO') {
@@ -909,6 +1034,9 @@ export async function decideAndAct(
 
   // RAG: pull the most relevant learned answers for this exact message.
   const knowledge = await retrieveKnowledge(text, { lang: customer.lang ?? undefined }).catch(() => []);
+  // Jo, 22 Oct: 'will' = Will decides every message (will-decides.ts).
+  let decisionMode: DecisionMode = 'legacy';
+  try { decisionMode = resolveDecisionMode(await store.getSetting(DECISION_MODE_KEY)); } catch { decisionMode = 'legacy'; }
   const ctx: CustomerContext = {
     // Owner rule: the model only ever sees the FIRST name, so it can never address
     // the customer by surname even if a full name was captured from WhatsApp.
@@ -922,12 +1050,11 @@ export async function decideAndAct(
     lang: customer.lang,
     backstory: await buildBackstory(store, customer, msgs).catch(() => ''),
     knowledge,
+    decisionMode,
   };
 
   const bank = await getBank();
-  let outcome = await runEngine({
-    ctx, history, mode, bank,
-    guard: {
+  const engineGuard = {
       aiPaused: customer.aiPaused, killSwitch,
       optedOut: customer.optedOut, isLegacy: customer.isLegacy,
       // ── WE ARE INSIDE THE 24-HOUR WINDOW. BY DEFINITION. ──────────────
@@ -952,8 +1079,83 @@ export async function decideAndAct(
       // We are processing an inbound message from this customer at this moment.
       // That IS the last customer message time, and Meta's window opens on it.
       lastCustomerMsgAt: new Date(),
-    },
-  });
+  };
+  let outcome = await runEngine({ ctx, history, mode, bank, decisionMode, guard: engineGuard });
+
+  // ── THE SECOND CHECK (Jo, 22 Oct) ─────────────────────────────────────────
+  // 'will' mode: before a reply Will wrote himself leaves, the reviewer reads
+  // it against the same rules. revise: the better version goes, if it still
+  // passes the Policy Guard. hold: Will writes it once more with the reason;
+  // only if that is held too does it become a task. Jo's exact wording
+  // (approved_key) is not reviewed. Any reviewer failure leaves Will's reply
+  // exactly as it was (reviewer.ts is fail-open).
+  if (decisionMode === 'will' && outcome.replyText && !outcome.decision?.approved_key
+      && (outcome.kind === 'queued' || outcome.kind === 'pending_approval')) {
+    try {
+      const checked = await secondCheck(store, customer, history, mode, outcome, ctx);
+      if (checked.verdict === 'hold') {
+        const firstDraft = outcome.replyText;
+        const review = checked.note;
+        const again = await runEngine({
+          ctx, history, mode, bank, decisionMode, guard: engineGuard,
+          reviewHint: `A second check held your previous reply${review ? ` because: ${review}` : ''}. Write it again so that it no longer has that problem, or hand it to the team if it should not be answered automatically.\n\nPrevious reply, for reference only:\n"""\n${(firstDraft ?? '').slice(0, 1500)}\n"""`,
+        });
+        const second = again.replyText && (again.kind === 'queued' || again.kind === 'pending_approval')
+          ? await secondCheck(store, customer, history, mode, again, ctx)
+          : { verdict: 'skip' as const };
+        if (second.verdict === 'hold') {
+          outcome = {
+            kind: 'human_task', decision: { ...again.decision, action: 'human_task' },
+            task: { reason: `Second check held Will's reply twice${second.note ? `: ${second.note}` : ''}`, severity: 'REVIEW', suggestedReply: again.replyText },
+          };
+        } else {
+          outcome = again;
+        }
+      }
+    } catch { /* fail-open: Will's reply stands */ }
+  }
+
+  // Will chose to start the residency questions (will mode): the quiz state
+  // is armed so the customer's Yes/No answers are read by residency-quiz.ts.
+  if (outcome.decision?.approved_key === 'residency_quiz_start' && outcome.replyText
+      && (outcome.kind === 'queued' || outcome.kind === 'sent' || outcome.kind === 'pending_approval')) {
+    await store.setSetting(residencyQuizKey(customer.id), {
+      step: 0, answers: [], startedAt: new Date().toISOString(), lang: quizLang(customer.lang),
+    }).catch(() => undefined);
+    await store.audit('assistant', 'residency_quiz_started_by_will', { customerId: customer.id }).catch(() => {});
+  }
+  // The side effects that went with the old keyword lines, now that Will
+  // chose them (Jo, 22 Oct).
+  if (decisionMode === 'will' && outcome.replyText && (outcome.kind === 'queued' || outcome.kind === 'sent' || outcome.kind === 'pending_approval')) {
+    try {
+      if (outcome.decision?.approved_key === 'refund_not_yet') {
+        const rec = (await readReviewAsks(store))[customer.id];
+        if ((rec?.checkins ?? 0) < 2) {
+          await store.cancelJobsFor(customer.id, ['REFUND_CHECKIN']).catch(() => 0);
+          await store.addJob({ customerId: customer.id, kind: 'REFUND_CHECKIN', payload: { attempt: rec?.checkins ?? 1 }, runAt: new Date(Date.now() + REFUND_CHECKIN_RETRY_DAYS * 86400000).toISOString() }).catch(() => {});
+        }
+      } else if (outcome.decision?.approved_key === 'referral') {
+        await patchReviewAsk(store, customer.id, { referralAt: new Date().toISOString() });
+      } else if (outcome.decision?.approved_key === 'review_link') {
+        // The link Jo set in the CRM, if it differs from the default; and the
+        // scheduled review ask is not sent on top of this one.
+        const link = await reviewLink(store);
+        if (outcome.replyText && !outcome.replyText.includes(link)) outcome.replyText = outcome.replyText.replace(/https:\/\/\S+$/, link);
+        await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString() });
+        await store.cancelJobsFor(customer.id, ['REVIEW_REQUEST']).catch(() => 0);
+      }
+    } catch { /* the reply matters more than the bookkeeping */ }
+  }
+  // Will closed the lead without a reply (a vendor) or with one (not
+  // interested): the stage moves and nothing chases them.
+  if (decisionMode === 'will' && (outcome.decision?.new_state === 'NOT_RELEVANT' || outcome.decision?.new_state === 'NOT_INTERESTED')
+      && customer.state !== outcome.decision.new_state && !customer.paid && canTransition(customer.state, outcome.decision.new_state)) {
+    try {
+      await store.setState(customer.id, outcome.decision.new_state, 'AI');
+      await store.cancelJobsFor(customer.id, ['FOLLOW_UP']);
+      await store.audit('assistant', 'lead_closed_by_will', { customerId: customer.id, to: outcome.decision.new_state });
+    } catch { /* the reply already stands */ }
+  }
 
   // ── A paying customer is never left in silence (11 Oct, full audit) ──────
   //
@@ -1016,8 +1218,17 @@ export async function decideAndAct(
   // as before — on auto-send, on approval of the draft, or when the delayed
   // autopilot reply goes out — including the Paid -> Form Pending cascade. This
   // is the same trust rule as the screenshot path, made language-proof.
-  if (paymentClaimForcesPaid({
-    paid: customer.paid, state: customer.state,
+  // One payment, one confirmation (Jo, 23 Oct, +49 160): the screenshot may
+  // have confirmed this payment while this reply was being written. Read the
+  // customer as they are NOW, and never confirm a second time.
+  let paidNow = customer.paid;
+  let alreadyConfirmed = false;
+  try {
+    paidNow = (await store.getCustomerById(customer.id))?.paid ?? customer.paid;
+    alreadyConfirmed = confirmationAlreadyOut(await store.listMessages(customer.id), { includePending: true });
+  } catch { /* fall back to the row we had */ }
+  if (!alreadyConfirmed && paymentClaimForcesPaid({
+    paid: paidNow, state: customer.state,
     outcomeKind: outcome.kind, outcomeNewState: outcome.newState,
     hasReply: !!outcome.replyText, text,
   })) {
@@ -1409,6 +1620,14 @@ export async function armAutoReply(store: Store, customer: CustomerRow): Promise
  * or a template got there first), opt-out, and the mode as it is NOW (switched
  * to Approval in the meantime means a draft, not a send).
  */
+/** Words that make a burst more than "here it is / done": a problem, a second
+ *  request, a question without a question mark. Used only to decide whether a
+ *  system acknowledgement already covered the customer's message. */
+const MORE_THAN_A_REPORT = /\b(?:but|also|another|when|how|what|where|why|which|can|could|should|need|problem|issue|error|wrong|missing|forgot|help|not|don'?t|didn'?t|can'?t|cannot|question|aber|auch|wann|wie|warum|problem|fehler|nicht|pero|tambi[ée]n|cu[áa]ndo|mais|aussi|quand|ma|anche|quando|mas|tamb[ée]m)\b|でも|問題|エラー|できない|いつ|どう|なぜ|また|それと/i;
+
+/** How long after a person on our side writes Will stays out of the chat. */
+export const TEAM_ACTIVE_MS = 30 * 60 * 1000;
+
 export async function runDeferredAutoReply(
   customer: CustomerRow,
   job: { id?: string; payload: { anchorAt?: string | null }; createdAt?: string | null; runAt: string },
@@ -1469,8 +1688,29 @@ export async function runDeferredAutoReply(
   if (!text.trim()) return 'skipped';
   const plainThanks = isClosingOnly(text) && containsThanks(text);
   const teamActive = msgs.some((m) => m.direction === 'OUT' && m.author === 'HUMAN'
-    && Date.now() - new Date(m.createdAt).getTime() < 30 * 60 * 1000);
+    && Date.now() - new Date(m.createdAt).getTime() < TEAM_ACTIVE_MS);
   if (teamActive && !plainThanks) {
+    // Jo, 22 Oct (Danielle +44 7930): Jo answered at 15:44, she asked "Is
+    // the eligibility check free?" at 16:06, and nothing ever answered it:
+    // this check stood Will aside and nothing was scheduled. Will still stays
+    // out of a live conversation, but the question is not dropped: the timer
+    // is re-armed for the moment the 30 minutes since Jo's last message are
+    // up. If Jo answers first, the "answered" check above skips it.
+    const lastHumanAt = Math.max(...msgs
+      .filter((m) => m.direction === 'OUT' && m.author === 'HUMAN')
+      .map((m) => new Date(m.createdAt).getTime()));
+    const deferrals = Number((job.payload as { attempt?: number }).attempt ?? 0); // capped, so a chat Jo keeps writing in cannot re-arm forever
+    if (Number.isFinite(lastHumanAt) && deferrals < 6) {
+      const runAt = new Date(lastHumanAt + TEAM_ACTIVE_MS + 60 * 1000).toISOString();
+      try {
+        await store.addJob({
+          customerId: customer.id, kind: 'AUTO_REPLY',
+          payload: { debounce: true, anchorAt, attempt: deferrals + 1 }, runAt,
+        });
+        await store.audit('assistant', 'auto_reply_deferred_team_active', { customerId: customer.id, anchorAt, runAt });
+        return 'skipped';
+      } catch { /* fall through to the old behaviour: stay out */ }
+    }
     await store.audit('assistant', 'auto_reply_skipped_team_active', { customerId: customer.id, anchorAt });
     return 'answered';
   }
@@ -1487,8 +1727,25 @@ export async function runDeferredAutoReply(
     && m.author !== 'HUMAN' && new Date(m.createdAt).getTime() >= since
     && (m.meta?.waTemplate?.name?.startsWith('payment_received')
       || PAYMENT_RECEIVED_PREFIXES.some((p) => (m.body ?? '').slice(0, 40).toLowerCase() === p)));
-  if (paymentConfirmationSent && !/[?？]/.test(text) && claimsPayment(text, { hasAttachment: true })) {
+  let deferredMode: DecisionMode = 'legacy';
+  try { deferredMode = resolveDecisionMode(await store.getSetting(DECISION_MODE_KEY)); } catch { deferredMode = 'legacy'; }
+  // In 'will' mode the two checks below (decided by the words) are Will's to
+  // make: he sees the confirmation right above and chooses to wait or answer.
+  if (deferredMode !== 'will' && paymentConfirmationSent && !/[?？]/.test(text) && claimsPayment(text, { hasAttachment: true })) {
     await store.audit('assistant', 'auto_reply_already_answered', { customerId: customer.id, anchorAt, reason: 'payment_report_only' });
+    return 'answered';
+  }
+  // Jo, 22 Oct (+39 342): "Hi! I've just sent through my form 😊" got the
+  // questionnaire acknowledgement at 20:10 and then, at 20:15, Will's own
+  // "Thanks! The team will now review everything and get back to you soon."
+  // A system line is not counted as an answer above, on purpose, so a QUESTION
+  // sent with the form is still answered. But when the burst is only the
+  // report the system line already answered (no question, nothing else asked
+  // or wrong), a second acknowledgement is just a repeat.
+  const coveredBySystemLine = msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT'
+    && new Date(m.createdAt).getTime() >= since && isSystemLine(m));
+  if (deferredMode !== 'will' && coveredBySystemLine && text.length <= 200 && !/[?？]/.test(text) && !MORE_THAN_A_REPORT.test(text)) {
+    await store.audit('assistant', 'auto_reply_covered_by_system_line', { customerId: customer.id, anchorAt });
     return 'answered';
   }
   // The owner's absolute rule, re-checked on the WHOLE burst: no answer to
@@ -1696,7 +1953,18 @@ export async function handleInboundNote(
     //
     // ONCE PER DROP, not once per file: fifty invoices are one arrival. A
     // timestamp in settings is enough — no column, and it survives a restart.
-    if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy && ack) {
+    // 'will' mode (Jo, 22 Oct): no fixed "got it all". The files are part of
+    // the conversation (their captions too) and Will answers the batch once,
+    // after the usual wait: the acknowledgement, or the question asked with it.
+    let docsWill = false;
+    try { docsWill = resolveDecisionMode(await store.getSetting(DECISION_MODE_KEY)) === 'will'; } catch { docsWill = false; }
+    if (docsWill && !customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
+      const docMode = resolveAiMode(await store.getSetting('ai_mode'));
+      if (docMode === 'FULL_AUTO') {
+        try { await armAutoReply(store, customer); } catch { /* the task is open either way */ }
+        await store.audit('system', 'documents_left_to_will', { customerId: customer.id }).catch(() => {});
+      }
+    } else if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy && ack) {
       try {
         const killSwitch = (await store.getSetting('kill_switch')) === true;
         const autopilot = !requiresApproval(await store.getSetting('ai_mode'));

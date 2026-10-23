@@ -34,6 +34,8 @@ export interface ReviewInput {
   mode: 'SUPERVISED' | 'FULL_AUTO';
   /** True when reviewing a human task's suggested reply rather than an outbound reply. */
   isTask: boolean;
+  /** Called from 'will' mode (Jo, 22 Oct), where the check is on by default. */
+  willMode?: boolean;
 }
 
 export interface ReviewResult {
@@ -136,7 +138,12 @@ export async function reviewDraft(input: ReviewInput): Promise<ReviewResult> {
   // now OFF unless explicitly turned on with WILL_REVIEWER=on. Will's own
   // decision is used as-is; the deterministic policy guard is unchanged and
   // still blocks hard violations before anything sends.
-  if (process.env.WILL_REVIEWER !== 'on') return PASS;
+  // Jo, 22 Oct: back on for 'will' mode, where service.ts calls it before a
+  // reply Will wrote himself leaves (never on Jo's exact wording, never a note
+  // under a task, a hold means one rewrite first). WILL_REVIEWER=off still
+  // switches it off everywhere; outside 'will' mode it needs WILL_REVIEWER=on.
+  if (process.env.WILL_REVIEWER === 'off') return PASS;
+  if (process.env.WILL_REVIEWER !== 'on' && !input.willMode) return PASS;
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return PASS;
   if (!input.draft || !input.draft.trim()) return PASS;
