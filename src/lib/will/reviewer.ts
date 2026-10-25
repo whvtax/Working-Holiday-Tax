@@ -105,6 +105,7 @@ THESE ARE A PASS, NEVER A HOLD (Jo, 25 Oct: in three days the second check held 
 - The careful buyer before paying: the registered agent's details are in the client agreement (link), the account name is The Accounting Academy, no myGov link or login is needed, the tax invoice is sent after payment.
 - Explaining that myGov access is not needed and the return can be done from overseas.
 - Answering a couple: each partner messages separately, the fee is per person.
+- A customer quoting a price that is not ours ($100, $130): saying it is not one of our prices, the fee is fixed at $220 / $385, and what it covers.
 Still a hold: a message that repeats word for word something already sent, refunds of money already paid, complaints, and a refund figure or residency determination before payment.
 
 HOW TO DECIDE:

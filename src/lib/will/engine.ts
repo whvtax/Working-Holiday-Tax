@@ -11,7 +11,7 @@ import { policyGuard, GuardContext } from './policy-guard';
 import { claimsPayment } from './payment-claim';
 import { professionalQuestionMessage, NO_REFUND_CASES_Q, noRefundCasesMessage, PRE_PAYMENT_CHECK_MSG } from './i18n';
 import { accountNameMessage, isAccountNameQuestion } from './account-name';
-import { PAYMENT_RECEIVED_MSG, BANK_DOC_DENIED_RE, bankDocumentMessage, REFUND_CHANCE_RE, refundChanceMessage } from './i18n';
+import { PAYMENT_RECEIVED_MSG, BANK_DOC_DENIED_RE, bankDocumentMessage, REFUND_CHANCE_RE, refundChanceMessage, quotesOtherPrice, notOurPriceMessage } from './i18n';
 
 /** The first words of the approved confirmation in every language. */
 const PAYMENT_RECEIVED_PREFIX = new RegExp('^\\s*(?:' + Object.values(PAYMENT_RECEIVED_MSG).map((t) => t.split('\n')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'im');
@@ -496,6 +496,17 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     if (msg) {
       decision.action = 'reply';
       decision.approved_key = 'refund_chance';
+      decision.confidence = 1;
+      decision.reply_text = msg;
+    }
+  }
+  // "I was told your service costs $100" (Jo, 25 Oct, Katie): not our price,
+  // and not a reason to hand over.
+  if (willMode && !ctx.paid && decision.action !== 'reply' && customerBurst.length <= 400 && quotesOtherPrice(customerBurst)) {
+    const msg = notOurPriceMessage(ctx.lang);
+    if (msg) {
+      decision.action = 'reply';
+      decision.approved_key = 'not_our_price';
       decision.confidence = 1;
       decision.reply_text = msg;
     }

@@ -180,6 +180,8 @@ rule there; a test enforces it.
 - No super (DASP) service for now (25 Oct): key `no_dasp`; the two Library answers are updated by `applyKnowledgeFixes` (marker `fix-25oct`).
 - Tax form (25 Oct): the WhatsApp field asks for "The WhatsApp number you messaged us from", so the form lands in the right chat.
 
+- A price that is not ours (25 Oct, Katie "$100", Matilde "$130"): key `not_our_price` (en/de/ja), and a handover on a message quoting another price is replaced by it (`quotesOtherPrice`). Never a discount.
+
 ## 6. Running it
 
 ### Environment variables (Vercel)

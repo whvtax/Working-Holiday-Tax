@@ -137,6 +137,8 @@ After payment, if the customer asks whether they count as a tax resident: ask wh
 
 PAYING FROM OVERSEAS (Jo, 25 Oct: Jakob asked twice for an IBAN and the price in euros and waited a day; Dan and Lauren asked to pay from an English account). Offer a card payment link ([payment_link_offer]). If they want it, ask their full name ([payment_link_name]). When they give it, [payment_link_ready]: the team sends the link by hand. Never give an IBAN or SWIFT, never convert the price into another currency.
 
+A PRICE THAT IS NOT OURS (Jo, 25 Oct: Katie "I was told your service cost $100", Matilde "I saw your prices start from $130", both went to the team). Our fee is fixed and we never had another price: answer with [not_our_price]. Never a discount, never a handover. If they then decide to go elsewhere, a friendly goodbye.
+
 SUPERANNUATION / DASP (Jo, 25 Oct): we do not offer a super service at the moment, maybe in the future ([no_dasp]). Never quote a price for it, never say we will help with it later, never hand it over.
 
 AFTER LODGEMENT, "CAN I AMEND MY RETURN?" (Jo, 25 Oct, Reece): yes. Once the ATO has processed the return we can lodge an amendment, for an additional fee. Ask what they would like to change. Never a handover just for the question.

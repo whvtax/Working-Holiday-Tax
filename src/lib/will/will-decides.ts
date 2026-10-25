@@ -20,7 +20,7 @@
 import type { CustomerState } from './state-machine';
 import { thanksReply } from './text-normalize';
 import { laterPlanReply } from './later-plan';
-import { noRefundCasesMessage, referralMessage, documentsReceivedMessage, coupleMessage, bankDocumentMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage } from './i18n';
+import { noRefundCasesMessage, referralMessage, documentsReceivedMessage, coupleMessage, bankDocumentMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage, notOurPriceMessage } from './i18n';
 import { refundNotYetMessage, reviewLinkFor } from './review-asks';
 import { accountNameMessage, isAccountNameQuestion } from './account-name';
 import { detectChoice, priceMessageFor, firstContactPriceMessage, priceMessageIn, hasPriceIn, reviewMessageIn } from './instant-choice';
@@ -37,7 +37,7 @@ export const APPROVED_KEYS = [
   'thanks', 'later_plan', 'no_refund_cases', 'account_name',
   'price_tfn', 'price_tfn_abn', 'residency_quiz_start',
   'refund_not_yet', 'referral', 'documents_received', 'review_link', 'couple',
-  'residency_resident', 'residency_whm', 'price_tfn_review', 'price_tfn_abn_review', 'bank_document', 'refund_chance', 'payment_link_offer', 'payment_link_name', 'payment_link_ready', 'no_dasp',
+  'residency_resident', 'residency_whm', 'price_tfn_review', 'price_tfn_abn_review', 'bank_document', 'refund_chance', 'payment_link_offer', 'payment_link_name', 'payment_link_ready', 'no_dasp', 'not_our_price',
 ] as const;
 export type ApprovedKey = typeof APPROVED_KEYS[number];
 export function isApprovedKey(v: unknown): v is ApprovedKey {
@@ -59,6 +59,7 @@ When one of these approved messages is exactly the right reply, set approved_key
 - payment_link_offer: they want to pay from overseas or from a non-Australian account, ask for an IBAN / SWIFT, how much it is in euros or pounds, or say the transfer does not work (Jo, 25 Oct). Offer a card payment link. Never give an IBAN, never convert the price.
 - payment_link_name: we offered the payment link and they said yes. Ask their full name.
 - payment_link_ready: we asked their full name for the payment link and they gave it. The system opens a task and the team sends the link by hand.
+- not_our_price: before paying, they say they were told, saw or heard a different price ($100, $130, "starts from $..."), or found it cheaper elsewhere and ask why ours is $220 (Jo, 25 Oct). Our fee is fixed; that price is not ours. Never a handover, never a discount. If they only say they are going with a cheaper provider, a friendly goodbye instead.
 - no_dasp: they ask about claiming their superannuation / super / DASP, or its price. We do not offer that service at the moment (maybe in the future). Never a handover. If the same message asks something else too, leave the key empty and write the reply yourself with this line in it.
 - bank_document: they ask whether the bank statement / bank document is really needed, or say they cannot get one (no access to online banking, no Australian number to verify, closed account). It IS required: an official document from their Australian bank with their full name, BSB and account number (ATO requirement). Never say it is not needed, never accept only the numbers typed into the form (Jo, 25 Oct).
 - residency_quiz_start: our last message was the residency double-check and they ask or are unsure about it, OR (Jo, 25 Oct) a paid customer asks anywhere whether they count as a resident / which box to tick, also when a team member has written in the chat. Not when they confirm it is correct.
@@ -109,6 +110,7 @@ export function renderApproved(key: ApprovedKey, c: RenderCtx): string | null {
     case 'payment_link_name': return paymentLinkMessage('name', lang);
     case 'payment_link_ready': return paymentLinkMessage('ready', lang);
     case 'no_dasp': return noDaspMessage(lang);
+    case 'not_our_price': return notOurPriceMessage(lang);
     case 'residency_quiz_start': return quizIntro(quizLang(lang));
     case 'residency_resident': return quizResult(quizLang(lang), 4);
     case 'residency_whm': return quizResult(quizLang(lang), 0);

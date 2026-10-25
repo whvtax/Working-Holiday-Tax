@@ -304,6 +304,33 @@ export function noDaspMessage(lang?: string | null): string | null {
   return k === 'en' || k === 'de' || k === 'ja' ? NO_DASP_MSG[k] : null;
 }
 
+/**
+ * "I WAS TOLD IT COSTS $100" (Jo, 25 Oct, Katie +353 85; Matilde +61 455 saw
+ * "$130"). Not our price; our fee is fixed. Never a handover.
+ */
+export const NOT_OUR_PRICE_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `That isn't one of our prices, so it may have been another provider. Our fee is fixed: $220 for a TFN return, or $385 with ABN income.
+
+That covers a full review of your tax residency, Medicare and deductions, and preparing and lodging your return, so you don't miss anything you're entitled to.`,
+  de: `Das ist keiner unserer Preise, vielleicht war das ein anderer Anbieter. Unsere Gebühr ist fest: $220 für eine TFN-Steuererklärung oder $385 mit ABN-Einkommen.
+
+Darin enthalten sind die vollständige Prüfung deiner steuerlichen Ansässigkeit, von Medicare und deinen Abzügen sowie die Erstellung und Einreichung deiner Steuererklärung, damit du nichts verpasst, was dir zusteht.`,
+  ja: `そちらは当社の料金ではありませんので、別の業者の料金かもしれません。当社の料金は固定で、TFNのみの申告は$220、ABNの収入がある場合は$385です。
+
+税務上の居住区分、メディケア、控除をしっかり確認したうえで、タックスリターンを作成・提出します。受け取れるものを見逃さないようにしっかり確認します。`,
+};
+export function notOurPriceMessage(lang?: string | null): string | null {
+  const k = (lang ?? 'en').toLowerCase().slice(0, 2);
+  return k === 'en' || k === 'de' || k === 'ja' ? NOT_OUR_PRICE_MSG[k] : null;
+}
+/** A price the customer quotes back that is not one of ours ($100, $130, $250...). */
+export function quotesOtherPrice(text: string): boolean {
+  const t = text ?? '';
+  if (!/\b(?:told|said|saw|seen|heard|read|quoted|advertis\w*|start(?:s|ing)? (?:from|at)|cost|costs|price|prices|charge|only|cheaper|gesagt|gesehen|kostet|preis|ab|言われ|見た|料金)\b|言われ|見まし|料金/i.test(t)) return false;
+  const amounts = [...t.matchAll(/(?:\$|A\$|AUD\s?|€)\s?(\d{2,4})\b|\b(\d{2,4})\s?(?:dollars?|aud|euros?|ドル)\b/gi)].map((m) => Number(m[1] ?? m[2]));
+  return amounts.length > 0 && amounts.some((a) => ![220, 385, 330, 495, 110].includes(a));
+}
+
 /** A reply that tells the customer the bank document is not needed. */
 export const BANK_DOC_DENIED_RE = /(?:don'?t|do not|won'?t|will not|doesn'?t|does not)\s+(?:really\s+)?need\s+(?:a|your|the|any)?\s*bank\s*statement|no\s+bank\s*statement\s+(?:is\s+)?(?:needed|required|necessary)|bank\s*statement\s+(?:is\s+)?not\s+(?:needed|required|necessary)|(?:brauchst|benötigst|musst)\s+(?:du\s+)?kein(?:en|e)?\s+(?:bank\s*statement|kontoauszug|bankauszug|bankdokument)|kein(?:en|e)?\s+(?:bank\s*statement|kontoauszug)\s+(?:nötig|notwendig|erforderlich)|(?:銀行明細|バンクステートメント|口座明細)[^。]{0,10}(?:不要|必要ありません|いりません|必要ない)/i;
 
