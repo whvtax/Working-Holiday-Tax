@@ -10,15 +10,15 @@ import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
 import { claimsPayment } from './payment-claim';
 import { professionalQuestionMessage, NO_REFUND_CASES_Q, noRefundCasesMessage, PRE_PAYMENT_CHECK_MSG } from './i18n';
-import { accountNameMessage } from './account-name';
-import { PAYMENT_RECEIVED_MSG } from './i18n';
+import { accountNameMessage, isAccountNameQuestion } from './account-name';
+import { PAYMENT_RECEIVED_MSG, BANK_DOC_DENIED_RE, bankDocumentMessage, REFUND_CHANCE_RE, refundChanceMessage } from './i18n';
 
 /** The first words of the approved confirmation in every language. */
 const PAYMENT_RECEIVED_PREFIX = new RegExp('^\\s*(?:' + Object.values(PAYMENT_RECEIVED_MSG).map((t) => t.split('\n')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'im');
 const FORM_LINK_IN_TEXT = /workingholidaytax\.com(?:\.au)?\/tax-form/i;
 import { APPROVED } from './approved-messages';
 import { canTransition, CustomerState } from './state-machine';
-import { detectChoice, PRICE_ASK_RE, firstContactPriceMessage } from './instant-choice';
+import { detectChoice, PRICE_ASK_RE, firstContactPriceMessage, priceTail } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
 import { hasForeignIncome } from './foreign-income';
 import { hasAbnIncome, ABN_PRICE_RE } from './abn-income';
@@ -27,7 +27,7 @@ import { isLaterPlan, laterPlanReply } from './later-plan';
 import { renderApproved, type DecisionMode } from './will-decides';
 import { looksLikePaymentConfirmation } from './payment-confirmation';
 import { paragraphise } from './layout';
-import { OTHER_INCOME_RE, CLEAR_ABN_RE } from './instant-choice';
+import { OTHER_INCOME_RE, CLEAR_ABN_RE, abnStance } from './instant-choice';
 import { alreadyCheckedReason, applyCheckedClause, CHECKED_CLAUSE, alreadyLodged } from './already-checked';
 import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, containsThanks, firstSentenceOnly, isClosingOnly, thanksReply } from './text-normalize';
 
@@ -201,6 +201,15 @@ export function enforcePriceMessage(text: string, foreign = false, reviewOfLodge
   return lead ? `${lead}\n\n${approved}` : approved;
 }
 
+/** $495 -> $385 and $330 -> $220, in the ways Will writes an amount in his
+ *  languages ("$495", "A$495", "AUD 495", "495ドル", "495 Dollar"). */
+export function fixForeignPrice(text: string): string {
+  const swap = (n: string) => (n === '495' ? '385' : '220');
+  return text
+    .replace(/((?:A|AU)?\$\s?|AUD\s?)(495|330)\b/g, (_m, pre: string, n: string) => `${pre}${swap(n)}`)
+    .replace(/\b(495|330)(\s?(?:ドル|豪ドル|AUD|dollars?|Dollar|dólares|dollari|dólares australianos|euros?))/gi, (_m, n: string, post: string) => `${swap(n)}${post}`);
+}
+
 export function stripCheerOpener(text: string, firstName?: string | null): string {
   let stripped = text.replace(CHEER_OPENER, '');
   if (!stripped.trim() || stripped === text) return text;
@@ -287,8 +296,14 @@ const CHOICE_OR_PRICE_RE = new RegExp([
   '^(?:yes|yep|yeah|sure|ok|okay|ja|sí|si|oui|sì|sim|はい|お願いします|よろしくお願いします)\\b',
   'いくら', '料金', '費用', '値段', 'preis', 'kosten', 'kostet', 'precio', 'cu[áa]nto', 'prix', 'combien', 'prezzo', 'quanto', 'preço',
 ].join('|'), 'im');
+/** "How do I pay?", "haven't seen a transfer request", "what's the IBAN?":
+ *  the bank details ARE the answer (Jo, 25 Oct, Michael +31 6: the reply with
+ *  the payment step was refused as "prices instead of an answer"). */
+export const HOW_TO_PAY_RE = /\b(?:transfer|payment|pay)\s+(?:request|link|details|info)|\bwhich\s+transfer\b|how\s+(?:do|can|should|would)\s+i\s+(?:pay|transfer|send (?:the )?(?:money|payment))|where\s+(?:do|should|can)\s+i\s+(?:pay|send|transfer)|\b(?:iban|swift|bic)\b|bank\s*(?:details|account)|wie\s+(?:kann|soll)\s+ich\s+(?:bezahlen|zahlen|überweisen)|kontodaten|振込先|支払い方法|どうやって(?:支払|振り込)/i;
+
 export function isChoiceOrPriceAsk(burst: string): boolean {
-  return CHOICE_OR_PRICE_RE.test((burst ?? '').trim());
+  const t = (burst ?? '').trim();
+  return CHOICE_OR_PRICE_RE.test(t) || HOW_TO_PAY_RE.test(t);
 }
 
 /** 11 Oct (decision 12): a message that reads as upset, worried or about a
@@ -470,6 +485,27 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   }
 
   const decision = await decide(ctx, history, input.reviewHint ? { rewriteHint: input.reviewHint } : undefined);
+  // THE ACCOUNT NAME IS NEVER A HANDOVER (Jo, 25 Oct, Sawada +61 468: "is the
+  // account name Working Holiday Tax?" went to the team for two hours while
+  // he stood ready to pay). A short account-name question that Will would
+  // hand over or leave gets the fixed answer: The Accounting Academy.
+  // Same for "how likely is it that I get something back?" (Jo, 25 Oct,
+  // +49 1516): it depends on many factors, an estimate only after the review.
+  if (willMode && !ctx.paid && decision.action !== 'reply' && customerBurst.length <= 220 && REFUND_CHANCE_RE.test(customerBurst)) {
+    const msg = refundChanceMessage(ctx.lang);
+    if (msg) {
+      decision.action = 'reply';
+      decision.approved_key = 'refund_chance';
+      decision.confidence = 1;
+      decision.reply_text = msg;
+    }
+  }
+  if (willMode && !ctx.paid && isAccountNameQuestion(customerBurst) && decision.action !== 'reply') {
+    decision.action = 'reply';
+    decision.approved_key = 'account_name';
+    decision.confidence = 1;
+    decision.reply_text = accountNameMessage(ctx.lang);
+  }
 
   // ── WILL DECIDES (Jo, 22 Oct): his chosen approved message, Jo's wording ──
   // In 'will' mode Will names the approved message (approved_key) and the
@@ -482,9 +518,18 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     //  - other income that is not clearly ABN (freelance, UGC, side work) is
     //    never priced as TFN: it goes to the team (Jo, 22 Oct, Sydney);
     //  - a first message is never answered with the thank-you line.
-    const customerTexts = history.filter((t) => t.role === 'customer').map((t) => t.text)
-      .map((t) => t.replace(/\b(?:no|not|without|don'?t have|do not have|never had|didn'?t have)\s+(?:an?\s+)?abn\b/gi, ' '));
-    if (decision.approved_key === 'price_tfn' && customerTexts.some((t) => CLEAR_ABN_RE.test(t))) decision.approved_key = 'price_tfn_abn';
+    //  - Jo, 24 Oct (+353 85): the word "ABN" alone is not ABN income. "not
+    //    sure if that's an ABN?" is a question, "I never worked under an ABN"
+    //    rules it out, and the newest thing they said wins (abnStance).
+    const rawTexts = history.filter((t) => t.role === 'customer').map((t) => t.text);
+    const stance = abnStance(rawTexts);
+    // With the ABN ruled out or only asked about, the bare word is not "other
+    // income"; Uber, delivery, freelance and the rest still are.
+    const customerTexts = rawTexts.map((t) => (stance === 'abn' ? t : t.replace(/\babn\b/gi, ' ')));
+    const abnSignal = customerTexts.some((t) => CLEAR_ABN_RE.test(t));
+    if (decision.approved_key === 'price_tfn' && (stance === 'abn' || (stance === null && abnSignal))) decision.approved_key = 'price_tfn_abn';
+    else if (decision.approved_key === 'price_tfn_abn' && (stance === 'no_abn' || stance === 'unsure') && !abnSignal
+      && !customerTexts.some((t) => OTHER_INCOME_RE.test(t))) decision.approved_key = 'price_tfn';
     else if (decision.approved_key === 'price_tfn' && customerTexts.some((t) => OTHER_INCOME_RE.test(t))) {
       return {
         kind: 'human_task', decision: { ...decision, action: 'human_task' },
@@ -494,6 +539,8 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
         },
       };
     }
+    if (decision.approved_key === 'price_tfn_review' && (stance === 'abn' || (stance === null && abnSignal))) decision.approved_key = 'price_tfn_abn_review';
+    else if (decision.approved_key === 'price_tfn_abn_review' && stance !== 'abn' && !abnSignal) decision.approved_key = 'price_tfn_review';
     if (decision.approved_key === 'thanks' && lastAssistantIdx < 0) decision.approved_key = undefined;
   }
   if (willMode && decision.action === 'reply' && decision.approved_key) {
@@ -713,6 +760,46 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // 16 Oct (Megan): a price the TEAM quoted in this chat stands; the standard
   // TFN / TFN + ABN message must not overwrite it with the wrong label.
   const teamQuoted = history.some((t) => t.role === 'assistant' && t.author === 'HUMAN' && /\$\s?\d/.test(t.text));
+  // THE FOREIGN-INCOME PRICE ONLY WITH FOREIGN INCOME (Jo, 23 Oct, Taiki):
+  // "I'm back in Japan, TFN and ABN income" was quoted $495 in Japanese.
+  // Living overseas now is not foreign income. In every language, $495 / $330
+  // become $385 / $220 unless the customer actually reported foreign income.
+  // THE BANK DOCUMENT IS NEVER "NOT NEEDED" (Jo, 25 Oct, +49 160): a reply
+  // telling the customer they need no bank statement is replaced by Jo's
+  // wording in their language; with no wording in that language, the team.
+  if (BANK_DOC_DENIED_RE.test(text)) {
+    const msg = bankDocumentMessage(ctx.lang);
+    if (!msg) {
+      return {
+        kind: 'human_task', decision, guardViolations: ['BANK_DOCUMENT_DENIED'],
+        task: { reason: 'Will was about to say the bank document is not needed. It is required: an official document with their full name, BSB and account number.', severity: 'REVIEW', suggestedReply: undefined },
+        newState: undefined, stateChanged: false,
+      };
+    }
+    text = msg;
+    rewriteNote = 'The draft said the bank document is not needed; Jo\'s wording went instead (it is an ATO requirement).';
+  }
+  if (!foreignCustomer && !teamQuoted && !ctx.paid) {
+    const fixed = fixForeignPrice(text);
+    if (fixed !== text) { text = fixed; rewriteNote = 'The draft quoted the foreign-income price to a customer with no foreign income; the standard price went instead.'; }
+  }
+  // A PRICE WITH NOTHING TO PAY WITH (Jo, 23 Oct, Taiki): the customer gave
+  // their track and asked the total; the reply quoted the fee and asked "any
+  // questions?". When the fee is in the reply, the track is clear, they asked
+  // the price, and the bank details have never gone out, the end of the
+  // approved price message is added, in their language.
+  if (!ctx.paid && !teamQuoted && !bankAlreadySent && !/\bBSB\b|062692|81049952/.test(text)
+      && /\$\s?(?:220|385|330|495)\b|(?:220|385|330|495)\s?(?:ドル|AUD)/.test(text) && PRICE_ASK_RE.test(customerBurst)) {
+    const said = history.filter((t) => t.role === 'customer').map((t) => t.text);
+    const track = /\$\s?(?:385|495)\b|(?:385|495)\s?(?:ドル|AUD)/.test(text) ? 'TFN_ABN' : 'TFN';
+    const tail = priceTail(ctx.lang, track, foreignCustomer);
+    if (tail && (track === 'TFN_ABN' ? abnStance(said) === 'abn' || (abnStance(said) === null && said.some((t) => CLEAR_ABN_RE.test(t))) : true)) {
+      // "Any questions?" at the end gives way to the payment step.
+      const trimmed = text.replace(/\n*[^\n]*(?:any questions|questions\?|ご質問はありますか|noch fragen|fragen\?)[^\n]*$/i, '').trim();
+      text = `${trimmed}\n\n${tail}`;
+      if (!newState && canTransition(ctx.state, 'PRICE_SENT')) newState = 'PRICE_SENT';
+    }
+  }
   if ((ctx.lang ?? 'en') === 'en' && !ctx.paid && !teamQuoted && /\bBSB\b|062692|81049952/.test(text)) {
     const enforced = enforcePriceMessage(text, foreignCustomer, alreadyLodged(history.filter((t) => t.role === 'customer').map((t) => t.text)));
     if (enforced !== text) text = enforced;
@@ -739,7 +826,10 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // very first message is the opening question, unless the customer's own
   // first message already picks a track or asks the price. The price message
   // (with the bank details) follows their answer, immediately.
-  if (!ctx.paid && willTurns === 0 && BANK_RE.test(text) && !detectChoice(customerBurst, null) && !PRICE_ASK_RE.test(customerBurst)) {
+  // Not for a return they already lodged (Jo, 24 Oct, Chinami): the review
+  // has one price, there is no option to ask about.
+  if (!ctx.paid && willTurns === 0 && BANK_RE.test(text) && !detectChoice(customerBurst, null) && !PRICE_ASK_RE.test(customerBurst)
+      && !alreadyLodged(history.filter((t) => t.role === 'customer').map((t) => t.text))) {
     const name = custFirstName ? cleanFirstName(custFirstName) : '';
     text = name ? APPROVED.opening.replace(/^Hey!/, `Hey ${name}!`) : APPROVED.opening;
     rewriteNote = 'The first draft sent the bank details before any exchange; the opening question went instead.';
@@ -796,7 +886,14 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // question. The prices or the bank block are never that answer; they come
   // in the next message. "How much?", "TFN?", "220?" are about the price and
   // get it.
-  if (menuAsAnswer(customerBurst, text, ctx.paid)) {
+  // Not for the review of a return they already lodged (Jo, 24 Oct, Chinami:
+  // "can it be lodged again?" got a task and a holding line). "Yes, happy to
+  // help, it is a review, $220 whatever the result" IS the answer.
+  const isReviewOfLodged = /for the review itself|確認作業に対して|für die Prüfung selbst/i.test(text)
+    && alreadyLodged(history.filter((t) => t.role === 'customer').map((t) => t.text));
+  // Nor for "what is the account name?" (Jo, 25 Oct, Sawada): the account
+  // name and the bank details ARE the answer.
+  if (!isReviewOfLodged && !isAccountNameQuestion(customerBurst) && menuAsAnswer(customerBurst, text, ctx.paid)) {
     const retry = await decide(ctx, history, {
       rewriteHint: 'Your previous reply was refused: the customer ASKED something and you answered with the prices or the bank details. Rewrite: answer what they asked FIRST, in one to three short lines (an operational question gets a real answer; a tax-outcome question gets the one line "that\'s one of the many things we check before we lodge, so leave that with us"), then ONE short qualifying question (TFN only, or also ABN income? still in Australia?). Do NOT include $220, $385, the BSB or the account number in this message. Same language, same action.\n\nPrevious reply, for reference only:\n"""\n' + decision.reply_text.slice(0, 1500) + '\n"""',
       timeoutMs: 12_000,

@@ -144,9 +144,41 @@ rule there; a test enforces it.
 | One payment, one confirmation | `payment-confirmation.ts` | A confirmation is recognised by its flags or first line in any language; the queued one, the typed-"I paid" route and Will's own draft all skip it if one already went (23 Oct: two "Zahlung erhalten" five minutes apart). |
 | Review link | `will-decides.ts` (`review_link`) | "Is there a link to leave a review?" gets thanks and the Google link; the scheduled review ask is not sent on top. |
 | Short paragraphs | `layout.ts`, playbook | After the guard passes a reply, a long block of Will's own prose is split at sentence ends into short paragraphs (2 to 3 sentences; 1 to 2 in Japanese). Words never change; Jo's approved wording, lists and bank lines are left as laid out. |
+| Couples | `approved-messages.ts` (`o16_couple`, Library `obj_16`), `will-decides.ts` (`couple`) | Two people asking together: each writes separately from their own WhatsApp (security and confidentiality), the fee is per person, never a couple price or discount. |
+| Foreign-income price guard | `engine.ts` (`fixForeignPrice`) | $495 / $330 become $385 / $220 in every language unless the customer reported foreign income (being back home is not foreign income). A reply that quotes the fee to someone who asked the price gets the bank details and the screenshot line. |
+| Residency, counted by the customer | `will-decides.ts` (`residency_resident` / `residency_whm`), playbook | After the residency double-check, a customer who counted the points themselves gets Jo's result from their latest count, without the questions again. The old "hand it to the team" line was removed (it contradicted the 21 Oct rule). |
 | Morning report | `morning-report.ts`, `/api/will/morning`, `MorningReport.tsx` | On the Overview: handled by Will alone, tasks and why, waiting on us, stuck after paying. Replaced the "Ask Will" bot, which was removed. |
 
 ---
+
+## 5a. Security watch (`lib/security-watch.ts`, 23 Oct)
+
+- Every CRM login step is written to `will_audit` with actor `auth`: `crm_password_ok`, `crm_password_failed`, `crm_locked_out`, `crm_otp_ok`, `crm_otp_failed`, `crm_otp_too_many`. Each row has the device ("Chrome on macOS"), Vercel's city/country and a masked IP.
+- A successful login from a device + country the CRM has not seen before emails `CRM_ADMIN_EMAIL` (via Resend) "New login to your CRM". The very first login is remembered silently. Known devices live in setting `security_known_devices`.
+- Nightly (`runNightly`) checks the `bank_details` setting and every Library message for any BSB/account that is not 062-692 / 81049952. A mismatch raises an URGENT task "Bank details do not match ours: ..." and an email.
+- The morning report has a "CRM logins" tile: logins, failed attempts, lockouts, new devices and the last logins in 24 hours.
+- If a login was not Jo: change `CRM_PASSWORD` and `JWT_SECRET` in Vercel and redeploy (signs everyone out).
+
+## 5b. 24 Oct fixes
+
+- ABN reading (`abnStance` in `instant-choice.ts`): the newest customer message that says anything about an ABN decides. "not sure if that's an ABN?" is `unsure` (TFN price), "I never worked under an ABN" is `no_abn`. The engine can step a $385 choice down to $220 on a correction.
+- No silent repeats: a reply that is word for word a message already sent becomes a task ("Will was about to repeat a message he already sent") instead of being dropped by `deliverOut`.
+- Review of a lodged return (amendment, "lodge it again"): Will-decides keys `price_tfn_review` / `price_tfn_abn_review`, in English, German and Japanese; never a handover, exempt from the opening question and from the "answer first" guard. The Oct 31 deadline is for new returns only.
+
+- Bank document (25 Oct): always required, an official document from the Australian bank with full name, BSB and account number. Will-decides key `bank_document` (en/de/ja); the engine replaces any "you don't need a bank statement" reply with that wording (`BANK_DOC_DENIED_RE`), or hands it to the team in other languages.
+
+- Careful buyer (25 Oct): invoice is sent after payment; TPB/agent → [legitimacy]; account name The Accounting Academy; no myGov link needed. A message with several questions is answered point by point; only a truly unknown point goes to the team, with the rest drafted.
+
+- Account name (25 Oct): "アカウントネーム", "口座名", "is the name Working Holiday Tax?" are account-name questions; in Will mode a handover on one is replaced by the fixed answer (The Accounting Academy), and the "answer first" guard no longer blocks it.
+- Refund chance (25 Oct): "how likely / will I get anything back / how much" before paying → key `refund_chance` (en/de/ja): depends on many factors, estimate only after the review, which starts after payment. A handover on it is replaced by that answer.
+
+- Prompt caching (25 Oct, Anthropic "low cache hit rate" email): the playbook block in `decide` and the reviewer's rules are cached with a 1-hour TTL (`cache_control: { type: 'ephemeral', ttl: '1h' }`). `ai-usage.ts` costs 1-hour writes at 2x input.
+
+- 72-hour review (25 Oct, 107 conversations): "per person" price questions no longer read as "are you a bot?"; the reviewer has an explicit pass list (declines, refund-chance wording, residency counting, careful buyer); no sales nudge once the team has sent an invoice/estimate; "transfer request / IBAN / how do I pay" counts as a payment question; long residency answers that open with yes/no count; playbook rules for residency counting after payment (also with the team in the chat; Will never counts days, the customer answers question 1 themselves), amendments after lodgement and "I haven't seen a transfer request".
+
+- Paying from overseas (25 Oct): keys `payment_link_offer` → `payment_link_name` → `payment_link_ready`; the last one opens an URGENT task "PAYMENT LINK: send a card payment link to …" and the team sends the link by hand. Never an IBAN, never a currency conversion.
+- No super (DASP) service for now (25 Oct): key `no_dasp`; the two Library answers are updated by `applyKnowledgeFixes` (marker `fix-25oct`).
+- Tax form (25 Oct): the WhatsApp field asks for "The WhatsApp number you messaged us from", so the form lands in the right chat.
 
 ## 6. Running it
 

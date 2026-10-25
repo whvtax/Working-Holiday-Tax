@@ -43,6 +43,11 @@ const ACCOUNT_NAME_ASK = new RegExp([
   'name (?:doesn\'?t|does not|didn\'?t|did not|don\'?t) match', 'different (?:company )?name', 'name (?:is|was) (?:not|different)', 'shows? (?:a )?different name', 'wrong name',
   'kontoname', 'kontoinhaber', 'empf[äa]nger(?:name)?', 'welcher name', 'auf welchen namen', 'name (?:stimmt|passt) nicht',
   '口座名義', '名義', '受取人', '宛名', '名前は',
+  // Jo, 25 Oct (Sawada, +61 468): "アカウントネームはWorking Holiday Taxで
+  // よろしかったですか？" went to the team. Katakana "account name", "口座名"
+  // and "is the name Working Holiday Tax?" are the same question.
+  'アカウント\\s*ネーム', 'アカウント名', '口座名', '振込先の?(?:名前|名)',
+  '(?:name|名義|ネーム|名前|kontoname)[^.?!。？]{0,25}working\\s*holiday\\s*tax', 'working\\s*holiday\\s*tax[^.?!。？]{0,15}(?:で(?:よろしい|いい|大丈夫|合って)|as the (?:account )?name|for the (?:account )?name|als (?:konto)?name)',
   'nombre de (?:la )?cuenta', 'titular', 'a nombre de', 'nom du compte', 'titulaire', 'à quel nom', 'intestatario', 'nome del conto', 'nome da conta',
 ].join('|'), 'i');
 const NOT_THIS = /\bmy name\b|\bfull name\b|\byour name\b|\bfirst name\b|\blast name\b|\bemployer\b|\bcompany name\b.*\babn\b/i;

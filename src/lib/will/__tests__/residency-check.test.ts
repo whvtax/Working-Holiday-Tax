@@ -20,8 +20,10 @@ describe('who gets it', () => {
 
 describe('the message', () => {
   it('in the customer\'s language, with the right page and no dash', () => {
-    expect(residencyCheckMessage('en', 'Sarah').startsWith('Hi Sarah, ')).toBe(true);
-    expect(residencyCheckMessage('en', 'Sarah').endsWith('tax-residency\nIs your answer still correct?')).toBe(true);
+    expect(residencyCheckMessage('en', 'Sarah').startsWith('Hi Sarah,\n\n')).toBe(true);
+    expect(residencyCheckMessage('en', 'Sarah')).toContain('for tax purposes.');
+    expect(residencyCheckMessage('en', 'Sarah')).not.toContain('difference to your refund');
+    expect(residencyCheckMessage('en', 'Sarah').endsWith('tax-residency\n\nIs your answer still correct?')).toBe(true);
     expect(residencyCheckMessage('de', 'Lena')).toContain('/de/tax-residency');
     expect(residencyCheckMessage('ja', 'Yui')).toMatch(/^こんにちは、Yuiさん。/);
     expect(residencyCheckMessage('es', 'Ana')).toContain('workingholidaytax.com.au/tax-residency');

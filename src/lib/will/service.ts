@@ -16,7 +16,7 @@ import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
 import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
 import { retrieveKnowledge, nearestKnowledge } from './knowledge';
 import { buildHandoffDiagnostic, taskContextWithDiagnostic } from './handoff-diagnostic';
-import { deliverOut, fetchWaMedia } from './channel';
+import { deliverOut, fetchWaMedia, wasAlreadySentVerbatim } from './channel';
 import { reviewLink } from './review-asks';
 import { readReviewAsks, patchReviewAsk, saysRefundLanded, isPositiveAck, REFERRAL_WINDOW_DAYS, saysRefundNotYet, refundNotYetMessage, REFUND_CHECKIN_RETRY_DAYS } from './review-asks';
 import { referralMessage } from './i18n';
@@ -1136,6 +1136,25 @@ export async function decideAndAct(
         }
       } else if (outcome.decision?.approved_key === 'referral') {
         await patchReviewAsk(store, customer.id, { referralAt: new Date().toISOString() });
+      } else if (outcome.decision?.approved_key === 'residency_resident' || outcome.decision?.approved_key === 'residency_whm') {
+        // Same ending as the five questions in the chat: a quiz in progress is
+        // closed, and the resident result tells the team a new form is coming.
+        await store.setSetting(residencyQuizKey(customer.id), null).catch(() => undefined);
+        await store.audit('assistant', 'residency_result_by_will', { customerId: customer.id, result: outcome.decision.approved_key }).catch(() => {});
+        if (outcome.decision.approved_key === 'residency_resident') {
+          await store.addTask({
+            customerId: customer.id, customerName: customer.name ?? customer.waId,
+            reason: 'Residency check in the chat: the customer counted 4 or more of the 5 points themselves. Told they look like an Australian tax resident and asked to fill out the questionnaire again with the correct details.',
+            severity: 'REVIEW', context: text.slice(0, 500), suggestedReply: null,
+          }).catch(() => {});
+        }
+      } else if (outcome.decision?.approved_key === 'payment_link_ready') {
+        // Jo, 25 Oct: the team sends the card payment link by hand.
+        await raiseOrUpdateTask(store, customer, {
+          reason: `PAYMENT LINK: send a card payment link to ${customer.name ?? customer.waId}. Full name as they wrote it: "${text.replace(/\s+/g, ' ').trim().slice(0, 80)}"`,
+          severity: 'URGENT', newContext: text.slice(0, 300), suggestedReply: null,
+        });
+        await store.cancelJobsFor(customer.id, ['FOLLOW_UP']).catch(() => 0);
       } else if (outcome.decision?.approved_key === 'review_link') {
         // The link Jo set in the CRM, if it differs from the default; and the
         // scheduled review ask is not sent on top of this one.
@@ -1293,6 +1312,26 @@ export async function decideAndAct(
       return { outcome: { kind: 'silent', decision: outcome.decision } };
     }
     outcome.kind = 'sent';
+  }
+
+  // NEVER A SILENT REPEAT (Jo, 24 Oct, +353 85): she corrected "I never
+  // worked under an ABN. Just TFN" and Will produced the very same $385
+  // message he had sent two minutes earlier. deliverOut drops an AI message
+  // that already went out word for word, so she got nothing at all and
+  // nobody knew. A reply to a new message that only repeats what was already
+  // sent goes to the team instead, with what she wrote.
+  if (outcome.replyText && (outcome.kind === 'sent' || outcome.kind === 'queued' || outcome.kind === 'pending_approval')
+      && !['thanks', 'documents_received'].includes(outcome.decision?.approved_key ?? '')) {
+    try {
+      if (await wasAlreadySentVerbatim(store, customer.id, outcome.replyText)) {
+        await store.audit('assistant', 'reply_repeats_sent_message', { customerId: customer.id, preview: outcome.replyText.slice(0, 120) });
+        await raiseOrUpdateTask(store, customer, {
+          reason: 'Will was about to repeat a message he already sent, word for word, in answer to a new message. They are waiting for a reply.',
+          severity: 'REVIEW', newContext: text.slice(0, 500), suggestedReply: null,
+        });
+        return { outcome: { ...outcome, kind: 'human_task' } };
+      }
+    } catch { /* the normal path still runs */ }
   }
 
   if (outcome.kind === 'sent' && outcome.replyText) {

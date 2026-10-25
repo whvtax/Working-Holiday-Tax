@@ -11,9 +11,10 @@ export async function GET() {
   const store = getStore();
   const now = Date.now();
   const startIso = new Date(now - 24 * 60 * 60 * 1000).toISOString();
-  const [customers, tasks, history, messages] = await Promise.all([
+  const [customers, tasks, history, messages, auth] = await Promise.all([
     store.listCustomers(), store.listTasks(), store.allHistory(),
     store.listMessagesBetween(startIso, new Date(now).toISOString(), 5000),
+    typeof store.listAuditByActor === 'function' ? store.listAuditByActor('auth', startIso) : Promise.resolve([]),
   ]);
-  return NextResponse.json({ ok: true, report: buildMorningReport({ customers, tasks, messages, history, now }) });
+  return NextResponse.json({ ok: true, report: buildMorningReport({ customers, tasks, messages, history, auth, now }) });
 }

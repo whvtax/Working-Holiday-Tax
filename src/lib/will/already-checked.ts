@@ -81,7 +81,9 @@ export const ALREADY_LODGED_RE = new RegExp([
   '\\b(?:tax\\s+)?(?:bill|debt)\\s+from\\s+the\\s+ato\\b',
   'check\\s+my\\s+(?:lodged\\s+)?return', 'review\\s+my\\s+(?:lodged\\s+)?return',
   'bereits\\s+(?:eingereicht|abgegeben)', 'schon\\s+(?:eingereicht|abgegeben)', 'steuerbescheid',
-  '(?:もう|すでに|既に)(?:申告|提出)', '修正申告',
+  '(?:もう|すでに|既に)(?:申告|提出|申請)', '修正申告',
+  // Jo, 24 Oct (Chinami): "既に申請…再申請は可能でしょうか" / "lodge it again".
+  '再申請', '再申告', 'lodge\\s+(?:it\\s+)?again', '\\bre-?lodg', '\\bre-?submit', 'erneut\\s+einreichen',
 ].join('|'), 'i');
 
 export function alreadyLodged(customerTexts: (string | null | undefined)[]): boolean {

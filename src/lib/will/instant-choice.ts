@@ -23,6 +23,37 @@ const NO_ABN_RE = /\b(?:no|not|don'?t have|without|never had|didn'?t have)\s+(?:
 /** Income that is not wages from an employer. Next to a TFN answer it means
  *  the customer has more than one kind of income and the track is not clear. */
 /** Unmistakably ABN work: no need to ask how it was paid. */
+/**
+ * Where the customer stands on an ABN, read from their messages NEWEST FIRST
+ * (Jo, 24 Oct, +353 85: "TFN only I think.. I worked an agency job ... not
+ * sure if that's an ABN?" got the $385 TFN + ABN price because the word
+ * "ABN" was in it, and her "I never worked under an ABN. Just TFN" two
+ * minutes later got nothing, because the code still saw the old "ABN?" and
+ * produced the same $385 message again, which the duplicate guard dropped).
+ *  - 'no_abn': they ruled it out ("never worked under an ABN", "just TFN").
+ *  - 'unsure': they ask or are not sure whether it was an ABN.
+ *  - 'abn':    they clearly had ABN income.
+ *  - null:     nothing said about it.
+ * The latest message that says anything decides: a correction wins.
+ */
+export type AbnStance = 'abn' | 'no_abn' | 'unsure';
+const NEVER_ABN_RE = /\b(?:never|didn'?t|did not|haven'?t|have not|wasn'?t|was not|weren'?t)\s+(?:\w+\s+){0,3}(?:under|on|with|through|via|using|an?|had|have|got|get|registered)\s+(?:an?\s+)?abn\b|\babn\s*[:\-]?\s*(?:no|none|nope)\b/i;
+const UNSURE_ABN_RE = /\b(?:not sure|unsure|no idea|don'?t know|do not know|i think|maybe|perhaps|wondering|whether|if (?:that'?s|it'?s|it was|that was|this is))\b/i;
+export function abnStance(texts: string[]): AbnStance | null {
+  for (let i = texts.length - 1; i >= 0; i--) {
+    const t = texts[i] ?? '';
+    if (NEVER_ABN_RE.test(t) || NO_ABN_ML_RE.test(t)) return 'no_abn';
+    // Only the sentence that names the ABN counts: "I had ABN income (A$4,500).
+    // How do I log in to myGov?" is a clear ABN with an unrelated question.
+    const abnSentences = (t.match(/[^.!?。！？\n]*(?:[.!?。！？]+|$)/g) ?? [])
+      .filter((x) => /\babn\b/i.test(x) || ABN_ML_RE.test(x));
+    if (abnSentences.some((x) => /[?？]/.test(x) || UNSURE_ABN_RE.test(x))) return 'unsure';
+    if (NO_ABN_RE.test(t) && !/\b(?:option\s?1|1st|first)\b/i.test(t)) return 'no_abn';
+    if (CLEAR_ABN_RE.test(t) || ABN_ML_RE.test(t)) return 'abn';
+  }
+  return null;
+}
+
 export const CLEAR_ABN_RE = /\babn\b|\buber\b|deliver(?:y|oo)|door\s?dash|menulog|sole\s?trader|self[- ]?employed/i;
 export const OTHER_INCOME_RE = /\babn\b|\buber\b|deliver(?:y|oo)|door\s?dash|menulog|contract(?:or|ing)\b|sole\s?trader|self[- ]?employed|freelanc|\bugc\b|content (?:creat|work)|influencer|brand (?:deal|work|collab)|sponsor|on the side|side (?:job|gig|hustle|income|work)|cash (?:job|work|in hand)|online (?:work|job|income)|invoic|selbstst[äa]ndig|freiberuf|nebenjob|副業|フリーランス/i;
 const TFN_RE = /\btfn\b|employers?\b|employee|payslips?|cafe|hospitality|farm|casual/i;
@@ -70,6 +101,23 @@ export function detectChoice(text: string, lastWillLine: string | null | undefin
 
 /** A direct question about the price: the two prices are the right answer. */
 export const PRICE_ASK_RE = /how much|what(?:'s| is| does it) (?:the )?(?:cost|price|fee)|\bcost\b|\bprice\b|\bfees?\b|\bcharge\b|how (?:do|can) i pay|payment details|bank details|wie viel|was kostet|kosten|preis|cu[áa]nto|precio|combien|prix|quanto|prezzo|いくら|料金|費用/i;
+
+/** The end of the price message (bank details, the guarantee where it
+ *  applies, the screenshot line) in the customer's language, for a reply that
+ *  quoted the fee but left the payment details out (Jo, 23 Oct, Taiki: "the
+ *  total cost?" got a price and "any questions?", nothing to pay with).
+ *  null for a language with no approved wording. */
+export function priceTail(lang: string | null | undefined, track: Track, foreign = false): string | null {
+  const l = (lang ?? 'en').toLowerCase().slice(0, 2);
+  if (l === 'de' || l === 'ja') {
+    const L = PRICE_ML[l];
+    return track === 'TFN' && !foreign ? `${BANK}\n\n${L.guarantee}\n\n${L.screenshot}` : `${BANK}\n\n${L.screenshot}`;
+  }
+  if (l !== 'en') return null;
+  const msg = priceMessageFor(track, foreign);
+  const at = msg.indexOf('BSB:');
+  return at >= 0 ? msg.slice(at) : null;
+}
 
 export function priceMessageFor(track: Track, foreign = false): string {
   if (foreign) return track === 'TFN_ABN' ? APPROVED.price_tfn_abn_foreign : APPROVED.price_tfn_foreign;
@@ -126,6 +174,19 @@ const PRICE_ML: Record<PriceLang, { tfn: string; abn: string; guarantee: string;
     hello: (name) => (name ? `こんにちは、${name}さん😊 ご連絡ありがとうございます。` : 'こんにちは😊 ご連絡ありがとうございます。'),
   },
 };
+
+/** The review of a return they already lodged (an amendment), in German or
+ *  Japanese (Jo, 24 Oct, Chinami +81 90: "we'd be happy to help, but as it is
+ *  a correction the fee is $220 for the review, no guarantee, whatever the
+ *  result"). Same meaning as APPROVED.price_tfn_review. */
+const REVIEW_ML: Record<PriceLang, (amount: number) => string> = {
+  de: (amount) => `Da deine Steuererklärung schon eingereicht wurde, ist das eine Prüfung der bestehenden Erklärung und keine neue. Die Gebühr beträgt $${amount} für die Prüfung selbst und ist unabhängig vom Ergebnis gleich.`,
+  ja: (amount) => `喜んでお手伝いいたします。すでに申告済みのため、今回は新規の申告ではなく、提出済みの申告内容の確認・修正となります。料金は確認作業に対して$${amount}で、結果にかかわらず同じです。`,
+};
+export function reviewMessageIn(lang: PriceLang, track: Track, firstName?: string | null): string {
+  const L = PRICE_ML[lang];
+  return `${L.hello((firstName ?? '').trim())}\n\n${REVIEW_ML[lang](track === 'TFN_ABN' ? 385 : 220)}\n\n${BANK}\n\n${L.screenshot}`;
+}
 
 export function hasPriceIn(lang: string | null | undefined): lang is PriceLang {
   return lang === 'de' || lang === 'ja';

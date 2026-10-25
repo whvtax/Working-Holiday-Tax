@@ -202,7 +202,11 @@ export async function decide(ctx: CustomerContext, history: Turn[], opts: Decide
     model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
     max_tokens: 1024,
     system: [
-      { type: 'text', text: stable, cache_control: { type: 'ephemeral' } },
+      // 1-hour TTL (Anthropic billing email, 25 Oct: low cache hit rate). With
+      // the 5-minute default the playbook expired between most customer
+      // messages and was re-written at 1.25x every time; an hour covers the
+      // gaps of an ordinary day. A 1h write costs 2x, a read 0.1x.
+      { type: 'text', text: stable, cache_control: { type: 'ephemeral', ttl: '1h' } },
       { type: 'text', text: dynamicWithHint },
     ],
     tools: [DECIDE_TOOL],

@@ -8,6 +8,7 @@ import {
 import { getRedis } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import crypto from 'crypto'
+import { recordLoginEvent, requestInfo } from '@/lib/security-watch'
 type RedisClient = import('redis').RedisClientType
 
 let _cachedPasswordHash: string | null = null
@@ -44,13 +45,17 @@ export async function POST(req: NextRequest) {
 
     // AUTHZ-DOS-01: lockout is keyed per client IP, not globally.
     const ip = getClientIp(req)
+    // Jo, 23 Oct: every login step is recorded (lib/security-watch.ts).
+    const info = requestInfo(req, ip)
 
     if (await isLockedOutRedis(redis as RedisClient, ip)) {
+      await recordLoginEvent('locked_out', info)
       return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
     }
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
       const fa = await recordFailedAttemptRedis(redis as RedisClient, ip)
+      await recordLoginEvent(fa.locked ? 'locked_out' : 'password_failed', info)
       // Genuinely fire-and-forget now: `await` here made the alert block the
       // login response, so the wrong-password reply waited on Resend. The
       // function catches internally, so nothing can escape as an unhandled
@@ -60,6 +65,7 @@ export async function POST(req: NextRequest) {
     }
 
     await resetFailedAttemptsRedis(redis as RedisClient, ip)
+    await recordLoginEvent('password_ok', info)
 
     // OTP-BIND-05: bind the OTP to the browser that passed the password step.
     // A random pre-auth id is stored in an httpOnly cookie; the OTP hash and its

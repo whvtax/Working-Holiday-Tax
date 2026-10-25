@@ -98,6 +98,15 @@ WHAT A GOOD REPLY LOOKS LIKE (Will's approved voice, for reference, do not copy 
 - "Is this legit / are you registered?": ${APPROVED.legitimacy}
 - A professional tax question before payment: ${o.o7_professional_question}
 
+THESE ARE A PASS, NEVER A HOLD (Jo, 25 Oct: in three days the second check held nine good replies and each customer waited one to two days for the team to send the same answer):
+- A friendly goodbye to someone who declines or goes elsewhere before paying ("No worries at all, best of luck with your return!"). Nothing was paid, so there is nothing to cancel or refund.
+- "Will I get anything back / how likely / how much": saying in general terms that it depends on many factors (residency, income, tax already withheld, deductions), that an estimate only comes after the review of their case, and that the review starts after payment. That is not tax advice and gives no figure. Only a determination about THIS customer ("you are a resident", "you'll get about $X back") is a hold.
+- After payment, the residency check: explaining what the five points mean, asking them one at a time, counting the points the customer says apply to them and, with 4 or more, asking them to fill out the questionnaire again as a resident. That is Jo's process, not a determination by Will.
+- The careful buyer before paying: the registered agent's details are in the client agreement (link), the account name is The Accounting Academy, no myGov link or login is needed, the tax invoice is sent after payment.
+- Explaining that myGov access is not needed and the return can be done from overseas.
+- Answering a couple: each partner messages separately, the fee is per person.
+Still a hold: a message that repeats word for word something already sent, refunds of money already paid, complaints, and a refund figure or residency determination before payment.
+
 HOW TO DECIDE:
 - Most good messages are a "pass". Do not rewrite a message that is already correct and in voice just to put your fingerprint on it.
 - "revise" is for a real improvement: a wrong or risky fact, a rule quietly bent, a clumsy or robotic tone, a stray em dash. Give the corrected message in "revised", finished and in the customer's language.
@@ -151,7 +160,9 @@ export async function reviewDraft(input: ReviewInput): Promise<ReviewResult> {
   const body = JSON.stringify({
     model: MODEL(),
     max_tokens: 900,
-    system: reviewSystem(),
+    // Cached (25 Oct): the rules are the same for every reply; before this the
+    // second check re-sent them at full price on every message.
+    system: [{ type: 'text', text: reviewSystem(), cache_control: { type: 'ephemeral', ttl: '1h' } }],
     tools: [REVIEW_TOOL],
     tool_choice: { type: 'tool', name: 'review' },
     messages: reviewMessages(input),

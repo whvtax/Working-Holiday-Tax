@@ -57,13 +57,15 @@ export function priceFor(model: string): ModelPrice | null {
   return key ? table[key] : null;
 }
 
-export interface TokenUsage { input: number; output: number; cacheWrite: number; cacheRead: number }
+export interface TokenUsage { input: number; output: number; cacheWrite: number; cacheRead: number; /** Of cacheWrite, the tokens written with the 1-hour TTL (2x input, not 1.25x). */ cacheWrite1h?: number }
 
 /** Exact cost in USD for one call, or null when the model is unpriced. */
 export function costUsd(model: string, u: TokenUsage): number | null {
   const p = priceFor(model);
   if (!p) return null;
-  const usd = (u.input * p.in + u.output * p.out + u.cacheWrite * p.cacheWrite + u.cacheRead * p.cacheRead) / 1_000_000;
+  // A 1-hour cache write costs 2x the input price instead of 1.25x (25 Oct).
+  const w1h = Math.min(u.cacheWrite1h ?? 0, u.cacheWrite);
+  const usd = (u.input * p.in + u.output * p.out + (u.cacheWrite - w1h) * p.cacheWrite + w1h * p.in * 2 + u.cacheRead * p.cacheRead) / 1_000_000;
   return Math.round(usd * 1_000_000) / 1_000_000;
 }
 
@@ -71,7 +73,12 @@ export function costUsd(model: string, u: TokenUsage): number | null {
 export function usageFromResponse(data: unknown): TokenUsage {
   const u = (data as { usage?: Record<string, unknown> } | null)?.usage ?? {};
   const n = (k: string) => { const v = Number(u[k]); return Number.isFinite(v) && v > 0 ? Math.round(v) : 0; };
-  return { input: n('input_tokens'), output: n('output_tokens'), cacheWrite: n('cache_creation_input_tokens'), cacheRead: n('cache_read_input_tokens') };
+  const cc = (u.cache_creation ?? {}) as Record<string, unknown>;
+  const w1h = Number(cc.ephemeral_1h_input_tokens);
+  return {
+    input: n('input_tokens'), output: n('output_tokens'), cacheWrite: n('cache_creation_input_tokens'), cacheRead: n('cache_read_input_tokens'),
+    ...(Number.isFinite(w1h) && w1h > 0 ? { cacheWrite1h: Math.round(w1h) } : {}),
+  };
 }
 
 export type AiFeature = 'decide' | 'reviewer' | 'mining' | 'vision' | 'assistant' | 'suggest' | 'lost_leads' | 'other';

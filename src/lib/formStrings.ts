@@ -55,7 +55,8 @@ export const formStrings = {
   // supplies the example instead. Day-first, because that is how Australia and
   // every country these customers come from writes a date.
   dobHint:             { en: 'For example: 20/10/2000',            de: 'Zum Beispiel: 20.10.2000',  ja: '例：2000/10/20' },
-  whatsapp:            { en: 'WhatsApp number',                    de: 'WhatsApp-Nummer',           ja: 'WhatsApp番号' },
+  // Jo, 25 Oct: the number they messaged us from, so the form lands in the right chat.
+  whatsapp:            { en: 'The WhatsApp number you messaged us from', de: 'Die WhatsApp-Nummer, mit der du uns geschrieben hast', ja: '私たちにご連絡いただいたWhatsApp番号' },
   auPhone:             { en: 'Australian phone number',            de: 'Australische Telefonnummer', ja: 'オーストラリアの電話番号' },
   gender:              { en: 'Gender as shown in passport',        de: 'Geschlecht laut Reisepass', ja: 'パスポートに記載の性別' },
   marital:             { en: 'Marital status',                     de: 'Familienstand',             ja: '配偶者の有無' },

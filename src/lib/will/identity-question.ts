@@ -76,6 +76,9 @@ const PATTERNS: RegExp[] = [
   new RegExp(`\\b(?:is\\s+there|can\\s+i\\s+(?:talk|speak|chat)\\s+(?:to|with)|i\\s+want\\s+(?:to\\s+(?:talk|speak)\\s+(?:to|with)\\s+)?)\\b[^.?!]{0,25}\\b(?:${HUMAN_WORDS})\\b`, 'i'),
   // "do you use AI", "is this AI generated", "are these answers automated"
   new RegExp(`\\b(?:do\\s+(?:you|u)\\s+use|is\\s+(?:this|it)\\s+(?:being\\s+)?(?:generated|written|answered|powered)\\s+by|are\\s+(?:these|the)\\s+(?:answers|replies|messages))\\b[^.?!]{0,30}\\b(?:${BOT_WORDS})\\b`, 'i'),
+  // German with filler words (Jo, 25 Oct, Joana): "schreibe ich hier gerade
+  // mit einer KI? oder einem Menschen?"
+  /\b(?:schreibe|rede|spreche|chatte)\s+ich\b[^.?!]{0,25}\bmit\s+(?:einer?m?\s+)?(?:ki|bot|roboter|maschine|mensch\w*)\b/i,
   // German formal address ("Sie"), which the informal "bist du" pattern misses.
   new RegExp(`\\b(?:sind\\s+sie|ist\\s+das|reden\\s+sie|schreiben\\s+sie)\\b[^.?!]{0,25}\\b(?:${BOT_WORDS}|mensch\\w*|echte\\s+person)\\b`, 'i'),
 ];
@@ -97,8 +100,17 @@ const NOT_THE_QUESTION = /\b(?:paid|payment|transferred|sent (?:it|the|you)|scre
  *  qualifications is the registered-agent question, answered by Will. */
 const CREDENTIALS_QUESTION = /\b(?:registered|qualified|certified|licen[cs]ed|accredited)\b|\btax\s+(?:person|agent|accountant|professional|practitioner)\b|\b(?:tpb|tan|abn)\s*(?:number|no\.?|id)?\b|\bagent\s+(?:number|id)\b/i;
 
+// Jo, 25 Oct (Inès, +33 6): "Is it $220 per person per year or for
+// everything?" matched "is it ... person" and went to the team as an "are you
+// a bot?" question with no draft: 49 hours of silence on a price question.
+// "per person", "each person", "for two people" are about the fee, never about us.
+const PER_PERSON = /\b(?:per|each|every|for\s+(?:one|each|every))\s+(?:person|persona|personne|pessoa|head)\b|\bpro\s+person\b|\bpar\s+personne\b|\bpor\s+persona\b|\bper\s+persona\b|\b(?:two|2|both)\s+(?:people|persons)\b/gi;
+const MONEY = /\$\s?\d|\b\d+\s?(?:dollars?|aud|euros?)\b|\b(?:price|cost|fee|charge|how much|kosten|preis|gebühr|prix|tarif|precio|prezzo)\b|料金|費用|いくら/i;
+
 export function isIdentityQuestion(text: string): boolean {
-  const t = (text || '').replace(/\s+/g, ' ').trim();
+  const raw = (text || '').replace(/\s+/g, ' ').trim();
+  if (MONEY.test(raw) && !/\b(?:bot|robot|ai|a\.i\.|chatgpt|automated)\b/i.test(raw)) return false;
+  const t = raw.replace(PER_PERSON, ' ');
   if (!t || t.length > 400) return false; // long essays are not this question
   if (NOT_THE_QUESTION.test(t)) return false;
   if (CREDENTIALS_QUESTION.test(t)) return false;

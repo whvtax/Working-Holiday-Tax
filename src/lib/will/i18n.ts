@@ -191,6 +191,122 @@ export function noRefundCasesMessage(lang?: string | null): string | null {
   return lang === 'de' || lang === 'ja' ? NO_REFUND_CASES_MSG[lang] : (!lang || lang === 'en' ? NO_REFUND_CASES_MSG.en : null);
 }
 
+/** [o16_couple] in the three site languages (Jo, 23 Oct). */
+export const COUPLE_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Of course, happy to help you both 😊
+
+For security and confidentiality, each of you needs to message us separately from your own WhatsApp. Every tax return is personal, and we keep each person's details private, even between partners.
+
+The fee is per person and the same for everyone: $220 for a TFN return, or $385 with ABN income. Just ask your partner to send us a message and we'll take it from there.`,
+  de: `Klar, wir helfen euch beiden gerne 😊
+
+Aus Sicherheits- und Datenschutzgründen muss uns jeder von euch separat von seinem eigenen WhatsApp schreiben. Jede Steuererklärung ist persönlich, und wir behandeln die Angaben jeder Person vertraulich, auch unter Partnern.
+
+Die Gebühr gilt pro Person und ist für alle gleich: $220 für eine TFN-Steuererklärung oder $385 mit ABN-Einkommen. Sag deinem Partner einfach, dass er oder sie uns schreiben soll, dann kümmern wir uns um den Rest.`,
+  ja: `もちろんです、お二人ともお手伝いします😊
+
+セキュリティと守秘義務のため、お一人ずつご自身のWhatsAppから別々にご連絡ください。確定申告は個人ごとのもので、パートナー同士であってもお一人ずつの情報を個別に管理しています。
+
+料金はお一人ごとで、どなたも同じです。TFNのみの申告は$220、ABNの収入がある場合は$385です。パートナーの方からもメッセージを送っていただければ、そちらで対応いたします。`,
+};
+export function coupleMessage(lang?: string | null): string | null {
+  const k = (lang ?? 'en').toLowerCase().slice(0, 2);
+  return k === 'en' || k === 'de' || k === 'ja' ? COUPLE_MSG[k] : null;
+}
+
+/**
+ * THE BANK DOCUMENT IS REQUIRED (Jo, 25 Oct, +49 160: "I can't get into my
+ * online banking, is the bank statement really needed?" got "No, you don't
+ * need a bank statement". Wrong: an official document from an Australian bank
+ * showing the customer's full name, BSB and account number is required, an
+ * ATO requirement so the refund goes into an account in their name.
+ */
+export const BANK_DOCUMENT_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Sorry, but we do need an official bank document showing your full name, BSB and account number.
+
+It's an ATO requirement to make sure any refund goes into an account in your name.
+
+Your bank can usually email this through online chat or its overseas support line, which is normally the quickest option.`,
+  de: `Leider brauchen wir ein offizielles Dokument deiner australischen Bank, auf dem dein vollständiger Name, die BSB und die Kontonummer stehen.
+
+Das ist eine Vorgabe der ATO, damit deine Rückerstattung auf ein Konto auf deinen Namen geht.
+
+Deine Bank kann dir so ein Dokument meistens über den Online-Chat oder die Hotline für Kunden im Ausland per E-Mail schicken. Das geht in der Regel am schnellsten.`,
+  ja: `恐れ入りますが、フルネーム、BSB、口座番号が記載された銀行の正式な書類が必要です。
+
+還付金がご本人名義の口座に確実に振り込まれるよう、ATOが求めているものです。
+
+多くの場合、銀行のオンラインチャットや海外からの問い合わせ窓口に連絡すると、メールで送ってもらえます。それが一番早い方法です。`,
+};
+export function bankDocumentMessage(lang?: string | null): string | null {
+  const k = (lang ?? 'en').toLowerCase().slice(0, 2);
+  return k === 'en' || k === 'de' || k === 'ja' ? BANK_DOCUMENT_MSG[k] : null;
+}
+/**
+ * "HOW LIKELY IS IT THAT I GET SOMETHING BACK?" (Jo, 25 Oct, +49 1516: went to
+ * the team). Jo: it depends on so many factors; we can only give an estimate
+ * after a thorough review of their specific case, which starts after payment.
+ */
+export const REFUND_CHANCE_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `It really depends on a lot of factors, like your residency, your income, the tax already taken from your pay and your deductions.
+
+We can only give you an estimate after a thorough review of your specific case, and that review starts once payment is made.`,
+  de: `Das hängt wirklich von sehr vielen Faktoren ab, zum Beispiel von deiner steuerlichen Ansässigkeit, deinem Einkommen, der bereits einbehaltenen Steuer und deinen Abzügen.
+
+Eine Einschätzung können wir dir erst nach einer gründlichen Prüfung deines konkreten Falls geben, und diese Prüfung beginnt, sobald die Zahlung eingegangen ist.`,
+  ja: `還付の有無や金額は、居住区分、収入、給与から差し引かれた税金、控除など、とても多くの要素によって変わります。
+
+お客様の個別のケースをしっかり確認したうえでないと見込みをお伝えできません。その確認はお支払い後に開始いたします。`,
+};
+export function refundChanceMessage(lang?: string | null): string | null {
+  const k = (lang ?? 'en').toLowerCase().slice(0, 2);
+  return k === 'en' || k === 'de' || k === 'ja' ? REFUND_CHANCE_MSG[k] : null;
+}
+export const REFUND_CHANCE_RE = /how (?:likely|probable|sure)\b[^?]{0,50}\b(?:get|receive|getting)\b[^?]{0,25}(?:back|refund)|\b(?:will|would|do|can|could) i (?:actually |even |definitely )?(?:get|receive) (?:anything|something|any money|money|a refund|any refund)(?: back)?\b|\bchances?\b[^?]{0,30}(?:refund|money back|get (?:anything|something) back)|how much (?:refund|money )?(?:will|would|could|can) i (?:get|receive)(?: back)?|how much (?:will|would) (?:i|my refund) be|\b(?:estimate|idea) (?:of |for )?(?:my |the )?refund|bekomme ich (?:etwas|geld|was) zurück|wie (?:viel|wahrscheinlich)[^?]{0,40}(?:zurück|erstattung)|還付[^？?。]{0,12}(?:もらえ|ありますか|いくら|され|戻)|いくら(?:戻|返|還付)|お金(?:は)?(?:戻|返)/i;
+
+/**
+ * PAYING FROM OVERSEAS (Jo, 25 Oct): "IBAN?", "how many euros?", "can I pay
+ * from my English account?". Will offers a card payment link; if they want it,
+ * he asks their full name and the team sends the link by hand (a task).
+ */
+export const PAYMENT_LINK_MSG: Record<'offer' | 'name' | 'ready', Record<'en' | 'de' | 'ja', string>> = {
+  offer: {
+    en: `No problem! Would you prefer to pay by card through a payment link? It works from any country.`,
+    de: `Kein Problem! Möchtest du lieber per Karte über einen Zahlungslink bezahlen? Das funktioniert aus jedem Land.`,
+    ja: `問題ありません！カードでお支払いいただける支払いリンクをご希望ですか？どの国からでもご利用いただけます。`,
+  },
+  name: {
+    en: `Great! What's your full name, so I can get the payment link ready for you?`,
+    de: `Super! Wie lautet dein vollständiger Name, damit ich den Zahlungslink für dich vorbereiten kann?`,
+    ja: `ありがとうございます！支払いリンクをご用意しますので、フルネームを教えていただけますか？`,
+  },
+  ready: {
+    en: `Thanks! We'll send you the payment link here shortly 😊`,
+    de: `Danke! Wir schicken dir den Zahlungslink in Kürze hier 😊`,
+    ja: `ありがとうございます！まもなくこちらに支払いリンクをお送りします😊`,
+  },
+};
+export function paymentLinkMessage(step: 'offer' | 'name' | 'ready', lang?: string | null): string | null {
+  const k = (lang ?? 'en').toLowerCase().slice(0, 2);
+  return k === 'en' || k === 'de' || k === 'ja' ? PAYMENT_LINK_MSG[step][k] : null;
+}
+
+/**
+ * NO SUPER (DASP) SERVICE FOR NOW (Jo, 25 Oct).
+ */
+export const NO_DASP_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `At the moment we don't offer a superannuation (DASP) service, though we may add it in the future. We're happy to take care of your tax return.`,
+  de: `Eine Superannuation-Rückforderung (DASP) bieten wir im Moment leider nicht an, vielleicht aber in Zukunft. Um deine Steuererklärung kümmern wir uns gerne.`,
+  ja: `申し訳ありませんが、現在スーパーアニュエーション（DASP）の申請サービスは行っておりません。今後提供する可能性はあります。タックスリターンについては喜んでお手伝いいたします。`,
+};
+export function noDaspMessage(lang?: string | null): string | null {
+  const k = (lang ?? 'en').toLowerCase().slice(0, 2);
+  return k === 'en' || k === 'de' || k === 'ja' ? NO_DASP_MSG[k] : null;
+}
+
+/** A reply that tells the customer the bank document is not needed. */
+export const BANK_DOC_DENIED_RE = /(?:don'?t|do not|won'?t|will not|doesn'?t|does not)\s+(?:really\s+)?need\s+(?:a|your|the|any)?\s*bank\s*statement|no\s+bank\s*statement\s+(?:is\s+)?(?:needed|required|necessary)|bank\s*statement\s+(?:is\s+)?not\s+(?:needed|required|necessary)|(?:brauchst|benötigst|musst)\s+(?:du\s+)?kein(?:en|e)?\s+(?:bank\s*statement|kontoauszug|bankauszug|bankdokument)|kein(?:en|e)?\s+(?:bank\s*statement|kontoauszug)\s+(?:nötig|notwendig|erforderlich)|(?:銀行明細|バンクステートメント|口座明細)[^。]{0,10}(?:不要|必要ありません|いりません|必要ない)/i;
+
 /** Kept under its old name for the engine and the corpus: the stand-in for a
  *  blocked pre-payment determination IS the line above. */
 export const PROFESSIONAL_QUESTION_MSG: Record<Lang, string> = PRE_PAYMENT_CHECK_MSG;
@@ -671,9 +787,10 @@ export const SYSTEM_MESSAGE_FAMILIES = {
 // `residency_check` (Utility), {{1}} = first name, en / de / ja.
 // ============================================================
 export const RESIDENCY_CHECK_MSG: Record<'en' | 'de' | 'ja', string> = {
-  en: `Hi {{1}}, I went through your details and saw you marked yourself as a Working Holiday Maker for tax. Before we start on your return, could you double-check this page on who counts as an Australian tax resident? It can make a big difference to your refund.\nhttps://workingholidaytax.com.au/tax-residency\nIs your answer still correct?`,
-  de: `Hi {{1}}, ich habe deine Angaben durchgesehen und gesehen, dass du dich steuerlich als Working Holiday Maker eingetragen hast. Bevor wir mit deiner Steuererklärung anfangen, schau bitte noch einmal auf diese Seite, wer in Australien als steuerlich ansässig gilt. Das kann bei deiner Rückerstattung einen großen Unterschied machen.\nhttps://workingholidaytax.com.au/de/tax-residency\nIst deine Angabe noch richtig?`,
-  ja: `こんにちは、{{1}}さん。ご入力内容を確認したところ、税務上ワーキングホリデーメーカーを選択されていました。申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？還付額に大きく影響することがあります。\nhttps://workingholidaytax.com.au/ja/tax-residency\nご回答は正しいままでよろしいですか？`,
+  // Jo, 25 Oct: "for tax purposes", short paragraphs, no line about the refund.
+  en: `Hi {{1}},\n\nI went through your details and saw you marked yourself as a Working Holiday Maker for tax purposes.\n\nBefore we start on your tax return, could you please double-check this page on who counts as an Australian tax resident?\n\nhttps://workingholidaytax.com.au/tax-residency\n\nIs your answer still correct?`,
+  de: `Hi {{1}},\n\nich habe deine Angaben durchgesehen und gesehen, dass du dich steuerlich als Working Holiday Maker eingetragen hast.\n\nBevor wir mit deiner Steuererklärung anfangen, schau bitte noch einmal auf diese Seite, wer in Australien als steuerlich ansässig gilt:\n\nhttps://workingholidaytax.com.au/de/tax-residency\n\nIst deine Angabe noch richtig?`,
+  ja: `こんにちは、{{1}}さん。\n\nご入力内容を確認したところ、税務上ワーキングホリデーメーカーを選択されていました。\n\n申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？\n\nhttps://workingholidaytax.com.au/ja/tax-residency\n\nご回答は正しいままでよろしいですか？`,
 };
 export const RESIDENCY_CHECK_TEMPLATE = 'residency_check';
 export function residencyCheckMessage(lang: string | null | undefined, firstName: string): string {

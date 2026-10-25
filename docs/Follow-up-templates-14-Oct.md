@@ -135,35 +135,50 @@ I'll send it for final review and then for your signature. The team will walk yo
 
 ---
 
-## E. Residency double-check (added 16 Oct)
+## E. Residency double-check (added 16 Oct, wording changed 25 Oct)
 
 ### `residency_check` · Utility · {{1}} = first name, sample `Sarah`
 Goes to: a customer from the UK, Germany or Japan who ticked "Working Holiday Maker" for tax, 10 minutes after the form (waits for a quiet chat).
+25 Oct: edit the template in WhatsApp Manager to the wording below (all three languages) and resubmit; until Meta approves it, the old approved wording is what customers receive.
 
 **English**
 ```
-Hi {{1}}, I went through your details and saw you marked yourself as a Working Holiday Maker for tax. Before we start on your return, could you double-check this page on who counts as an Australian tax resident? It can make a big difference to your refund.
+Hi {{1}},
+
+I went through your details and saw you marked yourself as a Working Holiday Maker for tax purposes.
+
+Before we start on your tax return, could you please double-check this page on who counts as an Australian tax resident?
+
 https://workingholidaytax.com.au/tax-residency
+
 Is your answer still correct?
 ```
 
 **German**
 ```
-Hi {{1}}, ich habe deine Angaben durchgesehen und gesehen, dass du dich steuerlich als Working Holiday Maker eingetragen hast. Bevor wir mit deiner Steuererklärung anfangen, schau bitte noch einmal auf diese Seite, wer in Australien als steuerlich ansässig gilt. Das kann bei deiner Rückerstattung einen großen Unterschied machen.
+Hi {{1}},
+
+ich habe deine Angaben durchgesehen und gesehen, dass du dich steuerlich als Working Holiday Maker eingetragen hast.
+
+Bevor wir mit deiner Steuererklärung anfangen, schau bitte noch einmal auf diese Seite, wer in Australien als steuerlich ansässig gilt:
+
 https://workingholidaytax.com.au/de/tax-residency
+
 Ist deine Angabe noch richtig?
 ```
 
 **Japanese**
 ```
-こんにちは、{{1}}さん。ご入力内容を確認したところ、税務上ワーキングホリデーメーカーを選択されていました。申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？還付額に大きく影響することがあります。
+こんにちは、{{1}}さん。
+
+ご入力内容を確認したところ、税務上ワーキングホリデーメーカーを選択されていました。
+
+申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？
+
 https://workingholidaytax.com.au/ja/tax-residency
+
 ご回答は正しいままでよろしいですか？
 ```
-
-Will's reply: "yes, correct" → "Great, thanks for checking! 😊". "No / I got it wrong" → asks them to fill in the form again, with the link. "Not sure" → handed to the team.
-
----
 
 ## F. Customer who owes tax: separate template NAME per language (added 16 Oct)
 

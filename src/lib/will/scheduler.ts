@@ -16,6 +16,7 @@ import { salesPromisedKey, businessDaysFromNow } from './stage-sync';
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
 import { residencyCheckMessage, RESIDENCY_CHECK_TEMPLATE } from './i18n';
+import { checkBankDetails, sendSecurityEmail } from '@/lib/security-watch';
 import { confirmationAlreadyOut, looksLikePaymentConfirmation } from './payment-confirmation';
 import { residencyCheckKey, RESIDENCY_CHECK_DELAY_MS } from './form-link';
 import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, handoffBumpTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
@@ -1703,8 +1704,16 @@ async function doProcess(): Promise<TickResult> {
       // any canned system confirmation (payment received, documents
       // acknowledged) already sent is independent proof they are past being
       // a fresh lead, so check for one before trusting the flags alone.
+      // Jo, 25 Oct (Rachel, +353 87): her partner paid, the team took her
+      // through the bank statements and sent the estimate and the invoice by
+      // hand, the stage was never moved, and two days later she got the sales
+      // nudge "are you still in Australia or have you already left?". The
+      // team's own work in the chat is proof too: an invoice, an estimate, the
+      // questionnaire or a lodgement means she is past the sales stage.
+      const TEAM_PAST_SALES = /in\.xero\.com|\binvoice\b|\bestimate|\bpayable\b|questionnaire|tax-form|\blodg|your return is ready|Rechnung|請求書/i;
       const alreadyPastLeadStage = flow === 'prePayment'
-        && (await store.listMessages(customer.id)).some((m) => m.direction === 'OUT' && m.meta?.system === true);
+        && (await store.listMessages(customer.id)).some((m) => m.direction === 'OUT'
+          && (m.meta?.system === true || (m.author === 'HUMAN' && m.status === 'SENT' && TEAM_PAST_SALES.test(m.body ?? ''))));
       // The per-customer off switch is checked at fire time too (audit, 5 Sep):
       // a job that was already SCHEDULED, deferred to the evening or re-queued
       // after a throttle when Jo pressed "Stop chasing" is cancelled here
@@ -2128,6 +2137,22 @@ export async function runNightly(): Promise<void> {
   // than the conversations do. 90 days is generous for diagnosis and stops the
   // table from eventually dwarfing the messages.
   // Customer conversations are NEVER touched by this.
+  // THE BANK DETAILS ARE STILL OURS (Jo, 23 Oct, security watch). The saved
+  // setting and every Library message are checked against BSB 062692 /
+  // account 81049952. Anything else: an URGENT task and an email to Jo.
+  try {
+    const bank = await checkBankDetails();
+    if (!bank.ok) {
+      await store.audit('nightly', 'bank_details_mismatch', { problems: bank.problems });
+      await raiseOrFoldSystemTask(store, {
+        match: (t: { reason: string }) => t.reason.startsWith('Bank details do not match ours'),
+        reason: `Bank details do not match ours: ${bank.problems.join('; ')}. Check the bank details setting and the Library now.`,
+        severity: 'URGENT', context: bank.problems.join('\n'), suggestedReply: null,
+      });
+      await sendSecurityEmail('Bank details changed in the CRM', `<p>The nightly check found bank details that are not ours (BSB 062692, account 81049952):</p><ul>${bank.problems.map((p) => `<li>${p.replace(/[<>&]/g, '')}</li>`).join('')}</ul><p>Customers could be paying someone else. Check the bank details setting and the Library now.</p>`);
+    }
+  } catch { /* the rest of the nightly run carries on */ }
+
   const auditPurged = typeof store.purgeAudit === 'function'
     ? await store.purgeAudit(90 * 24 * 60 * 60 * 1000).catch(() => 0)
     : 0;

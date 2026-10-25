@@ -6,7 +6,7 @@
 // why, who is waiting on us right now, and who has been stuck after paying.
 // Pure: the API route loads the rows and this turns them into the report.
 // ============================================================
-import type { CustomerRow, MessageRow, TaskRow, StateHistoryRow } from './store';
+import type { CustomerRow, MessageRow, TaskRow, StateHistoryRow, AuditRow } from './store';
 import { explainHandoffReason } from './handoff-reasons';
 
 export interface ReportPerson { id: string; name: string; waId: string; hours: number; preview: string | null; stage: string }
@@ -29,6 +29,14 @@ export interface MorningReport {
   waitingOnUs: ReportPerson[];
   /** Paid, nothing has moved and nobody has written for over two days. */
   stuckAfterPayment: ReportPerson[];
+  /** CRM logins in the window (Jo, 23 Oct, security watch). */
+  security: {
+    logins: number;
+    failed: number;
+    lockouts: number;
+    newDevices: { label: string; at: string }[];
+    recent: { at: string; where: string; device: string; ip: string }[];
+  };
 }
 
 const CLOSED = new Set(['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'COMPLETED']);
@@ -47,6 +55,8 @@ export function buildMorningReport(input: {
   tasks: TaskRow[];
   messages: MessageRow[];
   history: StateHistoryRow[];
+  /** will_audit rows with actor 'auth' (CRM logins). */
+  auth?: AuditRow[];
   now?: number;
   windowHours?: number;
 }): MorningReport {
@@ -81,7 +91,21 @@ export function buildMorningReport(input: {
     .slice(0, 15)
     .map((c) => person(c, c.stateChangedAt, now));
 
+  const auth = (input.auth ?? []).filter((a) => inWindow(a.at));
+  const detail = (a: AuditRow) => (a.detail ?? {}) as { device?: string; city?: string | null; country?: string | null; ip?: string; label?: string };
+  const security = {
+    logins: auth.filter((a) => a.action === 'crm_otp_ok').length,
+    failed: auth.filter((a) => a.action === 'crm_password_failed' || a.action === 'crm_otp_failed' || a.action === 'crm_otp_too_many').length,
+    lockouts: auth.filter((a) => a.action === 'crm_locked_out').length,
+    newDevices: auth.filter((a) => a.action === 'crm_new_device').map((a) => ({ label: detail(a).label ?? detail(a).device ?? 'unknown device', at: a.at })),
+    recent: auth.filter((a) => a.action === 'crm_otp_ok').slice(0, 10).map((a) => ({
+      at: a.at, device: detail(a).device ?? 'unknown device', ip: detail(a).ip ?? '',
+      where: [detail(a).city, detail(a).country].filter(Boolean).join(', ') || 'unknown place',
+    })),
+  };
+
   return {
+    security,
     generatedAt: new Date(now).toISOString(),
     windowHours,
     newLeads: input.customers.filter((c) => inWindow(c.createdAt)).length,

@@ -733,7 +733,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I would like to claim my tax refund and apply for my super",
       "can you do my super refund?"
     ],
-    "answer": "Yes, we can help with your super refund (DASP) too 😊 It's a separate service from your tax return, claimed after you've left Australia permanently, with its own fee that we confirm with you when the time comes. Happy to get your tax return moving first and sort the super out as well.",
+    "answer": "At the moment we don't offer a superannuation (DASP) service, though we may add it in the future. We're happy to take care of your tax return. 😊",
     "keywords": [
       "super",
       "superannuation",
@@ -878,7 +878,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I leave in October, can I claim super now?",
       "how do I get my super refund before I go home?"
     ],
-    "answer": "Good question 😊 Your super (DASP) can only be claimed once you've left Australia and your visa has ended, so it can't be done while you're still here. We're happy to help when the time comes. For now, let's get your tax return sorted.",
+    "answer": "At the moment we don't offer a superannuation (DASP) service, though we may add it in the future. We're happy to take care of your tax return. 😊",
     "keywords": [
       "super",
       "superannuation",

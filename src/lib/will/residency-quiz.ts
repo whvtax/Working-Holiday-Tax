@@ -103,7 +103,11 @@ export function quizResult(lang: QuizLang, yes: number): string {
  *  null when it is not an answer at all. */
 export function parseYesNo(text: string): boolean | null {
   const t = (text ?? '').trim().toLowerCase().replace(/[.!。！\s😊🙂👍👎]+$/u, '');
-  if (!t || t.length > 60) return null;
+  // Jo, 25 Oct (Fua, +81 90): "はい、2025年2月14日から2026年2月11日まで
+  // オーストラリアに滞在しておりましたので…" is a yes with the details. A long
+  // answer still counts when it opens with the yes or the no.
+  if (!t || t.length > 400) return null;
+  if (t.length > 60 && !/^(?:yes|yeah|yep|no|nope|nah|ja|nein|はい|いいえ|ええ|いや)(?:[\s,.!、。！]|$)/iu.test(t)) return null;
   if (/^(?:no|nope|nah|not really|not quite|n|not sure|unsure|i don'?t know|don'?t know|no idea|maybe not|nein|eher nicht|nicht wirklich|wei[ßs] nicht|nicht sicher|いいえ|いや|ない|ありません|いません|ないです|違います|わかりません|分かりません)\b/iu.test(t)
     || /^(?:いいえ|ない|ありません|いません|わかりません|分かりません)/u.test(t) || /👎/u.test(text)) return false;
   if (/^(?:yes|yeah|yep|yup|y|sure|correct|definitely|of course|i do|i did|it was|ja|jap|jo|genau|richtig|stimmt|klar|はい|ええ|うん|そうです|あります|います)\b/iu.test(t)

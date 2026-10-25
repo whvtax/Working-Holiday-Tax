@@ -255,6 +255,27 @@ const RULES: Rule[] = [
     prevent: 'Nothing to change. This is Will doing exactly what it should.',
   },
   {
+    match: /^Bank details do not match ours/i,
+    kind: 'system',
+    label: 'Bank details changed',
+    because: 'the nightly security check found a BSB or account number that is not ours in the saved setting or in a Library message',
+    prevent: 'Put back BSB 062692 and account 81049952, then find out who changed it: check the CRM logins in the morning report and change CRM_PASSWORD and JWT_SECRET in Vercel.',
+  },
+  {
+    match: /^PAYMENT LINK\b/i,
+    kind: 'system',
+    label: 'Send a payment link',
+    because: 'the customer pays from overseas, chose to pay by card and gave their full name',
+    prevent: 'Nothing to prevent: send the card payment link in the chat and close the task.',
+  },
+  {
+    match: /^Will was about to repeat a message he already sent/i,
+    kind: 'guard',
+    label: 'Will would have repeated himself',
+    because: 'his answer to the customer’s new message was word for word a message already sent, which would not go out a second time',
+    prevent: 'Answer what the customer actually said. If it was a correction (a different track, a different price), send it over: Will should have changed his answer.',
+  },
+  {
     match: /^Second check held Will's reply twice/i,
     kind: 'guard',
     label: 'The second check held Will’s reply',

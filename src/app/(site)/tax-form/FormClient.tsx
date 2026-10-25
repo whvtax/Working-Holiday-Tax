@@ -613,9 +613,9 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <div>
 
             <Field label={T('whatsapp')} required error={errors.waNumber}
-              hint={lang === 'de' ? 'Die Nummer, unter der wir dich erreichen können.'
-                : lang === 'ja' ? 'ご連絡可能な番号をご記入ください。'
-                : 'The number we can reach you on.'}>
+              hint={lang === 'de' ? 'Bitte genau die Nummer, über die wir gerade chatten, damit wir dein Formular deinem Chat zuordnen können.'
+                : lang === 'ja' ? 'フォームとチャットを紐づけるため、現在やり取りしている番号と同じものをご記入ください。'
+                : 'Use the same number you are chatting with us on, so we can match your form to our chat.'}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+44 7XXX XXXXXX" name="waNumber" autoComplete="tel" inputMode="tel" maxLength={30}
                 enterKeyHint="next"
                 value={waNumber} onChange={e => { setWaNumber(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({...p, waNumber: ''})) }} />

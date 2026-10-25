@@ -452,6 +452,10 @@ export interface Store {
   audit(actor: string, action: string, detail?: unknown): Promise<void>;
   /** Most recent audit rows, newest first (decision log for review). */
   listAudit(limit?: number): Promise<AuditRow[]>;
+  /** One actor's rows since a moment, newest first (Jo, 23 Oct: the CRM
+   *  logins for the morning report, which listAudit's newest-N can miss on a
+   *  busy day). Optional so test stores need not implement it. */
+  listAuditByActor?(actor: string, sinceIso: string, limit?: number): Promise<AuditRow[]>;
   /** Every audit row the store still holds, oldest first, paged. Optional:
    *  the all-time export (9 Oct) falls back to listAudit when absent. */
   allAudit?(): Promise<AuditRow[]>;

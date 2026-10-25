@@ -135,6 +135,14 @@ Just send a screenshot once paid and we'll get started!`,
     // after the price message got the stock line. It is a question about OUR
     // guarantee's wording, not about their tax: it gets a general answer.
     o15_when_no_refund: `Usually when the tax taken from your pay during the year already matches what you owe, or when too little was taken (for example from a second job), so there's tax to pay instead. Whether that's the case for you is one of the things we check in the review 😊`,
+    // Jo, 23 Oct (Laura & Felix): a couple asking together. Each partner
+    // writes from their own WhatsApp (security and confidentiality), the fee
+    // is per person and the same for everyone, never a couple discount.
+    o16_couple: `Of course, happy to help you both 😊
+
+For security and confidentiality, each of you needs to message us separately from your own WhatsApp. Every tax return is personal, and we keep each person's details private, even between partners.
+
+The fee is per person and the same for everyone: $220 for a TFN return, or $385 with ABN income. Just ask your partner to send us a message and we'll take it from there.`,
     o14_check_eligible_first: `Yes, that's exactly what we'll check as part of your review. Eligibility can depend on your individual situation, so we need to go through your details properly before giving you an answer. That's why the review starts once payment is made. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
   },
 

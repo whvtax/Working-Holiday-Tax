@@ -1580,6 +1580,24 @@ export class SupabaseStore implements Store {
     }
   }
 
+  async listAuditByActor(actor: string, sinceIso: string, limit = 500): Promise<AuditRow[]> {
+    try {
+      const { data, error } = await this.sb()
+        .from('will_audit')
+        .select('*')
+        .eq('actor', actor)
+        .gte('created_at', sinceIso)
+        .order('created_at', { ascending: false })
+        .limit(limit);
+      if (error) lastPersistError = `listAuditByActor: ${error.message}`;
+      return (data ?? []).map((r: Record<string, unknown>) => ({
+        id: String(r.id), actor: String(r.actor), action: String(r.action), detail: r.detail ?? null, at: String(r.created_at),
+      }));
+    } catch {
+      return [];
+    }
+  }
+
   async listAudit(limit = 200): Promise<AuditRow[]> {
     try {
       const { data, error } = await this.sb()

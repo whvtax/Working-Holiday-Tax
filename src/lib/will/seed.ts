@@ -86,6 +86,7 @@ export function seedTemplates(): TemplateRow[] {
     t('obj_13', 'Objections', '#13 Just one question', o.o13_one_question),
     t('obj_14', 'Objections', '#14 Check eligibility first', o.o14_check_eligible_first),
     t('obj_15', 'Objections', '#15 In what cases is there no refund', o.o15_when_no_refund),
+    t('obj_16', 'Objections', '#16 A couple asking together', o.o16_couple),
     t('fu_pre_24h', 'Follow-ups', 'Pre-payment · 24h', APPROVED.followups_pre_payment.h24, true),
     t('fu_pre_3d', 'Follow-ups', 'Pre-payment · 3d', APPROVED.followups_pre_payment.d3, true),
     t('fu_pre_7d', 'Follow-ups', 'Pre-payment · 7d (final)', APPROVED.followups_pre_payment.d7, true),
@@ -210,7 +211,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-10-12-foreign-income';
+export const TEMPLATE_BACKFILL_VERSION = '2026-10-23-no-refund-and-couple';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.
@@ -335,6 +336,15 @@ export async function syncTemplatesFromCode(
  *  question would never reach Will. Each fix updates the one row with that
  *  question, once (marker), and leaves any other edit Jo made by hand alone. */
 const KNOWLEDGE_FIXES: { question: string; answer: string }[] = [
+  // 25 Oct (Jo): no super (DASP) service at the moment.
+  {
+    question: 'Can you help me claim my superannuation (DASP)?',
+    answer: 'At the moment we don\'t offer a superannuation (DASP) service, though we may add it in the future. We\'re happy to take care of your tax return. \u{1F60A}',
+  },
+  {
+    question: "Can I claim my superannuation back while I'm still in Australia / before my visa ends?",
+    answer: 'At the moment we don\'t offer a superannuation (DASP) service, though we may add it in the future. We\'re happy to take care of your tax return. \u{1F60A}',
+  },
   {
     question: 'Can I set up a payment plan with the ATO for the amount I owe?',
     answer: 'Once the ATO has issued your notice, you can ask them directly for a payment plan. You\'ll need to call the ATO yourself to request one. We\'ll message you in about two weeks with the amount and how to pay. \u{1F60A}',
@@ -344,7 +354,7 @@ export async function applyKnowledgeFixes(
   store: Pick<Store, 'listKnowledge' | 'updateKnowledge' | 'getSetting' | 'setSetting'>,
 ): Promise<number> {
   try {
-    const marker = 'fix-21oct';
+    const marker = 'fix-25oct';
     if ((await store.getSetting('knowledge_fix')) === marker) return 0;
     const rows = await store.listKnowledge();
     let fixed = 0;
