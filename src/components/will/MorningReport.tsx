@@ -76,6 +76,17 @@ export default function MorningReport({ onOpenChat }: { onOpenChat: (id: string)
             <div style={tile}><div style={num}>{report.lodged}</div><div style={lab}>Lodged</div></div>
             <div style={tile}><div style={{ ...num, color: report.blocked ? '#b42318' : '#0B2E24' }}>{report.blocked}</div><div style={lab}>Messages blocked by a rule</div></div>
           </div>
+          <div style={tile}>
+            <p style={head}>Win-backs</p>
+            <div style={{ fontSize: 13, color: '#0B2E24', display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+              <span><b>{report.winback.sent}</b> sent</span>
+              <span><b>{report.winback.replied}</b> replied (back to Lead)</span>
+              <span style={{ color: report.winback.toFinal ? '#b42318' : undefined }}><b>{report.winback.toFinal}</b> moved to Final</span>
+            </div>
+            <div style={{ fontSize: 12, color: '#587066', marginTop: 6 }}>
+              {report.winback.waitingReply} waiting for a reply · {report.winback.queued} ready to send · {report.winback.wonBackPaid} won back and paid
+            </div>
+          </div>
           <div style={{ ...tile, borderColor: report.security.newDevices.length || report.security.lockouts ? '#f3b3ad' : '#e6ece9' }}>
             <p style={head}>CRM logins</p>
             <div style={{ fontSize: 13, color: '#0B2E24', display: 'flex', gap: 14, flexWrap: 'wrap' }}>

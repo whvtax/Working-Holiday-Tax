@@ -10,7 +10,7 @@ import { phoneCandidates } from './phone-candidates';
 import { getSupabase } from '@/lib/supabase';
 import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
-  LostAnalysisRow, DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS,
+  DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS,
 } from './store';
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { seedTemplates } from './seed';
@@ -120,28 +120,6 @@ function toHistory(r: Record<string, unknown>): StateHistoryRow {
     createdAt: (r.created_at as string) ?? now(),
   };
 }
-function toLostAnalysis(r: Record<string, unknown>): LostAnalysisRow {
-  return {
-    customerId: r.customer_id as string,
-    state: r.state as CustomerState,
-    triggerKind: (r.trigger_kind as string) ?? '',
-    quietDays: (r.quiet_days as number) ?? 0,
-    hoursPriceToSilence: r.hours_price_to_silence == null ? null : Number(r.hours_price_to_silence),
-    status: (r.status as LostAnalysisRow['status']) ?? 'OK',
-    error: (r.error as string) ?? null,
-    attempts: (r.attempts as number) ?? 1,
-    reason: (r.reason as string) ?? '',
-    category: (r.category as string) ?? 'unclear',
-    shouldHaveDone: (r.should_have_done as string) ?? '',
-    fault: (r.fault as string) ?? 'NOT_OURS',
-    recoverable: (r.recoverable as string) ?? 'NO',
-    recoveryAction: (r.recovery_action as string) ?? null,
-    recoveryMessage: (r.recovery_message as string) ?? null,
-    evidenceQuote: (r.evidence_quote as string) ?? null,
-    confidence: Number(r.confidence ?? 0),
-    analysedAt: (r.analysed_at as string) ?? now(),
-  };
-}
 
 // camelCase CustomerRow field -> snake_case column (for partial updates)
 // KEYED BY THE ROW TYPE, NOT BY `string`.
@@ -163,7 +141,7 @@ const CUSTOMER_COL: Record<Exclude<keyof CustomerRow, 'id'>, string> = {
 };
 
 const FORWARD = ['NEW_LEAD','QUALIFIED','PRICE_SENT','PAYMENT_PENDING','PAID','FORM_PENDING','FORM_COMPLETE','DOCUMENTS_COMPLETE','UNDER_REVIEW','ESTIMATE_READY','FINAL_REVIEW','SIGNATURE_PENDING','SIGNED','LODGED','COMPLETED'];
-const CLOSED = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
+const CLOSED = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'];
 
 export let lastPersistError: string | null = null;
 
@@ -555,7 +533,8 @@ export class SupabaseStore implements Store {
       customer_id: id, from_state: c.state, to_state: to, caused_by: causedBy, created_at: now(),
     });
     const upd: Record<string, unknown> = { state: to, state_changed_at: now() };
-    if (CLOSED.includes(to)) upd.previous_state = c.state;
+    // Closed to closed (e.g. Not Interested to Final) keeps the sales stage they left from.
+    if (CLOSED.includes(to) && !CLOSED.includes(c.state)) upd.previous_state = c.state;
     // ANY post-payment stage means they paid (audit, 5 Sep).
     //
     // Only 'PAID' used to set the flag, so a customer moved straight to
@@ -1406,65 +1385,6 @@ export class SupabaseStore implements Store {
   }
   async deleteKnowledge(id: string): Promise<void> {
     await this.sb().from('will_knowledge').delete().eq('id', id);
-  }
-
-  // ── Lost-lead post-mortems (migration 031) ──
-  //
-  // Read-only for every UI path: these rows are written ONLY by the nightly
-  // LOST_ANALYSIS job. Nothing in them ever reaches a customer.
-  //
-  // Paged, then sorted newest first in memory (audit, 5 Sep): the ordered
-  // select was silently capped at PostgREST's 1,000 rows, the same trap the
-  // customer, history and job readers already avoid above. Three readers need
-  // the COMPLETE set: the nightly job treats this list as "already analysed"
-  // (so a lead past the cap was re-analysed and re-paid for every night, and
-  // its fresh analysed_at pushed another lead off the cap in turn), the lost
-  // report showed those leads as pending, and Win-back said "not assessed"
-  // for a lead that was. customer_id is the upsert key, so it is a stable,
-  // unique page cursor.
-  async listLostAnalyses(): Promise<LostAnalysisRow[]> {
-    const data = await this.pageAll<Record<string, unknown>>('will_lost_analysis', 'customer_id');
-    return data.map(toLostAnalysis)
-      .sort((a, b) => String(b.analysedAt).localeCompare(String(a.analysedAt)));
-  }
-
-  /** One lead's post-mortem by its key, without reading the whole table. */
-  async getLostAnalysis(customerId: string): Promise<LostAnalysisRow | null> {
-    const { data, error } = await this.sb().from('will_lost_analysis').select('*')
-      .eq('customer_id', customerId).maybeSingle();
-    if (error) { lastPersistError = `getLostAnalysis: ${error.message}`; throw error; }
-    return data ? toLostAnalysis(data as Record<string, unknown>) : null;
-  }
-
-  /** Upsert on customer_id, so re-running the nightly job replaces a lead's
-   *  post-mortem rather than accumulating one row per run. */
-  async upsertLostAnalysis(row: LostAnalysisRow): Promise<void> {
-    const { error } = await this.sb().from('will_lost_analysis').upsert({
-      customer_id: row.customerId,
-      state: row.state,
-      trigger_kind: row.triggerKind,
-      quiet_days: row.quietDays,
-      hours_price_to_silence: row.hoursPriceToSilence,
-      status: row.status,
-      error: row.error,
-      attempts: row.attempts,
-      reason: row.reason,
-      category: row.category,
-      should_have_done: row.shouldHaveDone,
-      fault: row.fault,
-      recoverable: row.recoverable,
-      recovery_action: row.recoveryAction,
-      recovery_message: row.recoveryMessage,
-      evidence_quote: row.evidenceQuote,
-      confidence: row.confidence,
-      analysed_at: row.analysedAt,
-    }, { onConflict: 'customer_id' });
-    // (audit, 5 Sep) Used to only record lastPersistError and return, so a
-    // failed upsert looked identical to a successful one to the caller: the
-    // nightly job's .catch(...) that logs 'lost_analysis_store_failed' could
-    // never fire, and the loop kept spending paid model calls on leads whose
-    // verdicts were never actually stored. Throw so the caller's catch runs.
-    if (error) { lastPersistError = `upsertLostAnalysis: ${error.message}`; throw error; }
   }
 
   async audit(actor: string, action: string, detail?: unknown): Promise<void> {

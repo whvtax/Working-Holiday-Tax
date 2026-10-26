@@ -32,7 +32,7 @@ type Client = {
   yearlyCheckins?: Record<string, boolean>
   referred_by?: string | null
 }
-type View = 'tasks'|'clients'|'client-detail'|'archive'|'leads'
+type View = 'tasks'|'clients'|'client-detail'|'leads'
 
 // Was computed at MODULE SCOPE, once, when the bundle loaded — so a tab left
 // open across 1 July kept serving last year's list until somebody hard-reloaded.
@@ -271,7 +271,6 @@ function FilterEmpty() {
 
 export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
-  const [archivedClients, setArchivedClients] = useState<Client[]>([])
   const [referralPartners, setReferralPartners] = useState<{id:string;name:string}[]>([])
   const [taskView, setTaskView]   = useState<'list'|'detail'>('list')
   const [tasks, setTasks]         = useState<Task[]>([])
@@ -292,7 +291,6 @@ export default function DashboardClient() {
   const [noReturnFilter, setNoReturnFilter] = useState<'all'|'didnt-return'>('all')
   const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
   const [statusFilter, setStatusFilter] = useState<Set<ClientStatus>>(new Set())
-  const [archiveSearch, setArchiveSearch] = useState('')
   const [taskSearch, setTaskSearch] = useState('')
   const [taskTileFilter, setTaskTileFilter] = useState<'all'|'ready'|'done'>('all')
   // Remembers which task card was last opened + the list's scroll position, so
@@ -309,14 +307,9 @@ export default function DashboardClient() {
   // right-aligned only when it actually would not fit — works at any zoom or
   // window width. Only one menu is ever open, so a single flag is enough.
   const [dropAlignRight, setDropAlignRight] = useState(false)
-  const [archiveYearFilter, setArchiveYearFilter] = useState<Set<string>>(new Set())
-  const [archiveHowHeardFilter, setArchiveHowHeardFilter] = useState<Set<string>>(new Set())
-  const [archiveCountryFilter, setArchiveCountryFilter] = useState<Set<string>>(new Set())
   const [refreshing, setRefreshing] = useState(false)
   const [newClientsCount, setNewClientsCount] = useState(0)
   const prevClientsCountRef = React.useRef(0)
-  const [newArchiveCount, setNewArchiveCount] = useState(0)
-  const prevArchiveCountRef = React.useRef(0)
   const prevPendingTasksRef = React.useRef(0)
   const [previewUrl, setPreviewUrl] = useState<string|null>(null)
   // Fetch the file as a blob and render via object URL. This avoids the site's
@@ -417,8 +410,6 @@ export default function DashboardClient() {
 
   // Server-side client search (for 5k+ clients where local filter isn't enough)
   const [searchResults, setSearchResults] = useState<Client[]|null>(null)
-  // Same, but for archive view (which can grow to 500k+)
-  const [archiveSearchResults, setArchiveSearchResults] = useState<Client[]|null>(null)
 
   // A failed read used to be invisible: the poll swallowed it, the list stayed
   // as it was and nothing on screen said the data was stale (audit, 4 Sep).
@@ -472,22 +463,6 @@ export default function DashboardClient() {
     finally { setClientsLoadingMore(false) }
   },[clients.length])
 
-  const [archivedLoaded, setArchivedLoaded] = useState(false)
-  const loadArchived = useCallback(async()=>{
-    try {
-      const r=await fetchWithTimeout(`/api/crm/clients?archived=true&limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
-      const d=await r.json()
-      if(d.ok) {
-        const newCount = d.clients.length
-        if (prevArchiveCountRef.current > 0 && newCount > prevArchiveCountRef.current) {
-          setNewArchiveCount(n => n + (newCount - prevArchiveCountRef.current))
-        }
-        prevArchiveCountRef.current = newCount
-        setArchivedClients(d.clients)
-      }
-    } catch(e){ console.error('[loadArchived]',e) }
-  },[])
-
   // Load server-computed dashboard stats (scales to 10k+ clients)
   const loadStats = useCallback(async(opts?: { force?: boolean })=>{
     try {
@@ -529,11 +504,11 @@ export default function DashboardClient() {
         } catch { changed = true }
         // (audit, 5 Sep) Something moved: the Done cards' signature state is
         // re-read too, so the card matches what actually went out.
-        if (changed) { sigFetched.current.clear(); await Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()]) }
+        if (changed) { sigFetched.current.clear(); await Promise.all([loadTasks(), loadClients(), loadStats()]) }
       } finally { inFlight = false }
     }, 20_000)
     return ()=> clearInterval(id)
-  },[loadTasks, loadClients, loadArchived, loadStats])
+  },[loadTasks, loadClients, loadStats])
 
   // (audit, 5 Sep) The Done-card signature lookup used to be cached once per
   // task for the life of the page, so a "ready for signature" sent from the
@@ -587,19 +562,6 @@ export default function DashboardClient() {
     return () => { clearTimeout(handle) }
   }, [search, globalSearch, clients.length, clientsTotal])
 
-  // Server-side search for archived clients (archive can grow to 500k+)
-  useEffect(() => {
-    const query = archiveSearch.trim()
-    if (query.length < 2) { setArchiveSearchResults(null); return }
-    const handle = setTimeout(async () => {
-      try {
-        const r = await fetch(`/api/crm/clients/search?q=${encodeURIComponent(query)}&archived=true&limit=100`, { cache: 'no-store' })
-        const d = await r.json()
-        if (d.ok && Array.isArray(d.clients)) setArchiveSearchResults(d.clients as Client[])
-      } catch (e) { console.error('[archive-search]', e) }
-    }, 350)
-    return () => clearTimeout(handle)
-  }, [archiveSearch])
 
   // Update browser tab title with pending count (so you see updates even when tab is in background)
   useEffect(() => {
@@ -650,7 +612,6 @@ export default function DashboardClient() {
     return () => clearTimeout(timer)
   }, [clientNotes, activeClient?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const openArchive = useCallback(()=>{ setView('archive'); setNewArchiveCount(0); if(!archivedLoaded){ loadArchived(); setArchivedLoaded(true) } },[archivedLoaded,loadArchived])
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
@@ -663,11 +624,6 @@ export default function DashboardClient() {
   }
 
 
-  async function unarchiveClient(id: string) {
-      setArchivedClients(prev => prev.filter(c => c.id !== id))
-    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
-    await Promise.all([loadClients(), loadArchived()])
-  }
 
   // ── "In progress" flag ────────────────────────────────────────────────
   // Lets the admin mark a lead as "currently working on it" (e.g. waiting on a
@@ -870,7 +826,7 @@ export default function DashboardClient() {
     }
     // Trigger badge explicitly - user is on Tasks tab, client was added to Clients
     setNewClientsCount(n => n + 1)
-    await Promise.all([loadClients(), loadArchived()])
+    await loadClients()
   }
 
   async function deleteTaskPermanently(id: string) {
@@ -940,7 +896,7 @@ export default function DashboardClient() {
     }
     setActiveTask(null); setTaskView('list'); setConfirmDelete(null); setCaptureRefund(null)
     setCaptureRefundAmt(''); setCaptureSuperAmt(''); setCaptureRefundType('refund')
-    await Promise.all([loadTasks(),loadClients(),loadArchived()])
+    await Promise.all([loadTasks(),loadClients()])
   }
 
   async function saveClientNotes() {
@@ -954,14 +910,11 @@ export default function DashboardClient() {
   }
 
   async function deleteClient(id:string) {
-    const prevArchived = archivedClients
-    setArchivedClients(prev => prev.filter(c => c.id !== id))
-    setActiveClient(null); setView('archive'); setConfirmDeleteClient(null)
+    setActiveClient(null); setView('clients'); setConfirmDeleteClient(null)
     try {
       await crmFetch(`/api/crm/clients/${id}`,{method:'DELETE'})
     } catch (err) {
       console.error('[deleteClient]', err)
-      setArchivedClients(prevArchived)
       alert('Could not delete this client. Please try again.')
       return
     }
@@ -1585,28 +1538,6 @@ export default function DashboardClient() {
     )
   }
 
-  const archiveHowHeardStats = useMemo(()=>archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [archivedClients])
-  const visibleArchived = useMemo(()=>{
-    // Merge with server-side search results if user is searching
-    const source = (archiveSearch.trim().length >= 2 && archiveSearchResults)
-      ? (() => {
-          const seen = new Set(archivedClients.map(c => c.id))
-          return [...archivedClients, ...archiveSearchResults.filter(c => !seen.has(c.id))]
-        })()
-      : archivedClients
-    return source.filter(c=>{
-    const aq = archiveSearch.trim().toLowerCase()
-    const aqDigits = aq.replace(/[\s-]/g, '')
-    const ms = !aq
-      || c.fullName.toLowerCase().includes(aq)
-      || (c.email || '').toLowerCase().includes(aq)
-      || (aqDigits && (c.whatsapp || '').replace(/[\s-]/g, '').includes(aqDigits))
-    const my = archiveYearFilter.size===0 || c.taxReturns?.some(r=>archiveYearFilter.has(r.year)) || c.superReturns?.some(r=>archiveYearFilter.has(r.year))
-    const mh = archiveHowHeardFilter.size===0 || archiveHowHeardFilter.has(c.howHeard||'Unknown')
-    const mc = archiveCountryFilter.size===0 || archiveCountryFilter.has(c.country||'')
-    return ms && my && mh && mc
-  })
-  }, [archivedClients, archiveSearchResults, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
 
 
   return (
@@ -1616,11 +1547,10 @@ export default function DashboardClient() {
     <div className="crm-scope">
       <CrmSide
         items={crmNav({
-          badges: { tasks: pendingTasks.length, clients: newClientsCount, archive: newArchiveCount },
+          badges: { tasks: pendingTasks.length, clients: newClientsCount },
           on: {
             tasks:   ()=>{ setView('tasks');setTaskView('list');setActiveTask(null);setActiveClient(null) },
             clients: ()=>{ setView('clients');setTaskView('list');setActiveTask(null);setActiveClient(null);setNewClientsCount(0) },
-            archive: openArchive,
             leads:   ()=>{ setView('leads');setTaskView('list');setActiveTask(null);setActiveClient(null) },
           },
         })}
@@ -2428,117 +2358,6 @@ export default function DashboardClient() {
             </div>
           )}
 
-          {/* ── ARCHIVE ── */}
-          {view==='archive' && (
-            <div className="view" style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div className="phead">
-              {/* Header */}
-              <div className="hrow">
-                  <h1 className="vt">📦 Archive</h1>
-                  <span className="chip">
-                    {visibleArchived.length}{archivedClients.length!==visibleArchived.length?` of ${archivedClients.length}`:''} clients
-                  </span>
-                  {(()=>{
-                    const tot = visibleArchived.reduce((sum,c)=>{
-                      return sum
-                        + c.taxReturns.filter(r=>r.type==='refund').reduce((s,r)=>s+r.refundAmount,0)
-                        - c.taxReturns.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
-                        + c.superReturns.reduce((s,r)=>s+r.amount,0)
-                    },0)
-                    return <span className="chip">{fmtCur(tot)} historical</span>
-                  })()}
-              </div>
-              {/* Filters row — kept in .phead for the same reason as Clients:
-                  the DropBtn menus are absolutely positioned and .pbody clips. */}
-              <div className="hrow" style={{gap:8,marginTop:8}}>
-                <div className="search" style={{flex:3,minWidth:200}}>
-                  <span className="search-ic">{NavIcons.search}</span>
-                  <input placeholder="Search by name, WhatsApp or email…" value={archiveSearch} onChange={e=>setArchiveSearch(e.target.value)}/>
-                </div>
-                <DropBtn id="ar-year" label={archiveYearFilter.size===0?'All tax years':`${archiveYearFilter.size} year${archiveYearFilter.size>1?'s':''}`} active={archiveYearFilter.size>0} onClear={()=>setArchiveYearFilter(new Set())}
-                  icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                  {taxYearRange().slice().reverse().map(y=>{const checked=archiveYearFilter.has(y);const cnt=archivedClients.filter(c=>c.taxReturns?.some(r=>r.year===y)||c.superReturns?.some(r=>r.year===y)).length;return(
-                    <FilterOpt key={y} label={y} count={cnt} checked={checked} onToggle={()=>{const s=new Set(archiveYearFilter);checked?s.delete(y):s.add(y);setArchiveYearFilter(s)}}/>
-                  )})}
-                </DropBtn>
-                {<DropBtn id="ar-hh" label="How heard" active={archiveHowHeardFilter.size>0} onClear={()=>setArchiveHowHeardFilter(new Set())}
-                    icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                    {Object.keys(archiveHowHeardStats).sort().map(src=>{const checked=archiveHowHeardFilter.has(src);return(
-                      <FilterOpt key={src} label={src} count={archiveHowHeardStats[src]} checked={checked} onToggle={()=>{const s=new Set(archiveHowHeardFilter);checked?s.delete(src):s.add(src);setArchiveHowHeardFilter(s)}}/>
-                    )})}
-                    {Object.keys(archiveHowHeardStats).length===0 && <FilterEmpty/>}
-                  </DropBtn>}
-                {<DropBtn id="ar-country" label="Country" active={archiveCountryFilter.size>0} onClear={()=>setArchiveCountryFilter(new Set())}
-                    icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).sort().map(ctry=>{const checked=archiveCountryFilter.has(ctry);const cnt=archivedClients.filter(cl=>cl.country===ctry).length;return(
-                      <FilterOpt key={ctry} label={ctry} count={cnt} checked={checked} onToggle={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(ctry):s.add(ctry);setArchiveCountryFilter(s)}}/>
-                    )})}
-                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).length===0 && <FilterEmpty/>}
-                  </DropBtn>}
-                {(archiveHowHeardFilter.size>0||archiveCountryFilter.size>0||archiveYearFilter.size>0||archiveSearch) && (
-                  <button className="btn quiet danger" onClick={()=>{setArchiveHowHeardFilter(new Set());setArchiveCountryFilter(new Set());setArchiveYearFilter(new Set());setArchiveSearch('')}}>
-                    ✕ Clear
-                  </button>
-                )}
-              </div>
-              </div>{/* end fixed header */}
-              <div className="pbody">
-              {/* Table */}
-              {visibleArchived.length===0?(
-                <div className="card"><div className="empty">{archivedClients.length===0?'No archived clients yet.':'No clients match the current filters.'}</div></div>
-              ):(
-                <div className="card">
-                  <div className="tblwrap">
-                  <table className="tbl">
-                    <thead><tr>
-                      {['Name','WhatsApp','Email','Country','Last refund',''].map(h=>(
-                        <th key={h}>{h}</th>
-                      ))}
-                    </tr></thead>
-                    <tbody>
-                      {visibleArchived.map(cl=>{
-                        const [bg,fg]=avColor(cl.fullName)
-                        const lastTax = cl.taxReturns?.length ? [...cl.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0] : null
-                        return(
-                          <tr key={cl.id}>
-                            <td>
-                              <div style={{display:'flex',alignItems:'center',gap:9}}>
-                                <div className="avatar" style={{width:32,height:32,borderRadius:9,background:bg,color:fg,fontSize:11,fontWeight:700}}>{initials(cl.fullName)}</div>
-                                <div style={{fontWeight:500,color:'var(--ink3)',whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
-                              </div>
-                            </td>
-                            <td className="num" style={{direction:'ltr',whiteSpace:'nowrap'}}>
-                              {cl.whatsapp
-                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'var(--brand1)',textDecoration:'none',whiteSpace:'nowrap'}}>{formatPhoneNumber(cl.whatsapp)}</a>
-                                : '-'}
-                            </td>
-                            <td className="muted">{cl.email||'-'}</td>
-                            <td className="muted" style={{whiteSpace:'nowrap' as const}}>{cl.country||'-'}</td>
-                            <td className="num">
-                              {lastTax
-                                ? <div><div style={{fontWeight:600,color:'var(--brand1)'}}>{lastTax.year}</div><div style={{fontSize:11,color:'var(--ink3)'}}>{fmtCur(lastTax.refundAmount)}</div></div>
-                                : <span style={{color:'var(--ink3)'}}>-</span>}
-                            </td>
-                            <td>
-                              <div style={{display:'flex',gap:6,alignItems:'center'}}>
-                                <button className="btn quiet sm" onClick={()=>unarchiveClient(cl.id)}>↩ Restore</button>
-                                <button className="btn quiet danger sm" title="Delete permanently" onClick={()=>setConfirmDeleteClient(cl.id)}>
-                                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                  </div>
-                </div>
-              )}
-              </div>{/* end scroll */}
-            </div>
-          )}
-
           {/* ── CLIENT DETAIL ── */}
           {view==='clients' && activeClient && (
             <div className="view" style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
@@ -2871,7 +2690,6 @@ export default function DashboardClient() {
         </div>
       )}
 
-      {/* Confirm archive client */}
       {/* Confirm delete client */}
       {confirmDeleteClient && (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setConfirmDeleteClient(null)}}>

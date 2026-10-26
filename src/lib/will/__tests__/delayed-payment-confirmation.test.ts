@@ -30,7 +30,6 @@ jest.mock('@/lib/will/channel', () => ({
 }));
 jest.mock('@/lib/will/daily-digest', () => ({ runDailyDigest: jest.fn().mockResolvedValue('already_run') }));
 jest.mock('@/lib/will/service', () => ({ runDeferredAutoReply: jest.fn() }));
-jest.mock('@/lib/will/lost-analysis', () => ({ runLostLeadAnalysis: jest.fn().mockResolvedValue(undefined) }));
 
 import { processDueJobs } from '@/lib/will/scheduler';
 import { APPROVED } from '@/lib/will/approved-messages';

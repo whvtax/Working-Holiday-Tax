@@ -5,11 +5,12 @@ import { recordAiUsage } from './ai-usage';
 // ("never an error to the customer"), strict output validation.
 // Falls back to a deterministic mock when no ANTHROPIC_API_KEY.
 // ============================================================
+import { WINBACK_SYSTEM, WINBACK_TOOL, validateWinbackDecision, type WinbackDecision } from './winback-decision';
+export type { WinbackDecision } from './winback-decision';
 import { buildSystemPrompt, CustomerContext, LiveTemplates } from './playbook';
 import { APPROVED } from './approved-messages';
 import { CustomerState } from './state-machine';
 import { getStore } from './store';
-import { LostAnalysis, LOST_CATEGORIES, validateLostAnalysis } from './lost-leads';
 import { claimsPayment } from './payment-claim';
 import { APPROVED_KEYS, isApprovedKey, type ApprovedKey } from './will-decides';
 import { stripDashes } from './text';
@@ -673,119 +674,40 @@ export interface LostLeadEvidence {
   stateHistory: string;
 }
 
-const POSTMORTEM_TOOL = {
-  name: 'post_mortem',
-  description: 'Your honest assessment of why this lead did not become a paying client.',
-  input_schema: {
-    type: 'object',
-    properties: {
-      reason: {
-        type: 'string',
-        description: 'One or two sentences: why THIS lead did not convert. Specific to this conversation, not a generic sales truism. If the conversation does not actually say why, say that plainly.',
-      },
-      category: {
-        type: 'string',
-        enum: [...LOST_CATEGORIES],
-        description: 'The single closest bucket. Use "unclear" when the evidence genuinely does not support one of the others — a wrong bucket is worse than an honest "unclear", because these are counted and the counts are what the owner acts on.',
-      },
-      should_have_done: {
-        type: 'string',
-        description: 'The detailed part of this report, and the reason the owner reads it. Walk through the conversation and set out what specifically should have been done differently: which message, what was said, what should have been said instead, and what would probably have happened. Where more than one moment mattered, cover each in turn, earliest first. Be concrete enough that someone could act on it tomorrow without having to reread the chat. Several sentences, or a short paragraph per moment. If the honest answer is that nothing should have been done differently, write exactly that and explain what makes you sure of it from this conversation — that is a correct and complete answer, not a cop-out, and it must not be padded out into invented criticism.',
-      },
-      fault: {
-        type: 'string',
-        enum: ['OURS', 'PARTLY_OURS', 'NOT_OURS'],
-        description: 'OURS: a mistake or omission on our side cost this lead. PARTLY_OURS: we could have done better but the outcome was likely anyway. NOT_OURS: nothing was done wrong, this lead was never going to convert.',
-      },
-      recoverable: {
-        type: 'string',
-        enum: ['YES', 'MAYBE', 'NO'],
-        description: 'Could this specific person still become a client? NO for someone who asked us to stop, who has no Australian income to lodge, or who has already lodged elsewhere.',
-      },
-      recovery_action: {
-        type: 'string',
-        description: 'Required unless recoverable is NO: the one concrete move that would most likely win them back, in the owner\'s own hands. Not "follow up" — say what about, and why now. One or two sentences; this is the reasoning, not the message itself.',
-      },
-      recovery_message: {
-        type: 'string',
-        description: 'Required unless recoverable is NO: the actual WhatsApp message to send this person, word for word, ready to send. Write it to THIS conversation: pick up the specific thing they last said or asked, and answer it. Their language, not English, if that is what they wrote in. Warm, short, three lines at most, no greeting beyond a natural opener, no pressure and no discount. Never quote a refund figure, never give tax advice, never negotiate the fixed fee. Never use an em dash or en dash. Do not include placeholders of any kind: write the finished text.',
-      },
-      evidence_quote: {
-        type: 'string',
-        description: 'Optional: the single most telling line from the conversation, quoted verbatim, that supports your reason.',
-      },
-      confidence: { type: 'number', description: '0..1 — how well the conversation actually supports this reading.' },
-    },
-    required: ['reason', 'category', 'should_have_done', 'fault', 'recoverable', 'confidence'],
-  },
-} as const;
-
-const POSTMORTEM_SYSTEM = `You are an experienced sales and client-service reviewer looking at ONE conversation from "Working Holiday Tax", an Australian tax agency serving Working Holiday Makers (backpackers). A tax return is a fixed fee: $220 for TFN-only, $385 when there is also an ABN. Payment is upfront, and there is a guarantee for all customers that if the customer gets a refund smaller than the fee, the difference is refunded; it applies only when there is an actual refund, and if the customer owes tax or gets no refund the fee is non-refundable. The team cannot give personalised tax advice, quote a refund figure, or decide residency before someone has paid: that is a professional obligation, not a sales choice.
-
-This lead did NOT pay. You are writing a private post-mortem for the business owner. It will never be shown or sent to the customer, so write for the owner, plainly.
-
-BE HONEST ABOVE ALL ELSE. A large share of leads that do not convert were never going to: a backpacker with no Australian income, someone who already lodged, a wrong number, a person who simply stopped answering with no reason given. When that is the truth, say so — "nothing was done wrong, this lead was never going to convert" is a complete and correct answer, and you should give it whenever it fits. Do NOT manufacture a fault to have something to report. A post-mortem that always finds fault is worse than useless: the owner will stop reading it, and the real failures will be buried among invented ones.
-
-Equally, do not soften a real failure. If a question went unanswered, if a reply took days, if the price landed with no context and nobody followed up, if an objection was met with a script instead of an answer — name it, and name the message where it happened.
-
-The timing is often the whole story. Someone who read the price and never typed again is a different failure from someone who argued about it over three days, and both are different from someone who was still asking questions when the conversation stopped.
-
-What "should have been done differently" must be concrete and inside the rules above. Never suggest discounting, negotiating the fixed price, quoting a refund amount before payment, or giving tax advice before payment — those are not available and suggesting them makes the report unusable.
-
-TWO OF THE FIELDS ARE THE WORK, AND THE REST IS CONTEXT FOR THEM.
-
-The should_have_done field is where the thinking goes. Do not summarise: go through the conversation and show your reasoning, message by message where it matters. The owner is trying to stop the same thing happening to the next twenty leads, so vague advice is worth nothing to him and a precise account of one wrong sentence is worth a great deal. And when the truth is that nothing would have changed the outcome, say that clearly instead of reaching for something.
-
-The recovery_message field is a message that a person will read on their phone. Write it as one, not as a description of one. It has to sound like the same person who was already talking to them, pick up where that conversation actually stopped, and give them a reason to answer that is about their situation rather than about our sales process. Somebody who asked us to stop, or who has nothing to lodge, gets no message at all: set recoverable to NO and leave it out.
-
-BE STRICT ABOUT "recoverable" (Jo, 24 Sep: 104 of 111 came back YES or MAYBE, which is not a judgement, it is a default). YES means they engaged after seeing the price, or asked a real question that never got a proper answer, or gave a reason (timing, a document, a doubt) that one message can address. MAYBE means there is a plausible hook but no sign they cared. NO is the right answer when they never wrote anything after the opening, when they have been silent for 60 days or more with no question on the table, when they said no more than once, when they went to someone else and said so, or when they have nothing to lodge. If you cannot name the specific thing the message would pick up, it is NO.
-
-Answer only by calling the post_mortem tool.`;
-
-/** Returns the validated analysis, or `{ error }` on any failure — no key, a
- *  timeout, a bad status, a truncated response, or output that did not pass
- *  validation. Never throws. */
-export async function analyseLostLead(
-  ev: LostLeadEvidence,
-): Promise<LostAnalysis | { error: string }> {
+/**
+ * The 30-day win-back decision (Jo, 25 Oct, winback-auto.ts): read the whole
+ * closed conversation, decide "never" or "send", and for "send" write the one
+ * personal paragraph that goes into the winback_<lang> template.
+ */
+export async function decideWinback(ev: LostLeadEvidence, now: Date = new Date()): Promise<WinbackDecision | { error: string }> {
   const key = process.env.ANTHROPIC_API_KEY;
-  // No mock fallback here on purpose. decide() mocks because a customer is
-  // waiting and silence is not an option; a report can simply say it has not
-  // been generated, which is true. Inventing a post-mortem would be worse than
-  // an empty page.
   if (!key) return { error: 'No Anthropic API key configured' };
-
   const userContent = [
+    `Today: ${now.toISOString().slice(0, 10)}`,
     `Lead: ${ev.label}`,
     `Stage when the conversation stopped: ${ev.stateLabel}`,
-    `Why the system counts this lead as lost: ${ev.lostBecause}`,
     `Income type on file: ${ev.income}`,
-    `Language: ${ev.lang ?? 'unknown'}`,
+    `Language on file: ${ev.lang ?? 'unknown'}`,
     '',
     'TIMING',
     ev.timingSummary,
     '',
-    'STATE HISTORY',
-    ev.stateHistory || '(no transitions recorded)',
-    '',
     'CONVERSATION (oldest first; long numbers and emails are redacted)',
     ev.transcript || '(no messages on file)',
   ].join('\n');
-
   const body = JSON.stringify({
     model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
-    max_tokens: 1024,
-    system: POSTMORTEM_SYSTEM,
-    tools: [POSTMORTEM_TOOL],
-    tool_choice: { type: 'tool', name: 'post_mortem' },
+    max_tokens: 700,
+    system: [{ type: 'text', text: WINBACK_SYSTEM, cache_control: { type: 'ephemeral', ttl: '1h' } }],
+    tools: [WINBACK_TOOL],
+    tool_choice: { type: 'tool', name: 'winback_decision' },
     messages: [{ role: 'user', content: userContent.slice(0, 60000) }],
   });
-
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        signal: AbortSignal.timeout(45_000),
+        signal: AbortSignal.timeout(40_000),
         headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
         body,
       });
@@ -798,12 +720,10 @@ export async function analyseLostLead(
       recordAiUsage('lost_leads', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
       if (data.stop_reason === 'max_tokens') return { error: 'Model response truncated' };
       const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
-        ?.find((bl) => bl.type === 'tool_use' && bl.name === 'post_mortem');
-      if (!tool?.input) return { error: 'Model returned no assessment' };
-      const parsed = validateLostAnalysis(tool.input);
-      // Never trust the shape. A half-formed answer is dropped rather than
-      // patched into something that looks complete in the report.
-      if (!parsed) return { error: 'Model returned an unusable assessment' };
+        ?.find((bl) => bl.type === 'tool_use' && bl.name === 'winback_decision');
+      if (!tool?.input) return { error: 'Model returned no decision' };
+      const parsed = validateWinbackDecision(tool.input);
+      if (!parsed) return { error: 'Model returned an unusable decision' };
       return parsed;
     } catch {
       if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }

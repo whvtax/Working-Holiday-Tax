@@ -153,7 +153,7 @@ export const CUSTOMER_FACING_JOB_KINDS: ReadonlyArray<JobRow['kind']> = ['AUTO_R
 export interface JobRow {
   id: string;
   customerId: string | null;
-  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'HANDOFF_BUMP' | 'REFUND_CHECK' | 'REFUND_CHECKIN' | 'REVIEW_REMIND' | 'REVIEW_REQUEST' | 'MEDICARE_INFO' | 'RESEND_MESSAGE' | 'RESIDENCY_CHECK' | 'PAYABLE_FOLLOWUP';
+  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'WINBACK' | 'HANDOFF_ACK' | 'HANDOFF_BUMP' | 'REFUND_CHECK' | 'REFUND_CHECKIN' | 'REVIEW_REMIND' | 'REVIEW_REQUEST' | 'MEDICARE_INFO' | 'RESEND_MESSAGE' | 'RESIDENCY_CHECK' | 'PAYABLE_FOLLOWUP';
   payload: {
     templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
     /** MEDICARE_INFO: how many times this job has already stood aside for the
@@ -214,34 +214,6 @@ export interface StateHistoryRow {
   to: CustomerState;
   causedBy: string;
   createdAt: string;
-}
-
-/** One stored post-mortem for a lead that never paid (migration 031).
- *  Written ONLY by the nightly LOST_ANALYSIS job; read by /api/will/lost and
- *  the dashboard's Lost Leads view. It never reaches a customer — there is no
- *  draft, message or template field here on purpose. */
-export interface LostAnalysisRow {
-  customerId: string;
-  /** Snapshot of the lead as it was when analysed, so the report still reads
-   *  correctly if the customer later reactivates. */
-  state: CustomerState;
-  triggerKind: string;           // 'declined' | 'opted_out' | 'auto_closed' | 'silent'
-  quietDays: number;
-  hoursPriceToSilence: number | null;
-  status: 'OK' | 'ERROR';
-  error: string | null;
-  attempts: number;
-  reason: string;
-  category: string;
-  shouldHaveDone: string;
-  fault: string;                 // OURS | PARTLY_OURS | NOT_OURS
-  recoverable: string;           // YES | MAYBE | NO
-  recoveryAction: string | null;
-  /** The ready-to-send win-back message. Null when recoverable is NO. */
-  recoveryMessage: string | null;
-  evidenceQuote: string | null;
-  confidence: number;
-  analysedAt: string;
 }
 
 export interface AuditRow {
@@ -436,18 +408,6 @@ export interface Store {
   addTemplate(t: { category: string; title: string; body: string; key?: string }): Promise<TemplateRow>;
   updateTemplate(id: string, body: string): Promise<void>;
   deleteTemplate(id: string): Promise<void>;
-
-  // ── Lost-lead post-mortems (migration 031) ──
-  /** Every stored post-mortem, newest first. Read-only for the UI.
-   *  Must be COMPLETE, never capped: the nightly job uses it as the set of
-   *  leads already analysed (audit, 5 Sep). */
-  listLostAnalyses(): Promise<LostAnalysisRow[]>;
-  /** One lead's post-mortem, or null when it has not been assessed. Use this
-   *  for a single lookup (Win-back) instead of scanning the whole list. */
-  getLostAnalysis(customerId: string): Promise<LostAnalysisRow | null>;
-  /** Insert or replace the post-mortem for one customer. Keyed by customerId,
-   *  so re-running the nightly job is idempotent rather than duplicating. */
-  upsertLostAnalysis(row: LostAnalysisRow): Promise<void>;
 
   audit(actor: string, action: string, detail?: unknown): Promise<void>;
   /** Most recent audit rows, newest first (decision log for review). */

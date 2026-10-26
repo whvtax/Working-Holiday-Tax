@@ -548,7 +548,10 @@ export async function deliverOut(
       // was live and the board still said Not Interested, and no follow-up
       // cadence was ever armed behind it, so the reply we invited landed
       // nowhere.
-      if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state)) {
+      // Except the automatic win-back (Jo, 25 Oct): the lead stays closed until
+      // THEY answer (the inbound path reopens them then). Reopening on the
+      // send would start the whole follow-up cadence behind a single message.
+      if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(customer.state) && meta?.winback !== true) {
         // Lead for a lead; a paid customer goes back to the stage they were
         // closed from (reopenTarget), never into the sales flow.
         const target = reopenTarget(customer);
@@ -729,7 +732,7 @@ export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
   { name: 'estimate_invoice', params: 2, optional: false },
   { name: 'signature', params: 0, optional: false },
   { name: 'lodged_confirmation', params: 0, optional: false },
-  // Win-back from the Lost Leads tab (Jo, 24 Sep): {{1}} name, {{2}} the hook.
+  // The automatic win-back (Jo, 25 Oct, winback-auto.ts): {{1}} name, {{2}} the personal message.
   ...META_LANGS.map((lang) => ({ name: `winback_${lang}`, params: 2, optional: false })),
   // System lines with a free-text fallback inside the window.
   { name: 'medicare', params: 0, optional: true },

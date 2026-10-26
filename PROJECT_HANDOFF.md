@@ -127,7 +127,8 @@ rule there; a test enforces it.
 - **Handoffs**: holding line, a 24h bump, a 48h apology.
 - **After lodgement**: refund check-in, Google review request, referral line.
 - **Nightly**: auto-close cold leads, audit retention, Library suggestions mined from the
-  day's conversations (Learning tab), lost-lead analysis.
+  day's conversations (Learning tab), the bank-details security check, and the queue for the
+  automatic win-back pass (section 5c).
 
 ---
 
@@ -181,6 +182,25 @@ rule there; a test enforces it.
 - Tax form (25 Oct): the WhatsApp field asks for "The WhatsApp number you messaged us from", so the form lands in the right chat.
 
 - A price that is not ours (25 Oct, Katie "$100", Matilde "$130"): key `not_our_price` (en/de/ja), and a handover on a message quoting another price is replaced by it (`quotesOtherPrice`). Never a discount.
+
+- CRM (25 Oct): the Archive tab is removed (never used); the Clients tab is labelled "Clients 2026".
+
+## 5c. Automatic win-back and the Final stage (25 Oct)
+
+The Lost Leads tab and `/api/will/lost` are gone; `lib/will/winback-auto.ts` does the work.
+- New state `FINAL` (red "Final" column after Closed). Nobody reaches out to a Final lead again; if they write, the normal inbound reactivation makes them a New Lead and Will answers as usual.
+- A `WINBACK` job (queued by the nightly job and on every close, replacing `LOST_ANALYSIS`) runs passes:
+  1. Not Relevant / opted out → Final (no model call, no message).
+  2. Not Interested / Went Cold, 30 days after the last message in the chat (either side) → `decideWinback` (claude.ts, prompt and validator in `winback-decision.ts`) reads the whole chat: `never` → Final; `send` → one personal paragraph (no greeting, no price, no super/DASP, no deadline, no link, ≤360 chars, one line).
+  3. Sends go out as the Meta template `winback_<en|de|ja>` ({{1}} first name, {{2}} the paragraph), 2 per pass, passes 20 minutes apart, max 10 a day, only inside the evening window. The send does NOT reopen the lead (`meta.winback`); their reply does.
+  4. After a win-back: 7 days with no reply → Final; replied and closed again → Final. One win-back per person ever (old manual ones count).
+- State per customer lives in the `winbacks` settings row (decision, reason, message, sentAt, finalAt...). The morning report has a Win-backs tile.
+- If WhatsApp refuses the template, one task "Win-back did not go out" and sending stops until the next day.
+
+- Refund check-in reads the chat first (25 Oct, Lauren): before "has your refund landed yet?" goes out, the chat since lodgement is checked (`checkinAlreadyAnswered`); a refund they said arrived ("my tax return has come through"), a review link already sent or asked for, means it is skipped (a sent link is recorded as the review ask). Saying the refund landed also cancels the check-in job.
+- The guarantee with their own numbers (25 Oct): a TFN-only customer before paying gets "pay $220; if the refund is $60 we refund the $160 difference; no refund, full fee" (playbook + reviewer pass list).
+
+- Several unlodged years, any visa (26 Oct): playbook rule; each year its own return and fee, owing / refund / late lodgement are part of the review after payment; never a handover.
 
 ## 6. Running it
 

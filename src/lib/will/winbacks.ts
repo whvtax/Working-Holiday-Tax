@@ -1,29 +1,37 @@
 // ============================================================
-// Win-back tracking (Jo, 24 Sep).
+// Win-back records (Jo, 24 Sep; automatic since 25 Oct).
 //
-// Until now a lost lead's card had no memory: pressing "send this to Tasks"
-// opened a draft, the message went out, and the card looked exactly as it did
-// before, button included. A week later the same person could be messaged
-// again. This keeps one small record per customer:
-//
-//   queuedAt  the button was pressed (a draft exists in Tasks)
-//   sentAt    the win-back actually reached WhatsApp (send_task_reply on a
-//             task whose reason starts with "Win-back:")
-//
-// From those two timestamps and the customer's own last message the report
-// derives one of four states for the card: draft waiting, waiting for a reply,
-// won back (they wrote after the win-back), or gave up (14 days of silence
-// after it). Stored as one settings row, not a table: a few hundred entries
-// at most, read once per report.
+// One small record per customer in the `winbacks` settings row: the
+// automatic job's decision (never / send), the personal message, when it went
+// out, and when the lead moved to Final (winback-auto.ts). The old manual
+// win-backs sent from the Lost Leads tab live in the same row, so anyone who
+// already got one is never messaged again.
 // ============================================================
 import type { Store } from './store';
 
 export const WINBACKS_SETTING = 'winbacks';
-export const WINBACK_GIVE_UP_DAYS = 14;
 /** How a win-back task is recognised in send_task_reply. */
 export const WINBACK_REASON_PREFIX = 'Win-back:';
 
-export interface WinbackRecord { queuedAt: string; sentAt?: string }
+export interface WinbackRecord {
+  queuedAt?: string;
+  sentAt?: string;
+  // ── Automatic win-back (Jo, 25 Oct, winback-auto.ts) ──
+  /** When Will last read the conversation and decided. */
+  decidedAt?: string;
+  decision?: 'never' | 'send';
+  /** One sentence for Jo: why. */
+  reason?: string;
+  /** The personal paragraph that goes into {{2}} of winback_<lang>. */
+  message?: string;
+  attempts?: number;
+  failedAt?: string;
+  error?: string;
+  /** Sent by the automatic job (not the old manual button). */
+  auto?: boolean;
+  finalAt?: string;
+  finalWhy?: string;
+}
 export type Winbacks = Record<string, WinbackRecord>;
 
 export async function readWinbacks(store: Store): Promise<Winbacks> {
@@ -31,35 +39,8 @@ export async function readWinbacks(store: Store): Promise<Winbacks> {
   return v && typeof v === 'object' ? (v as Winbacks) : {};
 }
 
-export async function markWinbackQueued(store: Store, customerId: string, at = new Date().toISOString()): Promise<void> {
-  const all = await readWinbacks(store);
-  all[customerId] = { ...(all[customerId] ?? {}), queuedAt: at };
-  await store.setSetting(WINBACKS_SETTING, all);
-}
-
 export async function markWinbackSent(store: Store, customerId: string, at = new Date().toISOString()): Promise<void> {
   const all = await readWinbacks(store);
-  all[customerId] = { queuedAt: all[customerId]?.queuedAt ?? at, sentAt: at };
+  all[customerId] = { ...(all[customerId] ?? {}), queuedAt: all[customerId]?.queuedAt ?? at, sentAt: at };
   await store.setSetting(WINBACKS_SETTING, all);
-}
-
-export type WinbackStatus =
-  | { kind: 'none' }
-  | { kind: 'draft'; queuedAt: string }
-  | { kind: 'waiting'; sentAt: string; days: number }
-  | { kind: 'gave_up'; sentAt: string; days: number }
-  | { kind: 'won_back'; sentAt: string; repliedAt: string };
-
-const DAY = 24 * 60 * 60 * 1000;
-
-/** Pure. `lastCustomerMsgAt` is the customer's own last message, if any. */
-export function winbackStatus(rec: WinbackRecord | undefined, lastCustomerMsgAt: string | null | undefined, now = new Date()): WinbackStatus {
-  if (!rec) return { kind: 'none' };
-  if (!rec.sentAt) return { kind: 'draft', queuedAt: rec.queuedAt };
-  const sent = new Date(rec.sentAt).getTime();
-  const replied = lastCustomerMsgAt ? new Date(lastCustomerMsgAt).getTime() : 0;
-  if (replied > sent) return { kind: 'won_back', sentAt: rec.sentAt, repliedAt: lastCustomerMsgAt as string };
-  const days = Math.max(0, Math.floor((now.getTime() - sent) / DAY));
-  if (days >= WINBACK_GIVE_UP_DAYS) return { kind: 'gave_up', sentAt: rec.sentAt, days };
-  return { kind: 'waiting', sentAt: rec.sentAt, days };
 }

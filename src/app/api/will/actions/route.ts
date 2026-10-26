@@ -4,8 +4,7 @@
 import { DECISION_MODE_KEY } from '@/lib/will/will-decides';
 import { NextResponse } from 'next/server';
 import { teamConfirmsPayment, teamSaysLodged, teamPromisesRefund, teamSentRefund, businessDaysFromNow, teamOutcomeFromWords } from '@/lib/will/stage-sync';
-import { readWinbacks, markWinbackQueued, markWinbackSent, winbackStatus, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
-import { winbackMessage } from '@/lib/will/i18n';
+import { markWinbackSent, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
 import { REVIEW_ASK_FALLBACK_DAYS, REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK } from '@/lib/will/review-asks';
 
 import { sessionValid } from '@/lib/will/auth';
@@ -37,14 +36,12 @@ export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'mark_read_silent' | 'toggle_ai' | 'resume_all_leads' | 'set_outcome'
-  | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_ai_mode' | 'set_decision_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'recover_lead' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault' | 'set_google_place_id' | 'sync_reviews';
+  | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_ai_mode' | 'set_decision_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault' | 'set_google_place_id' | 'sync_reviews';
   /** dismiss_fault only: the fault's stable key (SystemFault.key). */
   faultKey?: string;
   id?: string;
   customerId?: string;
   body?: string;
-  /** recover_lead: a campaign line for the win-back's {{2}} (Jo, 24 Sep). */
-  hook?: string;
   /** reviews_received: +1 / -1. */
   delta?: number;
   value?: boolean;
@@ -910,57 +907,6 @@ async function handlePost(req: Request) {
       return sentJson(warning);
     }
 
-    case 'recover_lead': {
-      // The button on a lost-lead card. The post-mortem judged this person
-      // still winnable and wrote the message to send them; this puts that
-      // message in front of the owner as an ordinary task, in the same place
-      // as every other thing waiting for him.
-      //
-      // IT DOES NOT SEND. Jo, 28 Aug: "a button I press and it goes over to
-      // Will, to tasks and a draft". A win-back is the most delicate message
-      // this system produces, written about somebody who already said no or
-      // went quiet, so it is read by a person before it goes anywhere. The
-      // send path from the task is the ordinary one, guard included.
-      if (!b.customerId) return bad('customerId required');
-      const customer = await store.getCustomerById(b.customerId);
-      if (!customer) return bad('customer not found', 404);
-      if (customer.optedOut) return bad('this person asked us to stop messaging them');
-
-      const analysis = (await store.listLostAnalyses()).find((r) => r.customerId === customer.id);
-      if (!analysis || analysis.status !== 'OK') return bad('this lead has not been assessed yet');
-      if (analysis.recoverable === 'NO') return bad('the assessment says this lead cannot be recovered');
-      // Jo, 24 Sep: the win-back goes out as the Meta template (the lead has
-      // been silent for days, free text cannot reach them). {{2}} is the whole
-      // personal message the post-mortem wrote for THIS person, or the
-      // campaign line when one is given. Meta caps a variable at 1024 chars.
-      const hook = typeof b.hook === 'string' && b.hook.trim()
-        ? b.hook.trim().slice(0, 700)
-        : (analysis.recoveryMessage ?? '').trim().slice(0, 700);
-      if (!hook) return bad('the assessment did not write a message for this lead');
-      const draft = winbackMessage(customer.lang, greetingName(customer), hook);
-      // One win-back per person (Jo, 24 Sep). Once it has gone out, the card
-      // shows what happened instead of offering the button again.
-      const prior = winbackStatus((await readWinbacks(store))[customer.id], customer.lastCustomerMsgAt);
-      if (prior.kind === 'waiting') return bad(`a win-back already went out ${prior.days} day${prior.days === 1 ? '' : 's'} ago; wait for a reply`);
-      if (prior.kind === 'gave_up') return bad('a win-back already went out and got no reply; this lead is not messaged again');
-
-      const existing = await store.findOpenTaskForCustomer(customer.id);
-      const reason = 'Win-back: the assessment says this lead is still worth a message. Read it, change anything you want, send it.';
-      const context = analysis.reason;
-      if (existing) {
-        // One task per customer, same rule as everywhere else.
-        await store.updateTask(existing.id, { reason, severity: 'REVIEW', context, suggestedReply: draft });
-      } else {
-        await store.addTask({
-          customerId: customer.id, customerName: customer.name ?? customer.waId,
-          reason, severity: 'REVIEW', context, suggestedReply: draft,
-        });
-      }
-      await markWinbackQueued(store, customer.id).catch(() => undefined);
-      await store.audit('owner', 'lost_lead_recovery_queued', { customerId: customer.id });
-      return NextResponse.json({ ok: true });
-    }
-
     case 'create_task': {
       // Open a task for the owner from the Overview copilot's "open task"
       // proposal. This only writes an internal reminder — nothing is sent to
@@ -1263,14 +1209,14 @@ async function handlePost(req: Request) {
         if (f) await reconcileSchedule(f);
         return NextResponse.json({ ok: true });
       }
-      const isClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(target);
+      const isClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(target);
       // A paid customer can only move forward within the service flow or be closed,
       // never back into sales (spec §5).
       if ((customer.paid || POST_PAYMENT_STATES.includes(customer.state)) && isSalesState(target)) {
         return bad('a paid customer cannot be moved back into the sales flow');
       }
       const forward = canTransition(customer.state, target);
-      const wasClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state);
+      const wasClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(customer.state);
       const reopen = wasClosed && target === (customer.previousState ?? 'QUALIFIED');
       // Owner may step one stage forward, close a customer, or reopen a closed one.
       // Arbitrary multi-stage skips are rejected (they corrupt reporting & flow).

@@ -101,7 +101,7 @@ export function LeadsTab() {
   const activeCount = (leads ?? []).filter(l => !l.unsubscribed).length
 
   return (
-    // Same structure as the Clients and Archive tabs: a flex column that
+    // Same structure as the Clients tab: a flex column that
     // doesn't scroll, a fixed header, and only the list scrolling below it.
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
       <div className="phead">

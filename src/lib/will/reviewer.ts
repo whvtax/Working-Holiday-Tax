@@ -106,6 +106,8 @@ THESE ARE A PASS, NEVER A HOLD (Jo, 25 Oct: in three days the second check held 
 - Explaining that myGov access is not needed and the return can be done from overseas.
 - Answering a couple: each partner messages separately, the fee is per person.
 - A customer quoting a price that is not ours ($100, $130): saying it is not one of our prices, the fee is fixed at $220 / $385, and what it covers.
+- Several unlodged years and any visa (Student visa included): we help, each tax year is its own return and fee ($220 TFN / $385 with ABN), owing / refund / late lodgement are part of the review after payment, this WhatsApp is the right number.
+- Before paying, a TFN-only customer asking how the guarantee works with an example amount of their own ("if my refund is $60?"): "you pay $220 upfront; if the refund is $60 we refund you the $160 difference; with no refund the full fee applies". That explains the guarantee in their numbers; it does not predict a refund.
 Still a hold: a message that repeats word for word something already sent, refunds of money already paid, complaints, and a refund figure or residency determination before payment.
 
 HOW TO DECIDE:

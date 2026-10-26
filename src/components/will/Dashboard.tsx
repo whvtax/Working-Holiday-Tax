@@ -21,70 +21,13 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js/min'  // /min: the
 // The Simulator was removed on Jo's instruction, 25 Aug: with real WhatsApp
 // traffic flowing it had no use left, and a fake customer sitting in the
 // pipeline next to the real ones was a hazard rather than a help.
-type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'followups' | 'insights' | 'lost' | 'learning';
+type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'followups' | 'insights' | 'learning';
 
 /** Sidebar labels. Only needed where the view id is not the words we want. */
-const VIEW_LABELS: Partial<Record<View, string>> = { followups: 'Follow-ups', insights: 'System & Costs', lost: 'Lost Leads' };
+const VIEW_LABELS: Partial<Record<View, string>> = { followups: 'Follow-ups', insights: 'System & Costs' };
 
-// ────────────────────────────────────────────────────────────
-// Lost Leads report, as /api/will/lost returns it.
-//
-// Every post-mortem here is written for Jo and NOBODY else. There is no
-// "message them" button anywhere in this view and no draft is ever created
-// from it — the whole feature is read-only by construction.
-// ────────────────────────────────────────────────────────────
-interface LostAnalysisView {
-  reason: string;
-  category: string;
-  categoryLabel: string;
-  shouldHaveDone: string;
-  fault: 'OURS' | 'PARTLY_OURS' | 'NOT_OURS';
-  recoverable: 'YES' | 'MAYBE' | 'NO';
-  recoveryAction: string | null;
-  /** The ready-to-send win-back message. Null when recoverable is NO. */
-  recoveryMessage: string | null;
-  evidenceQuote: string | null;
-  confidence: number;
-  hoursPriceToSilence: number | null;
-  analysedAt: string;
-}
-interface LostRow {
-  customerId: string;
-  waId: string;
-  name: string | null;
-  flag: string;
-  state: CustomerState;
-  stateLabel: string;
-  lang: string | null;
-  trigger: string | null;
-  triggerLabel: string | null;
-  quietDays: number;
-  lostBecause: string;
-  analysis: LostAnalysisView | null;
-  failure: { error: string | null; attempts: number } | null;
-  winback: { kind: 'none' } | { kind: 'draft'; queuedAt: string } | { kind: 'waiting'; sentAt: string; days: number }
-    | { kind: 'gave_up'; sentAt: string; days: number } | { kind: 'won_back'; sentAt: string; repliedAt: string };
-  priority: number;
-}
-interface WonBackRow { customerId: string; waId: string; name: string | null; flag: string; state: CustomerState; stateLabel: string; paid: boolean; sentAt: string; repliedAt: string }
-interface LostReport {
-  generatedAt: string;
-  definition: { silenceDays: number; text: string };
-  counts: { lost: number; analysed: number; pending: number; failed: number; recoverable: number; ourFault: number };
-  categories: { category: string; label: string; n: number; share: number; recoverable: number; ourFault: number }[];
-  rows: LostRow[];
-  winbacks: { giveUpDays: number; sent: number; waiting: number; gaveUp: number; wonBack: WonBackRow[] };
-  top: string[];
-  campaign: { customerIds: string[]; since: string };
-  prevention: { category: string; label: string; ourFault: number; fix: string }[];
-  lastRun: { day: string; ranAt: string; analysed: number; failed: number; remaining: number; budgetExhausted: boolean; incomplete: boolean } | null;
-}
-/** How firmly the model committed, in the same three words the report uses. */
-const RECOVER_TEXT: Record<LostAnalysisView['recoverable'], { label: string; color: string }> = {
-  YES: { label: 'Winnable', color: 'var(--good)' },
-  MAYBE: { label: 'Maybe winnable', color: 'var(--sig)' },
-  NO: { label: 'Gone', color: 'var(--ink3)' },
-};
+// The Lost Leads tab was removed (Jo, 25 Oct): the automatic win-back
+// (lib/will/winback-auto.ts) does that work now, see the morning report.
 
 /** One scheduled follow-up, as /api/will/followups returns it. */
 interface FollowUpRow {
@@ -161,8 +104,6 @@ const ICONS: Record<View, React.ReactNode> = {
   // A clock with a forward arrow: messages queued to leave later.
   followups: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>,
   insights: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>,
-  // A person walking away: the leads that did not become clients.
-  lost: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M15 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/></svg>,
   learning: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
 };
 const BELL = <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>;
@@ -631,17 +572,6 @@ export default function Dashboard() {
       if (r.ok) setMonthly(r.months ?? []);
     } catch { /* keep whatever is on screen */ }
   }, []);
-  // The Lost Leads report. Read-only: the post-mortems are written once a night
-  // by the LOST_ANALYSIS job and simply read here, so opening the tab is instant
-  // and free and yesterday's finding is still the same finding today.
-  const [lost, setLost] = useState<LostReport | null>(null);
-  const [lostOpen, setLostOpen] = useState<string | null>(null);
-  const loadLost = useCallback(async () => {
-    try {
-      const r = await fetch('/api/will/lost').then((x) => x.json());
-      if (r.ok) setLost(r as LostReport);
-    } catch { /* keep whatever is on screen */ }
-  }, []);
   // Everyone scheduled to receive a follow-up. Kept current while the view is
   // open: this is a live queue, not a report you regenerate.
   const [followups, setFollowups] = useState<FollowUpRow[] | null>(null);
@@ -912,7 +842,6 @@ export default function Dashboard() {
   useEffect(() => { if (view === 'insights') { loadMonthly(); } }, [view, loadMonthly]);
   useEffect(() => { if (view === 'insights' || view === 'tasks') loadSystem(); }, [view, loadSystem]);
   // Fetched on open, not polled: these rows only change once a night.
-  useEffect(() => { if (view === 'lost') loadLost(); }, [view, loadLost]);
   // The follow-up queue moves on its own (the scheduler sends, cancels and
   // re-arms jobs), so while you are looking at it, it refreshes itself.
   useEffect(() => {
@@ -1063,7 +992,7 @@ export default function Dashboard() {
   // "Journey" timeline in the customer drawer: same eight pipeline stages,
   // in pipeline order, minus "Closed" (a closed customer is shown via the
   // separate closedState banner rather than as a forward step).
-  const journeyGroups = STAGE_GROUPS.filter((sg) => sg.id !== 'closed');
+  const journeyGroups = STAGE_GROUPS.filter((sg) => sg.id !== 'closed' && sg.id !== 'final');
   const journey: CustomerState[] = journeyGroups.map((sg) => sg.states[0] as CustomerState);
   const journeyIdx: Partial<Record<CustomerState, number>> = {};
   STAGE_GROUPS.forEach((sg) => {
@@ -1141,7 +1070,7 @@ export default function Dashboard() {
     <>
       <aside className="side">
         <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
-        {(['pipeline', 'chats', 'tasks', 'followups', 'library', 'lost', 'learning', 'insights'] as View[]).map((v) => (
+        {(['pipeline', 'chats', 'tasks', 'followups', 'library', 'learning', 'insights'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
             <span className="nl">{VIEW_LABELS[v] ?? v[0].toUpperCase() + v.slice(1)}</span>
@@ -2125,9 +2054,8 @@ export default function Dashboard() {
                   things in one box, and the preview is now its own Follow-ups
                   page with the full list.
 
-                  What the card promised does now exist, properly scoped: Lost
-                  Leads reads each non-converting conversation through Claude and
-                  reports why it failed and what would have changed it.
+                  The Lost Leads report that followed was retired on 25 Oct: the
+                  automatic win-back (winback-auto.ts) acts on those leads instead.
 
                   /api/will/report itself is NOT removed. The funnel, the
                   variant tests, the conversion rate and the handoff reasons on
@@ -2779,345 +2707,12 @@ export default function Dashboard() {
           </section>
         )}
 
-        {/* ────────────────────────────────────────────────────────────────
-            LOST LEADS. The post-mortem report.
-
-            Every lead that did not become a paying client, with an honest
-            assessment of why and what should have been done differently.
-
-            THIS IS FOR JO'S EYES ONLY. There is no send button, no draft, no
-            "message them" action anywhere in this view, and the API route
-            behind it is read-only. Nothing here ever reaches a customer.
-
-            The individual cards are anecdotes. The panel at the top. The
-            categories ranked by how often they happen. Is the finding, which
-            is why it sits above the list and not below it.
-            ──────────────────────────────────────────────────────────────── */}
-        {view === 'lost' && (
-          <section className="view active">
-            <h2 className="vt">Lost Leads</h2>
-            <div className="vsub">
-              Every lead that did not become a paying client, read back and assessed.
-            </div>
-
-            {lost === null && <div className="sysline" style={{ margin: '20px 0' }}>Reading the report…</div>}
-
-            {lost && (
-              <>
-                <div className="kpis">
-                  <div className="kpi"><div className="kl">Lost leads</div><div className="kv">{lost.counts.lost}</div><div className="kd">reached WhatsApp, did not convert</div></div>
-                  <div className="kpi"><div className="kl">Assessed</div><div className="kv">{lost.counts.analysed}</div></div>
-                  <div className="kpi"><div className="kl">Still winnable</div><div className="kv">{lost.counts.recoverable}</div><div className="kd">a message is ready to send</div></div>
-                  <div className="kpi"><div className="kl">On us</div><div className="kv">{lost.counts.ourFault}</div><div className="kd">the rest could not have been converted</div></div>
-                  <div className="kpi"><div className="kl">Won back</div><div className="kv">{lost.winbacks?.wonBack.length ?? 0}</div><div className="kd">{lost.winbacks ? `of ${lost.winbacks.sent} win-backs sent · ${lost.winbacks.waiting} waiting · ${lost.winbacks.gaveUp} gave up` : ''}</div></div>
-                </div>
-
-                {/* Jo, 24 Sep: the win-backs that are out and unanswered, on top,
-                    so what he is waiting on is one glance and never re-sent. */}
-                {lost.winbacks && (lost.winbacks.waiting > 0 || lost.winbacks.wonBack.length > 0) && (
-                  <div className="panel" style={{ marginBottom: 10 }}>
-                    <h3>Win-backs</h3>
-                    {lost.winbacks.wonBack.length > 0 && (
-                      <>
-                        <div className="psub">Came back after the win-back</div>
-                        {lost.winbacks.wonBack.map((w) => (
-                          <div key={w.customerId} className="qitem">
-                            <span className="qn">✓</span>
-                            <span className="qwrap">
-                              <span className="qlabel">{w.flag} {phoneOf(w.waId)} · now {w.stateLabel}{w.paid ? ' · paid' : ''}</span>
-                              <span className="qwhy">replied {new Date(w.repliedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}, {Math.max(0, Math.round((new Date(w.repliedAt).getTime() - new Date(w.sentAt).getTime()) / 86400000))}d after the win-back</span>
-                            </span>
-                            <button className="btn ghost" onClick={() => { setView('chats'); openChat(w.customerId); }}>Open chat →</button>
-                          </div>
-                        ))}
-                      </>
-                    )}
-                    {lost.winbacks.waiting > 0 && (
-                      <>
-                        <div className="psub" style={{ marginTop: lost.winbacks.wonBack.length ? 10 : 0 }}>Waiting for a reply (given up after {lost.winbacks.giveUpDays} days)</div>
-                        {lost.rows.filter((r) => r.winback.kind === 'waiting').map((r) => (
-                          <div key={r.customerId} className="qitem">
-                            <span className="qn">{(r.winback as { days: number }).days}d</span>
-                            <span className="qwrap">
-                              <span className="qlabel">{r.flag} {phoneOf(r.waId)}</span>
-                              <span className="qwhy">win-back sent {new Date((r.winback as { sentAt: string }).sentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}, no reply yet</span>
-                            </span>
-                            <button className="btn ghost" onClick={() => { setView('chats'); openChat(r.customerId); }}>Open chat →</button>
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </div>
-                )}
-
-                {/* Jo, 24 Sep: the work queue. Ten best bets, one button. Each
-                    queue puts the templated win-back in Tasks as a draft; the
-                    send still goes through a person and the guard. */}
-                {lost.top && lost.top.length > 0 && (
-                  <div className="panel" style={{ marginBottom: 10 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-                      <div>
-                        <h3 style={{ margin: 0 }}>Best to try today</h3>
-                        <div className="psub">Ranked by how far they got, how recently they went quiet, and how firm the assessment is. One win-back per person, ever.</div>
-                      </div>
-                      <button
-                        className="btn take"
-                        disabled={acted.has('queue-top')}
-                        onClick={() => once('queue-top', async () => {
-                          let ok = 0;
-                          for (const id of lost.top) { const r = await act({ action: 'recover_lead', customerId: id }); if (r?.ok) ok++; }
-                          say(`${ok} of ${lost.top.length} win-backs are waiting in Tasks as drafts. Nothing has been sent.`);
-                          refresh();
-                          return ok > 0;
-                        })}
-                      >➤ Queue all {lost.top.length} as drafts</button>
-                    </div>
-                    {lost.top.map((id, i) => {
-                      const r = lost.rows.find((x) => x.customerId === id); if (!r) return null;
-                      return (
-                        <div key={id} className="qitem">
-                          <span className="qn">{i + 1}</span>
-                          <span className="qwrap">
-                            <span className="qlabel">{r.flag} {phoneOf(r.waId)} · {r.stateLabel} · quiet {r.quietDays}d</span>
-                            <span className="qwhy">{r.analysis?.recoveryAction ?? r.analysis?.reason ?? ''}</span>
-                          </span>
-                          <button className="btn ghost" onClick={() => { setView('chats'); openChat(r.customerId); }}>Open chat →</button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* The deadline campaign: everyone winnable who went quiet this
-                    tax year, with the 31 October line as the hook. */}
-                {lost.campaign && lost.campaign.customerIds.length > 0 && (
-                  <div className="panel" style={{ marginBottom: 10 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-                      <div>
-                        <h3 style={{ margin: 0 }}>31 October deadline campaign</h3>
-                        <div className="psub">{lost.campaign.customerIds.length} winnable lead{lost.campaign.customerIds.length === 1 ? '' : 's'} went quiet since {lost.campaign.since} and have not had a win-back. The hook: &quot;The 31 October lodgement deadline is coming up, and there is still time to get yours in.&quot;</div>
-                      </div>
-                      <button
-                        className="btn take"
-                        disabled={acted.has('queue-campaign')}
-                        onClick={() => once('queue-campaign', async () => {
-                          if (!window.confirm(`Queue ${lost.campaign.customerIds.length} deadline win-backs as drafts in Tasks? Nothing is sent until you send each one.`)) return false;
-                          let ok = 0;
-                          for (const id of lost.campaign.customerIds) {
-                            const r = await act({ action: 'recover_lead', customerId: id, hook: 'The 31 October lodgement deadline is coming up, and there is still time to get yours in.' });
-                            if (r?.ok) ok++;
-                          }
-                          say(`${ok} deadline win-backs are waiting in Tasks as drafts.`);
-                          refresh();
-                          return ok > 0;
-                        })}
-                      >➤ Queue the campaign</button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Prevention: the categories that are on us, and the lever. */}
-                {lost.prevention && lost.prevention.length > 0 && (
-                  <div className="panel" style={{ marginBottom: 10 }}>
-                    <h3>Fix in Will</h3>
-                    <div className="psub">The reasons we lose people that are ours to fix, most frequent first.</div>
-                    {lost.prevention.map((p) => (
-                      <div key={p.category} className="qitem qitem-why">
-                        <span className="qn">×{p.ourFault}</span>
-                        <span className="qwrap">
-                          <span className="qlabel">{p.label}</span>
-                          <span className="qwhy">{p.fix}</span>
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* The aggregate. Eleven leads in one bucket is a thing to fix;
-                    eleven separate stories are not. */}
-                <div className="panel" style={{ marginBottom: 10 }}>
-                  <h3>Why they go?</h3>
-                  <div className="psub">
-                    Counted across the {lost.counts.analysed} lead{lost.counts.analysed === 1 ? '' : 's'} assessed so far.
-                  </div>
-                  {lost.categories.length === 0 && (
-                    <div className="mini" style={{ marginTop: 0 }}>
-                      Nothing assessed yet. The report fills in after tonight&apos;s run.
-                    </div>
-                  )}
-                  {lost.categories.map((c) => (
-                    <div key={c.category} className="qitem qitem-why">
-                      <span className="qn">×{c.n}</span>
-                      <span className="qwrap">
-                        <span className="qlabel">{c.label}</span>
-                        <span className="qwhy">
-                          {c.share}% of everything assessed
-                          {c.ourFault > 0 && ` · ${c.ourFault} we could have handled better`}
-                          {c.recoverable > 0 && ` · ${c.recoverable} still worth a try`}
-                        </span>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                {lost.rows.length === 0 && (
-                  <div className="sysline" style={{ margin: '20px 0' }}>
-                    No lost leads right now. Everyone who has not paid is still inside the window where they might.
-                  </div>
-                )}
-
-                <div className="rowlist">
-                  {lost.rows.map((r) => {
-                    const open = lostOpen === r.customerId;
-                    const a = r.analysis;
-                    const color = stageColorOf(r.state);
-                    return (
-                      <div key={r.customerId}>
-                        <div
-                          className="rowcard"
-                          style={{ ['--gc' as string]: color }}
-                          title={open ? 'Hide the assessment' : 'Read the assessment'}
-                          role="button"
-                          tabIndex={0}
-                          aria-expanded={open}
-                          onClick={() => setLostOpen(open ? null : r.customerId)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLostOpen(open ? null : r.customerId); }
-                          }}
-                        >
-                          <div className="rc-main">
-                            <div className="rc-top">
-                              {/* A row that opens has to look like one. Without
-                                  a marker the only way to find out was to click
-                                  it, which is how "does this do anything?"
-                                  happens. */}
-                              <span aria-hidden style={{
-                                display: 'inline-block', fontSize: 10, color: 'var(--ink3)',
-                                transform: open ? 'rotate(90deg)' : 'none', transition: 'transform .15s',
-                              }}>▶</span>
-                              {/* The number and the category, and nothing else.
-                                  The trigger chip ("Said no") and the winnable
-                                  chip said in two more places what the category
-                                  pill and the card inside already say. */}
-                              <span className="cname">{r.flag} {phoneOf(r.waId)}</span>
-                            </div>
-                            <div className="rc-msg">
-                              {a ? a.reason
-                                : r.failure ? `Could not be assessed: ${r.failure.error ?? 'unknown reason'}`
-                                : 'Being assessed now, this updates in a minute or two'}
-                            </div>
-                          </div>
-                          <div className="rc-side">
-                            {r.winback?.kind === 'waiting' && <span className="stagepill" style={{ ['--pc' as string]: '#2a6fd6' }}>Win-back sent · {r.winback.days}d</span>}
-                            {r.winback?.kind === 'gave_up' && <span className="stagepill" style={{ ['--pc' as string]: '#8a8f98' }}>Gave up</span>}
-                            {r.winback?.kind === 'draft' && <span className="stagepill" style={{ ['--pc' as string]: '#c98a1f' }}>Draft in Tasks</span>}
-                            <span className="stagepill" style={{ ['--pc' as string]: color }}>{a ? a.categoryLabel : r.stateLabel}</span>
-                            <span className="rc-time">{r.quietDays}d</span>
-                          </div>
-                        </div>
-
-                        {open && (
-                          <div className="panel" style={{ margin: '6px 0 2px', borderRadius: 10 }}>
-                            {/* Jo's four questions, in his order. Each one is a
-                                heading and an answer, so the card is read the
-                                same way every time instead of being scanned for
-                                whichever part happens to matter. */}
-                            <div className="syshead" style={{ marginTop: 0 }}>Where it stopped</div>
-                            <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>
-                              {r.stateLabel}
-                              {a?.hoursPriceToSilence != null && (
-                                <>. {a.hoursPriceToSilence < 1 ? 'Under an hour' : a.hoursPriceToSilence < 48 ? `${Math.round(a.hoursPriceToSilence)} hours` : `${Math.round(a.hoursPriceToSilence / 24)} days`} between the price and their last word.</>
-                              )}
-                            </div>
-
-                            <div className="syshead">Why it closed</div>
-                            <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>
-                              {a ? a.reason : r.lostBecause}
-                            </div>
-                            {a?.evidenceQuote && <div className="tctx">&ldquo;{a.evidenceQuote}&rdquo;</div>}
-
-                            {a ? (
-                              <>
-                                <div className="syshead">What could have been done differently</div>
-                                {/* Paragraph breaks survive the validator now,
-                                    because this is the part worth reading and a
-                                    single block of text is the part people skip. */}
-                                <div className="mini" style={{ marginTop: 0, lineHeight: 1.6, color: 'var(--ink2)', whiteSpace: 'pre-wrap' }}>
-                                  {a.fault === 'NOT_OURS' && !a.shouldHaveDone.trim()
-                                    ? `${ASSISTANT_NAME} did everything he could here. Nothing in this conversation would have changed the outcome.`
-                                    : a.shouldHaveDone}
-                                </div>
-
-                                <div className="syshead">Can they still become a client?</div>
-                                <div className="mini" style={{ marginTop: 0, lineHeight: 1.55, color: 'var(--ink2)' }}>
-                                  <b style={{ color: RECOVER_TEXT[a.recoverable].color }}>
-                                    {a.recoverable === 'NO' ? 'No' : a.recoverable === 'YES' ? 'Yes' : 'Possibly'}
-                                  </b>
-                                  {/* Jo: this spot is the exact message to send (below),
-                                      not a theoretical "you could reach out and…". The
-                                      reasoning is only worth showing when there is NO
-                                      message to send — i.e. the lead is a dead end and
-                                      the line explains why not to bother. */}
-                                  {a.recoverable === 'NO' && a.recoveryAction ? <>. {a.recoveryAction}</> : null}
-                                </div>
-
-                                {a.recoveryMessage && (
-                                  <>
-                                    <div className="syshead">The message to send</div>
-                                    <div className="wapreview">
-                                      <div className="msg out" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{a.recoveryMessage}</div>
-                                    </div>
-                                  </>
-                                )}
-                                <div className="mini">
-                                  Assessed {new Date(a.analysedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Melbourne' })} · confidence {Math.round(a.confidence * 100)}%.
-                                </div>
-                              </>
-                            ) : r.failure ? (
-                              <div className="mini" style={{ marginTop: 0 }}>
-                                Could not be assessed after {r.failure.attempts} attempt{r.failure.attempts === 1 ? '' : 's'}: {r.failure.error ?? 'unknown reason'}.
-                              </div>
-                            ) : (
-                              <div className="mini" style={{ marginTop: 0 }}>
-                                Not assessed yet. The assessment starts the moment a lead closes and usually lands within a couple of minutes, so this fills itself in shortly.
-                              </div>
-                            )}
-                            <div className="tbtns">
-                              {r.winback?.kind === 'waiting' && <span className="mini" style={{ marginTop: 0 }}>Win-back sent {new Date(r.winback.sentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}. Waiting for a reply; nothing more is sent.</span>}
-                              {r.winback?.kind === 'gave_up' && <span className="mini" style={{ marginTop: 0 }}>A win-back went out on {new Date(r.winback.sentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })} and got no reply. This lead is not messaged again.</span>}
-                              {r.winback?.kind === 'draft' && <span className="mini" style={{ marginTop: 0 }}>The draft is waiting in Tasks.</span>}
-                              {a?.recoveryMessage && (!r.winback || r.winback.kind === 'none') && (
-                                <button
-                                  className="btn take"
-                                  disabled={acted.has('recover-' + r.customerId)}
-                                  onClick={() => once('recover-' + r.customerId, async () => {
-                                    const res = await act({ action: 'recover_lead', customerId: r.customerId });
-                                    say(res?.ok
-                                      ? `Draft is waiting in Tasks. Nothing has been sent.`
-                                      : `❌ ${res?.error ?? 'could not create the task'}`);
-                                    refresh();
-                                    return !!res?.ok;
-                                  })}
-                                >➤ Send this to Tasks as a draft</button>
-                              )}
-                              <button className="btn ghost" onClick={() => { setView('chats'); openChat(r.customerId); }}>Read the conversation →</button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </>
-            )}
-          </section>
-        )}
 
       </main>
 
       <div className={`drawer ${drawer ? 'open' : ''}`}>
         {drawer && (() => {
-          const closedState = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(drawer.state);
+          const closedState = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(drawer.state);
           const now = closedState ? -1 : journeyIdx[drawer.state] ?? 0;
           const nextJob = upcoming.find((x) => x.customerId === drawer.id);
           const secs = nextJob ? Math.max(0, Math.round((new Date(nextJob.runAt).getTime() - Date.now()) / 1000)) : null;

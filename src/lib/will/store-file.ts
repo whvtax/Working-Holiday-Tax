@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto';
 import type { AiUsageRow } from './ai-usage';
 import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
-  LostAnalysisRow, DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS,
+  DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS,
 } from './store';
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { phoneCandidates } from './phone-candidates';
@@ -23,7 +23,6 @@ interface Db {
   settings: Record<string, unknown>;
   audit: { id?: string; actor: string; action: string; detail: unknown; at: string }[];
   processed?: { id: string; at: string }[];
-  lostAnalyses?: LostAnalysisRow[];   // stored lost-lead post-mortems (migration 031)
   knownContacts?: string[]; // normalized numbers of pre-existing contacts kept OUT of Will
 }
 
@@ -52,7 +51,6 @@ async function load(): Promise<Db> {
     cache.knowledge ??= [];
     cache.settings ??= {};
     cache.processed ??= [];
-    cache.lostAnalyses ??= [];
     for (const c of cache.customers) { c.previousState ??= null; c.lastMessageDirection ??= (c.unread ? 'IN' : 'OUT'); c.botOwned ??= false; c.lang ??= null; c.unreadCount ??= (c.unread ? 1 : 0); c.lastMessageAt ??= (c.lastCustomerMsgAt ?? c.stateChangedAt ?? c.createdAt ?? null); }
     for (const t of cache.tasks) t.suggestedReply ??= null;
   } catch {
@@ -66,7 +64,6 @@ async function load(): Promise<Db> {
       knowledge: [],
       settings: {},
       audit: [],
-      lostAnalyses: [],
     };
     await persist();
   }
@@ -245,7 +242,8 @@ export class FileStore implements Store {
     // no-op (missing customer or already in the target state) returns false.
     if (!c || c.state === to) return false;
     db.history.push({ customerId: id, from: c.state, to, causedBy, createdAt: now() });
-    if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(to)) c.previousState = c.state;
+    // Closed to closed (e.g. Not Interested to Final) keeps the sales stage they left from.
+    if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(to) && !['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(c.state)) c.previousState = c.state;
     c.state = to;
     c.stateChangedAt = now();
     // Any post-payment stage means they paid; see store-supabase.setState.
@@ -698,25 +696,6 @@ export class FileStore implements Store {
   async deleteKnowledge(id: string) {
     const db = await load();
     db.knowledge = db.knowledge.filter((k) => k.id !== id);
-    await persist();
-  }
-
-  // ── Lost-lead post-mortems (migration 031) ──
-  async listLostAnalyses(): Promise<LostAnalysisRow[]> {
-    const db = await load();
-    return [...(db.lostAnalyses ?? [])].sort((a, b) => (a.analysedAt < b.analysedAt ? 1 : -1));
-  }
-  async getLostAnalysis(customerId: string): Promise<LostAnalysisRow | null> {
-    const db = await load();
-    return (db.lostAnalyses ?? []).find((r) => r.customerId === customerId) ?? null;
-  }
-  /** Keyed by customerId: re-running the nightly job replaces the row rather
-   *  than adding a second post-mortem for the same lead. */
-  async upsertLostAnalysis(row: LostAnalysisRow): Promise<void> {
-    const db = await load();
-    db.lostAnalyses ??= [];
-    const i = db.lostAnalyses.findIndex((r) => r.customerId === row.customerId);
-    if (i >= 0) db.lostAnalyses[i] = row; else db.lostAnalyses.push(row);
     await persist();
   }
 

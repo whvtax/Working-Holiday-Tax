@@ -37,9 +37,18 @@ export interface MorningReport {
     newDevices: { label: string; at: string }[];
     recent: { at: string; where: string; device: string; ip: string }[];
   };
+  /** The automatic win-back (Jo, 25 Oct). */
+  winback: {
+    sent: number;
+    replied: number;
+    toFinal: number;
+    waitingReply: number;
+    queued: number;
+    wonBackPaid: number;
+  };
 }
 
-const CLOSED = new Set(['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'COMPLETED']);
+const CLOSED = new Set(['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL', 'COMPLETED']);
 const H = 60 * 60 * 1000;
 
 function person(c: CustomerRow, sinceIso: string | null, now: number): ReportPerson {
@@ -57,6 +66,8 @@ export function buildMorningReport(input: {
   history: StateHistoryRow[];
   /** will_audit rows with actor 'auth' (CRM logins). */
   auth?: AuditRow[];
+  /** The `winbacks` settings row (winbacks.ts). */
+  winbacks?: Record<string, { sentAt?: string; decision?: string; decidedAt?: string; finalAt?: string }>;
   now?: number;
   windowHours?: number;
 }): MorningReport {
@@ -104,7 +115,27 @@ export function buildMorningReport(input: {
     })),
   };
 
+  const wb = input.winbacks ?? {};
+  const byId = new Map(input.customers.map((c) => [c.id, c]));
+  const DAY = 24 * H;
+  const winback = { sent: 0, replied: 0, toFinal: 0, waitingReply: 0, queued: 0, wonBackPaid: 0 };
+  for (const [id, r] of Object.entries(wb)) {
+    const c = byId.get(id);
+    if (r.finalAt && inWindow(r.finalAt)) winback.toFinal++;
+    if (r.sentAt) {
+      const sent = new Date(r.sentAt).getTime();
+      if (inWindow(r.sentAt)) winback.sent++;
+      const lastIn = c?.lastCustomerMsgAt ? new Date(c.lastCustomerMsgAt).getTime() : 0;
+      if (lastIn > sent && inWindow(c?.lastCustomerMsgAt)) winback.replied++;
+      if (c && lastIn <= sent && c.state !== 'FINAL' && now - sent < 7 * DAY) winback.waitingReply++;
+      if (c?.paid && lastIn > sent) winback.wonBackPaid++;
+    } else if (r.decision === 'send' && c && c.state !== 'FINAL' && !c.paid) {
+      winback.queued++;
+    }
+  }
+
   return {
+    winback,
     security,
     generatedAt: new Date(now).toISOString(),
     windowHours,

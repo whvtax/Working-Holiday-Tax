@@ -67,7 +67,8 @@ export async function patchReviewAsk(store: Store, customerId: string, patch: Re
  *  (they ask about it constantly); it has to be received/arrived/in. */
 const REFUND_LANDED = new RegExp([
   // en
-  '(?:refund|money|it|payment|tax back|cash)\\b[^.!?\\n]{0,40}\\b(?:arrived|landed|came (?:in|through)|come (?:in|through)|is in|went in|hit my account|received|got it|in my account|deposited)',
+  // Jo, 25 Oct (Lauren, +44 7472): "My tax return has come through" counts too.
+  '(?:refund|money|it|payment|tax back|cash|tax return|return)\\b[^.!?\\n]{0,40}\\b(?:arrived|landed|came (?:in|through)|come (?:in|through)|is in|went in|hit my account|received|got it|in my account|deposited)',
   '\\b(?:got|received|have|just got)\\b[^.!?\\n]{0,25}\\b(?:my )?(?:refund|money|tax back)\\b',
   // de
   '(?:r[üu]ckerstattung|geld|erstattung)[^.!?\\n]{0,40}\\b(?:angekommen|eingegangen|da|erhalten|bekommen|auf dem konto|drauf)',
@@ -76,8 +77,40 @@ const REFUND_LANDED = new RegExp([
   // ja
   '(?:還付金|お金|入金)[^。\\n]{0,20}(?:届き|入り|振り込まれ|受け取り|着金|来ました|きました)',
 ].join('|'), 'i');
+/** Our Google review link, in any of the shapes it is pasted in. */
+export const REVIEW_LINK_RE = /g\.page\/|maps\.app\.goo\.gl\/|google\.[a-z.]+\/maps|search\.google\.com\/local\/writereview|writereview\?placeid/i;
+/** The customer asking where to leave a review. */
+export const ASKS_REVIEW_LINK_RE = /\b(?:link|where)\b[^.?!]{0,40}\breview|\breview\b[^.?!]{0,40}\blink\b|bewertung[^.?!]{0,30}link|レビュー[^。]{0,15}(?:リンク|どこ)/i;
+
+/**
+ * Before the scheduled "has your refund landed yet?" goes out, read the chat
+ * since lodgement (Jo, 25 Oct, Lauren: she wrote "My tax return has come
+ * through, is there a link for a review?", the team sent the link, and two
+ * days later the check-in still asked whether the refund had landed). Returns
+ * why it is no longer needed, or null when it still is.
+ */
+export function checkinAlreadyAnswered(
+  messages: { direction: string; status?: string; body: string | null; createdAt: string }[],
+  sinceIso: string | null | undefined,
+): { why: 'refund_landed' | 'review_link_sent' | 'asked_for_review'; at: string } | null {
+  const since = sinceIso ? new Date(sinceIso).getTime() : 0;
+  for (const m of messages) {
+    if (new Date(m.createdAt).getTime() < since) continue;
+    const body = m.body ?? '';
+    if (m.direction === 'OUT' && (m.status ?? 'SENT') === 'SENT' && REVIEW_LINK_RE.test(body)) return { why: 'review_link_sent', at: m.createdAt };
+    if (m.direction === 'IN' && saysRefundLanded(body)) return { why: 'refund_landed', at: m.createdAt };
+    if (m.direction === 'IN' && ASKS_REVIEW_LINK_RE.test(body)) return { why: 'asked_for_review', at: m.createdAt };
+  }
+  return null;
+}
+
 export function saysRefundLanded(text: string): boolean {
-  return REFUND_LANDED.test((text || '').replace(/\s+/g, ' '));
+  // Sentence by sentence, and never a question: "When will my tax return
+  // come through?" is the opposite of it having landed.
+  const sentences = (text || '').replace(/\s+/g, ' ').match(/[^.!?。！？]+[.!?。！？]*/g) ?? [];
+  return sentences.some((x) => !/[?？]\s*$/.test(x)
+    && !/^\s*(?:when|has|have|did|will|is|was|how long|wann|ist|hat|cu[aá]ndo|quand|quando|いつ)\b/i.test(x)
+    && REFUND_LANDED.test(x));
 }
 
 /** A short positive reply to the review ask: "done", "left it", "sure", "👍". */

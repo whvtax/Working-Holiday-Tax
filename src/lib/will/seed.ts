@@ -33,7 +33,7 @@ export function seedCustomers(): CustomerRow[] {
     flag: c.flag,
     state: c.state,
     income: c.inc,
-    paid: !['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(c.state),
+    paid: !['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(c.state),
     formComplete: ['FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED'].includes(c.state),
     missingDocs: [],
     aiPaused: false,
@@ -145,7 +145,7 @@ export function seedTemplates(): TemplateRow[] {
       t(estimatePayableTemplateKey(lang), 'Post-payment & Service', `Estimate, amount payable ("Send Estimate" with Tax payable) · ${LANG_LABELS[lang]}`, ESTIMATE_PAYABLE_MSG[lang])),
     ...(Object.keys(LODGED_PAYABLE_MSG) as ('en' | 'de' | 'ja')[]).map((lang) =>
       t(lodgedPayableTemplateKey(lang), 'Post-payment & Service', `Lodged confirmation, tax payable ("Mark Lodged" when outcome is payable) · ${LANG_LABELS[lang]}`, LODGED_PAYABLE_MSG[lang])),
-    // Win-back (Jo, 24 Sep): sent from the Lost Leads tab, always outside the
+    // Win-back (Jo, 24 Sep; automatic since 25 Oct, winback-auto.ts): always outside the
     // 24h window, so each language needs the matching Meta template.
     t('winback_en', 'Follow-ups', 'Win-back for a lost lead (EN, Meta template winback_en, {{1}} name {{2}} the personal message)', WINBACK_MSG.en, true),
     t('winback_de', 'Follow-ups', 'Win-back for a lost lead (DE, Meta template winback_de)', WINBACK_MSG.de, true),

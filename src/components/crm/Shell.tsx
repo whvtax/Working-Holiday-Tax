@@ -41,11 +41,6 @@ export const NavIcons = {
     <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8"/>
     <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
   </>),
-  archive: ic(<>
-    <path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-  </>),
   leads: ic(<>
     <path d="M4 5h16v14H4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
     <path d="M4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
@@ -155,18 +150,18 @@ export function CrmSide({ items, activeKey, onLock }: {
  * passes `on` handlers so the same rows change view instead of reloading.
  */
 export function crmNav(opts: {
-  badges?: Partial<Record<'tasks' | 'clients' | 'archive' | 'leads', number>>
-  on?: Partial<Record<'tasks' | 'clients' | 'archive' | 'leads', () => void>>
+  badges?: Partial<Record<'tasks' | 'clients' | 'leads', number>>
+  on?: Partial<Record<'tasks' | 'clients' | 'leads', () => void>>
 } = {}): NavItem[] {
   const { badges = {}, on = {} } = opts
-  const local = (key: 'tasks' | 'clients' | 'archive' | 'leads', label: string, icon: React.ReactNode): NavItem =>
+  const local = (key: 'tasks' | 'clients' | 'leads', label: string, icon: React.ReactNode): NavItem =>
     on[key]
       ? { key, label, icon, badge: badges[key], onClick: on[key] }
       : { key, label, icon, badge: badges[key], href: `/crm/dashboard?view=${key}` }
   return [
     local('tasks', 'Tasks', NavIcons.tasks),
-    local('clients', 'Clients', NavIcons.clients),
-    local('archive', 'Archive', NavIcons.archive),
+    // Jo, 25 Oct: the Archive tab is gone (never used); Clients carries the year.
+    local('clients', 'Clients 2026', NavIcons.clients),
     local('leads', 'Leads', NavIcons.leads),
     { key: 'partners', label: 'Partners', icon: NavIcons.partners, href: '/crm/partners' },
     { key: 'will', label: 'Will', icon: NavIcons.will, href: '/crm/whatsapp' },

@@ -262,6 +262,13 @@ const RULES: Rule[] = [
     prevent: 'Put back BSB 062692 and account 81049952, then find out who changed it: check the CRM logins in the morning report and change CRM_PASSWORD and JWT_SECRET in Vercel.',
   },
   {
+    match: /^Win-back did not go out/i,
+    kind: 'system',
+    label: 'Win-back template not delivered',
+    because: 'WhatsApp refused the automatic win-back, usually because the winback template in that language is not approved yet',
+    prevent: 'Approve the winback_en / winback_de / winback_ja templates in WhatsApp Manager. Win-backs resume by themselves the next day.',
+  },
+  {
     match: /^PAYMENT LINK\b/i,
     kind: 'system',
     label: 'Send a payment link',

@@ -9,7 +9,12 @@ export type CustomerState =
   | 'PAID' | 'FORM_PENDING' | 'FORM_COMPLETE' | 'DOCUMENTS_COMPLETE'
   | 'UNDER_REVIEW' | 'ESTIMATE_READY' | 'FINAL_REVIEW'
   | 'SIGNATURE_PENDING' | 'SIGNED' | 'LODGED' | 'COMPLETED'
-  | 'NOT_INTERESTED' | 'WENT_COLD' | 'NOT_RELEVANT';
+  | 'NOT_INTERESTED' | 'WENT_COLD' | 'NOT_RELEVANT'
+  // Jo, 25 Oct: the end of the line. Will has read the whole chat 30 days on
+  // and either decided they will not come back, or sent the one win-back and
+  // got no reply in 7 days. Nobody reaches out again; if THEY write, Will
+  // answers them like any new lead.
+  | 'FINAL';
 
 /** Runtime allow-list of every valid state (used to validate untrusted input). */
 export const ALL_STATES: CustomerState[] = [
@@ -17,7 +22,7 @@ export const ALL_STATES: CustomerState[] = [
   'PAID', 'FORM_PENDING', 'FORM_COMPLETE', 'DOCUMENTS_COMPLETE',
   'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW',
   'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED',
-  'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT',
+  'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL',
 ];
 
 export const STAGE_GROUPS = [
@@ -35,6 +40,7 @@ export const STAGE_GROUPS = [
   { id: 'sig',       label: 'Signature',  color: '#c2568f', states: ['SIGNATURE_PENDING'] },
   { id: 'done',      label: 'Completed',  color: '#4aa872', states: ['SIGNED', 'LODGED', 'COMPLETED'] },
   { id: 'closed',    label: 'Closed',     color: '#7a8494', states: ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'] },
+  { id: 'final',     label: 'Final',      color: '#c0392b', states: ['FINAL'] },
 ] as const;
 
 export const STATE_LABELS: Record<CustomerState, string> = {
@@ -45,6 +51,7 @@ export const STATE_LABELS: Record<CustomerState, string> = {
   FINAL_REVIEW: 'Final Review', SIGNATURE_PENDING: 'Signature Pending',
   SIGNED: 'Signed', LODGED: 'Lodged', COMPLETED: 'Completed',
   NOT_INTERESTED: 'Not Interested', WENT_COLD: 'Went Cold', NOT_RELEVANT: 'Not Relevant',
+  FINAL: 'Final',
 };
 
 /** States in which a customer counts as having paid — sales flow is forever closed. */
@@ -53,7 +60,7 @@ export const POST_PAYMENT_STATES: CustomerState[] = [
   'ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED',
 ];
 
-export const CLOSED_STATES: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
+export const CLOSED_STATES: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'];
 
 /** Allowed forward transitions. Reactivation from closed states returns to the stored previous state. */
 export const TRANSITIONS: Partial<Record<CustomerState, CustomerState[]>> = {
@@ -80,6 +87,9 @@ export const TRANSITIONS: Partial<Record<CustomerState, CustomerState[]>> = {
   SIGNATURE_PENDING:   ['SIGNED'],
   SIGNED:              ['LODGED'],
   LODGED:              ['COMPLETED'],
+  NOT_INTERESTED:      ['FINAL'],
+  WENT_COLD:           ['FINAL'],
+  NOT_RELEVANT:        ['FINAL'],
 };
 
 /** The three follow-up flows and the nudges each one sends, in order.

@@ -380,7 +380,7 @@ async function handleIncomingInner(
   //    one task is raised, because a returning "no thanks" deserves a person's
   //    eyes before the assistant speaks again.
   // ============================================================
-  const isClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state);
+  const isClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(customer.state);
   if (isClosed) {
     // A closed customer (Went Cold / Not Interested / Not Relevant) who messages
     // again is no longer closed: reopen (to Lead, or for a paid customer back
@@ -848,8 +848,8 @@ async function buildBackstory(store: Store, customer: CustomerRow, msgs: Message
   // The stage history says what actually happened, including the returns.
   try {
     const hist = await store.history(customer.id);
-    const closes = hist.filter((h) => ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(h.to));
-    const reopens = hist.filter((h) => !!h.from && ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(h.from));
+    const closes = hist.filter((h) => ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(h.to));
+    const reopens = hist.filter((h) => !!h.from && ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(h.from));
     if (closes.length && reopens.length) {
       const last = closes[closes.length - 1];
       const label = last.to === 'NOT_INTERESTED' ? 'said they were not interested'
@@ -982,7 +982,7 @@ export async function decideAndAct(
         return { outcome: { kind: 'pending_approval', decision: { action: 'reply', reply_text: body, confidence: 1 }, replyText: body }, pendingMessageId: m.id };
       }
       if (!rec?.askedAt && !rec?.skippedAt && saysRefundLanded(text)) {
-        await store.cancelJobsFor(customer.id, ['REVIEW_REQUEST']).catch(() => 0);
+        await store.cancelJobsFor(customer.id, ['REVIEW_REQUEST', 'REFUND_CHECKIN']).catch(() => 0);
         await store.addJob({
           customerId: customer.id, kind: 'REVIEW_REQUEST', payload: { trigger: 'refund_received' },
           runAt: new Date(Date.now() + 3 * 60 * 1000).toISOString(),
@@ -1882,7 +1882,7 @@ export async function handleInboundNote(
   // photo, a voice note, a document — is no longer closed and moves straight
   // back to Lead. A bare reaction (👍 on an old message) is too small a
   // signal to count as "messaged again", so it is excluded.
-  const wasClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(customer.state);
+  const wasClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(customer.state);
   if (wasClosed && !meta?.reaction) {
     const target = reopenTarget(customer);
     await store.setState(customer.id, target, 'SYSTEM');

@@ -24,8 +24,7 @@ import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
-import { runLostLeadAnalysis } from './lost-analysis';
-import { readReviewAsks, patchReviewAsk, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, reviewRemindMessage, reviewRemindTemplateKey, reviewThanksMessage, matchReviewToAsk, REVIEW_REMIND_DAYS } from './review-asks';
+import { readReviewAsks, patchReviewAsk, checkinAlreadyAnswered, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, reviewRemindMessage, reviewRemindTemplateKey, reviewThanksMessage, matchReviewToAsk, REVIEW_REMIND_DAYS } from './review-asks';
 import { fetchGoogleReviews } from './google-reviews';
 import { decideReviewAsk, judgeHoldingLine } from './claude';
 import { reviewAskMessage, reviewAskTemplateKey, REVIEW_ASK_DEFAULT_OPENER } from './i18n';
@@ -211,18 +210,17 @@ export async function restartSignatureCadenceFromNotice(customerId: string): Pro
  * followed-up #1 forever (audit finding).
  */
 /** The three ways a lead ends without paying. */
-const CLOSED_STATES: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
+const CLOSED_STATES: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'];
 
 export async function reconcileSchedule(customer: CustomerRow): Promise<void> {
   const store = getStore();
   await store.cancelJobsFor(customer.id, ['FOLLOW_UP', 'AUTO_CLOSE']);
-  // A lead that has just closed is a lead worth understanding, now rather than
-  // at 4am tomorrow (Jo, 28 Aug). Queued before the opt-out/paused checks
-  // below, because a lead who opted out or was paused and then closed is
-  // exactly the kind worth reading back. Best effort: failing to queue a
-  // post-mortem must never break the state change that caused it.
+  // A lead that has just closed: queue a win-back pass (Jo, 25 Oct). It moves
+  // Not Relevant / opted-out leads to Final at once; everyone else waits the
+  // 30 days inside the pass. Queued before the opt-out/paused checks below on
+  // purpose. Best effort: it must never break the state change that caused it.
   if (CLOSED_STATES.includes(customer.state)) {
-    await ensureLostAnalysisSoon().catch(() => { /* the close itself is what matters */ });
+    await ensureWinbackSoon().catch(() => { /* the close itself is what matters */ });
   }
   if (customer.optedOut || customer.aiPaused || customer.isLegacy) return;
   // "Stop chasing this one person" has to survive their next message. The
@@ -388,12 +386,14 @@ export async function ensureDailyDigest(): Promise<void> {
  * ceiling the truncated page stopped containing the queued job, and this
  * quietly queued another one every time it was called.
  */
-export async function ensureLostAnalysisSoon(): Promise<void> {
+export async function ensureWinbackSoon(delayMs = 2 * 60 * 1000): Promise<void> {
+  // Jo, 25 Oct: the Lost Leads report is gone; the same slot now runs the
+  // automatic win-back (winback-auto.ts). Idempotent: one scheduled pass at most.
   const store = getStore();
-  if (await store.hasScheduledJobOfKind('LOST_ANALYSIS')) return;
+  if (await store.hasScheduledJobOfKind('WINBACK')) return;
   await store.addJob({
-    customerId: null, kind: 'LOST_ANALYSIS', payload: {},
-    runAt: new Date(Date.now() + 2 * 60 * 1000).toISOString(),
+    customerId: null, kind: 'WINBACK', payload: {},
+    runAt: new Date(Date.now() + delayMs).toISOString(),
   });
 }
 
@@ -866,7 +866,21 @@ async function doProcess(): Promise<TickResult> {
           if (c && !c.optedOut && !c.isLegacy && !c.aiPaused && c.outcome !== 'PAYABLE'
               && !(c.refundPromisedAt && !c.refundSentAt)
               && ['SIGNED', 'LODGED', 'COMPLETED'].includes(c.state)
-              && !rec?.askedAt && !rec?.skippedAt && attempt < 2) {
+              && !rec?.askedAt && !rec?.skippedAt && attempt < 2
+              && !(await (async () => {
+                // Read the chat since lodgement first (Jo, 25 Oct): a refund
+                // they already said arrived, or a review link already sent,
+                // means there is nothing left to ask.
+                const lodgedAt = (await store.history(c.id).catch(() => [])).filter((h) => h.to === 'LODGED').map((h) => h.createdAt).sort().pop() ?? null;
+                const done = checkinAlreadyAnswered(await store.listMessages(c.id), lodgedAt);
+                if (!done) return false;
+                if (done.why === 'review_link_sent') {
+                  await patchReviewAsk(store, c.id, { askedAt: done.at });
+                  await store.cancelJobsFor(c.id, ['REVIEW_REQUEST']).catch(() => 0);
+                }
+                await store.audit('system', 'refund_checkin_not_needed', { customerId: c.id, why: done.why }).catch(() => {});
+                return true;
+              })())) {
             const firstName = greetingName(c);
             const body = refundCheckinMessage(c.lang, firstName);
             const tpl = { name: refundCheckinTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: true };
@@ -968,12 +982,10 @@ async function doProcess(): Promise<TickResult> {
 
       if (job.kind === 'NIGHTLY') {
         await runNightly();
-        // Catch-up, not a schedule. Most lost leads are assessed the moment
-        // they close. A lead that simply went silent in a sales stage never
-        // transitions anywhere, so nothing would ever ask about it; nightly
-        // maintenance queues one run if any of those are waiting. It is a
-        // no-op when there is nothing to assess.
-        await ensureLostAnalysisSoon().catch(() => { /* maintenance is best effort */ });
+        // The daily win-back pass (Jo, 25 Oct): leads reaching their 30 days,
+        // win-backs reaching their 7, and the day's sends. Cheap when there is
+        // nothing to do.
+        await ensureWinbackSoon().catch(() => { /* maintenance is best effort */ });
         await store.setJobStatus(job.id, 'DONE');
         await ensureNightly();
         continue;
@@ -988,36 +1000,34 @@ async function doProcess(): Promise<TickResult> {
         continue;
       }
       if (job.kind === 'LOST_ANALYSIS') {
-        // Best-effort, exactly like the digest above: the run records its own
-        // outcome (including "the AI budget stopped me"), so a crash here must
-        // not take the tick down with it. The day key is only written by a run
-        // that got that far, so a crashed run is retried on the next tick.
-        //
-        // It is given whatever is LEFT of this tick's budget, never more: each
-        // post-mortem is a model call of up to 45s, and the invocation itself is
-        // capped at 60s. The run stops on that deadline with every finished lead
-        // already stored, and asks to be resumed rather than being killed
-        // mid-call and burning a retry on the job.
-        let outcome: Awaited<ReturnType<typeof runLostLeadAnalysis>> | null = null;
-        const leftOfTick = Math.max(2_000, TICK_BUDGET_MS - (Date.now() - startedAt) - 5_000);
-        try { outcome = await runLostLeadAnalysis(Date.now(), leftOfTick); }
-        catch (e) { await store.audit('nightly', 'lost_analysis_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {}); }
+        // The Lost Leads report was retired (Jo, 25 Oct). A job queued before
+        // the deploy is closed and replaced by a win-back pass.
         await store.setJobStatus(job.id, 'DONE');
-        if (outcome === 'incomplete') {
-          // Same night, more leads to get through. Come back in a few minutes
-          // rather than waiting for tomorrow's 4am slot.
-          await store.addJob({
-            customerId: null, kind: 'LOST_ANALYSIS', payload: {},
-            runAt: new Date(Date.now() + 3 * 60 * 1000).toISOString(),
-          });
+        await ensureWinbackSoon().catch(() => {});
+        continue;
+      }
+      if (job.kind === 'WINBACK') {
+        // The automatic win-back (winback-auto.ts). Given what is left of the
+        // tick, never more: a decision is a model call of up to 40s. It is
+        // imported lazily because winback-auto imports this file.
+        const leftOfTick = Math.max(2_000, TICK_BUDGET_MS - (Date.now() - startedAt) - 8_000);
+        let summary: Awaited<ReturnType<typeof import('./winback-auto').runWinbackPass>> | null = null;
+        try {
+          const { runWinbackPass } = await import('./winback-auto');
+          summary = await runWinbackPass(Date.now(), leftOfTick);
+        } catch (e) {
+          await store.audit('system', 'winback_pass_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
         }
-        // Every other outcome ends here. This branch used to call
-        // ensureLostAnalysisSoon() unconditionally: the job just finished is
-        // DONE, so the existence check saw nothing and queued another run two
-        // minutes out, which returned 'already_run' and queued the next, about
-        // 720 no-op will_jobs rows a day for ever. A close (reconcileSchedule)
-        // and the nightly job already queue a run whenever one is needed, so
-        // nothing is lost by stopping (audit, 5 Sep).
+        await store.setJobStatus(job.id, 'DONE');
+        if (summary) {
+          // More decisions to make: soon. Sends waiting: every 20 minutes in
+          // the evening window (a few at a time, never a burst: Meta restricted
+          // the account once for bulk sending, 16 Sep), otherwise the next window.
+          const next = summary.incomplete || summary.remainingDecisions > 0 ? 3 * 60 * 1000
+            : summary.remainingSends > 0 ? (withinQuietHours() ? 20 * 60 * 1000 : Math.max(60_000, deferToMorning().getTime() - Date.now()))
+            : 0;
+          if (next > 0 && !summary.budgetExhausted) await ensureWinbackSoon(next).catch(() => {});
+        }
         continue;
       }
       if (!job.customerId) { await store.setJobStatus(job.id, 'CANCELLED'); continue; }
@@ -2016,7 +2026,7 @@ export async function runNightly(): Promise<void> {
   // cancelled every single night. The set must be complete, so it is paged.
   const customers = await store.allCustomers();
   const salesStates: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
-  const closedStates: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'];
+  const closedStates: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'];
   const issues: string[] = [];
 
   // ── REPAIR, DON'T REPORT (audit, 5 Sep) ──────────────────────────────────
