@@ -4,6 +4,8 @@
 // Same behaviour as FileStore; this is the seam we left open so all
 // data lives on your server exactly like the rest of the CRM.
 // ============================================================
+import { isBrand } from '@/lib/brand';
+import { currentBrand, svtLineEnabled } from './brand-context';
 import { randomUUID } from 'crypto';
 import type { AiUsageRow } from './ai-usage';
 import { phoneCandidates } from './phone-candidates';
@@ -33,6 +35,7 @@ function toCustomer(r: Record<string, unknown>): CustomerRow {
   return {
     id: r.id as string,
     waId: r.wa_id as string,
+    brand: isBrand(r.brand) ? r.brand : 'wht',
     name: (r.name as string) ?? null,
     flag: (r.flag as string) ?? '',
     state: r.state as CustomerState,
@@ -131,6 +134,9 @@ function toHistory(r: Record<string, unknown>): StateHistoryRow {
 // there is, adding a field to a customer. Typed this way, omitting one is a
 // compile error at the point of the omission.
 const CUSTOMER_COL: Record<Exclude<keyof CustomerRow, 'id'>, string> = {
+  // brand: never written by updateCustomer. It is fixed at creation, and a
+  // whole-row patch must not write the column before migration 047 exists.
+  brand: '',
   waId: 'wa_id', name: 'name', flag: 'flag', state: 'state', income: 'income',
   paid: 'paid', formComplete: 'form_complete', missingDocs: 'missing_docs',
   aiPaused: 'ai_paused', isLegacy: 'is_legacy', botOwned: 'bot_owned', optedOut: 'opted_out',
@@ -190,6 +196,10 @@ export class SupabaseStore implements Store {
       ['will_customers.last_message_at', () => this.sb().from('will_customers').select('last_message_at').limit(1)],
       ['will_known_contacts', () => this.sb().from('will_known_contacts').select('wa_norm').limit(1)],
       ['will_processed_messages', () => this.sb().from('will_processed_messages').select('meta_id').limit(1)],
+      // Decision 004: with the SVT line on, every customer lookup filters by
+      // brand, so a missing migration 047 would fail every inbound message.
+      // Probed only then, so WHT's health is unchanged before the switch.
+      ...(svtLineEnabled() ? [['will_customers.brand (migration 047)', () => this.sb().from('will_customers').select('brand').limit(1)] as [string, () => PromiseLike<{ error: unknown }>]] : []),
       // (audit, 5 Sep) will_bump_counter (migration 029) guards the paid AI
       // call on every inbound message, but a missing/broken function used to
       // be invisible here: schemaHealth stayed green while bumpCounter quietly
@@ -371,10 +381,13 @@ export class SupabaseStore implements Store {
    *  rule the client used). `opts.states` narrows to a pipeline group; `unreadOnly`
    *  to the unread chats. Keyed by (last_message_at, id) with a stable tiebreak
    *  so pages neither overlap nor skip. */
-  async listChatPage(offset: number, limit: number, opts?: { states?: CustomerState[]; unreadOnly?: boolean }): Promise<CustomerRow[]> {
+  async listChatPage(offset: number, limit: number, opts?: { states?: CustomerState[]; unreadOnly?: boolean; brand?: 'wht' | 'svt' }): Promise<CustomerRow[]> {
     let q = this.sb().from('will_customers').select('*').not('last_message_preview', 'is', null);
     if (opts?.states && opts.states.length) q = q.in('state', opts.states);
     if (opts?.unreadOnly) q = q.gt('unread_count', 0);
+    // CRM brand filter. Only once the SVT line is on: before migration 047 the
+    // column does not exist, and every row is WHT anyway.
+    if (opts?.brand && svtLineEnabled()) q = q.eq('brand', opts.brand);
     q = q.order('last_message_at', { ascending: false, nullsFirst: false })
       .order('id', { ascending: false })
       .range(offset, offset + limit - 1);
@@ -436,7 +449,10 @@ export class SupabaseStore implements Store {
   }
 
   async getCustomerByWaId(waId: string): Promise<CustomerRow | null> {
-    const { data } = await this.sb().from('will_customers').select('*').eq('wa_id', waId).limit(1).maybeSingle();
+    // One customer per number PER BRAND once the SVT line is on (decision 004).
+    let q = this.sb().from('will_customers').select('*').eq('wa_id', waId);
+    if (svtLineEnabled()) q = q.eq('brand', currentBrand());
+    const { data } = await q.limit(1).maybeSingle();
     return data ? toCustomer(data) : null;
   }
 
@@ -452,7 +468,9 @@ export class SupabaseStore implements Store {
     // customers resolve to the same candidate set, acting on either one would
     // open the wrong person's conversation or mark the wrong form complete, so
     // the safe answer is null. Two is enough to detect ambiguity cheaply.
-    const { data } = await this.sb().from('will_customers').select('*').in('wa_norm', candidates).limit(2);
+    let q = this.sb().from('will_customers').select('*').in('wa_norm', candidates);
+    if (svtLineEnabled()) q = q.eq('brand', currentBrand());
+    const { data } = await q.limit(2);
     const rows = data ?? [];
     return rows.length === 1 ? toCustomer(rows[0]) : null;
   }
@@ -478,7 +496,10 @@ export class SupabaseStore implements Store {
   }
 
   async createCustomer(c: Partial<CustomerRow> & { waId: string }): Promise<CustomerRow> {
+    const brand = isBrand(c.brand) ? c.brand : currentBrand();
     const row = {
+      // Only SVT rows name a brand, so a WHT insert is unchanged (decision 004).
+      ...(brand === 'svt' ? { brand: 'svt' as const } : {}),
       id: randomUUID(), wa_id: c.waId, wa_norm: normPhone(c.waId), name: c.name ?? null,
       flag: c.flag ?? '💬', state: c.state ?? 'NEW_LEAD', income: c.income ?? 'UNKNOWN',
       paid: false, form_complete: false, missing_docs: [], ai_paused: false,

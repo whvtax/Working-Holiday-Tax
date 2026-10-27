@@ -1,0 +1,25 @@
+.thread {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bubble {
+  max-width: 280px;
+  padding: 11px 14px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.them {
+  align-self: flex-end;
+  background: var(--svt-paper);
+  color: var(--svt-ink);
+  border-radius: var(--svt-radius-bubble) var(--svt-radius-bubble) 4px var(--svt-radius-bubble);
+}
+.us {
+  align-self: flex-start;
+  background: var(--svt-ink);
+  color: var(--svt-mist);
+  border-radius: var(--svt-radius-bubble) var(--svt-radius-bubble) var(--svt-radius-bubble) 4px;
+}
+@media (min-width: 768px) { .bubble { max-width: 360px; } }

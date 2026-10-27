@@ -1,0 +1,8 @@
+.footer { background: var(--svt-ink); color: var(--svt-mist); padding: 32px var(--svt-gutter) 40px; }
+.inner { max-width: var(--svt-max); margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; }
+.legal { font-size: var(--svt-text-sm); line-height: 1.55; color: var(--svt-mist-2); max-width: var(--svt-measure); }
+.links { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 15px; }
+.links a { color: var(--svt-mist); display: inline-flex; min-height: 44px; align-items: center; }
+.links a:hover { color: var(--svt-paper); }
+.footer :focus-visible { box-shadow: 0 0 0 3px var(--svt-ink), 0 0 0 5px var(--svt-lime); }

@@ -1,0 +1,66 @@
+/* Student Visa Tax base styles. Global, but only ever loaded by the (svt)
+ * root layouts, so it cannot touch a WHT page. */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--svt-paper);
+  color: var(--svt-ink);
+  font-family: var(--svt-font-sans);
+  font-size: var(--svt-text-base);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; }
+img, svg { display: block; max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+
+a { color: var(--svt-ink); text-underline-offset: 3px; }
+a:hover { color: #000; }
+
+:focus-visible { outline: 2px solid transparent; outline-offset: 2px; box-shadow: var(--svt-focus); }
+
+/* Chinese: body text a touch looser, headings never letter-spaced tight
+ * (negative tracking crushes Han characters). Scoped to body and headings
+ * so component line-heights are not overridden everywhere. */
+html:lang(zh) body { line-height: 1.7; }
+:lang(zh) h1, :lang(zh) h2, :lang(zh) h3 { letter-spacing: 0 !important; line-height: 1.3 !important; }
+
+/* IBM Plex Mono is for numbers. In Chinese and Vietnamese the words next to
+ * a price are set in the text face; a monospace fallback spaces Han
+ * characters out and reads as foreign in Vietnamese. */
+:lang(zh) [data-mono-words], :lang(vi) [data-mono-words] { font-family: var(--svt-font-sans) !important; letter-spacing: 0 !important; }
+
+.svt-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.svt-skip {
+  position: absolute; left: 8px; top: -60px; z-index: 50;
+  background: var(--svt-ink); color: var(--svt-paper);
+  padding: 12px 16px; border-radius: var(--svt-radius-button); font-weight: 600;
+}
+.svt-skip:focus { top: 8px; color: var(--svt-paper); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* On the form page the sticky WhatsApp bar would cover the fields while
+ * typing and compete with the submit button, so it steps aside. */
+body:has(form[data-svt-form]) [data-sticky-wa] { display: none; }
+
+/* The phone WhatsApp bar is fixed to the bottom: keep a focused link or a
+ * jumped-to heading clear of it (WCAG 2.4.11). The bar hides from 900px. */
+@media (max-width: 899px) { html { scroll-padding-bottom: 96px; } }

@@ -4,6 +4,8 @@
 // Hardened after audit: single-flight mutex, claim-before-send,
 // seq resume (no restart-forever), kill switch, quiet hours.
 // ============================================================
+import type { Brand } from '@/lib/brand';
+import { enterBrand, svtLineEnabled, withBrand } from './brand-context';
 import { getStore, CustomerRow, JobRow, Store } from './store';
 import { cleanFirstName, firstNameOf, isClosingOnly } from './text-normalize';
 import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts, SIGNATURE_AFTER_NOTICE } from './config';
@@ -20,6 +22,7 @@ import { checkBankDetails, sendSecurityEmail } from '@/lib/security-watch';
 import { confirmationAlreadyOut, looksLikePaymentConfirmation } from './payment-confirmation';
 import { residencyCheckKey, RESIDENCY_CHECK_DELAY_MS } from './form-link';
 import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, handoffBumpTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
+import { svtTemplateName } from './brand-voice';
 import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
@@ -415,7 +418,7 @@ export async function ensureWinbackSoon(delayMs = 2 * 60 * 1000): Promise<void> 
  *  lost from the chat record (msg.body still holds it), only from what
  *  actually reaches the customer's phone this time. */
 async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; meta?: Record<string, unknown> | null }) {
-  if (msg.meta?.proposedState !== 'PAID' && msg.meta?.paymentConfirmation !== true) return sendWhatsAppText(customer.waId, msg.body);
+  if (msg.meta?.proposedState !== 'PAID' && msg.meta?.paymentConfirmation !== true) return sendWhatsAppText(customer.waId, msg.body, customer.brand);
   const name = paymentReceivedTemplateKey(metaTemplateLang(customer.lang));
   // German / Japanese have their own template (payment_received_de / _ja).
   // If that translation is missing, msg.body (already in their language) is
@@ -423,9 +426,9 @@ async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; met
   // keep the English template with the button, as before (Jo, 17 Sep).
   const ownTemplate = metaTemplateLang(customer.lang) !== 'en';
   const templated = ownTemplate
-    ? await sendWhatsAppTemplate(customer.waId, name, [], customer.lang, { englishFallback: false })
-    : await sendWhatsAppTemplate(customer.waId, name, [], customer.lang);
-  return templated.ok ? templated : sendWhatsAppText(customer.waId, msg.body);
+    ? await sendWhatsAppTemplate(customer.waId, name, [], customer.lang, { englishFallback: false, brand: customer.brand })
+    : await sendWhatsAppTemplate(customer.waId, name, [], customer.lang, { brand: customer.brand });
+  return templated.ok ? templated : sendWhatsAppText(customer.waId, msg.body, customer.brand);
 }
 
 /** The holding line in the CUSTOMER'S language: their Library row first
@@ -487,7 +490,9 @@ const TICK_WALL_MS = 58_000;
  * exactly as an over-budget one always was.
  */
 export function tickReservationMs(kind: JobRow['kind']): number {
-  return kind === 'AUTO_REPLY' ? 30_000 : 5_000;
+  // A win-back pass makes a model call of up to 25s (Jo, 26 Oct): it only
+  // starts while a whole call still fits before the wall.
+  return kind === 'AUTO_REPLY' || kind === 'WINBACK' ? 30_000 : 5_000;
 }
 
 /** True while a job of this kind can still be claimed `elapsedMs` into a tick. */
@@ -604,8 +609,17 @@ export async function trySendBudget(store: Store): Promise<boolean> {
 
 export function processDueJobs(): Promise<TickResult> {
   if (running) return running;
-  running = doProcess().finally(() => { running = null; });
+  // The tick starts as WHT; each job then sets its customer's brand
+  // (decision 004). withBrand keeps that setting inside this call.
+  running = withBrand('wht', () => doProcess()).finally(() => { running = null; });
   return running;
+}
+
+/** A job's brand: its customer's. One extra read only once the SVT line is
+ *  on; before that every customer is WHT (decision 004). */
+async function jobBrand(store: Store, job: JobRow): Promise<Brand> {
+  if (!svtLineEnabled() || !job.customerId) return 'wht';
+  try { return (await store.getCustomerById(job.customerId))?.brand === 'svt' ? 'svt' : 'wht'; } catch { return 'wht'; }
 }
 
 async function doProcess(): Promise<TickResult> {
@@ -669,7 +683,7 @@ async function doProcess(): Promise<TickResult> {
       const job = timers[nextTimer++];
       if (!(await store.claimJob(job.id))) continue;
       result.processed++;
-      await runAutoReplyTimer(store, job, result);
+      await withBrand(await jobBrand(store, job), () => runAutoReplyTimer(store, job, result));
     }
   };
   await Promise.all(Array.from({ length: Math.min(AUTO_REPLY_CONCURRENCY, timers.length) }, timerWorker));
@@ -698,6 +712,8 @@ async function doProcess(): Promise<TickResult> {
     // it is reclaimed to SCHEDULED next tick (up to 3 attempts), never lost.
     if (!(await store.claimJob(job.id))) continue;
     result.processed++;
+    // Everything this job writes or asks the model is in its customer's brand.
+    enterBrand(await jobBrand(store, job));
     try {
       // ── The holding line for a long message nobody has answered yet ────
       //
@@ -885,7 +901,8 @@ async function doProcess(): Promise<TickResult> {
             const body = refundCheckinMessage(c.lang, firstName);
             const tpl = { name: refundCheckinTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: true };
             const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
-            await patchReviewAsk(store, c.id, { checkinAt: new Date().toISOString(), checkins: (rec?.checkins ?? 0) + 1 });
+            // Only a delivered check-in can be answered (review 27 Oct).
+            if (out.ok) await patchReviewAsk(store, c.id, { checkinAt: new Date().toISOString(), checkins: (rec?.checkins ?? 0) + 1 });
             await store.audit('system', out.ok ? 'refund_checkin_sent' : 'refund_checkin_failed', { customerId: c.id, attempt, error: out.ok ? undefined : out.error }).catch(() => {});
             if (out.ok) result.sent.push(`${c.name ?? c.waId} · refund check-in`);
           } else {
@@ -904,7 +921,7 @@ async function doProcess(): Promise<TickResult> {
         try {
           const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
           const rec = c ? (await readReviewAsks(store))[c.id] : undefined;
-          if (c && rec?.askedAt && !rec.remindedAt && !rec.reviewedAt && !c.optedOut && !c.isLegacy && !c.aiPaused
+          if (c && c.brand !== 'svt' && rec?.askedAt && !rec.remindedAt && !rec.reviewedAt && !c.optedOut && !c.isLegacy && !c.aiPaused
               && !(c.refundPromisedAt && !c.refundSentAt)) {
             const askedAt = new Date(rec.askedAt).getTime();
             const replied = (await store.listMessages(c.id)).some((m) => m.direction === 'IN' && new Date(m.createdAt).getTime() > askedAt);
@@ -1488,7 +1505,9 @@ async function doProcess(): Promise<TickResult> {
           await store.addJob({ customerId: customer.id, kind: 'REVIEW_REQUEST', payload: job.payload, runAt: businessDaysFromNow(5).toISOString() }).catch(() => {});
           continue;
         }
-        if (!customer.optedOut && !customer.isLegacy
+        // No Google review profile for the student brand yet: SVT customers
+        // are never sent WHT's review page (final review, 27 Oct).
+        if (!customer.optedOut && !customer.isLegacy && customer.brand !== 'svt'
           && ['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state)) {
           const rawTrigger = (job.payload as { trigger?: string } | null)?.trigger;
           const trigger = rawTrigger === 'refund_received' ? 'refund_received' : rawTrigger === 'checkin' ? 'checkin' : 'timer';
@@ -1855,7 +1874,7 @@ async function doProcess(): Promise<TickResult> {
       // this, fu_pre_3d with no Meta template at all went out as free text,
       // failed outside the window, retried three days in a row and opened an
       // URGENT task each time.
-      const approvedHere = typeof templateApprovedFor === 'function' ? await templateApprovedFor(template.key, customer.lang).catch(() => null) : null;
+      const approvedHere = typeof templateApprovedFor === 'function' ? await templateApprovedFor(customer.brand === 'svt' ? svtTemplateName(template.key) : template.key, customer.lang).catch(() => null) : null;
       if (approvedHere === false) {
         await store.audit('scheduler', 'follow_up_skipped_no_template_in_language', {
           customerId: customer.id, template: template.key, lang: customer.lang ?? 'en', seq,

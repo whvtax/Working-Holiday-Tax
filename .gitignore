@@ -22,3 +22,18 @@ tsconfig.tsbuildinfo
 # Logs & OS droppings
 npm-debug.log*
 .DS_Store
+
+# Testing and scan output
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.playwright-mcp/
+*.sarif
+semgrep-results/
+.semgrep/
+
+# Keys and local tooling
+*.pem
+*.key
+.vercel/

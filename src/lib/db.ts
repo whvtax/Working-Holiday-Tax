@@ -4,6 +4,7 @@
 // ──────────────────────────────────────────────────────────────────────────
 
 import { getSupabase } from '@/lib/supabase'
+import { isBrand, type Brand } from '@/lib/brand'
 import { currentTaxYear } from '@/lib/tax-year'
 import { deleteFiles } from '@/lib/upload'
 import crypto from 'crypto'
@@ -36,6 +37,9 @@ export type Task = {
   marital: string; taxStatus: string; howHeard: string; auPhone: string; notes: string
   fileUrls: string[]; reviewStatus: ReviewStatus; reviewerNote: string; reviewedAt: string
   refCode?: string
+  /** Which brand the task came from. Set on the server from the request host
+   *  (decision 003). Absent or unknown in the database means 'wht'. */
+  brand?: Brand
 }
 
 // ── DB init ────────────────────────────────────────────────────────────────
@@ -102,6 +106,7 @@ function toTask(r: Record<string, unknown>): Task {
     reviewerNote: (r.reviewer_note as string) ?? '',
     reviewedAt:   (r.reviewed_at as string) ?? '',
     refCode:      (r.ref_code as string) || undefined,
+    brand:        isBrand(r.brand) ? r.brand : 'wht',
   }
 }
 
@@ -131,7 +136,7 @@ export async function logAudit(
 
 
 
-export async function findExistingClient(email: string, whatsapp: string): Promise<{ id: string } | null> {
+export async function findExistingClient(email: string, whatsapp: string, brand: Brand = 'wht'): Promise<{ id: string } | null> {
   const sb = getSupabase()
   const norm = (s: string) => (s ?? '').trim().toLowerCase().replace(/\s+/g, '')
   // Escape ILIKE wildcards so a value like "%@%" can't match unrelated clients.
@@ -145,8 +150,13 @@ export async function findExistingClient(email: string, whatsapp: string): Promi
   // PostgREST `or()` syntax issues with special characters in emails (e.g. '+'),
   // and is faster than the previous sequential await loop.
   const clientQueries: PromiseLike<{ data: { id: string }[] | null }>[] = []
-  if (e) clientQueries.push(sb.from('crm_clients').select('id').ilike('email', e).limit(1))
-  if (w) clientQueries.push(sb.from('crm_clients').select('id').ilike('whatsapp', w).limit(1))
+  // Final review, 27 Oct: an SVT submission is matched only against SVT
+  // records, so a student who was once a WHT client is not merged into that
+  // client. WHT queries are unchanged (no brand filter: the column may not
+  // exist yet, and every row is WHT until SVT forms are on).
+  const scoped = <T,>(q: T): T => (brand === 'svt' ? (q as unknown as { eq: (c: string, v: string) => T }).eq('brand', 'svt') : q)
+  if (e) clientQueries.push(scoped(sb.from('crm_clients').select('id').ilike('email', e)).limit(1))
+  if (w) clientQueries.push(scoped(sb.from('crm_clients').select('id').ilike('whatsapp', w)).limit(1))
   const clientResults = await Promise.all(clientQueries)
   for (const res of clientResults) {
     if (res.data && res.data.length > 0) return { id: res.data[0].id }
@@ -154,8 +164,8 @@ export async function findExistingClient(email: string, whatsapp: string): Promi
 
   // Search crm_tasks (active only) - same parallel strategy
   const taskQueries: PromiseLike<{ data: { client_id: string }[] | null }>[] = []
-  if (e) taskQueries.push(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('email', e).limit(1))
-  if (w) taskQueries.push(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('whatsapp', w).limit(1))
+  if (e) taskQueries.push(scoped(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('email', e)).limit(1))
+  if (w) taskQueries.push(scoped(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('whatsapp', w)).limit(1))
   const taskResults = await Promise.all(taskQueries)
   for (const res of taskResults) {
     if (res.data && res.data.length > 0) return { id: res.data[0].client_id }
@@ -219,6 +229,9 @@ export async function createTask(data: Omit<Task, 'id' | 'done'>): Promise<Task>
     review_status: 'pending',
     reviewer_note: '',
     reviewed_at: '',
+    // Only SVT rows name a brand. A WHT insert stays exactly as it always was,
+    // so it works whether or not migration 047 has been applied (decision 003).
+    ...(data.brand === 'svt' ? { brand: 'svt' as const } : {}),
   }
   const { error } = await sb.from('crm_tasks').insert(row)
   if (error) throw error
@@ -413,6 +426,8 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       created_at: new Date().toISOString(),
       archived: false,
       yearly_checkins: '{}',
+      // An SVT client is an SVT client (the column default is 'wht').
+      ...(task.brand === 'svt' ? { brand: 'svt' } : {}),
     }
 
     if (task.taskType === 'tfn') {

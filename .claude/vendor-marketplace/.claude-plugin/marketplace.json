@@ -1,0 +1,12 @@
+{
+  "name": "whvtax-vendored",
+  "owner": { "name": "Working Holiday Tax" },
+  "metadata": { "description": "Plugins copied from their official repositories at a pinned commit and reviewed before use. See .claude/VENDORED.md." },
+  "plugins": [
+    {
+      "name": "insecure-defaults",
+      "source": "./plugins/insecure-defaults",
+      "description": "Trail of Bits: detects insecure default configurations (fallback secrets, default credentials, fail-open switches, weak crypto, permissive access, debug leakage). Pinned at trailofbits/skills@196a907."
+    }
+  ]
+}

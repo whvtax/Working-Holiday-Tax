@@ -1,0 +1,9 @@
+/* Phone only: the action stays in reach while scrolling. On wider screens
+ * the header carries it instead. */
+.bar {
+  position: sticky; bottom: 0; z-index: 10;
+  background: var(--svt-paper);
+  padding: 10px 16px calc(14px + env(safe-area-inset-bottom));
+  box-shadow: 0 -1px 0 var(--svt-line);
+}
+@media (min-width: 900px) { .bar { display: none; } }

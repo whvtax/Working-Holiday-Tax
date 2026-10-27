@@ -95,7 +95,7 @@ it('a queued payment confirmation tries the Meta template first, in the customer
   sendWhatsAppTemplate.mockResolvedValue({ ok: true });
   await processDueJobs();
   // 21 Oct: a missing German translation falls back to the German text, not the English template.
-  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received_de', [], 'de', { englishFallback: false });
+  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received_de', [], 'de', { englishFallback: false, brand: undefined });
   expect(sendWhatsAppText).not.toHaveBeenCalled();
   expect(store.setMessageStatus).toHaveBeenCalledWith('m1', 'SENT', { restamp: true });
 });
@@ -106,7 +106,7 @@ it('falls back to the free text (the model\'s own composed body) if the template
   sendWhatsAppText.mockResolvedValue({ ok: true });
   await processDueJobs();
   expect(sendWhatsAppTemplate).toHaveBeenCalledTimes(1);
-  expect(sendWhatsAppText).toHaveBeenCalledWith('61400000001', 'Zahlung erhalten, und ja, du brauchst kein myGov.');
+  expect(sendWhatsAppText).toHaveBeenCalledWith('61400000001', 'Zahlung erhalten, und ja, du brauchst kein myGov.', undefined);
   expect(store.setMessageStatus).toHaveBeenCalledWith('m1', 'SENT', { restamp: true });
 });
 
@@ -115,7 +115,7 @@ it('an unknown/fallback language falls back to the English template name', async
   store.getMessageById.mockResolvedValue(paymentMsg());
   sendWhatsAppTemplate.mockResolvedValue({ ok: true });
   await processDueJobs();
-  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received', [], 'fr');
+  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received', [], 'fr', { brand: undefined });
 });
 
 it('an ordinary (non payment) queued reply never asks for a template at all', async () => {
@@ -123,5 +123,5 @@ it('an ordinary (non payment) queued reply never asks for a template at all', as
   sendWhatsAppText.mockResolvedValue({ ok: true });
   await processDueJobs();
   expect(sendWhatsAppTemplate).not.toHaveBeenCalled();
-  expect(sendWhatsAppText).toHaveBeenCalledWith('61400000001', 'Sure, that makes sense.');
+  expect(sendWhatsAppText).toHaveBeenCalledWith('61400000001', 'Sure, that makes sense.', undefined);
 });

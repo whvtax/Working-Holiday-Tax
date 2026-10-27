@@ -531,7 +531,9 @@ export default function Dashboard() {
   const [drawerId, setDrawerId] = useState<string | null>(null);
   const [tpl, setTpl] = useState<TemplateRow | null>(null);
   const [newTpl, setNewTpl] = useState<{ title: string; category: string; body: string } | null>(null);
-  type Knw = { id: string; intent: string; question: string; answer: string; source: string };
+  type Knw = { id: string; intent: string; question: string; answer: string; source: string; tags?: string[] };
+  /** Decision 004: an answer learned from a chat on the second line is used by Mia only. */
+  const svtOnly = (k: Knw) => (k.tags ?? []).includes('brand:svt');
   const [knowledge, setKnowledge] = useState<{ drafts: Knw[]; active: Knw[] }>({ drafts: [], active: [] });
   const loadKnowledge = useCallback(async () => {
     try { const r = await fetch('/api/will/knowledge').then((x) => x.json()); if (r.ok) setKnowledge({ drafts: r.drafts ?? [], active: r.active ?? [] }); } catch { /* */ }
@@ -622,6 +624,9 @@ export default function Dashboard() {
   const chatListElRef = useRef<HTMLDivElement | null>(null);
   // Chat-list filter chip: 'all' | 'unread' | a pipeline stage-group id.
   const [chatFilter, setChatFilter] = useState('all');
+  // Brand filter (decision 004). The chips show only once the SVT line is on.
+  const [brandFilter, setBrandFilter] = useState<'all' | 'wht' | 'svt'>('all');
+  const [brandsOn, setBrandsOn] = useState(false);
   // One-off bulk resume for the mark_read pause bug (Jo, 7 Sep) — see
   // resume_all_leads in actions/route.ts.
   // Whether the chat-header stage badge dropdown (manual stage move) is open.
@@ -745,8 +750,9 @@ export default function Dashboard() {
     if (!reset) setChatLoadingMore(true);
     const offset = reset ? 0 : chatOffsetRef.current;
     try {
-      const res = await fetch(`/api/will/chats?offset=${offset}&limit=${CHAT_PAGE}&filter=${encodeURIComponent(chatFilter)}`);
+      const res = await fetch(`/api/will/chats?offset=${offset}&limit=${CHAT_PAGE}&filter=${encodeURIComponent(chatFilter)}${brandFilter !== 'all' ? `&brand=${brandFilter}` : ''}`);
       const d = await res.json();
+      setBrandsOn(!!d.brands);
       const rows: CustomerRow[] = Array.isArray(d.customers) ? d.customers : [];
       setChatPage((prev) => {
         if (reset) return rows;
@@ -762,7 +768,7 @@ export default function Dashboard() {
       chatBusyRef.current = false;
       setChatLoadingMore(false);
     }
-  }, [chatFilter]);
+  }, [chatFilter, brandFilter]);
   // Reset and load the first page when entering the chats view or changing the
   // filter. Not while a search is active — the search results own the list then.
   useEffect(() => {
@@ -771,7 +777,7 @@ export default function Dashboard() {
     chatOffsetRef.current = 0;
     chatPagesRef.current = 0;
     loadChatPage(true);
-  }, [view, chatFilter, searchQ, loadChatPage]);
+  }, [view, chatFilter, brandFilter, searchQ, loadChatPage]);
   // Keep the TOP of the list live: every state poll, if the user is still on the
   // first page (has not scrolled deeper) and is not searching, re-pull page one
   // so a new inbound conversation jumps to the top like WhatsApp. Once they have
@@ -1290,6 +1296,9 @@ export default function Dashboard() {
                     {STAGE_GROUPS.filter((sg) => sg.id === 'onb' || sg.id === 'rev' || sg.id === 'sig').map((sg) => (
                       <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(chatFilter === sg.id ? 'all' : sg.id)}>{sg.label}</button>
                     ))}
+                    {brandsOn && (['wht', 'svt'] as const).map((b) => (
+                      <button key={b} className={`cfchip ${brandFilter === b ? 'on' : ''}`} onClick={() => setBrandFilter(brandFilter === b ? 'all' : b)} title={b === 'svt' ? 'Only chats on the second (SVT) line' : 'Only chats on the main line'}>{b.toUpperCase()}</button>
+                    ))}
                   </div>
                 </div>
                 {/* WhatsApp-real: the scrollbar belongs to the chat list only —
@@ -1315,7 +1324,7 @@ export default function Dashboard() {
                     <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''} ${followupSet.has(c.id) ? 'fu-row' : ''}`} onClick={() => openChat(c.id)} title={followupSet.has(c.id) ? 'Follow-up scheduled — already being chased' : undefined}>
                       <div className="cav">{avatarFor(c.name)}</div>
                       <div className="cinfo">
-                        <div className="cn"><b>{phoneOf(c.waId)}</b><time>{chatListTime(c.lastCustomerMsgAt)}</time></div>
+                        <div className="cn"><b>{phoneOf(c.waId)}</b>{c.brand === 'svt' && <span className="cdraft" title="Student line: this chat is on the second number and is answered as that brand">SVT</span>}<time>{chatListTime(c.lastCustomerMsgAt)}</time></div>
                         <div className="cm">
                           {draftWaiting && (
                             <span className="cdraft" title={`${ASSISTANT_NAME} has written a reply for this chat and is waiting for you to approve it. It has NOT been sent.`}>✎ draft waiting</span>
@@ -1857,7 +1866,7 @@ export default function Dashboard() {
                   <span className="pencil">✎</span>
                   <div className="tn">{k.intent || k.question}</div>
                   <div className="tv">{k.answer}</div>
-                  <div className="tf"><span className="edited">● live</span><span>{k.source === 'manual' ? 'added by you' : 'learned'}</span></div>
+                  <div className="tf"><span className="edited">● live</span><span>{k.source === 'manual' ? 'added by you' : 'learned'}{svtOnly(k) ? ' · SVT only' : ''}</span></div>
                 </div>
               ))}
               {knowledge.drafts.map((k) => (
@@ -1865,7 +1874,7 @@ export default function Dashboard() {
                   <span className="pencil">✎</span>
                   <div className="tn">{k.intent || k.question}</div>
                   <div className="tv">{k.answer}</div>
-                  <div className="tf"><span className="edited" style={{ background: 'var(--warn)' }}>● pending approval</span></div>
+                  <div className="tf"><span className="edited" style={{ background: 'var(--warn)' }}>● pending approval</span>{svtOnly(k) ? <span>SVT only</span> : null}</div>
                 </div>
               ))}
             </div>
@@ -2312,7 +2321,7 @@ export default function Dashboard() {
         )}
 
         {view === 'learning' && (
-          <section className="view active">
+          <section className="view active learning-print">
             <h2 className="vt">Learning</h2>
             <div className="vsub">Snap and send</div>
 
@@ -2355,6 +2364,20 @@ export default function Dashboard() {
               <a className="btn ghost" href="/api/will/export?hours=720" download>Download last 30 days (everything)</a>
               <a className="btn ghost" href="/api/will/export?all=1" download>Download everything (all time)</a>
               <span className="psub" style={{ margin: 0 }}>Conversations, Will&apos;s drafts and notes, handoffs, decision log. One text file.</span>
+            </div>
+
+            {/* Jo, 27 Oct: "a button to download the whole Learning page as a PDF,
+                so I can send it every morning". The browser's own print to PDF,
+                with a print stylesheet that shows only this page, every card
+                opened out (will-scoped.css, @media print). No new dependency. */}
+            <div className="no-print" style={{ margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <button className="btn take" onClick={() => {
+                const before = document.title;
+                document.title = `Will learning ${new Date().toISOString().slice(0, 10)}`;
+                window.print();
+                document.title = before;
+              }}>Download this page as PDF</button>
+              <span className="psub" style={{ margin: 0 }}>In the print window choose &quot;Save as PDF&quot;.</span>
             </div>
 
             {/* Jo, 6 Sep: the "Your Goal" card (month-by-month conversion +

@@ -113,6 +113,17 @@ export function saysRefundLanded(text: string): boolean {
     && REFUND_LANDED.test(x));
 }
 
+/** Jo, 27 Oct (a customer): our check-in asked "has your refund landed
+ *  in your account yet?" and she answered "It has, thank you so much!". That
+ *  is the refund landing, but it names no refund, so saysRefundLanded missed
+ *  it and she got the referral line instead of the review ask. A short yes is
+ *  read as "it landed" only when the last thing we asked was that check-in. */
+const YES_TO_CHECKIN = /^\s*(?:(?:yes|yep|yeah|yup|it has|it did|yes it has|yes it did|yes,? (?:it )?(?:has|did|arrived|landed)|got it|all good|ja|jawohl|ist da|s[ií]|oui)\b|はい|届きました|入りました)/iu;
+export function saysYesToRefundCheckin(text: string): boolean {
+  const t = (text || '').trim();
+  return t.length > 0 && t.length <= 120 && !/[?？]/.test(t) && YES_TO_CHECKIN.test(t) && !saysRefundNotYet(t);
+}
+
 /** A short positive reply to the review ask: "done", "left it", "sure", "👍". */
 const POSITIVE_ACK = /^(?:(?:ok(?:ay)?|sure|done|will do|of course|no worries|absolutely|yes|yep|yeah|left (?:it|one|a review)|just did|done it|posted|thanks?|thank you|cheers|👍|🙏|❤️|😊|klar|gerne|erledigt|gemacht|danke|hecho|claro|listo|gracias|fait|bien s[ûu]r|merci|fatto|certo|grazie|feito|obrigad[oa]|はい|了解|書きました|投稿しました|ありがとう(?:ございます)?)[\s!.,😊👍🙏❤️]*)+$/iu;
 export function isPositiveAck(text: string): boolean {

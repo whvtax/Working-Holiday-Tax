@@ -1,0 +1,2 @@
+.photo { margin: 0; aspect-ratio: 3 / 2; overflow: hidden; background: var(--svt-slot-a); }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }

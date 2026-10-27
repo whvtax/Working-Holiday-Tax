@@ -1,5 +1,7 @@
 // JSON-file store: credential-free persistence for dev & the simulator.
 // Lives in .data/store.json (gitignored). Not for production traffic.
+import { isBrand } from '@/lib/brand';
+import { currentBrand, svtLineEnabled } from './brand-context';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
@@ -133,12 +135,13 @@ export class FileStore implements Store {
     return (await load()).customers.filter((c) => set.has(c.state)).length;
   }
 
-  async listChatPage(offset: number, limit: number, opts?: { states?: CustomerState[]; unreadOnly?: boolean }) {
+  async listChatPage(offset: number, limit: number, opts?: { states?: CustomerState[]; unreadOnly?: boolean; brand?: 'wht' | 'svt' }) {
     const set = opts?.states && opts.states.length ? new Set(opts.states) : null;
     return (await load()).customers
       .filter((c) => c.lastMessagePreview)
       .filter((c) => !set || set.has(c.state))
       .filter((c) => !opts?.unreadOnly || c.unreadCount > 0)
+      .filter((c) => !opts?.brand || (c.brand ?? 'wht') === opts.brand)
       .sort((a, b) => {
         const at = (a.lastMessageAt ?? a.lastCustomerMsgAt) ?? '';
         const bt = (b.lastMessageAt ?? b.lastCustomerMsgAt) ?? '';
@@ -174,7 +177,11 @@ export class FileStore implements Store {
   }
 
   async getCustomerByWaId(waId: string) {
-    return (await load()).customers.find((c) => c.waId === waId) ?? null;
+    // Same rule as the Supabase store (decision 004): per brand once the SVT
+    // line is on. A row without a brand is WHT.
+    const brand = currentBrand();
+    const scoped = svtLineEnabled();
+    return (await load()).customers.find((c) => c.waId === waId && (!scoped || (c.brand ?? 'wht') === brand)) ?? null;
   }
 
   async findCustomerByPhone(phone: string) {
@@ -182,7 +189,10 @@ export class FileStore implements Store {
     // an ambiguous match (two customers) is treated as no match.
     const candidates = phoneCandidates(phone);
     if (!candidates.length) return null;
+    const brand = currentBrand();
+    const scoped = svtLineEnabled();
     const hits = (await load()).customers.filter((c) => {
+      if (scoped && (c.brand ?? 'wht') !== brand) return false;
       const stored = normPhoneDigits(c.waId);
       return !!stored && candidates.includes(stored);
     });
@@ -214,7 +224,9 @@ export class FileStore implements Store {
 
   async createCustomer(c: Partial<CustomerRow> & { waId: string }): Promise<CustomerRow> {
     const db = await load();
+    const brand = isBrand(c.brand) ? c.brand : currentBrand();
     const row: CustomerRow = {
+      ...(brand === 'svt' ? { brand: 'svt' as const } : {}),
       id: randomUUID(), waId: c.waId, name: c.name ?? null, flag: c.flag ?? '💬',
       state: c.state ?? 'NEW_LEAD', income: c.income ?? 'UNKNOWN',
       paid: false, formComplete: false, missingDocs: [], aiPaused: false,

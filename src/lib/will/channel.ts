@@ -10,6 +10,9 @@
 // system, Simulator and dashboard behave exactly as before, but nothing leaves
 // the building. Adding the two env vars flips it live with no code change.
 // ============================================================
+import type { Brand } from '@/lib/brand';
+import { currentBrand, svtPhoneNumberId } from './brand-context';
+import { brandLeaks, rebrandText, svtTemplateName } from './brand-voice';
 import { getStore, CustomerRow, Store } from './store';
 import { reopenTarget } from './state-machine';
 
@@ -169,8 +172,17 @@ export async function verifyChannel(): Promise<{ configured: boolean; live: bool
 /** POST a message payload to Meta and normalise the outcome. Shared by the
  *  text and template senders so retries, error shape and the health-cache
  *  invalidation behave identically for both. */
-async function postMessage(payload: Record<string, unknown>): Promise<SendResult> {
-  const { token, phoneId } = await resolveWaCreds();
+async function postMessage(payload: Record<string, unknown>, brand: Brand = currentBrand()): Promise<SendResult> {
+  // ── ONE BRAND, ONE NUMBER (decision 004) ─────────────────────────────────
+  // The last check before anything leaves: a message carrying the other
+  // brand's name, domain or number is refused, whoever built it.
+  const leaks = brandLeaks(JSON.stringify(payload), brand);
+  if (leaks.length) return { ok: false, error: `blocked: mentions ${leaks.join(', ')} (brand ${brand})` };
+  const { token, phoneId: whtPhoneId } = await resolveWaCreds();
+  // An SVT customer is only ever written to from the SVT number. No SVT
+  // number configured = refuse, never fall back to the WHT number.
+  const phoneId = brand === 'svt' ? svtPhoneNumberId() : whtPhoneId;
+  if (brand === 'svt' && !phoneId) return { ok: false, error: 'the Student Visa Tax WhatsApp line is not configured' };
   if (!token || !phoneId) return { ok: true, skipped: true }; // test mode: not connected yet
 
   try {
@@ -249,16 +261,20 @@ export function isPreResponseNetworkError(e: unknown): boolean {
 /** Transmit a plain text message to a WhatsApp number via Meta's Cloud API.
  *  Only valid INSIDE the 24h customer-service window; outside it Meta rejects
  *  free-form text and `sendWhatsAppTemplate` is the only way through. */
-export async function sendWhatsAppText(toWaId: string, body: string): Promise<SendResult> {
+export async function sendWhatsAppText(toWaId: string, body: string, brand?: Brand): Promise<SendResult> {
   const to = (toWaId || '').replace(/[^\d]/g, '');
   if (!to) return { ok: false, error: 'no recipient number' };
+  // Queued, approved and payment-confirmation sends come here with the stored
+  // WHT wording (the form link, the name). Rebrand it as deliverOut does, or
+  // the leak guard blocks the student's confirmation (final review, 27 Oct).
+  const text = (brand ?? currentBrand()) === 'svt' ? rebrandText(body, 'svt') : body;
   return postMessage({
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
     to,
     type: 'text',
-    text: { preview_url: false, body: body.slice(0, 4096) },
-  });
+    text: { preview_url: false, body: text.slice(0, 4096) },
+  }, brand);
 }
 
 /** Meta rejects template parameters containing newlines, tabs or runs of 4+
@@ -309,11 +325,18 @@ export async function sendWhatsAppTemplate(
    *  the residency check in English because only the English template was
    *  approved). Default true, which is the behaviour outside the window,
    *  where an English template is the only thing that can reach them. */
-  opts?: { englishFallback?: boolean },
+  opts?: { englishFallback?: boolean; brand?: Brand },
 ): Promise<SendResult> {
   const to = (toWaId || '').replace(/[^\d]/g, '');
   if (!to) return { ok: false, error: 'no recipient number' };
   if (!name) return { ok: false, error: 'no template name' };
+  // SVT uses the SVT twin of each template: the approved text of the WHT one
+  // names WHT and cannot be changed at send time (decision 004).
+  const brand = opts?.brand ?? currentBrand();
+  if (brand === 'svt') {
+    name = svtTemplateName(name);
+    params = params.map((p) => rebrandText(p, 'svt'));
+  }
 
   const components = params.length
     ? [{ type: 'body', parameters: params.map((p) => ({ type: 'text', text: sanitizeTemplateParam(p) })) }]
@@ -325,7 +348,7 @@ export async function sendWhatsAppTemplate(
     to,
     type: 'template',
     template: { name: tplName, language: { code }, ...(components.length ? { components } : {}) },
-  });
+  }, brand);
   const attempt = (code: string) => attemptNamed(name, code);
   const missing = (r: SendResult) => /does not exist|not exist|132001|template/i.test(r.error ?? '');
 
@@ -433,6 +456,11 @@ export async function deliverOut(
   },
 ): Promise<{ ok: boolean; error?: string; retryable?: boolean; messageId?: string }> {
   const store = getStore();
+  // Decision 004: the customer's brand decides the words and the number. For
+  // WHT rebrandText returns the body unchanged. What is recorded in the CRM is
+  // exactly what the customer receives.
+  const brand: Brand = customer.brand === 'svt' ? 'svt' : 'wht';
+  body = rebrandText(body, brand);
 
   // Last-resort opt-out guard. Every caller is supposed to check `optedOut`
   // before getting here, and one of them (handlePaymentProofMedia) did not.
@@ -482,8 +510,8 @@ export async function deliverOut(
   const templateLang = template?.lang ?? customer.lang;
   const keepLanguage = !!template?.fallbackToText && inWindow && normalizeTemplateLang(templateLang) !== TEMPLATE_LANG;
   let res = template?.name
-    ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, templateLang, keepLanguage ? { englishFallback: false } : undefined)
-    : await sendWhatsAppText(customer.waId, body);
+    ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, templateLang, keepLanguage ? { englishFallback: false, brand } : { brand })
+    : await sendWhatsAppText(customer.waId, body, brand);
   if (!res.ok && template?.fallbackToText && /does not exist|not exist|132001|template/i.test(res.error ?? '')) {
     // Only fall back to free text when free text can actually arrive. (audit,
     // 5 Sep) Meta accepts a free text to a customer outside the 24h window
@@ -512,7 +540,7 @@ export async function deliverOut(
       await store.audit('channel', 'template_missing_sent_as_text', {
         customerId: customer.id, template: template.name, error: res.error ?? null,
       }).catch(() => { /* diagnostics */ });
-      res = await sendWhatsAppText(customer.waId, body);
+      res = await sendWhatsAppText(customer.waId, body, brand);
     }
   }
   // Once `res.ok` the customer HAS the message. From here on, a failing write is

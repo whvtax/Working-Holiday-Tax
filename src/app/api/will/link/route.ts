@@ -23,6 +23,7 @@ import { STAGE_GROUPS } from '@/lib/will/state-machine';
 import { APPROVED } from '@/lib/will/approved-messages';
 import { ESTIMATE_PAYABLE_MSG } from '@/lib/will/i18n';
 import { signatureNoticeStands } from '@/lib/will/scheduler';
+import { withBrand } from '@/lib/will/brand-context';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,7 +35,11 @@ export async function GET(req: NextRequest) {
 
   try {
     const store = getStore();
-    const c = await store.findCustomerByPhone(phone);
+    // Final review, 27 Oct: an SVT task looks up the SVT chat for that number,
+    // never the same person's WHT chat (the lookup is brand-scoped once the
+    // second line exists). Anything but 'svt' is WHT, as before.
+    const brand = req.nextUrl.searchParams.get('brand') === 'svt' ? 'svt' : 'wht';
+    const c = await withBrand(brand, () => store.findCustomerByPhone(phone));
     if (!c) return NextResponse.json({ ok: true, customer: null });
     // The CURRENT Library wording, so the preview in the CRM is the message
     // that will actually be sent and not a copy of it that drifted.

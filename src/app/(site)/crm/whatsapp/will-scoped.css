@@ -1030,3 +1030,16 @@ aside.side{
 .will-scope .cc-features{margin-top:10px;border-top:1px solid var(--line);padding-top:6px}
 .will-scope .cc-features small{color:var(--ink2);font-weight:400}
 @media (max-width:760px){.will-scope .costcards{grid-template-columns:1fr}}
+
+/* Jo, 27 Oct: "Download this page as PDF" on the Learning page. Only that
+   page is printed, at full length: every scrolling box is opened out, and the
+   buttons are left off. */
+@media print {
+  body:has(.learning-print) * { visibility: hidden; }
+  .learning-print, .learning-print * { visibility: visible; }
+  body:has(.learning-print) .will-scope, body:has(.learning-print) .will-scope * { overflow: visible !important; max-height: none !important; }
+  body:has(.learning-print) .will-scope, body:has(.learning-print) .will-scope .view.active { height: auto !important; display: block !important; }
+  .will-scope .view.active.learning-print { position: absolute !important; left: 0; top: 0; width: 100%; padding: 0 !important; margin: 0 !important; }
+  .learning-print .btn, .learning-print button, .learning-print .no-print { display: none !important; }
+  @page { margin: 12mm; }
+}

@@ -30,6 +30,7 @@
 // manual win-backs sent before this existed count too: anyone who already
 // got one is never messaged again.
 // ============================================================
+import { withBrand } from './brand-context';
 import { getStore, type CustomerRow, type Store } from './store';
 import { readWinbacks, type Winbacks, type WinbackRecord, WINBACKS_SETTING } from './winbacks';
 import { buildEvidence } from './lost-analysis';
@@ -43,6 +44,8 @@ import { greetingName } from './scheduler';
 export const WINBACK_AFTER_DAYS = 30;
 export const WINBACK_REPLY_DAYS = 7;
 export const WINBACK_DAILY_CAP = 10;
+/** Time one decision may take (claude.ts WINBACK_CALL_MS plus reading the chat). */
+export const WINBACK_DECISION_MS = 27_000;
 /** Never a burst: at most this many per pass, passes 20 minutes apart. */
 export const WINBACK_SENDS_PER_PASS = 2;
 /** A failed assessment is retried the next day, at most this many times; after
@@ -173,7 +176,9 @@ export async function runWinbackPass(nowMs: number, passBudgetMs = 25_000): Prom
   const toDecide = plans.filter((p) => p.plan.kind === 'decide')
     .sort((a, b) => (lastActivity(b.c) ?? 0) - (lastActivity(a.c) ?? 0));
   for (const { c } of toDecide) {
-    if (Date.now() - started > passBudgetMs) { summary.incomplete = true; break; }
+    // Only start a model call that can finish inside this pass: a call cut off
+    // by the end of the tick would cost money and decide nothing.
+    if (passBudgetMs - (Date.now() - started) < WINBACK_DECISION_MS) { summary.incomplete = true; break; }
     if (await aiBudgetExhausted()) { summary.budgetExhausted = true; break; }
     const rec = records[c.id] ?? {};
     // Attempts count per conversation: a lead who wrote again since the last
@@ -182,7 +187,8 @@ export async function runWinbackPass(nowMs: number, passBudgetMs = 25_000): Prom
     let result: WinbackDecision | { error: string };
     try {
       const { evidence } = await buildEvidence(c, now);
-      result = await decideWinback(evidence, now);
+      // The model reads this lead's brand (decision 004).
+      result = await withBrand(c.brand, () => decideWinback(evidence, now));
     } catch (e) {
       result = { error: (e as Error).message?.slice(0, 200) ?? 'unknown error' };
     }
@@ -219,7 +225,7 @@ export async function runWinbackPass(nowMs: number, passBudgetMs = 25_000): Prom
     let thisPass = 0;
     for (const { c, rec } of ready) {
       if (sentToday >= WINBACK_DAILY_CAP || thisPass >= WINBACK_SENDS_PER_PASS) break;
-      if (Date.now() - started > passBudgetMs + 15_000) { summary.incomplete = true; break; }
+      if (Date.now() - started > passBudgetMs) { summary.incomplete = true; break; }
       const hook = (rec?.message ?? '').trim();
       if (!hook) continue;
       const name = greetingName(c);

@@ -10,6 +10,7 @@ import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { STAGE_GROUPS, CustomerState } from '@/lib/will/state-machine';
+import { svtLineEnabled } from '@/lib/will/brand-context';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,7 +23,10 @@ export async function GET(req: Request) {
   const limit = Math.min(PAGE_MAX, Math.max(1, parseInt(url.searchParams.get('limit') ?? '100', 10) || 100));
   const filter = url.searchParams.get('filter') ?? 'all';
 
-  let opts: { states?: CustomerState[]; unreadOnly?: boolean } = {};
+  // Brand filter (decision 004): only the two known values, anything else is ignored.
+  const b = url.searchParams.get('brand');
+  const brand = b === 'wht' || b === 'svt' ? b : undefined;
+  let opts: { states?: CustomerState[]; unreadOnly?: boolean; brand?: 'wht' | 'svt' } = {};
   if (filter === 'unread') opts = { unreadOnly: true };
   else if (filter !== 'all') {
     const group = STAGE_GROUPS.find((g) => g.id === filter);
@@ -30,8 +34,8 @@ export async function GET(req: Request) {
   }
 
   try {
-    const customers = await getStore().listChatPage(offset, limit, opts);
-    return NextResponse.json({ ok: true, customers, hasMore: customers.length === limit });
+    const customers = await getStore().listChatPage(offset, limit, { ...opts, brand });
+    return NextResponse.json({ ok: true, customers, hasMore: customers.length === limit, brands: svtLineEnabled() });
   } catch (e) {
     return NextResponse.json({ ok: false, error: (e as Error).message?.slice(0, 200) ?? 'chats failed' }, { status: 500 });
   }

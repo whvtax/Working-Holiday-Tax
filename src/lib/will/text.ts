@@ -31,11 +31,19 @@ export function stripDashes(input: string): string {
   return input
     // A dash sitting between two numbers is a range (2019–2023, 9–5): keep it
     // as a plain hyphen rather than turning it into a comma.
-    .replace(/(\d)\s*[—–]\s*(\d)/g, '$1-$2')
+    .replace(/(\d)\s*[—–‒―]+\s*(\d)/g, '$1-$2')
+    // Jo, 26 Oct: "never, in any language". Chinese and Japanese write the
+    // dash doubled (——); after a CJK character it becomes the full-width
+    // comma that language uses, not ", , ".
+    // Punctuation already there: just drop the dash (review 27 Oct: "。——").
+    .replace(/([\u3000-\u303f\uff01-\uff0f])\s*[—–‒―]+\s*/g, '$1')
+    // After kana Japanese uses 、, after other CJK the Chinese ，.
+    .replace(/([\u3040-\u30ff])\s*[—–‒―]+\s*/g, '$1、')
+    .replace(/([\u3400-\u9fff\uff10-\uffef])\s*[—–‒―]+\s*/g, '$1，')
     // A dash used as a clause break, with a space on at least one side
     // ("Holly — I", "fee—$220"): a comma is how the same sentence reads without
     // it. Collapse the surrounding spaces into a single ", ".
-    .replace(/\s*[—–]\s*/g, ', ')
+    .replace(/\s*[—–‒―]+\s*/g, ', ')
     // Any stray double space the substitutions may have produced.
     .replace(/[ \t]{2,}/g, ' ')
     // Never leave a dangling ", " before a newline or at the very end.

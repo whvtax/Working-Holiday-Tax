@@ -195,6 +195,7 @@ The Lost Leads tab and `/api/will/lost` are gone; `lib/will/winback-auto.ts` doe
   3. Sends go out as the Meta template `winback_<en|de|ja>` ({{1}} first name, {{2}} the paragraph), 2 per pass, passes 20 minutes apart, max 10 a day, only inside the evening window. The send does NOT reopen the lead (`meta.winback`); their reply does.
   4. After a win-back: 7 days with no reply → Final; replied and closed again → Final. One win-back per person ever (old manual ones count).
 - State per customer lives in the `winbacks` settings row (decision, reason, message, sentAt, finalAt...). The morning report has a Win-backs tile.
+- Timing (26 Oct): one model call per decision, 25s timeout, started only while a whole call fits in the pass; the WINBACK job is only claimed early in a tick (30s reservation).
 - If WhatsApp refuses the template, one task "Win-back did not go out" and sending stops until the next day.
 
 - Refund check-in reads the chat first (25 Oct, Lauren): before "has your refund landed yet?" goes out, the chat since lodgement is checked (`checkinAlreadyAnswered`); a refund they said arrived ("my tax return has come through"), a review link already sent or asked for, means it is skipped (a sent link is recorded as the review ask). Saying the refund landed also cancels the check-in job.

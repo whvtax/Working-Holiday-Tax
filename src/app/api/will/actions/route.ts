@@ -549,13 +549,13 @@ async function handlePost(req: Request) {
       // window. Conversation replies carry nothing and go as plain text.
       const wa = msg.meta?.waTemplate as { name?: string; params?: string[]; lang?: string | null; fallbackToText?: boolean } | undefined;
       let tx = wa?.name
-        ? await sendWhatsAppTemplate(customer.waId, wa.name, wa.params ?? [], wa.lang ?? customer.lang)
-        : await sendWhatsAppText(customer.waId, msg.body);
+        ? await sendWhatsAppTemplate(customer.waId, wa.name, wa.params ?? [], wa.lang ?? customer.lang, { brand: customer.brand })
+        : await sendWhatsAppText(customer.waId, msg.body, customer.brand);
       // A system line drafted with a template Jo has not created in Meta goes
       // as the same text (see deliverOut's fallbackToText), so approving it
       // does not fail on a template that was only ever optional.
       if (!tx.ok && wa?.fallbackToText && /does not exist|not exist|132001|template/i.test(tx.error ?? '')) {
-        tx = await sendWhatsAppText(customer.waId, msg.body);
+        tx = await sendWhatsAppText(customer.waId, msg.body, customer.brand);
       }
       if (!tx.ok) {
         // Meta throttling is "try again later", not a failure (audit, 5 Sep).

@@ -196,3 +196,14 @@ describe('runWinbackPass', () => {
     expect(decideWinback).not.toHaveBeenCalled();
   });
 });
+
+describe('the pass stays inside the tick (26 Oct)', () => {
+  it('does not start a model call that cannot finish in the time left', async () => {
+    customers.push(cust({ id: 'late' }));
+    decideWinback.mockResolvedValue({ decision: 'never', reason: 'r', message: null, confidence: 0.9 });
+    const s = await runWinbackPass(NOW.getTime(), 10_000);
+    expect(decideWinback).not.toHaveBeenCalled();
+    expect(s.incomplete).toBe(true);
+    expect(s.remainingDecisions).toBe(1);
+  });
+});

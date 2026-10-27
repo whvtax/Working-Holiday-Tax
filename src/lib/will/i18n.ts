@@ -47,6 +47,18 @@ function countMatches(re: RegExp, t: string): number {
  * over every other language) is confident. The caller only ever acts on a
  * confident read, so an ambiguous message leaves the established language alone.
  */
+/** Chinese (Han with no kana) or Vietnamese: languages Mia speaks on the
+ *  student line but that have no fixed wording and no phrase rules in the
+ *  guard yet. Used to keep English fixed texts out of those chats and to hold
+ *  the reply for approval (final review, 27 Oct). */
+export function unsupportedScript(text: string): 'zh' | 'vi' | null {
+  const t = text || '';
+  if (/[\u3040-\u30ff]/.test(t)) return null;
+  if (/[\u3400-\u9fff]/.test(t)) return 'zh';
+  if (/[ăâđơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹĂÂĐƠƯ]/.test(t)) return 'vi';
+  return null;
+}
+
 export function detectLanguage(text: string): { lang: Lang | null; confident: boolean; enoughToSet?: boolean } {
   const t = (text || '').trim();
   if (!t) return { lang: null, confident: false };
@@ -238,6 +250,17 @@ Deine Bank kann dir so ein Dokument meistens über den Online-Chat oder die Hotl
 
 多くの場合、銀行のオンラインチャットや海外からの問い合わせ窓口に連絡すると、メールで送ってもらえます。それが一番早い方法です。`,
 };
+/** Jo, 27 Oct (his own words, German customer): the refund cannot go to a
+ *  friend's account; it must be in the customer's name. */
+export const OWN_ACCOUNT_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: "Unfortunately that's not possible. The bank account has to be in your own name and show your personal details.",
+  de: 'Leider ist das nicht möglich. Das Bankkonto muss auf deinen Namen laufen und deine persönlichen Daten enthalten.',
+  ja: '申し訳ありませんが、それはできません。銀行口座はご本人名義で、ご本人の情報が記載されている必要があります。',
+};
+export function ownAccountMessage(lang?: string | null): string | null {
+  const k = (lang ?? 'en').toLowerCase().slice(0, 2);
+  return k === 'en' || k === 'de' || k === 'ja' ? OWN_ACCOUNT_MSG[k] : null;
+}
 export function bankDocumentMessage(lang?: string | null): string | null {
   const k = (lang ?? 'en').toLowerCase().slice(0, 2);
   return k === 'en' || k === 'de' || k === 'ja' ? BANK_DOCUMENT_MSG[k] : null;

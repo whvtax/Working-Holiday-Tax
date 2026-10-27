@@ -4,7 +4,7 @@
 
 ## About this file
 
-Generated 2026-10-21 by scripts/generate-llms.mjs. Do not hand edit.
+Generated 2026-10-27 by scripts/generate-llms.mjs. Do not hand edit.
 
 This file is an index, not a dump of article bodies. It lists 142 English guides, 142 German translations and 142 Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted.
 
@@ -16,7 +16,7 @@ Prepared by our team, reviewed and signed off by a registered tax agent before i
 
 ## Guarantee
 
-If your refund is less than our fee, we refund the difference, so you are never out of pocket. Where no refund is payable to you at all, the fee is refunded in full.
+If your refund is less than our fee, we refund the difference once the ATO has issued your Notice of Assessment. If there is no refund, or you owe tax, the full fee applies.
 
 # ============================================================
 # English (en)
@@ -1020,7 +1020,7 @@ Summary: Eine ABN brauchst du nur, wenn du auf Rechnung arbeitest, also als Cont
 URL: https://workingholidaytax.com.au/de/blog/how-to-register-for-an-abn
 Category: ABN
 Published: 22 September 2024
-Summary: Die Registrierung selbst ist kostenlos. Wer zu einer ABN berechtigt ist, warum Sham Contracting das eigentliche Risiko ist, die GST-Grenze von 75.000 $, die 47-%-Einbehaltsregel und wann du sie beendest.
+Summary: Die Registrierung ist kostenlos. Wer eine ABN bekommt, warum Sham Contracting das eigentliche Risiko ist, die GST-Grenze von 75.000 $ und die 47-%-Regel.
 
 ### Farmarbeit mit ABN: warum das riskant ist
 URL: https://workingholidaytax.com.au/de/blog/farm-work-and-abns
@@ -1044,7 +1044,7 @@ Summary: Working Holiday Maker können TFN und ABN parallel nutzen. Wann welche 
 URL: https://workingholidaytax.com.au/de/blog/how-to-cancel-your-abn
 Category: ABN
 Published: 9 October 2024
-Summary: Eine nach dem Rückflug offen gelassene ABN erzeugt weiter Abgabeerwartungen des ATO. Wann die Kündigung wirken sollte, was vorher zu klären ist und was trotzdem noch eingereicht werden muss.
+Summary: Eine nach dem Rückflug offene ABN lässt das ATO weiter Erklärungen erwarten. Wann du sie kündigst, was vorher zu klären ist und was trotzdem fällig bleibt.
 
 ### GST und ABN: ab wann musst du dich melden?
 URL: https://workingholidaytax.com.au/de/blog/gst-and-abn-for-working-holiday-makers
@@ -1203,7 +1203,7 @@ Summary: Gegen einen Bescheid kannst du innerhalb der Frist Einspruch einlegen. 
 URL: https://workingholidaytax.com.au/de/blog/amending-tax-return-australia
 Category: Tax Return
 Published: 22 September 2025
-Summary: Eine eingereichte Erklärung lässt sich innerhalb von zwei Jahren nach dem Bescheid ändern, zu deinen Gunsten wie zu deinen Ungunsten. Für das ATO läuft dieselbe Zweijahresuhr.
+Summary: Eine eingereichte Erklärung lässt sich bis zwei Jahre nach dem Bescheid ändern, zu deinen Gunsten wie zu deinen Ungunsten. Für das ATO gilt dieselbe Frist.
 
 ### Steuerschuld beim ATO: Zahlplan vereinbaren
 URL: https://workingholidaytax.com.au/de/blog/ato-payment-plan-tax-debt-australia
@@ -1263,7 +1263,7 @@ Summary: Arbeitswerkzeuge unter 300 $ kannst du als Working Holiday Maker komple
 URL: https://workingholidaytax.com.au/de/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary: Ab 1. Juli 2026 können Working Holiday Maker eine Sofortabschreibung von 1.000 $ für arbeitsbezogene Ausgaben ohne Belege geltend machen. Wer profitiert, und wann die tatsächlichen Kosten mehr wert sind.
+Summary: Ab 1. Juli 2026 gibt es einen Pauschalabzug von 1.000 $ für Arbeitskosten ohne Belege. Wer profitiert und wann sich die tatsächlichen Kosten mehr lohnen.
 
 ### Fahrrad, Roller oder Van: Kosten absetzen
 URL: https://workingholidaytax.com.au/de/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -1305,7 +1305,7 @@ Summary: Der komplette Steuerguide für Working Holiday Maker: 15 % auf die erst
 URL: https://workingholidaytax.com.au/de/blog/diy-tax-return-vs-tax-agent-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: Die eigene Erklärung einzureichen ist kostenlos. Was ein Working-Holiday-Jahr schwer richtig zu erwischen macht, die fünf Stellen, an denen Erstattungen verloren gehen, und was eine Prüfung umfasst.
+Summary: Selbst einreichen ist kostenlos. Was ein Working-Holiday-Jahr schwierig macht, die fünf Stellen, an denen Erstattungen verloren gehen, und was eine Prüfung umfasst.
 
 ## Category: Super (14)
 Index: https://workingholidaytax.com.au/de/blog/category/super
@@ -1314,7 +1314,7 @@ Index: https://workingholidaytax.com.au/de/blog/category/super
 URL: https://workingholidaytax.com.au/de/blog/how-much-super-should-employer-pay
 Category: Super
 Published: 2 December 2024
-Summary: Dein Arbeitgeber zahlt 12 % deines gewöhnlichen Verdienstes zusätzlich in einen Superfonds, mindestens quartalsweise. Woran du siehst, ob der Betrag angekommen ist, und was gilt, wenn nicht.
+Summary: Dein Arbeitgeber zahlt 12 % deines Verdienstes zusätzlich in einen Superfonds. Woran du siehst, ob das Geld angekommen ist, und was gilt, wenn nicht.
 
 ### Wie lange dauert deine DASP-Auszahlung?
 URL: https://workingholidaytax.com.au/de/blog/how-long-does-dasp-take
@@ -1362,7 +1362,7 @@ Summary: Deine Super liegt bei einem Fonds und nicht beim Arbeitgeber. Beiträge
 URL: https://workingholidaytax.com.au/de/blog/dasp-documents-required
 Category: Super
 Published: 28 November 2025
-Summary: Identität, Nachweis über das beendete Visum und Nachweis der Ausreise, für jeden Fonds getrennt. An beglaubigten Kopien bleiben die meisten Anträge aus dem Ausland hängen.
+Summary: Identität, Nachweis über das beendete Visum und die Ausreise, für jeden Fonds getrennt. An beglaubigten Kopien scheitern die meisten Anträge aus dem Ausland.
 
 ### DASP-Steuer: warum die 65 % fällig werden
 URL: https://workingholidaytax.com.au/de/blog/dasp-tax-rate-65-percent-explained
@@ -1380,7 +1380,7 @@ Summary: Mehrere Fonds bedeuten mehrere DASP-Anträge, oder vorher eine Zusammen
 URL: https://workingholidaytax.com.au/de/blog/dasp-rejected-what-to-do
 Category: Super
 Published: 22 December 2025
-Summary: Ein abgelehnter DASP-Antrag ist kein verlorenes Geld. Fast immer steckt ein noch nicht aktualisierter Visumsdatensatz, eine Namensabweichung oder ein Fonds ohne dein Guthaben dahinter.
+Summary: Ein abgelehnter DASP-Antrag ist kein verlorenes Geld. Meist steckt ein nicht aktualisierter Visumsdatensatz, ein abweichender Name oder der falsche Fonds dahinter.
 
 ### Arbeitgeber zahlt keine Super? Was tun
 URL: https://workingholidaytax.com.au/de/blog/super-employer-not-paying-what-to-do

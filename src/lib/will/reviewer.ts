@@ -1,3 +1,4 @@
+import { anthropicMessages } from './llm-transport';
 import { recordAiUsage } from './ai-usage';
 // ============================================================
 // The reviewer: a second set of eyes over Will's decision, on the SAME rules
@@ -103,9 +104,16 @@ THESE ARE A PASS, NEVER A HOLD (Jo, 25 Oct: in three days the second check held 
 - "Will I get anything back / how likely / how much": saying in general terms that it depends on many factors (residency, income, tax already withheld, deductions), that an estimate only comes after the review of their case, and that the review starts after payment. That is not tax advice and gives no figure. Only a determination about THIS customer ("you are a resident", "you'll get about $X back") is a hold.
 - After payment, the residency check: explaining what the five points mean, asking them one at a time, counting the points the customer says apply to them and, with 4 or more, asking them to fill out the questionnaire again as a resident. That is Jo's process, not a determination by Will.
 - The careful buyer before paying: the registered agent's details are in the client agreement (link), the account name is The Accounting Academy, no myGov link or login is needed, the tax invoice is sent after payment.
+- Saying the refund cannot go to a friend's or family member's account, it must be in their own name (Jo, 27 Oct).
 - Explaining that myGov access is not needed and the return can be done from overseas.
 - Answering a couple: each partner messages separately, the fee is per person.
 - A customer quoting a price that is not ours ($100, $130): saying it is not one of our prices, the fee is fixed at $220 / $385, and what it covers.
+- Saying that residency, a tax treaty, the Medicare statement or timing "is checked as part of your return" is not tax advice: it is the right answer before payment, as long as it gives no opinion on the outcome.
+- A paid customer asking how their return is going: "the team is working on it and will message you here when it's ready" (no date).
+- A customer asking us to keep their file open while an ATO or myGov lock, travel or an employer holds them up: "your file stays open, message us once it's sorted", with no comment on the lock itself.
+- "I thought it was free": we used to offer a free eligibility check; the review is now part of the $220 / $385 service, with the guarantee for TFN-only returns.
+- A plain yes to the team's estimate ("Yes please" to "would you like to proceed?"): one warm line that the team will go through the paperwork and message them here when it is ready, no date, no figures.
+- "Is my tax return still in time?" / the deadline / "will I be added to your client list before the 31st?" (Jo, 27 Oct: always yes): up to 31 October, "yes, returns we prepare are lodged by a registered tax agent, so as long as you're with us before 31 October the due date is usually 15 May 2027" (2025-26 return only; an earlier year gets the not-too-late line); after 31 October, "yes, it's not too late, we can still lodge it". Approved wording, not a promise to hold. Still held: "no deadline", "anytime", or no penalty.
 - Several unlodged years and any visa (Student visa included): we help, each tax year is its own return and fee ($220 TFN / $385 with ABN), owing / refund / late lodgement are part of the review after payment, this WhatsApp is the right number.
 - Before paying, a TFN-only customer asking how the guarantee works with an example amount of their own ("if my refund is $60?"): "you pay $220 upfront; if the refund is $60 we refund you the $160 difference; with no refund the full fee applies". That explains the guarantee in their numbers; it does not predict a refund.
 Still a hold: a message that repeats word for word something already sent, refunds of money already paid, complaints, and a refund figure or residency determination before payment.
@@ -173,7 +181,7 @@ export async function reviewDraft(input: ReviewInput): Promise<ReviewResult> {
 
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await anthropicMessages({
         method: 'POST',
         signal: AbortSignal.timeout(20_000),
         headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },

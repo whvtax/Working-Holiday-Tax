@@ -141,3 +141,10 @@ it('the Lost Leads tab, its route and its button are gone; the playbook knows a 
   expect(fs.readFileSync(path.join(process.cwd(), 'src/lib/will/playbook.ts'), 'utf8')).toContain('A REPLY TO OUR WIN-BACK');
   expect(fs.readFileSync(path.join(process.cwd(), 'src/components/will/MorningReport.tsx'), 'utf8')).toContain('Win-backs');
 });
+
+it('a win-back pass is only claimed while a whole model call fits in the tick', async () => {
+  const { tickReservationMs } = await import('@/lib/will/scheduler');
+  expect(tickReservationMs('WINBACK' as never)).toBe(30_000);
+  const src = fs.readFileSync(path.join(process.cwd(), 'src/lib/will/claude.ts'), 'utf8');
+  expect(src).toContain('export const WINBACK_CALL_MS = 25_000;');
+});

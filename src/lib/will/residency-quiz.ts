@@ -90,13 +90,13 @@ export function quizResult(lang: QuizLang, yes: number): string {
   const resident = yes >= 4;
   if (lang === 'de') return resident
     ? `Super, es sieht so aus, als würdest du als steuerlich ansässig in Australien gelten 😊 Bitte füll den Fragebogen noch einmal mit den richtigen Angaben aus: ${FORM_URL}`
-    : 'Super, du bist steuerlich ein Working Holiday Maker, deine Angabe bleibt also so 😊 Das Team kümmert sich ab hier um alles.';
+    : 'Super, es sieht so aus, als würdest du steuerlich als Working Holiday Maker gelten, deine Angabe bleibt also so 😊 Das Team prüft das noch einmal und kümmert sich ab hier um alles.';
   if (lang === 'ja') return resident
     ? `ありがとうございます！オーストラリアの税務上の居住者に該当するようです😊 お手数ですが、正しい内容でもう一度アンケートにご記入ください：${FORM_URL}`
-    : 'ありがとうございます！税務上はワーキングホリデーメーカーに該当しますので、ご回答はそのままで大丈夫です😊 この後はチームが対応いたします。';
+    : 'ありがとうございます！税務上はワーキングホリデーメーカーに該当するようですので、ご回答はそのままで大丈夫です😊 最終確認も含め、この後はチームが対応いたします。';
   return resident
     ? `Great, it looks like you count as an Australian tax resident 😊 Please fill out the questionnaire again with the correct details: ${FORM_URL}`
-    : "Great, you're a Working Holiday Maker for tax, so your answer stays as it is 😊 The team will take it from here.";
+    : "Great, it looks like you count as a Working Holiday Maker for tax, so your answer stays as it is 😊 The team will double-check it and take it from here.";
 }
 
 /** Yes / No / not sure (counted as No: a point has to genuinely apply).

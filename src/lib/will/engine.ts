@@ -5,6 +5,7 @@
 //   SUPERVISED  = the assistant drafts, the owner approves every send
 //   FULL_AUTO   = the assistant sends; anything unclear goes to a human
 // ============================================================
+import { FORM_LINK_ANY_BRAND } from './brand-voice';
 import { decide, Decision, Turn } from './claude';
 import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
@@ -15,14 +16,15 @@ import { PAYMENT_RECEIVED_MSG, BANK_DOC_DENIED_RE, bankDocumentMessage, REFUND_C
 
 /** The first words of the approved confirmation in every language. */
 const PAYMENT_RECEIVED_PREFIX = new RegExp('^\\s*(?:' + Object.values(PAYMENT_RECEIVED_MSG).map((t) => t.split('\n')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'im');
-const FORM_LINK_IN_TEXT = /workingholidaytax\.com(?:\.au)?\/tax-form/i;
+const FORM_LINK_IN_TEXT = FORM_LINK_ANY_BRAND; // decision 004: either brand's form link
 import { APPROVED } from './approved-messages';
 import { canTransition, CustomerState } from './state-machine';
 import { detectChoice, PRICE_ASK_RE, firstContactPriceMessage, priceTail } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
 import { hasForeignIncome } from './foreign-income';
 import { hasAbnIncome, ABN_PRICE_RE } from './abn-income';
-import { detectLanguage } from './i18n';
+import { detectLanguage, unsupportedScript } from './i18n';
+import { currentBrand } from './brand-context';
 import { isLaterPlan, laterPlanReply } from './later-plan';
 import { renderApproved, type DecisionMode } from './will-decides';
 import { looksLikePaymentConfirmation } from './payment-confirmation';
@@ -365,7 +367,24 @@ export function scrubUnpaidDraft(text: string, paid: boolean): string {
   return text.split('\n').filter((line) => !PAID_LINE.test(line)).join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }
 
+/** Fixed texts that only make sense for working holiday makers. */
+const SVT_BLOCKED_KEYS = new Set<string>(['residency_quiz_start', 'residency_resident', 'residency_whm', 'referral', 'review_link']);
+
 export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
+  const out = await runEngineInner(input);
+  // The guard has no Chinese or Vietnamese phrase rules yet, so on the student
+  // line a reply in (or to) those languages waits for a person instead of
+  // going out on Autopilot (final review, 27 Oct).
+  if (currentBrand() === 'svt' && out.kind === 'queued') {
+    const lastCustomer = [...input.history].reverse().find((t) => t.role === 'customer')?.text ?? '';
+    if (unsupportedScript(lastCustomer) || unsupportedScript(out.replyText ?? '')) {
+      return { ...out, kind: 'pending_approval', reviewNote: [out.reviewNote, 'Chinese/Vietnamese: held for approval until the guard covers it.'].filter(Boolean).join(' ') };
+    }
+  }
+  return out;
+}
+
+async function runEngineInner(input: EngineInput): Promise<EngineOutcome> {
   const { ctx, history, mode, bank } = input;
   const willMode = input.decisionMode === 'will';
 
@@ -553,6 +572,20 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     if (decision.approved_key === 'price_tfn_review' && (stance === 'abn' || (stance === null && abnSignal))) decision.approved_key = 'price_tfn_abn_review';
     else if (decision.approved_key === 'price_tfn_abn_review' && stance !== 'abn' && !abnSignal) decision.approved_key = 'price_tfn_review';
     if (decision.approved_key === 'thanks' && lastAssistantIdx < 0) decision.approved_key = undefined;
+  }
+  // STUDENT LINE (final review, 27 Oct). The fixed texts below were written
+  // for backpackers. On SVT: super (DASP) is something the site says we help
+  // with, so it goes to the team; the working holiday residency quiz and the
+  // "anyone else on a working holiday" referral never go out; and a chat in
+  // Chinese or Vietnamese keeps Mia's own words rather than an English text.
+  if (currentBrand() === 'svt' && decision.approved_key) {
+    if (decision.approved_key === 'no_dasp') {
+      return {
+        kind: 'human_task', decision: { ...decision, action: 'human_task' },
+        task: { reason: 'Asking about super (DASP). The student site says we can help: the team answers.', severity: 'REVIEW', suggestedReply: undefined },
+      };
+    }
+    if (SVT_BLOCKED_KEYS.has(decision.approved_key) || unsupportedScript(customerBurst)) decision.approved_key = undefined;
   }
   if (willMode && decision.action === 'reply' && decision.approved_key) {
     const rendered = renderApproved(decision.approved_key, {

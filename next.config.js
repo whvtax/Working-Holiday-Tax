@@ -9,6 +9,9 @@
 // if the Facebook WhatsApp-connect popup ever misbehaves in production.
 const CSP_NONCE_ENABLED = process.env.CSP_NONCE_DISABLED !== 'true'
 
+// Two brands, one app: host-conditioned rewrites (see config/brand-routing.js).
+const { brandRewrites, whtOnly, svtHost } = require('./config/brand-routing')
+
 const staticCsp = {
     key: 'Content-Security-Policy',
     value: [
@@ -73,6 +76,30 @@ const securityHeaders = [
 // (two CSPs enforce their intersection, which is a debugging trap).
 // ─────────────────────────────────────────────────────────────────────────
 const publicHeaders = [...securityHeaders, staticCsp]
+
+// Student Visa Tax CSP: least privilege. Fonts and images are self-hosted, and
+// there is no analytics, Facebook SDK or YouTube on the SVT site yet, so none of
+// those origins are allowed. It also never names the WHT domain (brand
+// separation). Add an origin here only together with the feature that needs it.
+const svtCsp = {
+  key: 'Content-Security-Policy',
+  value: [
+    "default-src 'self'",
+    `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
+    "img-src 'self' data: blob:",
+    "frame-src 'none'",
+    "connect-src 'self'",
+    "media-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "upgrade-insecure-requests",
+  ].join('; '),
+}
+const svtHeaders = [...securityHeaders, svtCsp]
 const crmHeaders    = CSP_NONCE_ENABLED ? securityHeaders : publicHeaders
 
 const nextConfig = {
@@ -100,10 +127,15 @@ const nextConfig = {
       { source: '/crm/:path*', headers: crmHeaders },
       { source: '/crm', headers: crmHeaders },
       { source: '/((?!crm).*)', headers: publicHeaders },
+      // Student Visa Tax hosts: later rules win per key, so this replaces the
+      // CSP above on every SVT response, /crm included (which is a 404 there).
+      { source: '/:path*', has: [svtHost()], headers: svtHeaders },
       // Serve llms.txt and llms-full.txt as plain text with cache headers
       // so AI crawlers can ingest the structured content map.
       {
         source: '/llms.txt',
+        // WHT only: the SVT route sets its own headers.
+        missing: [svtHost()],
         headers: [
           { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
           { key: 'Cache-Control', value: 'public, max-age=3600, must-revalidate' },
@@ -115,6 +147,11 @@ const nextConfig = {
           { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
           { key: 'Cache-Control', value: 'public, max-age=3600, must-revalidate' },
         ],
+      },
+      // SVT font files: the folder is versioned (fonts/5.3.0), so immutable.
+      {
+        source: '/svt-assets/fonts/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
       // Static assets - long cache (immutable file content)
       {
@@ -131,8 +168,12 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return { beforeFiles: brandRewrites(), afterFiles: [], fallback: [] }
+  },
   async redirects() {
-    return [
+    // Every redirect below points at a WHT path, so none may fire on an SVT host.
+    return whtOnly([
       // The two-stage intake (/start + /complete/<token>) has been removed in
       // favour of the single full /tax-form. These redirects are NOT for SEO,
       // both routes were noindex. They exist so a customer who still has one
@@ -209,7 +250,7 @@ const nextConfig = {
         permanent: true,
       },
 
-    ]
+    ])
   },
 }
 

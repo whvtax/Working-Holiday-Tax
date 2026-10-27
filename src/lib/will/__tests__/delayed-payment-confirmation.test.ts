@@ -69,14 +69,14 @@ beforeEach(() => {
 it('is not discarded as stale when the customer wrote in the meantime, and goes out through the template', async () => {
   await processDueJobs();
   expect(store.setMessageStatus).not.toHaveBeenCalledWith('m1', 'DISCARDED');
-  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received', [], 'en');
+  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received', [], 'en', { brand: undefined });
   expect(store.setMessageStatus).toHaveBeenCalledWith('m1', 'SENT', expect.anything());
 });
 
 it('falls back to the text when the template is refused inside the window', async () => {
   sendWhatsAppTemplate.mockResolvedValue({ ok: false, error: 'template missing' });
   await processDueJobs();
-  expect(sendWhatsAppText).toHaveBeenCalledWith('61400000001', APPROVED.payment_received);
+  expect(sendWhatsAppText).toHaveBeenCalledWith('61400000001', APPROVED.payment_received, undefined);
 });
 
 it('raises the URGENT "paid but not told" task when the send fails', async () => {

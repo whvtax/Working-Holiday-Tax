@@ -3,7 +3,7 @@
 import { NextResponse } from 'next/server';
 import { cronAuthorized, cronAuthMethod } from '@/lib/will/auth';
 import { processDueJobs, ensureNightly, ensureDailyDigest, backfillFollowupSchedules } from '@/lib/will/scheduler';
-import { backfillMissingTemplates, backfillKnowledgePack, applyKnowledgeFixes } from '@/lib/will/seed';
+import { backfillMissingTemplates, backfillKnowledgePack, applyKnowledgeFixes, applyBrandTags } from '@/lib/will/seed';
 import { getStore } from '@/lib/will/store';
 
 export const dynamic = 'force-dynamic';
@@ -33,6 +33,7 @@ export async function GET() {
   // it arrives on its own rather than behind a button nobody knew to press.
   await backfillKnowledgePack(getStore());
   await applyKnowledgeFixes(getStore());
+  await applyBrandTags(getStore());
   // ARMING MUST NEVER BLOCK DOING.
   //
   // These two only QUEUE future work. They both end in store.addJob(), which

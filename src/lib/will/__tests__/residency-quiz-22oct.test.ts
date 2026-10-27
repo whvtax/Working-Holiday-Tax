@@ -90,7 +90,7 @@ it('4 of 5 Yes: fill out the questionnaire again, and a task for the team', asyn
 it('fewer than 4: Working Holiday Maker, the team takes it from here, no task', async () => {
   await say('not sure');
   for (const a of ['No', 'Yes', 'No', 'Yes', 'No']) await say(a);
-  expect(sent[5]).toBe("Great, you're a Working Holiday Maker for tax, so your answer stays as it is 😊 The team will take it from here.");
+  expect(sent[5]).toBe("Great, it looks like you count as a Working Holiday Maker for tax, so your answer stays as it is 😊 The team will double-check it and take it from here.");
   expect(addTask).not.toHaveBeenCalled();
 });
 

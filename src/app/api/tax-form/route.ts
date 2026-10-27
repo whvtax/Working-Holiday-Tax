@@ -11,10 +11,16 @@ import { isValidSupabaseStorageUrl } from '@/lib/supabase'
 import { normalisePhone } from '@/lib/leads'
 import crypto from 'crypto'
 import { notifyFormReceived, medicareAnswerFor } from '@/lib/will/form-link'
+import { brandFromHost } from '@/lib/brand'
+import { svtLineEnabled, withBrand } from '@/lib/will/brand-context'
 
 export async function POST(req: NextRequest) {
   try {
     const ip = getClientIp(req)
+    // Brand from the host the request was routed by, never from the body
+    // (decision 003). The SVT host can only reach this route in a build with
+    // SVT_FORMS_ENABLED=true (config/brand-routing.js).
+    const brand = brandFromHost(req.headers.get('host'))
 
     const formData  = await req.formData()
     const email     = sanitiseShort(formData.get('email'))
@@ -59,7 +65,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'invalid_fields', fields: issues }, { status: 400 })
     }
 
-    const existing  = await findExistingClient(email, whatsapp)
+    const existing  = await findExistingClient(email, whatsapp, brand)
     const isReturning = !!existing
     const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
@@ -101,6 +107,22 @@ export async function POST(req: NextRequest) {
         formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
         formData.get('hasMedicare') ? `Medicare: ${sanitiseShort(formData.get('hasMedicare'))}` : '',
         formData.get('hasExpenses') ? `Expenses: ${sanitiseShort(formData.get('hasExpenses'))}` : '',
+        // Optional extra lines from the SVT form (visa, course length). At most
+        // 5 lines of 200 characters, tags stripped; anything malformed is
+        // ignored. The WHT form never sends this field.
+        (() => {
+          const raw = formData.get('extraNotes')
+          if (typeof raw !== 'string') return ''
+          try {
+            const parsed: unknown = JSON.parse(raw)
+            if (!Array.isArray(parsed)) return ''
+            return parsed.slice(0, 5)
+              .filter((n): n is string => typeof n === 'string')
+              .map((n) => sanitiseField(n, 200))
+              .filter(Boolean)
+              .join(' | ')
+          } catch { return '' }
+        })(),
         // Receipts the client chose but that did not reach storage. Named, so
         // the missing one can simply be asked for on WhatsApp instead of the
         // whole submission having been thrown away for it (Jo, 28 Aug).
@@ -147,7 +169,44 @@ export async function POST(req: NextRequest) {
       reviewStatus: 'pending',
       reviewerNote: '',
       reviewedAt:   '',
+      brand,
     })
+
+    // Student Visa Tax. Once the SVT WhatsApp line exists, the form goes
+    // through the same notifyFormReceived as WHT, inside the SVT brand (final
+    // review, 27 Oct): the phone lookup is brand-scoped, so it can only find
+    // the SVT chat, and the confirmation goes out from the SVT number as Mia.
+    // A foreign resident never gets the Medicare exemption message.
+    // Before the line exists the lookup is NOT brand-scoped, so nothing is
+    // sent and staff are told instead (an audit row), as before.
+    if (brand === 'svt' && svtLineEnabled()) {
+      try {
+        const taxStatus = sanitiseShort(formData.get('taxStatus'))
+        const foreign = /foreign/i.test(taxStatus)
+        const hasAbnIncome = (() => {
+          const raw = formData.get('invoiceDetails')
+          if (!raw || typeof raw !== 'string') return false
+          try { const parsed: unknown = JSON.parse(raw); return Array.isArray(parsed) && parsed.some((i) => (i as { type?: string })?.type === 'abn') } catch { return false }
+        })()
+        await withBrand('svt', () => notifyFormReceived(
+          whatsapp, email, 'tax-return',
+          foreign ? 'n/a (foreign resident)' : medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), taxStatus),
+          hasAbnIncome, { country: sanitiseShort(formData.get('country')), taxStatus },
+        ))
+      } catch (err) {
+        console.error('[tax-form] svt notify failed after the task was saved:', err)
+      }
+      return NextResponse.json({ ok: true })
+    }
+    if (brand === 'svt') {
+      try {
+        const { getStore } = await import('@/lib/will/store')
+        await getStore().audit('system', 'svt_form_received', { clientId, taxYear: sanitiseShort(formData.get('taxYear')) })
+      } catch (err) {
+        console.error('[tax-form] svt audit failed after the task was saved:', err)
+      }
+      return NextResponse.json({ ok: true })
+    }
 
         // Tell Will the questionnaire arrived: this marks the form complete, STOPS
     // the form reminders (otherwise it keeps chasing someone who already filled

@@ -38,6 +38,14 @@ export default function LinkFormTask({ task, phoneOf, act, say, refresh }: Props
   const [results, setResults] = useState<CustomerRow[] | null>(null);
   const [busy, setBusy] = useState(false);
   const [linking, setLinking] = useState(false);
+  // Jo, 27 Oct: the people who paid and have not sent the questionnaire yet,
+  // shown under the search, because the unmatched form is almost always one of
+  // them (another number, or a typo in the number).
+  const [waiting, setWaiting] = useState<CustomerRow[] | null>(null);
+  useEffect(() => {
+    if (!open || waiting) return;
+    fetch('/api/will/search?waiting=1').then((r) => r.json()).then((d) => setWaiting(Array.isArray(d.customers) ? d.customers : [])).catch(() => setWaiting([]));
+  }, [open, waiting]);
 
   useEffect(() => {
     if (!open) return;
@@ -61,13 +69,17 @@ export default function LinkFormTask({ task, phoneOf, act, say, refresh }: Props
 
   if (!submitted) return null;
 
-  const pick = async (c: CustomerRow) => {
+  const pick = async (c: CustomerRow, fromWaiting = false) => {
     if (linking) return;
-    setLinking(true);
     const name = c.name ?? phoneOf(c.waId);
+    // A pick from the waiting list is not backed by a search: confirm it, so a
+    // misclick never files someone's questionnaire under another customer.
+    if (fromWaiting && !window.confirm(`Link this questionnaire to ${name} (${phoneOf(c.waId)})?`)) return;
+    setLinking(true);
     const r = await act({ action: 'mark_form_received', customerId: c.id, taskId: task.id });
     setLinking(false);
     say(r?.ok ? linkOutcomeToast(r.outcome, name) : `❌ Not linked: ${r?.error ?? 'something went wrong'}`);
+    if (r?.ok) setWaiting(null);
     refresh();
   };
 
@@ -90,6 +102,18 @@ export default function LinkFormTask({ task, phoneOf, act, say, refresh }: Props
           </button>
         ))}
       </div>
+      {waiting && waiting.length > 0 && (
+        <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <span style={{ fontSize: 12, fontWeight: 600 }}>Paid, questionnaire not received yet</span>
+          {waiting.filter((c) => !results?.some((r) => r.id === c.id)).slice(0, 12).map((c) => (
+            <button key={c.id} className="btn ghost" disabled={linking} onClick={() => pick(c, true)}
+              style={{ justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+              <span>{c.name ? `${c.name} · ` : ''}{phoneOf(c.waId)}</span>
+              <span style={{ fontSize: 11, opacity: 0.7 }}>{STATE_LABELS[c.state] ?? c.state}</span>
+            </button>
+          ))}
+        </div>
+      )}
       <button className="btn quiet sm" style={{ marginTop: 6 }} onClick={() => setOpen(false)}>Cancel</button>
     </div>
   );

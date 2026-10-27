@@ -1,0 +1,23 @@
+.wrap { display: flex; flex-direction: column; gap: 18px; }
+.result {
+  background: var(--svt-lime-pale);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.price { font-family: var(--svt-font-mono); font-size: 24px; font-weight: 600; }
+.amount { background: var(--svt-lime); padding: 0 5px; }
+.note { font-size: 15px; line-height: 1.5; color: var(--svt-ink-2); }
+.preview {
+  align-self: flex-end;
+  max-width: 290px;
+  background: var(--svt-paper);
+  padding: 12px 14px;
+  border-radius: var(--svt-radius-bubble) var(--svt-radius-bubble) 4px var(--svt-radius-bubble);
+  font-size: 15px;
+  line-height: 1.45;
+}
+@media (min-width: 768px) {
+  .preview { max-width: 360px; }
+}

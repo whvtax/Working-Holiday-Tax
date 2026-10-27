@@ -5,6 +5,9 @@
 // broadened patterns, numeric amount comparison, prompt-injection
 // and placeholder leak detection.
 // ============================================================
+import type { Brand } from '@/lib/brand';
+import { currentBrand } from './brand-context';
+import { FORM_LINK_ANY_BRAND, ownSiteHostPattern } from './brand-voice';
 import { isApprovedCheckedClause } from './already-checked';
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { namesAccountWrongly } from './account-name';
@@ -184,6 +187,10 @@ const MAX_IMPROVISED_CHARS = 450;
 const MAX_PROSE_AROUND_PRICE = 170;
 /** A promise that there is no lodgement deadline, or that a return can be lodged
  *  "anytime". Both were written by the model (19 Oct, Takumi Harada). */
+/** A request in a plain sentence: a question mark, or "could you / can you /
+ *  please confirm" (27 Oct). Used only to give a multi-question message room. */
+export const SENTENCE_ASK = /\?|\b(?:could|can|would) you\b|\bplease (?:confirm|send|provide|tell)\b/gi;
+
 const NO_DEADLINE_CLAIM = /\bno\s+(?:lodg(?:e)?ment\s+|tax\s+return\s+|filing\s+)?deadline\b|\bthere(?:'s| is)\s+no\s+(?:lodg(?:e)?ment\s+)?deadline\b|\byou can lodge\b[^.!?]{0,40}\banytime\b/i;
 const BANK_DETAILS_PRESENT = /\bBSB\b|062692|81049952/;
 /** The price message shape: the BSB and Account lines as a block (11 Oct: the
@@ -246,7 +253,7 @@ function isBenignThreshold(cents: number, context: string): boolean {
 // Audit, 3 Sep: Italian "dollari", Portuguese "dólares", German "Dollar",
 // Japanese ドル / 円 / 万円 and a currency CODE before the number ("AUD 1.800")
 // were all outside the net, so a refund figure in those forms auto-sent.
-const CURRENCY_WORDS = 'dollars?|dollari|dollar|bucks?|aud|usd|dólares?|dolares?|euros?|eur|pounds?|libras?|sterline|quid|yen|jpy|francs?|kroner?|kronor?|reais?|pesos?|shekels?|rupees?|won|ドル|万円|円';
+const CURRENCY_WORDS = 'dollars?|dollari|dollar|bucks?|aud|usd|dólares?|dolares?|euros?|eur|pounds?|libras?|sterline|quid|yen|jpy|francs?|kroner?|kronor?|reais?|pesos?|shekels?|rupees?|won|ドル|万円|円|澳元|澳币|美元|元|块|đô la|đô|đồng';
 const CURRENCY_SYMBOLS = '\\$|€|£|¥|₪|₩|₺|₹|R\\$';
 // A currency code or word can also come FIRST: "AUD 1,800", "EUR 130", "USD 50".
 const CURRENCY_CODES_BEFORE = 'aud|usd|eur|gbp|jpy|brl|chf|nzd|cad';
@@ -810,8 +817,12 @@ const AI_IDENTITY_DENIAL =
 
 const PLACEHOLDER_LEFTOVER = /\{\{[A-Z_]+\}\}/;
 const INTERNAL_NOTE = /\[(?:TEAM|NOTE|TODO|INTERNAL|FIXME|DRAFT|PLACEHOLDER|INSERT|CHECK)\b[^\]]*\]|\bTODO\b|\bTBD\b|\bXXX\b|\[[^\]]*(?:確認してください|要確認|チーム)[^\]]*\]/;
-const ALLOWED_URL_HOSTS = /^(?:https?:\/\/)?(?:www\.)?(?:workingholidaytax\.com\.au|my\.gov\.au|ato\.gov\.au|servicesaustralia\.gov\.au|tpb\.gov\.au|abr\.business\.gov\.au|g\.page|maps\.app\.goo\.gl|search\.google\.com)(?:\/|$)/i;
-export function hasForeignUrl(text: string): boolean {
+// Decision 004: the brand's OWN site is allowed, never the other brand's.
+// For WHT this is exactly the list it always was.
+const allowedUrlHosts = (brand: Brand) => new RegExp(`^(?:https?:\\/\\/)?(?:www\\.)?(?:${ownSiteHostPattern(brand)}|my\\.gov\\.au|ato\\.gov\\.au|servicesaustralia\\.gov\\.au|tpb\\.gov\\.au|abr\\.business\\.gov\\.au|g\\.page|maps\\.app\\.goo\\.gl|search\\.google\\.com)(?:\\/|$)`, 'i');
+const ALLOWED_URL_HOSTS_BY_BRAND: Readonly<Record<Brand, RegExp>> = { wht: allowedUrlHosts('wht'), svt: allowedUrlHosts('svt') };
+export function hasForeignUrl(text: string, brand: Brand = currentBrand()): boolean {
+  const ALLOWED_URL_HOSTS = ALLOWED_URL_HOSTS_BY_BRAND[brand];
   for (const m of text.matchAll(/\b(?:https?:\/\/|www\.)[^\s)>\]]+|\b[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|au|net|org|io|co)(?:\.[a-z]{2})?(?:\/[^\s)>\]]*)?/gi)) {
     const u = m[0].replace(/[.,;:!?]+$/, '');
     if (/^[\d.]+$/.test(u)) continue;
@@ -1098,6 +1109,17 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     if (numberedQuestions >= 3) {
       ceiling = Math.max(ceiling, Math.min(1400, 300 + numberedQuestions * 150));
     }
+    // 27 Oct (Luca, +44 7521): "please send me an invoice ... confirm the name
+    // on the bank account ... can you confirm I'll be added to the client
+    // list?" is four requests in plain sentences, not a numbered list, and the
+    // short, correct answer to all four was refused as REPLY_TOO_LONG. Asks
+    // written as sentences earn room the same way numbered ones do.
+    const sentenceAsks = (ctx.customerText ?? '').match(SENTENCE_ASK)?.length ?? 0;
+    // Never for the price-message shape: around the bank details only one line is allowed.
+    const priceShape = BANK_DETAILS_PRESENT.test(text) && PRICE_MESSAGE_SHAPE.test(text);
+    if (sentenceAsks >= 3 && !priceShape) {
+      ceiling = Math.max(ceiling, Math.min(1000, 300 + sentenceAsks * 120));
+    }
     if (improvised.length > ceiling) violations.push('REPLY_TOO_LONG');
   }
 
@@ -1158,7 +1180,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // customer.paid is still false, because sending it is what flips paid to
   // true a moment later. Without this, approving the very confirmation draft
   // that is supposed to send the link would itself be refused.
-  if (!paid && /workingholidaytax\.com\.au\/tax-form/i.test(text)
+  if (!paid && FORM_LINK_ANY_BRAND.test(text)
       && !/payment received|zahlung erhalten|お支払いを確認しました|pago recibido|paiement bien reçu|pagamento ricevuto|pagamento recebido/i.test(text)) {
     violations.push('FORM_LINK_BEFORE_PAYMENT');
   }

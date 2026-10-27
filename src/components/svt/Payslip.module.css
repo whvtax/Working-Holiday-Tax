@@ -1,0 +1,19 @@
+.wrap { display: flex; flex-direction: column; gap: 16px; }
+.rows { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; font-family: var(--svt-font-mono); font-size: 15px; }
+.row { position: relative; display: block; }
+.input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.line {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  min-height: var(--svt-tap);
+  padding: 0 14px;
+  background: var(--svt-lime-pale);
+  cursor: pointer;
+}
+/* Not colour alone: a bar and bold text mark the chosen line too. */
+.input:checked + .line { background: var(--svt-lime); box-shadow: inset 4px 0 0 var(--svt-ink); font-weight: 700; }
+@media (forced-colors: active) {
+  .input:checked + .line { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+}
+.input:focus-visible + .line { outline: 2px solid transparent; outline-offset: 2px; box-shadow: var(--svt-focus); }
+.input:checked:focus-visible + .line { box-shadow: inset 4px 0 0 var(--svt-ink), var(--svt-focus); }
+.explain { font-size: var(--svt-text-base); line-height: 1.55; min-height: 3.1em; }

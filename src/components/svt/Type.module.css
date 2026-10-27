@@ -1,0 +1,22 @@
+/* The lime highlighter. A band behind ink text, never lime text. */
+.mark {
+  background: linear-gradient(transparent 62%, var(--svt-lime) 62%, var(--svt-lime) 92%, transparent 92%);
+  padding: 0 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.chip {
+  background: var(--svt-lime);
+  color: var(--svt-ink);
+  padding: 0 6px;
+}
+.mono { font-family: var(--svt-font-mono); }
+.lead { font-size: var(--svt-text-md); line-height: 1.55; color: var(--svt-ink-2); }
+.muted { color: var(--svt-ink-2); }
+.small { font-size: var(--svt-text-sm); }
+
+/* Chinese has no spaces, so a line may break inside the highlighted words;
+ * keep them together there (only there: Vietnamese highlights can be long). */
+:lang(zh) .mark { white-space: nowrap; }
+/* Under 360px a long highlight would overflow the screen: let it wrap. */
+@media (max-width: 359px) { :lang(zh) .mark { white-space: normal; } }

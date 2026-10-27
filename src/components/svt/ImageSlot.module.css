@@ -1,0 +1,23 @@
+/* Placeholder for an image that will be generated later (milestone 8).
+ * Fixed aspect ratio, so swapping in the real image causes no layout shift. */
+.slot {
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 14px var(--svt-gutter);
+  aspect-ratio: 390 / 240;
+  max-height: 440px;
+  width: 100%;
+}
+.a { background: var(--svt-slot-a); }
+.b { background: var(--svt-slot-b); }
+.caption {
+  font-family: var(--svt-font-mono);
+  font-size: 13px;
+  background: var(--svt-paper);
+  padding: 6px 10px;
+}
+/* A real photo fills the same box the placeholder had. */
+.photo { padding: 0; overflow: hidden; background: var(--svt-slot-a); }
+.photo picture { display: contents; }
+.img { width: 100%; height: 100%; object-fit: cover; display: block; }

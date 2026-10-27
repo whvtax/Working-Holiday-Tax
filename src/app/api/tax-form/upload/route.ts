@@ -4,6 +4,7 @@ import { getSupabase, STORAGE_BUCKETS, assertUploadsBucketPrivate } from '@/lib/
 import { isRateLimited, getRedis } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import crypto from 'crypto'
+import { brandFromHost } from '@/lib/brand'
 
 const ALLOWED = new Set(['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/heic','image/heif','application/pdf'])
 const MAX_SIZE = 10 * 1024 * 1024
@@ -124,7 +125,10 @@ export async function POST(req: NextRequest) {
     // Use a UUID for the random portion - Math.random() can collide under
     // heavy concurrent uploads (the tax form may upload 20+ files in parallel
     // with retries) since 5 base-36 chars only gives ~60M combinations.
-    const pathname = `tax-form/${folder}/${Date.now()}_${crypto.randomUUID().slice(0, 8)}_${safeName}`
+    // SVT files sit under svt/ in the same PRIVATE bucket (decision 003); the
+    // brand comes from the host, never from the request.
+    const brandPrefix = brandFromHost(req.headers.get('host')) === 'svt' ? 'svt/' : ''
+    const pathname = `${brandPrefix}tax-form/${folder}/${Date.now()}_${crypto.randomUUID().slice(0, 8)}_${safeName}`
 
     // ── A BYTE BUDGET, NOT JUST A REQUEST COUNT ─────────────────────────────
     //

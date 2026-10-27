@@ -1,3 +1,4 @@
+import { anthropicMessages } from './llm-transport';
 import { recordAiUsage } from './ai-usage';
 // ============================================================
 // Claude API client: one structured "decide" call per incoming
@@ -219,7 +220,7 @@ export async function decide(ctx: CustomerContext, history: Turn[], opts: Decide
   // failure falls back to a human task, never an error to the customer.
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await anthropicMessages({
         method: 'POST',
         // Two attempts must fit inside one serverless invocation (webhook and
         // tick are both capped at 60 s): 2 x 25 s + the backoff stays under it.
@@ -344,7 +345,7 @@ export async function assessPaymentProofImage(bytes: ArrayBuffer, mime: string):
   });
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await anthropicMessages({
       method: 'POST',
       signal: AbortSignal.timeout(20_000),
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
@@ -425,7 +426,7 @@ export async function assessSuccessConfirmationImage(bytes: ArrayBuffer, mime: s
   });
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await anthropicMessages({
       method: 'POST',
       signal: AbortSignal.timeout(20_000),
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
@@ -500,7 +501,7 @@ export async function describeAttachment(bytes: ArrayBuffer, mime: string): Prom
   });
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await anthropicMessages({
       method: 'POST',
       signal: AbortSignal.timeout(20_000),
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
@@ -607,7 +608,7 @@ export async function mineKnowledge(
       messages: [{ role: 'user', content: convText.slice(0, 100000) }],
     });
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await anthropicMessages({
         method: 'POST',
         signal: AbortSignal.timeout(90_000),
         headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
@@ -679,6 +680,9 @@ export interface LostLeadEvidence {
  * closed conversation, decide "never" or "send", and for "send" write the one
  * personal paragraph that goes into the winback_<lang> template.
  */
+/** One attempt, well inside a tick (Jo, 26 Oct: a tick that ran out of time
+ *  was flagged). A failed decision is simply retried on the next pass. */
+export const WINBACK_CALL_MS = 25_000;
 export async function decideWinback(ev: LostLeadEvidence, now: Date = new Date()): Promise<WinbackDecision | { error: string }> {
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return { error: 'No Anthropic API key configured' };
@@ -703,11 +707,11 @@ export async function decideWinback(ev: LostLeadEvidence, now: Date = new Date()
     tool_choice: { type: 'tool', name: 'winback_decision' },
     messages: [{ role: 'user', content: userContent.slice(0, 60000) }],
   });
-  for (let attempt = 0; attempt < 2; attempt++) {
+  for (let attempt = 0; attempt < 1; attempt++) {
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await anthropicMessages({
         method: 'POST',
-        signal: AbortSignal.timeout(40_000),
+        signal: AbortSignal.timeout(WINBACK_CALL_MS),
         headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
         body,
       });
@@ -868,7 +872,7 @@ export async function decideReviewAsk(input: { lang: string | null; transcript: 
     messages: [{ role: 'user', content: `Trigger: ${input.trigger}. Customer language: ${input.lang ?? 'unknown'}.${input.outcome === 'PAYABLE' ? ' OUTCOME: this customer OWED the ATO (no refund). Only ask if the conversation shows they were clearly happy with the service despite the bill; never mention a refund.' : ''}\n\nConversation (oldest first):\n${input.transcript.slice(0, 40000)}` }],
   });
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await anthropicMessages({
       method: 'POST', signal: AbortSignal.timeout(25_000),
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
       body,
@@ -931,7 +935,7 @@ export async function judgeHoldingLine(input: { transcript: string; lang: string
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return { verdict: 'HOLD', reply: null, reason: 'no model key', measured: false };
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await anthropicMessages({
       method: 'POST', signal: AbortSignal.timeout(20_000),
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
       body: JSON.stringify({

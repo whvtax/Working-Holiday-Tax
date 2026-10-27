@@ -8,6 +8,21 @@
 import { getStore } from './store';
 import { KnowledgeRow } from './store';
 import { bridgeTokens } from './knowledge-i18n';
+import { currentBrand } from './brand-context';
+import type { Brand } from '@/lib/brand';
+
+/** Decision 004, learning: one shared Library. An entry with no brand tag is
+ *  for both assistants (everything learned so far, and everything learned
+ *  from WHT chats). An entry learned from a Student Visa Tax chat carries the
+ *  tag `brand:svt` and is used only for SVT; `brand:wht` works the same way.
+ *  So Mia knows everything Will knows, plus what students taught her, and a
+ *  student-only answer never reaches a WHT customer. */
+export const BRAND_TAG_PREFIX = 'brand:';
+export const brandTag = (b: Brand) => `${BRAND_TAG_PREFIX}${b}`;
+export function usableFor(e: Pick<KnowledgeRow, 'tags'>, brand: Brand = currentBrand()): boolean {
+  const tagged = (e.tags ?? []).filter((t) => t.startsWith(BRAND_TAG_PREFIX));
+  return tagged.length === 0 || tagged.includes(brandTag(brand));
+}
 
 const STOP = new Set(('a an the and or but if of to in on for with is are am was were be been being do does did ' +
   'i you he she it we they me my your our their this that these those at as by from not no yes can could would ' +
@@ -49,7 +64,7 @@ export async function retrieveKnowledge(message: string, opts?: { lang?: string;
   if (tokens.size === 0) return [];
   let entries: KnowledgeRow[];
   try {
-    entries = await getStore().listKnowledge('active');
+    entries = (await getStore().listKnowledge('active')).filter((e) => usableFor(e));
   } catch {
     return [];
   }
@@ -71,7 +86,7 @@ export async function nearestKnowledge(message: string, opts?: { lang?: string }
   const tokens = new Set([...tokenize(message), ...bridgeTokens(message).flatMap((t) => (t.includes(' ') ? t.split(' ') : [t]))]);
   if (tokens.size === 0) return null;
   let entries: KnowledgeRow[];
-  try { entries = await getStore().listKnowledge('active'); } catch { return null; }
+  try { entries = (await getStore().listKnowledge('active')).filter((e) => usableFor(e)); } catch { return null; }
   const lang = opts?.lang;
   let best: { intent: string; question: string; score: number } | null = null;
   for (const e of entries) {

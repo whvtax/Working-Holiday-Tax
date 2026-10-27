@@ -11,6 +11,8 @@
 import { teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { createHmac, timingSafeEqual } from 'crypto';
 import { handleIncoming, handleInboundNote, handlePaymentProofMedia } from '@/lib/will/service';
+import { brandForPhoneNumberId, withBrand } from '@/lib/will/brand-context';
+import type { Brand } from '@/lib/brand';
 import { isEditMessage, editFrom, applyInboundEdits } from '@/lib/will/inbound-edit';
 import { suggestReply } from '@/lib/will/suggest';
 // Indexed variant (customer_id, status lookup) rather than afterHumanReply's
@@ -179,6 +181,8 @@ interface WaMessage {
  *  so it is stored and handed to a human instead of the model. */
 interface InboundItem {
   msg: WaMessage; name?: string; body: string; isText: boolean; kind: string;
+  /** Decision 004: the brand of the number this message arrived on. */
+  brand: Brand;
   media?: { id: string; kind: string; mime?: string; filename?: string; caption?: string };
   reaction?: { emoji: string | null; to?: string };
   /** Set only on `kind: 'edit'`. `newText` is null whenever Meta withheld the
@@ -481,8 +485,10 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
     for (const e of entries) {
       for (const ch of ((e as { changes?: unknown[] }).changes ?? [])) {
         const val = (ch as { value?: { messages?: WaMessage[]; contacts?: { profile?: { name?: string }; wa_id?: string }[]; metadata?: { phone_number_id?: string } } }).value ?? {};
-        // Drop deliveries for a different phone number id (only when ours is set).
-        if (ourPhoneId && val.metadata?.phone_number_id && val.metadata.phone_number_id !== ourPhoneId) continue;
+        // Drop deliveries for a phone number id that is not ours (only when ours
+        // is set). The SVT number, once configured, is ours too (decision 004).
+        const itemBrand = brandForPhoneNumberId(val.metadata?.phone_number_id, ourPhoneId);
+        if (itemBrand === null) continue;
         // Skip coexistence history-sync payloads entirely (they carry old chats).
         if ((val as { history?: unknown }).history) continue;
         const nameByWa = new Map((val.contacts ?? []).map((c) => [c.wa_id, c.profile?.name]));
@@ -528,7 +534,7 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
           // Handled by its own branch here and dispatched in POST: it updates
           // the message it edits and creates nothing.
           if (isEditMessage(m)) {
-            out.push({ msg: m, name, body: '', isText: false, kind: 'edit', edit: editFrom(m) });
+            out.push({ msg: m, name, body: '', isText: false, kind: 'edit', edit: editFrom(m), brand: itemBrand });
             continue;
           }
           // THE FIX: recover the text whenever a body is present, WHATEVER the
@@ -536,7 +542,7 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
           // tagged `unsupported` while still carrying its `text.body`; the old
           // strict `type === 'text'` check dropped it silently, losing the lead.
           if (m.text?.body) {
-            out.push({ msg: m, name, body: m.text.body, isText: true, kind: 'text' });
+            out.push({ msg: m, name, body: m.text.body, isText: true, kind: 'text', brand: itemBrand });
             continue;
           }
           // A tap on a button/list reply has real, readable text — recover
@@ -544,14 +550,14 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
           // "open WhatsApp to view" placeholder below.
           const interactiveTitle = m.interactive?.button_reply?.title || m.interactive?.list_reply?.title;
           if (interactiveTitle) {
-            out.push({ msg: m, name, body: interactiveTitle, isText: true, kind: 'text' });
+            out.push({ msg: m, name, body: interactiveTitle, isText: true, kind: 'text', brand: itemBrand });
             continue;
           }
           // No readable text: keep the customer visible with a placeholder and a
           // human task rather than dropping them. Media and bodiless `unsupported`
           // both land here.
           out.push({
-            msg: m, name, body: placeholderFor(m), isText: false, kind: m.type || 'unknown',
+            msg: m, name, body: placeholderFor(m), isText: false, kind: m.type || 'unknown', brand: itemBrand,
             // Carry the attachment id and the reaction through, so the chat can
             // show the picture and the heart rather than a placeholder line.
             media: mediaOf(m),
@@ -582,16 +588,18 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
  * field in Meta. Extracted here and handled in POST.
  */
 export function extractEchoes(payload: unknown): {
-  echoes: { to: string; id: string; body: string; reaction?: { emoji: string | null; to?: string } }[];
+  echoes: { to: string; id: string; body: string; reaction?: { emoji: string | null; to?: string }; phoneNumberId?: string }[];
   revokes: string[];
 } {
-  const echoes: { to: string; id: string; body: string; reaction?: { emoji: string | null; to?: string } }[] = [];
+  const echoes: { to: string; id: string; body: string; reaction?: { emoji: string | null; to?: string }; phoneNumberId?: string }[] = [];
   const revokes: string[] = [];
   try {
     for (const e of ((payload as { entry?: unknown[] }).entry ?? [])) {
       for (const ch of ((e as { changes?: unknown[] }).changes ?? [])) {
         if ((ch as { field?: string }).field !== 'smb_message_echoes') continue;
-        const val = (ch as { value?: { message_echoes?: unknown[] } }).value ?? {};
+        const val = (ch as { value?: { message_echoes?: unknown[]; metadata?: { phone_number_id?: string } } }).value ?? {};
+        const phoneNumberId = val.metadata?.phone_number_id;
+        const before = echoes.length;
         for (const raw of (val.message_echoes ?? [])) {
           const m = raw as WaMessage & { to?: string; revoke?: { original_message_id?: string } };
           if (m.type === 'revoke' && m.revoke?.original_message_id) {
@@ -622,6 +630,8 @@ export function extractEchoes(payload: unknown): {
             echoes.push({ to: m.to, id: m.id, body: placeholderFor(m) });
           }
         }
+        // Which of our numbers this echo was sent from (decision 004).
+        for (let i = before; i < echoes.length; i++) echoes[i].phoneNumberId = phoneNumberId;
       }
     }
   } catch { /* malformed: return what we have */ }
@@ -676,7 +686,7 @@ export async function POST(req: Request) {
     if (!snap.statusesOnly) {
       await store.audit('channel', 'inbound_received', {
         ...snap, ourPhoneId: ourPhoneId ?? null, cutoff: inboundCutoffTs() || null,
-        phoneIdMatches: !snap.phoneNumberId || !ourPhoneId || snap.phoneNumberId === ourPhoneId,
+        phoneIdMatches: brandForPhoneNumberId(typeof snap.phoneNumberId === "string" ? snap.phoneNumberId : undefined, ourPhoneId) !== null,
       });
     }
   } catch { /* diagnostics only */ }
@@ -720,7 +730,7 @@ export async function POST(req: Request) {
   // on the redelivery, so a retry re-runs only what actually failed.
   // COST-01: throttle per-sender and globally before invoking the paid engine.
   let askMetaToRetry = false;
-  for (const { msg, name, body } of textItems) {
+  for (const { msg, name, body, brand } of textItems) {
     // Atomic idempotency claim (RACE-01/REL-02): the first delivery of a given
     // Meta id wins; concurrent duplicates get false and are skipped.
     let claimed = false;
@@ -730,7 +740,9 @@ export async function POST(req: Request) {
 
       // Fresh-start filter (Jo's rule): only 100% new customers enter Will. A
       // pre-existing / returning contact is dropped even if they message again.
-      if (await store.isBlockedContact(msg.from)) {
+      // The known-contacts list is WHT's fresh-start list: it never drops a
+      // student writing to the SVT number (final review, 27 Oct).
+      if (brand === 'wht' && await store.isBlockedContact(msg.from)) {
         // Masked: this log is readable in the CRM and the snapshot above already
           // masks senders. Writing the raw number here undid that.
           await store.audit('policy_guard', 'returning_contact_skipped', { from: maskWa(msg.from) });
@@ -755,7 +767,7 @@ export async function POST(req: Request) {
       const mode = resolveAiMode(await store.getSetting('ai_mode'));
       // Pass the customer's WhatsApp message id so a reaction they later add to
       // THIS message can be matched back to it and shown in its corner.
-      await handleIncoming(msg.from, body, mode, { name, providerId: msg.id });
+      await withBrand(brand, () => handleIncoming(msg.from, body, mode, { name, providerId: msg.id }));
       // success: the claim stands, so a Meta retry of the same id is a no-op.
     } catch (e) {
       const error = (e as Error).message?.slice(0, 200) ?? 'unknown';
@@ -783,7 +795,7 @@ export async function POST(req: Request) {
           });
         } catch { /* */ }
         try {
-          const customer = await store.getCustomerByWaId(msg.from);
+          const customer = await withBrand(brand, () => store.getCustomerByWaId(msg.from));
           await store.addTask({
             customerId: customer?.id ?? null,
             customerName: customer?.name ?? name ?? maskWa(msg.from),
@@ -804,7 +816,7 @@ export async function POST(req: Request) {
   // reply — but the customer must never disappear. Store the placeholder in the
   // thread and raise ONE task so a human opens WhatsApp and answers. Best-effort:
   // never blocks the ack, never asks Meta to retry (there is nothing to re-run).
-  for (const { msg, name, body, kind, media, reaction } of noteItems) {
+  for (const { msg, name, body, kind, media, reaction, brand } of noteItems) {
     try {
       if (!(await store.claimInbound(msg.id))) continue; // dedupe on the Meta id
       // For anything that fell through to the placeholder — no text, no
@@ -824,7 +836,7 @@ export async function POST(req: Request) {
       // null when it doesn't qualify (wrong stage, already paid, unknown
       // contact), and the normal note/task path runs as before.
       const isProofCandidate = (media?.kind === 'image' || media?.kind === 'document');
-      const autoPaid = isProofCandidate ? await handlePaymentProofMedia(msg.from, body, { name, media: media! }) : null;
+      const autoPaid = isProofCandidate ? await withBrand(brand, () => handlePaymentProofMedia(msg.from, body, { name, media: media! })) : null;
       if (!autoPaid) {
         // For a bodiless, media-less event, pass Meta's own type and error
         // through so the task can name it. It was already going to will_audit,
@@ -851,7 +863,7 @@ export async function POST(req: Request) {
         // These checks sit INSIDE `if (!autoPaid)` on purpose. Putting them
         // above handlePaymentProofMedia would change whether a customer's
         // payment is confirmed, which is not this file's decision to make.
-        if (await store.isBlockedContact(msg.from)) {
+        if (brand === 'wht' && await store.isBlockedContact(msg.from)) {
           await store.audit('policy_guard', 'returning_contact_skipped', { from: maskWa(msg.from), path: 'note' });
           continue;
         }
@@ -859,7 +871,7 @@ export async function POST(req: Request) {
           await store.audit('policy_guard', 'inbound_rate_limited', { from: maskWa(msg.from), scope: 'note' });
           continue;
         }
-        await handleInboundNote(msg.from, body, { name, media, reaction, undecoded, providerId: msg.id });
+        await withBrand(brand, () => handleInboundNote(msg.from, body, { name, media, reaction, undecoded, providerId: msg.id }));
       }
       await store.audit('channel', 'inbound_note_stored', { id: msg.id, kind, hasMedia: !!media, from: maskWa(msg.from), autoPaid: !!autoPaid });
     } catch (e) {
@@ -887,7 +899,10 @@ export async function POST(req: Request) {
       // Dedupe on the Meta id, reusing the processed-messages table.
       if (!(await store.claimInbound(echo.id))) continue;
       // from = the business, to = the customer — so the customer is `to`.
-      const customer = await store.getCustomerByWaId(echo.to);
+      // Looked up within the brand of the number it was sent from (decision 004).
+      const echoBrand = brandForPhoneNumberId(echo.phoneNumberId, ourPhoneId);
+      if (echoBrand === null) continue;
+      const customer = await withBrand(echoBrand, () => store.getCustomerByWaId(echo.to));
       // Only mirror into a conversation Will already knows, so messaging a
       // brand-new number from the phone does not silently create CRM contacts.
       if (!customer) continue;

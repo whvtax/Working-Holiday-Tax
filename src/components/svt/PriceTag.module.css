@@ -1,0 +1,11 @@
+.tag {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--svt-font-mono);
+}
+.main { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+.amount { background: var(--svt-lime); padding: 0 6px; }
+.unit { font-size: var(--svt-text-md); font-weight: 500; letter-spacing: 0; }
+.sub { font-size: var(--svt-text-base); }
+@media (min-width: 1024px) { .main { font-size: 40px; } }

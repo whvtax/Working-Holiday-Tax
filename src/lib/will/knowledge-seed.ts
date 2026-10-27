@@ -192,7 +192,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I want to make sure I'm paying the right account",
       "is the payment of $385 for my TFN + ABN return for this financial year?"
     ],
-    "answer": "Yes, confirmed. BSB 062692, account 81049952 is our business account, held under The Accounting Academy, our registered business name, and it's the account every Working Holiday Tax client pays into. The amount covers your full tax return for the year you're lodging. Once it's through, just send a screenshot and we'll get started. 😊",
+    "answer": "Yes, confirmed. BSB 062692, account 81049952 is our business account, held under the name The Accounting Academy, and it's the account every Working Holiday Tax client pays into. The amount covers your full tax return for the year you're lodging. Once it's through, just send a screenshot and we'll get started. 😊",
     "keywords": ["confirm", "official", "account", "bank", "details", "same", "accounting", "academy", "before", "transfer", "legit"],
     "tags": ["payment", "trust"],
     "lang": "en"
@@ -274,7 +274,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     ],
     "tags": [
       "objection",
-      "legitimacy"
+      "legitimacy",
+      "brand:wht"
     ],
     "lang": "en"
   },
@@ -530,7 +531,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "tags": [
       "tax-question",
       "residency",
-      "paid"
+      "paid",
+      "brand:wht"
     ],
     "lang": "en"
   },
@@ -557,7 +559,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     ],
     "tags": [
       "tax-question",
-      "residency"
+      "residency",
+      "brand:wht"
     ],
     "lang": "en"
   },
@@ -841,7 +844,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     ],
     "tags": [
       "objection",
-      "value"
+      "value",
+      "brand:wht"
     ],
     "lang": "en"
   },
@@ -1719,7 +1723,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     ],
     "tags": [
       "objection",
-      "process"
+      "process",
+      "brand:wht"
     ],
     "lang": "en"
   },
@@ -1885,7 +1890,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "How long do I have to lodge my return for last financial year?",
       "Am I too late to do my tax return?"
     ],
-    "answer": "If you lodge through us, your deadline may be extended until 15 May.",
+    "answer": "It's not too late, we can still lodge it for you 😊 Returns lodged by a registered tax agent usually have more time than lodging yourself. The sooner we start, the better.",
     "keywords": [
       "deadline",
       "cut off",
@@ -1999,7 +2004,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "part year"
     ],
     "tags": [
-      "process"
+      "process",
+      "brand:wht"
     ],
     "lang": "en"
   },
@@ -2015,7 +2021,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     ],
     "answer": "Tax residency isn't decided by your visa or length of stay alone. The ATO uses several tests based on your full circumstances, and meeting any one of them may make you an Australian resident for tax purposes.\n\nThe questionnaire guides you through these tests, and we confirm your status during the review because it can significantly affect your tax result.",
     "keywords": ["residency test","resident","criteria","five tests","whm","how decided","qualify","questionnaire","assess"],
-    "tags": ["residency","tax-question","boundary"],
+    "tags": ["residency","tax-question","boundary",
+      "brand:wht"
+    ],
     "lang": "en"
   },
   {
@@ -2029,7 +2037,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     ],
     "answer": "Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us. 😊",
     "keywords": ["tax free threshold","18200","18k","threshold","resident","non resident","eligible","residency"],
-    "tags": ["residency","tax-question"],
+    "tags": ["residency","tax-question",
+      "brand:wht"
+    ],
     "lang": "en"
   },
   {
@@ -2044,7 +2054,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     ],
     "answer": "No problem at all!\n\nPlease complete the questionnaire again with the correct answers.",
     "keywords": ["form","questionnaire","mistake","wrong","redo","resubmit","fill again","correct","edit"],
-    "tags": ["process","residency"],
+    "tags": ["process","residency",
+      "brand:wht"
+    ],
     "lang": "en"
   },
   {
@@ -2140,8 +2152,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       ],
       "tags": [
           "tax-question",
-          "residency"
-      ],
+          "residency",
+      "brand:wht"
+    ],
       "lang": "en"
   },
   {
@@ -2174,8 +2187,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       ],
       "tags": [
           "tax-question",
-          "owing"
-      ],
+          "owing",
+      "brand:wht"
+    ],
       "lang": "en"
   },
   {

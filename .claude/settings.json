@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "whvtax-vendored": {
+      "source": {
+        "source": "directory",
+        "path": "./.claude/vendor-marketplace"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "insecure-defaults@whvtax-vendored": true
+  }
+}

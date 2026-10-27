@@ -350,27 +350,77 @@ const KNOWLEDGE_FIXES: { question: string; answer: string }[] = [
     answer: 'Once the ATO has issued your notice, you can ask them directly for a payment plan. You\'ll need to call the ATO yourself to request one. We\'ll message you in about two weeks with the amount and how to pay. \u{1F60A}',
   },
 ];
+/** Later fixes, each batch applied once after the ones before it, so an
+ *  earlier batch never re-runs over an answer Jo has since edited by hand. */
+const LATER_FIXES: { marker: string; fixes: { question: string; answer: string }[] }[] = [
+  { marker: 'fix-27oct', fixes: [
+    // 27 Oct (Jo: deadline questions always get a yes). Date-free on purpose:
+    // the 31 October detail lives in the playbook, which knows today's date.
+    {
+      question: 'Is there a deadline for paying and getting my tax return lodged?',
+      answer: "It's not too late, we can still lodge it for you 😊 Returns lodged by a registered tax agent usually have more time than lodging yourself. The sooner we start, the better.",
+    },
+  ] },
+];
+
 export async function applyKnowledgeFixes(
   store: Pick<Store, 'listKnowledge' | 'updateKnowledge' | 'getSetting' | 'setSetting'>,
 ): Promise<number> {
   try {
-    const marker = 'fix-25oct';
-    if ((await store.getSetting('knowledge_fix')) === marker) return 0;
+    const batches = [{ marker: 'fix-25oct', fixes: KNOWLEDGE_FIXES }, ...LATER_FIXES];
+    const done = await store.getSetting('knowledge_fix');
+    const from = batches.findIndex((b) => b.marker === done) + 1;
+    if (from >= batches.length) return 0;
     const rows = await store.listKnowledge();
     let fixed = 0;
-    for (const fix of KNOWLEDGE_FIXES) {
-      const want = fix.question.trim().toLowerCase();
-      for (const row of rows) {
-        if ((row.question || '').trim().toLowerCase() !== want) continue;
-        if (row.answer === fix.answer) continue;
-        await store.updateKnowledge(row.id, { answer: fix.answer });
-        fixed++;
+    for (const batch of batches.slice(from)) {
+      for (const fix of batch.fixes) {
+        const want = fix.question.trim().toLowerCase();
+        for (const row of rows) {
+          if ((row.question || '').trim().toLowerCase() !== want) continue;
+          if (row.answer === fix.answer) continue;
+          await store.updateKnowledge(row.id, { answer: fix.answer });
+          fixed++;
+        }
       }
+      await store.setSetting('knowledge_fix', batch.marker);
     }
-    await store.setSetting('knowledge_fix', marker);
     return fixed;
   } catch {
     return 0;
+  }
+}
+
+/** Decision 004: the seed's brand tags (brand:wht / brand:svt) were added after
+ *  the pack was loaded into production, and the backfill only adds missing
+ *  questions. This merges the seed's brand tags into the matching rows, once
+ *  per set of tags, keeping every other tag Jo set (final review, 27 Oct).
+ *  It must run before the SVT line is turned on. */
+export async function applyBrandTags(
+  store: Pick<Store, 'listKnowledge' | 'updateKnowledge' | 'getSetting' | 'setSetting'>,
+): Promise<number> {
+  try {
+    const tagged = KNOWLEDGE_SEED.filter((e) => (e.tags ?? []).some((t) => t.startsWith('brand:')));
+    const marker = `brand-tags-${tagged.length}`;
+    if ((await store.getSetting('knowledge_brand_tags')) === marker) return 0;
+    const rows = await store.listKnowledge();
+    let fixed = 0;
+    for (const e of tagged) {
+      const want = e.question.trim().toLowerCase();
+      const brandTags = (e.tags ?? []).filter((t) => t.startsWith('brand:'));
+      for (const row of rows) {
+        if ((row.question || '').trim().toLowerCase() !== want) continue;
+        const tags = row.tags ?? [];
+        const missing = brandTags.filter((t) => !tags.includes(t));
+        if (!missing.length) continue;
+        await store.updateKnowledge(row.id, { tags: [...tags, ...missing] });
+        fixed++;
+      }
+    }
+    await store.setSetting('knowledge_brand_tags', marker);
+    return fixed;
+  } catch {
+    return 0; // retried on the next tick
   }
 }
 

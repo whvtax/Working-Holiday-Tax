@@ -27,7 +27,7 @@ it('no super (DASP) service: the wording, the Library and the playbook agree', (
   const dasp = KNOWLEDGE_SEED.filter((k) => /dasp|superannuation/i.test(k.question));
   expect(dasp.length).toBeGreaterThan(0);
   for (const k of dasp) expect(k.answer).toContain("we don't offer a superannuation (DASP) service");
-  expect(src('src/lib/will/seed.ts')).toContain("const marker = 'fix-25oct';");
+  expect(src('src/lib/will/seed.ts')).toContain("marker: 'fix-25oct'");
   expect(src('src/lib/will/playbook.ts')).not.toContain('we are happy to help with that too once your tax return is done');
 });
 

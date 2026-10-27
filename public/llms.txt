@@ -2,7 +2,7 @@
 
 > Australian tax for working holiday visa holders on subclass 417 and 462. We handle TFN applications, ABN registration, annual tax returns, superannuation claimed back through DASP, and Medicare levy exemptions. Fully online, from anywhere in the world. Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged with the ATO.
 
-Generated from the live guide data on 2026-10-21. Do not hand edit: run `npm run generate:llms`.
+Generated from the live guide data on 2026-10-27. Do not hand edit: run `npm run generate:llms`.
 
 ## About
 
@@ -18,7 +18,7 @@ The work that decides the outcome happens before lodgement: establishing the res
 
 ## Our guarantee
 
-If your refund is less than our fee, we refund the difference, so you are never out of pocket. Where no refund is payable to you at all, the fee is refunded in full.
+If your refund is less than our fee, we refund the difference once the ATO has issued your Notice of Assessment. If there is no refund, or you owe tax, the full fee applies.
 
 ## How our content is prepared
 

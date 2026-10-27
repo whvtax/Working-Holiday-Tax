@@ -20,7 +20,7 @@
 import type { CustomerState } from './state-machine';
 import { thanksReply } from './text-normalize';
 import { laterPlanReply } from './later-plan';
-import { noRefundCasesMessage, referralMessage, documentsReceivedMessage, coupleMessage, bankDocumentMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage, notOurPriceMessage } from './i18n';
+import { noRefundCasesMessage, referralMessage, documentsReceivedMessage, coupleMessage, bankDocumentMessage, ownAccountMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage, notOurPriceMessage } from './i18n';
 import { refundNotYetMessage, reviewLinkFor } from './review-asks';
 import { accountNameMessage, isAccountNameQuestion } from './account-name';
 import { detectChoice, priceMessageFor, firstContactPriceMessage, priceMessageIn, hasPriceIn, reviewMessageIn } from './instant-choice';
@@ -37,7 +37,7 @@ export const APPROVED_KEYS = [
   'thanks', 'later_plan', 'no_refund_cases', 'account_name',
   'price_tfn', 'price_tfn_abn', 'residency_quiz_start',
   'refund_not_yet', 'referral', 'documents_received', 'review_link', 'couple',
-  'residency_resident', 'residency_whm', 'price_tfn_review', 'price_tfn_abn_review', 'bank_document', 'refund_chance', 'payment_link_offer', 'payment_link_name', 'payment_link_ready', 'no_dasp', 'not_our_price',
+  'residency_resident', 'residency_whm', 'price_tfn_review', 'price_tfn_abn_review', 'bank_document', 'own_account', 'refund_chance', 'payment_link_offer', 'payment_link_name', 'payment_link_ready', 'no_dasp', 'not_our_price',
 ] as const;
 export type ApprovedKey = typeof APPROVED_KEYS[number];
 export function isApprovedKey(v: unknown): v is ApprovedKey {
@@ -55,20 +55,21 @@ When one of these approved messages is exactly the right reply, set approved_key
 - price_tfn: they clearly chose the TFN option (wages only) and nothing in the chat mentions other income (freelance, UGC, side work, cash, ABN). Set new_state PRICE_SENT.
 - price_tfn_abn: they have ABN income (Uber, delivery, contracting, any ABN). Set new_state PRICE_SENT.
 - price_tfn_review / price_tfn_abn_review: they already lodged their return (themselves, through myGov, another agent) and want it checked, corrected, amended or lodged again because something was wrong or they got less than expected. A review of an existing return: $220 (or $385 with ABN income), for the review itself, whatever the result, no guarantee. This is a standard service you answer yourself, never a reason to hand over (Jo, 24 Oct, Chinami). Set new_state PRICE_SENT. If they also ask something the wording does not cover (whether the 31 October deadline still allows it, their super), leave approved_key empty and write the reply yourself: the same review wording, plus one line per question. October 31 is the deadline for lodging a NEW return, not for correcting one already lodged. Super (DASP): we do not offer that service at the moment (Jo, 25 Oct).
-- refund_chance: before paying, they ask how likely a refund is, whether they will get anything back, or how much (Jo, 25 Oct). It depends on many factors and an estimate only comes after the review of their case, which starts after payment. Never a handover, never a figure or a promise.
+- refund_chance: before paying, they ask how likely a refund is, whether they will get anything back, or how much (Jo, 25 Oct). It depends on many factors and an estimate only comes after the review of their case, which starts after payment. Never a handover, never a figure or a promise. The same when they give their own figures (taxable income, tax withheld, "I earned $65,947 on a working holiday, will I get money back or owe?", Jo, 27 Oct): use this key and never comment on their numbers.
 - payment_link_offer: they want to pay from overseas or from a non-Australian account, ask for an IBAN / SWIFT, how much it is in euros or pounds, or say the transfer does not work (Jo, 25 Oct). Offer a card payment link. Never give an IBAN, never convert the price.
 - payment_link_name: we offered the payment link and they said yes. Ask their full name.
 - payment_link_ready: we asked their full name for the payment link and they gave it. The system opens a task and the team sends the link by hand.
 - not_our_price: before paying, they say they were told, saw or heard a different price ($100, $130, "starts from $..."), or found it cheaper elsewhere and ask why ours is $220 (Jo, 25 Oct). Our fee is fixed; that price is not ours. Never a handover, never a discount. If they only say they are going with a cheaper provider, a friendly goodbye instead.
 - no_dasp: they ask about claiming their superannuation / super / DASP, or its price. We do not offer that service at the moment (maybe in the future). Never a handover. If the same message asks something else too, leave the key empty and write the reply yourself with this line in it.
+- own_account: they ask whether the refund can go into SOMEONE ELSE'S account (a friend, partner, family member, a friend who is still in Australia), or whether the account has to be in their own name. It is not possible: the account must be in their own name with their personal details. Use this even when they also say they can no longer get into their own account. Never a handover (Jo, 27 Oct, a German customer: "Could it go to my friend's account?" was handed to the team).
 - bank_document: they ask whether the bank statement / bank document is really needed, or say they cannot get one (no access to online banking, no Australian number to verify, closed account). It IS required: an official document from their Australian bank with their full name, BSB and account number (ATO requirement). Never say it is not needed, never accept only the numbers typed into the form (Jo, 25 Oct).
 - residency_quiz_start: our last message was the residency double-check and they ask or are unsure about it, OR (Jo, 25 Oct) a paid customer asks anywhere whether they count as a resident / which box to tick, also when a team member has written in the chat. Not when they confirm it is correct.
 - residency_resident / residency_whm: after the residency double-check, the customer has already counted for themselves which of the five points on the page apply to them. Their latest count of 4 or 5 is residency_resident ("it looks like you count as a tax resident, please fill out the questionnaire again"); fewer is residency_whm. If they have not counted, use residency_quiz_start instead.
 - refund_not_yet: after lodgement, we asked whether the refund has arrived and they say not yet. (The system re-checks with them a few days later.)
-- referral: after lodgement, they answered our Google review request positively ("done", "sure", 👍). Once only.
+- referral: after lodgement, they answered our Google review request positively ("done", "sure", 👍). Once only. Never as the answer to our "has your refund landed?" check-in (Jo, 27 Oct): a yes there means the refund landed, and the system sends the Google review ask.
 - review_link: they ask for the link to leave us a review (or say they want to leave one). The system sends a thank-you with our Google review link.
 - couple: two people (partners, friends, siblings) ask about doing their returns together. Each writes to us separately from their own WhatsApp, the fee is per person and the same for everyone. Never a combined price, never a discount for two.
-- documents_received: a paid customer sent files (shown as [Photo] / [Document] lines) and there is nothing else to answer. Never twice for the same batch.
+- documents_received: a paid customer sent files (shown as [Photo] / [Document] lines), or wrote out in the message the record the team asked for (a working from home diary, a list of hours, a list of expenses: Jo, 27 Oct, Niamh), and there is nothing else to answer. Whether the record is enough is the team's check in the review, not a reason to hand over. Never twice for the same batch.
 CLOSING A LEAD YOURSELF: when a lead clearly says they are not interested, are going with someone else, already did it themselves, or tells us not to write: answer per the rules (one friendly line, no persuasion unless the comparing-providers rule applies) and set new_state NOT_INTERESTED; nothing will chase them after that. Someone pitching US a service (an agency, a collaboration, sponsorship): action wait and new_state NOT_RELEVANT, no reply.
 Anything else: write the reply yourself from the rules and the Library, wait, or hand it to the team. A message the system already answered (our automatic confirmation right above it covers everything they said) is a wait.`;
 
@@ -105,6 +106,7 @@ export function renderApproved(key: ApprovedKey, c: RenderCtx): string | null {
       return track === 'TFN' ? APPROVED.price_tfn_review : APPROVED.price_tfn_abn_review;
     }
     case 'bank_document': return bankDocumentMessage(lang);
+    case 'own_account': return ownAccountMessage(lang);
     case 'refund_chance': return refundChanceMessage(lang);
     case 'payment_link_offer': return paymentLinkMessage('offer', lang);
     case 'payment_link_name': return paymentLinkMessage('name', lang);

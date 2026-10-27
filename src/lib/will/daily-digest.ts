@@ -19,9 +19,12 @@
 //   in the Learning tab and he reviews them on his own schedule there — the
 //   email was pure duplication of what the tab already shows.
 // ============================================================
+import { FORM_LINK_ANY_BRAND } from './brand-voice';
 import { getStore } from './store';
 import { retrieveKnowledge } from './knowledge';
-import { extractKeywords } from './knowledge';
+import { brandTag, extractKeywords, usableFor } from './knowledge';
+import { svtLineEnabled, withBrand } from './brand-context';
+import { isBrand, type Brand } from '@/lib/brand';
 import { mineKnowledge, MinedEntry } from './claude';
 import { redactSensitive, shortLabel } from './digest';
 import { localMidnightUtc } from './config';
@@ -104,12 +107,14 @@ export function isApprovedScriptReply(reply: string): boolean {
     if (r.includes(sig) || sig.includes(r)) return true;
   }
   // The payment-received family in every wording: form link + "get back to you"
-  if (/workingholidaytax\.com\.au\/tax-form/i.test(reply) && /(?:payment|paid|received|thank|zahlung|pago|paiement|pagamento|お支払い|入金)/i.test(reply)) return true;
+  if (FORM_LINK_ANY_BRAND.test(reply) && /(?:payment|paid|received|thank|zahlung|pago|paiement|pagamento|お支払い|入金)/i.test(reply)) return true;
   return false;
 }
 
 
 export interface DigestCandidate {
+  /** The brand of the chat it came from (decision 004). */
+  brand: Brand;
   question: string;
   answer: string;
   answeredBy: 'HUMAN' | 'AI';
@@ -129,8 +134,16 @@ export async function findDailyCandidates(startIso: string, endIso: string): Pro
     byCustomer.get(m.customerId)!.push(m);
   }
 
+  // Which brand each chat is on. Only looked up once the SVT line exists:
+  // until then every chat is WHT and this costs nothing (no extra query).
+  const brandOf = new Map<string, Brand>();
+  if (svtLineEnabled()) {
+    for (const c of await store.listCustomersByIds([...byCustomer.keys()])) brandOf.set(c.id, isBrand(c.brand) ? c.brand : 'wht');
+  }
+
   const candidates: DigestCandidate[] = [];
-  for (const list of byCustomer.values()) {
+  for (const [customerId, list] of byCustomer) {
+    const brand = brandOf.get(customerId) ?? 'wht';
     const sorted = [...list].sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1));
     for (let i = 0; i < sorted.length; i++) {
       const m = sorted[i];
@@ -140,9 +153,11 @@ export async function findDailyCandidates(startIso: string, endIso: string): Pro
       const reply = sorted.slice(i + 1).find((x) => x.direction === 'OUT' && x.status === 'SENT' && (x.author === 'HUMAN' || x.author === 'AI'));
       if (!reply || !(reply.body ?? '').trim()) continue;
       if (isApprovedScriptReply(reply.body ?? '')) continue; // the answer was a script Will already has
-      const hits = await retrieveKnowledge(text).catch(() => []);
+      // Covered for THIS brand (an SVT question is checked against what Mia can use).
+      const hits = await withBrand(brand, () => retrieveKnowledge(text)).catch(() => []);
       if (hits.length > 0) continue; // already covered — nothing new to learn here
       candidates.push({
+        brand,
         question: redactSensitive(text),
         answer: redactSensitive(reply.body ?? ''),
         answeredBy: reply.author as 'HUMAN' | 'AI',
@@ -200,8 +215,15 @@ export async function runDailyDigest(nowMs: number): Promise<'mined' | 'already_
   let fresh: MinedEntry[] = [];
   try {
     const candidates = await findDailyCandidates(yesterdayMidnight.toISOString(), todayMidnight.toISOString());
-    if (candidates.length) {
-      const conversations = candidates.map((c) => ({
+    // One mining pass per brand. WHT drafts stay untagged (shared, exactly as
+    // before), so Mia learns from them too; drafts from SVT chats are tagged
+    // brand:svt so a student-only answer never reaches a WHT customer.
+    const existing = candidates.length ? await store.listKnowledge() : [];
+    const seen = new Set(existing.map((e) => normQ(e.question)));
+    for (const brand of ['wht', 'svt'] as const) {
+      const group = candidates.filter((c) => c.brand === brand);
+      if (!group.length) continue;
+      const conversations = group.map((c) => ({
         messages: [{ role: 'customer', text: c.question }, { role: 'assistant', text: c.answer }],
       }));
       // The model is handed every question the Library already holds, active
@@ -209,10 +231,10 @@ export async function runDailyDigest(nowMs: number): Promise<'mined' | 'already_
       // keyword score cannot tell "how do I pay?" from "what are the payment
       // details?" reliably in either direction (tried, 24 Sep: it matched
       // "TFN only price" to "help registering an ABN"); the model can.
-      const existing = await store.listKnowledge();
-      const mined = await mineKnowledge(conversations, existing.map((e) => `${e.intent}: ${e.question}`));
-
-      const seen = new Set(existing.map((e) => normQ(e.question)));
+      // Only what THIS brand can use counts as "already in the Library": a
+      // WHT-only answer must not stop a student version being learned.
+      const usable = existing.filter((e) => usableFor(e, brand));
+      const mined = await mineKnowledge(conversations, usable.map((e) => `${e.intent}: ${e.question}`));
       for (const e of mined) {
         const k = normQ(e.question);
         if (!k || seen.has(k)) continue;
@@ -221,7 +243,7 @@ export async function runDailyDigest(nowMs: number): Promise<'mined' | 'already_
           intent: e.intent || e.question.slice(0, 60),
           question: e.question, examples: e.examples, answer: e.answer,
           keywords: e.keywords.length ? e.keywords : extractKeywords(`${e.question} ${e.examples.join(' ')}`),
-          tags: e.tags, lang: e.lang || 'en', weight: 1, status: 'draft', source: 'mined',
+          tags: brand === 'svt' ? [...e.tags, brandTag('svt')] : e.tags, lang: e.lang || 'en', weight: 1, status: 'draft', source: 'mined',
         });
         fresh.push(e);
       }

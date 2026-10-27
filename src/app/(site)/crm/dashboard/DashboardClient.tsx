@@ -22,6 +22,8 @@ type Task = {
   fileUrls:string[]
   reviewStatus?: 'pending'|'approved'|'rejected'
   reviewerNote?: string
+  /** Which brand the form came from (decision 003). Absent = WHT. */
+  brand?: 'wht'|'svt'
 }
 type Client = {
   id:string; fullName:string; dob:string; whatsapp:string; email:string
@@ -710,7 +712,7 @@ export default function DashboardClient() {
     if (estimateSent[task.id]) { setDoneLooking(false); return }
     setDoneLooking(true)
     try {
-      const r = await fetch(`/api/will/link?phone=${encodeURIComponent(task.whatsapp || '')}`)
+      const r = await fetch(`/api/will/link?phone=${encodeURIComponent(task.whatsapp || '')}${task.brand === 'svt' ? '&brand=svt' : ''}`)
       const j = await r.json()
       if (doneReq.current !== task.id) return
       if (j?.customer) { setDoneLink(j.customer); setDoneTemplate(j.template || ''); setDoneTemplatePayable(j.templatePayable || ''); if (j.customer.outcome === 'PAYABLE') setDoneOutcome('PAYABLE') }
@@ -1404,7 +1406,7 @@ export default function DashboardClient() {
       for (const t of pending) {
         sigFetched.current.add(t.id)
         try {
-          const r = await fetch(`/api/will/link?phone=${encodeURIComponent(t.whatsapp||'')}`)
+          const r = await fetch(`/api/will/link?phone=${encodeURIComponent(t.whatsapp||'')}${t.brand === 'svt' ? '&brand=svt' : ''}`)
           const j = await r.json()
           if (cancelled) return
           setSigLinks(prev => ({ ...prev, [t.id]: toSigLink(j) }))
@@ -1431,7 +1433,7 @@ export default function DashboardClient() {
       try {
         const task = tasks.find(x => x.id === taskId)
         if (task?.whatsapp) {
-          const fresh = toSigLink(await fetch(`/api/will/link?phone=${encodeURIComponent(task.whatsapp)}`).then(r => r.json()))
+          const fresh = toSigLink(await fetch(`/api/will/link?phone=${encodeURIComponent(task.whatsapp)}${task.brand === 'svt' ? '&brand=svt' : ''}`).then(r => r.json()))
           if (fresh && (fresh.signatureReadySent || fresh.state === 'SIGNED' || fresh.state === 'LODGED' || fresh.state === 'COMPLETED')) {
             setSigLinks(prev => ({ ...prev, [taskId]: fresh }))
             setSigBusy(null)
@@ -1684,6 +1686,13 @@ export default function DashboardClient() {
                       <div className="trow" style={{flexWrap:'wrap',gap:4}}>
                         <span className="ttitle">{displayName(t.clientName)}</span>
                         <CopyBtn text={displayName(t.clientName)}/>
+                        {t.brand === 'svt' && (
+                          // Code, not the brand name: this bundle is served from the WHT
+                          // domain and the brands are separate to customers (CLAUDE.md).
+                          <span className="chip" title="Came in through the student brand: reply as that brand">
+                            SVT
+                          </span>
+                        )}
                         {isReturning && (
                           <span className="chip good" title="This client has been with you before">
                             🔄 Returning
@@ -1926,6 +1935,7 @@ export default function DashboardClient() {
                     <span className="tsev" style={{['--tc' as string]:TASK_COLORS[activeTask.taskType]}}>{TASK_LABELS[activeTask.taskType]}</span>
                     <span>{activeTask.taxYear}</span>
                     <span>· Submitted {fmtDate(activeTask.submittedAt)}</span>
+                    {activeTask.brand === 'svt' && <span className="cstate">SVT</span>}
                     {(activeTask.notes||'').includes('🔄 Returning client') && (
                       <span className="cstate">🔄 Returning client</span>
                     )}

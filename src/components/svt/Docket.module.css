@@ -1,0 +1,18 @@
+/* A receipt with a torn, zig-zag bottom edge. */
+.docket {
+  background: var(--svt-paper);
+  color: var(--svt-ink);
+  padding: 18px 18px 30px;
+  font-family: var(--svt-font-mono);
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  clip-path: polygon(0 0, 100% 0, 100% 92%, 83.3% 100%, 66.6% 92%, 50% 100%, 33.3% 92%, 16.6% 100%, 0 92%);
+  max-width: 420px;
+  width: 100%;
+}
+.row { display: flex; justify-content: space-between; gap: 16px; margin: 0; }
+.row dt, .row dd { margin: 0; }
+.total { font-weight: 600; }
+.highlight { background: var(--svt-ink); color: var(--svt-lime); padding: 0 4px; }

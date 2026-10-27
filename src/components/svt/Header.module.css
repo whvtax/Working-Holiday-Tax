@@ -1,0 +1,42 @@
+.header {
+  position: relative;
+  z-index: 20;
+  padding: 12px var(--svt-gutter);
+  background: var(--svt-paper);
+}
+.bar { max-width: var(--svt-max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: var(--svt-text-md); min-height: var(--svt-tap); }
+.brand:hover { color: var(--svt-ink); }
+
+/* Mobile: Menu disclosure. */
+.menu { position: static; }
+.menuButton {
+  list-style: none;
+  display: flex; align-items: center; min-height: var(--svt-tap); padding: 0 8px;
+  font-size: 15px; cursor: pointer;
+}
+.menuButton::-webkit-details-marker { display: none; }
+.menu[open] .menuButton { text-decoration: underline; text-underline-offset: 4px; }
+.panel {
+  position: absolute; left: 0; right: 0; top: 100%;
+  background: var(--svt-paper);
+  border-top: 1px solid var(--svt-line);
+  box-shadow: 0 12px 24px rgb(18 22 31 / 0.08);
+  padding: 8px var(--svt-gutter) 20px;
+  display: flex; flex-direction: column;
+}
+.panel a { display: flex; align-items: center; min-height: var(--svt-tap); font-size: var(--svt-text-md); text-decoration: none; border-bottom: 1px solid var(--svt-line); }
+
+/* Desktop: inline links and the WhatsApp action. */
+.nav { display: none; }
+@media (min-width: 900px) {
+  .menu { display: none; }
+  .nav { display: flex; align-items: center; gap: 28px; font-size: 15px; }
+  .nav a { text-decoration: none; }
+  .nav a:hover { text-decoration: underline; }
+  .cta {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px;
+    background: var(--svt-ink); color: var(--svt-paper) !important; border-radius: var(--svt-radius-button); font-weight: 700;
+  }
+  .cta:hover { background: #000; text-decoration: none !important; }
+}

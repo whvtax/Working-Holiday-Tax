@@ -1,0 +1,66 @@
+/*
+ * Student Visa Tax design tokens. The ONLY place SVT colours, type and
+ * spacing are defined. Locked design: "Student Visa Tax: final design" canvas.
+ *
+ * Colour rules (CLAUDE.md):
+ *   - Ink on white. Lime is a HIGHLIGHTER: a background behind ink text, or
+ *     ink-on-lime, never lime text on white (contrast 1.2:1).
+ *   - Contrast (WCAG 2.2 formula, computed 26 Oct):
+ *       ink    #12161F on white 18.1:1, on pale lime 16.9:1, on lime 15.7:1
+ *       ink-2  #3C4350 on white  9.9:1, on pale lime  9.3:1
+ *       mist   #F3F5F4 on ink 16.5:1;  mist-2 #C9CED6 on ink 11.4:1
+ *       lime   #D6FF3D on ink 15.7:1 (the "we send you back" chip)
+ *       lime on white is 1.2:1, which is why it is never text.
+ */
+:root {
+  --svt-ink: #12161f;
+  --svt-ink-2: #3c4350;
+  --svt-paper: #ffffff;
+  --svt-lime: #d6ff3d;
+  --svt-lime-pale: #f5fae3;
+  --svt-line: #dde1df;
+  --svt-mist: #f3f5f4;
+  --svt-mist-2: #c9ced6;
+  --svt-slot-a: #dde3d9;
+  --svt-slot-b: #d3d9df;
+
+  --svt-font-sans: 'Be Vietnam Pro', 'PingFang SC', 'Noto Sans CJK SC', 'Noto Sans SC',
+    'Microsoft YaHei', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --svt-font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Type scale (mobile first; larger steps arrive at the breakpoints). */
+  --svt-text-sm: 14px;
+  --svt-text-base: 16px;
+  --svt-text-md: 17px;
+  --svt-h2: 26px;
+  --svt-h1: 38px;
+
+  --svt-gutter: 20px;
+  --svt-section-y: 36px;
+  --svt-max: 1120px;
+  --svt-measure: 640px;
+
+  --svt-radius-button: 4px;
+  --svt-radius-pill: 24px;
+  --svt-radius-bubble: 14px;
+
+  --svt-tap: 48px;
+  --svt-focus: 0 0 0 3px var(--svt-paper), 0 0 0 5px var(--svt-ink);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --svt-gutter: 32px;
+    --svt-section-y: 56px;
+    --svt-h2: 32px;
+    --svt-h1: 48px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --svt-section-y: 72px;
+    --svt-h2: 36px;
+    --svt-h1: 60px;
+  }
+}

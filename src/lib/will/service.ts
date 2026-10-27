@@ -3,6 +3,7 @@
 // message, shared by the simulator and the future WhatsApp
 // webhook. Persists everything to the store.
 // ============================================================
+import { FORM_LINK_ANY_BRAND } from './brand-voice';
 import { getStore, CustomerRow, CustomerState, Store, MessageRow, JobRow } from './store';
 import { reopenTarget, POST_PAYMENT_STATES, canTransition } from './state-machine';
 import { runEngine, AiMode, EngineOutcome, customerAskedSomething } from './engine';
@@ -13,12 +14,12 @@ import { confirmationAlreadyOut } from './payment-confirmation';
 import { paragraphise } from './layout';
 import { policyGuard } from './policy-guard';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
-import { detectLanguage, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
+import { detectLanguage, unsupportedScript, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
 import { retrieveKnowledge, nearestKnowledge } from './knowledge';
 import { buildHandoffDiagnostic, taskContextWithDiagnostic } from './handoff-diagnostic';
 import { deliverOut, fetchWaMedia, wasAlreadySentVerbatim } from './channel';
 import { reviewLink } from './review-asks';
-import { readReviewAsks, patchReviewAsk, saysRefundLanded, isPositiveAck, REFERRAL_WINDOW_DAYS, saysRefundNotYet, refundNotYetMessage, REFUND_CHECKIN_RETRY_DAYS } from './review-asks';
+import { readReviewAsks, patchReviewAsk, saysRefundLanded, saysYesToRefundCheckin, isPositiveAck, REFERRAL_WINDOW_DAYS, saysRefundNotYet, refundNotYetMessage, REFUND_CHECKIN_RETRY_DAYS } from './review-asks';
 import { referralMessage } from './i18n';
 import { autopilotReplyDelaySeconds } from './config';
 import { promisedUntil, formPromisedKey, signaturePromisedKey } from './promised-date';
@@ -617,7 +618,8 @@ async function handleIncomingInner(
   // track. No model, no two-minute pause: Rochi and Jack were lost in that
   // pause. Anything else goes through Will as before.
   if (handleMode !== 'will' && mode === 'FULL_AUTO' && !killSwitch && !opts?.alreadyStored && !customer.paid && !customer.aiPaused && !customer.isLegacy
-      && SALES_STATES.includes(customer.state) && ((customer.lang ?? 'en') === 'en' || hasPriceIn(customer.lang))) {
+      && SALES_STATES.includes(customer.state) && ((customer.lang ?? 'en') === 'en' || hasPriceIn(customer.lang))
+      && !unsupportedScript(text)) {
     try {
       const prior = await store.listMessages(customer.id);
       const bankSent = prior.some((m) => m.direction === 'OUT' && m.status === 'SENT' && /\b0?62\s?692\b|\b81049952\b/.test(m.body ?? ''));
@@ -981,13 +983,25 @@ export async function decideAndAct(
         const m = await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL', body, meta: { system: true } });
         return { outcome: { kind: 'pending_approval', decision: { action: 'reply', reply_text: body, confidence: 1 }, replyText: body }, pendingMessageId: m.id };
       }
-      if (!rec?.askedAt && !rec?.skippedAt && saysRefundLanded(text)) {
+      // Review 27 Oct: only a "yes" that answers the check-in itself, i.e.
+      // nothing else went out to them after it. A later "Yes please" to a team
+      // question is a normal message and gets a normal reply.
+      const lastOutAt = msgs.filter((m) => m.direction === 'OUT' && m.status === 'SENT').map((m) => m.createdAt).sort().pop();
+      const checkinWasLast = !!rec?.checkinAt && (!lastOutAt || new Date(lastOutAt).getTime() <= new Date(rec.checkinAt).getTime() + 2 * 60 * 1000);
+      const yesToCheckin = checkinWasLast && saysYesToRefundCheckin(text);
+      if (customer.brand !== 'svt' && !rec?.askedAt && !rec?.skippedAt && (saysRefundLanded(text) || yesToCheckin)) {
         await store.cancelJobsFor(customer.id, ['REVIEW_REQUEST', 'REFUND_CHECKIN']).catch(() => 0);
         await store.addJob({
           customerId: customer.id, kind: 'REVIEW_REQUEST', payload: { trigger: 'refund_received' },
           runAt: new Date(Date.now() + 3 * 60 * 1000).toISOString(),
         });
         await store.audit('system', 'review_ask_pulled_forward', { customerId: customer.id });
+        // Jo, 27 Oct: the review ask (with its own warm opening line) IS the
+        // answer to "yes, it landed, thanks". A second message from Will in
+        // front of it (the referral line went out to a customer) is noise.
+        if (yesToCheckin && !hasQuestionOrRequest(text) && !/\b(?:though|less|only|disappoint|lower|expected|but)\b/i.test(text) && text.trim().length <= 200) {
+          return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } } };
+        }
       }
       if (!lodgedWill && rec?.askedAt && !rec.referralAt && isPositiveAck(text)
           && Date.now() - new Date(rec.askedAt).getTime() < REFERRAL_WINDOW_DAYS * 24 * 60 * 60 * 1000) {
@@ -2201,7 +2215,7 @@ export function paymentClaimForcesPaid(opts: {
 }
 
 /** The form link every "payment received" confirmation carries. */
-const TAX_FORM_URL_RE = /workingholidaytax\.com\.au\/tax-form/i;
+const TAX_FORM_URL_RE = FORM_LINK_ANY_BRAND; // decision 004: either brand's form link
 
 /** When the Paid move is forced onto a reply the model wrote itself, that reply
  *  must carry the form link, because Paid cascades to Form Pending and the form

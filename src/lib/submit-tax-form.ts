@@ -38,6 +38,9 @@ export type TaxFormPayload = {
    * these are OPTIONAL and NON-BLOCKING: see uploadInvoices below.
    */
   invoices: File[]
+  /** Optional extra lines for the reviewer (SVT: visa and course length).
+   *  The server keeps at most 5 lines of 200 characters. */
+  extraNotes?: string[]
 }
 
 /** Jo, 28 Aug. Ten is plenty for a working holiday and keeps the upload inside
@@ -129,7 +132,9 @@ const FIELD_LABELS: Record<string, Record<FormLang, string>> = {
 
 export async function submitTaxForm(
   p: TaxFormPayload,
-  taxStatus: 'resident' | 'whm',
+  /** 'unsure' = the form does not declare residency; the reviewer decides.
+   *  'foreign' = the customer marked foreign resident (Student Visa Tax). */
+  taxStatus: 'resident' | 'whm' | 'unsure' | 'foreign',
   lang: FormLang,
   /** Defaults to the original endpoint so /tax-form is unaffected. */
   endpoint: string = '/api/tax-form',
@@ -223,7 +228,8 @@ export async function submitTaxForm(
   fd.append('tfn',         p.tfn)
   fd.append('primaryJob',  p.primaryJob)
   fd.append('hasExpenses', p.hasExpenses === 'yes' ? 'Yes' : p.hasExpenses === 'no' ? 'No' : '')
-  fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus)
+  fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'unsure' ? 'Unsure, to be checked by the reviewer' : taxStatus === 'foreign' ? 'Foreign resident for tax purposes' : taxStatus)
+  if (p.extraNotes?.length) fd.append('extraNotes', JSON.stringify(p.extraNotes.slice(0, 5)))
   fd.append('taxYear',     p.taxYears.join(', '))
   fd.append('howHeard',    p.howHeard)
   if (p.refCode) fd.append('refCode', p.refCode)
