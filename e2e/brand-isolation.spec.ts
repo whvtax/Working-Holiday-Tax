@@ -9,7 +9,7 @@ const PORT = Number(process.env.E2E_PORT ?? 3100)
 const WHT = `http://localhost:${PORT}`
 const SVT = `http://svt.localhost:${PORT}`
 
-const WHT_MARKS = /working\s*holiday\s*tax|workingholidaytax|0424\s?513\s?998/i
+const WHT_MARKS = /working\s*holiday\s*tax|workingholidaytax|0424\s?513\s?998|G-8667FJL1N4/i
 const SVT_MARKS = /student\s*visa\s*tax|studentvisatax/i
 
 /** Node's resolver does not map *.localhost to the loopback address (Chromium
@@ -112,11 +112,28 @@ test('SVT home loads in the browser with no console errors', async ({ page }) =>
   const errors: string[] = []
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text()) })
   page.on('pageerror', e => errors.push(String(e)))
+  // GA4: the student brand's own property loads (stubbed, no internet here), never WHT's.
+  const tags: string[] = []
+  await page.route(/googletagmanager\.com|google-analytics\.com/, r => { tags.push(r.request().url()); return r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }) })
   await page.goto(`${SVT}/`)
   await expect(page.locator('h1')).toHaveText('Tax returns for student visas')
+  await expect.poll(() => tags.some(u => u.includes('id=G-YHFJYVG620'))).toBe(true)
+  expect(tags.some(u => u.includes('G-8667FJL1N4'))).toBe(false)
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-AU')
   expect(await page.content()).not.toMatch(WHT_MARKS)
   expect(errors).toEqual([])
+})
+
+// The student tax form is never tagged (DEPLOYMENT_CHECKLIST, SVT measurement), in any language.
+test('SVT tax form pages load no analytics', async ({ page }) => {
+  for (const path of ['/tax-form', '/zh/tax-form', '/vi/tax-form/residency']) {
+    const tags: string[] = []
+    await page.route(/googletagmanager\.com|google-analytics\.com/, r => { tags.push(r.request().url()); return r.fulfill({ status: 200, body: '' }) })
+    await page.goto(`${SVT}${path}`)
+    await page.waitForTimeout(1500)
+    expect(tags, path).toEqual([])
+    await page.unrouteAll()
+  }
 })
 
 test.describe('more isolation (HTTP)', () => {

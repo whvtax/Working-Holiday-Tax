@@ -2,7 +2,7 @@
 .inner { max-width: var(--svt-measure); margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
 .h1 { font-size: var(--svt-h2); line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; }
 .updated { font-size: var(--svt-text-sm); color: var(--svt-ink-2); margin-top: 8px; }
-.box { background: var(--svt-lime-pale); padding: 16px 18px; font-size: 15px; line-height: 1.6; }
+.box { border-radius: var(--svt-radius-card); background: var(--svt-lime-pale); padding: 16px 18px; font-size: 15px; line-height: 1.6; }
 .text { font-size: 15px; line-height: 1.7; color: var(--svt-ink-2); }
 .section { display: flex; flex-direction: column; gap: 8px; }
 .h2 { font-size: var(--svt-text-md); font-weight: 700; line-height: 1.3; color: var(--svt-ink); }

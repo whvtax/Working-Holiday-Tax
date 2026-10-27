@@ -16,11 +16,15 @@ import styles from './GuidePage.module.css'
  *  in the library, the short answer first, the sections, questions, then one
  *  path onward (next in the topic, the price, related pages) and the official
  *  sources. */
-export function GuidePage({ g, locale = 'en', section, basePath: base }: {
+export function GuidePage({ g, locale = 'en', section, basePath: base, article = false, locales }: {
   g: GuideContent
   locale?: SvtLocale
   /** A crumb between Home and the page, e.g. the blog. */
   section?: { href: string; label: string }
+  /** A library article outside the topic reading order: dated, Article markup. */
+  article?: boolean
+  /** Languages this page exists in, when not all of them. */
+  locales?: readonly SvtLocale[]
   /** The language-free path of this page, for the language switch. */
   basePath?: string
 }) {
@@ -34,7 +38,8 @@ export function GuidePage({ g, locale = 'en', section, basePath: base }: {
   const minutes = readingMinutes(words, locale === 'zh')
   // Topic pages (articles and topic guides) show their date, matching the
   // Article markup; service pages carry it in the markup only.
-  const updated = place ? g.updated : undefined
+  const isArticle = !!place || article
+  const updated = isArticle ? g.updated : undefined
   const abs = (p: string) => `${SVT_PUBLIC.siteUrl}${p === '/' ? '' : p}`
   const url = abs(localePath(locale, path))
   const schema = [
@@ -43,8 +48,8 @@ export function GuidePage({ g, locale = 'en', section, basePath: base }: {
     guidePageSchema({
       url, title: g.meta.title, description: g.meta.description, inLanguage: LOCALE_META[locale].hreflang,
       published: g.published, updated: g.updated, image: abs(`/svt-assets/og/og-${locale}.png`),
-      citations: place ? g.sources.map(s => s.href) : undefined,
-      kind: place ? 'Article' : g.slug === 'about' ? 'AboutPage' : 'WebPage',
+      citations: isArticle ? g.sources.map(s => s.href) : undefined,
+      kind: isArticle ? 'Article' : g.slug === 'about' ? 'AboutPage' : 'WebPage',
     }),
     breadcrumbList([
       { name: t.home, url: abs(localePath(locale, '/')) },
@@ -65,14 +70,14 @@ export function GuidePage({ g, locale = 'en', section, basePath: base }: {
               <span data-mono-words="">{fill(t.position, { i: String(place.index), n: String(place.total) })}</span>
             </p>
           ) : null}
-          <h1 id="guide-title" className={styles.h1}>{g.h1.before}<Mark>{g.h1.mark}</Mark>{g.h1.after ?? ''}</h1>
+          <h1 id="guide-title" className={styles.h1}>{g.h1.before}{g.h1.mark ? <Mark>{g.h1.mark}</Mark> : null}{g.h1.after ?? ''}</h1>
           <Lead>{g.lead}</Lead>
           <div className={styles.meta}>
             <p data-mono-words="">
               {updated ? <><time dateTime={updated}>{UI[locale].blog.updated} {updated}</time><span aria-hidden="true"> · </span></> : null}
               {fill(t.minRead, { n: String(minutes) })}
             </p>
-            <LanguageSwitch current={locale} path={path} compact />
+            <LanguageSwitch current={locale} path={path} compact only={locales} />
           </div>
         </div>
       </section>
@@ -80,7 +85,7 @@ export function GuidePage({ g, locale = 'en', section, basePath: base }: {
         <div className={styles.grid}>
           <div className={styles.content}>
             {/* The official source is shown for topic pages; service pages (price, how it works, about) answer about us. */}
-            {g.short ? <ShortAnswer short={g.short} source={place ? g.sources[0] : undefined} locale={locale} /> : null}
+            {g.short ? <ShortAnswer short={g.short} source={isArticle ? g.sources[0] : undefined} locale={locale} /> : null}
             <PagePhoto page={path.slice(1)} locale={locale} />
             {g.sections.map(sec => (
               <section key={sec.id} id={sec.id} className={styles.section} aria-labelledby={`${sec.id}-title`}>

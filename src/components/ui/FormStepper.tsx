@@ -16,20 +16,24 @@
  * ~295px a phone gives us, least of all in German.
  */
 
-import type { FormLang } from '@/lib/formStrings'
+import type { AnyFormLang } from '@/lib/formStrings'
 
 type Step = 1 | 2 | 3
 
-const STEPS: Record<FormLang, [string, string, string]> = {
+const STEPS: Record<AnyFormLang, [string, string, string]> = {
   en: ['Your details', 'Your income', 'Tax residency'],
   de: ['Deine Daten', 'Dein Einkommen', 'Steuerresidenz'],
   ja: ['基本情報', '収入について', '税務上の居住区分'],
+  zh: ['基本信息', '收入情况', '税务居民身份'],
+  vi: ['Thông tin của bạn', 'Thu nhập', 'Cư trú về thuế'],
 }
 
-const OF: Record<FormLang, (s: number, t: number) => string> = {
+const OF: Record<AnyFormLang, (s: number, t: number) => string> = {
   en: (s, t) => `Step ${s} of ${t}`,
   de: (s, t) => `Schritt ${s} von ${t}`,
   ja: (s, t) => `ステップ ${s}/${t}`,
+  zh: (s, t) => `第 ${s} 步，共 ${t} 步`,
+  vi: (s, t) => `Bước ${s}/${t}`,
 }
 
 function Tick() {
@@ -40,7 +44,7 @@ function Tick() {
   )
 }
 
-export function FormStepper({ step, lang = 'en' }: { step: Step; lang?: FormLang }) {
+export function FormStepper({ step, lang = 'en' }: { step: Step; lang?: AnyFormLang }) {
   const labels = STEPS[lang] ?? STEPS.en
   const of = (OF[lang] ?? OF.en)(step, 3)
 
@@ -74,12 +78,12 @@ const styles = `
   .stepper-row { display: flex; align-items: center; justify-content: center; }
   .stepper-node { display: flex; align-items: center; }
   .stepper-circle { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; transition: background .25s, color .25s, border-color .25s; }
-  .stepper-circle.is-done { background: #0B5240; color: #fff; }
-  .stepper-circle.is-now  { background: #fff; color: #0B5240; border: 2px solid #0B5240; }
-  /* #9DB5AC on #EAF6F1 is 1.97:1. The step number is visible text, so it has
-     to meet AA whatever the circle is doing; subtle #587066 is 4.78:1 here. */
-  .stepper-circle.is-todo { background: #EAF6F1; color: #587066; }
-  .stepper-line { width: 34px; height: 2px; background: #EAF6F1; transition: background .25s; }
-  .stepper-line.is-done { background: #0B5240; }
+  .stepper-circle.is-done { background: var(--f-brand, #0B5240); color: #fff; }
+  .stepper-circle.is-now  { background: #fff; color: var(--f-brand, #0B5240); border: 2px solid var(--f-brand, #0B5240); }
+  /* #9DB5AC on var(--f-tint, #EAF6F1) is 1.97:1. The step number is visible text, so it has
+     to meet AA whatever the circle is doing; subtle var(--f-muted, #587066) is 4.78:1 here. */
+  .stepper-circle.is-todo { background: var(--f-tint, #EAF6F1); color: var(--f-muted, #587066); }
+  .stepper-line { width: 34px; height: 2px; background: var(--f-tint, #EAF6F1); transition: background .25s; }
+  .stepper-line.is-done { background: var(--f-brand, #0B5240); }
   .stepper-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 `

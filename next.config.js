@@ -85,12 +85,13 @@ const svtCsp = {
   key: 'Content-Security-Policy',
   value: [
     "default-src 'self'",
-    `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
+    // GA4 (the student brand's own property, Jo, 27 Oct): the gtag loader and its beacons.
+    `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self'",
     "img-src 'self' data: blob:",
     "frame-src 'none'",
-    "connect-src 'self'",
+    "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
     "media-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",
@@ -112,6 +113,8 @@ const nextConfig = {
   typescript: { ignoreBuildErrors: false },
   experimental: {
     serverActions: { bodySizeLimit: '15mb' },
+    // One branded 404 for unmatched addresses on both hosts (app/global-not-found.tsx).
+    globalNotFound: true,
   },
   images: {
     remotePatterns: [

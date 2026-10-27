@@ -8,7 +8,8 @@ const SVT = `http://svt.localhost:${PORT}`
 const AXE = createRequire(__filename).resolve('axe-core/axe.min.js')
 
 test('every SVT page has no axe violations', async ({ page }) => {
-  test.setTimeout(600_000)
+  // The sitemap holds 600+ pages since the article library (27 Oct).
+  test.setTimeout(3_600_000)
   await page.goto(`${SVT}/sitemap.xml`)
   const urls = [...(await page.content()).matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => new URL(m[1]).pathname).concat(['/tax-form'])
   expect(urls.length).toBeGreaterThan(90)

@@ -59,11 +59,12 @@
 - [ ] Business name registered to The Accounting Academy Services Pty Limited (ABN 93 671 788 355, Tax Agent Number 26233096); TPB notified.
 - [ ] WhatsApp number live in the WABA; webhook routes it to the SVT brand.
 - [ ] Meta templates approved in en, zh, vi.
-- [ ] Search Console and Bing Webmaster set up; sitemaps submitted.
+- [x] Search Console set up and sitemap submitted (Jo, 27 Oct: 110 URLs from the old deploy; v4 lists 560). Bing Webmaster imported from Search Console (Jo, 27 Oct).
 - [ ] SVT: www.studentvisatax.com.au redirects to the apex in the Vercel domain settings (308).
-- [ ] SVT measurement (needs Jo): an SVT-only GA4 property (never shared with WHT); then add the tag, its CSP origins and a `whatsapp_click` key event (every SVT WhatsApp link carries `data-wa-pos`). Never tag /tax-form. Google Ads linked to that property; Meta uses Click-to-WhatsApp ads on the SVT number only.
+- [x] SVT GA4 property G-YHFJYVG620, its own account (Jo, 27 Oct); tag, CSP origins and the `whatsapp_click` event wired, /tax-form untagged. Left: mark `whatsapp_click` as a key event once the first one arrives. Original note: an SVT-only GA4 property (never shared with WHT); then add the tag, its CSP origins and a `whatsapp_click` key event (every SVT WhatsApp link carries `data-wa-pos`). Never tag /tax-form. Google Ads linked to that property; Meta uses Click-to-WhatsApp ads on the SVT number only.
 - [ ] SVT: before any Chinese-language ads, open a wa.me link inside the WeChat and Xiaohongshu browsers on a real phone.
-- [ ] Email inbox info@studentvisatax.com.au working.
+- [x] Email inbox info@studentvisatax.com.au working (Jo checked send and reply, 27 Oct).
+- [ ] Google Business Profile "Student Visa Tax" created by Jo on 27 Oct (service area, no address, no phone yet, waiting for Google's check). Once approved: put the review link in the student brand config, unblock `review_link` for Mia (SVT_BLOCKED_KEYS), add the reviews badge to the form and site like WHT, add the profile to the site JSON-LD `sameAs`. Add the SVT phone to the profile when the number is live.
 - [ ] Rollback note: unsetting `SVT_WHATSAPP_PHONE_NUMBER_ID` is only safe while no wa_id
       exists under both brands; to stop the SVT line, turn the number off in Meta instead.
 - [ ] After deploy, the tick applies the Library brand tags (`knowledge_brand_tags`) and the

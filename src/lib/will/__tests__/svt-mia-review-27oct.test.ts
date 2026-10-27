@@ -51,19 +51,58 @@ it('SVT: the working holiday residency result is never sent', async () => {
   expect(out.replyText ?? '').not.toMatch(/Working Holiday Maker/i);
 });
 
-it('SVT: a Chinese chat keeps Mia\'s own words and waits for approval', async () => {
-  (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'thanks', confidence: 0.9, reply_text: '不客气 😊' });
-  const out = await withBrand('svt', () => runEngine({ ...input('谢谢你'), history: [{ role: 'assistant', text: '你好' }, { role: 'customer', text: '谢谢你' }] }));
-  expect(out.kind).toBe('pending_approval');
-  expect(out.replyText).toContain('不客气');
+it('SVT: a Chinese chat gets the same fixed message in Chinese, sent like the English one', async () => {
+  (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'price_tfn', confidence: 0.9, reply_text: 'x' });
+  const out = await withBrand('svt', () => runEngine({ ...input('只有TFN的工作'), history: [{ role: 'assistant', text: '你好' }, { role: 'customer', text: '只有TFN的工作' }] }));
+  expect(out.replyText ?? '').toMatch(/\$220/);
+  expect(out.replyText ?? '').toMatch(/062692/);
+  expect(out.replyText ?? '').toMatch(/[\u4e00-\u9fff]/);
+  expect(out.kind).not.toBe('pending_approval');
 });
 
-it('direct sends rebrand for SVT; review asks, reminders and known-contacts drop are WHT only', () => {
+it('SVT: Chinese price with foreign income goes to the team, never the $220 text with the guarantee', async () => {
+  (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'price_tfn', confidence: 0.9, reply_text: 'x' });
+  const out = await withBrand('svt', () => runEngine({ ...input('只有TFN的工作'), history: [{ role: 'assistant', text: '你好' }, { role: 'customer', text: '我在国内还有收入' }, { role: 'customer', text: '只有TFN的工作' }] }));
+  expect(out.kind).toBe('human_task');
+  expect(out.replyText ?? '').not.toMatch(/\$220/);
+});
+
+it('SVT: "later" in Vietnamese after payment sends the Vietnamese form link on the student site', async () => {
+  (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'later_plan', confidence: 0.9, reply_text: 'x' });
+  const base = input('Tối nay mình điền nhé');
+  const out = await withBrand('svt', () => runEngine({ ...base, ctx: { ...base.ctx, state: 'PAID', paid: true }, history: [{ role: 'assistant', text: 'Chào bạn' }, { role: 'customer', text: 'Tối nay mình điền nhé' }] } as EngineInput));
+  expect(out.replyText ?? '').toContain('https://studentvisatax.com.au/vi/tax-form');
+  expect(out.replyText ?? '').not.toMatch(/workingholidaytax/);
+});
+
+it('SVT: a Chinese price question as the first message gets the Chinese price, with no stray space when there is no name', async () => {
+  (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'price_tfn', confidence: 0.9, reply_text: 'x' });
+  const base = input('报税多少钱');
+  const out = await withBrand('svt', () => runEngine({ ...base, ctx: { ...base.ctx, name: null } } as EngineInput));
+  expect(out.replyText ?? '').toMatch(/^嗨！/);
+  expect(out.replyText ?? '').toMatch(/\$220/);
+});
+
+it('SVT: a Vietnamese first message that picks no track gets the opening question in Vietnamese, not English', async () => {
+  (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'price_tfn', confidence: 0.9, reply_text: 'x' });
+  const out = await withBrand('svt', () => runEngine(input('Chào bạn, mình muốn khai thuế')));
+  expect(out.replyText ?? '').toMatch(/^Chào Lin! 😊/);
+  expect(out.replyText ?? '').toMatch(/TFN/);
+  expect(out.replyText ?? '').not.toMatch(/Happy to help|062692/);
+  expect(out.kind).not.toBe('pending_approval');
+});
+
+it('SVT: free text in Chinese (no fixed message) still waits for approval', async () => {
+  (decide as jest.Mock).mockResolvedValue({ action: 'reply', confidence: 0.9, reply_text: '好的，我们看一下你的情况。' });
+  const out = await withBrand('svt', () => runEngine({ ...input('我想问一个问题'), history: [{ role: 'assistant', text: '你好' }, { role: 'customer', text: '我想问一个问题' }] }));
+  expect(out.kind).toBe('pending_approval');
+});
+
+it('direct sends rebrand for SVT; review asks run on both brands; known-contacts drop is WHT only', () => {
   const src = (p: string) => readFileSync(join(process.cwd(), p), 'utf8');
   expect(src('src/lib/will/channel.ts')).toMatch(/=== 'svt' \? rebrandText\(body, 'svt'\) : body/);
   const sched = src('src/lib/will/scheduler.ts');
-  expect(sched).toMatch(/customer\.brand !== 'svt'\n\s+&& \['SIGNED', 'LODGED', 'COMPLETED'\]/);
-  expect(sched).toMatch(/c\.brand !== 'svt' && rec\?\.askedAt/);
+  expect(sched).not.toMatch(/brand !== 'svt'/);
   expect(sched).toMatch(/customer\.brand === 'svt' \? svtTemplateName\(template\.key\)/);
   expect(src('src/app/api/will/webhook/route.ts').match(/brand === 'wht' && await store\.isBlockedContact/g)?.length).toBe(2);
 });
@@ -86,4 +125,14 @@ it('the seed brand tags reach Library rows already in production, once, keeping 
   expect(await applyBrandTags(store)).toBe(1);
   expect(updates[0].tags).toEqual(['trust', 'brand:wht']);
   expect(await applyBrandTags(store)).toBe(0);
+});
+
+it('SVT: every Google review link a student receives is the student profile, never WHT\'s', async () => {
+  const { rebrandText } = await import('@/lib/will/brand-voice');
+  const { REVIEW_REQUEST_MSG } = await import('@/lib/will/i18n');
+  const out = rebrandText(REVIEW_REQUEST_MSG.en, 'svt');
+  expect(out).toContain('https://g.page/r/CW65-TcfMaArECE/review');
+  expect(out).not.toContain('CaWt4kV0UmY-EBM');
+  expect(rebrandText('https://search.google.com/local/writereview?placeid=ChIJabc123XYZ', 'svt')).toBe('https://g.page/r/CW65-TcfMaArECE/review');
+  expect(rebrandText(REVIEW_REQUEST_MSG.en, 'wht')).toContain('CaWt4kV0UmY-EBM');
 });

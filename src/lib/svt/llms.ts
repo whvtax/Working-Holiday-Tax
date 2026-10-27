@@ -5,7 +5,9 @@ import { homeEn } from '@/lib/svt/content/home-en'
 import { guidesFor } from '@/lib/svt/content/guides-i18n'
 import { blogFor } from '@/lib/svt/content/blog-i18n'
 import { placeOf } from '@/lib/svt/library'
-import { AGENT_NAME, AGENT_TPB } from '@/lib/constants'
+import { deadlineFact } from '@/lib/svt/deadline'
+import { LONG_EN, longFor, type LongArticle } from '@/lib/svt/content/long/library'
+import { AGENT_NAME, AGENT_TPB } from '@/lib/agent'
 
 /**
  * llms.txt for studentvisatax.com.au: a plain summary for AI answer engines.
@@ -20,6 +22,8 @@ export function buildSvtLlms(): string {
     const answer = g.short?.answer ?? g.meta.description
     return `- [${g.label}](${base}${path}): ${answer}${src ? ` (Source: ${src.label}, ${src.href}.)` : ''} Updated ${g.updated}.`
   }
+  const longLine = (a: LongArticle, path: string) =>
+    `- [${a.title}](${base}${path}): ${a.answer} (Source: ${a.sources[0]?.label ?? 'ATO'}, ${a.sources[0]?.href ?? 'https://www.ato.gov.au'}.) Updated ${a.updated}.`
   return [
     `# ${SVT_PUBLIC.name}`,
     '',
@@ -29,13 +33,13 @@ export function buildSvtLlms(): string {
     `- ${SVT_PUBLIC.name} operates under the supervision of a registered tax agent: ${AGENT_NAME}, Tax Agent Number ${AGENT_TPB}.`,
     '- Every return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
     `- Guarantee: ${homeEn.guarantee.title.charAt(0).toLowerCase()}${homeEn.guarantee.title.slice(1)}. ${homeEn.guarantee.terms}`,
-    `- Languages: English (${base}), Chinese (${base}/zh), Vietnamese (${base}/vi). Every page below also exists under /zh and /vi.`,
+    `- Languages: English (${base}), Chinese (${base}/zh), Vietnamese (${base}/vi). Guides and the first articles also exist under /zh and /vi.`,
     `- Contact: WhatsApp, or ${SVT_PUBLIC.email}.`,
     '',
     '## Key facts for the 2025-26 financial year',
     '',
     '- The Australian financial year runs from 1 July to 30 June. 2025-26 is 1 July 2025 to 30 June 2026.',
-    '- People lodging their own 2025-26 return have until 11:59 pm local time on Monday 2 November 2026, because 31 October 2026 is a Saturday. To use a registered tax agent\'s later date, you need to be on the agent\'s client list by 31 October 2026.',
+    `- ${deadlineFact()}`,
     '- An overseas student enrolled in a course of 6 months or more may be an Australian resident for tax purposes.',
     '- Residents for tax purposes get the $18,200 tax-free threshold, or part of it in the year they arrive or leave.',
     '- Medicare levy: 2% for residents for tax purposes. A student who was not entitled to Medicare usually needs a Medicare Entitlement Statement from Services Australia to claim the exemption.',
@@ -49,12 +53,14 @@ export function buildSvtLlms(): string {
     '## Articles',
     '',
     ...BLOG_EN.map(a => line(a, `/blog/${a.slug}`)),
+    ...LONG_EN.map(a => longLine(a, `/blog/${a.slug}`)),
     '',
     ...(['zh', 'vi'] as const).flatMap(l => [
       l === 'zh' ? '## 中文 (Simplified Chinese)' : '## Tiếng Việt (Vietnamese)',
       '',
       ...guidesFor(l).map(g => line(g, `/${l}/${g.slug}`)),
       ...blogFor(l).map(a => line(a, `/${l}/blog/${a.slug}`)),
+      ...longFor(l).map(a => longLine(a, `/${l}/blog/${a.slug}`)),
       '',
     ]),
   ].join('\n')

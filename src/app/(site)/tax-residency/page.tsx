@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import ResidencyStep from '@/components/ui/ResidencyStep'
+import { WhtFormProvider } from '@/components/ui/form-brand-wht'
 
 // Not a public page any more: this is a step of the tax form that happens to
 // have its own URL. Kept out of the sitemap and marked noindex so it isn't
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 }
 
 export default function TaxResidencyPage() {
-  return <ResidencyStep lang="en" />
+  return <WhtFormProvider><ResidencyStep lang="en" /></WhtFormProvider>
 }

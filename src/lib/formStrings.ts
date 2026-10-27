@@ -407,3 +407,8 @@ export const formStrings = {
 } as const
 
 export type FormStringKey = keyof typeof formStrings
+
+/** Every language a tax form can show: WHT's three plus the student brand's
+ *  Chinese and Vietnamese (Jo, 27 Oct: one form, both brands). zh and vi
+ *  words are supplied by the second brand's pages through the form brand context. */
+export type AnyFormLang = FormLang | 'zh' | 'vi'

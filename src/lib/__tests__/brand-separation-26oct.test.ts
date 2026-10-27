@@ -8,6 +8,7 @@
  * details (brand.ts, legal/brands.ts, config/) are not scanned here; they are
  * what the separation is built from.
  */
+import { LONG_EN } from '@/lib/svt/content/long/library'
 import fs from 'fs'
 import path from 'path'
 import { buildSvtRobots, buildSvtSitemap } from '@/lib/svt/seo'
@@ -82,7 +83,7 @@ describe('SVT robots and sitemap', () => {
     expect(locs).toContain('https://studentvisatax.com.au')
   })
   it('every page in the registry exists in the SVT app tree', () => {
-    const guideSlugs = new Set([...GUIDES_EN.map(g => `/${g.slug}`), ...BLOG_EN.map(a => `/blog/${a.slug}`)])
+    const guideSlugs = new Set([...GUIDES_EN.map(g => `/${g.slug}`), ...BLOG_EN.map(a => `/blog/${a.slug}`), ...LONG_EN.map(a => `/blog/${a.slug}`)])
     for (const p of SVT_PAGES) {
       const m = p.path.match(/^\/(zh|vi)(\/.*)?$/)
       const group = m ? `(svt-${m[1]})` : '(svt)'

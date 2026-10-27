@@ -12,6 +12,7 @@
  * last check before a send: a message carrying the other brand is blocked.
  */
 import { BRANDS, type Brand } from '@/lib/brand'
+import { SVT_PUBLIC } from '@/lib/svt/brand-public'
 
 export interface BrandVoice {
   brand: Brand
@@ -45,6 +46,9 @@ const svtNational = BRANDS.svt.phone
 /** Ordered WHT → SVT replacements for anything a customer can read. Longest
  *  and most specific first, so a URL is rewritten whole before the bare name. */
 const TEXT_REPLACEMENTS: ReadonlyArray<[RegExp, string]> = [
+  // Any Google review link (WHT's profile, or a Place ID override) becomes
+  // the student brand's own profile (Jo, 27 Oct). First, before the domains.
+  [/https:\/\/(?:g\.page\/r\/[A-Za-z0-9_-]+\/review|search\.google\.com\/local\/writereview\?placeid=[A-Za-z0-9_-]+)/g, SVT_PUBLIC.googleReviewUrl],
   [/https?:\/\/(?:www\.)?workingholidaytax\.com(?:\.au)?/gi, BRANDS.svt.siteUrl],
   [/(?:www\.)?workingholidaytax\.com(?:\.au)?/gi, BRANDS.svt.domain],
   [/info@workingholidaytax\.com\.au/gi, BRANDS.svt.email],

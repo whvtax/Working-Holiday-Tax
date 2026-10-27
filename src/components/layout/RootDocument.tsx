@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer'
 import { RevealObserver } from '@/components/ui/RevealObserver'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Analytics } from '@/components/layout/Analytics'
+import { GA_MEASUREMENT_ID } from '@/lib/constants'
 import PublicShellClient from '@/components/layout/PublicShellClient'
 import { MobileLanguageBanner } from '@/components/ui/MobileLanguageBanner'
 import { LangSync } from '@/components/ui/LangSync'
@@ -326,7 +327,7 @@ export function RootDocument({ lang, children }: { lang: string; children: React
 
         <MobileLanguageBanner />
         <LangSync />
-        <Analytics />
+        <Analytics measurementId={GA_MEASUREMENT_ID} />
         <RevealObserver />
         <ScrollToTop />
       </body>

@@ -1,5 +1,6 @@
 .wrap { display: flex; flex-direction: column; gap: 18px; }
 .result {
+  border-radius: var(--svt-radius-card);
   background: var(--svt-lime-pale);
   padding: 18px;
   display: flex;

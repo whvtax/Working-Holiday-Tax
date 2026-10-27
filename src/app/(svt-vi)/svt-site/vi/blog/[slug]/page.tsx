@@ -2,7 +2,9 @@ import { BlogArticle, blogMetadata, blogStaticParams } from '@/components/svt/pa
 
 // Every article is generated at build time; any other slug is a 404.
 export const dynamicParams = false
-export const generateStaticParams = blogStaticParams
+// Rebuilt daily: the deadline article says when its date has passed.
+export const revalidate = 86400
+export const generateStaticParams = blogStaticParams('vi')
 export const generateMetadata = ({ params }: { params: Promise<{ slug: string }> }) => blogMetadata('vi', params)
 
 export default function SvtBlogArticle({ params }: { params: Promise<{ slug: string }> }) {

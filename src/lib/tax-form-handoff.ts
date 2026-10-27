@@ -21,11 +21,11 @@
  * must look normal to visitors arriving from search).
  */
 
-import type { FormLang } from '@/lib/formStrings'
+import type { AnyFormLang } from '@/lib/formStrings'
 import type { TaxFormPayload } from '@/lib/submit-tax-form'
 
 export type TaxFormHandoff = {
-  lang: FormLang
+  lang: AnyFormLang
   /** Where to send the client back to (locale-aware). */
   formUrl: string
   /**

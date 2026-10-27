@@ -1,5 +1,5 @@
 .list { display: flex; flex-direction: column; gap: 6px; }
-.item { background: var(--svt-lime-pale); }
+.item { background: var(--svt-lime-pale); border-radius: var(--svt-radius-card); overflow: hidden; }
 .q {
   list-style: none;
   display: flex; justify-content: space-between; align-items: center; gap: 12px;

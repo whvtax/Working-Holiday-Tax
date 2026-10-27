@@ -23,7 +23,7 @@ export function Section({ tone = 'white', width = 'narrow', title, titleId, id, 
     >
       <div className={[styles.inner, width === 'narrow' ? styles.narrow : ''].join(' ')}>
         {title ? <h2 id={titleId} className={styles.title}>{title}</h2> : null}
-        {children}
+        <div className={styles.body}>{children}</div>
       </div>
     </section>
   )

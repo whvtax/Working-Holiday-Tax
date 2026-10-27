@@ -10,6 +10,7 @@ import { GUIDES_EN } from '@/lib/svt/content/guides-en'
 import { guidesFor } from '@/lib/svt/content/guides-i18n'
 import { BLOG_EN } from '@/lib/svt/content/blog-en'
 import { blogFor } from '@/lib/svt/content/blog-i18n'
+import { LONG_EN, longArticleFor, longLocales } from '@/lib/svt/content/long/library'
 import { LOCALE_META, SVT_LOCALES, UI, localePath, type SvtLocale } from '@/lib/svt/i18n'
 
 export interface SvtPage {
@@ -22,7 +23,7 @@ export interface SvtPage {
 }
 
 /** The blog hub changes whenever an article does. */
-const BLOG_LASTMOD = BLOG_EN.map(a => a.updated).sort().at(-1)
+const BLOG_LASTMOD = [...BLOG_EN, ...LONG_EN].map(a => a.updated).sort().at(-1)
 
 export const SVT_PAGES: readonly SvtPage[] = [
   { path: '/', priority: 1.0, changeFrequency: 'monthly', indexable: true },
@@ -30,6 +31,7 @@ export const SVT_PAGES: readonly SvtPage[] = [
   { path: '/questions', priority: 0.7, changeFrequency: 'monthly', indexable: true },
   { path: '/blog', priority: 0.7, changeFrequency: 'weekly', indexable: true, lastmod: BLOG_LASTMOD },
   ...BLOG_EN.map(a => ({ path: `/blog/${a.slug}`, priority: 0.6, changeFrequency: 'monthly' as const, indexable: true, lastmod: a.updated })),
+  ...LONG_EN.map(a => ({ path: `/blog/${a.slug}`, priority: 0.6, changeFrequency: 'monthly' as const, indexable: true, lastmod: a.updated })),
   // Chinese and Vietnamese versions of every translated page.
   ...(['zh', 'vi'] as const).flatMap(l => [
     { path: `/${l}`, priority: 0.9, changeFrequency: 'monthly' as const, indexable: true },
@@ -37,6 +39,7 @@ export const SVT_PAGES: readonly SvtPage[] = [
     { path: `/${l}/questions`, priority: 0.6, changeFrequency: 'monthly' as const, indexable: true },
     { path: `/${l}/blog`, priority: 0.6, changeFrequency: 'weekly' as const, indexable: true, lastmod: BLOG_LASTMOD },
     ...BLOG_EN.map(a => ({ path: `/${l}/blog/${a.slug}`, priority: 0.5, changeFrequency: 'monthly' as const, indexable: true, lastmod: a.updated })),
+    ...LONG_EN.filter(a => longLocales(a.slug).includes(l)).map(a => ({ path: `/${l}/blog/${a.slug}`, priority: 0.5, changeFrequency: 'monthly' as const, indexable: true, lastmod: a.updated })),
   ]),
   { path: '/client-agreement', priority: 0.3, changeFrequency: 'yearly', indexable: true },
   { path: '/privacy', priority: 0.3, changeFrequency: 'yearly', indexable: true },
@@ -70,7 +73,9 @@ export function relatedLinks(slugs: readonly string[], locale: SvtLocale = 'en')
     if (slug === 'questions') return [{ href: localePath(locale, '/questions'), label: UI[locale].guide.allQuestions }]
     if (slug.startsWith('blog/')) {
       const a = blogFor(locale).find(x => x.slug === slug.slice(5))
-      return a ? [{ href: localePath(locale, `/${slug}`), label: a.label }] : []
+      if (a) return [{ href: localePath(locale, `/${slug}`), label: a.label }]
+      const l = longArticleFor(locale, slug.slice(5))
+      return l ? [{ href: localePath(locale, `/${slug}`), label: l.title }] : []
     }
     const g = guides.find(x => x.slug === slug)
     return g ? [{ href: localePath(locale, `/${g.slug}`), label: g.label }] : []
@@ -86,11 +91,13 @@ export const TRANSLATED_PATHS: readonly string[] = ['/', ...GUIDES_EN.map(g => `
 
 /** hreflang alternates and canonical for a language-free path. */
 export function alternatesFor(locale: SvtLocale, path: string) {
-  const translated = TRANSLATED_PATHS.includes(path)
+  // A long-form article exists only in the languages it has been written in.
+  const long = path.startsWith('/blog/') ? longLocales(path.slice(6)) : []
+  const langs: readonly SvtLocale[] = long.length ? long : TRANSLATED_PATHS.includes(path) ? SVT_LOCALES : []
   return {
     canonical: localePath(locale, path),
-    languages: translated
-      ? { ...Object.fromEntries(SVT_LOCALES.map(l => [LOCALE_META[l].hreflang, localePath(l, path)])), 'x-default': localePath('en', path) }
+    languages: langs.length > 1
+      ? { ...Object.fromEntries(langs.map(l => [LOCALE_META[l].hreflang, localePath(l, path)])), 'x-default': localePath('en', path) }
       : undefined,
   }
 }

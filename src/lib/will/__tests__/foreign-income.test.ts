@@ -66,3 +66,12 @@ describe('never asked, only before payment', () => {
     expect(APPROVED.opening).not.toMatch(/foreign|overseas/i);
   });
 });
+
+describe('Chinese and Vietnamese foreign income (27 Oct)', () => {
+  it.each([
+    '我在国内还有收入', '我有海外收入要报吗', '去年在中国上班', 'Mình có thu nhập ở Việt Nam', 'em có lương từ VN',
+  ])('%s counts', (t) => expect(mentionsForeignIncome(t)).toBe(true))
+  it.each([
+    '我没有海外收入', '我在澳洲打工', 'Mình không có thu nhập nước ngoài', 'em làm phục vụ ở Melbourne',
+  ])('%s does not', (t) => expect(mentionsForeignIncome(t)).toBe(false))
+})

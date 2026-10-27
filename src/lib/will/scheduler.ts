@@ -921,7 +921,7 @@ async function doProcess(): Promise<TickResult> {
         try {
           const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
           const rec = c ? (await readReviewAsks(store))[c.id] : undefined;
-          if (c && c.brand !== 'svt' && rec?.askedAt && !rec.remindedAt && !rec.reviewedAt && !c.optedOut && !c.isLegacy && !c.aiPaused
+          if (c && rec?.askedAt && !rec.remindedAt && !rec.reviewedAt && !c.optedOut && !c.isLegacy && !c.aiPaused
               && !(c.refundPromisedAt && !c.refundSentAt)) {
             const askedAt = new Date(rec.askedAt).getTime();
             const replied = (await store.listMessages(c.id)).some((m) => m.direction === 'IN' && new Date(m.createdAt).getTime() > askedAt);
@@ -1505,9 +1505,10 @@ async function doProcess(): Promise<TickResult> {
           await store.addJob({ customerId: customer.id, kind: 'REVIEW_REQUEST', payload: job.payload, runAt: businessDaysFromNow(5).toISOString() }).catch(() => {});
           continue;
         }
-        // No Google review profile for the student brand yet: SVT customers
-        // are never sent WHT's review page (final review, 27 Oct).
-        if (!customer.optedOut && !customer.isLegacy && customer.brand !== 'svt'
+        // Both brands ask (27 Oct): the student brand has its own Google
+        // profile, and every SVT send goes through rebrandText, which swaps
+        // the review link for the student one.
+        if (!customer.optedOut && !customer.isLegacy
           && ['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state)) {
           const rawTrigger = (job.payload as { trigger?: string } | null)?.trigger;
           const trigger = rawTrigger === 'refund_received' ? 'refund_received' : rawTrigger === 'checkin' ? 'checkin' : 'timer';

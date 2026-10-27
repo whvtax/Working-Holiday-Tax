@@ -16,13 +16,14 @@ const VISA_LABELS: Readonly<Record<SvtLocale, Record<VisaId, string>>> = {
   vi: { '500': 'Du học 500', '485': 'Tốt nghiệp 485', other: 'Khác' },
 }
 const WORK_LABELS: Readonly<Record<SvtLocale, Record<WorkId, string>>> = {
-  en: { tfn: 'Jobs with a TFN', abn: 'Uber Eats or other ABN work', both: 'Both' },
-  zh: { tfn: '有 TFN 的工作', abn: 'Uber Eats 等 ABN 工作', both: '两种都有' },
-  vi: { tfn: 'Việc làm có TFN', abn: 'Uber Eats hoặc việc ABN khác', both: 'Cả hai' },
+  en: { tfn: 'Jobs with a TFN', abn: 'Work with TFN + ABN', both: 'Both' },
+  zh: { tfn: '有 TFN 的工作', abn: 'TFN + ABN 工作', both: '两种都有' },
+  vi: { tfn: 'Việc làm có TFN', abn: 'Việc làm TFN + ABN', both: 'Cả hai' },
 }
 
-const VISA_IDS: readonly VisaId[] = ['500', '485', 'other']
-const WORK_IDS: readonly WorkId[] = ['tfn', 'abn', 'both']
+const VISA_IDS: readonly VisaId[] = ['500', '485'] // Jo, 27 Oct: no "Other"
+// Jo, 27 Oct: two choices, "Jobs with a TFN" and "Work with TFN + ABN".
+const WORK_IDS: readonly WorkId[] = ['tfn', 'abn']
 
 export const visasFor = (l: SvtLocale) => VISA_IDS.map(id => ({ id, label: VISA_LABELS[l][id] }))
 export const worksFor = (l: SvtLocale) => WORK_IDS.map(id => ({ id, label: WORK_LABELS[l][id] }))
@@ -53,22 +54,22 @@ const NOTE: Readonly<Record<SvtLocale, { other: string; usual: string }>> = {
 function messageFor(l: SvtLocale, visa: VisaId, work: WorkId): string {
   if (l === 'zh') {
     const v = visa === 'other' ? '我是其他签证' : `我是 ${visa} 签证`
-    const w = work === 'tfn' ? '今年只有 TFN 的工作' : work === 'abn' ? '今年做了 Uber Eats 这类 ABN 工作' : '今年既有 TFN 工作，也有 ABN 工作'
+    const w = work === 'tfn' ? '今年只有 TFN 的工作' : '今年既有 TFN 工作，也有 ABN 工作'
     return `你好，${v}，${w}。想问下可以帮我报税吗？`
   }
   if (l === 'vi') {
     const v = visa === 'other' ? 'mình đang có loại visa khác' : `mình đang có visa ${visa}`
-    const w = work === 'tfn' ? 'năm nay mình đi làm có TFN' : work === 'abn' ? 'năm nay mình có chạy Uber Eats/làm việc ABN' : 'năm nay mình vừa đi làm có TFN vừa làm việc ABN'
+    const w = work === 'tfn' ? 'năm nay mình đi làm có TFN' : 'năm nay mình vừa đi làm có TFN vừa làm việc ABN'
     return `Chào bạn, ${v}, ${w}. Bên bạn khai thuế giúp mình được không ạ?`
   }
   const visaText = visa === 'other' ? 'another visa' : `a ${visa} visa`
-  const workText = work === 'tfn' ? 'jobs with a TFN' : work === 'abn' ? 'ABN work like Uber Eats' : 'TFN jobs and ABN work'
+  const workText = work === 'tfn' ? 'jobs with a TFN' : 'TFN jobs and ABN work'
   return `Hi, I am on ${visaText} and had ${workText} this year. Can you do my tax return?`
 }
 
 export function priceCheck(visaIn: VisaId, workIn: WorkId, locale: SvtLocale = 'en'): PriceCheckResult {
   const visa: VisaId = isVisa(visaIn) ? visaIn : '500'
-  const work: WorkId = isWork(workIn) ? workIn : 'tfn'
+  const work: WorkId = workIn === 'both' ? 'abn' : isWork(workIn) ? workIn : 'tfn'
   const price = work === 'tfn' ? FEE_TFN : FEE_ABN
   const note = visa === 'other' ? NOTE[locale].other : NOTE[locale].usual
   const message = messageFor(locale, visa, work)

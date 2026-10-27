@@ -3,11 +3,11 @@
 import { useState, useRef, useEffect, useId, isValidElement, cloneElement } from 'react'
 import { lastCompletedTaxYear } from '@/lib/tax-year'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { WA_NUMBER, AGENT_TPB } from '@/lib/constants'
-import { formStrings, type FormLang } from '@/lib/formStrings'
+import { AGENT_TPB } from '@/lib/agent'
+import { formStrings, type AnyFormLang } from '@/lib/formStrings'
+import { useFormBrand, formText, type FormExtraKey } from '@/components/ui/form-brand'
 import { isPlausiblePhone, isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
-import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
 import { FormStepper } from '@/components/ui/FormStepper'
 import { setTaxFormHandoff, getTaxFormHandoff, clearTaxFormHandoff, takeTaxFormSubmitted } from '@/lib/tax-form-handoff'
 import { MAX_INVOICES } from '@/lib/submit-tax-form'
@@ -60,10 +60,10 @@ function Field({ label, required, children, error, hint }: { label: string; requ
   return (
     <div style={{marginBottom:'14px'}}>
       <label id={labelId} htmlFor={isControl ? controlId : undefined}
-        style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'6px'}}>
+        style={{display:'block',fontSize:'13px',fontWeight:600,color:'var(--f-ink, #1A2822)',marginBottom:'6px'}}>
         {label}
       </label>
-      {hint && <div id={hintId} style={{fontSize:'12px',color:'#5A7B70',marginBottom:'6px',lineHeight:1.4}}>{hint}</div>}
+      {hint && <div id={hintId} style={{fontSize:'12px',color:'var(--f-muted, #5A7B70)',marginBottom:'6px',lineHeight:1.4}}>{hint}</div>}
       {control}
       {error && <span id={errorId} className="err-msg" role="alert">{error}</span>}
     </div>
@@ -75,8 +75,9 @@ function FileUpload({
   id, label, accept, value, onChange, lang
 }: {
   id: string; label: string; accept: string
-  value: UploadState; onChange: (v: UploadState) => void; lang: FormLang
+  value: UploadState; onChange: (v: UploadState) => void; lang: AnyFormLang
 }) {
+  const brand = useFormBrand()
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,12 +127,12 @@ function FileUpload({
         <div className="file-empty">
           <div className="file-upload-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M12 16V8M8 12l4-4 4 4" stroke="#0B5240" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <rect x="3" y="3" width="18" height="18" rx="4" stroke="#C8EAE0" strokeWidth="1.2"/>
+              <path d="M12 16V8M8 12l4-4 4 4" style={{ stroke: 'var(--f-brand, #0B5240)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <rect x="3" y="3" width="18" height="18" rx="4" style={{ stroke: 'var(--f-line, #C8EAE0)' }} strokeWidth="1.2"/>
             </svg>
           </div>
           <span className="file-upload-label">{label}</span>
-          <span className="file-upload-sub">{formStrings.tapToChoose[lang]}</span>
+          <span className="file-upload-sub">{formText(brand, formStrings, 'tapToChoose', lang)}</span>
         </div>
       )}
     </div>
@@ -201,8 +202,8 @@ function MultiFileUpload({
           <div className="file-empty">
             <div className="file-upload-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path d="M12 16V8M8 12l4-4 4 4" stroke="#0B5240" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <rect x="3" y="3" width="18" height="18" rx="4" stroke="#C8EAE0" strokeWidth="1.2"/>
+                <path d="M12 16V8M8 12l4-4 4 4" style={{ stroke: 'var(--f-brand, #0B5240)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <rect x="3" y="3" width="18" height="18" rx="4" style={{ stroke: 'var(--f-line, #C8EAE0)' }} strokeWidth="1.2"/>
               </svg>
             </div>
             <span className="file-upload-label">{label}</span>
@@ -219,9 +220,12 @@ function MultiFileUpload({
 }
 
 /* ── Main Form ── */
-export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = {}) {
-  const [lang, setLang] = useState<FormLang>(defaultLang)
-  const T = (key: keyof typeof formStrings) => formStrings[key][lang]
+export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang } = {}) {
+  const brand = useFormBrand()
+  const [lang, setLang] = useState<AnyFormLang>(defaultLang)
+  const T = (key: keyof typeof formStrings | FormExtraKey) => formText(brand, formStrings, key, lang)
+  /** zh and vi carry their inline words in the brand context. */
+  const own = lang === 'zh' || lang === 'vi'
   // Personal
   const [waNumber, setWaNumber]       = useState('')
   const [auPhone, setAuPhone]         = useState('')
@@ -294,8 +298,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
-  const residencyUrl = lang === 'de' ? '/de/tax-residency' : lang === 'ja' ? '/ja/tax-residency' : '/tax-residency'
-  const formUrl      = lang === 'de' ? '/de/tax-form'      : lang === 'ja' ? '/ja/tax-form'      : '/tax-form'
+  // Input hints: the brand's own words when it has them, else the WHT ones.
+  const ph = (key: FormExtraKey, fallback: string) => brand.text?.[lang]?.[key] ?? fallback
+  const residencyUrl = brand.url(lang, 'tax-residency')
+  const formUrl      = brand.url(lang, 'tax-form')
   const SNAPSHOT_KEY = 'whv_taxform_return'
 
   // Restore the form when the client comes back from the tax-residency page.
@@ -434,7 +440,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!bankStatement.file)  e.bankStatement  = T('required')
     if (!selfiePassport.file) e.selfiePassport = T('required')
     if (!declared)            e.declared       = T('required')
-    if (declared === 'no')    e.declared       = 'You must agree to submit'
+    if (declared === 'no')    e.declared       = own ? T('mustAgree') : 'You must agree to submit'
     if (!howHeard.trim())     e.howHeard       = T('required')
     if (!hasExpenses)         e.hasExpenses    = T('required')
     // Jo, 10 Sep: someone answering "Yes" to work expenses with zero receipts
@@ -491,15 +497,15 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     // something that does not exist, which is a bad first thirty seconds for
     // everyone. It now just says they have sent the form.
     const waMsg = encodeURIComponent("Hi! I've just sent through my form 😊")
-    const waHref = `https://wa.me/${WA_NUMBER}?text=${waMsg}`
+    const waHref = `https://wa.me/${brand.waNumber}?text=${waMsg}`
     return (
       <>
         <style>{styles}</style>
         <div className="form-success-wrap">
           <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-              <circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/>
-              <path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="20" cy="20" r="19" style={{ stroke: 'var(--f-brand, #0B5240)' }} strokeWidth="1.5"/>
+              <path d="M12 20l6 6 10-12" style={{ stroke: 'var(--f-brand, #0B5240)' }} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <h1 className="success-title">{T('thankYou')}, {firstName}! 🎉</h1>
@@ -539,22 +545,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             {T('msgWhatsApp')}
           </a>
 
-          <div className="success-divider" />
-
-          <div className="success-socials">
-            <a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="success-social-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.95a8.16 8.16 0 004.77 1.52V7.03a4.85 4.85 0 01-1-.34z"/>
-              </svg>
-              TikTok
-            </a>
-            <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className="success-social-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-              </svg>
-              Instagram
-            </a>
-          </div>
+          {brand.socials ? <><div className="success-divider" />{brand.socials}</> : null}
         </div>
       </>
     )
@@ -570,7 +561,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             {/* Step 1 only: the site nav's switcher navigates to another route,
                 which would throw away everything typed so far. This one just
                 flips local state - but by step 2 the language is settled. */}
-            {step === 1 && <FormLanguageToggle lang={lang} onChange={setLang} />}
+            {step === 1 && <FormLanguageToggle lang={lang} onChange={setLang} options={brand.langs} />}
 
             {/* Step 1 is an instruction plus a reason; giving the second half a
                 lighter weight and size lets the first line carry real heading
@@ -590,10 +581,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 registration seal, rather than generic icons. */}
             {step === 1 && (
               <div className="form-trust-row">
-                <GoogleReviewsBadge lang={lang} />
+                {brand.reviews?.(lang)}
                 <img
                   className="form-trust-seal"
-                  src="/assets/tpb-registered.png"
+                  src={brand.sealSrc}
                   alt={`${T('registeredAgentNo')} ${AGENT_TPB}`}
                   width={509}
                   height={319}
@@ -613,7 +604,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <div>
 
             <Field label={T('whatsapp')} required error={errors.waNumber}
-              hint={lang === 'de' ? 'Bitte genau die Nummer, über die wir gerade chatten, damit wir dein Formular deinem Chat zuordnen können.'
+              hint={own ? T('waHint') : lang === 'de' ? 'Bitte genau die Nummer, über die wir gerade chatten, damit wir dein Formular deinem Chat zuordnen können.'
                 : lang === 'ja' ? 'フォームとチャットを紐づけるため、現在やり取りしている番号と同じものをご記入ください。'
                 : 'Use the same number you are chatting with us on, so we can match your form to our chat.'}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+44 7XXX XXXXXX" name="waNumber" autoComplete="tel" inputMode="tel" maxLength={30}
@@ -628,12 +619,12 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
 
             <Field label={T('givenNames')} required error={errors.fullName}>
-              <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="Exactly as shown on your passport" autoComplete="given-name" maxLength={60}
+              <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder={ph('phGiven', 'Exactly as shown on your passport')} autoComplete="given-name" maxLength={60}
                 enterKeyHint="next"
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
             </Field>
             <Field label={T('lastName')} required error={errors.lastName}>
-              <input className={`inp ${errors.lastName ? 'inp-err' : ''}`} type="text" placeholder="As shown on your passport" autoComplete="family-name" maxLength={60}
+              <input className={`inp ${errors.lastName ? 'inp-err' : ''}`} type="text" placeholder={ph('phLast', 'As shown on your passport')} autoComplete="family-name" maxLength={60}
                 enterKeyHint="next"
                 value={lastName} onChange={e => { setLastName(e.target.value); setErrors(p => ({...p, lastName: ''})) }} />
             </Field>
@@ -657,13 +648,13 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
 
             <Field label={T('addressShort')} required error={errors.address}>
-              <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12 Smith Street, Bondi NSW 2026" autoComplete="street-address" maxLength={300}
+              <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder={ph('phAddress', 'e.g. 12 Smith Street, Bondi NSW 2026')} autoComplete="street-address" maxLength={300}
                 enterKeyHint="next"
                 value={address} onChange={e => { setAddress(e.target.value); setErrors(p => ({...p, address: ''})) }} />
             </Field>
 
             <Field label={T('primaryJob')} required error={errors.primaryJob}>
-              <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista"
+              <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder={ph('phJob', 'e.g. Farm worker, Barista')}
                 enterKeyHint="done"
                 value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
             </Field>
@@ -725,14 +716,16 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
 
             <Field label="" required error={errors.hasExpenses}>
-              <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'6px'}}>
-                {lang === 'de' ? (
-                  <>Hast du{' '}<a href="/de/expenses" target="_blank" rel="noopener noreferrer" style={{color:'#0B5240',textDecoration:'underline'}}>arbeitsbezogene Ausgaben</a>?</>
+              <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'var(--f-ink, #1A2822)',marginBottom:'6px'}}>
+                {own ? (
+                  <>{T('expensesBefore')}<a href={brand.url(lang, 'expenses')} target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>{T('expensesLink')}</a>{T('expensesAfter')}</>
+                ) : lang === 'de' ? (
+                  <>Hast du{' '}<a href="/de/expenses" target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>arbeitsbezogene Ausgaben</a>?</>
                 ) : lang === 'ja' ? (
-                  <><a href="/ja/expenses" target="_blank" rel="noopener noreferrer" style={{color:'#0B5240',textDecoration:'underline'}}>業務関連の経費</a>はありますか？</>
+                  <><a href="/ja/expenses" target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>業務関連の経費</a>はありますか？</>
                 ) : (
-                  <>Do you have{' '}<a href="/expenses" target="_blank" rel="noopener noreferrer" style={{color:'#0B5240',textDecoration:'underline'}}>work-related expenses</a>?</>
-                )}<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
+                  <>Do you have{' '}<a href={brand.url(lang, 'expenses')} target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>work-related expenses</a>?</>
+                )}<span style={{color:'var(--f-brand, #0B5240)',marginLeft:'3px'}}>*</span>
               </label>
               <div className="radio-group">
                 {(['yes','no'] as const).map(opt => (
@@ -809,12 +802,14 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                   <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
                   <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
                   <span className="decl-text">
-                    {lang === 'de' ? (
+                    {own ? (
+                      <>{T('declBefore')}<a href={brand.url(lang, 'client-agreement')} target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>{T('declCA')}</a>{T('declAnd')}<a href={brand.url(lang, 'privacy')} target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>{T('declPP')}</a>{T('declAfter')}</>
+                    ) : lang === 'de' ? (
                       <>Ich habe die{' '}<a href="/de/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Mandantenvereinbarung</a>{' & '}<a href="/de/privacy" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Datenschutzerklärung</a>{' '}gelesen &amp; stimme zu.</>
                     ) : lang === 'ja' ? (
                       <><a href="/ja/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>クライアント規約</a>{'・'}<a href="/ja/privacy" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>プライバシーポリシー</a>{'を読み、同意します。'}</>
                     ) : (
-                      <>I&apos;ve read &amp; agree to the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Client Agreement</a>{' & '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Privacy Policy</a>.</>
+                      <>I&apos;ve read &amp; agree to the{' '}<a href={brand.url(lang, 'client-agreement')} target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Client Agreement</a>{' & '}<a href={brand.url(lang, 'privacy')} target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Privacy Policy</a>.</>
                     )}
                   </span>
                 </label>
@@ -868,15 +863,15 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 const styles = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .hidden { display: none !important; }
-  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 28px 16px 60px; }
-  .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
+  .form-page-wrap { min-height: 100dvh; background: var(--f-bg, #F5F9F7); display: flex; flex-direction: column; align-items: center; padding: 28px 16px 60px; }
+  .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(var(--f-brand-rgb, 11,82,64),0.07); overflow: hidden; }
   /* Narrower gutters than the form body: the heading needs the width more
      than the header needs the margin. */
   .form-header { background: #fff; padding: 20px 14px 10px; text-align: center; }
   .form-header.is-bare { padding: 20px 14px 8px; }
   .form-trust-row { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; margin-top: 16px; margin-bottom: 4px; }
   .form-trust-seal { display: block; width: 112px; height: auto; }
-  .form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: rgba(11,82,64,0.65); text-transform: uppercase; margin-bottom: 8px; }
+  .form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: rgba(var(--f-brand-rgb, 11,82,64),0.65); text-transform: uppercase; margin-bottom: 8px; }
   /* Two lines is fine - forcing one line meant shrinking it to ~19px, which
      left the headline weaker than the Google score right below it. text-wrap
      balance splits it evenly ("Find out what / you're owed") instead of
@@ -886,21 +881,23 @@ const styles = `
      in every language. white-space: pre honours that break and blocks any
      other, and the per-language clamp keeps the longest line on screen down to
      a 320px phone - German runs ~12% longer than English, Japanese shorter. */
-  .form-title { font-weight: 800; color: #080F0D; letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 4px; white-space: nowrap; }
+  .form-title { font-weight: 800; color: var(--f-ink, #080F0D); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 4px; white-space: nowrap; }
   .form-title-en { font-size: clamp(14px, 5.0vw, 22px); }
   .form-title-de { font-size: clamp(12px, 4.2vw, 20px); }
   .form-title-ja { font-size: clamp(15px, 5.2vw, 24px); letter-spacing: 0; }
-  .form-title-sub { font-size: 14px; font-weight: 500; color: #587066; line-height: 1.4; margin-bottom: 10px; }
+  .form-title-zh { font-size: clamp(15px, 5.2vw, 24px); letter-spacing: 0; }
+  .form-title-vi { font-size: clamp(13px, 4.4vw, 21px); }
+  .form-title-sub { font-size: 14px; font-weight: 500; color: var(--f-muted, #587066); line-height: 1.4; margin-bottom: 10px; }
   .form-title-short { font-size: 26px; letter-spacing: -0.025em; line-height: 1.15; white-space: normal; }
-  .form-intro { font-size: 13px; color: #587066; line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }
+  .form-intro { font-size: 13px; color: var(--f-muted, #587066); line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }
   form { padding: 14px 24px 32px; }
   .field-group { margin-bottom: 14px; }
-  .field-label { display: block; font-size: 13px; font-weight: 600; color: #1A2822; margin-bottom: 6px; }
-  .req-dot { color: #0B5240; margin-left: 3px; }
+  .field-label { display: block; font-size: 13px; font-weight: 600; color: var(--f-ink, #1A2822); margin-bottom: 6px; }
+  .req-dot { color: var(--f-brand, #0B5240); margin-left: 3px; }
   .field-error { display: block; font-size: 14px; line-height: 1.5; color: #9A3412; margin-top: 4px; }
-  .inp { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: #080F0D; background: #F5F9F7; border: 1.5px solid #CDE3DB; border-radius: 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
+  .inp { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: var(--f-ink, #080F0D); background: var(--f-bg, #F5F9F7); border: 1.5px solid var(--f-line, #CDE3DB); border-radius: 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
   input[type="date"].inp { min-height: 47px; line-height: 1.4; }
-  .inp:focus { border-color: #0B5240; background: #fff; }
+  .inp:focus { border-color: var(--f-brand, #0B5240); background: #fff; }
   .inp-err { border-color: #FCA5A5 !important; background: #FFF5F5 !important; }
   .form-textarea { min-height: 80px; resize: vertical; }
   /* Prevent iOS auto-zoom on input focus (fires when font-size < 16px) */
@@ -909,63 +906,63 @@ const styles = `
   }
   .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
   .radio-group-col { flex-direction: column; }
-  .radio-card { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid #CDE3DB; font-size: 13px; font-weight: 500; color: #587066; cursor: pointer; transition: all .15s; background: #F5F9F7; width: 100%; }
-  .radio-card-active { background: #EAF6F1; border-color: #0B5240; color: #0B5240; font-weight: 600; }
+  .radio-card { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid var(--f-line, #CDE3DB); font-size: 13px; font-weight: 500; color: var(--f-muted, #587066); cursor: pointer; transition: all .15s; background: var(--f-bg, #F5F9F7); width: 100%; }
+  .radio-card-active { background: var(--f-tint, #EAF6F1); border-color: var(--f-brand, #0B5240); color: var(--f-brand, #0B5240); font-weight: 600; }
   .radio-card-no { }
-  .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #C8EAE0; flex-shrink: 0; transition: all .15s; background: #fff; }
-  .radio-dot-active { border-color: #0B5240; background: #0B5240; }
-  .declaration-box { background: #F5F9F7; border: 1.5px solid #CDE3DB; border-radius: 14px; padding: 13px 14px; }
+  .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--f-line, #C8EAE0); flex-shrink: 0; transition: all .15s; background: #fff; }
+  .radio-dot-active { border-color: var(--f-brand, #0B5240); background: var(--f-brand, #0B5240); }
+  .declaration-box { background: var(--f-bg, #F5F9F7); border: 1.5px solid var(--f-line, #CDE3DB); border-radius: 14px; padding: 13px 14px; }
   .decl-row { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-  .decl-text { font-size: 12px; color: #1A2822; line-height: 1.5; }
-  .decl-link { color: #0B5240; text-decoration: underline; }
+  .decl-text { font-size: 12px; color: var(--f-ink, #1A2822); line-height: 1.5; }
+  .decl-link { color: var(--f-brand, #0B5240); text-decoration: underline; }
   .err-msg { display: block; font-size: 14px; line-height: 1.5; color: #9A3412; margin-top: 4px; }
-  .section-chip { display: inline-flex; align-items: center; background: #EAF6F1; color: #0B5240; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 16px; }
-  .file-zone { border: 1.5px dashed #C8EAE0; border-radius: 14px; background: #F5F9F7; overflow: hidden; cursor: pointer; transition: border-color .15s; }
-  .file-zone:hover { border-color: #0B5240; }
+  .section-chip { display: inline-flex; align-items: center; background: var(--f-tint, #EAF6F1); color: var(--f-brand, #0B5240); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 16px; }
+  .file-zone { border: 1.5px dashed var(--f-line, #C8EAE0); border-radius: 14px; background: var(--f-bg, #F5F9F7); overflow: hidden; cursor: pointer; transition: border-color .15s; }
+  .file-zone:hover { border-color: var(--f-brand, #0B5240); }
   .file-empty { padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .file-upload-icon { width: 44px; height: 44px; border-radius: 12px; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 2px; }
-  .file-upload-label { font-size: 13px; font-weight: 600; color: #1A2822; }
-  .file-upload-sub { font-size: 11px; color: #4C6459; }
+  .file-upload-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--f-tint, #EAF6F1); display: flex; align-items: center; justify-content: center; margin-bottom: 2px; }
+  .file-upload-label { font-size: 13px; font-weight: 600; color: var(--f-ink, #1A2822); }
+  .file-upload-sub { font-size: 11px; color: var(--f-muted, #4C6459); }
   .file-selected { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
   .file-img-preview { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
-  .file-icon-box { width: 48px; height: 48px; border-radius: 8px; background: #EAF6F1; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .file-icon-box { width: 48px; height: 48px; border-radius: 8px; background: var(--f-tint, #EAF6F1); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
   .file-meta { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .file-name { font-size: 12.5px; font-weight: 600; color: #080F0D; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .file-size { font-size: 11px; color: #4C6459; }
+  .file-name { font-size: 12.5px; font-weight: 600; color: var(--f-ink, #080F0D); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file-size { font-size: 11px; color: var(--f-muted, #4C6459); }
   /* 30px was the only way to undo a wrong document, and a missed tap means the
      wrong passport photo is what gets submitted. 44px is the minimum. */
   .file-remove { width: 44px; height: 44px; border-radius: 10px; background: #FEE2E2; color: #ef4444; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; flex-shrink: 0; }
-  .check-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #CDE3DB; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all .15s; }
-  .check-box.checked { background: #0B5240; border-color: #0B5240; }
-  .check-label { font-size: 13px; color: #1A2822; font-weight: 500; line-height: 1.5; }
+  .check-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--f-line, #CDE3DB); background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all .15s; }
+  .check-box.checked { background: var(--f-brand, #0B5240); border-color: var(--f-brand, #0B5240); }
+  .check-label { font-size: 13px; color: var(--f-ink, #1A2822); font-weight: 500; line-height: 1.5; }
   .check-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; }
   .errors-banner { background: #FFF5F5; border: 1px solid #FCA5A5; border-radius: 12px; padding: 12px 16px; font-size: 13px; color: #9A3412; font-weight: 500; margin-top: 16px; }
-  .submit-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: #0B5240; color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; margin-top: 24px; transition: opacity .15s, transform .1s; }
+  .submit-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: var(--f-brand, #0B5240); color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; margin-top: 24px; transition: opacity .15s, transform .1s; }
   .submit-btn:active { transform: scale(.98); opacity: .9; }
   .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
   .btn-loading { display: flex; align-items: center; gap: 8px; }
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .form-footer-note { text-align: center; font-size: 11px; color: #4C6459; margin-top: 14px; line-height: 1.6; }
+  .form-footer-note { text-align: center; font-size: 11px; color: var(--f-muted, #4C6459); margin-top: 14px; line-height: 1.6; }
   /* Same quiet treatment as the footer note, but sitting under the stepper.
      Deliberately small: it reassures, it does not compete with the title. */
-  .form-time-note { text-align: center; font-size: 11px; color: #4C6459; margin: 10px 0 0; line-height: 1.6; }
-  .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
-  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 30% 25%, #EAF6F1, #D6EDE4); box-shadow: inset 0 0 0 2px rgba(11,82,64,0.14); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .form-time-note { text-align: center; font-size: 11px; color: var(--f-muted, #4C6459); margin: 10px 0 0; line-height: 1.6; }
+  .form-success-wrap { min-height: 100dvh; background: var(--f-bg, #F5F9F7); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
+  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 30% 25%, var(--f-tint, #EAF6F1), #D6EDE4); box-shadow: inset 0 0 0 2px rgba(var(--f-brand-rgb, 11,82,64),0.14); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   /* The site's heading face (Fraunces) in brand forest, not DM Sans black - so
      the last screen reads in the same voice as the rest of the site. */
-  .success-title { font-family: var(--font-serif), 'Fraunces', Georgia, serif; font-size: 27px; font-weight: 700; color: #0B5240; letter-spacing: -0.01em; margin: 0 0 10px; }
-  .success-body { font-size: 14px; color: #587066; line-height: 1.65; max-width: 30ch; margin: 0 0 18px; }
+  .success-title { font-family: var(--font-serif), 'Fraunces', Georgia, serif; font-size: 27px; font-weight: 700; color: var(--f-brand, #0B5240); letter-spacing: -0.01em; margin: 0 0 10px; }
+  .success-body { font-size: 14px; color: var(--f-muted, #587066); line-height: 1.65; max-width: 30ch; margin: 0 0 18px; }
   /* "What happens next" - three steps with a connecting line behind them. */
   .success-steps { position: relative; width: 100%; max-width: 300px; display: flex; justify-content: space-between; margin: 2px 0 18px; }
   .success-steps::before { content: ''; position: absolute; top: 15px; left: 15%; right: 15%; height: 2px; background: #D6E7DF; z-index: 0; }
   .success-step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 33%; }
-  .success-step-dot { width: 32px; height: 32px; border-radius: 50%; background: #fff; border: 2px solid #0B5240; color: #0B5240; display: flex; align-items: center; justify-content: center; }
-  .success-step-dot.is-done { background: #0B5240; color: #fff; }
-  .success-step-label { font-size: 10.5px; font-weight: 600; color: #587066; line-height: 1.3; }
+  .success-step-dot { width: 32px; height: 32px; border-radius: 50%; background: #fff; border: 2px solid var(--f-brand, #0B5240); color: var(--f-brand, #0B5240); display: flex; align-items: center; justify-content: center; }
+  .success-step-dot.is-done { background: var(--f-brand, #0B5240); color: #fff; }
+  .success-step-label { font-size: 10.5px; font-weight: 600; color: var(--f-muted, #587066); line-height: 1.3; }
   .success-eta { display: inline-flex; align-items: center; gap: 6px; background: #FFF8EC; border: 1px solid #F0D9A8; color: #7A5A16; font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 100px; margin-bottom: 22px; }
-  .success-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #0B5240; color: #fff; font-size: 14px; font-weight: 600; padding: 14px 26px; border-radius: 100px; text-decoration: none; font-family: inherit; box-shadow: 0 2px 8px rgba(11,82,64,0.28); }
-  .success-divider { width: 40px; height: 1px; background: #CDE3DB; margin: 26px auto 18px; }
+  .success-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--f-brand, #0B5240); color: #fff; font-size: 14px; font-weight: 600; padding: 14px 26px; border-radius: 100px; text-decoration: none; font-family: inherit; box-shadow: 0 2px 8px rgba(var(--f-brand-rgb, 11,82,64),0.28); }
+  .success-divider { width: 40px; height: 1px; background: var(--f-line, #CDE3DB); margin: 26px auto 18px; }
   .success-socials { display: flex; gap: 10px; justify-content: center; }
-  .success-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 100px; border: 1.5px solid #CDE3DB; font-size: 13px; font-weight: 600; color: #0B5240; text-decoration: none; background: #fff; font-family: inherit; }
+  .success-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 100px; border: 1.5px solid var(--f-line, #CDE3DB); font-size: 13px; font-weight: 600; color: var(--f-brand, #0B5240); text-decoration: none; background: #fff; font-family: inherit; }
 `

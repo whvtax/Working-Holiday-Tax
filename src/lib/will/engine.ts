@@ -5,7 +5,7 @@
 //   SUPERVISED  = the assistant drafts, the owner approves every send
 //   FULL_AUTO   = the assistant sends; anything unclear goes to a human
 // ============================================================
-import { FORM_LINK_ANY_BRAND } from './brand-voice';
+import { FORM_LINK_ANY_BRAND, VOICES } from './brand-voice';
 import { decide, Decision, Turn } from './claude';
 import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
@@ -25,6 +25,7 @@ import { hasForeignIncome } from './foreign-income';
 import { hasAbnIncome, ABN_PRICE_RE } from './abn-income';
 import { detectLanguage, unsupportedScript } from './i18n';
 import { currentBrand } from './brand-context';
+import { SVT_FIXED_TEXTS } from './svt-fixed-texts';
 import { isLaterPlan, laterPlanReply } from './later-plan';
 import { renderApproved, type DecisionMode } from './will-decides';
 import { looksLikePaymentConfirmation } from './payment-confirmation';
@@ -368,23 +369,29 @@ export function scrubUnpaidDraft(text: string, paid: boolean): string {
 }
 
 /** Fixed texts that only make sense for working holiday makers. */
-const SVT_BLOCKED_KEYS = new Set<string>(['residency_quiz_start', 'residency_resident', 'residency_whm', 'referral', 'review_link']);
+// review_link is allowed since 27 Oct: the student brand has its own Google
+// profile and rebrandText swaps the link on the way out.
+const SVT_BLOCKED_KEYS = new Set<string>(['residency_quiz_start', 'residency_resident', 'residency_whm', 'referral']);
 
 export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
-  const out = await runEngineInner(input);
+  const flags: { fixedText?: string } = {};
+  const out = await runEngineInner(input, flags);
   // The guard has no Chinese or Vietnamese phrase rules yet, so on the student
   // line a reply in (or to) those languages waits for a person instead of
   // going out on Autopilot (final review, 27 Oct).
   if (currentBrand() === 'svt' && out.kind === 'queued') {
     const lastCustomer = [...input.history].reverse().find((t) => t.role === 'customer')?.text ?? '';
-    if (unsupportedScript(lastCustomer) || unsupportedScript(out.replyText ?? '')) {
+    // A fixed message in Chinese or Vietnamese is Jo's own wording, so it goes
+    // out like the English one does; only free text waits for a person.
+    const fixed = !!flags.fixedText && (out.replyText ?? '').trim() === flags.fixedText.trim();
+    if (!fixed && (unsupportedScript(lastCustomer) || unsupportedScript(out.replyText ?? ''))) {
       return { ...out, kind: 'pending_approval', reviewNote: [out.reviewNote, 'Chinese/Vietnamese: held for approval until the guard covers it.'].filter(Boolean).join(' ') };
     }
   }
   return out;
 }
 
-async function runEngineInner(input: EngineInput): Promise<EngineOutcome> {
+async function runEngineInner(input: EngineInput, flags: { fixedText?: string } = {}): Promise<EngineOutcome> {
   const { ctx, history, mode, bank } = input;
   const willMode = input.decisionMode === 'will';
 
@@ -585,7 +592,43 @@ async function runEngineInner(input: EngineInput): Promise<EngineOutcome> {
         task: { reason: 'Asking about super (DASP). The student site says we can help: the team answers.', severity: 'REVIEW', suggestedReply: undefined },
       };
     }
-    if (SVT_BLOCKED_KEYS.has(decision.approved_key) || unsupportedScript(customerBurst)) decision.approved_key = undefined;
+    const script = unsupportedScript(customerBurst);
+    if (SVT_BLOCKED_KEYS.has(decision.approved_key)) decision.approved_key = undefined;
+    else if (script && willMode && decision.action === 'reply') {
+      // The same fixed message, in Chinese or Vietnamese (Jo, 27 Oct).
+      const key = decision.approved_key;
+      // The Chinese and Vietnamese price texts carry the standard fee and the
+      // guarantee, neither of which applies to a return with foreign income
+      // ($330/$495, no guarantee). Those chats go to the team (devil's
+      // advocate review, 27 Oct).
+      if ((key === 'price_tfn' || key === 'price_tfn_abn' || key === 'not_our_price')
+        && hasForeignIncome(history.filter((t) => t.role === 'customer').map((t) => t.text))) {
+        return {
+          kind: 'human_task', decision: { ...decision, action: 'human_task' },
+          task: { reason: `Foreign income in a ${script === 'zh' ? 'Chinese' : 'Vietnamese'} chat: the price is $330 / $495 with no guarantee. The team answers.`, severity: 'REVIEW', suggestedReply: undefined },
+        };
+      }
+      const first = lastAssistantIdx < 0;
+      // "I'll do it later" depends on the stage, as in English (later-plan.ts).
+      const stage = key === 'later_plan'
+        ? (ctx.state === 'PAID' || ctx.state === 'FORM_PENDING' ? 'later_plan@form'
+          : ctx.state === 'PRICE_SENT' || ctx.state === 'PAYMENT_PENDING' ? 'later_plan@pay' : undefined)
+        : undefined;
+      const raw = (stage ? SVT_FIXED_TEXTS[script][stage] : undefined)
+        ?? (first ? SVT_FIXED_TEXTS[script][`${key}@first`] : undefined) ?? SVT_FIXED_TEXTS[script][key];
+      if (raw) {
+        const name = custFirstName ? cleanFirstName(custFirstName) : '';
+        const withName = name ? raw.replace(/\{\{name\}\}/g, name) : raw.replace(/ ?\{\{name\}\} ?/g, '');
+        decision.reply_text = withName
+          .replace(/\{\{form\}\}/g, `${VOICES.svt.siteUrl}/${script}/tax-form`)
+          .replace(/\s+([!！,，])/g, '$1')
+          .trimStart();
+        flags.fixedText = decision.reply_text;
+        approvedRendered = true;
+        if ((key === 'price_tfn' || key === 'price_tfn_abn') && !decision.new_state && canTransition(ctx.state, 'PRICE_SENT')) decision.new_state = 'PRICE_SENT';
+      }
+      decision.approved_key = undefined;
+    } else if (script) decision.approved_key = undefined;
   }
   if (willMode && decision.action === 'reply' && decision.approved_key) {
     const rendered = renderApproved(decision.approved_key, {
@@ -844,7 +887,8 @@ async function runEngineInner(input: EngineInput): Promise<EngineOutcome> {
       if (!newState && canTransition(ctx.state, 'PRICE_SENT')) newState = 'PRICE_SENT';
     }
   }
-  if ((ctx.lang ?? 'en') === 'en' && !ctx.paid && !teamQuoted && /\bBSB\b|062692|81049952/.test(text)) {
+  // A Chinese or Vietnamese fixed price message is already Jo's wording.
+  if ((ctx.lang ?? 'en') === 'en' && !flags.fixedText && !ctx.paid && !teamQuoted && /\bBSB\b|062692|81049952/.test(text)) {
     const enforced = enforcePriceMessage(text, foreignCustomer, alreadyLodged(history.filter((t) => t.role === 'customer').map((t) => t.text)));
     if (enforced !== text) text = enforced;
   }
@@ -875,7 +919,16 @@ async function runEngineInner(input: EngineInput): Promise<EngineOutcome> {
   if (!ctx.paid && willTurns === 0 && BANK_RE.test(text) && !detectChoice(customerBurst, null) && !PRICE_ASK_RE.test(customerBurst)
       && !alreadyLodged(history.filter((t) => t.role === 'customer').map((t) => t.text))) {
     const name = custFirstName ? cleanFirstName(custFirstName) : '';
-    text = name ? APPROVED.opening.replace(/^Hey!/, `Hey ${name}!`) : APPROVED.opening;
+    // A Chinese or Vietnamese chat on the student line gets the same opening
+    // question in its own language, sent like the English one.
+    const ownScript = flags.fixedText && currentBrand() === 'svt' ? unsupportedScript(customerBurst) : null;
+    const ownOpening = ownScript ? SVT_FIXED_TEXTS[ownScript].opening : undefined;
+    if (ownOpening) {
+      text = (name ? ownOpening.replace(/\{\{name\}\}/g, name) : ownOpening.replace(/ ?\{\{name\}\}/g, '')).trimStart();
+      flags.fixedText = text;
+    } else {
+      text = name ? APPROVED.opening.replace(/^Hey!/, `Hey ${name}!`) : APPROVED.opening;
+    }
     rewriteNote = 'The first draft sent the bank details before any exchange; the opening question went instead.';
     newState = canTransition(ctx.state, 'QUALIFIED') ? 'QUALIFIED' : undefined;
   }

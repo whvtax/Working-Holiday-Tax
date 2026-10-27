@@ -3,8 +3,7 @@
 import Script from 'next/script'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
-import { GA_MEASUREMENT_ID } from '@/lib/constants'
-import { trackDepth, initAiAttribution } from '@/lib/analytics'
+import { trackDepth, initAiAttribution, trackWhatsApp } from '@/lib/analytics'
 
 /**
  * GA4, moved out of the root layout.
@@ -28,9 +27,23 @@ import { trackDepth, initAiAttribution } from '@/lib/analytics'
  *   not help, because the URL travels as a parameter and not as a referrer.
  *   Never tag a page whose path contains a secret.
  */
-export function Analytics() {
-  const pathname = usePathname() || ''
+export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
+  /** The brand's own GA4 property, passed in by its root layout so a shared
+   *  component never ships another brand's ID. */
+  measurementId: string
+  /** Count taps on links marked data-wa-pos as the whatsapp_click key event
+   *  (the student brand marks its WhatsApp links this way; WHT tracks its
+   *  links in each component). */
+  waClicks?: boolean
+  /** Paths a brand keeps untagged on top of /crm and /complete (the student
+   *  brand: its tax form, in every language). */
+  untagged?: readonly string[]
+}) {
+  // The student brand's pages live under an internal /svt-site segment (host
+  // rewrite); the path can arrive with it, so it is dropped before matching.
+  const pathname = (usePathname() || '').replace(/^\/svt-site(?=\/|$)/, '') || '/'
   const isAdminArea = pathname.startsWith('/crm') || pathname.startsWith('/complete')
+    || untagged.some((p) => pathname === p || pathname.startsWith(`${p}/`))
 
   const fired = useRef(false)
   useEffect(() => {
@@ -47,7 +60,8 @@ export function Analytics() {
 
   useEffect(() => {
     if (isAdminArea) return
-    const lang = pathname.startsWith('/de') ? 'de' : pathname.startsWith('/ja') ? 'ja' : 'en'
+    const first = pathname.split('/')[1] ?? ''
+    const lang = ['de', 'ja', 'zh', 'vi'].includes(first) ? first : 'en'
     // rAF-THROTTLED.
     //
     // `scrollHeight` is a layout-forcing read, and this ran on every scroll
@@ -76,12 +90,24 @@ export function Analytics() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [pathname, isAdminArea])
 
+  useEffect(() => {
+    if (!waClicks || isAdminArea) return
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.('a[data-wa-pos]')
+      if (!a) return
+      const first = window.location.pathname.split('/')[1] ?? ''
+      trackWhatsApp({ position: a.getAttribute('data-wa-pos') ?? 'unknown', lang: ['zh', 'vi'].includes(first) ? first : 'en' })
+    }
+    document.addEventListener('click', onClick, { capture: true })
+    return () => document.removeEventListener('click', onClick, { capture: true })
+  }, [waClicks, isAdminArea])
+
   if (isAdminArea) return null
 
   return (
     <>
       <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
         strategy="afterInteractive"
       />
       <Script id="ga4-init" strategy="afterInteractive">
@@ -89,7 +115,7 @@ export function Analytics() {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${GA_MEASUREMENT_ID}');
+          gtag('config', '${measurementId}');
         `}
       </Script>
     </>

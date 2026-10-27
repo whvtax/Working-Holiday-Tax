@@ -16,7 +16,9 @@ describe('SVT llms.txt', () => {
   })
   it('never mentions the other brand', () => {
     expect(txt).not.toMatch(/working\s*holiday\s*tax|workingholidaytax|0424\s?513\s?998/i)
-    expect(txt).not.toMatch(/\b(417|462)\b/)
+    // 417/462 may appear only inside an article line, as a visa type (the
+    // DASP rate for super from a working holiday visa), never in the summary.
+    expect(txt.split('## Guides')[0]).not.toMatch(/\b(417|462)\b/)
   })
   it('has no AI-style dashes', () => {
     expect(txt).not.toMatch(/[–—―]/)

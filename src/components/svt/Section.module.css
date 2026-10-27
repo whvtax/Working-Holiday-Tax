@@ -10,7 +10,8 @@
 }
 /* Narrow keeps the shared left edge of the page grid and limits only the
  * content width, so every section starts on the same vertical line. */
-.narrow > * { max-width: var(--svt-measure); width: 100%; }
+.body { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.narrow > *, .narrow > .body > * { max-width: var(--svt-measure); width: 100%; }
 
 .white { background: var(--svt-paper); }
 .pale { background: var(--svt-lime-pale); }
@@ -22,4 +23,12 @@
   line-height: 1.15;
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+/* Desktop (Jo, 27 Oct: "not in sync on the computer"): a narrow section no
+ * longer leaves the right half of the screen empty. Heading on the left,
+ * content on the right, on the same grid as the hero. Phones: one column. */
+@media (min-width: 1024px) {
+  .narrow { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 64px; align-items: start; }
+  .narrow > *, .narrow > .body > * { max-width: none; }
 }

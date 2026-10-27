@@ -7,7 +7,7 @@
 @media (min-width: 1024px) {
   .hero { padding-top: 56px; padding-bottom: 72px; }
   .heroGrid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: center; gap: 56px; }
-  .heroImage { margin: 0; width: 100%; aspect-ratio: 4 / 5; max-height: 600px; }
+  .heroImage { margin: 0; width: 100%; aspect-ratio: 4 / 5; max-height: 600px; border-radius: var(--svt-radius-card); overflow: hidden; }
 }
 
 .guaranteeText { font-size: var(--svt-text-base); line-height: 1.55; }
@@ -21,7 +21,7 @@
 }
 
 .points { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: var(--svt-text-base); line-height: 1.5; }
-.points li { background: var(--svt-paper); padding: 12px 14px; }
+.points li { border-radius: var(--svt-radius-card); background: var(--svt-paper); padding: 12px 14px; }
 @media (min-width: 768px) { .points { display: grid; grid-template-columns: 1fr 1fr; } .points li:last-child:nth-child(odd) { grid-column: 1 / -1; } }
 
 .storyLead { font-size: var(--svt-text-md); line-height: 1.55; }

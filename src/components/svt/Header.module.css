@@ -1,6 +1,9 @@
 .header {
-  position: relative;
-  z-index: 20;
+  /* Stays at the top while scrolling (Jo, 27 Oct). */
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--svt-line);
   padding: 12px var(--svt-gutter);
   background: var(--svt-paper);
 }
@@ -39,4 +42,18 @@
     background: var(--svt-ink); color: var(--svt-paper) !important; border-radius: var(--svt-radius-button); font-weight: 700;
   }
   .cta:hover { background: #000; text-decoration: none !important; }
+  .drop { position: relative; }
+  .dropBtn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; background: none; border: 0; font: inherit; color: var(--svt-ink); cursor: pointer; }
+  .dropBtn span { font-size: 11px; transition: transform 120ms ease; }
+  .dropPanel {
+    position: absolute; top: 100%; left: -16px; min-width: 280px;
+    display: none; flex-direction: column; padding: 8px;
+    background: var(--svt-paper); border: 1px solid var(--svt-line); border-radius: var(--svt-radius-card);
+    box-shadow: 0 16px 32px rgb(18 22 31 / 0.10);
+  }
+  .dropPanel a { display: flex; align-items: center; min-height: 40px; padding: 0 12px; border-radius: 8px; font-weight: 600; }
+  .dropPanel a:hover { background: var(--svt-lime-pale); text-decoration: none; }
+  .drop:hover .dropPanel, .drop:focus-within .dropPanel { display: flex; }
+  .drop:hover .dropBtn span, .drop:focus-within .dropBtn span { transform: rotate(180deg); }
 }
+@media (prefers-reduced-motion: reduce) { .dropBtn span { transition: none; } }

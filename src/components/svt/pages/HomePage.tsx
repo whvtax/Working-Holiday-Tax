@@ -64,15 +64,11 @@ export function HomePage({ locale, t }: { locale: SvtLocale; t: HomeCopy }) {
         <Payslip locale={locale} />
       </Section>
 
-      <Section tone="pale" title={t.story.title} titleId="story-title" width="wide">
-        <div className={styles.split}>
-          <p className={styles.storyLead}>{t.story.lead}</p>
-          <div>
-            <ul className={styles.points}>
-              {t.story.points.map(p => <li key={p}>{p}</li>)}
-            </ul>
-          </div>
-        </div>
+      <Section tone="pale" title={t.story.title} titleId="story-title">
+        <p className={styles.storyLead}>{t.story.lead}</p>
+        <ul className={styles.points}>
+          {t.story.points.map(p => <li key={p}>{p}</li>)}
+        </ul>
         <p className={styles.guaranteeText}>{t.story.languages}</p>
       </Section>
 

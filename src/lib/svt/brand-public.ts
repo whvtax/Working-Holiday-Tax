@@ -18,6 +18,10 @@ export const SVT_PUBLIC = {
   /** wa.me number, placeholder derived from the phone above. */
   whatsappNumber: '614123123123',
   whatsappIsPlaceholder: true,
+  /** GA4 property "Student Visa Tax" (its own account, Jo, 27 Oct). Public by nature. */
+  gaMeasurementId: 'G-YHFJYVG620',
+  /** Google Business Profile "Student Visa Tax", review link (Jo, 27 Oct). */
+  googleReviewUrl: 'https://g.page/r/CW65-TcfMaArECE/review',
 } as const
 
 /** A wa.me link to the SVT number, with an optional prefilled message. */

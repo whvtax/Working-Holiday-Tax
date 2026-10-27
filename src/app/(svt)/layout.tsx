@@ -9,7 +9,8 @@ import './svt.css'
  * Root layout for Student Visa Tax (English).
  *
  * A separate root layout, not a child of the WHT one: nothing from the WHT
- * shell (nav, footer, analytics, JSON-LD, fonts, CSS) can reach an SVT page.
+ * shell (nav, footer, JSON-LD, fonts, CSS) can reach an SVT page. Analytics is
+ * the shared component with the student brand's own GA4 property.
  * Pages here are served only on the SVT hosts, by the rewrite in
  * config/brand-routing.js; on any other host /svt-site is a 404.
  */

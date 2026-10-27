@@ -15,11 +15,11 @@ describe('SVT price check (locked canvas behaviour)', () => {
   })
   it('writes the WhatsApp opening message from the choices', () => {
     expect(priceCheck('500', 'tfn').message).toBe('Hi, I am on a 500 visa and had jobs with a TFN this year. Can you do my tax return?')
-    expect(priceCheck('485', 'abn').message).toBe('Hi, I am on a 485 visa and had ABN work like Uber Eats this year. Can you do my tax return?')
-    expect(priceCheck('other', 'both').message).toBe('Hi, I am on another visa and had TFN jobs and ABN work this year. Can you do my tax return?')
+    expect(priceCheck('485', 'abn').message).toBe('Hi, I am on a 485 visa and had TFN jobs and ABN work this year. Can you do my tax return?')
   })
-  it('never promises a price for other visas; it is confirmed first', () => {
-    expect(priceCheck('other', 'tfn').note).toBe('Tell us your visa and we will confirm the price before you pay.')
+  it('two visas and two kinds of work only (Jo, 27 Oct)', () => {
+    expect(VISAS.map(v => v.id)).toEqual(['500', '485'])
+    expect(WORKS.map(w => w.label)).toEqual(['Jobs with a TFN', 'Work with TFN + ABN'])
     expect(priceCheck('500', 'tfn').note).toBe('We confirm your price on WhatsApp before you pay.')
   })
   it('links to the SVT WhatsApp number with the message prefilled', () => {
@@ -31,7 +31,7 @@ describe('SVT price check (locked canvas behaviour)', () => {
   it('rejects values that are not on the list (falls back to the defaults)', () => {
     // @ts-expect-error: an unexpected value from outside the type system
     expect(priceCheck('999', 'x').price).toBe(220)
-    expect(WORKS.map(w => w.id)).toEqual(['tfn', 'abn', 'both'])
+    expect(WORKS.map(w => w.id)).toEqual(['tfn', 'abn'])
   })
   it('never says AI, bot, or promises a refund', () => {
     for (const v of VISAS) for (const w of WORKS) {

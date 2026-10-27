@@ -149,7 +149,10 @@ describe('next.config.js wiring', () => {
     // Last rule wins per key in Next, so the SVT rule must come after the public one.
     expect(headers.indexOf(svt[0])).toBeGreaterThan(headers.findIndex(h => h.source === '/((?!crm).*)'))
     const csp = svt[0].headers.find(h => h.key === 'Content-Security-Policy')!.value
-    expect(csp).not.toMatch(/workingholidaytax|facebook|youtube|googletagmanager|fonts\.g/)
+    expect(csp).not.toMatch(/workingholidaytax|facebook|youtube|fonts\.g/)
+    // GA4 only: its own property loads, nothing else from Google or Meta.
+    expect(csp).toContain('https://www.googletagmanager.com')
+    expect(csp).toContain('https://*.google-analytics.com')
     expect(csp).toContain("frame-ancestors 'none'")
     expect(csp).toContain("object-src 'none'")
     for (const key of ['Strict-Transport-Security', 'X-Content-Type-Options', 'Referrer-Policy', 'Permissions-Policy']) {

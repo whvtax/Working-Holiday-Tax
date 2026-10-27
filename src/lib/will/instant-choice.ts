@@ -100,7 +100,7 @@ export function detectChoice(text: string, lastWillLine: string | null | undefin
 }
 
 /** A direct question about the price: the two prices are the right answer. */
-export const PRICE_ASK_RE = /how much|what(?:'s| is| does it) (?:the )?(?:cost|price|fee)|\bcost\b|\bprice\b|\bfees?\b|\bcharge\b|how (?:do|can) i pay|payment details|bank details|wie viel|was kostet|kosten|preis|cu[áa]nto|precio|combien|prix|quanto|prezzo|いくら|料金|費用/i;
+export const PRICE_ASK_RE = /how much|what(?:'s| is| does it) (?:the )?(?:cost|price|fee)|\bcost\b|\bprice\b|\bfees?\b|\bcharge\b|how (?:do|can) i pay|payment details|bank details|wie viel|was kostet|kosten|preis|cu[áa]nto|precio|combien|prix|quanto|prezzo|いくら|料金|費用|多少钱|价格|价钱|收费|费用|bao nhi[eê]u ti[eề]n|gi[aá] bao nhi[eê]u|ph[ií] (?:là )?bao nhi[eê]u|chi ph[ií]/i;
 
 /** The end of the price message (bank details, the guarantee where it
  *  applies, the screenshot line) in the customer's language, for a reply that

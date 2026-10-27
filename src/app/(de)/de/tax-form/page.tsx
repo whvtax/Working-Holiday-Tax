@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
+import { WhtFormProvider } from '@/components/ui/form-brand-wht'
 import { SITE_URL } from '@/lib/constants'
 import { FormClient } from '@/app/(site)/tax-form/FormClient'
 
@@ -45,7 +46,7 @@ export default function GermanTaxFormPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <Suspense fallback={null}><FormClient defaultLang="de" /></Suspense>
+      <WhtFormProvider><Suspense fallback={null}><FormClient defaultLang="de" /></Suspense></WhtFormProvider>
     </>
   )
 }

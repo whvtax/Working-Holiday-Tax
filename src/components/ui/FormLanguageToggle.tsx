@@ -1,5 +1,5 @@
 'use client'
-import type { FormLang } from '@/lib/formStrings'
+import type { AnyFormLang, FormLang } from '@/lib/formStrings'
 
 /**
  * Language toggle shown at the top of each form.
@@ -13,17 +13,18 @@ import type { FormLang } from '@/lib/formStrings'
  * whatever the client typed.
  */
 
-const OPTIONS: { code: FormLang; label: string; full: string }[] = [
+const OPTIONS: ReadonlyArray<{ code: FormLang; label: string; full: string }> = [
   { code: 'en', label: 'EN',   full: 'English' },
   { code: 'de', label: 'DE',   full: 'Deutsch' },
   { code: 'ja', label: '日本語', full: '日本語' },
 ]
 
-export function FormLanguageToggle({ lang, onChange }: { lang: FormLang; onChange: (l: FormLang) => void }) {
+export function FormLanguageToggle<L extends AnyFormLang = FormLang>({ lang, onChange, options }: { lang: L; onChange: (l: L) => void; options?: ReadonlyArray<{ code: L; label: string; full: string }> }) {
+  const list = (options ?? OPTIONS) as ReadonlyArray<{ code: L; label: string; full: string }>
   return (
     <div className="flang">
       <style>{styles}</style>
-      {OPTIONS.map(o => (
+      {list.map(o => (
         <button
           key={o.code}
           type="button"
@@ -44,8 +45,8 @@ const styles = `
   /* Padding keeps a ~40px tap target even though the text is small. */
   /* #9DB5AC is 2.18:1 on white and was retired from the palette for exactly
      this reason. The inactive languages are the control's only affordance, so
-     they read at subtle #587066, 5.35:1, and the active one stays forest. */
-  .flang-btn { padding: 9px 10px; font-size: 12px; font-weight: 600; font-family: inherit; letter-spacing: .04em; color: #587066; background: none; border: none; border-bottom: 2px solid transparent; border-radius: 0; cursor: pointer; transition: color .15s, border-color .15s; }
-  .flang-btn:hover { color: #0B5240; }
-  .flang-btn.is-active { color: #0B5240; border-bottom-color: #0B5240; }
+     they read at subtle var(--f-muted, #587066), 5.35:1, and the active one stays forest. */
+  .flang-btn { padding: 9px 10px; font-size: 12px; font-weight: 600; font-family: inherit; letter-spacing: .04em; color: var(--f-muted, #587066); background: none; border: none; border-bottom: 2px solid transparent; border-radius: 0; cursor: pointer; transition: color .15s, border-color .15s; }
+  .flang-btn:hover { color: var(--f-brand, #0B5240); }
+  .flang-btn.is-active { color: var(--f-brand, #0B5240); border-bottom-color: var(--f-brand, #0B5240); }
 `

@@ -25,16 +25,16 @@
 .p { font-size: var(--svt-text-md); line-height: 1.65; }
 .list { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; line-height: 1.6; font-size: var(--svt-text-md); }
 .list li::marker { color: var(--svt-ink-2); }
-.note { background: var(--svt-mist); border-left: 3px solid var(--svt-lime); padding: 14px 16px; line-height: 1.6; }
+.note { background: var(--svt-mist); border-left: 3px solid var(--svt-lime); border-radius: 0 var(--svt-radius-card) var(--svt-radius-card) 0; padding: 14px 16px; line-height: 1.6; }
 
 /* One path onward: next in the topic, then the price. */
 .end { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--svt-line); padding-top: 28px; }
-.next { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--svt-line); text-decoration: none; min-height: var(--svt-tap); }
+.next { border-radius: var(--svt-radius-card); display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--svt-line); text-decoration: none; min-height: var(--svt-tap); }
 .next:hover .nextTitle { text-decoration: underline; }
 .nextLabel { font-size: 13px; color: var(--svt-ink-2); }
 .nextTitle { font-size: 18px; font-weight: 700; line-height: 1.3; }
 .nextTitle::after { content: '  \2192'; content: '  \2192' / ''; font-weight: 400; }
-.cta { background: var(--svt-lime-pale); padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.cta { border-radius: var(--svt-radius-card); background: var(--svt-lime-pale); padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
 .ctaTitle { font-size: 20px; font-weight: 700; line-height: 1.25; }
 .ctaText { font-family: var(--svt-font-mono); font-size: 15px; }
 

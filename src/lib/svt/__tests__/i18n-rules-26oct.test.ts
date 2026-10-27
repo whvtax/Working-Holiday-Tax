@@ -94,7 +94,7 @@ describe('structure', () => {
     expect(hrefs('vi')).toEqual(hrefs('en'))
   })
   it('the price check message is in the reader language', () => {
-    expect(priceCheck('485', 'abn', 'zh').message).toBe('你好，我是 485 签证，今年做了 Uber Eats 这类 ABN 工作。想问下可以帮我报税吗？')
+    expect(priceCheck('485', 'abn', 'zh').message).toBe('你好，我是 485 签证，今年既有 TFN 工作，也有 ABN 工作。想问下可以帮我报税吗？')
     expect(priceCheck('500', 'tfn', 'vi').message).toBe('Chào bạn, mình đang có visa 500, năm nay mình đi làm có TFN. Bên bạn khai thuế giúp mình được không ạ?')
     expect(priceCheck('500', 'tfn', 'en').message).toBe('Hi, I am on a 500 visa and had jobs with a TFN this year. Can you do my tax return?')
   })

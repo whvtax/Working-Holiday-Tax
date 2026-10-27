@@ -30,6 +30,8 @@ test.describe('SVT pages', () => {
       const errors: string[] = []
       page.on('console', m => { if (m.type() === 'error') errors.push(m.text()) })
       page.on('pageerror', e => errors.push(String(e)))
+      // GA4 is stubbed: the test machine has no internet, and the tag is checked in brand-isolation.
+      await page.route(/googletagmanager\.com|google-analytics\.com/, r => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }))
       const res = await page.goto(`${SVT}${path}`)
       expect(res?.status()).toBe(200)
       await expect(page.locator('h1')).toHaveCount(1)

@@ -40,7 +40,10 @@
   --svt-max: 1120px;
   --svt-measure: 640px;
 
-  --svt-radius-button: 4px;
+  --svt-radius-button: 8px;
+  /* Cards and boxes (Jo, 27 Oct: a little rounding for flow). The docket
+   * (receipt) keeps its square cut on purpose. */
+  --svt-radius-card: 10px;
   --svt-radius-pill: 24px;
   --svt-radius-bubble: 14px;
 

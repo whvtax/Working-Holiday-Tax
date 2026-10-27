@@ -59,7 +59,7 @@ html:lang(zh) body { line-height: 1.7; }
 
 /* On the form page the sticky WhatsApp bar would cover the fields while
  * typing and compete with the submit button, so it steps aside. */
-body:has(form[data-svt-form]) [data-sticky-wa] { display: none; }
+body:has([data-svt-form]) [data-sticky-wa] { display: none; }
 
 /* The phone WhatsApp bar is fixed to the bottom: keep a focused link or a
  * jumped-to heading clear of it (WCAG 2.4.11). The bar hides from 900px. */

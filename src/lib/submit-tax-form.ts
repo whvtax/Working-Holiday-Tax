@@ -9,7 +9,7 @@
  */
 
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
-import { formStrings, type FormLang } from '@/lib/formStrings'
+import { formStrings, type AnyFormLang } from '@/lib/formStrings'
 
 export type TaxFormPayload = {
   waNumber: string
@@ -119,15 +119,15 @@ async function uploadOne(
 
 /** Server field names, as a person would recognise them on the form. Only the
  *  fields validateIntake can actually reject appear here. */
-const FIELD_LABELS: Record<string, Record<FormLang, string>> = {
-  email:     { en: 'email address',   de: 'E-Mail-Adresse',   ja: 'メールアドレス' },
-  tfn:       { en: 'TFN',             de: 'TFN',              ja: 'TFN' },
-  dob:       { en: 'date of birth',   de: 'Geburtsdatum',     ja: '生年月日' },
-  taxYear:   { en: 'tax year',        de: 'Steuerjahr',       ja: '課税年度' },
-  marital:   { en: 'marital status',  de: 'Familienstand',    ja: '婚姻状況' },
-  taxStatus: { en: 'tax status',      de: 'Steuerstatus',     ja: '税務上の居住区分' },
-  whatsapp:  { en: 'WhatsApp number', de: 'WhatsApp-Nummer',  ja: 'WhatsApp番号' },
-  fullName:  { en: 'name',            de: 'Name',             ja: 'お名前' },
+const FIELD_LABELS: Record<string, Record<AnyFormLang, string>> = {
+  email:     { en: 'email address',   de: 'E-Mail-Adresse',   ja: 'メールアドレス', zh: '邮箱地址', vi: 'địa chỉ email' },
+  tfn:       { en: 'TFN',             de: 'TFN',              ja: 'TFN', zh: 'TFN', vi: 'TFN' },
+  dob:       { en: 'date of birth',   de: 'Geburtsdatum',     ja: '生年月日', zh: '出生日期', vi: 'ngày sinh' },
+  taxYear:   { en: 'tax year',        de: 'Steuerjahr',       ja: '課税年度', zh: '报税年度', vi: 'năm thuế' },
+  marital:   { en: 'marital status',  de: 'Familienstand',    ja: '婚姻状況', zh: '婚姻状况', vi: 'tình trạng hôn nhân' },
+  taxStatus: { en: 'tax status',      de: 'Steuerstatus',     ja: '税務上の居住区分', zh: '税务身份', vi: 'tình trạng cư trú thuế' },
+  whatsapp:  { en: 'WhatsApp number', de: 'WhatsApp-Nummer',  ja: 'WhatsApp番号', zh: 'WhatsApp 号码', vi: 'số WhatsApp' },
+  fullName:  { en: 'name',            de: 'Name',             ja: 'お名前', zh: '姓名', vi: 'họ tên' },
 }
 
 export async function submitTaxForm(
@@ -135,7 +135,7 @@ export async function submitTaxForm(
   /** 'unsure' = the form does not declare residency; the reviewer decides.
    *  'foreign' = the customer marked foreign resident (Student Visa Tax). */
   taxStatus: 'resident' | 'whm' | 'unsure' | 'foreign',
-  lang: FormLang,
+  lang: AnyFormLang,
   /** Defaults to the original endpoint so /tax-form is unaffected. */
   endpoint: string = '/api/tax-form',
   /**
@@ -150,10 +150,12 @@ export async function submitTaxForm(
    * whole form.
    */
   onProgress?: (done: number, total: number) => void,
+  /** A brand's own words for these messages (zh and vi on the student brand). */
+  own?: Partial<Record<string, string>>,
 ): Promise<SubmitResult> {
   const t = (k: keyof typeof formStrings) => {
-    const entry = formStrings[k] as Record<FormLang, string>
-    return entry?.[lang] ?? entry?.en ?? ''
+    const entry = formStrings[k] as Record<string, string>
+    return own?.[k] ?? entry?.[lang] ?? entry?.en ?? ''
   }
 
   let uploadError = ''

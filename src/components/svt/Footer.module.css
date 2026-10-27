@@ -1,8 +1,29 @@
-.footer { background: var(--svt-ink); color: var(--svt-mist); padding: 32px var(--svt-gutter) 40px; }
-.inner { max-width: var(--svt-max); margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-.brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; }
-.legal { font-size: var(--svt-text-sm); line-height: 1.55; color: var(--svt-mist-2); max-width: var(--svt-measure); }
-.links { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 15px; }
-.links a { color: var(--svt-mist); display: inline-flex; min-height: 44px; align-items: center; }
-.links a:hover { color: var(--svt-paper); }
-.footer :focus-visible { box-shadow: 0 0 0 3px var(--svt-ink), 0 0 0 5px var(--svt-lime); }
+/* Same shape as the WHT footer: a light section with four columns, then a
+ * dark bar with the copyright and legal links. SVT colours only. */
+.footer a { text-decoration: none; }
+.main { background: var(--svt-lime-pale); border-top: 1px solid rgba(18, 22, 31, 0.08); padding: 56px var(--svt-gutter) 48px; color: var(--svt-ink); }
+.inner { max-width: var(--svt-max); margin: 0 auto; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } .brandCol { grid-column: 1 / -1; } }
+@media (min-width: 900px) { .grid { grid-template-columns: 1.5fr 1fr 1fr 0.8fr; gap: 40px; } .brandCol { grid-column: auto; } }
+.brandCol { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
+.tagline { font-size: 18px; font-weight: 700; margin-top: 6px; letter-spacing: -0.01em; }
+.intro { font-size: 14px; line-height: 1.65; color: var(--svt-ink-2); max-width: 34ch; }
+.ask { color: var(--svt-ink); font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.ask:hover { text-decoration: underline; }
+.seal img { display: block; width: 104px; height: auto; margin-top: 10px; }
+.head { font-family: var(--svt-font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; }
+.col { list-style: none; display: flex; flex-direction: column; }
+.col a { color: var(--svt-ink-2); font-size: 14px; display: inline-flex; min-height: 36px; align-items: center; }
+.col a:hover { color: var(--svt-ink); text-decoration: underline; }
+.bottom { background: var(--svt-ink); color: var(--svt-mist-2); padding: 10px var(--svt-gutter); }
+.bottom .inner { display: flex; flex-direction: column; gap: 6px; }
+.bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 24px; font-size: 13px; }
+.legal { font-size: 12.5px; line-height: 1.55; color: var(--svt-mist-2); max-width: var(--svt-measure); }
+.links { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; }
+.dot { color: var(--svt-mist-2); opacity: 0.6; }
+.links a { color: var(--svt-mist); font-size: 13px; display: inline-flex; min-height: 44px; align-items: center; }
+.links a:hover { color: var(--svt-paper); text-decoration: underline; }
+.footer :focus-visible { outline: 2px solid transparent; box-shadow: var(--svt-focus); }
+.bottom :focus-visible { box-shadow: 0 0 0 3px var(--svt-ink), 0 0 0 5px var(--svt-lime); }

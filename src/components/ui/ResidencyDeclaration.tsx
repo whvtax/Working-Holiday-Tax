@@ -15,7 +15,8 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { formStrings, type FormLang } from '@/lib/formStrings'
+import { formStrings, type AnyFormLang, type FormLang } from '@/lib/formStrings'
+import { useFormBrand, formText } from '@/components/ui/form-brand'
 import { submitTaxForm } from '@/lib/submit-tax-form'
 import { isNdaCountry, languageForCountry } from '@/lib/nda-countries'
 import {
@@ -99,7 +100,7 @@ const COPY = {
 } as const
 
 export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
-  lang?: FormLang
+  lang?: AnyFormLang
   /**
    * Called instead of navigating, when the caller is already rendering this
    * step inside its own page. The two-stage flow needs it: there, formUrl is
@@ -109,6 +110,7 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   onSubmitted?: (firstName: string) => void
 }) {
   const router = useRouter()
+  const brand = useFormBrand()
   const [handoff, setHandoff] = useState<TaxFormHandoff | null>(null)
   const [status, setStatus] = useState<Status>('')
   const [error, setError] = useState('')
@@ -126,16 +128,16 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
 
   if (!handoff) return null
 
-  const t = (k: keyof typeof formStrings) => {
-    const entry = formStrings[k] as Record<FormLang, string>
-    return entry?.[lang] ?? entry?.en ?? ''
-  }
-  const c = COPY[lang] ?? COPY.en
+  const t = (k: keyof typeof formStrings) => formText(brand, formStrings, k, lang)
+  // A brand with its own residency words (the student brand: resident or
+  // foreign resident) uses them; otherwise the WHT words, unchanged.
+  const own = brand.residency ? (brand.residency.copy[lang] ?? brand.residency.copy.en) : undefined
+  const c = COPY[lang as FormLang] ?? COPY.en
   // Which WHM confirmation wording to show. Treaty (NDA) countries get the full
   // "you are giving up residency + the $18,200 threshold" explanation; everyone
   // else gets the one-line low-income-tax-offset note and nothing after it.
   const country = (handoff.payload as { country?: string }).country
-  const nda = isNdaCountry(country)
+  const nda = !own && isNdaCountry(country)
   // The WHM warning is shown in the language of the customer's HOME COUNTRY, not
   // the language they filled the form in: a German who used the English form
   // still sees the warning in German, a Japanese person in Japanese (Jo, 3 Sep).
@@ -148,9 +150,13 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
     // "3 of 12" instead of a static label. Uploads run one at a time with
     // retries, so a dozen files on a slow connection is a long, silent minute
     // behind an unchanging button, at the exact moment of commitment.
+    // The second status is the brand's own ('foreign' for the student brand).
+    const status = picked === 'whm' && brand.residency ? brand.residency.status : picked
+    // en/de/ja come from formStrings; a brand's zh and vi words come with it.
     const res = await submitTaxForm(
-      handoff.payload, picked, handoff.lang, handoff.submitUrl,
+      handoff.payload, status, handoff.lang, handoff.submitUrl,
       (done, total) => { if (total > 1) setProgress({ done, total }) },
+      brand.text?.[handoff.lang],
     )
     if (res.ok) {
       // Trim first: a leading space (autofill/paste) made "  Sarah".split(' ')[0]
@@ -170,7 +176,7 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   // the choice by hand, and cannot submit until the quiz has produced a status
   // (which only happens once all questions are answered).
   const handleSubmit = () => {
-    if (!status) { setError(c.pickOne); return }
+    if (!status) { setError(own?.pickOne ?? c.pickOne); return }
     // Every WHM result now confirms before it is lodged (Jo, 30 Aug). The
     // consequence differs by country, so the modal has two wordings (see below):
     //   treaty (NDA) country  -> they might qualify as a resident WITH the
@@ -186,18 +192,18 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   }
 
   const options: { val: 'resident' | 'whm'; label: string }[] = [
-    { val: 'resident', label: c.residentLabel },
-    { val: 'whm',      label: c.whmLabel },
+    { val: 'resident', label: own?.residentLabel ?? c.residentLabel },
+    { val: 'whm',      label: own?.otherLabel ?? c.whmLabel },
   ]
 
   return (
     <div className="resdecl-wrap">
       <style>{styles}</style>
 
-      <p className="resdecl-intro">{c.intro}</p>
+      <p className="resdecl-intro">{own?.declIntro ?? c.intro}</p>
 
       {/* The client picks their status by hand (Jo, 3 Sep). */}
-      <div className="resdecl-options" role="radiogroup" aria-label={c.pickOne}>
+      <div className="resdecl-options" role="radiogroup" aria-label={own?.pickOne ?? c.pickOne}>
         {options.map(opt => (
           <div
             key={opt.val}
@@ -227,7 +233,7 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
           : t('submitTax')}
       </button>
 
-      <p className="resdecl-secure">{c.secure}</p>
+      <p className="resdecl-secure">{own?.secure ?? c.secure}</p>
 
       {/* WHM confirmation. Explicit consequence, then a clear choice: submit as
           declared, or go back and re-read. Nothing is lodged until they confirm.
@@ -236,7 +242,7 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
       {confirming && (
         <div className="resdecl-overlay" onClick={(e) => { if (e.target === e.currentTarget) setConfirming(false) }}>
           <div className="resdecl-modal" role="dialog" aria-modal="true">
-            <p className="resdecl-modal-lead">{nda ? cAlert.confirmLead : cAlert.confirmLeadNonNda}</p>
+            <p className="resdecl-modal-lead">{own ? own.confirmLead : nda ? cAlert.confirmLead : cAlert.confirmLeadNonNda}</p>
             {nda && (
               <>
                 <ul className="resdecl-modal-points">
@@ -251,12 +257,12 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
                 type="button"
                 className="resdecl-submit"
                 onClick={() => { setConfirming(false); void doSubmit('whm') }}
-              >{cAlert.confirmYes}</button>
+              >{own ? own.confirmYes : cAlert.confirmYes}</button>
               <button
                 type="button"
                 className="resdecl-modal-back"
                 onClick={() => setConfirming(false)}
-              >{cAlert.confirmNo}</button>
+              >{own ? own.confirmNo : cAlert.confirmNo}</button>
             </div>
           </div>
         </div>
@@ -268,28 +274,28 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
 
 const styles = `
   .resdecl-wrap { max-width: 560px; margin: 0 auto; text-align: left; }
-  .resdecl-intro { font-size: 14px; font-weight: 600; color: #1A2822; line-height: 1.6; margin-bottom: 14px; }
-  .resdecl-req { color: #0B5240; margin-left: 3px; }
+  .resdecl-intro { font-size: 14px; font-weight: 600; color: var(--f-ink, #1A2822); line-height: 1.6; margin-bottom: 14px; }
+  .resdecl-req { color: var(--f-brand, #0B5240); margin-left: 3px; }
   .resdecl-options { display: flex; flex-direction: column; gap: 10px; }
-  .resdecl-card { display: flex; align-items: center; padding: 15px 16px; border-radius: 12px; border: 1.5px solid #CDE3DB; background: #F5F9F7; cursor: default; transition: all .15s; }
+  .resdecl-card { display: flex; align-items: center; padding: 15px 16px; border-radius: 12px; border: 1.5px solid var(--f-line, #CDE3DB); background: var(--f-bg, #F5F9F7); cursor: default; transition: all .15s; }
   .resdecl-card-btn { cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .resdecl-card-btn:hover { border-color: #0B5240; }
-  .resdecl-card-btn:focus-visible { outline: 2px solid #0B5240; outline-offset: 2px; }
+  .resdecl-card-btn:hover { border-color: var(--f-brand, #0B5240); }
+  .resdecl-card-btn:focus-visible { outline: 2px solid var(--f-brand, #0B5240); outline-offset: 2px; }
   .resdecl-card-btn:active { transform: scale(.99); }
-  .resdecl-card-active { background: #EAF6F1; border-color: #0B5240; }
+  .resdecl-card-active { background: var(--f-tint, #EAF6F1); border-color: var(--f-brand, #0B5240); }
   .resdecl-row { display: flex; align-items: center; gap: 10px; }
   .resdecl-input { display: none; }
-  .resdecl-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #C8EAE0; background: #fff; flex-shrink: 0; transition: all .15s; }
-  .resdecl-dot-active { border-color: #0B5240; background: #0B5240; }
-  .resdecl-label { font-size: 14px; font-weight: 500; color: #587066; }
-  .resdecl-card-active .resdecl-label { color: #0B5240; font-weight: 600; }
+  .resdecl-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--f-line, #C8EAE0); background: #fff; flex-shrink: 0; transition: all .15s; }
+  .resdecl-dot-active { border-color: var(--f-brand, #0B5240); background: var(--f-brand, #0B5240); }
+  .resdecl-label { font-size: 14px; font-weight: 500; color: var(--f-muted, #587066); }
+  .resdecl-card-active .resdecl-label { color: var(--f-brand, #0B5240); font-weight: 600; }
   .resdecl-error { font-size: 12.5px; color: #DC2626; margin-top: 10px; font-weight: 500; }
-  .resdecl-submit { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; margin-top: 20px; background: #0B5240; color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; transition: opacity .15s, transform .1s; }
+  .resdecl-submit { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; margin-top: 20px; background: var(--f-brand, #0B5240); color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; transition: opacity .15s, transform .1s; }
   .resdecl-submit:active { transform: scale(.98); opacity: .9; }
   .resdecl-submit:disabled { opacity: .6; cursor: not-allowed; }
   .resdecl-secure { font-size: 11.5px; color: #7a8a82; text-align: center; margin-top: 12px; }
-  .resdecl-tick { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid #C8EAE0; background: #fff; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; transition: background .18s ease, border-color .18s ease; }
-  .resdecl-tick.is-checked { background: #0B5240; border-color: #0B5240; color: #fff; animation: resdeclTickPop .22s ease; }
+  .resdecl-tick { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--f-line, #C8EAE0); background: #fff; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; transition: background .18s ease, border-color .18s ease; }
+  .resdecl-tick.is-checked { background: var(--f-brand, #0B5240); border-color: var(--f-brand, #0B5240); color: #fff; animation: resdeclTickPop .22s ease; }
   .resdecl-card { transition: background .18s ease, border-color .18s ease; }
   @keyframes resdeclTickPop { 0% { transform: scale(.7); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
   .resdecl-hint { font-size: 12px; color: #9AA99F; text-align: center; margin-top: 8px; }
@@ -297,19 +303,19 @@ const styles = `
   .resdecl-check { margin-top: 12px; background: #FFF8EC; border: 1.5px solid #F0D9A8; border-radius: 12px; padding: 13px 14px; }
   .resdecl-check-q { font-size: 12.5px; font-weight: 600; color: #7A5A16; line-height: 1.5; margin: 0 0 10px; }
   .resdecl-check-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .resdecl-check-yes { flex: 1; min-width: 120px; min-height: 38px; border-radius: 100px; border: none; background: #0B5240; color: #fff; font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; }
-  .resdecl-check-no { flex: 1; min-width: 120px; min-height: 38px; border-radius: 100px; border: 1.5px solid #E2E8E4; background: #fff; color: #587066; font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; }
+  .resdecl-check-yes { flex: 1; min-width: 120px; min-height: 38px; border-radius: 100px; border: none; background: var(--f-brand, #0B5240); color: #fff; font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; }
+  .resdecl-check-no { flex: 1; min-width: 120px; min-height: 38px; border-radius: 100px; border: 1.5px solid #E2E8E4; background: #fff; color: var(--f-muted, #587066); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; }
   /* WHM + treaty-country confirmation modal */
   .resdecl-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(11,20,17,.5); display: flex; align-items: center; justify-content: center; padding: 18px; }
   .resdecl-modal { width: 100%; max-width: 420px; background: #fff; border-radius: 20px; box-shadow: 0 12px 48px rgba(11,20,17,.28); padding: 22px 20px; text-align: left; }
-  .resdecl-modal-lead { font-size: 14px; font-weight: 600; color: #1A2822; line-height: 1.55; margin: 0 0 12px; }
+  .resdecl-modal-lead { font-size: 14px; font-weight: 600; color: var(--f-ink, #1A2822); line-height: 1.55; margin: 0 0 12px; }
   .resdecl-modal-points { margin: 0 0 12px; padding: 0 0 0 2px; list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .resdecl-modal-points li { position: relative; padding-left: 20px; font-size: 13.5px; color: #1A2822; line-height: 1.5; }
+  .resdecl-modal-points li { position: relative; padding-left: 20px; font-size: 13.5px; color: var(--f-ink, #1A2822); line-height: 1.5; }
   .resdecl-modal-points li::before { content: ''; position: absolute; left: 4px; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: #D08A00; }
   .resdecl-modal-points strong { font-weight: 700; color: #0B3B2E; }
-  .resdecl-modal-note { font-size: 12.5px; color: #587066; line-height: 1.55; margin: 0 0 16px; background: #F5F9F7; border-radius: 10px; padding: 10px 12px; }
+  .resdecl-modal-note { font-size: 12.5px; color: var(--f-muted, #587066); line-height: 1.55; margin: 0 0 16px; background: var(--f-bg, #F5F9F7); border-radius: 10px; padding: 10px 12px; }
   .resdecl-modal-btns { display: flex; flex-direction: column; gap: 8px; }
   .resdecl-modal-btns .resdecl-submit { margin-top: 0; height: 50px; }
-  .resdecl-modal-back { width: 100%; height: 46px; border-radius: 100px; border: 1.5px solid #E2E8E4; background: #fff; color: #587066; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; }
+  .resdecl-modal-back { width: 100%; height: 46px; border-radius: 100px; border: 1.5px solid #E2E8E4; background: #fff; color: var(--f-muted, #587066); font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; }
   .resdecl-modal-back:active { transform: scale(.98); }
 `
