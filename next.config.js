@@ -198,9 +198,6 @@ const nextConfig = {
         { source: `/de/${slug}`, destination: '/de/link-after-payment', permanent: false },
         { source: `/ja/${slug}`, destination: '/ja/link-after-payment', permanent: false },
       ]),
-      { source: '/start',    destination: '/start',    permanent: false },
-      { source: '/de/start', destination: '/de/start', permanent: false },
-      { source: '/ja/start', destination: '/ja/start', permanent: false },
       // ─── Superannuation cluster consolidation (Aug 2026) ──────────────────
       // Five broad "how do I claim my super" guides were merged into the
       // /superannuation answer hub. They ranked 21-33 while narrow DASP guides
