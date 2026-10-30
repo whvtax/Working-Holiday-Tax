@@ -23,7 +23,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
       guarantee: { title: '如果你的退税比我们的费用少', blocks: [
         { p: '差额我们退给你。比如我们的费用是 $220，你的退税是 $150，我们就退给你 $70。' },
         { p: '差额会在 ATO 发出税务评估通知（notice of assessment）之后支付，因为这份文件才显示最终的退税金额。' },
-        { note: '如果没有退税，或者你需要补税，则按全额收费。同时向两个雇主申报免税额度，或者用 ABN 送外卖，是留学生最后需要补税的常见原因。' },
+        { note: '如果没有退税，或者你需要补税，则按全额收费。同时在两个雇主那里享受免税额度，或者用 ABN 送外卖，是留学生最终要补税的常见原因。' },
       ] },
       paying: { title: '怎么付款', blocks: [
         { p: '确认价格之后，通过银行转账付款给 The Accounting Academy。在 WhatsApp 上把转账截图发给我们，我们就开始办理。' },
@@ -97,7 +97,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
       { q: '我从打工度假签证转成了学生签证，有影响吗？', a: '有。同一年里，这两段时间的税可能算法不同。请告诉我们两个签证以及各自的日期。' },
     ],
     sourceLabels: ['ATO：在澳洲学习', 'ATO：澳洲税务居民'],
-    short: {"answer": "在澳洲就读 6 个月或以上课程的国际学生，可能是澳洲税务居民。税务居民可以享受免税额度（2025-26 财年为 $18,200）；来澳或离澳的那一年，可能只能享受其中一部分。", "mark": "可能是澳洲税务居民", "facts": [{"figure": "6 个月", "label": "课程达到这个长度，你可能是税务居民"}, {"figure": "$18,200", "label": "税务居民的免税额度"}]},
+    short: {"answer": "在澳洲就读 6 个月或以上课程的留学生，可能是澳洲税务居民。税务居民可以享受免税额度（2025-26 财年为 $18,200）；来澳或离澳的那一年，可能只能享受其中一部分。", "mark": "可能是澳洲税务居民", "facts": [{"figure": "6 个月", "label": "课程达到这个长度，你可能是税务居民"}, {"figure": "$18,200", "label": "税务居民的免税额度"}]},
   },
   medicare: {
     label: 'Medicare 税',
@@ -128,7 +128,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
       { q: '每年都要重新申请吗？', a: '是的。每一年申请免除 Medicare 税，都需要一份新的 Medicare Entitlement Statement。' },
     ],
     sourceLabels: ['ATO：没有资格享受 Medicare 福利', 'Services Australia：Medicare Entitlement Statement'],
-    short: {"answer": "如果你是国际学生、属于税务居民，而且没有资格享受 Medicare，通常可以申请免除 Medicare 税，但前提是要有 Services Australia 出具的 Medicare Entitlement Statement（MES）。拿到之后再报税。", "mark": "Medicare Entitlement Statement（MES）", "facts": [{"figure": "2%", "label": "税务居民的 Medicare 税"}, {"figure": "8 周", "label": "ATO 表示，处理最长可能需要的时间"}]},
+    short: {"answer": "如果你是留学生、属于税务居民，而且没有资格享受 Medicare，通常可以申请免除 Medicare 税，但前提是要有 Services Australia 出具的 Medicare Entitlement Statement（MES）。拿到之后再报税。", "mark": "Medicare Entitlement Statement（MES）", "facts": [{"figure": "2%", "label": "税务居民的 Medicare 税"}, {"figure": "8 周", "label": "ATO 表示，处理最长可能需要的时间"}]},
   },
   'abn-delivery': {
     label: 'Uber Eats 和 ABN 工作',
@@ -240,7 +240,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
   },
   superannuation: {
     label: '养老金（DASP）',
-    meta: { title: '离开澳洲后退 super 养老金（DASP）', description: '留学生和毕业生离开澳洲后怎么申领养老金：谁符合条件、扣多少税，以及超过 6 个月不申领会怎样。' },
+    meta: { title: '离开澳洲后领取养老金（DASP）', description: '留学生和毕业生离开澳洲后怎么申领养老金：谁符合条件、扣多少税，以及超过 6 个月不申领会怎样。' },
     h1: { before: '离开之后，', mark: '把养老金拿回来' },
     lead: '雇主在你的工资之外，还为你缴纳了养老金（super）。离开澳洲、签证结束之后，你可以作为离境养老金付款（DASP）申领。',
     sections: {
@@ -277,7 +277,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
     lead: 'Student Visa Tax 只为在澳洲持学生签证（500）和毕业生签证（485）的人办理报税，别的都不做。',
     sections: {
       why: { title: '为什么只做学生', blocks: [
-        { p: '留学生的税有自己的问题：6 个月课程的规则、Medicare Entitlement Statement、同时打两份零工、用 ABN 送外卖，还有回国时养老金怎么处理。我们只处理这类问题，所以你不用从头解释你的情况。' },
+        { p: '留学生的税务有一些特有的问题：6 个月课程的规则、Medicare Entitlement Statement、同时打两份工、用 ABN 送外卖，还有回国时养老金怎么处理。我们只处理这类问题，所以你不用从头解释你的情况。' },
         { p: '可以用 English、中文或 Tiếng Việt 问我们。' },
       ] },
       'who-checks': { title: '谁来审核你的报税', blocks: [
@@ -286,6 +286,6 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
       ] },
     },
     sourceLabels: ['税务从业者委员会（TPB）：公开注册信息'],
-    short: {"answer": "Student Visa Tax 只为在澳洲持学生签证和毕业生签证的人办理报税，可以用英文、中文和越南文沟通，并在注册税务代理人的监督下运营。", "mark": "只为在澳洲持学生签证和毕业生签证的人"},
+    short: {"answer": "Student Visa Tax 只为在澳洲持学生签证和毕业生签证的人办理报税，可以用英语、中文和越南语沟通，并在注册税务代理人的监督下运营。", "mark": "只为在澳洲持学生签证和毕业生签证的人"},
   },
 }

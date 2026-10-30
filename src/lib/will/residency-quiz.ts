@@ -11,8 +11,8 @@
 //   - Only when they ASK or are UNSURE after the check. "Yes, still correct"
 //     closes the topic.
 //   - Will says the questions are about the tax year being lodged, then asks
-//     the same five Yes/No questions as the form on the site, one at a time.
-//   - 4 or 5 "Yes": "Great, it looks like you count as an Australian tax
+//     the same six Yes/No questions as the form on the site, one at a time.
+//   - 4 or more of the 6 "Yes" (a majority, Jo 30 Oct): "Great, it looks like you count as an Australian tax
 //     resident. Please fill out the questionnaire again with the correct
 //     details." Fewer: "Great, you're a Working Holiday Maker. The team will
 //     take it from here."
@@ -29,7 +29,7 @@ export const residencyQuizKey = (customerId: string) => `residency_quiz:${custom
 export const QUIZ_TTL_MS = 48 * 60 * 60 * 1000;
 /** The check counts as "just sent" for a week. */
 export const CHECK_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
-const FORM_URL = 'https://workingholidaytax.com.au/tax-form';
+const FORM_URL = 'https://workingholidaytax.com.au/start';
 
 export function quizLang(lang: string | null | undefined): QuizLang {
   return lang === 'de' || lang === 'ja' ? lang : 'en';
@@ -50,6 +50,7 @@ const Q: Record<QuizLang, string[]> = {
     'Do you plan to continue living in Australia?',
     'Did you have ongoing work in Australia?',
     'Do you have personal or family ties in Australia?',
+    'Do you hold a passport from an NDA country: UK, Germany, Japan, Chile, Finland, Israel, Norway or Turkey?',
   ],
   de: [
     'Hast du in diesem Steuerjahr 6 Monate oder länger in Australien gelebt?',
@@ -57,6 +58,7 @@ const Q: Record<QuizLang, string[]> = {
     'Hast du vor, weiterhin in Australien zu leben?',
     'Hattest du eine fortlaufende Arbeit in Australien?',
     'Hast du persönliche oder familiäre Bindungen in Australien?',
+    'Hast du einen Reisepass aus einem NDA-Land: Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen oder Türkei?',
   ],
   ja: [
     'その課税年度中に、オーストラリアに6か月以上住んでいましたか？',
@@ -64,19 +66,20 @@ const Q: Record<QuizLang, string[]> = {
     '今後もオーストラリアに住み続ける予定はありますか？',
     'オーストラリアで継続的なお仕事がありましたか？',
     'オーストラリアに個人的なつながりやご家族のつながりはありますか？',
+    'NDA対象国のパスポートを所持していますか？（イギリス、ドイツ、日本、チリ、フィンランド、イスラエル、ノルウェー、トルコ）',
   ],
 };
 
 export function quizQuestion(lang: QuizLang, step: number): string {
   const qs = Q[lang];
-  return lang === 'ja' ? `${step + 1}/5：${qs[step]}` : `${step + 1}/5: ${qs[step]}`;
+  return lang === 'ja' ? `${step + 1}/6：${qs[step]}` : `${step + 1}/6: ${qs[step]}`;
 }
 
 export function quizIntro(lang: QuizLang, now = new Date()): string {
   const { start, end } = lodgingYear(now);
-  if (lang === 'de') return `Gute Frage! Es zählt nur das Steuerjahr, das wir einreichen, also 1. Juli ${start} bis 30. Juni ${end}. Zeit davor in Australien zählt nicht. Lass uns das kurz zusammen durchgehen: 5 schnelle Fragen, antworte einfach mit Ja oder Nein 😊\n\n${quizQuestion(lang, 0)}`;
-  if (lang === 'ja') return `ご質問ありがとうございます！対象になるのは、今回申告する課税年度（${start}年7月1日〜${end}年6月30日）だけです。それより前にオーストラリアにいた期間は含まれません。一緒に確認しましょう。5つの質問に「はい」か「いいえ」でお答えください😊\n\n${quizQuestion(lang, 0)}`;
-  return `Good question! Only the tax year we're lodging counts, 1 July ${start} to 30 June ${end}, so time in Australia before that doesn't count. Let's check it together: 5 quick questions, just answer Yes or No 😊\n\n${quizQuestion(lang, 0)}`;
+  if (lang === 'de') return `Gute Frage! Es zählt nur das Steuerjahr, das wir einreichen, also 1. Juli ${start} bis 30. Juni ${end}. Zeit davor in Australien zählt nicht. Lass uns das kurz zusammen durchgehen: 6 schnelle Fragen, antworte einfach mit Ja oder Nein 😊\n\n${quizQuestion(lang, 0)}`;
+  if (lang === 'ja') return `ご質問ありがとうございます！対象になるのは、今回申告する課税年度（${start}年7月1日〜${end}年6月30日）だけです。それより前にオーストラリアにいた期間は含まれません。一緒に確認しましょう。6つの質問に「はい」か「いいえ」でお答えください😊\n\n${quizQuestion(lang, 0)}`;
+  return `Good question! Only the tax year we're lodging counts, 1 July ${start} to 30 June ${end}, so time in Australia before that doesn't count. Let's check it together: 6 quick questions, just answer Yes or No 😊\n\n${quizQuestion(lang, 0)}`;
 }
 
 export function quizAgain(lang: QuizLang, step: number): string {
@@ -118,10 +121,10 @@ export function parseYesNo(text: string): boolean | null {
 /** The last thing we sent is the residency check (any language). */
 export function isResidencyCheck(body: string | null | undefined): boolean {
   const b = body ?? '';
-  return /\/tax-residency\b/.test(b) && /(?:Working Holiday Maker|ワーキングホリデーメーカー)/.test(b);
+  return /\/y8vwp4bf7\b/.test(b) && /(?:Working Holiday Maker|ワーキングホリデーメーカー)/.test(b);
 }
 
-/** Their reply asks, doubts or disagrees, so the five questions start. A plain
+/** Their reply asks, doubts or disagrees, so the six questions start. A plain
  *  "yes, still correct" does not. */
 export function startsQuiz(text: string): boolean {
   const t = (text ?? '').trim();
@@ -145,7 +148,7 @@ export function quizStep(state: QuizState, text: string): { reply: string; next:
   const a = parseYesNo(text);
   if (a === null) return 'not_an_answer';
   const answers = [...state.answers, a];
-  if (answers.length >= 5) {
+  if (answers.length >= 6) {
     const yes = answers.filter(Boolean).length;
     return { reply: quizResult(state.lang, yes), next: null, done: { yes, answers } };
   }

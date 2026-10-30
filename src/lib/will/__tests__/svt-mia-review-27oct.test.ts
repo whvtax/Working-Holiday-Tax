@@ -33,16 +33,18 @@ it('a refund figure in Chinese or Vietnamese is caught by the money rule', () =>
   expect(policyGuard('Hoàn thuế của bạn khoảng 800 đô', g).allowed).toBe(false);
 });
 
-it('SVT: a DASP question goes to the team, never "we don\'t offer it"', async () => {
+it('SVT: a DASP question gets the same "unfortunately not available at the moment" as WHT (Jo, 30 Oct), no handover, no price', async () => {
   (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'no_dasp', confidence: 0.9, reply_text: 'x' });
   const out = await withBrand('svt', () => runEngine(input('Can you help me claim my super?', 'en')));
-  expect(out.kind).toBe('human_task');
+  expect(out.kind).not.toBe('human_task');
+  expect(out.replyText ?? '').toMatch(/not available at the moment/);
+  expect(out.replyText ?? '').not.toMatch(/\$\d/);
 });
 
 it('WHT is unchanged: no_dasp still renders the fixed text', async () => {
   (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'no_dasp', confidence: 0.9, reply_text: 'x' });
   const out = await withBrand('wht', () => runEngine(input('Can you help me claim my super?', 'en')));
-  expect(out.replyText ?? '').toMatch(/superannuation \(DASP\)/);
+  expect(out.replyText ?? '').toMatch(/superannuation \(DASP\)[^.]*not available at the moment/);
 });
 
 it('SVT: the working holiday residency result is never sent', async () => {
@@ -71,7 +73,7 @@ it('SVT: "later" in Vietnamese after payment sends the Vietnamese form link on t
   (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'later_plan', confidence: 0.9, reply_text: 'x' });
   const base = input('Tối nay mình điền nhé');
   const out = await withBrand('svt', () => runEngine({ ...base, ctx: { ...base.ctx, state: 'PAID', paid: true }, history: [{ role: 'assistant', text: 'Chào bạn' }, { role: 'customer', text: 'Tối nay mình điền nhé' }] } as EngineInput));
-  expect(out.replyText ?? '').toContain('https://studentvisatax.com.au/vi/tax-form');
+  expect(out.replyText ?? '').toContain('https://studentvisatax.com.au/vi/jhd7hp9xd');
   expect(out.replyText ?? '').not.toMatch(/workingholidaytax/);
 });
 

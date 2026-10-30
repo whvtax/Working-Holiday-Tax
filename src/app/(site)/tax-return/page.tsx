@@ -160,8 +160,8 @@ const REFUND_SOURCES = [
     "body": "Shoes, uniforms, tools, licences and travel between sites can reduce your taxable income where they relate to the work you did. At the 15% rate, every $100 of genuine deductions takes $15 off the tax."
   },
   {
-    "label": "Your passport and the Addy decision",
-    "body": "For nationals of the UK, Germany, Japan, Finland, Norway, Chile and Turkey who were residents for tax purposes, the Addy decision can restore the tax free threshold for the year."
+    "label": "Your passport and your residency",
+    "body": "Depending on your passport and how your year looked, a court ruling may change the rates that apply to you. Whether it does is part of our review."
   }
 ]
 
@@ -187,7 +187,7 @@ const FAQS = [
   {
     question: 'When is a working holiday tax return due?',
     answer:
-      'If you lodge it yourself, 31 October after the financial year ends, so a 2025-26 return is due 31 October 2026, which this year means Monday 2 November. A year past its deadline is late rather than lost, and it can still be lodged.',
+      'If you lodge it yourself, 31 October after the financial year ends, so a 2025-26 return is due 31 October 2026. A year past its deadline is late rather than lost, and it can still be lodged.',
   },
   {
     question: 'Do you need my payslips?',
@@ -225,7 +225,7 @@ const GUIDES = [
   {
     href: '/blog/tax-residency-working-holiday-makers',
     title: 'Are you a resident for tax purposes',
-    desc: 'The judgement behind step 04, written out in full.',
+    desc: 'Why step 04 cannot be settled from a checklist.',
   },
   {
     href: '/blog/tax-deductions-working-holiday-makers',

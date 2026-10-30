@@ -36,8 +36,8 @@ describe('stripDashes (owner rule: Will never emits a dash)', () => {
   });
 
   test('a URL keeps its hyphens', () => {
-    const out = stripDashes('Fill it in here: https://working-holiday-tax.com.au/tax-form thanks');
-    expect(out).toContain('https://working-holiday-tax.com.au/tax-form');
+    const out = stripDashes('Fill it in here: https://working-holiday-tax.com.au/start thanks');
+    expect(out).toContain('https://working-holiday-tax.com.au/start');
   });
 
   test('an email keeps its hyphens', () => {

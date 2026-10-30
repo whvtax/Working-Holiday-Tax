@@ -18,7 +18,7 @@ const WA = waUrl({ topic: 'super', lang: 'de' })
 export const metadata: Metadata = {
   title: 'DASP: Super aus Australien zurückholen',
   description:
-    'Zurück aus Australien mit 417 oder 462 Visum? Deine Super holst du per DASP zurück: Anspruch, die 65 % Steuer, Unterlagen und Dauer.',
+    'Zurück aus Australien mit 417- oder 462-Visum? Deine Super holst du per DASP zurück: Anspruch, die DASP-Steuer von 65 %, Unterlagen und Dauer.',
   keywords: [
     'Super zurückholen Australien',
     'Superannuation zurückholen',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de/superannuation`,
     siteName: 'Working Holiday Tax',
     title: 'DASP: Super aus Australien zurückholen (2026)',
-    description: 'Wer Anspruch hat, wie viel nach der 65 % Steuer übrig bleibt, welche Unterlagen du brauchst und wie lange es dauert.',
+    description: 'Wer Anspruch hat, wie viel nach Abzug der Steuer von 65 % übrig bleibt, welche Unterlagen du brauchst und wie lange es dauert.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-super.png`],
@@ -69,28 +69,28 @@ export const metadata: Metadata = {
  */
 const MYGOV = [
   {
-    mygov: 'Der Antrag nimmt einen Fonds nach dem anderen, und nur die, von denen du schon weißt.',
-    us: 'Wir suchen jedes Konto, das mit deiner Steuernummer verknüpft ist, auch die, die ein Arbeitgeber ungefragt für dich eröffnet hat.',
+    mygov: 'Du stellst einen Antrag pro Fonds, und nur für Fonds, von denen du schon weißt.',
+    us: 'Wir suchen jedes Konto, das mit deiner TFN verknüpft ist, auch solche, die ein Arbeitgeber ungefragt für dich eröffnet hat.',
   },
   {
     mygov: 'Nichts sagt dir, dass ein Guthaben den Fonds längst verlassen hat und als nicht abgeholte Super beim ATO liegt.',
-    us: 'Etwa ein halbes Jahr nach Ablauf deines Visums landet es dort, deshalb sehen wir dort nach.',
+    us: 'Etwa ein halbes Jahr nach Ablauf deines Visums landet es dort, deshalb suchen wir auch dort.',
   },
   {
-    mygov: 'Der Antrag wird gegen deinen Visastatus geprüft, und ein Visum, das noch läuft, stoppt ihn sofort.',
+    mygov: 'Der Antrag wird gegen deinen Visumstatus geprüft, und ein Visum, das noch läuft, stoppt ihn sofort.',
     us: 'Wir prüfen alle drei Voraussetzungen vorher, damit du keine zwei Wochen in einen Antrag steckst, der noch gar nicht auszahlen kann.',
   },
   {
-    mygov: 'Super ist ein Antrag, deine Steuererklärung ein zweiter. Verbunden wird das für dich nicht.',
-    us: 'Auf der Steuerseite liegt meist der größere Teil des Geldes, deshalb machen wir beides.',
+    mygov: 'Super ist ein Antrag, deine Steuererklärung ein zweiter. Beide werden nicht automatisch verknüpft.',
+    us: 'Beide Anträge laufen getrennt, deshalb behalten wir beide im Blick.',
   },
 ]
 
 const faqs = [
   {
-    question: 'Kann man mit einem 417 oder 462 Working Holiday Visum die Super beantragen?',
+    question: 'Kann ich mit einem 417- oder 462-Visum meine Super beantragen?',
     answer:
-      'Ja, sobald du Australien verlassen hast und dein Working Holiday Visum erloschen ist. Solange du mit diesem Visum noch hier bist, geht es nicht. Der Antrag heißt Departing Australia Superannuation Payment (DASP), 65 % des versteuerten Betrags werden einbehalten, und anders als eine Steuererstattung kann sie auf ein Konto im Ausland gezahlt werden.',
+      'Ja, sobald du Australien verlassen hast und dein Working-Holiday-Visum erloschen ist. Solange du mit diesem Visum noch hier bist, geht es nicht. Der Antrag heißt Departing Australia Superannuation Payment (DASP), 65 % des versteuerten Betrags werden einbehalten, und anders als eine Steuererstattung kann sie auf ein Konto im Ausland gezahlt werden.',
   },
   {
     question: 'Kann ich meine Super einfach selbst beantragen?',
@@ -98,24 +98,24 @@ const faqs = [
       'Kannst du, es kostet nichts, und bei einem einzigen Fonds mit sauberen Unterlagen sagen wir dir das auch. Schwieriger wird es bei Super auf mehreren Fonds, bei einem Fonds, der beglaubigte Kopien aus dem Ausland verlangt, oder bei einem Visum, das noch läuft.',
   },
   {
-    question: 'Bekommst du Superannuation, wenn du unter einer ABN gearbeitet hast?',
+    question: 'Bekomme ich Superannuation, wenn ich unter einer ABN gearbeitet habe?',
     answer:
-      'In der Regel nicht. Super ist eine Arbeitgeberpflicht bei PAYG Anstellung, Arbeit auf Rechnung über eine ABN erzeugt meist keine. Ausnahme: du warst auf dem Papier Auftragnehmer, hast aber faktisch wie angestellt gearbeitet.',
+      'In der Regel nicht. Super ist eine Arbeitgeberpflicht bei PAYG-Anstellung. Arbeit auf Rechnung über eine ABN erzeugt meist keine. Ausnahme: Du warst auf dem Papier Auftragnehmer, hast aber faktisch wie angestellt gearbeitet.',
   },
   {
     question: 'Ist eine DASP-Auszahlung dasselbe wie eine Steuerrückerstattung?',
     answer:
-      'Nein, zwei verschiedene Zahlungen. Die Steuerrückerstattung ist zu viel gezahlte Lohnsteuer und kommt vom ATO nach der Steuererklärung. Die DASP ist die Super, die dein Arbeitgeber extra eingezahlt hat, und kommt vom Fonds. Meist steht dir beides zu.',
+      'Nein, zwei verschiedene Zahlungen. Die Steuerrückerstattung ist zu viel gezahlte Lohnsteuer und kommt vom ATO nach der Steuererklärung. Die DASP ist die Super, die dein Arbeitgeber extra eingezahlt hat, und kommt vom Fonds. Beides beantragst du getrennt.',
   },
   {
-    question: 'Brauchst du deine TFN, um deine Super zu beantragen?',
+    question: 'Brauche ich meine TFN, um meine Super zu beantragen?',
     answer:
       'Ein Fonds erkennt dich meist auch über Namen, Geburtsdatum und Pass, eine verlorene TFN stoppt den Antrag also nicht. Aber nur über die TFN findet das ATO jedes deiner Superkonten. Sie wiederherzustellen geht schneller, als Fonds für Fonds zu suchen.',
   },
   {
     question: 'Warum sind es 65 % für Working Holiday Maker und 35 % für andere?',
     answer:
-      'Die 65 % gelten per Gesetz für alle, die je ein 417 oder 462 Visum hatten, andere temporäre Aufenthalter zahlen 35 %. Der Satz folgt deiner Visumshistorie, nicht deinem letzten Visum, und gilt auch nach einem Wechsel.',
+      'Die 65 % gelten per Gesetz für alle, die je ein 417- oder 462-Visum hatten, andere temporäre Aufenthalter zahlen 35 %. Der Satz folgt deiner Visumhistorie, nicht deinem letzten Visum, und gilt auch nach einem Wechsel.',
   },
   {
     question: 'Was, wenn ein Arbeitgeber überhaupt keine Super gezahlt hat?',
@@ -123,9 +123,9 @@ const faqs = [
       'Beantragen kannst du nur, was wirklich in einen Fonds eingezahlt wurde. Hat ein Arbeitgeber nicht gezahlt, kann das ATO das prüfen und für dich eintreiben. Das dauert deutlich länger und gehört vor den DASP-Antrag, sonst machst du alles doppelt.',
   },
   {
-    question: 'Wirkt sich die Auszahlung auf deine Steuererklärung oder ein späteres Visum aus?',
+    question: 'Wirkt sich die Auszahlung auf meine Steuererklärung oder ein späteres Visum aus?',
     answer:
-      'Auf beides nicht. Die einbehaltene Steuer ist endgültig, die DASP gehört also nicht in deine australische Steuererklärung, und ein späterer Visumantrag hängt in der Regel nicht daran. Einzige praktische Folge: deine Superkonten werden geschlossen.',
+      'Auf beides nicht. Die einbehaltene Steuer ist endgültig, die DASP gehört also nicht in deine australische Steuererklärung, und ein späterer Visumsantrag hängt in der Regel nicht daran. Einzige praktische Folge: deine Superkonten werden geschlossen.',
   },
 ]
 
@@ -153,10 +153,10 @@ const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   '@id': `${SITE_URL}/de/superannuation#service`,
-  name: 'DASP Superannuation Auszahlung für Working Holiday Maker',
+  name: 'DASP-Superannuation-Auszahlung für Working Holiday Maker',
   serviceType: 'Departing Australia Superannuation Payment (DASP) Antrag',
   description:
-    'DASP-Anträge für Inhaber von 417 und 462 Visa: von der Suche nach jedem mit der TFN verknüpften Fonds bis zur Auszahlung auf ein australisches oder deutsches Konto.',
+    'DASP-Anträge für Inhaber von 417- und 462-Visa: von der Suche nach jedem mit der TFN verknüpften Fonds bis zur Auszahlung auf ein australisches oder deutsches Konto.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 / 462) nach der Abreise aus Australien' },
@@ -189,7 +189,7 @@ const howToSchema = {
     'Woraus ein DASP-Antrag für Working Holiday Maker mit einem Visum der Klasse 417 oder 462 besteht, vom Anspruch bis zur Auszahlung.',
   step: [
     { name: 'Der Anspruch wird geprüft', text: 'Dein Visum muss abgelaufen oder annulliert sein und du musst Australien verlassen haben. Beides muss gleichzeitig zutreffen, und ein Antrag davor ist der häufigste vergebliche Antrag überhaupt.' },
-    { name: 'Jeder Fonds wird ermittelt', text: 'Ein Working-Holiday-Jahr mit mehreren Arbeitgebern bedeutet meist mehrere Fonds, einschließlich Guthaben, die ein Fonds bereits als unclaimed super an das ATO übertragen hat. Ein Antrag erreicht nur das Geld, auf das er zeigt.' },
+    { name: 'Jeder Fonds wird ermittelt', text: 'Ein Working-Holiday-Jahr mit mehreren Arbeitgebern bedeutet meist mehrere Fonds, einschließlich Guthaben, die ein Fonds bereits als nicht abgeholte Super an das ATO übertragen hat. Ein Antrag erreicht nur das Geld, auf das er zeigt.' },
     { name: 'Jeder Antrag wird vorbereitet und belegt', text: 'Jeder Fonds mit Guthaben wird einzeln beantragt, nach seinem eigenen Identitäts- und Beglaubigungsstandard. Was ein Fonds akzeptiert, akzeptiert der nächste nicht zwangsläufig.' },
     { name: 'Die Quellensteuer wird einbehalten', text: 'Auf den steuerpflichtigen Anteil einer DASP für Working Holiday Maker fallen 65 % an. Der Fonds behält sie ein und führt sie an das ATO ab, unabhängig davon, wer den Antrag stellt.' },
     { name: 'Das Guthaben wird ausgezahlt', text: 'Das verbleibende Guthaben wird ausgezahlt, und anders als eine Steuererstattung kann es auf ein ausländisches Konto gehen.' },
@@ -320,7 +320,7 @@ export default function GermanSuperannuationPage() {
                   <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
                     {i === 0 && (
                       <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
-                        Im ATO Portal
+                        Im ATO-Portal
                       </p>
                     )}
                     <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
@@ -339,7 +339,7 @@ export default function GermanSuperannuationPage() {
             </div>
 
             <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
-              Du wirst dich nie bei myGov einloggen und keinen Ausweis verknüpfen müssen. Wir regeln das direkt mit dem ATO.
+              Du musst dich nie bei myGov einloggen und keinen Ausweis verknüpfen. Wir regeln das direkt mit dem ATO.
             </p>
           </div>
         </div>
@@ -353,7 +353,7 @@ export default function GermanSuperannuationPage() {
           neuseeländische Staatsbürger und Permanent Residents können nicht beantragen.
         </p>
         <p style={BODY}>
-          Dein Visastatus wird beim Antrag direkt mit dem Department of Home Affairs abgeglichen, du
+          Dein Visumstatus wird beim Antrag direkt mit dem Department of Home Affairs abgeglichen, du
           musst nichts extra nachweisen. Ein Bridging Visum oder ein noch gültiges Visum, mit dem du im
           Land bist, blockiert den Antrag.
         </p>
@@ -363,7 +363,7 @@ export default function GermanSuperannuationPage() {
         <p style={BODY}>
           Bei Working Holiday Makern werden 65 % Quellensteuer auf den steuerpflichtigen Anteil der DASP
           einbehalten, bei dir kommen also rund 35 Cent pro Dollar an. Der Satz steht im Gesetz, gilt für
-          jeden, der irgendwann ein 417 oder 462 Visum hatte, und lässt sich weder durch Berater noch
+          jeden, der irgendwann ein 417- oder 462-Visum hatte, und lässt sich weder durch Berater noch
           durch Warten senken.
         </p>
 
@@ -389,7 +389,7 @@ export default function GermanSuperannuationPage() {
         </div>
 
         <p style={{ ...BODY, fontSize: '13px', color: '#4C6459' }}>
-          Beträge nach der 65 % DASP Quellensteuer des ATO, bei rein versteuerten Beiträgen. Auf einen
+          Beträge nach Abzug der DASP-Quellensteuer des ATO von 65 %, bei rein versteuerten Beiträgen. Auf einen
           unversteuerten Anteil, den manche Fonds führen, gilt ein höherer Satz. Sieh die Zahlen als
           Beispiel, nicht als Angebot.
         </p>
@@ -403,7 +403,7 @@ export default function GermanSuperannuationPage() {
           zu.
         </p>
         <p style={BODY}>
-          Woran Anträge hängen bleiben, ist die Beglaubigung. Ab 5.000 $ bei einem Fonds
+          Woran Anträge hängen bleiben, ist die Beglaubigung. Liegen bei einem Fonds ab 5.000 $,
           verlangt er in der Regel beglaubigte Kopien von Reisepass und Visum, und das aus Deutschland zu
           organisieren dauert länger, als die meisten denken.
         </p>
@@ -429,7 +429,7 @@ export default function GermanSuperannuationPage() {
           oder Mitgliedsnummer. Auch ans ATO abgegebene Guthaben tauchen in der Suche auf.
         </p>
         <p style={BODY}>
-          Nicht automatisch ist der Antrag selbst: Ein Konto zu finden beantragt gar nichts, jeder Fonds
+          Der Antrag selbst läuft nicht automatisch: Ein Konto zu finden, beantragt noch nichts, jeder Fonds
           braucht seinen eigenen Antrag. Übersehen wird fast immer der erste Job.
         </p>
       </Answer>
@@ -464,8 +464,8 @@ export default function GermanSuperannuationPage() {
 
       <Answer id="while-in-australia" heading="Kannst du deine Super beantragen, solange du noch in Australien bist?" tint>
         <p style={BODY}>
-          Nein. Super ist gesperrt, solange du ein gültiges Visum hast und im Land bist. Auf einem Working
-          Holiday Visum gibt es keine vorzeitige Auszahlung, auch nicht bei Geldnot.
+          Nein. Super ist gesperrt, solange du ein gültiges Visum hast und im Land bist. Mit einem Working-Holiday-Visum
+          gibt es keine vorzeitige Auszahlung, auch nicht bei Geldnot.
         </p>
         <p style={BODY}>
           Fliegst du deutlich vor Ablauf deines Visums heim, kann das Department of Home Affairs das
@@ -487,8 +487,8 @@ export default function GermanSuperannuationPage() {
 
       <Answer id="with-us" heading="Selbst beantragen oder uns machen lassen" tint>
         <p style={BODY}>
-          Du kannst das selbst machen. Abgeben würdest du die Suche nach jedem Konto, das mit deiner
-          Steuernummer verknüpft ist, ATO-Guthaben eingeschlossen, die beglaubigten Kopien aus dem
+          Du kannst das selbst machen. Dann liegt bei dir: die Suche nach jedem Konto, das mit deiner
+          TFN verknüpft ist, ATO-Guthaben eingeschlossen, die beglaubigten Kopien aus dem
           Ausland, einen eigenen Antrag pro Fonds, und das Nachfassen, wenn ein Fonds nicht mehr
           antwortet.
         </p>
@@ -498,8 +498,8 @@ export default function GermanSuperannuationPage() {
             Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
           </p>
           <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
-            Von einem registrierten Steueragenten geprüft und freigegeben,
-            bevor es beim ATO eingereicht wird.
+            Von einem registrierten australischen Tax Agent geprüft und freigegeben,
+            bevor sie beim ATO eingereicht wird.
           </p>
         </div>
 
@@ -553,7 +553,7 @@ export default function GermanSuperannuationPage() {
       <NextStep
         eyebrow="Was kommt als Nächstes"
         heading="Die 2 % Medicare Levy holt sich auch fast niemand zurück"
-        body="Die meisten mit 417 oder 462 Visum schulden sie gar nicht. Sie fällt mit einer Bescheinigung weg, die kaum jemand beantragt."
+        body="Die meisten mit einem 417- oder 462-Visum schulden sie gar nicht. Sie fällt mit einer Bescheinigung weg, die kaum jemand beantragt."
         cta="Zur Medicare-Befreiung"
         href="/de/medicare"
       />

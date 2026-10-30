@@ -12,6 +12,9 @@
 // (Jo's own approved wording uses these; audit, 3 Sep).
 // ============================================================
 
+import { BRANDS } from '@/lib/brand';
+import formPaths from '../../../config/form-paths';
+
 // Every Unicode dash/hyphen that could appear in generated text. The one
 // exception, carved out below, is a plain hyphen joining two words.
 const DASH_CLASS =
@@ -253,6 +256,41 @@ export function stripNameAddress(input: string | null | undefined, firstName: st
   return s;
 }
 
+// ── OUR OWN LINKS, REPAIRED BEFORE THEY LEAVE (30 Oct) ───────────────────
+//
+// The form link lost its ".au" in Will drafts and in team text (Enzo, Lauren,
+// Joe: "workingholidaytax.com/tax-form"), and a retired slug ("/tax-form") is a
+// page that no longer exists. The brand URL lives once in BRANDS.wht.domain and
+// the slugs once in config/form-paths.js; this puts both back into any text
+// that carries a mangled version of them. Pure and idempotent: a correct link
+// is returned unchanged.
+const WHT_DOMAIN = BRANDS.wht.domain; // workingholidaytax.com.au
+const WHT_BARE = WHT_DOMAIN.replace(/\.au$/, ''); // workingholidaytax.com
+const WHT_BARE_RE = new RegExp(`\\b${WHT_BARE.replace(/\./g, '\\.')}(?!\\.au\\b)(?![\\w-])`, 'gi');
+const RETIRED_SLUG_RE = new RegExp(
+  `(${WHT_DOMAIN.replace(/\./g, '\\.')})\\/(${formPaths.RETIRED.join('|')})(?![\\w-])`, 'gi');
+
+/** True when the text names our domain without ".au", e.g. workingholidaytax.com/x. */
+export function hasBrokenBrandUrl(text: string | null | undefined): boolean {
+  const t = text ?? '';
+  WHT_BARE_RE.lastIndex = 0;
+  if (WHT_BARE_RE.test(t)) { WHT_BARE_RE.lastIndex = 0; return true; }
+  RETIRED_SLUG_RE.lastIndex = 0;
+  const retired = RETIRED_SLUG_RE.test(t);
+  RETIRED_SLUG_RE.lastIndex = 0;
+  return retired;
+}
+
+/** Put ".au" back on our domain, and swap a retired page slug for its current one. */
+export function repairBrandUrls(text: string | null | undefined): string {
+  const t = text ?? '';
+  const fixed = t.replace(WHT_BARE_RE, WHT_DOMAIN);
+  return fixed.replace(RETIRED_SLUG_RE, (_m, host: string, slug: string) => {
+    const current = (formPaths.WHT as Record<string, string>)[slug.toLowerCase()];
+    return `${host}/${current ?? slug}`;
+  });
+}
+
 /** Convenience: all owner text rules applied together, in the right order — strip
  *  dashes, cap emojis, then (on non-opening messages) remove the name as address.
  *  `firstName` is the customer's first name; omit it to skip the name rule. */
@@ -260,7 +298,7 @@ export function normaliseWillText(
   input: string | null | undefined,
   opts: { firstMessage: boolean; firstName?: string | null },
 ): string {
-  let s = limitEmojis(stripDashes(input), opts.firstMessage);
+  let s = limitEmojis(stripDashes(repairBrandUrls(input)), opts.firstMessage);
   if (!opts.firstMessage && opts.firstName) s = stripNameAddress(s, opts.firstName);
   return s;
 }
@@ -399,12 +437,12 @@ export function thanksReply(lastWillText: string | null | undefined, lang?: stri
 export const LEAVING_RE = new RegExp([
   // en
   'elsewhere', 'someone else', 'somebody else', 'another (?:company|accountant|agent|service|provider)', 'other (?:company|accountant|agent|service|provider)',
-  'decided (?:to|not)', 'not interested', 'no longer need', "don'?t need (?:it|your|the service)", '(?:did|do|done|doing|lodge[d]?|file[d]?) it (?:myself|on my own)',
+  'decided (?:to|not)', "(?:i'?ll|i will|we'?ll|we will) pass", 'not this time', 'pass for now', 'not interested', 'no longer need', "don'?t need (?:it|your|the service)", '(?:did|do|done|doing|lodge[d]?|file[d]?) it (?:myself|on my own)',
   'already (?:done|lodged|filed|sorted|did it)', 'my (?:own )?accountant', 'go(?:ing)? with',
   // de
-  'woanders', 'jemand(?:em)? anderes?', 'anderen? (?:anbieter|steuerberater|firma)', 'selbst gemacht', 'schon erledigt', 'kein interesse', 'brauche (?:es|das) nicht mehr', 'entschieden',
+  'woanders', 'jemand(?:em)? anderes?', 'anderen? (?:anbieter|steuerberater|firma)', 'selbst gemacht', 'schon erledigt', 'kein interesse', 'diesmal nicht', 'lasse (?:es|das) (?:lieber )?sein', 'brauche (?:es|das) nicht mehr', 'entschieden',
   // ja
-  '他(?:で|の(?:会社|業者|ところ|所|税理士|エージェント))', '別の(?:会社|業者|ところ|所|税理士)', '自分で', 'もう(?:済|終わ|大丈夫|必要)', '結構です', '必要(?:ありません|ないです|なくなり)', '不要', 'やめ(?:ます|ました|ておきます)', 'キャンセル', 'することにしました|することにした',
+  '他(?:で|の(?:会社|業者|ところ|所|税理士|エージェント))', '別の(?:会社|業者|ところ|所|税理士)', '自分で', 'もう(?:済|終わ|大丈夫|必要)', '結構です', '見送', '必要(?:ありません|ないです|なくなり)', '不要', 'やめ(?:ます|ました|ておきます)', 'キャンセル', 'することにしました|することにした',
   // es / pt / fr / it
   'otra (?:empresa|persona|gestor)', 'con otro', 'ya lo hice', 'lo har[ée] (?:yo|por mi cuenta)', 'no me interesa', 'ya no (?:lo )?necesito',
   'outra (?:empresa|pessoa)', 'j[áa] (?:fiz|resolvi)', 'n[ãa]o (?:tenho interesse|preciso mais)',

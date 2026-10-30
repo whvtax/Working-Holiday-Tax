@@ -50,8 +50,9 @@ it('knowledge fixes run each batch once, in order, never re-running an earlier o
     getSetting: async (k: string) => settings[k] ?? null,
     setSetting: async (k: string, v: string) => { settings[k] = v; },
   } as unknown as Parameters<typeof applyKnowledgeFixes>[0];
-  expect(await applyKnowledgeFixes(store)).toBe(1);
-  expect(updates).toEqual(['a']);
-  expect(settings.knowledge_fix).toBe('fix-27oct');
+  // 'a' by the 27 Oct batch; 'b' only by the 30 Oct batch b (DASP: not available at the moment), never by the 25 Oct batch.
+  expect(await applyKnowledgeFixes(store)).toBe(2);
+  expect(updates).toEqual(['a', 'b']);
+  expect(settings.knowledge_fix).toBe('fix-30oct-b');
   expect(await applyKnowledgeFixes(store)).toBe(0);
 });

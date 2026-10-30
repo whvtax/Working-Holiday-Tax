@@ -20,7 +20,7 @@ type Props = {
   faqs?: FAQ[]
 }
 
-const money = (n: number) => '$' + Math.round(n).toLocaleString('en-AU')
+const money = (n: number) => Math.round(n).toLocaleString('de-DE') + ' $'
 
 function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Result {
   let tax = 0
@@ -48,12 +48,12 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Re
   const refund = d > 0 ? d : 0
   const total = refund + (sup ? sup.net : 0)
 
-  if (d > 0) return { label: 'Grobe Rückzahlung', amount: money(d),  sub: visa === 'whm' ? 'Steuersatz für Working Holiday Maker angewendet' : 'Steuersatz für australische Steuerresidenten, ohne die 2 % Medicare Levy', owing: false, refund, sup, total }
+  if (d > 0) return { label: 'Grobe Erstattung', amount: money(d),  sub: visa === 'whm' ? 'Steuersatz für Working Holiday Maker angewendet' : 'Steuersatz für australische Steuerresidenten, ohne die 2 % Medicare Levy', owing: false, refund, sup, total }
   if (d < 0) return { label: 'Grobe Steuerschuld',  amount: money(-d), sub: 'Mit diesen Zahlen ergibt sich eine Nachzahlung. Absetzbare Kosten ändern das oft.', owing: true,  refund: 0, sup, total }
-  return             { label: 'Ausgeglichen', amount: money(0), sub: 'Mit diesen Zahlen weder Rückzahlung noch Nachzahlung.', owing: false, refund: 0, sup, total }
+  return             { label: 'Ausgeglichen', amount: money(0), sub: 'Mit diesen Zahlen weder Erstattung noch Nachzahlung.', owing: false, refund: 0, sup, total }
 }
 
-/** Die Zeile, die in die WhatsApp Nachricht wandert. */
+/** Die Zeile, die in die WhatsApp-Nachricht wandert. */
 function detailFor(r: Result, hasAbn: boolean): string {
   const bits: string[] = []
   bits.push(r.owing ? `Schätzung zeigte ${r.amount} Nachzahlung` : `Schätzung ${r.amount}`)
@@ -81,12 +81,12 @@ const MYGOV = [
     us: 'Richtig eingeordnet, kann der Wohnsitz die Sätze für dein ganzes Jahr ändern. Wir legen uns fest und stehen dafür ein.',
   },
   {
-    mygov: 'Werbungskosten sind ein leeres Feld, und keine Schätzung füllt es für dich.',
+    mygov: 'Abzüge sind ein leeres Feld, und keine Schätzung füllt es für dich.',
     us: 'Wir wissen, was deine Art von Arbeit absetzen darf und welcher Nachweis dahinter stehen muss.',
   },
   {
-    mygov: 'Niemand prüft die Wochen, bevor deine Steuernummer beim Arbeitgeber war, einbehalten mit 45 %.',
-    us: 'Wir gleichen jeden Arbeitgeber des Jahres ab und holen diese Lücke zurück.',
+    mygov: 'Niemand prüft die Wochen, in denen vor Eingang deiner TFN 45 % einbehalten wurden.',
+    us: 'Wir gleichen jeden Arbeitgeber des Jahres ab und schließen diese Lücke.',
   },
 ]
 
@@ -236,7 +236,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
 
               <div>
                 <label htmlFor="cs" className={LABEL} style={LABEL_S}>
-                  Superannuation Guthaben <span style={{ textTransform: 'none', letterSpacing: 0, opacity: 0.7 }}>(optional)</span>
+                  Superannuation-Guthaben <span style={{ textTransform: 'none', letterSpacing: 0, opacity: 0.7 }}>(optional)</span>
                 </label>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
@@ -249,7 +249,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   />
                 </div>
                 <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px', lineHeight: 1.6 }}>
-                  Wer jemals ein 417 oder 462 Visum hatte, zahlt auf das gesamte Guthaben den DASP-Satz von 65 %.
+                  Wer jemals ein 417- oder 462-Visum hatte, zahlt auf das gesamte Guthaben den DASP-Satz von 65 %.
                 </p>
               </div>
 
@@ -313,8 +313,8 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 <div style={{ padding: '0 20px 18px' }}>
                   <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '14px' }}>
                     Nimm das als groben Anhaltspunkt. Die echte Zahl hängt an drei Dingen, die diese Seite
-                    nicht klären kann: welcher Residentenstatus für dich gilt, ob die Medicare Levy
-                    Befreiung greift und was du in deinem Job absetzen kannst.
+                    nicht klären kann: welcher Residentenstatus für dich gilt, ob die Medicare-Levy-Befreiung
+                    greift und was du in deinem Job absetzen kannst.
                   </p>
                   <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
                     className="btn-primary w-full flex items-center justify-center"
@@ -341,7 +341,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                       <span style={{ fontWeight: 500, color: '#9A3412' }}>-{money(result.sup.tax)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                      <span style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240' }}>Du erhältst</span>
+                      <span style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240' }}>Ausgezahlt wird</span>
                       <span className="font-black" style={{ fontSize: '19px', letterSpacing: '-0.02em', color: '#0B5240' }}>{money(result.sup.net)}</span>
                     </div>
                     <p style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '11px', color: '#4C6459' }}>
@@ -366,7 +366,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             )}
 
             <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '16px', lineHeight: 1.6 }}>
-              Der Rechner nutzt die Sätze für 2025-26 und ausschließlich die Zahlen, die du eingibst.
+              Der Rechner nutzt die Sätze für 2025/26 und ausschließlich die Zahlen, die du eingibst.
               Deine endgültige Zahl ist er also nicht.
             </p>
           </div>
@@ -390,7 +390,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             </h2>
 
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
-              Eine Schätzung ist nur so gut wie das, was du eingetippt hast, und vier Dinge fehlen darin.
+              Eine Schätzung ist nur so gut wie das, was du eingetippt hast, und drei Dinge fehlen darin.
             </p>
 
             <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
@@ -422,7 +422,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             </div>
 
             <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
-              Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
+              Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches
               Formular welches ist. Wir regeln das direkt mit dem ATO.
             </p>
           </div>
@@ -440,22 +440,22 @@ export function CalculatorClient({ faqs = [] }: Props) {
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               Drei Dinge, und keins davon steht auf dieser Seite. Erstens dein Residentenstatus. Richtig
               eingeordnet, kann er die Sätze für dein ganzes Jahr ändern. Es ist eine Beurteilung deiner
-              Umstände und mehr wert als alles andere zusammen.
+              Umstände und oft entscheidender als alles andere zusammen.
             </p>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               Zweitens die Medicare Levy. Sie beträgt 2 % des zu versteuernden Einkommens, wird
-              standardmäßig abgezogen, und die meisten mit 417 oder 462 Visum schuldeten sie nie.
+              standardmäßig abgezogen, und die meisten mit einem 417- oder 462-Visum schuldeten sie nie.
               Weggenommen wird sie mit einer Bescheinigung, die kaum jemand beantragt.
             </p>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
-              Drittens die absetzbaren Kosten, bei myGov ein leeres Feld. Was eine Erntehelferin, ein
-              Barista und jemand im Hospitality jeweils absetzen kann, ist nicht dieselbe Liste.
+              Drittens die absetzbaren Kosten, bei myGov ein leeres Feld. Was ein Erntehelfer, ein
+              Barista und jemand aus der Gastronomie jeweils absetzen kann, ist nicht dieselbe Liste.
             </p>
             <div className="flex flex-wrap gap-3" style={{ marginTop: '18px' }}>
               <Link href="/de/medicare"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
                 style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
-                Die Medicare Levy Befreiung
+                Die Medicare-Levy-Befreiung
               </Link>
               <Link href="/de/superannuation"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
@@ -509,8 +509,8 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Schick uns deine Zahlen und wir sagen dir, was in deinem Jahr drin ist. Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '22px', maxWidth: '46ch' }}>
-            Von einem registrierten Steueragenten geprüft und freigegeben,
-            bevor es beim ATO eingereicht wird.
+            Von einem registrierten australischen Tax Agent geprüft und freigegeben,
+            bevor sie beim ATO eingereicht wird.
           </p>
           <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
             className="btn-primary w-full sm:w-auto"

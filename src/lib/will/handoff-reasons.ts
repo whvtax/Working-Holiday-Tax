@@ -300,7 +300,7 @@ const RULES: Rule[] = [
     match: /^Residency check in the chat/i,
     kind: 'system',
     label: 'Residency check: looks like a tax resident',
-    because: 'they answered Yes to at least 4 of the 5 residency questions in the chat, so Will asked them to fill out the questionnaire again as a resident',
+    because: 'they answered Yes to at least 4 of the 6 residency questions in the chat, so Will asked them to fill out the questionnaire again as a resident',
     prevent: 'Nothing to change. Check the new questionnaire when it arrives and lodge as a resident if it holds up.',
   },
   {

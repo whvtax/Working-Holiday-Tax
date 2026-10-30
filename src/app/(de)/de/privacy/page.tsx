@@ -25,11 +25,11 @@ type Section = {
 const sections: Section[] = [
   {
     title: '1. Einleitung',
-    body: 'Diese Datenschutzerklärung erläutert, wie Working Holiday Tax („wir", „uns", „unser") deine personenbezogenen Daten in Übereinstimmung mit dem Privacy Act 1988 (Cth), den Australian Privacy Principles (APPs) und dem Notifiable Data Breaches (NDB)-Schema erhebt, verwendet, offenlegt und schützt. Wir erfüllen außerdem strenge Vertraulichkeitsanforderungen gegenüber dem ATO und den zuständigen Aufsichtsbehörden. Durch die Nutzung unserer Website oder die Inanspruchnahme unserer Dienstleistungen stimmst du der Erhebung und Verwendung deiner Daten gemäß dieser Datenschutzerklärung zu.',
+    body: 'Diese Datenschutzerklärung erläutert, wie Working Holiday Tax („wir“, „uns“, „unser“) deine personenbezogenen Daten in Übereinstimmung mit dem Privacy Act 1988 (Cth), den Australian Privacy Principles (APPs) und dem Notifiable Data Breaches (NDB)-Schema erhebt, verwendet, offenlegt und schützt. Wir erfüllen außerdem strenge Vertraulichkeitsanforderungen gegenüber dem ATO und den zuständigen Aufsichtsbehörden. Durch die Nutzung unserer Website oder die Inanspruchnahme unserer Dienstleistungen stimmst du der Erhebung und Verwendung deiner Daten gemäß dieser Datenschutzerklärung zu.',
   },
   {
     title: '2. Allgemeiner Informationshinweis',
-    body: 'Die auf unserer Website bereitgestellten Informationen dienen ausschließlich allgemeinen Informationszwecken und stellen keine persönliche Steuerberatung dar. Für Beratung zu deinen individuellen Umständen solltest du eine registrierte Steueragentur oder eine qualifizierte Fachperson konsultieren.',
+    body: 'Die auf unserer Website bereitgestellten Informationen dienen ausschließlich allgemeinen Informationszwecken und stellen keine persönliche Beratung dar. Für Beratung zu deinen individuellen Umständen solltest du einen registrierten Tax Agent oder eine qualifizierte Fachperson konsultieren.',
   },
   {
     title: '3. Daten, die wir erheben',
@@ -39,7 +39,7 @@ const sections: Section[] = [
       'Tax File Number (TFN) und ATO-Korrespondenz.',
       'Einkommens-, Beschäftigungs- und Finanzdaten.',
       'Ausweisdokumente (z. B. Reisepass oder Führerschein).',
-      'Bankverbindung (erforderlich für Rückzahlungen).',
+      'Bankverbindung (erforderlich für Erstattungen).',
       'Über Formulare, E-Mail, Telefon oder Website-Interaktionen bereitgestellte Informationen.',
       'Nicht identifizierbare Daten wie IP-Adresse, Browsertyp und besuchte Seiten.',
     ],
@@ -68,11 +68,11 @@ const sections: Section[] = [
   },
   {
     title: '6. Cookies und Website-Tracking',
-    body: 'Wir verwenden Cookies und Analysetools (einschließlich Google Analytics), um die Website-Nutzung zu verstehen, das Nutzererlebnis zu verbessern und Leistung sowie Traffic zu überwachen. Du kannst Cookies über die Einstellungen deines Browsers deaktivieren. Durch die weitere Nutzung unserer Website stimmst du der Verwendung von Cookies gemäß dieser Richtlinie zu.',
+    body: 'Wir verwenden Cookies und Analysetools (einschließlich Google Analytics), um die Website-Nutzung zu verstehen, das Nutzererlebnis zu verbessern und Leistung sowie Traffic zu überwachen. Du kannst Cookies über die Einstellungen deines Browsers deaktivieren. Durch die weitere Nutzung unserer Website stimmst du der Verwendung von Cookies gemäß dieser Datenschutzerklärung zu.',
   },
   {
     title: '7. Weitergabe an Dritte',
-    body: 'Wir verkaufen oder handeln deine personenbezogenen Daten nicht. Wir geben begrenzte Informationen weiter an:',
+    body: 'Wir verkaufen deine personenbezogenen Daten nicht und handeln nicht damit. Wir geben begrenzte Informationen weiter an:',
     items: [
       'Vertrauenswürdige Dienstleister, die bei Betrieb oder Kommunikation unterstützen.',
       'Aufsichtsbehörden wie das ATO, sofern gesetzlich erforderlich.',
@@ -86,7 +86,7 @@ const sections: Section[] = [
     title: '9. Deine Rechte',
     body: 'Du hast das Recht:',
     items: [
-      'Auf personenbezogene Daten zuzugreifen, die wir über dich gespeichert haben.',
+      'Auskunft über die personenbezogenen Daten zu erhalten, die wir über dich gespeichert haben.',
       'Die Berichtigung unrichtiger Daten zu verlangen.',
       'Die Löschung von Daten zu verlangen, vorbehaltlich gesetzlicher Pflichten.',
       'Jederzeit Marketingkommunikation abzubestellen.',
@@ -100,7 +100,7 @@ const sections: Section[] = [
     title: '11. Kontakt',
     body: 'Bei Fragen zu dieser Datenschutzerklärung oder zur Verarbeitung deiner Daten kannst du uns kontaktieren:',
     items: [
-      'Telefon: 0424 513 998',
+      'Telefon: +61 424 513 998',
       `E-Mail: ${EMAIL}`,
     ],
   },

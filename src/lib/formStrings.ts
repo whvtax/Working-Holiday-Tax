@@ -28,15 +28,15 @@ export const formStrings = {
   // ─ Section titles ─
   sectionPersonal:     { en: 'Personal details',          de: 'Persönliche Daten',          ja: '個人情報' },
   sectionDocuments:    { en: 'Documents',                 de: 'Dokumente',                  ja: '書類' },
-  sectionDeclaration:  { en: 'Declaration',               de: 'Erklärung',                  ja: '宣言' },
+  sectionDeclaration:  { en: 'Declaration',               de: 'Erklärung',                  ja: '確認事項' },
   sectionWork:         { en: 'Work details',              de: 'Arbeitsdaten',               ja: '就労情報' },
   sectionTax:          { en: 'Tax details',               de: 'Steuerdaten',                ja: '税務情報' },
   sectionBusiness:     { en: 'Business details',          de: 'Geschäftsdaten',             ja: '事業情報' },
   sectionBank:         { en: 'Bank details',              de: 'Bankverbindung',             ja: '銀行情報' },
   bankDetailsHint: {
-    en: 'To have your tax refund paid directly into your bank account.',
-    de: 'Damit deine Steuerrückerstattung direkt auf dein Bankkonto ausgezahlt werden kann.',
-    ja: '税還付金を銀行口座に直接受け取るために。',
+    en: 'So any tax refund can be paid directly into your bank account.',
+    de: 'Damit eine mögliche Steuerrückerstattung direkt auf dein Bankkonto ausgezahlt werden kann.',
+    ja: '税金の還付金が発生した場合に、銀行口座へ直接お受け取りいただくための情報です。',
   },
   sectionSuper:        { en: 'Super fund details',        de: 'Superfondsdaten',            ja: 'スーパーファンド情報' },
   sectionEmployers:    { en: 'Employers',                 de: 'Arbeitgeber',                ja: '雇用主情報' },
@@ -56,13 +56,13 @@ export const formStrings = {
   // every country these customers come from writes a date.
   dobHint:             { en: 'For example: 20/10/2000',            de: 'Zum Beispiel: 20.10.2000',  ja: '例：2000/10/20' },
   // Jo, 25 Oct: the number they messaged us from, so the form lands in the right chat.
-  whatsapp:            { en: 'The WhatsApp number you messaged us from', de: 'Die WhatsApp-Nummer, mit der du uns geschrieben hast', ja: '私たちにご連絡いただいたWhatsApp番号' },
+  whatsapp:            { en: 'The WhatsApp number you messaged us from', de: 'Die WhatsApp-Nummer, mit der du uns geschrieben hast', ja: '当社へのご連絡に使用したWhatsApp番号' },
   auPhone:             { en: 'Australian phone number',            de: 'Australische Telefonnummer', ja: 'オーストラリアの電話番号' },
   gender:              { en: 'Gender as shown in passport',        de: 'Geschlecht laut Reisepass', ja: 'パスポートに記載の性別' },
   marital:             { en: 'Marital status',                     de: 'Familienstand',             ja: '配偶者の有無' },
-  address:             { en: 'Full Australian address (street, suburb, state, postcode)', de: 'Vollständige australische Adresse (Straße, Vorort, Bundesstaat, Postleitzahl)', ja: 'オーストラリアの完全な住所（番地、サバーブ、州、郵便番号）' },
+  address:             { en: 'Full Australian address (street, suburb, state, postcode)', de: 'Vollständige australische Adresse (Straße, Stadtteil/Suburb, Bundesstaat, Postleitzahl)', ja: 'オーストラリアの住所（番地、サバーブ、州、郵便番号）' },
   addressShort:        { en: 'Australian address', de: 'Australische Adresse', ja: 'オーストラリアの住所' },
-  howHeard:            { en: 'How did you hear about us?',         de: 'Wie hast du von uns erfahren?', ja: '当社をどこで知りましたか？' },
+  howHeard:            { en: 'How did you hear about us?',         de: 'Wie hast du von uns erfahren?', ja: 'どちらで当社をお知りになりましたか？' },
   selfieWithPassport:  { en: 'Selfie holding your passport',        de: 'Selfie mit deinem Reisepass in der Hand', ja: 'パスポートを持った自撮り写真' },
   uploadSelfie:        { en: 'Upload selfie holding your passport', de: 'Selfie mit Reisepass in der Hand hochladen', ja: 'パスポートを持った自撮り写真をアップロード' },
   passportPhoto:       { en: 'Passport photo page',                de: 'Reisepassfotoseite',        ja: 'パスポートの顔写真ページ' },
@@ -72,7 +72,7 @@ export const formStrings = {
   // ─ Buttons & generic ─
   submit:              { en: 'Submit application →',               de: 'Antrag abschicken →',       ja: '申請を送信 →' },
   submitTFN:           { en: 'Submit TFN Application →',           de: 'TFN-Antrag abschicken →',   ja: 'TFN申請を送信 →' },
-  submitABN:           { en: 'Submit ABN Application →',           de: 'ABN-Antrag abschicken →',   ja: 'ABN申請を送信 →' },
+  submitABN:           { en: 'Submit ABN Application →',           de: 'ABN-Antrag abschicken →',   ja: 'ABN登録を送信 →' },
   submitTax:           { en: 'Submit Tax Return →',                de: 'Steuererklärung abschicken →', ja: 'タックスリターンを送信 →' },
   submitSuper:         { en: 'Submit Super Claim →',               de: 'Superantrag abschicken →',  ja: 'スーパー申請を送信 →' },
   submitting:          { en: 'Submitting…',                        de: 'Wird abgeschickt…',         ja: '送信中…' },
@@ -84,29 +84,30 @@ export const formStrings = {
     ja: '最後のステップ：税務上の居住区分についてご説明し、その後送信いただけます。',
   },
   continueButton:      { en: 'Continue →',                         de: 'Weiter →',                  ja: '次へ →' },
-  timeEstimate:        { en: '⏱ Takes about 1 minute',             de: '⏱ Dauert etwa 1 Minute',     ja: '⏱ 約1分で完了' },
+  timeEstimate:        { en: '⏱ Takes about 1 minute',             de: '⏱ Dauert etwa 1 Minute',     ja: '⏱ 所要時間は約1分です' },
   backButton:          { en: '← Back',                             de: '← Zurück',                   ja: '← 戻る' },
-  registeredAgentNo:   { en: 'Registered Tax Agent',              de: 'Registrierter Steueragent',  ja: '登録税理士' },
+  registeredAgentNo:   { en: 'Supervising registered tax agent no.', de: 'Unter der Aufsicht eines registrierten Tax Agent, Nr.', ja: '監督するタックスエージェントの登録番号' },
   registeredTaxAgent:  { en: 'Working holiday specialists',        de: 'Working-Holiday-Spezialisten', ja: 'ワーホリ専門チーム' },
   secureForm:          { en: 'Secure Form',                         de: 'Sicheres Formular',           ja: '安全なフォーム' },
-  fullyOnline:         { en: '100% Online',                         de: '100% Online',                 ja: '完全オンライン' },
+  fullyOnline:         { en: '100% Online',                         de: '100 % online',                ja: '完全オンライン' },
 
   // ─ Radio options ─
-  female:              { en: 'Female',                              de: 'Female',                   ja: 'Female' },
-  male:                { en: 'Male',                                de: 'Male',                     ja: 'Male' },
-  single:              { en: 'Single',                              de: 'Single',                   ja: 'Single' },
-  married:             { en: 'Married',                             de: 'Married',                  ja: 'Married' },
-  yes:                 { en: 'Yes',                                 de: 'Yes',                      ja: 'Yes' },
-  no:                  { en: 'No',                                  de: 'No',                       ja: 'No' },
+  // What the customer SEES. The value sent to the server stays the English word.
+  female:              { en: 'Female',                              de: 'Weiblich',                 ja: '女性',   zh: '女',     vi: 'Nữ' },
+  male:                { en: 'Male',                                de: 'Männlich',                 ja: '男性',   zh: '男',     vi: 'Nam' },
+  single:              { en: 'Single',                              de: 'Ledig',                    ja: '独身',   zh: '未婚',   vi: 'Độc thân' },
+  married:             { en: 'Married',                             de: 'Verheiratet',              ja: '既婚',   zh: '已婚',   vi: 'Đã kết hôn' },
+  yes:                 { en: 'Yes',                                 de: 'Ja',                       ja: 'はい' },
+  no:                  { en: 'No',                                  de: 'Nein',                     ja: 'いいえ' },
 
   // ─ Validation ─
   required:            { en: 'Required',                            de: 'Pflichtfeld',              ja: '必須' },
   invalidEmail:        { en: 'Please enter a valid email address',  de: 'Bitte gib eine gültige E-Mail-Adresse ein', ja: '有効なメールアドレスをご入力ください' },
   invalidTfn:          { en: 'A TFN is 8 or 9 digits',              de: 'Eine TFN hat 8 oder 9 Ziffern', ja: 'TFNは8桁または9桁の数字です' },
   invalidDob:          { en: 'Please check the date of birth',      de: 'Bitte überprüfe das Geburtsdatum', ja: '生年月日をご確認ください' },
-  mustConfirmDecl:     { en: 'You must confirm this declaration to proceed', de: 'Du musst diese Erklärung bestätigen, um fortzufahren', ja: '続行するにはこの宣言の確認が必要です' },
+  mustConfirmDecl:     { en: 'You must confirm this declaration to proceed', de: 'Du musst diese Erklärung bestätigen, um fortzufahren', ja: '続行するには、宣言内容を確認のうえチェックしてください' },
   mustAcceptTerms:     { en: 'You must accept the terms',           de: 'Du musst die Bedingungen akzeptieren', ja: '規約への同意が必要です' },
-  fixBeforeSubmit:     { en: 'Please fix the following before submitting:', de: 'Bitte korrigiere Folgendes, bevor du absendest:', ja: '送信前に以下を修正してください：' },
+  fixBeforeSubmit:     { en: 'Please fix the following before submitting:', de: 'Bitte korrigiere Folgendes, bevor du absendest:', ja: '送信前に、次の項目をご確認ください：' },
   fieldIsRequired:     { en: 'is required',                         de: 'ist ein Pflichtfeld',      ja: 'は必須項目です' },
 
   // ─ File upload helper ─
@@ -115,29 +116,29 @@ export const formStrings = {
   // ─ Declarations ─
   declTFN: {
     en: 'I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.',
-    de: 'Ich bestätige, dass ich aktuell zum ersten Mal in Australien bin, meinen Namen oder mein Geschlecht nie geändert habe, kein Vermögen in Australien besitze und noch keine TFN bekommen habe.',
+    de: 'Ich bestätige, dass ich aktuell zum ersten Mal in Australien bin, meinen Namen oder mein Geschlecht nie geändert habe, keine Vermögenswerte in Australien besitze und noch keine TFN erhalten habe.',
     ja: '現在オーストラリアに初めて滞在しており、氏名や性別の変更歴がなく、オーストラリアに資産を所有しておらず、TFNが発行されたことがないことを確認します。',
   },
   declConfirm:         { en: 'I confirm this declaration',          de: 'Ich bestätige diese Erklärung', ja: 'この宣言を確認します' },
-  acceptTerms:         { en: 'I have read and accept the',          de: 'Ich habe Folgendes gelesen und akzeptiere die', ja: '以下を読み、同意します：' },
+  acceptTerms:         { en: 'I have read and accept the',          de: 'Ich akzeptiere die', ja: '以下を読み、同意します：' },
   clientAgreement:     { en: 'Client Agreement',                    de: 'Mandantenvereinbarung',     ja: 'クライアント規約' },
   and:                 { en: '&',                                   de: 'und die',                  ja: 'および' },
   privacyPolicy:       { en: 'Privacy Policy',                      de: 'Datenschutzerklärung',     ja: 'プライバシーポリシー' },
 
   // ─ Submission errors ─
-  tooMany:             { en: 'Too many submissions. Please wait 15 minutes and try again.', de: 'Zu viele Anfragen. Bitte warte 15 Minuten und versuche es nochmal.', ja: '送信回数が多すぎます。15分後にもう一度お試しください。' },
+  tooMany:             { en: 'Too many submissions. Please wait 15 minutes and try again.', de: 'Zu viele Anfragen. Bitte warte 15 Minuten und versuche es noch einmal.', ja: '送信回数が多すぎます。15分後にもう一度お試しください。' },
   // Shown when the server named the fields it would not accept, instead of the
   // generic failure. Jo, 28 Aug: a form that only ever says "something went
   // wrong" cannot be reported, only abandoned.
-  invalidPhone:        { en: 'Enter a valid phone number with country code, e.g. +44 7700 900123', de: 'Bitte gib eine gültige Nummer mit Ländervorwahl ein, z. B. +49 151 12345678', ja: '国番号を含む有効な電話番号を入力してください（例：+81 90 1234 5678）' },
-  checkFields:         { en: 'Please check these and try again: ', de: 'Bitte prüfe diese Angaben und versuche es nochmal: ', ja: '次の項目をご確認のうえ、もう一度お試しください：' },
-  somethingWrong:      { en: 'Something went wrong. Please try again or contact us directly.', de: 'Etwas ist schiefgelaufen. Bitte versuche es nochmal oder kontaktiere uns direkt.', ja: '問題が発生しました。もう一度お試しいただくか、直接ご連絡ください。' },
+  invalidPhone:        { en: 'Enter a valid phone number with country code, e.g. +44 7700 900123', de: 'Bitte gib eine gültige Nummer mit Ländervorwahl ein, z. B. +49 151 12345678', ja: '国番号を含む有効な電話番号をご入力ください（例：+81 90 1234 5678）' },
+  checkFields:         { en: 'Please check these and try again: ', de: 'Bitte prüfe diese Angaben und versuche es noch einmal: ', ja: '次の項目をご確認のうえ、もう一度お試しください：' },
+  somethingWrong:      { en: 'Something went wrong. Please try again or contact us directly.', de: 'Etwas ist schiefgelaufen. Bitte versuche es noch einmal oder kontaktiere uns direkt.', ja: '問題が発生しました。もう一度お試しいただくか、直接ご連絡ください。' },
   // The six characters that let a screenshot be matched to the server log.
   refPrefix:           { en: 'reference ', de: 'Referenz ', ja: '参照番号 ' },
   // The expense-invoice picker (Jo, 28 Aug). Optional, so the wording never
   // implies the form cannot be sent without them.
   invoicesLabel:       { en: 'Receipts or invoices', de: 'Belege oder Rechnungen', ja: '領収書または請求書' },
-  invoicesHint:        { en: 'Add up to 10 invoices for free.', de: 'Bis zu 10 Rechnungen kostenlos hinzufügen.', ja: '請求書は無料で最大10件まで追加できます。' },
+  invoicesHint:        { en: 'Add up to 10 invoices for free.', de: 'Bis zu 10 Belege oder Rechnungen kostenlos hinzufügen.', ja: '領収書・請求書は最大10件まで無料で追加できます。' },
   uploadInvoices:      { en: 'Upload receipts', de: 'Belege hochladen', ja: '領収書をアップロード' },
   invoicesRequired:    { en: 'Please upload at least one receipt or invoice, or change your answer to No above.', de: 'Bitte lade mindestens einen Beleg oder eine Rechnung hoch, oder ändere deine Antwort oben auf Nein.', ja: '少なくとも1件の領収書または請求書をアップロードするか、上の回答を「いいえ」に変更してください。' },
   fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：' },
@@ -145,13 +146,13 @@ export const formStrings = {
   // This said 10MB while `fileTooLarge` directly below said 4 MB, so the two
   // upload errors a customer can see named different limits — and the wrong one
   // promised that a file would be accepted which never could be.
-  fileErrorGeneric:    { en: 'Please upload a valid image or PDF under 4 MB.', de: 'Bitte lade ein gültiges Bild oder PDF unter 4 MB hoch.', ja: '4MB以下の画像またはPDFファイルをアップロードしてください。' },
-  fileTooLarge:        { en: 'This file is too large to upload. Please use a file under 4 MB - for a PDF, try compressing it or photographing the document instead.', de: 'Diese Datei ist zu groß. Bitte verwende eine Datei unter 4 MB - komprimiere ein PDF oder fotografiere das Dokument stattdessen.', ja: 'このファイルは大きすぎます。4MB未満のファイルをご利用ください。PDFは圧縮するか、書類を写真で撮影してください。' },
-  generic:             { en: 'Something went wrong. Please try again.', de: 'Etwas ist schiefgelaufen. Bitte versuche es nochmal.', ja: 'エラーが発生しました。もう一度お試しください。' },
+  fileErrorGeneric:    { en: 'Please upload a valid image or PDF under 4 MB.', de: 'Bitte lade ein gültiges Bild oder PDF unter 4 MB hoch.', ja: '4MB未満の画像またはPDFファイルをアップロードしてください。' },
+  fileTooLarge:        { en: 'This file is too large to upload. Please use a file under 4 MB - for a PDF, try compressing it or photographing the document instead.', de: 'Diese Datei ist zu groß. Bitte verwende eine Datei unter 4 MB. Komprimiere ein PDF oder fotografiere das Dokument stattdessen.', ja: 'このファイルは大きすぎます。4MB未満のファイルをご利用ください。PDFは圧縮するか、書類を写真で撮影してください。' },
+  generic:             { en: 'Something went wrong. Please try again.', de: 'Etwas ist schiefgelaufen. Bitte versuche es noch einmal.', ja: 'エラーが発生しました。もう一度お試しください。' },
 
   // ─ Success screen ─
   thankYou:            { en: 'Thank you',                            de: 'Vielen Dank',              ja: 'ありがとうございます' },
-  successBody:         { en: "We've received your details. Our team will review everything and message you on WhatsApp about your tax return.", de: 'Wir haben deine Daten erhalten. Unser Team prüft alles und meldet sich per WhatsApp zu deiner Steuererklärung.', ja: '情報を受領しました。担当チームが内容を確認し、タックスリターンについてWhatsAppでご連絡いたします。' },
+  successBody:         { en: "We've received your details. Our team will review everything and message you on WhatsApp about your tax return.", de: 'Wir haben deine Daten erhalten. Unser Team prüft alles und meldet sich per WhatsApp zu deiner Steuererklärung.', ja: 'お客様の情報を受け付けました。担当チームが内容を確認し、タックスリターンについてWhatsAppでご連絡いたします。' },
   msgWhatsApp:         { en: 'Message us on WhatsApp',              de: 'Schreib uns auf WhatsApp', ja: 'WhatsAppでメッセージを送る' },
   followUs:            { en: "Tax, Super & Workers' rights",        de: 'Steuern, Super & Arbeitsrechte', ja: '税金・スーパー・労働者の権利' },
   followSub:           { en: 'Learn one thing every day 🙋',         de: 'Jeden Tag eine Sache lernen 🙋', ja: '毎日ひとつ学びましょう 🙋' },
@@ -162,12 +163,12 @@ export const formStrings = {
   successNextLead: {
     en: "We've received your details. Here's what happens next:",
     de: 'Wir haben deine Daten erhalten. So geht es weiter:',
-    ja: '情報を受領しました。次の流れはこちらです：',
+    ja: 'お客様の情報を受け付けました。次の流れはこちらです：',
   },
-  stepReceived:  { en: 'Details received',          de: 'Daten erhalten',            ja: '情報を受領' },
+  stepReceived:  { en: 'Details received',          de: 'Daten erhalten',            ja: '情報を受け付けました' },
   stepWhatsApp:  { en: 'We message you on WhatsApp', de: 'Wir schreiben dir auf WhatsApp', ja: 'WhatsAppでご連絡' },
-  stepRefund:    { en: 'You get your refund',       de: 'Du erhältst deine Rückerstattung', ja: '還付金を受け取り' },
-  etaLabel:      { en: 'Usually within 24 hours',   de: 'Meist innerhalb von 24 Stunden', ja: '通常24時間以内' },
+  stepRefund:    { en: 'Your return is reviewed and lodged with the ATO', de: 'Deine Steuererklärung wird geprüft und eingereicht', ja: 'ATOへの提出と結果のご案内' },
+  etaLabel:      { en: 'We usually message you within 24 hours', de: 'Wir melden uns meist innerhalb von 24 Stunden', ja: '通常24時間以内にご連絡します' },
 
   // ─ Expenses WhatsApp block (tax form) ─
   emailInvoicesTitle:  { en: 'Send us any receipts or invoices for your work expenses on WhatsApp.', de: 'Schicke uns Belege oder Rechnungen für deine Arbeitsausgaben per WhatsApp.', ja: '業務経費の領収書や請求書をWhatsAppでお送りください。' },
@@ -178,12 +179,12 @@ export const formStrings = {
   titleTax:            {
     en: 'Tell us a bit about yourself',
     de: 'Erzähl uns ein bisschen über dich',
-    ja: '簡単な自己紹介をお願いします',
+    ja: 'お手続きを始めるために',
   },
   titleTaxSub:         {
     en: 'so we can get started',
     de: 'damit wir loslegen können',
-    ja: '手続きを始めましょう',
+    ja: '簡単な情報をご入力ください',
   },
   titleTaxStep2:       { en: 'Almost done!',                         de: 'Fast geschafft!',          ja: 'あと少しです！' },
   titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー受取（DASP）' },
@@ -194,13 +195,13 @@ export const formStrings = {
   visa462:             { en: '462 Work and Holiday',                de: '462 Work and Holiday',     ja: '462 ワーク・アンド・ホリデー' },
   visa500:             { en: '500 Student',                         de: '500 Studentenvisum',       ja: '500 学生ビザ' },
   visaOther:           { en: 'Other',                               de: 'Andere',                   ja: 'その他' },
-  visaType:            { en: 'Visa type',                           de: 'Visumstyp',                ja: 'ビザの種類' },
+  visaType:            { en: 'Visa type',                           de: 'Visumtyp',               ja: 'ビザの種類' },
   arrivalDate:         { en: 'Arrival date in Australia',           de: 'Ankunftsdatum in Australien', ja: 'オーストラリア到着日' },
-  departureDate:       { en: 'Departure date (or planned)',         de: 'Abreisedatum (oder geplant)', ja: '出国日（予定でも可）' },
+  departureDate:       { en: 'Departure date (or planned)',         de: 'Abreisedatum (oder geplantes Datum)', ja: '出国日（予定でも可）' },
   bankBSB:             { en: 'BSB',                                 de: 'BSB',                      ja: 'BSB' },
   bankAccount:         { en: 'Bank account number',                 de: 'Bankkontonummer',          ja: '銀行口座番号' },
   bankName:            { en: 'Bank name',                           de: 'Name der Bank',            ja: '銀行名' },
-  paymentSummary:      { en: 'Payment summary / income statement',  de: 'Payment Summary / Income Statement', ja: 'Payment Summary / Income Statement（給与明細書）' },
+  paymentSummary:      { en: 'Payment summary / income statement',  de: 'Payment Summary / Income Statement', ja: 'Payment Summary / Income Statement（年間の収入と源泉徴収税額の証明書）' },
   employerName:        { en: 'Employer name',                       de: 'Name des Arbeitgebers',    ja: '雇用主名' },
   employerABN:         { en: 'Employer ABN',                        de: 'Arbeitgeber-ABN',          ja: '雇用主のABN' },
   startDate:           { en: 'Start date',                          de: 'Startdatum',               ja: '開始日' },
@@ -214,9 +215,9 @@ export const formStrings = {
   superFundName:       { en: 'Super fund name',                     de: 'Name des Superfonds',      ja: 'スーパーファンド名' },
   superMemberNumber:   { en: 'Super member number',                 de: 'Supermitgliedsnummer',     ja: 'スーパーメンバー番号' },
   superStartDate:      { en: 'Super fund start date',               de: 'Eröffnungsdatum des Superfonds', ja: 'スーパーファンド開始日' },
-  hasLeftAustralia:    { en: 'Have you left Australia?',            de: 'Hast du Australien verlassen?', ja: 'オーストラリアを既に出国しましたか？' },
-  visaStatus:          { en: 'Current visa status',                 de: 'Aktueller Visumsstatus',   ja: '現在のビザステータス' },
-  visaExpired:         { en: 'Expired or cancelled',                de: 'Abgelaufen oder gekündigt', ja: '失効または取消済' },
+  hasLeftAustralia:    { en: 'Have you left Australia?',            de: 'Hast du Australien verlassen?', ja: 'オーストラリアからすでに出国しましたか？' },
+  visaStatus:          { en: 'Current visa status',                 de: 'Aktueller Visumstatus',   ja: '現在のビザステータス' },
+  visaExpired:         { en: 'Expired or cancelled',                de: 'Abgelaufen oder annulliert', ja: '失効または取り消し済み' },
   visaActive:          { en: 'Still active',                        de: 'Noch aktiv',               ja: '有効' },
 
   // ─ ABN form specific ─
@@ -231,12 +232,12 @@ export const formStrings = {
   passportCountryWithVisa: {
     en: 'Country that issued the passport (with visa attached)',
     de: 'Land, das den Reisepass ausgestellt hat (mit Visum)',
-    ja: 'パスポート発行国（ビザ添付）',
+    ja: 'ビザが貼付されているパスポートの発行国',
   },
   homeAddress: {
     en: 'Full home country address',
     de: 'Vollständige Adresse in deinem Heimatland',
-    ja: '本国の完全な住所',
+    ja: '本国の住所（省略せずにご記入ください）',
   },
   bankHolderFull: {
     en: 'Account holder full name',
@@ -250,7 +251,7 @@ export const formStrings = {
   },
   taxAndSuperDetails: {
     en: 'Tax & super fund details',
-    de: 'Steuer- und Super-Fonds-Daten',
+    de: 'Steuer- und Superfonds-Daten',
     ja: '税金とスーパーファンド情報',
   },
   australianTaxResident: {
@@ -368,28 +369,43 @@ export const formStrings = {
   },
   bankStatements: {
     en: 'Bank statement',
-    de: 'Bankauszug',
+    de: 'Kontoauszug',
     ja: '銀行明細書',
   },
   uploadBankStatement: {
     en: 'Upload bank statement',
-    de: 'Bankauszug hochladen',
+    de: 'Kontoauszug hochladen',
     ja: '銀行明細書をアップロード',
   },
   bankStatementHint: {
-    en: 'Upload your Australian bank statement (PDF) with your name, BSB and account number so your refund reaches the correct account.',
-    de: 'Lade deinen australischen Kontoauszug (PDF) mit deinem Namen, deiner BSB und deiner Kontonummer hoch, damit deine Rückerstattung auf dem richtigen Konto ankommt.',
-    ja: '氏名・BSB・口座番号が記載されたオーストラリアの銀行明細書（PDF）をアップロードしてください。還付金が正しい口座に届くようにするためです。',
+    en: 'Upload your Australian bank statement (PDF) with your name, BSB and account number so any refund reaches the correct account.',
+    de: 'Lade deinen australischen Kontoauszug (PDF) mit deinem Namen, deiner BSB und deiner Kontonummer hoch, damit eine mögliche Rückerstattung auf dem richtigen Konto ankommt.',
+    ja: '氏名・BSB・口座番号が記載されたオーストラリアの銀行明細書（PDF）をアップロードしてください。還付金が発生した場合に、正しい口座へ届くようにするためです。',
   },
   selfieHint: {
     en: 'This verifies your identity. Your photo is kept private and secure, and deleted immediately after verification.',
     de: 'Damit wird deine Identität überprüft. Dein Foto wird vertraulich und sicher behandelt und sofort nach der Überprüfung gelöscht.',
-    ja: '本人確認のために使用されます。写真は厳重に保護・安全に管理され、確認完了後すぐに削除されます。',
+    ja: '本人確認のために使用されます。写真は安全に管理され、確認が完了次第すぐに削除されます。',
   },
   hasExpenses: {
     en: 'Did you have any work-related expenses?',
     de: 'Hattest du arbeitsbezogene Ausgaben?',
     ja: '業務関連の経費はありましたか？',
+  },
+  hasOtherIncome: {
+    en: 'Do you have any additional income?',
+    de: 'Hast du zusätzliche Einkünfte?',
+    ja: '追加の収入はありますか？',
+  },
+  otherIncomeWhat: {
+    en: 'Which income?',
+    de: 'Welche Einkünfte?',
+    ja: 'どのような収入ですか？',
+  },
+  otherIncomePh: {
+    en: 'e.g. income from overseas, interest, shares, rent',
+    de: 'z. B. Einkünfte aus dem Ausland, Zinsen, Aktien, Mieteinnahmen',
+    ja: '例：海外の収入、利息、株式、家賃収入（英語でご入力ください）',
   },
   workingHolidayMakerTax: {
     en: 'Working holiday maker for tax purposes',
@@ -399,12 +415,153 @@ export const formStrings = {
   // ABN declaration
   declABN: {
     en: 'I declare that I do not own any assets in Australia and have never been issued an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',
-    de: 'Ich erkläre, dass ich kein Vermögen in Australien besitze und noch nie eine ABN bekommen habe. Ich beabsichtige, ein Geschäft als Einzelunternehmer (Sole Trader) zu führen, bei dem ich alleiniger Inhaber bin, mit Sitz in Australien.',
+    de: 'Ich erkläre, dass ich kein Vermögen in Australien besitze und noch nie eine ABN erhalten habe. Ich beabsichtige, ein Unternehmen als Einzelunternehmer (Sole Trader) mit Sitz in Australien zu gründen, dessen alleiniger Inhaber ich bin.',
     ja: 'オーストラリアに資産を所有しておらず、ABNが発行されたことがないことを宣言します。オーストラリアに拠点を置く個人事業主（Sole Trader）として事業を運営する意向です。',
   },
   // Tax form income disclosure declaration
 
+  // ─ Words that used to be hardcoded English in the forms ─
+  // `{n}` and `{max}` are filled in by the form.
+  tapToAddFiles: {
+    en: 'Tap to add files (max {n})',
+    de: 'Tippe, um Dateien hinzuzufügen (max. {n})',
+    ja: 'タップしてファイルを追加（最大{n}件）',
+    zh: '点击添加文件（最多 {n} 个）',
+    vi: 'Chạm để thêm tệp (tối đa {n})',
+  },
+  addMoreFiles: {
+    en: 'Add more ({n}/{max})',
+    de: 'Weitere hinzufügen ({n}/{max})',
+    ja: 'さらに追加（{n}/{max}）',
+    zh: '继续添加（{n}/{max}）',
+    vi: 'Thêm tệp ({n}/{max})',
+  },
+  filePreviewAlt:      { en: 'preview', de: 'Vorschau', ja: 'プレビュー', zh: '预览', vi: 'Xem trước' },
+  mustAgree:           { en: 'You must agree to submit', de: 'Du musst zustimmen, um abzusenden', ja: '送信するには同意が必要です' },
+  // The message that is pre-typed into WhatsApp from the success screen.
+  waPrefill: {
+    en: "Hi! I've just sent through my form 😊",
+    de: 'Hallo! Ich habe gerade mein Formular abgeschickt 😊',
+    ja: 'こんにちは！フォームを送信しました 😊',
+    zh: '你好！我刚刚提交了表格 😊',
+    vi: 'Xin chào! Mình vừa gửi tờ khai xong 😊',
+  },
+  // Used in "Thank you, there!" when no first name was typed.
+  thereName:           { en: 'there', de: 'du', ja: 'お客様' },
+  submitSuperApp:      { en: 'Submit Super Application →', de: 'Superantrag abschicken →', ja: 'スーパー申請を送信 →' },
+  tfnShort:            { en: 'TFN', de: 'TFN', ja: 'TFN' },
+
+  // ─ Placeholders ─
+  egPrefix:            { en: 'e.g. ', de: 'z. B. ', ja: '例：', zh: '例如：', vi: 'Ví dụ: ' },
+  phGiven: {
+    en: 'Exactly as shown on your passport',
+    de: 'Genau wie im Reisepass',
+    ja: 'パスポートの表記どおりに（ローマ字）',
+  },
+  phLast: {
+    en: 'As shown on your passport',
+    de: 'Wie im Reisepass',
+    ja: 'パスポートの表記どおりに（ローマ字）',
+  },
+  phAddress: {
+    en: 'e.g. 12 Smith Street, Bondi NSW 2026',
+    de: 'z. B. 12 Smith Street, Bondi NSW 2026',
+    ja: '例：12 Smith Street, Bondi NSW 2026',
+  },
+  phJob: {
+    en: 'e.g. Farm worker, Barista',
+    de: 'z. B. Farmarbeit, Barista (bitte auf Englisch)',
+    ja: '例：ファームの仕事、バリスタ（英語でご入力ください）',
+  },
+  phWaNumber: {
+    en: '+44 7XXX XXXXXX',
+    de: '+49 151 XXXXXXXX',
+    ja: '+81 90 XXXX XXXX',
+    zh: '+86 138 XXXX XXXX',
+    vi: '+84 9XX XXX XXX',
+  },
+  phEmail: {
+    en: 'your@email.com',
+    de: 'deine@email.de',
+    ja: 'name@example.co.jp',
+    zh: 'name@example.com',
+    vi: 'ten@example.com',
+  },
+  phCountry: {
+    en: 'e.g. United Kingdom',
+    de: 'z. B. Deutschland',
+    ja: '例：日本（英語でご入力ください）',
+    zh: '例如：中国（请尽量用英文填写）',
+    vi: 'Ví dụ: Việt Nam (vui lòng ghi bằng tiếng Anh)',
+  },
+  phHowHeard: {
+    en: 'e.g. Instagram, TikTok, friend...',
+    de: 'z. B. Instagram, TikTok, Freunde...',
+    ja: '例：Instagram、TikTok、友人など',
+    zh: '例如：小红书、微信、朋友推荐',
+    vi: 'Ví dụ: Facebook, TikTok, bạn bè giới thiệu',
+  },
+  phHowHeardFriend: {
+    en: "e.g. Instagram, TikTok, friend's name...",
+    de: 'z. B. Instagram, TikTok, Name eines Freundes...',
+    ja: '例：Instagram、TikTok、友人の名前など',
+  },
+  phFirstNames:        { en: 'e.g. John Michael', de: 'z. B. Anna Maria', ja: '例：Taro' },
+  phLastNameEg:        { en: 'e.g. Smith', de: 'z. B. Mueller', ja: '例：Yamada' },
+  phEmailEg:           { en: 'e.g. john@email.com', de: 'z. B. anna@email.de', ja: '例：taro@email.co.jp' },
+  phWaNumberEg:        { en: '+44 7700 900123', de: '+49 151 12345678', ja: '+81 90 1234 5678' },
+  phBusiness: {
+    en: 'e.g. Freelance photographer, providing photography services to clients',
+    de: 'z. B. Freiberuflicher Fotograf, Fotografie-Dienstleistungen für Kunden',
+    ja: '例：フリーランスのカメラマン（お客様向けの撮影サービス）',
+  },
+  phHomeAddress: {
+    en: 'e.g. 10 Downing Street, London, SW1A 2AA, UK',
+    de: 'z. B. Musterstraße 10, 10115 Berlin, Deutschland',
+    ja: '例：1-2-3 Shibuya, Shibuya-ku, Tokyo 150-0002, Japan',
+  },
+  phBankHolder: {
+    en: 'As it appears on the bank account',
+    de: 'Genau wie auf dem Bankkonto',
+    ja: '銀行口座の名義どおりに',
+  },
+
+  // ─ Upload errors (submit-tax-form.ts) ─
+  uploadFailedRequired: {
+    en: 'Failed to upload required files. Please check your documents are images or PDFs under 4 MB and try again.',
+    de: 'Die erforderlichen Dateien konnten nicht hochgeladen werden. Bitte prüfe, ob es Bilder oder PDFs unter 4 MB sind, und versuche es noch einmal.',
+    ja: '必要なファイルをアップロードできませんでした。4MB未満の画像またはPDFかをご確認のうえ、もう一度お試しください。',
+    zh: '必需的文件上传失败。请确认是 4 MB 以内的图片或 PDF，然后再试一次。',
+    vi: 'Không tải được các tệp bắt buộc. Vui lòng kiểm tra tệp là ảnh hoặc PDF dưới 4 MB rồi thử lại.',
+  },
+  uploadFailedFile: {
+    en: 'Upload failed for "{name}": {reason}',
+    de: 'Upload fehlgeschlagen für "{name}": {reason}',
+    ja: '「{name}」のアップロードに失敗しました：{reason}',
+    zh: '“{name}”上传失败：{reason}',
+    vi: 'Tải lên "{name}" không thành công: {reason}',
+  },
+  unknownError:        { en: 'Unknown error', de: 'Unbekannter Fehler', ja: '不明なエラー', zh: '未知错误', vi: 'Lỗi không xác định' },
+
 } as const
+
+/** The thank-you line on the success screen, punctuated for the language.
+ *  English is exactly "Thank you, Name!". */
+export function thankYouHeading(lang: AnyFormLang, thankYou: string, name: string, isRealName = true): string {
+  if (lang === 'ja') return `${thankYou}、${name}${isRealName ? 'さん' : ''}！`
+  if (lang === 'zh') return `${thankYou}，${name}！`
+  return `${thankYou}, ${name}!`
+}
+
+/** Joins a list of field names: 、 for Japanese and Chinese, a comma otherwise. */
+export function joinFieldList(lang: AnyFormLang, items: string[]): string {
+  return items.join(lang === 'ja' || lang === 'zh' ? '、' : ', ')
+}
+
+/** Japanese and Chinese write the field name and "is required" with no space. */
+export function requiredSep(lang: AnyFormLang): string {
+  return lang === 'ja' || lang === 'zh' ? '' : ' '
+}
 
 export type FormStringKey = keyof typeof formStrings
 

@@ -110,12 +110,13 @@ it('falls back to the free text (the model\'s own composed body) if the template
   expect(store.setMessageStatus).toHaveBeenCalledWith('m1', 'SENT', { restamp: true });
 });
 
-it('an unknown/fallback language falls back to the English template name', async () => {
+it('a language with no template of its own (French) never gets the English template (30 Oct)', async () => {
   store.getCustomerById.mockResolvedValue({ ...CUSTOMER, lang: 'fr' });
   store.getMessageById.mockResolvedValue(paymentMsg());
-  sendWhatsAppTemplate.mockResolvedValue({ ok: true });
+  sendWhatsAppTemplate.mockResolvedValue({ ok: false, error: 'meta 404: (#132001) Template name does not exist in the translation' });
+  sendWhatsAppText.mockResolvedValue({ ok: true });
   await processDueJobs();
-  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received', [], 'fr', { brand: undefined });
+  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received', [], 'fr', { englishFallback: false, brand: undefined });
 });
 
 it('an ordinary (non payment) queued reply never asks for a template at all', async () => {

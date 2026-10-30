@@ -18,8 +18,8 @@ const ctx = (paid: boolean) => ({
 it('the review-only price messages carry NO guarantee: the fee is for the review, whatever the result (Jo, 29 Sep, Holly)', () => {
   for (const m of [APPROVED.price_tfn_review, APPROVED.price_tfn_abn_review]) {
     expect(m).not.toMatch(/refund the difference/);
-    expect(m).toMatch(/for the review itself and is the same whatever the result/);
-    expect(m).toMatch(/The fee is \$(220|385) for the review itself/);
+    expect(m).toMatch(/for the review itself(?: \(GST included\))? and is the same whatever the result/);
+    expect(m).toMatch(/The fee is \$(330|440) for the review itself/);
     expect(m).not.toMatch(/Amount:/);
     expect(policyGuard(m, ctx(false)).allowed).toBe(true);
   }

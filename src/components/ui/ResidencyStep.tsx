@@ -31,7 +31,7 @@ const COPY = {
     titleTail: '',
     intro: 'Tax residency determines which tax rates apply to your income.',
     introEmph: 'It is separate from your immigration status.',
-    whyTitle: 'Why it matters?',
+    whyTitle: 'Why does it matter?',
     whyBody: 'If you qualify as an Australian tax resident, the first $18,200 of your taxable income is tax-free, meaning any 15% tax paid on that amount may be refunded.',
     compareCaption: 'Tax on $45,000 of income',
     whmName: 'Working holiday maker',
@@ -42,10 +42,10 @@ const COPY = {
       'You hold a passport from: United Kingdom, Germany, Japan, Chile, Finland, Israel, Norway or Turkey.',
       'Your ordinary place of residence is in Australia.',
       'You have an intention to live in Australia.',
-      'You have ongoing ties to Australia - a home, ongoing employment, or personal connections.',
+      'You have ongoing ties to Australia, such as a home, ongoing employment or personal connections.',
     ],
     note: 'If you\u2019re not from one of these countries but meet the other requirements, you can still qualify for Australian tax residency and a refund of up to $700.',
-    quizIntro: 'To be considered an Australian tax resident, meaning the first $18,200 of your income is tax-free, at least 4 of the 5 points below need to genuinely apply to you.',
+    quizIntro: 'To be considered an Australian tax resident, meaning the first $18,200 of your income is tax-free, most of the points below should genuinely apply to you.\n\nIf they do, you can select Australian tax resident. The ATO makes the final decision on your residency after we lodge your return.',
     yearNote: 'These apply to the tax year you’re lodging.',
     yesLabel: 'Yes',
     noLabel: 'No',
@@ -55,6 +55,7 @@ const COPY = {
       'You plan to continue living in Australia',
       'You have ongoing work in Australia',
       'You have personal or family ties in Australia',
+      'You hold a passport from an NDA country: UK, Germany, Japan, Chile, Finland, Israel, Norway or Turkey',
     ],
     whmResult: 'Based on your answers, you are considered a WHM for tax purposes, so the $18,200 tax-free threshold does not apply to you.',
     nonNdaResult: 'Based on your answers, you may be an Australian tax resident, but the $18,200 tax-free threshold does not apply. You may still be entitled to the Low Income Tax Offset of up to $700.',
@@ -83,7 +84,7 @@ const COPY = {
     intro: 'Die Steuerresidenz bestimmt deinen Steuersatz.',
     introEmph: 'Sie ist nicht dasselbe wie dein Aufenthaltsstatus.',
     whyTitle: 'Warum ist das wichtig?',
-    whyBody: 'Wenn du als australischer Steuerresident giltst, sind die ersten $18.200 deines zu versteuernden Einkommens steuerfrei - die darauf gezahlte 15%-Steuer kann erstattet werden.',
+    whyBody: 'Wenn du als australischer Steuerresident giltst, sind die ersten $18.200 deines zu versteuernden Einkommens steuerfrei. Die darauf gezahlten 15 % Steuer können erstattet werden.',
     compareCaption: 'Steuer auf $45.000 Einkommen',
     whmName: 'Working Holiday Maker',
     residentName: 'Australischer Steuerresident',
@@ -93,10 +94,10 @@ const COPY = {
       'Du hast einen Reisepass aus: Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen oder Türkei.',
       'Dein gewöhnlicher Wohnsitz ist in Australien.',
       'Du hast die Absicht, in Australien zu leben.',
-      'Du hast dauerhafte Bindungen zu Australien - ein Zuhause, eine feste Arbeit oder persönliche Beziehungen.',
+      'Du hast dauerhafte Bindungen zu Australien, zum Beispiel ein Zuhause, eine feste Arbeit oder persönliche Beziehungen.',
     ],
     note: 'Wenn du nicht aus einem dieser Länder kommst, aber die anderen Voraussetzungen erfüllst, kannst du trotzdem als australischer Steuerresident gelten und bis zu $700 zurückbekommen.',
-    quizIntro: 'Um als australischer Steuerresident zu gelten, was bedeutet, dass die ersten $18.200 deines Einkommens steuerfrei sind, müssen mindestens 4 der 5 folgenden Punkte wirklich auf dich zutreffen.',
+    quizIntro: 'Um als australischer Steuerresident zu gelten, was bedeutet, dass die ersten $18.200 deines Einkommens steuerfrei sind, sollten die meisten der folgenden Punkte wirklich auf dich zutreffen.\n\nWenn das der Fall ist, kannst du „Australischer Steuerresident“ auswählen. Die endgültige Entscheidung über deinen Status trifft das ATO, nachdem wir deine Steuererklärung eingereicht haben.',
     yearNote: 'Diese Punkte gelten für das Steuerjahr, das du einreichst.',
     yesLabel: 'Ja',
     noLabel: 'Nein',
@@ -104,23 +105,24 @@ const COPY = {
       'Du hast 6 Monate oder länger in Australien gelebt',
       'Dein gewöhnlicher Wohnsitz ist in Australien',
       'Du beabsichtigst, weiterhin in Australien zu leben',
-      'Du hast eine laufende Arbeit in Australien',
+      'Du hast eine feste Arbeit in Australien',
       'Du hast persönliche oder familiäre Bindungen in Australien',
+      'Du hast einen Reisepass aus einem NDA-Land: Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen oder Türkei',
     ],
-    whmResult: 'Basierend auf deinen Antworten bist du steuerlich ein Working Holiday Maker, daher gilt der steuerfreie Betrag von $18.200 nicht. Unser Team bestätigt dies bei der Erstellung deiner Steuererklärung.',
-    nonNdaResult: 'Basierend auf deinen Antworten bist du möglicherweise australischer Steuerresident, aber der steuerfreie Betrag von $18.200 gilt nicht. Möglicherweise hast du trotzdem Anspruch auf den Low Income Tax Offset von bis zu $700.',
-      sessionLost: 'Deine Sitzung ist abgelaufen, deine Angaben müssen noch einmal eingegeben werden. Es wurde nichts gesendet.',
+    whmResult: 'Aufgrund deiner Antworten bist du steuerlich ein Working Holiday Maker, daher gilt der steuerfreie Betrag von $18.200 nicht. Unser Team bestätigt dies bei der Erstellung deiner Steuererklärung.',
+    nonNdaResult: 'Aufgrund deiner Antworten bist du möglicherweise australischer Steuerresident, aber der steuerfreie Betrag von $18.200 gilt nicht. Möglicherweise hast du trotzdem Anspruch auf den Low Income Tax Offset von bis zu $700.',
+      sessionLost: 'Deine Sitzung ist abgelaufen. Bitte gib deine Angaben noch einmal ein. Es wurde nichts gesendet.',
     sessionLostCta: 'Zurück zum Formular',
     warn: {
-      title: 'Bitte lies das aufmerksam',
-      leadPre: 'Basierend auf deinen Antworten giltst du steuerlich ',
+      title: 'Bitte lies das aufmerksam durch',
+      leadPre: 'Aufgrund deiner Antworten giltst du steuerlich ',
       leadEmph: 'nicht',
       leadPost: ' als australischer Steuerresident.',
       meansLabel: 'Das bedeutet',
-      b1: 'Der steuerfreie Betrag gilt nicht, die ersten $18.200 deines Einkommens sind nicht steuerfrei.',
+      b1: 'Der steuerfreie Betrag gilt nicht: Die ersten $18.200 deines Einkommens sind nicht steuerfrei.',
       b2: 'Du hast keinen Anspruch auf den Low Income Tax Offset von bis zu $700.',
       notePre: 'Deine Steuerresidenz ist ',
-      noteEmph: 'völlig getrennt',
+      noteEmph: 'unabhängig',
       notePost: ' von deinem Aufenthalts- bzw. Visastatus.',
       read: 'Bitte stelle sicher, dass du jede Frage gelesen und verstanden hast und nur für das Steuerjahr antwortest, das du einreichst.',
       btnReview: 'Antworten überprüfen',
@@ -133,22 +135,22 @@ const COPY = {
     titleTail: 'を確認しましょう',
     intro: '税務上の居住区分は、所得に適用される税率を決めるものです。',
     introEmph: '在留資格とは異なります。',
-    whyTitle: 'なぜ重要なのか？',
+    whyTitle: 'なぜ重要なのでしょうか？',
     whyBody: 'オーストラリア税務居住者に該当する場合、課税所得の最初の$18,200は非課税となり、その分に支払った15%の税金が還付される可能性があります。',
     compareCaption: '所得$45,000にかかる税額',
     whmName: 'ワーキングホリデーメーカー',
     residentName: 'オーストラリア税務居住者',
-    compareFoot: '$2,462があなたの手元に',
+    compareFoot: '$2,462が手元に残ります',
     condIntro: '以下の条件を満たす場合、オーストラリア税務居住者に該当する可能性があります：',
     conditions: [
-      '以下の国のパスポートを所持：イギリス、ドイツ、日本、チリ、フィンランド、イスラエル、ノルウェー、トルコ。',
+      '以下のいずれかの国のパスポートを所持していること：イギリス、ドイツ、日本、チリ、フィンランド、イスラエル、ノルウェー、トルコ。',
       '通常の居住地がオーストラリアにあること。',
       'オーストラリアに居住する意思があること。',
       '住居、継続的な仕事、個人的なつながりなど、オーストラリアとの結びつきがあること。',
     ],
     note: 'これらの国の出身でなくても、他の条件を満たしていれば、オーストラリア税務居住者として最大$700の還付を受けられる場合があります。',
-    quizIntro: 'オーストラリア税務居住者と見なされ、最初の$18,200の所得が非課税となるには、以下の5つの項目のうち少なくとも4つが本当に当てはまる必要があります。',
-    yearNote: '今回申告する税務年度についてご確認ください。',
+    quizIntro: 'オーストラリアの税務居住者と見なされ、最初の$18,200の所得が非課税となるには、以下の項目のほとんどが本当に当てはまる必要があります。\n\n当てはまる場合は、「オーストラリア税務居住者」を選択できます。最終的な判断は、当社がタックスリターンを提出した後にATOが行います。',
+    yearNote: '以下の項目は、今回申告する税務年度についてお答えください。',
     yesLabel: 'はい',
     noLabel: 'いいえ',
     questions: [
@@ -157,17 +159,18 @@ const COPY = {
       '今後もオーストラリアに住み続ける予定である',
       'オーストラリアで継続的な仕事がある',
       'オーストラリアに個人的または家族的なつながりがある',
+      'NDA対象国のパスポートを所持している：イギリス、ドイツ、日本、チリ、フィンランド、イスラエル、ノルウェー、トルコ',
     ],
     whmResult: 'ご回答に基づくと、税務上あなたはワーキングホリデーメーカーであるため、$18,200の非課税枠は適用されません。申告書作成時に当チームが確認します。',
     nonNdaResult: 'ご回答に基づくと、あなたはオーストラリア税務居住者である可能性がありますが、$18,200の非課税枠は適用されません。低所得者税額控除（Low Income Tax Offset）として最大$700を受けられる可能性があります。',
-      sessionLost: 'セッションの有効期限が切れたため、もう一度ご入力をお願いします。送信はされていません。',
+      sessionLost: 'セッションの有効期限が切れたため、もう一度ご入力ください。送信はされていません。',
     sessionLostCta: 'フォームに戻る',
     warn: {
       title: '重要：必ずお読みください',
       leadPre: 'ご回答に基づくと、あなたはオーストラリアの税務居住者には',
       leadEmph: '該当しません',
       leadPost: '。',
-      meansLabel: 'これは次を意味します',
+      meansLabel: 'これは次のことを意味します',
       b1: '非課税枠は適用されず、所得の最初の$18,200は非課税になりません。',
       b2: '最大$700の低所得者税額控除（Low Income Tax Offset）を受けられません。',
       notePre: '税務上の居住区分は、在留資格（ビザ）とは',
@@ -175,7 +178,7 @@ const COPY = {
       notePost: 'です。',
       read: '各質問をよく読んで理解し、申告する税務年度についてのみお答えください。',
       btnReview: '回答を確認する',
-      btnConfirm: '理解しました、これで正しいです',
+      btnConfirm: '内容を理解しました。この回答で間違いありません',
     },
   },
 } as const
@@ -221,7 +224,9 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
           {/* The green box now holds the quiz instruction itself (the old
               "Why it matters?" copy was removed). */}
           <div className="resstep-why">
-            <p className="resstep-why-body">{c.quizIntro}</p>
+            {c.quizIntro.split('\n\n').map((t, i) => (
+              <p key={i} className="resstep-why-body">{t}</p>
+            ))}
           </div>
 
           {/* Reference only: the criteria to consider, no Yes/No. The client
@@ -280,7 +285,7 @@ const styles = `
 
   /* Two lines at every phone width - see note above. */
   .resstep-intro { font-size: 12px; color: var(--f-muted, #587066); line-height: 1.6; margin: 0; }
-  .resstep-intro strong { font-weight: 700; color: var(--f-ink, #1A2822); }
+  .resstep-intro strong { font-weight: 700; color: var(--f-ink, #1A2822); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-color: var(--f-brand, #0B5240); }
 
   .resstep-body { padding: 4px 18px 30px; }
 
@@ -310,6 +315,7 @@ const styles = `
 
   .resstep-why { background: var(--f-tint, #EAF6F1); border: 1.5px solid var(--f-line, #C8EAE0); border-radius: 14px; padding: 14px 15px; margin-bottom: 14px; }
   .resstep-why-title { font-size: 13px; font-weight: 700; color: var(--f-brand, #0B5240); margin: 0 0 6px; }
+  .resstep-why-body + .resstep-why-body { margin-top: 8px; }
   .resstep-why-body { font-size: 12.5px; color: var(--f-ink, #1A2822); line-height: 1.6; margin: 0; }
 
   .resstep-compare { border: 1.5px solid var(--f-line, #CDE3DB); border-radius: 14px; padding: 12px 12px 10px; margin-bottom: 22px; }

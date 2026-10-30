@@ -88,7 +88,7 @@ const cfg: GuideLocaleConfig = {
     category,
     'Backpacker Steuer',
   ],
-  reviewedByDescription: 'Registrierter Steueragent, der die von Working Holiday Tax vorbereitete Arbeit prüft und freigibt.',
+  reviewedByDescription: 'Registrierter australischer Tax Agent, der die von Working Holiday Tax vorbereitete Arbeit prüft und freigibt.',
   authorDescription: 'Auf Working Holiday Maker (Visumklassen 417 und 462) spezialisierter australischer Steuerservice.',
   knowsAbout: [
     'Australisches Steuerrecht',
@@ -144,8 +144,8 @@ const cfg: GuideLocaleConfig = {
   viewAllLabel: (label) => `Alle ${label}-Artikel ansehen →`,
   aside: {
     label: 'Über diesen Ratgeber',
-    p1: 'Geschrieben vom Team von Working Holiday Tax, das ausschließlich mit Inhabern von 417- und 462-Visa arbeitet, und anhand der aktuellen Vorgaben von ATO und Fair Work geprüft. Allgemeine Informationen, keine persönliche Steuerberatung.',
-    p2: 'Steuererklärungen werden vor der Einreichung beim ATO von einem registrierten Steueragenten geprüft und freigegeben.',
+    p1: 'Geschrieben vom Team von Working Holiday Tax, das ausschließlich mit Inhabern von 417- und 462-Visa arbeitet, und anhand der aktuellen Vorgaben von ATO und Fair Work geprüft. Das sind allgemeine Informationen und keine individuelle Beratung zu deiner Steuersituation.',
+    p2: 'Steuererklärungen werden vor der Einreichung beim ATO von einem registrierten australischen Tax Agent geprüft und freigegeben.',
   },
 
   styles: {

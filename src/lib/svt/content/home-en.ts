@@ -17,7 +17,7 @@ export const homeEn = {
   hero: {
     titleBefore: 'Tax returns for ',
     titleMark: 'student visas',
-    lead: 'For 500 and 485 visa holders. All on WhatsApp and one short online form. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
+    lead: 'For 500 and 485 visa holders. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
     price: { amount: '$220', unit: 'per return', sub: '$385 with ABN work. GST included.' },
     cta: 'Start your return on WhatsApp',
   },
@@ -45,7 +45,6 @@ export const homeEn = {
       { from: 'them', text: 'You sign online.' },
       { from: 'us', text: 'Your return is lodged with the ATO.' },
     ] satisfies ChatStep[],
-    note: 'Example, not a real chat.',
   },
   payslip: {
     title: 'Your payslip, line by line',
@@ -87,7 +86,7 @@ export interface HomeCopy {
   hero: { titleBefore: string; titleMark: string; titleAfter?: string; lead: string; price: { amount: string; unit: string; sub: string }; cta: string }
   priceCheck: { title: string }
   guarantee: { title: string; docketLabel: string; docket: readonly DocketRow[]; terms: string; why: string; cta: string }
-  flow: { title: string; label: string; steps: readonly ChatStep[]; note: string }
+  flow: { title: string; label: string; steps: readonly ChatStep[] }
   payslip: { title: string; lead: string }
   story: { title: string; lead: string; points: readonly string[]; languages: string }
   faq: { title: string; items: readonly FaqItem[] }

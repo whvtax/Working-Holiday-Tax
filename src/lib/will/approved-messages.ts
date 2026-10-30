@@ -100,7 +100,7 @@ Which option works best for you?`,
   // refund-shortfall guarantee is for returns WE prepare and lodge only.
   price_tfn_review: `No problem, we can review a return you've already lodged.
 
-Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $220 for the review itself and is the same whatever the result.
+Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $330 for the review itself and is the same whatever the result. It also covers lodging the amended return, if one is needed.
 
 BSB: 062692
 Account: 81049952
@@ -109,7 +109,7 @@ Just send a screenshot once paid and we'll get started!`,
 
   price_tfn_abn_review: `No problem, we can review a return you've already lodged.
 
-Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $385 for the review itself and is the same whatever the result.
+Since it's already been lodged, this is a review of an existing return rather than a fresh one. The fee is $440 for the review itself (GST included) and is the same whatever the result.
 
 BSB: 062692
 Account: 81049952
@@ -123,14 +123,15 @@ Just send a screenshot once paid and we'll get started!`,
     o4_mygov: `Yes, absolutely, you can lodge your tax return yourself through myGov. The difference is that myGov is just where you lodge it. It won't review your situation, guide you on your tax residency, Medicare, or what you can claim, and make sure everything is correct. That's part of what we do, so you know everything has been properly reviewed and you're not left figuring it all out on your own.`,
     o5_too_expensive: `I understand. The fee covers the full review and personal guidance, so you're not left trying to work everything out on your own. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
     o6_pay_after_refund: `Payment is made upfront because the review and personal guidance are the main part of the service, and that's where our work starts. Once payment is received, we can start going through your situation properly. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
-    o7_professional_question: `Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us. 😊`,
+    // 30 Oct (Jo): the stock line is retired for everything except the refund_chance wording.
+    o7_professional_question: `Yes, that is covered in the review of your case, which starts once payment is made. Reviewed and signed off by a registered tax agent before it is lodged with the ATO. 😊`,
     o8_simple_return: `I understand. Even with just one job, there's more to check than the income on your payslip. Your tax residency, Medicare, and what you're entitled to claim can still make a difference. Our fee is based on reviewing your situation properly and guiding you through it, not on how many jobs or payslips you've had.`,
     o9_no_refund: `No problem. If your tax refund is less than our fee, we'll refund the difference. If there's no refund at all, or you have an amount to pay, our full fee applies, as the work is the same. What the review makes sure of is that nothing you're entitled to is missed.`,
     o10a_why_not_accountant: `Of course, you can use an accountant. The difference is that we focus specifically on Working Holiday Makers and deal with situations like yours every day. Our team knows the common issues backpackers run into, things like tax residency, Medicare, ABN income, and work-related expenses, so the whole service is built around people in your situation.`,
     o10b_found_cheaper: `No worries, I completely understand. Just make sure you're comparing the same level of service. With us, you're not just paying to submit a tax return. Your situation is properly reviewed and you get personal guidance throughout the process. If you've found someone cheaper, just make sure you know exactly what's included before you decide.`,
     o11_think_about_it: `Of course, no problem. Before you go, is there anything you're unsure about or anything you'd like me to clarify for you? Happy to answer any questions before you decide.`,
     o12_ask_partner: `Of course, no problem. If there's anything you or your partner are unsure about, just let me know and I'm happy to clarify it before you decide.`,
-    o13_one_question: `Of course, happy to help. Anything about your own situation is one of the many things we check before we lodge your tax return, so leave that with us. What would you like to know?`,
+    o13_one_question: `Of course, happy to help. What would you like to know?`,
     // Jo, 22 Oct (+44 7809): "In what cases would there be no refund?" right
     // after the price message got the stock line. It is a question about OUR
     // guarantee's wording, not about their tax: it gets a general answer.
@@ -194,7 +195,7 @@ Please fill out this quick form so we can start reviewing your situation.
 
 Once you've submitted it, we'll go through everything and get back to you within 24 hours.
 
-https://workingholidaytax.com.au/tax-form`,
+https://workingholidaytax.com.au/start`,
 
   followups_form: {
     // Jo, 4 Sep: no number. The form is two steps, ten or so fields, a residency
@@ -235,6 +236,27 @@ https://workingholidaytax.com.au/tax-form`,
 • What type of work did you do?
 • Do you have any invoices or records of your ABN income?
 • Did you have any work-related expenses that you can provide proof of payment for?`,
+
+  // 30 Oct (Jo): the full one message intake lives in EXPENSES_INTAKE_MSG below.
+  // 30 Oct (Jo): the expenses module (see EXPENSES_INTAKE_MSG below for de and ja). Registered here so the Policy Guard counts it as approved wording.
+  // 30 Oct (Jo): the expenses module (de and ja: EXPENSES_INTAKE_MSG below). Four parts, sent together as one message, so each part stays below the longest approved script (the Policy Guard sizes its length allowance from that) and each is a Library entry.
+  expenses: {
+    intake_a: `Thanks! One quick thing on work expenses. I'll ask for everything in one go, so you only need to reply once.
+
+What did you spend on for work? For example phone or internet, a car or kilometres driven, a bike, scooter or rental car, tools, uniform or protective clothing, courses, licences, registrations or union fees, or working from home. Just tell me what applies. "None" is a fine answer.`,
+    intake_b: `If you used a car or have fuel receipts: were these trips from home to work, or between work sites or to another job during working hours? Trips from home to work and personal trips, like lunch runs, can't go in. Trips between work sites during working hours may be included.`,
+    intake_c: `If they were between sites, please send a logbook (trip diary) covering up to 5,000 km, with the date, from, to, purpose and km (a screenshot of your notes app is fine). We use the cents per kilometre method: 88 cents per km, up to 5,000 km. Please also send the car's registration number (rego), when you bought it, how much it cost, and the make and model, and tell us whether you own it or rent it. For a rental car, send the rental invoices and the logbook. For rideshare or delivery, send the app's yearly km report and your earnings summary.`,
+    intake_d: `Working from home: a diary or timesheet with the dates and hours.
+
+Phone and internet: the bills, and roughly what percentage you use for work.
+
+Clothing: tell us exactly what you bought. If it was everyday clothing, like jeans, trainers or black pants, let us know whether it was compulsory at work or used for work purposes. What can be claimed is confirmed in the review, before anything is lodged.
+
+Tools, courses and licences: a receipt, or a bank statement with the item highlighted.
+
+No receipts? A list of the items is fine, up to $300. Just tell us what the items were.`,
+    done: `Thanks, I have what we need on expenses.`,
+  },
 
   request_expenses: `Hey! I can see you mentioned having some work-related expenses. Could you please send me any receipts or invoices you have for them here on WhatsApp?`,
 
@@ -342,3 +364,73 @@ Your refund should arrive in your bank account within 14 business days.`,
   },
 } as const;
 
+
+// ============================================================
+// EXPENSES MODULE (Jo, 30 Oct: "all expenses must be fully Will's").
+// ONE message that asks for everything; Will collects, never decides.
+// No dashes of any kind. Items marked in docs/WILL_EXPENSES_MODULE_30OCT.md
+// must be verified by Jo or the registered tax agent.
+// ============================================================
+export const EXPENSES_INTAKE_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: [APPROVED.expenses.intake_a, APPROVED.expenses.intake_b + ' ' + APPROVED.expenses.intake_c, APPROVED.expenses.intake_d].join('\n\n'),
+  de: `Danke! Noch kurz zu den Arbeitsausgaben. Ich frage alles auf einmal, damit du nur einmal antworten musst.
+
+Wofür hast du beruflich Geld ausgegeben? Zum Beispiel Handy oder Internet, Auto oder gefahrene Kilometer, Fahrrad, Roller oder Mietwagen, Werkzeug, Uniform oder Schutzkleidung, Kurse, Lizenzen, Registrierungen oder Gewerkschaftsbeiträge, oder Arbeiten von zu Hause. Schreib einfach, was zutrifft. "Nichts" ist auch eine gute Antwort.
+
+Falls du ein Auto genutzt hast oder Tankbelege hast: Waren das Fahrten von zu Hause zur Arbeit, oder zwischen Arbeitsorten oder zu einem anderen Job während der Arbeitszeit? Fahrten von zu Hause zur Arbeit und private Fahrten, zum Beispiel in der Mittagspause, können wir nicht aufnehmen. Fahrten zwischen Arbeitsorten während der Arbeitszeit können möglicherweise aufgenommen werden. Wenn es Fahrten zwischen Arbeitsorten waren, schick uns bitte ein Fahrtenbuch für bis zu 5.000 km mit Datum, von, nach, Zweck und Kilometern (ein Screenshot deiner Notizen-App reicht). Wir nutzen die Cent-pro-Kilometer-Methode: 88 Cent pro km, bis zu 5.000 km. Schick uns außerdem das Kennzeichen (Rego) des Autos, wann du es gekauft hast, was es gekostet hat sowie Marke und Modell, und sag uns, ob es dir gehört oder gemietet war. Bei einem Mietwagen schick die Mietrechnungen und das Fahrtenbuch. Bei Fahrdiensten oder Lieferdiensten schick den Jahresbericht der App mit den Kilometern und deine Einnahmenübersicht.
+
+Arbeiten von zu Hause: ein Tagebuch oder Stundenzettel mit Datum und Stunden.
+
+Handy und Internet: die Rechnungen und ungefähr, wie viel Prozent du davon beruflich nutzt.
+
+Kleidung: schreib uns genau, was du gekauft hast. Bei Alltagskleidung, zum Beispiel Jeans, Turnschuhen oder schwarzen Hosen, sag uns bitte, ob sie bei der Arbeit vorgeschrieben waren oder für die Arbeit genutzt wurden. Was angesetzt werden kann, wird in der Prüfung bestätigt, bevor etwas eingereicht wird.
+
+Werkzeug, Kurse und Lizenzen: ein Beleg oder ein Kontoauszug mit markierter Zahlung.
+
+Keine Belege? Eine Liste der Posten reicht bis zu $300. Schreib uns einfach, um welche Posten es sich handelt.`,
+  ja: `ありがとうございます！仕事に関わる経費について、ひとつだけ確認させてください。一度で済むよう、まとめてお聞きします。
+
+仕事のためにどんなものにお金を使いましたか？たとえば、携帯電話やインターネット、車や走行距離、自転車・スクーター・レンタカー、工具、制服や保護具、講習・免許・登録料・組合費、在宅勤務などです。当てはまるものだけ教えてください。「なし」でも大丈夫です。
+
+車を使った場合や、ガソリンのレシートがある場合は、自宅から職場への移動でしたか？それとも、勤務時間中の現場間の移動や、別の仕事先への移動でしたか？自宅から職場への移動や、昼食の買い出しなどの私用の移動は含められません。勤務時間中の現場間の移動は、含められる可能性があります。現場間の移動の場合は、5,000kmまでの走行記録(ログブック)を、日付、出発地、目的地、目的、距離(km)を書いてお送りください(メモアプリのスクリーンショットで大丈夫です)。1キロあたりのセントで計算する方法を使います：1kmあたり88セント、5,000kmまでです。あわせて、車両登録番号(ナンバープレート)、購入時期、購入金額、メーカーと車種、所有かレンタルかも教えてください。レンタカーの場合は、レンタルの請求書と走行記録をお願いします。配車や配達の仕事の場合は、アプリの年間走行距離レポートと収入の概要をお送りください。
+
+在宅勤務：日付と時間がわかる日誌またはタイムシートをお願いします。
+
+携帯電話とインターネット：請求書と、仕事で使う割合のだいたいの目安を教えてください。
+
+衣類：購入したものを具体的に教えてください。ジーンズ、スニーカー、黒いパンツなどの普段着の場合は、仕事で着用が義務付けられていたか、仕事の目的で使用したかを教えてください。何を申告できるかは、提出前の確認で判断します。
+
+工具、講習、免許：領収書、または該当の支払いに印をつけた銀行明細をお願いします。
+
+領収書がない場合は、品目のリストで大丈夫です(合計$300まで)。どんな品目だったかを教えてください。`,
+};
+
+/** Said once, after the expenses are collected. */
+export const EXPENSES_DONE_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: APPROVED.expenses.done,
+  de: 'Danke, ich habe alles, was wir zu den Ausgaben brauchen.',
+  ja: 'ありがとうございます、経費について必要なものは揃いました。',
+};
+
+// ============================================================
+// THE TWO APPROVED AGENT PHRASES, PER LANGUAGE (Jo, 30 Oct).
+// "Steuerberater" (German) and 税理士 (Japanese) are protected titles and must
+// never be used for our agent. German says "registrierten australischen Tax
+// Agent", Japanese says "オーストラリアの登録タックスエージェント". These are the
+// only agent wordings a German or Japanese customer is shown. The Policy Guard
+// refuses the protected titles (PROTECTED_AGENT_TITLE).
+// ============================================================
+export const AGENT_PHRASES = {
+  /** 'operates under the supervision of a registered tax agent' */
+  supervision: {
+    en: 'operates under the supervision of a registered tax agent',
+    de: 'unter der Aufsicht eines registrierten australischen Tax Agent',
+    ja: 'オーストラリアの登録タックスエージェントの監督のもとで運営',
+  },
+  /** 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO' */
+  signedOff: {
+    en: 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO',
+    de: 'Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird',
+    ja: 'ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します',
+  },
+} as const;

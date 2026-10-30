@@ -16,7 +16,7 @@ import { join } from 'path';
 import { withPaymentReceivedIfNoForm } from '@/lib/will/service';
 import { paymentReceivedMessage } from '@/lib/will/i18n';
 
-const FORM = 'https://workingholidaytax.com.au/tax-form';
+const FORM = 'https://workingholidaytax.com.au/start';
 
 describe('withPaymentReceivedIfNoForm', () => {
   it('appends the approved payment received body when the reply has no form link', () => {

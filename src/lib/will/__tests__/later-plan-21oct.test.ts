@@ -46,7 +46,7 @@ describe('the reply', () => {
     const out = await runEngine(input('Okay thank you! Will complete this after work', 'FORM_PENDING'));
     expect(decideMock).not.toHaveBeenCalled();
     expect(out.kind).toBe('queued');
-    expect(out.replyText).toBe("No worries 😊 Here's the link whenever you're ready: https://workingholidaytax.com.au/tax-form");
+    expect(out.replyText).toBe("No worries 😊 Here's the link whenever you're ready: https://workingholidaytax.com.au/start");
   });
   it('waiting on the payment: the screenshot line', () => {
     expect(laterPlanReply('PRICE_SENT', 'en')).toMatch(/screenshot/);

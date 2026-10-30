@@ -451,7 +451,7 @@ These are the dates most students need to know:
 - **Around 14 July:** most employers finalise their payroll data with the ATO.
 - **31 October:** the usual deadline to lodge your return if you do it yourself.
 
-The ATO says that if you use a registered tax agent, you need to contact them before 31 October, and you may then get a later due date. For the 2025-26 year, 31 October 2026 is a Saturday, so the ATO says people lodging themselves have until 11:59 pm local time on Monday 2 November 2026.
+The ATO says that if you use a registered tax agent, you need to contact them before 31 October, and you may then get a later due date. For the 2025-26 year, the ATO says people lodging themselves have until 11:59 pm local time on 31 October 2026.
 
 ## Your course and the tax year do not match
 

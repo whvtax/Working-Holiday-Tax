@@ -73,7 +73,7 @@ export default function PartnerDetailClient({ partnerId }: { partnerId: string }
 
   function copyLink() {
     if (!partner) return
-    const link = `https://workingholidaytax.com.au/tax-form?ref=${partner.code}`
+    const link = `https://workingholidaytax.com.au/start?ref=${partner.code}`
     navigator.clipboard.writeText(link).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500) })
   }
 

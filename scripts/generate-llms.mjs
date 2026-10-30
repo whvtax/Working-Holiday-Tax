@@ -192,7 +192,7 @@ const SPECIALISM = 'Working holiday tax is the only thing we do.'
 // ── German and Japanese wording, verbatim from the live localised pages ──────
 const DE_INTRO = 'Wir kümmern uns um TFN, Steuererklärung, Super-Auszahlung und ABN für Working Holiday Maker in Australien.'
 const DE_SPECIALISM = 'Working-Holiday-Steuer ist das Einzige, was wir machen.'
-const DE_SUPERVISION = 'Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.'
+const DE_SUPERVISION = 'Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.'
 const DE_GUARANTEE = 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.'
 const DE_PAGES = [
   ['Startseite', '/de'],
@@ -208,7 +208,7 @@ const DE_PAGES = [
 ]
 const JA_INTRO = 'オーストラリアでワーキングホリデーをする方のTFN申請、タックスリターン、スーパー受取、ABN登録をすべて代行します。'
 const JA_SPECIALISM = 'ワーキングホリデーの税金だけを専門にしています。'
-const JA_SUPERVISION = '申告書は、ATOへ提出する前に登録税理士が確認して承認します。'
+const JA_SUPERVISION = '申告書は、ATOへ提出する前に登録タックスエージェントが確認し署名します。'
 const JA_GUARANTEE = '当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。'
 const JA_PAGES = [
   ['トップページ', '/ja'],
@@ -238,7 +238,7 @@ const KEY_FACTS = [
   'Third working holiday visa: requires six months (179 days) of specified regional work. Source: Department of Home Affairs',
   'Working holiday visa application fee: $670, up from $495. Source: Department of Home Affairs',
   'UK passport holders applying from 1 July 2024: eligible up to and including age 35, and up to three Working Holiday visas with no specified work requirement. From 1 July 2026 the same age-35 eligibility was extended to Cyprus, Finland, Germany and South Korea. Source: Department of Home Affairs',
-  'Addy v Commissioner of Taxation [2021] HCA 34: the ATO applies the decision to working holiday makers who were Australian residents for tax purposes and are nationals of the United Kingdom, Chile, Finland, Germany, Japan, Norway or Turkey. Source: High Court of Australia, ATO Decision Impact Statement',
+  'Addy v Commissioner of Taxation [2021] HCA 34: a High Court ruling that may change which rates apply to some working holiday makers. Whether it applies depends on the passport and on how the year looked, and is part of the review of each return. Source: High Court of Australia',
   'Reciprocal Health Care Agreement countries, which generally have Medicare access and so generally no levy exemption: United Kingdom, Ireland, Italy, Malta, Netherlands, Belgium, Finland, Norway, Sweden, Slovenia, New Zealand. Germany, Japan and Austria are not on this list. Source: Services Australia',
 ]
 
@@ -264,8 +264,8 @@ const SERVICE_PAGES = [
   { url: '/blog', priority: 0.85, freq: 'weekly', l10n: true, label: 'Guides', line: 'The full guide index, grouped by category.' },
   { url: '/contact', priority: 0.7, freq: 'monthly', l10n: true, label: 'Contact', line: 'How to reach us about a specific situation.' },
   { url: '/about', priority: 0.6, freq: 'monthly', l10n: true, label: 'About', line: 'Why the service exists and how a return is handled from start to lodgement.' },
-  { url: '/uk-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'UK Working Holiday Tax', line: 'Australian tax for UK passport holders: the age-35 and three visa arrangements, why UK citizens are generally not entitled to the Medicare levy exemption, the Addy decision, and the UK and Australian tax year mismatch.' },
-  { url: '/german-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'German Working Holiday Tax', line: 'Australian tax for German passport holders: why Germans are generally not entitled to Medicare and so can claim the levy exemption, the Addy decision, the age-35 change from 1 July 2026, and claiming super from Germany.' },
+  { url: '/uk-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'UK Working Holiday Tax', line: 'Australian tax for UK passport holders: the age-35 and three visa arrangements, why UK citizens are generally not entitled to the Medicare levy exemption, why the Addy ruling may matter, and the UK and Australian tax year mismatch.' },
+  { url: '/german-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'German Working Holiday Tax', line: 'Australian tax for German passport holders: why Germans are generally not entitled to Medicare and so can claim the levy exemption, why the Addy ruling may matter, the age-35 change from 1 July 2026, and claiming super from Germany.' },
 ]
 
 const SOURCES = [
@@ -273,7 +273,7 @@ const SOURCES = [
   'Minimum wages, casual loading and modern awards: Fair Work Commission and Fair Work Ombudsman',
   'Medicare entitlement, the Medicare Entitlement Statement and Reciprocal Health Care Agreements: Services Australia',
   'Visa conditions, subclass 417 and 462 eligibility and specified work: Department of Home Affairs',
-  'Resident tax treatment for nationals of non-discrimination treaty countries: Addy v Commissioner of Taxation [2021] HCA 34',
+  'How a court ruling may change the rates for some passports: Addy v Commissioner of Taxation [2021] HCA 34',
 ]
 
 const NOT_COVERED = [

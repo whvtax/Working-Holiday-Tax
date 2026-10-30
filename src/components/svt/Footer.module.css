@@ -13,6 +13,7 @@
 .ask { color: var(--svt-ink); font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
 .ask:hover { text-decoration: underline; }
 .seal img { display: block; width: 104px; height: auto; margin-top: 10px; }
+.supervision { font-size: 12px; line-height: 1.5; color: var(--svt-ink-2); margin-top: 10px; max-width: 34ch; }
 .head { font-family: var(--svt-font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; }
 .col { list-style: none; display: flex; flex-direction: column; }
 .col a { color: var(--svt-ink-2); font-size: 14px; display: inline-flex; min-height: 36px; align-items: center; }

@@ -12,7 +12,11 @@
 // ============================================================
 import type { Brand } from '@/lib/brand';
 import { currentBrand, svtPhoneNumberId } from './brand-context';
-import { brandLeaks, rebrandText, svtTemplateName } from './brand-voice';
+import { brandLeaks, rebrandText, scrubCustomerText, svtTemplateName } from './brand-voice';
+import { resolveLanguage, englishToForeignReason } from './language-30oct';
+import { recordSendFailure, classifySendError, noLanguageVariantError } from './send-failure-30oct';
+import { repairBrandUrls } from './text-normalize';
+import { systemMessageKind, sameKindAlreadyOut } from './system-message-guard';
 import { getStore, CustomerRow, Store } from './store';
 import { reopenTarget } from './state-machine';
 
@@ -460,7 +464,16 @@ export async function deliverOut(
   // WHT rebrandText returns the body unchanged. What is recorded in the CRM is
   // exactly what the customer receives.
   const brand: Brand = customer.brand === 'svt' ? 'svt' : 'wht';
-  body = rebrandText(body, brand);
+  // 30 Oct: our own links are repaired on the way out, whoever wrote them
+  // (a draft or the team's text with "workingholidaytax.com/..." without ".au",
+  // or a retired form slug), see repairBrandUrls.
+  body = rebrandText(repairBrandUrls(body), brand);
+  // 30 Oct: the last line of defence on EVERY customer text, whatever wrote
+  // it: the retired payee name becomes "The Accounting Academy" and no dash of
+  // any kind survives. Template parameters are customer text too (the
+  // winback hook is a stored model paragraph).
+  body = scrubCustomerText(body);
+  if (template) template = { ...template, params: template.params.map((p) => scrubCustomerText(p)) };
 
   // Last-resort opt-out guard. Every caller is supposed to check `optedOut`
   // before getting here, and one of them (handlePaymentProofMedia) did not.
@@ -493,6 +506,30 @@ export async function deliverOut(
     return { ok: true, error: 'already sent, skipped' };
   }
 
+  // 30 Oct: one confirmation per payment and per questionnaire, and the
+  // questionnaire line only when the form is in the system. "Payment received"
+  // went twice one minute apart, "we've received your questionnaire" went twice
+  // and also when no form had been submitted (Ronan lost eleven days). Applies
+  // to every AI-authored message whichever door it came through; a person can
+  // still send either on purpose.
+  if (author === 'AI') {
+    const kind = systemMessageKind(body, meta);
+    if (kind) {
+      const thread = await store.listMessages(customer.id);
+      if (sameKindAlreadyOut(thread, kind)) {
+        await store.audit('channel', 'send_blocked_same_kind_in_window', { customerId: customer.id, kind }).catch(() => {});
+        return { ok: true, error: 'already sent, skipped' };
+      }
+      if (kind === 'questionnaire_received') {
+        const fresh = typeof store.getCustomerById === 'function' ? await store.getCustomerById(customer.id).catch(() => null) : null;
+        if (fresh && !fresh.formComplete) {
+          await store.audit('channel', 'questionnaire_confirmation_blocked_no_form', { customerId: customer.id }).catch(() => {});
+          return { ok: true, error: 'no form submission in the system, skipped' };
+        }
+      }
+    }
+  }
+
   // REL-03 outbox: record the intended message as QUEUED FIRST, so if the send
   // succeeds but a later write throws, the fact that we messaged the customer is
   // already durable (never a silent double-send on retry). Then send, then
@@ -501,17 +538,35 @@ export async function deliverOut(
     customerId: customer.id, direction: 'OUT', author, status: 'QUEUED', body,
     meta: { ...(meta ?? {}) },
   });
-  // Inside the 24h window, a template that is missing in the customer's
-  // language must not turn into the ENGLISH template: the localized body we
-  // hold is sent as free text instead (fallback below). Outside the window the
-  // English template stays, because free text cannot arrive there at all.
-  const lastIn = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
-  const inWindow = lastIn > 0 && Date.now() - lastIn <= WINDOW_MS;
-  const templateLang = template?.lang ?? customer.lang;
-  const keepLanguage = !!template?.fallbackToText && inWindow && normalizeTemplateLang(templateLang) !== TEMPLATE_LANG;
-  let res = template?.name
-    ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, templateLang, keepLanguage ? { englishFallback: false, brand } : { brand })
-    : await sendWhatsAppText(customer.waId, body, brand);
+  // A template that is missing in the customer's language never turns into the
+  // ENGLISH template (30 Oct, Jo; before that only inside the 24h window): the
+  // localized body is sent as free text when the window allows it, and nothing
+  // is sent otherwise (see below).
+  // 30 Oct (about 50 messages, 25+ customers): the language is what the
+  // customer writes in NOW (their last few own messages, the form's English
+  // auto text ignored), not the possibly stale stored value the caller built
+  // the body from. And an English template or an English body NEVER goes to a
+  // customer who writes in another language: outside the window that means
+  // nothing is sent and the failure becomes one task for Jo; inside it the
+  // localized body goes as text only when it really is localized.
+  let writes: { lang: string | null; unsupported: 'zh' | 'vi' | null } = { lang: customer.lang, unsupported: null };
+  if (template?.name) {
+    try {
+      const r = resolveLanguage(await store.listMessages(customer.id), customer.lang);
+      writes = { lang: r.lang ?? customer.lang, unsupported: r.unsupported };
+    } catch { /* keep the stored language */ }
+  }
+  const templateLang = template?.name ? (writes.lang ?? template.lang ?? customer.lang) : (template?.lang ?? customer.lang);
+  const notEnglish = !!template?.name && (normalizeTemplateLang(templateLang) !== TEMPLATE_LANG || !!writes.unsupported);
+  const keepLanguage = notEnglish;
+  const languageRefusal = template?.name && writes.unsupported
+    ? englishToForeignReason(templateLang, writes.unsupported, body)
+    : null;
+  let res: { ok: boolean; error?: string; retryable?: boolean; providerId?: string; skipped?: boolean } = languageRefusal
+    ? { ok: false, error: noLanguageVariantError(languageRefusal) }
+    : template?.name
+      ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, templateLang, keepLanguage ? { englishFallback: false, brand } : { brand })
+      : await sendWhatsAppText(customer.waId, body, brand);
   if (!res.ok && template?.fallbackToText && /does not exist|not exist|132001|template/i.test(res.error ?? '')) {
     // Only fall back to free text when free text can actually arrive. (audit,
     // 5 Sep) Meta accepts a free text to a customer outside the 24h window
@@ -536,6 +591,14 @@ export async function deliverOut(
         ok: false,
         error: `template "${template.name}" is not in WhatsApp Manager and the customer last wrote ${days == null ? 'more than a day ago' : `${days} day${days === 1 ? '' : 's'} ago`}, so free text cannot reach them`,
       };
+    } else if (englishToForeignReason(templateLang, writes.unsupported, body)) {
+      // Inside the window, but the only text we hold is English and the
+      // customer does not write English: nothing is sent (30 Oct).
+      const why = englishToForeignReason(templateLang, writes.unsupported, body) as string;
+      await store.audit('channel', 'template_missing_english_text_withheld', {
+        customerId: customer.id, template: template.name, lang: templateLang, why,
+      }).catch(() => { /* diagnostics */ });
+      res = { ok: false, error: noLanguageVariantError(why) };
     } else {
       await store.audit('channel', 'template_missing_sent_as_text', {
         customerId: customer.id, template: template.name, error: res.error ?? null,
@@ -622,9 +685,23 @@ export async function deliverOut(
   // the scheduler without this id — without it, "reschedules" was nothing.
   if (res.retryable) {
     await store.audit('channel', 'send_throttled', { customerId: customer.id, error: res.error });
+    // 131042 (unsettled WhatsApp bill) is recorded per customer too; the one
+    // account level alert lives in the webhook route.
+    if (classifySendError(res.error).kind === 'billing') {
+      await recordSendFailure(store, { customerId: customer.id, customerName: customer.name ?? customer.waId, messageId: rec.id, error: res.error, body, templateName: template?.name ?? null, via: 'send' }).catch(() => undefined);
+    }
     return { ok: false, error: res.error, retryable: true, messageId: rec.id };
   }
   await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });
+  // 30 Oct: restricted country (130497), outside the window, no template in
+  // their language, or English withheld: ONE urgent task per customer, folded
+  // into the one they already have, instead of one card per failed message.
+  const failure = classifySendError(res.error);
+  if (failure.kind === 'restricted_country' || failure.kind === 'no_language_variant' || (failure.kind === 'outside_window' && /131047/.test(res.error ?? ''))
+    || (notEnglish && (failure.kind === 'no_template' || failure.kind === 'outside_window'))) {
+    await recordSendFailure(store, { customerId: customer.id, customerName: customer.name ?? customer.waId, messageId: rec.id, error: res.error, body, templateName: template?.name ?? null, via: 'send' });
+    return { ok: false, error: res.error };
+  }
   await store.addTask({
     customerId: customer.id, customerName: customer.name ?? customer.waId,
     reason: typeof opts?.onFailure?.reason === 'function'

@@ -5,7 +5,7 @@ export const LONG_VI_05: Readonly<Record<string, LongText>> = {
     title: 'Làm nông trại khi có visa du học: lương, piece rate và thuế',
     description: 'Đi hái hoặc đóng gói trái cây trong kỳ nghỉ? Quyền lợi của bạn ở nông trại, cách trả theo sản phẩm phải đúng luật, nông trại được trừ gì từ lương, và thu nhập này khai thuế ra sao.',
     answer: 'Ở nông trại, bạn có cùng quyền lợi như mọi nhân viên khác, gồm lương tối thiểu, phiếu lương và super. Theo Horticulture Award, mức trả theo sản phẩm (piece rate) phải được thỏa thuận bằng văn bản trước khi bạn bắt đầu, và mỗi ngày bạn được bảo đảm ít nhất mức lương tối thiểu theo giờ.',
-    body: `Nhiều du học sinh dành một phần kỳ nghỉ hè để làm ở nông trại. Việc hái, đóng gói hay tỉa cành dễ tìm trong mùa nghỉ, và có thể được trả khá. Nhưng làm nông trại cũng là lĩnh vực mà người lao động hay bị trả thiếu nhất. Bài này giải thích những quy định bảo vệ bạn và cách khoản tiền này được khai trong hồ sơ thuế. Mọi câu hỏi về số giờ visa cho phép bạn làm, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
+    body: `Nhiều du học sinh dành một phần kỳ nghỉ hè để làm ở nông trại. Việc hái, đóng gói hay tỉa cành dễ tìm trong mùa nghỉ, và có thể được trả khá. Nhưng làm nông trại cũng là lĩnh vực mà người lao động hay bị trả thiếu nhất. Bài này giải thích những quy định bảo vệ bạn và cách khoản tiền này được khai trong hồ sơ thuế. Về số giờ visa cho phép bạn làm, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
 
 ## Bạn có cùng quyền lợi như người lao động Úc không?
 
@@ -312,7 +312,7 @@ White card là tên gọi thông dụng của general construction induction car
 
 Service NSW cho biết bạn cần white card nếu bạn được thuê để làm việc xây dựng, hoặc nếu công việc của bạn đòi hỏi đi vào khu vực xây dựng đang hoạt động. Những việc thường gặp ở du học sinh gồm phụ hồ, dọn dẹp công trường, chuyển vật liệu, và phụ giúp thợ.
 
-Bạn không cần thẻ cho phần lớn công việc của du học sinh, như nhà hàng - khách sạn, bán lẻ, dọn dẹp văn phòng hay giao hàng. Nếu lời mời làm việc có nhắc đến công trường, hãy hỏi xem bạn có cần white card không trước ca làm đầu tiên.
+Bạn không cần thẻ cho phần lớn công việc của du học sinh, như nhà hàng và khách sạn, bán lẻ, dọn dẹp văn phòng hay giao hàng. Nếu lời mời làm việc có nhắc đến công trường, hãy hỏi xem bạn có cần white card không trước ca làm đầu tiên.
 
 ## Lấy thẻ bằng cách nào?
 
@@ -368,7 +368,7 @@ Nếu bạn dùng món đồ cho cả việc riêng, bạn chỉ được khấu
     title: 'Chứng chỉ RSA cho du học sinh: những điều cần biết',
     description: 'Muốn làm ở quán bar, nhà hàng hay cửa hàng rượu khi đi học? Ai cần RSA, vì sao quy định của bang lại quan trọng, và vì sao ATO nói RSA đầu tiên nhìn chung không được khấu trừ.',
     answer: 'Bạn cần chứng chỉ Responsible Service of Alcohol (RSA, phục vụ rượu bia có trách nhiệm) để phục vụ hoặc bán rượu bia ở Úc, và quy định do từng bang đặt ra. ATO cho biết bạn không được khấu trừ chi phí cho RSA đầu tiên, nhưng được khấu trừ chi phí gia hạn trong khi bạn làm công việc đó.',
-    body: `Nhà hàng - khách sạn là một trong những ngành du học sinh làm nhiều nhất. Quán cà phê, nhà hàng, quán pub và địa điểm tổ chức sự kiện thường tuyển du học sinh cho ca tối và cuối tuần. Nếu công việc có liên quan đến rượu bia, trước hết bạn cần có chứng chỉ RSA. Bài này giải thích ai cần chứng chỉ này, vì sao bang nơi bạn làm lại quan trọng, và chi phí được tính thế nào trong hồ sơ thuế. Mọi câu hỏi về giờ làm, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
+    body: `Ngành nhà hàng và khách sạn là một trong những ngành du học sinh làm nhiều nhất. Quán cà phê, nhà hàng, quán pub và địa điểm tổ chức sự kiện thường tuyển du học sinh cho ca tối và cuối tuần. Nếu công việc có liên quan đến rượu bia, trước hết bạn cần có chứng chỉ RSA. Bài này giải thích ai cần chứng chỉ này, vì sao bang nơi bạn làm lại quan trọng, và chi phí được tính thế nào trong hồ sơ thuế. Về giờ làm, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
 
 ## RSA là gì?
 
@@ -405,15 +405,15 @@ Nếu chủ lao động trả tiền khóa học hoặc hoàn tiền cho bạn, 
 
 ## RSA có được khấu trừ thuế không?
 
-ATO nói rõ điều này trong hướng dẫn cho người làm ngành nhà hàng - khách sạn. Bạn không được khấu trừ chi phí để có giấy phép hành nghề, giấy phép quản lý, thẻ hay chứng chỉ đầu tiên nhằm có được việc làm, và ATO lấy chứng chỉ RSA làm ví dụ. Chi phí này giúp bạn có việc, nên không được coi là chi phí để tạo ra thu nhập.
+ATO nói rõ điều này trong hướng dẫn cho người làm ngành nhà hàng và khách sạn. Bạn không được khấu trừ chi phí để có giấy phép hành nghề, giấy phép quản lý, thẻ hay chứng chỉ đầu tiên nhằm có được việc làm, và ATO lấy chứng chỉ RSA làm ví dụ. Chi phí này giúp bạn có việc, nên không được coi là chi phí để tạo ra thu nhập.
 
-Bạn được khấu trừ các chi phí phát sinh khi gia hạn giấy phép, giấy phép quản lý, thẻ hay chứng chỉ trong khi bạn đang làm công việc đó. Vì vậy, nếu bang của bạn yêu cầu học lại khóa cập nhật và đến hạn đó bạn vẫn đang làm trong ngành nhà hàng - khách sạn, chi phí gia hạn có thể được khấu trừ. Hãy giữ hóa đơn.
+Bạn được khấu trừ các chi phí phát sinh khi gia hạn giấy phép, giấy phép quản lý, thẻ hay chứng chỉ trong khi bạn đang làm công việc đó. Vì vậy, nếu bang của bạn yêu cầu học lại khóa cập nhật và đến hạn đó bạn vẫn đang làm trong ngành nhà hàng và khách sạn, chi phí gia hạn có thể được khấu trừ. Hãy giữ hóa đơn.
 
 ## Còn việc học của bạn thì sao?
 
-Câu hỏi này rất hay gặp, vì du học sinh vốn đã chi nhiều cho giáo dục. Có bạn hỏi liệu có thể khấu trừ chi phí học đại học như chi phí tự học nâng cao (self-education) vì mình đang làm ở quán bar không. ATO cho biết chi phí tự học nâng cao chỉ được khấu trừ khi có mối liên hệ đủ chặt chẽ với công việc hiện tại của bạn. Một khóa đại học không liên quan đến công việc nhà hàng - khách sạn của bạn, ví dụ ngành kỹ thuật, nhìn chung không đáp ứng điều kiện này. ATO cũng cho biết chi phí tự học nâng cao không được khấu trừ nếu nó giúp bạn có công việc mới hoặc chuyển việc. Vì vậy học phí của bạn thường không nằm trong các khoản khấu trừ từ công việc nhà hàng - khách sạn.
+Câu hỏi này rất hay gặp, vì du học sinh vốn đã chi nhiều cho giáo dục. Có bạn hỏi liệu có thể khấu trừ chi phí học đại học như chi phí tự học nâng cao (self-education) vì mình đang làm ở quán bar không. ATO cho biết chi phí tự học nâng cao chỉ được khấu trừ khi có mối liên hệ đủ chặt chẽ với công việc hiện tại của bạn. Một khóa đại học không liên quan đến công việc nhà hàng và khách sạn của bạn, ví dụ ngành kỹ thuật, nhìn chung không đáp ứng điều kiện này. ATO cũng cho biết chi phí tự học nâng cao không được khấu trừ nếu nó giúp bạn có công việc mới hoặc chuyển việc. Vì vậy học phí của bạn thường không nằm trong các khoản khấu trừ từ công việc nhà hàng và khách sạn.
 
-## Những chi phí khác trong ngành nhà hàng - khách sạn
+## Những chi phí khác trong ngành nhà hàng và khách sạn
 
 - **Đồng phục:** đồng phục bắt buộc có logo của cơ sở có thể được khấu trừ. Quần đen trơn và áo sơ mi trắng là quần áo thông thường và không được khấu trừ, kể cả khi cơ sở yêu cầu bạn phải mặc.
 - **Giặt giũ:** tiền giặt đồng phục thuộc diện được khấu trừ có thể được kê khai, $1 cho mỗi mẻ chỉ có đồ làm việc, hoặc 50 cent nếu giặt chung với đồ khác.
@@ -427,7 +427,7 @@ Câu hỏi này rất hay gặp, vì du học sinh vốn đã chi nhiều cho gi
 - Giữ hóa đơn của mọi lần gia hạn bạn tự trả tiền.
 - Giữ hóa đơn đồng phục có logo, và ghi lại bạn giặt bao nhiêu lần.
 
-Đến mùa khai thuế, bạn có thể nhắn cho Student Visa Tax qua WhatsApp, và chúng tôi sẽ kiểm tra những gì bạn được và không được khấu trừ từ công việc nhà hàng - khách sạn.`,
+Đến mùa khai thuế, bạn có thể nhắn cho Student Visa Tax qua WhatsApp, và chúng tôi sẽ kiểm tra những gì bạn được và không được khấu trừ từ công việc nhà hàng và khách sạn.`,
     faq: [
       { q: 'Tôi có được khấu trừ thuế khóa RSA đầu tiên không?', a: 'Không. ATO cho biết bạn không được khấu trừ chi phí để có giấy phép hay chứng chỉ đầu tiên nhằm có được việc làm, và ATO lấy RSA làm ví dụ. Bạn được khấu trừ chi phí gia hạn trong khi đang làm công việc đó.' },
       { q: 'RSA của tôi có dùng được ở mọi bang không?', a: 'Không phải lúc nào cũng được. Quy định về RSA do từng bang và vùng lãnh thổ đặt ra. Hãy hỏi cơ quan quản lý rượu bia ở bang nơi bạn định làm.' },
@@ -436,13 +436,13 @@ Câu hỏi này rất hay gặp, vì du học sinh vốn đã chi nhiều cho gi
   },
   'working-with-children-check-international-students': {
     title: 'Giấy kiểm tra làm việc với trẻ em cho du học sinh',
-    description: 'Làm gia sư, dạy bơi, huấn luyện thể thao hay trông trẻ khi đi học? Vì sao bạn cần working with children check, quy định mỗi bang khác nhau ra sao, và khi nào ATO cho khấu trừ.',
-    answer: 'Bạn cần working with children check (WWCC, giấy kiểm tra làm việc với trẻ em) cho phần lớn công việc có lương hoặc tình nguyện với trẻ em, và mỗi bang có chương trình riêng. ATO cho biết nhìn chung bạn không được khấu trừ chi phí cho lần kiểm tra đầu tiên, nhưng được khấu trừ nếu bạn cần nó để giữ công việc hiện tại hoặc khi gia hạn.',
-    body: `Nhiều du học sinh làm việc với trẻ em. Làm gia sư, dạy bơi, huấn luyện thể thao, chăm sóc trẻ sau giờ học và trông trẻ là những lựa chọn phổ biến, vì giờ làm thường dễ sắp xếp quanh lịch học. Trước khi bắt đầu, bạn thường sẽ cần một working with children check. Bài này giải thích đó là gì, áp dụng thế nào cho du học sinh, và khi nào chi phí được khấu trừ thuế. Mọi câu hỏi về số giờ bạn được làm, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
+    description: 'Làm gia sư, dạy bơi, huấn luyện thể thao hay trông trẻ khi đi học? Vì sao bạn cần giấy kiểm tra làm việc với trẻ em (working with children check), quy định mỗi bang khác nhau ra sao, và khi nào ATO cho khấu trừ.',
+    answer: 'Bạn cần giấy kiểm tra làm việc với trẻ em (working with children check, WWCC) cho phần lớn công việc có lương hoặc tình nguyện với trẻ em, và mỗi bang có chương trình riêng. ATO cho biết nhìn chung bạn không được khấu trừ chi phí cho lần kiểm tra đầu tiên, nhưng được khấu trừ nếu bạn cần nó để giữ công việc hiện tại hoặc khi gia hạn.',
+    body: `Nhiều du học sinh làm việc với trẻ em. Làm gia sư, dạy bơi, huấn luyện thể thao, chăm sóc trẻ sau giờ học và trông trẻ là những lựa chọn phổ biến, vì giờ làm thường dễ sắp xếp quanh lịch học. Trước khi bắt đầu, bạn thường sẽ cần giấy kiểm tra làm việc với trẻ em (working with children check). Bài này giải thích đó là gì, áp dụng thế nào cho du học sinh, và khi nào chi phí được khấu trừ thuế. Về số giờ bạn được làm, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
 
-## Working with children check là gì?
+## Giấy kiểm tra làm việc với trẻ em (working with children check) là gì?
 
-Working with children check là một đợt sàng lọc do chính quyền bang hoặc vùng lãnh thổ thực hiện. Họ xem xét hồ sơ của bạn để quyết định bạn có an toàn khi làm việc với trẻ em hay không. Đây không giống giấy lý lịch tư pháp ở nước bạn.
+Giấy kiểm tra làm việc với trẻ em (working with children check) là một đợt sàng lọc do chính quyền bang hoặc vùng lãnh thổ thực hiện. Họ xem xét hồ sơ của bạn để quyết định bạn có an toàn khi làm việc với trẻ em hay không. Đây không giống giấy lý lịch tư pháp ở nước bạn.
 
 Ở phần lớn các bang, giấy kiểm tra của bạn tiếp tục được theo dõi sau khi được cấp. Nếu có thông tin mới, giấy có thể bị hủy. Đây là một lý do chủ lao động yêu cầu giấy kiểm tra ở Úc chứ không chỉ giấy lý lịch tư pháp ở nước ngoài.
 
@@ -480,7 +480,7 @@ Hãy giữ bản sao biên nhận nộp đơn, và số trên thẻ khi thẻ v�
 
 ## Giấy kiểm tra có được khấu trừ thuế không?
 
-Đây là chỗ nhiều du học sinh hay nhầm. ATO có quy định riêng cho working with children check.
+Đây là chỗ nhiều du học sinh hay nhầm. ATO có quy định riêng cho giấy kiểm tra làm việc với trẻ em.
 
 Bạn **được** khấu trừ chi phí nếu:
 
@@ -515,7 +515,7 @@ Nếu bạn làm việc với trẻ em và còn có những công việc khác, 
     title: 'Lương ngày lễ cho du học sinh ở Úc',
     description: 'Đi làm vào ngày Giáng sinh hay Anzac Day? Những ngày lễ nào áp dụng, khi nào người làm casual được trả lương, khi nào bạn được từ chối ca làm, và lương ngày lễ bị tính thuế ra sao.',
     answer: 'Nếu bạn đi làm vào ngày lễ, bạn có thể được hưởng lương phụ trội (penalty rate) theo award hoặc thỏa thuận lao động của mình. Người làm casual không được trả lương cho ngày lễ mà họ không làm, và bạn có thể từ chối yêu cầu đi làm nếu có lý do hợp lý.',
-    body: `Ngày lễ là một trong những ngày đông khách nhất của quán cà phê, nhà hàng, cửa hàng và khách sạn. Nhiều du học sinh ở lại Úc trong kỳ nghỉ và nhận thêm ca làm. Bài này giải thích những ngày nào là ngày lễ, lương được tính thế nào vào những ngày đó, và khoản tiền thêm được khai thuế ra sao. Mọi câu hỏi về số giờ visa cho phép bạn làm, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
+    body: `Ngày lễ là một trong những ngày đông khách nhất của quán cà phê, nhà hàng, cửa hàng và khách sạn. Nhiều du học sinh ở lại Úc trong kỳ nghỉ và nhận thêm ca làm. Bài này giải thích những ngày nào là ngày lễ, lương được tính thế nào vào những ngày đó, và khoản tiền thêm được khai thuế ra sao. Về số giờ visa cho phép bạn làm, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
 
 ## Những ngày nào là ngày lễ?
 
@@ -595,10 +595,10 @@ Nếu bạn làm thêm ca trong kỳ nghỉ lễ, đến mùa khai thuế bạn 
     ],
   },
   'shift-cancelled-casual-international-students': {
-    title: 'Ca làm bị hủy hay bị cho về sớm? Quyền lợi của du học sinh làm casual',
+    title: 'Ca làm bị hủy hoặc bị cho về sớm: quyền lợi người làm casual',
     description: 'Đến ca làm rồi bị bảo về? Nhiều award quy định số giờ tối thiểu được trả lương cho người làm casual. Du học sinh được trả những gì, và cần giữ chứng từ gì.',
     answer: 'Thường thì bạn vẫn được trả một phần lương. Nhiều award và thỏa thuận doanh nghiệp quy định số giờ tối thiểu được trả (minimum engagement) cho một ca casual, kể cả khi bạn bị cho về sớm. Số giờ cụ thể tùy vào award của bạn.',
-    body: `Phần lớn du học sinh đi làm là nhân viên casual. Làm casual linh hoạt, rất tiện khi bạn có lịch học và thi. Nhưng điều đó cũng có nghĩa là ca làm của bạn có thể thay đổi vào phút chót. Một chuyện thường gặp là bạn đến ca làm và được bảo hôm nay vắng khách, bạn có thể về. Bài này giải thích khi nào bạn vẫn được trả lương, và cần giữ gì làm bằng chứng. Mọi câu hỏi về số giờ visa cho phép, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
+    body: `Phần lớn du học sinh đi làm là nhân viên casual. Làm casual linh hoạt, rất tiện khi bạn có lịch học và thi. Nhưng điều đó cũng có nghĩa là ca làm của bạn có thể thay đổi vào phút chót. Một chuyện thường gặp là bạn đến ca làm và được bảo hôm nay vắng khách, bạn có thể về. Bài này giải thích khi nào bạn vẫn được trả lương, và cần giữ gì làm bằng chứng. Về số giờ visa cho phép, hãy kiểm tra điều kiện visa của chính bạn với Bộ Nội vụ (Department of Home Affairs).
 
 ## Minimum engagement là gì?
 
@@ -793,7 +793,7 @@ Hãy để mọi hóa đơn chung trong một phong bì trong hành lý xách ta
 
 Bạn mua một chiếc laptop giá $1,650 và một con chuột giá $55 ở cùng một cửa hàng điện tử, trên hai hóa đơn, 20 ngày trước chuyến bay. Tổng cộng là $1,705 ở một doanh nghiệp, nên đáp ứng quy tắc $300.
 
-GST bằng 10% giá trước GST. Vì vậy, GST nằm trong một mức giá đã gồm GST bằng một phần mười một của tổng số. Với $1,705, số đó là $155. Đây là số tiền TRS có thể hoàn lại, nếu đáp ứng mọi quy định khác. Vì hóa đơn laptop trên $1,000, hóa đơn đó phải ghi họ tên đầy đủ của bạn.
+GST bằng 10% giá trước GST. Vì vậy, trong một mức giá đã gồm GST, phần GST bằng một phần mười một của tổng số. Với $1,705, số đó là $155. Đây là số tiền TRS có thể hoàn lại, nếu đáp ứng mọi quy định khác. Vì hóa đơn laptop trên $1,000, hóa đơn đó phải ghi họ tên đầy đủ của bạn.
 
 ## Cách làm thủ tục ở sân bay
 

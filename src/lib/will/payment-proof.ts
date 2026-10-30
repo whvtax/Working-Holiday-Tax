@@ -20,7 +20,8 @@
 
 /** Our two fees, in AUD. A phone consultation ($110) is not a fee for the
  *  return and never confirms a payment screenshot. */
-export const FEES_AUD = [220, 385, 330, 495] as const; // 330/495: with foreign income (Jo, 12 Oct)
+export const FEES_AUD = [220, 385, 330, 495, 440] as const; // 330 / 440: review of an already-lodged return, TFN / ABN (Jo, 30 Oct; 330 is also foreign income TFN)
+// // 330/495: with foreign income (Jo, 12 Oct)
 
 /** How far the amount that lands may sit from the fee and still count. A
  *  transfer from overseas can lose a few dollars to an intermediary, and a
@@ -62,6 +63,7 @@ export function incomeFromAmount(amount: number | null): 'TFN' | 'TFN_ABN' | nul
   if (amount == null || !Number.isFinite(amount)) return null;
   if (Math.abs(amount - 385) <= AMOUNT_TOLERANCE_AUD || Math.abs(amount - 495) <= AMOUNT_TOLERANCE_AUD) return 'TFN_ABN';
   if (Math.abs(amount - 330) <= AMOUNT_TOLERANCE_AUD) return 'TFN';
+  if (Math.abs(amount - 440) <= AMOUNT_TOLERANCE_AUD) return 'TFN_ABN';
   if (Math.abs(amount - 220) <= AMOUNT_TOLERANCE_AUD) return 'TFN';
   return null;
 }
@@ -84,7 +86,7 @@ export function verifyProofDetails(d: ProofDetails): ProofVerification {
   if (d.recipientIsUs === 'no') unverified.push(`the recipient shown is ${d.recipient ?? 'someone else'}, not us`);
   else if (d.recipientIsUs !== 'yes') unverified.push('the recipient is not visible');
   if (d.amountAud == null) unverified.push('no AUD amount is visible');
-  else if (!amountMatchesFee(d.amountAud)) unverified.push(`the amount is ${formatAud(d.amountAud)}, not $220 or $385`);
+  else if (!amountMatchesFee(d.amountAud)) unverified.push(`the amount is ${formatAud(d.amountAud)}, not $220, $330, $385, $440 or $495`);
   if (d.status === 'failed') unverified.push('the transfer shows as failed');
   else if (d.status === 'pending') unverified.push('the transfer shows as pending, not completed');
   // 12 Oct (+44 7854, Wise "Sent 220 AUD, Working Holiday Tax, We paid out
@@ -132,4 +134,38 @@ export function coerceProofDetails(raw: unknown): ProofDetails {
   const recipientIsUs: RecipientMatch = r.recipient_is_us === 'yes' || r.recipient_is_us === 'no' ? r.recipient_is_us : 'unknown';
   const status: ProofStatus = r.status === 'completed' || r.status === 'pending' || r.status === 'failed' ? r.status : 'unknown';
   return { amountAud: amount, recipient, recipientIsUs, status };
+}
+
+// ── A PROOF WE COULD NOT READ IS NOT A PROOF WE MAY DROP (30 Oct) ────────────
+//
+// Niamh, Dewi, Megan and Luca sent their bank receipt as a PDF or another
+// document and nothing came back: the check ran only on pictures, or failed,
+// and the attachment fell through to a "cannot read this" task while the
+// customer was left without the form link (Luca was even told he was done).
+// A customer who has been given the bank details and then sends a DOCUMENT is
+// sending the receipt. When the check could not decide (the file type is not
+// readable, the model was unreachable, the daily budget is spent, the download
+// failed), the payment is taken on trust exactly as a typed "paid" is, the form
+// link goes out, and Jo gets a task to verify. A check that DID read the file
+// and said it is not a payment (a payslip, a statement) is respected.
+
+/** The check could not reach a verdict (as opposed to reading the file and
+ *  saying "this is not a payment"). Reasons are written by claude.ts and the
+ *  service; they are matched at the start so a free-text model reason that
+ *  happens to contain these words is not mistaken for a failure. */
+export function checkWasUndecided(reason: string | null | undefined): boolean {
+  const r = (reason ?? '').trim().toLowerCase();
+  if (!r) return false;
+  return /^(?:no api key|unsupported file type|vision check failed|vision check unreachable|model returned no assessment|daily ai budget|could not download|download failed|lookup failed|media expired|channel not configured|attachment too large|the operation was aborted|fetch failed|network|timeout|aborted)/.test(r);
+}
+
+/** Is this attachment the kind of thing a customer sends as a receipt when it
+ *  is not a photo: a PDF or any document, or a file whose type we cannot see. */
+export function isDocumentLikeProof(media: { kind?: string; mime?: string; filename?: string }): boolean {
+  const kind = (media.kind ?? '').toLowerCase();
+  const mime = (media.mime ?? '').toLowerCase();
+  if (kind === 'document') return true;
+  if (mime === 'application/pdf') return true;
+  if (mime && !mime.startsWith('image/') && !mime.startsWith('audio/') && !mime.startsWith('video/')) return true;
+  return /\.(pdf|docx?|xlsx?|html?|txt|rtf|odt|pages)$/i.test(media.filename ?? '');
 }

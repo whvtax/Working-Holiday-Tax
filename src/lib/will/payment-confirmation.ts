@@ -57,3 +57,22 @@ export function confirmationAlreadyOut(
     && now - new Date(m.createdAt).getTime() <= 48 * 60 * 60 * 1000
     && isPaymentConfirmationRow(m));
 }
+
+const NEGATED = /\b(?:not|yet|haven'?t|hasn'?t|didn'?t|can'?t|cannot|unable|unless|until|once|when|if|nicht|noch nicht|todavía|aún|pas encore|non ancora|ainda)\b|n't|ません|まだ/i;
+const ENGLISH_VARIANTS = /\b(?:payment\s+(?:has\s+been\s+|was\s+|is\s+)?(?:received|confirmed|come through|came through)|(?:we(?:'ve| have)|i(?:'ve| have)|we|i)\s+(?:just\s+)?(?:received|got)\s+your\s+(?:payment|transfer|receipt)|your\s+payment\s+(?:has\s+)?(?:arrived|come through|came through|is in)|thanks? for (?:your|the) payment)\b/i;
+
+/** 30 Oct: does ANY line of this draft tell the customer their payment arrived,
+ *  in any wording? "Payment received!", "Payment received, thank you",
+ *  "We've received your payment", "Zahlung erhalten". The strict first-line
+ *  test above recognises the fixed confirmation; this one recognises the model
+ *  saying the same thing in its own words, so an unpaid customer ("I'll pay
+ *  next week") can be kept from hearing it. A line that denies it ("we haven't
+ *  received your payment") does not count. */
+export function mentionsPaymentReceived(body: string | null | undefined): boolean {
+  const lines = (body ?? '').split(/\n|(?<=[.!?。！])\s+/).map((l) => l.trim()).filter(Boolean);
+  return lines.some((raw) => {
+    const l = raw.toLowerCase();
+    if (NEGATED.test(l) && !/^payment received/.test(l)) return false;
+    return ENGLISH_VARIANTS.test(l) || CORES.some((c) => phraseAt(l, c, l.indexOf(c)));
+  });
+}

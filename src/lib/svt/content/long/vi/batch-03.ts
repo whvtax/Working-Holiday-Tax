@@ -15,7 +15,7 @@ Chữ “penalty” (phạt) nghe có vẻ lạ. Nó không có nghĩa là bạn
 
 ## Lương phụ trội từ đâu mà có?
 
-Lương phụ trội đến từ award hoặc thỏa thuận lao động đã đăng ký (registered agreement) áp dụng cho công việc của bạn. Award là văn bản pháp lý quy định mức lương và điều kiện làm việc tối thiểu cho một ngành hoặc một loại công việc, như nhà hàng - khách sạn, bán lẻ hay dọn dẹp. Thỏa thuận lao động đã đăng ký thì được lập riêng cho một doanh nghiệp hoặc một nhóm doanh nghiệp.
+Lương phụ trội đến từ award hoặc thỏa thuận lao động đã đăng ký (registered agreement) áp dụng cho công việc của bạn. Award là văn bản pháp lý quy định mức lương và điều kiện làm việc tối thiểu cho một ngành hoặc một loại công việc, như nhà hàng và khách sạn, bán lẻ hay dọn dẹp. Thỏa thuận lao động đã đăng ký thì được lập riêng cho một doanh nghiệp hoặc một nhóm doanh nghiệp.
 
 Điều này có nghĩa là:
 
@@ -110,7 +110,7 @@ Trên thực tế, “trả tiền mặt” (cash in hand) thường có nghĩa 
 
 Kiểu sắp xếp này chủ yếu có lợi cho chủ lao động, không phải cho bạn. Bạn có thể mất:
 
-- **Tiền super của bạn.** 12% tiền lương thông thường lẽ ra phải vào quỹ của bạn. Khi bạn rời Úc hẳn và visa đã hết hiệu lực, bạn có thể xin rút khoản này dưới dạng khoản super khi rời Úc (DASP).
+- **Tiền super của bạn.** 12% tiền lương thông thường lẽ ra phải vào quỹ của bạn. Khi bạn rời Úc hẳn và visa đã hết hiệu lực, khoản này có thể được rút theo diện khoản super khi rời Úc (DASP), nhưng hiện tại việc xin DASP không khả dụng.
 - **Bằng chứng bạn đã làm việc.** Không có phiếu lương và bảng kê thu nhập, nếu bị trả thiếu lương thì bạn khó chứng minh mình đã làm ở đó.
 - **Mức lương công bằng.** Việc không ghi sổ thường trả thấp hơn award, không có mức cho cuối tuần hay ngày lễ.
 - **Sự yên tâm khi khai thuế.** Bạn vẫn phải khai khoản thu nhập này, nhưng phải tự tính lấy các con số.
@@ -128,7 +128,7 @@ Lin có thể là người cư trú về thuế trong năm 2025-26. Lin kiếm �
 - Phần thu nhập vượt ngưỡng miễn thuế: $20,000 trừ $18,200 = $1,800
 - Thuế 16% trên $1,800: $288, trước khi tính các khoản giảm thuế
 
-Nếu Lin bỏ phần tiền mặt ra, hồ sơ của Lin sẽ sai, dù riêng công việc có phiếu lương vẫn dưới ngưỡng. Khai đủ $20,000 mới là đúng. Lin cũng có thể được hưởng khoản giảm thuế cho thu nhập thấp (low income tax offset), giúp giảm số thuế trên khoản này.
+Nếu Lin bỏ sót phần tiền mặt, hồ sơ của Lin sẽ sai, dù riêng công việc có phiếu lương vẫn dưới ngưỡng. Khai đủ $20,000 mới là đúng. Lin cũng có thể được hưởng khoản giảm thuế cho thu nhập thấp (low income tax offset), giúp giảm số thuế trên khoản này.
 
 Kết quả sẽ rất khác nếu Lin là người không cư trú về thuế. Người không cư trú về thuế không có ngưỡng miễn thuế, nên năm 2025-26 thuế sẽ là 30% của toàn bộ $20,000, tức $6,000. Đây là một lý do khiến việc xác định tình trạng cư trú về thuế rất quan trọng trước khi nộp hồ sơ. Tình trạng cư trú phụ thuộc vào hoàn cảnh riêng của bạn, như độ dài khóa học và thời gian bạn ở Úc.
 
@@ -166,7 +166,7 @@ Visa không làm giảm quyền của bạn tại nơi làm việc. Thanh tra C�
 Nếu bạn có thu nhập tiền mặt cần đưa vào hồ sơ thuế, hãy nhắn cho Student Visa Tax qua WhatsApp, chúng tôi sẽ cùng bạn xem xét.`,
     faq: [
       { q: 'Chủ lao động trả tiền mặt nhưng có đưa phiếu lương và đóng super. Như vậy có ổn không?', a: 'Có, đó có thể là một cách trả lương hợp pháp. Hãy kiểm tra xem mức lương có đạt award không, và thuế có được trừ và báo cáo không.' },
-      { q: 'Khai thu nhập tiền mặt có làm tôi gặp rắc rối không?', a: 'Khai đủ mọi khoản thu nhập là điều luật yêu cầu bạn làm. Bỏ ra mới là lựa chọn rủi ro, vì ATO cho biết thu nhập bằng tiền mặt phải được khai.' },
+      { q: 'Khai thu nhập tiền mặt có làm tôi gặp rắc rối không?', a: 'Khai đủ mọi khoản thu nhập là điều luật yêu cầu bạn làm. Bỏ sót mới là lựa chọn rủi ro, vì ATO cho biết thu nhập bằng tiền mặt phải được khai.' },
       { q: 'Làm việc trả tiền mặt thì tôi có còn được super không?', a: 'Lẽ ra bạn đã phải được đóng super. Bạn có thể hỏi chủ lao động, và nếu họ không đóng, hãy báo cáo super chưa đóng cho ATO bằng công cụ trực tuyến của ATO. Những ghi chép chứng minh bạn đã làm ở đó sẽ có ích.' },
     ],
   },
@@ -213,7 +213,7 @@ Làm thử không lương là một câu hỏi liên quan. Bạn có phải làm
 
 Nhìn chung là có. ATO cho biết nhân viên, dù toàn thời gian, bán thời gian hay casual, nhìn chung đều đủ điều kiện hưởng super bắt buộc (super guarantee), kể cả người tạm trú. Mức đóng là 12% thu nhập trong giờ làm thông thường (ordinary time earnings), đóng thêm ngoài tiền lương.
 
-Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, chủ lao động đóng super cùng lúc với trả lương, và tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc. Khi bạn rời Úc hẳn và visa đã hết hiệu lực, bạn có thể xin rút super dưới dạng khoản super khi rời Úc (DASP).
+Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, chủ lao động đóng super cùng lúc với trả lương, và tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc. Khi bạn rời Úc hẳn và visa đã hết hiệu lực, super có thể được rút theo diện khoản super khi rời Úc (DASP), nhưng hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất của ATO.
 
 ## Nếu tôi bị gọi là nhà thầu thì sao?
 
@@ -253,7 +253,7 @@ Khi bảng kê thu nhập của bạn hiện “Tax ready”, du học sinh có 
     answer: 'Trước hết hãy dựa vào award để tính số tiền lẽ ra bạn được trả, rồi đề nghị chủ lao động bằng văn bản, ghi rõ ngày và số tiền. Nếu không được giải quyết, Thanh tra Công bằng Lao động (Fair Work Ombudsman) có thể giúp miễn phí, và visa của bạn sẽ không bị hủy vì liên hệ họ.',
     body: `Bạn so lương với một người bạn làm cùng công việc, và thấy có gì đó không khớp. Có thể mức lương Chủ nhật của bạn trông giống hệt mức thứ Hai. Có thể thiếu tiền super. Bài này đưa ra cách làm thực tế, từng bước, để đề nghị chủ lao động sửa lại.
 
-## Bước 1: Tìm hiểu số tiền lẽ ra bạn được trả
+## Bước 1: tìm hiểu số tiền lẽ ra bạn được trả
 
 Đừng bắt đầu từ lương tối thiểu quốc gia. Phần lớn công việc thuộc phạm vi một award (bộ quy định về lương và điều kiện làm việc tối thiểu của ngành), và mức theo award cho công việc và bậc của bạn thường cao hơn. Lương tối thiểu quốc gia là $26.44 một giờ, áp dụng từ kỳ lương đầy đủ đầu tiên bắt đầu vào hoặc sau ngày 1 tháng 7 năm 2026, và mức lương tối thiểu trong các award cũng tăng 4.75% cùng thời điểm đó.
 
@@ -266,7 +266,7 @@ Hãy dùng công cụ tính lương (Pay Calculator) của Thanh tra Công bằn
 
 Bậc của bạn trong award (classification) phụ thuộc vào công việc bạn thực sự làm, không chỉ vào chức danh.
 
-## Bước 2: Thu thập bằng chứng
+## Bước 2: thu thập bằng chứng
 
 Phần lớn vấn đề về lương nằm ở dữ kiện: bạn đã làm những ca nào, bao lâu, và được trả bao nhiêu. Hãy thu thập:
 
@@ -278,7 +278,7 @@ Phần lớn vấn đề về lương nằm ở dữ kiện: bạn đã làm nh�
 
 Nếu chủ lao động chưa bao giờ đưa phiếu lương, ghi chép cẩn thận của chính bạn vẫn có giá trị. Bản thân việc không đưa phiếu lương đã là vi phạm quy định.
 
-## Bước 3: Tính phần chênh lệch theo từng ca
+## Bước 3: tính phần chênh lệch theo từng ca
 
 Lập một bảng đơn giản, mỗi ca một dòng: ngày, thứ, số giờ, mức lương bạn được trả và mức lương lẽ ra bạn được trả. Sau đó nhân ra và cộng phần chênh lệch lại.
 
@@ -290,7 +290,7 @@ Lập một bảng đơn giản, mỗi ca một dòng: ngày, thứ, số giờ,
 
 Đừng quên super. Super được đóng ở mức 12% trên thu nhập trong giờ làm thông thường (ordinary time earnings), nên thiếu lương cơ bản cũng có thể có nghĩa là thiếu super.
 
-## Bước 4: Đề nghị chủ lao động bằng văn bản
+## Bước 4: đề nghị chủ lao động bằng văn bản
 
 Nhiều trường hợp trả thiếu là do hệ thống tính lương cài đặt sai, ví dụ mức lương không được cập nhật vào ngày 1 tháng 7. Hãy bắt đầu một cách lịch sự và tin rằng chuyện này có thể sửa được.
 
@@ -307,7 +307,7 @@ Một tin nhắn đơn giản có thể như sau: “Chào anh/chị, em đã đ
 
 Sau khi gửi, hãy giữ một bản sao và ghi lại ngày gửi. Nếu chủ lao động đồng ý và trả cho bạn, hãy kiểm tra phiếu lương kỳ sau để chắc rằng khoản lương truy lĩnh được ghi trên đó và super cũng đã được cộng thêm.
 
-## Bước 5: Nếu không được giải quyết, hãy nhờ giúp miễn phí
+## Bước 5: nếu không được giải quyết, hãy nhờ giúp miễn phí
 
 Nếu chủ lao động không trả lời, từ chối mà không nêu lý do, hoặc nổi giận, hãy ngừng tranh cãi và tiếp tục lưu giữ ghi chép. Liên hệ Thanh tra Công bằng Lao động:
 
@@ -551,7 +551,7 @@ Trong myGov, dịch vụ trực tuyến của ATO cho phép bạn:
 - Tìm các tài khoản bị thất lạc
 - Gộp các tài khoản, nếu điều đó phù hợp với bạn
 
-Trước khi gộp, hãy kiểm tra xem bạn có mất bảo hiểm hay phải trả phí không. Khi bạn rời Úc hẳn và visa đã hết hiệu lực, bạn có thể xin rút từng quỹ dưới dạng khoản super khi rời Úc (DASP). Một quỹ bị quên rất dễ bị bỏ sót, nên hãy giữ một danh sách.
+Trước khi gộp, hãy kiểm tra xem bạn có mất bảo hiểm hay phải trả phí không. Khi bạn rời Úc hẳn và visa đã hết hiệu lực, super ở từng quỹ có thể được rút theo diện khoản super khi rời Úc (DASP), nhưng hiện tại việc xin DASP không khả dụng. Một quỹ bị quên rất dễ bị bỏ sót, nên hãy giữ một danh sách.
 
 ## Cuối năm tài chính thì sao?
 
@@ -624,7 +624,7 @@ Trên thực tế, làm casual thường có nghĩa là:
 - Số giờ của bạn có thể thay đổi mỗi tuần
 - Ca làm được đưa ra cho bạn, và bạn thường có thể từ chối
 - Bạn được trả thêm phụ cấp casual ngoài mức lương cơ bản
-- Bạn không có phần lớn các loại nghỉ phép có lương, không được báo trước khi cho nghỉ việc và không có trợ cấp thôi việc (redundancy pay)
+- Bạn không có phần lớn các loại nghỉ phép có lương, không được báo trước khi bị cho nghỉ việc và không có trợ cấp thôi việc (redundancy pay)
 
 Làm casual rất phổ biến với du học sinh vì có thể xếp quanh lịch học và lịch thi.
 
@@ -698,8 +698,8 @@ Nhìn chung là không. ATO cho biết nhân viên nhìn chung đều đủ đi�
   },
 
   'medicare-or-oshc-international-students': {
-    title: 'Medicare hay OSHC: du học sinh được bảo hiểm bởi đâu?',
-    description: 'Phần lớn du học sinh được bảo hiểm bởi Overseas Student Health Cover, không phải Medicare. Mỗi loại là gì, ai có thể có Medicare, và điều này ảnh hưởng thế nào đến hồ sơ thuế.',
+    title: 'Medicare hay OSHC: du học sinh dùng loại nào?',
+    description: 'Phần lớn du học sinh có bảo hiểm qua Overseas Student Health Cover, không phải Medicare. Mỗi loại là gì, ai có thể có Medicare, và điều này ảnh hưởng thế nào đến hồ sơ thuế.',
     answer: 'Phần lớn du học sinh không đủ điều kiện hưởng Medicare. Bảo hiểm y tế của họ là Overseas Student Health Cover (OSHC), một điều kiện của visa du học. Du học sinh từ một số nước có hiệp định cũng có thể đăng ký Medicare, nhưng vẫn cần OSHC.',
     body: `Medicare và OSHC là hai thứ khác nhau, và du học sinh hay nhầm lẫn. Một bên là hệ thống y tế công của Úc. Bên kia là bảo hiểm y tế tư nhân dành riêng cho du học sinh. Bạn bè, bạn cùng lớp, thậm chí cả chủ lao động đôi khi dùng hai từ này như thể chúng là một, khiến mọi người càng dễ nhầm. Biết mình thuộc diện nào cũng quan trọng khi khai thuế, vì có liên quan đến Medicare levy.
 
@@ -784,7 +784,7 @@ Du học sinh có thể nhắn cho Student Visa Tax qua WhatsApp để kiểm tr
   'medicare-agreement-countries-international-students': {
     title: 'Các nước có hiệp định Medicare: du học sinh cần biết gì',
     description: 'Du học sinh từ một số nước có thể đăng ký Medicare theo hiệp định tương hỗ. Những nước nào áp dụng cho du học sinh, OSHC có gì thay đổi, và điều này có ý nghĩa gì với thuế.',
-    answer: 'Du học sinh từ Vương quốc Anh, Thụy Điển, Hà Lan, Bỉ, Slovenia, Ý và New Zealand có thể đăng ký Medicare theo hiệp định của nước mình. Du học sinh từ Na Uy, Phần Lan, Malta và Ireland không được áp dụng khi là du học sinh. Tất cả vẫn cần OSHC, trừ khi được miễn.',
+    answer: 'Du học sinh từ Vương quốc Anh, Thụy Điển, Hà Lan, Bỉ, Slovenia, Ý và New Zealand có thể đăng ký Medicare theo hiệp định của nước mình. Du học sinh từ Na Uy, Phần Lan, Malta và Ireland không được hiệp định áp dụng khi là du học sinh. Tất cả vẫn cần OSHC, trừ khi được miễn.',
     body: `Úc có hiệp định chăm sóc sức khỏe tương hỗ (reciprocal health care agreement) với một số nước. Các hiệp định này giúp người từ những nước đó được hỗ trợ một phần chi phí y tế khi ở Úc. Nhưng quy định cho du học sinh không giống quy định cho khách du lịch hay những người đến Úc theo diện khác. Bài này giải thích các hiệp định có ý nghĩa gì nếu bạn là du học sinh.
 
 ## Du học sinh nào có thể đăng ký Medicare?
@@ -1016,7 +1016,7 @@ Giờ hãy so sánh: nếu Minh đánh dấu foreign resident, chủ lao động
 
 Hãy nói với chủ lao động và nộp một tờ khai mới với câu trả lời đúng. Bộ phận tính lương sẽ dùng câu trả lời mới từ đó trở đi. Những kỳ lương đã xử lý không bị thay đổi, nhưng hồ sơ thuế cuối năm sẽ điều chỉnh phần chênh lệch.
 
-- Nếu đã bị trừ quá nhiều thuế, có thể bạn sẽ được trả lại một phần, nếu có.
+- Nếu đã bị trừ quá nhiều thuế, phần thuế trừ thừa sẽ được tính lại trong hồ sơ của bạn.
 - Nếu bị trừ quá ít, có thể bạn sẽ có một khoản phải đóng.
 
 Hãy xem phiếu lương kỳ sau khi đã thay đổi để chắc rằng số thuế bị trừ đã thay đổi. Nếu không thay đổi, hãy hỏi bộ phận tính lương xem họ đã nhận được tờ khai mới của bạn chưa.

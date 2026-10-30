@@ -67,14 +67,14 @@ const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
-  "guaranteeBody": "Vier Agenturen und eine vergessene Einzelschicht in eine Erklärung zu ziehen ist hier normale Arbeit, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
-  "faqHeading": "Fragen, die uns dazu gestellt werden",
+  "guaranteeBody": "Vier Agenturen und eine vergessene Einzelschicht in einer Erklärung zusammenzuführen ist für uns normale Arbeit, und alle unsere Kunden haben ein 417- oder 462-Visum. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
+  "faqHeading": "Häufige Fragen dazu",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
+  "disclaimer": "Das sind allgemeine Informationen und keine individuelle Beratung zu deiner Steuersituation. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -97,7 +97,7 @@ const HERO = {
   "kicker": "Lager, Umzüge, Garten und Events",
   "h1lead": "Zwei Agenturen sind zwei Income Statements.",
   "h1accent": "Zwei Einsatzorte sind ein Abzug.",
-  "lede": "Eine vergessene Agentur kostet mehr als jeder fehlende Beleg, und eine Erklärung muss jede einzelne tragen."
+  "lede": "Eine vergessene Agentur wiegt schwerer als jeder fehlende Beleg, denn die Erklärung muss jede einzelne Agentur enthalten."
 }
 
 const SECTIONS: Section[] = [
@@ -106,7 +106,7 @@ const SECTIONS: Section[] = [
     "h2": "Was können Hilfskräfte über eine Agentur absetzen?",
     "paras": [
       "Absetzbar sind Schutzausrüstung, die der Einsatzort verlangt, die Verlängerung eines Tickets, das du bereits hast, selbst gekauftes Werkzeug, die Fahrt zwischen zwei Einsatzorten am selben Tag und der arbeitsbezogene Anteil deines Handys. Was absetzbar ist, folgt der Arbeit, die du an diesem Tag wirklich gemacht hast, nicht der Jobbezeichnung im Agenturvertrag.",
-      "Eine Woche im Kühllager, eine Woche in einer Gartenkolonne und ein Wochenende beim Event-Abbau erzeugen drei verschiedene Kostenbilder."
+      "Eine Woche im Kühllager, eine Woche in einer Gartenkolonne und ein Wochenende beim Event-Abbau bringen drei ganz unterschiedliche Kostenbilder mit sich."
     ]
   },
   {
@@ -136,7 +136,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Arbeitsanteil deines Handys",
-        "d": "Agenturen laufen über Nachrichten: Schichtangebote um sechs Uhr morgens, Adressen, Stundenzettel. Der arbeitsbezogene Prozentsatz deines Vertrags ist ein echter Abzug, wenn du dafür dein eigenes Handy nutzt."
+        "d": "Agenturen laufen über Nachrichten: Schichtangebote um sechs Uhr morgens, Adressen, Stundenzettel. Der arbeitsbezogene Anteil deiner Handykosten ist ein echter Abzug, wenn du dafür dein eigenes Handy nutzt."
       }
     ]
   },
@@ -144,8 +144,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was musst du über alle Einsätze hinweg aufheben?",
     "paras": [
-      "Ein Abzug, drei Tests: du hast bezahlt, dir hat es niemand erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Über mehrere Einsätze heißt das Belege für selbst gekaufte Stiefel und Handschuhe, für die Ticketverlängerung und eine Notiz zu Daten, Orten und Entfernungen hinter den Fahrten.",
-      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, mit Betrag, Datum, Anbieter und Gegenstand, fünf Jahre aufbewahrt. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen keinen schriftlichen Nachweis. Das sind nicht die 300 Dollar, die entscheiden, ob ein Ausrüstungsteil sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Ein Abzug, drei Tests: du hast bezahlt, dir hat es niemand erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Über mehrere Einsätze heißt das Belege für selbst gekaufte Stiefel und Handschuhe, für die Ticketverlängerung und eine Notiz zu Datum, Ort und Entfernung der Fahrten.",
+      "Der Nachweis kann ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto sein, mit Betrag, Datum, Anbieter und Gegenstand, fünf Jahre aufbewahrt. Abzüge von zusammen 300 Dollar oder weniger im Jahr brauchen keinen schriftlichen Nachweis. Diese 300 Dollar sind nicht dieselbe Grenze wie die, die entscheidet, ob ein Ausrüstungsteil sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
@@ -166,8 +166,8 @@ const SECTIONS: Section[] = [
         "d": "Die meisten Agenturen stellen Warnkleidung und manchmal Schuhe. Wurde es dir ausgegeben oder erstattet, sind keine Kosten übrig."
       },
       {
-        "t": "Das erste Ticket als Arbeitskost",
-        "d": "Der Staplerschein, den du bezahlt hast, damit dich eine Agentur vorschlägt, ist eine Qualifikationskost, keine Arbeitskost. Verlängerungen im laufenden Einsatz sind absetzbar."
+        "t": "Das erste Ticket als Arbeitsausgabe",
+        "d": "Der Staplerschein, den du bezahlt hast, damit dich eine Agentur vorschlägt, ist eine Qualifikationsausgabe, keine Arbeitsausgabe. Verlängerungen im laufenden Einsatz sind absetzbar."
       },
       {
         "t": "Anzunehmen, die Agentur habe deine Steuer erledigt",
@@ -176,12 +176,12 @@ const SECTIONS: Section[] = [
     ],
     "missed": [
       {
-        "t": "Ein Income Statement einer vergessenen Agentur",
-        "d": "Drei Wochen bei einer Agentur im März, eine Schicht in einem anderen Bundesstaat im Juni, und die Erklärung geht ohne sie raus. Schlimmer als ein vergessener Abzug, weil es später eine Korrektur bedeutet."
+        "t": "Das Income Statement einer vergessenen Agentur",
+        "d": "Drei Wochen bei einer Agentur im März, eine Schicht in einem anderen Bundesstaat im Juni, und die Erklärung geht ohne sie raus. Das ist schlimmer als ein vergessener Abzug, weil es später eine Korrektur nötig macht."
       },
       {
         "t": "Fahrten zwischen zwei Einsatzorten an einem Tag",
-        "d": "Bei Agenturen, die eine Crew verschieben, sehr üblich, und fast nie abgesetzt, weil die Bewegung von jemand anderem entschieden wurde. Absetzbar ist sie trotzdem."
+        "d": "Bei Agenturen, die ihre Crews zwischen Orten umsetzen, sehr üblich, und fast nie abgesetzt, weil jemand anderes den Wechsel entschieden hat. Absetzbar ist sie trotzdem."
       },
       {
         "t": "Selbst gekaufte Boots und Handschuhe zwischen zwei Einsätzen",
@@ -192,8 +192,8 @@ const SECTIONS: Section[] = [
         "d": "Verlängerungen für Stapler oder Hubarbeitsbühne sind günstig genug, um sie bis Juli zu vergessen, und absetzbar, sobald du mit dem Ticket bereits arbeitest."
       },
       {
-        "t": "Wochen mit falschem Einbehalt",
-        "d": "Eine neue Agentur, die deine Tax File Number Declaration noch nicht verarbeitet hat oder nicht als Arbeitgeber von Working Holiday Makern registriert ist, behält deutlich mehr als 15 Prozent ein. Das kommt nur mit der Erklärung zurück, die alle Agenturen zusammenführt."
+        "t": "Wochen mit zu hohem Steuereinbehalt",
+        "d": "Eine neue Agentur, die deine Tax File Number Declaration noch nicht verarbeitet hat oder nicht als Arbeitgeber von Working Holiday Makern registriert ist, behält deutlich mehr als 15 Prozent ein. Das lässt sich nur mit der Erklärung klären, die alle Agenturen zusammenführt."
       }
     ]
   },
@@ -201,9 +201,9 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Welche Teile hängen daran, wie dein Jahr lief?",
     "paras": [
-      "Wie wechselnd die Arbeit war, entscheidet, wie viel deiner Fahrten absetzbar ist, und das ist eine Tatsachenfrage, keine Regel. Wie oft der Ort wechselte, ob es eine Basis gab, zu der du immer zurückkehrtest, und ob die Agentur die Bewegung verlangt hat, fließt alles ein. Zwei Leute derselben Agentur können sehr unterschiedliche Fahrtabzüge haben.",
-      "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehaltsverhältnis und eigenem Income Statement. Working Holiday Maker bekommen von keiner davon einen Steuerfreibetrag, das Risiko ist also ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt.",
-      "Darunter liegt der steuerliche Wohnsitz. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen, mehr wert als alle Abzüge auf dieser Seite. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
+      "Wie wechselnd die Arbeit war, entscheidet, wie viel deiner Fahrten absetzbar ist, und das ist eine Tatsachenfrage, keine Regel. Wie oft der Ort wechselte, ob es eine Basis gab, zu der du immer zurückkehrtest, und ob die Agentur die Bewegung verlangt hat, fließt alles ein. Zwei Personen derselben Agentur können sehr unterschiedliche Fahrtabzüge haben.",
+      "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Steuereinbehalt und eigenem Income Statement. Working Holiday Maker bekommen von keiner davon einen Steuerfreibetrag, das Risiko ist also ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt.",
+      "Darunter liegt der steuerliche Wohnsitz, der mehr ausmachen kann als alle Abzüge auf dieser Seite. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -223,7 +223,7 @@ const FAQS = [
   },
   {
     "question": "Kann ich einen Staplerschein absetzen?",
-    "answer": "Die Verlängerung ja, den ersten Erwerb nein. Nutzt du den Schein bereits im Einsatz, ist seine Verlängerung eine Kost der Arbeit. Der erste Schein hat dich erst vermittelbar gemacht, und das behandelt das ATO als privat.\n\nFür Hubarbeitsbühne, White Card und Führerschein gilt dieselbe Grenze."
+    "answer": "Die Verlängerung ja, den ersten Erwerb nein. Nutzt du den Schein bereits im Einsatz, ist seine Verlängerung eine Ausgabe für die Arbeit. Der erste Schein hat dich erst vermittelbar gemacht, und das behandelt das ATO als privat.\n\nFür Hubarbeitsbühne, White Card und Führerschein gilt dieselbe Grenze."
   },
   {
     "question": "Ich hatte nur ein paar Schichten. Lohnt sich das überhaupt?",

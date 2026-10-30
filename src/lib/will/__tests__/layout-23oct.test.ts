@@ -30,10 +30,10 @@ it('Japanese, split at 。', () => {
 });
 
 it('links, amounts and emoji do not break a sentence in the wrong place', () => {
-  const t = "The fee is $220.50 for this one, and here's the form: https://workingholidaytax.com.au/tax-form. Fill it in when you can 😊 We then review everything and come back to you here. If anything is unclear, just ask me and I'll explain it. The team usually starts the same day. Thanks again for choosing us, it really means a lot.";
+  const t = "The fee is $220.50 for this one, and here's the form: https://workingholidaytax.com.au/start. Fill it in when you can 😊 We then review everything and come back to you here. If anything is unclear, just ask me and I'll explain it. The team usually starts the same day. Thanks again for choosing us, it really means a lot.";
   const s = splitSentences(t);
   expect(s[0]).toContain('$220.50');
-  expect(s.join(' ')).toContain('https://workingholidaytax.com.au/tax-form.');
+  expect(s.join(' ')).toContain('https://workingholidaytax.com.au/start.');
   expect(paragraphise(t).replace(/\s+/g, ' ')).toBe(t);
 });
 

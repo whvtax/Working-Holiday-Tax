@@ -11,6 +11,7 @@ const CSP_NONCE_ENABLED = process.env.CSP_NONCE_DISABLED !== 'true'
 
 // Two brands, one app: host-conditioned rewrites (see config/brand-routing.js).
 const { brandRewrites, whtOnly, svtHost } = require('./config/brand-routing')
+const formPaths = require('./config/form-paths')
 
 const staticCsp = {
     key: 'Content-Security-Policy',
@@ -186,12 +187,20 @@ const nextConfig = {
       // be cached permanently by anyone's browser.
       {
         source: '/complete/:token',
-        destination: '/tax-form',
+        destination: '/start',
         permanent: false,
       },
-      { source: '/start',    destination: '/tax-form',    permanent: false },
-      { source: '/de/start', destination: '/de/tax-form', permanent: false },
-      { source: '/ja/start', destination: '/ja/tax-form', permanent: false },
+      // Retired questionnaire links (Jo, 29 Oct): the pages no longer exist at
+      // these paths. Anyone who arrives from an old chat, ad or partner link
+      // is told the form opens after payment (no form, no residency content).
+      ...formPaths.RETIRED.flatMap((slug) => [
+        { source: `/${slug}`, destination: '/link-after-payment', permanent: false },
+        { source: `/de/${slug}`, destination: '/de/link-after-payment', permanent: false },
+        { source: `/ja/${slug}`, destination: '/ja/link-after-payment', permanent: false },
+      ]),
+      { source: '/start',    destination: '/start',    permanent: false },
+      { source: '/de/start', destination: '/de/start', permanent: false },
+      { source: '/ja/start', destination: '/ja/start', permanent: false },
       // ─── Superannuation cluster consolidation (Aug 2026) ──────────────────
       // Five broad "how do I claim my super" guides were merged into the
       // /superannuation answer hub. They ranked 21-33 while narrow DASP guides
@@ -253,6 +262,10 @@ const nextConfig = {
         permanent: true,
       },
 
+    ]).concat([
+      // Student Visa Tax only (Jo, 27 Oct): the questions page was removed in
+      // favour of a contact page; old links land there instead of a 404.
+      ...['', '/zh', '/vi'].map((pre) => ({ source: `${pre}/questions`, has: [svtHost()], destination: `${pre}/contact`, permanent: true })),
     ])
   },
 }

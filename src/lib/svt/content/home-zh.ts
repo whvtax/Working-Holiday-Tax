@@ -16,7 +16,7 @@ export const homeZh: HomeCopy = {
     titleBefore: '专为',
     titleMark: '学生签证',
     titleAfter: '持有人办理报税',
-    lead: '适用于 500 和 485 签证持有人。全程用 WhatsApp 和一份简短的在线表格完成。在提交给 ATO 之前，由注册税务代理人审核并签字确认。',
+    lead: '适用于 500 和 485 签证持有人。在提交给 ATO 之前，由注册税务代理人审核并签字确认。',
     price: { amount: '$220', unit: '每份报税', sub: '有 ABN 工作 $385。均含 GST。' },
     cta: '在 WhatsApp 上开始报税',
   },
@@ -30,7 +30,7 @@ export const homeZh: HomeCopy = {
       { label: '我们退还你', value: '$70', total: true },
     ],
     terms: '差额会在 ATO 发出税务评估通知（notice of assessment）之后支付。如果没有退税，或者你需要补税，则按全额收费。',
-    why: '同时向两个雇主申报免税额度，或者用 ABN 送外卖，是留学生最后需要补税的常见原因。',
+    why: '同时在两个雇主那里享受免税额度，或者用 ABN 送外卖，是留学生最终要补税的常见原因。',
     cta: '在 WhatsApp 上联系我们',
   },
   flow: {
@@ -44,7 +44,6 @@ export const homeZh: HomeCopy = {
       { from: 'them', text: '你在线签字。' },
       { from: 'us', text: '你的报税就提交给 ATO 了。' },
     ],
-    note: '仅为示例，并非真实对话。',
   },
   payslip: {
     title: '一行一行看懂你的工资单',
@@ -56,7 +55,7 @@ export const homeZh: HomeCopy = {
     points: [
       '在澳洲读 6 个月或以上的课程，对你的税有什么影响。',
       'Medicare Entitlement Statement：学生保险公司不会寄给你，要你自己申请。',
-      '同时打两份零工，为什么最后可能要补税。',
+      '同时打两份工，为什么最后可能要补税。',
       '用 ABN 跑 Uber Eats 或 DoorDash。',
       '毕业回国之后，你的养老金（super）怎么办。',
     ],

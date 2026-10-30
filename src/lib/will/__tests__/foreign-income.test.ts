@@ -12,10 +12,10 @@ import { join } from 'path';
 const ALICE = 'I worked in Australia on a Working Holiday visa until February 2026, and I also need to report foreign income.';
 
 describe('detecting it', () => {
-  it.each([ALICE, 'I had overseas income too', 'I also have income from Germany', '海外の収入もあります', 'Ich habe auch ausländisches Einkommen'])('%s', (t) => {
+  it.each([ALICE, 'I had overseas income too', 'I also have income from Germany', 'I worked TFN on a WHV (417). I also had remote employment in Ireland for the year and I\'m not sure if I\'m supposed to include it in my return or not.', 'I had a job in Germany for the whole tax year', '海外の収入もあります', 'Ich habe auch ausländisches Einkommen'])('%s', (t) => {
     expect(mentionsForeignIncome(t)).toBe(true);
   });
-  it.each(["I'm overseas now", 'I have no foreign income', 'I worked on a TFN only', 'I left Australia in March'])('%s is not foreign income', (t) => {
+  it.each(["I'm overseas now", 'I have no foreign income', 'I worked on a TFN only', 'I left Australia in March', 'I worked in Germany before I came to Australia'])('%s is not foreign income', (t) => {
     expect(mentionsForeignIncome(t)).toBe(false);
   });
   it('anywhere in the conversation', () => {

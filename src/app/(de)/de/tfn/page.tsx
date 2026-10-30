@@ -112,8 +112,8 @@ const WHAT_WE_DO = [
     body: 'Die Referenznummer des Antrags, korrekt angegeben, hält die ersten Abrechnungen vom Höchstsatz fern.',
   },
   {
-    title: 'Wir holen die Lücke am Jahresende zurück',
-    body: 'Was schon mit 45 % einbehalten wurde, kommt nur über eine Steuererklärung zurück, und nur wenn sie das auch sagt.',
+    title: 'Wir kümmern uns am Jahresende um die Lücke',
+    body: 'Was schon mit 45 % einbehalten wurde, lässt sich nur über eine Steuererklärung klären, und nur wenn sie das auch ausweist.',
   },
 ]
 
@@ -124,22 +124,22 @@ const FAQS = [
   {
     question: 'Kann ich die TFN einfach selbst beantragen?',
     answer:
-      'Kannst du, der Antrag ist ein kurzes und kostenloses Formular.\n\nBezahlt wird die Arbeit drumherum: deine Daten an den Einreisedatensatz anpassen, eine Adresse wählen, die in vier Wochen noch Post annimmt, und deinem Arbeitgeber die Referenznummer geben, damit die ersten Abrechnungen nicht mit 45 % laufen.',
+      'Kannst du. Der Antrag ist ein kurzes und kostenloses Formular.\n\nBezahlt wird die Arbeit drumherum: deine Daten an den Einreisedatensatz anpassen, eine Adresse wählen, die in vier Wochen noch Post annimmt, und deinem Arbeitgeber die Referenznummer geben, damit die ersten Abrechnungen nicht mit 45 % laufen.',
   },
   {
     question: 'Der TFN-Antrag ist beim ATO kostenlos. Wofür zahle ich dann?',
     answer:
-      'Die Nummer selbst ist kostenlos. Geld kostet die Lücke: Jede Abrechnung, bevor dein Arbeitgeber die Nummer hat, wird mit 45 % statt mit 15 % einbehalten. Bezahlt wird, dass diese Lücke geschlossen wird und dass zurückkommt, was schon weg ist.',
+      'Die Nummer selbst ist kostenlos. Geld kostet die Lücke: Jede Abrechnung, bevor dein Arbeitgeber die Nummer hat, wird mit 45 % statt mit 15 % einbehalten. Bezahlt wird die Arbeit, die diese Lücke schließt, und die Erklärung, über die zu viel einbehaltene Steuer zurückkommen kann.',
   },
   {
     question: 'Was passiert, wenn ich ohne TFN anfange zu arbeiten?',
     answer:
-      'Dein Arbeitgeber muss 45 % einbehalten statt der 15 %, die für Working Holiday Maker auf die ersten 45.000 $ gelten, solange du ihm keine Steuernummer gegeben hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Bei 25 $ pro Stunde sind das rund 7,50 $ pro Stunde, die ans ATO gehen statt an dich.\n\nDas Geld ist nicht weg, es kommt aber nur über eine Steuererklärung zurück, die nach dem 30. Juni korrekt eingereicht wird.',
+      'Dein Arbeitgeber muss 45 % einbehalten statt der 15 %, die für Working Holiday Maker auf die ersten 45.000 $ gelten, solange du ihm keine TFN mitgeteilt hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Bei 25 $ pro Stunde sind das rund 7,50 $ pro Stunde, die ans ATO gehen statt an dich.\n\nDas Geld ist nicht automatisch verloren. Es kann aber nur über eine Steuererklärung zurückkommen, die nach dem 30. Juni korrekt eingereicht wird.',
   },
   {
     question: 'Ich arbeite schon seit Wochen ohne TFN. Ist es zu spät?',
     answer:
-      'Nein. Beantrage die Nummer jetzt, damit der Höchstsatz für die nächsten Abrechnungen wegfällt. Der zu viel einbehaltene Teil kommt mit der Steuererklärung für dieses Steuerjahr zurück.\n\nMeistens können wir den Antrag am selben Tag fertig machen. Sag uns, wie viele Wochen schon mit 45 % abgerechnet wurden, denn das ändert, was deine Erklärung sagen muss.',
+      'Nein. Beantrage die Nummer jetzt, damit der Höchstsatz für die nächsten Abrechnungen wegfällt. Der zu viel einbehaltene Teil kann mit der Steuererklärung für dieses Steuerjahr zurückkommen.\n\nMeistens können wir den Antrag am selben Tag fertig machen. Sag uns, wie viele Wochen schon mit 45 % abgerechnet wurden, denn das ändert, was deine Erklärung sagen muss.',
   },
   {
     question: 'Wie lange dauert es, bis die TFN ankommt?',
@@ -149,7 +149,7 @@ const FAQS = [
   {
     question: 'Kann ich die TFN schon vor der Ankunft in Australien beantragen?',
     answer:
-      'Mit einem Working Holiday Visum nicht. Du beantragst sie, sobald du mit aktiviertem 417- oder 462-Visum in Australien bist, weil der Antrag mit deinen Einreise- und Visumsdaten abgeglichen wird. Außerdem brauchst du eine australische Postadresse für den Brief.',
+      'Mit einem Working-Holiday-Visum nicht. Du beantragst sie, sobald du mit aktiviertem 417- oder 462-Visum in Australien bist, weil der Antrag mit deinen Einreise- und Visumsdaten abgeglichen wird. Außerdem brauchst du eine australische Postadresse für den Brief.',
   },
   {
     question: 'Brauche ich für das zweite Working-Holiday-Visum eine neue TFN?',
@@ -172,7 +172,7 @@ const GUIDES = [
   {
     href: '/de/blog/how-long-does-it-take-to-get-a-tfn',
     title: 'Wie lange die TFN dauert',
-    desc: 'Was das ATO zusagt, was üblich ist, und ab wann man nachhaken sollte.',
+    desc: 'Was das ATO zusagt, was üblich ist, und ab wann du nachhaken solltest.',
   },
 ]
 
@@ -196,7 +196,7 @@ export default function TFNPageDE() {
     url: `${SITE_URL}/de/tfn`,
     name: 'TFN beantragen für Working Holiday Maker',
     description:
-      'Was es kostet, ohne TFN zu arbeiten, warum TFN-Anträge von Working Holiday Makern scheitern, und wie der zu viel einbehaltene Teil zurückkommt.',
+      'Was es kostet, ohne TFN zu arbeiten, warum TFN-Anträge von Working Holiday Makern scheitern, und wie sich der zu viel einbehaltene Teil klären lässt.',
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -306,11 +306,11 @@ export default function TFNPageDE() {
           <div className="grid gap-4 sm:grid-cols-3">
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>45 %</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>Werden von jedem Dollar einbehalten, solange keine TFN vorliegt, statt fünfzehn.</p>
+              <p style={{ ...BODY, color: '#2A3C34' }}>Werden von jedem Dollar einbehalten, solange keine TFN vorliegt, statt 15 %.</p>
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>28 Tage</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>Um deinem Arbeitgeber die TFN zu geben, und für das ATO, sie auszustellen.</p>
+              <p style={{ ...BODY, color: '#2A3C34' }}>Zeit, um deinem Arbeitgeber die TFN zu geben, und für das ATO, sie auszustellen.</p>
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>1 Erklärung</p>
@@ -362,7 +362,7 @@ export default function TFNPageDE() {
             Was wir dagegen tun
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
-            Du schickst uns deine Daten auf WhatsApp. Alles Weitere passiert auf unserer Seite.
+            Du schickst uns deine Daten auf WhatsApp. Alles Weitere übernehmen wir.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -375,12 +375,12 @@ export default function TFNPageDE() {
           </div>
 
           <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
-            Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
+            Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches
             Formular welches ist. Wir regeln das direkt mit dem ATO.
           </p>
 
           <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '60ch' }}>
-            Du hast die Nummer schon und willst die Wochen mit 45 % zurück?{' '}
+            Du hast die Nummer schon und willst die Wochen mit 45 % klären?{' '}
             <Link href="/de/tax-return" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Das ist die Steuererklärung</Link>.
           </p>
         </div>
@@ -392,7 +392,7 @@ export default function TFNPageDE() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
+            Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.
@@ -432,7 +432,7 @@ export default function TFNPageDE() {
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Steuererklärungen werden von einem
-            registrierten Steueragenten geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
+            registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
           </p>
           <GoogleReviewsServer lang="de" />
         </div>
@@ -490,8 +490,8 @@ export default function TFNPageDE() {
 
       <NextStep
         eyebrow="Was kommt als Nächstes"
-        heading="Die Wochen mit 45 % kommen über die Erklärung zurück"
-        body="Sobald die Nummer hinterlegt ist, holt die Steuererklärung den zu viel einbehaltenen Teil zurück."
+        heading="Die Wochen mit 45 % lassen sich über die Erklärung klären"
+        body="Sobald die Nummer hinterlegt ist, kann die Steuererklärung den zu viel einbehaltenen Teil zurückholen."
         cta="Wie die Erklärung läuft →"
         href="/de/tax-return"
       />

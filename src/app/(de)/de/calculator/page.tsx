@@ -7,7 +7,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 export const metadata: Metadata = {
   title: 'Steuerrechner Australien (417 und 462)',
   description:
-    'Schätze deine Steuerrückerstattung und dein Super-Guthaben nach der 65 % DASP-Steuer. Aktuelle Sätze für 417 und 462, ein grober Anhaltspunkt.',
+    'Schätze deine Steuerrückerstattung und dein Super-Guthaben nach Abzug der DASP-Steuer von 65 %. Aktuelle Sätze für 417 und 462, ein grober Anhaltspunkt.',
   keywords: [
     'Steuerrückerstattung Rechner Australien',
     'Working Holiday Steuerrückerstattung Rechner',
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de/calculator`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrechner Australien für Work and Travel (417 / 462)',
-    description: 'Grobe Rückerstattung plus Super nach der 65 % DASP-Steuer, mit den aktuellen Sätzen.',
+    description: 'Grobe Rückerstattung plus Super nach Abzug der DASP-Steuer von 65 %, mit den aktuellen Sätzen.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Steuerrechner Australien für Work and Travel',
-    description: 'Grobe Rückerstattung plus Super nach der 65 % DASP-Steuer.',
+    description: 'Grobe Rückerstattung plus Super nach Abzug der DASP-Steuer von 65 %.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -43,37 +43,37 @@ const faqs = [
   {
     question: 'Ich habe die Zahl. Kann ich sie nicht einfach selbst einreichen?',
     answer:
-      'Kannst du, und das Einreichen ist der einfache Teil. Eine Schätzung kann die Zahl nicht verändern, sie rechnet nur mit dem, was du schon weißt.\n\nBewegen lässt sich das Ergebnis über drei Beurteilungen, und keine davon ist ein Feld auf dieser Seite: welcher Residentenstatus für dich gilt, ob die Medicare Levy dir überhaupt hätte berechnet werden dürfen und was deine Art von Arbeit absetzen darf.',
+      'Kannst du, und das Einreichen ist der einfache Teil. Eine Schätzung kann die Zahl nicht verändern, sie rechnet nur mit dem, was du schon weißt.\n\nBewegen lässt sich das Ergebnis über drei Beurteilungen, und keine davon ist ein Feld auf dieser Seite: welcher Residentenstatus für dich gilt, ob dir die Medicare Levy überhaupt hätte berechnet werden dürfen und was deine Art von Arbeit absetzen darf.',
   },
   {
     question: 'Wie genau ist dieser Steuerrechner?',
     answer:
-      'Er rechnet genau mit den Zahlen, die du eingibst, und mehr nicht. Er wendet die Sätze für Working Holiday Maker und australische Steuerresidenten für 2025-26 auf dein Einkommen und die einbehaltene Steuer an. Nimm die Zahl als Ausgangspunkt, nicht als Endergebnis.',
+      'Er rechnet genau mit den Zahlen, die du eingibst, und mehr nicht. Er wendet die Sätze für Working Holiday Maker und australische Steuerresidenten für 2025/26 auf dein Einkommen und die einbehaltene Steuer an. Nimm die Zahl als Ausgangspunkt, nicht als Endergebnis.',
   },
   {
     question: 'Welche Steuersätze nutzt der Rechner?',
     answer:
-      'Für Working Holiday Maker mit 417 oder 462 Visum: 15 % auf die ersten 45.000 $, 30 % von 45.001 bis 135.000 $, 37 % von 135.001 bis 190.000 $ und 45 % darüber, ohne Freibetrag. Für australische Steuerresidenten: Freibetrag bis 18.200 $, dann 16 % bis 45.000 $, 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber. Welcher der beiden für dich gilt, ist eine Beurteilung deiner Umstände und keine Einstellung.',
+      'Für Working Holiday Maker mit einem 417- oder 462-Visum: 15 % auf die ersten 45.000 $, 30 % von 45.001 bis 135.000 $, 37 % von 135.001 bis 190.000 $ und 45 % darüber, ohne Freibetrag. Für australische Steuerresidenten: Freibetrag bis 18.200 $, dann 16 % bis 45.000 $, 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber. Welcher der beiden für dich gilt, ist eine Beurteilung deiner Umstände und keine Einstellung.',
   },
   {
     question: 'Warum berücksichtigt der Rechner die Medicare Levy nicht?',
     answer:
-      'Weil sie bei den meisten, die ihn benutzen, gar nicht anfallen dürfte. Die Medicare Levy ist separate 2 % des zu versteuernden Einkommens, und Working Holiday Maker aus Ländern ohne Sozialversicherungsabkommen, Deutschland eingeschlossen, können sie über eine Befreiung streichen lassen.\n\nSie standardmäßig einzurechnen würde die Rückerstattung für die Mehrheit zu niedrig zeigen, deshalb gehört sie in die Prüfung, wo dein Anspruch geklärt werden kann.',
+      'Weil sie bei den meisten, die ihn benutzen, gar nicht anfallen dürfte. Die Medicare Levy beträgt zusätzlich 2 % des zu versteuernden Einkommens, und Working Holiday Maker aus Ländern ohne Sozialversicherungsabkommen, Deutschland eingeschlossen, können sie über eine Befreiung streichen lassen.\n\nSie standardmäßig einzurechnen, würde die Rückerstattung bei den meisten zu niedrig ausweisen, deshalb gehört sie in die Prüfung, wo dein Anspruch geklärt werden kann.',
   },
   {
     question: 'Der Rechner zeigt eine Nachzahlung. Ist das das Ende?',
     answer:
-      'Normalerweise nicht. Eine angezeigte Steuerschuld bedeutet fast immer, dass Einkommen im Spiel ist, von dem wenig oder nichts einbehalten wurde, typischerweise ABN-Arbeit, oder dass keine absetzbaren Kosten drinstecken, weil es dafür kein Feld gibt.\n\nAbsetzbare Kosten senken das zu versteuernde Einkommen und können aus einer Nachzahlung eine Rückerstattung machen. Lass die Position prüfen.',
+      'Normalerweise nicht. Eine angezeigte Steuerschuld bedeutet fast immer, dass Einkommen im Spiel ist, von dem wenig oder nichts einbehalten wurde, typischerweise ABN-Arbeit, oder dass keine absetzbaren Kosten drinstecken, weil es dafür kein Feld gibt.\n\nAbsetzbare Kosten senken das zu versteuernde Einkommen und können das Ergebnis verändern. Lass die Position prüfen.',
   },
   {
-    question: 'Kannst du den Rechner auch nutzen, wenn du schon zurück in Deutschland bist?',
+    question: 'Kann ich den Rechner auch nutzen, wenn ich schon zurück in Deutschland bin?',
     answer:
       'Ja. Deine australische Steuerposition hängt vom Einkommen ab, das du in Australien verdient hast, und vom Visum, mit dem du es verdient hast, nicht davon, wo du jetzt wohnst.\n\nDer Rechner funktioniert aus Berlin genauso wie aus Sydney, und eine Steuererklärung lässt sich von überall einreichen. Neu ist nach der Abreise nur, dass auch deine Super über DASP beantragt werden kann.',
   },
   {
-    question: 'Was macht der Rechner mit dem Superannuation Guthaben?',
+    question: 'Was macht der Rechner mit dem Superannuation-Guthaben?',
     answer:
-      'Er wendet den DASP-Steuersatz auf das eingegebene Guthaben an und zeigt, was auf deinem Konto ankäme. Für alle, die jemals ein 417 oder 462 Visum hatten, sind das 65 % auf den steuerpflichtigen Anteil, aus 10.000 $ werden also etwa 3.500 $.\n\nDie Super ist ein eigener Antrag, getrennt von der Steuererklärung, und kann erst ausgezahlt werden, wenn du Australien verlassen hast und dein Visum abgelaufen oder annulliert ist.',
+      'Er wendet den DASP-Steuersatz auf das eingegebene Guthaben an und zeigt, was auf deinem Konto ankäme. Für alle, die jemals ein 417- oder 462-Visum hatten, sind das 65 % auf den steuerpflichtigen Anteil, aus 10.000 $ werden also etwa 3.500 $.\n\nDie Super ist ein eigener Antrag, getrennt von der Steuererklärung, und kann erst ausgezahlt werden, wenn du Australien verlassen hast und dein Visum abgelaufen oder annulliert ist.',
   },
 ]
 
@@ -104,7 +104,7 @@ const webAppSchema = {
   '@type': 'WebApplication',
   name: 'Steuerrechner für Work and Travel in Australien',
   description:
-    'Grobe Schätzung der australischen Steuerrückerstattung und der DASP Superannuation für Inhaber von Working Holiday Visa, mit den Sätzen 2025-26.',
+    'Grobe Schätzung der australischen Steuerrückerstattung und der DASP-Superannuation für Inhaber von Working-Holiday-Visa, mit den Sätzen 2025/26.',
   url: `${SITE_URL}/de/calculator`,
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Any',

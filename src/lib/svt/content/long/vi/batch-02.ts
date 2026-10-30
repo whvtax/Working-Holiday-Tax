@@ -119,11 +119,11 @@ Một cách kiểm tra đơn giản: lấy tiền thuế bị trừ chia cho t�
 
 Hãy nhớ rằng super do chủ lao động đóng thêm, ngoài tiền lương. Super không được làm giảm lương thực nhận của bạn.
 
-## Vì sao một số du học sinh được nhận lại tiền?
+## Vì sao số thuế bị trừ có thể khác số thuế phải đóng?
 
 Mỗi kỳ lương được tính thuế riêng. Chủ lao động không biết cả năm bạn sẽ kiếm được bao nhiêu, hay bạn có nghỉ làm một học kỳ hay không. Khi bạn nộp hồ sơ, ATO nhìn vào tổng thu nhập thực tế của bạn trong năm.
 
-**Ví dụ (năm 2025-26).** Một du học sinh có thể là người cư trú về thuế, kiếm được $20,000 từ một công việc casual trong năm 2025-26, và có đăng ký ngưỡng miễn thuế. Thuế thu nhập là 16% trên phần vượt $18,200, tức 16% của $1,800 = $288. Sau đó khoản giảm thuế cho thu nhập thấp (low income tax offset) $700 làm số thuế này về 0, vì khoản giảm này không được hoàn thành tiền và không thể làm số thuế xuống dưới 0. Nếu trong năm chủ lao động đã trừ $900, hồ sơ thuế sẽ so sánh $900 đã bị trừ với số thuế phải đóng là 0. Ví dụ này giả định không có Medicare levy, chẳng hạn vì du học sinh đó được miễn Medicare levy.
+**Ví dụ (năm 2025-26).** Một du học sinh có thể là người cư trú về thuế, kiếm được $20,000 từ một công việc casual trong năm 2025-26, và có đăng ký ngưỡng miễn thuế. Thuế thu nhập là 16% trên phần vượt $18,200, tức 16% của $1,800 = $288. Sau đó khoản giảm thuế cho thu nhập thấp (low income tax offset) $700 làm số thuế này về 0, vì khoản giảm này không được hoàn lại thành tiền và không thể làm số thuế xuống dưới 0. Nếu trong năm chủ lao động đã trừ $900, hồ sơ thuế sẽ so sánh $900 đã bị trừ với số thuế phải đóng là 0. Ví dụ này giả định không có Medicare levy, chẳng hạn vì du học sinh đó được miễn Medicare levy.
 
 Một người không cư trú về thuế kiếm cùng $20,000 sẽ đóng 30% ngay từ đồng đầu tiên: $6,000. Nếu chủ lao động trừ ít hơn số đó, người này sẽ phải đóng thêm.
 
@@ -373,7 +373,7 @@ Nếu cách đó không được, ATO có công cụ trực tuyến để báo c
 
 Nếu bạn chưa từng chọn quỹ, chủ lao động phải hỏi ATO quỹ hiện có của bạn (gọi là quỹ gắn sẵn, stapled fund) và đóng vào quỹ đó. Nếu bạn hoàn toàn chưa có quỹ nào, chủ lao động có thể dùng quỹ mặc định của họ. Để mọi thứ đơn giản, hãy đưa cùng một thông tin quỹ cho mọi chủ lao động bằng mẫu super standard choice form (mẫu chọn quỹ super). Một quỹ nghĩa là một số dư để kiểm tra, và sau này là một lần rút.
 
-Khi bạn rời Úc và visa đã hết hiệu lực, bạn có thể rút super theo diện Departing Australia Superannuation Payment (DASP). Với du học sinh chưa từng có visa working holiday, phần đã chịu thuế (taxed element) bị đánh thuế 35%. Mỗi đồng được đóng đúng là một đồng bạn có thể rút về sau, nên kiểm tra ngay từ bây giờ là đáng công.
+Khi bạn rời Úc và visa đã hết hiệu lực, tiền super có thể được rút theo diện Departing Australia Superannuation Payment (DASP), nhưng hiện tại việc xin DASP không khả dụng. Với du học sinh chưa từng có visa working holiday, phần đã chịu thuế (taxed element) bị đánh thuế 35%. Mỗi đồng được đóng đúng là một đồng bạn có thể rút về sau, nên kiểm tra ngay từ bây giờ là đáng công.
 
 Nếu bạn ở lại Úc sau khi học xong, ví dụ với visa tốt nghiệp, tiền super của bạn tiếp tục tăng trong cùng một quỹ. Dù thế nào, kiểm tra từng phiếu lương khi bạn còn làm cho chủ lao động đó vẫn dễ hơn nhiều so với đi đòi một khoản bị thiếu nhiều năm sau.
 
@@ -397,7 +397,7 @@ Nếu bạn có câu hỏi về super trong hồ sơ thuế, bạn có thể nh�
     title: 'DASP mất bao lâu với du học sinh: các mốc thời gian',
     description: 'ATO cho biết đơn DASP đầy đủ thường được chi trả trong vòng 28 ngày. Các mốc thời gian từng bước cho du học sinh, từ ca làm cuối cùng đến khi tiền về tài khoản.',
     answer: 'ATO cho biết DASP thường được chi trả trong vòng 28 ngày kể từ khi nhận được đơn đầy đủ. Trước khi bắt đầu tính 28 ngày đó, bạn phải đã rời Úc và visa của bạn phải không còn hiệu lực.',
-    body: `Khi học xong và rời Úc, bạn có thể rút tiền super qua Departing Australia Superannuation Payment, gọi tắt là DASP (khoản super chi trả khi rời Úc). Du học sinh hay hỏi việc này mất bao lâu. Câu trả lời thật là 28 ngày chỉ bắt đầu tính khi đơn của bạn đã đầy đủ, và có vài bước phải xong trước khi bạn được nộp đơn. Bài này đi qua từng mốc thời gian.
+    body: `Khi học xong và rời Úc, tiền super có thể được rút qua Departing Australia Superannuation Payment, gọi tắt là DASP (khoản super chi trả khi rời Úc). Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang của ATO. Du học sinh hay hỏi việc này mất bao lâu. Câu trả lời thật là 28 ngày chỉ bắt đầu tính khi đơn của bạn đã đầy đủ, và có vài bước phải xong trước khi bạn được nộp đơn. Bài này đi qua từng mốc thời gian.
 
 ## Bước 1: khoản super cuối cùng của bạn
 
@@ -475,7 +475,7 @@ Hồ sơ thuế cuối cùng của bạn là một việc riêng, tách biệt v
     title: 'Thuế trên tiền super khi du học sinh rời Úc',
     description: 'Với du học sinh chưa từng có visa working holiday, thuế DASP là 35% trên phần đã chịu thuế. Cách tính các mức thuế, ví dụ cụ thể, và vì sao từng có visa 417 hay 462 lại quan trọng.',
     answer: 'Nếu bạn chưa từng có visa working holiday, thuế DASP là 0% với phần miễn thuế (tax-free component), 35% với phần đã chịu thuế (taxed element) và 45% với phần chưa chịu thuế (untaxed element). Nếu khoản rút có tiền super từ các khoản đóng khi bạn có visa 417 hoặc 462, mức 65% áp dụng cho toàn bộ số tiền.',
-    body: `Khi rời Úc sau khi học xong, bạn có thể rút số tiền super mà chủ lao động đã đóng theo diện Departing Australia Superannuation Payment (DASP). Thuế được trừ trước khi bạn nhận tiền. Mức thuế với phần lớn du học sinh thấp hơn mức mà nhiều người đọc được trên mạng, vốn là mức dành cho người có visa working holiday. Bài này giải thích các mức thuế dành cho du học sinh.
+    body: `Khi rời Úc sau khi học xong, số tiền super mà chủ lao động đã đóng có thể được rút theo diện Departing Australia Superannuation Payment (DASP). Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang của ATO. Thuế được trừ trước khi bạn nhận tiền. Mức thuế với phần lớn du học sinh thấp hơn mức mà nhiều người đọc được trên mạng, vốn là mức dành cho người có visa working holiday. Bài này giải thích các mức thuế dành cho du học sinh.
 
 ## Các mức thuế DASP là bao nhiêu?
 
@@ -548,7 +548,7 @@ Hệ thống DASP trực tuyến của ATO miễn phí.
 - Tìm mọi tài khoản super của bạn trong myGov.
 - Bảo đảm quỹ có đúng họ tên và ngày sinh của bạn.
 - Giữ tên quỹ, ABN và số thành viên.
-- Sau khi visa hết hiệu lực và bạn đã rời Úc, nộp đơn qua hệ thống DASP trực tuyến của ATO.
+- Sau khi visa hết hiệu lực và bạn đã rời Úc, kiểm tra trên trang ATO xem DASP có sẵn không.
 
 DASP tách biệt với hồ sơ thuế cuối cùng của bạn. Nếu bạn muốn được giúp với hồ sơ đó, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
@@ -561,8 +561,8 @@ DASP tách biệt với hồ sơ thuế cuối cùng của bạn. Nếu bạn mu
   'what-happens-to-unclaimed-super-international-students': {
     title: 'Tiền super không rút sẽ ra sao khi du học sinh rời Úc',
     description: 'Nếu bạn rời Úc mà không rút super, sau 6 tháng quỹ sẽ chuyển tiền cho ATO. Tiền vẫn là của bạn. Du học sinh tìm và rút lại khoản này về sau thế nào.',
-    answer: 'Nếu bạn đã rời Úc, visa đã hết hiệu lực và đã qua 6 tháng, quỹ super sẽ chuyển số dư của bạn cho ATO dưới dạng super không có người nhận (unclaimed super). Tiền vẫn là của bạn, và bạn có thể rút từ ATO theo diện DASP bất cứ lúc nào.',
-    body: `Nhiều du học sinh rời Úc sau khi tốt nghiệp mà chưa rút tiền super. Cuộc sống bận rộn, và việc rút tiền có vẻ là chuyện để sau. Rồi một số bạn lo rằng tiền đã mất. Không phải vậy. Bài này giải thích tiền super của bạn đi đâu nếu bạn không rút, và cách lấy lại.
+    answer: 'Nếu bạn đã rời Úc, visa đã hết hiệu lực và đã qua 6 tháng, quỹ super sẽ chuyển số dư của bạn cho ATO dưới dạng super không có người nhận (unclaimed super). Tiền vẫn là của bạn, và theo ATO, sau này bạn có thể xin lại từ ATO theo diện DASP.',
+    body: `Nhiều du học sinh rời Úc sau khi tốt nghiệp mà chưa rút tiền super. Cuộc sống bận rộn, và việc rút tiền có vẻ là chuyện để sau. Rồi một số bạn lo rằng tiền đã mất. Không phải vậy. Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang của ATO. Bài này giải thích tiền super của bạn đi đâu nếu bạn không rút, và cách lấy lại.
 
 ## Super không có người nhận là gì?
 
@@ -629,12 +629,12 @@ Nếu phiếu lương của một công việc có ghi super, nhưng cả quỹ 
 - Trước khi đi, cài đặt myGov để dùng được từ nước ngoài.
 - Ghi lại tên mọi quỹ và số thành viên.
 - Sau 6 tháng, xem myGov để tìm super “ATO-held”, và để ý ngày “as at”.
-- Rút qua hệ thống DASP trực tuyến của ATO.
+- Kiểm tra trên trang ATO xem DASP có sẵn không, rồi mới xin rút.
 - Báo cáo mọi khoản super có trên phiếu lương nhưng không tài khoản nào nhận được.
 
 Hồ sơ thuế cuối cùng của bạn ở Úc tách biệt với tiền super. Nếu bạn muốn được giúp với hồ sơ đó, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
-      { q: 'Có hạn chót để rút tiền super do ATO giữ không?', a: 'ATO cho biết bạn có thể rút tiền super theo diện DASP bất cứ lúc nào. Tiền không vì thế mà thôi là của bạn.' },
+      { q: 'Có hạn chót để rút tiền super do ATO giữ không?', a: 'ATO cho biết không có hạn chót để xin DASP. Tiền không vì thế mà thôi là của bạn.' },
       { q: 'Nếu ATO trả DASP thì thuế có khác không?', a: 'Không. Các mức thuế DASP như nhau, dù quỹ hay ATO là bên trả tiền.' },
       { q: 'Sau khi visa du học hết hiệu lực, tôi không có visa nào khác. Khi nào tiền super của tôi được chuyển đi?', a: 'Quỹ sẽ chuyển tiền cho ATO khi đã qua 6 tháng kể từ lúc bạn rời Úc và visa hết hiệu lực.' },
     ],
@@ -703,7 +703,7 @@ Hãy kiểm tra trước. ATO cho biết bạn có thể mất bảo hiểm ở 
 
 ## Khi nào bạn có thể rút?
 
-Du học sinh có thể rút super theo diện Departing Australia Superannuation Payment (DASP) khi đã rời Úc và không còn visa nào có hiệu lực. Nếu bạn chuyển sang visa tốt nghiệp hoặc visa khác, bạn chưa đủ điều kiện.
+Theo điều kiện của ATO, Departing Australia Superannuation Payment (DASP) dành cho người đã rời Úc và không còn visa nào có hiệu lực. Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang ATO. Nếu bạn chuyển sang visa tốt nghiệp hoặc visa khác, bạn chưa đủ điều kiện.
 
 Với du học sinh chưa từng có visa working holiday, thuế DASP là 35% trên phần đã chịu thuế (taxed element). Nếu bạn không rút trong vòng 6 tháng kể từ khi rời Úc và visa hết hiệu lực, quỹ sẽ chuyển tiền super của bạn cho ATO, và bạn vẫn có thể rút từ đó.
 

@@ -12,6 +12,8 @@ import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES, paymentReceivedBody } from '@/lib/will/service';
+import { lodgedVariant } from '@/lib/will/followup-gate-30oct';
+import { refreshCustomerLang } from '@/lib/will/language-30oct';
 import { paymentReceivedTemplateKey, estimateInvoiceMessage, estimateInvoiceTemplateKey, estimatePayableMessage, estimatePayableTemplateKey, signatureMessage, signatureTemplateKey, lodgedConfirmationMessage, lodgedConfirmationTemplateKey, lodgedPayableMessage, lodgedPayableTemplateKey, metaTemplateLang } from '@/lib/will/i18n';
 import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName, syncGoogleReviews } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
@@ -255,7 +257,7 @@ async function libraryTemplateFor(
  *  twice. The owner may be marking Paid a day after the customer last wrote,
  *  so it goes as the Library-keyed template with text fallback, exactly like
  *  the other "may or may not have written recently" system lines. */
-const FORM_LINK_RE = /workingholidaytax\.com\.au\/tax-form/i;
+const FORM_LINK_RE = /workingholidaytax\.com\.au\/start/i;
 
 /** 1 Oct (72-hour audit, Naatt and Felix): the team sent "Payment received"
  *  and the form link by hand, and the record still said "not paid / Payment
@@ -1292,6 +1294,8 @@ async function handlePost(req: Request) {
 
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
+      // 30 Oct: the wording follows the language the customer writes in now.
+      customer.lang = (await refreshCustomerLang(store, customer)).lang;
       // No pipeline-stage gate (Jo, 30 Aug). The owner can send the estimate and
       // invoice from ANY stage: this is a deliberate manual action with a typed
       // amount and a typed invoice link, and the completed CRM task is itself the
@@ -1368,6 +1372,8 @@ async function handlePost(req: Request) {
       if (!b.customerId) return bad('customerId required');
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
+      // 30 Oct: the wording follows the language the customer writes in now.
+      customer.lang = (await refreshCustomerLang(store, customer)).lang;
       // Jo, 4 Sep: the button decides. Wherever the customer sits in the pipe,
       // sending "your tax return is ready for signature" from the CRM moves
       // them to Signature, because the return really has been emailed to them.
@@ -1417,6 +1423,8 @@ async function handlePost(req: Request) {
       if (!b.customerId) return bad('customerId required');
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
+      // 30 Oct: the wording follows the language the customer writes in now.
+      customer.lang = (await refreshCustomerLang(store, customer)).lang;
       // Same rule as the signature button (Jo, 4 Sep): the click is the truth.
       // A customer moved to Completed by hand, or still at Estimate when the
       // return was lodged, could not be marked lodged at all before this.
@@ -1427,7 +1435,10 @@ async function handlePost(req: Request) {
       // template.
       // Jo, 1 Oct: a customer marked "tax payable" never hears "your refund
       // should arrive"; they get the Notice of Assessment wording instead.
-      const payable = customer.outcome === 'PAYABLE';
+      // 30 Oct: "owes" is read from the outcome flag AND from the chat (a negative
+      // estimate, the payable estimate, the team telling them the amount is
+      // payable), so the refund wording never reaches someone who owes.
+      const payable = lodgedVariant(customer, await store.listMessages(customer.id).catch(() => [])) === 'payable';
       const lodgedKey = payable ? lodgedPayableTemplateKey(customer.lang) : lodgedConfirmationTemplateKey(customer.lang);
       const body = await libraryBody(lodgedKey, payable
         ? lodgedPayableMessage(customer.lang)
@@ -1459,7 +1470,7 @@ async function handlePost(req: Request) {
         // 16 Oct (Jo): a customer who owes tax was just told "we'll message
         // you again in about two weeks". Fourteen days from now, the team
         // gets an URGENT task to send the ATO payment instructions.
-        if (customer.outcome === 'PAYABLE') {
+        if (payable) {
           await store.cancelJobsFor(customer.id, ['PAYABLE_FOLLOWUP']).catch(() => 0);
           await store.addJob({
             customerId: customer.id, kind: 'PAYABLE_FOLLOWUP', payload: {},

@@ -202,7 +202,7 @@ const SECTIONS: Section[] = [
     "h2": "What has to be judged rather than looked up?",
     "paras": [
       "The clothing question, first. Whether an item is a compulsory uniform turns on how distinctive it is and whether the employer requires it. Whether footwear is protective turns on the hazard in your venue. A written uniform policy and a photograph usually settle it.",
-      "The income side is where a professional view pays. Working holiday makers do not get the tax free threshold, so a venue that withholds as though you do leaves a bill behind. That changes if the Addy decision applies to you, which it can for British, German and Japanese passport holders who were Australian residents for tax purposes. It depends on your own circumstances and has to be reviewed properly."
+      "The income side is where a professional view pays. Working holiday makers do not get the tax free threshold, so a venue that withholds as though you do leaves a bill behind. That may change if a court ruling known as Addy applies to you. Whether it does depends on your passport and on how your year looked, and that is part of our review."
     ]
   }
 ]

@@ -40,6 +40,10 @@ import { deliverOut } from './channel';
 import { winbackMessage, winbackTemplateKey } from './i18n';
 import { withinQuietHours } from './config';
 import { greetingName } from './scheduler';
+import { refreshCustomerLang, hasTemplateVariant } from './language-30oct';
+import { declinedInChat, messagesOf } from './followup-gate-30oct';
+import { scrubCustomerText } from './brand-voice';
+import { raiseOrUpdateTask } from './tasks';
 
 export const WINBACK_AFTER_DAYS = 30;
 export const WINBACK_REPLY_DAYS = 7;
@@ -176,6 +180,16 @@ export async function runWinbackPass(nowMs: number, passBudgetMs = 25_000): Prom
   const toDecide = plans.filter((p) => p.plan.kind === 'decide')
     .sort((a, b) => (lastActivity(b.c) ?? 0) - (lastActivity(a.c) ?? 0));
   for (const { c } of toDecide) {
+    // 30 Oct, nothing after a no: a lead whose last word in the chat is "not
+    // interested" / "going elsewhere" / "I'll pass" is finished without a model
+    // call and without a message.
+    const said = declinedInChat(await messagesOf(store, c.id));
+    if (said) {
+      await saveRecord(store, c.id, { decision: 'never', decidedAt: new Date().toISOString(), reason: 'The customer said no.' });
+      await toFinal(store, c, 'never');
+      summary.never++; summary.finals++;
+      continue;
+    }
     // Only start a model call that can finish inside this pass: a call cut off
     // by the end of the tick would cost money and decide nothing.
     if (passBudgetMs - (Date.now() - started) < WINBACK_DECISION_MS) { summary.incomplete = true; break; }
@@ -226,11 +240,37 @@ export async function runWinbackPass(nowMs: number, passBudgetMs = 25_000): Prom
     for (const { c, rec } of ready) {
       if (sentToday >= WINBACK_DAILY_CAP || thisPass >= WINBACK_SENDS_PER_PASS) break;
       if (Date.now() - started > passBudgetMs) { summary.incomplete = true; break; }
-      const hook = (rec?.message ?? '').trim();
-      if (!hook) continue;
+      const hookRaw = (rec?.message ?? '').trim();
+      if (!hookRaw) continue;
+      // The stored paragraph may carry the retired payee name or a dash; it is
+      // cleaned here and again at the single send point (channel.deliverOut).
+      const hook = scrubCustomerText(hookRaw);
+      // 30 Oct: nothing after a no, checked once more against the chat at the
+      // moment of sending (the decision may be weeks old).
+      const msgs = await messagesOf(store, c.id);
+      if (declinedInChat(msgs)) {
+        await saveRecord(store, c.id, { decision: 'never', decidedAt: new Date().toISOString(), reason: 'The customer said no.' });
+        await toFinal(store, c, 'never');
+        summary.finals++;
+        continue;
+      }
+      // 30 Oct: their language, from what they actually write. Winback
+      // templates exist in English, German and Japanese only; anyone else is
+      // never sent the English one. The personal paragraph (written in their
+      // language) goes to Jo as ONE task instead, and the lead is finished.
+      const langNow = (await refreshCustomerLang(store, c)).lang ?? c.lang;
+      if (!hasTemplateVariant(langNow)) {
+        await raiseOrUpdateTask(store, c, {
+          reason: `Win-back ready but there is no win-back template in ${langNow}. Send the paragraph below yourself if you want to.`,
+          severity: 'REVIEW', newContext: hook.slice(0, 300), suggestedReply: hook,
+        });
+        await toFinal(store, c, 'no_language_variant');
+        summary.finals++;
+        continue;
+      }
       const name = greetingName(c);
-      const body = winbackMessage(c.lang, name, hook);
-      const tpl = { name: winbackTemplateKey(c.lang), params: [name, hook], lang: c.lang };
+      const body = winbackMessage(langNow, name, hook);
+      const tpl = { name: winbackTemplateKey(langNow), params: [name, hook], lang: langNow };
       const out = await deliverOut(c, body, 'AI', { system: true, winback: true, waTemplate: tpl }, tpl, {
         onFailure: {
           reason: (e) => `Win-back did not go out: ${e ?? 'WhatsApp rejected it'}. Check that the template "${tpl.name}" is approved in WhatsApp Manager. Win-backs are paused until tomorrow.`,

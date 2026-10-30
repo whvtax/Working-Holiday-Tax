@@ -918,16 +918,16 @@ export const BLOG_EN: readonly ArticleContent[] = [
     published: '2026-10-27', updated: '2026-10-27',
     label: 'The 31 October deadline',
     meta: {
-      title: 'Tax return deadline 2026 for students: 2 November',
-      description: 'Lodging your own 2025-26 return? 31 October is a Saturday, so the ATO gives you until 11:59 pm on Monday 2 November 2026. With a tax agent, 31 October still counts.',
+      title: 'Tax return deadline 2026 for students: 31 October',
+      description: 'Lodging your own 2025-26 return? The deadline is 11:59 pm on 31 October 2026. With a tax agent, 31 October is still the key date.',
     },
-    h1: { before: 'The tax deadline is ', mark: 'Monday 2 November' },
-    lead: 'Your 2025-26 return covers 1 July 2025 to 30 June 2026. If you lodge it yourself, it is due by Monday 2 November 2026. Here is what the date means for you, and what happens if you miss it.',
+    h1: { before: 'The tax deadline is ', mark: '31 October 2026' },
+    lead: 'Your 2025-26 return covers 1 July 2025 to 30 June 2026. If you lodge it yourself, it is due by 31 October 2026. Here is what the date means for you, and what happens if you miss it.',
     sections: [
       {
         id: 'when', title: 'When is my return due?',
         blocks: [
-          { p: 'The usual date is 31 October. In 2026 that is a Saturday, so the ATO says people lodging their own return have until 11:59 pm local time on Monday 2 November 2026.' },
+          { p: 'The ATO says people lodging their own return have until 11:59 pm local time on 31 October 2026.' },
           { p: 'The date is the same if you have already finished your course and gone home.' },
         ],
       },
@@ -936,7 +936,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
         blocks: [
           { p: 'Registered tax agents have a lodgment program that usually lets them lodge for their clients after 31 October.' },
           { list: [
-            'To use the later date, you need to be on the agent\'s client list by 31 October. That date does not move to Monday.',
+            'To use the later date, you need to be on the agent\'s client list by 31 October.',
             'If an earlier year was still not lodged on 30 June 2026, your return is due on 31 October, even with a tax agent.',
           ] },
         ],
@@ -970,7 +970,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Failure to lodge on time penalty', href: `${ATO}/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty` },
     ],
     related: ['blog/late-lodgment', 'blog/income-statement-tax-ready', 'pricing'],
-    short: {"answer": "If you lodge your own 2025-26 return, it is due by 11:59 pm local time on Monday 2 November 2026, because 31 October is a Saturday. To use a tax agent's later date, you need to be on their client list by 31 October.", "mark": "Monday 2 November 2026", "facts": [{"figure": "11:59 pm", "label": "local time, Monday 2 November, for your own return"}, {"figure": "$1,820", "label": "the most the late lodgment penalty can reach"}]},
+    short: {"answer": "If you lodge your own 2025-26 return, it is due by 11:59 pm local time on 31 October 2026. To use a tax agent's later date, you need to be on their client list by 31 October.", "mark": "31 October 2026", "facts": [{"figure": "11:59 pm", "label": "local time, 31 October, for your own return"}, {"figure": "$1,820", "label": "the most the late lodgment penalty can reach"}]},
   },
   {
     slug: 'late-lodgment',

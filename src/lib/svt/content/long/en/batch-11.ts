@@ -782,7 +782,7 @@ When your course or your 485 visa ends and you go home, plan these steps:
 - Lodge your tax return after 30 June, which you can do from overseas.
 - Claim your super as a Departing Australia Superannuation Payment (DASP) after your visa has ended and you have left. The ATO DASP online system is free.
 
-DASP is taxed at 35% on the taxed element if you never held a 417 or 462 visa. If part of your super came from work while you held a 417 or 462 visa, that part is taxed at 65%. This matters for graduates who were working holiday makers before they studied. Six months after you leave and your visa ends, your fund may transfer your super to the ATO, and you can still claim it.
+DASP is taxed at 35% on the taxed element if you never held a 417 or 462 visa. If any of your super came from work while you held a 417 or 462 visa, the ATO applies 65% to the whole payment. This matters for graduates who were working holiday makers before they studied. Six months after you leave and your visa ends, your fund may transfer your super to the ATO, and you can still claim it.
 
 ## Your yearly checklist
 
@@ -797,7 +797,7 @@ If you would like help with your return, you can message Student Visa Tax on Wha
       { q: 'Is a 485 graduate taxed differently from a 500 student?', a: 'No. The same rules apply. Your tax depends on your residency position and income, not on the visa subclass.' },
       { q: 'Do 500 visa holders pay the working holiday maker rate?', a: 'No. That rate is only for working holiday makers. Students and graduates use the resident or foreign resident rates.' },
       { q: 'Can I claim my university fees?', a: 'Usually not. Self-education is only claimable when it has a sufficient connection to your current job, not when it helps you get a new job.' },
-      { q: 'How is my super taxed when I leave?', a: 'If you never held a 417 or 462 visa, the taxed element of a DASP is taxed at 35%. Super from work while on a 417 or 462 visa is taxed at 65%.' },
+      { q: 'How is my super taxed when I leave?', a: 'If you never held a 417 or 462 visa, the taxed element of a DASP is taxed at 35%. If the payment includes super from work while on a 417 or 462 visa, the whole payment is taxed at 65%.' },
     ],
     sources: [
       { label: 'ATO: Studying in Australia', href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/studying-in-australia' },
@@ -821,7 +821,7 @@ This guide helps you decide based on what happened in your year.
 
 Yes. You can lodge online with myTax through myGov linked to the ATO. It is free, and much of your income information is filled in for you once your employers have finalised their reporting. Wait until your income statements show "Tax ready" before you lodge.
 
-If you lodge yourself, the usual deadline is 31 October. For the 2025-26 year, the ATO has said self-lodgers have until 11:59 pm local time on Monday 2 November 2026, because 31 October falls on a Saturday.
+If you lodge yourself, the usual deadline is 31 October. For the 2025-26 year, the ATO has said self-lodgers have until 11:59 pm local time on 31 October 2026.
 
 There is also free help. The ATO's Tax Help program is for people with an income of around $70,000 or less and simple tax affairs. It is not for contractors or people running a business, so it does not cover ABN delivery or rideshare work.
 

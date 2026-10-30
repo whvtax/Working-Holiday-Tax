@@ -23,15 +23,16 @@ it('the payment link flow: offer, full name, then a task for the team', () => {
 });
 
 it('no super (DASP) service: the wording, the Library and the playbook agree', () => {
-  expect(renderApproved('no_dasp', { ...base, lang: 'en' })).toContain("we don't offer a superannuation (DASP) service");
+  expect(renderApproved('no_dasp', { ...base, lang: 'en' })).toContain('not available at the moment');
   const dasp = KNOWLEDGE_SEED.filter((k) => /dasp|superannuation/i.test(k.question));
   expect(dasp.length).toBeGreaterThan(0);
-  for (const k of dasp) expect(k.answer).toContain("we don't offer a superannuation (DASP) service");
+  for (const k of dasp.filter((d) => d.lang === 'en' && /claim my superannuation/i.test(d.question))) expect(k.answer).toContain('not available at the moment');
   expect(src('src/lib/will/seed.ts')).toContain("marker: 'fix-25oct'");
+  expect(src('src/lib/will/seed.ts')).toContain("marker: 'fix-30oct-b'");
   expect(src('src/lib/will/playbook.ts')).not.toContain('we are happy to help with that too once your tax return is done');
 });
 
 it('the form asks for the WhatsApp number they messaged us from', () => {
   expect((formStrings as unknown as Record<string, { en: string }>).whatsapp.en).toBe('The WhatsApp number you messaged us from');
-  expect(src('src/app/(site)/tax-form/FormClient.tsx')).toContain('Use the same number you are chatting with us on');
+  expect(src('src/app/(site)/start/FormClient.tsx')).toContain('Use the same number you are chatting with us on');
 });

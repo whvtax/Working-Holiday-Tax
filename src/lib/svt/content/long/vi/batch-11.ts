@@ -322,7 +322,7 @@ Công việc ở trang trại có những rủi ro thật sự: gia súc, máy m
 
 Nếu năm của bạn có một công việc ở trang trại cùng với các công việc khác, bạn có thể nhắn cho Student Visa Tax qua WhatsApp để được hỗ trợ làm hồ sơ thuế.`,
     faq: [
-      { q: 'Station hand là nhân viên hay nhà thầu?', a: 'Station hand thường là nhân viên thuộc Pastoral Award. Chỉ có ABN thôi không biến bạn thành nhà thầu, và chủ lao động không nên bắt bạn phải có ABN mới cho đi làm.' },
+      { q: 'Station hand là nhân viên hay nhà thầu?', a: 'Station hand thường là nhân viên thuộc Pastoral Award. Chỉ có ABN thôi không biến bạn thành nhà thầu, và chủ lao động không nên bắt bạn phải có ABN mới được đi làm.' },
       { q: 'Trang trại có được trừ tiền phòng và tiền ăn của tôi không?', a: 'Chỉ trong một số trường hợp hạn chế, ví dụ khi bạn đồng ý bằng văn bản và khoản trừ chủ yếu là vì lợi ích của bạn. Hãy có các chi tiết bằng văn bản và kiểm tra khoản trừ có hiện trên phiếu lương không.' },
       { q: 'Tôi có được khấu trừ giày ủng đi làm không?', a: 'Giày bảo hộ mà công việc cần thường được khấu trừ nếu bạn tự trả tiền và giữ hóa đơn. Giày thường mà bạn cũng mang hằng ngày thì không.' },
     ],
@@ -448,7 +448,7 @@ Kế hoạch trả góp không làm tiền lãi ngừng tính. GIC vẫn tiếp 
 
 ## Tiền lãi có được giảm không?
 
-ATO cho biết có thể miễn giảm (remit), nghĩa là giảm bớt hoặc xóa, GIC nếu có hoàn cảnh đặc biệt (extenuating circumstances). Bạn phải tự đề nghị và giải thích lý do, kèm bằng chứng. Chỉ phàn nàn chung chung rằng số tiền quá lớn là không đủ.
+ATO cho biết có thể miễn giảm (remit), nghĩa là giảm bớt hoặc xóa, GIC nếu có hoàn cảnh đặc biệt (extenuating circumstances). Bạn phải tự đề nghị và giải thích lý do, kèm bằng chứng. Chỉ than phiền chung chung rằng số tiền quá lớn là không đủ.
 
 Đề nghị sớm sẽ có lợi hơn. Liên hệ ATO trước ngày đến hạn đặt bạn vào vị trí tốt hơn nhiều so với việc bỏ qua thư từ hàng tháng trời.
 
@@ -532,9 +532,9 @@ Tiền hoàn thuế (nếu có) được trả vào tài khoản ngân hàng ở
 
 Nếu bạn có đi làm, nhiều khả năng bạn cần nộp hồ sơ sau ngày 30 tháng 6, và bạn có thể làm việc này từ nước ngoài. ATO cho biết nộp hồ sơ trước ngày 30 tháng 6 khi rời Úc vĩnh viễn chỉ làm được bằng bản giấy và chậm hơn. Trước khi đi, hãy xin từng chủ lao động bảng tóm tắt thu nhập (payment summary) mà bạn cần. ATO cho biết chủ lao động phải đưa cho bạn trong vòng 14 ngày nếu bạn yêu cầu lúc nghỉ việc để rời Úc.
 
-Bạn cũng có thể nộp hồ sơ cho những năm trước mà bạn đã bỏ sót. Có thể có tiền đang chờ bạn, nhưng nộp trễ có thể bị phạt, nên tốt nhất là nộp càng sớm càng tốt.
+Bạn cũng có thể nộp hồ sơ cho những năm trước mà bạn đã bỏ sót. Nếu năm đó thuế bị trừ nhiều hơn số bạn phải đóng, phần dư có thể được hoàn lại. Nộp trễ có thể bị phạt, nên tốt nhất là nộp càng sớm càng tốt.
 
-Tiền super tách biệt với tiền hoàn thuế. Chủ lao động đóng 12% thu nhập thông thường của bạn vào một quỹ super. Sau khi visa của bạn hết hiệu lực và bạn đã rời Úc, bạn có thể rút số tiền này dưới dạng khoản chi trả super khi rời Úc (Departing Australia Superannuation Payment, DASP). Nếu bạn chưa từng có visa 417 hoặc 462, phần đã đóng thuế (taxed element) bị đánh thuế 35%.
+Tiền super tách biệt với tiền hoàn thuế. Chủ lao động đóng 12% thu nhập thông thường của bạn vào một quỹ super. Sau khi visa của bạn hết hiệu lực và bạn đã rời Úc, bạn có thể rút số tiền này dưới dạng khoản chi trả super khi rời Úc (Departing Australia Superannuation Payment, DASP). Nếu bạn chưa từng có visa 417 hoặc 462, phần đã chịu thuế (taxed element) bị đánh thuế 35%.
 
 ## Danh sách để nhận lại tiền thuế
 
@@ -692,7 +692,7 @@ Ba quy tắc của ATO là: bạn tự bỏ tiền ra và không được hoàn 
 
 Học phí là câu hỏi hay gặp. ATO cho biết chi phí tự học nâng cao (self-education) chỉ được khấu trừ khi có mối liên hệ đủ chặt chẽ với công việc hiện tại của bạn, ví dụ duy trì hoặc nâng cao kỹ năng bạn đang dùng trong công việc đó. Khoản này không được khấu trừ nếu nó giúp bạn kiếm việc mới hoặc chuyển ngành. Với phần lớn du học sinh, học phí không được khấu trừ. Một người tốt nghiệp có visa 485 học một khóa ngắn hạn cho công việc hiện tại có thể ở trường hợp khác.
 
-Một số du học sinh và người mới tốt nghiệp làm giao hàng, chạy xe chở khách hoặc làm tự do bằng ABN. Thu nhập ABN không bị trừ thuế trước, nên bạn khai trong hồ sơ thuế cùng với các chi phí kinh doanh và đóng số thuế phải trả lúc đó. Tài xế chở khách qua ứng dụng phải đăng ký GST trước khi bắt đầu, dù kiếm được bao nhiêu. Chủ lao động không nên bắt bạn phải có ABN mới cho làm một công việc bình thường.
+Một số du học sinh và người mới tốt nghiệp làm giao hàng, chạy xe chở khách hoặc làm tự do bằng ABN. Thu nhập ABN không bị trừ thuế trước, nên bạn khai trong hồ sơ thuế cùng với các chi phí kinh doanh và đóng số thuế phải trả lúc đó. Tài xế chở khách qua ứng dụng phải đăng ký GST trước khi bắt đầu, dù kiếm được bao nhiêu. Chủ lao động không nên bắt bạn phải có ABN mới được làm một công việc bình thường.
 
 ## Khi nào và nộp hồ sơ thế nào
 
@@ -709,7 +709,7 @@ Khi khóa học hoặc visa 485 của bạn kết thúc và bạn về nước, 
 - Nộp hồ sơ thuế sau ngày 30 tháng 6, việc này bạn làm được từ nước ngoài.
 - Rút super dưới dạng khoản chi trả super khi rời Úc (Departing Australia Superannuation Payment, DASP) sau khi visa đã hết hiệu lực và bạn đã rời Úc. Hệ thống DASP trực tuyến của ATO là miễn phí.
 
-DASP bị đánh thuế 35% trên phần đã đóng thuế (taxed element) nếu bạn chưa từng có visa 417 hoặc 462. Nếu một phần super của bạn đến từ công việc trong thời gian có visa 417 hoặc 462, phần đó bị đánh thuế 65%. Điều này quan trọng với những người tốt nghiệp từng có visa working holiday trước khi đi học. Sáu tháng sau khi bạn rời Úc và visa hết hiệu lực, quỹ của bạn có thể chuyển tiền super sang ATO, và bạn vẫn có thể rút được.
+DASP bị đánh thuế 35% trên phần đã chịu thuế (taxed element) nếu bạn chưa từng có visa 417 hoặc 462. Nếu một phần super của bạn đến từ công việc trong thời gian có visa 417 hoặc 462, ATO áp dụng mức 65% cho toàn bộ khoản chi trả. Điều này quan trọng với những người tốt nghiệp từng có visa working holiday trước khi đi học. Sáu tháng sau khi bạn rời Úc và visa hết hiệu lực, quỹ của bạn có thể chuyển tiền super sang ATO, và bạn vẫn có thể rút được.
 
 ## Danh sách việc cần làm hằng năm
 
@@ -724,7 +724,7 @@ Nếu bạn cần hỗ trợ làm hồ sơ thuế, bạn có thể nhắn cho St
       { q: 'Người tốt nghiệp có visa 485 có bị đánh thuế khác với du học sinh visa 500 không?', a: 'Không. Các quy định là như nhau. Thuế của bạn tùy vào tình trạng cư trú và thu nhập, không tùy vào loại visa.' },
       { q: 'Người có visa 500 có đóng thuế theo mức của visa working holiday không?', a: 'Không. Mức đó chỉ dành cho người có visa working holiday. Du học sinh và người mới tốt nghiệp áp dụng thuế suất của người cư trú hoặc người không cư trú về thuế.' },
       { q: 'Tôi có được khấu trừ học phí đại học không?', a: 'Thường là không. Chi phí tự học nâng cao chỉ được khấu trừ khi có mối liên hệ đủ chặt chẽ với công việc hiện tại của bạn, không phải khi nó giúp bạn kiếm việc mới.' },
-      { q: 'Tiền super của tôi bị đánh thuế thế nào khi rời Úc?', a: 'Nếu bạn chưa từng có visa 417 hoặc 462, phần đã đóng thuế của DASP bị đánh thuế 35%. Super từ công việc trong thời gian có visa 417 hoặc 462 bị đánh thuế 65%.' },
+      { q: 'Tiền super của tôi bị đánh thuế thế nào khi rời Úc?', a: 'Nếu bạn chưa từng có visa 417 hoặc 462, phần đã chịu thuế của DASP bị đánh thuế 35%. Nếu khoản chi trả có bao gồm super từ công việc trong thời gian có visa 417 hoặc 462, toàn bộ khoản chi trả bị đánh thuế 65%.' },
     ],
   },
   'diy-tax-return-vs-tax-agent-international-students': {
@@ -739,7 +739,7 @@ Bài này giúp bạn quyết định dựa trên những gì đã xảy ra tron
 
 Được. Bạn có thể nộp trực tuyến bằng myTax qua myGov đã liên kết với ATO. Việc này miễn phí, và phần lớn thông tin thu nhập được điền sẵn cho bạn khi chủ lao động đã hoàn tất báo cáo. Hãy chờ đến khi bảng kê thu nhập (income statement) hiện “Tax ready” rồi mới nộp.
 
-Nếu bạn tự nộp, hạn thông thường là ngày 31 tháng 10. Với năm tài chính 2025-26, ATO cho biết người tự nộp có hạn đến 11 giờ 59 tối theo giờ địa phương, thứ Hai ngày 2 tháng 11 năm 2026, vì ngày 31 tháng 10 rơi vào thứ Bảy.
+Nếu bạn tự nộp, hạn thông thường là ngày 31 tháng 10. Với năm tài chính 2025-26, ATO cho biết người tự nộp có hạn đến 11 giờ 59 tối theo giờ địa phương ngày 31 tháng 10 năm 2026.
 
 Cũng có hỗ trợ miễn phí. Chương trình Tax Help của ATO dành cho người có thu nhập khoảng $70,000 trở xuống và tình hình thuế đơn giản. Chương trình không dành cho người làm nhà thầu (contractor) hay người đang kinh doanh, nên không bao gồm việc giao hàng hay chạy xe chở khách bằng ABN.
 

@@ -255,7 +255,7 @@ const SECTIONS: Section[] = [
       "Rostered onto sites and shifts by a cleaning company is employment under a TFN, tax withheld and super on top.",
       "A company that set your roster, supervised your work and supplied the products, then asked you to get an ABN, may be an employer wearing a contractor label.",
       "For a sole trader GST only becomes compulsory once cleaning turnover passes $75,000 in a year, which part time cleaning rarely approaches.",
-      "Residency sits under all of it and is worth more than the whole deduction list: British, German and Japanese passport holders who were Australian residents for tax purposes can carry the full tax free threshold under the Addy decision."
+      "Residency sits under all of it and can matter more than the whole deduction list. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review."
     ]
   }
 ]

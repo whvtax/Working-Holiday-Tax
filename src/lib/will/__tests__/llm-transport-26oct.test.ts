@@ -2,7 +2,7 @@ import { brandBody, anthropicMessages, ANTHROPIC_MESSAGES_URL } from '@/lib/will
 import { withBrand } from '@/lib/will/brand-context'
 
 const cached = { type: 'text', text: 'You are a team member at Working Holiday Tax, for Working Holiday Makers (backpackers).', cache_control: { type: 'ephemeral' } }
-const dynamic = { type: 'text', text: 'Form: https://workingholidaytax.com.au/tax-form' }
+const dynamic = { type: 'text', text: 'Form: https://workingholidaytax.com.au/start' }
 const body = JSON.stringify({ model: 'm', system: [cached, dynamic], messages: [{ role: 'user', content: 'hi Working Holiday Tax' }] })
 
 it('outside any brand context (and for WHT) the body is the same string', async () => {
@@ -17,7 +17,7 @@ it('for SVT every system block is rebranded and the student rules appear once, a
     expect(out.system[0].cache_control).toEqual({ type: 'ephemeral' })
     expect(out.system[0].text).toContain('Student Visa Tax')
     expect(out.system[0].text).not.toContain('STUDENT VISA TAX (')
-    expect(out.system[1].text).toContain('https://studentvisatax.com.au/tax-form')
+    expect(out.system[1].text).toContain('https://studentvisatax.com.au/jhd7hp9xd')
     expect(out.system[1].text.match(/STUDENT VISA TAX \(/g)).toHaveLength(1)
     expect(JSON.stringify(out.system)).not.toMatch(/workingholidaytax|Working Holiday Tax/)
     // The conversation itself is never rewritten.

@@ -29,7 +29,7 @@ export default function NotFoundDE() {
           className="font-light text-muted leading-[1.7] max-w-[380px] mx-auto mb-8"
           style={{ fontSize: '14px' }}
         >
-          Diese Seite existiert nicht. Lass uns dich zurück auf Kurs bringen.
+          Diese Seite gibt es nicht. Hier geht es zurück zur Startseite.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
           <Link href="/de" className="btn-primary" style={{ height: '46px', padding: '0 24px', fontSize: '13.5px' }}>

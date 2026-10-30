@@ -84,8 +84,8 @@ export function Nav() {
           { label: 'Steuernummer (TFN)',     href: '/de/tfn',            desc: 'Deine TFN beantragen' },
           { label: 'ABN-Registrierung',      href: '/de/abn',            desc: 'Als Selbstständiger arbeiten' },
           { label: 'Steuererklärung',        href: '/de/tax-return',     desc: 'Jahressteuererklärung einreichen' },
-          { label: 'Super auszahlen (DASP)', href: '/de/superannuation', desc: 'Super nach der Abreise zurück' },
-          { label: 'Medicare',               href: '/de/medicare',       desc: 'Medicare Levy Befreiung' },
+          { label: 'Super-Auszahlung (DASP)', href: '/de/superannuation', desc: 'Super nach der Abreise zurück' },
+          { label: 'Medicare',               href: '/de/medicare',       desc: 'Medicare-Levy-Befreiung' },
         ]
       : locale === 'ja'
       ? [
@@ -131,9 +131,9 @@ export function Nav() {
         ]
       : locale === 'ja'
       ? [
-          { label: '計算機',           href: '/ja/calculator' },
+          { label: '計算ツール',       href: '/ja/calculator' },
           { label: 'ブログ',           href: '/ja/blog' },
-          { label: 'お問い合わせ',     href: '/ja/contact' },
+          { label: 'お問い合わせ',    href: '/ja/contact' },
         ]
       : TOP_LINKS
 
@@ -473,7 +473,7 @@ export function Nav() {
           <GoogleReviewsBadge lang={locale} />
           <img
             src="/assets/tpb-registered.png"
-            alt={`${locale === 'de' ? 'Registrierter Steueragent' : locale === 'ja' ? '登録税理士' : 'Registered Tax Agent'} ${AGENT_TPB}`}
+            alt={`${locale === 'de' ? 'Unter der Aufsicht eines registrierten Tax Agent, Nr.' : locale === 'ja' ? '監督するタックスエージェントの登録番号' : 'Supervising registered tax agent no.'} ${AGENT_TPB}`}
             width={509}
             height={319}
             loading="lazy"

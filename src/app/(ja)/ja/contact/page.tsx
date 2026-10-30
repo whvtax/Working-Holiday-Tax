@@ -7,7 +7,7 @@ import { WA_NUMBER, EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'お問い合わせ：担当者が直接返信します',
-  description: 'WhatsAppで送ってください。営業時間内ならだいたい1時間以内に実在のスタッフが返信します。myGovもIDも給与明細も必要ありません。',
+  description: 'WhatsAppで送ってください。営業時間内ならだいたい1時間以内に担当者が返信します。myGovもIDも給与明細も必要ありません。',
   keywords: [
     'Working Holiday Tax 問い合わせ',
     'ワーホリ 税金 相談 日本語',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'お問い合わせ｜Working Holiday Tax',
-    description: 'WhatsAppが一番早い連絡方法です。営業時間内なら、だいたい1時間以内に実在のスタッフが返信します。',
+    description: 'WhatsAppが一番早い連絡方法です。営業時間内なら、だいたい1時間以内に担当者が返信します。',
     url: `${SITE_URL}/ja/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'お問い合わせ｜Working Holiday Tax',
-    description: 'WhatsAppでメッセージを送ってください。だいたい1時間以内に実在のスタッフが返信します。',
+    description: 'WhatsAppでメッセージを送ってください。だいたい1時間以内に担当者が返信します。',
   },
   robots: {
     index: true,
@@ -70,7 +70,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'この会社は信用できますか？',
-    a: '申告書は、ATOへ提出する前に登録税理士（registered tax agent）が確認して承認します。ご同意いただく契約条件はクライアント規約にすべて掲載していますし、Googleのレビューは実際にお手伝いしたワーホリの方々によるものです。',
+    a: '申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。ご同意いただく契約条件はクライアント規約にすべて掲載していますし、Googleのレビューは実際にお手伝いしたワーホリの方々によるものです。',
     link: { href: '/ja/client-agreement', label: 'クライアント規約を読む' },
   },
 ]
@@ -108,7 +108,7 @@ const contactPageLd = {
   '@id': `${SITE_URL}/ja/contact#webpage`,
   url: `${SITE_URL}/ja/contact`,
   name: 'お問い合わせ｜Working Holiday Tax',
-  description: 'WhatsAppでメッセージを送ってください。営業時間内なら、だいたい1時間以内に実在のスタッフが返信します。',
+  description: 'WhatsAppでメッセージを送ってください。営業時間内なら、だいたい1時間以内に担当者が返信します。',
   inLanguage: 'ja',
   isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#business` },
@@ -195,7 +195,7 @@ export default function JapaneseContactPage() {
 
             <p className="contact-lead mx-auto"
               style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.8, color: '#2A3C34', maxWidth: '34em', marginBottom: '22px' }}>
-              メッセージを読んで返信するのは実在のスタッフです。営業時間内なら、だいたい1時間以内にお返事します。
+              メッセージを読んで返信するのは担当者です。営業時間内なら、だいたい1時間以内にお返事します。
             </p>
 
             <WaLink href={WA} position="hero" topic="contact" lang="ja"

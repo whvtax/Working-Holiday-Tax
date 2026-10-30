@@ -1,5 +1,5 @@
 import { SVT_PUBLIC, svtWhatsappUrl } from '@/lib/svt/brand-public'
-import { AGENT_TPB } from '@/lib/agent'
+import { AGENT_NAME, AGENT_TPB } from '@/lib/agent'
 import { guideLinksFor, navFor } from '@/lib/svt/pages'
 import { UI, fill, localePath, type SvtLocale } from '@/lib/svt/i18n'
 import { Logo } from './Logo'
@@ -8,10 +8,14 @@ import styles from './Footer.module.css'
 /** Same layout as the WHT footer (Jo, 27 Oct): brand column with the TPB
  *  seal, then guides, learn and connect, and a bottom bar with the legal
  *  links. SVT's own colours, words and links only. */
+const FOOTER_GUIDES = ['tax-residency', 'medicare', 'abn-delivery', 'do-i-need-to-lodge', 'leaving-australia'] as const
+
 export function Footer({ locale = 'en' }: { locale?: SvtLocale }) {
   const ui = UI[locale]
   const t = ui.footer
-  const guides = guideLinksFor(locale).filter(l => !l.href.endsWith('/about'))
+  // Five strongest guides only (Jo, 27 Oct). Past years and super stay in the
+  // header menu, the sitemap and the articles.
+  const guides = guideLinksFor(locale).filter(l => FOOTER_GUIDES.some(slug => l.href.endsWith(`/${slug}`)))
   const learn = navFor(locale)
   const year = new Date().getFullYear()
   return (
@@ -25,8 +29,9 @@ export function Footer({ locale = 'en' }: { locale?: SvtLocale }) {
             <p className={styles.intro}>{t.intro}</p>
             <a className={styles.ask} href={svtWhatsappUrl(ui.whatsappHello)} data-wa-pos="footer">{t.askUs} <span aria-hidden="true">→</span></a>
             <span className={styles.seal}>
-              <img src="/svt-assets/img/tpb-registered.png" alt={fill(t.sealAlt, { tpb: AGENT_TPB })} width={509} height={319} loading="lazy" decoding="async" />
+              <img src="/svt-assets/img/tpb-registered.png" alt={fill(t.sealAlt, { agent: AGENT_NAME, tpb: AGENT_TPB })} width={509} height={319} loading="lazy" decoding="async" />
             </span>
+            <p className={styles.supervision}>{fill(t.supervision, { agent: AGENT_NAME, tpb: AGENT_TPB })}</p>
           </div>
           <nav aria-label={t.guidesAria}>
             <p className={styles.head}>{t.guidesAria}</p>

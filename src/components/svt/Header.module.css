@@ -38,7 +38,7 @@
   .nav a { text-decoration: none; }
   .nav a:hover { text-decoration: underline; }
   .cta {
-    display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px;
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px;
     background: var(--svt-ink); color: var(--svt-paper) !important; border-radius: var(--svt-radius-button); font-weight: 700;
   }
   .cta:hover { background: #000; text-decoration: none !important; }

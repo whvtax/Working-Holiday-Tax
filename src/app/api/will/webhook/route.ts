@@ -8,6 +8,7 @@
 //        run the existing engine pipeline (handleIncoming) and enqueue the
 //        outbound message as an OUT record.
 // ============================================================
+import { recordSendFailure } from '@/lib/will/send-failure-30oct';
 import { teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { createHmac, timingSafeEqual } from 'crypto';
 import { handleIncoming, handleInboundNote, handlePaymentProofMedia } from '@/lib/will/service';
@@ -324,6 +325,7 @@ function inboundSnapshot(payload: unknown): Record<string, unknown> {
 // Delivered / read receipts are stamped on the message for the two ticks.
 const WINDOW_ERROR_CODES = new Set([131047]);
 const STATUS_ERROR_HINT: Record<number, string> = {
+  130497: 'the WhatsApp Business account is restricted from messaging this country',
   131042: 'the WhatsApp Business account has unsettled payments: pay the bill in Meta Business Manager; held messages resend by themselves once it clears',
   131047: 'outside the 24h window: the customer has not written for over a day, so only an approved template can reach them',
   131026: 'the number cannot receive WhatsApp messages (blocked, or not on WhatsApp)',
@@ -442,6 +444,16 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
             severity: 'REVIEW', context: msg.body.slice(0, 1500), suggestedReply: msg.body,
           });
           await store.audit('channel', 'delivery_failed_131026_unreachable', { customerId: customer.id, messageId: msg.id, cancelledFollowUps: cancelled });
+          continue;
+        }
+        // 30 Oct: restricted country (130497) and outside the 24h window are
+        // recorded and folded into ONE urgent task for the customer, however
+        // many of their messages Meta reports as failed.
+        if (code === 130497 || outsideWindow) {
+          await recordSendFailure(store, {
+            customerId: customer.id, customerName: customer.name ?? customer.waId,
+            messageId: msg.id, error, code, body: msg.body, templateName: msg.meta?.waTemplate?.name ?? null, via: 'status',
+          });
           continue;
         }
         await store.addTask({

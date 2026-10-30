@@ -17,6 +17,8 @@ export const FOREIGN_INCOME_RE = new RegExp([
   'foreign income', 'overseas income', 'income (?:from )?(?:overseas|abroad|outside (?:of )?australia)',
   'income (?:from|in) my (?:home )?country', 'foreign (?:salary|wages?|employment|pension|dividends?|rental|interest)',
   '(?:worked|working|job|employ(?:ed|ment)) (?:overseas|abroad|outside (?:of )?australia) (?:during|in|for) (?:the|this|that) (?:tax |financial |income )?year',
+  // 28 Oct (Anna Whelan): "I also had remote employment in Ireland for the year".
+  'remote (?:employment|work|job|income|salary)', '(?:employment|job|work|salary|wages?|income) in (?:germany|japan|the uk|uk|france|italy|spain|korea|taiwan|ireland|canada|the us|usa|new zealand|nz|abroad|overseas) (?:for|during|throughout) (?:the|this|that) (?:whole |entire |full )?(?:tax |financial |income )?year',
   'report (?:my |the |some )?(?:foreign|overseas) income', 'income from (?:germany|japan|the uk|uk|france|italy|spain|korea|taiwan|ireland|canada|the us|usa|new zealand|nz|abroad)',
   'ausl[äa]ndische(?:s|n)? einkommen', 'einkommen aus (?:dem ausland|deutschland)', 'einkünfte aus dem ausland', 'auslandseinkünfte',
   '海外(?:の)?(?:収入|所得)', '日本(?:で|の)(?:収入|所得)', '国外(?:の)?(?:収入|所得)',

@@ -9,7 +9,7 @@
  */
 
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
-import { formStrings, type AnyFormLang } from '@/lib/formStrings'
+import { formStrings, joinFieldList, type AnyFormLang } from '@/lib/formStrings'
 
 export type TaxFormPayload = {
   waNumber: string
@@ -25,6 +25,9 @@ export type TaxFormPayload = {
   tfn: string
   primaryJob: string
   hasExpenses: 'yes' | 'no' | ''
+  /** Any income beyond the main job; the text says which (Jo, 28 Oct). */
+  hasOtherIncome?: 'yes' | 'no' | ''
+  otherIncomeText?: string
   taxYears: string[]
   howHeard: string
   refCode: string
@@ -108,7 +111,11 @@ async function uploadOne(
     } catch (e) {
       console.error('[uploadOne]', f.name, 'attempt', i + 1, 'error:', e)
       if (i === 2) {
-        onError(`Upload failed for "${f.name}": ${e instanceof Error ? e.message : 'Unknown error'}`)
+        onError(
+          t('uploadFailedFile')
+            .replace('{name}', f.name)
+            .replace('{reason}', e instanceof Error ? e.message : t('unknownError')),
+        )
         return null
       }
       await new Promise(r => setTimeout(r, 800 * (i + 1)))
@@ -181,8 +188,7 @@ export async function submitTaxForm(
   if (coreResults.some(r => !r)) {
     return {
       ok: false,
-      error: uploadError
-        || 'Failed to upload required files. Please check your documents are images or PDFs under 10MB and try again.',
+      error: uploadError || t('uploadFailedRequired'),
     }
   }
 
@@ -230,6 +236,10 @@ export async function submitTaxForm(
   fd.append('tfn',         p.tfn)
   fd.append('primaryJob',  p.primaryJob)
   fd.append('hasExpenses', p.hasExpenses === 'yes' ? 'Yes' : p.hasExpenses === 'no' ? 'No' : '')
+  if (p.hasOtherIncome) {
+    fd.append('hasOtherIncome', p.hasOtherIncome === 'yes' ? 'Yes' : 'No')
+    if (p.hasOtherIncome === 'yes') fd.append('otherIncomeText', (p.otherIncomeText ?? '').slice(0, 300))
+  }
   fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'unsure' ? 'Unsure, to be checked by the reviewer' : taxStatus === 'foreign' ? 'Foreign resident for tax purposes' : taxStatus)
   if (p.extraNotes?.length) fd.append('extraNotes', JSON.stringify(p.extraNotes.slice(0, 5)))
   fd.append('taxYear',     p.taxYears.join(', '))
@@ -270,14 +280,13 @@ export async function submitTaxForm(
     // something went wrong, could not tell what, and their most likely next
     // move was to fill the whole form in again and be refused again.
     if (data?.error === 'invalid_fields' && Array.isArray(data.fields) && data.fields.length) {
-      const named = data.fields
+      const named = joinFieldList(lang, data.fields
         .map((f: { field?: string }) => FIELD_LABELS[String(f?.field ?? '')]?.[lang] ?? f?.field)
-        .filter(Boolean)
-        .join(', ')
+        .filter(Boolean))
       if (named) return { ok: false, error: `${t('checkFields')}${named}` }
     }
     if (data?.error === 'missing_required_fields') {
-      return { ok: false, error: `${t('checkFields')}${FIELD_LABELS.fullName[lang]}, ${FIELD_LABELS.email[lang]}, ${FIELD_LABELS.whatsapp[lang]}` }
+      return { ok: false, error: `${t('checkFields')}${joinFieldList(lang, [FIELD_LABELS.fullName[lang], FIELD_LABELS.email[lang], FIELD_LABELS.whatsapp[lang]])}` }
     }
 
     // Genuinely our end. The reference is the only thing that makes a

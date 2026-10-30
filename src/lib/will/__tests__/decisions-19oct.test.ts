@@ -70,7 +70,7 @@ describe('held drafts do not confirm a payment to an unpaid customer', () => {
     '',
     "Since you've paid, please fill out this quick form so we can start reviewing your situation:",
     '',
-    'https://workingholidaytax.com.au/tax-form',
+    'https://workingholidaytax.com.au/start',
     '',
     "Once you've submitted it, we'll go through everything and get back to you within 24 hours.",
   ].join('\n');
@@ -78,7 +78,7 @@ describe('held drafts do not confirm a payment to an unpaid customer', () => {
   it('the form link and paid wording are removed for an unpaid lead', () => {
     const out = scrubUnpaidDraft(paige, false);
     expect(out).toContain('wherever you are');
-    expect(out).not.toMatch(/tax-form/);
+    expect(out).not.toMatch(/start/);
     expect(out).not.toMatch(/since you've paid/i);
     expect(out).not.toMatch(/once you've submitted/i);
   });

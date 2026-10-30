@@ -63,12 +63,12 @@ export const metadata: Metadata = {
     title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
     description:
       'Absenden kann jeder. Die Arbeit passiert davor: steuerlicher Wohnsitz, jeder Arbeitgeber, die Medicare-Befreiung und die Abzüge, die zu deiner Arbeit gehören.',
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Steuerrückerstattung Australien Working Holiday Maker, Backpacker Steuer 417 462 Visum' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax: Steuererklärung in Australien für Working Holiday Maker' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Steuerrückerstattung Australien | Working Holiday WHV',
-    description: 'Steuererklärung in Australien als Working Holiday Maker. Wohnsitz, Medicare, Abzüge und jeder Arbeitgeber, geprüft bevor eingereicht wird.',
+    description: 'Steuererklärung in Australien als Working Holiday Maker. Wohnsitz, Medicare, Abzüge und jeder Arbeitgeber, geprüft, bevor eingereicht wird.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
@@ -117,12 +117,12 @@ const ANALYSIS = [
   {
     n: '02',
     title: 'Jeder Arbeitgeber, jede Woche',
-    body: 'Ein Working-Holiday-Jahr ist unordentlich: mehrere Arbeitgeber, späte Zahlungen, vergessene Jobs. Wir rechnen es gegen deinen ATO-Datensatz ab, nicht gegen dein Gedächtnis.',
+    body: 'Ein Working-Holiday-Jahr ist chaotisch: mehrere Arbeitgeber, späte Zahlungen, vergessene Jobs. Wir gleichen es mit deinen ATO-Daten ab, nicht mit deinem Gedächtnis.',
   },
   {
     n: '03',
     title: 'Medicare, falls es dich betrifft',
-    body: 'Zwei Prozent gehen standardmäßig ab, ob du sie geschuldet hast oder nicht. Zu erkennen, wann sie nie deine war, und sie entfernen zu lassen, ist unser Job.',
+    body: 'Zwei Prozent gehen standardmäßig ab, ob du sie geschuldet hast oder nicht. Zu erkennen, wann sie dir nie zustand, und sie streichen zu lassen, ist unser Job.',
   },
   {
     n: '04',
@@ -132,7 +132,7 @@ const ANALYSIS = [
   {
     n: '05',
     title: 'Dann wird eingereicht',
-    body: 'Geprüft und freigegeben von einem registrierten Steueragenten, bevor sie zum ATO geht. Die vier Schritte davor entscheiden die Zahl.',
+    body: 'Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Die vier Schritte davor entscheiden den Betrag.',
   },
 ]
 
@@ -140,19 +140,19 @@ const COMPARISON = [
   { mygov: '15 % Steuer ab dem ersten Dollar',                us: 'Wir finden heraus, was für dich tatsächlich stimmt' },
   { mygov: 'Von der Medicare-Befreiung steht dort nichts',      us: 'Wir helfen beim Antrag, wenn du die Bedingungen erfüllst' },
   { mygov: 'Abzüge sind ein leeres Feld',                       us: 'Wir wissen, was deine Art von Arbeit absetzen kann' },
-  { mygov: 'Du brauchst ein Konto und eine aktive Handynummer', us: 'Du brauchst nichts. Wir regeln das mit dem ATO' },
+  { mygov: 'Du brauchst ein Konto und eine aktive Handynummer', us: 'Du brauchst kein Konto. Wir regeln das mit dem ATO.' },
 ]
 
 const SERVICES = [
   { n: '01', href: '/de/tfn',            icon: <IconTFN />,      title: 'TFN beantragen',    desc: 'Vor dem ersten Payslip, ohne Wochen zum Höchstsatz.' },
-  { n: '02', href: '/de/abn',            icon: <IconABN />,      title: 'ABN-Registrierung', desc: 'Rechnungen stellen, Steuerliches vorher erklärt.' },
+  { n: '02', href: '/de/abn',            icon: <IconABN />,      title: 'ABN-Registrierung', desc: 'Rechnungen stellen, steuerliche Folgen vorher geklärt.' },
   { n: '03', href: '/de/tax-return',     icon: <IconReturn />,   title: 'Steuererklärung',   desc: 'Die Analyse oben, dann die Einreichung beim ATO.' },
   { n: '04', href: '/de/superannuation', icon: <IconSuper />,    title: 'Superauszahlung',   desc: 'Alle Fonds gefunden, ein DASP-Antrag zur Abreise.' },
   { n: '05', href: '/de/medicare',       icon: <IconMedicare />, title: 'Medicare Levy',     desc: 'Die Befreiung, wenn dein Jahr die Bedingungen erfüllt.' },
 ]
 
 const GUIDES = [
-  { href: '/de/blog/diy-tax-return-vs-tax-agent-working-holiday', title: 'Selbst machen oder Steuerberater',        desc: 'Was dich beides wirklich kostet.' },
+  { href: '/de/blog/diy-tax-return-vs-tax-agent-working-holiday', title: 'Selbst machen oder Tax Agent',       desc: 'Was dich beides wirklich kostet.' },
   { href: '/de/blog/tax-residency-working-holiday-makers',        title: 'Bist du steuerlich ansässig',         desc: 'Die Frage, die auf einer Backpacker-Erklärung das meiste Geld bewegt.' },
   { href: '/de/blog/medicare-levy-working-holiday-makers',        title: 'Die Medicare-Levy-Befreiung',         desc: 'Wer die zwei Prozent schuldet, wer nicht, und wie sie wegfallen.' },
   { href: '/de/blog/tax-deductions-working-holiday-makers',       title: 'Was du absetzen kannst',              desc: 'Abzüge nach Art der Arbeit, statt einer allgemeinen Liste.' },
@@ -161,7 +161,7 @@ const GUIDES = [
 const FAQS = [
   {
     question: 'Wovon hängt ab, wie viel Steuern ich aus Australien zurückbekomme?',
-    answer: 'Vier Dinge: dein steuerlicher Wohnsitz für das Jahr, ob ein Teil deines Lohns mit 45 % einbehalten wurde, bevor deine TFN beim Arbeitgeber ankam, ob die 2 % Medicare Levy abgezogen wurden, obwohl du keinen Anspruch auf Medicare hattest, und die Abzüge, die zu deiner Arbeit gehören.\n\nZwei Leute mit demselben Einkommen können deshalb sehr unterschiedliche Rückerstattungen bekommen.',
+    answer: 'Vier Dinge: dein steuerlicher Wohnsitz für das Jahr, ob ein Teil deines Lohns mit 45 % einbehalten wurde, bevor deine TFN beim Arbeitgeber ankam, ob die 2 % Medicare Levy abgezogen wurden, obwohl du keinen Anspruch auf Medicare hattest, und die Abzüge, die zu deiner Arbeit gehören.\n\nZwei Personen mit demselben Einkommen können deshalb sehr unterschiedliche Rückerstattungen erhalten.',
   },
   {
     question: 'Kann ich meine Steuererklärung einfach selbst über myGov einreichen?',
@@ -173,7 +173,7 @@ const FAQS = [
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker in Australien?',
-    answer: 'Working Holiday Maker zahlen pauschal 15 % auf die ersten 45.000 $, dann 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber.\n\nWenn du deinem Arbeitgeber keine TFN gegeben hast, muss er stattdessen zum Höchstsatz einbehalten, einer der häufigsten Gründe, warum Backpacker am Ende Geld zurückbekommen.',
+    answer: 'Working Holiday Maker zahlen pauschal 15 % auf die ersten 45.000 $, dann 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber.\n\nWenn du deinem Arbeitgeber keine TFN gegeben hast, muss er stattdessen zum Höchstsatz einbehalten. Das ist einer der häufigsten Gründe, warum Backpacker am Ende Geld zurückbekommen.',
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
@@ -185,7 +185,7 @@ const FAQS = [
   },
   {
     question: 'Macht ihr nur Steuererklärungen?',
-    answer: 'Nein. Wir übernehmen auch TFN-Anträge, ABN-Registrierungen, die Superauszahlung (DASP) und Medicare-Levy-Befreiungen, also das, was man mit einem 417 oder 462 Visum normalerweise braucht.',
+    answer: 'Nein. Wir übernehmen auch TFN-Anträge, ABN-Registrierungen, die Superauszahlung (DASP) und Medicare-Levy-Befreiungen, also das, was man mit einem 417- oder 462-Visum normalerweise braucht.',
   },
 ]
 
@@ -204,7 +204,7 @@ export default async function GermanHomePage() {
     '@id': `${SITE_URL}/de/#webpage`,
     url: `${SITE_URL}/de`,
     name: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-    description: 'Steuererklärung Australien für Working Holiday Maker auf 417/462 Visum. Wohnsitz, jeder Arbeitgeber, Medicare-Befreiung und Abzüge, geprüft bevor eingereicht wird.',
+    description: 'Steuererklärung Australien für Working Holiday Maker auf 417/462 Visum. Wohnsitz, jeder Arbeitgeber, Medicare-Befreiung und Abzüge, geprüft, bevor eingereicht wird.',
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -377,7 +377,7 @@ export default async function GermanHomePage() {
           </div>
 
           <p className="font-serif" style={{ fontSize: '18.5px', lineHeight: 1.45, color: '#0B5240', marginTop: '26px', maxWidth: '48ch', fontWeight: 700 }}>
-            Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
+            Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches
             Formular welches ist. Wir regeln das direkt mit dem ATO.
           </p>
 
@@ -426,7 +426,7 @@ export default async function GermanHomePage() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
+            Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.
@@ -473,7 +473,7 @@ export default async function GermanHomePage() {
             Welches der beiden war dein Jahr?
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
-            Beides landet in derselben Erklärung, aber nicht auf denselben Zeilen. Wähl das, was passt.
+            Beides landet in derselben Erklärung, aber nicht auf denselben Zeilen. Wähle aus, was passt.
           </p>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -524,7 +524,7 @@ export default async function GermanHomePage() {
           <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Womit wir dir helfen</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '26px' }}>
-            Von der ersten Abrechnung bis zu dem Geld, das dir nach Hause folgt
+            Von der ersten Abrechnung bis zur Auszahlung deiner Super
           </h2>
 
           {/* Zwei Spalten auf dem Handy. Einspaltig waren das fünf fast gleiche
@@ -561,7 +561,7 @@ export default async function GermanHomePage() {
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Jede Erklärung, die wir vorbereiten, ist für jemanden mit 417- oder 462-Visum und wird von einem registrierten
-            Steueragenten geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
+            australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
           </p>
 
           <GoogleReviewsServer lang="de" />
@@ -574,8 +574,8 @@ export default async function GermanHomePage() {
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
             <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>Ein registrierter Steuerberater fragt niemals nach deinen myGov-Logindaten.</strong>{' '}
-              Wer dich danach fragt, sind nicht wir.
+              <strong style={{ color: '#080F0D' }}>Ein registrierter Tax Agent fragt niemals nach deinen myGov-Logindaten.</strong>{' '}
+              Wer dich danach fragt, gehört nicht zu uns.
             </p>
           </div>
         </div>

@@ -31,7 +31,7 @@ test.describe('SVT tax form', () => {
       await route.fulfill({ json: { ok: true } })
     })
 
-    await page.goto(`${SVT}/tax-form`)
+    await page.goto(`${SVT}/jhd7hp9xd`)
     await expect(page.locator('[data-sticky-wa]')).toBeHidden()
     const html = await page.content()
     expect(html).not.toMatch(/workingholidaytax|Working Holiday Tax|0424\s?513\s?998|61424513998/i)
@@ -50,6 +50,7 @@ test.describe('SVT tax form', () => {
     await page.locator('label.radio-card', { hasText: 'No' }).first().click()
     await page.locator('label.radio-card', { hasText: 'Single' }).click()
     await page.locator('input[name="hasExpenses"][value="no"]').locator('..').click()
+    await page.locator('input[name="hasOtherIncome"][value="no"]').locator('..').click()
     await page.getByLabel('Home country').fill('Vietnam')
     await page.getByLabel('How did you hear about us?').fill('Friend')
     await page.locator('#bankStatement').setInputFiles(path.join(__dirname, 'fixtures/test.pdf'))
@@ -57,7 +58,7 @@ test.describe('SVT tax form', () => {
     await page.locator('.decl-row').click()
     await page.getByRole('button', { name: /Continue to tax residency/ }).click()
 
-    await expect(page).toHaveURL(/\/tax-form\/residency$/)
+    await expect(page).toHaveURL(/\/jhd7hp9xd\/w3rp42fav$/)
     await page.getByRole('radio', { name: 'Foreign resident for tax' }).click()
     await page.getByRole('button', { name: /Submit Tax Return/ }).click()
     await page.getByRole('button', { name: 'Yes, this is correct' }).click()
@@ -72,9 +73,9 @@ test.describe('SVT tax form', () => {
   })
 
   test('the same form in Chinese and Vietnamese', async ({ page }) => {
-    await page.goto(`${SVT}/zh/tax-form`)
+    await page.goto(`${SVT}/zh/jhd7hp9xd`)
     await expect(page.getByRole('button', { name: /继续/ })).toBeVisible()
-    await page.goto(`${SVT}/vi/tax-form`)
+    await page.goto(`${SVT}/vi/jhd7hp9xd`)
     await expect(page.getByRole('button', { name: /Tiếp tục/ })).toBeVisible()
   })
 })

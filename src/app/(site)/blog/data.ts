@@ -3358,56 +3358,36 @@ Where tax was owed rather than refunded, interest accrues and the debt follows t
  }, {
  slug: "tax-residency-working-holiday-makers",
  title:
- "Are You a Tax Resident of Australia?",
+ "Are you a tax resident of Australia?",
  description:
- "Residency can change the rates applied to your whole year. It is a judgement rather than a checkbox, and it is easy to get wrong in both directions.",
+ "Residency can change the rates applied to your whole year. It cannot be settled from a checklist, it is easy to get wrong in both directions, and it needs a proper review.",
  category: "Tax Return",
  date: "24 May 2025",
  readTime: 6,
  body: `
 Tax residency is the question with the widest reach on a working holiday tax return. It can change the rates applied to your entire year, and it is the item most often answered wrongly by people who were sure of their answer.
 
-Most working holiday makers are taxed at the working holiday maker rates: 15% on the first $45,000. A minority are assessed differently, and for some the difference is worth thousands. Which side of that line you fall on is a judgement, not a lookup, and every return prepared here is reviewed and signed off by a registered tax agent before a position is taken.
+Which side of the line you fall on cannot be worked out from this page, from a calculator or from a friend's experience. It is a judgement about your own year, and every return prepared here has it reviewed and signed off by a registered tax agent before a position is taken.
 
-## What are the working holiday maker rates?
+## What does tax residency change?
 
-They apply to wage income earned on a 417 or 462 visa. The scale is 15% on the first $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000, and 45% above that. The rates were set by the 2017 working holiday maker reform package, and for a straightforward year of wages they are the whole story.
+More than most people expect. It can change the rates applied to your wages, the deductions available to you, how investment income and foreign income are treated, and the size of the final result. For some people the difference is worth thousands of dollars. For others it changes nothing. Nobody can tell which from the outside.
 
-What residency changes is everything around them. For a small number of people it changes the rate too.
+## Why can't you work it out yourself?
 
-## Why is residency so hard to pin down?
+Because it is not one question with one answer. It weighs many parts of your circumstances together, including parts most people never think to check, and no single fact and no rule of thumb settles it. Two travellers whose years look almost identical can be correctly assessed differently.
 
-Because it is a judgement fought over at the highest level. How working holiday makers should be taxed went to the High Court of Australia in Addy v Commissioner of Taxation, and experienced judges disagreed on the way up. It is not a question you resolve with a search and a checklist.
+## Does your visa decide it?
 
-Residency turns on details of your year that most people never think to check, weighed together rather than ticked off one by one. No single fact settles it.
+Not on its own. Holding a 417 or 462 visa tells you very little about how your year will be assessed, and answering the residency question on a form by instinct is how returns end up wrong, in both directions.
 
-## What do people get wrong about it?
+## What happens if it is answered wrongly?
 
-Two assumptions do most of the damage, and both are unreliable.
+Either you claim a position you cannot support, which can lead to an amended assessment later, or you quietly overpay because a better position was never considered. Both are common, and both are avoidable.
 
-The first is that the visa decides it. It does not. Holding a 417 or 462 tells you almost nothing about how your year will be assessed.
+## Who should check it for you?
 
-The second is that some simple rule of thumb decides it. None does. It is a judgement about your circumstances taken as a whole, and it has to be properly reviewed rather than worked out from a shortcut.
-
-Both myths survive because they are simple. Answering on either is how returns end up wrong in both directions: people who claim a position they cannot hold, and people who quietly overpay by never realising a better position existed.
-
-## How close can two years be and still land differently?
-
-Very close. Two travellers can arrive in the same month, earn similar money, leave in the same week, and be correctly assessed on opposite sides of the line, because the assessment weighs parts of their years that look identical from the outside and are not. The difference is invisible until someone who knows what to look for goes through the year.
-
-## Does the tax free threshold apply or not?
-
-For almost everyone the answer on the withholding declaration is that it does not apply, because answering otherwise creates a debt during the year regardless of how the residency question eventually resolves. The residency position is settled at assessment, not in payroll, and never by the form you fill in on your first day.
-
-## What else does residency change?
-
-More than most people expect, even where the wage rate does not move. Some deductions are only available to residents. Capital gains and investment income are treated differently. Whether foreign income has to be declared turns on it. And where the finding goes the other way, it can be the largest number on the return.
-
-## Which side of the residency line are you on?
-
-That is not a question this page can answer, and not one you can safely answer about yourself in either direction. What can be said is the stakes: the rates applied to your whole year, the deductions available to you, and the treatment of everything you earned outside your wages.
-
-A defensible position is reached by going through your year in full, weighing the details that carry weight, and taking a position that stands up if the ATO asks about it. That is how the residency item is handled in every [working holiday tax return](/tax-return) prepared here, reviewed and signed off by a registered tax agent. You can [estimate your tax refund](/calculator) on the ordinary working holiday rates as a baseline while the position is worked out.
+A registered tax agent who goes through your year in full before anything is lodged. That is how residency is handled in every [working holiday tax return](/tax-return) prepared here. [Get in touch](/contact) and we will go through it with you.
  `,
  },
 
@@ -5447,7 +5427,7 @@ The question is a judgement about your own circumstances, turning on details mos
 
 ## What does any of this change on your return?
 
-For most people, nothing. Most working holiday makers are not Australian tax residents, the 15% rate applies, and the refund comes from over-withholding and the Medicare levy exemption rather than from *Addy*.
+For many people, the refund comes from over-withholding and the Medicare levy exemption rather than from *Addy*. A court ruling may change which rates apply to some passports, and whether it applies to you depends on your passport and on how your year looked.
 
 Where it does apply it changes things substantially, in ways that differ from person to person for reasons that are not obvious from the outside. That is the branch worth having checked before a [tax return](/tax-return) is lodged, because amending later is harder than getting it right once, and the position taken has to be one that can be defended.
 `,
@@ -7567,12 +7547,12 @@ Amending means a return was filed and something in it was wrong. For individuals
  slug: "tax-return-deadline-31-october-working-holiday",
  title: "Tax Return Deadline 2026 for Working Holiday Makers",
  description:
-   "Lodging your 2025-26 return yourself? It is due 31 October 2026, which this year means Monday 2 November. Missed it, or already left Australia? Here is what changes.",
+   "Lodging your 2025-26 return yourself? It is due 31 October 2026. Missed it, or already left Australia? Here is what changes.",
  category: "Tax Return",
  date: "21 October 2026",
  readTime: 5,
  body: `
-If you lodge it yourself, your 2025-26 Australian tax return is due on 31 October 2026. That date falls on a Saturday this year, and under the ATO's next business day rule a return lodged on Monday 2 November 2026 is still on time. The year it covers runs 1 July 2025 to 30 June 2026, and the deadline is the same whether you are still in Australia or already home.
+If you lodge it yourself, your 2025-26 Australian tax return is due on 31 October 2026. The year it covers runs 1 July 2025 to 30 June 2026, and the deadline is the same whether you are still in Australia or already home.
 
 ## Which tax year is due right now?
 
@@ -7592,7 +7572,7 @@ The ATO is explicit that the exact date depends on your own situation and on whe
 
 ## What actually happens if you miss 31 October?
 
-Nothing happens on 3 November, and for most working holiday makers who are owed money, the larger cost of a late return is usually time rather than a fine. The ATO can apply a Failure to Lodge penalty of one penalty unit for each 28 days a return is overdue, capped at five units. From 1 July 2026 a penalty unit is $364, so the maximum is $1,820.
+Nothing dramatic happens the day after, and for most working holiday makers who are owed money, the larger cost of a late return is usually time rather than a fine. The ATO can apply a Failure to Lodge penalty of one penalty unit for each 28 days a return is overdue, capped at five units. From 1 July 2026 a penalty unit is $364, so the maximum is $1,820.
 
 The ATO applies that penalty selectively. A first late return that produces a refund is treated very differently from several unlodged years or a return that produces a debt. The [late lodgement guide](/blog/late-tax-return-penalty-working-holiday) covers when the penalty is applied, when interest is added, and how remission works.
 

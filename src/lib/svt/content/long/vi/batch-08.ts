@@ -159,12 +159,12 @@ Nếu năm của bạn có cả hai loại visa và bạn muốn được giúp 
     ],
   },
   'dasp-documents-checklist-international-students': {
-    title: 'Giấy tờ DASP cho cựu du học sinh: giải thích về bản sao chứng thực',
+    title: 'Giấy tờ DASP cho cựu du học sinh: bản sao chứng thực',
     description: 'Rút super sau khi visa du học hết hạn? Hệ thống DASP trực tuyến cần gì, khi nào đơn giấy cần bản sao chứng thực, và ai có thể chứng thực khi bạn ở nước ngoài.',
     answer: 'Hệ thống DASP trực tuyến miễn phí của ATO tự kiểm tra visa và việc xuất cảnh của bạn, nên chủ yếu bạn cần hộ chiếu, thông tin liên lạc và thông tin quỹ super. Đơn giấy cần bản sao chứng thực, và nếu số tiền từ $5,000 trở lên thì cần giấy Certification of Immigration Status của Bộ Nội vụ.',
     body: `Khi rời Úc sau khi học xong, bạn có thể rút tiền super mà chủ lao động đã đóng cho bạn. Khoản này gọi là Departing Australia Superannuation Payment (DASP). Giấy tờ là khâu khiến nhiều hồ sơ bị chậm, nhất là khi bạn đã về nước. Bài này giải thích bạn cần gì cho từng cách nộp đơn.
 
-## Tôi đã xin được chưa?
+## Tôi có đủ điều kiện xin không?
 
 Trước khi gom giấy tờ, hãy kiểm tra xem bạn có đủ điều kiện không. Thông thường bạn có thể xin DASP khi đáp ứng tất cả các điều sau:
 
@@ -251,7 +251,7 @@ Trước khi nộp đơn, hãy đăng nhập myGov và xem dịch vụ trực tu
   'dasp-tax-rate-international-students': {
     title: 'Thuế DASP cho du học sinh: thường là 35%, không phải 65%',
     description: 'Super từ việc làm khi đi học thường bị đánh thuế 35% khi rút sau khi rời Úc, không phải mức 65% của visa working holiday. Cách tính thuế DASP, kèm ví dụ cụ thể.',
-    answer: 'Nếu bạn chưa từng có visa working holiday 417 hoặc 462, phần taxed element trong DASP bị đánh thuế 35%, phần untaxed element 45% và phần miễn thuế (tax-free component) 0%. Mức 65% chỉ áp dụng cho super từ các khoản đóng trong thời gian bạn có visa 417 hoặc 462.',
+    answer: 'Nếu bạn chưa từng có visa working holiday 417 hoặc 462, phần taxed element trong DASP bị đánh thuế 35%, phần untaxed element 45% và phần miễn thuế (tax-free component) 0%. Nếu khoản chi trả có bao gồm super từ các khoản đóng trong thời gian bạn có visa 417 hoặc 462, mức 65% áp dụng cho toàn bộ khoản chi trả.',
     body: `Nhiều du học sinh đọc trên mạng rằng super bị đánh thuế 65% khi rời Úc. Mức thuế này có thật, nhưng là dành cho người có visa working holiday. Với phần lớn du học sinh, mức thuế thấp hơn. Bài này giải thích mức nào áp dụng cho bạn và bạn có thể nhận được bao nhiêu.
 
 ## Thuế suất DASP là bao nhiêu?
@@ -261,7 +261,7 @@ Khi bạn rút super sau khi rời Úc, khoản tiền này gọi là Departing 
 - **Phần miễn thuế (tax-free component):** 0%
 - **Taxed element:** 35%, nếu bạn chưa từng có visa 417 hoặc 462
 - **Untaxed element:** 45%, nếu bạn chưa từng có visa 417 hoặc 462
-- **Super từ các khoản đóng trong thời gian có visa 417 hoặc 462:** 65%
+- **Toàn bộ khoản chi trả, nếu có super từ các khoản đóng trong thời gian có visa 417 hoặc 462:** 65%
 
 Quỹ xác định thuế suất dựa vào thông tin visa trong đơn DASP của bạn. Bạn không phải khai DASP trong hồ sơ thuế, và cũng không thể xin lại tiền thuế này về sau.
 
@@ -286,15 +286,15 @@ Phí quỹ và lợi nhuận đầu tư làm số dư thay đổi chút ít cho 
 
 ## Khi nào mức 65% áp dụng cho cựu du học sinh?
 
-Mức 65% chỉ áp dụng cho super từ các khoản đóng trong thời gian bạn có visa working holiday 417 hoặc 462. Có người đến Úc bằng visa working holiday trước, sau đó mới đi học bằng visa du học. Lịch sử super của họ là hỗn hợp.
+Nếu khoản chi trả có bao gồm super từ các khoản đóng trong thời gian bạn có visa working holiday 417 hoặc 462, ATO áp dụng mức 65% cho toàn bộ khoản chi trả. Có người đến Úc bằng visa working holiday trước, sau đó mới đi học bằng visa du học. Lịch sử super của họ là hỗn hợp.
 
-Trong trường hợp đó, các phần khác nhau của khoản tiền có thể chịu thuế suất khác nhau. Quỹ dựa vào thông tin visa trong đơn của bạn để tách riêng.
+Trong trường hợp đó, toàn bộ khoản chi trả từ cùng một quỹ chịu một mức thuế, chứ không phải mỗi phần một mức. Quỹ dựa vào thông tin visa trong đơn của bạn để xác định.
 
 **Ví dụ với lịch sử visa hỗn hợp.** Sofia làm việc bằng visa 417 và được đóng $4,000 super. Sau đó cô đi học bằng visa du học và được đóng $6,000 super. Toàn bộ thuộc taxed element.
 
-- $4,000 từ thời gian có visa 417, thuế 65%: $2,600
-- $6,000 từ thời gian đi học, thuế 35%: $2,100
-- Tổng tiền thuế: $4,700, và Sofia nhận được $5,300
+- Tổng khoản chi trả từ quỹ: $10,000, trong đó có $4,000 từ thời gian có visa 417
+- Thuế 65% trên toàn bộ khoản: $6,500
+- Sofia nhận được $3,500
 
 Vì vậy bạn cần khai đúng các visa của mình trong đơn DASP. Nếu bạn chưa từng có visa working holiday, hãy chắc chắn đơn thể hiện điều đó.
 
@@ -324,7 +324,7 @@ Nhiều du học sinh khi rời Úc cần nộp hồ sơ sau ngày 30/6, và b�
 - Nộp đơn qua hệ thống DASP trực tuyến miễn phí của ATO, mỗi quỹ một đơn
 - Nộp hồ sơ thuế cuối cùng riêng, sau ngày 30/6`,
     faq: [
-      { q: 'Tôi chỉ có visa du học. Super của tôi có bị đánh thuế 65% không?', a: 'Không. Nếu bạn chưa từng có visa 417 hoặc 462, phần taxed element trong DASP bị đánh thuế 35%. Mức 65% chỉ dành cho super từ các khoản đóng trong thời gian có visa 417 hoặc 462.' },
+      { q: 'Tôi chỉ có visa du học. Super của tôi có bị đánh thuế 65% không?', a: 'Không. Nếu bạn chưa từng có visa 417 hoặc 462, phần taxed element trong DASP bị đánh thuế 35%. Mức 65% chỉ áp dụng khi khoản chi trả có bao gồm super từ các khoản đóng trong thời gian có visa 417 hoặc 462.' },
       { q: 'Tôi có phải khai DASP trong hồ sơ thuế không?', a: 'Không. Quỹ trừ thuế DASP trước khi trả cho bạn, và khoản tiền này không khai trong hồ sơ thuế ở Úc.' },
       { q: 'Nếu tôi không rút super thì sao?', a: 'Khoảng 6 tháng sau khi bạn rời Úc và visa hết hiệu lực, quỹ sẽ chuyển tiền sang ATO. Bạn vẫn có thể rút từ ATO về sau, và cùng thuế suất DASP sẽ được áp dụng.' },
     ],
@@ -548,7 +548,7 @@ Khi bạn rút super theo diện DASP, quỹ chỉ trả được số tiền đ
 - Tìm các phiếu lương và ghi lại số super của mỗi kỳ lương
 - Kiểm tra tài khoản quỹ và dịch vụ trực tuyến của ATO để xem các khoản đóng
 - Hỏi chủ lao động bằng văn bản, kèm thông tin quỹ của bạn
-- Nếu không có gì thay đổi, báo cho ATO bằng công cụ trực tuyến
+- Nếu vẫn không được giải quyết, báo cho ATO bằng công cụ trực tuyến
 - Liên hệ Fair Work Ombudsman nếu tiền lương hoặc phiếu lương của bạn cũng sai
 - Giữ lại mọi tin nhắn và mọi phiếu lương`,
     faq: [
@@ -585,7 +585,7 @@ Cơ quan quản lý có thể giải thích quyền lợi của bạn, cách n�
 
 Chi tiết tùy vào bang của bạn, nhưng các bước sau giúp ích trong mọi trường hợp:
 
-- **Đi khám chữa trước tiên.** Nếu chấn thương nghiêm trọng, hãy gọi 000.
+- **Lo chăm sóc y tế trước tiên.** Nếu chấn thương nghiêm trọng, hãy gọi 000.
 - **Báo cho chủ lao động càng sớm càng tốt.** Nếu được, hãy báo bằng văn bản, ví dụ qua email hoặc tin nhắn, để có ghi nhận kèm ngày tháng.
 - **Đi khám bác sĩ và nói rõ chấn thương xảy ra khi đi làm.** Hỏi bác sĩ về giấy chứng nhận bồi thường tai nạn lao động dùng ở bang của bạn.
 - **Ghi lại chuyện đã xảy ra.** Ghi ngày, giờ, địa điểm, bạn đang làm gì và ai đã chứng kiến.

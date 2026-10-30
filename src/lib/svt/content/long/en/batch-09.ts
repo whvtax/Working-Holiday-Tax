@@ -822,7 +822,7 @@ You can message Student Visa Tax on WhatsApp when you are ready for your tax ret
 
 ## When is a student tax return late?
 
-The usual deadline is 31 October for people who lodge themselves. In 2026, 31 October is a Saturday, so the ATO says self-lodgers have until 11:59 pm local time on Monday 2 November 2026 for the 2025-26 return.
+The deadline is 31 October for people who lodge themselves. For the 2025-26 return, the ATO says self-lodgers have until 11:59 pm local time on 31 October 2026.
 
 If you use a registered tax agent, you may be able to lodge later, but only if you contact the agent before 31 October. There is an exception: if you had prior-year returns still outstanding at 30 June 2026, your 2025-26 return is generally due by 31 October 2026 even with an agent.
 
@@ -855,7 +855,7 @@ Keep your contact details up to date in myGov, including your email, phone numbe
 
 ## A worked example
 
-Hana is a student from Japan studying in Perth. She forgot about her 2025-26 return and lodges it on 15 January 2027, about 10 weeks after the 2 November deadline.
+Hana is a student from Japan studying in Perth. She forgot about her 2025-26 return and lodges it on 15 January 2027, about 10 weeks after the 31 October deadline.
 
 - Days late: about 74 days, which is 3 periods of 28 days or part of 28 days.
 - Possible penalty: 3 units x $364 = $1,092.
@@ -903,13 +903,13 @@ If you would like help catching up on a late return, you can message Student Vis
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Final week before the tax deadline: a checklist for students',
-    description: 'Lodging your own 2025-26 return before Monday 2 November 2026? A step-by-step checklist for international students: income, residency, Medicare, bank account and more.',
-    answer: 'If you lodge your own 2025-26 return, you have until 11:59 pm local time on Monday 2 November 2026, because 31 October falls on a Saturday. In the final week, check your income statements, your residency, your Medicare position and your bank details before you lodge.',
+    description: 'Lodging your own 2025-26 return before 31 October 2026? A step-by-step checklist for international students: income, residency, Medicare, bank account and more.',
+    answer: 'If you lodge your own 2025-26 return, you have until 11:59 pm local time on 31 October 2026. In the final week, check your income statements, your residency, your Medicare position and your bank details before you lodge.',
     body: `The tax deadline is close. If you are an international student lodging your own 2025-26 return, this checklist helps you use the last days well. It is not about rushing. It is about getting the return right the first time, so you do not have to fix it later.
 
 ## What is the exact deadline?
 
-The usual deadline for people who lodge themselves is 31 October. In 2026, 31 October is a Saturday. The ATO says self-lodgers have until 11:59 pm local time on Monday 2 November 2026.
+The deadline for people who lodge themselves is 31 October. The ATO says self-lodgers have until 11:59 pm local time on 31 October 2026.
 
 The 2025-26 return covers income from 1 July 2025 to 30 June 2026. If you want to use a registered tax agent instead, contact the agent before 31 October. Agents must add new clients to their list by 31 October. If you had prior-year returns still outstanding at 30 June 2026, your 2025-26 return is generally due by 31 October 2026, even with an agent.
 
@@ -971,11 +971,11 @@ Lodge as soon as you can, even after the deadline. The ATO's failure to lodge pe
 - Every deduction has a record.
 - ABN income, interest and all jobs are included.
 - Your Australian bank account details are correct.
-- You lodge by 11:59 pm local time on Monday 2 November 2026.
+- You lodge by 11:59 pm local time on 31 October 2026.
 
 If you would rather have someone check it, you can message Student Visa Tax on WhatsApp before 31 October.`,
     faq: [
-      { q: 'Is the 2026 deadline really 2 November?', a: 'For people lodging themselves, yes. The ATO says self-lodgers have until 11:59 pm local time on Monday 2 November 2026, because 31 October is a Saturday.' },
+      { q: 'Is the 2026 deadline 31 October?', a: 'For people lodging themselves, yes. The ATO says self-lodgers have until 11:59 pm local time on 31 October 2026.' },
       { q: 'Can I lodge before my income statement says "Tax ready"?', a: 'The ATO says to wait until it says "Tax ready". If you lodge early and the figures change, you may need to amend your return.' },
       { q: 'My Medicare Entitlement Statement has not arrived. What do I do?', a: 'The ATO says to wait for the statement before you lodge. Do not claim the exemption without it.' },
     ],

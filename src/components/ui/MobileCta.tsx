@@ -12,8 +12,8 @@ const LABEL: Record<Lang, string> = {
 
 const SUB: Record<Lang, string> = {
   en: 'Signed off by a registered tax agent · reply in ~1 hour',
-  de: 'Geprüft von einem registrierten Steueragenten · Antwort in ca. 1 Std.',
-  ja: '登録税理士が確認 · 約1時間で返信',
+  de: 'Von einem registrierten Tax Agent geprüft und freigegeben · Antwort in ca. 1 Std.',
+  ja: '登録タックスエージェントが確認 · 約1時間で返信',
 }
 
 /**
@@ -24,8 +24,8 @@ const SUB: Record<Lang, string> = {
  * strongest reassurance available and it stays.
  */
 const SUB_NEUTRAL: Record<Lang, string> = {
-  en: 'A real person replies, usually within the hour',
-  de: 'Eine echte Person antwortet, meist innerhalb einer Stunde',
+  en: 'We usually reply within the hour',
+  de: 'Antwort meist innerhalb einer Stunde',
   ja: '担当者が約1時間以内に返信します',
 }
 

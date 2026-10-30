@@ -208,7 +208,7 @@ Nếu bạn dùng ô tô của mình cho công việc (không chỉ để đi đ
 
 ## Là nhân viên hay làm bằng ABN thì quy tắc có khác không?
 
-Quy tắc về xe là như nhau, nhưng cách áp dụng thì khác. Là nhân viên, bạn chỉ được khấu trừ những chuyến đi mà công việc đòi hỏi, không phải quãng đường đi làm hằng ngày. Khi làm bằng ABN, việc đi lại trong lúc làm công việc được trả tiền, như đi giữa nhà hàng và nhà khách, là một phần công việc kinh doanh của bạn.
+Quy tắc về xe là như nhau, nhưng cách áp dụng thì khác. Là nhân viên, bạn chỉ được khấu trừ những chuyến đi mà công việc đòi hỏi, không phải quãng đường đi làm hằng ngày. Khi làm bằng ABN, việc đi lại trong lúc làm công việc được trả tiền, như đi từ nhà hàng đến nhà khách, là một phần công việc kinh doanh của bạn.
 
 Hãy nhớ rằng thu nhập ABN không bị trừ thuế trước. Các khoản khấu trừ chi phí xe làm giảm phần lợi nhuận bạn phải đóng thuế, nên giữ chứng từ đầy đủ càng quan trọng.
 
@@ -254,7 +254,7 @@ ATO cũng cho biết không thể nộp đơn trực tuyến khi visa tạm trú
 
 DASP bị đánh thuế khi được chi trả. Với phần đã chịu thuế (taxed element), mức thông thường là 35% cho người chưa từng giữ visa working holiday (417 hoặc 462). Phần chưa chịu thuế (untaxed element), ít gặp hơn, bị đánh thuế 45%.
 
-Mức cao hơn là 65% chỉ áp dụng cho phần super đến từ các khoản đóng trong thời gian bạn giữ visa 417 hoặc 462. Hầu hết du học sinh chưa từng giữ các visa này, nên mức 35% là mức thường áp dụng.
+Mức cao hơn là 65% áp dụng cho toàn bộ khoản chi trả, nếu trong đó có phần super đến từ các khoản đóng trong thời gian bạn giữ visa 417 hoặc 462. Hầu hết du học sinh chưa từng giữ các visa này, nên mức 35% là mức thường áp dụng.
 
 **Ví dụ.** Một du học sinh rời Úc với $6,000 tiền super, toàn bộ là phần đã chịu thuế, và chưa từng giữ visa working holiday. Thuế DASP là 35% của $6,000, tức là $2,100. Khoảng $3,900 được chi trả, chưa tính phí của quỹ nếu có.
 
@@ -306,7 +306,7 @@ Nếu bạn cần giúp với hồ sơ thuế cho năm cuối, bạn có thể n
     ],
   },
   'fruit-picking-student-visa-tax': {
-    title: 'Hái trái cây khi có visa du học: lương, lương theo sản phẩm và thuế',
+    title: 'Hái trái cây khi có visa du học: lương và thuế',
     description: 'Đi hái trái cây trong kỳ nghỉ? Lương theo sản phẩm và mức lương tối thiểu được bảo đảm hoạt động thế nào, vì sao cần TFN, được đóng super ra sao, và được khấu trừ gì khi khai thuế.',
     answer: 'Người hái trái cây thường là nhân viên, nên bạn đưa TFN cho nông trại hoặc công ty cung ứng lao động, thuế được trừ từ lương và bạn được đóng super. Theo Horticulture Award, người làm lương theo sản phẩm vẫn phải được trả ít nhất bằng mức lương tối thiểu theo giờ cho số giờ làm mỗi ngày.',
     body: `Một số du học sinh dành một phần kỳ nghỉ để đi hái trái cây ở vùng nông thôn Úc. Lương có thể khá, nhưng quy định khác với công việc ở quán cà phê trong thành phố. Bài này nói về cách trả lương cho người hái trái cây, phần thuế, và những gì cần giữ lại để khai thuế. Về số giờ bạn được phép làm, hãy kiểm tra điều kiện visa của bạn với Bộ Nội vụ (Home Affairs).
@@ -336,7 +336,7 @@ Nhiều người hái trái cây được thuê qua một công ty cung ứng la
 
 Hầu hết người hái trái cây nên là nhân viên. Là nhân viên, bạn đưa TFN và điền tờ khai TFN (TFN declaration), và thuế được trừ ở mỗi kỳ lương.
 
-Một số nông trại yêu cầu người làm phải có ABN. ABN dành cho người tự kinh doanh. Cơ quan Đăng ký Doanh nghiệp Úc (ABR) cho biết bạn không đủ điều kiện được cấp ABN cho công việc bạn làm với tư cách nhân viên, và chủ lao động không nên bắt bạn phải có ABN mới cho đi làm. Nếu nông trại quyết định giờ làm, cách bạn hái và nơi bạn làm, đồng thời cung cấp dụng cụ, thì thường đó là quan hệ làm thuê.
+Một số nông trại yêu cầu người làm phải có ABN. ABN dành cho người tự kinh doanh. Cơ quan Đăng ký Doanh nghiệp Úc (ABR) cho biết bạn không đủ điều kiện được cấp ABN cho công việc bạn làm với tư cách nhân viên, và chủ lao động không nên bắt bạn phải có ABN mới được đi làm. Nếu nông trại quyết định giờ làm, cách bạn hái và nơi bạn làm, đồng thời cung cấp dụng cụ, thì thường đó là quan hệ làm thuê.
 
 ## Thuế được tính thế nào?
 
@@ -374,7 +374,7 @@ Nếu bạn ở gần nông trại, tiền chỗ ở thường là chi phí cá 
 Sau ngày 30 tháng 6, hãy chờ đến khi bảng kê thu nhập trong myGov hiện “Tax ready” rồi mới nộp hồ sơ. Nếu bạn vừa hái trái cây vừa làm việc trong thành phố, bạn có thể nhắn cho Student Visa Tax qua WhatsApp, chúng tôi sẽ đưa cả hai công việc vào cùng một hồ sơ thuế.`,
     faq: [
       { q: 'Nông trại có được chỉ trả theo thùng mà không có mức tối thiểu không?', a: 'Không. Fair Work cho biết người làm lương theo sản phẩm theo Horticulture Award phải được trả ít nhất bằng mức lương tối thiểu theo giờ cho số giờ làm mỗi ngày.' },
-      { q: 'Nông trại muốn tôi đăng ký ABN. Như vậy có bình thường không?', a: 'ABR cho biết bạn không đủ điều kiện được cấp ABN cho công việc bạn làm với tư cách nhân viên, và chủ lao động không nên bắt bạn phải có ABN mới cho đi làm. Hầu hết người hái trái cây là nhân viên.' },
+      { q: 'Nông trại muốn tôi đăng ký ABN. Như vậy có bình thường không?', a: 'ABR cho biết bạn không đủ điều kiện được cấp ABN cho công việc bạn làm với tư cách nhân viên, và chủ lao động không nên bắt bạn phải có ABN mới được đi làm. Hầu hết người hái trái cây là nhân viên.' },
       { q: 'Hái trái cây vài tuần thì tôi có cần khai thuế không?', a: 'Nếu bạn đã đi làm, thông thường bạn sẽ khai thuế cho năm đó, và thu nhập từ hái trái cây được khai chung với các thu nhập khác của bạn.' },
     ],
   },
@@ -400,7 +400,7 @@ Phiếu lương (payslip) phải được gửi cho bạn trong vòng 1 ngày l�
 
 Gần như mọi người làm phụ việc nông trại đều là nhân viên. Bạn làm việc trong công việc kinh doanh của chủ nông trại, và chủ nông trại quyết định bạn làm gì, ở đâu và khi nào.
 
-ATO cho biết chỉ có ABN thôi không khiến bạn trở thành nhà thầu, và một hợp đồng ghi “nhà thầu” (contractor) cũng không thay đổi mối quan hệ thực tế. Nếu nông trại yêu cầu bạn phải có ABN mới cho bắt đầu làm, đó là dấu hiệu đáng lo ngại. ABR cho biết chủ lao động không nên bắt bạn phải có ABN như một điều kiện để được thuê.
+ATO cho biết chỉ có ABN thôi không khiến bạn trở thành nhà thầu, và một hợp đồng ghi “nhà thầu” (contractor) cũng không thay đổi mối quan hệ thực tế. Nếu nông trại yêu cầu bạn phải có ABN mới được bắt đầu làm, đó là dấu hiệu đáng lo ngại. ABR cho biết chủ lao động không nên bắt bạn phải có ABN như một điều kiện để được thuê.
 
 ## Người làm phụ việc nông trại bị tính thuế thế nào?
 
@@ -533,7 +533,7 @@ Nếu bạn cần giúp với hồ sơ thuế, bạn có thể nhắn cho Studen
     ],
   },
   'barista-jobs-student-visa-tax': {
-    title: 'Làm barista khi là du học sinh: lương, ca làm thử và thuế',
+    title: 'Làm barista khi có visa du học: lương, ca làm thử và thuế',
     description: 'Làm quán cà phê là một trong những việc làm thêm phổ biến nhất của du học sinh. Barista được trả lương thế nào, khi nào ca làm thử phải được trả tiền, thuế và super, và các khoản khấu trừ nhỏ.',
     answer: 'Barista thường là nhân viên casual, nên bạn đưa TFN, thuế được trừ từ lương và bạn được đóng super. Lương của bạn tùy vào award và bậc, có thể có lương phụ trội cuối tuần, và ca làm thử dài hơn một bài kiểm tra kỹ năng ngắn thì phải được trả lương.',
     body: `Làm ở quán cà phê là một trong những công việc phổ biến nhất của du học sinh ở Úc. Ca làm thường vào sáng sớm và cuối tuần, nên có thể sắp xếp quanh giờ học. Bài này nói về lương, ca làm thử, thuế và super. Về giới hạn giờ làm, hãy kiểm tra điều kiện visa của bạn với Bộ Nội vụ (Home Affairs).
@@ -700,7 +700,7 @@ Nếu bạn muốn được giúp khai đúng tiền lương và tiền tip, b�
     ],
   },
   'kitchen-hand-student-visa-tax': {
-    title: 'Làm phụ bếp khi có visa du học: lương, thuế và khoản được khấu trừ',
+    title: 'Làm phụ bếp khi có visa du học: lương, thuế, khấu trừ',
     description: 'Làm phụ bếp không cần bằng cấp, nên nhiều du học sinh bắt đầu từ đây. Award, lương phụ trội, TFN, super và các khoản khấu trừ chi phí công việc áp dụng cho phụ bếp thế nào.',
     answer: 'Phụ bếp thường là nhân viên casual, nên bạn đưa TFN, thuế được trừ từ lương và chủ lao động đóng 12% super. Bạn có thể được khấu trừ giày chống trượt, tạp dề, dao của riêng bạn và tiền giặt quần áo bảo hộ khi làm việc.',
     body: `Phụ bếp (kitchen hand) là một trong những công việc dễ bắt đầu nhất ở Úc. Bạn không cần bằng cấp, và gần như nhà hàng, quán cà phê, quán rượu hay khách sạn nào cũng cần người làm. Với nhiều du học sinh, đây là công việc đầu tiên. Bài này giải thích phụ bếp được trả lương và tính thuế thế nào. Về số giờ visa cho phép, hãy kiểm tra điều kiện visa của bạn với Bộ Nội vụ (Home Affairs).
@@ -777,7 +777,7 @@ Fair Work cho biết người có visa có các quyền lợi như những ngư�
 
 Nếu bạn cần giúp với hồ sơ thuế, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
-      { q: 'Tôi có được khấu trừ những con dao mua để đi làm không?', a: 'Có, nếu bạn tự trả tiền và dùng chúng cho công việc. Một con dao riêng lẻ từ $300 trở xuống thông thường được khấu trừ toàn bộ trong năm đó; một bộ dao trên $300 được khấu trừ dần theo thời gian.' },
+      { q: 'Tôi có được khấu trừ những con dao mua để đi làm không?', a: 'Có, nếu bạn tự trả tiền và dùng chúng cho công việc. Một con dao riêng lẻ từ $300 trở xuống thông thường được khấu trừ toàn bộ trong năm đó. Một bộ dao trên $300 được khấu trừ dần theo thời gian.' },
       { q: 'Tôi được trả bằng tiền mặt. Tôi vẫn phải đóng thuế chứ?', a: 'Có. Lương trả bằng tiền mặt là thu nhập và phải được khai. Bạn cũng vẫn phải được nhận phiếu lương và được đóng super.' },
       { q: 'Tôi có cần giữ hóa đơn tiền giặt không?', a: 'Với năm 2025-26, bạn chỉ cần chứng từ bằng văn bản cho tiền giặt nếu khoản khai tiền giặt trên $150 và tổng các khoản khấu trừ cho công việc trên $300. Bạn vẫn phải cho thấy được cách bạn tính ra số tiền. Từ năm 2026-27, ATO yêu cầu chứng từ bằng văn bản cho mọi khoản khai tiền giặt.' },
     ],

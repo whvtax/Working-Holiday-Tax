@@ -149,7 +149,7 @@ I went through your details and saw you marked yourself as a Working Holiday Mak
 
 Before we start on your tax return, could you please double-check this page on who counts as an Australian tax resident?
 
-https://workingholidaytax.com.au/tax-residency
+https://workingholidaytax.com.au/y8vwp4bf7
 
 Is your answer still correct?
 ```
@@ -162,7 +162,7 @@ ich habe deine Angaben durchgesehen und gesehen, dass du dich steuerlich als Wor
 
 Bevor wir mit deiner Steuererklärung anfangen, schau bitte noch einmal auf diese Seite, wer in Australien als steuerlich ansässig gilt:
 
-https://workingholidaytax.com.au/de/tax-residency
+https://workingholidaytax.com.au/de/y8vwp4bf7
 
 Ist deine Angabe noch richtig?
 ```
@@ -175,7 +175,7 @@ Ist deine Angabe noch richtig?
 
 申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？
 
-https://workingholidaytax.com.au/ja/tax-residency
+https://workingholidaytax.com.au/ja/y8vwp4bf7
 
 ご回答は正しいままでよろしいですか？
 ```

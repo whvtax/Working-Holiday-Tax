@@ -22,7 +22,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
         { p: 'Mỗi năm tài chính là một hồ sơ thuế riêng. Nếu bạn còn những năm trước chưa khai, hãy cho chúng tôi biết những năm nào, chúng tôi sẽ xác nhận giá cho từng năm trước khi bạn thanh toán.' },
       ] },
       guarantee: { title: 'Nếu tiền hoàn thuế thấp hơn phí của chúng tôi', blocks: [
-        { p: 'Chúng tôi trả lại bạn phần chênh lệch. Nếu phí là $220 và tiền hoàn thuế của bạn là $150, chúng tôi trả lại bạn $70.' },
+        { p: 'Chúng tôi trả lại bạn phần chênh lệch. Ví dụ minh họa: nếu phí là $220 và tiền hoàn thuế cuối cùng của bạn là $150, chúng tôi trả lại bạn $70.' },
         { p: 'Chúng tôi trả khoản này sau khi ATO gửi thông báo tính thuế (notice of assessment), vì đó là giấy tờ cho biết số tiền hoàn thuế cuối cùng.' },
         { note: 'Nếu không có tiền hoàn thuế, hoặc bạn phải đóng thêm thuế, thì vẫn tính đủ phí. Đăng ký ngưỡng miễn thuế ở cả hai chỗ làm, hoặc giao đồ ăn bằng ABN, là những lý do hay gặp khiến du học sinh phải đóng thêm thuế.' },
       ] },
@@ -45,7 +45,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
           'Bạn nhắn tin cho chúng tôi qua WhatsApp. Chúng tôi hỏi về visa và công việc của bạn, rồi xác nhận giá.',
           'Bạn chuyển khoản cho The Accounting Academy và gửi ảnh chụp màn hình. Khi nhận được tiền, chúng tôi gửi bạn hóa đơn thuế (tax invoice).',
           'Bạn điền một mẫu đơn trực tuyến ngắn và tải lên những giấy tờ được yêu cầu.',
-          'Chúng tôi xem hết hồ sơ trong khoảng 24 giờ, rồi gửi bạn bản ước tính.',
+          'Chúng tôi xem mẫu đơn của bạn trong khoảng 24 giờ, rồi gửi bạn bản ước tính.',
           'Bạn đọc lại hồ sơ thuế và ký trực tuyến.',
           'Hồ sơ được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.',
         ] },
@@ -57,10 +57,10 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
           'Thông tin tài khoản ngân hàng ở Úc, để nhận tiền hoàn thuế, nếu có.',
           'Nếu bạn có làm việc ABN: số tiền nhận được từ từng ứng dụng hoặc từng khách hàng, và các chi phí làm việc như điện thoại, xe đạp hay ô tô.',
         ] },
-        { p: 'Bảng kê thu nhập (income statement) do chủ lao động gửi thẳng cho ATO. Chúng tôi chờ đến khi bảng kê hiện trạng thái “Tax ready”, thường là vào tháng 7.' },
+        { p: 'Bảng kê thu nhập (income statement) được chủ lao động gửi thẳng cho ATO, bạn không cần tự chuẩn bị. Chúng tôi chờ đến khi bảng kê hiện trạng thái “Tax ready”, thường là vào tháng 7.' },
       ] },
       timing: { title: 'Mất bao lâu', blocks: [
-        { p: 'Chúng tôi xem mẫu đơn của bạn trong khoảng 24 giờ. Có hai việc có thể làm cả quá trình lâu hơn: chủ lao động chưa hoàn tất bảng kê thu nhập của bạn, và giấy Medicare Entitlement Statement, có khi phải chờ vài tuần.' },
+        { p: 'Chúng tôi xem mẫu đơn của bạn trong khoảng 24 giờ. Có hai điều có thể khiến cả quá trình lâu hơn: chủ lao động chưa hoàn tất bảng kê thu nhập của bạn, và giấy Medicare Entitlement Statement có thể phải chờ vài tuần mới có.' },
         { p: 'Sau đó ATO xử lý hồ sơ. Chúng tôi báo cho bạn khi hồ sơ đã được nộp, và khi có thông báo tính thuế.' },
       ] },
     },
@@ -81,7 +81,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
         { list: [
           'Người cư trú không phải đóng thuế cho $18,200 đầu tiên của thu nhập mỗi năm: đó là ngưỡng miễn thuế.',
           'Trong năm bạn mới sang hoặc rời Úc, bạn có thể chỉ được hưởng một phần ngưỡng này.',
-          'Với hầu hết thu nhập, người cư trú chịu thuế suất thấp hơn người không cư trú; người không cư trú phải đóng thuế ngay từ đồng đầu tiên.',
+          'Với hầu hết thu nhập, người cư trú chịu thuế suất thấp hơn người không cư trú, còn người không cư trú phải đóng thuế ngay từ đồng đầu tiên.',
         ] },
         { p: 'Chủ lao động trừ thuế ở mỗi kỳ lương như thể tuần nào trong năm bạn cũng kiếm được mức đó. Công việc thứ hai bị trừ thuế theo mức cao hơn. Nếu bạn chỉ đi làm một phần của năm, có thể bạn đã bị trừ thuế nhiều hơn mức cần đóng. Hồ sơ thuế sẽ tính ra số thuế đúng.' },
       ] },
@@ -107,14 +107,14 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
     lead: 'Nếu bạn là người cư trú về thuế, khoản Medicare levy 2% thường sẽ được cộng vào thuế của bạn. Nếu bạn không đủ điều kiện hưởng Medicare, thường bạn có thể xin miễn, nhưng phải có đúng giấy tờ.',
     sections: {
       mes: { title: 'Giấy Medicare Entitlement Statement', blocks: [
-        { p: 'Để xin miễn, bạn cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. Giấy này cho biết khoảng thời gian trong năm bạn không đủ điều kiện hưởng Medicare. Công ty bảo hiểm sẽ không gửi giấy này; bạn phải tự xin.' },
+        { p: 'Để xin miễn, bạn cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. Giấy này cho biết khoảng thời gian trong năm bạn không đủ điều kiện hưởng Medicare. Công ty bảo hiểm sẽ không gửi giấy này. Bạn phải tự xin.' },
         { list: [
           'Bắt đầu nhận đơn từ ngày 1 tháng 7, cho năm tài chính vừa kết thúc.',
           'Bạn xin trực tuyến qua tài khoản myGov.',
           'ATO cho biết thời gian xử lý có thể lên đến 8 tuần.',
           'Mỗi năm xin miễn, bạn cần một giấy mới.',
         ] },
-        { note: 'ATO yêu cầu bạn phải chờ có MES rồi mới nộp hồ sơ thuế. Đây là lý do hay gặp nhất khiến hồ sơ của một du học sinh được nộp muộn hơn của bạn bè.' },
+        { note: 'ATO yêu cầu bạn phải chờ có MES rồi mới nộp hồ sơ thuế. Đây là lý do hay gặp nhất khiến hồ sơ của một du học sinh được nộp muộn hơn so với bạn bè.' },
       ] },
       'not-automatic': { title: 'Có giấy chưa chắc đã được miễn', blocks: [
         { p: 'Chỉ có MES thôi thì chưa tự động được miễn. Người phụ thuộc của bạn, kể cả vợ/chồng hoặc bạn đời (partner), cũng phải thuộc diện được miễn. Nếu vợ/chồng hoặc bạn đời của bạn đủ điều kiện hưởng Medicare, có thể bạn sẽ không xin miễn được.' },
@@ -223,13 +223,13 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
       before: { title: 'Trước khi bay', blocks: [
         { list: [
           'Giữ tài khoản ngân hàng ở Úc cho đến khi nhận được tiền hoàn thuế (nếu có), và cho đến khi nhận tiền super nếu bạn muốn nhận vào tài khoản này.',
-          'Hầu hết chủ lao động báo lương của bạn thẳng cho ATO. Nếu có chủ nào không báo, hãy xin họ bảng tóm tắt thu nhập (payment summary) trước khi đi; ATO cho biết họ phải đưa trong vòng 14 ngày.',
+          'Hầu hết chủ lao động báo lương của bạn thẳng cho ATO. Nếu có chủ nào không báo, hãy xin họ bảng tóm tắt thu nhập (payment summary) trước khi đi. ATO cho biết họ phải đưa trong vòng 14 ngày.',
           'Lưu lại phiếu lương, và lịch sử thu nhập trên ứng dụng nếu bạn có giao hàng.',
           'Ghi lại email và số điện thoại bạn sẽ dùng ở nước ngoài, và đừng xóa WhatsApp.',
         ] },
       ] },
       'last-return': { title: 'Hồ sơ thuế cuối cùng', blocks: [
-        { p: 'Hồ sơ cuối cùng thường được nộp sau ngày 30 tháng 6, khi năm tài chính đã kết thúc. Bạn có thể làm từ nước ngoài; chúng tôi vẫn làm việc với bạn qua WhatsApp như bình thường.' },
+        { p: 'Hồ sơ cuối cùng thường được nộp sau ngày 30 tháng 6, khi năm tài chính đã kết thúc. Bạn có thể làm từ nước ngoài, và chúng tôi vẫn làm việc với bạn qua WhatsApp như bình thường.' },
         { p: 'Nếu bạn rời Úc hẳn trước ngày 30 tháng 6, vẫn có thể nộp sớm, nhưng chỉ bằng giấy, và ATO xử lý lâu hơn. Với hầu hết mọi người, chờ đến hết năm thì đơn giản hơn.' },
       ] },
       super: { title: 'Tiền super của bạn', blocks: [
@@ -241,7 +241,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
   },
   superannuation: {
     label: 'Tiền super (DASP)',
-    meta: { title: 'Rút tiền super khi rời Úc (DASP)', description: 'Du học sinh và người tốt nghiệp rút tiền super ở Úc sau khi rời đi thế nào: ai đủ điều kiện, thuế suất, và chuyện gì xảy ra nếu chờ quá 6 tháng.' },
+    meta: { title: 'Rút tiền super khi rời Úc (DASP)', description: 'Du học sinh và người có visa tốt nghiệp rút tiền super ở Úc sau khi rời đi thế nào: ai đủ điều kiện, thuế suất, và chuyện gì xảy ra nếu chờ quá 6 tháng.' },
     h1: { before: 'Lấy lại ', mark: 'tiền super', after: ' sau khi rời Úc' },
     lead: 'Ngoài tiền lương, chủ lao động còn đóng tiền super cho bạn. Khi bạn đã rời Úc và visa đã hết hiệu lực, bạn có thể rút số tiền này dưới dạng khoản DASP.',
     sections: {
@@ -258,7 +258,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
         { note: 'Nếu bạn cũng từng có visa working holiday (417 hoặc 462), và khoản rút có tiền super từ thời gian đó, ATO áp thuế 65% cho toàn bộ số tiền.' },
       ] },
       'six-months': { title: 'Nếu chờ quá 6 tháng', blocks: [
-        { p: 'Sáu tháng sau khi bạn rời Úc, nếu visa đã hết hiệu lực, quỹ super sẽ chuyển số tiền chưa rút sang ATO. Tiền không mất, có thể bạn vẫn rút được từ ATO.' },
+        { p: 'Sáu tháng sau khi bạn rời Úc, nếu visa đã hết hiệu lực, quỹ super sẽ chuyển số tiền chưa rút sang ATO. Tiền không mất, và bạn vẫn có thể xin rút từ ATO.' },
       ] },
       'with-us': { title: 'Rút qua chúng tôi', blocks: [
         { p: 'Đơn trực tuyến của chính ATO là miễn phí. Nếu bạn muốn chúng tôi làm giúp, chúng tôi kiểm tra các quỹ super, ngày visa và giấy tờ, và xác nhận giá với bạn qua WhatsApp trước khi bạn thanh toán.' },

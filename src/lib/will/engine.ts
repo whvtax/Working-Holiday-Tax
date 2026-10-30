@@ -5,7 +5,7 @@
 //   SUPERVISED  = the assistant drafts, the owner approves every send
 //   FULL_AUTO   = the assistant sends; anything unclear goes to a human
 // ============================================================
-import { FORM_LINK_ANY_BRAND, VOICES } from './brand-voice';
+import { FORM_LINK_ANY_BRAND, FORM_SLUGS_ALT, VOICES } from './brand-voice';
 import { decide, Decision, Turn } from './claude';
 import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
@@ -19,8 +19,9 @@ const PAYMENT_RECEIVED_PREFIX = new RegExp('^\\s*(?:' + Object.values(PAYMENT_RE
 const FORM_LINK_IN_TEXT = FORM_LINK_ANY_BRAND; // decision 004: either brand's form link
 import { APPROVED } from './approved-messages';
 import { canTransition, CustomerState } from './state-machine';
-import { detectChoice, PRICE_ASK_RE, firstContactPriceMessage, priceTail } from './instant-choice';
+import { withMygovReassurance, detectChoice, PRICE_ASK_RE, firstContactPriceMessage, priceTail } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
+import { isFreeAdviceSeeker, FREE_ADVICE_BOUNDARY, BOUNDARY_MARKER } from './free-advice-seeker';
 import { hasForeignIncome } from './foreign-income';
 import { hasAbnIncome, ABN_PRICE_RE } from './abn-income';
 import { detectLanguage, unsupportedScript } from './i18n';
@@ -28,11 +29,12 @@ import { currentBrand } from './brand-context';
 import { SVT_FIXED_TEXTS } from './svt-fixed-texts';
 import { isLaterPlan, laterPlanReply } from './later-plan';
 import { renderApproved, type DecisionMode } from './will-decides';
-import { looksLikePaymentConfirmation } from './payment-confirmation';
+import { looksLikePaymentConfirmation, mentionsPaymentReceived } from './payment-confirmation';
+import { QUESTIONNAIRE_RECEIVED_RE } from './system-message-guard';
 import { paragraphise } from './layout';
 import { OTHER_INCOME_RE, CLEAR_ABN_RE, abnStance } from './instant-choice';
 import { alreadyCheckedReason, applyCheckedClause, CHECKED_CLAUSE, alreadyLodged } from './already-checked';
-import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, containsThanks, firstSentenceOnly, isClosingOnly, thanksReply } from './text-normalize';
+import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, containsThanks, firstSentenceOnly, isClosingOnly, thanksReply, hasQuestionOrRequest } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -206,6 +208,7 @@ export function enforcePriceMessage(text: string, foreign = false, reviewOfLodge
 
 /** $495 -> $385 and $330 -> $220, in the ways Will writes an amount in his
  *  languages ("$495", "A$495", "AUD 495", "495ドル", "495 Dollar"). */
+const REVIEW_OF_LODGED_TEXT = /for the review itself|確認作業に対して|für die Prüfung selbst|审核费用|xem lại hồ sơ/i;
 export function fixForeignPrice(text: string): string {
   const swap = (n: string) => (n === '495' ? '385' : '220');
   return text
@@ -295,7 +298,7 @@ export function customerAskedSomething(burst: string): boolean {
  *  then the price message is the right answer, question mark or not. */
 const CHOICE_OR_PRICE_RE = new RegExp([
   '\\b(?:tfn|abn|option|price|prices|cost|costs|fee|fees|how much|charge|pay|payment|bank|bsb)\\b',
-  '\\$\\s?(?:220|385|330|495)\\b', '\\b(?:220|385|330|495)\\b',
+  '\\$\\s?(?:220|385|330|440|495)\\b', '\\b(?:220|385|330|440|495)\\b',
   '^(?:yes|yep|yeah|sure|ok|okay|ja|sí|si|oui|sì|sim|はい|お願いします|よろしくお願いします)\\b',
   'いくら', '料金', '費用', '値段', 'preis', 'kosten', 'kostet', 'precio', 'cu[áa]nto', 'prix', 'combien', 'prezzo', 'quanto', 'preço',
 ].join('|'), 'im');
@@ -331,7 +334,7 @@ export function menuAsAnswer(burst: string, draft: string, paid: boolean): boole
 export function stripMenuAndBank(text: string): string {
   return text
     .split('\n')
-    .filter((l) => !BANK_LINE_RE.test(l.trim()) && !/\$\s?(?:220|385|330|495)\b/.test(l) && !/which option/i.test(l))
+    .filter((l) => !BANK_LINE_RE.test(l.trim()) && !/\$\s?(?:220|385|330|440|495)\b/.test(l) && !/which option/i.test(l))
     .join('\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
@@ -364,7 +367,7 @@ export function isApprovedVerbatim(text: string, firstName?: string | null): boo
  *  dropped; the team writes the rest. */
 export function scrubUnpaidDraft(text: string, paid: boolean): string {
   if (paid) return text;
-  const PAID_LINE = /tax-form|fill out (this|the|our) (quick )?form|once you'?ve submitted|since you'?ve paid|you'?ve already paid|payment received|received your payment|thanks? for (your|the) payment/i;
+  const PAID_LINE = new RegExp(`${FORM_SLUGS_ALT}|fill out (this|the|our) (quick )?form|once you'?ve submitted|since you'?ve paid|you'?ve already paid|payment received|received your payment|thanks? for (your|the) payment`, 'i');
   return text.split('\n').filter((line) => !PAID_LINE.test(line)).join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }
 
@@ -427,6 +430,25 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   // itself quoting an ABN price ($385 / $495). See abn-income.ts.
   const abnCustomer = ctx.income === 'TFN_ABN'
     || hasAbnIncome(history.filter((t) => t.role === 'customer').map((t) => t.text));
+  // Jo, 28 Oct (Anna Whelan): after the price, someone who only wants answers
+  // (will lodge herself, knows she owes the ATO) gets ONE friendly boundary and
+  // the chat is closed; nothing goes to the team. See free-advice-seeker.ts.
+  if (willMode && !ctx.paid && bankAlreadySent && (ctx.lang == null || ctx.lang === 'en')) {
+    const lastPriceIdx = (() => { for (let i = history.length - 1; i >= 0; i--) if (history[i].role === 'assistant' && BANK_DETAILS_RE.test(history[i].text)) return i; return -1; })();
+    const sincePrice = history.slice(lastPriceIdx + 1).filter((t) => t.role === 'customer').map((t) => t.text);
+    if (isFreeAdviceSeeker({ paid: ctx.paid, priceSent: lastPriceIdx >= 0, lang: ctx.lang, textsSincePrice: sincePrice, latestBurst: burstSinceOurs })) {
+      const alreadySaid = history.some((t) => t.role === 'assistant' && t.text.includes(BOUNDARY_MARKER));
+      const closed = canTransition(ctx.state, 'NOT_INTERESTED') ? 'NOT_INTERESTED' as const : undefined;
+      if (alreadySaid) {
+        return { kind: 'silent', newState: closed, stateChanged: !!closed, decision: { action: 'wait', confidence: 1, reply_text: '', new_state: closed } as Decision };
+      }
+      return {
+        kind: 'queued', replyText: FREE_ADVICE_BOUNDARY, newState: closed, stateChanged: !!closed,
+        decision: { action: 'reply', confidence: 1, reply_text: FREE_ADVICE_BOUNDARY, new_state: closed } as Decision,
+        reviewNote: 'Only wants answers before paying: one friendly boundary, chat closed (free-advice-seeker).',
+      };
+    }
+  }
   const applyBankRule = (t: string): string => {
     let out = suppressBankRepeat && BANK_DETAILS_RE.test(t) ? stripBankBlock(t) : t;
     if (guaranteeAlreadySent && !BANK_DETAILS_RE.test(out) && GUARANTEE_RE.test(out)) out = stripGuarantee(out);
@@ -446,7 +468,12 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   // kill switch stay silent.
   // Jo, 21 Oct: the thank-you line in THEIR language. The chat's language,
   // or, when that is not known yet, the language of what they just wrote.
-  const thanksLang = ctx.lang ?? detectLanguage(customerBurst).lang ?? 'en';
+  // 30 Oct: what they wrote now beats a stored language that is only 'en'
+  // because their first message was ("Danke", "ありがとうございます" got English).
+  const burstLang = detectLanguage(customerBurst);
+  const thanksLang = burstLang.confident && burstLang.lang && burstLang.lang !== 'en'
+    ? burstLang.lang
+    : (ctx.lang ?? burstLang.lang ?? 'en');
   // Only once we have said something: a "thank you" in someone's FIRST
   // message is politeness, not thanks for anything (Jo, 22 Oct, Nicole).
   if (!willMode && lastAssistantIdx >= 0 && burstSinceOurs.length > 0 && isClosingOnly(customerBurst) && containsThanks(customerBurst)) {
@@ -543,6 +570,19 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     decision.confidence = 1;
     decision.reply_text = accountNameMessage(ctx.lang);
   }
+  // A bare thank-you is never left unanswered (Jo, 29 Oct: at some stages Will
+  // stopped saying "You're very welcome!"). The playbook tells the model it
+  // will not see one, so it read them as a closing and waited, or handed them
+  // to the team. Safety net, in Will mode: a message that is only thanks, after
+  // we have said something, gets the thank-you line whatever the model chose.
+  // isClosingOnly already excludes a lead saying goodbye or asking anything.
+  if (willMode && decision.action !== 'reply' && lastAssistantIdx >= 0 && burstSinceOurs.length > 0
+      && isClosingOnly(customerBurst) && containsThanks(customerBurst)) {
+    decision.action = 'reply';
+    decision.approved_key = 'thanks';
+    decision.confidence = 1;
+    decision.reply_text = thanksReply(history[lastAssistantIdx].text, thanksLang);
+  }
 
   // ── WILL DECIDES (Jo, 22 Oct): his chosen approved message, Jo's wording ──
   // In 'will' mode Will names the approved message (approved_key) and the
@@ -586,12 +626,7 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   // "anyone else on a working holiday" referral never go out; and a chat in
   // Chinese or Vietnamese keeps Mia's own words rather than an English text.
   if (currentBrand() === 'svt' && decision.approved_key) {
-    if (decision.approved_key === 'no_dasp') {
-      return {
-        kind: 'human_task', decision: { ...decision, action: 'human_task' },
-        task: { reason: 'Asking about super (DASP). The student site says we can help: the team answers.', severity: 'REVIEW', suggestedReply: undefined },
-      };
-    }
+    // 30 Oct (Jo): DASP is not available at the moment for either brand; no_dasp is answered by Will for Mia too, no handover.
     const script = unsupportedScript(customerBurst);
     if (SVT_BLOCKED_KEYS.has(decision.approved_key)) decision.approved_key = undefined;
     else if (script && willMode && decision.action === 'reply') {
@@ -620,7 +655,7 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
         const name = custFirstName ? cleanFirstName(custFirstName) : '';
         const withName = name ? raw.replace(/\{\{name\}\}/g, name) : raw.replace(/ ?\{\{name\}\} ?/g, '');
         decision.reply_text = withName
-          .replace(/\{\{form\}\}/g, `${VOICES.svt.siteUrl}/${script}/tax-form`)
+          .replace(/\{\{form\}\}/g, `${VOICES.svt.siteUrl}/${script}/jhd7hp9xd`)
           .replace(/\s+([!！,，])/g, '$1')
           .trimStart();
         flags.fixedText = decision.reply_text;
@@ -632,13 +667,15 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   }
   if (willMode && decision.action === 'reply' && decision.approved_key) {
     const rendered = renderApproved(decision.approved_key, {
-      state: ctx.state, lang: ctx.lang ?? thanksLang, firstName: custFirstName ? cleanFirstName(custFirstName) : null,
+      state: ctx.state, lang: decision.approved_key === 'thanks' ? thanksLang : (ctx.lang ?? thanksLang), firstName: custFirstName ? cleanFirstName(custFirstName) : null,
       firstContact: lastAssistantIdx < 0,
       lastWillText: lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '',
       foreign: hasForeignIncome(history.filter((t) => t.role === 'customer').map((t) => t.text)),
     });
     if (rendered) {
-      decision.reply_text = rendered;
+      decision.reply_text = (decision.approved_key === 'price_tfn' || decision.approved_key === 'price_tfn_abn')
+        ? withMygovReassurance(rendered, customerBurst ? [customerBurst] : [], ctx.lang ?? thanksLang)
+        : rendered;
       approvedRendered = true;
       if ((decision.approved_key === 'price_tfn' || decision.approved_key === 'price_tfn_abn') && !decision.new_state && canTransition(ctx.state, 'PRICE_SENT')) {
         decision.new_state = 'PRICE_SENT';
@@ -786,7 +823,14 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     for (let i = history.length - 1; i >= 0; i--) if (history[i].role === 'assistant') { lastAssistant = i; break; }
     const sinceOurs = history.slice(lastAssistant + 1).filter((t) => t.role === 'customer');
     const burst = sinceOurs.length ? sinceOurs : history.filter((t) => t.role === 'customer').slice(-1);
-    if (!burst.some((t) => claimsPayment(t.text))) {
+    // 30 Oct: when what is left after the payment lines are removed is a real
+    // reply ("No problem, take your time"), it goes out and only the false
+    // confirmation and the move to Paid are dropped (the block further down);
+    // holding the whole reply for a person is for a draft that was ONLY that.
+    const leftover = decision.reply_text
+      ? decision.reply_text.split(/\n{2,}/).filter((para) => !PAYMENT_RECEIVED_PREFIX.test(para) && !mentionsPaymentReceived(para) && !FORM_LINK_IN_TEXT.test(para) && !/fill (?:out|in) (?:this|the) (?:quick )?form|questionnaire/i.test(para)).join('\n\n').trim()
+      : '';
+    if (!burst.some((t) => claimsPayment(t.text)) && !(leftover.length >= 20 && leftover.length < (decision.reply_text ?? '').trim().length)) {
       return {
         kind: 'human_task',
         decision,
@@ -817,6 +861,11 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     isApprovedTemplate: approvedRendered,
     customerTextChars: customerBurst.length,
     customerText: customerBurst,
+    // The guarantee is for TFN returns we prepare: not ABN, not foreign income,
+    // not the review of a return already lodged (30 Oct).
+    guaranteeBarred: foreignCustomer
+      || hasAbnIncome(history.filter((t) => t.role === 'customer').map((t) => t.text))
+      || alreadyLodged(history.filter((t) => t.role === 'customer').map((t) => t.text)),
   };
   // The payment-confirmation turn may mention onboarding although paid flips now;
   // only relax when the customer was NOT already paid (audit finding).
@@ -828,6 +877,24 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     fillPlaceholders(approvedRendered ? decision.reply_text : normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
   ), customerBurst);
   let rewriteNote: string | undefined;
+  // One rewrite by the model with a hint, accepted only when the new text does
+  // not itself carry a payment confirmation, the form link or a questionnaire
+  // confirmation (30 Oct). Replaces `text` on success.
+  const retryForAnswer = async (hint: string): Promise<boolean> => {
+    let retry: Decision | null = null;
+    try {
+      retry = await decide(ctx, history, {
+        rewriteHint: hint + '\n\nPrevious reply, for reference only:\n"""\n' + (decision.reply_text ?? '').slice(0, 1500) + '\n"""',
+        timeoutMs: 12_000,
+      });
+    } catch { retry = null; }
+    if (!retry || retry.action !== 'reply' || !retry.reply_text) return false;
+    const rewritten = applyBankRule(fillPlaceholders(normaliseWillText(retry.reply_text, { firstMessage, firstName: custFirstName }), bank)).trim();
+    if (!rewritten || PAYMENT_RECEIVED_PREFIX.test(rewritten) || mentionsPaymentReceived(rewritten)
+        || FORM_LINK_IN_TEXT.test(rewritten) || QUESTIONNAIRE_RECEIVED_RE.test(rewritten)) return false;
+    text = rewritten;
+    return true;
+  };
   // 1 Oct (72-hour audit): "Perfect" opened 63 of Will's messages in three
   // days, "Happy to help" 22, "No worries" 21. The prompt already says once
   // per conversation; the code now enforces it. From Will's third message on,
@@ -866,7 +933,8 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     text = msg;
     rewriteNote = 'The draft said the bank document is not needed; Jo\'s wording went instead (it is an ATO requirement).';
   }
-  if (!foreignCustomer && !teamQuoted && !ctx.paid) {
+  // The review of a return already lodged costs $330 (TFN) / $440 (ABN) (Jo, 30 Oct): its $330 is not the foreign income price.
+  if (!foreignCustomer && !teamQuoted && !ctx.paid && !REVIEW_OF_LODGED_TEXT.test(text)) {
     const fixed = fixForeignPrice(text);
     if (fixed !== text) { text = fixed; rewriteNote = 'The draft quoted the foreign-income price to a customer with no foreign income; the standard price went instead.'; }
   }
@@ -954,22 +1022,63 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     if (!kept) return { kind: 'silent', decision: { ...decision, action: 'wait' }, reviewNote: 'payment already confirmed: no second confirmation' };
     text = kept;
   }
-  if (!ctx.paid && (PAYMENT_RECEIVED_PREFIX.test(text) || FORM_LINK_IN_TEXT.test(text)) && !claimsPayment(customerBurst)) {
+  // 30 Oct: "Payment received" in ANY wording (not only the fixed first line),
+  // for a customer who wrote "I'll pay next week", "my bank is calling back"
+  // or "I'm not able to confirm the payment" (Federica, Luke, Janos).
+  if (!ctx.paid && (PAYMENT_RECEIVED_PREFIX.test(text) || mentionsPaymentReceived(text) || FORM_LINK_IN_TEXT.test(text)) && !claimsPayment(customerBurst)) {
     const cleaned = text
       .split(/\n{2,}/)
-      .filter((para) => !PAYMENT_RECEIVED_PREFIX.test(para) && !FORM_LINK_IN_TEXT.test(para) && !/fill (?:out|in) (?:this|the) (?:quick )?form|questionnaire/i.test(para))
+      .filter((para) => !PAYMENT_RECEIVED_PREFIX.test(para) && !mentionsPaymentReceived(para) && !FORM_LINK_IN_TEXT.test(para) && !/fill (?:out|in) (?:this|the) (?:quick )?form|questionnaire/i.test(para))
       .join('\n\n')
       .trim();
     rewriteNote = 'The draft confirmed a payment the customer never reported; the confirmation was removed and the stage stays.';
     if (newState === 'PAID') newState = undefined;
     if (cleaned.length >= 20) {
       text = cleaned;
+    } else if (await retryForAnswer(
+      'Your previous reply confirmed a payment the customer never reported. Rewrite: do NOT say payment was received and do NOT send the form link. Answer what they actually wrote in one to three short lines (if they said they will pay later or the bank is slow, say that is fine and the bank details are above if they need them).',
+    )) {
+      rewriteNote = 'The first draft confirmed a payment that was never reported; Will rewrote it to answer what they wrote.';
     } else {
       return {
         kind: 'human_task', decision, guardViolations: ['PAYMENT_CONFIRMED_WITHOUT_CLAIM'],
         task: { reason: 'Will wanted to confirm a payment the customer never reported. Check the bank, then reply.', severity: 'REVIEW', suggestedReply: text },
         newState: undefined, stateChanged: false,
       };
+    }
+  }
+
+  // ── "WE'VE RECEIVED YOUR QUESTIONNAIRE" ONLY WHEN WE HAVE (30 Oct) ────────
+  //
+  // Ronan lost eleven days because he was told the questionnaire was in when it
+  // was not; Joana, Abbie and Phil asked a question and were told "we've
+  // received your questionnaire" instead of getting an answer. The confirmation
+  // belongs to the form submission (the FORM_RECEIVED job), never to a draft:
+  // it is removed from the model's text unless the form is in the system AND the
+  // customer's message was not a question. A question is answered.
+  if (QUESTIONNAIRE_RECEIVED_RE.test(text)) {
+    const alreadyTold = history.some((t) => t.role === 'assistant' && QUESTIONNAIRE_RECEIVED_RE.test(t.text));
+    const asked = hasQuestionOrRequest(customerBurst);
+    if (!ctx.formComplete || alreadyTold || asked) {
+      const cleaned = text
+        .split(/\n{2,}/)
+        .filter((para) => !QUESTIONNAIRE_RECEIVED_RE.test(para))
+        .join('\n\n')
+        .trim();
+      if (cleaned.length >= 20) {
+        text = cleaned;
+        rewriteNote = 'The draft said the questionnaire was received when it was not (or answered a question with it); the line was removed.';
+      } else if (await retryForAnswer(
+        'Your previous reply told the customer we received their questionnaire. Do NOT say that: the form is confirmed by the system, never by you. Answer what they actually wrote or asked, in one to three short lines, in their language.',
+      )) {
+        rewriteNote = 'The draft only confirmed a questionnaire; Will rewrote it to answer what the customer wrote.';
+      } else {
+        return {
+          kind: 'human_task', decision, guardViolations: ['QUESTIONNAIRE_CONFIRMED_WITHOUT_FORM'],
+          task: { reason: 'Will wanted to confirm a questionnaire that is not in the system (or to answer a question with it). Check the form, then answer what the customer asked.', severity: 'REVIEW', suggestedReply: undefined },
+          newState: undefined, stateChanged: false,
+        };
+      }
     }
   }
 
@@ -1003,7 +1112,7 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
       text = rewritten;
     } else {
       const stripped = stripMenuAndBank(text);
-      if (stripped.length >= 40) {
+      if (stripped.replace(/[^\p{L}\p{N}]/gu, '').length >= 12) {
         rewriteNote = 'The first draft answered a question with the prices; the price lines were removed and the answer went.';
         text = stripped;
       } else {
@@ -1062,6 +1171,12 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     return { kind: 'silent', decision: { ...decision, action: 'wait', reply_text: undefined }, reviewNote: 'courtesy close: nothing to add, so nothing sent' };
   }
 
+  // 30 Oct: a guarantee sentence in a draft for a customer it does not cover
+  // (ABN, foreign income, a return already lodged) is dropped here, in code,
+  // exactly as applyBankRule does for the first two; the guard's
+  // GUARANTEE_NOT_ALLOWED is only the backstop and must not turn a good reply
+  // into a handoff.
+  if (guardCtx.guaranteeBarred && GUARANTEE_RE.test(text)) text = stripGuarantee(text);
   let verdict = policyGuard(text, guardCtx);
 
   // ── TOO LONG IS NOT A REASON TO STOP (Jo, 4 Sep) ─────────────────────

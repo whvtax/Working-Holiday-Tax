@@ -17,7 +17,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 const WA = waUrl({ topic: 'medicare', lang: 'de' })
 
 export const metadata: Metadata = {
-  title: 'Medicare Levy Befreiung: 417 und 462',
+  title: 'Medicare-Levy-Befreiung: 417 und 462',
   description:
     'Die 2 % Medicare Levy wird standardmäßig abgezogen, obwohl die meisten Working Holiday Maker sie nie schulden. Wer befreit ist.',
   keywords: [
@@ -41,13 +41,13 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/medicare`,
     siteName: 'Working Holiday Tax',
-    title: 'Medicare Levy Befreiung für 417 und 462 Visum',
+    title: 'Medicare-Levy-Befreiung für 417- und 462-Visum',
     description: 'Die 2 % werden standardmäßig abgezogen. Wer befreit ist und welche Bescheinigung die Befreiung braucht.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-medicare.png`],
     card: 'summary_large_image',
-    title: 'Medicare Levy Befreiung für Working Holiday Maker',
+    title: 'Medicare-Levy-Befreiung für Working Holiday Maker',
     description: 'Die 2 % werden standardmäßig abgezogen. Wer befreit ist und was die Befreiung braucht.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -71,7 +71,7 @@ const RHCA = [
 const MYGOV = [
   {
     mygov: 'Die Levy kommt bei der Veranlagung dazu, das erste Anzeichen ist also eine Rückerstattung, die kleiner ausfällt.',
-    us: 'Wir klären das, bevor die Erklärung rausgeht, und nicht erst wenn der Bescheid da ist.',
+    us: 'Wir klären das, bevor die Erklärung rausgeht, und nicht erst, wenn der Notice of Assessment da ist.',
   },
   {
     mygov: 'Nirgends steht, dass dein Pass darüber entscheidet und nicht dein Visum.',
@@ -89,24 +89,24 @@ const MYGOV = [
 
 const faqs = [
   {
-    question: 'Wie viel ist die Medicare Levy Befreiung wert?',
+    question: 'Wie viel ist die Medicare-Levy-Befreiung wert?',
     answer:
-      'Die Levy beträgt 2 % des zu versteuernden Einkommens, also rund 500 $ bei 25.000 $ Verdienst und rund 1.000 $ bei 50.000 $. Abgerechnet wird sie bei der Veranlagung deiner Erklärung und nicht Woche für Woche vom Lohn, dort die Befreiung zu beantragen holt das Geld also zurück.',
+      'Die Levy beträgt 2 % des zu versteuernden Einkommens, also rund 500 $ bei 25.000 $ Verdienst und rund 1.000 $ bei 50.000 $. Abgerechnet wird sie bei der Veranlagung deiner Erklärung und nicht Woche für Woche vom Lohn abgezogen. Die Befreiung gehört deshalb in die Erklärung.',
   },
   {
-    question: 'Bekommt jeder mit 417 oder 462 Visum die Befreiung?',
+    question: 'Bekommt jeder mit einem 417- oder 462-Visum die Befreiung?',
     answer:
-      'Die meisten ja, aber nicht alle. Entscheidend ist dein Pass, nicht dein Visum: Kommt deine Staatsangehörigkeit aus einem der elf Länder mit Sozialversicherungsabkommen, bist du in Australien in der Regel anspruchsberechtigt, und der Anspruch ist es, der die Befreiung wegnimmt.\n\nDeutschland, Österreich und die Schweiz gehören nicht dazu.',
+      'Die meisten ja, aber nicht alle. Entscheidend ist dein Pass, nicht dein Visum: Hast du die Staatsangehörigkeit eines der elf Länder mit Sozialversicherungsabkommen, bist du in der Regel anspruchsberechtigt, und genau dieser Anspruch schließt die Befreiung aus.\n\nDeutschland, Österreich und die Schweiz gehören nicht dazu.',
   },
   {
-    question: 'Was ist ein Medicare Entitlement Statement und brauchst du eines?',
+    question: 'Was ist ein Medicare Entitlement Statement, und brauche ich eines?',
     answer:
       'Das Medicare Entitlement Statement ist ein Dokument von Services Australia, das bestätigt, dass du für einen bestimmten Zeitraum keinen Anspruch auf Medicare hattest. Es ist der Nachweis hinter der Befreiung, und das ATO kann es sehen wollen, deshalb erledigen wir es als Teil deiner Erklärung.',
   },
   {
     question: 'Kann die Befreiung auch nur für einen Teil des Jahres gelten?',
     answer:
-      'Ja, und für viele Working Holiday Maker ist genau das die richtige Antwort. Gerechnet wird in Tagen, wenn du also im November angekommen bist, sind nur die Tage befreit, an denen du keinen Anspruch auf Medicare hattest.\n\nEin volles Jahr zu beantragen, wenn nur ein Teil zutrifft, ist der Fehler, der später zu einer Korrektur der Erklärung führt.',
+      'Ja, und für viele Working Holiday Maker ist genau das die richtige Antwort. Gerechnet wird in Tagen. Bist du also im November angekommen, sind nur die Tage befreit, an denen du keinen Anspruch auf Medicare hattest.\n\nEin volles Jahr zu beantragen, wenn nur ein Teil zutrifft, ist der Fehler, der später zu einer Korrektur der Erklärung führt.',
   },
   {
     question: 'Ändern Reiseversicherung oder private Krankenversicherung etwas daran?',
@@ -116,7 +116,7 @@ const faqs = [
   {
     question: 'Was ist, wenn die Levy im Laufe des Jahres schon abgezogen wurde?',
     answer:
-      'Nichts geht verloren. Die Levy wird bei der Veranlagung berechnet, nicht bei der Lohnzahlung, was während des Jahres abgezogen wurde, war also allgemein einbehaltene Steuer und nicht die Levy. Eine berechtigte Befreiung nimmt sie aus der Veranlagung heraus.\n\nWurde ein früheres Jahr ohne Befreiung eingereicht, obwohl sie dir zustand, lässt sich diese Erklärung meist korrigieren.',
+      'Nichts geht verloren. Die Levy wird bei der Veranlagung berechnet, nicht bei der Lohnzahlung. Was während des Jahres abgezogen wurde, war also allgemein einbehaltene Steuer und nicht die Levy. Eine berechtigte Befreiung nimmt sie aus der Veranlagung heraus.\n\nWurde ein früheres Jahr ohne Befreiung eingereicht, obwohl sie dir zustand, lässt sich diese Erklärung meist korrigieren.',
   },
 ]
 
@@ -144,13 +144,13 @@ const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   '@id': `${SITE_URL}/de/medicare#service`,
-  name: 'Medicare Levy Befreiung für Working Holiday Maker',
+  name: 'Medicare-Levy-Befreiung für Working Holiday Maker',
   serviceType: 'Medicare Levy Exemption',
   description:
-    'Die Medicare Levy Befreiung als Teil der australischen Steuererklärung, inklusive Medicare Entitlement Statement, für Inhaber von 417 und 462 Visa ohne Medicare Anspruch.',
+    'Die Medicare-Levy-Befreiung als Teil der australischen Steuererklärung, inklusive Medicare Entitlement Statement, für Inhaber von 417- und 462-Visa ohne Anspruch auf Medicare.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
-  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 / 462) ohne Medicare Anspruch' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 / 462) ohne Anspruch auf Medicare' },
   inLanguage: 'de',
   url: `${SITE_URL}/de/medicare`,
 }
@@ -291,7 +291,7 @@ export default function GermanMedicarePage() {
             </div>
 
             <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
-              Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
+              Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches
               Formular welches ist. Wir regeln das direkt mit dem ATO.
             </p>
           </div>
@@ -313,7 +313,7 @@ export default function GermanMedicarePage() {
               Jahreseinkommens, gezahlt in ein System, das du nie nutzen konntest.
             </p>
             <p style={BODY}>
-              Der stillere Fehler ist der umgekehrte: die Befreiung angekreuzt, ohne den Nachweis dahinter.
+              Der leisere Fehler ist der umgekehrte: die Befreiung angekreuzt, ohne den Nachweis dahinter.
               Dieser Nachweis ist ein Medicare Entitlement Statement von Services Australia, einer anderen
               Behörde als dem ATO, und eine Angabe ohne ihn lässt sich nicht belegen, wenn jemand nachfragt.
             </p>
@@ -333,7 +333,7 @@ export default function GermanMedicarePage() {
                 welcher Seite davon steht. */}
             <p style={BODY}>
               Befreit ist in der Regel, wer keinen Anspruch auf Medicare hatte, und auf einem Working
-              Holiday Visum hängt das an deinem Pass. Australien hat mit elf Ländern ein
+              Holiday-Visum hängt das an deinem Pass. Australien hat mit elf Ländern ein
               Sozialversicherungsabkommen.
             </p>
             <p style={BODY}>
@@ -390,8 +390,8 @@ export default function GermanMedicarePage() {
                 Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
               </p>
               <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
-                Von einem registrierten Steueragenten geprüft und freigegeben,
-                bevor es beim ATO eingereicht wird.
+                Von einem registrierten australischen Tax Agent geprüft und freigegeben,
+                bevor sie beim ATO eingereicht wird.
               </p>
             </div>
 
@@ -470,7 +470,7 @@ export default function GermanMedicarePage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
             {[
-              { href: '/de/blog/medicare-levy-working-holiday-makers', label: 'Die Medicare Levy Befreiung für Working Holiday Maker' },
+              { href: '/de/blog/medicare-levy-working-holiday-makers', label: 'Die Medicare-Levy-Befreiung für Working Holiday Maker' },
               { href: '/de/blog/countries-with-medicare-agreement-australia', label: 'Welche Länder ein Abkommen mit Australien haben' },
               { href: '/de/blog/what-is-medicare-working-holiday-makers', label: 'Was Medicare ist und wer wirklich abgedeckt ist' },
               { href: '/de/blog/private-health-insurance-working-holiday-australia', label: 'Ändert eine private Krankenversicherung die Levy?' },
@@ -491,7 +491,7 @@ export default function GermanMedicarePage() {
       <NextStep
         eyebrow="Was kommt als Nächstes"
         heading="Die Befreiung ist eine Zeile der Erklärung, nicht die ganze"
-        body="Dein Residentenstatus und deine absetzbaren Kosten sind mehr wert. Wir arbeiten alle drei zusammen aus."
+        body="Dein steuerlicher Wohnsitz und deine absetzbaren Kosten spielen dabei oft die größere Rolle. Wir arbeiten alle drei zusammen aus."
         cta="So bereiten wir die Erklärung vor"
         href="/de/tax-return"
       />

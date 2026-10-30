@@ -11,7 +11,7 @@ test('every SVT page has no axe violations', async ({ page }) => {
   // The sitemap holds 600+ pages since the article library (27 Oct).
   test.setTimeout(3_600_000)
   await page.goto(`${SVT}/sitemap.xml`)
-  const urls = [...(await page.content()).matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => new URL(m[1]).pathname).concat(['/tax-form'])
+  const urls = [...(await page.content()).matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => new URL(m[1]).pathname).concat(['/jhd7hp9xd'])
   expect(urls.length).toBeGreaterThan(90)
   const found: string[] = []
   for (const u of urls) {

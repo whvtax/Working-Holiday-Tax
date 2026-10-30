@@ -1,6 +1,7 @@
 'use client'
 /** Working Holiday Tax's tax form settings (the values the form always had). */
 import { WA_NUMBER } from '@/lib/constants'
+import formPaths from '../../../config/form-paths'
 import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
 import { FormBrandProvider, type FormBrand } from './form-brand'
 
@@ -12,7 +13,11 @@ export const WHT_FORM_BRAND: FormBrand = {
     { code: 'de', label: 'DE', full: 'Deutsch' },
     { code: 'ja', label: '日本語', full: '日本語' },
   ],
-  url: (lang, page) => (lang === 'de' || lang === 'ja' ? `/${lang}/${page}` : `/${page}`),
+  // The form pages have reset, random slugs (config/form-paths.js); other pages keep their names.
+  url: (lang, page) => {
+    const slug = (formPaths.WHT as Record<string, string>)[page] ?? page
+    return lang === 'de' || lang === 'ja' ? `/${lang}/${slug}` : `/${slug}`
+  },
   sealSrc: '/assets/tpb-registered.png',
   reviews: (lang) => <GoogleReviewsBadge lang={lang === 'de' || lang === 'ja' ? lang : 'en'} />,
   // The success screen's social links (moved here unchanged from FormClient).

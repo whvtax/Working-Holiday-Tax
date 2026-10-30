@@ -17,7 +17,7 @@ const ALL_APPROVED = strings(APPROVED)
 
 const WHT_SAMPLES = [
   'Hi Anna, it\'s the team at Working Holiday Tax 😊',
-  'Here is the form: https://workingholidaytax.com.au/tax-form',
+  'Here is the form: https://workingholidaytax.com.au/start',
   'Details: https://www.workingholidaytax.com.au/client-agreement',
   'Call 0424 513 998 or +61 424 513 998 or wa.me/61424513998',
   'You are Will, on the team at Working Holiday Tax, an Australian service for working holiday makers (backpackers).',
@@ -44,7 +44,7 @@ describe('SVT gets its own name, domain and number', () => {
       const out = rebrandText(s, 'svt')
       expect(brandLeaks(out, 'svt')).toEqual([])
     }
-    expect(rebrandText('https://workingholidaytax.com.au/tax-form', 'svt')).toBe('https://studentvisatax.com.au/tax-form')
+    expect(rebrandText('https://workingholidaytax.com.au/jhd7hp9xd', 'svt')).toBe('https://studentvisatax.com.au/jhd7hp9xd')
     expect(rebrandText('https://www.workingholidaytax.com.au/privacy', 'svt')).toBe('https://studentvisatax.com.au/privacy')
     expect(rebrandText("it's the team at Working Holiday Tax", 'svt')).toBe("it's the team at Student Visa Tax")
   })

@@ -65,11 +65,11 @@ export function seedTemplates(): TemplateRow[] {
     t('prices', 'Opening & Qualification', 'The two prices (only for a direct price question)', APPROVED.prices),
     t('price_tfn', 'Pricing', 'Price: TFN only ($220)', APPROVED.price_tfn),
     t('price_tfn_abn', 'Pricing', 'Price: TFN + ABN ($385)', APPROVED.price_tfn_abn),
-    t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($220)', APPROVED.price_tfn_review),
+    t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($330)', APPROVED.price_tfn_review),
     t('price_tfn_foreign', 'Pricing', 'Price: TFN with foreign income ($330)', APPROVED.price_tfn_foreign),
     t('price_tfn_abn_foreign', 'Pricing', 'Price: TFN + ABN with foreign income ($495)', APPROVED.price_tfn_abn_foreign),
     t('prices_foreign', 'Pricing', 'Both prices with foreign income ($330 / $495)', APPROVED.prices_foreign),
-    t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($385)', APPROVED.price_tfn_abn_review),
+    t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($440)', APPROVED.price_tfn_abn_review),
     t('obj_1', 'Objections', '#1 Refund amount before paying', o.o1_refund_before_pay),
     t('obj_2', 'Objections', '#2 Why pay before knowing', o.o2_why_pay_first),
     t('obj_3', 'Objections', '#3 Thought the check was free', o.o3_thought_free),
@@ -109,6 +109,11 @@ export function seedTemplates(): TemplateRow[] {
     ...(Object.keys(REQUEST_ABN_MSG) as Lang[]).filter((l) => l !== 'en').map((lang) =>
       t(requestAbnTemplateKey(lang), 'Post-payment & Service', `Request ABN detail · ${LANG_LABELS[lang]}`, REQUEST_ABN_MSG[lang])),
     t('req_expenses', 'Post-payment & Service', 'Request expense receipts', APPROVED.request_expenses),
+    t('expenses_intake_a', 'Post-payment & Service', 'Expenses intake 1 of 4 (send 1 to 4 together)', APPROVED.expenses.intake_a),
+    t('expenses_intake_b', 'Post-payment & Service', 'Expenses intake 2 of 4', APPROVED.expenses.intake_b),
+    t('expenses_intake_c', 'Post-payment & Service', 'Expenses intake 3 of 4', APPROVED.expenses.intake_c),
+    t('expenses_intake_d', 'Post-payment & Service', 'Expenses intake 4 of 4', APPROVED.expenses.intake_d),
+    t('expenses_done', 'Post-payment & Service', 'Expenses collected', APPROVED.expenses.done),
     t('req_doc', 'Post-payment & Service', 'Request missing document', APPROVED.request_missing_doc),
     t('medicare', 'Post-payment & Service', 'Medicare exemption guide', APPROVED.medicare_exemption),
     // The same message in the other six languages, so the automatic Medicare
@@ -339,15 +344,15 @@ const KNOWLEDGE_FIXES: { question: string; answer: string }[] = [
   // 25 Oct (Jo): no super (DASP) service at the moment.
   {
     question: 'Can you help me claim my superannuation (DASP)?',
-    answer: 'At the moment we don\'t offer a superannuation (DASP) service, though we may add it in the future. We\'re happy to take care of your tax return. \u{1F60A}',
+    answer: 'Unfortunately our superannuation (DASP) service is not available at the moment. We\'re happy to take care of your tax return. \u{1F60A}',
   },
   {
     question: "Can I claim my superannuation back while I'm still in Australia / before my visa ends?",
-    answer: 'At the moment we don\'t offer a superannuation (DASP) service, though we may add it in the future. We\'re happy to take care of your tax return. \u{1F60A}',
+    answer: 'Unfortunately our superannuation (DASP) service is not available at the moment. We\'re happy to take care of your tax return. \u{1F60A}',
   },
   {
     question: 'Can I set up a payment plan with the ATO for the amount I owe?',
-    answer: 'Once the ATO has issued your notice, you can ask them directly for a payment plan. You\'ll need to call the ATO yourself to request one. We\'ll message you in about two weeks with the amount and how to pay. \u{1F60A}',
+    answer: 'The ATO offers payment plans once the payment request has been issued, and we will go through the options with you here in the chat. Within 14 days of lodging you will receive an email from the ATO with the payment request and how to pay. If it has not arrived, message us here and we will send it to you directly. \u{1F60A}',
   },
 ];
 /** Later fixes, each batch applied once after the ones before it, so an
@@ -362,6 +367,32 @@ const LATER_FIXES: { marker: string; fixes: { question: string; answer: string }
     },
   ] },
 ];
+
+/** 30 Oct (Jo, second batch): the Library answers changed by the decisions of
+ *  that day (guarantee, 7 days, review $330 / $440, DASP, expenses, owes tax),
+ *  pushed once into rows that already exist. The text comes from the seed, so
+ *  there is one copy of the wording. Matched by question like every fix. */
+const FIX_30OCT_B_INTENTS = [
+  'already started or lodged the return myself', 'review or amend a return already lodged', 'pricing',
+  'worked across two financial years, two returns and two fees', 'customer asks for a refund of our fee',
+  'status of the refund of our fee', 'super claim', 'superannuation while still in Australia',
+  'when does the tax owed have to be paid', 'ATO payment plan for tax owed',
+  'when the ATO notice of assessment or email arrives after lodging', 'owes tax after lodgement is it ready to pay',
+  'car expenses for work claim', 'claim travel to work tolls fuel', 'claim work clothing footwear laundry',
+  'work-related expenses', 'work expenses intake after payment', 'work expenses intake after payment (German)',
+  'work expenses intake after payment (Japanese)', 'what can i claim before paying',
+  'what can i claim before paying (German)', 'what can i claim before paying (Japanese)',
+  'car trips home to work or between sites', 'expenses mentioned after ticking no expenses',
+];
+function fixesFromSeed(intents: string[]): { question: string; answer: string }[] {
+  const out: { question: string; answer: string }[] = [];
+  for (const intent of intents) {
+    const e = KNOWLEDGE_SEED.find((k) => k.intent === intent);
+    if (e) out.push({ question: e.question, answer: e.answer });
+  }
+  return out;
+}
+LATER_FIXES.push({ marker: 'fix-30oct-b', fixes: fixesFromSeed(FIX_30OCT_B_INTENTS) });
 
 export async function applyKnowledgeFixes(
   store: Pick<Store, 'listKnowledge' | 'updateKnowledge' | 'getSetting' | 'setSetting'>,

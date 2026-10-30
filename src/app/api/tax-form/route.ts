@@ -21,6 +21,11 @@ export async function POST(req: NextRequest) {
     // (decision 003). The SVT host can only reach this route in a build with
     // SVT_FORMS_ENABLED=true (config/brand-routing.js).
     const brand = brandFromHost(req.headers.get('host'))
+    // Second lock behind the host rewrite (audit A09-1): the SVT form stays
+    // closed at runtime until SVT_FORMS_ENABLED is set.
+    if (brand === 'svt' && process.env.SVT_FORMS_ENABLED !== 'true') {
+      return NextResponse.json({ ok: false, error: 'not_found' }, { status: 404 })
+    }
 
     const formData  = await req.formData()
     const email     = sanitiseShort(formData.get('email'))
@@ -107,6 +112,15 @@ export async function POST(req: NextRequest) {
         formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
         formData.get('hasMedicare') ? `Medicare: ${sanitiseShort(formData.get('hasMedicare'))}` : '',
         formData.get('hasExpenses') ? `Expenses: ${sanitiseShort(formData.get('hasExpenses'))}` : '',
+        // Additional income (Jo, 28 Oct). Free text is cleaned and capped; it
+        // is only kept when the answer is Yes.
+        (() => {
+          const a = sanitiseShort(formData.get('hasOtherIncome')).toLowerCase()
+          if (a === 'no') return 'Other income: No'
+          if (a !== 'yes') return ''
+          const what = sanitiseField(formData.get('otherIncomeText'), 300).replace(/\s+/g, ' ')
+          return `⚠️ Other income: Yes${what ? ` - ${what}` : ' (not described, ask)'}`
+        })(),
         // Optional extra lines from the SVT form (visa, course length). At most
         // 5 lines of 200 characters, tags stripped; anything malformed is
         // ignored. The WHT form never sends this field.

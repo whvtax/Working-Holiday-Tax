@@ -48,7 +48,7 @@ describe('SVT host serves only the SVT tree', () => {
     ['/zh', `/${SVT_SEGMENT}/zh`],
     ['/vi/tax-return', `/${SVT_SEGMENT}/vi/tax-return`],
     // WHT pages and files land inside the SVT tree, where they do not exist.
-    ['/tax-form', `/${SVT_SEGMENT}/tax-form`],
+    ['/jhd7hp9xd', `/${SVT_SEGMENT}/jhd7hp9xd`],
     ['/crm', `/${SVT_SEGMENT}/crm`],
     ['/crm/dashboard', `/${SVT_SEGMENT}/crm/dashboard`],
     ['/de', `/${SVT_SEGMENT}/de`],
@@ -101,7 +101,7 @@ describe('every other host never reaches SVT', () => {
     expect(route(host, `/${SVT_SEGMENT}/zh/anything`)).toBe(NOT_FOUND_PATH)
     expect(route(host, '/svt-assets/logo.svg')).toBe(NOT_FOUND_PATH)
     // WHT itself is untouched.
-    for (const p of ['/', '/tax-form', '/crm', '/api/tax-form', '/de/tfn', '/robots.txt']) {
+    for (const p of ['/', '/start', '/crm', '/api/tax-form', '/de/tfn', '/robots.txt']) {
       expect(route(host, p)).toBe(p)
     }
   })
@@ -140,7 +140,10 @@ describe('next.config.js wiring', () => {
   it('no WHT redirect can fire on an SVT host', async () => {
     const redirects: Array<{ missing?: unknown[] }> = await nextConfig.redirects()
     expect(redirects.length).toBeGreaterThan(30)
-    for (const r of redirects) expect(r.missing).toContainEqual(svtCond)
+    // Every redirect is either WHT only (missing the SVT host) or SVT only (has it).
+    for (const r of redirects as Array<{ missing?: unknown[]; has?: unknown[] }>) {
+      expect(Boolean(r.missing?.some(c => JSON.stringify(c) === JSON.stringify(svtCond))) !== Boolean(r.has?.some(c => JSON.stringify(c) === JSON.stringify(svtCond)))).toBe(true)
+    }
   })
   it('SVT responses get their own CSP, which never names the WHT domain', async () => {
     const headers: Array<{ source: string; has?: unknown[]; headers: Array<{ key: string; value: string }> }> = await nextConfig.headers()

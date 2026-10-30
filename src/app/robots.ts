@@ -12,7 +12,7 @@ const DISALLOWED_PATHS = [
   // They each carry `robots: { index: false }` in their layout, and the two
   // controls cancel each other out: a crawler blocked by Disallow never fetches
   // the page, so it never reads the noindex. Meanwhile partner referral links
-  // (crm/partners) publish `/tax-form?ref=CODE` on other people's sites, and an
+  // (crm/partners) publish `/start?ref=CODE` on other people's sites, and an
   // external link to a blocked URL is precisely what produces a URL-only entry
   // in the index. Letting the crawler in to read "noindex" is what actually
   // keeps them out of results.
@@ -23,9 +23,9 @@ const DISALLOWED_PATHS = [
   // noindex, but noindex only stops a page being listed: the crawler still
   // reads it. The questions on it are the assessment method, so the AI
   // crawlers enumerated below are kept out of the content as well as the index.
-  '/tax-residency',
-  '/de/tax-residency',
-  '/ja/tax-residency',
+  '/y8vwp4bf7',
+  '/de/y8vwp4bf7',
+  '/ja/y8vwp4bf7',
 ]
 
 // Major AI crawlers (OpenAI, Anthropic, Perplexity, Google, Microsoft, Meta, Apple, ByteDance).

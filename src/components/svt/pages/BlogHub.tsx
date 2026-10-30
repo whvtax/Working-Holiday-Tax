@@ -5,6 +5,7 @@ import { UI, fill, localePath, type SvtLocale } from '@/lib/svt/i18n'
 import { Mark } from '../Type'
 import { LanguageSwitch } from '../LanguageSwitch'
 import styles from './BlogHub.module.css'
+import { BlogBrowser, type BlogCard } from './BlogBrowser'
 
 /** Reading order of the groups: first job, tax time, work rights, ABN, leaving. */
 const GROUPS = ['TFN', 'Tax return', 'Deductions', 'Work', 'ABN', 'Super', 'Medicare'] as const
@@ -29,7 +30,11 @@ export function BlogHub({ locale }: { locale: SvtLocale }) {
   const groups = GROUPS
     .map(c => ({ c, items: all.filter(a => a.category === c).sort((x, y) => y.updated.localeCompare(x.updated)) }))
     .filter(g => g.items.length > 0)
-  const id = (c: string) => `topic-${c.toLowerCase().replace(/\s+/g, '-')}`
+  // Topic order, newest first inside each topic, as one list of cards.
+  const cards: BlogCard[] = groups.flatMap(g => g.items.map(a => ({
+    slug: a.slug, href: localePath(locale, `/blog/${a.slug}`), category: a.category, categoryLabel: t.categories[a.category],
+    title: a.title, description: a.description, updated: a.updated, minRead: fill(ui.guide.minRead, { n: String(a.minutes) }),
+  })))
   return (
     <>
       <section className={styles.hero} aria-labelledby="blog-title">
@@ -44,35 +49,17 @@ export function BlogHub({ locale }: { locale: SvtLocale }) {
             <li><strong data-mono-words="">2025-26</strong><span>{t.statTaxYear}</span></li>
             <li className={styles.statFree}><strong>{t.statFree}</strong><span>{t.statFreeNote}</span></li>
           </ul>
-          <nav aria-label={`${t.nav}, ${t.statTopics}`} className={styles.pills}>
-            <a href="#articles" className={styles.pillActive}>{t.all} <span>{all.length}</span></a>
-            {groups.map(g => <a key={g.c} href={`#${id(g.c)}`}>{t.categories[g.c]} <span>{g.items.length}</span></a>)}
-          </nav>
           <LanguageSwitch current={locale} path="/blog" compact />
         </div>
       </section>
-      <section id="articles" className={styles.body}>
+      <section id="articles" className={styles.body} aria-labelledby="articles-title">
         <div className={styles.inner}>
-          {groups.map(g => (
-            <div key={g.c} className={styles.block}>
-              <h2 id={id(g.c)} className={styles.group}>{t.categories[g.c]}</h2>
-              <ul className={styles.grid}>
-                {g.items.map(a => (
-                  <li key={a.slug}>
-                    <a className={styles.card} href={localePath(locale, `/blog/${a.slug}`)}>
-                      <span className={styles.cardTop}>
-                        <span className={styles.tag}>{t.categories[a.category]}</span>
-                        <span data-mono-words="">{fill(ui.guide.minRead, { n: String(a.minutes) })}</span>
-                      </span>
-                      <span className={styles.title}>{a.title}</span>
-                      <span className={styles.desc}>{a.description}</span>
-                      <time className={styles.date} dateTime={a.updated} data-mono-words="">{t.updated} {a.updated}</time>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <h2 id="articles-title" className="svt-visually-hidden">{t.all}</h2>
+          <BlogBrowser
+            cards={cards}
+            topics={groups.map(g => ({ key: g.c, label: t.categories[g.c], count: g.items.length }))}
+            labels={{ all: t.all, topicsAria: `${t.nav}, ${t.statTopics}`, updated: t.updated, previous: t.pager.previous, next: t.pager.next, pageOf: t.pager.pageOf, paginationAria: t.pager.aria }}
+          />
         </div>
       </section>
     </>

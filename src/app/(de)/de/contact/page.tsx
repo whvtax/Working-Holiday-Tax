@@ -6,8 +6,8 @@ import { waUrl } from '@/lib/wa'
 import { WA_NUMBER, EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Kontakt: es antwortet ein Mensch',
-  description: 'Schreib uns auf WhatsApp. Es antwortet ein echter Mensch, meist in etwa einer Stunde. Kein myGov, kein australischer Ausweis, keine Payslips nötig.',
+  title: 'Kontakt: Schreib uns auf WhatsApp',
+  description: 'Schreib uns auf WhatsApp. Wir antworten meist in etwa einer Stunde. Kein myGov, kein australischer Ausweis, keine Payslips nötig.',
   keywords: [
     'Kontakt Working Holiday Tax',
     'Backpacker Steuer Hilfe',
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax: Steuererklärung in Australien' }],
     title: 'Kontakt: Working Holiday Tax',
-    description: 'WhatsApp ist der schnellste Weg zu uns. Es antwortet ein echter Mensch, während der Geschäftszeiten meist in etwa einer Stunde.',
+    description: 'WhatsApp ist der schnellste Weg zu uns. Wir antworten während der Geschäftszeiten meist in etwa einer Stunde.',
     url: `${SITE_URL}/de/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Kontakt: Working Holiday Tax',
-    description: 'Schreib uns auf WhatsApp. Es antwortet ein echter Mensch, meist in etwa einer Stunde.',
+    description: 'Schreib uns auf WhatsApp. Wir antworten meist in etwa einer Stunde.',
   },
   robots: {
     index: true,
@@ -62,16 +62,16 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'Brauche ich ein myGov-Konto?',
-    a: 'Nein. Du musst dich nie bei myGov einloggen, keinen australischen Ausweis verknüpfen und nicht herausfinden, welches Formular welches ist. Wir haben direkt mit dem ATO zu tun.\n\nWenn du es schon versucht hast und bei der Identitätsprüfung hängen geblieben bist, ändert das nichts.',
+    a: 'Nein. Du musst dich nie bei myGov einloggen, keinen australischen Ausweis verknüpfen und nicht herausfinden, welches Formular welches ist. Wir regeln das direkt mit dem ATO.\n\nWenn du es schon versucht hast und bei der Identitätsprüfung hängen geblieben bist, ändert das nichts.',
   },
   {
     q: 'Brauche ich meine Payslips?',
-    a: 'Nein, und du musst vor der Nachricht nichts zusammensuchen. Was deine Arbeitgeber einbehalten und gemeldet haben, sehen wir über das ATO, wenn du also gar nichts mehr hast, schreib uns trotzdem.',
+    a: 'Nein, und du musst vor der Nachricht nichts zusammensuchen. Was deine Arbeitgeber einbehalten und gemeldet haben, sehen wir über das ATO. Hast du also gar nichts mehr, schreib uns trotzdem.',
     link: { href: '/de/about', label: 'Warum wir bei den ATO-Daten anfangen' },
   },
   {
     q: 'Ist das hier seriös?',
-    a: 'Deine Steuererklärung wird von einem registrierten Steueragenten geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Die Bedingungen, denen du zustimmen würdest, stehen vollständig in unserer Mandantenvereinbarung, und die Bewertungen in unserem Google-Profil stammen von Working Holiday Makern, mit denen wir tatsächlich gearbeitet haben.',
+    a: 'Deine Steuererklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Die Bedingungen, denen du zustimmen würdest, stehen vollständig in unserer Mandantenvereinbarung, und die Bewertungen in unserem Google-Profil stammen von Working Holiday Makern, mit denen wir tatsächlich gearbeitet haben.',
     link: { href: '/de/client-agreement', label: 'Mandantenvereinbarung lesen' },
   },
 ]
@@ -79,11 +79,11 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Werktagmorgen. Muss deine Frage erst geprüft werden, sagen wir dir das sofort.',
+    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Geschäftstag. Muss deine Frage erst geprüft werden, sagen wir dir das sofort.',
   },
   {
     question: 'Kostet es etwas, eine Frage zu stellen?',
-    answer: 'Fragen kostet nichts, und du kannst so viel fragen wie du willst, bevor du dich entscheidest. Der Service hat ein pauschales Honorar, niemals einen Prozentsatz deiner Rückerstattung, bestätigt per WhatsApp, bevor die Arbeit beginnt.',
+    answer: 'Fragen kostet nichts, und du kannst so viel fragen, wie du willst, bevor du dich entscheidest. Unsere Leistung kostet ein Pauschalhonorar, niemals einen Prozentsatz deiner Rückerstattung. Es wird per WhatsApp bestätigt, bevor die Arbeit beginnt.',
   },
   {
     question: 'In welcher Sprache bekomme ich eine Antwort?',
@@ -91,7 +91,7 @@ const FAQS = [
   },
   {
     question: 'Muss ich sofort Unterlagen schicken?',
-    answer: 'Nein. Schick erst mal nur die Frage und sonst nichts. Wir beantworten sie, und wenn sich Arbeit lohnt, sagen wir dir vorher, welche und was sie kostet.\n\nUnterlagen kommen später, und dann sagen wir dir genau, welche und wie du sie sicher schickst.',
+    answer: 'Nein. Schick erst mal nur die Frage und sonst nichts. Wir beantworten sie, und wenn sich ein Auftrag lohnt, sagen wir dir vorher, was dazugehört und was er kostet.\n\nUnterlagen kommen später, und dann sagen wir dir genau, welche und wie du sie sicher schickst.',
   },
   {
     question: 'Was ist, wenn ich keine Rückerstattung bekomme?',
@@ -109,7 +109,7 @@ const contactPageLd = {
   '@id': `${SITE_URL}/de/contact#webpage`,
   url: `${SITE_URL}/de/contact`,
   name: 'Kontakt: Working Holiday Tax',
-  description: 'Schreib uns auf WhatsApp. Es antwortet ein echter Mensch, während der Geschäftszeiten meist in etwa einer Stunde.',
+  description: 'Schreib uns auf WhatsApp. Wir antworten während der Geschäftszeiten meist in etwa einer Stunde.',
   inLanguage: 'de',
   isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#business` },
@@ -196,7 +196,7 @@ export default function GermanContactPage() {
 
             <p className="contact-lead mx-auto"
               style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.6, color: '#2A3C34', maxWidth: '44ch', marginBottom: '22px' }}>
-              Ein echter Mensch liest deine Nachricht und antwortet, während der Geschäftszeiten meist in etwa einer Stunde.
+              Wir lesen deine Nachricht und antworten, während der Geschäftszeiten meist in etwa einer Stunde.
             </p>
 
             <WaLink href={WA} position="hero" topic="contact" lang="de"
@@ -341,10 +341,10 @@ export default function GermanContactPage() {
               Wann immer du so weit bist
             </p>
             <h2 className="font-serif font-black text-white" style={{ fontSize: 'clamp(21px,2.8vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '12px' }}>
-              Schick einfach die Frage. Mehr ist der erste Schritt nicht.
+              Schick einfach deine Frage. Mehr braucht der erste Schritt nicht.
             </h2>
             <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, marginBottom: '24px', fontWeight: 300 }}>
-              Wo du gearbeitet hast, ungefähr wann, und ob du Australien schon verlassen hast. Das reicht uns, um dir zu sagen, was sich zu verfolgen lohnt.
+              Wo du gearbeitet hast, ungefähr wann, und ob du Australien schon verlassen hast. Das reicht uns für eine erste Einschätzung.
             </p>
             <WaLink href={WA} position="footer" topic="contact" lang="de"
               className="btn-primary w-full sm:w-auto"

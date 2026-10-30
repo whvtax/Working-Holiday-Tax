@@ -1,7 +1,7 @@
 /**
  * Jo, 24 Oct (Chinami, +81 90): already lodged, got less than she should,
  * wants it lodged again (and asks about super). Will handed it to the team.
- * Jo: "happy to help, but as it is a correction the fee is $220 for the
+ * Jo: "happy to help, but as it is a correction the fee is $385 for the
  * review, no guarantee, whatever the result. Will already knows this."
  */
 jest.mock('@/lib/will/claude', () => ({ ...jest.requireActual('@/lib/will/claude'), decide: jest.fn() }));
@@ -19,15 +19,17 @@ it('Will can choose the review of a lodged return himself', () => {
   expect(WILL_DECIDES_PROMPT).toContain('October 31 is the deadline for lodging a NEW return');
 });
 
-it('the review wording: $220, no guarantee, in Japanese, German and English', () => {
+it('the review wording: $330 TFN / $440 ABN, no guarantee, in Japanese, German and English', () => {
   const ja = renderApproved('price_tfn_review', { ...base, lang: 'ja' }) ?? '';
   expect(ja).toContain('Chinamiさん');
-  expect(ja).toContain('$220');
+  expect(ja).toContain('$330');
+  expect(ja).not.toContain('$360');
   expect(ja).toContain('結果にかかわらず');
   expect(ja).toContain('BSB: 062692');
   expect(ja).not.toContain('差額を返金いたします');
   const de = renderApproved('price_tfn_abn_review', { ...base, lang: 'de' }) ?? '';
-  expect(de).toContain('$385');
+  expect(de).toContain('$440');
+  expect(de).not.toContain('$360');
   expect(de).toContain('unabhängig vom Ergebnis');
   expect(renderApproved('price_tfn_review', { ...base, lang: 'en' })).toBe(APPROVED.price_tfn_review);
   expect(renderApproved('price_tfn_review', { ...base, lang: 'fr' })).toBeNull();
@@ -42,9 +44,9 @@ it('the engine sends the review wording, and the ABN version only with ABN incom
   });
   decideMock.mockResolvedValue({ action: 'reply', confidence: 1, reply_text: 'x', approved_key: 'price_tfn_abn_review', new_state: 'PRICE_SENT' } as never);
   const out = await runEngine(input('tax returnは既に申請、金額受領しておりますが誤った申請のため全額返ってきておりません。再申請は可能でしょうか？'));
-  expect(out.replyText).toContain('$220');
-  expect(out.replyText).not.toContain('$385');
+  expect(out.replyText).toContain('$330');
   decideMock.mockResolvedValue({ action: 'reply', confidence: 1, reply_text: 'x', approved_key: 'price_tfn_review', new_state: 'PRICE_SENT' } as never);
   const abn = await runEngine(input('既に申告しましたが、ABNの収入を入れ忘れました。修正できますか？'));
-  expect(abn.replyText).toContain('$385');
+  expect(abn.replyText).toContain('$440');
+  expect(abn.replyText).not.toMatch(/\$(?:220|360)/);
 });

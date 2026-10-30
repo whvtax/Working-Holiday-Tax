@@ -89,7 +89,7 @@ it('Alexandra: Will starts the residency questions, and her Yes/No answers carry
   runEngine.mockClear();
   await say('Yes');
   expect(runEngine).not.toHaveBeenCalled();
-  expect(sent[sent.length - 1]).toMatch(/^2\/5/);
+  expect(sent[sent.length - 1]).toMatch(/^2\/6/);
 });
 
 it('a form report the confirmation already covered: in will mode Will decides (it is not skipped by the words)', async () => {

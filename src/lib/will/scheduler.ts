@@ -22,7 +22,12 @@ import { checkBankDetails, sendSecurityEmail } from '@/lib/security-watch';
 import { confirmationAlreadyOut, looksLikePaymentConfirmation } from './payment-confirmation';
 import { residencyCheckKey, RESIDENCY_CHECK_DELAY_MS } from './form-link';
 import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, handoffBumpTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
-import { svtTemplateName } from './brand-voice';
+import { svtTemplateName, FORM_SLUGS_ALT } from './brand-voice';
+import { resolveLanguage, refreshCustomerLang, englishToForeignReason, hasTemplateVariant } from './language-30oct';
+import { recordSendFailure, noLanguageVariantError } from './send-failure-30oct';
+import { followUpBlock, refundCheckinBlock, reviewAskAlreadySent, customerOwesTax, messagesOf } from './followup-gate-30oct';
+import { closeLeadAfterNo } from './close-lead-30oct';
+import { ensurePayableFollowups, payableRaisedKey, promiseTime } from './payable-followup-30oct';
 import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
@@ -146,6 +151,11 @@ export async function scheduleFollowUp(customerId: string, flow: Flow, seq: numb
   // just switched off. One indexed settings read; nothing about the cadence
   // itself changes for a customer whose follow-ups are on.
   if ((await store.getSetting(followupsOffKey(customerId))) === true) return;
+  // Nothing after a no (30 Oct) is enforced where it is cheap and certain: the
+  // lead is closed the moment they say it (service.ts, closeLeadAfterNo), a
+  // closed state has no flow so nothing is armed here, and every nudge that
+  // was already queued is checked against the chat when it fires
+  // (followUpBlock). A reopened lead is armed again as usual.
   const cfg = schedulerConfig();
   // The signature flow has two clocks. "Send for Signature" armed nudge 1 at
   // 24h from the notice, but the very next reconcileSchedule (any customer
@@ -156,6 +166,11 @@ export async function scheduleFollowUp(customerId: string, flow: Flow, seq: numb
   const afterNotice = flow === 'signature'
     ? (opts?.afterNotice ?? await signatureNoticeStands(customerId))
     : false;
+  // Jo, 28 Oct (Caira): a signature nudge ("we just need your signature") went
+  // out before the signature message had been sent. Sending the estimate moves
+  // the customer to Signature, so the stage alone proves nothing: the nudges
+  // run only once "Send for Signature" has actually gone out.
+  if (flow === 'signature' && !afterNotice) return;
   const delays = afterNotice ? SIGNATURE_AFTER_NOTICE : cfg[flow];
   if (seq >= delays.length) {
     // 14 Oct (Jo): the last form nudge asks "when do you think you'll have a
@@ -418,16 +433,27 @@ export async function ensureWinbackSoon(delayMs = 2 * 60 * 1000): Promise<void> 
  *  lost from the chat record (msg.body still holds it), only from what
  *  actually reaches the customer's phone this time. */
 async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; meta?: Record<string, unknown> | null }) {
+  // 30 Oct: the language is what the customer writes in now, and an English
+  // text or template never goes to someone who does not write English.
+  let lang: string | null = customer.lang;
+  let unsupported: 'zh' | 'vi' | null = null;
+  try {
+    const r = resolveLanguage(await getStore().listMessages(customer.id), customer.lang);
+    lang = r.lang ?? customer.lang; unsupported = r.unsupported;
+  } catch { /* the stored language stands */ }
+  const refusal = englishToForeignReason(lang, unsupported, msg.body);
+  if (refusal) return { ok: false as const, error: noLanguageVariantError(refusal) };
   if (msg.meta?.proposedState !== 'PAID' && msg.meta?.paymentConfirmation !== true) return sendWhatsAppText(customer.waId, msg.body, customer.brand);
-  const name = paymentReceivedTemplateKey(metaTemplateLang(customer.lang));
+  const name = paymentReceivedTemplateKey(metaTemplateLang(lang));
   // German / Japanese have their own template (payment_received_de / _ja).
   // If that translation is missing, msg.body (already in their language) is
-  // sent as text, never the English template (Jo, 21 Oct). Other languages
-  // keep the English template with the button, as before (Jo, 17 Sep).
-  const ownTemplate = metaTemplateLang(customer.lang) !== 'en';
-  const templated = ownTemplate
-    ? await sendWhatsAppTemplate(customer.waId, name, [], customer.lang, { englishFallback: false, brand: customer.brand })
-    : await sendWhatsAppTemplate(customer.waId, name, [], customer.lang, { brand: customer.brand });
+  // sent as text, never the English template (Jo, 21 Oct). Since 30 Oct the
+  // same holds for every other language: French, Italian, Spanish and
+  // Portuguese customers get their own text, never the English template.
+  const notEnglish = !!lang && lang !== 'en';
+  const templated = notEnglish
+    ? await sendWhatsAppTemplate(customer.waId, name, [], lang, { englishFallback: false, brand: customer.brand })
+    : await sendWhatsAppTemplate(customer.waId, name, [], lang, { brand: customer.brand });
   return templated.ok ? templated : sendWhatsAppText(customer.waId, msg.body, customer.brand);
 }
 
@@ -714,6 +740,17 @@ async function doProcess(): Promise<TickResult> {
     result.processed++;
     // Everything this job writes or asks the model is in its customer's brand.
     enterBrand(await jobBrand(store, job));
+    // 30 Oct: whatever this job sends, it sends in the language the customer
+    // writes in NOW. The stored language is corrected from their last few own
+    // messages first (the form's English auto text does not count), so every
+    // branch below, which reads the customer afresh, builds its text in the
+    // right language.
+    if (job.customerId && job.kind !== 'NIGHTLY' && job.kind !== 'DAILY_DIGEST' && job.kind !== 'WINBACK') {
+      try {
+        const c0 = await store.getCustomerById(job.customerId);
+        if (c0) await refreshCustomerLang(store, c0);
+      } catch { /* the stored language stands */ }
+    }
     try {
       // ── The holding line for a long message nobody has answered yet ────
       //
@@ -879,7 +916,12 @@ async function doProcess(): Promise<TickResult> {
           const asks = c ? await readReviewAsks(store) : {};
           const rec = c ? asks[c.id] : undefined;
           const attempt = Number((job.payload as { attempt?: number }).attempt ?? 0);
-          if (c && !c.optedOut && !c.isLegacy && !c.aiPaused && c.outcome !== 'PAYABLE'
+          // 30 Oct: never to someone who owes (outcome flag, negative estimate,
+          // or a payable estimate / lodged text in the chat) and never to
+          // someone who already said the refund arrived.
+          const checkinBlock = c ? refundCheckinBlock(c, await messagesOf(store, c.id)) : null;
+          if (checkinBlock && c) await store.audit('system', 'refund_checkin_blocked', { customerId: c.id, reason: checkinBlock }).catch(() => {});
+          if (c && !checkinBlock && !c.optedOut && !c.isLegacy && !c.aiPaused && c.outcome !== 'PAYABLE'
               && !(c.refundPromisedAt && !c.refundSentAt)
               && ['SIGNED', 'LODGED', 'COMPLETED'].includes(c.state)
               && !rec?.askedAt && !rec?.skippedAt && attempt < 2
@@ -947,7 +989,7 @@ async function doProcess(): Promise<TickResult> {
         continue;
       }
 
-      // PAYABLE_FOLLOWUP (Jo, 16 Oct): 14 days after Mark Lodged for a
+      // PAYABLE_FOLLOWUP (Jo, 16 Oct; 30 Oct: only for chats that carry the old promise): 14 days after Mark Lodged for a
       // customer who owes tax. The lodged message promised "we'll message you
       // again in about two weeks and walk you through how to pay"; the amount
       // and due date come from the Notice of Assessment, so this is a task for
@@ -955,7 +997,16 @@ async function doProcess(): Promise<TickResult> {
       if (job.kind === 'PAYABLE_FOLLOWUP') {
         try {
           const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
-          if (c && c.outcome === 'PAYABLE' && !c.optedOut) {
+          // Fires ONCE per customer (30 Oct): the raised marker survives a
+          // second job (the button pressed twice, a backfill racing the button).
+          const already = c ? (await store.getSetting(payableRaisedKey(c.id)).catch(() => null)) != null : false;
+          const owedMsgs = c ? await messagesOf(store, c.id) : [];
+          // 30 Oct (Jo): the lodged message no longer promises "we'll message you in
+          // two weeks"; the customer is told to expect the ATO email within 14 days
+          // and Will answers. No task up front. Only a chat that still carries the
+          // OLD promise (sent before this change) keeps the follow up it was given.
+          if (c && !already && !c.optedOut && customerOwesTax(c, owedMsgs) && promiseTime(owedMsgs) != null) {
+            await store.setSetting(payableRaisedKey(c.id), new Date().toISOString()).catch(() => undefined);
             await raiseOrUpdateTask(store, c, {
               reason: `ATO PAYMENT INSTRUCTIONS DUE: two weeks ago we told ${c.name ?? c.waId} we would message them now with how to pay the ATO. Send the amount, due date and payment details from their Notice of Assessment.`,
               severity: 'URGENT',
@@ -1498,6 +1549,18 @@ async function doProcess(): Promise<TickResult> {
         const asks = await readReviewAsks(store);
         const prior = asks[customer.id];
         if (prior?.askedAt || prior?.skippedAt) { await store.setJobStatus(job.id, 'DONE'); continue; }
+        // 30 Oct: one ask per customer, by ANY path. A review link or the ask
+        // template already in the chat (a person pasted it, an older job sent
+        // it, the record write failed) means it has been asked.
+        {
+          const sentBefore = reviewAskAlreadySent(await messagesOf(store, customer.id));
+          if (sentBefore) {
+            await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString(), trigger: 'manual' }).catch(() => undefined);
+            await store.audit('system', 'review_ask_skipped_already_in_chat', { customerId: customer.id }).catch(() => {});
+            await store.setJobStatus(job.id, 'DONE');
+            continue;
+          }
+        }
         // 11 Oct (decision 13): never ask for a review while we owe them money.
         if (customer.refundPromisedAt && !customer.refundSentAt) {
           await store.audit('system', 'review_ask_deferred_refund_owed', { customerId: customer.id }).catch(() => {});
@@ -1512,7 +1575,7 @@ async function doProcess(): Promise<TickResult> {
           && ['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state)) {
           const rawTrigger = (job.payload as { trigger?: string } | null)?.trigger;
           const trigger = rawTrigger === 'refund_received' ? 'refund_received' : rawTrigger === 'checkin' ? 'checkin' : 'timer';
-          const msgs = await store.listMessages(customer.id).catch(() => []);
+          const msgs = await messagesOf(store, customer.id);
           const transcript = msgs
             .filter((m) => m.status === 'SENT' || m.direction === 'IN')
             .map((m) => `${m.direction === 'IN' ? 'Customer' : 'Us'}: ${(m.body ?? '').replace(/\s+/g, ' ').slice(0, 400)}`)
@@ -1740,7 +1803,7 @@ async function doProcess(): Promise<TickResult> {
       // nudge "are you still in Australia or have you already left?". The
       // team's own work in the chat is proof too: an invoice, an estimate, the
       // questionnaire or a lodgement means she is past the sales stage.
-      const TEAM_PAST_SALES = /in\.xero\.com|\binvoice\b|\bestimate|\bpayable\b|questionnaire|tax-form|\blodg|your return is ready|Rechnung|請求書/i;
+      const TEAM_PAST_SALES = new RegExp(`in\\.xero\\.com|\\binvoice\\b|\\bestimate|\\bpayable\\b|questionnaire|${FORM_SLUGS_ALT}|\\blodg|your return is ready|Rechnung|請求書`, 'i');
       const alreadyPastLeadStage = flow === 'prePayment'
         && (await store.listMessages(customer.id)).some((m) => m.direction === 'OUT'
           && (m.meta?.system === true || (m.author === 'HUMAN' && m.status === 'SENT' && TEAM_PAST_SALES.test(m.body ?? ''))));
@@ -1748,7 +1811,9 @@ async function doProcess(): Promise<TickResult> {
       // a job that was already SCHEDULED, deferred to the evening or re-queued
       // after a throttle when Jo pressed "Stop chasing" is cancelled here
       // rather than sent.
-      if (!FLOW_ELIGIBLE_STATES[flow]?.includes(customer.state) || customer.optedOut || customer.aiPaused || customer.isLegacy
+      // The same rule at fire time, for a nudge armed before it existed.
+      const signatureNotSent = flow === 'signature' && !(await signatureNoticeStands(customer.id));
+      if (signatureNotSent || !FLOW_ELIGIBLE_STATES[flow]?.includes(customer.state) || customer.optedOut || customer.aiPaused || customer.isLegacy
           || (flow === 'prePayment' && customer.paid) || alreadyPastLeadStage
           || (!!customer.refundPromisedAt && !customer.refundSentAt)
           || (await store.getSetting(followupsOffKey(customer.id))) === true) {
@@ -1757,6 +1822,18 @@ async function doProcess(): Promise<TickResult> {
         }
         await store.setJobStatus(job.id, 'CANCELLED');
         continue;
+      }
+      // 30 Oct: the facts in the chat decide, not only the stage flag. Paid
+      // (or a payment confirmation in the chat), the customer said no, the
+      // form already went in, the customer said they signed: nothing goes.
+      {
+        const gate = followUpBlock(customer, flow, await messagesOf(store, customer.id));
+        if (gate) {
+          await store.setJobStatus(job.id, 'CANCELLED');
+          await store.audit('scheduler', 'follow_up_blocked_by_gate', { customerId: customer.id, flow, templateKey: job.payload.templateKey, reason: gate.block }).catch(() => {});
+          if (gate.closeLead) await closeLeadAfterNo(store, customer, gate.block);
+          continue;
+        }
       }
       if (!withinQuietHours()) {
         await store.setJobStatus(job.id, 'CANCELLED');
@@ -1876,10 +1953,24 @@ async function doProcess(): Promise<TickResult> {
       // failed outside the window, retried three days in a row and opened an
       // URGENT task each time.
       const approvedHere = typeof templateApprovedFor === 'function' ? await templateApprovedFor(customer.brand === 'svt' ? svtTemplateName(template.key) : template.key, customer.lang).catch(() => null) : null;
-      if (approvedHere === false) {
+      // 30 Oct: "unknown" is not "approved". A language with no variant at all
+      // (French, Italian, Spanish, Portuguese, Chinese, Vietnamese) only ever
+      // had the English template, so when Meta cannot confirm theirs, nothing
+      // goes. A paid customer's form or signature reminder that is skipped for
+      // this reason becomes ONE task for Jo (he writes it himself); a lead's
+      // sales nudge is simply not sent.
+      const noVariant = approvedHere === false || (approvedHere === null && !hasTemplateVariant(customer.lang));
+      if (noVariant) {
         await store.audit('scheduler', 'follow_up_skipped_no_template_in_language', {
           customerId: customer.id, template: template.key, lang: customer.lang ?? 'en', seq,
         });
+        if (flow !== 'prePayment') {
+          await recordSendFailure(store, {
+            customerId: customer.id, customerName: customer.name ?? customer.waId,
+            error: noLanguageVariantError(`no ${customer.lang ?? 'matching'} template for ${template.key}`),
+            body: body.slice(0, 400), templateName: template.key, via: 'send',
+          }).catch(() => undefined);
+        }
         await store.setJobStatus(job.id, 'DONE');
         await scheduleFollowUp(customer.id, flow, seq + 1);
         continue;
@@ -2045,6 +2136,9 @@ export async function runNightly(): Promise<void> {
   // other 4,000 would look like orphans and have their live follow-ups
   // cancelled every single night. The set must be complete, so it is paged.
   const customers = await store.allCustomers();
+  // 30 Oct: every customer who was promised "we'll message you in about two
+  // weeks" has a job behind the promise (see payable-followup-30oct.ts).
+  await ensurePayableFollowups(store).then((r) => r.scheduled > 0 ? store.audit('nightly', 'payable_followups_backfilled', r) : undefined).catch(() => undefined);
   const salesStates: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
   const closedStates: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'];
   const issues: string[] = [];

@@ -469,7 +469,7 @@ If you had a stretch of pays at 47%, your tax return is where it is worked out. 
     faq: [
       { q: 'Why is 47% taken and not 45%?', a: 'The rule is the top tax rate plus the Medicare levy. For 2025-26 that is 45% plus 2%.' },
       { q: 'Can my employer give the extra tax back to me?', a: 'Usually not. Once tax is taken and reported, it is credited against your tax when you lodge your return.' },
-      { q: 'I am a foreign resident for tax purposes. Does the 47% still apply?', a: 'Yes, if your employer does not have your TFN. Once you give it, the employer uses the rate for your situation.' },
+      { q: 'I am a foreign resident for tax purposes. Does the 47% still apply?', a: 'Not quite. Without your TFN, an employer withholds 45% from a foreign resident (there is no Medicare levy) and 47% from a resident. Once you give your TFN, the employer uses the rate for your situation.' },
     ],
     sources: [
       { label: 'ATO: Tax file number and withholding declarations (for employers)', href: TFN_DECL },

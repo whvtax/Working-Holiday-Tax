@@ -153,7 +153,7 @@ describe('isPaymentReceivedDraft', () => {
     for (const lang of ['en', 'de', 'ja', 'es', 'fr', 'it', 'pt']) {
       expect(isPaymentReceivedDraft({ body: paymentReceivedMessage(lang), meta: { proposedState: 'PAID' } })).toBe(true);
     }
-    const edited = 'Thanks, we have your payment. Form: https://workingholidaytax.com.au/tax-form';
+    const edited = 'Thanks, we have your payment. Form: https://workingholidaytax.com.au/start';
     expect(isPaymentReceivedDraft({ body: edited, meta: { proposedState: 'PAID' } })).toBe(false);
     expect(isPaymentReceivedDraft({ body: edited, meta: { proposedState: 'PAID' } }, [edited])).toBe(true);
   });

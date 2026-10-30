@@ -95,7 +95,7 @@ const cfg: GuideLocaleConfig = {
     category,
     'バックパッカー 税金',
   ],
-  reviewedByDescription: 'Working Holiday Taxが作成した内容を確認し承認する登録税理士（registered tax agent）。',
+  reviewedByDescription: 'Working Holiday Taxが作成した内容を確認し承認する登録タックスエージェント。',
   authorDescription: 'ワーキングホリデーメーカー（ビザサブクラス417・462）の税務サポートを専門とするオーストラリアのサービスです。',
   knowsAbout: [
     'オーストラリア税法',
@@ -152,7 +152,7 @@ const cfg: GuideLocaleConfig = {
   aside: {
     label: 'このガイドについて',
     p1: '417・462ビザ保持者だけを専門に扱うWorking Holiday Taxチームが執筆し、ATOおよびFair Workの最新ガイダンスに基づいて確認しています。一般的な情報であり、個別の税務アドバイスではありません。',
-    p2: '申告書は、ATOへ提出する前に登録税理士が確認し、承認します。',
+    p2: '申告書は、ATOへ提出する前に登録タックスエージェントが確認し、承認します。',
   },
 
   styles: {

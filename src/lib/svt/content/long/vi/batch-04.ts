@@ -155,13 +155,13 @@ Bảng kê thu nhập mà du học sinh hay quên nhất là những việc ng�
   },
   'what-is-the-ato-international-students': {
     title: 'ATO là gì? Hướng dẫn dễ hiểu cho du học sinh',
-    description: 'Sở Thuế Úc (ATO) quản lý thuế và super. ATO làm gì cho du học sinh, biết tiền lương của bạn bằng cách nào, khi nào liên hệ bạn, và cách nhận ra cuộc gọi giả danh ATO.',
-    answer: 'ATO (Australian Taxation Office, Sở Thuế Úc) là cơ quan Chính phủ Úc quản lý hệ thống thuế và super. Với du học sinh, ATO cấp TFN, nhận báo cáo về tiền lương, xử lý hồ sơ thuế và giải quyết việc rút super khi bạn rời Úc.',
+    description: 'ATO quản lý thuế và super. ATO làm gì cho du học sinh, biết tiền lương của bạn bằng cách nào, khi nào liên hệ bạn, và cách nhận ra cuộc gọi giả danh ATO.',
+    answer: 'ATO (Australian Taxation Office) là cơ quan Chính phủ Úc quản lý hệ thống thuế và super. Với du học sinh, ATO cấp TFN, nhận báo cáo về tiền lương, xử lý hồ sơ thuế và giải quyết việc rút super khi bạn rời Úc.',
     body: `Khi bắt đầu đi làm ở Úc, gần như ngay lập tức bạn sẽ nghe đến ATO. Chủ lao động hỏi mã số thuế của bạn. Phiếu lương ghi tiền thuế đã được gửi cho ATO. Bạn bè thì nói chuyện nộp hồ sơ cho ATO. Bài này giải thích ATO là gì và liên quan thế nào đến cuộc sống du học của bạn.
 
 ## ATO là gì?
 
-ATO là Australian Taxation Office, tức Sở Thuế Úc. Đây là cơ quan nhà nước thu thuế và quản lý hệ thống hưu bổng (superannuation, hay super). ATO tách biệt với Bộ Nội vụ (Home Affairs), nơi phụ trách visa, và với Services Australia, nơi phụ trách Medicare.
+ATO là Australian Taxation Office, cơ quan thuế của Úc. Đây là cơ quan nhà nước thu thuế và quản lý hệ thống quỹ hưu trí (superannuation, hay super). ATO tách biệt với Bộ Nội vụ (Home Affairs), nơi phụ trách visa, và với Services Australia, nơi phụ trách Medicare.
 
 ATO không quyết định gì về visa của bạn. ATO chỉ lo thu nhập, thuế và super của bạn.
 
@@ -238,9 +238,9 @@ Việc rút super cũng liên quan đến ATO sau khi bạn rời Úc. Nếu qu�
 
 ## Lương gộp là gì?
 
-Lương gộp (gross pay) là toàn bộ số tiền bạn kiếm được trong kỳ lương, trước mọi khoản khấu trừ. Nó gồm tiền giờ làm thông thường theo mức lương giờ, cộng với mọi khoản lương phạt (penalty rates), phụ cấp tăng lương (loadings), phụ cấp (allowances) và tiền làm thêm giờ (overtime) mà bạn được trả.
+Lương gộp (gross pay) là toàn bộ số tiền bạn kiếm được trong kỳ lương, trước mọi khoản khấu trừ. Nó gồm tiền giờ làm thông thường theo mức lương giờ, cộng với mọi khoản lương phụ trội (penalty rates), khoản cộng thêm (loadings), phụ cấp (allowances) và tiền làm thêm giờ (overtime) mà bạn được trả.
 
-Fair Work cho biết phiếu lương của bạn phải ghi lương gộp, mức lương giờ thông thường và số giờ làm theo mức đó, cùng mọi khoản loading, phụ cấp hay lương phạt đã trả.
+Fair Work cho biết phiếu lương của bạn phải ghi lương gộp, mức lương giờ thông thường và số giờ làm theo mức đó, cùng mọi khoản loading, phụ cấp hay lương phụ trội đã trả.
 
 ## Lương thực nhận là gì?
 
@@ -259,13 +259,13 @@ Phiếu lương phải ghi số super chủ lao động đã đóng cho bạn v�
 Đây là một phiếu lương giả định, đơn giản, cho một tuần làm casual:
 
 - Giờ làm thông thường: 15 giờ x $30.00 = $450.00
-- Giờ làm Chủ nhật có lương phạt: 2 giờ x $45.00 = $90.00
+- Giờ làm Chủ nhật có lương phụ trội: 2 giờ x $45.00 = $90.00
 - **Lương gộp: $540.00**
 - Thuế bị trừ: $45.00
 - **Lương thực nhận: $495.00** (chuyển vào tài khoản ngân hàng)
 - Super: $64.80 (12% của $540.00, đóng vào quỹ super)
 
-Trong ví dụ này, giờ làm có lương phạt là giờ làm thông thường, nên vẫn được tính super. Làm thêm giờ thì khác: ATO cho biết tiền làm thêm giờ nhìn chung không nằm trong phần thu nhập dùng để tính super.
+Trong ví dụ này, giờ làm có lương phụ trội là giờ làm thông thường, nên vẫn được tính super. Làm thêm giờ thì khác: ATO cho biết tiền làm thêm giờ nhìn chung không nằm trong phần thu nhập dùng để tính super.
 
 Các mức lương ở trên chỉ để làm ví dụ. Mức lương thật của bạn tùy vào award hoặc thỏa thuận lao động. Bạn có thể kiểm tra bằng công cụ tính lương (Pay Calculator) của Fair Work.
 
@@ -295,7 +295,7 @@ Ví dụ, thuế bị trừ theo mức cao nhất trong mấy tuần đầu, khi
 Lương thực nhận chỉ đúng khi lương gộp đúng. Mỗi tháng một lần, hãy lấy một phiếu lương và kiểm tra:
 
 - nhân số giờ làm thông thường với mức lương giờ
-- cộng thêm lương phạt cho cuối tuần, ngày lễ, ca khuya hoặc ca sáng sớm
+- cộng thêm lương phụ trội cho cuối tuần, ngày lễ, ca khuya hoặc ca sáng sớm
 - cộng thêm các khoản phụ cấp và tiền làm thêm giờ
 - so tổng số với lương gộp trên phiếu lương
 
@@ -315,7 +315,7 @@ Nếu không khớp, hãy hỏi quản lý hoặc bộ phận trả lương bằ
     ],
   },
   'tax-on-tips-student-visa': {
-    title: 'Tiền tip có phải đóng thuế khi có visa du học? Tip qua thẻ và tiền mặt',
+    title: 'Tiền tip có phải đóng thuế khi có visa du học?',
     description: 'Ở Úc, tiền tip là thu nhập chịu thuế, dù qua thẻ hay tiền mặt. Tip đến tay du học sinh qua bảng lương hoặc trực tiếp, phải khai gì, và cách ghi chép đơn giản.',
     answer: 'Có. ATO cho biết tiền tip và tiền thưởng của khách (gratuities) là thu nhập chịu thuế, nên phải khai trong hồ sơ thuế dù bạn nhận qua thẻ, qua bảng lương hay bằng tiền mặt. Tip qua thẻ được trả qua bảng lương thường đã được báo cáo; tip tiền mặt bạn tự giữ thì bạn tự khai.',
     body: `Nhiều du học sinh làm ở quán cà phê, nhà hàng, quán bar và khách sạn. Tiền tip có thể làm thu nhập tăng thêm đáng kể, nhất là vào những cuối tuần đông khách. Câu hỏi hay gặp là tiền tip có bị tính thuế không. Câu trả lời ngắn gọn là có. Bài này giải thích thuế áp dụng thế nào và bạn cần làm gì.
@@ -391,7 +391,7 @@ Nếu bạn cần giúp với hồ sơ thuế có tip tiền mặt, hãy nhắn 
   'tax-after-leaving-australia-international-students': {
     title: 'Thuế sau khi rời Úc: du học sinh vẫn còn phải làm gì',
     description: 'Học xong không có nghĩa là hồ sơ thuế đã đóng. Hồ sơ thuế, rút super, ABN và thông tin liên lạc mà du học sinh vẫn cần lo sau khi rời Úc.',
-    answer: 'Rời Úc không chấm dứt nghĩa vụ thuế của bạn. Nếu đã đi làm, có lẽ bạn vẫn cần nộp hồ sơ thuế sau ngày 30 tháng 6, và có thể nộp từ nước ngoài; bạn cũng có thể rút super theo diện DASP khi visa đã hết hiệu lực và bạn đã rời Úc.',
+    answer: 'Rời Úc không chấm dứt nghĩa vụ thuế của bạn. Nếu đã đi làm, có lẽ bạn vẫn cần nộp hồ sơ thuế sau ngày 30 tháng 6, và có thể nộp từ nước ngoài. Bạn cũng có thể rút super theo diện DASP khi visa đã hết hiệu lực và bạn đã rời Úc.',
     body: `Khóa học kết thúc, bạn thu dọn hành lý và bay về nước. Thuế và super ở Úc của bạn thì không kết thúc cùng ngày đó. Tin vui là gần như mọi việc đều làm được từ nước ngoài. Bài này liệt kê những việc vẫn còn dang dở sau khi bạn rời Úc và nên làm theo thứ tự nào.
 
 ## Những việc gì còn dang dở khi bạn rời Úc?
@@ -698,7 +698,7 @@ Nếu bạn muốn có người làm hồ sơ thuế giúp, hãy nhắn cho Stud
     ],
   },
   'tax-refund-delays-international-students': {
-    title: 'Vì sao tiền hoàn thuế đến chậm? Những lý do thường gặp với du học sinh',
+    title: 'Vì sao tiền hoàn thuế đến chậm? Lý do với du học sinh',
     description: 'Phần lớn hồ sơ trực tuyến được xử lý trong 12 ngày làm việc. Vì sao tiền hoàn thuế của du học sinh có thể lâu hơn, từ giấy Medicare đến thông tin ngân hàng, và cách theo dõi.',
     answer: 'ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong vòng 12 ngày làm việc, nhưng hồ sơ cần kiểm tra thủ công có thể mất đến 30 ngày theo lịch. Với du học sinh, lý do chậm thường là nộp quá sớm, số liệu không khớp với dữ liệu của ATO, hoặc sai thông tin ngân hàng.',
     body: `Bạn đã nộp hồ sơ và giờ đang chờ. Bạn của bạn nhận tiền hoàn thuế sau một tuần, còn của bạn thì vẫn chưa thấy. Bài này xem xét những lý do khiến tiền hoàn thuế của du học sinh có thể chậm hơn, cách kiểm tra hồ sơ đang ở đâu, và bạn có thể làm gì để tránh chậm trễ vào năm sau.
@@ -803,16 +803,16 @@ Thực ra, ATO liệt kê casual loading là một phần của thu nhập dùng
 
 ## Super được tính trên khoản nào?
 
-Super được tính trên thu nhập đủ điều kiện (qualifying earnings). ATO cho biết khoản này gồm tiền lương cho giờ làm thông thường, và liệt kê casual loading cùng lương phạt theo ca (shift penalties), kể cả lương phạt ngày lễ, là được tính. Tiền làm thêm giờ nhìn chung không được tính.
+Super được tính trên thu nhập đủ điều kiện (qualifying earnings). ATO cho biết khoản này gồm tiền lương cho giờ làm thông thường, và liệt kê casual loading cùng lương phụ trội theo ca (shift penalties), kể cả lương phụ trội ngày lễ, là được tính. Tiền làm thêm giờ nhìn chung không được tính.
 
 - giờ làm thông thường theo mức lương giờ: được tính
 - casual loading: được tính
-- lương phạt theo ca cho giờ làm thông thường: được tính
+- lương phụ trội theo ca cho giờ làm thông thường: được tính
 - làm thêm giờ (overtime): nhìn chung không được tính
 
 ## Một ví dụ cụ thể
 
-Một du học sinh làm casual và kiếm được $600 trong một tuần. Toàn bộ là tiền giờ làm thông thường, đã gồm casual loading và lương phạt ca Chủ nhật. Tuần đó không làm thêm giờ.
+Một du học sinh làm casual và kiếm được $600 trong một tuần. Toàn bộ là tiền giờ làm thông thường, đã gồm casual loading và lương phụ trội ca Chủ nhật. Tuần đó không làm thêm giờ.
 
 Super cho tuần đó là 12% của $600, tức là $72. Khoản này được đóng vào quỹ super của cô ấy. Lương gộp $600 vẫn bị tính thuế như bình thường, và lương thực nhận của cô ấy không thay đổi vì super.
 

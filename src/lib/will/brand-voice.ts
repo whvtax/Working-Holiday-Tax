@@ -13,6 +13,8 @@
  */
 import { BRANDS, type Brand } from '@/lib/brand'
 import { SVT_PUBLIC } from '@/lib/svt/brand-public'
+import formPaths from '../../../config/form-paths';
+import { stripDashes } from './text';
 
 export interface BrandVoice {
   brand: Brand
@@ -23,20 +25,20 @@ export interface BrandVoice {
   domain: string
   siteUrl: string
   formUrl: string
-  /** Fee for a super (DASP) claim. Jo, 26 Oct: $220 for SVT, infrastructure
-   *  only for now; Will hands DASP questions to the team and quotes nothing. */
+  /** Fee for a super (DASP) claim. Jo, 30 Oct: DASP is not available at the
+   *  moment for either brand (fault in the super withdrawal system): null, no price. */
   daspFeeAud: number | null
 }
 
 export const VOICES: Readonly<Record<Brand, BrandVoice>> = {
   wht: {
     brand: 'wht', name: BRANDS.wht.name, agentName: 'Will', domain: BRANDS.wht.domain,
-    siteUrl: BRANDS.wht.siteUrl, formUrl: `${BRANDS.wht.siteUrl}/tax-form`, daspFeeAud: null,
+    siteUrl: BRANDS.wht.siteUrl, formUrl: `${BRANDS.wht.siteUrl}/${formPaths.WHT['tax-form']}`, daspFeeAud: null,
   },
   svt: {
     // agentName: Mia, chosen by Jo on 26 Oct.
     brand: 'svt', name: BRANDS.svt.name, agentName: 'Mia', domain: BRANDS.svt.domain,
-    siteUrl: BRANDS.svt.siteUrl, formUrl: `${BRANDS.svt.siteUrl}/tax-form`, daspFeeAud: 220,
+    siteUrl: BRANDS.svt.siteUrl, formUrl: `${BRANDS.svt.siteUrl}/${formPaths.SVT.form}`, daspFeeAud: null,
   },
 }
 
@@ -59,6 +61,16 @@ const TEXT_REPLACEMENTS: ReadonlyArray<[RegExp, string]> = [
   [/\b0424\s?513\s?998\b/g, svtNational],
 ]
 
+/** Customer-facing text only (audit A01-2, A01-3). Approved WHT wording that
+ *  describes the audience or the Medicare process reaches students unchanged
+ *  otherwise. Not applied to prompts: the playbook uses these words as topics. */
+const CUSTOMER_ONLY_REPLACEMENTS: ReadonlyArray<[RegExp, string]> = [
+  [/Once you've submitted your application, send me a screenshot and we'll include the exemption in your tax return\./g,
+    "Once Services Australia sends you the statement, send us a copy and we'll include the exemption in your tax return. We wait for the statement before anything is lodged."],
+  [/Working Holiday Makers/g, 'international students and graduates'],
+  [/\bbackpackers\b/gi, 'international students'],
+]
+
 /** Extra replacements for prompts only: who the customers are. Topic words
  *  ("working holiday visa") stay, because a student may well have held one. */
 const PROMPT_REPLACEMENTS: ReadonlyArray<[RegExp, string]> = [
@@ -79,7 +91,7 @@ STUDENT VISA TAX (this conversation is with a Student Visa Tax customer; these r
 - If a customer was on a working holiday visa (417 or 462) earlier, that is normal; mention it to the team when it matters (it can change how super is taxed).
 - Medicare levy: many students can claim an exemption with a Medicare Entitlement Statement from Services Australia, which they apply for through myGov from 1 July; they must wait for it before we lodge.
 - Delivery or other ABN work: the $385 price applies.
-- Super (DASP) claims: say we can help with it, and hand it to the team. Do not quote a price.
+- Super (DASP) claims: unfortunately not available at the moment (Jo, 30 Oct). Say so in one line, with no timeline and no price, and never offer it.
 - The website is ${BRANDS.svt.siteUrl} and the form is ${VOICES.svt.formUrl}. Never mention or link to any other brand or website of ours.
 - The customer may write in English, Chinese or Vietnamese; reply in their language.`
 
@@ -92,7 +104,26 @@ function applyAll(text: string, rules: ReadonlyArray<[RegExp, string]>): string 
 /** Customer-facing text for a brand. WHT: the input, unchanged. */
 export function rebrandText(text: string, brand: Brand): string {
   if (brand !== 'svt' || !text) return text
-  return applyAll(text, TEXT_REPLACEMENTS)
+  return applyAll(applyAll(text, TEXT_REPLACEMENTS), CUSTOMER_ONLY_REPLACEMENTS)
+}
+
+// ── Last line of defence on customer text (Jo, 30 Oct) ───────────────────────
+// The only payee name is "The Accounting Academy" (the account name at the
+// bank). A retired name still lived in stored winback messages and Library
+// rows, and went out to about fifteen customers. It is built from parts so the
+// source scan test (stale-payee-30oct.test.ts) finds no copy of it in src.
+const STALE_PAYEE = new RegExp(`(?:the\\s+)?${['Simple', 'Tax', 'Services'].join('\\s+')}`, 'gi')
+export const PAYEE_NAME = 'The Accounting Academy'
+
+/** Applied to every text a customer receives, for both brands, whatever its
+ *  source (Library row, stored winback, model draft, human): the retired payee
+ *  name becomes the real one, and no dash of any kind survives (CLAUDE.md:
+ *  no em dash, en dash, horizontal bar or double dash in any language).
+ *  A text with neither is returned as the same string. */
+export function scrubCustomerText(text: string): string {
+  if (!text) return text
+  const swapped = text.replace(STALE_PAYEE, PAYEE_NAME)
+  return /[\u2012-\u2015]/.test(swapped) ? stripDashes(swapped) : swapped
 }
 
 /** A system prompt for a brand. WHT: the input, unchanged. */
@@ -175,7 +206,12 @@ export function svtTemplateReadiness(rows: ReadonlyArray<{ name?: string; status
 /** The tax form link of EITHER brand. Used by the safety rules that must
  *  recognise a form link ("never before payment", "form already sent"), so a
  *  rule cannot be side-stepped by the other brand's domain. */
-export const FORM_LINK_ANY_BRAND = /(?:workingholidaytax\.com(?:\.au)?|studentvisatax\.com\.au)\/tax-form/i
+/** The form slugs (current and retired) as a regex alternation, for matching a form link in text. */
+export const FORM_SLUGS_ALT = [formPaths.WHT['tax-form'], formPaths.SVT.form, ...formPaths.RETIRED].join('|');
+
+/** Either brand's form link, the current slug or any retired one (config/form-paths.js). */
+export const FORM_LINK_ANY_BRAND = new RegExp(
+  `(?:workingholidaytax\\.com(?:\\.au)?|studentvisatax\\.com\\.au)\\/(?:${FORM_SLUGS_ALT})(?![\\w-])`, 'i')
 
 /** The brand's own site, as allowed in a reply. Only the CURRENT brand's
  *  domain is ever allowed; the other brand's domain is a foreign URL. */

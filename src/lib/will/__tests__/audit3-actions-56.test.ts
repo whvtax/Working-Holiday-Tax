@@ -21,7 +21,7 @@ const customer = {
 };
 const draft = {
   id: 'm1', customerId: 'c1', direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL',
-  body: 'Payment received, thank you. Please fill in the form: https://workingholidaytax.com.au/tax-form',
+  body: 'Payment received, thank you. Please fill in the form: https://workingholidaytax.com.au/start',
   meta: { proposedState: 'PAID' },
   createdAt: new Date().toISOString(),
 };

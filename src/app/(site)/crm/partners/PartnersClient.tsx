@@ -20,7 +20,7 @@ async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs =
 
 function CopyLinkBtn({ code }: { code: string }) {
   const [copied, setCopied] = useState(false)
-  const link = `https://workingholidaytax.com.au/tax-form?ref=${code}`
+  const link = `https://workingholidaytax.com.au/start?ref=${code}`
   return (
     <button
       className={`btn ${copied ? 'take' : 'quiet'}`}

@@ -13,6 +13,7 @@ import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { namesAccountWrongly } from './account-name';
 import { APPROVED } from './approved-messages';
 import { SYSTEM_MESSAGE_FAMILIES } from './i18n';
+import { hasBrokenBrandUrl } from './text-normalize';
 
 export interface GuardContext {
   state: CustomerState;
@@ -34,6 +35,12 @@ export interface GuardContext {
    *  calculator says $849 owing") may be echoed back without being read as
    *  Will inventing a price or a refund. */
   customerText?: string;
+  /** 30 Oct: the refund-shortfall guarantee ("If your tax refund is less than our
+   *  fee, we'll refund the difference") is for TFN only returns we prepare. True
+   *  when this customer has ABN income, foreign income, or a return that was
+   *  already lodged: the guarantee must not be sent to them. Callers that do
+   *  not know leave it out. */
+  guaranteeBarred?: boolean;
 }
 
 export interface GuardResult {
@@ -49,7 +56,11 @@ function collectStrings(v: unknown, out: string[]): void {
   if (typeof v === 'string') out.push(v);
   else if (v && typeof v === 'object') Object.values(v).forEach((x) => collectStrings(x, out));
 }
-const norm = (s: string) => s.replace(/\s+/g, ' ').trim().toLowerCase();
+// 30 Oct: curly apostrophes and quotes are the same wording as straight ones. A
+// phone keyboard turns "we'll" into "we’ll", and the approved guarantee then no
+// longer matched the corpus: it passed for some customers and was refused for
+// others depending only on the keyboard that typed the draft.
+const norm = (s: string) => s.replace(/[‘’‛′`´]/g, "'").replace(/[“”„‟]/g, '"').replace(/\s+/g, ' ').trim().toLowerCase();
 
 /**
  * Fold non-ASCII digits down to ASCII before any check runs.
@@ -191,7 +202,24 @@ const MAX_PROSE_AROUND_PRICE = 170;
  *  please confirm" (27 Oct). Used only to give a multi-question message room. */
 export const SENTENCE_ASK = /\?|\b(?:could|can|would) you\b|\bplease (?:confirm|send|provide|tell)\b/gi;
 
+const DEADLINE_CONDITION = /\b31\s+oct(?:ober)?\b|\b15\s+may\b|\b(?:as long as|provided|once|if) (?:you(?:'re| are)|you(?:'ve| have)|you) (?:with us|paid|registered)/i;
 const NO_DEADLINE_CLAIM = /\bno\s+(?:lodg(?:e)?ment\s+|tax\s+return\s+|filing\s+)?deadline\b|\bthere(?:'s| is)\s+no\s+(?:lodg(?:e)?ment\s+)?deadline\b|\byou can lodge\b[^.!?]{0,40}\banytime\b/i;
+/** Lodgement is announced only after the customer has signed (Jo, 28 Oct: "The
+ *  team will lodge it now and message you here once it's lodged" went out before
+ *  the signature message). Future, present or past: "will lodge it", "lodging
+ *  your return now", "we have lodged", "once it's lodged", "it has been lodged". */
+const WE = "(?:the team|our team|we|i)";
+const LODGEMENT_CLAIM = new RegExp([
+  // "will lodge it now / today / shortly", "will now lodge"
+  `\\b${WE}(?:\\s+(?:will|are going to|am going to)|'ll)\\s+(?:(?:now|just)\\s+)?(?:lodge|submit|file)\\b(?:[^.!?]{0,40}\\b(?:now|today|right away|straight away|shortly|immediately|this (?:morning|afternoon|evening))\\b)?(?=[^.!?]*\\b(?:now|today|right away|straight away|shortly|immediately|this (?:morning|afternoon|evening))\\b|\\s+now\\b)`,
+  // "is lodging it", "are submitting your return"
+  `\\b${WE}\\s*(?:is|are|am|'re|'m)\\s+(?:now\\s+|just\\s+)?(?:lodging|submitting|filing)\\b`,
+  // "have lodged", "'ve submitted"
+  `\\b${WE}(?:\\s+(?:have|has)|'ve)\\s+(?:(?:now|just|already)\\s+)?(?:lodged|submitted|filed)\\b`,
+  // "your return is lodged", "it has been lodged" (not "before it's lodged", "once it is lodged")
+  `(?<!\\b(?:before|once|when|after|if|until)\\s)\\b(?:your (?:tax )?return|it)\\s*(?:is|has been|was|'s been|'s)\\s+(?:(?:now|just|already)\\s+)?(?:been\\s+)?(?:lodged|submitted)\\b`,
+].join('|'), 'i');
+const SIGNED_OR_LATER: ReadonlySet<CustomerState> = new Set<CustomerState>(['SIGNED', 'LODGED', 'COMPLETED']);
 const BANK_DETAILS_PRESENT = /\bBSB\b|062692|81049952/;
 /** The price message shape: the BSB and Account lines as a block (11 Oct: the
  *  Amount line left the price message, the amount is in the first sentence),
@@ -224,6 +252,13 @@ const TRANSLATED_SCRIPT_ALLOWANCE = Math.ceil(LONGEST_APPROVED_CHARS * 1.3);
 // sent. Post-payment nothing is allowed at all (see `allowedCents` below), so a
 // consultation price can only ever appear before the customer has paid.
 const FIXED_PRICES_CENTS = [22000, 38500, 11000, 33000, 49500]; // 330/495: foreign income (Jo, 12 Oct)
+// Review of a return that was ALREADY LODGED (Jo, 30 Oct): $330 with TFN, $440
+// with ABN (GST included), replacing the old $360. $330 is also the foreign
+// income TFN price and stays in the list above; $440 is allowed ONLY when the
+// text is plainly about that review (or two years of $220). $360 is no longer a price.
+const REVIEW_PRICE_CTX = /already\s+(?:been\s+)?(?:lodged|filed|submitted)|review of (?:a |an |your |the )?(?:existing |already[- ]lodged )?return|for the review itself|\bamend(?:ed|ing|ment)?\b|lodged\s+(?:it\s+)?(?:yourself|earlier|before)|bereits\s+eingereicht|Prüfung selbst|確認作業|申告済み|提出済み|修正申告/i;
+const REVIEW_PRICES_CENTS = [33000, 44000];
+function reviewPricesFor(text: string): number[] { return REVIEW_PRICE_CTX.test(text) ? REVIEW_PRICES_CENTS : []; }
 /** A reply about ANOTHER tax return for a customer who already paid for one. */
 const ANOTHER_RETURN_CONTEXT = /\b(?:20\d\d\s?[-–/]\s?(?:20)?\d\d|financial year|tax year|(?:another|second|previous|prior|last|next|other|each|both|that|this) (?:year|return)s?\b|two returns|per (?:year|return)|steuerjahr|año fiscal|ann[ée]e fiscale|anno fiscale|ano fiscal|会計年度|年度)/i;
 
@@ -237,16 +272,19 @@ const ANOTHER_RETURN_CONTEXT = /\b(?:20\d\d\s?[-–/]\s?(?:20)?\d\d|financial ye
 // other amount stays blocked. Deliberately one exact value, one direction.
 const SUBSTANTIATION_THRESHOLD_CENTS = 30000; // $300
 const SUBSTANTIATION_CTX =
-  /\b(?:receipts?|records?|record[- ]keeping|substantiat\w*|work[- ]related expenses?|work expenses?|claim(?:ed|ing|able)?|bank statements?)\b/i;
+  /\b(?:receipts?|records?|record[- ]keeping|substantiat\w*|work[- ]related expenses?|work expenses?|claim(?:ed|ing|able)?|bank statements?|lists?|items?|equipment|tools?|deductions?|expenses?|uniform|clothing|phone|internet|diary|logbook|without (?:any )?(?:receipts?|records?))\b|領収書|経費|品目|銀行明細|控除|\bBelege?\b|\bPosten\b|\bAusgaben\b/i;
 const REFUND_MONEY_CTX =
-  /\b(?:refund|get\s+back|getting\s+back|back\s+to\s+you|you'?ll\s+get|you\s+would\s+get|you\s+will\s+get|owe[ds]?|owing|estimate)\b/i;
+  /\b(?:refund|get\s+back|getting\s+back|back\s+to\s+you|you'?ll\s+get|you\s+would\s+get|you\s+will\s+get|owe[ds]?|owing|estimate|back|worth)\b/i;
 /** True only for the exact $300 substantiation threshold stated in a pure record-keeping context. */
 function isBenignThreshold(cents: number, context: string): boolean {
-  return (
-    cents === SUBSTANTIATION_THRESHOLD_CENTS &&
-    SUBSTANTIATION_CTX.test(context) &&
-    !REFUND_MONEY_CTX.test(context)
-  );
+  if (cents !== SUBSTANTIATION_THRESHOLD_CENTS || !SUBSTANTIATION_CTX.test(context)) return false;
+  // 30 Oct (Ok filled it again, Kontoauszuege): the refund/owe words are only
+  // disqualifying in the sentence that carries the $300 itself. "Your refund is
+  // safe with us. Without receipts you can list up to $300" is the Library
+  // line, and the first sentence used to veto the second one.
+  const carrying = splitSentences(context).filter((x) => amountsInCents(x).includes(SUBSTANTIATION_THRESHOLD_CENTS));
+  if (carrying.length === 0) return !REFUND_MONEY_CTX.test(context);
+  return carrying.every((x) => !REFUND_MONEY_CTX.test(x));
 }
 
 // Currency words in the languages backpackers actually use.
@@ -382,7 +420,14 @@ export function stripNonMoneyFigures(text: string): string {
   return text
     .replace(/[*_`~]+/g, ' ')
     .replace(/\b(?:BSB|account(?: number| no\.?| nr\.?)?|acct|acc\.?|konto(?:nummer)?|口座(?:番号)?|cuenta|compte|conto|conta)\b\s*[:：#]?\s*\d[\d \-]*/gi, (m) => m.replace(/\d[\d \-]*$/, ''))
-    .replace(/\b062\s?692\b|\b81049952\b/g, ' ');
+    .replace(/\b0?62[\s-]?692\b|\b0?8104[\s-]?9952\b|\b0?81049952\b/g, ' ');
+}
+
+/** Our BSB and account number (any spacing) replaced by a neutral token, so the
+ *  determination patterns do not read "you get ... BSB 062692" as a refund
+ *  figure. Only used on a copy; the bank checks run on the raw text. */
+function maskBankFigures(text: string): string {
+  return stripNonMoneyFigures(text);
 }
 
 /** Whole multiples of the two fixed prices, allowed only when the text is
@@ -392,9 +437,44 @@ const MULTIPLE_CONTEXT = /\b(?:years?|returns?|people|persons?|both|each|two|thr
 function allowedPriceMultiples(text: string): number[] {
   if (!MULTIPLE_CONTEXT.test(text)) return [];
   const out: number[] = [];
-  for (const base of [22000, 38500, 33000, 49500]) for (let n = 2; n <= 5; n++) out.push(base * n);
+  for (const base of [22000, 38500, 33000, 49500, ...reviewPricesFor(text)]) for (let n = 2; n <= 5; n++) out.push(base * n);
   return out;
 }
+
+/** The approved fixed prices a SUM may be built from (cents): $220, $385,
+ *  $330, $495 and the $110 consultation. */
+const SUMMABLE_PRICES_CENTS = [22000, 38500, 33000, 49500, 11000];
+/** Arithmetic or a count of years/returns/people around the figures. */
+const SUM_CONTEXT = /[+=×]|\bx\s?\d|\d\s?x\b|\b(?:plus|total|in total|altogether|combined|together|sum|add up|adds up|come to|comes to)\b/i;
+
+/** 30 Oct: "three years at $385 = $1,155", "$330 + $110 = $440", "$220 + $385 =
+ *  $605". A total built only from approved fixed prices is arithmetic, not an
+ *  invented price: every component is approved. Allowed when the text names at
+ *  least one fixed price AND is plainly arithmetic or about several years,
+ *  returns or people. Sums of up to six components, each one an approved price
+ *  that the text itself shows (so "$440" alone, with nothing to add up, is
+ *  still refused unless it is two of the $220 for several years). */
+export function allowedPriceSums(text: string): number[] {
+  const shown = new Set(amountsInCents(text).filter((c) => SUMMABLE_PRICES_CENTS.includes(c)));
+  if (shown.size === 0) return [];
+  if (!MULTIPLE_CONTEXT.test(text) && !SUM_CONTEXT.test(text)) return [];
+  const comps = [...shown];
+  // Counting a component more than once is the "three years" case; mixing
+  // different shown components is the "$330 + $110" case.
+  let sums = new Set<number>();
+  for (const c of comps) sums.add(c);
+  for (let n = 1; n < 6; n++) {
+    const next = new Set<number>(sums);
+    for (const base of sums) for (const c of comps) next.add(base + c);
+    sums = next;
+  }
+  return [...sums];
+}
+
+/** A paid customer asking what they paid, what the fee is, or whether they owe
+ *  or must pay something (30 Oct: "$220 is the fee per person", "no need to
+ *  pay the invoice?"). The fixed prices are the answer, not a re-sale. */
+const FEE_QUESTION_CTX = /\b(?:fees?|prices?|charged?|charges|how much|invoice|owe|owed|per person|(?:need|have|has|had|must|should) to pay|do i (?:still )?pay|did i pay|paid (?:you|us|the fee|the invoice)|husband|wife|partner|boyfriend|girlfriend|friend|brother|sister|second (?:return|year)|another (?:return|year))\b|\$\s?(?:110|220|330|385|440|495)\b|料金|費用|請求|いくら|gebühr|preis|bezahlen|precio|tarifa|pagar|prix|frais|payer|prezzo|tariffa|pagare|preço|taxa/i;
 
 function amountsInCents(rawText: string): number[] {
   const text = stripNonMoneyFigures(rawText);
@@ -575,8 +655,8 @@ const TAX_DETERMINATION: RegExp[] = [
   // payment, an URGENT task for a lodged confirmation after it. A refund of
   // exactly 2024 still needs a $ sign or a hedge, which the currency and
   // around/about rules already catch.
-  /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
-  /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
+  /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
+  /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d{3,6}\b/i,
   // The phrasings a model actually reaches for when it is hedging, all of which
   // walked straight past the list above. Verified passes before these existed:
   //   "Based on your payslips you should get around 3,800 back."
@@ -594,7 +674,7 @@ const TAX_DETERMINATION: RegExp[] = [
   /\byour\s+(?:visa|situation|case|circumstances)\s+means\b/i,
   // A hedge is still a determination: "roughly", "around", "ballpark" attached
   // to a refund is the number the customer will hold us to.
-  /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
+  /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
 ];
 
 // ---------- the same content rules in the six other languages ----------
@@ -646,13 +726,13 @@ const TAX_DETERMINATION_ML: RegExp[] = [
   /\b(?:n[ãa]o )?(?:vais|ter[áa]s que|dever[áa]s)\s+(?:pagar|dever)\b[^.!?]{0,20}\bimpostos?\b/i,
   /(?:納税|追徴|支払い)(?:は)?(?:必要ありません|不要です|ありません|になります|が必要です)/,
   // a refund figure in words of prediction — DE, ES, FR, IT, PT, JA
-  /\b(?:ungef[äa]hr|etwa|rund|circa|ca\.|um die|so um)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:zur[üu]ck|r[üu]ckerstattung|erstattung|erstattet)/i,
-  /\b(?:unos|unas|aproximadamente|alrededor de|cerca de|m[áa]s o menos)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de vuelta|reembolso|devoluci[óo]n)/i,
-  /\b(?:environ|à peu près|autour de|dans les)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de retour|remboursement|rembours[ée])/i,
-  /\b(?:circa|all'incirca|intorno a|pi[ùu] o meno)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:indietro|rimborso|rimborsat)/i,
-  /\b(?:cerca de|aproximadamente|uns|umas|mais ou menos)\b[^.!?]{0,15}\b(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de volta|reembolso|restitui)/i,
-  /(?:約|およそ|だいたい|ほぼ)\s?(?!220|385|330|495|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}[^。！？]{0,15}(?:還付|戻|返金|返っ)/,
-  /(?:還付|戻っ|返っ)[^。！？]{0,15}(?:約|およそ|だいたい)?\s?(?<![\d,])(?!220|385|330|495|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}/,
+  /\b(?:ungef[äa]hr|etwa|rund|circa|ca\.|um die|so um)\b[^.!?]{0,15}\b(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:zur[üu]ck|r[üu]ckerstattung|erstattung|erstattet)/i,
+  /\b(?:unos|unas|aproximadamente|alrededor de|cerca de|m[áa]s o menos)\b[^.!?]{0,15}\b(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de vuelta|reembolso|devoluci[óo]n)/i,
+  /\b(?:environ|à peu près|autour de|dans les)\b[^.!?]{0,15}\b(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de retour|remboursement|rembours[ée])/i,
+  /\b(?:circa|all'incirca|intorno a|pi[ùu] o meno)\b[^.!?]{0,15}\b(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:indietro|rimborso|rimborsat)/i,
+  /\b(?:cerca de|aproximadamente|uns|umas|mais ou menos)\b[^.!?]{0,15}\b(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}\b[^.!?]{0,25}\b(?:de volta|reembolso|restitui)/i,
+  /(?:約|およそ|だいたい|ほぼ)\s?(?!220|440|385|330|495|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}[^。！？]{0,15}(?:還付|戻|返金|返っ)/,
+  /(?:還付|戻っ|返っ)[^。！？]{0,15}(?:約|およそ|だいたい)?\s?(?<![\d,])(?!220|440|385|330|495|(?:19|20)\d{2}(?![\d,]))\d[\d,]{2,}/,
   // 4 Sep: a BARE figure next to the refund word, with no hedge ("Deine
   // Rückerstattung beträgt 1.800", "tu reembolso es de 1.800"). English is
   // covered above; these six were not, so the figure sent on Autopilot.
@@ -661,11 +741,11 @@ const TAX_DETERMINATION_ML: RegExp[] = [
   // eingereicht", "Tu devolución de 2024 ya está presentada" were refused). The
   // lookbehind stops the matcher restarting inside a number, which would have
   // read "024" out of "2024" and made the exclusion meaningless.
-  /(?<![A-Za-zÀ-ÿ])(?:r[üu]ckerstattung|erstattung|steuerr[üu]ckzahlung)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:reembolso|devoluci[óo]n|reintegro)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:remboursement|restitution)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:rimborso|restituzione)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
-  /(?<![A-Za-zÀ-ÿ])(?:reembolso|restitui[çc][ãa]o)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:r[üu]ckerstattung|erstattung|steuerr[üu]ckzahlung)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:reembolso|devoluci[óo]n|reintegro)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:remboursement|restitution)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:rimborso|restituzione)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
+  /(?<![A-Za-zÀ-ÿ])(?:reembolso|restitui[çc][ãa]o)(?![A-Za-zÀ-ÿ])[^.!?]{0,25}(?<![\d.,])(?!220\b|440\b|385\b|330\b|495\b|(?:19|20)\d{2}\b)\d[\d.,]{2,}/i,
 ];
 
 // myGov / ATO walkthroughs in the other languages: the site name is the same,
@@ -770,6 +850,11 @@ const MYGOV_REASSURANCE_ML = new RegExp([
   '\\bn[ãa]o precisas\\b', '\\bn[óo]s tratamos disso\\b', '\\bcuidamos disso\\b',
   // Japanese
   '不要です', 'する必要はありません', '必要ありません', '弊社が(?:対応|代行)', '私たちが(?:対応|代行)',
+  // 30 Oct: the same reassurance said with a negation inside the sentence
+  // ("Du musst dich nirgendwo einloggen", "wir kümmern uns direkt mit dem ATO")
+  '\\bnirgendwo\\b', '\\bkeinerlei\\b', '\\bnicht (?:einloggen|anmelden|einzuloggen)', '\\bmusst (?:du )?(?:dich )?(?:nicht|nie|nirgend\\w*|keine\\w*)', '\\bwir (?:kümmern|k[üu]mmern) uns\\b', '\\bwir erledigen\\b',
+  '\\bno (?:tienes|hace falta|debes)\\b', '\\bnos encargamos\\b', "\\bpas (?:besoin|[àa] te connecter)", "\\bn'as pas [àa]", '\\bne (?:dois|devez) pas\\b', '\\bnon (?:serve|devi|c\\W?è bisogno)\\b', '\\bn[ãa]o (?:tens de|tens que|[ée] preciso|necessitas)\\b',
+  'なくて(?:大丈夫|よい|も)', 'なくても', 'ありません',
 ].join('|'), 'i');
 // A benign device hint ("try again on a computer/laptop") is NOT portal
 // troubleshooting: it names no site, no login and no step through a service, it
@@ -819,7 +904,7 @@ const PLACEHOLDER_LEFTOVER = /\{\{[A-Z_]+\}\}/;
 const INTERNAL_NOTE = /\[(?:TEAM|NOTE|TODO|INTERNAL|FIXME|DRAFT|PLACEHOLDER|INSERT|CHECK)\b[^\]]*\]|\bTODO\b|\bTBD\b|\bXXX\b|\[[^\]]*(?:確認してください|要確認|チーム)[^\]]*\]/;
 // Decision 004: the brand's OWN site is allowed, never the other brand's.
 // For WHT this is exactly the list it always was.
-const allowedUrlHosts = (brand: Brand) => new RegExp(`^(?:https?:\\/\\/)?(?:www\\.)?(?:${ownSiteHostPattern(brand)}|my\\.gov\\.au|ato\\.gov\\.au|servicesaustralia\\.gov\\.au|tpb\\.gov\\.au|abr\\.business\\.gov\\.au|g\\.page|maps\\.app\\.goo\\.gl|search\\.google\\.com)(?:\\/|$)`, 'i');
+const allowedUrlHosts = (brand: Brand) => new RegExp(`^(?:https?:\\/\\/)?(?:www\\.)?(?:${ownSiteHostPattern(brand)}|my\\.gov\\.au|ato\\.gov\\.au|servicesaustralia\\.gov\\.au|tpb\\.gov\\.au|abr\\.business\\.gov\\.au|(?:[a-z0-9-]+\\.)*gov\\.au|g\\.page|maps\\.app\\.goo\\.gl|search\\.google\\.com)(?:\\/|$)`, 'i');
 const ALLOWED_URL_HOSTS_BY_BRAND: Readonly<Record<Brand, RegExp>> = { wht: allowedUrlHosts('wht'), svt: allowedUrlHosts('svt') };
 export function hasForeignUrl(text: string, brand: Brand = currentBrand()): boolean {
   const ALLOWED_URL_HOSTS = ALLOWED_URL_HOSTS_BY_BRAND[brand];
@@ -858,7 +943,13 @@ const SENSITIVE_LEAK = /(password|api.?key|access token|secret key|admin (access
 // so an API key, "admin access", "credentials", or a raw "your password is ..."
 // (even next to the word Xero) is still caught by SENSITIVE_LEAK below.
 const XERO_SIGNING = /\bxero\b/i;
-const XERO_BENIGN_PWD = /\b(?:if it (?:asks|is asking) for a password|try\s+\d{4,}|forgot password|reset (?:your |the )?password)\b/gi;
+// 30 Oct (Jo, confirmed): when Xero creates the account on its own, the
+// temporary password is 123456789, and telling the customer so is fine. ONLY
+// that exact password, ONLY next to the word Xero, is allowed ("try 123456789").
+// Any other password, key or credential is still blocked like any other leak.
+const XERO_BENIGN_PWD = /\b(?:if it (?:asks|is asking) for a password|forgot password|reset (?:your |the )?password)\b/gi;
+const XERO_DEFAULT_PWD = /\b(?:try|use)\s+(?:the\s+)?(?:password\s+)?["']?123456789["']?/gi;
+const PASSWORD_TO_TYPE = /\b(?:try|use|type|enter|put)\s+(?:the\s+)?(?:password\s+)?["']?\d{4,}["']?|\bpassword\s*(?:is|:|=)\s*\S+/i;
 // (audit, 5 Sep) Mirror of the Xero carve-out for the myGov reassurance. A
 // customer's login problem is literally about a password, and the playbook's
 // answer is "you won't need your myGov password at all, we deal with the ATO
@@ -955,6 +1046,15 @@ function maskAllowedAmounts(text: string, cents: Iterable<number>): string {
   return out;
 }
 
+/** 30 Oct: an answer about the customer's own expenses (phone bill, course cost,
+ *  union fees) uses the words "cost" and "fee" and is not a sale of our service. */
+const EXPENSE_TALK = /\b(?:expenses?|receipts?|deduct\w*|claims?|claimed|claiming|phone|mobile|internet|data plan|bills?|uniform|clothing|boots|tools?|equipment|laptop|courses?|licen[cs]es?|registration|rego|union|membership|subscriptions?|car|rental|fuel|petrol|km|kilomet\w*|diary|logbook|work[- ]related|work from home|home office|statements?|invoices?)\b/i;
+/** The sentences that really are our sales pitch, whatever the topic. */
+const OUR_SALES_PITCH = /\bour (?:fee|price|prices|service fee|rates?)\b|guarantee|discount|out of pocket|cover the (?:gap|difference)|refund the difference/i;
+
+const GUARANTEE_SENTENCE = /refund the difference|refund you the difference|erstatten wir dir die differenz|devolvemos la diferencia|rembours\w* la diff[ée]rence|rimborsiamo la differenza|devolvemos a diferen[çc]a|差額を返金/i;
+
+const PROTECTED_AGENT_TITLE = /steuerberater(?:in)?|steuer-?agent|steuerbevollm[äa]chtigt|税理士|税務代理/i;
 const DASHES = /[—–―−]/; // — – ― −
 
 export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
@@ -986,20 +1086,31 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // Only in the Xero signing context, strip the approved benign password phrases
   // before the sensitive check, so the portal support message sends while any
   // other credential leak stays blocked.
-  let sensText = XERO_SIGNING.test(text) ? text.replace(XERO_BENIGN_PWD, ' ') : text;
+  const xeroCtx = XERO_SIGNING.test(text);
+  const pwdText = xeroCtx ? text.replace(XERO_DEFAULT_PWD, ' ') : text;
+  let sensText = xeroCtx ? pwdText.replace(XERO_BENIGN_PWD, ' ') : text;
   // (audit, 5 Sep) same for the negated myGov password reassurance, see MYGOV_BENIGN_PWD.
   if (MYGOV_TERMS.test(text)) sensText = sensText.replace(MYGOV_BENIGN_PWD, ' ');
   // 11 Oct (decision 6, fix 6): the negation is not tied to myGov. "You won't
   // share any passwords with us" (Nathan) is the reassurance, in any context.
   sensText = sensText.replace(NEGATED_PASSWORD, ' ');
-  if (SENSITIVE_LEAK.test(sensText)) violations.push('SENSITIVE_CONTENT');
+  if (SENSITIVE_LEAK.test(sensText) || (/\bpassword\b/i.test(pwdText) && PASSWORD_TO_TYPE.test(pwdText))) violations.push('SENSITIVE_CONTENT');
   if (DASHES.test(text)) violations.push('EM_DASH_FORBIDDEN');
+  // 30 Oct (Jo): "Steuerberater" (German) and 税理士 / 登録税理士 / 税務代理人 (Japanese)
+  // are protected titles. The approved German and Japanese agent wording is
+  // AGENT_PHRASES in approved-messages.ts ("registrierten australischen Tax
+  // Agent", "オーストラリアの登録タックスエージェント"), which this check accepts.
+  if (PROTECTED_AGENT_TITLE.test(text)) violations.push('PROTECTED_AGENT_TITLE');
   // 11 Oct (full audit, decision 6): Hiro received "料金総額は [TEAM: 正確な料金を
   // 確認してください…] です。" An internal note is never customer text.
   if (INTERNAL_NOTE.test(text)) violations.push('INTERNAL_NOTE_LEFT_IN');
   // The form link was typed three times without ".au"; any link is either the
   // fixed form link (always inserted by the code) or one of our site's pages.
   if (!ctx.isApprovedTemplate && hasForeignUrl(text)) violations.push('TYPED_URL');
+  // 30 Oct: "workingholidaytax.com/..." without ".au", or a retired form slug, is a
+  // broken link whoever wrote it, template or not. Normally repaired before the
+  // guard runs (repairBrandUrls); this is the backstop that blocks what slipped by.
+  if (currentBrand() === 'wht' && hasBrokenBrandUrl(text)) violations.push('BRAND_URL_BROKEN');
   // The retired over-promise is banned everywhere, including in an "approved"
   // template: it was deleted from all of them, so anything carrying it is
   // either a stale Library row or the model reaching for wording Jo retired.
@@ -1120,6 +1231,12 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     if (sentenceAsks >= 3 && !priceShape) {
       ceiling = Math.max(ceiling, Math.min(1000, 300 + sentenceAsks * 120));
     }
+    // 30 Oct: the room scales with the number of questions, from the second one
+    // on. A four-question message is answered in four short answers (about 270
+    // characters each), not in the 450 meant for one. Never around the price block.
+    if (sentenceAsks >= 2 && !priceShape) {
+      ceiling = Math.max(ceiling, Math.min(1600, 200 + sentenceAsks * 270));
+    }
     if (improvised.length > ceiling) violations.push('REPLY_TOO_LONG');
   }
 
@@ -1133,7 +1250,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // prices and the sales wording are allowed again, exactly as before payment.
   const anotherReturn = paidState && ANOTHER_RETURN_CONTEXT.test(text);
   const paid = paidState && !anotherReturn;
-  const allowedCents = new Set<number>(paid ? [] : FIXED_PRICES_CENTS);
+  const allowedCents = new Set<number>(paid ? [] : [...FIXED_PRICES_CENTS, ...reviewPricesFor(text)]);
   if (ctx.estimateFromTeam != null) allowedCents.add(ctx.estimateFromTeam);
   // 11 Oct (full audit, decision 6, fixes 1 and 2): a figure the customer
   // wrote themselves may be echoed back (James "$1100", Megan "$700", ひめか
@@ -1142,6 +1259,27 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // "$1,155 for three returns"). Neither is Will inventing a number.
   for (const c of amountsInCents(ctx.customerText ?? '')) allowedCents.add(c);
   if (!paid) for (const c of allowedPriceMultiples(text)) allowedCents.add(c);
+  // 30 Oct: the customer's own figures, with or without a currency sign ("I
+  // earned 8000", "the invoice says 1155"), may be echoed back. This only
+  // silences FORBIDDEN_AMOUNT (an invented price); a refund or tax estimate is
+  // still a TAX_DETERMINATION and is checked separately.
+  for (const m of (ctx.customerText ?? '').matchAll(/(?<![\d.,])(\d{1,3}(?:[,. ]\d{3})+|\d{2,7})(?:[.,]\d{1,2})?(?![\d])/g)) {
+    const c = toCents(m[1].replace(/ /g, ''));
+    if (c != null && c >= 1000 && !LOOKS_LIKE_YEAR.test(m[1])) allowedCents.add(c);
+  }
+  // A paid customer who asks about the fee gets the fixed prices as the answer.
+  const paidFeeQuestion = paidState && FEE_QUESTION_CTX.test(ctx.customerText ?? '');
+  if (paid || paidState) {
+    if (paidFeeQuestion) for (const c of [...FIXED_PRICES_CENTS, ...reviewPricesFor(text)]) allowedCents.add(c);
+  }
+  // Sums of approved prices (several years, several people, 330 + 110).
+  if (!paid || paidFeeQuestion) for (const c of allowedPriceSums(text)) allowedCents.add(c);
+
+  // Sales wording after payment is excused for a direct fee question from the
+  // customer, and for an answer about their own expenses (30 Oct). The
+  // discount / negotiation rules and the amount check are unaffected.
+  const salesExcused = (sent: string): boolean =>
+    paidFeeQuestion || (EXPENSE_TALK.test(sent) && !OUR_SALES_PITCH.test(sent));
 
   let unguardedLanguage = false;
 
@@ -1211,10 +1349,18 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // need to worry about" and "you can lodge anytime". The Library says the
     // deadline may be extended to 15 May when we lodge, and a self-lodger's
     // 2025-26 date is 31 October. Neither "no deadline" nor "anytime" is ours to promise.
-    if (NO_DEADLINE_CLAIM.test(written)) violations.push('DEADLINE_CLAIM');
+    // 30 Oct: the approved answer to "do I have time?" is conditional and dated
+    // ("as long as you're with us before 31 October, ... usually 15 May 2027").
+    // A sentence that carries that condition or date is the wording, not the
+    // promise; "no deadline" / "anytime" with neither stays refused.
+    if (NO_DEADLINE_CLAIM.test(written) && !DEADLINE_CONDITION.test(written)) violations.push('DEADLINE_CLAIM');
+    // The guarantee is for TFN returns we prepare (not ABN, not foreign income,
+    // not the review of a return already lodged). Said to anyone else it is a
+    // promise we do not make, even in its approved wording.
+    if (ctx.guaranteeBarred && GUARANTEE_SENTENCE.test(written)) violations.push('GUARANTEE_NOT_ALLOWED');
     const opening = ownOpening(written);
     if (opening != null) {
-      if (paid && !POST_PAYMENT_NOT_SALES.test(written) && (POST_PAYMENT_SALES.test(written) || POST_PAYMENT_SALES_ML.test(written))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
+      if (paid && !POST_PAYMENT_NOT_SALES.test(written) && (POST_PAYMENT_SALES.test(written) || POST_PAYMENT_SALES_ML.test(written)) && !salesExcused(written)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
       if (opening === '') continue;
     }
     // An approved sentence with an adapted opening ("Yes Sarah, you can lodge
@@ -1222,6 +1368,8 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // and exempt, the opening is the model's own and checked below like any
     // other sentence (audit, 5 Sep).
     const sentence = opening || written;
+    // Never say the return is being lodged, or has been, before the customer has signed.
+    if (!ctx.isApprovedTemplate && !SIGNED_OR_LATER.has(ctx.state) && LODGEMENT_CLAIM.test(sentence)) violations.push('LODGEMENT_BEFORE_SIGNATURE');
 
     // Amount check is language-agnostic (currency symbols + words in many languages).
     const sentenceAmounts = amountsInCents(sentence);
@@ -1253,7 +1401,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     if (ctx.estimateFromTeam != null) maskable.push(ctx.estimateFromTeam);
     // Inside a worked example the fee itself is part of the arithmetic.
     if (sentenceExample.size > 0) maskable.push(...FIXED_PRICES_CENTS);
-    const determinationText = maskable.length ? maskAllowedAmounts(sentence, maskable) : sentence;
+    const determinationText = maskBankFigures(maskable.length ? maskAllowedAmounts(sentence, maskable) : sentence);
     for (const p of TAX_DETERMINATION) {
       if (p.test(determinationText)) { violations.push('TAX_DETERMINATION'); break; }
     }
@@ -1265,12 +1413,17 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // 12 Oct (+61 402 077 188): "did you already lodge your tax return
     // yourself, or are you still waiting to lodge it?" is a question about
     // what THEY did, not an instruction. A question about their past is exempt.
-    const asksWhatTheyDid = /\b(?:did|have|had|were) you\b[^?]*\?/i.test(sentence);
+    // 30 Oct: ANY plain question about what they are doing or did ("are you
+    // lodging it yourself?", "did you already lodge it yourself?") is not an
+    // instruction. A walkthrough keeps its own markers and is still refused.
+    const asksWhatTheyDid = /\b(?:did|have|had|were|are|do|does|will|would|is|was) (?:you|your)\b[^?]*[?？]\s*$/i.test(sentence.trim())
+      && !/step[- ]by[- ]step|schritt f[üu]r schritt|paso a paso|[ée]tape par [ée]tape|passo (?:dopo )?passo|ステップバイステップ|log ?in ?to mygov/i.test(sentence)
+      || /\b(?:did|have|had|were) you\b[^?]*\?/i.test(sentence);
     if ((DIY_INSTRUCTIONS.test(sentence) || DIY_INSTRUCTIONS_ML.test(sentence)) && !asksWhatTheyDid) violations.push('DIY_INSTRUCTIONS');
     if (REFUND_PROMISE_ML.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
     if (FEE_REFUNDABLE_PASSIVE.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
-    if (paid && !POST_PAYMENT_NOT_SALES.test(sentence) && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence))) violations.push('SALES_CONTENT_AFTER_PAYMENT');
-    const moneyBack = MONEY_BACK_ML.test(sentence);
+    if (paid && !POST_PAYMENT_NOT_SALES.test(sentence) && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence)) && !salesExcused(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
+    const moneyBack = MONEY_BACK_ML.test(sentence) && !/差額/.test(sentence); // 差額を返金します is the guarantee (Takeyama)
     if (!ctx.isApprovedTemplate && (REFUND_PROMISE.test(sentence) || OUT_OF_POCKET_PROMISE.test(sentence) || moneyBack)) violations.push('REFUND_OR_CANCEL_PROMISE');
 
     // H5: a non-approved sentence in a language the English patterns can't cover.

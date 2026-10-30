@@ -43,7 +43,7 @@ describe('5. a vendor is not a customer', () => {
 
 describe('2. Will never confirms a payment the customer did not report', () => {
   it('Luke: the confirmation is stripped and the stage stays', async () => {
-    decideMock.mockResolvedValueOnce({ action: 'reply', reply_text: "I'm sorry to hear that, take your time. Payment received!\n\nPlease fill out this quick form so we can start reviewing your situation.\n\nhttps://workingholidaytax.com.au/tax-form", new_state: 'PAID', confidence: 0.9 });
+    decideMock.mockResolvedValueOnce({ action: 'reply', reply_text: "I'm sorry to hear that, take your time. Payment received!\n\nPlease fill out this quick form so we can start reviewing your situation.\n\nhttps://workingholidaytax.com.au/start", new_state: 'PAID', confidence: 0.9 });
     const input: EngineInput = {
       ctx: { name: 'Luke', state: 'PRICE_SENT', income: 'TFN', paid: false, formComplete: false, missingDocs: [], estimatedRefundCents: null, lang: 'en', knowledge: [] },
       guard: { aiPaused: false, killSwitch: false, optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date() },

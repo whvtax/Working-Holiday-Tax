@@ -42,7 +42,7 @@ export function isLaterPlan(text: string | null | undefined): boolean {
   return PLAN_RE.test(t);
 }
 
-const FORM_URL = 'https://workingholidaytax.com.au/tax-form';
+const FORM_URL = 'https://workingholidaytax.com.au/start';
 
 const FORM_LINE: Record<string, string> = {
   en: `No worries 😊 Here's the link whenever you're ready: ${FORM_URL}`,

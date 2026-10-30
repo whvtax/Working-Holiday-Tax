@@ -67,14 +67,14 @@ const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
-  "guaranteeBody": "417 und 462 sind die einzigen Visa, für die wir Steuerarbeit annehmen, deshalb werden Zone Offset, Wohnsitzfrage und die Super in drei Fonds zusammen angesehen. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
-  "faqHeading": "Fragen, die uns dazu gestellt werden",
+  "guaranteeBody": "Wir nehmen Steuerarbeit nur für die Visa 417 und 462 an, deshalb schauen wir Zone Offset, Wohnsitzfrage und die Super aus mehreren Fonds gemeinsam an. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
+  "faqHeading": "Häufige Fragen dazu",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
+  "disclaimer": "Das sind allgemeine Informationen und keine individuelle Beratung zu deiner Steuersituation. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -116,7 +116,7 @@ const SECTIONS: Section[] = [
     "items": [
       {
         "t": "Selbst gekaufte Schutzausrüstung und deren Wäsche",
-        "d": "Overalls, Sicherheitsschuhe mit Stahlkappe, Handschuhe, Schutzbrille, Gehörschutz, Masken. Absetzbar, weil sie dich vor einer konkreten Gefahr auf dem Standort schützen. Das Waschen absetzbarer Schutzkleidung geht zum ATO-Satz: 1 Dollar pro reinem Arbeitswaschgang oder 50 Cent gemischt."
+        "d": "Overalls, Sicherheitsschuhe mit Stahlkappe, Handschuhe, Schutzbrille, Gehörschutz, Masken. Absetzbar, weil sie dich vor einer konkreten Gefahr auf dem Standort schützen. Das Waschen absetzbarer Schutzkleidung wird zum ATO-Satz angesetzt: 1 Dollar pro reinem Arbeitswaschgang oder 50 Cent gemischt."
       },
       {
         "t": "Werkzeug und Geräte",
@@ -124,7 +124,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Verlängerung von Tickets und Lizenzen",
-        "d": "High Risk Work Licence, Working-at-Heights-Ticket, Staplerschein. Verlängerungen sind absetzbar, sobald du bereits in der Rolle arbeitest. Das erste nicht, auf derselben Grundlage wie die erste White Card."
+        "d": "High Risk Work Licence, Working-at-Heights-Ticket, Staplerschein. Verlängerungen sind absetzbar, sobald du bereits in der Rolle arbeitest. Die erste Lizenz nicht, nach demselben Prinzip wie die erste White Card."
       },
       {
         "t": "Vom Arbeitgeber verlangte Medicals und Tests",
@@ -151,7 +151,7 @@ const SECTIONS: Section[] = [
     "h2": "Was muss hinter einem FIFO-Abzug stehen?",
     "paras": [
       "Ein Abzug übersteht drei Fragen. Hast du bezahlt? Hat dir jemand das Geld zurückgegeben? Diente es dazu, das Einkommen zu verdienen, das du angibst? Auf dem Roster heißt das der Beleg für die Stiefel, die das Lager nicht ausgegeben hat, die Rechnung für das Medical und die Rechnung hinter deinem Handyanteil.",
-      "Nachweis heißt Betrag, Datum, Anbieter und Gegenstand, auf einem Beleg, einer Rechnung, einem Kontoauszug oder einem Foto an der Kasse, und er muss fünf Jahre halten. Bei 300 Dollar Abzügen oder weniger im Jahr ist kein schriftlicher Nachweis nötig. Das sind nicht die 300 Dollar, die entscheiden, ob ein Werkzeug sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Nachweis heißt Betrag, Datum, Anbieter und Gegenstand, auf einem Beleg, einer Rechnung, einem Kontoauszug oder einem Foto an der Kasse, und er muss fünf Jahre halten. Bei Abzügen von insgesamt 300 Dollar oder weniger im Jahr ist kein schriftlicher Nachweis nötig. Diese 300 Dollar sind nicht dieselbe Grenze wie die, die entscheidet, ob ein Werkzeug sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
@@ -161,7 +161,7 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Der Zone Tax Offset",
-        "d": "Das mit Abstand am häufigsten angesetzte, worauf FIFO-Beschäftigte keinen Anspruch haben. Es kommt darauf an, wo du normal wohnst, nicht wohin du fliegst, und das Camp zählt nicht."
+        "d": "Der mit Abstand am häufigsten angesetzte Abzug, auf den FIFO-Beschäftigte keinen Anspruch haben. Es kommt darauf an, wo du normal wohnst, nicht wohin du fliegst, und das Camp zählt nicht."
       },
       {
         "t": "Camp-Unterkunft und Verpflegung",
@@ -177,7 +177,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Eine erste High Risk Work Licence",
-        "d": "Das Ticket, das du bezahlt hast, um eingestellt werden zu können, ist eine private Kost. Die Verlängerung, während du damit bereits arbeitest, ist absetzbar."
+        "d": "Das Ticket, das du bezahlt hast, um eingestellt werden zu können, ist eine private Ausgabe. Die Verlängerung, während du damit bereits arbeitest, ist absetzbar."
       }
     ],
     "missed": [
@@ -199,7 +199,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Superannuation, die in mehreren Fonds zurückbleibt",
-        "d": "FIFO zahlt gut, also ist der Super-Betrag größer als in den meisten Backpacker-Jobs. Er bleibt liegen, wenn du gehst, und muss als Departing Australia Superannuation Payment beantragt werden, sobald dein Visum abgelaufen ist."
+        "d": "FIFO zahlt gut, also ist der Super-Betrag größer als in den meisten Backpacker-Jobs. Er bleibt liegen, wenn du gehst, und sollte vor der Ausreise geklärt werden."
       }
     ]
   },
@@ -209,7 +209,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Der Zone Tax Offset ist meistens falsch, nicht unmöglich. Lag deine Basis während der Working Holiday in einer ausgewiesenen Zone, etwa eine Wohnung in einem abgelegenen Ort statt in einer Großstadt, ist die Frage offen.",
       "Die Ausnahme für sperriges Werkzeug zählt eher für Handwerker, die mit eigenem Werkzeugsatz einfliegen, als für Camp-Service-Rollen. Entschieden wird sie davon, was du transportiert hast und was der Standort an Lagerung bot.",
-      "Der steuerliche Wohnsitz ist bei FIFO die größte Frage, weil die Beträge größer sind. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
+      "Der steuerliche Wohnsitz ist bei FIFO die größte Frage, weil es um höhere Beträge geht. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -246,12 +246,12 @@ const GUIDES = [
   {
     "href": "/de/blog/1000-dollar-instant-deduction-rule-2026",
     "label": "Die 1.000-Dollar-Pauschale ab 1. Juli 2026",
-    "desc": "Pauschale ohne Belege oder tatsächliche Kosten. Du bekommst nur eins von beidem."
+    "desc": "Pauschale statt Belegen. Du kannst nur entweder die Pauschale oder die tatsächlichen Kosten ansetzen."
   },
   {
     "href": "/de/superannuation",
-    "label": "Superannuation zurückholen, wenn du Australien verlässt",
-    "desc": "Wie DASP funktioniert und was davon einbehalten wird."
+    "label": "Superannuation, wenn du Australien verlässt",
+    "desc": "Was bei der Super nach der Ausreise gilt und was einbehalten wird."
   }
 ]
 

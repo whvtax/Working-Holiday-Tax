@@ -55,9 +55,11 @@ it('inside the 24h window: the Japanese text goes out, never the English templat
   expect(text?.text?.body).toContain('税務居住者');
 });
 
-it('outside the window the English template is still used (free text cannot arrive there)', async () => {
+it('outside the window with no Japanese template: nothing is sent in English (30 Oct)', async () => {
   const body = residencyCheckMessage('ja', 'Ruito');
   const tpl = { name: RESIDENCY_CHECK_TEMPLATE, params: ['Ruito'], lang: 'ja', fallbackToText: true };
-  await deliverOut(ruito(new Date(Date.now() - 3 * 86_400_000).toISOString()), body, 'AI', { waTemplate: tpl }, tpl);
-  expect(sent.some((p) => p.type === 'template' && p.template?.language.code === 'en')).toBe(true);
+  const res = await deliverOut(ruito(new Date(Date.now() - 3 * 86_400_000).toISOString()), body, 'AI', { waTemplate: tpl }, tpl);
+  expect(res.ok).toBe(false);
+  expect(sent.some((p) => p.type === 'template' && p.template?.language.code === 'en')).toBe(false);
+  expect(sent.some((p) => p.type === 'text')).toBe(false);
 });

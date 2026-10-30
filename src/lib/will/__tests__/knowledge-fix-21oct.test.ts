@@ -21,9 +21,11 @@ describe('applyKnowledgeFixes', () => {
   it('updates the payment-plan answer on the matching row', async () => {
     const st = store([{ id: 'r1', question: 'Can I set up a payment plan with the ATO for the amount I owe?', answer: 'old' }]);
     const n = await applyKnowledgeFixes(st.s);
-    expect(n).toBe(1);
+    // two batches touch this row now (25 Oct, then 30 Oct b): the last one wins
+    expect(n).toBeGreaterThanOrEqual(1);
     expect(st.updates[0].id).toBe('r1');
-    expect(JSON.stringify(st.updates[0].patch)).toMatch(/call the ATO yourself/);
+    expect(JSON.stringify(st.updates[st.updates.length - 1].patch)).toMatch(/within 14 days of lodging you will receive an email from the ATO/i);
+    expect(JSON.stringify(st.updates.map((u) => u.patch))).not.toMatch(/call the ATO yourself|in about two weeks/);
   });
   it('runs once (marker)', async () => {
     const settings: Record<string, string> = {};

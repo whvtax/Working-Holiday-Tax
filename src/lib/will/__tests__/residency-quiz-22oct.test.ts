@@ -74,23 +74,23 @@ it('her case: the intro explains the tax year and asks question 1', async () => 
   await say('I lived in aus for 6 months in feb 2023 and was there for 4 months this year would that account as living in aus for 6 months or more?');
   expect(runEngine).not.toHaveBeenCalled();
   expect(sent[0]).toContain('1 July 2025 to 30 June 2026');
-  expect(sent[0]).toContain('1/5: During that tax year, did you live in Australia for 6 months or more?');
+  expect(sent[0]).toContain('1/6: During that tax year, did you live in Australia for 6 months or more?');
 });
 
-it('4 of 5 Yes: fill out the questionnaire again, and a task for the team', async () => {
+it('4 of 6 Yes: fill out the questionnaire again, and a task for the team', async () => {
   await say('not sure?');
-  for (const a of ['Yes', 'Yes', 'Yes', 'No', 'Yes']) await say(a);
-  expect(sent).toHaveLength(6);
-  expect(sent[1]).toMatch(/^2\/5/);
-  expect(sent[5]).toBe(quizResult('en', 4));
-  expect(sent[5]).toContain('Please fill out the questionnaire again with the correct details');
-  expect(addTask).toHaveBeenCalledWith(expect.objectContaining({ reason: expect.stringContaining('4 of 5 Yes') }));
+  for (const a of ['Yes', 'Yes', 'Yes', 'No', 'Yes', 'No']) await say(a);
+  expect(sent).toHaveLength(7);
+  expect(sent[1]).toMatch(/^2\/6/);
+  expect(sent[6]).toBe(quizResult('en', 4));
+  expect(sent[6]).toContain('Please fill out the questionnaire again with the correct details');
+  expect(addTask).toHaveBeenCalledWith(expect.objectContaining({ reason: expect.stringContaining('4 of 6 Yes') }));
 });
 
 it('fewer than 4: Working Holiday Maker, the team takes it from here, no task', async () => {
   await say('not sure');
-  for (const a of ['No', 'Yes', 'No', 'Yes', 'No']) await say(a);
-  expect(sent[5]).toBe("Great, it looks like you count as a Working Holiday Maker for tax, so your answer stays as it is 😊 The team will double-check it and take it from here.");
+  for (const a of ['No', 'Yes', 'No', 'Yes', 'No', 'No']) await say(a);
+  expect(sent[6]).toBe("Great, it looks like you count as a Working Holiday Maker for tax, so your answer stays as it is 😊 The team will double-check it and take it from here.");
   expect(addTask).not.toHaveBeenCalled();
 });
 
@@ -98,7 +98,7 @@ it('a reply that is not Yes or No gets the question again', async () => {
   await say('not sure');
   await say('hmm');
   expect(sent[1]).toMatch(/^Just a Yes or No for this one/);
-  expect(sent[1]).toContain('1/5');
+  expect(sent[1]).toContain('1/6');
 });
 
 it('"Yes, still correct" does not start anything', async () => {

@@ -90,7 +90,7 @@ it('his case: a confirmation already went as text, so the queued template one st
   store.getMessageById.mockResolvedValue(paymentMsg({ meta: { paymentConfirmation: true } }));
   store.listMessages.mockResolvedValue([
     { id: 'earlier', customerId: 'c1', direction: 'OUT', author: 'AI', status: 'SENT', createdAt: new Date(Date.now() - 5 * 60_000).toISOString(),
-      body: 'Zahlung erhalten.\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation beginnen können.\n\nhttps://workingholidaytax.com.au/tax-form', meta: {} },
+      body: 'Zahlung erhalten.\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation beginnen können.\n\nhttps://workingholidaytax.com.au/start', meta: {} },
     paymentMsg({ meta: { paymentConfirmation: true } }),
   ]);
   await processDueJobs();

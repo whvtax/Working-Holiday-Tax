@@ -203,7 +203,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "How itinerant the work was decides how much travel is deductible, and it is a question of fact rather than a rule. How often the site changed, whether one base kept pulling you back and whether the agency required the movement all feed in. Two people at the same agency can end up with very different travel claims.",
       "Every agency is a separate employer with its own Tax File Number Declaration, withholding relationship and income statement. Working holiday makers do not get a tax free threshold from any of them, so the risk is a rate applied wrongly, or an employer missing from the return.",
-      "Residency sits under all of it. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision, worth more than every deduction on this page. It depends on your own circumstances and has to be reviewed properly."
+      "Residency sits under all of it. A court ruling known as Addy may change which rates apply to some passports, and that can matter more than every deduction on this page. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review."
     ]
   }
 ]

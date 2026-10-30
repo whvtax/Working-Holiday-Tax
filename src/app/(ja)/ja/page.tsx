@@ -138,7 +138,7 @@ const ANALYSIS = [
   {
     n: '03',
     title: '該当する場合はメディケア税',
-    body: '2%のメディケア税は、義務がなくても自動的に引かれます。それが本来あなたのものでなかった年を見抜き、外す手続きまで行うのが私たちの仕事です。',
+    body: '2%のメディケア税は、納める義務がなくても自動的に引かれます。納めなくてよかった年かどうかを見極め、免除の手続きまで行うのが当社の仕事です。',
   },
   {
     n: '04',
@@ -161,7 +161,7 @@ const COMPARISON = [
 
 const SERVICES = [
   { n: '01', href: '/ja/tfn',            icon: <IconTFN />,      title: 'TFN申請',         desc: '最初の給与より前に取得し、最高税率を避けます。' },
-  { n: '02', href: '/ja/abn',            icon: <IconABN />,      title: 'ABN登録',         desc: '個人事業主として働くための登録。税金の話も先に。' },
+  { n: '02', href: '/ja/abn',            icon: <IconABN />,      title: 'ABN登録',         desc: '個人事業主として働くための登録。税金の注意点も先にお伝えします。' },
   { n: '03', href: '/ja/tax-return',     icon: <IconReturn />,   title: 'タックスリターン', desc: '上記の確認をすべて行い、ATOへ提出します。' },
   { n: '04', href: '/ja/superannuation', icon: <IconSuper />,    title: 'スーパー受取',     desc: '全ファンドを探し、帰国時にDASPを申請します。' },
   { n: '05', href: '/ja/medicare',       icon: <IconMedicare />, title: 'メディケア税免除', desc: '条件を満たす年は、免除証明書を申請します。' },
@@ -189,7 +189,7 @@ const FAQS = [
   },
   {
     question: 'ワーキングホリデーメーカーの税率はいくらですか？',
-    answer: 'ワーキングホリデーメーカーは、45,000ドルまで一律15%、135,000ドルまで30%、190,000ドルまで37%、それを超える部分は45%で課税されます。\n\n雇用主にTFNを提出していない場合は最高税率で源泉徴収されるため、これがワーホリ参加者に還付が生じる最も多い理由の一つです。',
+    answer: 'ワーキングホリデーメーカーは、45,000ドルまで一律15%、135,000ドルまで30%、190,000ドルまで37%、それを超える部分は45%で課税されます。\n\n雇用主にTFNを提出していない場合は最高税率で源泉徴収されるため、これがワーホリ参加者に還付が生じる代表的な理由の一つです。',
   },
   {
     question: '帰国後でもタックスリターンの申請はできますか？',
@@ -587,8 +587,8 @@ export default async function JapaneseHomePage() {
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
             <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>税理士がmyGovのログイン情報を尋ねることは絶対にありません。</strong>
-              尋ねてくる相手は当社ではありません。
+              <strong style={{ color: '#080F0D' }}>当社からmyGovのログイン情報をお尋ねすることは絶対にありません。</strong>
+              尋ねてくる相手がいれば、それは当社ではありません。
             </p>
           </div>
         </div>
@@ -640,7 +640,7 @@ export default async function JapaneseHomePage() {
               セクションが4本のガイドを並べている以上、見出しとカードの言い直しに
               なっていた。事実を足している一文だけを残す。 */}
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '24px' }}>
-            連絡させるために内容を出し惜しみすることはありません。
+            ご連絡いただくために、情報を小出しにすることはありません。
           </p>
 
           <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">

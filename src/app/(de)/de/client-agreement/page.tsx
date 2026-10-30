@@ -4,7 +4,7 @@ import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Mandantenvereinbarung',
-  description: 'Mandantenvereinbarung von Working Holiday Tax - Vertragsbedingungen für unsere Steuerdienstleistungen.',
+  description: 'Mandantenvereinbarung von Working Holiday Tax: Vertragsbedingungen für unsere Steuerdienstleistungen.',
   alternates: {
     canonical: '/de/client-agreement',
     languages: {
@@ -27,12 +27,12 @@ const sections: Section[] = [
     title: '1. Definitionen',
     body: 'Im Sinne dieser Vereinbarung gilt:',
     items: [
-      '„Mandant" bezeichnet die natürliche Person, die den Service nutzt und diese Vereinbarung abschließt.',
-      '„Anbieter" bezeichnet Working Holiday Tax, das unter der Aufsicht eines registrierten Steueragenten wie oben angegeben tätig ist.',
-      '„Service" bezeichnet die vom Anbieter erbrachten steuerbezogenen Dienstleistungen, einschließlich Vorbereitung und Einreichung der Steuererklärung sowie zugehörige Unterstützung bei australischen Steuerangelegenheiten.',
-      '„Prüfung" bezeichnet die vom Anbieter durchgeführte Beurteilung des Einkommens, des Ansässigkeitsstatus und der Ansprüche des Mandanten, um die dem Mandanten zur Verfügung stehenden Abzüge, Freibeträge und Befreiungen zu ermitteln. Die Prüfung ist Teil der einheitlichen Beauftragung nach Klausel 3 und wird nicht gesondert berechnet.',
-      '„Steuererklärung" bezeichnet die im Namen des Mandanten vorbereitete und beim Australian Taxation Office (ATO) eingereichte australische Einkommensteuererklärung.',
-      '„Rückzahlung" bezeichnet jede vom ATO ausgestellte und auf das vom Mandanten angegebene Konto überwiesene Erstattung, Zahlung oder Gutschrift.',
+      '„Mandant“ bezeichnet die natürliche Person, die den Service nutzt und diese Vereinbarung abschließt.',
+      '„Anbieter“ bezeichnet Working Holiday Tax, das unter der Aufsicht eines registrierten australischen Tax Agent tätig ist (Angaben siehe Klausel 21).',
+      '„Service“ bezeichnet die vom Anbieter erbrachten steuerbezogenen Dienstleistungen, einschließlich Vorbereitung und Einreichung der Steuererklärung sowie zugehörige Unterstützung bei australischen Steuerangelegenheiten.',
+      '„Prüfung“ bezeichnet die vom Anbieter durchgeführte Beurteilung des Einkommens, des Ansässigkeitsstatus und der Ansprüche des Mandanten, um die dem Mandanten zur Verfügung stehenden Abzüge, Freibeträge und Befreiungen zu ermitteln. Die Prüfung ist Teil der einheitlichen Beauftragung nach Klausel 3 und wird nicht gesondert berechnet.',
+      '„Steuererklärung“ bezeichnet die im Namen des Mandanten vorbereitete und beim Australian Taxation Office (ATO) eingereichte australische Einkommensteuererklärung.',
+      '„Rückzahlung“ bezeichnet jede vom ATO ausgestellte und auf das vom Mandanten angegebene Konto überwiesene Erstattung, Zahlung oder Gutschrift.',
     ],
   },
   {
@@ -65,8 +65,8 @@ const sections: Section[] = [
     title: '6. Gebühren und Kosten',
     body: 'Unser Service hat eine einzige Gebühr, die von der Art deiner Einkünfte abhängt. Die anfallende Gebühr wird dir offengelegt und von dir akzeptiert, bevor die Arbeit beginnt, und ist im Voraus zahlbar.',
     items: [
-      'Steuererklärung, nur TFN-Einkünfte (AUD 220 $, inkl. GST): die vollständige Beauftragung, die die Prüfung deiner Situation sowie die Vorbereitung und Einreichung deiner Steuererklärung umfasst.',
-      'Steuererklärung, TFN- und ABN-Einkünfte (AUD 385 $, inkl. GST): wie oben, wenn du zusätzlich Einkünfte unter einer Australian Business Number erhalten hast, was die Abstimmung deiner Betriebseinnahmen und Betriebsausgaben und die Berücksichtigung deiner GST-Position erfordert.',
+      'Steuererklärung, nur TFN-Einkünfte (220 AUD, inkl. GST): die vollständige Beauftragung, die die Prüfung deiner Situation sowie die Vorbereitung und Einreichung deiner Steuererklärung umfasst.',
+      'Steuererklärung, TFN- und ABN-Einkünfte (385 AUD, inkl. GST): wie oben, wenn du zusätzlich Einkünfte unter einer Australian Business Number erhalten hast, was die Abstimmung deiner Betriebseinnahmen und Betriebsausgaben und die Berücksichtigung deiner GST-Position erfordert.',
       'Die Gebühr wird für die Prüfung und die erbrachte fachliche Arbeit berechnet. Sie ist ein fester Betrag und wird nie als Prozentsatz deiner Rückzahlung berechnet. Ob eine Rückzahlung ausgezahlt wird, wie hoch sie ausfällt oder ob du Steuern nachzahlen musst, entscheidet allein das ATO.',
       'Rückzahlungsgarantie: Zahlt dir das ATO eine Rückzahlung aus, die geringer ist als die von dir gezahlte Gebühr, erstattet dir der Anbieter die Differenz zwischen Gebühr und Rückzahlung, sobald das ATO deinen Steuerbescheid (Notice of Assessment) erlassen hat. Die Garantie gilt für die Steuererklärung, für die die Gebühr gezahlt wurde, und für die vom ATO festgesetzte Rückzahlung vor einer Verrechnung nach Klausel 22. Sie gilt nicht für die Prüfung einer Steuererklärung, die du bereits selbst oder über jemand anderen eingereicht hast: Diese Gebühr wird für die Prüfung selbst berechnet und ist unabhängig vom Ergebnis zu zahlen.',
       'Wird keine Rückzahlung ausgezahlt, auch wenn das ATO feststellt, dass du Steuern nachzahlen musst, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet, vorbehaltlich deiner Rechte nach dem Australian Consumer Law. Nach Beginn der Prüfung wird die Gebühr ebenfalls nicht erstattet, außer im Rahmen der obigen Garantie.',
@@ -108,7 +108,7 @@ const sections: Section[] = [
   },
   {
     title: '11. Gewährleistungsausschluss',
-    body: 'Der Anbieter erbringt den Service mit der gebotenen Sorgfalt und Fachkunde, wie es das Australian Consumer Law verlangt. Der Anbieter garantiert jedoch weder eine Steuerrückzahlung, deren Höhe noch ein bestimmtes finanzielles Ergebnis, da diese ausschließlich vom ATO bestimmt werden. Unsere Verantwortung beschränkt sich auf die Vorbereitung und Einreichung deiner Steuererklärung auf Basis der von dir bereitgestellten Informationen. Der Anbieter kann Teile des Service aussetzen, ändern oder einstellen; betrifft dies eine bereits bezahlte Leistung, wird dir die entsprechende Gebühr erstattet.',
+    body: 'Der Anbieter erbringt den Service mit der gebotenen Sorgfalt und Fachkunde, wie es das Australian Consumer Law verlangt. Der Anbieter garantiert jedoch weder eine Steuerrückzahlung noch deren Höhe noch ein bestimmtes finanzielles Ergebnis, da diese ausschließlich vom ATO bestimmt werden. Unsere Verantwortung beschränkt sich auf die Vorbereitung und Einreichung deiner Steuererklärung auf Basis der von dir bereitgestellten Informationen. Der Anbieter kann Teile des Service aussetzen, ändern oder einstellen; betrifft dies eine bereits bezahlte Leistung, wird dir die entsprechende Gebühr erstattet.',
   },
   {
     title: '12. Datenschutz',
@@ -116,7 +116,7 @@ const sections: Section[] = [
   },
   {
     title: '13. Einreichungsvollmacht',
-    body: 'Durch Bereitstellung einer unterzeichneten oder bestätigten Steuererklärung (digital oder manuell) ermächtigst du den Anbieter, deine Steuererklärung im Namen beim Australian Taxation Office (ATO) einzureichen. Nach Erhalt der Vollmacht ist keine weitere Bestätigung erforderlich.',
+    body: 'Durch Bereitstellung einer unterzeichneten oder bestätigten Steuererklärung (digital oder manuell) ermächtigst du den Anbieter, deine Steuererklärung in deinem Namen beim Australian Taxation Office (ATO) einzureichen. Nach Erhalt der Vollmacht ist keine weitere Bestätigung erforderlich.',
   },
   {
     title: '14. Bindende Kommunikation',
@@ -147,7 +147,7 @@ const sections: Section[] = [
   },
   {
     title: '18. Richtigkeit der Informationen und gesetzliche Erklärung',
-    body: 'Du erklärst, dass alle dem Anbieter bereitgestellten Informationen - einschließlich persönlicher Daten, Einkommen, Beschäftigungsinformationen, Bankverbindung, Reisepassdaten und Tax File Number (TFN) - wahrheitsgemäß, vollständig und korrekt sind. Du erkennst an, dass:',
+    body: 'Du erklärst, dass alle dem Anbieter bereitgestellten Informationen (einschließlich persönlicher Daten, Einkommen, Beschäftigungsinformationen, Bankverbindung, Reisepassdaten und Tax File Number (TFN)) wahrheitsgemäß, vollständig und korrekt sind. Du erkennst an, dass:',
     items: [
       'Die Bereitstellung falscher oder irreführender Informationen an den Anbieter oder das ATO eine Straftat nach australischem Recht darstellen kann, einschließlich des Taxation Administration Act 1953 (Cth), und zu Strafen, strafrechtlicher Verfolgung oder Rückzahlungspflichten führen kann.',
       'Du den Anbieter umgehend über Änderungen oder Korrekturen der bereitgestellten Informationen informierst.',
@@ -169,13 +169,13 @@ const sections: Section[] = [
   },
   {
     title: '21. Dienstleister-Informationen',
-    body: `Alle über workingholidaytax.com.au bereitgestellten Dienstleistungen werden von Working Holiday Tax erbracht, das unter der Aufsicht eines registrierten Steueragenten tätig ist: ${AGENT_NAME}, ABN: ${AGENT_ABN}, Tax Agent Number: ${AGENT_TPB}.`,
+    body: `Alle über workingholidaytax.com.au bereitgestellten Dienstleistungen werden von Working Holiday Tax erbracht, das unter der Aufsicht eines registrierten australischen Tax Agent tätig ist: ${AGENT_NAME}, ABN: ${AGENT_ABN}, Tax Agent Number: ${AGENT_TPB}.`,
   },
   {
     title: '22. Rückzahlungen, ATO-Schulden und Verrechnung',
     body: 'Deine Rückzahlung wird vom ATO geleistet, nicht vom Anbieter. Bitte beachte:',
     items: [
-      'Das ATO kann deine Rückzahlung kürzen oder einbehalten, um bestehende Schulden zu verrechnen - etwa Steuerschulden, HELP-Studienschulden, Unterhaltsverpflichtungen oder Schulden bei einer anderen Behörde.',
+      'Das ATO kann deine Rückzahlung kürzen oder einbehalten, um bestehende Schulden zu verrechnen, etwa Steuerschulden, HELP-Studienschulden, Unterhaltsverpflichtungen oder Schulden bei einer anderen Behörde.',
       'Eine solche Verrechnung ändert nichts an der nach Klausel 6 fälligen Gebühr, da der verrechnete Betrag auf eine von dir geschuldete Verbindlichkeit angerechnet und nicht verloren wurde. Die Gebühr wird für die erbrachte fachliche Arbeit berechnet und nicht für die Höhe der letztlich erhaltenen Rückzahlung.',
       'Die Rückzahlung geht direkt auf das von dir angegebene Bankkonto. Der Anbieter erhält, verwahrt oder verrechnet keine Gebühren aus deiner Rückzahlung.',
       'Du bist für die Richtigkeit der angegebenen Bankdaten verantwortlich. Der Anbieter haftet nicht für eine Rückzahlung auf ein falsches Konto, wenn die Daten von dir stammen.',
@@ -227,13 +227,13 @@ export default function GermanClientAgreementPage() {
 
             <div className="rounded-xl px-5 py-4 mb-8" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
               <p className="text-[13px] font-light text-body leading-[1.75]">
-                Working Holiday Tax ist unter der Aufsicht eines registrierten Steueragenten tätig:{' '}
+                Working Holiday Tax ist unter der Aufsicht eines registrierten australischen Tax Agent tätig:{' '}
                 <strong className="font-semibold text-ink">{AGENT_NAME} (ABN: {AGENT_ABN}), Tax Agent Number {AGENT_TPB}</strong>.
               </p>
             </div>
 
             <p className="text-[13px] font-light text-body leading-[1.75] mb-8">
-              Diese Vereinbarung wird zwischen dir (dem &ldquo;Mandanten&rdquo;) und Working Holiday Tax (dem &ldquo;Anbieter&rdquo;) geschlossen und regelt deine Nutzung unserer australischen Steuerdienstleistungen, einschließlich Vorbereitung und Einreichung der Steuererklärung sowie zugehörige Unterstützung.
+              Diese Vereinbarung wird zwischen dir (dem &bdquo;Mandanten&ldquo;) und Working Holiday Tax (dem &bdquo;Anbieter&ldquo;) geschlossen und regelt deine Nutzung unserer australischen Steuerdienstleistungen, einschließlich Vorbereitung und Einreichung der Steuererklärung sowie zugehörige Unterstützung.
             </p>
 
             {sections.map((s, i) => (

@@ -10,19 +10,19 @@ import type { HomeCopy } from './home-en'
 export const homeVi: HomeCopy = {
   meta: {
     title: 'Khai thuế, hoàn thuế cho du học sinh Úc',
-    description: 'Khai thuế cho người có visa 500 và 485. $220 mỗi hồ sơ, $385 nếu có việc ABN, đã gồm GST. Được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.',
+    description: 'Khai thuế cho visa 500 và 485. $220 mỗi hồ sơ, $385 nếu có việc ABN, đã gồm GST. Được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.',
   },
   hero: {
     titleBefore: 'Khai thuế cho ',
     titleMark: 'du học sinh',
-    lead: 'Dành cho người có visa 500 và 485. Mọi việc đều làm qua WhatsApp và một mẫu đơn trực tuyến ngắn. Được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.',
+    lead: 'Dành cho người có visa 500 và 485. Được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.',
     price: { amount: '$220', unit: 'mỗi hồ sơ', sub: '$385 nếu có việc ABN. Đã gồm GST.' },
     cta: 'Bắt đầu khai thuế qua WhatsApp',
   },
   priceCheck: { title: 'Giá nào phù hợp với tôi?' },
   guarantee: {
     title: 'Nếu tiền hoàn thuế thấp hơn phí của chúng tôi, chúng tôi trả lại bạn phần chênh lệch',
-    docketLabel: 'Ví dụ: phí $220, hoàn thuế $150, chúng tôi trả lại bạn $70',
+    docketLabel: 'Ví dụ minh họa: phí $220, nếu hoàn thuế là $150 thì chúng tôi trả lại bạn $70',
     docket: [
       { label: 'Phí của chúng tôi', value: '$220' },
       { label: 'Tiền hoàn thuế', value: '$150' },
@@ -39,11 +39,10 @@ export const homeVi: HomeCopy = {
       { from: 'them', text: 'Bạn nhắn tin cho chúng tôi qua WhatsApp và chúng tôi xác nhận giá.' },
       { from: 'us', text: 'Bạn chuyển khoản cho The Accounting Academy và gửi ảnh chụp màn hình cho chúng tôi.' },
       { from: 'them', text: 'Bạn điền một mẫu đơn trực tuyến ngắn.' },
-      { from: 'us', text: 'Chúng tôi xem hết hồ sơ trong khoảng 24 giờ, rồi gửi bạn bản ước tính.' },
+      { from: 'us', text: 'Chúng tôi xem mẫu đơn của bạn trong khoảng 24 giờ, rồi gửi bạn bản ước tính.' },
       { from: 'them', text: 'Bạn ký trực tuyến.' },
       { from: 'us', text: 'Hồ sơ thuế của bạn được nộp cho ATO.' },
     ],
-    note: 'Chỉ là ví dụ, không phải cuộc trò chuyện thật.',
   },
   payslip: {
     title: 'Đọc phiếu lương từng dòng',

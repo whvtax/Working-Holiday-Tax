@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: 'Client Agreement',
   description: 'The terms of the Student Visa Tax service.',
   alternates: { canonical: '/client-agreement' },
+  // Same text as the other brand's legal page, so kept out of search (Jo, 27 Oct).
+  robots: { index: false, follow: true },
 }
 
 export default function SvtClientAgreement() {

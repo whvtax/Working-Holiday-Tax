@@ -67,14 +67,14 @@ const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
-  "guaranteeBody": "Baustellenerklärungen, Ticketverlängerungen und der Streit um den Ute sind hier Wochengeschäft, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
+  "guaranteeBody": "Baustellenerklärungen, Ticketverlängerungen und der Streit um den Ute sind hier Wochengeschäft, und jeder Kunde hat ein 417- oder 462-Visum. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
+  "disclaimer": "Das sind allgemeine Informationen und keine individuelle Beratung zu deiner Steuersituation. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -161,7 +161,7 @@ const SECTIONS: Section[] = [
       "Es ist wirklich sperrig, das heißt Größe oder Gewicht sind der eigentliche Grund für das Fahrzeug, nicht bloße Bequemlichkeit.",
       "Es gibt auf der Baustelle keinen sicheren Ort dafür, es muss also mit nach Hause."
     ],
-    "note": "Gibt es auf der Baustelle einen abschließbaren Container, Schuppen oder Käfig, oder passt dein Werkzeug in eine normale Tasche, bleibt die Fahrt ein normaler Arbeitsweg. Und falls du die Ausnahme erfüllst: Utes und Kastenwagen mit einer Nutzlast ab einer Tonne dürfen die Kilometerpauschale gar nicht nutzen, also bleibt für die meisten nur das Fahrtenbuch."
+    "note": "Gibt es auf der Baustelle einen abschließbaren Container, Schuppen oder Käfig, oder passt dein Werkzeug in eine normale Tasche, bleibt die Fahrt ein normaler Arbeitsweg. Und falls du die Ausnahme erfüllst: Für Utes und Kastenwagen mit einer Nutzlast ab einer Tonne gilt die Kilometerpauschale gar nicht, also bleibt für die meisten nur das Fahrtenbuch."
   },
   {
     "kind": "traps",
@@ -174,7 +174,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Deine erste White Card",
-        "d": "Die Karte, die du bezahlt hast, bevor dich jemand einstellen wollte, sind die Kosten dafür, für den Beruf überhaupt in Frage zu kommen, und die behandelt das ATO wie den ersten Führerschein. Die Verlängerung, während du arbeitest, ist absetzbar."
+        "d": "Die Karte hast du bezahlt, bevor dich jemand einstellen wollte. Das sind Kosten dafür, für den Beruf überhaupt in Frage zu kommen, und das ATO behandelt sie wie den ersten Führerschein. Die Verlängerung, während du arbeitest, ist absetzbar."
       },
       {
         "t": "Den Ute pauschal",
@@ -217,7 +217,7 @@ const SECTIONS: Section[] = [
     "h2": "Welche Teile hängen an deinen eigenen Fakten?",
     "paras": [
       "Zuerst die Ausnahme für sperriges Werkzeug. Was du transportierst, was die Baustelle an Stauraum bietet und ob das Werkzeug an diesem Tag nötig war, gibt den Ausschlag. Zwei Helfer derselben Crew können unterschiedlich dastehen.",
-      "Der steuerliche Wohnsitz ist mehr wert als alles Werkzeug auf der Liste. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
+      "Der steuerliche Wohnsitz kann mehr ins Gewicht fallen als alles Werkzeug auf der Liste. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
     ]
   }
 ]

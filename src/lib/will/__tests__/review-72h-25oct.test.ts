@@ -40,7 +40,7 @@ it('the second check lets the good answers through', () => {
 
 it('no sales nudge once the team has sent an invoice or estimate (Rachel)', () => {
   const s = src('scheduler.ts');
-  expect(s).toContain("const TEAM_PAST_SALES = /in\\.xero\\.com|");
+  expect(s).toContain("const TEAM_PAST_SALES = new RegExp(`in\\\\.xero\\\\.com|");
   expect(s).toContain("m.author === 'HUMAN' && m.status === 'SENT' && TEAM_PAST_SALES.test(m.body ?? '')");
 });
 

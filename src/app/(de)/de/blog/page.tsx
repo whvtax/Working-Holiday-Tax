@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Steuerrückerstattung Australien Blog: WHV Steuer-Guides',
-    description: 'Praktische Artikel über Steuerrückerstattung in Australien für Working Holiday Maker. So holst du dir deine Steuern zurück.',
+    description: 'Praktische Artikel über Steuerrückerstattung in Australien für Working Holiday Maker. So gehst du deine Steuererklärung in Australien an.',
     url: `${SITE_URL}/de/blog`,
     siteName: 'Working Holiday Tax',
     locale: 'de_DE',

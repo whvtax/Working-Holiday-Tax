@@ -35,7 +35,7 @@ export async function BlogArticle({ locale, params }: { locale: SvtLocale; param
   const a = articleFor(locale, slug)
   // GuidePage writes the page markup (Article, breadcrumbs, questions).
   if (a) {
-    // After 2 November the deadline article opens by saying the date has passed.
+    // After 31 October the deadline article opens by saying the date has passed.
     const g = a.slug === 'tax-return-deadline-31-october' && deadlinePassed()
       ? { ...a, sections: [{ ...a.sections[0], blocks: [{ note: DEADLINE_PASSED_NOTE[locale] }, ...a.sections[0].blocks] }, ...a.sections.slice(1)] }
       : a
@@ -43,5 +43,11 @@ export async function BlogArticle({ locale, params }: { locale: SvtLocale; param
   }
   const l = longArticleFor(locale, slug)
   if (!l) notFound()
-  return <GuidePage g={longToGuide(l)} locale={locale} section={section} basePath={`/blog/${l.slug}`} article locales={longLocales(l.slug)} />
+  // The final-week checklist is written for the days before 31 October: after
+  // the deadline it opens with the same note as the deadline article (audit A06-2).
+  const lg = longToGuide(l)
+  const g = l.slug === 'tax-deadline-final-week-checklist-students' && deadlinePassed()
+    ? { ...lg, sections: [{ ...lg.sections[0], blocks: [{ note: DEADLINE_PASSED_NOTE[locale] }, ...lg.sections[0].blocks] }, ...lg.sections.slice(1)] }
+    : lg
+  return <GuidePage g={g} locale={locale} section={section} basePath={`/blog/${l.slug}`} article locales={longLocales(l.slug)} />
 }

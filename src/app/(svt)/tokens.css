@@ -40,7 +40,7 @@
   --svt-max: 1120px;
   --svt-measure: 640px;
 
-  --svt-radius-button: 8px;
+  --svt-radius-button: 999px; /* pill, softer than square (Jo, 27 Oct) */
   /* Cards and boxes (Jo, 27 Oct: a little rounding for flow). The docket
    * (receipt) keeps its square cut on purpose. */
   --svt-radius-card: 10px;

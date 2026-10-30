@@ -50,13 +50,13 @@ const EN: Phrases = {
 }
 
 const DE: Phrases = {
-  general:     'Hallo, ich habe euch über eure Website gefunden und habe eine Frage zu meiner australischen Steuer.',
+  general:     'Hallo, ich bin über eure Website auf euch gestoßen und habe eine Frage zu meiner australischen Steuer.',
   'tax-return':'Hallo, ich habe eine Frage zu meiner australischen Steuererklärung.',
   tfn:         'Hallo, ich habe eine Frage zur TFN.',
   abn:         'Hallo, ich habe eine Frage zu meiner ABN und wie sie sich auf meine Steuer auswirkt.',
-  super:       'Hallo, ich habe eine Frage dazu, wie ich meine Superannuation zurückbekomme.',
+  super:       'Hallo, ich habe eine Frage zur Auszahlung meiner Superannuation.',
   medicare:    'Hallo, ich habe eine Frage zur Befreiung von der Medicare Levy.',
-  residency:   'Hallo, ich habe eine Frage zu meinem steuerlichen Wohnsitz.',
+  residency:   'Hallo, ich habe eine Frage zu meiner Steuerresidenz.',
   calculator:  'Hallo, ich habe euren Rechner benutzt und würde gerne meine Situation prüfen lassen.',
   expenses:    'Hallo, ich habe eine Frage dazu, was ich für meine Arbeit absetzen kann.',
   guide:       'Hallo, ich habe einen eurer Ratgeber gelesen und habe eine Frage zu meiner eigenen Situation.',
@@ -70,7 +70,7 @@ const JA: Phrases = {
   'tax-return':'こんにちは。タックスリターンについて相談したいです。',
   tfn:         'こんにちは。TFNの取得について相談したいです。',
   abn:         'こんにちは。ABNと税金への影響について相談したいです。',
-  super:       'こんにちは。スーパーアニュエーションの受け取りについて相談したいです。',
+  super:       'こんにちは。スーパーアニュエーションについて相談したいです。',
   medicare:    'こんにちは。メディケア税の免除について相談したいです。',
   residency:   'こんにちは。税務上の居住区分について相談したいです。',
   calculator:  'こんにちは。サイトの計算ツールを使いました。自分の状況を確認したいです。',
@@ -93,7 +93,7 @@ const TIER: Record<WaLang, Record<WaTier, string>> = {
     'unsure':  ' I am not sure which of the two applies to me.',
   },
   de: {
-    'tfn':     ' Ich habe als Angestellter mit einer TFN gearbeitet.',
+    'tfn':     ' Ich war bei Arbeitgebern angestellt und habe mit einer TFN gearbeitet.',
     'tfn-abn': ' Ich habe mit einer TFN gearbeitet und zusätzlich über eine ABN abgerechnet.',
     'unsure':  ' Ich bin nicht sicher, was auf mich zutrifft.',
   },

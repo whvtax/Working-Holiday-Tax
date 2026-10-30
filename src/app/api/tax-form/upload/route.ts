@@ -81,6 +81,10 @@ export function validateMagicBytes(buf: ArrayBuffer, contentType: string): boole
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req)
+  // Second lock behind the host rewrite (audit A09-1).
+  if (brandFromHost(req.headers.get('host')) === 'svt' && process.env.SVT_FORMS_ENABLED !== 'true') {
+    return NextResponse.json({ ok: false, error: 'not_found' }, { status: 404 })
+  }
   // ── The ceiling that used to break the invoice upload ────────────────────
   //
   // The comment here said 100 and the code said 40. One person filling the form

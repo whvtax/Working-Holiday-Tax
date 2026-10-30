@@ -81,7 +81,7 @@ Khoản khấu trừ làm giảm thu nhập chịu thuế của bạn. Nó khôn
 
 ## Một thay đổi từ năm 2026-27
 
-Từ năm 2026-27 (hồ sơ thuế bạn nộp từ tháng 7 năm 2027), ATO sẽ áp dụng khoản khấu trừ chuẩn tối đa $1,000 cho người cư trú về thuế có thu nhập từ lao động như tiền lương. Bạn không cần hóa đơn cho khoản này. Nếu bạn kê khai chi phí công việc thực tế, khoản khấu trừ chuẩn bị giảm đúng bằng số đó, nên có thể giảm về 0. Khoản này không áp dụng cho hồ sơ năm 2025-26, và cũng không áp dụng cho người không cư trú về thuế.
+Từ năm 2026-27 (hồ sơ thuế bạn nộp từ tháng 7 năm 2027), ATO sẽ áp dụng khoản khấu trừ tiêu chuẩn (standard deduction) tối đa $1,000 cho người cư trú về thuế có thu nhập từ lao động như tiền lương. Bạn không cần hóa đơn cho khoản này. Nếu bạn kê khai chi phí công việc thực tế, khoản khấu trừ tiêu chuẩn sẽ bị giảm đúng bằng số đó, nên có thể giảm về 0. Khoản này không áp dụng cho hồ sơ năm 2025-26, và cũng không áp dụng cho người không cư trú về thuế.
 
 ## Bước tiếp theo
 
@@ -162,7 +162,7 @@ Arjun không được cộng thêm chiếc quần đen ($60), RSA đầu tiên t
 
 Với năm 2025-26, nếu tổng các khoản khấu trừ công việc trên $300, bạn cần chứng từ bằng văn bản cho tất cả. Riêng tiền giặt, bạn cần chứng từ bằng văn bản như một cuốn sổ ghi khi tiền giặt khai trên $150 và tổng các khoản khấu trừ công việc trên $300.
 
-Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương sẽ được hưởng khoản khấu trừ chuẩn tối đa $1,000 thay cho các mức $300 và $150. Nếu bạn kê khai chi phí công việc thực tế, khoản khấu trừ chuẩn bị giảm đúng bằng số đó.
+Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương sẽ được hưởng khoản khấu trừ tiêu chuẩn tối đa $1,000 thay cho các mức $300 và $150. Nếu bạn kê khai chi phí công việc thực tế, khoản khấu trừ tiêu chuẩn sẽ bị giảm đúng bằng số đó.
 
 ## Hai quán, một hồ sơ
 
@@ -242,9 +242,9 @@ Là người không cư trú về thuế, Linh đóng thuế 30% ngay từ đồ
 
 Chỉ có sao kê ngân hàng thường là chưa đủ. ATO muốn có hóa đơn từ bên bán, hoặc chứng từ khác cho thấy bạn đã mua gì.
 
-## Khoản khấu trừ chuẩn $1,000 có dành cho người giao hàng không?
+## Khoản khấu trừ tiêu chuẩn $1,000 có dành cho người giao hàng không?
 
-Từ năm 2026-27, ATO sẽ áp dụng khoản khấu trừ chuẩn tối đa $1,000 cho người cư trú về thuế có thu nhập từ lao động như tiền lương. Khoản này không áp dụng nếu thu nhập duy nhất của bạn là thu nhập kinh doanh, như thu nhập giao hàng bằng ABN. Người giao hàng bằng ABN vẫn tiếp tục khấu trừ chi phí thực tế kèm chứng từ.
+Từ năm 2026-27, ATO sẽ áp dụng khoản khấu trừ tiêu chuẩn tối đa $1,000 cho người cư trú về thuế có thu nhập từ lao động như tiền lương. Khoản này không áp dụng nếu thu nhập duy nhất của bạn là thu nhập kinh doanh, như thu nhập giao hàng bằng ABN. Người giao hàng bằng ABN vẫn tiếp tục khấu trừ chi phí thực tế kèm chứng từ.
 
 ## Danh sách kiểm tra trước khi nộp
 
@@ -323,7 +323,7 @@ Nếu thu nhập chịu thuế của Sofia nằm trong khung từ $18,201 đến
 
 Với năm 2025-26, nếu tổng các khoản khấu trừ công việc trên $300, bạn cần chứng từ bằng văn bản cho toàn bộ số tiền. Chỉ có sao kê ngân hàng thường là chưa đủ, vì nó không cho thấy bạn đã mua gì.
 
-Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương sẽ được hưởng khoản khấu trừ chuẩn tối đa $1,000 mà không cần hóa đơn. Nếu bạn kê khai chi phí công việc thực tế, khoản khấu trừ chuẩn bị giảm đúng bằng số đó.
+Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương sẽ được hưởng khoản khấu trừ tiêu chuẩn tối đa $1,000 mà không cần hóa đơn. Nếu bạn kê khai chi phí công việc thực tế, khoản khấu trừ tiêu chuẩn sẽ bị giảm đúng bằng số đó.
 
 ## Những câu du học sinh làm bán lẻ hay hỏi
 
@@ -411,7 +411,7 @@ Với năm 2025-26, khi tổng các khoản khấu trừ công việc (không t�
 
 ## Thay đổi từ năm 2026-27
 
-Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ chuẩn tối đa $1,000. Nếu bạn kê khai chi phí thực tế, kể cả chi phí lái ô tô giữa các chỗ làm, khoản khấu trừ chuẩn bị giảm đúng bằng số đó. Người làm dọn dẹp có khoản đi lại lớn thường sẽ kê khai chi phí thực tế kèm đầy đủ chứng từ. Khoản khấu trừ chuẩn không áp dụng khi bạn chỉ có thu nhập kinh doanh bằng ABN.
+Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ tiêu chuẩn tối đa $1,000. Nếu bạn kê khai chi phí thực tế, kể cả chi phí lái ô tô giữa các chỗ làm, khoản khấu trừ tiêu chuẩn sẽ bị giảm đúng bằng số đó. Người làm dọn dẹp có khoản đi lại lớn thường sẽ kê khai chi phí thực tế kèm đầy đủ chứng từ. Khoản khấu trừ tiêu chuẩn không áp dụng khi bạn chỉ có thu nhập kinh doanh bằng ABN.
 
 ## Danh sách kiểm tra trước khi nộp
 
@@ -500,7 +500,7 @@ Hãy xem phiếu lương trước khi khai. Nếu chủ lao động hoàn lại 
 
 Cách tính theo cent mỗi km chỉ dành cho ô tô, không dùng cho xe máy.
 
-Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ chuẩn tối đa $1,000. Kê khai chi phí thực tế, kể cả chi phí lái ô tô, sẽ làm khoản này giảm đúng bằng số đó. Nếu khoản đi lại của bạn lớn, bạn thường sẽ kê khai chi phí thực tế kèm đầy đủ chứng từ.
+Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ tiêu chuẩn tối đa $1,000. Kê khai chi phí thực tế, kể cả chi phí lái ô tô, sẽ làm khoản này giảm đúng bằng số đó. Nếu khoản đi lại của bạn lớn, bạn thường sẽ kê khai chi phí thực tế kèm đầy đủ chứng từ.
 
 ## Danh sách kiểm tra trước khi nộp
 
@@ -521,7 +521,7 @@ Nếu bạn muốn được giúp với hồ sơ của người làm chăm sóc,
     title: 'Khấu trừ thuế cho du học sinh làm kho hàng và lao động phổ thông',
     description: 'Làm ca ở kho hàng, nhà máy hay qua công ty cung ứng lao động khi có visa du học? Được khấu trừ gì: giày mũi thép, áo phản quang, dụng cụ, gia hạn bằng và đi lại giữa các nơi làm.',
     answer: 'Người làm kho hàng và lao động phổ thông được khấu trừ đồ bảo hộ như giày mũi thép và găng tay, dụng cụ tự mua, phí gia hạn bằng đã có, và chi phí lái ô tô giữa hai nơi làm trong cùng một ngày. Bằng lái xe nâng đầu tiên và đường đi làm hằng ngày thì không được khấu trừ.',
-    body: `Công việc ở kho hàng, nhà máy và qua công ty cung ứng lao động (labour hire) cho nhiều du học sinh những ca dài trong kỳ nghỉ và việc làm đều đặn vào cuối tuần trong học kỳ. Công ty cung ứng thường gửi bạn đến nhiều nơi khác nhau. Khoản khấu trừ đi theo công việc bạn làm, không theo tên của công ty cung ứng.
+    body: `Công việc ở kho hàng, nhà máy và qua công ty cung ứng lao động (labour hire) mang đến cho nhiều du học sinh những ca dài trong kỳ nghỉ và việc làm đều đặn vào cuối tuần trong học kỳ. Công ty cung ứng thường gửi bạn đến nhiều nơi khác nhau. Khoản khấu trừ đi theo công việc bạn làm, không theo tên của công ty cung ứng.
 
 ## Ba điều kiện
 
@@ -588,7 +588,7 @@ Mỗi công ty cung ứng là một chủ lao động riêng và đưa cho bạn
 
 ## Danh sách kiểm tra trước khi nộp
 
-Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ chuẩn tối đa $1,000 mà không cần hóa đơn. Kê khai chi phí công việc thực tế sẽ làm khoản này giảm đúng bằng số đó. Người không cư trú về thuế không được dùng khoản này. Với hồ sơ năm 2025-26, hãy kiểm tra những điểm sau:
+Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ tiêu chuẩn tối đa $1,000 mà không cần hóa đơn. Kê khai chi phí công việc thực tế sẽ làm khoản này giảm đúng bằng số đó. Người không cư trú về thuế không được dùng khoản này. Với hồ sơ năm 2025-26, hãy kiểm tra những điểm sau:
 
 - Liệt kê mọi công ty cung ứng và kiểm tra từng bảng kê thu nhập đã "Tax ready".
 - Tìm hóa đơn giày, găng tay và dụng cụ bạn đã trả tiền.
@@ -672,7 +672,7 @@ Nếu thu nhập chịu thuế của Kenji nằm trong khung từ $18,201 đến
 
 Với năm 2025-26, nếu tổng các khoản khấu trừ công việc, không tính chi phí ô tô, trên $300, bạn cần chứng từ bằng văn bản cho tất cả. Chỉ có sao kê ngân hàng thường là chưa đủ, vì nó không cho thấy bạn đã mua gì.
 
-Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ chuẩn tối đa $1,000 mà không cần hóa đơn. Kê khai chi phí thực tế sẽ làm khoản này giảm đúng bằng số đó. Với du học sinh chỉ có vài trăm đô la tiền PPE, khoản khấu trừ chuẩn có thể đơn giản hơn. Với du học sinh mua nhiều dụng cụ lớn, chi phí thực tế kèm chứng từ có thể cao hơn.
+Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ tiêu chuẩn tối đa $1,000 mà không cần hóa đơn. Kê khai chi phí thực tế sẽ làm khoản này giảm đúng bằng số đó. Với du học sinh chỉ có vài trăm đô la tiền PPE, khoản khấu trừ tiêu chuẩn có thể đơn giản hơn. Với du học sinh mua nhiều dụng cụ lớn, chi phí thực tế kèm chứng từ có thể cao hơn.
 
 ## Nhà thầu hay nhân viên?
 
@@ -849,7 +849,7 @@ Nếu thu nhập chịu thuế của Hana nằm trong khung từ $18,201 đến 
 
 Với năm 2025-26, nếu tổng các khoản khấu trừ công việc, không tính chi phí ô tô, trên $300, bạn cần chứng từ bằng văn bản cho tất cả. Chỉ có sao kê ngân hàng thường là chưa đủ.
 
-Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ chuẩn tối đa $1,000. Kê khai chi phí công việc thực tế sẽ làm khoản này giảm đúng bằng số đó. Khoản này không áp dụng nếu thu nhập duy nhất của bạn là thu nhập kinh doanh.
+Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ tiêu chuẩn tối đa $1,000. Kê khai chi phí công việc thực tế sẽ làm khoản này giảm đúng bằng số đó. Khoản này không áp dụng nếu thu nhập duy nhất của bạn là thu nhập kinh doanh.
 
 ## Danh sách kiểm tra trước khi nộp
 
@@ -938,9 +938,9 @@ Nếu David đã đăng ký GST và được khấu trừ lại GST cho các chi
 
 ATO cho biết bạn phải nộp hồ sơ thuế nếu có thu nhập từ chở khách qua ứng dụng, dù nhiều hay ít.
 
-## Chạy xe chở khách và khoản khấu trừ chuẩn $1,000
+## Chạy xe chở khách và khoản khấu trừ tiêu chuẩn $1,000
 
-Từ năm 2026-27, người cư trú về thuế có thu nhập từ lao động được hưởng khoản khấu trừ chuẩn tối đa $1,000. Khoản này không áp dụng nếu thu nhập duy nhất của bạn là thu nhập kinh doanh, như thu nhập chạy xe chở khách. Nếu bạn còn có một công việc hưởng lương, hãy hỏi xem hai phần này kết hợp với nhau thế nào.
+Từ năm 2026-27, người cư trú về thuế có thu nhập từ lao động được hưởng khoản khấu trừ tiêu chuẩn tối đa $1,000. Khoản này không áp dụng nếu thu nhập duy nhất của bạn là thu nhập kinh doanh, như thu nhập chạy xe chở khách. Nếu bạn còn có một công việc hưởng lương, hãy hỏi xem hai phần này kết hợp với nhau thế nào.
 
 ## Danh sách kiểm tra trước khi nộp
 
@@ -1015,7 +1015,7 @@ Minh là người không cư trú về thuế và làm nấu ăn ở một nhà 
 - Tiền mài dao: $30
 - Tiền giặt: mỗi tuần một mẻ chỉ có quần áo làm việc trong 45 tuần, $1 mỗi mẻ: $45
 
-Tổng cộng là $400. Anh cũng trả $380 cho một bộ dao; bộ này được khấu trừ dần qua nhiều năm, không phải toàn bộ trong năm nay. Anh không được khấu trừ áo đen đi làm, các bữa ăn nhân viên hay đường lái xe đi làm có mang theo dao.
+Tổng cộng là $400. Anh cũng trả $380 cho một bộ dao. Bộ này được khấu trừ dần qua nhiều năm, không phải toàn bộ trong năm nay. Anh không được khấu trừ áo đen đi làm, các bữa ăn nhân viên hay đường lái xe đi làm có mang theo dao.
 
 Là người không cư trú về thuế, Minh đóng thuế 30% ngay từ đồng đầu tiên (năm 2025-26), nên khoản khấu trừ $400 giúp giảm khoảng $120 tiền thuế thu nhập.
 
@@ -1028,7 +1028,7 @@ Là người không cư trú về thuế, Minh đóng thuế 30% ngay từ đồ
 
 Với năm 2025-26, nếu tổng các khoản khấu trừ công việc trên $300, bạn cần chứng từ bằng văn bản cho toàn bộ số tiền, không chỉ phần vượt quá $300. Riêng tiền giặt, bạn cần chứng từ bằng văn bản khi tiền giặt khai trên $150 và tổng các khoản khấu trừ công việc trên $300. Chỉ có sao kê ngân hàng thường là chưa đủ.
 
-Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ chuẩn tối đa $1,000 mà không cần hóa đơn. Kê khai chi phí công việc thực tế sẽ làm khoản này giảm đúng bằng số đó. Người không cư trú về thuế không được dùng khoản này.
+Từ năm 2026-27, người cư trú về thuế có thu nhập từ lương được hưởng khoản khấu trừ tiêu chuẩn tối đa $1,000 mà không cần hóa đơn. Kê khai chi phí công việc thực tế sẽ làm khoản này giảm đúng bằng số đó. Người không cư trú về thuế không được dùng khoản này.
 
 ## Danh sách kiểm tra trước khi nộp
 

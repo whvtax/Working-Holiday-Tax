@@ -14,6 +14,31 @@ import { ALREADY_LODGED_RE as LODGED_RE_SHARED } from './already-checked';
 
 export type Track = 'TFN' | 'TFN_ABN';
 
+// ============================================================
+// myGov trouble next to a price answer (Jo, 29 Oct, "Tfn only, I'm doing this
+// so late because I didn't know how to conect it to myGov app" got the bare
+// price message and never the reassurance that myGov is not needed). When the
+// customer mentions myGov / ATO access / logging in in the same breath as
+// their track, the approved reassurance goes in front of the price message.
+// Only the reassurance, never a myGov how-to (playbook, MYGOV / ATO ACCESS).
+// ============================================================
+export const MYGOV_TROUBLE_RE = /my\s?gov|\bato\s+(?:account|portal|login|online|app)|digital\s?id|(?:link|connect)\w*\s+(?:it\s+|my\s+|the\s+|your\s+)?(?:to\s+|with\s+)?(?:my\s+|the\s+|your\s+)?(?:ato|account|my\s?gov)|\blog\s?in\b|\blogin\b|\bsign\s?in\b|locked\s+out|マイガブ|ログイン|anmeld|verkn[üu]pf/i;
+
+const MYGOV_REASSURANCE: Record<string, string> = {
+  en: "No need to worry about myGov: you don't have to link anything or log in yourself. We handle everything directly with the ATO, and any refund goes straight into your Australian bank account.",
+  de: 'Um myGov musst du dir keine Sorgen machen: Du musst nichts verknüpfen und dich nirgends selbst anmelden. Wir regeln alles direkt mit dem ATO, und eine eventuelle Rückzahlung geht direkt auf dein australisches Bankkonto.',
+  ja: 'myGovについてはご心配いりません。連携やログインはご自身で行う必要はなく、ATOとのやり取りはすべて私たちが直接行います。還付金がある場合は、オーストラリアの銀行口座に直接入金されます。',
+};
+
+/** The price message with the myGov reassurance in front when the customer's
+ *  latest messages mention a myGov / ATO access problem. Unchanged otherwise. */
+export function withMygovReassurance(msg: string, customerTexts: string[], lang: string | null | undefined): string {
+  if (!customerTexts.some((t) => MYGOV_TROUBLE_RE.test(t ?? ''))) return msg;
+  const line = MYGOV_REASSURANCE[(lang ?? 'en').toLowerCase().slice(0, 2)];
+  if (!line || msg.includes(line)) return msg;
+  return `${line}\n\n${msg}`;
+}
+
 const ABN_RE = /\babn\b|\buber\b|deliver(?:y|oo)|door\s?dash|menulog|contract(?:or|ing)?\b|sole\s?trader|self[- ]?employed|freelanc|invoic|\bboth\b|option\s?2\b|\b2nd\b|second/i;
 // 16 Oct (Jo, Minami +61 478): German and Japanese say it their own way.
 const NO_ABN_ML_RE = /kein(?:e|en)?\s+abn|ohne\s+abn|nur\s+(?:mit\s+)?(?:der\s+)?tfn|nur\s+angestellt|abn\s*(?:は|が)?\s*(?:ありません|ない|なし|持っていません)|tfn\s*(?:のみ|だけ)/i;
@@ -75,6 +100,8 @@ export function detectChoice(text: string, lastWillLine: string | null | undefin
   if (CARRIES_A_NUMBER_RE.test(t)) return null;
   if (YES_RE.test(t)) {
     const w = lastWillLine ?? '';
+    // The review of a lodged return quotes $330 / $440 (Jo, 30 Oct): a yes to that is not a choice of track.
+    if (/for the review itself|確認作業に対して|für die Prüfung selbst/i.test(w)) return null;
     const abn = /\$\s?(?:385|495)\b/.test(w), tfn = /\$\s?(?:220|330)\b/.test(w);
     if (abn && !tfn) return 'TFN_ABN';
     if (tfn && !abn) return 'TFN';
@@ -183,9 +210,9 @@ const REVIEW_ML: Record<PriceLang, (amount: number) => string> = {
   de: (amount) => `Da deine Steuererklärung schon eingereicht wurde, ist das eine Prüfung der bestehenden Erklärung und keine neue. Die Gebühr beträgt $${amount} für die Prüfung selbst und ist unabhängig vom Ergebnis gleich.`,
   ja: (amount) => `喜んでお手伝いいたします。すでに申告済みのため、今回は新規の申告ではなく、提出済みの申告内容の確認・修正となります。料金は確認作業に対して$${amount}で、結果にかかわらず同じです。`,
 };
-export function reviewMessageIn(lang: PriceLang, track: Track, firstName?: string | null): string {
+export function reviewMessageIn(lang: PriceLang, firstName?: string | null, track: Track = 'TFN'): string {
   const L = PRICE_ML[lang];
-  return `${L.hello((firstName ?? '').trim())}\n\n${REVIEW_ML[lang](track === 'TFN_ABN' ? 385 : 220)}\n\n${BANK}\n\n${L.screenshot}`;
+  return `${L.hello((firstName ?? '').trim())}\n\n${REVIEW_ML[lang](track === 'TFN_ABN' ? 440 : 330)}\n\n${BANK}\n\n${L.screenshot}`;
 }
 
 export function hasPriceIn(lang: string | null | undefined): lang is PriceLang {

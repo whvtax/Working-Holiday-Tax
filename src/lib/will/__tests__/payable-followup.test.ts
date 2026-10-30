@@ -7,7 +7,7 @@ describe('the two-week promise to a customer who owes tax', () => {
   const route = readFileSync(join(__dirname, '..', '..', '..', 'app', 'api', 'will', 'actions', 'route.ts'), 'utf8');
   const sched = readFileSync(join(__dirname, '..', 'scheduler.ts'), 'utf8');
   it('Mark Lodged on a PAYABLE customer schedules it 14 days out', () => {
-    expect(route).toMatch(/if \(customer\.outcome === 'PAYABLE'\) \{[\s\S]{0,200}kind: 'PAYABLE_FOLLOWUP'[\s\S]{0,80}14 \* 24 \* 60 \* 60 \* 1000/);
+    expect(route).toMatch(/if \(payable\) \{[\s\S]{0,200}kind: 'PAYABLE_FOLLOWUP'[\s\S]{0,80}14 \* 24 \* 60 \* 60 \* 1000/);
   });
   it('the job raises an URGENT task with a ready opening, and sends nothing itself', () => {
     const i = sched.indexOf("job.kind === 'PAYABLE_FOLLOWUP'");

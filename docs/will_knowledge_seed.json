@@ -4,7 +4,7 @@
       "intent": "eligibility check request",
       "question": "Can you check if I'm eligible for a tax refund / can you help with my Working Holiday tax return?",
       "examples": ["could you do a tax eligibility check for me?", "I'm on a WHV and need help lodging my tax return", "can you do my aus tax return", "looking to complete my tax return"],
-      "answer": "Hey! 😊 Absolutely, we'd be happy to help. To get started, just fill out this quick 2 minute form and I'll review everything and come back to you:\nhttps://workingholidaytax.com.au/tax-form\nOur fee is $220 for a TFN tax return, and it only applies if you're eligible for a refund. If you have any questions along the way, just ask 🙌🏽",
+      "answer": "Hey! 😊 Absolutely, we'd be happy to help. To get started, just fill out this quick 2 minute form and I'll review everything and come back to you:\nhttps://workingholidaytax.com.au/start\nOur fee is $220 for a TFN tax return, and it only applies if you're eligible for a refund. If you have any questions along the way, just ask 🙌🏽",
       "keywords": ["eligibility", "tax", "return", "refund", "whv", "help", "lodge", "check"],
       "tags": ["opening"], "lang": "en"
     },
@@ -164,7 +164,7 @@
       "intent": "referral from friend or social",
       "question": "A friend / Instagram / TikTok referred me.",
       "examples": ["a friend gave me your number", "I saw you on Instagram", "someone recommended you"],
-      "answer": "That's lovely to hear, thank you for reaching out 😊 We'd be glad to help you get your Australian tax sorted properly. Just fill out this quick 2 minute form and I'll review everything and get back to you:\nhttps://workingholidaytax.com.au/tax-form\nOur fee is $220 and only applies if you're eligible for a refund 🙌🏽",
+      "answer": "That's lovely to hear, thank you for reaching out 😊 We'd be glad to help you get your Australian tax sorted properly. Just fill out this quick 2 minute form and I'll review everything and get back to you:\nhttps://workingholidaytax.com.au/start\nOur fee is $220 and only applies if you're eligible for a refund 🙌🏽",
       "keywords": ["friend", "referred", "recommended", "instagram", "tiktok", "social", "gave", "number"],
       "tags": ["opening", "referral"], "lang": "en"
     },

@@ -174,7 +174,7 @@ Trước khi nhận một công việc mới, hãy dùng danh sách ngắn này 
 
 ## TFN và ABN khác nhau thế nào?
 
-TFN là mã số cá nhân của bạn với Sở Thuế Úc (ATO). Nó theo bạn suốt đời. Bạn đưa nó cho chủ lao động, quỹ super và người làm hồ sơ thuế cho bạn. Mọi hồ sơ thuế bạn nộp đều dùng TFN.
+TFN là mã số cá nhân của bạn với ATO. Nó theo bạn suốt đời. Bạn đưa nó cho chủ lao động, quỹ super và người làm hồ sơ thuế cho bạn. Mọi hồ sơ thuế bạn nộp đều dùng TFN.
 
 ABN là mã số của một doanh nghiệp. Bạn ghi nó trên các hóa đơn bạn gửi đi. Cơ quan Đăng ký Doanh nghiệp Úc (ABR) cho biết bạn được cấp ABN nếu bạn đang kinh doanh, hoặc đang bắt đầu kinh doanh (enterprise), tại Úc. Bạn không được cấp ABN cho công việc bạn làm với tư cách nhân viên. Đăng ký ABN qua cơ quan này là miễn phí.
 
@@ -408,7 +408,7 @@ Nếu bạn đang học một khóa từ 6 tháng trở lên, bạn có thể l�
 - **Khoảng 14 tháng 7:** phần lớn chủ lao động hoàn tất dữ liệu lương với ATO.
 - **31 tháng 10:** hạn thông thường để nộp hồ sơ nếu bạn tự nộp.
 
-ATO cho biết nếu bạn khai qua một đại lý thuế đã đăng ký, bạn cần liên hệ họ trước ngày 31 tháng 10, và khi đó bạn có thể có hạn nộp muộn hơn. Với năm 2025-26, ngày 31 tháng 10 năm 2026 rơi vào thứ Bảy, nên ATO cho biết người tự nộp có thời hạn đến 11 giờ 59 tối theo giờ địa phương, thứ Hai ngày 2 tháng 11 năm 2026.
+ATO cho biết nếu bạn khai qua một đại lý thuế đã đăng ký, bạn cần liên hệ họ trước ngày 31 tháng 10, và khi đó bạn có thể có hạn nộp muộn hơn. Với năm 2025-26, ATO cho biết người tự nộp có thời hạn đến 11 giờ 59 tối theo giờ địa phương ngày 31 tháng 10 năm 2026.
 
 ## Khóa học và năm thuế không trùng nhau
 
@@ -634,7 +634,7 @@ Nếu bạn muốn có người chuẩn bị hồ sơ giúp, bạn có thể nh�
   },
 
   'payg-payment-summary-vs-income-statement-students': {
-    title: 'PAYG payment summary hay income statement? Hướng dẫn cho du học sinh',
+    title: 'Payment summary hay income statement cho du học sinh',
     description: 'Có thể chủ lao động sẽ không bao giờ đưa bạn payment summary. Bảng kê thu nhập là gì, tìm ở đâu trong myGov, “Tax ready” nghĩa là gì và cần kiểm tra những gì.',
     answer: 'Với phần lớn chủ lao động, bảng tóm tắt thu nhập PAYG (PAYG payment summary) đã được thay bằng bảng kê thu nhập (income statement), do chủ lao động báo cho ATO qua Single Touch Payroll. Bạn xem nó trong myGov, và nên chờ đến khi nó hiện “Tax ready” rồi mới nộp hồ sơ.',
     body: `Các hướng dẫn cũ, bạn bè, thậm chí một số chủ lao động vẫn nói về “PAYG payment summary” hay “group certificate”. Nếu bạn đang chờ chủ lao động đưa cho mình tờ giấy đó, có thể bạn sẽ chờ mãi. Phần lớn chủ lao động giờ báo tiền lương của bạn thẳng cho ATO. Bài này giải thích thứ gì đã thay thế bảng tóm tắt thu nhập và cách dùng nó cho hồ sơ thuế.
@@ -908,11 +908,11 @@ Thời gian nộp hồ sơ thông thường là từ 1 tháng 7 đến 31 tháng
 
 ## Tiền super: DASP
 
-Nếu bạn có đi làm, chủ lao động đã đóng super cho bạn. Sau khi rời Úc, bạn có thể xin rút khoản này dưới dạng khoản super khi rời Úc (Departing Australia Superannuation Payment, DASP). ATO cho biết bạn có thể xin khi visa tạm trú của bạn đã hết hiệu lực, bạn đã rời Úc, và bạn không còn visa nào khác có hiệu lực.
+Nếu bạn có đi làm, chủ lao động đã đóng super cho bạn. Khoản super khi rời Úc (Departing Australia Superannuation Payment, DASP) là cách ATO cho phép rút khoản này sau khi bạn rời Úc. Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang của ATO trước khi lên kế hoạch. Theo điều kiện của ATO, visa tạm trú của bạn phải đã hết hiệu lực, bạn đã rời Úc, và bạn không còn visa nào khác có hiệu lực.
 
-Điều này quan trọng với du học sinh chuyển từ visa 500 sang visa 485. Bạn không thể xin DASP khi vẫn còn một visa tạm trú có hiệu lực. ATO cho biết bạn có thể bắt đầu điền đơn trước khi rời Úc, nhưng chỉ nộp được khi visa đã hết hiệu lực.
+Điều này quan trọng với du học sinh chuyển từ visa 500 sang visa 485. Bạn không thể xin DASP khi vẫn còn một visa tạm trú có hiệu lực.
 
-Với người chưa từng có visa lao động kết hợp kỳ nghỉ (working holiday), ATO cho biết phần đã chịu thuế (taxed element) của DASP bị tính thuế 35%. Hệ thống DASP trực tuyến của ATO là miễn phí. Nếu bạn không rút, quỹ sẽ chuyển super của bạn cho ATO 6 tháng sau khi bạn rời Úc và visa đã hết hiệu lực, và bạn vẫn có thể xin rút từ ATO.
+Với người chưa từng có visa lao động kết hợp kỳ nghỉ (working holiday), ATO cho biết phần đã chịu thuế (taxed element) của DASP bị tính thuế 35%. ATO không thu phí khi xử lý DASP. Nếu bạn không rút, quỹ sẽ chuyển super của bạn cho ATO 6 tháng sau khi bạn rời Úc và visa đã hết hiệu lực, và tiền vẫn thuộc về bạn.
 
 ## Những năm bạn chưa từng nộp hồ sơ
 
@@ -933,13 +933,13 @@ ATO cho biết nếu bạn nợ từ $200,000 trở xuống, bạn có thể l�
 - Sau ngày 30 tháng 6: chờ “Tax ready” trên mọi bảng kê thu nhập.
 - Không đủ điều kiện hưởng Medicare? Xin Medicare Entitlement Statement.
 - Nộp bằng myTax, qua một đại lý thuế đã đăng ký hoặc bằng giấy trước ngày 31 tháng 10, hoặc liên hệ một đại lý trước ngày đó.
-- Khi mọi visa tạm trú đã hết hiệu lực: xin rút super qua DASP.
+- Khi mọi visa tạm trú đã hết hiệu lực: kiểm tra trên trang ATO xem DASP có sẵn không.
 - Nộp những năm trước mà bạn đã bỏ lỡ.
 
 Nếu bạn đã về nước và muốn được giúp với hồ sơ cuối cùng, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp, dù bạn đang ở đâu.`,
     faq: [
       { q: 'Tiền hoàn thuế có thể chuyển vào tài khoản ngân hàng ở quê nhà không?', a: 'ATO cho biết bạn cần có tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế, nên hãy giữ một tài khoản còn mở cho đến khi hồ sơ cuối cùng được xử lý xong.' },
-      { q: 'Tôi đang có visa 485. Tôi có xin rút super được không?', a: 'Chưa được. ATO cho biết bạn không thể nộp đơn DASP khi vẫn còn một visa tạm trú có hiệu lực. Bạn có thể xin sau khi visa hết hiệu lực và bạn đã rời Úc.' },
+      { q: 'Tôi đang có visa 485. Tôi có xin rút super được không?', a: 'Chưa được. ATO cho biết bạn không thể nộp đơn DASP khi vẫn còn một visa tạm trú có hiệu lực. Điều kiện là visa đã hết hiệu lực và bạn đã rời Úc.' },
       { q: 'Khi rút super, tôi bị tính thuế thế nào?', a: 'Nếu bạn chưa từng có visa lao động kết hợp kỳ nghỉ (working holiday), ATO cho biết phần đã chịu thuế (taxed element) bị tính thuế 35%.' },
     ],
   },

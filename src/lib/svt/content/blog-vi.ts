@@ -68,7 +68,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       ] },
       wait: { title: 'Mất bao lâu', blocks: [
         { p: 'ATO cho biết bạn thường sẽ nhận được TFN trong vòng 28 ngày kể từ khi ATO nhận được đơn đầy đủ của bạn. Trong thời gian đó đừng nộp đơn lại. Nếu sau 28 ngày vẫn chưa nhận được, hãy liên hệ ATO kèm mã số biên nhận.' },
-        { p: 'Bạn có thể đi làm trước khi có TFN: báo với chủ lao động là bạn đã nộp đơn. Nếu sau 28 ngày bạn vẫn chưa đưa TFN cho họ, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.' },
+        { p: 'Bạn có thể đi làm trước khi có TFN, chỉ cần báo với chủ lao động là bạn đã nộp đơn. Nếu sau 28 ngày bạn vẫn chưa đưa TFN cho họ, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.' },
       ] },
       'keep-safe': { title: 'Giữ an toàn cho mã số thuế', blocks: [
         { p: 'Bạn đưa TFN cho chủ lao động, quỹ super và người làm hồ sơ thuế cho bạn. Đừng đăng lên mạng hay gửi cho người mà bạn chưa xác minh.' },
@@ -81,7 +81,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
     label: 'Bao lâu thì nhận tiền hoàn thuế',
     meta: { title: 'Bao lâu thì nhận được tiền hoàn thuế ở Úc?', description: 'ATO xử lý phần lớn hồ sơ nộp trực tuyến trong 12 ngày làm việc. Hồ sơ giấy mất đến 50 ngày làm việc. Vì sao hồ sơ của du học sinh có thể bắt đầu muộn hơn, và cách theo dõi.' },
     h1: { before: 'Bao lâu thì nhận được ', mark: 'tiền hoàn thuế', after: '?' },
-    lead: 'Khi hồ sơ đã được nộp, phần còn lại là việc của ATO. Phần lớn hồ sơ trực tuyến được xử lý nhanh; có vài điều có thể làm hồ sơ của bạn chậm hơn.',
+    lead: 'Khi hồ sơ đã được nộp, phần còn lại là việc của ATO. Phần lớn hồ sơ trực tuyến được xử lý nhanh, nhưng có vài điều có thể làm hồ sơ của bạn chậm hơn.',
     sections: {
       times: { title: 'Thời gian xử lý của ATO', blocks: [
         { list: [
@@ -179,7 +179,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
     },
     faq: [
       { q: 'Tôi vừa đi làm thuê vừa có ABN được không?', a: 'Được. Công việc làm thuê trả lương cho bạn như một nhân viên và có trừ thuế từ lương. ABN chỉ dùng cho phần việc bạn tự làm.' },
-      { q: 'Có ABN thì điều kiện làm việc trong visa của tôi có thay đổi không?', a: 'Điều kiện visa do Bộ Nội vụ (Department of Home Affairs) quy định, không phải hệ thống thuế. Bạn hãy kiểm tra ở đó; ABN không làm thay đổi các điều kiện này.' },
+      { q: 'Có ABN thì điều kiện làm việc trong visa của tôi có thay đổi không?', a: 'Điều kiện visa do Bộ Nội vụ (Department of Home Affairs) quy định, không phải hệ thống thuế. Bạn hãy kiểm tra ở đó, vì ABN không làm thay đổi các điều kiện này.' },
     ],
     sourceLabels: ['Cơ quan Đăng ký Doanh nghiệp Úc: Điều kiện được cấp ABN', 'Cộng đồng ATO: Hướng dẫn đăng ký ABN'],
     short: {"answer": "ABN dùng khi bạn tự làm cho chính mình, như giao hàng cho ứng dụng, không dùng cho công việc làm thuê với tư cách nhân viên. Đăng ký miễn phí, và thu nhập ABN không bị trừ thuế trước.", "mark": "không dùng cho công việc làm thuê"},
@@ -210,7 +210,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       ] },
       why: { title: 'Vì sao điều này quan trọng', blocks: [
         { p: 'Nếu là nhân viên, chủ lao động sẽ trừ thuế từ lương và đóng super cho bạn. Nếu là nhà thầu, bạn tự lo phần thuế của mình. ATO cho biết doanh nghiệp coi nhân viên là nhà thầu có thể bị phạt.' },
-        { note: 'Nói với một nhân viên rằng họ là nhà thầu được gọi là hợp đồng thầu giả (sham contracting), và việc này là phạm pháp. Nếu bạn nghĩ mình đang gặp chuyện này, Thanh tra Công bằng Lao động (Fair Work Ombudsman) có thể giúp bạn.' },
+        { note: 'Bắt một nhân viên mang danh “nhà thầu” để né quyền lợi của nhân viên được gọi là hợp đồng thầu giả (sham contracting), và việc này là phạm pháp. Nếu bạn nghĩ mình đang gặp chuyện này, Thanh tra Công bằng Lao động (Fair Work Ombudsman) có thể giúp bạn.' },
       ] },
     },
     sourceLabels: ['ATO: Những hiểu lầm thường gặp về nhà thầu', 'business.gov.au: Nhân viên hay nhà thầu?'],
@@ -297,7 +297,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       ] },
     },
     faq: [
-      { q: 'Tôi đã rời Úc rồi, làm với bên các bạn có khác gì không?', a: 'Không khác. Dù bạn ở đâu, chúng tôi vẫn làm việc với bạn qua WhatsApp, và hồ sơ của bạn được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.' },
+      { q: 'Tôi đã rời Úc rồi, làm với Student Visa Tax có khác gì không?', a: 'Không khác. Dù bạn ở đâu, chúng tôi vẫn làm việc với bạn qua WhatsApp, và hồ sơ của bạn được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.' },
     ],
     sourceLabels: ['ATO: Nộp hồ sơ thuế khi ở ngoài nước Úc', 'ATO: Hạn nộp hồ sơ khi khai qua đại lý'],
     short: {"answer": "Bạn có thể nộp hồ sơ thuế Úc khi đang ở nước ngoài: tự nộp trực tuyến qua myGov, hoặc nhờ một dịch vụ nộp giúp. Hãy giữ cho tài khoản myGov đăng nhập được và tài khoản ngân hàng ở Úc vẫn mở.", "mark": "khi đang ở nước ngoài"},
@@ -539,18 +539,18 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
   },
   'tax-return-deadline-31-october': {
     label: 'Hạn khai thuế 31 tháng 10',
-    meta: { title: 'Hạn khai thuế 2026 cho du học sinh: ngày 2/11', description: 'Tự khai thuế năm 2025-26? Ngày 31/10 năm nay là thứ Bảy, nên ATO cho bạn đến 11:59 tối thứ Hai 2/11/2026. Nếu khai qua đại lý, ngày 31/10 vẫn là mốc quan trọng.' },
-    h1: { before: 'Hạn khai thuế năm nay là ', mark: 'thứ Hai 2/11' },
-    lead: 'Hồ sơ thuế 2025-26 tính từ 1/7/2025 đến 30/6/2026. Nếu bạn tự khai, hạn chót là thứ Hai 2/11/2026. Dưới đây là ý nghĩa của mốc này với bạn, và chuyện gì xảy ra nếu bạn lỡ hạn.',
+    meta: { title: 'Hạn khai thuế 2026 cho du học sinh: ngày 31/10', description: 'Tự khai thuế năm 2025-26? Hạn chót là 11:59 tối ngày 31/10/2026. Nếu khai qua đại lý, ngày 31/10 vẫn là mốc quan trọng.' },
+    h1: { before: 'Hạn khai thuế năm nay là ', mark: '31/10/2026' },
+    lead: 'Hồ sơ thuế 2025-26 tính từ 1/7/2025 đến 30/6/2026. Nếu bạn tự khai, hạn chót là 31/10/2026. Dưới đây là ý nghĩa của mốc này với bạn, và chuyện gì xảy ra nếu bạn lỡ hạn.',
     sections: {
       when: { title: 'Khi nào là hạn nộp hồ sơ của tôi?', blocks: [
-        { p: 'Hạn thông thường là 31/10. Năm 2026 ngày này là thứ Bảy, nên ATO cho biết người tự khai thuế có đến 11:59 tối theo giờ địa phương, thứ Hai 2/11/2026.' },
+        { p: 'ATO cho biết người tự khai thuế có đến 11:59 tối theo giờ địa phương ngày 31/10/2026.' },
         { p: 'Hạn vẫn như vậy kể cả khi bạn đã học xong và về nước.' },
       ] },
       agent: { title: 'Khai qua đại lý thì hạn có muộn hơn không?', blocks: [
         { p: 'Đại lý thuế đã đăng ký có chương trình nộp hồ sơ, thường cho phép họ nộp cho khách hàng sau ngày 31/10.' },
         { list: [
-          'Muốn dùng hạn muộn hơn này, bạn phải có tên trong danh sách khách hàng của đại lý chậm nhất là ngày 31/10. Ngày này không dời sang thứ Hai.',
+          'Muốn dùng hạn muộn hơn này, bạn phải có tên trong danh sách khách hàng của đại lý chậm nhất là ngày 31/10.',
           'Nếu đến ngày 30/6/2026 vẫn còn năm trước chưa khai, hồ sơ năm nay phải nộp chậm nhất là ngày 31/10, kể cả khi khai qua đại lý.',
         ] },
       ] },
@@ -572,12 +572,12 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       { q: 'Tôi đã rời Úc. Hạn có thay đổi không?', a: 'Không. Hạn nộp như nhau dù bạn ở đâu. Hãy giữ tài khoản ngân hàng ở Úc cho đến khi nhận được tiền hoàn thuế, nếu có.' },
     ],
     sourceLabels: ['ATO: Đếm ngược, ATO nhắc người nộp thuế khai ngay (19/10/2026)', 'ATO: Hạn nộp hồ sơ khi khai qua đại lý', 'ATO: Phạt nộp hồ sơ trễ hạn'],
-    short: {"answer": "Nếu bạn tự khai hồ sơ thuế 2025-26, hạn là 11:59 tối theo giờ địa phương, thứ Hai 2/11/2026, vì 31/10 là thứ Bảy. Muốn dùng hạn muộn hơn của đại lý, bạn phải có tên trong danh sách khách hàng của họ chậm nhất là ngày 31/10.", "mark": "thứ Hai 2/11/2026", "facts": [{"figure": "11:59 tối", "label": "giờ địa phương, thứ Hai 2/11, nếu bạn tự khai"}, {"figure": "$1,820", "label": "mức phạt nộp trễ cao nhất"}]},
+    short: {"answer": "Nếu bạn tự khai hồ sơ thuế 2025-26, hạn là 11:59 tối theo giờ địa phương ngày 31/10/2026. Muốn dùng hạn muộn hơn của đại lý, bạn phải có tên trong danh sách khách hàng của họ chậm nhất là ngày 31/10.", "mark": "31/10/2026", "facts": [{"figure": "11:59 tối", "label": "giờ địa phương, ngày 31/10, nếu bạn tự khai"}, {"figure": "$1,820", "label": "mức phạt nộp trễ cao nhất"}]},
   },
   'late-lodgment': {
     label: 'Nộp hồ sơ trễ hạn',
     meta: { title: 'Nộp hồ sơ thuế trễ hạn có bị phạt không?', description: 'Tiền phạt nộp trễ của ATO được tính thế nào, vì sao thường không bị phạt nếu chỉ trễ một lần, và vì sao nộp sớm nhất có thể vẫn là cách tốt nhất.' },
-    h1: { before: 'Lỡ hạn rồi? ', mark: 'Nộp trễ vẫn hơn' },
+    h1: { before: 'Lỡ hạn rồi? ', mark: 'Nộp trễ vẫn hơn không nộp' },
     lead: 'Học kỳ bận, thi cử, một chuyến về nước: ngày 31 tháng 10 có thể trôi qua lúc nào không hay. Vẫn khắc phục được, và càng sớm càng tốt.',
     sections: {
       penalty: { title: 'Tiền phạt', blocks: [
@@ -643,7 +643,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         "title": "Award quyết định mức tối thiểu thực tế của bạn",
         "blocks": [
           {
-            "p": "Phần lớn công việc thuộc phạm vi một award (bộ quy định về lương và điều kiện làm việc tối thiểu) của ngành hoặc nghề, như nhà hàng - khách sạn, bán lẻ hay dọn dẹp. Award có mức lương tối thiểu riêng, và từ cùng ngày đó phần lớn các mức này tăng 4.75%."
+            "p": "Phần lớn công việc thuộc phạm vi một award (bộ quy định về lương và điều kiện làm việc tối thiểu) của ngành hoặc nghề, như nhà hàng và khách sạn, bán lẻ hay dọn dẹp. Award có mức lương tối thiểu riêng, và từ cùng ngày đó phần lớn các mức này tăng 4.75%."
           },
           {
             "p": "Công cụ tính lương miễn phí (Pay Calculator) của Fair Work giúp bạn biết award nào áp dụng cho mình và mức lương bao nhiêu."

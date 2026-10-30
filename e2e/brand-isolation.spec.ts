@@ -126,7 +126,7 @@ test('SVT home loads in the browser with no console errors', async ({ page }) =>
 
 // The student tax form is never tagged (DEPLOYMENT_CHECKLIST, SVT measurement), in any language.
 test('SVT tax form pages load no analytics', async ({ page }) => {
-  for (const path of ['/tax-form', '/zh/tax-form', '/vi/tax-form/residency']) {
+  for (const path of ['/jhd7hp9xd', '/zh/jhd7hp9xd', '/vi/jhd7hp9xd']) {
     const tags: string[] = []
     await page.route(/googletagmanager\.com|google-analytics\.com/, r => { tags.push(r.request().url()); return r.fulfill({ status: 200, body: '' }) })
     await page.goto(`${SVT}${path}`)
@@ -149,8 +149,8 @@ test.describe('more isolation (HTTP)', () => {
     }
   })
 
-  test('SVT /tax-form is its own page: noindex, no WHT mention', async ({ request }) => {
-    const r = await get(request, `${SVT}/tax-form`)
+  test('SVT form is its own page: noindex, no WHT mention', async ({ request }) => {
+    const r = await get(request, `${SVT}/jhd7hp9xd`)
     expect(r.status).toBe(200)
     expect(r.body).toContain('noindex')
     expect(r.body).not.toMatch(WHT_MARKS)
@@ -176,7 +176,7 @@ test.describe('more isolation (HTTP)', () => {
 
 // WHT behaviour unchanged, in a real browser. Requests to outside origins
 // (analytics, fonts) fail in the sandbox; those are not app errors.
-for (const path of ['/', '/tax-form', '/crm']) {
+for (const path of ['/', '/start', '/crm']) {
   test(`WHT ${path} still loads with no app errors`, async ({ page }) => {
     const errors: string[] = []
     page.on('console', m => { if (m.type() === 'error' && !/ERR_TUNNEL|ERR_NAME_NOT_RESOLVED|ERR_CONNECTION/.test(m.text())) errors.push(m.text()) })
@@ -200,7 +200,7 @@ test.describe('scripts loaded by each brand', () => {
   }
 
   test('WHT pages load no script that names SVT', async ({ request }) => {
-    for (const page of ['/', '/tax-form', '/crm', '/privacy']) {
+    for (const page of ['/', '/start', '/crm', '/privacy']) {
       for (const src of await scriptsOf(request, `${WHT}${page}`)) {
         const js = (await get(request, `${WHT}${src}`)).body
         expect(js, `${page} ${src}`).not.toMatch(SVT_MARKS)
@@ -209,7 +209,7 @@ test.describe('scripts loaded by each brand', () => {
   })
 
   test('SVT pages load no script that names WHT', async ({ request }) => {
-    for (const page of ['/', '/pricing', '/tax-form', '/privacy']) {
+    for (const page of ['/', '/pricing', '/start', '/privacy']) {
       for (const src of await scriptsOf(request, `${SVT}${page}`)) {
         const js = (await get(request, `${SVT}${src}`)).body
         expect(js, `${page} ${src}`).not.toMatch(WHT_MARKS)

@@ -35,7 +35,7 @@ describe('a reply that is an approved script is not mined', () => {
     for (const m of Object.values(FORM_RECEIVED_MSG)) expect(isApprovedScriptReply(m)).toBe(true);
   });
   it('an old Library copy of the payment-received message (form link + thank you)', () => {
-    expect(isApprovedScriptReply('Thank you for your payment! Please fill out our quick form so we can start reviewing your situation: https://workingholidaytax.com.au/tax-form\n\nOnce you\'ve submitted it, we\'ll review everything and get back to you within 24 hours.')).toBe(true);
+    expect(isApprovedScriptReply('Thank you for your payment! Please fill out our quick form so we can start reviewing your situation: https://workingholidaytax.com.au/start\n\nOnce you\'ve submitted it, we\'ll review everything and get back to you within 24 hours.')).toBe(true);
   });
   it('a real answer is not', () => {
     expect(isApprovedScriptReply("I'm sorry to hear you're dealing with unpaid wages. Call TIS National on 131 450 and ask to be connected to the Fair Work Ombudsman.")).toBe(false);

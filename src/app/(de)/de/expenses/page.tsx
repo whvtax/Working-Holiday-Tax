@@ -67,14 +67,14 @@ const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
-  "guaranteeBody": "Working-Holiday-Steuer ist das Einzige, was wir machen. Deine Steuererklärung wird vor der Einreichung beim ATO von einem registrierten Steueragenten geprüft und freigegeben.",
+  "guaranteeBody": "Working-Holiday-Steuer ist das Einzige, was wir machen. Deine Steuererklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
+  "disclaimer": "Das sind allgemeine Informationen und keine individuelle Beratung zu deiner Steuersituation. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -93,7 +93,7 @@ const HERO = {
   "kicker": "Working-Holiday-Visa 417 und 462",
   "h1lead": "Abzüge sind keine Einheitsliste.",
   "h1accent": "Es ist deine Liste.",
-  "lede": "Sieben Berufe, jeder mit eigener Liste, eigenen Nachweisen und eigenen Posten, die abgelehnt werden."
+  "lede": "Sieben Berufe, jeder mit eigener Liste, eigenen Nachweisen und eigenen Posten, die das ATO ablehnt."
 }
 
 /**
@@ -111,7 +111,7 @@ const MYGOV_UI = {
   "lede": "Was in dieses Feld gehört und welcher Nachweis hinter jedem Posten steht, wird geklärt, bevor irgendetwas getippt wird.",
   "colLeft": "Auf myGov",
   "colRight": "Mit uns",
-  "close": "Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches Formular welches ist. Wir regeln das direkt mit dem ATO."
+  "close": "Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches Formular welches ist. Wir regeln das direkt mit dem ATO."
 }
 
 const MYGOV = [
@@ -138,14 +138,14 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was können Working Holiday Maker in Australien steuerlich absetzen?",
     "paras": [
-      "Du kannst absetzen, was du ausgegeben hast, um das Einkommen zu verdienen, das du angibst, solange du selbst bezahlt und nichts erstattet bekommen hast. Am 417- oder 462-Visum liegt es nicht.",
+      "Du kannst absetzen, was du ausgegeben hast, um das Einkommen zu verdienen, das du angibst, solange du selbst bezahlt und nichts erstattet bekommen hast. Das Visum (417 oder 462) macht dabei keinen Unterschied.",
       "Was die Liste verändert, ist der Job. Sonnenschutz ist absetzbar, wenn du in einer offenen Plantage pflückst, und nicht, wenn du hinter der Bar stehst."
     ]
   },
   {
     "kind": "occupations",
     "h2": "Welchen Job hast du tatsächlich gemacht?",
-    "intro": "Sieben Seiten, jede dazu, was dieser Beruf absetzt und was er fälschlich absetzt.",
+    "intro": "Sieben Seiten, jeweils mit dem, was in diesem Beruf absetzbar ist, und dem, was fälschlich angesetzt wird.",
     "jobs": [
       {
         "href": "/de/expenses/farm-work",
@@ -193,7 +193,7 @@ const SECTIONS: Section[] = [
       "Die Ausgabe ist beim Verdienen deines Einkommens entstanden, nicht dabei, dich erst in die Lage zu bringen, es zu verdienen, und sie ist nicht privat.",
       "Du hast einen Nachweis, aus dem hervorgeht, was du wann bei wem für wie viel gekauft hast."
     ],
-    "note": "Der zweite Test richtet den Schaden an. Deshalb ist deine erste White Card nicht absetzbar und die Verlängerung schon."
+    "note": "Am zweiten Test scheitern die meisten Abzüge. Deshalb ist deine erste White Card nicht absetzbar, die Verlängerung schon."
   },
   {
     "kind": "answer",
@@ -207,7 +207,7 @@ const SECTIONS: Section[] = [
     "kind": "note",
     "label": "Neu ab 1. Juli 2026",
     "title": "Pauschal 1.000 Dollar oder deine echten Kosten. Nicht beides.",
-    "body": "Ab dem 1. Juli 2026 kannst du pauschal 1.000 Dollar an arbeitsbezogenen Kosten ganz ohne Belege absetzen, oder deine tatsächlichen Kosten mit vollständigen Nachweisen. Es gilt für das ganze Jahr entweder das eine oder das andere. Liegen deine echten Kosten bei 1.400 Dollar und du nimmst die Pauschale, verschenkst du 400 Dollar.\n\nDie Wahl gilt erstmals für die Steuererklärung 2026-27, die ab Juli 2027 eingereicht wird. Für die Erklärung 2025-26, die gerade eingereicht wird, gelten noch die alten Regeln."
+    "body": "Ab dem 1. Juli 2026 kannst du pauschal 1.000 Dollar an arbeitsbezogenen Kosten ganz ohne Belege absetzen, oder deine tatsächlichen Kosten mit vollständigen Nachweisen. Es gilt für das ganze Jahr entweder das eine oder das andere. Liegen deine echten Kosten bei 1.400 Dollar und du nimmst die Pauschale, verschenkst du 400 Dollar.\n\nDie Wahl gilt erstmals für die Steuererklärung 2026/27, die ab Juli 2027 eingereicht wird. Für die Erklärung 2025/26, die gerade eingereicht wird, gelten noch die alten Regeln."
   },
   {
     "kind": "tables",
@@ -218,11 +218,11 @@ const SECTIONS: Section[] = [
         "label": "Kilometerpauschale",
         "rows": [
           [
-            "Satz 2024-25 und 2025-26",
+            "Satz 2024/25 und 2025/26",
             "88 Cent pro km"
           ],
           [
-            "Satz ab 2026-27",
+            "Satz ab 2026/27",
             "91 Cent pro km"
           ],
           [
@@ -262,7 +262,7 @@ const SECTIONS: Section[] = [
   {
     "kind": "traps",
     "h2": "Was machen Backpacker in jedem Job falsch?",
-    "intro": "Die erste Liste macht aus einer Rückerstattung eine korrigierte Veranlagung. Die zweite, das Geld, das niemand anfordert, ist häufiger und teurer.",
+    "intro": "Die erste Liste führt dazu, dass aus einer Rückerstattung eine korrigierte Veranlagung wird. Die zweite, das Geld, das niemand anfordert, ist häufiger und teurer.",
     "wrong": [
       {
         "t": "Normale Kleidung, die ein Dresscode vorschreibt",
@@ -295,7 +295,7 @@ const SECTIONS: Section[] = [
         "d": "Über 300 Dollar verschwindet der Abzug nicht, nur der Zeitpunkt ändert sich. Die Kosten werden über die Nutzungsdauer verteilt. Viele hören \"über 300\" und hören auf."
       },
       {
-        "t": "Das Waschen von Pflicht- oder Schutzkleidung",
+        "t": "Das Waschen von vorgeschriebener Uniform oder Schutzkleidung",
         "d": "Das ATO erlaubt 1 Dollar pro Waschgang, wenn nur Arbeitskleidung drin ist, oder 50 Cent pro Waschgang, wenn du sie mit allem anderen wäschst. Ab 150 Dollar Wäschekosten im Jahr brauchst du ein einfaches Tagebuch statt einer Schätzung."
       },
       {
@@ -304,7 +304,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Wochen mit 45 Prozent Einbehalt, bevor die TFN da war",
-        "d": "Kein Abzug, aber dasselbe Geld. Wenn ein Arbeitgeber zum Höchstsatz einbehalten hat, während deine Tax File Number Declaration noch in der Schublade lag, kommt das mit der Steuererklärung zurück. Von allein passiert das nicht."
+        "d": "Kein Abzug, aber dasselbe Geld. Wenn ein Arbeitgeber zum Höchstsatz einbehalten hat, während deine Tax File Number Declaration noch in der Schublade lag, kann das mit der Steuererklärung zurückkommen. Von allein passiert das nicht."
       }
     ]
   },
@@ -313,7 +313,7 @@ const SECTIONS: Section[] = [
     "h2": "Wo hängt es von deiner eigenen Situation ab?",
     "paras": [
       "Ob deine Fahrten als wechselnde Einsatzorte gelten statt als Arbeitsweg, hängt davon ab, wie deine Woche aufgebaut war: wie oft der Einsatzort wechselte, ob es eine feste Basis gab und ob dein Arbeitgeber die Bewegung verlangt hat.",
-      "Dein steuerlicher Wohnsitz ist die zweite Frage, und sie ist mehr wert als alle Abzüge auf dieser Seite zusammen. Es ist eine Beurteilung, dieselbe Frage, über die der High Court im Fall Addy entschieden hat. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind."
+      "Dein steuerlicher Wohnsitz ist die zweite Frage, und sie wiegt oft schwerer als alle Abzüge auf dieser Seite zusammen. Es ist eine Beurteilung, dieselbe Frage, über die der High Court im Fall Addy entschieden hat. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind."
     ]
   }
 ]
@@ -325,11 +325,11 @@ const FAQS = [
   },
   {
     "question": "Haben Working Holiday Maker weniger Abzüge als Australier?",
-    "answer": "Nein. Die Abzugsregeln sind für Inhaber eines 417- oder 462-Visums dieselben wie für alle anderen, die in Australien Einkommen verdienen.\n\nDer Unterschied liegt bei den Einnahmen, nicht bei den Ausgaben: Einkommen von Working Holiday Makern wird bis 45.000 Dollar mit 15 Prozent besteuert, statt dass ein Steuerfreibetrag gilt, sofern dein steuerlicher Wohnsitz daran nichts ändert."
+    "answer": "Nein. Die Abzugsregeln sind für Inhaber eines 417- oder 462-Visums dieselben wie für alle anderen, die in Australien Einkommen verdienen.\n\nDer Unterschied liegt bei den Einnahmen, nicht bei den Ausgaben: Einkommen von Working Holiday Makern wird bis 45.000 Dollar mit 15 Prozent besteuert und ohne Steuerfreibetrag, sofern dein steuerlicher Wohnsitz daran nichts ändert."
   },
   {
     "question": "Ich hatte vier verschiedene Jobs in einem Jahr. Sind das vier Listen?",
-    "answer": "Du gibst eine Steuererklärung für das Steuerjahr ab, und darin steckt jeder Abzug aus jedem Job. Wichtig ist nur, dass jede Ausgabe zu Arbeit gehört, die du damals tatsächlich gemacht hast.\n\nBoots für einen Lagerjob im September und Sonnencreme für einen Farmjob im Januar gehören in dieselbe Erklärung, und dass die Arbeitgeber unterschiedlich waren, ändert daran nichts."
+    "answer": "Du gibst eine Steuererklärung für das Steuerjahr ab, und darin steckt jeder Abzug aus jedem Job. Wichtig ist nur, dass jede Ausgabe zu Arbeit gehört, die du damals tatsächlich gemacht hast.\n\nBoots für einen Lagerjob im September und Sonnencreme für einen Farmjob im Januar gehören in dieselbe Erklärung, auch wenn die Arbeitgeber unterschiedlich waren."
   },
   {
     "question": "Was ist, wenn ich die Belege verloren habe?",

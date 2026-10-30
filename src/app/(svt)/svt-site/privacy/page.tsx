@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'How Student Visa Tax collects, uses and protects your personal information.',
   alternates: { canonical: '/privacy' },
+  // Same text as the other brand's legal page, so kept out of search (Jo, 27 Oct).
+  robots: { index: false, follow: true },
 }
 
 export default function SvtPrivacy() {

@@ -78,11 +78,11 @@ describe('the Rose reply is blocked before payment and the line goes instead', (
 describe('the Library and the approved messages carry the line, not the hedge', () => {
   const byIntent = (i: string) => KNOWLEDGE_SEED.find((k) => k.intent === i)!;
 
-  it('the four pre-payment answers are the line', () => {
+  it('residency Library answers are untouched (Jo, 30 Oct); the other two lost the stock line', () => {
     expect(byIntent('tax residency question').answer).toBe(LINE);
-    expect(byIntent('tax free threshold eligibility').answer).toBe(LINE);
-    expect(byIntent('how much tax do i owe on my income').answer).toBe(LINE);
     expect(byIntent('asked for a residency ruling on their own facts').answer).toContain(LINE);
+    expect(byIntent('tax free threshold eligibility').answer).not.toContain('one of the many things we check');
+    expect(byIntent('how much tax do i owe on my income').answer).not.toContain('one of the many things we check');
   });
 
   it('the already-paid residency answer stays as it was (different stage)', () => {
@@ -93,9 +93,9 @@ describe('the Library and the approved messages carry the line, not the hedge', 
     for (const k of KNOWLEDGE_SEED) expect(k.answer).not.toMatch(/^that's a great question/i);
   });
 
-  it('objection #7 is the line and #13 leans on it', () => {
-    expect(APPROVED.objections.o7_professional_question).toBe(LINE);
-    expect(APPROVED.objections.o13_one_question).toMatch(/one of the many things we check before we lodge/);
+  it('objection #7 and #13 no longer use the stock line (30 Oct)', () => {
+    expect(APPROVED.objections.o7_professional_question).not.toContain('one of the many things we check');
+    expect(APPROVED.objections.o13_one_question).not.toContain('one of the many things we check');
     expect(JSON.stringify(APPROVED.objections)).not.toMatch(/depends on your individual situation/);
   });
 });
@@ -105,10 +105,9 @@ describe('the playbook states the rule', () => {
     name: 'Rose', state: 'NEW_LEAD', income: 'UNKNOWN', paid: false,
     formComplete: false, missingDocs: [], estimatedRefundCents: null, lang: 'en',
   });
-  it('names the line, the two-line shape and the banned sentences', () => {
-    expect(stable).toMatch(/THE ONE LINE THAT ANSWERS ALMOST EVERYTHING BEFORE PAYMENT/);
-    expect(stable).toContain(LINE);
-    expect(stable).toMatch(/That is the whole reply\. Two lines\./);
+  it('names the retired line, the pre payment rules and the banned sentences', () => {
+    expect(stable).toMatch(/PRE PAYMENT TAX QUESTIONS/);
+    expect(stable).not.toContain(LINE);
     expect(stable).toMatch(/NEVER before payment: "Great question"/);
   });
 });

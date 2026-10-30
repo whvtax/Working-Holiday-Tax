@@ -101,7 +101,7 @@ Nhìn chung mọi người lao động đều được đóng super, kể cả n
 
 ## Từ ngày 1/7/2026 có gì thay đổi?
 
-Từ ngày 1/7/2026, quy định Payday Super được áp dụng. Chủ lao động phải đóng super cùng lúc với trả lương, và tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc. Với nhân viên mới, khoản đóng đầu tiên có 20 ngày làm việc.
+Từ ngày 1/7/2026, quy định Payday Super được áp dụng. Chủ lao động phải đóng super cùng lúc với trả lương, và tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc. Với nhân viên mới, khoản đóng đầu tiên có thể mất đến 20 ngày làm việc.
 
 Nhờ vậy việc kiểm tra dễ hơn trước rất nhiều. Bạn không còn phải chờ đến cuối quý. Nếu bạn được trả lương cách đây hai tuần mà chưa thấy super, đó là điều đáng hỏi.
 
@@ -152,7 +152,7 @@ Super từ thời gian có visa tạm trú thường có thể được rút sau
 - Báo với ATO về super chưa được đóng nếu vấn đề chưa được giải quyết
 - Giữ thông tin quỹ và số thành viên để làm hồ sơ DASP`,
     faq: [
-      { q: 'Bây giờ sau ngày trả lương bao lâu thì super phải vào quỹ?', a: 'Theo Payday Super, từ ngày 1/7/2026, tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc sau ngày trả lương. Với công việc mới, khoản đóng đầu tiên có 20 ngày làm việc.' },
+      { q: 'Bây giờ sau ngày trả lương bao lâu thì super phải vào quỹ?', a: 'Theo Payday Super, từ ngày 1/7/2026, tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc sau ngày trả lương. Với công việc mới, khoản đóng đầu tiên có thể mất đến 20 ngày làm việc.' },
       { q: 'Du học sinh làm casual có được đóng super không?', a: 'Nhìn chung là có. Người làm casual và bán thời gian, kể cả người tạm trú, đều thuộc diện được đóng super bắt buộc. Người dưới 18 tuổi chỉ được đóng cho những tuần làm trên 30 giờ.' },
       { q: 'Tôi có nên gộp các tài khoản super không?', a: 'Gộp có thể tiết kiệm phí, nhưng hãy kiểm tra bảo hiểm và phí rời quỹ trước. Gộp tài khoản không làm thay đổi quỹ mà chủ lao động đóng vào.' },
     ],
@@ -191,13 +191,13 @@ Chuyện này rất hay xảy ra với người mới sang, vì nhiều điện 
 
 Nếu quốc gia của bạn không có trong danh sách thả xuống, ATO không thể xử lý đơn trực tuyến. Trong trường hợp đó, ATO hướng dẫn liên hệ Bộ Nội vụ. Đừng chọn một quốc gia khác chỉ để qua được màn hình đó, vì khi ấy thông tin sẽ không khớp với hồ sơ của bạn.
 
-Bạn có thể xin trực tuyến nếu bạn đang ở Úc và có visa còn hiệu lực, cho phép đi làm và được liên kết với hộ chiếu của bạn. Một số visa có điều kiện không được làm việc, và những visa đó không dùng được đơn trực tuyến. Bạn có thể xem thông tin và điều kiện visa của mình trên VEVO. Mọi câu hỏi về điều kiện visa, hãy hỏi Bộ Nội vụ.
+Bạn có thể xin trực tuyến nếu bạn đang ở Úc và có visa còn hiệu lực, cho phép đi làm và được liên kết với hộ chiếu của bạn. Một số visa có điều kiện không được làm việc, và những visa đó không dùng được đơn trực tuyến. Bạn có thể xem thông tin và điều kiện visa của mình trên VEVO. Với câu hỏi về điều kiện visa, hãy hỏi Bộ Nội vụ.
 
 ## Nguyên nhân 5: bạn đã có TFN
 
 TFN là của bạn suốt đời. Nếu trước đây bạn đã có TFN, ví dụ từ một visa trước hoặc một lần ở Úc trước, bạn không nên có TFN thứ hai. Trong đơn có câu hỏi bạn đã từng có TFN hoặc ABN chưa. Hãy chọn có và nhập số đó nếu bạn biết.
 
-Nếu không tìm được số cũ, dịch vụ đăng ký trực tuyến của ATO có thể giúp bạn tìm TFN hoặc xin bản sao thư báo TFN. Bạn cũng có thể tìm thấy số này trên thư cũ của ATO, trên thông báo kết quả tính thuế (notice of assessment) hoặc trên sao kê super.
+Nếu không tìm được số cũ, dịch vụ đăng ký trực tuyến của ATO có thể giúp bạn tìm TFN hoặc xin bản sao thư báo TFN. Bạn cũng có thể tìm thấy số này trên thư cũ của ATO, trên thông báo tính thuế (notice of assessment) hoặc trên sao kê super.
 
 ## Có nên nộp đơn lại ngay không?
 
@@ -225,7 +225,7 @@ Số tiền này không mất. Thuế đã bị trừ sẽ được tính vào k
     faq: [
       { q: 'Tôi có xin TFN trực tuyến được trước khi sang Úc không?', a: 'Đơn trực tuyến cho người tạm trú dành cho người đang ở Úc và có visa cho phép đi làm. Nếu bạn sống ngoài Úc, bạn dùng mẫu đơn giấy.' },
       { q: 'Tôi lỡ nộp đơn hai lần. Giờ phải làm gì?', a: 'Hãy liên hệ ATO và giải thích. TFN chỉ được cấp một lần cho suốt đời, và ATO có thể giúp xử lý đơn thứ hai.' },
-      { q: 'Đơn xin TFN không thành công có ảnh hưởng đến visa không?', a: 'Đơn xin TFN là chuyện thuế. Mọi câu hỏi về visa, hãy hỏi Bộ Nội vụ (Department of Home Affairs).' },
+      { q: 'Đơn xin TFN không thành công có ảnh hưởng đến visa không?', a: 'Đơn xin TFN là chuyện thuế. Với câu hỏi về visa, hãy hỏi Bộ Nội vụ (Department of Home Affairs).' },
     ],
   },
   'tfn-documents-international-students': {
@@ -429,7 +429,7 @@ Những yêu cầu này là bình thường và có lợi cho bạn.
 
 - **Ngân hàng.** Nếu không có TFN, ngân hàng phải trừ nhiều thuế hơn trên tiền lãi bạn nhận.
 - **Quỹ super.** TFN giúp quỹ ghép đúng tiền super với bạn, và bạn sẽ cần điều đó khi xin rút super sau khi rời Úc.
-- **Trường đại học.** ATO liệt kê trường đại học trong số các tổ chức có thể có lý do chính đáng để hỏi. Nếu bạn không rõ vì sao trường cần nó, hãy hỏi văn phòng sinh viên để làm gì.
+- **Trường đại học.** ATO liệt kê trường đại học trong số các tổ chức có thể có lý do chính đáng để hỏi. Nếu bạn không rõ vì sao trường cần nó, hãy hỏi văn phòng sinh viên xem họ cần nó để làm gì.
 
 ## Ai không cần TFN của bạn?
 
@@ -492,7 +492,7 @@ Nếu bạn đã lỡ đưa TFN cho nhầm người, đừng hoảng, nhưng hã
   'tfn-postal-address-international-students': {
     title: 'Địa chỉ nhận TFN của du học sinh: làm sao để nhận được thư',
     description: 'TFN được gửi qua bưu điện đến địa chỉ ở Úc mà bạn khai, thường trong vòng 28 ngày. Địa chỉ nào phù hợp với du học sinh đang ở tạm, và phải làm gì nếu bạn chuyển nhà.',
-    answer: 'TFN được gửi qua bưu điện đến địa chỉ nhận thư ở Úc ghi trong đơn, và bạn sẽ nhận được trong vòng 28 ngày. Hãy dùng địa chỉ có người giữ thư cho bạn ít nhất một tháng; địa chỉ nơi ở không được là hộp thư PO box.',
+    answer: 'TFN được gửi qua bưu điện đến địa chỉ nhận thư ở Úc ghi trong đơn, và bạn sẽ nhận được trong vòng 28 ngày. Hãy dùng địa chỉ có người giữ thư cho bạn ít nhất một tháng. Địa chỉ nơi ở không được là hộp thư PO box.',
     body: `Nhiều du học sinh xin mã số thuế (TFN) ngay trong tuần đầu, khi vẫn đang ở khách sạn, phòng thuê ngắn ngày hoặc nhà bạn bè. Như vậy không sao. Nhưng TFN đến dưới dạng một lá thư qua bưu điện, nên địa chỉ bạn chọn quyết định bạn có thật sự nhận được nó hay không. Bài này giúp bạn chọn địa chỉ tốt và giải thích phải làm gì nếu thư bị thất lạc.
 
 ## Vì sao địa chỉ lại quan trọng đến vậy?
@@ -560,7 +560,7 @@ Khi đã có thư, hãy cất ở nơi an toàn. TFN rất có giá trị với 
 - Dùng địa chỉ nơi ở không phải là PO box
 - Kiểm tra kỹ số căn hộ và mã bưu điện
 - Giữ mã số biên nhận khi nộp đơn
-- Không nộp đơn lại nếu chuyển nhà; hãy liên hệ ATO
+- Không nộp đơn lại khi chuyển nhà, hãy liên hệ ATO
 - Sau 28 ngày chưa có thư, liên hệ ATO kèm mã số biên nhận`,
     faq: [
       { q: 'Tôi có dùng địa chỉ trường đại học được không?', a: 'Nếu bạn ở ký túc xá đại học có giữ thư cho người ở theo tên, đó có thể là lựa chọn tốt. Hãy hỏi họ giữ thư bao lâu trước khi nộp đơn.' },
@@ -576,9 +576,9 @@ Khi đã có thư, hãy cất ở nơi an toàn. TFN rất có giá trị với 
 
 ## Trước hết: công việc này có thật sự cần ABN không?
 
-Bạn chỉ được có ABN nếu bạn đang kinh doanh, hoặc đang bắt đầu một hoạt động kinh doanh thật sự ở Úc. ABN không dành cho công việc bạn làm với tư cách người làm thuế, kể cả khi công việc đó được gọi là “contracting”. Chủ lao động không được bắt bạn lấy ABN làm điều kiện để nhận việc.
+Bạn chỉ được có ABN nếu bạn đang kinh doanh, hoặc đang bắt đầu một hoạt động kinh doanh thật sự ở Úc. ABN không dành cho công việc bạn làm với tư cách người làm thuê, kể cả khi công việc đó được gọi là “contracting”. Chủ lao động không được bắt bạn lấy ABN làm điều kiện để nhận việc.
 
-Chỉ có ABN thôi không biến bạn thành người làm hợp đồng độc lập (contractor). Nếu doanh nghiệp quyết định bạn làm thế nào, ở đâu và khi nào, có thể bạn thực chất là người làm thuế, có quyền được trả lương tối thiểu và đóng super. Mọi câu hỏi về việc visa có cho phép công việc này không, hãy kiểm tra điều kiện visa với Bộ Nội vụ (Home Affairs).
+Chỉ có ABN thôi không biến bạn thành người làm hợp đồng độc lập (contractor). Nếu doanh nghiệp quyết định bạn làm thế nào, ở đâu và khi nào, có thể bạn thực chất là người làm thuê, có quyền được trả lương tối thiểu và đóng super. Về việc visa có cho phép công việc này không, hãy kiểm tra điều kiện visa với Bộ Nội vụ (Home Affairs).
 
 ## Mỗi hóa đơn cần ghi những gì?
 
@@ -599,7 +599,7 @@ Nếu bạn chưa đăng ký GST, như phần lớn du học sinh, bạn xuất 
 
 Nếu bạn làm việc cho một doanh nghiệp mà không đưa ABN, doanh nghiệp đó nhìn chung phải giữ lại 47% số tiền và nộp cho ATO. Có một số ngoại lệ, ví dụ khi khoản thanh toán từ $75 trở xuống, chưa tính GST.
 
-Số thuế bị giữ lại không mất. Nó được tính vào khi bạn nộp hồ sơ thuế. Nhưng bạn phải chờ hàng tháng trời cho số tiền mà bạn cần ngay bây giờ, nên hãy luôn ghi ABN thật rõ.
+Số thuế bị giữ lại không mất. Nó được tính vào khi bạn nộp hồ sơ thuế. Nhưng bạn phải chờ hàng tháng trời mới lấy lại được số tiền mà bạn cần ngay bây giờ, nên hãy luôn ghi ABN thật rõ.
 
 **Một ví dụ cụ thể.** Priya dạy kèm học sinh trung học qua một doanh nghiệp dạy kèm nhỏ. Cô gửi hóa đơn cho 6 buổi, mỗi buổi $45, tổng cộng $270. Nếu quên ghi ABN, doanh nghiệp có thể giữ lại 47%, tức $126.90, và chỉ trả cô $143.10. Có ABN trên hóa đơn, cô nhận đủ $270. Sau đó cô đóng thuế trên khoản này, nếu có, qua hồ sơ thuế.
 
@@ -636,7 +636,7 @@ Nếu bạn ngừng làm tự do, hãy hủy ABN, thường trong vòng 28 ngày
 
 ## Danh sách việc cần làm
 
-- Kiểm tra bạn thật sự đang kinh doanh, không phải đang làm thuế
+- Kiểm tra bạn thật sự đang kinh doanh, không phải đang làm thuê
 - Ghi tên, ABN, ngày, mô tả và số tiền trên mọi hóa đơn
 - Không gọi là “tax invoice” hay cộng GST nếu chưa đăng ký
 - Đăng ký GST trước khi bắt đầu nếu bạn chở khách qua ứng dụng
@@ -652,13 +652,13 @@ Nếu bạn ngừng làm tự do, hãy hủy ABN, thường trong vòng 28 ngày
     title: 'Chi phí kinh doanh với ABN cho du học sinh: được khai gì',
     description: 'Có ABN, chi phí kinh doanh thật sự làm giảm số thuế bạn đóng. Du học sinh làm tự do hoặc qua ứng dụng thường được khai gì, cách tách phần dùng riêng, và cần giữ gì.',
     answer: 'Có ABN, bạn được khai các chi phí liên quan trực tiếp đến việc tạo ra thu nhập kinh doanh, như phí nền tảng, phần dùng cho kinh doanh của điện thoại và phần công việc của chi phí xe. Bạn phải chứng minh được chi phí đó và cách bạn tính phần dùng cho kinh doanh.',
-    body: `Khi bạn đi làm thuế, chủ lao động trừ thuế từ mỗi kỳ lương. Thu nhập ABN thì khác: không bị trừ thuế, và toàn bộ số tiền được khai trong hồ sơ thuế. Sau đó chi phí kinh doanh được trừ vào thu nhập đó. Với du học sinh làm tự do hoặc qua ứng dụng, khai đúng chi phí, với đủ giấy tờ, có thể tạo khác biệt rõ rệt cho số thuế phải đóng.
+    body: `Khi bạn đi làm thuê, chủ lao động trừ thuế từ mỗi kỳ lương. Thu nhập ABN thì khác: không bị trừ thuế, và toàn bộ số tiền được khai trong hồ sơ thuế. Sau đó chi phí kinh doanh được trừ vào thu nhập đó. Với du học sinh làm tự do hoặc qua ứng dụng, khai đúng chi phí, với đủ giấy tờ, có thể tạo khác biệt rõ rệt cho số thuế phải đóng.
 
 ## Vì sao chi phí quan trọng, và cần kiểm tra những gì?
 
 Với tiền lương, thuế đã được đóng trong năm. Một khoản khấu trừ thường làm tăng tiền hoàn thuế, nếu có. Với thu nhập ABN, trong năm chưa đóng thuế gì. Một khoản khấu trừ làm giảm số thuế bạn còn phải đóng.
 
-Vì vậy nếu quên khai chi phí kinh doanh, bạn đóng thuế nhiều hơn mức cần đóng. Nếu khai chi phí mà không chứng minh được, sau này bạn có thể phải trả lại, có khi kèm tiền phạt. Du học sinh từng đi làm thuế thường quen dùng quy định dành cho người làm thuế, nhưng quy định cho kinh doanh ở một số khoản, như xe và thiết bị, không giống vậy.
+Vì vậy nếu quên khai chi phí kinh doanh, bạn đóng thuế nhiều hơn mức cần đóng. Nếu khai chi phí mà không chứng minh được, sau này bạn có thể phải trả lại, có khi kèm tiền phạt. Du học sinh từng đi làm thuê thường quen dùng quy định dành cho người làm thuê, nhưng quy định cho kinh doanh ở một số khoản, như xe và thiết bị, không giống vậy.
 
 Với mỗi khoản chi, hãy tự hỏi ba câu:
 
@@ -686,7 +686,7 @@ Với công việc tự do, ví dụ có thể là phần mềm thiết kế ho�
 
 Nhiều du học sinh dùng chung một điện thoại, laptop hoặc xe cho việc học, đời sống riêng và kinh doanh. Bạn chỉ được khai phần dùng cho kinh doanh, và phải chứng minh được cách bạn tính phần đó.
 
-Cách tốt là ghi chép trong một khoảng thời gian tiêu biểu. Với điện thoại, bạn có thể đánh dấu các cuộc gọi và dữ liệu dùng cho kinh doanh trong bốn tuần. Với xe, bạn có thể ghi sổ nhật trình (logbook). Ước chừng là không đủ.
+Cách tốt là ghi chép trong một khoảng thời gian tiêu biểu. Với điện thoại, bạn có thể đánh dấu các cuộc gọi và dữ liệu dùng cho kinh doanh trong bốn tuần. Với xe, bạn có thể ghi sổ ghi hành trình (logbook). Ước chừng là không đủ.
 
 Nếu bạn đã đăng ký GST và được nhận lại GST (GST credit), bạn chỉ khấu trừ số tiền chưa gồm GST. Phần lớn du học sinh chưa đăng ký, nên dùng toàn bộ số tiền đã trả.
 
@@ -695,7 +695,7 @@ Nếu bạn đã đăng ký GST và được nhận lại GST (GST credit), bạ
 Nếu bạn dùng ô tô cho kinh doanh, có hai cách khai.
 
 - **Tính theo cent mỗi km (cents per kilometre).** Bạn khai một mức cố định cho mỗi km đi vì kinh doanh, tối đa 5,000 km kinh doanh mỗi xe mỗi năm. Mức này đã bao gồm mọi chi phí vận hành, nên bạn không được khai riêng thêm xăng hay sửa chữa. Cách này chỉ dành cho ô tô, không dùng cho xe máy hay xe đạp.
-- **Sổ nhật trình (logbook).** Bạn ghi sổ nhật trình ít nhất 12 tuần liên tục, kèm số đồng hồ công-tơ-mét. Sau đó bạn khai theo tỷ lệ phần trăm kinh doanh của các chi phí vận hành xe.
+- **Sổ ghi hành trình (logbook).** Bạn ghi sổ hành trình ít nhất 12 tuần liên tục, kèm số đồng hồ công-tơ-mét. Sau đó bạn khai theo tỷ lệ phần trăm kinh doanh của các chi phí vận hành xe.
 
 Với ride-sourcing, chỉ quãng đường đi đón hoặc chở khách mới tính là kinh doanh. Lái xe lòng vòng chờ cuốc nhìn chung là đi riêng.
 
@@ -729,7 +729,7 @@ Vì thu nhập ABN không bị trừ thuế trước, bạn nên tập thói que
 
 - Chụp lại mọi biên lai kinh doanh
 - Ghi lại cách bạn tính phần kinh doanh của những thứ dùng chung
-- Chọn cách tính theo cent mỗi km hoặc sổ nhật trình cho chi phí xe
+- Chọn cách tính theo cent mỗi km hoặc sổ ghi hành trình cho chi phí xe
 - Không khai tiền phạt, bữa ăn riêng hoặc phần dùng riêng
 - Giữ giấy tờ 5 năm kể từ khi nộp hồ sơ
 - Để riêng tiền đóng thuế sau mỗi lần được trả
@@ -744,7 +744,7 @@ Nếu năm nay bạn có thu nhập ABN, bạn có thể nhắn tin cho Student 
   'uber-doordash-tax-international-students': {
     title: 'Uber, DoorDash và Menulog: thuế cho du học sinh',
     description: 'Các nền tảng báo thu nhập của bạn cho ATO. Thu nhập từ ứng dụng của du học sinh bị đánh thuế thế nào, vì sao chở khách và giao đồ ăn khác nhau về GST, và nên để riêng bao nhiêu.',
-    answer: 'Làm việc qua ứng dụng thường là làm bằng ABN, nên không bị trừ thuế trước và nền tảng báo thu nhập của bạn cho ATO. Chở khách cần đăng ký GST trước khi bắt đầu; giao đồ ăn nhìn chung chỉ cần đăng ký khi doanh thu đạt $75,000.',
+    answer: 'Làm việc qua ứng dụng thường là làm bằng ABN, nên không bị trừ thuế trước và nền tảng báo thu nhập của bạn cho ATO. Chở khách cần đăng ký GST trước khi bắt đầu. Giao đồ ăn nhìn chung chỉ cần đăng ký khi doanh thu đạt $75,000.',
     body: `Ứng dụng giao hàng và chở khách được du học sinh ưa chuộng vì bạn tự chọn giờ làm. Chuyện thuế thì khác với một công việc bình thường. Không có chủ lao động trừ thuế mỗi tuần. Bạn đang điều hành một doanh nghiệp nhỏ, và thuế được tính vào cuối năm. Bài này giải thích cách hoạt động và cách tránh một khoản thuế lớn bất ngờ.
 
 ## Thu nhập từ nền tảng bị đánh thuế thế nào?
@@ -782,7 +782,7 @@ Một ghi chú đơn giản mỗi tuần sẽ giúp ích: ngày, ứng dụng, s
 
 Với ride-sourcing, ATO đưa ra ví dụ như phí nền tảng, xăng, phí đỗ xe và phí cầu đường bạn đã trả, phần dùng cho kinh doanh của điện thoại, và chi phí giấy phép thương mại. Người giao hàng có thể khai các chi phí tương tự liên quan trực tiếp đến công việc, như túi giữ nhiệt giao hàng hoặc tiền sửa xe đạp.
 
-Bạn chỉ được khai phần dùng cho kinh doanh của những thứ bạn cũng dùng riêng. Cách tính theo cent mỗi km chỉ dành cho ô tô. Với chở khách, chỉ quãng đường đi đón hoặc chở khách mới tính là kinh doanh; thời gian lái xe lòng vòng chờ cuốc nhìn chung là đi riêng. Giữ giấy tờ 5 năm.
+Bạn chỉ được khai phần dùng cho kinh doanh của những thứ bạn cũng dùng riêng. Cách tính theo cent mỗi km chỉ dành cho ô tô. Với chở khách, chỉ quãng đường đi đón hoặc chở khách mới tính là kinh doanh. Thời gian lái xe lòng vòng chờ cuốc nhìn chung là đi riêng. Giữ giấy tờ 5 năm.
 
 ## Nên để riêng bao nhiêu?
 
@@ -809,13 +809,13 @@ Nhiều du học sinh không được hưởng Medicare vì có bảo hiểm y t
     faq: [
       { q: 'Tôi chỉ làm Uber Eats thì có cần GST không?', a: 'Với giao đồ ăn, nhìn chung bạn phải đăng ký GST khi doanh thu đạt $75,000. Chở khách thì khác: bạn đăng ký trước khi bắt đầu.' },
       { q: 'ATO có biết thu nhập DoorDash của tôi không?', a: 'Có. Các nền tảng báo thu nhập của người kiếm tiền qua họ cho ATO hai lần một năm, nên hãy khai đủ toàn bộ trong hồ sơ thuế.' },
-      { q: 'Nền tảng có đóng super cho tôi không?', a: 'Các nền tảng thường coi bạn là người làm hợp đồng độc lập. Đừng mặc định là super đang được đóng; hãy kiểm tra điều khoản của nền tảng và quỹ super của bạn.' },
+      { q: 'Nền tảng có đóng super cho tôi không?', a: 'Các nền tảng thường coi bạn là người làm hợp đồng độc lập. Đừng mặc định là super đang được đóng. Hãy kiểm tra điều khoản của nền tảng và quỹ super của bạn.' },
     ],
   },
   'tax-return-no-tfn-international-students': {
     title: 'Đi làm mà không có TFN khi có visa du học? Các bước khai thuế',
     description: 'Không có TFN, chủ lao động trừ thuế theo mức cao nhất. Du học sinh xin TFN thế nào, kể cả sau khi đã rời Úc, và nộp hồ sơ để phần thuế bị trừ thêm được tính vào.',
-    answer: 'Bạn cần TFN mới nộp được hồ sơ thuế, nhưng bạn vẫn có thể xin TFN, kể cả sau khi đã rời Úc. Thuế bị trừ theo mức cao nhất sẽ được tính vào khi bạn nộp hồ sơ, và phần nhiều hơn số thuế thật của bạn được hoàn lại, nếu có.',
+    answer: 'Bạn cần TFN mới nộp được hồ sơ thuế, nhưng bạn vẫn có thể xin TFN, kể cả sau khi đã rời Úc. Thuế bị trừ theo mức cao nhất sẽ được tính vào khi bạn nộp hồ sơ, và phần thuế bị trừ nhiều hơn số thuế thật của bạn được hoàn lại, nếu có.',
     body: `Có du học sinh bắt đầu đi làm trước khi nhận được mã số thuế (TFN), hoặc không bao giờ đưa TFN cho chủ lao động. Khi đó, chủ lao động buộc phải trừ thuế nhiều hơn bình thường rất nhiều. Tin tốt là số thuế này không mất. Nó được tính trừ vào số thuế thật của bạn khi bạn nộp hồ sơ. Bài này giải thích các bước.
 
 ## Chuyện gì đã xảy ra với tiền lương của bạn?
@@ -830,7 +830,7 @@ TFN là cách ATO ghép thu nhập và số thuế mà chủ lao động đã b�
 
 ## Xin TFN bây giờ như thế nào?
 
-**Nếu bạn vẫn đang ở Úc.** Nếu bạn đang ở Úc và có visa cho phép đi làm, bạn có thể xin trực tuyến miễn phí. Bạn không gửi giấy tờ; thông tin hộ chiếu của bạn được kiểm tra với Bộ Nội vụ (Home Affairs). TFN được gửi qua bưu điện đến địa chỉ ở Úc của bạn, và bạn sẽ nhận được trong vòng 28 ngày.
+**Nếu bạn vẫn đang ở Úc.** Nếu bạn đang ở Úc và có visa cho phép đi làm, bạn có thể xin trực tuyến miễn phí. Bạn không gửi giấy tờ. Thông tin hộ chiếu của bạn được kiểm tra với Bộ Nội vụ (Home Affairs). TFN được gửi qua bưu điện đến địa chỉ ở Úc của bạn, và bạn sẽ nhận được trong vòng 28 ngày.
 
 Nếu bạn nghĩ mình đã từng có TFN, ví dụ từ một visa trước, đừng xin lại. Hãy dùng dịch vụ đăng ký trực tuyến của ATO để tìm, hoặc xem trên thư cũ của ATO hay sao kê super.
 
@@ -854,7 +854,7 @@ Khi đã được cấp TFN, hãy đưa cho chủ lao động nếu bạn vẫn 
 
 Sofia kiếm $20,000 tiền lương trong năm 2025-26 và không bao giờ đưa TFN cho chủ lao động. Chủ lao động đã trừ ít nhất 45%, tức ít nhất $9,000.
 
-- **Nếu cô có thể là người cư trú về thuế**, thuế trên $20,000 theo thuế suất năm 2025-26 là 16% của $1,800 (phần trên $18,200), tức $288. Khoản giảm thuế cho người thu nhập thấp (low income tax offset) $700 làm số này giảm về 0. Medicare levy được tính riêng, và nhiều du học sinh có thể xin miễn. Trong ví dụ này, phần lớn số thuế đã bị trừ nhiều hơn số thuế thật của cô.
+- **Nếu cô có thể là người cư trú về thuế**, thuế trên $20,000 theo thuế suất năm 2025-26 là 16% của $1,800 (phần trên $18,200), tức $288. Khoản giảm thuế cho người thu nhập thấp (low income tax offset) $700 làm số này giảm về 0. Medicare levy được tính riêng, và nhiều du học sinh có thể xin miễn. Trong ví dụ này, số thuế đã bị trừ nhiều hơn rất nhiều so với số thuế thật của cô.
 - **Nếu cô có thể là người không cư trú về thuế**, thuế là 30% của $20,000, tức $6,000. Trong ví dụ này, số thuế đã bị trừ nhiều hơn số thuế thật của cô ít nhất $3,000.
 
 Tình trạng cư trú về thuế của cô quyết định kết quả nào được áp dụng, nên xác định đúng câu hỏi này là rất đáng.

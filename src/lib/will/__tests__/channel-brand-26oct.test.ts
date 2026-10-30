@@ -39,7 +39,7 @@ afterEach(() => { global.fetch = realFetch; process.env = env })
 const sent = () => fetchMock.mock.calls.map(c => ({ url: c[0] as string, payload: JSON.parse((c[1] as { body: string }).body) }))
 
 it('WHT: words unchanged, WHT number id', async () => {
-  const body = 'Form: https://workingholidaytax.com.au/tax-form'
+  const body = 'Form: https://workingholidaytax.com.au/start'
   const res = await deliverOut(customer(), body, 'AI')
   expect(res.ok).toBe(true)
   expect(sent()[0].url).toContain('/WHT_ID/messages')
@@ -55,11 +55,11 @@ it('SVT with no SVT number configured: refused, nothing sent, never the WHT numb
 
 it('SVT: rebranded words, recorded as sent, SVT number id', async () => {
   process.env.SVT_WHATSAPP_PHONE_NUMBER_ID = 'SVT_ID'
-  const res = await deliverOut(customer({ brand: 'svt' }), "Hi, it's the team at Working Holiday Tax. Form: https://workingholidaytax.com.au/tax-form", 'AI')
+  const res = await deliverOut(customer({ brand: 'svt' }), "Hi, it's the team at Working Holiday Tax. Form: https://workingholidaytax.com.au/jhd7hp9xd", 'AI')
   expect(res.ok).toBe(true)
   const s = sent()[0]
   expect(s.url).toContain('/SVT_ID/messages')
-  expect(s.payload.text.body).toBe("Hi, it's the team at Student Visa Tax. Form: https://studentvisatax.com.au/tax-form")
+  expect(s.payload.text.body).toBe("Hi, it's the team at Student Visa Tax. Form: https://studentvisatax.com.au/jhd7hp9xd")
   expect(store.addMessage.mock.calls[0][0].body).toBe(s.payload.text.body)
 })
 

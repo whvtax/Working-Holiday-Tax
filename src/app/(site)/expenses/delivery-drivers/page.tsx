@@ -259,7 +259,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Uber Eats, DoorDash, Menulog and Amazon Flex engage riders as contractors: an ABN, nothing withheld, no super. A roster at one pizza shop that hands you a payslip is employment under a TFN. A shop that sets your shifts, supervises your work and supplies the bike, then asks you to register an ABN, may be an employer in disguise.",
       "Where the deductible driving starts follows from that. An employee's trip to the shop is private, and only shop to drop off counts. Under an ABN the driving is the work.",
-      "Residency decides how the profit is taxed at all. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. It depends on your own circumstances and has to be reviewed properly."
+      "Residency decides how the profit is taxed at all. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review."
     ]
   }
 ]

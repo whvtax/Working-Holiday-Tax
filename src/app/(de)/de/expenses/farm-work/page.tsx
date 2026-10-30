@@ -5,7 +5,7 @@ import { JobExpensesPage, type Section } from '@/components/expenses/JobExpenses
 
 export const metadata: Metadata = {
   "title": "Farmarbeit: Sonnenschutz und Fahrten",
-  "description": "Sonnenschutz, Pflückausrüstung, Schutzschuhe und Fahrten zwischen Blöcken. Dazu die Abzüge, die abgelehnt werden, und die, an die niemand denkt.",
+  "description": "Sonnenschutz, Pflückausrüstung, Schutzschuhe und Fahrten zwischen Blöcken. Dazu die Abzüge, die das ATO ablehnt, und die, an die niemand denkt.",
   "keywords": [
     "Farmarbeit Steuerabzüge Australien",
     "Fruit Picking Steuererklärung",
@@ -67,14 +67,14 @@ const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
-  "guaranteeBody": "Eine Saison aus kurzen Farmjobs, mehreren Contractors und einer Erklärung entwirren wir jede Woche, für Leute auf 417 und 462 und sonst niemanden. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
+  "guaranteeBody": "Eine Saison aus kurzen Farmjobs, mehreren Contractors und einer Erklärung entwirren wir jede Woche, für Leute auf 417 und 462 und sonst niemanden. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
+  "disclaimer": "Das sind allgemeine Informationen und keine individuelle Beratung zu deiner Steuersituation. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -144,7 +144,7 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was musst du aus einer Saison aufheben?",
     "paras": [
-      "Nichts ist absetzbar, solange nicht drei Dinge stimmen: das Geld war deins, niemand hat es dir zurückgegeben, und es diente dazu, das Einkommen zu verdienen, das in der Erklärung steht. In einer Saison sind das der Roadhouse-Beleg für die Sonnencreme, der Kassenzettel für Handschuhe und Schere und eine Notiz zu Daten und Kilometern, wann immer ein Contractor dich zwischen Blöcken bewegt hat.",
+      "Nichts ist absetzbar, solange nicht drei Dinge stimmen: das Geld war deins, niemand hat es dir zurückgegeben, und es diente dazu, das Einkommen zu verdienen, das in der Erklärung steht. In einer Saison sind das der Roadhouse-Beleg für die Sonnencreme, der Kassenzettel für Handschuhe und Schere und eine Notiz zu Datum und Kilometern jedes Mal, wenn ein Contractor dich zwischen Blöcken umgesetzt hat.",
       "Ein Beleg, eine Rechnung, ein Kontoauszug oder ein Handyfoto mit Betrag, Datum, Anbieter und Gegenstand zählt jeweils, und alles davon muss fünf Jahre halten. Liegen deine Abzüge im ganzen Jahr bei 300 Dollar oder weniger, brauchst du keinen schriftlichen Nachweis. Das sind nicht dieselben 300 Dollar, die entscheiden, ob ein einzelner Gegenstand sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
@@ -155,11 +155,11 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Normale Kleidung, die der Job zerstört",
-        "d": "Jeans, T-Shirts, Flanellhemd, Pulli für den Start um fünf. Das ATO prüft den Gegenstand, nicht die Absicht, und Alltagskleidung bleibt privat, egal wie schnell die Fruchtflecken sie erledigen."
+        "d": "Jeans, T-Shirts, Flanellhemd, Pulli für den Start um fünf. Das ATO prüft den Gegenstand, nicht die Absicht, und Alltagskleidung bleibt privat, egal wie schnell Fruchtflecken sie ruinieren."
       },
       {
         "t": "Hostelmiete und Kaution im Working Hostel",
-        "d": "Wo du in der Saison geschlafen hast, ist eine Lebenshaltungskost, keine Arbeitskost, auch wenn das Hostel die einzige Unterkunft weit und breit war und die Farm sie organisiert hat."
+        "d": "Wo du in der Saison geschlafen hast, gehört zu den Lebenshaltungskosten, nicht zu den Arbeitskosten, auch wenn das Hostel die einzige Unterkunft weit und breit war und die Farm sie organisiert hat."
       },
       {
         "t": "Essen und Trinken tagsüber",
@@ -171,7 +171,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Die Anreise in die Region",
-        "d": "Der Flug oder die Fahrt nach Bundaberg, Mildura oder Tully, um dort Arbeit zu suchen, bringt dich erst dorthin, wo der Job ist, und ist keine Kost des Verdienens."
+        "d": "Der Flug oder die Fahrt nach Bundaberg, Mildura oder Tully, um dort Arbeit zu suchen, bringt dich erst dorthin, wo der Job ist, und gehört nicht zu den Kosten des Verdienens."
       }
     ],
     "missed": [
@@ -193,7 +193,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Einbehalt über 15 Prozent bei einem nicht registrierten Arbeitgeber",
-        "d": "Ein beim ATO als Arbeitgeber von Working Holiday Makern registrierter Betrieb behält ab dem ersten Dollar 15 Prozent ein. Ein nicht registrierter muss zum Satz für ausländische Steuerpflichtige einbehalten, der über 30 Prozent beginnt. Die Differenz kommt mit der Steuererklärung zurück, und nur dann."
+        "d": "Ein beim ATO als Arbeitgeber von Working Holiday Makern registrierter Betrieb behält ab dem ersten Dollar 15 Prozent ein. Ein nicht registrierter muss zum Satz für ausländische Steuerpflichtige einbehalten, der über 30 Prozent beginnt. Die Differenz lässt sich nur mit der Steuererklärung klären."
       }
     ]
   },
@@ -202,7 +202,7 @@ const SECTIONS: Section[] = [
     "h2": "Was hängt daran, wie deine Saison aufgebaut war?",
     "paras": [
       "Ob deine Fahrten als wechselnde Einsatzorte statt als Arbeitsweg gelten, ist eine Tatsachenfrage. Wer von einem Contractor ohne feste Basis zwischen drei Betrieben geschickt wird, steht anders da als jemand, der elf Wochen zur selben Plantage gefahren ist. Wie oft der Ort wechselte, ob der Job das Reisen verlangte und ob es einen festen Arbeitsplatz gab, entscheidet das.",
-      "Der steuerliche Wohnsitz ist größer. Er ist eine Beurteilung, keine Formel, und der Fall Addy vor dem High Court zeigt, wie viel daran hängen kann. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind.",
+      "Der steuerliche Wohnsitz wiegt oft mehr. Er ist eine Beurteilung, keine Formel, und der Fall Addy vor dem High Court zeigt, wie viel daran hängen kann. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind.",
       "Farmarbeit zahlt außerdem auf ein weiteres Visum ein, und dieser Teil ist Einwanderungsrecht, kein Steuerrecht. Welche Branchen, Postleitzahlen und Zeiträume zählen, legt das Department of Home Affairs fest, und die Regeln haben sich mehr als einmal geändert. Prüf die aktuellen offiziellen Angaben oder frag einen registrierten Migration Agent, bevor du dich darauf verlässt, dass ein Job zählt."
     ]
   }
@@ -211,7 +211,7 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Kann ich Sonnencreme und einen Hut absetzen?",
-    "answer": "Ja, wenn dich die Arbeit in die Sonne stellt, und Farmarbeit tut das normalerweise. Das ATO akzeptiert Sonnenschutz als Arbeitskost für Menschen, die im Freien arbeiten, weil die Belastung aus dem Job kommt.\n\nBelege aufheben und nur den beruflichen Anteil ansetzen."
+    "answer": "Ja, wenn dich die Arbeit in die Sonne stellt, und Farmarbeit tut das normalerweise. Das ATO akzeptiert Sonnenschutz als Arbeitsausgabe für Menschen, die im Freien arbeiten, weil die Belastung aus dem Job kommt.\n\nBelege aufheben und nur den beruflichen Anteil ansetzen."
   },
   {
     "question": "Ich war auf drei Farmen. Sind das drei Steuererklärungen?",

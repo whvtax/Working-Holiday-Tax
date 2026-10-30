@@ -283,7 +283,7 @@ Before you apply, log in to myGov and check ATO online services. It shows the su
     published: '2026-10-27', updated: '2026-10-27',
     title: 'DASP tax for international students: usually 35%, not 65%',
     description: 'Super from student work is usually taxed at 35% when you claim it after leaving, not the 65% working holiday rate. How the DASP rates work, with worked examples.',
-    answer: 'If you never held a 417 or 462 working holiday visa, the taxed element of your DASP is taxed at 35%, the untaxed element at 45% and any tax-free component at 0%. The 65% rate applies only to super from contributions made while you held a 417 or 462 visa.',
+    answer: 'If you never held a 417 or 462 working holiday visa, the taxed element of your DASP is taxed at 35%, the untaxed element at 45% and any tax-free component at 0%. The 65% rate applies to the whole payment if it includes any super from contributions made while you held a 417 or 462 visa.',
     body: `Many students read online that super is taxed at 65% when you leave Australia. That rate is real, but it is for working holiday makers. For most international students, the rate is lower. This guide explains which rate applies to you and what you can expect to receive.
 
 ## What are the DASP tax rates?
@@ -293,7 +293,7 @@ When you claim your super after leaving Australia, the payment is called a Depar
 - **Tax-free component:** 0%
 - **Taxed element:** 35%, if you never held a 417 or 462 visa
 - **Untaxed element:** 45%, if you never held a 417 or 462 visa
-- **Super from contributions made while on a 417 or 462 visa:** 65%
+- **Whole payment, if it includes super from contributions made while on a 417 or 462 visa:** 65%
 
 Your fund works out the rate from the visa information on your DASP application. You do not lodge a tax return for the DASP, and you cannot claim the tax back later.
 
@@ -318,15 +318,15 @@ Fund fees and investment returns change the balance a little until the day the f
 
 ## When does the 65% rate apply to a former student?
 
-The 65% rate applies only to super from contributions made while you held a 417 or 462 working holiday visa. Some people came to Australia on a working holiday visa first, then later studied on a student visa. Their super history is mixed.
+The ATO applies the 65% rate to the whole payment if it includes any super from contributions made while you held a 417 or 462 working holiday visa. Some people came to Australia on a working holiday visa first, then later studied on a student visa. Their super history is mixed.
 
-In that case, different rates can apply to different parts of the payment. The fund uses the visa details on your application to separate them.
+In that case, one rate applies to the whole payment from that fund, not a different rate to each part. The fund uses the visa details on your application to work this out.
 
 **Example with a mixed history.** Sofia worked on a 417 visa and received $4,000 of super. Later she studied on a student visa and received $6,000 of super. All of it is taxed element.
 
-- $4,000 from the 417 period at 65%: $2,600 tax
-- $6,000 from the student period at 35%: $2,100 tax
-- Total tax: $4,700, and Sofia receives $5,300
+- Total payment from the fund: $10,000, which includes the $4,000 from the 417 period
+- Tax at 65% on the whole payment: $6,500
+- Sofia receives $3,500
 
 This is why it is important to list your visas correctly on the DASP application. If you never held a working holiday visa, make sure the application shows that.
 
@@ -356,7 +356,7 @@ Many students who leave need to lodge after 30 June, and you can lodge from over
 - Apply through the free ATO online DASP system, one claim for each fund
 - Lodge your final tax return separately after 30 June`,
     faq: [
-      { q: 'I only had a student visa. Will my super be taxed at 65%?', a: 'No. If you never held a 417 or 462 visa, the taxed element of your DASP is taxed at 35%. The 65% rate is only for super from contributions made while on a 417 or 462 visa.' },
+      { q: 'I only had a student visa. Will my super be taxed at 65%?', a: 'No. If you never held a 417 or 462 visa, the taxed element of your DASP is taxed at 35%. The 65% rate applies only when the payment includes super from contributions made while on a 417 or 462 visa.' },
       { q: 'Do I need to put my DASP on my tax return?', a: 'No. The fund takes the DASP tax out before paying you, and the payment does not go on your Australian tax return.' },
       { q: 'What happens if I do not claim my super?', a: 'About 6 months after you leave and your visa ends, your fund transfers it to the ATO. You can still claim it later from the ATO, and the same DASP rates apply.' },
     ],

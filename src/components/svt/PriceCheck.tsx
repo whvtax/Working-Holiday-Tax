@@ -52,7 +52,7 @@ export function PriceCheck({ locale = 'en' }: { locale?: SvtLocale }) {
           <span className="svt-visually-hidden">{t.messageWillOpen}</span>
           {r.message}
         </p>
-        <LinkButton href={r.whatsappHref} size="md">{t.send}</LinkButton>
+        <LinkButton href={r.whatsappHref} size="md" data-wa-pos="calculator-result">{t.send}</LinkButton>
       </div>
     </div>
   )

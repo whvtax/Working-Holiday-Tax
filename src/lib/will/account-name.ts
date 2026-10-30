@@ -2,7 +2,7 @@
 // THE ACCOUNT NAME, ONE ANSWER (11 Oct, full audit decision 4).
 //
 // Seven customers in one October week asked what name to put on the
-// transfer; Neta was told "Simple Tax Services" by the model, Laura and Marta
+// transfer; Neta was given a retired payee name by the model, Laura and Marta
 // "Working Holiday Tax". A wrong name bounces the transfer or scares the
 // customer off at the exact moment they are paying. So the answer is fixed
 // text, in the customer's language, sent from the code the moment the
@@ -36,7 +36,7 @@ export function accountNameMessage(lang?: string | null): string {
 const ACCOUNT_NAME_ASK = new RegExp([
   'account[- ]?(?:holder|owner)?\\s*name', 'name (?:of|on|for) the (?:bank )?account',
   // 21 Oct: "What's the name connected to this account?" went to Will's model, which
-  // answered "Simple Tax Services" (wrong). Any "name ... this account" is the fixed answer.
+  // answered with the retired payee name (wrong). Any "name ... this account" is the fixed answer.
   'name (?:connected|linked|attached|associated|registered|tied|listed) (?:to|with|on) (?:this|that|the|my|your)? ?account',
   'name (?:on|for|with) (?:this|that|the) account', 'recipient(?:\'s)? name', 'payee(?:\'s)? name', 'beneficiary(?:\'s)? name',
   'what name', 'which name', 'whose name', 'name (?:do|should|can) i (?:put|use|write|enter|type)', 'name field', 'under what name', 'in whose name',
@@ -68,7 +68,7 @@ const THEIR_ACCOUNT = /\b(?:send (?:me|us)|your (?:own )?(?:bank )?(?:account|de
 export function namesAccountWrongly(text: string): boolean {
   const t = text || '';
   if (WRONG_NAME_NEAR_ACCOUNT.test(t)) return true;
-  // 21 Oct: "Simple Tax Services / Yes, those are the right details" slipped past the
+  // 21 Oct: "<retired payee name> / Yes, those are the right details" slipped past the
   // rule above because the account word was missing. In a payment reply, the old
   // name is wrong whatever sentence it sits in, unless the correct name is there too.
   if (/simple tax services/i.test(t) && !t.includes(ACCOUNT_NAME) && /\b(?:bsb|account|transfer|pay|payment|bank|details|correct|right)\b/i.test(t)) return true;

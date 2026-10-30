@@ -49,10 +49,9 @@ beforeEach(() => {
 });
 
 describe('signature cadence clocks', () => {
-  it('Done path (no notice): nudge 1 uses the prep offset, exactly as before', async () => {
+  it('Done path (no notice): nothing is armed until the signature message has gone (Jo, 28 Oct, Caira)', async () => {
     await reconcileSchedule(customer);
-    expect(armedDelaySec()).toBe(schedulerConfig().signature[0]);
-    expect(store.addJob.mock.calls[0][0].payload).toMatchObject({ flow: 'signature', seq: 0 });
+    expect(store.addJob).not.toHaveBeenCalled();
   });
 
   it('Send for Signature arms nudge 1 at 24h from the notice and records the notice', async () => {
@@ -85,13 +84,13 @@ describe('signature cadence clocks', () => {
     expect(store.addJob.mock.calls[0][0].payload).toMatchObject({ flow: 'signature', seq: 1 });
   });
 
-  it('a customer who comes back into Signature via Done after an old notice is on the prep clock again', async () => {
+  it('a customer who comes back into Signature via Done after an old notice gets no nudge until a new notice is sent', async () => {
     settings[signatureNoticeSentKey('c1')] = new Date(Date.now() - 30 * 86400_000).toISOString();
     store.history.mockResolvedValue([
       { customerId: 'c1', from: 'FINAL_REVIEW', to: 'SIGNATURE_PENDING', causedBy: 'HUMAN', createdAt: new Date(Date.now() - 60_000).toISOString() },
     ]);
     await reconcileSchedule(customer);
-    expect(armedDelaySec()).toBe(schedulerConfig().signature[0]);
+    expect(store.addJob).not.toHaveBeenCalled();
   });
 
   it('the notice never arms anything for a customer whose follow-ups are switched off', async () => {

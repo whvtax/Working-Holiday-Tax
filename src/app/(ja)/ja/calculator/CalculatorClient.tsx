@@ -84,7 +84,7 @@ const MYGOV = [
   },
   {
     mygov: 'TFNが雇用主に届く前の45%源泉徴収の期間は、どこでも確認されません。',
-    us: 'その年度のすべての雇用主を突き合わせ、その差額を取り戻します。',
+    us: 'その年度のすべての雇用主を突き合わせ、差額があれば申告に反映します。',
   },
 ]
 
@@ -206,7 +206,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   />
                 </div>
                 <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
-                  Income StatementまたはPayment Summaryに記載されています。すべての勤務先を合計してください。
+                  インカムステートメント（Income Statement）またはPayment Summaryに記載されています。すべての勤務先を合計してください。
                 </p>
               </div>
 
@@ -227,7 +227,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   </svg>
                 </div>
                 <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
-                  ビザの名称からワーキングホリデーメーカーを選ぶ方がほとんどです。
+                  ビザがワーキングホリデー（417・462）の方は、ほとんどの場合こちらを選びます。
                 </p>
               </div>
 
@@ -362,7 +362,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             )}
 
             <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '16px', lineHeight: 1.7 }}>
-              この計算ツールが使うのは2025-26年度の税率と、入力された数字だけです。最終的な金額にはなりません。
+              この計算ツールが使うのは2025-26年度の税率と、入力された数字だけです。最終的な金額ではありません。
             </p>
           </div>
         </div>
@@ -428,7 +428,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
           <div className="max-w-[680px]">
             <h2 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '16px' }}>
-              実際の金額がこの数字と変わる理由は。
+              実際の金額が、この数字と変わる理由
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
               3つあり、どれもこのページには入っていません。1つ目は居住区分です。判断ひとつで1年全体の税率が変わることがあります。ご本人の状況によって決まる判断であり、他のどの要素よりも金額への影響が大きい部分です。
@@ -436,7 +436,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             {/* 1段落に2つ目と3つ目が同居して5文の塊になっていた。メディケア税が
                 終わり控除が始まる転換点で切っている。 */}
             <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
-              2つ目はメディケア税です。課税所得の2%が既定で差し引かれますが、417・462ビザの多くはそもそも支払う義務がありません。外すにはほとんど誰も申請しない証明書が必要です。
+              2つ目はメディケア税です。課税所得の2%が自動的に差し引かれますが、417・462ビザの多くはそもそも支払う義務がありません。外すにはほとんど誰も申請しない証明書が必要です。
             </p>
             <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
               3つ目は控除で、myGovではただの空欄です。ファーム、カフェ、ホスピタリティで、申告できる項目はそれぞれ違います。
@@ -501,7 +501,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             試算した数字をお送りください。あなたの1年で何が効くのかをお伝えします。当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: '22px', maxWidth: '34ch' }}>
-            申告書は、ATOへ提出する前に登録税理士が確認して承認します。
+            申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。
           </p>
           <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
             className="btn-primary w-full sm:w-auto"

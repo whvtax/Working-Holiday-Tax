@@ -67,14 +67,14 @@ const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
-  "guaranteeBody": "Fahrer auf Lieferplattformen mit 417- und 462-Visum sind ein großer Teil unserer Arbeit, deshalb sind die Fahrtenbuchfrage und die GST-Zeile geklärt, bevor die Erklärung geschrieben wird. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
+  "guaranteeBody": "Fahrer auf Lieferplattformen mit 417- und 462-Visum sind ein großer Teil unserer Arbeit, deshalb sind die Fahrtenbuchfrage und die GST-Zeile geklärt, bevor die Erklärung geschrieben wird. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
+  "disclaimer": "Das sind allgemeine Informationen und keine individuelle Beratung zu deiner Steuersituation. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -149,11 +149,11 @@ const SECTIONS: Section[] = [
         "label": "Kilometerpauschale",
         "rows": [
           [
-            "Satz 2024-25 und 2025-26",
+            "Satz 2024/25 und 2025/26",
             "88 Cent pro km"
           ],
           [
-            "Satz ab 2026-27",
+            "Satz ab 2026/27",
             "91 Cent pro km"
           ],
           [
@@ -215,7 +215,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Bußgelder",
-        "d": "Ein Strafzettel, den du dir beim Hochtragen einer Bestellung eingefangen hast, bleibt nicht absetzbar. Ein Tempoverstoß auch nicht, so eng das Lieferfenster war."
+        "d": "Ein Strafzettel, den du dir beim Hochtragen einer Bestellung eingefangen hast, ist nicht absetzbar. Ein Tempoverstoß auch nicht, so eng das Lieferfenster war."
       },
       {
         "t": "Essen während der Arbeit",
@@ -257,9 +257,9 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was hängt daran, wie du fährst, statt an der Regel?",
     "paras": [
-      "Uber Eats, DoorDash, Menulog und Amazon Flex beauftragen dich als Selbstständigen: ABN, kein Einbehalt, keine Superannuation. Wer für eine einzelne Pizzeria im Dienstplan fährt und einen Payslip bekommt, ist angestellt, mit TFN. Ein einzelner Laden, der deine Schichten festlegt, deine Arbeit beaufsichtigt, das Rad stellt und dann eine ABN verlangt, kann ein Arbeitgeber in Verkleidung sein.",
+      "Uber Eats, DoorDash, Menulog und Amazon Flex beauftragen dich als Selbstständigen: ABN, kein Einbehalt, keine Superannuation. Wer für eine einzelne Pizzeria im Dienstplan fährt und einen Payslip bekommt, ist angestellt, mit TFN. Ein einzelner Laden, der deine Schichten festlegt, deine Arbeit beaufsichtigt, das Rad stellt und dann eine ABN verlangt, kann ein Arbeitgeber sein, der dich nur auf dem Papier selbstständig macht (Scheinselbstständigkeit).",
       "Wo die absetzbaren Fahrten beginnen, folgt daraus. Bei Angestellten ist der Weg zum Laden privat, nur Laden bis Übergabepunkt zählt. Mit ABN sind die Fahrten die Arbeit.",
-      "Der steuerliche Wohnsitz entscheidet, wie der Gewinn überhaupt besteuert wird. Britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
+      "Der steuerliche Wohnsitz entscheidet mit, wie dein Gewinn überhaupt besteuert wird. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
     ]
   }
 ]

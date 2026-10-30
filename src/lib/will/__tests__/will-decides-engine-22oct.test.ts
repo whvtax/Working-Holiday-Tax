@@ -59,7 +59,7 @@ describe('the key he names goes out in Jo\'s exact wording', () => {
       { role: 'assistant', text: 'a' }, { role: 'customer', text: 'b' }, { role: 'assistant', text: 'c' },
       { role: 'assistant', text: 'Payment received.' }, { role: 'customer', text: 'Will complete this after work' },
     ], { state: 'FORM_PENDING', paid: true }));
-    expect(out.replyText).toBe("No worries 😊 Here's the link whenever you're ready: https://workingholidaytax.com.au/tax-form");
+    expect(out.replyText).toBe("No worries 😊 Here's the link whenever you're ready: https://workingholidaytax.com.au/start");
   });
   it('no_refund_cases', async () => {
     reply('Yes, that is one of the many things we check', { approved_key: 'no_refund_cases' });
@@ -77,12 +77,12 @@ describe('the key he names goes out in Jo\'s exact wording', () => {
   it('residency_quiz_start sends the intro with question 1', async () => {
     reply('x', { approved_key: 'residency_quiz_start' });
     const out = await runEngine(input([{ role: 'assistant', text: RESIDENCY_CHECK_MSG.en.replace('{{1}}', 'Alexandra') }, { role: 'customer', text: 'would that count as 6 months?' }], { state: 'FORM_COMPLETE', paid: true }));
-    expect(out.replyText).toContain('1/5: During that tax year');
+    expect(out.replyText).toContain('1/6: During that tax year');
   });
   it('a key with no exact version in their language leaves Will\'s own words', async () => {
     reply('Merci beaucoup, avec plaisir !', { approved_key: 'later_plan' });
     const out = await runEngine(input([{ role: 'assistant', text: 'x' }, { role: 'customer', text: 'je le fais ce soir' }], { state: 'FORM_PENDING', paid: true, lang: 'fr' }));
-    expect(out.replyText).toContain('workingholidaytax.com.au/tax-form'); // fr has a later_plan line
+    expect(out.replyText).toContain('workingholidaytax.com.au/start'); // fr has a later_plan line
   });
 });
 

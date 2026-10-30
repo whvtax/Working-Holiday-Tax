@@ -17,7 +17,7 @@ const ours = (over: Partial<ProofDetails> = {}): ProofDetails => ({
 
 describe('the amount', () => {
   it('is one of the four fees (330/495 with foreign income)', () => {
-    expect(FEES_AUD).toEqual([220, 385, 330, 495]);
+    expect(FEES_AUD).toEqual([220, 385, 330, 495, 440]);
     expect(amountMatchesFee(220)).toBe(true);
     expect(amountMatchesFee(385)).toBe(true);
   });
@@ -61,7 +61,7 @@ describe('verification', () => {
   });
 
   it('a wrong amount is named with the figure', () => {
-    expect(verifyProofDetails(ours({ amountAud: 150 })).unverified).toEqual(['the amount is $150, not $220 or $385']);
+    expect(verifyProofDetails(ours({ amountAud: 150 })).unverified).toEqual(['the amount is $150, not $220, $330, $385, $440 or $495']);
   });
 
   it('a pending transfer is not verified', () => {

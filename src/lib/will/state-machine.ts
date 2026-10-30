@@ -69,8 +69,13 @@ export const TRANSITIONS: Partial<Record<CustomerState, CustomerState[]>> = {
   // and Will then quotes the price immediately. Without this the model's
   // proposal was rejected as an "invalid transition" and pushed into Tasks as a
   // CONFLICT instead of appearing as a normal draft in the chat.
-  NEW_LEAD:            ['QUALIFIED', 'PRICE_SENT', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
-  QUALIFIED:           ['PRICE_SENT', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
+  // 30 Oct (tomeka, Shane, Paige): a customer often pays from the first chat or
+  // straight after a price given in conversation, so a verified payment (or the
+  // customer's own report of one) must be able to reach PAID from any sales
+  // state. "invalid transition NEW_LEAD -> PAID" blocked three receipts. The
+  // engine still refuses a proposed PAID that has no payment report behind it.
+  NEW_LEAD:            ['QUALIFIED', 'PRICE_SENT', 'PAID', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
+  QUALIFIED:           ['PRICE_SENT', 'PAID', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
   // NOT_RELEVANT after the price too: a wrong number or spam sometimes only
   // shows itself once the price is out, and without this exit the contact was
   // chased with the whole pre-payment cadence, auto-closed as Went Cold and

@@ -16,7 +16,7 @@ import { WaLink } from '@/app/(site)/HomeWa'
 export const metadata: Metadata = {
   // Das Root-Layout hängt " | Working Holiday Tax" an, deshalb ist der Titel
   // hier kurz genug, dass das Ganze in ein mobiles Suchergebnis passt.
-  title: 'ABN im Working Holiday: was sie ändert',
+  title: 'ABN mit Working-Holiday-Visum: was sie ändert',
   description:
     'Eine ABN ändert, was deine Steuererklärung sagen muss. Rechnungen ohne Steuerabzug, Betriebsausgaben, GST und die Frage nach der Selbstständigkeit.',
   keywords: [
@@ -76,11 +76,11 @@ const THE_SPLIT = [
   {
     n: '01',
     title: 'Es wurde nichts einbehalten, die Steuer bleibt trotzdem offen',
-    body: 'Lohn kommt bei dir an, nachdem die Steuer schon abgezogen wurde. Rechnungen nicht, und die Steuer darauf wird einmal am Jahresende fällig. In einem gemischten Jahr sieht die Lohnhälfte nach Rückerstattung aus, die Rechnungshälfte nicht.',
+    body: 'Lohn kommt bei dir an, nachdem die Steuer schon abgezogen wurde. Rechnungen nicht, und die Steuer darauf wird einmal am Jahresende fällig. In einem gemischten Jahr kann die Lohnhälfte nach Erstattung aussehen, die Rechnungshälfte nicht.',
   },
   {
     n: '02',
-    title: 'Aus Werbungskosten werden Betriebsausgaben, mit anderen Regeln',
+    title: 'Aus Abzügen werden Betriebsausgaben, mit anderen Regeln',
     body: 'Als Angestellter setzt du beruflich veranlasste Kosten ab. Als Selbstständiger ziehst du die Kosten des Betriebs ab, eine breitere Kategorie mit strengeren Nachweisen.',
   },
   {
@@ -129,7 +129,7 @@ const FAQS = [
   {
     question: 'Kann ich das einfach selbst machen?',
     answer:
-      'Kannst du, und wenn dein ganzes Jahr über die Lohnabrechnung lief, ist es unkompliziert.\n\nGenau damit macht eine ABN Schluss: wo die Grenze zwischen Lohn und Rechnungseinkommen verläuft, ob du überhaupt selbstständig warst, welche Kosten vom Rechnungseinkommen abgehen, und ob du dich für GST registrieren musstest. Das sind Beurteilungen zu deinem Jahr, keine Felder zum Ausfüllen.',
+      'Kannst du, und wenn dein ganzes Jahr über die Lohnabrechnung lief, ist es unkompliziert.\n\nGenau das ändert eine ABN: wo die Grenze zwischen Lohn und Rechnungseinkommen verläuft, ob du überhaupt selbstständig warst, welche Kosten vom Rechnungseinkommen abgehen, und ob du dich für GST registrieren musstest. Das sind Beurteilungen zu deinem Jahr, keine Felder zum Ausfüllen.',
   },
   {
     question: 'Wie verändert eine ABN meine Steuererklärung?',
@@ -142,7 +142,7 @@ const FAQS = [
       'Meistens nicht, und es lohnt sich, das vor der Registrierung anzusprechen. Wenn er deinen Dienstplan macht, dir sagt, wie die Arbeit abläuft, das Werkzeug stellt und dich früher nach Hause schicken kann, wirst du wie ein Angestellter behandelt, egal was auf dem Papier steht.\n\nEine ABN verschiebt die Kosten auf dich: kein Steuerabzug, keine Superannuation, kein Unfallversicherungsschutz, kein Mindestlohn und keine Zuschläge. Schick uns die Jobdetails, bevor du etwas zusagst.',
   },
   {
-    question: 'Muss ich mich mit Working Holiday Visum für GST registrieren?',
+    question: 'Muss ich mich mit einem Working-Holiday-Visum für GST registrieren?',
     answer:
       'Nur wenn dein Umsatz 75.000 $ im Jahr erreicht, was die meisten Working Holiday Maker nicht annähernd tun, oder wenn du Rideshare fährst. Wer Taxi- oder Fahrdienstleistungen anbietet, Uber eingeschlossen, muss sich ab der ersten Fahrt für GST registrieren, egal wie wenig dabei verdient wird.\n\nFür Essenslieferungen und Kurierfahrten gilt diese Regel nicht, dort greift die Grenze von 75.000 $. Mit der Registrierung kommen vierteljährliche Business Activity Statements.',
   },
@@ -199,7 +199,7 @@ export default function ABNPageDE() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/de/abn#webpage`,
     url: `${SITE_URL}/de/abn`,
-    name: 'ABN im Working Holiday',
+    name: 'ABN mit Working-Holiday-Visum',
     description:
       'Was eine ABN an der australischen Steuererklärung eines Working Holiday Makers ändert: unversteuertes Rechnungseinkommen, Betriebsausgaben, die GST-Frage und Angestellter oder Selbstständiger.',
     inLanguage: 'de',
@@ -335,10 +335,10 @@ export default function ABNPageDE() {
             Solltest du eine ABN anmelden, weil ein Arbeitgeber danach fragt?
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
-            Nicht, bevor jemand den Job angesehen hat. Eine ABN über Arbeit, die in Wahrheit Anstellung ist, beendet
-            deine Superannuation und den Steuerabzug, streicht den Unfallversicherungsschutz und stellt dich außerhalb
-            von Mindestlohn und Zuschlägen. All das wird zu deinen Kosten. Häufig ist das in der Farmarbeit, der
-            Gastronomie, der Reinigung und auf dem Bau.
+            Nicht, bevor jemand den Job angesehen hat. Eine ABN über Arbeit, die in Wahrheit Anstellung ist, kostet
+            dich Superannuation und Steuerabzug, streicht den Unfallversicherungsschutz und schließt dich von
+            Mindestlohn und Zuschlägen aus. All das geht auf deine Kosten. Das kommt häufig in der Farmarbeit, der
+            Gastronomie, der Reinigung und auf dem Bau vor.
           </p>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '22px' }}>
             Entscheidend ist die Kontrolle, nicht das Papier. Wer bestimmt, wann du arbeitest, wer sagt, wie es gemacht
@@ -354,7 +354,7 @@ export default function ABNPageDE() {
             </svg>
             <p style={{ ...BODY, color: '#2A3C34' }}>
               <strong style={{ color: '#080F0D' }}>Schick uns den Job, bevor du dich registrierst.</strong>{' '}
-              Was die Arbeit umfasst, wer was stellt, und wie du bezahlt werden sollst. Wir sagen dir, was davon es ist.
+              Was die Arbeit umfasst, wer was stellt, und wie du bezahlt werden sollst. Wir sagen dir, ob es Anstellung oder Selbstständigkeit ist.
             </p>
           </div>
         </div>
@@ -384,7 +384,7 @@ export default function ABNPageDE() {
           </div>
 
           <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
-            Du wirst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden müssen, welches
+            Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches
             Formular welches ist. Wir regeln das direkt mit dem ATO.
           </p>
 
@@ -402,7 +402,7 @@ export default function ABNPageDE() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
+            Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
             Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.
@@ -418,8 +418,8 @@ export default function ABNPageDE() {
             Beschreib uns die Arbeit
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
-            Wem du Rechnungen schreiben würdest, was du dabei machst, und wer die Ausrüstung stellt. Das reicht uns, um
-            dir zu sagen, ob eine ABN hier überhaupt hingehört.
+            Wem du Rechnungen schreiben würdest, was du dabei machst, und wer die Ausrüstung stellt. Das reicht uns für
+            eine erste Einschätzung, ob eine ABN hier überhaupt sinnvoll ist.
           </p>
           <WaLink href={waUrl({ topic: 'abn', lang: 'de', tier: 'tfn-abn' })} position="section" topic="abn" lang="de" tier="tfn-abn"
             className="btn-primary inline-flex items-center justify-center gap-2"

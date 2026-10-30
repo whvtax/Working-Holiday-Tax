@@ -9,7 +9,7 @@ export const LONG_VI_00: Readonly<Record<string, LongText>> = {
 
 ## TFN là gì?
 
-ATO mô tả TFN là số tham chiếu cá nhân của bạn trong hệ thống thuế và hưu bổng (superannuation). TFN do ATO cấp, và xin TFN là miễn phí. Bạn không bao giờ cần trả tiền cho một trang web hay một người trung gian nào để có TFN.
+ATO mô tả TFN là số tham chiếu cá nhân của bạn trong hệ thống thuế và quỹ hưu trí (superannuation, gọi tắt là super). TFN do ATO cấp, và xin TFN là miễn phí. Bạn không bao giờ cần trả tiền cho một trang web hay một người trung gian nào để có TFN.
 
 TFN là của bạn suốt đời. ATO cho biết bạn vẫn giữ TFN kể cả khi đổi việc, đổi tên, chuyển sang bang khác hay ra nước ngoài. Vì vậy một du học sinh học xong, về nước, rồi sau đó quay lại Úc với visa mới vẫn dùng đúng mã số cũ.
 
@@ -38,7 +38,7 @@ Số thuế bị trừ thêm không mất đi. Nó được tính trừ vào s�
 
 ## Tờ khai TFN: nơi mức thuế của bạn thật sự được quyết định
 
-Nhắn TFN cho quản lý qua tin nhắn không làm thay đổi tiền lương của bạn. Điều làm thay đổi nó là tờ khai TFN (TFN declaration), mẫu đơn bạn điền khi bắt đầu mỗi công việc. Với du học sinh, có hai câu hỏi trên tờ khai quan trọng nhất:
+Chỉ nhắn TFN cho quản lý thì mức thuế trên lương của bạn không thay đổi. Điều quyết định mức thuế là tờ khai TFN (TFN declaration), mẫu đơn bạn điền khi bắt đầu mỗi công việc. Với du học sinh, có hai câu hỏi trên tờ khai quan trọng nhất:
 
 - **Bạn có phải là người cư trú về thuế ở Úc không?** Du học sinh theo học một khóa từ 6 tháng trở lên có thể là người cư trú về thuế. Điều này tùy vào hoàn cảnh của bạn, nên hãy suy nghĩ kỹ trước khi trả lời.
 - **Bạn có muốn đăng ký ngưỡng miễn thuế với nơi trả lương này không?** Chỉ người cư trú về thuế mới có ngưỡng miễn thuế. Nếu bạn có thể là người cư trú, chỉ đăng ký với một chủ lao động, thường là nơi trả cho bạn nhiều nhất.
@@ -214,7 +214,7 @@ Priya đến Úc ngày 10 tháng 2. Học kỳ bắt đầu ngày 2 tháng 3, v�
 - Cô bắt đầu đi làm ngày 21 tháng 2 và báo với chủ lao động là cô đã nộp đơn.
 - TFN của cô đến vào đầu tháng 3, nằm trong cả hai khoảng 28 ngày. Cô đưa mã số cho chủ lao động bằng tờ khai TFN, và lương của cô không bao giờ bị trừ thuế theo mức cao hơn.
 
-Nếu Priya chờ đến sau khi đi làm mới nộp đơn, cô sẽ có ít khoảng trống hơn nếu thư bị chậm. Nếu lá thư bị thất lạc, khi 28 ngày của cô hết, chủ lao động sẽ phải trừ thuế theo mức cao hơn từ các kỳ lương, đúng vào lúc cô còn phải mua sách và trả tiền nhà tháng đầu.
+Nếu Priya chờ đến khi đi làm rồi mới nộp đơn, cô sẽ có ít thời gian dự phòng hơn nếu thư bị chậm. Nếu lá thư bị thất lạc, khi 28 ngày của cô hết, chủ lao động sẽ phải trừ thuế theo mức cao hơn từ các kỳ lương, đúng vào lúc cô còn phải mua sách và trả tiền nhà tháng đầu.
 
 Bài học rất đơn giản: hãy nộp đơn ngay trong những ngày đầu, kể cả khi bạn chưa có việc. Có sẵn TFN trước khi cần đến không tốn gì và cũng chẳng có gì bất lợi.
 
@@ -360,7 +360,7 @@ Một du học sinh làm bán thời gian có thể kiếm từ $300 đến $600
 - $450 một tuần: $211.50 bị trừ thuế
 - $600 một tuần: $282 bị trừ thuế
 
-Những số này cao hơn nhiều so với số thuế mà phần lớn du học sinh phải đóng cho cả năm. Du học sinh có thể là người cư trú về thuế ở Úc không đóng thuế trên $18,200 đầu tiên trong năm, và sau đó đóng 16% trên phần thu nhập từ $18,201 đến $45,000 (mức thuế năm 2025-26). Du học sinh là người không cư trú về thuế (foreign resident) đóng 30% từ đô la đầu tiên cho đến $135,000. Cả hai đều thấp hơn 47%.
+Những số này cao hơn nhiều so với số thuế mà phần lớn du học sinh phải đóng cho cả năm. Nếu bạn có thể là người cư trú về thuế ở Úc, bạn không đóng thuế trên $18,200 đầu tiên trong năm, và sau đó đóng 16% trên phần thu nhập từ $18,201 đến $45,000 (mức thuế năm 2025-26). Du học sinh là người không cư trú về thuế (foreign resident) đóng 30% từ đô la đầu tiên cho đến $135,000. Cả hai đều thấp hơn 47%.
 
 ## Số tiền đó có mất đi không?
 
@@ -414,7 +414,7 @@ Nếu bạn có một loạt kỳ lương bị trừ 47%, hồ sơ thuế là n�
     faq: [
       { q: 'Vì sao bị trừ 47% chứ không phải 45%?', a: 'Quy tắc là mức thuế cao nhất cộng thêm Medicare levy. Trong năm 2025-26, đó là 45% cộng 2%.' },
       { q: 'Chủ lao động có trả lại phần thuế bị trừ thêm cho tôi được không?', a: 'Thường là không. Một khi thuế đã bị trừ và báo cáo, nó được tính trừ vào số thuế của bạn khi bạn nộp hồ sơ thuế.' },
-      { q: 'Tôi là người không cư trú về thuế. Mức 47% có còn áp dụng không?', a: 'Có, nếu chủ lao động không có TFN của bạn. Khi bạn đưa TFN, chủ lao động sẽ dùng mức thuế phù hợp với hoàn cảnh của bạn.' },
+      { q: 'Tôi là người không cư trú về thuế. Mức 47% có còn áp dụng không?', a: 'Không hẳn. Khi chưa có TFN, chủ lao động trừ 45% với người không cư trú về thuế (không có Medicare levy) và 47% với người cư trú. Khi bạn đưa TFN, chủ lao động sẽ dùng mức thuế phù hợp với hoàn cảnh của bạn.' },
     ],
   },
 
@@ -535,7 +535,7 @@ Bạn không cần scan hay gửi giấy tờ. ATO kiểm tra thông tin hộ ch
 TFN của bạn đến bằng thư, gửi đến địa chỉ ở Úc mà bạn khai. Hãy nghĩ xem một tháng nữa bạn sẽ ở đâu, chứ không chỉ chỗ bạn ngủ đêm đầu tiên.
 
 - **Ký túc xá của trường hoặc chỗ ở sinh viên tư nhân:** thường là lựa chọn tốt nếu bạn đặt dài hạn và tòa nhà có phòng nhận thư.
-- **Ở nhà dân bản xứ (homestay):** được, nếu chủ nhà đồng ý giữ thư giúp bạn.
+- **Ở homestay (nhà người bản xứ):** được, nếu chủ nhà đồng ý giữ thư giúp bạn.
 - **Khách sạn tạm hoặc chỗ thuê ngắn ngày:** không phải lựa chọn tốt nếu bạn sẽ rời đi trước khi thư đến.
 - **Người thân hoặc bạn bè ở Úc:** một lựa chọn tốt nếu họ có thể mở thư giúp bạn.
 
@@ -554,9 +554,9 @@ Linh bay đến Úc vào một ngày thứ Bảy, ba tuần trước khi khóa h
 - **Tuần thứ 3:** cô được nhận vào một công việc cuối tuần và báo với chủ lao động là đã nộp đơn.
 - **Tuần thứ 4:** thư TFN của cô đến. Cô đưa mã số cho chủ lao động bằng tờ khai TFN.
 
-Linh không bao giờ phải đóng thuế theo mức cao hơn, vì cô nộp đơn vào ngày thứ 3 thay vì chờ đến khi tìm được việc.
+Linh không bao giờ phải đóng thuế theo mức cao hơn, vì cô nộp đơn ngay từ thứ Hai đầu tiên thay vì chờ đến khi tìm được việc.
 
-Bạn của cô là Jun thì chờ. Anh chỉ nộp đơn khi được nhận việc vào tuần thứ 3, và khai địa chỉ một chỗ thuê ngắn ngày mà một tuần sau anh đã rời đi. Thư của anh bị thất lạc, 28 ngày với chủ lao động hết hạn, và một phần tiền lương của anh bị trừ thuế 47% trong vài tuần. Số thuế đó được tính lại khi khai thuế, nhưng anh có ít tiền hơn đúng lúc đến hạn trả tiền nhà.
+Bạn của cô là Jun thì chờ. Anh chỉ nộp đơn khi được nhận việc vào tuần thứ 3, và khai địa chỉ một chỗ thuê ngắn ngày mà một tuần sau anh đã rời đi. Thư của anh bị thất lạc, thời hạn 28 ngày với chủ lao động đã hết, và một phần tiền lương của anh bị trừ thuế 47% trong vài tuần. Số thuế đó được tính lại khi khai thuế, nhưng anh có ít tiền hơn đúng lúc đến hạn trả tiền nhà.
 
 ## Các câu hỏi trên tờ khai TFN đầu tiên
 
@@ -661,7 +661,7 @@ Nếu có kỳ lương bị trừ thuế theo mức cao hơn, mọi thứ sẽ �
     faq: [
       { q: 'Người khác có gọi ATO giúp tôi được không?', a: 'Nếu bạn dùng dịch vụ của một đại lý thuế đã đăng ký, họ có thể thay bạn liên hệ ATO. Còn không, thường bạn sẽ phải tự xác nhận danh tính của mình.' },
       { q: 'TFN bị chậm có ảnh hưởng đến visa của tôi không?', a: 'TFN là vấn đề thuế. Với mọi câu hỏi về visa, hãy kiểm tra với Bộ Nội vụ (Department of Home Affairs).' },
-      { q: 'Chủ lao động nói tôi phải đưa TFN ngay, không thì nghỉ làm. Tôi phải làm sao?', a: 'Hãy giải thích rằng bạn đã nộp đơn và đưa họ xem mã số biên nhận. Quy định về thuế cho 28 ngày để đưa mã số, sau đó chủ lao động chỉ cần trừ thuế theo mức cao hơn.' },
+      { q: 'Chủ lao động nói tôi phải đưa TFN ngay, không thì nghỉ làm. Tôi phải làm sao?', a: 'Hãy giải thích rằng bạn đã nộp đơn và đưa họ xem mã số biên nhận. Quy định về thuế cho 28 ngày để đưa mã số, sau đó chủ lao động buộc phải trừ thuế theo mức cao hơn.' },
     ],
   },
 
@@ -709,7 +709,7 @@ Trong năm 2025-26, người cư trú về thuế không đóng thuế trên $18
 
 ## Còn tiền super thì sao?
 
-Tiền super từ mọi công việc của bạn đều gắn với TFN, nên nó đi theo bạn qua các visa. Bạn không thể rút super dưới dạng khoản chi trả super khi rời Úc (DASP) khi bạn vẫn còn một visa đang có hiệu lực. DASP chỉ dành cho người có visa tạm trú đã hết hiệu lực và đã rời khỏi Úc.
+Tiền super từ mọi công việc của bạn đều gắn với TFN, nên nó đi theo bạn qua các visa. Bạn không thể rút super qua khoản chi trả super cho người rời Úc (DASP) khi vẫn còn một visa đang có hiệu lực. DASP chỉ dành cho người có visa tạm trú đã hết hiệu lực và đã rời khỏi Úc.
 
 Vì vậy nếu bạn chuyển thẳng từ visa du học sang visa 485, tiền super của bạn chỉ đơn giản là vẫn nằm trong quỹ. Đây là lúc thích hợp để kiểm tra super trên mạng và xem bạn có nhiều hơn một tài khoản không.
 
@@ -752,7 +752,7 @@ Nếu bạn có một năm cần khai thuế, hay một năm cũ vẫn còn đ�
     title: 'Mất TFN? Du học sinh có thể tìm lại ở đâu',
     description: 'TFN theo bạn suốt đời, nên mất mã số thì chỉ cần tìm lại, không cần xin mới. Những nơi du học sinh có thể tìm thấy TFN, làm gì nếu bị đánh cắp, và cách cất giữ an toàn.',
     answer: 'TFN là của bạn suốt đời, nên bạn tìm lại chứ không xin mới. ATO cho biết bạn có thể xem TFN trong dịch vụ trực tuyến của ATO qua myGov, hoặc tìm thấy nó trên thông báo tính thuế, bảng kê thu nhập hoặc bảng tóm tắt thu nhập, thư của ATO, hay bảng sao kê super.',
-    body: `Nhiều du học sinh không còn nhớ mã số thuế của mình. Lá thư nằm trong một tập hồ sơ ở căn phòng đầu tiên, mà căn phòng đó là từ hai lần chuyển nhà trước. Tin tốt là TFN của bạn không bao giờ thay đổi và xuất hiện ở nhiều chỗ hơn bạn nghĩ. Bài này chỉ cho bạn nên tìm ở đâu, từng bước một.
+    body: `Nhiều du học sinh không còn nhớ mã số thuế của mình. Lá thư nằm trong một tập hồ sơ ở căn phòng đầu tiên, cách đây đã hai lần chuyển nhà. Tin tốt là TFN của bạn không bao giờ thay đổi và xuất hiện ở nhiều chỗ hơn bạn nghĩ. Bài này chỉ cho bạn nên tìm ở đâu, từng bước một.
 
 ## Vì sao không nên xin lại
 
@@ -807,7 +807,7 @@ Hana hoàn toàn không cần TFN mới. Cô còn phát hiện ra một năm v�
 Có hai thời điểm khiến việc mất TFN trở thành vấn đề thật sự:
 
 - **Một công việc mới.** Nếu không có TFN, và bạn cũng không báo với chủ lao động là đã nộp đơn, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy, tức là 47% trong năm 2025-26.
-- **Rời khỏi Úc.** TFN không bắt buộc trong đơn xin DASP để rút super, nhưng nó giúp liên kết các tài khoản của bạn. Hãy tìm lại trước khi bay, khi việc đăng nhập myGov còn dễ dàng.
+- **Rời khỏi Úc.** TFN giúp liên kết các tài khoản super và hồ sơ của bạn với nhau. Hãy tìm lại trước khi bay, khi việc đăng nhập myGov còn dễ dàng.
 
 Khi đã tìm lại được, hãy giữ nó an toàn:
 
@@ -863,20 +863,20 @@ Trong hồ sơ thuế, thu nhập ABN và tiền lương được cộng lại v
 - Cộng thêm tiền lương và các khoản thu nhập khác.
 - Thuế được tính trên tổng số, theo mức thuế áp dụng cho bạn.
 
-Trong năm 2025-26, du học sinh có thể là người cư trú về thuế ở Úc không đóng thuế trên $18,200 đầu tiên, sau đó đóng 16% cho phần từ $18,201 đến $45,000, và 30% cho phần từ $45,001 đến $135,000. Người không cư trú về thuế (foreign resident) đóng 30% từ đô la đầu tiên cho đến $135,000, không có ngưỡng miễn thuế.
+Trong năm 2025-26, nếu bạn có thể là người cư trú về thuế ở Úc, bạn không đóng thuế trên $18,200 đầu tiên, sau đó đóng 16% cho phần từ $18,201 đến $45,000, và 30% cho phần từ $45,001 đến $135,000. Người không cư trú về thuế (foreign resident) đóng 30% từ đô la đầu tiên cho đến $135,000, không có ngưỡng miễn thuế.
 
 ## Ví dụ
 
-Anh giao đồ ăn qua ứng dụng và còn làm ở một tiệm bánh. Trong năm 2025-26:
+Hà giao đồ ăn qua ứng dụng và còn làm ở một tiệm bánh. Trong năm 2025-26:
 
 - Thu nhập giao hàng: $14,000, không bị trừ thuế
 - Chi phí kinh doanh cô được khấu trừ: $3,000, nên thu nhập kinh doanh của cô là $11,000
 - Lương ở tiệm bánh: $16,000, đã bị tiệm bánh trừ thuế
 - Thu nhập chịu thuế: $27,000
 
-Nếu Anh có thể là người cư trú về thuế: $27,000 trừ $18,200 là $8,800, tính thuế 16%, tức là $1,408. Khoản giảm thuế cho thu nhập thấp (low income tax offset), tối đa $700, giảm số này xuống còn $708. Số thuế tiệm bánh đã trừ được tính trừ vào đó. Nếu tiệm bánh đã trừ ít hơn $708, cô sẽ phải đóng thêm. Medicare levy là một câu hỏi riêng; nhiều du học sinh có thể xin miễn bằng giấy Medicare Entitlement Statement.
+Nếu Hà có thể là người cư trú về thuế: $27,000 trừ $18,200 là $8,800, tính thuế 16%, tức là $1,408. Khoản giảm thuế cho thu nhập thấp (low income tax offset), tối đa $700, giảm số này xuống còn $708. Số thuế tiệm bánh đã trừ được tính trừ vào đó. Nếu tiệm bánh đã trừ ít hơn $708, cô sẽ phải đóng thêm. Medicare levy là một câu hỏi riêng; nhiều du học sinh có thể xin miễn bằng giấy Medicare Entitlement Statement.
 
-Nếu Anh là người không cư trú về thuế: 30% của $27,000 là $8,100, và không được áp dụng khoản giảm thuế cho thu nhập thấp.
+Nếu Hà là người không cư trú về thuế: 30% của $27,000 là $8,100, và không được áp dụng khoản giảm thuế cho thu nhập thấp.
 
 ## Bạn được khấu trừ những chi phí kinh doanh nào?
 

@@ -318,9 +318,9 @@ export function paymentLinkMessage(step: 'offer' | 'name' | 'ready', lang?: stri
  * NO SUPER (DASP) SERVICE FOR NOW (Jo, 25 Oct).
  */
 export const NO_DASP_MSG: Record<'en' | 'de' | 'ja', string> = {
-  en: `At the moment we don't offer a superannuation (DASP) service, though we may add it in the future. We're happy to take care of your tax return.`,
-  de: `Eine Superannuation-Rückforderung (DASP) bieten wir im Moment leider nicht an, vielleicht aber in Zukunft. Um deine Steuererklärung kümmern wir uns gerne.`,
-  ja: `申し訳ありませんが、現在スーパーアニュエーション（DASP）の申請サービスは行っておりません。今後提供する可能性はあります。タックスリターンについては喜んでお手伝いいたします。`,
+  en: `Unfortunately our superannuation (DASP) service is not available at the moment. We're happy to take care of your tax return.`,
+  de: `Unser Superannuation-Service (DASP) ist im Moment leider nicht verfügbar. Um deine Steuererklärung kümmern wir uns gerne.`,
+  ja: `申し訳ありませんが、スーパーアニュエーション（DASP）のサービスは現在ご利用いただけません。タックスリターンについては喜んでお手伝いいたします。`,
 };
 export function noDaspMessage(lang?: string | null): string | null {
   const k = (lang ?? 'en').toLowerCase().slice(0, 2);
@@ -351,7 +351,7 @@ export function quotesOtherPrice(text: string): boolean {
   const t = text ?? '';
   if (!/\b(?:told|said|saw|seen|heard|read|quoted|advertis\w*|start(?:s|ing)? (?:from|at)|cost|costs|price|prices|charge|only|cheaper|gesagt|gesehen|kostet|preis|ab|言われ|見た|料金)\b|言われ|見まし|料金/i.test(t)) return false;
   const amounts = [...t.matchAll(/(?:\$|A\$|AUD\s?|€)\s?(\d{2,4})\b|\b(\d{2,4})\s?(?:dollars?|aud|euros?|ドル)\b/gi)].map((m) => Number(m[1] ?? m[2]));
-  return amounts.length > 0 && amounts.some((a) => ![220, 385, 330, 495, 110].includes(a));
+  return amounts.length > 0 && amounts.some((a) => ![220, 385, 330, 440, 495, 110].includes(a));
 }
 
 /** A reply that tells the customer the bank document is not needed. */
@@ -378,13 +378,13 @@ export const PROFESSIONAL_QUESTION_MSG: Record<Lang, string> = PRE_PAYMENT_CHECK
  *  an interactive button. Same destination either way, just two different
  *  ways WhatsApp lets a link be tapped. */
 export const PAYMENT_RECEIVED_MSG: Record<Lang, string> = {
-  en: `Payment received.\n\nPlease fill out this quick form so we can start reviewing your situation.\n\nOnce you've submitted it, we'll go through everything and get back to you within 24 hours.\n\nhttps://workingholidaytax.com.au/tax-form`,
-  de: 'Zahlung erhalten.\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation starten können.\n\nSobald du es abgeschickt hast, gehen wir alles durch und melden uns innerhalb von 24 Stunden bei dir.\n\nhttps://workingholidaytax.com.au/tax-form',
-  ja: 'お支払いを確認しました。\n\nご状況の確認を始められるよう、こちらの簡単なフォームにご記入ください。\n\nご送信いただいたら、すべて確認のうえ24時間以内にご連絡します。\n\nhttps://workingholidaytax.com.au/tax-form',
-  es: 'Pago recibido.\n\nRellena este formulario rápido para que podamos empezar a revisar tu situación.\n\nEn cuanto lo envíes, revisamos todo y te respondemos en 24 horas.\n\nhttps://workingholidaytax.com.au/tax-form',
-  fr: 'Paiement bien reçu.\n\nRemplis ce court formulaire pour que nous puissions commencer à examiner ta situation.\n\nDès que tu l\'as envoyé, nous passons tout en revue et revenons vers toi sous 24 heures.\n\nhttps://workingholidaytax.com.au/tax-form',
-  it: 'Pagamento ricevuto.\n\nCompila questo breve modulo così possiamo iniziare a esaminare la tua situazione.\n\nUna volta inviato, controlliamo tutto e ti rispondiamo entro 24 ore.\n\nhttps://workingholidaytax.com.au/tax-form',
-  pt: 'Pagamento recebido.\n\nPreenche este formulário rápido para podermos começar a analisar a tua situação.\n\nAssim que o enviares, vemos tudo e respondemos dentro de 24 horas.\n\nhttps://workingholidaytax.com.au/tax-form',
+  en: `Payment received.\n\nPlease fill out this quick form so we can start reviewing your situation.\n\nOnce you've submitted it, we'll go through everything and get back to you within 24 hours.\n\nhttps://workingholidaytax.com.au/start`,
+  de: 'Zahlung erhalten.\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation starten können.\n\nSobald du es abgeschickt hast, gehen wir alles durch und melden uns innerhalb von 24 Stunden bei dir.\n\nhttps://workingholidaytax.com.au/start',
+  ja: 'お支払いを確認しました。\n\nご状況の確認を始められるよう、こちらの簡単なフォームにご記入ください。\n\nご送信いただいたら、すべて確認のうえ24時間以内にご連絡します。\n\nhttps://workingholidaytax.com.au/start',
+  es: 'Pago recibido.\n\nRellena este formulario rápido para que podamos empezar a revisar tu situación.\n\nEn cuanto lo envíes, revisamos todo y te respondemos en 24 horas.\n\nhttps://workingholidaytax.com.au/start',
+  fr: 'Paiement bien reçu.\n\nRemplis ce court formulaire pour que nous puissions commencer à examiner ta situation.\n\nDès que tu l\'as envoyé, nous passons tout en revue et revenons vers toi sous 24 heures.\n\nhttps://workingholidaytax.com.au/start',
+  it: 'Pagamento ricevuto.\n\nCompila questo breve modulo così possiamo iniziare a esaminare la tua situazione.\n\nUna volta inviato, controlliamo tutto e ti rispondiamo entro 24 ore.\n\nhttps://workingholidaytax.com.au/start',
+  pt: 'Pagamento recebido.\n\nPreenche este formulário rápido para podermos começar a analisar a tua situação.\n\nAssim que o enviares, vemos tudo e respondemos dentro de 24 horas.\n\nhttps://workingholidaytax.com.au/start',
 };
 
 export function paymentReceivedMessage(lang?: string | null): string {
@@ -667,9 +667,9 @@ export const LODGED_CONFIRMATION_MSG: Record<'en' | 'de' | 'ja', string> = {
  *  audit: "your refund should arrive within 14 business days" went to two
  *  customers with a tax bill). Library key lodged_payable / lodged_payable_<lang>. */
 export const LODGED_PAYABLE_MSG: Record<'en' | 'de' | 'ja', string> = {
-  en: `Your tax return has been lodged successfully! ✅\nWe'll message you again in about two weeks and walk you through how to pay. Nothing to do until then 😊`,
-  de: 'Deine Steuererklärung wurde erfolgreich eingereicht! ✅\nWir melden uns in etwa zwei Wochen wieder bei dir und erklären dir, wie du bezahlst. Bis dahin musst du nichts tun 😊',
-  ja: 'あなたの確定申告書の提出が完了しました！✅\n約2週間後にこちらから改めてご連絡し、お支払い方法をご案内します。それまでは何もしていただく必要はありません😊',
+  en: `Your tax return has been lodged successfully! ✅\nWithin 14 days you will receive an email from the ATO with the payment request and how to pay. If it has not arrived, just message us here and we will send it to you directly 😊`,
+  de: 'Deine Steuererklärung wurde erfolgreich eingereicht! ✅\nInnerhalb von 14 Tagen bekommst du eine E-Mail vom ATO mit der Zahlungsaufforderung und der Anleitung zur Zahlung. Falls sie nicht ankommt, schreib uns einfach hier, dann schicken wir sie dir direkt 😊',
+  ja: 'あなたの確定申告書の提出が完了しました！✅\n14日以内にATOから、お支払いの請求とお支払い方法についてのメールが届きます。届かない場合は、こちらにメッセージをいただければ、直接お送りします😊',
 };
 export function lodgedPayableMessage(lang?: string | null): string {
   const key = (lang && lang in LODGED_PAYABLE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
@@ -838,9 +838,9 @@ export const SYSTEM_MESSAGE_FAMILIES = {
 // ============================================================
 export const RESIDENCY_CHECK_MSG: Record<'en' | 'de' | 'ja', string> = {
   // Jo, 25 Oct: "for tax purposes", short paragraphs, no line about the refund.
-  en: `Hi {{1}},\n\nI went through your details and saw you marked yourself as a Working Holiday Maker for tax purposes.\n\nBefore we start on your tax return, could you please double-check this page on who counts as an Australian tax resident?\n\nhttps://workingholidaytax.com.au/tax-residency\n\nIs your answer still correct?`,
-  de: `Hi {{1}},\n\nich habe deine Angaben durchgesehen und gesehen, dass du dich steuerlich als Working Holiday Maker eingetragen hast.\n\nBevor wir mit deiner Steuererklärung anfangen, schau bitte noch einmal auf diese Seite, wer in Australien als steuerlich ansässig gilt:\n\nhttps://workingholidaytax.com.au/de/tax-residency\n\nIst deine Angabe noch richtig?`,
-  ja: `こんにちは、{{1}}さん。\n\nご入力内容を確認したところ、税務上ワーキングホリデーメーカーを選択されていました。\n\n申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？\n\nhttps://workingholidaytax.com.au/ja/tax-residency\n\nご回答は正しいままでよろしいですか？`,
+  en: `Hi {{1}},\n\nI went through your details and saw you marked yourself as a Working Holiday Maker for tax purposes.\n\nBefore we start on your tax return, could you please double-check this page on who counts as an Australian tax resident?\n\nhttps://workingholidaytax.com.au/y8vwp4bf7\n\nIs your answer still correct?`,
+  de: `Hi {{1}},\n\nich habe deine Angaben durchgesehen und gesehen, dass du dich steuerlich als Working Holiday Maker eingetragen hast.\n\nBevor wir mit deiner Steuererklärung anfangen, schau bitte noch einmal auf diese Seite, wer in Australien als steuerlich ansässig gilt:\n\nhttps://workingholidaytax.com.au/de/y8vwp4bf7\n\nIst deine Angabe noch richtig?`,
+  ja: `こんにちは、{{1}}さん。\n\nご入力内容を確認したところ、税務上ワーキングホリデーメーカーを選択されていました。\n\n申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？\n\nhttps://workingholidaytax.com.au/ja/y8vwp4bf7\n\nご回答は正しいままでよろしいですか？`,
 };
 export const RESIDENCY_CHECK_TEMPLATE = 'residency_check';
 export function residencyCheckMessage(lang: string | null | undefined, firstName: string): string {

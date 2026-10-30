@@ -48,7 +48,7 @@ Emma đến từ Manchester. Cô đang học thạc sĩ hai năm ở Melbourne, 
 - Thuế thu nhập năm 2025-26 theo mức của người cư trú: không đóng thuế trên $18,200 đầu tiên, sau đó 16% trên $21,800 phía trên, tức là $3,488 trước khi tính các khoản giảm thuế. Khoản giảm thuế cho thu nhập thấp có thể làm số này giảm xuống.
 - Medicare levy 2% của $40,000: $800.
 
-Một du học sinh đến từ nước không có hiệp định, với cùng mức thu nhập, có thể xin miễn bằng Medicare Entitlement Statement và không phải đóng $800 đó. Emma thường thì không được, vì cô có quyền hưởng Medicare. Người có thu nhập thấp hơn có thể được giảm Medicare levy, nên số tiền chính xác tùy vào con số của riêng bạn.
+Một du học sinh đến từ nước không có hiệp định, với cùng mức thu nhập, có thể xin miễn bằng Medicare Entitlement Statement và không phải đóng $800 đó. Emma thường không xin được, vì cô có quyền hưởng Medicare. Người có thu nhập thấp hơn có thể được giảm Medicare levy, nên số tiền chính xác tùy vào con số của riêng bạn.
 
 ## Nếu bạn là người không cư trú về thuế thì sao?
 
@@ -56,7 +56,7 @@ Không phải du học sinh nào cũng là người cư trú về thuế. Một 
 
 ATO liệt kê người không cư trú về thuế là một trong các diện được miễn Medicare levy. ATO cũng cho biết nếu bạn không phải là người cư trú về thuế ở Úc trong suốt cả năm 2025-26, bạn có thể được miễn. Vì vậy câu hỏi về Medicare levy trước hết phụ thuộc vào tình trạng cư trú về thuế của bạn trong năm, sau đó mới đến quyền hưởng Medicare.
 
-Người không cư trú về thuế không có ngưỡng miễn thuế. Trong năm 2025-26, họ đóng 30% từ đô la đầu tiên cho đến $135,000. Vì thế câu trả lời về cư trú quan trọng hơn nhiều so với Medicare levy.
+Người không cư trú về thuế không có ngưỡng miễn thuế. Trong năm 2025-26, họ đóng 30% từ đồng đầu tiên cho đến $135,000. Vì thế câu trả lời về cư trú quan trọng hơn nhiều so với Medicare levy.
 
 ## Những lỗi du học sinh Anh hay mắc
 
@@ -141,7 +141,7 @@ Nếu Lukas không có quyền hưởng Medicare và có Medicare Entitlement St
 
 Một số du học sinh, ví dụ học khóa ngắn, có thể là người không cư trú về thuế (foreign resident). ATO liệt kê người không cư trú về thuế là một diện miễn Medicare levy riêng.
 
-Người không cư trú về thuế cũng không có ngưỡng miễn thuế. Trong năm 2025-26, họ đóng 30% từ đô la đầu tiên cho đến $135,000. Vì vậy hãy xem tình trạng cư trú của bạn trước. Câu hỏi về Medicare levy đến sau.
+Người không cư trú về thuế cũng không có ngưỡng miễn thuế. Trong năm 2025-26, họ đóng 30% từ đồng đầu tiên cho đến $135,000. Vì vậy hãy xem tình trạng cư trú của bạn trước. Câu hỏi về Medicare levy đến sau.
 
 ## Bạn nên làm gì tiếp theo
 
@@ -160,7 +160,7 @@ Nếu bạn muốn được giúp, Student Visa Tax có thể kiểm tra tình t
     ],
   },
   'oshc-what-it-covers-international-students': {
-    title: 'OSHC chi trả những gì khi có visa du học, và không chi trả gì',
+    title: 'OSHC chi trả những gì khi có visa du học, và không chi trả những gì',
     description: 'OSHC giúp chi trả chi phí nằm viện, khám bệnh và xe cứu thương, nhưng giới hạn tiền thuốc và không chi trả nha khoa, mắt kính hay vật lý trị liệu. Hướng dẫn dễ hiểu cho du học sinh.',
     answer: 'OSHC giúp chi trả chi phí nằm viện và khám chữa bệnh ở Úc và có bao gồm xe cứu thương, nhưng tiền thuốc bị giới hạn và OSHC không chi trả các dịch vụ ngoài như nha khoa, mắt kính hay vật lý trị liệu. Bạn phải giữ OSHC trong suốt thời gian mà visa du học yêu cầu.',
     body: `Bảo hiểm y tế cho du học sinh (OSHC) là loại bảo hiểm mà phần lớn du học sinh ở Úc đang có. Có lẽ bạn đã mua nó cùng lúc với visa, và có thể bạn chưa bao giờ đọc hợp đồng. Bài này giải thích bằng lời đơn giản OSHC chi trả những gì, đâu là những khoảng trống, và nó liên quan thế nào đến hồ sơ thuế của bạn.
@@ -397,7 +397,7 @@ Một ví dụ ngắn. Mei có thể là người cư trú về thuế trong nă
 Khi bạn sẵn sàng nộp hồ sơ thuế, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
       { q: 'Tôi có thể dùng bảo hiểm du lịch thay cho OSHC không?', a: 'Không. Home Affairs cho biết người có visa du học phải có OSHC khi ở Úc. Bảo hiểm du lịch là một sản phẩm khác và không thay thế được OSHC.' },
-      { q: 'OSHC có bảo hiểm cho tôi khi đi du lịch nước ngoài không?', a: 'OSHC dành cho khám chữa bệnh và nằm viện ở Úc. Nếu bạn đi ra ngoài nước Úc, hãy kiểm tra xem bạn cần thêm loại bảo hiểm nào.' },
+      { q: 'OSHC có chi trả cho tôi khi đi du lịch nước ngoài không?', a: 'OSHC dành cho khám chữa bệnh và nằm viện ở Úc. Nếu bạn đi ra ngoài nước Úc, hãy kiểm tra xem bạn cần thêm loại bảo hiểm nào.' },
       { q: 'Phí bảo hiểm có được khấu trừ thuế cho du học sinh không?', a: 'Bảo hiểm y tế và bảo hiểm du lịch là chi phí cá nhân, không phải chi phí công việc, nên thường không được kê khai là khoản khấu trừ liên quan đến công việc. Điều quan trọng khi khai thuế là tình trạng Medicare của bạn.' },
     ],
   },
@@ -498,7 +498,7 @@ Lương theo sản phẩm (piece rate) nghĩa là bạn được trả theo số
 
 Fair Work cho biết từ kỳ lương đầu tiên bắt đầu vào hoặc sau ngày 28/4/2022, người làm theo sản phẩm phải nhận ít nhất mức lương tối thiểu bảo đảm. Người làm theo sản phẩm dù là toàn thời gian, bán thời gian hay casual đều có mức bảo đảm này cho mỗi ngày làm việc.
 
-Với nhân viên casual, mức lương giờ bảo đảm đã gồm 25% phụ cấp casual (casual loading). Vì vậy vào một ngày ít trái, nếu tiền theo sản phẩm của bạn thấp hơn mức bảo đảm cho số giờ đã làm, chủ lao động phải bù phần chênh lệch.
+Với nhân viên casual, mức lương giờ bảo đảm đã gồm 25% phụ cấp casual (casual loading). Nghĩa là vào một ngày ít trái, nếu tiền theo sản phẩm của bạn thấp hơn mức bảo đảm cho số giờ đã làm, chủ lao động phải bù phần chênh lệch.
 
 ## Một ví dụ đơn giản
 
@@ -738,14 +738,14 @@ Khi bạn sẵn sàng làm hồ sơ thuế, bạn có thể nhắn cho Student V
     ],
   },
   'late-tax-return-penalty-dollars-students': {
-    title: 'Nộp hồ sơ thuế trễ bị phạt bao nhiêu tiền: hướng dẫn cho du học sinh',
+    title: 'Nộp hồ sơ thuế trễ bị phạt bao nhiêu: hướng dẫn cho du học sinh',
     description: 'Tiền phạt nộp hồ sơ trễ của ATO được tính thế nào: theo từng khoảng 28 ngày, đơn vị phạt $364 từ 1/7/2026, mức tối đa $1,820, và cách xin miễn giảm.',
     answer: 'Tiền phạt nộp hồ sơ trễ của ATO là một đơn vị phạt cho mỗi 28 ngày, hoặc một phần của 28 ngày, mà hồ sơ bị trễ, tối đa 5 đơn vị với cá nhân. Với hồ sơ nộp trễ từ ngày 1/7/2026, một đơn vị phạt là $364, nên mức tối đa là $1,820, nhưng ATO cho biết nhìn chung họ không phạt khi việc nộp trễ chỉ là trường hợp cá biệt.',
     body: `Nếu bạn là du học sinh và hồ sơ thuế của bạn bị trễ, có lẽ bạn chỉ muốn biết một điều: chuyện này có thể tốn bao nhiêu tiền? Bài này trình bày các con số từng bước, và giải thích vì sao phần lớn du học sinh nộp ngay sau hạn chót không bao giờ bị phạt.
 
 ## Khi nào hồ sơ thuế của du học sinh bị coi là trễ?
 
-Hạn chót thông thường cho người tự nộp hồ sơ là ngày 31 tháng 10. Năm 2026, ngày 31 tháng 10 là thứ Bảy, nên ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày thứ Hai 2 tháng 11 năm 2026 cho hồ sơ năm 2025-26.
+Hạn chót cho người tự nộp hồ sơ là ngày 31 tháng 10. ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026 cho hồ sơ năm 2025-26.
 
 Nếu bạn khai qua một đại lý thuế đã đăng ký, bạn có thể được nộp muộn hơn, nhưng chỉ khi bạn liên hệ đại lý thuế trước ngày 31 tháng 10. Có một ngoại lệ: nếu đến ngày 30/6/2026 bạn vẫn còn hồ sơ của các năm trước chưa nộp, thì hồ sơ năm 2025-26 của bạn nhìn chung phải nộp trước ngày 31/10/2026, kể cả khi khai qua đại lý thuế.
 
@@ -778,7 +778,7 @@ Hãy cập nhật thông tin liên lạc trong myGov, gồm email, số điện 
 
 ## Một ví dụ cụ thể
 
-Hana là du học sinh Nhật Bản đang học ở Perth. Cô quên hồ sơ năm 2025-26 và nộp vào ngày 15 tháng 1 năm 2027, khoảng 10 tuần sau hạn chót ngày 2 tháng 11.
+Hana là du học sinh Nhật Bản đang học ở Perth. Cô quên hồ sơ năm 2025-26 và nộp vào ngày 15 tháng 1 năm 2027, khoảng 10 tuần sau hạn chót ngày 31 tháng 10.
 
 - Số ngày trễ: khoảng 74 ngày, tức là 3 khoảng 28 ngày hoặc một phần của 28 ngày.
 - Tiền phạt có thể có: 3 đơn vị x $364 = $1,092.
@@ -818,13 +818,13 @@ Nếu bạn muốn được giúp nộp bù hồ sơ bị trễ, bạn có thể
   },
   'tax-deadline-final-week-checklist-students': {
     title: 'Tuần cuối trước hạn khai thuế: danh sách kiểm tra cho du học sinh',
-    description: 'Tự nộp hồ sơ năm 2025-26 trước thứ Hai 2/11/2026? Danh sách kiểm tra từng bước cho du học sinh: thu nhập, cư trú về thuế, Medicare, tài khoản ngân hàng và nhiều hơn nữa.',
-    answer: 'Nếu bạn tự nộp hồ sơ năm 2025-26, bạn có thời hạn đến 11:59 tối giờ địa phương ngày thứ Hai 2 tháng 11 năm 2026, vì ngày 31 tháng 10 rơi vào thứ Bảy. Trong tuần cuối, hãy kiểm tra bảng kê thu nhập, tình trạng cư trú về thuế, tình trạng Medicare và thông tin ngân hàng trước khi nộp.',
+    description: 'Tự nộp hồ sơ năm 2025-26 trước ngày 31/10/2026? Danh sách kiểm tra từng bước cho du học sinh: thu nhập, cư trú về thuế, Medicare, tài khoản ngân hàng và nhiều hơn nữa.',
+    answer: 'Nếu bạn tự nộp hồ sơ năm 2025-26, bạn có thời hạn đến 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026. Trong tuần cuối, hãy kiểm tra bảng kê thu nhập, tình trạng cư trú về thuế, tình trạng Medicare và thông tin ngân hàng trước khi nộp.',
     body: `Hạn khai thuế đã gần kề. Nếu bạn là du học sinh tự nộp hồ sơ năm 2025-26, danh sách kiểm tra này giúp bạn tận dụng tốt những ngày cuối. Mục đích không phải là làm vội. Mục đích là làm đúng ngay từ lần đầu, để sau này không phải sửa lại.
 
 ## Hạn chót chính xác là khi nào?
 
-Hạn chót thông thường cho người tự nộp hồ sơ là ngày 31 tháng 10. Năm 2026, ngày 31 tháng 10 là thứ Bảy. ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày thứ Hai 2 tháng 11 năm 2026.
+Hạn chót cho người tự nộp hồ sơ là ngày 31 tháng 10. ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026.
 
 Hồ sơ năm 2025-26 gồm thu nhập từ ngày 1/7/2025 đến 30/6/2026. Nếu bạn muốn khai qua một đại lý thuế đã đăng ký, hãy liên hệ đại lý thuế trước ngày 31 tháng 10. Đại lý thuế phải thêm khách hàng mới vào danh sách của họ trước ngày 31 tháng 10. Nếu đến ngày 30/6/2026 bạn vẫn còn hồ sơ của các năm trước chưa nộp, thì hồ sơ năm 2025-26 của bạn nhìn chung phải nộp trước ngày 31/10/2026, kể cả khi khai qua đại lý thuế.
 
@@ -847,7 +847,7 @@ Nếu thiếu một công việc, hãy liên hệ chủ lao động ngay hôm na
 Câu trả lời làm thay đổi rất nhiều. Trong năm 2025-26:
 
 - Người cư trú về thuế không đóng thuế trên $18,200 đầu tiên, sau đó đóng 16% cho phần từ $18,201 đến $45,000, 30% cho phần từ $45,001 đến $135,000, 37% cho phần từ $135,001 đến $190,000 và 45% cho phần trên $190,000.
-- Người không cư trú về thuế (foreign resident) đóng 30% từ đô la đầu tiên cho đến $135,000, sau đó 37%, rồi 45%, và không có ngưỡng miễn thuế.
+- Người không cư trú về thuế (foreign resident) đóng 30% từ đồng đầu tiên cho đến $135,000, sau đó 37%, rồi 45%, và không có ngưỡng miễn thuế.
 
 **Một ví dụ cụ thể.** Nguyên học một khóa diploma hai năm ở Sydney và có thể là người cư trú về thuế. Thu nhập chịu thuế của anh trong năm 2025-26 là $25,000.
 
@@ -886,17 +886,17 @@ Hãy nộp càng sớm càng tốt, kể cả sau hạn chót. Tiền phạt n�
 - Mọi khoản khấu trừ đều có chứng từ.
 - Đã khai đủ thu nhập ABN, tiền lãi ngân hàng và mọi công việc.
 - Thông tin tài khoản ngân hàng ở Úc là đúng.
-- Bạn nộp hồ sơ trước 11:59 tối giờ địa phương ngày thứ Hai 2 tháng 11 năm 2026.
+- Bạn nộp hồ sơ trước 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026.
 
 Nếu bạn muốn có người kiểm tra giúp, bạn có thể nhắn cho Student Visa Tax qua WhatsApp trước ngày 31 tháng 10.`,
     faq: [
-      { q: 'Hạn chót năm 2026 thật sự là ngày 2 tháng 11 sao?', a: 'Với người tự nộp hồ sơ thì đúng vậy. ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày thứ Hai 2 tháng 11 năm 2026, vì ngày 31 tháng 10 là thứ Bảy.' },
+      { q: 'Hạn chót năm 2026 thật sự là ngày 31 tháng 10 sao?', a: 'Với người tự nộp hồ sơ thì đúng vậy. ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026.' },
       { q: 'Tôi có thể nộp trước khi bảng kê thu nhập hiện “Tax ready” không?', a: 'ATO khuyên nên chờ đến khi bảng kê hiện “Tax ready”. Nếu bạn nộp sớm và các con số thay đổi, có thể bạn sẽ phải sửa lại hồ sơ.' },
       { q: 'Medicare Entitlement Statement của tôi chưa đến. Tôi nên làm gì?', a: 'ATO khuyên nên chờ có giấy rồi mới nộp hồ sơ. Đừng xin miễn khi chưa có giấy.' },
     ],
   },
   'understating-income-ato-penalty-students': {
-    title: 'Khai thiếu thu nhập trong hồ sơ thuế? Mức phạt của ATO cho du học sinh',
+    title: 'Khai thiếu thu nhập? Mức phạt của ATO cho du học sinh',
     description: 'Quên khai một công việc, tiền mặt hay thu nhập ABN? Mức phạt 25%, 50% hoặc 75% trên phần thuế thiếu của ATO được tính thế nào, và vì sao tự báo cho ATO thường giúp giảm phạt.',
     answer: 'Nếu hồ sơ thuế của bạn bỏ sót thu nhập, ATO có thể phạt trên phần thuế bị thiếu: 25% nếu không cẩn trọng hợp lý, 50% nếu cẩu thả và 75% nếu cố ý bỏ qua. ATO cho biết tiền phạt nhìn chung sẽ được giảm nếu bạn tự báo lỗi cho ATO, nên hãy sửa hồ sơ ngay khi phát hiện.',
     body: `Nhiều du học sinh làm hơn một việc trong năm, và có người còn làm việc nhận tiền mặt hoặc giao đồ ăn. Khi nộp hồ sơ, rất dễ quên một việc nào đó. Bài này giải thích điều gì xảy ra nếu hồ sơ bỏ sót thu nhập, tiền phạt được tính thế nào, và cách đơn giản để sửa.

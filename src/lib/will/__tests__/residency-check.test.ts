@@ -23,10 +23,10 @@ describe('the message', () => {
     expect(residencyCheckMessage('en', 'Sarah').startsWith('Hi Sarah,\n\n')).toBe(true);
     expect(residencyCheckMessage('en', 'Sarah')).toContain('for tax purposes.');
     expect(residencyCheckMessage('en', 'Sarah')).not.toContain('difference to your refund');
-    expect(residencyCheckMessage('en', 'Sarah').endsWith('tax-residency\n\nIs your answer still correct?')).toBe(true);
-    expect(residencyCheckMessage('de', 'Lena')).toContain('/de/tax-residency');
+    expect(residencyCheckMessage('en', 'Sarah').endsWith('y8vwp4bf7\n\nIs your answer still correct?')).toBe(true);
+    expect(residencyCheckMessage('de', 'Lena')).toContain('/de/y8vwp4bf7');
     expect(residencyCheckMessage('ja', 'Yui')).toMatch(/^こんにちは、Yuiさん。/);
-    expect(residencyCheckMessage('es', 'Ana')).toContain('workingholidaytax.com.au/tax-residency');
+    expect(residencyCheckMessage('es', 'Ana')).toContain('workingholidaytax.com.au/y8vwp4bf7');
     for (const t of Object.values(RESIDENCY_CHECK_MSG)) { expect(t).not.toMatch(/[—–]/); expect(t.trim().endsWith('{{1}}')).toBe(false); }
   });
   it('the Meta template is on the System card list', () => {

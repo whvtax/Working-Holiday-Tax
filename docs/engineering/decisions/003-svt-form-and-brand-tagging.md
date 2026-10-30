@@ -21,7 +21,7 @@ and every record must carry its brand. Two facts found while reading the code:
 - For SVT submissions, `notifyFormReceived` is NOT called until Will is brand-aware. An
   audit event `svt_form_received` is written instead so staff see it and follow up by hand.
 - The SVT host keeps every API closed unless the build has `SVT_FORMS_ENABLED=true`, which
-  opens exactly `/api/tax-form` and `/api/tax-form/upload`. The SVT `/tax-form` page shows
+  opens exactly `/api/tax-form` and `/api/tax-form/upload`. The SVT `/jhd7hp9xd` page shows
   the form only in that build; otherwise it points to WhatsApp.
 - CRM: tasks read `brand` (missing column = 'wht') and show an SVT badge. Staff-only.
 

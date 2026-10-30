@@ -25,7 +25,7 @@ it.each(['will', 'legacy'] as const)('%s mode: a long block goes out in short pa
 it('Jo\'s exact wording is sent as he laid it out', async () => {
   decideMock.mockResolvedValue({ action: 'reply', confidence: 1, reply_text: 'x', approved_key: 'later_plan' } as never);
   const out = await runEngine(input('will', 'en'));
-  expect(out.replyText).toBe("No worries 😊 Here's the link whenever you're ready: https://workingholidaytax.com.au/tax-form");
+  expect(out.replyText).toBe("No worries 😊 Here's the link whenever you're ready: https://workingholidaytax.com.au/start");
 });
 
 it('the playbook asks for short paragraphs', () => {

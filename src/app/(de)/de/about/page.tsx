@@ -10,7 +10,7 @@ import { SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Über uns: 417 und 462, sonst nichts',
-  description: 'Working-Holiday-Steuer ist das Einzige, was wir machen. Jeder Kunde ist auf einem 417 oder 462. Vom ersten Payslip bis zum Rückflug, immer dasselbe Jahr.',
+  description: 'Working-Holiday-Steuer ist das Einzige, was wir machen. Jeder Kunde hat ein 417- oder 462-Visum. Vom ersten Payslip bis zum Rückflug, immer dasselbe Jahr.',
   keywords: [
     'Working Holiday Tax Spezialisten',
     'Backpacker Steuerhilfe Australien',
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax: Steuererklärung in Australien' }],
     title: 'Über Working Holiday Tax',
-    description: 'Nur eine Art von Kunden: Working Holiday Maker mit 417 oder 462. Das Jahr, das wir sehen, vom ersten Payslip bis zum Rückflug.',
+    description: 'Nur eine Art von Kunden: Working Holiday Maker mit 417- oder 462-Visum. Das Jahr, das wir sehen, vom ersten Payslip bis zum Rückflug.',
     url: `${SITE_URL}/de/about`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Über Working Holiday Tax',
-    description: 'Working-Holiday-Steuer ist das Einzige, was wir machen. Jeder Kunde ist auf einem 417 oder 462.',
+    description: 'Working-Holiday-Steuer ist das Einzige, was wir machen. Jeder Kunde hat ein 417- oder 462-Visum.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -87,7 +87,7 @@ const chapters = [
 const faqs = [
   {
     question: 'Mit wem arbeitet ihr?',
-    answer: 'Mit Working Holiday Makern, und mit sonst niemandem. Jeder unserer Kunden ist mit einem 417- oder 462-Visum in Australien oder war es und ist inzwischen wieder zu Hause. Wir nehmen keine australischen Steuerresidenten, keine Studierenden, keine gesponserten Arbeitskräfte und keine Unternehmen an.',
+    answer: 'Mit Working Holiday Makern und mit sonst niemandem. Jeder unserer Kunden ist mit einem 417- oder 462-Visum in Australien oder war es und ist inzwischen wieder zu Hause. Wir nehmen keine australischen Steuerresidenten, keine Studierenden, keine gesponserten Arbeitskräfte und keine Unternehmen an.',
   },
   {
     question: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
@@ -176,7 +176,7 @@ export default function GermanAboutPage() {
             <p className="about-lead text-ink"
               style={{ fontSize: 'clamp(16.5px,1.5vw,18px)', fontWeight: 500, lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
               Working-Holiday-Steuer ist das Einzige, was wir machen. Kommt dir das Jahr hier unten bekannt vor,
-              liegt in Australien wahrscheinlich noch Geld mit deinem Namen darauf.
+              lohnt sich ein Blick auf deine Steuer in Australien.
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row" style={{ marginTop: '26px', maxWidth: '480px' }}>
@@ -191,7 +191,7 @@ export default function GermanAboutPage() {
               </Link>
             </div>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              Es antwortet ein echter Mensch, während der Geschäftszeiten meist in etwa einer Stunde.
+              Wir antworten während der Geschäftszeiten meist in etwa einer Stunde.
             </p>
           </div>
         </div>
@@ -207,7 +207,7 @@ export default function GermanAboutPage() {
               Wie sieht ein Working-Holiday-Jahr für uns aus?
             </h2>
             <p style={{ ...bodyStyle, marginBottom: '30px' }}>
-              Fünf Dinge passieren fast jedem auf einem 417 oder 462, und vier davon kosten Geld, das sich hinterher meistens zurückholen lässt.
+              Fünf Dinge passieren fast jedem mit einem 417- oder 462-Visum, und vier davon können dich Geld kosten, das sich manchmal über die Steuererklärung zurückholen lässt.
             </p>
 
             <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
@@ -248,10 +248,10 @@ export default function GermanAboutPage() {
               Warum arbeiten wir nur mit Working Holiday Makern?
             </h2>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              Jeder unserer Kunden ist auf einem 417 oder 462, also sind die Dinge, die über deine Rückerstattung entscheiden, für uns keine Sonderfälle zum Nachschlagen. Sie sind unser Tagesgeschäft.
+              Jeder unserer Kunden hat ein 417- oder 462-Visum, also sind die Dinge, die über deine Rückerstattung entscheiden, für uns keine Sonderfälle zum Nachschlagen. Sie sind unser Tagesgeschäft.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              Ein allgemeiner Steuerberater sieht ein paar Mal im Jahr einen Backpacker, im Juli, zwischen zweihundert normalen Erklärungen.
+              Eine allgemeine Steuerkanzlei sieht ein paar Mal im Jahr einen Backpacker, im Juli, zwischen zweihundert normalen Erklärungen.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
               Der 417/462-Steuersatz, die Frage nach dem steuerlichen Wohnsitz, die ordentlich geprüft und nicht angenommen werden muss, die Medicare-Befreiung, die davon abhängt, welchen Pass du hast, ein Superannuation-Antrag aus einem Zimmer in Hamburg oder München, elf Monate nach der Ausreise: für uns ist das ein ganz normaler Dienstag.
@@ -290,7 +290,7 @@ export default function GermanAboutPage() {
               Wie erreichst du uns?
             </h2>
             <p style={{ ...bodyStyle, marginBottom: '14px' }}>
-              Über WhatsApp. Kein Bot, keine Ticketnummer, kein Formular, das dir fünf bis sieben Werktage verspricht. Du kannst eine einzige Frage stellen und es dabei belassen.
+              Über WhatsApp. Keine Ticketnummer, kein Formular, das dir fünf bis sieben Werktage verspricht. Du kannst eine einzige Frage stellen und es dabei belassen.
             </p>
             <p style={{ ...bodyStyle, marginBottom: '22px' }}>
               Für den Anfang brauchst du kein myGov-Konto, keinen australischen Ausweis und keine Payslips, und es macht keinen Unterschied, ob du noch in Australien bist oder seit zwei Jahren wieder zu Hause. Die{' '}
@@ -355,7 +355,7 @@ export default function GermanAboutPage() {
               Erzähl uns von deinem Jahr
             </h2>
             <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, marginBottom: '24px', fontWeight: 300 }}>
-              Wo du gearbeitet hast, ungefähr wann, und ob du schon ausgereist bist. Das reicht uns, um dir zu sagen, was sich zu verfolgen lohnt.
+              Wo du gearbeitet hast, ungefähr wann, und ob du schon ausgereist bist. Das reicht uns für eine erste Einschätzung.
             </p>
             <WaLink href={WA} position="footer" topic="general" lang="de"
               className="btn-primary w-full sm:w-auto"

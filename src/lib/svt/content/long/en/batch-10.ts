@@ -285,7 +285,7 @@ The ATO also says the online application cannot be submitted while a temporary v
 
 The DASP is taxed when it is paid. For the taxed element, the usual rate is 35% for people who never held a working holiday visa (417 or 462). The untaxed element, which is less common, is taxed at 45%.
 
-A higher rate of 65% applies only to super from contributions made while you held a 417 or 462 visa. Most students never held one of those visas, so the 35% rate is the one that usually applies.
+A higher rate of 65% applies to the whole payment if it includes super from contributions made while you held a 417 or 462 visa. Most students never held one of those visas, so the 35% rate is the one that usually applies.
 
 **Example.** A student leaves Australia with $6,000 of super, all taxed element, and never held a working holiday visa. The DASP tax is 35% of $6,000, which is $2,100. About $3,900 is paid out, before any fund fees on the way.
 

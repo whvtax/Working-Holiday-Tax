@@ -7,7 +7,7 @@ const SVT = `http://svt.localhost:${PORT}`
 const WHT_MARKS = /working\s*holiday\s*tax|workingholidaytax|0424\s?513\s?998/i
 
 const TRANSLATED = ['/', '/pricing', '/how-it-works', '/tax-residency', '/medicare', '/abn-delivery', '/do-i-need-to-lodge',
-  '/past-years', '/leaving-australia', '/superannuation', '/about', '/questions',
+  '/past-years', '/leaving-australia', '/superannuation', '/about', '/contact',
   '/blog', '/blog/tfn-declaration-two-jobs', '/blog/apply-for-tfn-student-visa', '/blog/how-long-does-a-tax-refund-take',
   '/blog/low-income-tax-offset-students', '/blog/income-statement-tax-ready',
   '/blog/what-is-an-abn-students', '/blog/employee-or-contractor', '/blog/work-deductions-students',

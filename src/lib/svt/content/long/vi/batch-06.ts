@@ -309,7 +309,7 @@ Nếu bạn muốn được giúp khai thu nhập ABN vào mùa khai thuế, b�
     faq: [
       { q: 'Người tự kinh doanh có cần một hồ sơ thuế riêng không?', a: 'Không. Người tự kinh doanh khai thu nhập và chi phí kinh doanh trong hồ sơ thuế cá nhân của mình, cùng với tiền lương (nếu có).' },
       { q: 'Thuế suất công ty có thấp hơn thuế suất cá nhân của tôi không?', a: 'Điều này phụ thuộc vào tình trạng cư trú về thuế của bạn. Với du học sinh có thể là người cư trú về thuế và có thu nhập vừa phải, thuế suất cá nhân thường thấp hơn. Công ty còn có thêm chi phí và nghĩa vụ mỗi năm.' },
-      { q: 'Học xong thì tôi làm gì với ABN?', a: 'Nếu việc kinh doanh đã ngừng, hãy hủy ABN; ABR cho biết nên làm trong vòng 28 ngày. Bạn vẫn phải nộp hồ sơ thuế cuối cùng.' },
+      { q: 'Học xong thì tôi làm gì với ABN?', a: 'Nếu việc kinh doanh đã ngừng, hãy hủy ABN. ABR cho biết nên làm trong vòng 28 ngày. Bạn vẫn phải nộp hồ sơ thuế cuối cùng.' },
     ],
   },
   'personal-services-income-abn-international-students': {
@@ -397,7 +397,7 @@ Nếu bạn muốn PSI và các thu nhập khác được khai cho đúng, bạn
     ],
   },
   'low-income-tax-offset-examples-international-students': {
-    title: 'Ví dụ cụ thể về khoản giảm thuế cho thu nhập thấp cho du học sinh',
+    title: 'Ví dụ cụ thể về khoản giảm thuế thu nhập thấp (LITO) của du học sinh',
     description: 'Năm mức thu nhập của du học sinh, từng bước một: biểu thuế người cư trú 2025-26 cho ra bao nhiêu thuế, khoản giảm thuế cho thu nhập thấp trừ đi bao nhiêu, và vì sao nó không bao giờ tự tạo ra tiền hoàn thuế.',
     answer: 'Nếu bạn là người cư trú về thuế ở Úc và thu nhập chịu thuế dưới $66,667, khoản giảm thuế cho thu nhập thấp có thể giảm thuế của bạn đến $700. Bản thân nó không tạo ra tiền hoàn thuế, và người không cư trú về thuế không được hưởng.',
     body: `Khoản giảm thuế cho thu nhập thấp (low income tax offset, LITO) là một trong những khoản giảm thuế có ích nhất cho du học sinh làm việc bán thời gian. Nhưng nhiều du học sinh không rõ nó được tính ra sao hay mình có được hưởng không. Bài này đi qua các con số thật, từng bước một, để bạn thấy nó hoạt động thế nào trong năm 2025-26.
@@ -699,7 +699,7 @@ Nếu bạn không rõ vì sao mình nợ thuế, bạn có thể nhắn tin cho
   'piece-rates-farm-work-student-visa': {
     title: 'Lương theo sản phẩm ở nông trại: du học sinh cần biết gì',
     description: 'Đi hái trái cây trong kỳ nghỉ và được trả theo thùng? Theo Horticulture Award, mỗi ngày bạn vẫn phải nhận ít nhất bằng mức lương theo giờ. Cách kiểm tra tiền lương của bạn.',
-    answer: 'Có, theo Horticulture Award, nông trại được trả lương theo thùng, theo kg hoặc theo khay, nhưng nhân viên vẫn phải được trả ít nhất bằng mức lương tối thiểu theo giờ của bậc công việc mình, nhân với số giờ đã làm trong mỗi ngày. Nếu tiền theo sản phẩm thấp hơn, chủ lao động phải trả phần chênh lệch.',
+    answer: 'Có, theo Horticulture Award, nông trại được phép trả lương theo thùng, theo kg hoặc theo khay, nhưng nhân viên vẫn phải được trả ít nhất bằng mức lương tối thiểu theo giờ của bậc công việc mình, nhân với số giờ đã làm trong mỗi ngày. Nếu tiền theo sản phẩm thấp hơn, chủ lao động phải trả phần chênh lệch.',
     body: `Một số du học sinh dành một phần kỳ nghỉ đại học để đi hái hoặc đóng gói rau quả. Nhiều nông trại trả lương theo sản phẩm (piece rate): theo thùng, theo kg hoặc theo khay. Với người làm nhanh, đây có thể là một khoản thu nhập tốt, nhưng đây cũng là lĩnh vực hay xảy ra chuyện trả thiếu lương. Bài này giải thích các quy định một cách đơn giản và cách kiểm tra tiền lương của bạn. Trước khi nhận bất kỳ công việc nào, hãy kiểm tra điều kiện visa của bạn với Bộ Nội vụ (Home Affairs).
 
 ## Lương theo sản phẩm là gì?
@@ -716,7 +716,7 @@ Với nhân viên casual, mức lương theo giờ dùng cho mức bảo đảm 
 
 ## Mức lương theo sản phẩm phải được đặt ra thế nào?
 
-Fair Work cho biết mức lương theo sản phẩm phải đủ cao để một người lao động có năng lực trung bình kiếm được ít nhất 15% cao hơn mỗi giờ so với mức lương theo giờ dành cho người làm theo sản phẩm. Chỉ người làm nhanh nhất mới đạt mức tối thiểu là không đủ.
+Fair Work cho biết mức lương theo sản phẩm phải đủ cao để một người lao động có năng lực trung bình kiếm được mỗi giờ cao hơn ít nhất 15% so với mức lương theo giờ dành cho người làm theo sản phẩm. Một mức lương mà chỉ người làm nhanh nhất mới đạt được mức tối thiểu là không đủ.
 
 Trước khi bắt đầu làm theo sản phẩm, chủ lao động phải lập một **biên bản lương theo sản phẩm** (piecework record), ký tên và đưa cho bạn. Mức lương theo sản phẩm phải được đặt ra trước khi lập biên bản này. Chủ lao động cũng phải lưu hồ sơ về toàn bộ số giờ bạn làm và mức lương theo sản phẩm áp dụng vào thời điểm đó.
 

@@ -209,7 +209,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "The Zone Tax Offset is usually wrong rather than impossible. If your home base during the working holiday sat inside a specified zone, a rental in a remote town rather than a capital city, the question is live.",
       "The bulky tools exception matters more to a tradesperson flying in with a personal kit than to a camp services role. What you carried and what the site offered for storage settle it.",
-      "Residency is the largest question on a FIFO file, because the sums are larger. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. It depends on your own circumstances and has to be reviewed properly."
+      "Residency is the largest question on a FIFO file, because the sums are larger. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review."
     ]
   }
 ]

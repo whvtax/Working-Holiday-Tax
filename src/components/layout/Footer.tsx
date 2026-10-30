@@ -32,7 +32,7 @@ export function Footer() {
           { label: 'Super-Auszahlung (DASP)', href: '/de/superannuation' },
           { label: 'Medicare',               href: '/de/medicare' },
         ],
-        learn: 'Lernen',
+        learn: 'Ratgeber',
         // Ausgaben und Rechner standen in keiner Fußzeile, obwohl beides
         // eigene Seiten mit Suchwert sind. Jetzt sind sie von jeder Seite
         // aus verlinkt.
@@ -185,7 +185,7 @@ export function Footer() {
                   <GoogleReviewsBadge lang={locale === 'de' ? 'de' : locale === 'ja' ? 'ja' : 'en'} />
                   <img
                     src="/assets/tpb-registered.png"
-                    alt={`${locale === 'de' ? 'Registrierter Steueragent' : locale === 'ja' ? '登録税理士' : 'Registered Tax Agent'} ${AGENT_TPB}`}
+                    alt={`${locale === 'de' ? 'Unter der Aufsicht eines registrierten Tax Agent, Nr.' : locale === 'ja' ? '監督するタックスエージェントの登録番号' : 'Supervising registered tax agent no.'} ${AGENT_TPB}`}
                     width={509}
                     height={319}
                     loading="lazy"

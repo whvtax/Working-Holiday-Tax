@@ -25,6 +25,9 @@ function req(host: string, extra: Record<string, string> = {}) {
 
 beforeEach(() => { createTask.mockClear(); notifyFormReceived.mockClear(); audit.mockClear() })
 
+beforeAll(() => { process.env.SVT_FORMS_ENABLED = 'true' })
+afterAll(() => { delete process.env.SVT_FORMS_ENABLED })
+
 it('WHT host: task tagged wht and Will confirms as before', async () => {
   const res = await POST(req('workingholidaytax.com.au'))
   expect(res.status).toBe(200)
@@ -76,5 +79,31 @@ describe('extraNotes (SVT visa and course details)', () => {
   it('WHT submissions without the field are unchanged', async () => {
     await POST(req('workingholidaytax.com.au'))
     expect(createTask.mock.calls[0][0].notes).toBe('')
+  })
+})
+
+describe('additional income question (Jo, 28 Oct)', () => {
+  it('Yes keeps the cleaned description in the task notes, on both brands', async () => {
+    for (const host of ['workingholidaytax.com.au', 'studentvisatax.com.au']) {
+      createTask.mockClear()
+      await POST(req(host, { hasOtherIncome: 'Yes', otherIncomeText: '  <b>Irish</b> remote   salary ' }))
+      const notes = String(JSON.stringify(createTask.mock.calls[0][0]))
+      expect(notes).toContain('Other income: Yes - Irish remote salary')
+      expect(notes).not.toContain('<b>')
+    }
+  })
+  it('No is recorded, and text sent with No is ignored', async () => {
+    createTask.mockClear()
+    await POST(req('workingholidaytax.com.au', { hasOtherIncome: 'No', otherIncomeText: 'ignored' }))
+    const notes = String(JSON.stringify(createTask.mock.calls[0][0]))
+    expect(notes).toContain('Other income: No')
+    expect(notes).not.toContain('ignored')
+  })
+  it('the description is capped at 300 characters', async () => {
+    createTask.mockClear()
+    await POST(req('workingholidaytax.com.au', { hasOtherIncome: 'Yes', otherIncomeText: 'x'.repeat(900) }))
+    const notes = String(JSON.stringify(createTask.mock.calls[0][0]))
+    expect(notes).toContain('x'.repeat(300))
+    expect(notes).not.toContain('x'.repeat(301))
   })
 })

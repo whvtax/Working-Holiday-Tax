@@ -16,7 +16,7 @@ const customer = {
   lastCustomerMsgAt: new Date(Date.now() - 2 * 86400_000).toISOString(), estimatedRefundCents: null,
 };
 const messages: Array<Record<string, unknown>> = [
-  { id: 'm1', direction: 'OUT', status: 'SENT', body: 'Payment received. https://workingholidaytax.com.au/tax-form', createdAt: new Date().toISOString() },
+  { id: 'm1', direction: 'OUT', status: 'SENT', body: 'Payment received. https://workingholidaytax.com.au/start', createdAt: new Date().toISOString() },
 ];
 const settings: Record<string, unknown> = {};
 const store = {

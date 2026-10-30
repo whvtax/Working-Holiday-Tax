@@ -9,7 +9,7 @@ import { waUrl } from '@/lib/wa'
 export const metadata: Metadata = {
   title: 'Australian Tax Refund: UK Backpackers',
   description:
-    'Gone home to the UK with Australian tax years open. A British passport can carry the full tax free threshold under Addy, and none of it needs you here.',
+    'Gone home to the UK with Australian tax years open. A court ruling known as Addy may change which rates apply to some passports, and none of it needs you here.',
   keywords: [
     'australian tax back for brits',
     'claim australian tax from the uk',
@@ -36,14 +36,14 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Australian Tax Refund: UK Backpackers',
     description:
-      'A British passport can carry the full tax free threshold under Addy, and the Medicare levy works the other way round for Brits. You never have to log into myGov.',
+      'The Addy ruling may change which rates apply to some passports, and the Medicare levy can work the other way round for Brits. You never have to log into myGov.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Australian Tax Refund: UK Backpackers',
     description:
-      'A British passport can carry the full tax free threshold under Addy, and the Medicare levy works the other way round for Brits.',
+      'The Addy ruling may change which rates apply to some passports, and the Medicare levy can work the other way round for Brits.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -68,8 +68,8 @@ const DIFFERENCES = [
     d: 'For applications lodged on or after 1 July 2024, UK passport holders can apply up to and including age 35, and can be granted up to three working holiday visas without completing any specified regional work. Three years usually means three or four Australian tax years.',
   },
   {
-    t: 'The Addy decision is yours',
-    d: 'The case that struck down the backpacker tax was brought by a British working holiday maker, and the UK sits on the ATO list of countries it applies to. Where it applies it restores the full tax free threshold and resident rates for those years.',
+    t: 'The Addy ruling may matter',
+    d: 'The Addy case was brought by a British working holiday maker, and the ruling may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review.',
   },
   {
     t: 'Medicare runs the other way round',
@@ -83,7 +83,7 @@ const DIFFERENCES = [
 
 const WHAT_WE_DO = [
   'Work out which Australian tax years you have open, including the ones you left behind when you flew home.',
-  'Take a position on your residency for tax purposes for each of those years, and apply the Addy decision where it applies.',
+  'Review each of those years, including the Addy ruling and what it may mean for your rates.',
   'Check the Medicare levy against your real position rather than copying the exemption other backpackers claim.',
   'Chase down every employer income statement, including the ones you have forgotten, and check what each withheld.',
   'Find superannuation left in funds you no longer have the logins for, and claim it as a Departing Australia Superannuation Payment once your visa has ceased.',
@@ -95,7 +95,7 @@ const WHAT_WE_DO = [
  * It is a different objection here. From Manchester the problem is not that
  * lodging is hard, it is that the door is shut: linking the ATO wants Australian
  * identity documents nobody keeps. And the thing worth the most on a British
- * return, the Addy residency position, is not mentioned anywhere on the screen.
+ * return, the Addy question, is not mentioned anywhere on the screen.
  */
 const MYGOV = [
   {
@@ -103,12 +103,12 @@ const MYGOV = [
     us: 'We deal with the ATO directly. Nothing on our side needs you to hold an Australian ID.',
   },
   {
-    mygov: 'Nothing there mentions that a British passport can carry the full tax free threshold of $18,200 under the Addy decision.',
-    us: 'That is a residency position, and on a British return it is usually worth more than everything else combined.',
+    mygov: 'Nothing there mentions the Addy ruling, which may change which rates apply to some passports.',
+    us: 'That is part of our review, and it can make a real difference to a return, so it is looked at properly before anything is lodged.',
   },
   {
     mygov: 'The Medicare levy is applied by default, and for Brits the health care agreement works the opposite way round.',
-    us: 'We work out which side of it you fall on before the return goes in.',
+    us: 'We review where you stand on it before the return goes in.',
   },
   {
     mygov: 'The years you left open do not appear as a prompt anywhere.',
@@ -117,6 +117,11 @@ const MYGOV = [
 ]
 
 const FAQS = [
+  {
+    question: 'What is the Addy ruling and does it affect UK working holiday makers?',
+    answer:
+      'Addy is a 2021 High Court decision about how working holiday makers can be taxed. A court ruling may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review.',
+  },
   {
     question: 'Do UK citizens pay the Medicare levy in Australia?',
     answer:
@@ -433,7 +438,7 @@ export default function UKWorkingHolidayTaxPage() {
                 2025-26", so the lede said the year twice. */}
             <p style={ps}>
               Working holiday maker rates apply to your Australian wages whether or not you are a resident for tax purposes, unless
-              the Addy position above changes that.
+              a court ruling known as Addy changes that for you. That is part of our review.
             </p>
             <div style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
               <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>

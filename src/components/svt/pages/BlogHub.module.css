@@ -13,10 +13,11 @@
 .stats span { font-size: 13px; color: var(--svt-ink-2); }
 .stats .statFree { background: var(--svt-lime); border-color: var(--svt-lime); }
 .stats .statFree span { color: var(--svt-ink); }
-.pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.pills a { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 1px solid var(--svt-line); border-radius: var(--svt-radius-pill); background: var(--svt-paper); color: var(--svt-ink); text-decoration: none; font-weight: 600; font-size: 14px; }
-.pills a span { font-family: var(--svt-font-mono); font-size: 12px; padding: 1px 7px; border-radius: var(--svt-radius-pill); background: var(--svt-lime-pale); }
-.pills a:hover { border-color: var(--svt-ink); }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.pills button { font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
+.pills a, .pills button { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 1px solid var(--svt-line); border-radius: var(--svt-radius-pill); background: var(--svt-paper); color: var(--svt-ink); text-decoration: none; font-weight: 600; font-size: 14px; }
+.pills a span, .pills button span { font-family: var(--svt-font-mono); font-size: 12px; padding: 1px 7px; border-radius: var(--svt-radius-pill); background: var(--svt-lime-pale); }
+.pills a:hover, .pills button:hover { border-color: var(--svt-ink); }
 .pills .pillActive { background: var(--svt-ink); border-color: var(--svt-ink); color: var(--svt-paper); }
 .pills .pillActive span { background: var(--svt-lime); color: var(--svt-ink); }
 .body { padding: 40px var(--svt-gutter) var(--svt-section-y); scroll-margin-top: 72px; }
@@ -34,3 +35,8 @@
 .desc { font-size: 14.5px; line-height: 1.55; color: var(--svt-ink-2); flex: 1; }
 .date { font-family: var(--svt-font-mono); font-size: 12px; color: var(--svt-ink-2); }
 @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+
+.pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 32px; font-size: 14px; }
+.pager button { min-height: 44px; padding: 0 20px; border: 1px solid var(--svt-ink); border-radius: var(--svt-radius-button); background: var(--svt-paper); color: var(--svt-ink); font: inherit; font-weight: 600; cursor: pointer; }
+.pager button:hover:not(:disabled) { background: var(--svt-ink); color: var(--svt-paper); }
+.pager button:disabled { opacity: 0.35; cursor: default; }

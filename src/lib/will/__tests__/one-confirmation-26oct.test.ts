@@ -15,7 +15,7 @@ const CELVIN = `Payment received, thanks Sam!
 
 Please fill out this quick form so we can start reviewing your 2023-24 return:
 
-https://workingholidaytax.com.au/tax-form
+https://workingholidaytax.com.au/start
 
 Once you've submitted it, we'll go through everything and get back to you within 24 hours with your tax outcome.`;
 
@@ -27,7 +27,7 @@ describe('a reworded confirmation still counts', () => {
   });
   it('other wordings of the same first line, in every language', () => {
     for (const t of [
-      'Payment received! Thanks so much.', 'Payment received - thank you', 'Thanks Sam, payment received.\n\nhttps://workingholidaytax.com.au/tax-form',
+      'Payment received! Thanks so much.', 'Payment received - thank you', 'Thanks Sam, payment received.\n\nhttps://workingholidaytax.com.au/start',
       'Zahlung erhalten, danke Lena!', 'Pago recibido, ¡gracias!', 'お支払いを確認しました！ありがとうございます。',
     ]) expect([t, looksLikePaymentConfirmation(t)]).toEqual([t, true]);
   });

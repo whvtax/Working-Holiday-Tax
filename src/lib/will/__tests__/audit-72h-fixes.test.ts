@@ -98,7 +98,7 @@ describe('the price message is pasted verbatim for English chats (four wordings 
 
 describe('a paid customer re-proposed as PAID is not a conflict (Simon, +61 425)', () => {
   it('the reply goes out, the stage stays', async () => {
-    decideMock.mockResolvedValue({ action: 'reply', reply_text: 'All good, the form is the next step: https://workingholidaytax.com.au/tax-form', new_state: 'PAID', confidence: 0.9 });
+    decideMock.mockResolvedValue({ action: 'reply', reply_text: 'All good, the form is the next step: https://workingholidaytax.com.au/start', new_state: 'PAID', confidence: 0.9 });
     const out = await runEngine(base({ ctx: { ...base().ctx, state: 'FORM_PENDING', paid: true }, history: [{ role: 'assistant', text: 'Payment received.' }, { role: 'customer', text: 'Done! Helloo?' }] }));
     expect(out.kind).toBe('queued');
     expect(out.newState).toBeUndefined();

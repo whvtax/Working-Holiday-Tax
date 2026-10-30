@@ -68,7 +68,7 @@ it('forced Paid from the stage badge sends the payment received line with the fo
   const [c, body, author, , tpl] = deliverOut.mock.calls[0];
   expect(c.id).toBe('c1');
   expect(body).toBe(PAYMENT_RECEIVED_MSG.en);
-  expect(body).toContain('https://workingholidaytax.com.au/tax-form');
+  expect(body).toContain('https://workingholidaytax.com.au/start');
   expect(author).toBe('AI');
   // Outside the 24h window it must be able to go as the approved template.
   expect(tpl).toMatchObject({ name: 'payment_received', fallbackToText: true });

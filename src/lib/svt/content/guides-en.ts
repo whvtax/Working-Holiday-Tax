@@ -546,7 +546,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
     sources: [
       { label: 'Tax Practitioners Board: public register', href: 'https://www.tpb.gov.au/registrations_search?number=26233096' },
     ],
-    related: ['how-it-works', 'pricing', 'questions'],
+    related: ['how-it-works', 'pricing'],
     short: {"answer": "Student Visa Tax does tax returns only for people on student and graduate visas in Australia, in English, Chinese and Vietnamese. It operates under the supervision of a registered tax agent.", "mark": "only"},
   },
 ]

@@ -6,7 +6,7 @@ import { Analytics } from '@/components/layout/Analytics'
 import { SVT_PUBLIC } from '@/lib/svt/brand-public'
 
 /** The tax form is never tagged (DEPLOYMENT_CHECKLIST, SVT measurement). */
-const FORM_PATHS = ['/tax-form', '/zh/tax-form', '/vi/tax-form'] as const
+const FORM_PATHS = ['/jhd7hp9xd', '/zh/jhd7hp9xd', '/vi/jhd7hp9xd'] as const
 
 /** The <html> of every SVT root layout, one per language, so <html lang> is
  *  right in the static HTML. */

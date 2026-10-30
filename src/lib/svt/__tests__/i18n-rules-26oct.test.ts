@@ -102,7 +102,7 @@ describe('structure', () => {
 
 describe('paths and hreflang', () => {
   it('localePath and basePath are inverse', () => {
-    for (const p of ['/', '/medicare', '/questions']) {
+    for (const p of ['/', '/medicare', '/contact']) {
       for (const l of ['en', 'zh', 'vi'] as const) expect(basePath(localePath(l, p))).toBe(p)
     }
     expect(localePath('zh', '/')).toBe('/zh')

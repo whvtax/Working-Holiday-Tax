@@ -6,6 +6,9 @@
 import { FORM_LINK_ANY_BRAND } from './brand-voice';
 import { getStore, CustomerRow, CustomerState, Store, MessageRow, JobRow } from './store';
 import { reopenTarget, POST_PAYMENT_STATES, canTransition } from './state-machine';
+import { isFormAutoText, refreshCustomerLang } from './language-30oct';
+import { saysLeaving } from './followup-gate-30oct';
+import { closeLeadAfterNo } from './close-lead-30oct';
 import { runEngine, AiMode, EngineOutcome, customerAskedSomething } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
@@ -25,7 +28,7 @@ import { autopilotReplyDelaySeconds } from './config';
 import { promisedUntil, formPromisedKey, signaturePromisedKey } from './promised-date';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
 import { isIdentityQuestion } from './identity-question';
-import { detectChoice, priceMessageFor, firstContactPriceMessage, hasPriceIn, priceMessageIn } from './instant-choice';
+import { withMygovReassurance, detectChoice, priceMessageFor, firstContactPriceMessage, hasPriceIn, priceMessageIn } from './instant-choice';
 import { hasForeignIncome } from './foreign-income';
 import { abnIntakeKey, readIntake, ABN_INTAKE_DONE_RE, intakeSummary } from './abn-intake';
 import { alreadyCheckedReason, applyCheckedClause } from './already-checked';
@@ -38,7 +41,9 @@ import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnl
 export { isCourtesyLine };
 import { suggestReply } from './suggest';
 import { assessPaymentProofImage, assessSuccessConfirmationImage, describeAttachment, PaymentProofCheck } from './claude';
-import { verifyProofDetails, isNotOurPayment, pictureConfirmsPayment, describeProof, incomeFromAmount } from './payment-proof';
+import { verifyProofDetails, isNotOurPayment, pictureConfirmsPayment, describeProof, incomeFromAmount, checkWasUndecided, isDocumentLikeProof } from './payment-proof';
+import { repairBrandUrls } from './text-normalize';
+import { needsTextOnlyAsk, textOnlyAsk } from './text-only-reply';
 import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
 import { DECISION_MODE_KEY, resolveDecisionMode, isFastLane, type DecisionMode } from './will-decides';
@@ -253,7 +258,10 @@ async function handleIncomingInner(
   // language the first time and can switch it only when the customer clearly
   // writes in another language (a confident English message reclaims a chat that
   // had drifted). An ambiguous message never touches it.
-  const detected = opts?.alreadyStored ? null : detectLanguage(text);
+  // 30 Oct: the form's English auto text ("Hi! I've just sent through my form")
+  // is OUR button, not the customer's language. It used to read as a confident
+  // English message and flip German and Japanese customers back to English.
+  const detected = opts?.alreadyStored || isFormAutoText(text) ? null : detectLanguage(text);
   // SETTING a language the customer does not have yet takes one clear foreign
   // signal ("Olá, quero saber o preço"); SWITCHING one they already have takes
   // a confident read, so a single "Danke!" in an English chat cannot move it
@@ -264,6 +272,13 @@ async function handleIncomingInner(
     await store.updateCustomer(customer.id, { lang: detected.lang });
     await store.audit('system', 'language_set', { customerId: customer.id, from: customer.lang, to: detected.lang });
     customer = { ...customer, lang: detected.lang };
+  }
+  // ...and the language they write in is read from their last few messages,
+  // so a stale stored value (English from a form text, or null) is corrected
+  // as soon as they write something clear in another language.
+  if (!opts?.alreadyStored) {
+    const read = await refreshCustomerLang(store, customer);
+    if (read.changed && read.lang) customer = { ...customer, lang: read.lang };
   }
 
   // Opt-out: mark, cancel everything, discard pending drafts, stay silent forever.
@@ -295,6 +310,18 @@ async function handleIncomingInner(
   // date below is still read here, because it only moves a reminder.
   let preMode: DecisionMode = 'legacy';
   try { preMode = resolveDecisionMode(await store.getSetting(DECISION_MODE_KEY)); } catch { preMode = 'legacy'; }
+  // 30 Oct, nothing after a no: whatever the decision mode, a lead who says
+  // they are leaving (not interested, going elsewhere, "I'll pass", doing it
+  // themselves, not this time) is closed on the spot and everything queued for
+  // them is cancelled. Will may still answer the message itself; nothing
+  // chases them afterwards. A later real message from them reopens the lead.
+  if (!opts?.alreadyStored && !customer.paid && SALES_STATES.includes(customer.state) && saysLeaving(text)) {
+    try {
+      await closeLeadAfterNo(store, customer, text);
+      const cNo = await store.getCustomerByWaId(waId);
+      if (cNo) customer = cNo;
+    } catch { /* the reply below still goes */ }
+  }
   if (!opts?.alreadyStored && !customer.paid && SALES_STATES.includes(customer.state)) {
     if (preMode !== 'will' && customerNotInterested(text)) {
       try {
@@ -525,7 +552,7 @@ async function handleIncomingInner(
   // ── THE ACCOUNT NAME, AT ONCE (11 Oct, full audit, decision 4) ───────────
   //
   // "What name do I put?" arrives while the customer is standing at the
-  // bank. Neta got "Simple Tax Services" from the model, Laura and Marta
+  // bank. Neta got a retired payee name from the model, Laura and Marta
   // "Working Holiday Tax". The answer is fixed text in their language and
   // goes out now, from the code, with no pause and no model.
   // Jo, 22 Oct: in 'will' mode none of the instant answers below decide what
@@ -592,7 +619,7 @@ async function handleIncomingInner(
           if (done && done.yes >= 4) {
             await store.addTask({
               customerId: customer.id, customerName: customer.name ?? waId,
-              reason: `Residency check in the chat: ${done.yes} of 5 Yes. Told they look like an Australian tax resident and asked to fill out the questionnaire again with the correct details.`,
+              reason: `Residency check in the chat: ${done.yes} of 6 Yes. Told they look like an Australian tax resident and asked to fill out the questionnaire again with the correct details.`,
               severity: 'REVIEW',
               context: done.answers.map((a, i) => `${i + 1}. ${a ? 'Yes' : 'No'}`).join('\n'),
               suggestedReply: null,
@@ -635,9 +662,10 @@ async function handleIncomingInner(
         // 16 Oct (Jo): German and Japanese get their own approved price
         // message. Foreign income and "already checked" in those languages go
         // through Will (null here), the English ones are adjusted in code.
-        const price: string | null = hasPriceIn(customer.lang)
+        const priceBase: string | null = hasPriceIn(customer.lang)
           ? (foreign || checkedReason ? null : priceMessageIn(customer.lang, track, firstContact, cleanFirstName(firstNameOf(customer.name))))
           : applyCheckedClause(firstContact ? firstContactPriceMessage(track, cleanFirstName(firstNameOf(customer.name)), foreign) : priceMessageFor(track, foreign), checkedReason);
+        const price = priceBase ? withMygovReassurance(priceBase, [text], customer.lang) : null;
         if (price) {
         const out = await deliverOut(customer, price, 'AI', { proposedState: 'PRICE_SENT' }, undefined, {
           onFailure: { reason: 'The price message was not delivered after the customer chose a track. They are waiting.', severity: 'URGENT', context: text.slice(0, 200) },
@@ -1844,6 +1872,27 @@ export async function runDeferredAutoReply(
 // the AI engine, the daily budget, or the returning-contact filter — a task is
 // safe for any sender, and the whole point is that nothing gets lost.
 // ============================================================
+/** Sends the "send it as text" line when Will may talk here and has not just
+ *  asked. True when it went; false means the caller raises the ordinary task
+ *  (paused, opted out, kill switch, approval mode, asked in the last 2 hours,
+ *  or the send failed), now carrying the same line as its suggested reply. */
+async function askForTextOnly(store: Store, customer: CustomerRow): Promise<boolean> {
+  try {
+    if (customer.optedOut || customer.aiPaused || customer.isLegacy) return false;
+    if ((await store.getSetting('kill_switch')) === true) return false;
+    if (requiresApproval(await store.getSetting('ai_mode'))) return false;
+    const key = `text_only_ask_at:${customer.id}`;
+    const last = Number((await store.getSetting(key)) ?? 0);
+    if (Date.now() - last < 2 * 60 * 60 * 1000) return false;
+    await store.setSetting(key, Date.now()); // before the send, so two events cannot both ask
+    const res = await deliverOut(customer, textOnlyAsk(customer.lang), 'AI', { system: true });
+    await store.audit('system', 'text_only_asked', { customerId: customer.id, ok: res.ok }).catch(() => {});
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 export async function handleInboundNote(
   waId: string,
   body: string,
@@ -1918,6 +1967,16 @@ export async function handleInboundNote(
   // thread and that is the whole of it. Raising one here was what buried the
   // real "cannot read this" tasks under a pile of thumbs-ups.
   if (meta?.reaction) return (await store.getCustomerByWaId(waId)) ?? customer;
+  // 30 Oct: a voice note, a sticker or an event Meta could not render (131051)
+  // gets one line back in the customer's language, "Could you send that as a
+  // text message?", instead of a handoff for a person to click hours later.
+  const unreadableKind = needsTextOnlyAsk({
+    media: meta?.media, undecoded: meta?.undecoded, revoked: meta?.undecoded?.type === 'revoke', reaction: false,
+  });
+  if (unreadableKind) {
+    const asked = await askForTextOnly(store, customer);
+    if (asked) return (await store.getCustomerByWaId(waId)) ?? customer;
+  }
   // Owner's rule: 20 invoice photos in a row is ONE task to open, not 20 —
   // raiseOrUpdateTask folds this into whatever task is already open for this
   // customer instead of creating a fresh one per attachment.
@@ -1942,6 +2001,9 @@ export async function handleInboundNote(
   // T-shirt and monthly fees). A file with a question in its caption is not
   // paperwork alone, so it goes to the normal answer path instead of the drop.
   if (meta?.media && hasQuestionOrRequest(body)) intakeActive = true; // a question with the file is answered, not dropped
+  // 30 Oct: a voice note or sticker is not paperwork to collect either (it was
+  // acknowledged with "got it all"); it takes the unreadable path below.
+  if (meta?.media && ['audio', 'voice', 'sticker'].includes(meta.media.kind)) intakeActive = true;
   if (meta?.media && isAfterPayment(customer.state) && !intakeActive) {
     // Jo, 21 Oct (+81 70 5498): a second screenshot of the SAME payment, sent
     // while the "payment received" reply is still waiting its few minutes, is
@@ -2120,7 +2182,7 @@ export async function handleInboundNote(
     // A deleted message gets no canned reply: the open message above needs the
     // real answer, and an English placeholder for a German customer was the
     // bug Hannah's chat showed.
-    suggestedReply: revoked ? null : await suggestReply('', customer, meta?.media ? 'attachment' : 'unreadable'),
+    suggestedReply: revoked ? null : unreadableKind ? textOnlyAsk(customer.lang) : await suggestReply('', customer, meta?.media ? 'attachment' : 'unreadable'),
   });
   const fresh = await store.getCustomerByWaId(waId);
   // A voice note or an unreadable attachment is still the customer talking:
@@ -2270,7 +2332,9 @@ export async function paymentReceivedBody(store: Store, lang?: string | null): P
     const templates = await store.listTemplates();
     const row = templates.find((t) => t.key === key)
       ?? (key !== 'payment_received' ? templates.find((t) => t.key === 'payment_received') : undefined);
-    if (row?.body?.trim() && !/\{\{[A-Z_]+\}\}/.test(row.body)) return row.body;
+    // 30 Oct: a Library row that lost its form link must never go out as "Payment
+    // received": the confirmation without the link leaves the customer waiting.
+    if (row?.body?.trim() && !/\{\{[A-Z_]+\}\}/.test(row.body) && TAX_FORM_URL_RE.test(repairBrandUrls(row.body))) return repairBrandUrls(row.body);
   } catch { /* the constant is the honest fallback */ }
   return paymentReceivedMessage(lang);
 }
@@ -2344,17 +2408,27 @@ async function handlePaymentProofMediaInner(
   let overBudget = false;
   try { overBudget = await aiBudgetExhausted(); } catch { overBudget = false; }
   let check: PaymentProofCheck = { isProof: false };
+  // 30 Oct (Niamh, Dewi, Megan, Luca): a DOCUMENT (a PDF receipt, any non
+  // image file) sent while the price is outstanding is the receipt. When the
+  // check cannot decide, it is taken on trust like a typed "paid", the form
+  // link goes out, and Jo is asked to verify. See payment-proof.ts.
+  let unreadableTrusted = null as string | null;
+  const trustUnreadable = (why: string): boolean => {
+    if (!isDocumentLikeProof(meta.media) || !PAYABLE_STATES.includes(customer.state)) return false;
+    unreadableTrusted = why;
+    return true;
+  };
   if (overBudget) {
     await store.audit('system', 'payment_proof_check_skipped', {
       customerId: customer.id,
       reason: said ? 'daily AI budget exhausted; trusting their words' : 'daily AI budget exhausted; sent to a human instead',
     });
-    if (!said) return null;
+    if (!said && !trustUnreadable('the daily check budget is spent')) return null;
   } else {
     const fetched = await fetchWaMedia(meta.media.id);
     if (!fetched.ok) {
       await store.audit('system', 'payment_proof_check_skipped', { customerId: customer.id, reason: fetched.error });
-      if (!said) return null;
+      if (!said && !trustUnreadable(`the file could not be downloaded (${fetched.error})`)) return null;
     } else {
       check = await assessPaymentProofImage(fetched.body, fetched.mime || meta.media.mime || '');
       await store.audit('system', 'payment_proof_checked', {
@@ -2376,8 +2450,12 @@ async function handlePaymentProofMediaInner(
     }
   }
 
+  // The check ran but could not reach a verdict on a document: same as above.
+  if (!said && !check.isProof && !unreadableTrusted && checkWasUndecided(check.reason)) {
+    trustUnreadable(check.reason ?? 'the check could not decide');
+  }
   // Either route is enough on its own.
-  if (!said && !check.isProof) return null; // neither — falls through to the manual task
+  if (!said && !check.isProof && !unreadableTrusted) return null; // neither — falls through to the manual task
 
   // Fully verified means our fee, to our account, completed, read off the
   // picture. Anything short of that moves the stage on trust and says exactly
@@ -2388,6 +2466,8 @@ async function handlePaymentProofMediaInner(
   const shown = check.details ? describeProof(check.details) : null;
   const trustedBecause = verification.verified
     ? `the screenshot shows ${shown}`
+    : unreadableTrusted && !said && !check.isProof
+      ? `they sent a document straight after the bank details and it could not be read (${unreadableTrusted})`
     : said
       ? `they said they paid${shown ? `; the screenshot shows ${shown}` : ''}`
       : (check.reason ?? 'the screenshot shows a payment');
@@ -2574,7 +2654,9 @@ async function handlePaymentProofMediaInner(
   } else if (!verification.verified) {
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-      reason: `Customer confirmed payment (${trustedBecause}).${unverifiedNote} Moved to Paid automatically. Worth a glance to confirm it looks right.`,
+      reason: unreadableTrusted && !said && !check.isProof
+        ? `Customer confirmed payment (${trustedBecause}).${unverifiedNote} Moved to Paid automatically and sent the form link so they are not left waiting. Worth a glance: open the file and check the amount and the account.`
+        : `Customer confirmed payment (${trustedBecause}).${unverifiedNote} Moved to Paid automatically. Worth a glance to confirm it looks right.`,
       severity: 'REVIEW',
       context: body,
       suggestedReply: null,

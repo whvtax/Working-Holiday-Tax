@@ -20,7 +20,7 @@
 .body { padding: 20px var(--svt-gutter) var(--svt-section-y); }
 .grid { max-width: var(--svt-max); margin: 0 auto; display: grid; gap: 44px; }
 .content { display: flex; flex-direction: column; gap: 44px; max-width: var(--svt-measure); min-width: 0; }
-.section { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 24px; }
+.section { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 96px; }
 .h2 { font-size: 23px; line-height: 1.2; font-weight: 700; letter-spacing: -0.015em; }
 .p { font-size: var(--svt-text-md); line-height: 1.65; }
 .list { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; line-height: 1.6; font-size: var(--svt-text-md); }
@@ -59,7 +59,7 @@
   .grid { grid-template-columns: minmax(0, 1fr) 300px; gap: 72px; align-items: start; }
   .content { gap: 56px; }
   .h2 { font-size: 26px; }
-  .aside { position: sticky; top: 24px; max-height: calc(100vh - 48px); overflow-y: auto; }
+  .aside { position: sticky; top: 96px; max-height: calc(100vh - 120px); overflow-y: auto; }
   .toc { display: flex; flex-direction: column; gap: 2px; font-size: var(--svt-text-sm); border-left: 2px solid var(--svt-line); padding-left: 14px; }
   .toc a { text-decoration: none; color: var(--svt-ink-2); padding: 5px 0; line-height: 1.35; }
   .toc a:hover { color: var(--svt-ink); text-decoration: underline; }

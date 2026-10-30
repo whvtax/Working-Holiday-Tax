@@ -26,6 +26,9 @@ const req = (host: string) => new NextRequest(`http://${host}/api/tax-form/uploa
 
 beforeEach(() => { uploads.length = 0 })
 
+beforeAll(() => { process.env.SVT_FORMS_ENABLED = 'true' })
+afterAll(() => { delete process.env.SVT_FORMS_ENABLED })
+
 it('WHT upload path is unchanged', async () => {
   const res = await POST(req('workingholidaytax.com.au'))
   expect(res.status).toBe(200)
@@ -36,4 +39,11 @@ it('SVT upload path is prefixed svt/', async () => {
   const res = await POST(req('studentvisatax.com.au'))
   expect(res.status).toBe(200)
   expect(uploads[0]).toMatch(/^svt\/tax-form\/invoices\//)
+})
+
+it('SVT upload is closed at runtime until SVT_FORMS_ENABLED is true (audit A09-1)', async () => {
+  delete process.env.SVT_FORMS_ENABLED
+  const res = await POST(req('studentvisatax.com.au'))
+  expect(res.status).toBe(404)
+  process.env.SVT_FORMS_ENABLED = 'true'
 })

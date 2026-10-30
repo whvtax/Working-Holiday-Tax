@@ -217,7 +217,7 @@ const SECTIONS: Section[] = [
     "h2": "Which parts come down to your own facts?",
     "paras": [
       "The bulky tools exception, first. What you carry, what the site offers for storage, and whether the tools were essential that day settle it. Two labourers on the same crew can land differently.",
-      "Residency is worth more than every tool on the list. British, German and Japanese passport holders who were residents of Australia for tax purposes can carry the full tax free threshold under the Addy decision. It depends on your own circumstances and has to be reviewed properly."
+      "Residency is worth more than every tool on the list. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review."
     ]
   }
 ]

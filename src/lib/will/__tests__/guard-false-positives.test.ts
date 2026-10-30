@@ -83,10 +83,10 @@ describe('new: internal notes and typed links', () => {
     expect(policyGuard('The fee is [INSERT PRICE].', pre()).violations).toContain('INTERNAL_NOTE_LEFT_IN');
   });
   it('a link that is not ours', () => {
-    expect(hasForeignUrl('Fill in the form at workingholidaytax.com/tax-form')).toBe(true);
-    expect(hasForeignUrl('https://workingholidaytax.com.au/tax-form')).toBe(false);
+    expect(hasForeignUrl('Fill in the form at workingholidaytax.com/start')).toBe(true);
+    expect(hasForeignUrl('https://workingholidaytax.com.au/start')).toBe(false);
     expect(hasForeignUrl('see my.gov.au and ato.gov.au')).toBe(false);
-    expect(policyGuard('Here is the form: https://workingholidaytax.com/tax-form', pre()).violations).toContain('TYPED_URL');
+    expect(policyGuard('Here is the form: https://workingholidaytax.com/start', pre()).violations).toContain('TYPED_URL');
     expect(policyGuard(APPROVED.price_tfn, pre()).violations).not.toContain('TYPED_URL');
   });
 });

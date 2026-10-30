@@ -28,11 +28,11 @@ it('each brand may link only its own site', async () => {
 })
 
 it('the form link before payment is caught for either domain', async () => {
-  for (const url of ['https://workingholidaytax.com.au/tax-form', 'https://studentvisatax.com.au/tax-form']) {
+  for (const url of ['https://workingholidaytax.com.au/jhd7hp9xd', 'https://studentvisatax.com.au/jhd7hp9xd']) {
     const v = policyGuard(`Here you go: ${url}`, ctx()).violations
     expect(v).toContain('FORM_LINK_BEFORE_PAYMENT')
   }
   await withBrand('svt', async () => {
-    expect(policyGuard('Here you go: https://studentvisatax.com.au/tax-form', ctx()).violations).toContain('FORM_LINK_BEFORE_PAYMENT')
+    expect(policyGuard('Here you go: https://studentvisatax.com.au/jhd7hp9xd', ctx()).violations).toContain('FORM_LINK_BEFORE_PAYMENT')
   })
 })

@@ -63,8 +63,8 @@ export const metadata: Metadata = {
     'バックパッカー 税金 オーストラリア',
     // Professional service
     'ワーホリ 税金 専門 日本語',
-    'オーストラリア 税理士 ワーホリ',
-    'オーストラリア 税務代理人 日本人',
+    'オーストラリア 登録タックスエージェント ワーホリ',
+    'オーストラリア タックスエージェント 日本人',
     // Medicare / specific topics
     'メディケア レビー 免除',
     'メディケア税 還付',
@@ -105,7 +105,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'オーストラリア タックスリターン 還付金｜ワーホリ専門',
-    description: 'オーストラリアのワーホリ専門。タックスリターン還付金を最大化。',
+    description: 'オーストラリアのワーホリ専門。居住区分、メディケア税の免除、控除まで確認してから提出します。',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

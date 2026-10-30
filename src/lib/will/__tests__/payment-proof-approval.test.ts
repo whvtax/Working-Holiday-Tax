@@ -302,7 +302,7 @@ describe('a payment taken on trust keeps the heads-up, and says why', () => {
     expect(setState).not.toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
     expect(addTask).toHaveBeenCalledTimes(1);
     expect(addTask.mock.calls[0][0].reason).toMatch(/\$150/);
-    expect(addTask.mock.calls[0][0].context).toMatch(/not \$220 or \$385/);
+    expect(addTask.mock.calls[0][0].context).toMatch(/not \$220, \$330, \$385, \$440 or \$495/);
   });
 
   it('the same wrong amount WITH "paid" typed under it is still trusted', async () => {

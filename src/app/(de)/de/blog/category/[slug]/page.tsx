@@ -26,7 +26,7 @@ const CATEGORY_INTRO: Record<string, CategoryIntro> = {
     paragraphs: [
       'Die Tax File Number ist die Nummer, mit der die australische Steuerbehörde ATO dich identifiziert. Für die Nummer selbst fällt keine Behördengebühr an. Teuer sind die Wochen ohne sie, in denen 45 % statt 15 % einbehalten werden. Diese Ratgeber behandeln den Antrag selbst, das Arbeiten in der Wartezeit, Verzögerungen über die 28 Tage hinaus, verlorene Nummern, Ausweisdokumente und die Frage, ob ein zweites Visum eine neue Nummer braucht.',
       'Sie sind für jemanden geschrieben, der gerade angekommen ist, oder der einen Job angefangen hat und feststellt, dass 45 Prozent statt 15 Prozent vom Lohn abgehen. An der TFN selbst wird fast nie Geld gewonnen oder verloren.',
-      'Entscheidend sind das Tax File Number Declaration Formular, das dir dein Arbeitgeber in der ersten Woche gibt, das 28 Tage Fenster, das mit deiner ersten Schicht beginnt und nicht mit dem Antrag, und ob dieser Arbeitgeber beim ATO als Working Holiday Maker Arbeitgeber registriert ist.',
+      'Entscheidend sind das Tax-File-Number-Declaration-Formular, das dir dein Arbeitgeber in der ersten Woche gibt, das 28-Tage-Fenster, das mit deiner ersten Schicht beginnt und nicht mit dem Antrag, und ob dieser Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist.',
     ],
     service: { path: '/de/tfn', label: 'Was wir bei TFN und Erklärungsformular übernehmen' },
   },
@@ -41,13 +41,13 @@ const CATEGORY_INTRO: Record<string, CategoryIntro> = {
   'tax-return': {
     paragraphs: [
       'Das australische Steuerjahr läuft vom 1. Juli bis zum 30. Juni, und wer in diesem Zeitraum Einkommen hatte, gibt eine Steuererklärung ab. Diese Ratgeber behandeln Fristen und Strafen, Abzüge und Belege, den steuerlichen Wohnsitz, nachträgliche Korrekturen, die Abgabe nach der Heimreise und das, was die Höhe der Rückerstattung tatsächlich bestimmt.',
-      'Das ist die Kategorie für jemanden, der entscheidet, ob er selbst einreicht oder es abgibt. Dein steuerlicher Wohnsitz, der von deinen eigenen Umständen abhängt und ordentlich geprüft werden muss. Die Wochen mit 45 Prozent Einbehalt, bevor die TFN bei der Lohnbuchhaltung war. Die Medicare Frage. Und die Abzüge, die zu deiner tatsächlichen Arbeit gehören. Nichts davon lässt sich in einer Tabelle nachschlagen.',
+      'Das ist die Kategorie für jemanden, der entscheidet, ob er selbst einreicht oder einreichen lässt. Dein steuerlicher Wohnsitz, der von deinen eigenen Umständen abhängt und ordentlich geprüft werden muss. Die Wochen mit 45 Prozent Einbehalt, bevor die TFN bei der Lohnbuchhaltung war. Die Medicare-Frage. Und die Abzüge, die zu deiner tatsächlichen Arbeit gehören. Nichts davon lässt sich in einer Tabelle nachschlagen.',
     ],
     service: { path: '/de/tax-return', label: 'Was wir bei jeder Steuererklärung durchgehen' },
   },
   'super': {
     paragraphs: [
-      'Superannuation ist Geld, das dein Arbeitgeber zusätzlich zum Lohn in einen Rentenfonds einzahlt, ab dem 1. Juli 2026 mit 12 Prozent. Wenn du Australien endgültig verlässt, kannst du es über den Departing Australia Superannuation Payment zurückholen. Diese Ratgeber behandeln, wie Super entsteht, wie du den Stand prüfst, wie du verlorene Fonds findest, den DASP Ablauf, die nötigen Unterlagen und die Besteuerung der Auszahlung.',
+      'Superannuation ist Geld, das dein Arbeitgeber zusätzlich zum Lohn in einen Rentenfonds einzahlt, ab dem 1. Juli 2026 mit 12 Prozent. Wenn du Australien endgültig verlässt, kannst du es über den Departing Australia Superannuation Payment zurückholen. Diese Ratgeber behandeln, wie Super entsteht, wie du den Stand prüfst, wie du verlorene Fonds findest, den DASP-Ablauf, die nötigen Unterlagen und die Besteuerung der Auszahlung.',
       'Sie sind für alle am Ende einer Working Holiday, und besonders für alle, die bei mehreren Arbeitgebern gejobbt haben und vermuten, dass das Geld auf mehreren Konten liegt.',
       'Zwei Dinge entscheiden über Betrag und Dauer. Ob vor dem Antrag jedes Konto unter deiner TFN gefunden wurde, denn ein Antrag leert nur die Fonds, die du nennst. Und wann der Antrag im Verhältnis zum Ablauf deines Visums gestellt wird. Die Auszahlung selbst wird bei Working Holiday Makern mit 65 Prozent besteuert. Das ist gesetzlich festgelegt und nicht gestaltbar.',
     ],

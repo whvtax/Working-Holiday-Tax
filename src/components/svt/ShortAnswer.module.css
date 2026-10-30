@@ -11,7 +11,7 @@
           mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--tooth) * 2) 100%;
 }
 /* The page's own contents list links here. */
-.label { scroll-margin-top: 24px; font-family: var(--svt-font-mono); font-size: 13px; font-weight: 500; color: var(--svt-ink-2); letter-spacing: 0.02em; }
+.label { scroll-margin-top: 96px; font-family: var(--svt-font-mono); font-size: 13px; font-weight: 500; color: var(--svt-ink-2); letter-spacing: 0.02em; }
 .answer { font-size: 19px; line-height: 1.45; font-weight: 600; overflow-wrap: anywhere; }
 /* Marks inside a sentence are long (a clause, not a title word): let them wrap,
  * including in Chinese, where headings keep theirs on one line. */

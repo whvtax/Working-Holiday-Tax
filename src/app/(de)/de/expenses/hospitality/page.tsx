@@ -67,14 +67,14 @@ const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
-  "guaranteeBody": "Vier Betriebe, vier Income Statements und Super in vier Fonds ist hier das übliche Gastro-Jahr, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
-  "faqHeading": "Fragen, die uns dazu gestellt werden",
+  "guaranteeBody": "Vier Betriebe, vier Income Statements und Super in vier Fonds sind in der Gastronomie ein ganz normales Jahr, und alle unsere Kunden haben ein 417- oder 462-Visum. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
+  "faqHeading": "Häufige Fragen dazu",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
+  "disclaimer": "Das sind allgemeine Informationen und keine individuelle Beratung zu deiner Steuersituation. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -94,19 +94,19 @@ const CRUMBS = [
 ]
 
 const HERO = {
-  "kicker": "Bars, Cafes, Restaurants und Küchen",
+  "kicker": "Bars, Cafés, Restaurants und Küchen",
   "h1lead": "Deine rutschfesten Schuhe sind absetzbar.",
   "h1accent": "Das schwarze Outfit nicht.",
-  "lede": "Die Liste ist kurz, deshalb liegt das Geld einer Gastro-Erklärung meistens auf der Einkommensseite: mehrere Betriebe, mehrere Einbehaltssätze, Super in mehreren Fonds."
+  "lede": "Die Liste ist kurz, deshalb liegt das Geld einer Gastro-Erklärung meistens auf der Einkommensseite: mehrere Betriebe, mehrfacher Steuereinbehalt, Super in mehreren Fonds."
 }
 
 const SECTIONS: Section[] = [
   {
     "kind": "answer",
-    "h2": "Was können Bar-, Cafe- und Küchenkräfte absetzen?",
+    "h2": "Was können Bar-, Café- und Küchenkräfte absetzen?",
     "paras": [
-      "Absetzbar sind rutschfeste Schutzschuhe, berufsspezifische Kleidung wie Kochjacke und Karohose, das Waschen einer Pflichtuniform mit Arbeitgeberlogo, die Verlängerung eines RSA- oder Food-Safety-Supervisor-Zertifikats und selbst gekauftes Küchenwerkzeug. Alles andere im Schrank ist normale Kleidung.",
-      "Die Gastronomie gibt dir sehr wenig, das nur zu diesem Job gehört. Du bist drinnen, dein Arbeitgeber stellt die Ausrüstung, und die Kleidung, die ein Betrieb verlangt, könnte meist jeder überall tragen."
+      "Absetzbar sind rutschfeste Schutzschuhe, berufsspezifische Kleidung wie Kochjacke und Karohose, das Waschen einer vorgeschriebenen Uniform mit Arbeitgeberlogo, die Verlängerung eines RSA- oder Food-Safety-Supervisor-Zertifikats und selbst gekauftes Küchenwerkzeug. Alles andere im Schrank ist normale Kleidung.",
+      "Die Gastronomie bietet dir sehr wenig, was ausschließlich zu diesem Job gehört. Du bist drinnen, dein Arbeitgeber stellt die Ausrüstung, und die Kleidung, die ein Betrieb verlangt, könnte meist jeder überall tragen."
     ]
   },
   {
@@ -123,7 +123,7 @@ const SECTIONS: Section[] = [
         "d": "Berufsspezifische Kleidung, also Kleidung, die dich als Angehörigen eines bestimmten Berufs erkennbar macht und überall sonst absurd aussähe. Das ist eine eigene anerkannte Kategorie, getrennt von der Uniform mit Logo, und genau deshalb bekommt ein Koch einen Kleidungsabzug und ein Kellner meistens nicht."
       },
       {
-        "t": "Waschen einer Pflichtuniform mit Logo",
+        "t": "Waschen einer vorgeschriebenen Uniform mit Logo",
         "d": "Verlangt dein Arbeitgeber eine Uniform mit Logo oder wirklich unverwechselbarem Design, ist das Waschen absetzbar: 1 Dollar pro Waschgang, wenn nur Arbeitskleidung drin ist, oder 50 Cent, wenn du sie mit allem anderen wäschst. Über 150 Dollar Wäschekosten im Jahr brauchst du ein einfaches Tagebuch statt einer Schätzung."
       },
       {
@@ -145,21 +145,21 @@ const SECTIONS: Section[] = [
     "h2": "Was muss hinter einem Abzug in der Gastronomie stehen?",
     "paras": [
       "Dieselben drei Tests wie überall: das Geld war deins, niemand hat es dir erstattet, und es diente dazu, das Einkommen zu verdienen, das du angibst. Im Betrieb heißt das der Beleg für die Schuhe und die Messerrolle, die schriftliche Uniformregel und ein Wäschetagebuch, sobald sich die Waschgänge summieren.",
-      "Jeder Nachweis mit Betrag, Datum, Anbieter und Gegenstand tut es, und er muss fünf Jahre überstehen. Ein Jahr mit Abzügen von zusammen 300 Dollar oder weniger braucht gar keinen schriftlichen Nachweis. Das sind nicht die 300 Dollar, die entscheiden, ob ein Messerset sofort oder über die Nutzungsdauer abgeschrieben wird."
+      "Jeder Nachweis mit Betrag, Datum, Anbieter und Gegenstand tut es, und er muss fünf Jahre überstehen. Ein Jahr mit Abzügen von zusammen 300 Dollar oder weniger braucht gar keinen schriftlichen Nachweis. Diese 300 Dollar sind nicht dieselbe Grenze wie die, die entscheidet, ob ein Messerset sofort oder über die Nutzungsdauer abgeschrieben wird."
     ]
   },
   {
     "kind": "traps",
     "h2": "Was macht Gastro-Personal falsch?",
-    "intro": "Die Kleidungsregel erwischt alle, weil sie sich unfair anfühlt. Die übersehenen Abzüge sind leiser und drehen sich meist um die Bezahlung statt um Ausgaben.",
+    "intro": "Die Kleidungsregel überrascht fast alle, weil sie sich unfair anfühlt. Die übersehenen Abzüge sind leiser und drehen sich meist um die Bezahlung statt um Ausgaben.",
     "wrong": [
       {
         "t": "Das komplett schwarze Outfit, das der Betrieb verlangt",
-        "d": "Schlichte schwarze Hose, schlichtes schwarzes Hemd, schlichte schwarze Schuhe ohne Logo. Das ATO schaut auf den Gegenstand, und Alltagskleidung, die jeder überall tragen könnte, ist privat, was der Dresscode auch sagt."
+        "d": "Schlichte schwarze Hose, schlichtes schwarzes Hemd, schlichte schwarze Schuhe ohne Logo. Das ATO schaut auf den Gegenstand, und Alltagskleidung, die jeder überall tragen könnte, ist privat, auch wenn der Dresscode etwas anderes vorschreibt."
       },
       {
         "t": "Deine erste RSA",
-        "d": "Das Zertifikat, das du vor dem Job bezahlt hast, hat dich einstellbar gemacht, und das ist eine private Kost. Sobald du arbeitest, ist die Verlängerung absetzbar."
+        "d": "Das Zertifikat, das du vor dem Job bezahlt hast, hat dich einstellbar gemacht, und das ist eine private Ausgabe. Sobald du arbeitest, ist die Verlängerung absetzbar."
       },
       {
         "t": "Friseur, Pflege und Make-up für den Standard im Service",
@@ -185,15 +185,15 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Ein zweiter oder dritter Arbeitgeber mit falschem Einbehalt",
-        "d": "Hat ein Betrieb deine Tax File Number Declaration nie bekommen oder ist er nicht als Arbeitgeber von Working Holiday Makern registriert, behält er weit mehr als 15 Prozent ein. Nichts davon ist verloren, aber es kommt nur mit einer Erklärung zurück, die alle Arbeitgeber zusammenführt."
+        "d": "Hat ein Betrieb deine Tax File Number Declaration nie bekommen oder ist er nicht als Arbeitgeber von Working Holiday Makern registriert, behält er weit mehr als 15 Prozent ein. Nichts davon ist verloren, lässt sich aber nur mit einer Erklärung klären, die alle Arbeitgeber zusammenführt."
       },
       {
-        "t": "Superannuation in drei verschiedenen Fonds",
+        "t": "Superannuation in mehreren verschiedenen Fonds",
         "d": "Jeder Betrieb zahlt ab dem ersten Dollar 12 Prozent Super zusätzlich zum Lohn, ohne monatliche Mindestgrenze. Bei vier Casual-Jobs endest du mit vier Konten, jedes mit eigenen Gebühren, und die meisten finden nur eines davon wieder."
       },
       {
         "t": "Ein Betrieb, der dir die Uniform unrechtmäßig vom Lohn abgezogen hat",
-        "d": "Kein Abzug. Lohnabzüge für Uniformen, Wäsche, Bruch oder Kassendifferenzen sind nach dem Fair Work Act fast immer rechtswidrig, und das ist Geld zurück, keine Steuersache."
+        "d": "Kein Abzug. Lohnabzüge für Uniformen, Wäsche, Bruch oder Kassendifferenzen sind nach dem Fair Work Act fast immer rechtswidrig, und es geht um Geld, das du zurückfordern kannst, nicht um eine Steuersache."
       }
     ]
   },
@@ -201,8 +201,8 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was muss beurteilt statt nachgeschlagen werden?",
     "paras": [
-      "Zuerst die Kleidungsfrage. Ob ein Teil eine Pflichtuniform ist, hängt daran, wie unverwechselbar es ist und ob der Arbeitgeber es verlangt. Ob Schuhe Schutzschuhe sind, hängt an der Gefahr in deinem Betrieb. Eine schriftliche Uniformregel und ein Foto klären das meistens.",
-      "Auf der Einnahmenseite zahlt sich ein fachlicher Blick aus. Working Holiday Maker bekommen keinen Steuerfreibetrag, ein Betrieb, der so einbehält, als hättest du einen, behält also zu wenig ein und hinterlässt eine Nachzahlung. Das kippt, wenn die Addy-Entscheidung für dich gilt, was bei britischen, deutschen und japanischen Pässen möglich ist, sofern du steuerlich in Australien ansässig warst. Das hängt von deinen eigenen Umständen ab und muss ordentlich geprüft werden."
+      "Zuerst die Kleidungsfrage. Ob ein Teil eine vorgeschriebene Uniform ist, hängt daran, wie unverwechselbar es ist und ob der Arbeitgeber es verlangt. Ob Schuhe Schutzschuhe sind, hängt an der Gefahr in deinem Betrieb. Eine schriftliche Uniformregel und ein Foto klären das meistens.",
+      "Auf der Einnahmenseite zahlt sich ein fachlicher Blick aus. Working Holiday Maker bekommen keinen Steuerfreibetrag, ein Betrieb, der so einbehält, als hättest du einen, behält also zu wenig ein und hinterlässt eine Nachzahlung. Das kann sich ändern, wenn ein Gerichtsurteil namens Addy für dich gilt. Ob das so ist, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -214,7 +214,7 @@ const FAQS = [
   },
   {
     "question": "Kann ich mein RSA-Zertifikat absetzen?",
-    "answer": "Die Verlängerung ja, das erste Zertifikat nein. Sobald du in einer Rolle arbeitest, die eine RSA verlangt, ist ihre Verlängerung eine Kost der Arbeit. Das erste Zertifikat hat dich erst für die Stelle qualifiziert, und das behandelt das ATO als privat.\n\nFür den Food Safety Supervisor gilt dieselbe Grenze."
+    "answer": "Die Verlängerung ja, das erste Zertifikat nein. Sobald du in einer Rolle arbeitest, die eine RSA verlangt, ist ihre Verlängerung eine Ausgabe für die Arbeit. Das erste Zertifikat hat dich erst für die Stelle qualifiziert, und das behandelt das ATO als privat.\n\nFür den Food Safety Supervisor gilt dieselbe Grenze."
   },
   {
     "question": "Ist mein Trinkgeld steuerpflichtig?",
@@ -226,7 +226,7 @@ const FAQS = [
   },
   {
     "question": "Bekomme ich Superannuation in einem Casual-Job?",
-    "answer": "Ja. Dein Arbeitgeber zahlt für Casual-Arbeit ab dem ersten Dollar 12 Prozent Super zusätzlich zum Lohn, ohne monatliche Mindestverdienstgrenze.\n\nJeder Betrieb zahlt unabhängig, bei mehreren Jobs verteilt sich das also meist auf mehrere Fonds, die du vor der Abreise aufspüren solltest."
+    "answer": "Ja. Dein Arbeitgeber zahlt für Casual-Arbeit ab dem ersten Dollar 12 Prozent Super zusätzlich zum Lohn, ohne monatliche Mindestverdienstgrenze.\n\nJeder Betrieb zahlt unabhängig, bei mehreren Jobs verteilt sich das also meist auf mehrere Fonds, die du vor der Abreise zusammensuchen solltest."
   }
 ]
 

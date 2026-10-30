@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   // hier kurz genug, dass das Ganze in ein mobiles Suchergebnis passt.
   title: 'Steuererklärung Australien ohne myGov',
   description:
-    'Pass und australisches Bankkonto, keine Payslips. Wir holen deine ATO-Daten, bereiten die Erklärung vor und reichen ein. Rückerstattung meist nach etwa 14 Werktagen.',
+    'Pass und australisches Bankkonto, keine Payslips. Wir holen deine ATO-Daten, bereiten die Erklärung vor und reichen ein. Eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus.',
   keywords: [
     'Steuererklärung Australien machen lassen',
     'Steuererklärung Australien einreichen',
@@ -55,13 +55,13 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Steuererklärung Australien ohne myGov (417 & 462)',
     description:
-      'Deine Daten und wohin die Erstattung gehen soll. Wir lesen die ATO-Daten, bereiten die Erklärung vor, du unterschreibst, wir reichen ein. Rückerstattung meist nach etwa 14 Werktagen.',
+      'Deine Daten und wohin die Erstattung gehen soll. Wir lesen die ATO-Daten, bereiten die Erklärung vor, du unterschreibst, wir reichen ein. Eine Erstattung zahlt das ATO meist etwa 14 Werktage danach aus.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
     title: 'Steuererklärung Australien ohne myGov (417 & 462)',
-    description: 'Pass, Bankdaten, keine Payslips. Du unterschreibst, wir reichen ein, Rückerstattung meist nach etwa 14 Werktagen.',
+    description: 'Pass, Bankdaten, keine Payslips. Du unterschreibst, wir reichen ein. Eine Erstattung zahlt das ATO meist nach etwa 14 Werktagen aus.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -121,12 +121,12 @@ const SEQUENCE = [
   {
     n: '06',
     title: 'Es wird eingereicht',
-    body: 'Geprüft und freigegeben von einem registrierten Steueragenten, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten.',
+    body: 'Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten.',
   },
   {
     n: '07',
     title: 'Das ATO zahlt aus',
-    body: 'Rückerstattungen kommen meist etwa 14 Werktage nach der Einreichung an, auf das australische Konto, das du uns genannt hast. Fragt das ATO nach, beantworten wir das und sagen dir, worum es ging.',
+    body: 'Eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus, auf das australische Konto, das du uns genannt hast. Fragt das ATO nach, beantworten wir das und sagen dir, worum es ging.',
   },
 ]
 
@@ -141,7 +141,7 @@ const SEQUENCE = [
 const REFUND_SOURCES = [
   {
     "label": "Wochen mit 45 %, bevor deine TFN da war",
-    "body": "Liegt deinem Arbeitgeber weder deine Steuernummer vor noch eine Erklärung, dass dein Antrag läuft, muss er 45 % statt 15 % einbehalten. Jede Lohnabrechnung in dieser Zeit war zu hoch besteuert, und das Geld kommt nur über eine eingereichte Erklärung zurück."
+    "body": "Liegt deinem Arbeitgeber weder deine TFN vor noch eine Erklärung, dass dein Antrag läuft, muss er 45 % statt 15 % einbehalten. Jede Lohnabrechnung in dieser Zeit war zu hoch besteuert, und das Geld kommt nur über eine eingereichte Erklärung zurück."
   },
   {
     "label": "Ein zweiter Job ohne eigene Erklärung",
@@ -157,11 +157,11 @@ const REFUND_SOURCES = [
   },
   {
     "label": "Arbeitskosten, die niemand angesetzt hat",
-    "body": "Schuhe, Arbeitskleidung, Werkzeug, Lizenzen und Fahrten zwischen Einsatzorten können dein steuerpflichtiges Einkommen senken, wenn sie mit deiner Arbeit zusammenhängen. Beim Satz von 15 % senkt jeder Dollar 100 an echten Abzügen die Steuer um 15 $."
+    "body": "Schuhe, Arbeitskleidung, Werkzeug, Lizenzen und Fahrten zwischen Einsatzorten können dein steuerpflichtiges Einkommen senken, wenn sie mit deiner Arbeit zusammenhängen. Beim Satz von 15 % senken 100 $ an echten Abzügen die Steuer um 15 $."
   },
   {
-    "label": "Dein Pass und die Addy-Entscheidung",
-    "body": "Für Staatsangehörige aus Großbritannien, Deutschland, Japan, Finnland, Norwegen, Chile und der Türkei, die steuerlich ansässig waren, kann die Addy-Entscheidung den steuerfreien Grundbetrag für das Jahr zurückbringen."
+    "label": "Dein Pass und deine steuerliche Ansässigkeit",
+    "body": "Je nach Reisepass und Verlauf deines Jahres kann ein Gerichtsurteil die geltenden Steuersätze verändern. Ob das bei dir der Fall ist, klären wir in unserer Prüfung."
   }
 ]
 
@@ -171,8 +171,8 @@ const RULES = [
     body: 'Die Super-Auszahlung (DASP) kann auf ein Konto im Ausland gehen. Eine Steuerrückerstattung nicht. Willst du dein australisches Konto schließen, warte, bis die Rückerstattung da ist, oder sag uns vorher Bescheid.',
   },
   {
-    label: 'Frühere Jahre kannst du dir noch holen',
-    body: 'Ein Steuerjahr, für das du nie eingereicht hast, verschwindet nicht von allein. Jedes Jahr ist eine eigene Erklärung und eine eigene Rückerstattung, und wir arbeiten sie vom ältesten an ab.',
+    label: 'Frühere Jahre kannst du noch nachreichen',
+    body: 'Ein Steuerjahr, für das du nie eingereicht hast, verschwindet nicht von allein. Jedes Jahr ist eine eigene Erklärung und eine eigene Rückerstattung, und wir arbeiten sie der Reihe nach ab, das älteste zuerst.',
   },
 ]
 
@@ -183,12 +183,12 @@ const FAQS = [
   {
     question: 'Wie lange dauert eine Steuererklärung für Working Holiday Maker?',
     answer:
-      'Ab dem Tag, an dem dein Fragebogen da ist, brauchen Vorbereitung und Prüfung bei einem unkomplizierten Jahr wenige Tage, und das ATO zahlt die Rückerstattung meist etwa 14 Werktage nach der Einreichung aus.\n\nFünf Arbeitgeber, über eine ABN abgerechnetes Einkommen oder ein Wohnsitz, der begründet werden muss, dauern bei uns länger. Wir sagen dir, welcher Fall deiner ist.',
+      'Ab dem Tag, an dem dein Fragebogen da ist, brauchen Vorbereitung und Prüfung bei einem unkomplizierten Jahr wenige Tage, und eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus.\n\nFünf Arbeitgeber, über eine ABN abgerechnetes Einkommen oder ein Wohnsitz, der begründet werden muss, dauern bei uns länger. Wir sagen dir, welcher Fall deiner ist.',
   },
   {
     question: 'Bis wann muss die Steuererklärung eingereicht werden?',
     answer:
-      'Wenn du selbst einreichst, bis zum 31. Oktober nach Ende des Steuerjahres. Eine Erklärung für 2025-26 ist also am 31. Oktober 2026 fällig, dieses Jahr Montag, der 2. November. Ein Jahr nach Fristablauf ist verspätet, aber nicht verloren, und kann weiterhin eingereicht werden.',
+      'Wenn du selbst einreichst, bis zum 31. Oktober nach Ende des Steuerjahres. Eine Erklärung für 2025/26 ist also am 31. Oktober 2026 fällig. Eine Erklärung nach Fristablauf ist verspätet, aber nicht verloren und kann weiterhin eingereicht werden.',
   },
   {
     question: 'Braucht ihr meine Payslips?',
@@ -208,7 +208,7 @@ const FAQS = [
   {
     question: 'Was ist, wenn ich für ein früheres Jahr nie eingereicht habe?',
     answer:
-      'Das lässt sich jetzt noch nachholen. Jedes Steuerjahr steht für sich, mit eigener Erklärung und eigener Rückerstattung, und an den ATO-Daten sehen wir, welche Jahre noch offen sind.\n\nIn den meisten Working-Holiday-Jahren steht am Ende Geld für dich und nicht gegen dich.',
+      'Das lässt sich jetzt noch nachholen. Jedes Steuerjahr steht für sich, mit eigener Erklärung und eigener Rückerstattung, und an den ATO-Daten sehen wir, welche Jahre noch offen sind.\n\nOb am Ende eine Erstattung steht, entscheidet das ATO. Wir sagen dir vorher, womit du rechnen kannst.',
   },
   {
     question: 'Was passiert, wenn am Ende eine Nachzahlung steht?',
@@ -221,12 +221,12 @@ const GUIDES = [
   {
     href: '/de/blog/how-to-lodge-tax-return-from-overseas',
     title: 'Einreichen nach der Rückkehr',
-    desc: 'Was aus Deutschland weiter funktioniert, und die Kontoregel, die viele übersieht.',
+    desc: 'Was aus Deutschland weiter funktioniert, und die Kontoregel, die viele übersehen.',
   },
   {
     href: '/de/blog/tax-residency-working-holiday-makers',
     title: 'Bist du steuerlich ansässig',
-    desc: 'Die Beurteilung hinter Schritt 04, ausführlich erklärt.',
+    desc: 'Warum sich Schritt 04 nicht per Checkliste klären lässt.',
   },
   {
     href: '/de/blog/tax-deductions-working-holiday-makers',
@@ -250,7 +250,7 @@ export default function TaxReturnPageDE() {
     url: `${SITE_URL}/de/tax-return`,
     name: 'Steuererklärung Australien machen lassen',
     description:
-      'Wie eine australische Steuererklärung mit 417- oder 462-Visum eingereicht wird: was wir von dir brauchen, was wir prüfen, wie du unterschreibst und wann die Rückerstattung kommt.',
+      'Wie eine australische Steuererklärung mit 417- oder 462-Visum eingereicht wird: was wir von dir brauchen, was wir prüfen, wie du unterschreibst und wann das ATO eine Erstattung auszahlt.',
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -264,7 +264,7 @@ export default function TaxReturnPageDE() {
     name: 'Steuererklärung für Working Holiday Maker einreichen',
     serviceType: 'Steuererklärung Vorbereitung und Einreichung',
     description:
-      'Australische Steuererklärungen für Inhaber von 417- und 462-Visa. Geprüft und freigegeben von einem registrierten Steueragenten, bevor sie beim ATO eingereicht wird, auch aus dem Ausland.',
+      'Australische Steuererklärungen für Inhaber von 417- und 462-Visa. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird, auch aus dem Ausland.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australien' },
     audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 und 462)' },
@@ -280,7 +280,7 @@ export default function TaxReturnPageDE() {
     '@id': `${SITE_URL}/de/tax-return#howto`,
     name: 'Wie eine Steuererklärung für Working Holiday Maker eingereicht wird',
     description:
-      'Die Reihenfolge, in der eine Steuererklärung mit 417- oder 462-Visum vorbereitet und eingereicht wird, von der ersten Nachricht bis zur Rückerstattung.',
+      'Die Reihenfolge, in der eine Steuererklärung mit 417- oder 462-Visum vorbereitet und eingereicht wird, von der ersten Nachricht bis zur Auszahlung einer Erstattung.',
     inLanguage: 'de',
     totalTime: 'P14D',
     step: SEQUENCE.map((s, i) => ({
@@ -343,7 +343,7 @@ export default function TaxReturnPageDE() {
 
           <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '52ch', marginBottom: '26px' }}>
             Keine Payslips, kein myGov-Konto, kein Formular zum Entziffern. Ein Fragebogen, eine Unterschrift,
-            und die Rückerstattung kommt meist etwa 14 Werktage nach der Einreichung.
+            und eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus.
           </p>
 
           <div className="hero-animate-delay-2">
@@ -373,7 +373,7 @@ export default function TaxReturnPageDE() {
             Warum Working Holiday Maker oft eine Steuererstattung bekommen
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch', marginBottom: '26px' }}>
-            Eine Erstattung ist keine Prämie fürs Backpacken. Sie ist die Lücke zwischen dem, was deine Arbeitgeber einbehalten haben, und dem, was du tatsächlich geschuldet hast, und in einem Working-Holiday-Jahr entsteht diese Lücke meist an den Stellen unten. Die Erstattungen unserer Kunden reichen von ein paar hundert bis zu mehreren tausend Dollar, je nachdem, was davon zutraf.
+            Eine Erstattung ist keine Prämie fürs Backpacken. Sie ist die Lücke zwischen dem, was deine Arbeitgeber einbehalten haben, und dem, was du tatsächlich geschuldet hast, und in einem Working-Holiday-Jahr entsteht diese Lücke meist an den Stellen unten.
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             {REFUND_SOURCES.map((r) => (
@@ -487,11 +487,11 @@ export default function TaxReturnPageDE() {
           <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
+            Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
-            Von dem, was das ATO überweist, wird nie etwas abgezogen. Der Betrag wird vor Schritt 01 auf WhatsApp mit dir
-            geklärt.
+            Von dem, was das ATO überweist, wird nie etwas abgezogen. Die Gebühr klären wir vor Beginn der Arbeit auf WhatsApp
+            mit dir.
           </p>
         </div>
       </section>
@@ -529,7 +529,7 @@ export default function TaxReturnPageDE() {
           </h2>
           <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Vorbereitet
-            von unserem Team, geprüft und freigegeben von einem registrierten Steueragenten, bevor sie beim ATO
+            von unserem Team, von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO
             eingereicht wird.
           </p>
 

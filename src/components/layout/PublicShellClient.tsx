@@ -22,11 +22,11 @@ export default function PublicShellClient({
   // same form, so it matches. TFN, ABN and Super are conversion forms on
   // exactly the same footing as /tax-form (with their /de and /ja variants).
   const formRoutes = [
-    '/tax-form', '/de/tax-form', '/ja/tax-form',
-    '/tax-residency', '/de/tax-residency', '/ja/tax-residency',
-    '/tfn-form', '/de/tfn-form', '/ja/tfn-form',
-    '/abn-form', '/de/abn-form', '/ja/abn-form',
-    '/super-form', '/de/super-form', '/ja/super-form',
+    '/start', '/de/start', '/ja/start',
+    '/y8vwp4bf7', '/de/y8vwp4bf7', '/ja/y8vwp4bf7',
+    '/vukjw4byf', '/de/vukjw4byf', '/ja/vukjw4byf',
+    '/3cw5w5hcx', '/de/3cw5w5hcx', '/ja/3cw5w5hcx',
+    '/rh84sez58', '/de/rh84sez58', '/ja/rh84sez58',
   ]
   const isTaxForm = !!pathname && formRoutes.includes(pathname)
 

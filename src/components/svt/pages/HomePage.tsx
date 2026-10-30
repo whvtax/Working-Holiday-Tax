@@ -54,7 +54,6 @@ export function HomePage({ locale, t }: { locale: SvtLocale; t: HomeCopy }) {
 
       <Section id="how" tone="pale" title={t.flow.title} titleId="how-title">
         <ChatThread steps={t.flow.steps} label={t.flow.label} />
-        <p className={styles.note}>{t.flow.note}</p>
       </Section>
 
       <ImageSlot {...t.images.flow} tone="b" />

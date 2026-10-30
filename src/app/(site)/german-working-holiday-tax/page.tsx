@@ -9,7 +9,7 @@ import { waUrl } from '@/lib/wa'
 export const metadata: Metadata = {
   title: 'Australian Tax Refund for German Backpackers',
   description:
-    'Back in Germany with Australian tax still open? A German passport usually means no Medicare levy, the Addy residency question, and super you can claim from home.',
+    'Back in Germany with Australian tax still open? A court ruling known as Addy may change which rates apply to some passports, and super can be claimed from home.',
   keywords: [
     'german working holiday australia tax',
     'australian tax return from germany',
@@ -34,14 +34,14 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Australian Tax Refund for German Backpackers',
     description:
-      'A German passport usually means you were never entitled to Medicare, so the 2 per cent levy can come off, and Germany is on the Addy list. All of it is handled from Germany.',
+      'A German passport usually means you were never entitled to Medicare, so the 2 per cent levy can come off, and a court ruling may matter for your years here. All of it is handled from Germany.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Australian Tax Refund for German Backpackers',
     description:
-      'No Medicare entitlement, the Addy residency question, and super claimable from home: what a German passport changes on an Australian tax return.',
+      'The Addy ruling, the Medicare levy, and super claimable from home: what may change on an Australian tax return for a German passport.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -66,8 +66,8 @@ const DIFFERENCES = [
     d: 'Germany has no Reciprocal Health Care Agreement with Australia, so a German working holiday maker is generally not entitled to Medicare. That is the reverse of the British position, and it is what makes the 2 per cent levy exemption available. The exemption needs a Medicare Entitlement Statement; without one the levy stays on the return.',
   },
   {
-    t: 'Germany is on the Addy list',
-    d: 'The ATO applies the Addy decision to working holiday makers who were Australian residents for tax purposes and are nationals of the United Kingdom, Chile, Finland, Germany, Japan, Norway or Turkey. Where it applies it restores the tax free threshold and resident rates for those years.',
+    t: 'A court ruling may matter for German passports',
+    d: 'A court ruling can change the rates that apply to some German passport holders, depending on how their years in Australia looked. Whether it applies to you is something we check in our review.',
   },
   {
     t: 'Two tax years that never line up',
@@ -81,7 +81,7 @@ const DIFFERENCES = [
 
 const WHAT_WE_DO = [
   'Work out which Australian tax years you have open, including the ones you left behind when you flew home.',
-  'Take a position on your residency for tax purposes for each of those years, and apply the Addy decision where it applies.',
+  'Review each of those years, including the Addy ruling and what it may mean for your rates.',
   'Apply for the Medicare Entitlement Statement where the levy exemption is warranted, so the 2 per cent does not stay on by default.',
   'Chase down every employer income statement, including the ones you have forgotten, and check what each withheld.',
   'Find superannuation left in funds you no longer have the logins for, and claim it as a Departing Australia Superannuation Payment once your visa has ceased.',
@@ -97,8 +97,8 @@ const MYGOV = [
     us: 'We check your entitlement and apply for the statement the exemption needs before the return goes in.',
   },
   {
-    mygov: 'Nothing there mentions that Germany is one of the countries the Addy decision is applied to.',
-    us: 'That is a residency position for each year, and it is taken before anything is lodged.',
+    mygov: 'Nothing there mentions the Addy ruling, which may change which rates apply to some passports.',
+    us: 'That is part of our review, and it is looked at properly before anything is lodged.',
   },
   {
     mygov: 'The years you left open do not appear as a prompt anywhere.',
@@ -107,6 +107,11 @@ const MYGOV = [
 ]
 
 const FAQS = [
+  {
+    question: 'What is the Addy ruling and does it affect German working holiday makers?',
+    answer:
+      'Addy is a 2021 High Court decision about how working holiday makers can be taxed. A court ruling may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review.',
+  },
   {
     question: 'Do Germans pay the Medicare levy in Australia?',
     answer:
@@ -130,7 +135,7 @@ const FAQS = [
   {
     question: 'Is there a deadline, and am I already late?',
     answer:
-      'A self lodged return for 2025-26 is due 31 October 2026, which this year means Monday 2 November. Past that, the year is late rather than lost, and late returns are still lodged and still refunded.',
+      'A self lodged return for 2025-26 is due 31 October 2026. Past that, the year is late rather than lost, and late returns are still lodged and still refunded.',
   },
 ]
 
@@ -426,7 +431,7 @@ export default function GermanWorkingHolidayTaxPage() {
                 2025-26", so the lede said the year twice. */}
             <p style={ps}>
               Working holiday maker rates apply to your Australian wages whether or not you are a resident for tax purposes, unless
-              the Addy position above changes that.
+              a court ruling known as Addy changes that for you. That is part of our review.
             </p>
             <div style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
               <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>
@@ -484,8 +489,7 @@ export default function GermanWorkingHolidayTaxPage() {
           <div style={wrap}>
             <h2 style={h2s}>Are you late, and does it matter?</h2>
             <p style={{ ...ps, marginBottom: 0 }}>
-              Australian returns can be lodged from 1 July. A self lodged 2025-26 return is due 31 October 2026, which this year
-              means Monday 2 November. Past that, the year is late rather than lost, and late returns are still lodged and still
+              Australian returns can be lodged from 1 July. A self lodged 2025-26 return is due 31 October 2026. Past that, the year is late rather than lost, and late returns are still lodged and still
               refunded. The{' '}
               <Link href="/blog/tax-return-deadline-31-october-working-holiday" style={linkS}>2026 deadline guide</Link> has the detail.
             </p>

@@ -5,7 +5,7 @@ import { JobExpensesPage, type Section } from '@/components/expenses/JobExpenses
 
 export const metadata: Metadata = {
   "title": "Reinigungskraft: Fahrten, Ausrüstung",
-  "description": "Ausrüstung, Schutzkleidung, Uniformwäsche zum ATO-Satz und die Fahrt zwischen zwei Jobs, die kaum jemand ansetzt. Dazu, was abgelehnt wird.",
+  "description": "Ausrüstung, Schutzkleidung, Uniformwäsche zum ATO-Satz und die Fahrt zwischen zwei Jobs, die kaum jemand ansetzt. Dazu, was das ATO ablehnt.",
   "keywords": [
     "Reinigungskraft Steuerabzüge Australien",
     "Putzhilfe Steuer Australien",
@@ -67,14 +67,14 @@ const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
-  "guaranteeBody": "Reinigungserklärungen landen hier jede Woche auf dem Tisch, und jede gehört jemandem mit 417- oder 462-Visum. Von einem registrierten Steueragenten geprüft und freigegeben, bevor es beim ATO eingereicht wird.",
+  "guaranteeBody": "Reinigungserklärungen landen hier jede Woche auf dem Tisch, und jede gehört jemandem mit 417- oder 462-Visum. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",
   "servicesLabel": "Weiter auf der Website",
   "wrongLabel": "Abgesetzt, obwohl es nicht ging",
   "missedLabel": "Nicht abgesetzt, obwohl es gegangen wäre",
-  "disclaimer": "Das sind allgemeine Informationen, keine persönliche Steuerberatung. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
+  "disclaimer": "Das sind allgemeine Informationen und keine individuelle Beratung zu deiner Steuersituation. Was du absetzen kannst, hängt von deinen Arbeitgebern, deinen Belegen und davon ab, wie du tatsächlich gearbeitet hast. Wenn du bei uns einreichst, gehen wir deine Situation Punkt für Punkt durch.",
   "hubHref": "/de/expenses"
 }
 
@@ -105,7 +105,7 @@ const SECTIONS: Section[] = [
     "kind": "answer",
     "h2": "Was können Reinigungskräfte absetzen?",
     "paras": [
-      "Absetzbar sind selbst gekaufte Ausrüstung und Reinigungsmittel, Schutzausrüstung wie Handschuhe, Schürze, Schutzbrille oder Sicherheitsschuhe, das Waschen einer Pflichtuniform oder von Schutzkleidung und die Fahrt von einem Reinigungsjob zum nächsten am selben Tag. Was Kunde oder Arbeitgeber stellt oder erstattet, fällt raus.",
+      "Absetzbar sind selbst gekaufte Ausrüstung und Reinigungsmittel, Schutzausrüstung wie Handschuhe, Schürze, Schutzbrille oder Sicherheitsschuhe, das Waschen einer vorgeschriebenen Uniform oder von Schutzkleidung und die Fahrt von einem Reinigungsjob zum nächsten am selben Tag. Was Kunde oder Arbeitgeber stellt oder erstattet, fällt raus.",
       "Drei Häuser an einem Tag bedeuten zwei absetzbare Fahrten, und über ein Jahr ist das normalerweise die größte einzelne Zahl der Erklärung."
     ]
   },
@@ -132,11 +132,11 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Waschen absetzbarer Arbeitskleidung",
-        "d": "Das Waschen einer Pflichtuniform oder echter Schutzkleidung ist zum ATO-Satz absetzbar: 1 Dollar pro Waschgang, wenn nur Arbeitskleidung drin ist, oder 50 Cent, wenn du sie mit allem anderen wäschst. Über 150 Dollar im Jahr führst du ein einfaches Tagebuch statt zu schätzen."
+        "d": "Das Waschen einer vorgeschriebenen Uniform oder echter Schutzkleidung ist zum ATO-Satz absetzbar: 1 Dollar pro Waschgang, wenn nur Arbeitskleidung drin ist, oder 50 Cent, wenn du sie mit allem anderen wäschst. Über 150 Dollar im Jahr führst du ein einfaches Tagebuch statt zu schätzen."
       },
       {
         "t": "Arbeitsanteil deines Handys",
-        "d": "Real für alle, die Buchungen annehmen, eine App nutzen oder mit Kunden über Zugang und Schlüssel schreiben. Setze den arbeitsbezogenen Prozentsatz auf nachvollziehbarer Grundlage an, nicht den ganzen Vertrag."
+        "d": "Gilt für alle, die Buchungen annehmen, eine App nutzen oder mit Kunden über Zugang und Schlüssel schreiben. Setze den arbeitsbezogenen Prozentsatz auf nachvollziehbarer Grundlage an, nicht den ganzen Vertrag."
       }
     ]
   },
@@ -157,11 +157,11 @@ const SECTIONS: Section[] = [
         "label": "Kilometerpauschale",
         "rows": [
           [
-            "Satz 2024-25 und 2025-26",
+            "Satz 2024/25 und 2025/26",
             "88 Cent pro km"
           ],
           [
-            "Satz ab 2026-27",
+            "Satz ab 2026/27",
             "91 Cent pro km"
           ],
           [
@@ -220,7 +220,7 @@ const SECTIONS: Section[] = [
         "d": "Eine ABN macht aus privaten Ausgaben keine Betriebsausgaben. Handy, Auto und Kleidung werden weiterhin aufgeteilt."
       },
       {
-        "t": "Anzunehmen, Barzahlungen müsse man nicht angeben",
+        "t": "Zu glauben, Barzahlungen müsse man nicht angeben",
         "d": "Reinigungseinkommen ist Einkommen, ob es per Überweisung, App-Auszahlung oder im Umschlag kommt."
       }
     ],
@@ -234,8 +234,8 @@ const SECTIONS: Section[] = [
         "d": "Verbrauchsmaterial wird ständig gekauft und fast nie belegt. Ein laufendes Fotoalbum der Belege auf dem Handy reicht."
       },
       {
-        "t": "Wäsche, zu einem veröffentlichten Satz",
-        "d": "Das Waschen von Schutzkleidung und Pflichtuniform ist mit 1 Dollar oder 50 Cent pro Waschgang absetzbar, und fast niemand weiß, dass es diesen Satz gibt."
+        "t": "Wäsche zum ATO-Pauschalsatz",
+        "d": "Das Waschen von Schutzkleidung und vorgeschriebener Uniform ist mit 1 Dollar oder 50 Cent pro Waschgang absetzbar, und fast niemand weiß, dass es diesen Satz gibt."
       },
       {
         "t": "Ausrüstung aus der Aufbauphase",
@@ -243,7 +243,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Wochen mit falschem Einbehalt bei einer Reinigungsfirma",
-        "d": "Hat eine Firma deine Tax File Number Declaration nie erhalten oder ist sie nicht als Arbeitgeber von Working Holiday Makern registriert, sind weit mehr als 15 Prozent abgeflossen. Das kommt mit der Erklärung zurück und nicht vorher."
+        "d": "Hat eine Firma deine Tax File Number Declaration nie erhalten oder ist sie nicht als Arbeitgeber von Working Holiday Makern registriert, sind weit mehr als 15 Prozent abgeflossen. Das lässt sich nur mit der Erklärung klären, nicht vorher."
       }
     ]
   },
@@ -253,9 +253,9 @@ const SECTIONS: Section[] = [
     "paras": [
       "Einzelunternehmer oder Angestellter ist die erste Weiche. Private Hausreinigungen, Endreinigungen und App-Jobs über etwas wie Airtasker sind ABN-Einkommen: du setzt den Preis, du stellst Rechnung, nichts wird einbehalten, es gibt keine Superannuation.",
       "Von einer Reinigungsfirma auf Objekte und Schichten eingeteilt zu werden ist Anstellung mit TFN, mit Einbehalt und Super obendrauf.",
-      "Eine Firma, die deinen Dienstplan macht, deine Arbeit beaufsichtigt und die Mittel stellt und dann eine ABN von dir verlangt, kann ein Arbeitgeber im Kostüm der Selbstständigkeit sein.",
+      "Eine Firma, die deinen Dienstplan macht, deine Arbeit beaufsichtigt und die Mittel stellt und dann eine ABN von dir verlangt, kann ein Arbeitgeber sein, der dich nur auf dem Papier selbstständig macht (Scheinselbstständigkeit).",
       "Für Einzelunternehmer wird die GST erst ab 75.000 Dollar Reinigungsumsatz im Jahr Pflicht, und dahin kommt Teilzeitreinigung selten.",
-      "Unter allem liegt der steuerliche Wohnsitz, mehr wert als die ganze Abzugsliste: britische, deutsche und japanische Passinhaber, die steuerlich in Australien ansässig waren, können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen."
+      "Unter allem liegt der steuerliche Wohnsitz, der mehr ins Gewicht fallen kann als die ganze Abzugsliste. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
     ]
   }
 ]
