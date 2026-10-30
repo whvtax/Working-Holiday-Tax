@@ -616,15 +616,8 @@ async function handleIncomingInner(
           await store.audit('assistant', done ? 'residency_quiz_done' : 'residency_quiz_step', {
             customerId: customer.id, step: next?.step ?? 5, ...(done ? { yes: done.yes, answers: done.answers } : {}),
           }).catch(() => {});
-          if (done && done.yes >= 4) {
-            await store.addTask({
-              customerId: customer.id, customerName: customer.name ?? waId,
-              reason: `Residency check in the chat: ${done.yes} of 6 Yes. Told they look like an Australian tax resident and asked to fill out the questionnaire again with the correct details.`,
-              severity: 'REVIEW',
-              context: done.answers.map((a, i) => `${i + 1}. ${a ? 'Yes' : 'No'}`).join('\n'),
-              suggestedReply: null,
-            }).catch(() => {});
-          }
+          // 30 Oct (Jo): no task for the team. Will tells them the result and asks them to
+          // fill the questionnaire again; the audit row above is the record.
           const freshQ = await store.getCustomerByWaId(waId);
           return {
             outcome: { kind: 'sent', replyText: reply, decision: { action: 'reply', reply_text: reply, confidence: 1 } },

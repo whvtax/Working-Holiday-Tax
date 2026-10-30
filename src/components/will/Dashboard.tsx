@@ -711,7 +711,9 @@ export default function Dashboard() {
   const tryResolve = async (id: string, okMsg: string) => {
     const r = await act({ action: 'resolve_task', id });
     if (r && !r.ok && r.error === 'no_reply_yet') {
-      setConfirmDismiss((prev) => new Set(prev).add(id));
+      // 30 Oct (Jo): pressing X means close. No second question; it closes as "no reply needed".
+      const r2 = await act({ action: 'resolve_task', id, noReplyNeeded: true });
+      say(actionToast(r2, okMsg).message); refresh();
       return;
     }
     say(actionToast(r, okMsg).message); refresh();

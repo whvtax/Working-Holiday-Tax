@@ -77,14 +77,14 @@ it('her case: the intro explains the tax year and asks question 1', async () => 
   expect(sent[0]).toContain('1/6: During that tax year, did you live in Australia for 6 months or more?');
 });
 
-it('4 of 6 Yes: fill out the questionnaire again, and a task for the team', async () => {
+it('4 of 6 Yes: fill out the questionnaire again, no task', async () => {
   await say('not sure?');
   for (const a of ['Yes', 'Yes', 'Yes', 'No', 'Yes', 'No']) await say(a);
   expect(sent).toHaveLength(7);
   expect(sent[1]).toMatch(/^2\/6/);
   expect(sent[6]).toBe(quizResult('en', 4));
   expect(sent[6]).toContain('Please fill out the questionnaire again with the correct details');
-  expect(addTask).toHaveBeenCalledWith(expect.objectContaining({ reason: expect.stringContaining('4 of 6 Yes') }));
+  expect(addTask).not.toHaveBeenCalled();
 });
 
 it('fewer than 4: Working Holiday Maker, the team takes it from here, no task', async () => {
