@@ -249,9 +249,9 @@ export default function TFNPageDE() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
             <Link href="/de" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Startseite</Link>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page">TFN</span>
           </nav>
 
@@ -260,14 +260,14 @@ export default function TFNPageDE() {
               did; the slogan below is unchanged. Was: "Working Holiday Visum 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(28px, 4.8vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               TFN beantragen&nbsp;&middot; Working Holiday Visum 417 &amp; 462
             </span>
             <span style={{ display: 'block' }}>Die Nummer ist kostenlos.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>Die Wochen ohne sie nicht.{' '}</span>
           </h1>
 
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '50ch', marginBottom: '26px' }}>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '50ch', marginBottom: '26px' }}>
             Solange dein Arbeitgeber die Nummer nicht hat, werden 45 % deines Lohns einbehalten statt 15 %.
           </p>
 
@@ -278,7 +278,7 @@ export default function TFNPageDE() {
               <IconWhatsApp />
               Schreib uns auf WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               Antwort in etwa einer Stunde.
             </p>
           </div>
@@ -297,7 +297,7 @@ export default function TFNPageDE() {
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
             Was kostet es, ohne TFN anzufangen?
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '28px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '28px' }}>
             Hat dein Arbeitgeber deine TFN nicht innerhalb von 28 Tagen, muss er 45 % einbehalten statt der 15 % für
             Working Holiday Maker. Die zu viel gezahlte Steuer ist nicht verloren und kann mit der Steuererklärung nach
             dem 30. Juni zurückkommen.
@@ -306,32 +306,32 @@ export default function TFNPageDE() {
           <div className="grid gap-4 sm:grid-cols-3">
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>45 %</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>Werden von jedem Dollar einbehalten, solange keine TFN vorliegt, statt 15 %.</p>
+              <p style={{ ...BODY, color: '#0F1A16' }}>Werden von jedem Dollar einbehalten, solange keine TFN vorliegt, statt 15 %.</p>
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>28 Tage</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>Zeit, um deinem Arbeitgeber die TFN zu geben, und für das ATO, sie auszustellen.</p>
+              <p style={{ ...BODY, color: '#0F1A16' }}>Zeit, um deinem Arbeitgeber die TFN zu geben, und für das ATO, sie auszustellen.</p>
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>1 Erklärung</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>Der einzige Weg zurück für alles, was schon zum falschen Satz einbehalten wurde.</p>
+              <p style={{ ...BODY, color: '#0F1A16' }}>Der einzige Weg zurück für alles, was schon zum falschen Satz einbehalten wurde.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* ── 3. WO ES SCHIEFGEHT ──────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Selbst machen</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Selbst machen</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Warum scheitern TFN-Anträge von Backpackern?
           </h2>
           {/* Die Lede sagte "einer von drei Punkten" und die Liste darunter
               sagte dasselbe dann dreimal. Was bleibt, sind die Kosten. */}
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '30px' }}>
             Das Formular ist kurz. Jeder der drei Punkte, an denen es schiefgeht, kann einen weiteren Monat mit 45 %
             bedeuten.
           </p>
@@ -340,11 +340,11 @@ export default function TFNPageDE() {
             {FAILURE_POINTS.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
@@ -356,20 +356,20 @@ export default function TFNPageDE() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Arbeit</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Die Arbeit</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Was wir dagegen tun
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '26px' }}>
             Du schickst uns deine Daten auf WhatsApp. Alles Weitere übernehmen wir.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
             {WHAT_WE_DO.map((c) => (
-              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F5F9F7', border: '1px solid #E2EFE9' }}>
+              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{c.title}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{c.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{c.body}</p>
               </div>
             ))}
           </div>
@@ -379,7 +379,7 @@ export default function TFNPageDE() {
             Formular welches ist. Wir regeln das direkt mit dem ATO.
           </p>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '60ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '18px', maxWidth: '60ch' }}>
             Du hast die Nummer schon und willst die Wochen mit 45 % klären?{' '}
             <Link href="/de/tax-return" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Das ist die Steuererklärung</Link>.
           </p>
@@ -389,7 +389,7 @@ export default function TFNPageDE() {
       {/* ── 5. GEBÜHR ──────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
             Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
@@ -401,13 +401,13 @@ export default function TFNPageDE() {
       </section>
 
       {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
             Sag uns, wo du gerade stehst
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '56ch', marginBottom: '24px' }}>
             Ob du schon gelandet bist, ob du einen Job angefangen hast, und ob schon etwas mit 45 % ausgezahlt
             wurde. Drei Antworten, und wir sagen dir, was als Nächstes kommt.
           </p>
@@ -417,7 +417,7 @@ export default function TFNPageDE() {
             <IconWhatsApp />
             Schreib uns auf WhatsApp
           </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
             Antwort in etwa einer Stunde.
           </p>
         </div>
@@ -430,7 +430,7 @@ export default function TFNPageDE() {
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
             Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Steuererklärungen werden von einem
             registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
           </p>
@@ -439,7 +439,7 @@ export default function TFNPageDE() {
       </section>
 
       {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
@@ -468,7 +468,7 @@ export default function TFNPageDE() {
       {/* ── 9. RATGEBER ──────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             Mehr zur TFN und den Wochen mit 45 %
@@ -479,9 +479,9 @@ export default function TFNPageDE() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

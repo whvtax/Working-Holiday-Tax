@@ -253,9 +253,9 @@ export default function ABNPageJA() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
             <Link href="/ja" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>ホーム</Link>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page">ABN登録</span>
           </nav>
 
@@ -264,14 +264,14 @@ export default function ABNPageJA() {
               did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               ワーホリのABN登録｜417・462ビザ
             </span>
             <span style={{ display: 'block' }}>ABNは仕事を変えません。</span>
             <span style={{ display: 'block', color: '#0B5240' }}>変えるのはタックスリターンです。</span>
           </h1>
 
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '40ch', marginBottom: '26px' }}>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '40ch', marginBottom: '26px' }}>
             源泉徴収のない収入、必要経費、GSTの立場。その3つの下にもう1つ、あなたは本当に個人事業主だったのかという問いがあります。
           </p>
 
@@ -282,7 +282,7 @@ export default function ABNPageJA() {
               <IconWhatsApp />
               WhatsAppで相談する
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               約1時間で返信します。
             </p>
           </div>
@@ -297,14 +297,14 @@ export default function ABNPageJA() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>収入の切り分け</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>収入の切り分け</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '16px' }}>
             ABNを持つと、申告の何が変わりますか。
           </h2>
           {/* 「その両方を突き合わせる1つの申告です」は、下のリスト最後の項目と
               ページ末のNextStepがすでに言っている。 */}
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '30px' }}>
             変わるのは4つで、しかも互いに影響し合います。
           </p>
 
@@ -312,11 +312,11 @@ export default function ABNPageJA() {
             {THE_SPLIT.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '4px' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '4px' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
@@ -325,28 +325,28 @@ export default function ABNPageJA() {
       </section>
 
       {/* ── 3. 注意 ──────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '28ch', marginBottom: '16px' }}>
             雇用主に言われたという理由でABNを登録すべきですか。
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '16px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '16px' }}>
             誰かが仕事の中身を見るまでは、登録すべきではありません。実態は雇用なのにABNにすると、スーパーアニュエーションが積み立てられず、税金も源泉徴収されず、労災保険の対象から外れ、最低賃金や割増賃金の枠組みの外に出て、そのすべてがあなたの負担になります。ファーム、飲食、清掃、建設現場ではよくあることです。
           </p>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '22px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '22px' }}>
             判断の基準は書類ではなく指揮命令です。働く時間を誰が決めるか、進め方を誰が指示するか、道具を誰が用意するか、うまくいかなかったときのリスクを誰が負うか。答えが相手を指しているなら、ABNは適切な手段ではありません。
           </p>
 
-          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>登録する前に、その仕事の内容をお送りください。</strong>
+            <p style={{ ...BODY, color: '#0F1A16' }}>
+              <strong style={{ color: '#0F1A16' }}>登録する前に、その仕事の内容をお送りください。</strong>
               作業の中身、誰が何を用意するか、どう支払われると言われているか。どちらに当たるかをお伝えします。
             </p>
           </div>
@@ -357,20 +357,20 @@ export default function ABNPageJA() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>当社の作業</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>当社の作業</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             当社が行うこと
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '26px' }}>
             登録そのものは無料で、数分で終わります。それがいくらの負担になるかを決めるのは、その前と後にあることです。
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
             {WHAT_WE_DO.map((c) => (
-              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F5F9F7', border: '1px solid #E2EFE9' }}>
+              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{c.title}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{c.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{c.body}</p>
               </div>
             ))}
           </div>
@@ -379,7 +379,7 @@ export default function ABNPageJA() {
             myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
           </p>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '44ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '18px', maxWidth: '44ch' }}>
             ABNもTFNもまだお持ちでない場合は{' '}
             <Link href="/ja/tfn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>TFNが先</Link>
             です。ABNの申請はTFNと照合されます。
@@ -390,7 +390,7 @@ export default function ABNPageJA() {
       {/* ── 5. 料金 ──────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>当社の保証</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 28px)', lineHeight: 1.6, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
             当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
@@ -402,13 +402,13 @@ export default function ABNPageJA() {
       </section>
 
       {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             その仕事の内容を教えてください
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '42ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '42ch', marginBottom: '24px' }}>
             誰に請求書を出すことになるのか、何をするのか、道具は誰が用意するのか。それだけあれば、そもそもABNが必要な話かどうかをお伝えできます。
           </p>
           <WaLink href={waUrl({ topic: 'abn', lang: 'ja', tier: 'tfn-abn' })} position="section" topic="abn" lang="ja" tier="tfn-abn"
@@ -417,7 +417,7 @@ export default function ABNPageJA() {
             <IconWhatsApp />
             WhatsAppで相談する
           </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
             約1時間で返信します。
           </p>
         </div>
@@ -430,7 +430,7 @@ export default function ABNPageJA() {
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '28px' }}>
             だからこそ、同じABNの形を何度も見ています。ファームの請負契約、配達プラットフォーム、全員を下請け扱いにする建設現場。
           </p>
           <GoogleReviewsServer lang="ja" />
@@ -438,7 +438,7 @@ export default function ABNPageJA() {
       </section>
 
       {/* ── 8. よくある質問 ──────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
@@ -466,7 +466,7 @@ export default function ABNPageJA() {
       {/* ── 9. ガイド ────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>ガイド</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>ガイド</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
             請負、必要経費、GSTをさらに詳しく
@@ -477,9 +477,9 @@ export default function ABNPageJA() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px', lineHeight: 1.6 }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

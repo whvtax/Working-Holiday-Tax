@@ -22,8 +22,8 @@ const Logo = ({ locale }: { locale: 'en' | 'de' | 'ja' }) => {
     <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
       <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#FFFFFF" strokeWidth="2" opacity="0.85"/>
       <rect x="13" y="13" width="19" height="19" rx="4.5" fill="#FFFFFF"/>
-      <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.2" strokeLinecap="round"/>
-      <circle cx="2" cy="2" r="1.6" fill="#E9A020"/>
+      <line x1="2" y1="2" x2="13" y2="13" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round"/>
+      <circle cx="2" cy="2" r="1.6" fill="#0B5240"/>
       <path d="M22.5 17 L27 19 L27 23.5 Q27 27 22.5 29 Q18 27 18 23.5 L18 19 Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
       <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
@@ -227,7 +227,7 @@ export function Nav() {
                   onClick={() => setServicesOpen(!servicesOpen)}
                   onMouseEnter={() => setServicesOpen(true)}
                   className="nav-link inline-flex items-center gap-1 text-[13.5px] cursor-pointer bg-transparent border-none p-0"
-                  style={{ color: isServicePage ? '#F9D88A' : 'rgba(255,255,255,0.80)', fontWeight: isServicePage ? 600 : 400 }}
+                  style={{ color: isServicePage ? '#DCE0DE' : 'rgba(255,255,255,0.80)', fontWeight: isServicePage ? 600 : 400 }}
                   aria-expanded={servicesOpen}
                   aria-haspopup="true"
                 >
@@ -250,7 +250,7 @@ export function Nav() {
                       background: '#fff',
                       borderRadius: '14px',
                       boxShadow: '0 12px 32px -8px rgba(11, 82, 64, 0.18), 0 4px 12px -4px rgba(11, 82, 64, 0.08)',
-                      border: '1px solid #E2EFE9',
+                      border: '1px solid #DCE0DE',
                       padding: '8px',
                       zIndex: 60,
                     }}
@@ -274,7 +274,7 @@ export function Nav() {
                           <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240', marginBottom: '2px' }}>
                             {s.label}
                           </div>
-                          <div style={{ fontSize: '12px', color: '#587066', fontWeight: 400, lineHeight: 1.4 }}>
+                          <div style={{ fontSize: '12px', color: '#525A57', fontWeight: 400, lineHeight: 1.4 }}>
                             {s.desc}
                           </div>
                         </Link>
@@ -291,7 +291,7 @@ export function Nav() {
                   onClick={() => setExpensesOpen(!expensesOpen)}
                   onMouseEnter={() => setExpensesOpen(true)}
                   className="nav-link inline-flex items-center gap-1 text-[13.5px] cursor-pointer bg-transparent border-none p-0"
-                  style={{ color: isExpensePage ? '#F9D88A' : 'rgba(255,255,255,0.80)', fontWeight: isExpensePage ? 600 : 400 }}
+                  style={{ color: isExpensePage ? '#DCE0DE' : 'rgba(255,255,255,0.80)', fontWeight: isExpensePage ? 600 : 400 }}
                   aria-expanded={expensesOpen}
                   aria-haspopup="true"
                 >
@@ -314,7 +314,7 @@ export function Nav() {
                       background: '#fff',
                       borderRadius: '14px',
                       boxShadow: '0 12px 32px -8px rgba(11, 82, 64, 0.18), 0 4px 12px -4px rgba(11, 82, 64, 0.08)',
-                      border: '1px solid #E2EFE9',
+                      border: '1px solid #DCE0DE',
                       padding: '8px',
                       zIndex: 60,
                     }}
@@ -338,7 +338,7 @@ export function Nav() {
                           <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240', marginBottom: '2px' }}>
                             {e.label}
                           </div>
-                          <div style={{ fontSize: '12px', color: '#587066', fontWeight: 400, lineHeight: 1.4 }}>
+                          <div style={{ fontSize: '12px', color: '#525A57', fontWeight: 400, lineHeight: 1.4 }}>
                             {e.desc}
                           </div>
                         </Link>
@@ -356,7 +356,7 @@ export function Nav() {
                     key={l.href}
                     href={l.href}
                     className="nav-link relative text-[13.5px]"
-                    style={{ color: active ? '#F9D88A' : 'rgba(255,255,255,0.80)', fontWeight: active ? 600 : 400 }}
+                    style={{ color: active ? '#DCE0DE' : 'rgba(255,255,255,0.80)', fontWeight: active ? 600 : 400 }}
                   >
                     {l.label}
                     {active && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-amber-100" />}
@@ -374,7 +374,7 @@ export function Nav() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="nav-cta inline-flex items-center gap-2 font-semibold"
-                style={{ height: '40px', padding: '0 18px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,0.14)' }}
+                style={{ height: '40px', padding: '0 18px', background: '#FFFFFF', color: '#0B5240', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,0.14)' }}
               >
                 {ctaLabel}
               </a>
@@ -430,7 +430,7 @@ export function Nav() {
         ].map(group => {
           const header = (
             <p className="font-semibold uppercase"
-              style={{ fontSize: '11px', letterSpacing: '0.14em', color: '#16775C', padding: '6px 0 4px', borderBottom: '1px solid #E2EFE9', marginBottom: '2px' }}>
+              style={{ fontSize: '11px', letterSpacing: '0.14em', color: '#0B5240', padding: '6px 0 4px', borderBottom: '1px solid #DCE0DE', marginBottom: '2px' }}>
               {group.title}
             </p>
           );

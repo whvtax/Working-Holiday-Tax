@@ -322,9 +322,9 @@ export default function TaxReturnPage() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
             <Link href="/" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Home</Link>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page">Tax return</span>
           </nav>
 
@@ -333,14 +333,14 @@ export default function TaxReturnPage() {
               did; the slogan below is unchanged. Was: "Working holiday visas 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(30px, 5vw, 43px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               Working holiday tax return&nbsp;&middot; 417 &amp; 462 visas
             </span>
             <span style={{ display: 'block' }}>Your details and where to deposit your refund.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>We take it from there.{' '}</span>
           </h1>
 
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '52ch', marginBottom: '26px' }}>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '52ch', marginBottom: '26px' }}>
             No payslips, no myGov account, no form to decipher. One questionnaire, one signature, and the refund usually
             follows about 14 business days after lodgement.
           </p>
@@ -352,7 +352,7 @@ export default function TaxReturnPage() {
               <IconWhatsApp />
               Message us on WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               Replies in about an hour.
             </p>
           </div>
@@ -364,25 +364,25 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── 1b. WHERE A REFUND COMES FROM ─────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Where a refund comes from</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Where a refund comes from</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
             Why working holiday makers are often owed a tax refund
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch', marginBottom: '26px' }}>
             A refund is not a bonus for being a backpacker. It is the gap between what your employers withheld and what you actually owed, and on a working holiday year that gap usually comes from the places below. Refunds for our clients range from a few hundred dollars to several thousand, depending on which of them applied.
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             {REFUND_SOURCES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
               </div>
             ))}
           </div>
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '62ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '22px', maxWidth: '62ch' }}>
             None of these is automatic and none is assumed. Each one is checked against your ATO record before anything is lodged.{' '}
             <Link href="/calculator" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>See an indicative estimate in the calculator</Link>.
           </p>
@@ -393,12 +393,12 @@ export default function TaxReturnPage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Your side of it</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Your side of it</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '16px' }}>
             What we need from you
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
             Three things, and that is the list.
           </p>
 
@@ -406,16 +406,16 @@ export default function TaxReturnPage() {
             {NEEDED.map((item) => (
               <div key={item.label} style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{item.label}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{item.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{item.body}</p>
               </div>
             ))}
           </div>
 
-          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #CDE3DB' }}>
+          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
             <p className="font-serif" style={{ fontSize: '19px', lineHeight: 1.45, color: '#0B5240', fontWeight: 700, marginBottom: '10px', maxWidth: '30ch' }}>
               You do not need payslips.
             </p>
-            <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch' }}>
+            <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch' }}>
               Every employer who put you on a payroll has already reported an income statement against your tax file
               number, and that is what a return is built from. Receipts for work expenses are the one thing worth
               looking for, and if there are none, tell us what the work involved instead.
@@ -425,15 +425,15 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── 3. THE SEQUENCE ──────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Start to finish</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Start to finish</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             The order it happens in
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
             Seven steps. You appear in two of them, at the start and again to sign.
           </p>
 
@@ -441,17 +441,17 @@ export default function TaxReturnPage() {
             {SEQUENCE.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px', letterSpacing: '-0.01em' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px', letterSpacing: '-0.01em' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
           </ol>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '24px', maxWidth: '60ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '24px', maxWidth: '60ch' }}>
             More on step 04:{' '}
             <Link href="/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>what an ABN changes</Link> if any of your income was invoiced rather than paid through a payroll.
           </p>
@@ -470,9 +470,9 @@ export default function TaxReturnPage() {
 
           <div className="grid gap-4 md:grid-cols-2" style={{ marginTop: '22px' }}>
             {RULES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
               </div>
             ))}
           </div>
@@ -482,7 +482,7 @@ export default function TaxReturnPage() {
       {/* ── 5. THE FEE ─────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Our guarantee</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Our guarantee</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '22ch' }}>
             Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
@@ -495,13 +495,13 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Start with a message, not a form
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '56ch', marginBottom: '24px' }}>
             Send the towns you worked in, roughly which months, and whether you ever invoiced under an ABN. That is
             enough to say which years are open and what your side looks like. Two years since you flew home makes no
             difference.
@@ -512,7 +512,7 @@ export default function TaxReturnPage() {
             <IconWhatsApp />
             Message us on WhatsApp
           </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
             Replies in about an hour.
           </p>
         </div>
@@ -525,21 +525,21 @@ export default function TaxReturnPage() {
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working holiday tax is the only thing we do.
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
             The questionnaire, the checks and the order above were built around one visa year and nothing else.
             Reviewed and signed off by a registered tax agent before it is lodged with the ATO.
           </p>
 
           <GoogleReviewsServer lang="en" />
 
-          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>Nobody legitimate will ask you for your myGov password.</strong>{' '}
+            <p style={{ ...BODY, color: '#0F1A16' }}>
+              <strong style={{ color: '#0F1A16' }}>Nobody legitimate will ask you for your myGov password.</strong>{' '}
               We never ask for it, because the lodgement route above does not use it. If a message asks for those
               details, it did not come from us.
             </p>
@@ -548,7 +548,7 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
@@ -576,7 +576,7 @@ export default function TaxReturnPage() {
       {/* ── 9. GUIDES ────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Guides</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Guides</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             The longer version of the hard steps
@@ -587,9 +587,9 @@ export default function TaxReturnPage() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

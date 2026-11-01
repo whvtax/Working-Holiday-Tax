@@ -255,9 +255,9 @@ export default function ABNPage() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
             <Link href="/" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Home</Link>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page">ABN</span>
           </nav>
 
@@ -266,14 +266,14 @@ export default function ABNPage() {
               did; the slogan below is unchanged. Was: "Working holiday visas 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(31px, 5.2vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               ABN on a working holiday visa&nbsp;&middot; 417 &amp; 462
             </span>
             <span style={{ display: 'block' }}>An ABN does not change your job.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>It changes your tax return.{' '}</span>
           </h1>
 
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '50ch', marginBottom: '26px' }}>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '50ch', marginBottom: '26px' }}>
             Untaxed income, business expenses, a GST position, and one question underneath all three: were you a
             contractor at all.
           </p>
@@ -285,7 +285,7 @@ export default function ABNPage() {
               <IconWhatsApp />
               Message us on WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               Replies in about an hour.
             </p>
           </div>
@@ -300,14 +300,14 @@ export default function ABNPage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>The split</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>The split</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
             What changes on your return once you have an ABN?
           </h2>
           {/* "One return has to reconcile both halves" is said by the last card
               in the section below and again by the NextStep at the foot. */}
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '30px' }}>
             Four things, and they compound.
           </p>
 
@@ -315,11 +315,11 @@ export default function ABNPage() {
             {THE_SPLIT.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px', letterSpacing: '-0.01em' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px', letterSpacing: '-0.01em' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
@@ -328,33 +328,33 @@ export default function ABNPage() {
       </section>
 
       {/* ── 3. THE WARNING ───────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
             Should you register an ABN because an employer asked you to?
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '16px' }}>
             Not before somebody has looked at the job. An ABN over work that is really employment stops your
             superannuation and your tax withholding, drops workers compensation cover and puts you outside minimum wage
             and penalty rates. All of it becomes your cost. It is common in farm work, hospitality, cleaning and on
             building sites.
           </p>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '22px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '22px' }}>
             The test is control, not paperwork. Who decides when you work, who directs how it is done, who supplies the
             equipment, and who carries the risk if the job goes badly. If the answers point at them, an ABN is the wrong
             instrument.
           </p>
 
-          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>Send us the job before you register.</strong>{' '}
+            <p style={{ ...BODY, color: '#0F1A16' }}>
+              <strong style={{ color: '#0F1A16' }}>Send us the job before you register.</strong>{' '}
               What the work involves, who supplies what, and how you will be paid. We will tell you which of the two it
               is.
             </p>
@@ -366,21 +366,21 @@ export default function ABNPage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>The work</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>The work</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             What we do about it
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '26px' }}>
             Registration itself is free and takes minutes. Everything that decides what it costs you happens either side
             of it.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
             {WHAT_WE_DO.map((c) => (
-              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F5F9F7', border: '1px solid #E2EFE9' }}>
+              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{c.title}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{c.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{c.body}</p>
               </div>
             ))}
           </div>
@@ -389,7 +389,7 @@ export default function ABNPage() {
             You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
           </p>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '60ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '18px', maxWidth: '60ch' }}>
             No ABN yet and no tax file number either? The{' '}
             <Link href="/tfn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>TFN comes first</Link>, because an
             ABN application is matched against it.
@@ -400,7 +400,7 @@ export default function ABNPage() {
       {/* ── 5. THE FEE ─────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Our guarantee</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Our guarantee</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '22ch' }}>
             Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
@@ -412,13 +412,13 @@ export default function ABNPage() {
       </section>
 
       {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Tell us what the work looks like
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '56ch', marginBottom: '24px' }}>
             Who you would be invoicing, what you would be doing, and who supplies the equipment. That is enough to tell
             you whether an ABN belongs in this at all.
           </p>
@@ -428,7 +428,7 @@ export default function ABNPage() {
             <IconWhatsApp />
             Message us on WhatsApp
           </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
             Replies in about an hour.
           </p>
         </div>
@@ -441,7 +441,7 @@ export default function ABNPage() {
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working holiday tax is the only thing we do.
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
             Which means we see the same ABN arrangements over and over: the farm contract, the delivery platform, the
             site that pays everyone as a subcontractor.
           </p>
@@ -450,7 +450,7 @@ export default function ABNPage() {
       </section>
 
       {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
@@ -478,7 +478,7 @@ export default function ABNPage() {
       {/* ── 9. GUIDES ────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Guides</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Guides</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             More on contracting, expenses and GST
@@ -489,9 +489,9 @@ export default function ABNPage() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

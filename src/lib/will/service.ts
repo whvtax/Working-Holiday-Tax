@@ -34,7 +34,7 @@ import { abnIntakeKey, readIntake, ABN_INTAKE_DONE_RE, intakeSummary } from './a
 import { alreadyCheckedReason, applyCheckedClause } from './already-checked';
 import { isAccountNameQuestion, accountNameMessage } from './account-name';
 import { customerNotInterested, looksLikeVendor, salesPromisedKey } from './stage-sync';
-import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnly, hasQuestionOrRequest, containsThanks } from './text-normalize';
+import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnly, hasQuestionOrRequest, containsThanks, thanksReply } from './text-normalize';
 // Moved to text-normalize.ts so the engine can use it too without importing this
 // file (service.ts imports the engine; a static import back would be a cycle).
 // Re-exported here because this is where every caller and test already looks.
@@ -851,6 +851,39 @@ async function sendOwedFormAck(store: Store, customer: CustomerRow, text: string
 const quoteForPrompt = (v: string): string =>
   (v || '').replace(/[\r\n{}#`<>*_|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160);
 
+/** "today", "yesterday", "3 days ago (28 Oct)". Pure, for the facts line. */
+export function agoLabel(iso: string, now: number = Date.now()): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return 'at an unknown time';
+  const days = Math.floor((now - d.getTime()) / 86400000);
+  const day = d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Sydney' });
+  return days <= 0 ? `today (${day})` : days === 1 ? `yesterday (${day})` : `${days} days ago (${day})`;
+}
+
+/** The dated milestones of this customer's file, from the stage history, as one
+ *  sentence for Will's profile. Only milestones that happened are listed, so
+ *  Will can say "your form arrived on ..." and never invents one. */
+export function stageFacts(hist: { to: string; createdAt: string }[], now: number = Date.now()): string {
+  const first = (st: string[]) => hist.find((h) => st.includes(h.to));
+  const out: string[] = [];
+  const paid = first(['PAID']);
+  const form = first(['FORM_COMPLETE', 'DOCUMENTS_COMPLETE']);
+  const sig = first(['SIGNATURE_PENDING']);
+  const signed = first(['SIGNED']);
+  const lodged = first(['LODGED', 'COMPLETED']);
+  if (paid) out.push(`payment confirmed ${agoLabel(paid.createdAt, now)}`);
+  if (paid && !form) out.push('their tax form has NOT been received yet');
+  if (form) out.push(`their tax form was received ${agoLabel(form.createdAt, now)}`);
+  if (sig) out.push(`the return was sent to them for signature ${agoLabel(sig.createdAt, now)}`);
+  if (signed) out.push(`they signed ${agoLabel(signed.createdAt, now)}`);
+  if (lodged) {
+    const due = new Date(new Date(lodged.createdAt).getTime() + 14 * 86400000)
+      .toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Sydney' });
+    out.push(`the return was lodged with the ATO ${agoLabel(lodged.createdAt, now)} (the ATO email with the payment request, if they owe, is due by about ${due})`);
+  }
+  return out.length ? `FACTS FROM OUR SYSTEM: ${out.join('; ')}` : '';
+}
+
 async function buildBackstory(store: Store, customer: CustomerRow, msgs: MessageRow[]): Promise<string> {
   const parts: string[] = [];
   try {
@@ -882,6 +915,12 @@ async function buildBackstory(store: Store, customer: CustomerRow, msgs: Message
     }
     if (hist.some((h) => h.to === 'PAID')) parts.push('they have already paid us');
     if (hist.some((h) => h.to === 'LODGED' || h.to === 'COMPLETED')) parts.push('a return has already been lodged for them');
+    // FACTS the system knows (Will mission, 1 Nov): dates Will needs to answer
+    // status questions himself instead of handing them to Jo.
+    const facts = stageFacts(hist);
+    if (facts) parts.push(facts);
+    const lastHuman = [...msgs].reverse().find((m) => m.direction === 'OUT' && m.author === 'HUMAN' && m.status === 'SENT');
+    if (lastHuman) parts.push(`our team last wrote to them ${agoLabel(lastHuman.createdAt)}`);
   } catch { /* the profile is still useful without it */ }
 
   // The very first thing they ever asked is usually the whole story.
@@ -1853,7 +1892,54 @@ export async function runDeferredAutoReply(
       }).catch(() => { /* the store is the likely thing that just failed */ });
     }
   }
+  if (outcome.kind === 'silent') await silenceNet(store, customer, text, since, anchorAt);
   return outcome.kind === 'sent' ? 'sent' : 'decided';
+}
+
+/**
+ * Silence is a bug (Will mission, 1 Nov). When the engine ends a customer burst
+ * with no reply, no task and no deliberate reason (paused, opted out, kill
+ * switch, a reaction or a bare "ok"), something must still happen:
+ *   - a plain thank-you gets the thank-you line (Sabine +61 408, 1 Nov: Jo sent
+ *     "lodged successfully", she wrote "Thank you so much!", nobody answered);
+ *   - anything else becomes ONE visible task carrying what the customer wrote.
+ * Best effort: a failure here is logged and never throws into the timer.
+ */
+async function silenceNet(store: Store, customer: CustomerRow, text: string, since: number, anchorAt: string | null): Promise<void> {
+  try {
+    const fresh = (await store.getCustomerById(customer.id)) ?? customer;
+    if (fresh.optedOut || fresh.aiPaused || fresh.isLegacy) return;
+    if ((await store.getSetting('kill_switch')) === true) return;
+    // A reaction is not a message to answer.
+    const cleaned = text.split('\n').filter((l) => !/reacted to your message/i.test(l)).join('\n').trim();
+    if (!cleaned) return;
+    const msgs = await store.listMessages(customer.id);
+    // Any outbound row since the burst counts, a FAILED one included: delivery failures have their own task.
+    const answered = msgs.some((m) => m.direction === 'OUT' && new Date(m.createdAt).getTime() >= since);
+    if (answered) return;
+    if (await store.findOpenTaskForCustomer(customer.id)) return;
+    // Nothing of ours yet: a first-ever "thanks" is politeness, not thanks for anything (Jo, 22 Oct).
+    if (!msgs.some((m) => m.direction === 'OUT')) return;
+    const thanks = isClosingOnly(cleaned) && containsThanks(cleaned);
+    if (isClosingOnly(cleaned) && !thanks) return; // "ok", "👍": nothing to add
+    if (thanks && !requiresApproval(await store.getSetting('ai_mode'))) {
+      const burstLang = detectLanguage(cleaned);
+      const lang = burstLang.confident && burstLang.lang && burstLang.lang !== 'en' ? burstLang.lang : (fresh.lang ?? burstLang.lang ?? 'en');
+      const lastOut = [...msgs].reverse().find((m) => m.direction === 'OUT' && m.author !== 'HUMAN');
+      const res = await deliverOut(fresh, thanksReply(lastOut?.body ?? '', lang), 'AI', { system: true });
+      await store.audit('assistant', 'silence_net_thanks', { customerId: customer.id, anchorAt, ok: res.ok });
+      if (res.ok) return;
+    }
+    await raiseOrUpdateTask(store, fresh, {
+      reason: 'Will did not reply to this message and nothing else answered it. Please reply.',
+      severity: 'REVIEW', newContext: cleaned.slice(0, 400), suggestedReply: null,
+    });
+    await store.audit('assistant', 'silence_net_task', { customerId: customer.id, anchorAt });
+  } catch (e) {
+    await store.audit('assistant', 'silence_net_failed', {
+      customerId: customer.id, error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
+    }).catch(() => { /* the store is the likely thing that failed */ });
+  }
 }
 
 // ============================================================

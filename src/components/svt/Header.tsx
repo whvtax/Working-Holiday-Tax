@@ -57,9 +57,34 @@ export function Header({ locale = 'en' }: { locale?: SvtLocale }) {
         </nav>
         <details className={styles.menu}>
           <summary className={styles.menuButton}>{t.menu}</summary>
-          <nav className={styles.panel} aria-label={t.mainNav}>
-            {[...nav, ...guideLinksFor(locale)].map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
-          </nav>
+          {/* Grouped phone menu (Jo, 31 Oct, roadmap 13): the four main pages
+              in the desktop order, guides and deductions as native collapsible groups (the
+              links stay in the HTML), WhatsApp pinned at the bottom. Same
+              links and anchor text as before, plus the jobs list. */}
+          <div className={styles.panel}>
+            <nav className={styles.panelScroll} aria-label={t.mainNav}>
+              {/* Same order as the desktop bar: two pages, Guides, Deductions, the rest. */}
+              <ul className={styles.mainList}>
+                {nav.slice(0, 2).map(l => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}
+              </ul>
+              <details className={styles.group}>
+                <summary>{t.footer.guidesAria}</summary>
+                <ul>{guideLinksFor(locale).map(l => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}</ul>
+              </details>
+              {deductions.length ? (
+                <details className={styles.group}>
+                  <summary>{t.blog.categories.Deductions}</summary>
+                  <ul>{deductions.map(d => <li key={d.slug}><a href={localePath(locale, `/blog/${d.slug}`)}>{d.label[locale]}</a></li>)}</ul>
+                </details>
+              ) : null}
+              <ul className={styles.mainList}>
+                {nav.slice(2).map(l => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}
+              </ul>
+            </nav>
+            <div className={styles.panelCta}>
+              <a className={styles.panelWa} href={svtWhatsappUrl(t.whatsappHello)} data-wa-pos="menu">{t.whatsappCta}</a>
+            </div>
+          </div>
         </details>
       </div>
     </header>

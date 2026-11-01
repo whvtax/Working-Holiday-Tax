@@ -139,7 +139,7 @@ const breadcrumbSchema = {
   ],
 }
 
-const bodyStyle = { fontSize: 'clamp(15px,1.2vw,16px)', lineHeight: 1.7, color: '#2A3C34', fontWeight: 300 } as const
+const bodyStyle = { fontSize: 'clamp(15px,1.2vw,16px)', lineHeight: 1.7, color: '#0F1A16', fontWeight: 300 } as const
 
 export default function AboutPage() {
   return (
@@ -153,9 +153,9 @@ export default function AboutPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-9 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '13px', color: '#4C6459' }}>
+            style={{ fontSize: '13px', color: '#525A57' }}>
             <Link href="/" className="transition-colors hover:text-forest-500" style={{ padding: '4px 0' }}>Home</Link>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page" style={{ color: '#0B5240' }}>About</span>
           </nav>
 
@@ -193,7 +193,7 @@ export default function AboutPage() {
                 Other ways to reach us →
               </Link>
             </div>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               A real person replies, usually within about an hour during business hours.
             </p>
           </div>
@@ -201,7 +201,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── THE YEAR ──────────────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+      <section className="py-11 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px] mx-auto">
 
@@ -220,14 +220,14 @@ export default function AboutPage() {
                   position: 'relative',
                   paddingLeft: '20px',
                   paddingBottom: i === chapters.length - 1 ? 0 : '28px',
-                  borderLeft: i === chapters.length - 1 ? 'none' : '1.5px solid #CDE3DB',
+                  borderLeft: i === chapters.length - 1 ? 'none' : '1.5px solid #DCE0DE',
                   marginLeft: '4px',
                 }}>
                   <span aria-hidden="true" style={{
                     position: 'absolute', left: '-6px', top: '5px', width: '10px', height: '10px',
-                    borderRadius: '999px', background: '#16775C', border: '2px solid #F5F9F7',
+                    borderRadius: '999px', background: '#0B5240', border: '2px solid #F2FAF7',
                   }} />
-                  <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.14em', color: '#16775C', marginBottom: '6px' }}>
+                  <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.14em', color: '#0B5240', marginBottom: '6px' }}>
                     {c.stage}
                   </p>
                   <h3 className="font-serif font-bold text-ink" style={{ fontSize: 'clamp(17px,1.7vw,20px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '8px' }}>
@@ -281,7 +281,7 @@ export default function AboutPage() {
                 assert something I cannot verify. Confirm the year the business started
                 and send a real photo of you or the team and I will put them back. */}
 
-            <div className="rounded-2xl" style={{ marginTop: '28px', padding: '20px', background: '#F2FAF7', border: '1.5px solid #C8EAE0' }}>
+            <div className="rounded-2xl" style={{ marginTop: '28px', padding: '20px', background: '#F2FAF7', border: '1.5px solid #DCE0DE' }}>
               <p className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.35, marginBottom: '8px' }}>
                 Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
               </p>
@@ -294,7 +294,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── HOW YOU REACH US ──────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-11 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px] mx-auto">
             <span className="section-label">Talking to us</span>
@@ -337,7 +337,7 @@ export default function AboutPage() {
       </ReviewsGate>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-14" style={{ background: '#F5F9F7' }}>
+      <section className="py-11 lg:py-14" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-start">
             <div>

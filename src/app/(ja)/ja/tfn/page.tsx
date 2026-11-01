@@ -247,9 +247,9 @@ export default function TFNPageJA() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
             <Link href="/ja" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>ホーム</Link>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page">TFN申請</span>
           </nav>
 
@@ -258,14 +258,14 @@ export default function TFNPageJA() {
               did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               TFN申請代行｜ワーホリ417・462ビザ
             </span>
             <span style={{ display: 'block' }}>番号は無料です。</span>
             <span style={{ display: 'block', color: '#0B5240' }}>無料でないのは、それがない期間です。</span>
           </h1>
 
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '40ch', marginBottom: '26px' }}>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '40ch', marginBottom: '26px' }}>
             雇用主が番号を受け取るまで、給与は15%ではなく45%で源泉徴収されます。
           </p>
 
@@ -276,7 +276,7 @@ export default function TFNPageJA() {
               <IconWhatsApp />
               WhatsAppで相談する
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               約1時間で返信します。
             </p>
           </div>
@@ -295,39 +295,39 @@ export default function TFNPageJA() {
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '16px' }}>
             TFNが届く前に働き始めると、いくら失いますか。
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '28px' }}>
             28日以内に雇用主へTFNを渡さないと、ワーキングホリデーの15%ではなく45%で源泉徴収されます。引かれすぎた税金は消えるわけではなく、6月30日以降にタックスリターンを提出すれば戻る場合があります。
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '10px' }}>45%</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>TFNが未提出の間、15%ではなくこの税率で全額から源泉徴収されます。</p>
+              <p style={{ ...BODY, color: '#0F1A16' }}>TFNが未提出の間、15%ではなくこの税率で全額から源泉徴収されます。</p>
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '10px' }}>28日</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>雇用主にTFNを渡す期限であり、ATOが発行にかける目安でもあります。</p>
+              <p style={{ ...BODY, color: '#0F1A16' }}>雇用主にTFNを渡す期限であり、ATOが発行にかける目安でもあります。</p>
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '10px' }}>申告1回</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>誤った税率で引かれた分を調整できる、唯一の経路です。</p>
+              <p style={{ ...BODY, color: '#0F1A16' }}>誤った税率で引かれた分を調整できる、唯一の経路です。</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* ── 3. どこでつまずくか ──────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>自分でやる場合</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>自分でやる場合</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             ワーホリのTFN申請はなぜ通らないのですか。
           </h2>
           {/* 「問題が起きる場合はほぼ次の3つのどれかで」は、下のリストが3つ並んで
               いる時点で言い直しだった。残すのは、それぞれの代償のほう。 */}
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '30px' }}>
             フォームは短いものです。つまずき方は3つあり、どれも45%の課税がもう1か月延びることにつながります。
           </p>
 
@@ -335,11 +335,11 @@ export default function TFNPageJA() {
             {FAILURE_POINTS.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '4px' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '4px' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
@@ -351,20 +351,20 @@ export default function TFNPageJA() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>当社の作業</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>当社の作業</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             当社が行うこと
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '26px' }}>
             必要な情報をWhatsAppでお送りいただくだけです。以下はすべて当社側で行います。
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
             {WHAT_WE_DO.map((c) => (
-              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F5F9F7', border: '1px solid #E2EFE9' }}>
+              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{c.title}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{c.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{c.body}</p>
               </div>
             ))}
           </div>
@@ -373,7 +373,7 @@ export default function TFNPageJA() {
             myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
           </p>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '44ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '18px', maxWidth: '44ch' }}>
             すでに番号をお持ちで、45%で引かれた期間を精算したい方は{' '}
             <Link href="/ja/tax-return" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>タックスリターンのページ</Link>
             をご覧ください。
@@ -384,7 +384,7 @@ export default function TFNPageJA() {
       {/* ── 5. 料金 ──────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>当社の保証</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 28px)', lineHeight: 1.6, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
             当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
@@ -396,13 +396,13 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '16px' }}>
             いまどの段階かをお知らせください
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '42ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '42ch', marginBottom: '24px' }}>
             すでに入国しているか、仕事を始めているか、45%で支払われた給与がすでにあるか。この3点だけで、次に何をすべきかをお伝えできます。
           </p>
           <WaLink href={WA_TFN} position="section" topic="tfn" lang="ja"
@@ -411,7 +411,7 @@ export default function TFNPageJA() {
             <IconWhatsApp />
             WhatsAppで相談する
           </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
             約1時間で返信します。
           </p>
         </div>
@@ -426,7 +426,7 @@ export default function TFNPageJA() {
           </h2>
           {/* 「だからこそ、つまずく箇所はいつも同じ3つです」は上のセクションを
               言い直しているだけだったので外した。 */}
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '28px' }}>
             提出するTFN申請は、すべて417・462ビザの方のものです。タックスリターンは登録タックスエージェントが確認・承認したうえでATOに提出します。
           </p>
           <GoogleReviewsServer lang="ja" />
@@ -434,7 +434,7 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── 8. よくある質問 ──────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
@@ -462,7 +462,7 @@ export default function TFNPageJA() {
       {/* ── 9. ガイド ────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>ガイド</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>ガイド</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
             TFNと45%の期間をさらに詳しく
@@ -473,9 +473,9 @@ export default function TFNPageJA() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px', lineHeight: 1.6 }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

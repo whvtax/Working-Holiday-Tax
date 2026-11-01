@@ -160,7 +160,7 @@ const faqLd = {
     })),
 }
 
-const answerStyle = { fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', fontWeight: 300 } as const
+const answerStyle = { fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', fontWeight: 300 } as const
 
 export default function GermanContactPage() {
   return (
@@ -174,9 +174,9 @@ export default function GermanContactPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-5 pb-9 lg:pt-12 lg:pb-12">
 
           <nav aria-label="Brotkrümelnavigation" className="mb-5 lg:mb-6">
-            <ol className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459' }}>
+            <ol className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57' }}>
               <li><Link href="/de" className="contact-breadcrumb-link">Startseite</Link></li>
-              <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
+              <li aria-hidden="true" style={{ color: '#DCE0DE' }}>/</li>
               <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>Kontakt</li>
             </ol>
           </nav>
@@ -195,7 +195,7 @@ export default function GermanContactPage() {
             </h1>
 
             <p className="contact-lead mx-auto"
-              style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.6, color: '#2A3C34', maxWidth: '44ch', marginBottom: '22px' }}>
+              style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.6, color: '#0F1A16', maxWidth: '44ch', marginBottom: '22px' }}>
               Wir lesen deine Nachricht und antworten, während der Geschäftszeiten meist in etwa einer Stunde.
             </p>
 
@@ -205,7 +205,7 @@ export default function GermanContactPage() {
               WhatsApp öffnen →
             </WaLink>
 
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               Montag bis Freitag, 9 bis 18 Uhr
             </p>
           </div>
@@ -213,7 +213,7 @@ export default function GermanContactPage() {
       </section>
 
       {/* ── DIE VIER FRAGEN VOR DER NACHRICHT ───────────────────────────── */}
-      <section className="py-11 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+      <section className="py-11 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px] mx-auto">
             <span className="section-label">Bevor du fragst</span>
@@ -223,7 +223,7 @@ export default function GermanContactPage() {
 
             <div className="flex flex-col" style={{ gap: '12px' }}>
               {blockers.map((b, i) => (
-                <div key={i} className="rounded-2xl" style={{ padding: '18px', background: '#fff', border: '1.5px solid #E2EFE9' }}>
+                <div key={i} className="rounded-2xl" style={{ padding: '18px', background: '#fff', border: '1.5px solid #DCE0DE' }}>
                   <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.35, letterSpacing: '-0.015em', marginBottom: '8px' }}>
                     {b.q}
                   </h3>
@@ -257,7 +257,7 @@ export default function GermanContactPage() {
 
             <address style={{ fontStyle: 'normal' }}>
               <a href={`mailto:${EMAIL}?subject=Steuerfrage%20von%20der%20Website`} className="contact-option-card">
-                <div className="contact-option-icon" style={{ background: '#fff', border: '1px solid #E2EFE9' }}>
+                <div className="contact-option-icon" style={{ background: '#fff', border: '1px solid #DCE0DE' }}>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <rect x="2" y="5" width="20" height="14" rx="2" stroke="#0B5240" strokeWidth="1.8" />
                     <path d="M2.5 6.5L12 13.5l9.5-7" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -294,10 +294,10 @@ export default function GermanContactPage() {
 
             <div className="contact-hours-block">
               <p className="contact-hours-title">
-                <span className="w-1.5 h-1.5 rounded-full inline-block mr-1.5" style={{ background: '#2FA880' }} aria-hidden="true" />
+                <span className="w-1.5 h-1.5 rounded-full inline-block mr-1.5" style={{ background: '#0B5240' }} aria-hidden="true" />
                 Geschäftszeiten
               </p>
-              <p className="contact-hours-detail" style={{ fontSize: '14px', color: '#4C6459' }}>
+              <p className="contact-hours-detail" style={{ fontSize: '14px', color: '#525A57' }}>
                 Montag bis Freitag, 9 bis 18 Uhr
               </p>
             </div>
@@ -306,7 +306,7 @@ export default function GermanContactPage() {
       </section>
 
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '48px', paddingBottom: '48px' }}>
+      <section style={{ background: '#F2FAF7', paddingTop: '48px', paddingBottom: '48px' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px] mx-auto">
           <div className="text-center mb-7">

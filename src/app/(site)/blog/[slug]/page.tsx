@@ -754,20 +754,20 @@ export default async function GuidePage({ params }: Props) {
                 blog index both announce themselves as breadcrumbs; this one
                 did not, and its last crumb was not marked as the current
                 page. */}
-            <nav aria-label="Breadcrumb" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '10px', alignItems: 'center', fontSize: '13px', color: '#4C6459', flexWrap: 'wrap' }}>
-              <Link href="/" style={{ color: '#587066', textDecoration: 'none', padding: '8px 0' }}>Home</Link>
+            <nav aria-label="Breadcrumb" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '10px', alignItems: 'center', fontSize: '13px', color: '#525A57', flexWrap: 'wrap' }}>
+              <Link href="/" style={{ color: '#525A57', textDecoration: 'none', padding: '8px 0' }}>Home</Link>
               <span aria-hidden="true">/</span>
-              <Link href="/blog" style={{ color: '#587066', textDecoration: 'none', padding: '8px 0' }}>Blog</Link>
+              <Link href="/blog" style={{ color: '#525A57', textDecoration: 'none', padding: '8px 0' }}>Blog</Link>
               <span aria-hidden="true">/</span>
               {categoryInfo && (
                 <>
-                  <Link href={`/blog/category/${categoryInfo.slug}`} style={{ color: '#587066', textDecoration: 'none', padding: '8px 0' }}>
+                  <Link href={`/blog/category/${categoryInfo.slug}`} style={{ color: '#525A57', textDecoration: 'none', padding: '8px 0' }}>
                     {categoryInfo.category}
                   </Link>
                   <span aria-hidden="true">/</span>
                 </>
               )}
-              <span aria-current="page" style={{ color: '#4C6459', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0, maxWidth: '100%' }}>{guide.title}</span>
+              <span aria-current="page" style={{ color: '#525A57', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0, maxWidth: '100%' }}>{guide.title}</span>
             </nav>
           </div>
 
@@ -793,7 +793,7 @@ export default async function GuidePage({ params }: Props) {
                       >
                         {guide.category}
                       </Link>
-                      <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
+                      <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
                     </>
                   )}
                   {/* "Last updated" was showing the publication date, so 77 of
@@ -801,26 +801,26 @@ export default async function GuidePage({ params }: Props) {
                       updated one or two financial years ago. On a money topic
                       that is the worst freshness signal a page can send, and it
                       was not true. It now says what it means. */}
-                  <span style={{ fontSize: '13px', color: '#4C6459' }}>Published {guide.date}</span>
+                  <span style={{ fontSize: '13px', color: '#525A57' }}>Published {guide.date}</span>
                   {reviewedDate && (
                     <>
-                      <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
-                      <span style={{ fontSize: '13px', color: '#4C6459' }}>Reviewed {reviewedDate}</span>
+                      <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
+                      <span style={{ fontSize: '13px', color: '#525A57' }}>Reviewed {reviewedDate}</span>
                     </>
                   )}
-                  <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
-                  <span style={{ fontSize: '13px', color: '#4C6459' }}>{readTime} min read</span>
+                  <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
+                  <span style={{ fontSize: '13px', color: '#525A57' }}>{readTime} min read</span>
                 </div>
 
                 {/* H1 - larger and clearer hierarchy vs H2 in body */}
                 <h1
                   className="font-serif font-black"
-                  style={{ fontSize: 'clamp(28px, 4.5vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: '1rem', color: '#080F0D' }}
+                  style={{ fontSize: 'clamp(28px, 4.5vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: '1rem', color: '#0F1A16' }}
                 >
                   {guide.title}
                 </h1>
 
-                <p className="guide-lead" style={{ fontSize: 'clamp(16.5px, 1.5vw, 18px)', color: '#2A3C34', lineHeight: 1.62, marginBottom: '0', fontWeight: 400 }}>
+                <p className="guide-lead" style={{ fontSize: 'clamp(16.5px, 1.5vw, 18px)', color: '#0F1A16', lineHeight: 1.62, marginBottom: '0', fontWeight: 400 }}>
                   {guide.description}
                 </p>
               </div>
@@ -857,7 +857,7 @@ export default async function GuidePage({ params }: Props) {
               the fastest way to fail the review this block exists to pass. */}
           <aside
             aria-labelledby="about-this-guide"
-            style={{ maxWidth: '780px', margin: '0 0 2rem 0', padding: '18px 20px', border: '1px solid #E2EFE9', borderRadius: '12px', background: '#F7F9F8' }}
+            style={{ maxWidth: '780px', margin: '0 0 2rem 0', padding: '18px 20px', border: '1px solid #DCE0DE', borderRadius: '12px', background: '#F7F9F8' }}
           >
             <p id="about-this-guide" style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 8px' }}>
               About this guide
@@ -866,13 +866,13 @@ export default async function GuidePage({ params }: Props) {
                 two drafts that were both left in. One sentence now, keeping
                 the two claims that matter: who wrote it, and what it is
                 checked against. */}
-            <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
+            <p style={{ fontSize: '15px', color: '#0F1A16', lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
               Written by the Working Holiday Tax team, who work with 417 and 462 visa holders and nothing else, and checked against current ATO and Fair Work guidance. General information, not personal tax advice.
             </p>
-            <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.65, margin: '10px 0 0', fontWeight: 400 }}>
+            <p style={{ fontSize: '15px', color: '#0F1A16', lineHeight: 1.65, margin: '10px 0 0', fontWeight: 400 }}>
               Tax returns are reviewed and signed off by a registered tax agent before they are lodged with the ATO.
             </p>
-            <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.6, margin: '12px 0 0', fontWeight: 400 }}>
+            <p style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.6, margin: '12px 0 0', fontWeight: 400 }}>
               Published {guide.date}{reviewedDate ? ` · Reviewed ${reviewedDate}` : ''}
             </p>
           </aside>
@@ -888,7 +888,7 @@ export default async function GuidePage({ params }: Props) {
 
           {/* Where to go next */}
           {relatedGuides.length > 0 && (
-            <div style={{ borderTop: '1px solid #E2EFE9', paddingTop: '2.5rem', paddingBottom: '3rem', maxWidth: '780px' }}>
+            <div style={{ borderTop: '1px solid #DCE0DE', paddingTop: '2.5rem', paddingBottom: '3rem', maxWidth: '780px' }}>
               <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
                 Where to go next
               </p>
@@ -897,7 +897,7 @@ export default async function GuidePage({ params }: Props) {
                   const gColors = getCategoryColor(g.category)
                   return (
                     <Link key={g.slug} href={`/blog/${g.slug}`} style={{ textDecoration: 'none' }} className="related-link">
-                      <div style={{ border: '1px solid #E2EFE9', borderRadius: '12px', padding: '1.1rem 1.4rem', transition: 'border-color 0.2s ease, transform 0.2s ease' }} className="related-card">
+                      <div style={{ border: '1px solid #DCE0DE', borderRadius: '12px', padding: '1.1rem 1.4rem', transition: 'border-color 0.2s ease, transform 0.2s ease' }} className="related-card">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                           <span style={{
                             fontSize: '13px',
@@ -911,12 +911,12 @@ export default async function GuidePage({ params }: Props) {
                           }}>
                             {g.category}
                           </span>
-                          <span style={{ fontSize: '13px', color: '#4C6459' }}>{g.readTime} min read</span>
+                          <span style={{ fontSize: '13px', color: '#525A57' }}>{g.readTime} min read</span>
                         </div>
                         <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: 1.35 }}>
                           {g.title}
                         </p>
-                        <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.6, margin: 0, fontWeight: 400 }}>
+                        <p style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.6, margin: 0, fontWeight: 400 }}>
                           {g.description}
                         </p>
                       </div>
@@ -929,14 +929,14 @@ export default async function GuidePage({ params }: Props) {
                     reasons to keep reading. */}
                 {service && (
                   <Link href={service.path} style={{ textDecoration: 'none' }} className="related-link">
-                    <div style={{ border: '1px solid #C8EAE0', background: '#F2FAF7', borderRadius: '12px', padding: '1.1rem 1.4rem' }} className="related-card">
+                    <div style={{ border: '1px solid #DCE0DE', background: '#F2FAF7', borderRadius: '12px', padding: '1.1rem 1.4rem' }} className="related-card">
                       <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 8px' }}>
                         What we do
                       </p>
                       <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: 1.35 }}>
                         {service.label}
                       </p>
-                      <p style={{ fontSize: '13px', color: '#2A3C34', lineHeight: 1.6, margin: 0, fontWeight: 400 }}>
+                      <p style={{ fontSize: '13px', color: '#0F1A16', lineHeight: 1.6, margin: 0, fontWeight: 400 }}>
                         {service.blurb}
                       </p>
                     </div>

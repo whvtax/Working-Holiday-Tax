@@ -300,7 +300,7 @@ export default async function GermanHomePage() {
               did; the slogan below is unchanged. Was: "Working Holiday Visum 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(30px, 5.2vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '16px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '16px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               Steuererklärung Australien&nbsp;&middot; Working Holiday 417 &amp; 462
             </span>
             <span style={{ display: 'block' }}>Absenden kann jeder.{' '}</span>
@@ -313,7 +313,7 @@ export default async function GermanHomePage() {
               Dinge". Die Zahl ist nicht der Punkt, und die drei Zahlen sind
               freigegebene Copy, also fällt die Zahl hier weg. */}
           <p className="mx-auto hero-animate-delay"
-            style={{ ...LEDE, color: '#4C6459', maxWidth: '72ch', marginBottom: '26px' }}>
+            style={{ ...LEDE, color: '#525A57', maxWidth: '72ch', marginBottom: '26px' }}>
             Deine Rückerstattung entscheidet sich, bevor irgendetwas eingereicht wird, und nichts davon passiert automatisch.
           </p>
 
@@ -324,7 +324,7 @@ export default async function GermanHomePage() {
               <IconWhatsApp />
               Schreib uns auf WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               Antwort in etwa einer Stunde.
             </p>
           </div>
@@ -339,17 +339,17 @@ export default async function GermanHomePage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Frage, die alle stellen</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Die Frage, die alle stellen</p>
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.7vw, 31px)', lineHeight: 1.2, letterSpacing: '-0.025em', maxWidth: '26ch', marginBottom: '14px' }}>
             {/* Ein Satz, der von selbst umbricht. Die beiden Hälften auf feste
                 Zeilen zu zwingen ergab bei 390px vier ausgefranste Zeilen. */}
-            <span style={{ color: '#2A3C34', fontWeight: 400 }}>Eine falsche Erklärung geht bei myGov </span>
+            <span style={{ color: '#0F1A16', fontWeight: 400 }}>Eine falsche Erklärung geht bei myGov </span>
             <span>genauso durch wie eine richtige.</span>
           </h2>
 
-          <p style={{ ...LEDE, color: '#4C6459', maxWidth: '54ch', marginBottom: '26px' }}>
+          <p style={{ ...LEDE, color: '#525A57', maxWidth: '54ch', marginBottom: '26px' }}>
             Nichts auf dem Bildschirm prüft deinen Wohnsitz, die Levy oder das, was deine Arbeit absetzen darf.
           </p>
 
@@ -360,17 +360,17 @@ export default async function GermanHomePage() {
               auf dem Handy als Legende. Den Rest tragen der Wechsel im
               Hintergrund und das schwerere Gewicht auf der "Mit uns"-Seite.
               Die Copy selbst ist unverändert. */}
-          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
             {COMPARISON.map((row, i) => (
-              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
                 <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
-                  {i === 0 && <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>Auf myGov</p>}
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{row.mygov}</p>
+                  {i === 0 && <p style={{ ...KICKER, color: '#525A57', marginBottom: '5px' }}>Auf myGov</p>}
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{row.mygov}</p>
                 </div>
-                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
                   style={{ padding: '13px 16px', background: '#F2FAF7' }}>
                   {i === 0 && <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>Mit uns</p>}
-                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500 }}>{row.us}</p>
+                  <p style={{ ...BODY, color: '#0F1A16', fontWeight: 500 }}>{row.us}</p>
                 </div>
               </div>
             ))}
@@ -388,21 +388,21 @@ export default async function GermanHomePage() {
               <IconWhatsApp />
               Schreib uns auf WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '10px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '10px' }}>
               Antwort in etwa einer Stunde.
             </p>
           </div>
         </div>
       </section>
       {/* ── 3. DIE DREI ZAHLEN ───────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '12px' }}>
             Wovon hängt die Höhe deiner Steuerrückerstattung ab?
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
             Meistens von drei Dingen.
           </p>
 
@@ -413,7 +413,7 @@ export default async function GermanHomePage() {
                   style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>
                   {f.figure}
                 </p>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{f.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{f.body}</p>
               </div>
             ))}
           </div>
@@ -423,7 +423,7 @@ export default async function GermanHomePage() {
       {/* ── 4. WAS DIE GEBÜHR ABDECKT ──────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
             Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
@@ -438,12 +438,12 @@ export default async function GermanHomePage() {
       <section id="how-it-works" className="py-12 lg:py-16 bg-white">
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Arbeit</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Die Arbeit</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Was wir bei jeder Steuererklärung durchgehen
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
             Vier der fünf passieren, bevor überhaupt etwas in deine Steuererklärung eingetragen wird.
           </p>
 
@@ -451,11 +451,11 @@ export default async function GermanHomePage() {
             {ANALYSIS.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
@@ -465,22 +465,22 @@ export default async function GermanHomePage() {
 
 
       {/* ── 6. TFN ODER TFN UND ABN ──────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Welches der beiden war dein Jahr?
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '26px' }}>
             Beides landet in derselben Erklärung, aber nicht auf denselben Zeilen. Wähle aus, was passt.
           </p>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="bg-white rounded-[14px] flex flex-col"
-              style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              style={{ padding: '22px 20px', border: '1px solid #DCE0DE', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>Nur TFN</h3>
-              <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
+              <p style={{ ...BODY, color: '#0F1A16', marginBottom: '18px', flex: 1 }}>
                 Jeder Job lief über eine Lohnabrechnung, und bei jedem Payslip wurde Steuer einbehalten.
               </p>
               <WaLink href={waUrl({ topic: 'tax-return', lang: 'de', tier: 'tfn' })} position="inline" topic="tax-return" lang="de" tier="tfn"
@@ -492,9 +492,9 @@ export default async function GermanHomePage() {
             </div>
 
             <div className="bg-white rounded-[14px] flex flex-col"
-              style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              style={{ padding: '22px 20px', border: '1px solid #DCE0DE', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFN und ABN</h3>
-              <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
+              <p style={{ ...BODY, color: '#0F1A16', marginBottom: '18px', flex: 1 }}>
                 Ein Teil deines Einkommens lief über eine ABN, und davon wurde nichts einbehalten.
               </p>
               <WaLink href={waUrl({ topic: 'abn', lang: 'de', tier: 'tfn-abn' })} position="inline" topic="abn" lang="de" tier="tfn-abn"
@@ -506,7 +506,7 @@ export default async function GermanHomePage() {
             </div>
           </div>
 
-          <p style={{ fontSize: '14px', color: '#4C6459', marginTop: '18px' }}>
+          <p style={{ fontSize: '14px', color: '#525A57', marginTop: '18px' }}>
             Nicht sicher, was auf dich zutrifft?{' '}
             <WaLink href={waUrl({ topic: 'general', lang: 'de', tier: 'unsure' })} position="inline" topic="general" lang="de" tier="unsure"
               className="inline-flex items-center"
@@ -521,7 +521,7 @@ export default async function GermanHomePage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Womit wir dir helfen</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Womit wir dir helfen</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '26px' }}>
             Von der ersten Abrechnung bis zur Auszahlung deiner Super
@@ -541,7 +541,7 @@ export default async function GermanHomePage() {
                 <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
                   style={{ marginBottom: '10px' }}>{s.icon}</span>
                 <h3 className="font-semibold text-ink service-card-title" style={{ fontSize: '15px', marginBottom: '5px' }}>{s.title}</h3>
-                <p className="flex-1" style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459', marginBottom: '12px' }}>{s.desc}</p>
+                <p className="flex-1" style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57', marginBottom: '12px' }}>{s.desc}</p>
                 <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3" style={{ fontSize: '13px' }}>
                   Mehr erfahren →
                 </span>
@@ -552,14 +552,14 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── 8. VERTRAUEN ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
             Jede Erklärung, die wir vorbereiten, ist für jemanden mit 417- oder 462-Visum und wird von einem registrierten
             australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
           </p>
@@ -567,14 +567,14 @@ export default async function GermanHomePage() {
           <GoogleReviewsServer lang="de" />
 
           <div className="rounded-[12px] flex gap-3 mx-auto"
-            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A', width: 'fit-content', maxWidth: '100%' }}>
+            style={{ marginTop: '28px', padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE', width: 'fit-content', maxWidth: '100%' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>Ein registrierter Tax Agent fragt niemals nach deinen myGov-Logindaten.</strong>{' '}
+            <p style={{ ...BODY, color: '#0F1A16' }}>
+              <strong style={{ color: '#0F1A16' }}>Ein registrierter Tax Agent fragt niemals nach deinen myGov-Logindaten.</strong>{' '}
               Wer dich danach fragt, gehört nicht zu uns.
             </p>
           </div>
@@ -607,7 +607,7 @@ export default async function GermanHomePage() {
             ))}
           </div>
 
-          <p style={{ fontSize: '14px', color: '#4C6459', marginTop: '24px' }}>
+          <p style={{ fontSize: '14px', color: '#525A57', marginTop: '24px' }}>
             Steht deine Frage nicht dabei?{' '}
             <Link href="/de/contact" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Schreib uns</Link>
           </p>
@@ -615,15 +615,15 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── 10. RATGEBER ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Lieber erst die ganze Antwort lesen?
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '24px' }}>
             Nichts davon wird zurückgehalten, damit du dich melden musst.
           </p>
 
@@ -631,9 +631,9 @@ export default async function GermanHomePage() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

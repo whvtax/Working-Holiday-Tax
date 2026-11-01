@@ -112,12 +112,12 @@ function Pagination({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '10px',
-    border: '1px solid #E2EFE9',
+    border: '1px solid #DCE0DE',
     background: 'transparent',
     cursor: 'pointer',
     fontSize: '13px',
     fontWeight: 500,
-    color: '#587066',
+    color: '#525A57',
     transition: 'all 0.2s ease',
     padding: '0 12px',
   }
@@ -135,7 +135,7 @@ function Pagination({
       </button>
       {getPages().map((p, i) =>
         p === '...' ? (
-          <span key={`dot-${i}`} aria-hidden="true" style={{ ...btnBase, border: 'none', cursor: 'default', color: '#4C6459' }}>…</span>
+          <span key={`dot-${i}`} aria-hidden="true" style={{ ...btnBase, border: 'none', cursor: 'default', color: '#525A57' }}>…</span>
         ) : (
           <button
             key={p}
@@ -145,8 +145,8 @@ function Pagination({
             style={{
               ...btnBase,
               background: page === p ? '#0B5240' : 'transparent',
-              color: page === p ? '#fff' : '#587066',
-              border: `1px solid ${page === p ? '#0B5240' : '#E2EFE9'}`,
+              color: page === p ? '#fff' : '#525A57',
+              border: `1px solid ${page === p ? '#0B5240' : '#DCE0DE'}`,
               fontWeight: page === p ? 700 : 500,
             }}
             className="pagination-btn"
@@ -279,12 +279,12 @@ export default function BlogClient({
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-12">
 
           {/* rgba(10,15,13,0.35) over this near white hero measures about
-              2.3:1 and fails WCAG AA. #4C6459 is the palette's caption colour
+              2.3:1 and fails WCAG AA. #525A57 is the palette's caption colour
               at 6.41:1 and reads as the same quiet grey green. */}
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '12px', color: '#4C6459' }}>
+            style={{ fontSize: '12px', color: '#525A57' }}>
             <a href={homePath} className="transition-colors hover:text-forest-500" style={{ color: 'inherit', textDecoration: 'none', padding: '6px 0' }}>{ui.breadcrumbHome}</a>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page">{ui.breadcrumbBlog}</span>
           </nav>
 
@@ -305,25 +305,25 @@ export default function BlogClient({
             </h1>
 
             <p className="font-light"
-              style={{ fontSize: 'clamp(14px,1.2vw,16px)', lineHeight: 1.65, color: '#4C6459', maxWidth: '52ch', marginBottom: '24px' }}>
+              style={{ fontSize: 'clamp(14px,1.2vw,16px)', lineHeight: 1.65, color: '#525A57', maxWidth: '52ch', marginBottom: '24px' }}>
               {ui.description}
             </p>
 
             {/* Stats grid - credibility signals at the top, focused on what working holiday makers care about */}
             <div className="hero-stats">
-              <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #E2EFE9' }}>
+              <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #DCE0DE' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>{guides.length}</div>
-                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{ui.statsArticles}</div>
+                <div style={{ fontSize: '11.5px', color: '#525A57', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{ui.statsArticles}</div>
               </div>
-              <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #E2EFE9' }}>
+              <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #DCE0DE' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>{categories.length}</div>
-                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{ui.statsCategories}</div>
+                <div style={{ fontSize: '11.5px', color: '#525A57', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{ui.statsCategories}</div>
               </div>
-              <div className="stat-card" style={{ padding: '16px 18px', background: '#EAF6F1', borderRadius: '12px', border: '1px solid #C8EAE0' }}>
+              <div className="stat-card" style={{ padding: '16px 18px', background: '#F2FAF7', borderRadius: '12px', border: '1px solid #DCE0DE' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>2025-26</div>
                 <div style={{ fontSize: '11.5px', color: '#0B5240', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Steuerjahr' : lang === 'ja' ? '税年度' : 'Tax year'}</div>
               </div>
-              <div className="stat-card" style={{ padding: '16px 18px', background: '#FDF0D5', borderRadius: '12px', border: '1px solid #E9A020' }}>
+              <div className="stat-card" style={{ padding: '16px 18px', background: '#F2FAF7', borderRadius: '12px', border: '1px solid #0B5240' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#7A4A00', lineHeight: 1 }}>{lang === 'de' ? 'Frei' : lang === 'ja' ? '無料' : 'Free'}</div>
                 <div style={{ fontSize: '11.5px', color: '#7A4A00', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Kostenlos' : lang === 'ja' ? '登録不要' : 'No sign-up'}</div>
               </div>
@@ -332,7 +332,7 @@ export default function BlogClient({
 
           {/* Search input */}
           <div style={{ maxWidth: '560px', marginBottom: '24px', position: 'relative' }}>
-            <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#4C6459' }}>
+            <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#525A57' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -349,12 +349,12 @@ export default function BlogClient({
                 padding: '12px 16px 12px 44px',
                 paddingRight: searchQuery ? '52px' : '16px',
                 borderRadius: '12px',
-                border: '1px solid #E2EFE9',
+                border: '1px solid #DCE0DE',
                 background: '#fff',
                 // 16px, not 14: anything smaller makes iOS zoom the whole page
                 // on focus, and the reader then has to pinch back out.
                 fontSize: '16px',
-                color: '#2A3C34',
+                color: '#0F1A16',
                 fontWeight: 400,
                 transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
               }}
@@ -366,7 +366,7 @@ export default function BlogClient({
                 className="clear-search-btn"
                 // 44x44, not a 4px pad around a 16px icon. The old target was
                 // 24px square and sat inside the input's rounded corner.
-                style={{ position: 'absolute', right: '4px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: '#4C6459', width: '44px', height: '44px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ position: 'absolute', right: '4px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: '#525A57', width: '44px', height: '44px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 aria-label={ui.clearSearch}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -405,9 +405,9 @@ export default function BlogClient({
                 textDecoration: 'none',
                 padding: '8px 16px',
                 borderRadius: '100px',
-                border: `1px solid ${activeCategory === 'All' ? '#E9A020' : '#E2EFE9'}`,
-                background: activeCategory === 'All' ? '#E9A020' : 'transparent',
-                color: activeCategory === 'All' ? '#1A2822' : '#587066',
+                border: `1px solid ${activeCategory === 'All' ? '#0B5240' : '#DCE0DE'}`,
+                background: activeCategory === 'All' ? '#0B5240' : 'transparent',
+                color: activeCategory === 'All' ? '#0F1A16' : '#525A57',
                 fontSize: '13px',
                 fontWeight: activeCategory === 'All' ? 700 : 500,
                 cursor: 'pointer',
@@ -422,8 +422,8 @@ export default function BlogClient({
                 fontSize: '11px',
                 padding: '1px 6px',
                 borderRadius: '100px',
-                background: activeCategory === 'All' ? 'rgba(26,40,34,0.15)' : '#E2EFE9',
-                color: activeCategory === 'All' ? '#1A2822' : '#587066',
+                background: activeCategory === 'All' ? 'rgba(26,40,34,0.15)' : '#DCE0DE',
+                color: activeCategory === 'All' ? '#0F1A16' : '#525A57',
                 fontWeight: 600,
               }}>
                 {countsByCategory.All}
@@ -448,9 +448,9 @@ export default function BlogClient({
                     textDecoration: 'none',
                     padding: '8px 16px',
                     borderRadius: '100px',
-                    border: `1px solid ${isActive ? colors.border : '#E2EFE9'}`,
+                    border: `1px solid ${isActive ? colors.border : '#DCE0DE'}`,
                     background: isActive ? colors.bg : 'transparent',
-                    color: isActive ? colors.text : '#587066',
+                    color: isActive ? colors.text : '#525A57',
                     fontSize: '13px',
                     fontWeight: isActive ? 700 : 500,
                     cursor: 'pointer',
@@ -465,8 +465,8 @@ export default function BlogClient({
                     fontSize: '11px',
                     padding: '1px 6px',
                     borderRadius: '100px',
-                    background: isActive ? 'rgba(0,0,0,0.08)' : '#E2EFE9',
-                    color: isActive ? colors.text : '#587066',
+                    background: isActive ? 'rgba(0,0,0,0.08)' : '#DCE0DE',
+                    color: isActive ? colors.text : '#525A57',
                     fontWeight: 600,
                   }}>
                     {countsByCategory[cat] ?? 0}
@@ -480,11 +480,11 @@ export default function BlogClient({
       </section>
 
       {/* Grid */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 80px', borderTop: '1px solid #E2EFE9' }}>
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 80px', borderTop: '1px solid #DCE0DE' }}>
 
         {/* Result count + search context */}
         {searchQuery && (
-          <div style={{ marginBottom: '24px', padding: '12px 16px', background: '#F7F9F8', borderRadius: '10px', fontSize: '13px', color: '#587066' }}>
+          <div style={{ marginBottom: '24px', padding: '12px 16px', background: '#F7F9F8', borderRadius: '10px', fontSize: '13px', color: '#525A57' }}>
             {filtered.length === 0
               ? <>{ui.noResults} <strong style={{ color: '#0B5240' }}>&ldquo;{searchQuery}&rdquo;</strong>. {ui.tryDifferent}</>
               : <>{ui.showingResults} <strong style={{ color: '#0B5240' }}>{filtered.length}</strong> {filtered.length === 1 ? ui.article : ui.articles} {ui.matching} <strong style={{ color: '#0B5240' }}>&ldquo;{searchQuery}&rdquo;</strong></>
@@ -493,7 +493,7 @@ export default function BlogClient({
         )}
 
         {filtered.length === 0 && !searchQuery ? (
-          <div style={{ textAlign: 'center', padding: '60px 20px', color: '#587066' }}>
+          <div style={{ textAlign: 'center', padding: '60px 20px', color: '#525A57' }}>
             <p style={{ fontSize: '14px' }}>{ui.noArticlesCategory}</p>
           </div>
         ) : (
@@ -513,7 +513,7 @@ export default function BlogClient({
                     background: '#fff',
                     textDecoration: 'none',
                     borderRadius: '16px',
-                    border: '1px solid #E2EFE9',
+                    border: '1px solid #DCE0DE',
                   }}
                 >
                   {/* Decorative category illustration at the top of the card */}
@@ -536,14 +536,14 @@ export default function BlogClient({
                       }}>
                         {article.category}
                       </span>
-                      <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
-                      <span style={{ fontSize: '12px', color: '#4C6459' }}>{article.readTime} {ui.minRead}</span>
+                      <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
+                      <span style={{ fontSize: '12px', color: '#525A57' }}>{article.readTime} {ui.minRead}</span>
                     </div>
 
                     {/* Title */}
                     <h2
                       className="font-serif blog-card-title"
-                      style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}
+                      style={{ fontSize: '16px', fontWeight: 700, color: '#0F1A16', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}
                     >
                       {article.title}
                     </h2>
@@ -552,7 +552,7 @@ export default function BlogClient({
                     {/* Weight 400, not 300. A 300 weight at 13px is thin
                         enough to break up on a phone screen in daylight, which
                         is where this listing is read. */}
-                    <p style={{ fontSize: '13.5px', color: '#4C6459', lineHeight: 1.65, margin: 0, fontWeight: 400, flex: 1 }}>
+                    <p style={{ fontSize: '13.5px', color: '#525A57', lineHeight: 1.65, margin: 0, fontWeight: 400, flex: 1 }}>
                       {article.description}
                     </p>
 
@@ -577,7 +577,7 @@ export default function BlogClient({
 
         {/* Count */}
         {filtered.length > 0 && (
-          <p style={{ textAlign: 'center', fontSize: '12px', color: '#4C6459', marginTop: '16px' }}>
+          <p style={{ textAlign: 'center', fontSize: '12px', color: '#525A57', marginTop: '16px' }}>
             {ui.showing} {(page - 1) * PER_PAGE + 1}-{Math.min(page * PER_PAGE, filtered.length)} {ui.of} {filtered.length} {filtered.length === 1 ? ui.article : ui.articles}
           </p>
         )}

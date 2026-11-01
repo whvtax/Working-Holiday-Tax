@@ -19,7 +19,7 @@ export default async function GlobalNotFound() {
   // Same page, same words on both brands (Jo, 27 Oct): only the colours change.
   const c = svt
     ? { ink: '#12161F', muted: '#4A5160', faint: 'rgba(18,22,31,0.07)', btnBg: '#12161F', radius: 8, wa: svtWhatsappUrl('Hi, I have a question about my tax.') }
-    : { ink: '#080F0D', muted: '#587066', faint: 'rgba(11,82,64,0.08)', btnBg: '#0B5240', radius: 100, wa: waUrl({ topic: 'general', lang: 'en' }) }
+    : { ink: '#0F1A16', muted: '#525A57', faint: 'rgba(11,82,64,0.08)', btnBg: '#0B5240', radius: 100, wa: waUrl({ topic: 'general', lang: 'en' }) }
   const btn = { display: 'inline-flex', alignItems: 'center', minHeight: 46, padding: '0 22px', borderRadius: c.radius, textDecoration: 'none', fontWeight: 600, fontSize: 13.5 } as const
   return (
     <html lang="en">

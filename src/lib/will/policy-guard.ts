@@ -568,6 +568,15 @@ export function isLikelyNonEnglish(text: string): boolean {
 }
 
 // ---------- pattern sets ----------
+// Jo, 1 Nov: after payment Will answers "can I claim X?" from the ATO rules
+// (playbook: EXPENSE QUESTIONS AFTER PAYMENT). These two English patterns are
+// therefore skipped for a PAID customer only. Before payment they still fire,
+// and every other determination (residency, Medicare, refund, tax payable)
+// is blocked at every stage.
+const YOUR_DEDUCTIBLE = /\byour\s+[\w' -]{2,30}\s+(?:is|are)\s+(?:fully\s+|partly\s+|not\s+)?(?:tax[- ])?deductible\b/i;
+const YOU_CAN_CLAIM = /(?<!\b(?:what|whatever|whichever|which|that|anything|everything|nothing|something|whether|if|deductions?|expenses?|costs?|things?|items?)\s)you can (?:claim|deduct|write off)/i;
+const EXPENSE_RULE_PATTERNS: ReadonlySet<RegExp> = new Set([YOUR_DEDUCTIBLE, YOU_CAN_CLAIM]);
+
 const TAX_DETERMINATION: RegExp[] = [
   // WILL-AI-01: broadened residency qualifiers — the old group only covered
   // "australian/tax/non- resident" and let "foreign / temporary / permanent /
@@ -593,7 +602,7 @@ const TAX_DETERMINATION: RegExp[] = [
   // carve-out as the rule above: "we work out if you are a resident or not".
   /(?<!\b(?:whether|if|what|which)\s)you(?:'re| are|'d be| would be| will be)(?: probably| definitely| likely)?(?: not| never)?(?: considered)?(?: an?| a)?\s*(?:australian |tax |non-?|foreign |temporary |permanent |working[ -]?holiday |non[ -]?)*resident/i,
   /you(?:'re| are)? (?:probably |definitely )?(?:do(?:n'?t| not)? |don'?t |are(?: not)? |aren'?t |will(?: not)? |won'?t )?(?:need to pay|have to pay|required to pay|qualify|exempt(?:ed)?|eligible)[^.!?]{0,40}medicare/i,
-  /\byour\s+[\w' -]{2,30}\s+(?:is|are)\s+(?:fully\s+|partly\s+|not\s+)?(?:tax[- ])?deductible\b/i,
+  YOUR_DEDUCTIBLE,
   // "You can claim your boots" is a determination and must never send.
   // "We'll check WHAT you can claim" is a description of the service and must.
   //
@@ -617,7 +626,7 @@ const TAX_DETERMINATION: RegExp[] = [
   //
   // Deliberately narrow. Anything not in this list still fires, including the
   // bare sentence-initial "You can claim ...".
-  /(?<!\b(?:what|whatever|whichever|which|that|anything|everything|nothing|something|whether|if|deductions?|expenses?|costs?|things?|items?)\s)you can (?:claim|deduct|write off)/i,
+  YOU_CAN_CLAIM,
   /you (?:can(?:'?t| ?not)?|won'?t|will(?: not)?|don'?t|do not) owe/i,
   // "your refund will ..." is a determination — EXCEPT when what follows is
   // process rather than prediction. "Your refund will be paid into the account
@@ -1054,6 +1063,11 @@ const OUR_SALES_PITCH = /\bour (?:fee|price|prices|service fee|rates?)\b|guarant
 
 const GUARANTEE_SENTENCE = /refund the difference|refund you the difference|erstatten wir dir die differenz|devolvemos la diferencia|rembours\w* la diff[ée]rence|rimborsiamo la differenza|devolvemos a diferen[çc]a|差額を返金/i;
 
+/** 31 Oct (Jo): Will never asks for, agrees to or encourages a photo or any details of a
+ *  payment card, in any language. Only a warning NOT to send them is allowed. */
+const CARD_TERMS = /\b(?:credit|debit|bank|payment)\s+card\b|\bcard\s+(?:details|number|info|information|photo|picture|image|front|back)\b|\b(?:photo|picture|image|screenshot)\s+of\s+(?:your|the)\s+card\b|\bcvv\b|\bcvc\b|\bsecurity\s+code\b|クレジットカード|デビットカード|カード番号|カード情報|kreditkarte|bankkarte|kartennummer|kartendaten|信用卡|银行卡|卡号|thẻ tín dụng|thẻ ngân hàng|số thẻ/i;
+const CARD_INVITE = /\b(?:send|share|attach|upload|provide|give|forward|take|snap|photo|picture|screenshot|image|foto|bild|schick|sende|teile|zeig)\w*|送|共有|写真|画像|撮|教え|ご提供|見せ|发|拍|照片|gửi|chụp|ảnh/i;
+const CARD_NEGATED = /\b(?:don'?t|do not|never|no need|not to|without|nicht|keine|keinen|keinesfalls|niemals|bitte nicht)\b|ないで|ご遠慮|お控え|不要|しないで|ません|请勿|不要|đừng|không cần/i;
 const PROTECTED_AGENT_TITLE = /steuerberater(?:in)?|steuer-?agent|steuerbevollm[äa]chtigt|税理士|税務代理/i;
 const DASHES = /[—–―−]/; // — – ― −
 
@@ -1101,6 +1115,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // AGENT_PHRASES in approved-messages.ts ("registrierten australischen Tax
   // Agent", "オーストラリアの登録タックスエージェント"), which this check accepts.
   if (PROTECTED_AGENT_TITLE.test(text)) violations.push('PROTECTED_AGENT_TITLE');
+  if (CARD_TERMS.test(text) && CARD_INVITE.test(text) && !CARD_NEGATED.test(text)) violations.push('CARD_DETAILS_INVITED');
   // 11 Oct (full audit, decision 6): Hiro received "料金総額は [TEAM: 正確な料金を
   // 確認してください…] です。" An internal note is never customer text.
   if (INTERNAL_NOTE.test(text)) violations.push('INTERNAL_NOTE_LEFT_IN');
@@ -1403,6 +1418,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     if (sentenceExample.size > 0) maskable.push(...FIXED_PRICES_CENTS);
     const determinationText = maskBankFigures(maskable.length ? maskAllowedAmounts(sentence, maskable) : sentence);
     for (const p of TAX_DETERMINATION) {
+      if (paidState && EXPENSE_RULE_PATTERNS.has(p)) continue
       if (p.test(determinationText)) { violations.push('TAX_DETERMINATION'); break; }
     }
     if (!violations.includes('TAX_DETERMINATION')) {

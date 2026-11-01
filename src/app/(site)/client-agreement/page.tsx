@@ -48,7 +48,7 @@ export default function ClientAgreementPage() {
           <div className="max-w-2xl">
 
             {/* Agent disclosure */}
-            <div className="rounded-xl px-5 py-4 mb-8" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
+            <div className="rounded-xl px-5 py-4 mb-8" style={{ background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
               <p className="text-[13px] font-light text-body leading-[1.75]">
                 {disclosure.lead}{' '}
                 <strong className="font-semibold text-ink">{disclosure.agent}</strong>.

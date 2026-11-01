@@ -319,9 +319,9 @@ export default function TaxReturnPageJA() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
             <Link href="/ja" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>ホーム</Link>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page">タックスリターン</span>
           </nav>
 
@@ -330,14 +330,14 @@ export default function TaxReturnPageJA() {
               did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               タックスリターン代行｜申告書は登録タックスエージェントが確認して承認
             </span>
             <span style={{ display: 'block' }}>必要な情報と、還付金の振込先だけ。</span>
             <span style={{ display: 'block', color: '#0B5240' }}>あとは当社が進めます。</span>
           </h1>
 
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '40ch', marginBottom: '26px' }}>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '40ch', marginBottom: '26px' }}>
             給与明細も、myGovのアカウントも、読み解く書式もありません。質問票に1回答えて、1回署名するだけです。還付金は提出からおおむね14営業日で届きます。
           </p>
 
@@ -348,7 +348,7 @@ export default function TaxReturnPageJA() {
               <IconWhatsApp />
               WhatsAppで相談する
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               約1時間で返信します。
             </p>
           </div>
@@ -360,25 +360,25 @@ export default function TaxReturnPageJA() {
       </section>
 
       {/* ── 1b. WHERE A REFUND COMES FROM ─────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>還付金はどこから生まれるのか</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>還付金はどこから生まれるのか</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
             ワーホリの多くがタックスリターンで還付を受けられる理由
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch', marginBottom: '26px' }}>
             還付金はバックパッカーであることへのご褒美ではありません。雇用主が源泉徴収した額と、本来払うべきだった額の差で、ワーホリの1年ではその差はたいてい下のような場所から生まれます。還付額は、どれが当てはまったかによって人それぞれ変わります。
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             {REFUND_SOURCES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
               </div>
             ))}
           </div>
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '62ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '22px', maxWidth: '62ch' }}>
             どれも自動ではなく、決めつけもしません。提出前に、ひとつずつATOの記録と照らし合わせて確認します。{' '}
             <Link href="/ja/calculator" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>計算ツールで還付額の目安を見る</Link>。
           </p>
@@ -389,12 +389,12 @@ export default function TaxReturnPageJA() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>あなたの側</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>あなたの側</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '16px' }}>
             ご用意いただくもの
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '30px' }}>
             3つだけで、これが全部です。
           </p>
 
@@ -402,21 +402,21 @@ export default function TaxReturnPageJA() {
             {NEEDED.map((item) => (
               <div key={item.label} style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.6, marginBottom: '8px' }}>{item.label}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{item.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{item.body}</p>
               </div>
             ))}
           </div>
 
-          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #CDE3DB' }}>
+          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
             <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.75, color: '#0B5240', fontWeight: 700, marginBottom: '10px', maxWidth: '28ch' }}>
               給与明細は必要ありません。
             </p>
             {/* 1つの塊だと日本語では壁になるので、論の切れ目で2段落に割った。
                 「ATOを通して、当社にはすべて見えています」は直前の言い直し。 */}
-            <p style={{ ...BODY, color: '#2A3C34', maxWidth: '46ch', marginBottom: '12px' }}>
+            <p style={{ ...BODY, color: '#0F1A16', maxWidth: '46ch', marginBottom: '12px' }}>
               給与として支払った雇用主は、あなたのTFNに紐づくインカムステートメントをすでにATOへ報告しています。申告書はそこから組み立てます。
             </p>
-            <p style={{ ...BODY, color: '#2A3C34', maxWidth: '46ch' }}>
+            <p style={{ ...BODY, color: '#0F1A16', maxWidth: '46ch' }}>
               探す価値があるのは仕事に関する支出の領収書だけで、それも無い場合は、どんな仕事だったかを教えてください。
             </p>
           </div>
@@ -424,15 +424,15 @@ export default function TaxReturnPageJA() {
       </section>
 
       {/* ── 3. 進む順序 ──────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>最初から最後まで</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>最初から最後まで</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             どんな順序で進むのか
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '30px' }}>
             手順は7つ。あなたの出番は、最初と、署名のときの2回だけです。
           </p>
 
@@ -440,17 +440,17 @@ export default function TaxReturnPageJA() {
             {SEQUENCE.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '4px' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '4px' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
           </ol>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '24px', maxWidth: '44ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '24px', maxWidth: '44ch' }}>
             収入の一部を給与ではなく請求で受け取っていた場合は{' '}
             <Link href="/ja/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>ABNで何が変わるか</Link>
             もご覧ください。
@@ -470,9 +470,9 @@ export default function TaxReturnPageJA() {
 
           <div className="grid gap-4 md:grid-cols-2" style={{ marginTop: '22px' }}>
             {RULES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.6, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
               </div>
             ))}
           </div>
@@ -482,7 +482,7 @@ export default function TaxReturnPageJA() {
       {/* ── 5. 料金 ──────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>当社の保証</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 28px)', lineHeight: 1.6, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
             当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
@@ -494,13 +494,13 @@ export default function TaxReturnPageJA() {
       </section>
 
       {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             フォームではなく、メッセージから始めてください
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '42ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '42ch', marginBottom: '24px' }}>
             働いた町、だいたいの月、そしてABNで請求したことがあるかどうか。それだけで、どの年度が未提出なのか、あなたの側の作業がどれくらいかをお伝えできます。2年前に帰国された方でも変わりません。
           </p>
           <WaLink href={WA_TR} position="section" topic="tax-return" lang="ja"
@@ -509,7 +509,7 @@ export default function TaxReturnPageJA() {
             <IconWhatsApp />
             WhatsAppで相談する
           </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
             約1時間で返信します。
           </p>
         </div>
@@ -522,20 +522,20 @@ export default function TaxReturnPageJA() {
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '28px' }}>
             質問票も、確認する項目も、上の順序も、たった1種類のビザの1年のために組み立てたものです。
           </p>
 
           <GoogleReviewsServer lang="ja" />
 
-          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>正規の窓口であれば、myGovのパスワードを尋ねることはありません。</strong>
+            <p style={{ ...BODY, color: '#0F1A16' }}>
+              <strong style={{ color: '#0F1A16' }}>正規の窓口であれば、myGovのパスワードを尋ねることはありません。</strong>
               当社はどの手順でも尋ねません。上の流れに必要ないからです。それを尋ねてくるメッセージは、当社からのものではありません。
             </p>
           </div>
@@ -543,7 +543,7 @@ export default function TaxReturnPageJA() {
       </section>
 
       {/* ── 8. よくある質問 ──────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
@@ -571,7 +571,7 @@ export default function TaxReturnPageJA() {
       {/* ── 9. ガイド ────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>ガイド</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>ガイド</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
             難しい手順の詳しい版
@@ -582,9 +582,9 @@ export default function TaxReturnPageJA() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px', lineHeight: 1.6 }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

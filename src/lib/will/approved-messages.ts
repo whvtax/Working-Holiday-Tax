@@ -186,7 +186,11 @@ The fee is per person and the same for everyone: $220 for a TFN return, or $385 
     // 24h and 3d nudges above make no sense ("want me to get you started?"
     // to someone holding the BSB). This one replaces them, once.
     // 14 Oct (Jo): assumes they are already on it; easy to answer.
-    priceSent: `Hi {{1}}, did the transfer go through on your end?`,
+    // 1 Nov (Jo, approved in Meta): invites a question instead of only asking
+    // whether they paid. German and Japanese are the same message (Jo's wording).
+    priceSent: `Hi {{1}}, did the transfer go through on your end?\n\nIf you have any question, just ask me here 😊`,
+    priceSentDe: `Hi {{1}}, hat die Überweisung bei dir geklappt?\n\nFalls du eine Frage hast, schreib mir einfach hier 😊`,
+    priceSentJa: `こんにちは、{{1}}さん。お振込はお済みでしょうか？\nご不明な点があれば、こちらにいつでもご連絡ください😊`,
   },
 
   payment_received: `Payment received.
@@ -325,7 +329,9 @@ I've emailed it to you for review and signature.`,
 Here is your invoice:
 {{INVOICE_LINK}}
 
-I'll send it for final review and then for your signature.`,
+I'll send it for final review and then for your signature.
+
+Please don't pay the invoice, as you've already paid by bank transfer`,
 
   /** "Mark Lodged" button (Signature stage). The Google review ask was SPLIT out
    *  of this message (Jo, 31 Aug): the lodgement note is now just the good news,

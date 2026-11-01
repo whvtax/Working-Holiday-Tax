@@ -17,7 +17,7 @@ describe('the intake', () => {
     expect(service).toMatch(/ABN INTAKE IN PROGRESS/);
     expect(playbook).toContain('# ABN INTAKE (Jo, 16 Oct)');
     expect(playbook).toContain(ABN_INTAKE_DONE_LINE);
-    expect(playbook).toMatch(/NEVER say whether something is deductible/);
+    expect(playbook).toMatch(/answer from the ATO rules in EXPENSE QUESTIONS AFTER PAYMENT/);
   });
   it('files during the intake go to Will, not to the generic "got it all" + task', () => {
     expect(service).toMatch(/if \(meta\?\.media && isAfterPayment\(customer\.state\) && !intakeActive\)/);

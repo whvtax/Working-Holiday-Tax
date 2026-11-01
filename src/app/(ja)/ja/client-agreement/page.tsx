@@ -225,7 +225,7 @@ export default function JapaneseClientAgreementPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-2xl">
 
-            <div className="rounded-xl px-5 py-4 mb-8" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
+            <div className="rounded-xl px-5 py-4 mb-8" style={{ background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
               <p className="text-[13px] font-light text-body leading-[1.75]">
                 Working Holiday Taxは、オーストラリアの登録タックスエージェントの監督のもとで運営されています：{' '}
                 <strong className="font-semibold text-ink">{AGENT_NAME}（ABN：{AGENT_ABN}）、Tax Agent Number {AGENT_TPB}</strong>。

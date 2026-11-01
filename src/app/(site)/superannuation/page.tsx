@@ -233,7 +233,7 @@ const H2: React.CSSProperties = {
 const BODY: React.CSSProperties = {
   fontSize: '15px',
   lineHeight: 1.7,
-  color: '#2A3C34',
+  color: '#0F1A16',
   marginBottom: '14px',
 }
 
@@ -241,7 +241,7 @@ function Answer({
   id, heading, children, tint = false,
 }: { id: string; heading: string; children: React.ReactNode; tint?: boolean }) {
   return (
-    <section id={id} className="py-8 lg:py-11" style={{ background: tint ? '#F5F9F7' : '#fff' }}>
+    <section id={id} className="py-8 lg:py-11" style={{ background: tint ? '#F2FAF7' : '#fff' }}>
       <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
         <div className="max-w-[680px] mx-auto">
           <h2 className="font-serif font-black text-ink" style={H2}>{heading}</h2>
@@ -267,7 +267,7 @@ export default function SuperannuationPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '13px', color: '#4C6459' }}>
+            style={{ fontSize: '13px', color: '#525A57' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
             <span aria-hidden="true">/</span>
             <span aria-current="page">Superannuation</span>
@@ -307,7 +307,7 @@ export default function SuperannuationPage() {
               </a>
             </div>
 
-            <p style={{ fontSize: '13px', color: '#4C6459' }}>
+            <p style={{ fontSize: '13px', color: '#525A57' }}>
               Replies in about an hour.
             </p>
           </div>
@@ -320,16 +320,16 @@ export default function SuperannuationPage() {
           <div className="max-w-[680px] mx-auto">
 
             <p className="font-medium uppercase"
-              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
+              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '12px' }}>
               Doing it yourself
             </p>
 
             <h2 className="font-serif font-black text-ink" style={H2}>
-              <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>The claim form has one box for a super fund.{' '}</span>
+              <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>The claim form has one box for a super fund.{' '}</span>
               <span style={{ display: 'block' }}>Four casual jobs can mean four.{' '}</span>
             </h2>
 
-            <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
+            <p style={{ ...BODY, color: '#525A57', maxWidth: '56ch', marginBottom: '20px' }}>
               Two of those accounts were opened without you choosing anything.
             </p>
 
@@ -338,25 +338,25 @@ export default function SuperannuationPage() {
                 once, on the first row, where they read as column headings on
                 desktop and as the key on mobile. The alternating ground and the
                 heavier weight carry the distinction from there. Copy unchanged. */}
-            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
               {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
                   <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
                     {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#525A57', marginBottom: '5px' }}>
                         On the ATO portal
                       </p>
                     )}
                     <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
                     style={{ padding: '13px 16px', background: '#F2FAF7' }}>
                     {i === 0 && (
                       <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
                         With us
                       </p>
                     )}
-                    <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word' }}>{row.us}</p>
+                    <p style={{ ...BODY, color: '#0F1A16', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word' }}>{row.us}</p>
                   </div>
                 </div>
               ))}
@@ -396,22 +396,22 @@ export default function SuperannuationPage() {
             { bal: '$6,000', net: '$2,100', note: 'around six months full time' },
             { bal: '$10,000', net: '$3,500', note: 'a full working holiday year' },
           ].map((r, i) => (
-            <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #E2EFE9', textAlign: 'center' }}>
-              <p className="font-medium" style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#4C6459', marginBottom: '6px' }}>
+            <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #DCE0DE', textAlign: 'center' }}>
+              <p className="font-medium" style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#525A57', marginBottom: '6px' }}>
                 Super balance
               </p>
               <p className="font-semibold text-ink" style={{ fontSize: '17px', marginBottom: '10px' }}>{r.bal}</p>
               <p className="font-serif font-black" style={{ fontSize: 'clamp(26px,3vw,33px)', color: '#0B5240', lineHeight: 1, marginBottom: '8px' }}>
                 {r.net}
               </p>
-              <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.55 }}>
+              <p style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.55 }}>
                 paid to you &middot; {r.note}
               </p>
             </div>
           ))}
         </div>
 
-        <p style={{ ...BODY, fontSize: '13px', color: '#4C6459' }}>
+        <p style={{ ...BODY, fontSize: '13px', color: '#525A57' }}>
           Figures are after the 65% DASP withholding, on a balance made up entirely of taxed contributions.
           An untaxed element, which some funds hold, is withheld at a higher rate, so treat these as
           illustrations rather than a quote.
@@ -521,11 +521,11 @@ export default function SuperannuationPage() {
           separate application to each fund, and the chasing when one goes quiet.
         </p>
 
-        <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0', margin: '22px 0 20px' }}>
+        <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #DCE0DE', margin: '22px 0 20px' }}>
           <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
             Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
           </p>
-          <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
+          <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#525A57' }}>
             Reviewed and signed off by a registered tax agent before it is lodged
             with the ATO.
           </p>
@@ -536,7 +536,7 @@ export default function SuperannuationPage() {
           style={{ minHeight: '54px', width: '100%', maxWidth: '360px', fontSize: '15px', borderRadius: '100px' }}>
           Message us on WhatsApp
         </WaLink>
-        <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '10px' }}>
+        <p style={{ fontSize: '13px', color: '#525A57', marginTop: '10px' }}>
           Replies in about an hour.
         </p>
       </Answer>
@@ -555,7 +555,7 @@ export default function SuperannuationPage() {
 
       {/* ── RELATED GUIDES. The narrow guides that already rank, pointed at  */}
       {/*    from the hub rather than competing with it. ───────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[900px] mx-auto">
           <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
@@ -572,7 +572,7 @@ export default function SuperannuationPage() {
             ].map(g => (
               <Link key={g.href} href={g.href}
                 className="block rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '16px', fontSize: '14px', lineHeight: 1.5, color: '#080F0D', minHeight: '44px' }}>
+                style={{ padding: '16px', fontSize: '14px', lineHeight: 1.5, color: '#0F1A16', minHeight: '44px' }}>
                 {g.label}
               </Link>
             ))}

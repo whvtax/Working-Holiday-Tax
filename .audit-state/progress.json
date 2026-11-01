@@ -1,0 +1,25 @@
+{
+ "phase": "COMPLETE",
+ "baseline": "d9dbac0",
+ "next": "collect findings, then run A10 devil advocate",
+ "reports_done": [
+  "A01",
+  "A12",
+  "A17-A19",
+  "A03"
+ ],
+ "reports_partial_on_disk": [
+  "A13-A14",
+  "A20-A15",
+  "A18-A04-A05"
+ ],
+ "pending": [
+  "A02",
+  "A16-A09",
+  "A06-A07-A08"
+ ],
+ "model": "sonnet-5-5",
+ "final_commit": "03599a8",
+ "zip": "whvtax-release-candidate-28oct.zip",
+ "final_name_withheld": "mandatory gates not all PASS (tax figures UNVERIFIED, privacy policy overseas disclosure, placeholder phone)"
+}

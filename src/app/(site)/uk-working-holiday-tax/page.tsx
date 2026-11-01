@@ -211,12 +211,12 @@ const speakableSchema = {
 }
 
 /* Tokens kept local so this page does not depend on shared CSS being finished. */
-const INK = '#080F0D'
-const BODY = '#2A3C34'
-const MUTED = '#4C6459'
+const INK = '#0F1A16'
+const BODY = '#0F1A16'
+const MUTED = '#525A57'
 const FOREST = '#0B5240'
-const HAIR = '#E2EFE9'
-const SUNKEN = '#F5F9F7'
+const HAIR = '#DCE0DE'
+const SUNKEN = '#F2FAF7'
 
 const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
 const h2s: React.CSSProperties = {
@@ -291,7 +291,7 @@ export default function UKWorkingHolidayTaxPage() {
               <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
                 {CRUMBS.map((b, i) => (
                   <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>}
                     {i === CRUMBS.length - 1 ? (
                       <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
                     ) : (
@@ -346,7 +346,7 @@ export default function UKWorkingHolidayTaxPage() {
                 read as column headings on desktop and as the key on mobile; the
                 alternating ground and the heavier weight carry the distinction
                 from there. Copy unchanged, padding tightened to 13px 16px. */}
-            <div style={{ background: '#fff', border: '1px solid #CDE3DB', borderRadius: '14px', overflow: 'hidden' }}>
+            <div style={{ background: '#fff', border: '1px solid #DCE0DE', borderRadius: '14px', overflow: 'hidden' }}>
               {MYGOV.map((row, i) => (
                 <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : `1px solid ${HAIR}` }}>
                   <div style={{ padding: '13px 16px' }}>
@@ -575,8 +575,8 @@ export default function UKWorkingHolidayTaxPage() {
                   justifyContent: 'center',
                   minHeight: '52px',
                   padding: '0 28px',
-                  background: '#E9A020',
-                  color: '#1A2822',
+                  background: '#0B5240',
+                  color: '#0F1A16',
                   borderRadius: '999px',
                   fontSize: '16px',
                   fontWeight: 600,

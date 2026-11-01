@@ -28,13 +28,13 @@ export function NextStep({ eyebrow, heading, body, cta, href, external, trustLin
         {external ? (
           <a href={href} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center justify-center font-semibold transition-all"
-            style={{ height: '48px', padding: '0 28px', fontSize: '14.5px', background: '#E9A020', color: '#1A2822', borderRadius: '100px' }}>
+            style={{ height: '48px', padding: '0 28px', fontSize: '14.5px', background: '#0B5240', color: '#FFFFFF', borderRadius: '100px' }}>
               {cta}
           </a>
         ) : (
           <Link href={href}
             className="inline-flex items-center justify-center font-semibold transition-all"
-            style={{ height: '48px', padding: '0 28px', fontSize: '14.5px', background: '#E9A020', color: '#1A2822', borderRadius: '100px' }}>
+            style={{ height: '48px', padding: '0 28px', fontSize: '14.5px', background: '#0B5240', color: '#FFFFFF', borderRadius: '100px' }}>
             {cta}
           </Link>
         )}

@@ -107,6 +107,8 @@ describe('the message', () => {
     expect(lines[3].trim()).toBe(url);
     expect(lines[4]).toBe('');
     expect(lines[5]).toBe("I'll send it for final review and then for your signature.");
+    expect(lines[6]).toBe('');
+    expect(lines[7]).toBe("Please don't pay the invoice, as you've already paid by bank transfer");
   });
 
   it('carries no AI dash', () => {

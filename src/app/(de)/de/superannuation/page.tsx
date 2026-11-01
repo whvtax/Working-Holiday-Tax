@@ -208,7 +208,7 @@ const H2: React.CSSProperties = {
 const BODY: React.CSSProperties = {
   fontSize: '15px',
   lineHeight: 1.7,
-  color: '#2A3C34',
+  color: '#0F1A16',
   marginBottom: '14px',
 }
 
@@ -216,7 +216,7 @@ function Answer({
   id, heading, children, tint = false,
 }: { id: string; heading: string; children: React.ReactNode; tint?: boolean }) {
   return (
-    <section id={id} className="py-8 lg:py-11" style={{ background: tint ? '#F5F9F7' : '#fff' }}>
+    <section id={id} className="py-8 lg:py-11" style={{ background: tint ? '#F2FAF7' : '#fff' }}>
       <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
         <div className="max-w-[680px] mx-auto">
           <h2 className="font-serif font-black text-ink" style={H2}>{heading}</h2>
@@ -241,7 +241,7 @@ export default function GermanSuperannuationPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '13px', color: '#4C6459' }}>
+            style={{ fontSize: '13px', color: '#525A57' }}>
             <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
             <span aria-hidden="true">/</span>
             <span aria-current="page">Super auszahlen</span>
@@ -282,7 +282,7 @@ export default function GermanSuperannuationPage() {
               </a>
             </div>
 
-            <p style={{ fontSize: '13px', color: '#4C6459' }}>
+            <p style={{ fontSize: '13px', color: '#525A57' }}>
               Antwort in etwa einer Stunde.
             </p>
           </div>
@@ -295,16 +295,16 @@ export default function GermanSuperannuationPage() {
           <div className="max-w-[680px] mx-auto">
 
             <p className="font-medium uppercase"
-              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
+              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '12px' }}>
               Selbst machen
             </p>
 
             <h2 className="font-serif font-black text-ink" style={H2}>
-              <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Ein DASP-Antrag geht an genau einen Fonds.{' '}</span>
+              <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>Ein DASP-Antrag geht an genau einen Fonds.{' '}</span>
               <span style={{ display: 'block' }}>Nach vier Casual Jobs sind es oft vier.{' '}</span>
             </h2>
 
-            <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
+            <p style={{ ...BODY, color: '#525A57', maxWidth: '56ch', marginBottom: '20px' }}>
               Zwei davon wurden für dich eröffnet, ohne dass du etwas ausgesucht hast.
             </p>
 
@@ -314,25 +314,25 @@ export default function GermanSuperannuationPage() {
                 Spaltenüberschrift, auf dem Handy als Legende. Den Rest tragen
                 der Wechsel im Hintergrund und das schwerere Gewicht. Copy
                 unverändert. */}
-            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
               {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
                   <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
                     {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#525A57', marginBottom: '5px' }}>
                         Im ATO-Portal
                       </p>
                     )}
                     <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
                     style={{ padding: '13px 16px', background: '#F2FAF7' }}>
                     {i === 0 && (
                       <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
                         Mit uns
                       </p>
                     )}
-                    <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
+                    <p style={{ ...BODY, color: '#0F1A16', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
                   </div>
                 </div>
               ))}
@@ -373,22 +373,22 @@ export default function GermanSuperannuationPage() {
             { bal: '6.000 $', net: '2.100 $', note: 'etwa sechs Monate Vollzeit' },
             { bal: '10.000 $', net: '3.500 $', note: 'ein ganzes Working-Holiday-Jahr' },
           ].map((r, i) => (
-            <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #E2EFE9', textAlign: 'center' }}>
-              <p className="font-medium" style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#4C6459', marginBottom: '6px' }}>
+            <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #DCE0DE', textAlign: 'center' }}>
+              <p className="font-medium" style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#525A57', marginBottom: '6px' }}>
                 Super-Guthaben
               </p>
               <p className="font-semibold text-ink" style={{ fontSize: '17px', marginBottom: '10px' }}>{r.bal}</p>
               <p className="font-serif font-black" style={{ fontSize: 'clamp(26px,3vw,33px)', color: '#0B5240', lineHeight: 1, marginBottom: '8px' }}>
                 {r.net}
               </p>
-              <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.55 }}>
+              <p style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.55 }}>
                 ausgezahlt &middot; {r.note}
               </p>
             </div>
           ))}
         </div>
 
-        <p style={{ ...BODY, fontSize: '13px', color: '#4C6459' }}>
+        <p style={{ ...BODY, fontSize: '13px', color: '#525A57' }}>
           Beträge nach Abzug der DASP-Quellensteuer des ATO von 65 %, bei rein versteuerten Beiträgen. Auf einen
           unversteuerten Anteil, den manche Fonds führen, gilt ein höherer Satz. Sieh die Zahlen als
           Beispiel, nicht als Angebot.
@@ -493,11 +493,11 @@ export default function GermanSuperannuationPage() {
           antwortet.
         </p>
 
-        <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0', margin: '22px 0 20px' }}>
+        <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #DCE0DE', margin: '22px 0 20px' }}>
           <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
             Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
           </p>
-          <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
+          <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#525A57' }}>
             Von einem registrierten australischen Tax Agent geprüft und freigegeben,
             bevor sie beim ATO eingereicht wird.
           </p>
@@ -508,7 +508,7 @@ export default function GermanSuperannuationPage() {
           style={{ minHeight: '54px', width: '100%', maxWidth: '360px', fontSize: '15px', borderRadius: '100px' }}>
           Schreib uns auf WhatsApp
         </WaLink>
-        <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '10px' }}>
+        <p style={{ fontSize: '13px', color: '#525A57', marginTop: '10px' }}>
           Antwort in etwa einer Stunde.
         </p>
       </Answer>
@@ -524,7 +524,7 @@ export default function GermanSuperannuationPage() {
         </div>
       </section>
 
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[900px] mx-auto">
           <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
@@ -541,7 +541,7 @@ export default function GermanSuperannuationPage() {
             ].map(g => (
               <Link key={g.href} href={g.href}
                 className="block rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '16px', fontSize: '14px', lineHeight: 1.5, color: '#080F0D', minHeight: '44px' }}>
+                style={{ padding: '16px', fontSize: '14px', lineHeight: 1.5, color: '#0F1A16', minHeight: '44px' }}>
                 {g.label}
               </Link>
             ))}

@@ -60,7 +60,7 @@ function Field({ label, required, children, error, hint }: { label: string; requ
   return (
     <div style={{marginBottom:'14px'}}>
       <label id={labelId} htmlFor={isControl ? controlId : undefined}
-        style={{display:'block',fontSize:'13px',fontWeight:600,color:'var(--f-ink, #1A2822)',marginBottom:'6px'}}>
+        style={{display:'block',fontSize:'13px',fontWeight:600,color:'var(--f-ink, #0F1A16)',marginBottom:'6px'}}>
         {label}
       </label>
       {hint && <div id={hintId} style={{fontSize:'12px',color:'var(--f-muted, #5A7B70)',marginBottom:'6px',lineHeight:1.4}}>{hint}</div>}
@@ -128,7 +128,7 @@ function FileUpload({
           <div className="file-upload-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path d="M12 16V8M8 12l4-4 4 4" style={{ stroke: 'var(--f-brand, #0B5240)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <rect x="3" y="3" width="18" height="18" rx="4" style={{ stroke: 'var(--f-line, #C8EAE0)' }} strokeWidth="1.2"/>
+              <rect x="3" y="3" width="18" height="18" rx="4" style={{ stroke: 'var(--f-line, #DCE0DE)' }} strokeWidth="1.2"/>
             </svg>
           </div>
           <span className="file-upload-label">{label}</span>
@@ -204,7 +204,7 @@ function MultiFileUpload({
             <div className="file-upload-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <path d="M12 16V8M8 12l4-4 4 4" style={{ stroke: 'var(--f-brand, #0B5240)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <rect x="3" y="3" width="18" height="18" rx="4" style={{ stroke: 'var(--f-line, #C8EAE0)' }} strokeWidth="1.2"/>
+                <rect x="3" y="3" width="18" height="18" rx="4" style={{ stroke: 'var(--f-line, #DCE0DE)' }} strokeWidth="1.2"/>
               </svg>
             </div>
             <span className="file-upload-label">{label}</span>
@@ -726,7 +726,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
             </Field>
 
             <Field label="" required error={errors.hasExpenses}>
-              <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'var(--f-ink, #1A2822)',marginBottom:'6px'}}>
+              <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'var(--f-ink, #0F1A16)',marginBottom:'6px'}}>
                 {own ? (
                   <>{T('expensesBefore')}<a href={brand.url(lang, 'expenses')} target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>{T('expensesLink')}</a>{T('expensesAfter')}</>
                 ) : lang === 'de' ? (
@@ -897,7 +897,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
 const styles = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .hidden { display: none !important; }
-  .form-page-wrap { min-height: 100dvh; background: var(--f-bg, #F5F9F7); display: flex; flex-direction: column; align-items: center; padding: 28px 16px 60px; }
+  .form-page-wrap { min-height: 100dvh; background: var(--f-bg, #F2FAF7); display: flex; flex-direction: column; align-items: center; padding: 28px 16px 60px; }
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(var(--f-brand-rgb, 11,82,64),0.07); overflow: hidden; }
   /* Narrower gutters than the form body: the heading needs the width more
      than the header needs the margin. */
@@ -915,21 +915,21 @@ const styles = `
      in every language. white-space: pre honours that break and blocks any
      other, and the per-language clamp keeps the longest line on screen down to
      a 320px phone - German runs ~12% longer than English, Japanese shorter. */
-  .form-title { font-weight: 800; color: var(--f-ink, #080F0D); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 4px; white-space: nowrap; }
+  .form-title { font-weight: 800; color: var(--f-ink, #0F1A16); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 4px; white-space: nowrap; }
   .form-title-en { font-size: clamp(14px, 5.0vw, 22px); }
   .form-title-de { font-size: clamp(12px, 4.2vw, 20px); }
   .form-title-ja { font-size: clamp(15px, 5.2vw, 24px); letter-spacing: 0; }
   .form-title-zh { font-size: clamp(15px, 5.2vw, 24px); letter-spacing: 0; }
   .form-title-vi { font-size: clamp(13px, 4.4vw, 21px); }
-  .form-title-sub { font-size: 14px; font-weight: 500; color: var(--f-muted, #587066); line-height: 1.4; margin-bottom: 10px; }
+  .form-title-sub { font-size: 14px; font-weight: 500; color: var(--f-muted, #525A57); line-height: 1.4; margin-bottom: 10px; }
   .form-title-short { font-size: 26px; letter-spacing: -0.025em; line-height: 1.15; white-space: normal; }
-  .form-intro { font-size: 13px; color: var(--f-muted, #587066); line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }
+  .form-intro { font-size: 13px; color: var(--f-muted, #525A57); line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }
   form { padding: 14px 24px 32px; }
   .field-group { margin-bottom: 14px; }
-  .field-label { display: block; font-size: 13px; font-weight: 600; color: var(--f-ink, #1A2822); margin-bottom: 6px; }
+  .field-label { display: block; font-size: 13px; font-weight: 600; color: var(--f-ink, #0F1A16); margin-bottom: 6px; }
   .req-dot { color: var(--f-brand, #0B5240); margin-left: 3px; }
   .field-error { display: block; font-size: 14px; line-height: 1.5; color: #9A3412; margin-top: 4px; }
-  .inp { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: var(--f-ink, #080F0D); background: var(--f-bg, #F5F9F7); border: 1.5px solid var(--f-line, #CDE3DB); border-radius: 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
+  .inp { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: var(--f-ink, #0F1A16); background: var(--f-bg, #F2FAF7); border: 1.5px solid var(--f-line, #DCE0DE); border-radius: 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
   input[type="date"].inp { min-height: 47px; line-height: 1.4; }
   .inp:focus { border-color: var(--f-brand, #0B5240); background: #fff; }
   .inp-err { border-color: #FCA5A5 !important; background: #FFF5F5 !important; }
@@ -940,35 +940,35 @@ const styles = `
   }
   .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
   .radio-group-col { flex-direction: column; }
-  .radio-card { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid var(--f-line, #CDE3DB); font-size: 13px; font-weight: 500; color: var(--f-muted, #587066); cursor: pointer; transition: all .15s; background: var(--f-bg, #F5F9F7); width: 100%; }
-  .radio-card-active { background: var(--f-tint, #EAF6F1); border-color: var(--f-brand, #0B5240); color: var(--f-brand, #0B5240); font-weight: 600; }
+  .radio-card { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid var(--f-line, #DCE0DE); font-size: 13px; font-weight: 500; color: var(--f-muted, #525A57); cursor: pointer; transition: all .15s; background: var(--f-bg, #F2FAF7); width: 100%; }
+  .radio-card-active { background: var(--f-tint, #F2FAF7); border-color: var(--f-brand, #0B5240); color: var(--f-brand, #0B5240); font-weight: 600; }
   .radio-card-no { }
-  .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--f-line, #C8EAE0); flex-shrink: 0; transition: all .15s; background: #fff; }
+  .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--f-line, #DCE0DE); flex-shrink: 0; transition: all .15s; background: #fff; }
   .radio-dot-active { border-color: var(--f-brand, #0B5240); background: var(--f-brand, #0B5240); }
-  .declaration-box { background: var(--f-bg, #F5F9F7); border: 1.5px solid var(--f-line, #CDE3DB); border-radius: 14px; padding: 13px 14px; }
+  .declaration-box { background: var(--f-bg, #F2FAF7); border: 1.5px solid var(--f-line, #DCE0DE); border-radius: 14px; padding: 13px 14px; }
   .decl-row { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-  .decl-text { font-size: 12px; color: var(--f-ink, #1A2822); line-height: 1.5; }
+  .decl-text { font-size: 12px; color: var(--f-ink, #0F1A16); line-height: 1.5; }
   .decl-link { color: var(--f-brand, #0B5240); text-decoration: underline; }
   .err-msg { display: block; font-size: 14px; line-height: 1.5; color: #9A3412; margin-top: 4px; }
-  .section-chip { display: inline-flex; align-items: center; background: var(--f-tint, #EAF6F1); color: var(--f-brand, #0B5240); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 16px; }
-  .file-zone { border: 1.5px dashed var(--f-line, #C8EAE0); border-radius: 14px; background: var(--f-bg, #F5F9F7); overflow: hidden; cursor: pointer; transition: border-color .15s; }
+  .section-chip { display: inline-flex; align-items: center; background: var(--f-tint, #F2FAF7); color: var(--f-brand, #0B5240); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 16px; }
+  .file-zone { border: 1.5px dashed var(--f-line, #DCE0DE); border-radius: 14px; background: var(--f-bg, #F2FAF7); overflow: hidden; cursor: pointer; transition: border-color .15s; }
   .file-zone:hover { border-color: var(--f-brand, #0B5240); }
   .file-empty { padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .file-upload-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--f-tint, #EAF6F1); display: flex; align-items: center; justify-content: center; margin-bottom: 2px; }
-  .file-upload-label { font-size: 13px; font-weight: 600; color: var(--f-ink, #1A2822); }
-  .file-upload-sub { font-size: 11px; color: var(--f-muted, #4C6459); }
+  .file-upload-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--f-tint, #F2FAF7); display: flex; align-items: center; justify-content: center; margin-bottom: 2px; }
+  .file-upload-label { font-size: 13px; font-weight: 600; color: var(--f-ink, #0F1A16); }
+  .file-upload-sub { font-size: 11px; color: var(--f-muted, #525A57); }
   .file-selected { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
   .file-img-preview { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
-  .file-icon-box { width: 48px; height: 48px; border-radius: 8px; background: var(--f-tint, #EAF6F1); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .file-icon-box { width: 48px; height: 48px; border-radius: 8px; background: var(--f-tint, #F2FAF7); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
   .file-meta { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .file-name { font-size: 12.5px; font-weight: 600; color: var(--f-ink, #080F0D); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .file-size { font-size: 11px; color: var(--f-muted, #4C6459); }
+  .file-name { font-size: 12.5px; font-weight: 600; color: var(--f-ink, #0F1A16); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file-size { font-size: 11px; color: var(--f-muted, #525A57); }
   /* 30px was the only way to undo a wrong document, and a missed tap means the
      wrong passport photo is what gets submitted. 44px is the minimum. */
   .file-remove { width: 44px; height: 44px; border-radius: 10px; background: #FEE2E2; color: #ef4444; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; flex-shrink: 0; }
-  .check-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--f-line, #CDE3DB); background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all .15s; }
+  .check-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--f-line, #DCE0DE); background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all .15s; }
   .check-box.checked { background: var(--f-brand, #0B5240); border-color: var(--f-brand, #0B5240); }
-  .check-label { font-size: 13px; color: var(--f-ink, #1A2822); font-weight: 500; line-height: 1.5; }
+  .check-label { font-size: 13px; color: var(--f-ink, #0F1A16); font-weight: 500; line-height: 1.5; }
   .check-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; }
   .errors-banner { background: #FFF5F5; border: 1px solid #FCA5A5; border-radius: 12px; padding: 12px 16px; font-size: 13px; color: #9A3412; font-weight: 500; margin-top: 16px; }
   .submit-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: var(--f-brand, #0B5240); color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; margin-top: 24px; transition: opacity .15s, transform .1s; }
@@ -977,26 +977,26 @@ const styles = `
   .btn-loading { display: flex; align-items: center; gap: 8px; }
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .form-footer-note { text-align: center; font-size: 11px; color: var(--f-muted, #4C6459); margin-top: 14px; line-height: 1.6; }
+  .form-footer-note { text-align: center; font-size: 11px; color: var(--f-muted, #525A57); margin-top: 14px; line-height: 1.6; }
   /* Same quiet treatment as the footer note, but sitting under the stepper.
      Deliberately small: it reassures, it does not compete with the title. */
-  .form-time-note { text-align: center; font-size: 11px; color: var(--f-muted, #4C6459); margin: 10px 0 0; line-height: 1.6; }
-  .form-success-wrap { min-height: 100dvh; background: var(--f-bg, #F5F9F7); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
-  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 30% 25%, var(--f-tint, #EAF6F1), #D6EDE4); box-shadow: inset 0 0 0 2px rgba(var(--f-brand-rgb, 11,82,64),0.14); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-  /* The site's heading face (Fraunces) in brand forest, not DM Sans black - so
+  .form-time-note { text-align: center; font-size: 11px; color: var(--f-muted, #525A57); margin: 10px 0 0; line-height: 1.6; }
+  .form-success-wrap { min-height: 100dvh; background: var(--f-bg, #F2FAF7); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
+  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 30% 25%, var(--f-tint, #F2FAF7), #D6EDE4); box-shadow: inset 0 0 0 2px rgba(var(--f-brand-rgb, 11,82,64),0.14); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  /* The site's heading face (Be Vietnam Pro) in brand forest, not DM Sans black - so
      the last screen reads in the same voice as the rest of the site. */
-  .success-title { font-family: var(--font-serif), 'Fraunces', Georgia, serif; font-size: 27px; font-weight: 700; color: var(--f-brand, #0B5240); letter-spacing: -0.01em; margin: 0 0 10px; }
-  .success-body { font-size: 14px; color: var(--f-muted, #587066); line-height: 1.65; max-width: 30ch; margin: 0 0 18px; }
+  .success-title { font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif; font-size: 27px; font-weight: 700; color: var(--f-brand, #0B5240); letter-spacing: -0.01em; margin: 0 0 10px; }
+  .success-body { font-size: 14px; color: var(--f-muted, #525A57); line-height: 1.65; max-width: 30ch; margin: 0 0 18px; }
   /* "What happens next" - three steps with a connecting line behind them. */
   .success-steps { position: relative; width: 100%; max-width: 300px; display: flex; justify-content: space-between; margin: 2px 0 18px; }
   .success-steps::before { content: ''; position: absolute; top: 15px; left: 15%; right: 15%; height: 2px; background: #D6E7DF; z-index: 0; }
   .success-step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 33%; }
   .success-step-dot { width: 32px; height: 32px; border-radius: 50%; background: #fff; border: 2px solid var(--f-brand, #0B5240); color: var(--f-brand, #0B5240); display: flex; align-items: center; justify-content: center; }
   .success-step-dot.is-done { background: var(--f-brand, #0B5240); color: #fff; }
-  .success-step-label { font-size: 10.5px; font-weight: 600; color: var(--f-muted, #587066); line-height: 1.3; }
+  .success-step-label { font-size: 10.5px; font-weight: 600; color: var(--f-muted, #525A57); line-height: 1.3; }
   .success-eta { display: inline-flex; align-items: center; gap: 6px; background: #FFF8EC; border: 1px solid #F0D9A8; color: #7A5A16; font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 100px; margin-bottom: 22px; }
   .success-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--f-brand, #0B5240); color: #fff; font-size: 14px; font-weight: 600; padding: 14px 26px; border-radius: 100px; text-decoration: none; font-family: inherit; box-shadow: 0 2px 8px rgba(var(--f-brand-rgb, 11,82,64),0.28); }
-  .success-divider { width: 40px; height: 1px; background: var(--f-line, #CDE3DB); margin: 26px auto 18px; }
+  .success-divider { width: 40px; height: 1px; background: var(--f-line, #DCE0DE); margin: 26px auto 18px; }
   .success-socials { display: flex; gap: 10px; justify-content: center; }
-  .success-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 100px; border: 1.5px solid var(--f-line, #CDE3DB); font-size: 13px; font-weight: 600; color: var(--f-brand, #0B5240); text-decoration: none; background: #fff; font-family: inherit; }
+  .success-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 100px; border: 1.5px solid var(--f-line, #DCE0DE); font-size: 13px; font-weight: 600; color: var(--f-brand, #0B5240); text-decoration: none; background: #fff; font-family: inherit; }
 `

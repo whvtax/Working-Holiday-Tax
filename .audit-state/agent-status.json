@@ -1,0 +1,98 @@
+{
+ "updated": "2026-10-27T13:19:52.703072+00:00",
+ "phase": "AGENTS_RUNNING",
+ "subagents": [
+  {
+   "report": "A12-security.md",
+   "roles": [
+    "A12"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A17-A19-privacy-infra.md",
+   "roles": [
+    "A17",
+    "A19"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A01-tax.md",
+   "roles": [
+    "A01"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A02-zh.md",
+   "roles": [
+    "A02"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A03-vi.md",
+   "roles": [
+    "A03"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A16-A09-code-arch.md",
+   "roles": [
+    "A16",
+    "A09"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A18-A04-A05-qa-ux.md",
+   "roles": [
+    "A18",
+    "A04",
+    "A05"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A13-A14-seo-ai.md",
+   "roles": [
+    "A13",
+    "A14"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A20-A15-a11y-perf.md",
+   "roles": [
+    "A20",
+    "A15"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A06-A07-A08-content-marketing.md",
+   "roles": [
+    "A06",
+    "A07",
+    "A08"
+   ],
+   "status": "RUNNING"
+  },
+  {
+   "report": "A10-devil.md",
+   "roles": [
+    "A10"
+   ],
+   "status": "PENDING (after the ten above)"
+  },
+  {
+   "report": "decisions.json",
+   "roles": [
+    "A11"
+   ],
+   "status": "main session"
+  }
+ ]
+}

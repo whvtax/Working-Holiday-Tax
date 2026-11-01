@@ -65,8 +65,8 @@ export default GoogleReviewsBadge
 const styles = `
   .gbadge { display: inline-flex; flex-direction: column; align-items: center; gap: 3px; }
   .gbadge-top { display: flex; align-items: center; gap: 6px; }
-  .gbadge-label { font-size: 11.5px; font-weight: 600; color: #1A2822; }
+  .gbadge-label { font-size: 11.5px; font-weight: 600; color: #0F1A16; }
   .gbadge-bottom { display: flex; align-items: center; gap: 7px; }
-  .gbadge-score { font-size: 18px; font-weight: 700; color: #1A2822; letter-spacing: -0.01em; line-height: 1; }
+  .gbadge-score { font-size: 18px; font-weight: 700; color: #0F1A16; letter-spacing: -0.01em; line-height: 1; }
   .gbadge-stars { display: inline-flex; gap: 1px; }
 `

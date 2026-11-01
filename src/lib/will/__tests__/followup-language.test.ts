@@ -114,3 +114,19 @@ it('the 7d door-closer is untouched for a lead with the bank details', async () 
   await processDueJobs();
   expect(deliverOut.mock.calls[0][4]).toEqual(expect.objectContaining({ name: 'fu_pre_7d' }));
 });
+
+describe('the "have you paid?" nudge in German and Japanese (1 Nov)', () => {
+  it('a German lead gets the German body, under the _de name when Meta approved it', async () => {
+    store.listTemplates.mockResolvedValue([
+      { key: 'fu_pre_24h', title: 'Pre 24h', body: APPROVED.followups_pre_payment.h24, active: true },
+      { key: 'fu_price_sent', title: 'Price sent', body: APPROVED.followups_pre_payment.priceSent, active: true },
+    ]);
+    store.getCustomerById.mockResolvedValue(customer({ state: 'PRICE_SENT', lang: 'de' }));
+    store.dueJobs.mockResolvedValue([job('fu_pre_24h')]);
+    templateApprovedFor.mockResolvedValue(true);
+    await processDueJobs();
+    const call = deliverOut.mock.calls[0];
+    expect(call[1]).toMatch(/^Hi Jan, hat die Überweisung bei dir geklappt\?/);
+    expect(call[4]).toEqual(expect.objectContaining({ name: 'fu_price_sent_de', lang: 'de' }));
+  });
+});

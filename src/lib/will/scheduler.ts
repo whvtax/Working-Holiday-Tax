@@ -1882,7 +1882,7 @@ async function doProcess(): Promise<TickResult> {
         const outs = (await store.listMessages(customer.id)).filter((m) => m.direction === 'OUT' && m.status === 'SENT');
         const hasBank = customer.state === 'PRICE_SENT' || outs.some((m) => /\b0?62\s?692\b|\b81049952\b/.test(m.body ?? ''));
         if (hasBank) {
-          const alreadyNudged = outs.some((m) => m.meta?.waTemplate?.name === 'fu_price_sent');
+          const alreadyNudged = outs.some((m) => /^fu_price_sent(?:_(?:de|ja))?$/.test(m.meta?.waTemplate?.name ?? ''));
           if (alreadyNudged) {
             await store.audit('scheduler', 'follow_up_skipped_price_sent_already_nudged', { customerId: customer.id, templateKey }).catch(() => {});
             await store.setJobStatus(job.id, 'DONE');
@@ -1944,6 +1944,18 @@ async function doProcess(): Promise<TickResult> {
       // same text with {{1}} filled in, so what we log and show in the CRM is
       // exactly what the customer receives.
       const firstName = greetingName(customer);
+      // 1 Nov: the "have you paid?" nudge exists in German and Japanese too.
+      // The body is the customer's language either way; the Meta name is the
+      // _de/_ja one when Meta has approved it, otherwise the same name in the
+      // customer's language (how the other follow-ups work).
+      let sendName = template.key;
+      if (template.key === 'fu_price_sent') {
+        const tl = metaTemplateLang(customer.lang);
+        if (tl === 'de' || tl === 'ja') {
+          body = tl === 'de' ? APPROVED.followups_pre_payment.priceSentDe : APPROVED.followups_pre_payment.priceSentJa;
+          if (typeof templateApprovedFor === 'function' && (await templateApprovedFor(`fu_price_sent_${tl}`, tl).catch(() => null)) === true) sendName = `fu_price_sent_${tl}`;
+        }
+      }
       body = body.replace(/\{\{1\}\}/g, firstName);
       // 11 Oct (full audit, decision 9): their language or nothing. A nudge
       // in English to a German or Japanese lead converted zero of 56; a step
@@ -1952,7 +1964,7 @@ async function doProcess(): Promise<TickResult> {
       // this, fu_pre_3d with no Meta template at all went out as free text,
       // failed outside the window, retried three days in a row and opened an
       // URGENT task each time.
-      const approvedHere = typeof templateApprovedFor === 'function' ? await templateApprovedFor(customer.brand === 'svt' ? svtTemplateName(template.key) : template.key, customer.lang).catch(() => null) : null;
+      const approvedHere = typeof templateApprovedFor === 'function' ? await templateApprovedFor(customer.brand === 'svt' ? svtTemplateName(template.key) : sendName, customer.lang).catch(() => null) : null;
       // 30 Oct: "unknown" is not "approved". A language with no variant at all
       // (French, Italian, Spanish, Portuguese, Chinese, Vietnamese) only ever
       // had the English template, so when Meta cannot confirm theirs, nothing
@@ -1975,7 +1987,7 @@ async function doProcess(): Promise<TickResult> {
         await scheduleFollowUp(customer.id, flow, seq + 1);
         continue;
       }
-      const waTemplate = { name: template.key, params: [firstName], lang: customer.lang };
+      const waTemplate = { name: sendName, params: [firstName], lang: customer.lang };
 
       // REL-02: mark the job DONE BEFORE sending, so an at-least-once replay
       // (crash between send and status-write) cannot re-deliver the same nudge.

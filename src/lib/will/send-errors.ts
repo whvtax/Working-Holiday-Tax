@@ -52,6 +52,7 @@ const VIOLATION_TEXT: Record<string, string> = {
   CUSTOMER_OPTED_OUT: 'this customer has opted out of messages',
   LEGACY_CHAT_AI_DISABLED: 'this is a legacy chat, Will does not write here',
   EM_DASH_FORBIDDEN: 'the text contains a dash; replace it with a comma or a full stop',
+  CARD_DETAILS_INVITED: 'the text asks for or agrees to a photo or details of a payment card; never do that, tell them not to send card details and offer a bank transfer or the payment link',
   PROTECTED_AGENT_TITLE: 'the text uses a protected title (Steuerberater, 税理士); use the approved agent wording instead',
   SALES_CONTENT_AFTER_PAYMENT: 'the text sells the service to someone who has already paid; remove the price or sign-up lines',
   PLACEHOLDER_LEFTOVER: 'the text still has an unfilled placeholder such as {{1}} or {{AMOUNT}}',

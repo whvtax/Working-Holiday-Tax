@@ -61,6 +61,18 @@ Two brands, one codebase: Working Holiday Tax (backpackers, live) and Student Vi
   highlighter only, pale lime #F5FAE3, Be Vietnam Pro + IBM Plex Mono, receipt-with-cap
   logo. Reference: the "Student Visa Tax: final design" canvas.
 
+### Which design skill when
+
+- Direction and anti-generic check: frontend-design, then ui-ux-pro-max (palette, type, patterns).
+- Visual hierarchy, spacing, colour: refactoring-ui. Type: web-typography.
+- Usability and accessibility audit: ux-heuristics, web-design-guidelines.
+- Motion: emil-design-eng for decisions, animate for recipes, animation-performance and
+  review-animations before finishing. Reduced-motion guard always.
+- Apple-style restraint review: apple-design, apple-hig-designer, steve-jobs-design-review
+  (ideas only; never SF Pro or iOS patterns on the web).
+- Performance: vercel-react-best-practices, next-bundle-optimizer. Browser check: webapp-testing.
+- One primary skill per task. If two disagree, the brand rules in this file win.
+
 ## Completion policy
 
 Report work in four buckets: implemented, tested successfully, not tested, known

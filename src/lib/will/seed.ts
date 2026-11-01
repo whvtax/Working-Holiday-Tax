@@ -91,6 +91,8 @@ export function seedTemplates(): TemplateRow[] {
     t('fu_pre_3d', 'Follow-ups', 'Pre-payment · 3d', APPROVED.followups_pre_payment.d3, true),
     t('fu_pre_7d', 'Follow-ups', 'Pre-payment · 7d (final)', APPROVED.followups_pre_payment.d7, true),
     t('fu_price_sent', 'Follow-ups', 'Pre-payment · they already have the bank details', APPROVED.followups_pre_payment.priceSent, true),
+    t('fu_price_sent_de', 'Follow-ups', 'Pre-payment · they already have the bank details (German)', APPROVED.followups_pre_payment.priceSentDe, true),
+    t('fu_price_sent_ja', 'Follow-ups', 'Pre-payment · they already have the bank details (Japanese)', APPROVED.followups_pre_payment.priceSentJa, true),
     t('fu_form_6h', 'Follow-ups', 'Form · 6h', APPROVED.followups_form.h6, true),
     t('fu_form_3d', 'Follow-ups', 'Form · 3d', APPROVED.followups_form.d3, true),
     t('fu_form_7d', 'Follow-ups', 'Form · 7d', APPROVED.followups_form.d7, true),

@@ -35,8 +35,15 @@ describe('the shared document ships real webfonts', () => {
     expect(layout).not.toContain('__FontOpts');
   });
 
-  it('still declares all three families', () => {
-    for (const family of ['Fraunces', 'DM_Sans', 'Inter']) {
+  it('self-hosts Be Vietnam Pro and IBM Plex Mono from the WHT folder', () => {
+    expect(layout).toContain('next/font/local');
+    expect(layout).toContain('be-vietnam-pro-latin-700');
+    expect(layout).toContain('ibm-plex-mono-latin-500');
+    expect(layout).not.toContain('svt-assets');
+  });
+
+  it('still declares the brand families', () => {
+    for (const family of ['Noto_Sans_JP', 'Inter']) {
       expect(layout).toContain(family);
     }
   });

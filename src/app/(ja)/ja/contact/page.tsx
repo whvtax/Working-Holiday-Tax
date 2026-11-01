@@ -159,7 +159,7 @@ const faqLd = {
     })),
 }
 
-const answerStyle = { fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', fontWeight: 300 } as const
+const answerStyle = { fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', fontWeight: 300 } as const
 
 export default function JapaneseContactPage() {
   return (
@@ -173,9 +173,9 @@ export default function JapaneseContactPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-5 pb-9 lg:pt-12 lg:pb-12">
 
           <nav aria-label="パンくずリスト" className="mb-5 lg:mb-6">
-            <ol className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459' }}>
+            <ol className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57' }}>
               <li><Link href="/ja" className="contact-breadcrumb-link">ホーム</Link></li>
-              <li aria-hidden="true" style={{ color: '#CDE3DB' }}>/</li>
+              <li aria-hidden="true" style={{ color: '#DCE0DE' }}>/</li>
               <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>お問い合わせ</li>
             </ol>
           </nav>
@@ -194,7 +194,7 @@ export default function JapaneseContactPage() {
             </h1>
 
             <p className="contact-lead mx-auto"
-              style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.8, color: '#2A3C34', maxWidth: '34em', marginBottom: '22px' }}>
+              style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.8, color: '#0F1A16', maxWidth: '34em', marginBottom: '22px' }}>
               メッセージを読んで返信するのは担当者です。営業時間内なら、だいたい1時間以内にお返事します。
             </p>
 
@@ -204,7 +204,7 @@ export default function JapaneseContactPage() {
               WhatsAppを開く →
             </WaLink>
 
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               月曜から金曜、9時から18時
             </p>
           </div>
@@ -212,7 +212,7 @@ export default function JapaneseContactPage() {
       </section>
 
       {/* ── 送る前に確認されること ──────────────────────────────────────── */}
-      <section className="py-11 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+      <section className="py-11 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px] mx-auto">
             <span className="section-label">送る前に</span>
@@ -222,7 +222,7 @@ export default function JapaneseContactPage() {
 
             <div className="flex flex-col" style={{ gap: '12px' }}>
               {blockers.map((b, i) => (
-                <div key={i} className="rounded-2xl" style={{ padding: '18px', background: '#fff', border: '1.5px solid #E2EFE9' }}>
+                <div key={i} className="rounded-2xl" style={{ padding: '18px', background: '#fff', border: '1.5px solid #DCE0DE' }}>
                   <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '8px' }}>
                     {b.q}
                   </h3>
@@ -258,7 +258,7 @@ export default function JapaneseContactPage() {
 
             <address style={{ fontStyle: 'normal' }}>
               <a href={`mailto:${EMAIL}?subject=%E3%82%A6%E3%82%A7%E3%83%96%E3%82%B5%E3%82%A4%E3%83%88%E3%81%8B%E3%82%89%E3%81%AE%E3%81%94%E8%B3%AA%E5%95%8F`} className="contact-option-card">
-                <div className="contact-option-icon" style={{ background: '#fff', border: '1px solid #E2EFE9' }}>
+                <div className="contact-option-icon" style={{ background: '#fff', border: '1px solid #DCE0DE' }}>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <rect x="2" y="5" width="20" height="14" rx="2" stroke="#0B5240" strokeWidth="1.8" />
                     <path d="M2.5 6.5L12 13.5l9.5-7" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -295,10 +295,10 @@ export default function JapaneseContactPage() {
 
             <div className="contact-hours-block">
               <p className="contact-hours-title">
-                <span className="w-1.5 h-1.5 rounded-full inline-block mr-1.5" style={{ background: '#2FA880' }} aria-hidden="true" />
+                <span className="w-1.5 h-1.5 rounded-full inline-block mr-1.5" style={{ background: '#0B5240' }} aria-hidden="true" />
                 営業時間
               </p>
-              <p className="contact-hours-detail" style={{ fontSize: '14px', color: '#4C6459', lineHeight: 1.8 }}>
+              <p className="contact-hours-detail" style={{ fontSize: '14px', color: '#525A57', lineHeight: 1.8 }}>
                 月曜から金曜、9時から18時
               </p>
             </div>
@@ -307,7 +307,7 @@ export default function JapaneseContactPage() {
       </section>
 
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '48px', paddingBottom: '48px' }}>
+      <section style={{ background: '#F2FAF7', paddingTop: '48px', paddingBottom: '48px' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px] mx-auto">
           <div className="text-center mb-7">

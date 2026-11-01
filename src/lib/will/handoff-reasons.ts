@@ -124,6 +124,15 @@ const RULES: Rule[] = [
     prevent: 'Reply to them yourself, and switch Will back on (System tab) when the pause is over.',
   },
   {
+    // 1 Nov (Will mission): the silence net. An unpaid or unclassified burst
+    // that ended with no reply and no task becomes this one visible task.
+    match: /Will did not reply to this message and nothing else/i,
+    kind: 'policy',
+    label: 'Will had no reply for this message',
+    because: 'Will chose not to reply and nothing else answered it, so the silence net opened this task',
+    prevent: 'Reply yourself, then add the answer to the Library so Will sends it next time.',
+  },
+  {
     // 11 Oct (full audit, decision 1): a paying customer is never left in
     // silence. A "wait" decision on them becomes the holding line plus this.
     match: /\(paid\) wrote in (and Will had nothing to say|while Will is paused)/i,

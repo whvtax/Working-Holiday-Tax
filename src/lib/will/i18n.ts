@@ -590,18 +590,18 @@ export function medicareTemplateKey(lang?: string | null): string {
  *  language. English lives under the Library key `estimate_invoice` (the key
  *  Jo already knows), the others under estimate_invoice_<lang>. */
 export const ESTIMATE_INVOICE_MSG: Record<'en' | 'de' | 'ja', string> = {
-  en: `Your estimated tax refund is {{AMOUNT}}.\n\nHere is your invoice:\n{{INVOICE_LINK}}\n\nI'll send it for final review and then for your signature.`,
-  de: 'Deine geschätzte Steuerrückerstattung beträgt {{AMOUNT}}.\n\nHier ist deine Rechnung:\n{{INVOICE_LINK}}\n\nIch schicke sie zur finalen Prüfung und dann zur Unterschrift.',
-  ja: 'あなたの推定還付金額は{{AMOUNT}}です。\n\nこちらが請求書です:\n{{INVOICE_LINK}}\n\n最終確認後、署名のためにお送りします。',
+  en: `Your estimated tax refund is {{AMOUNT}}.\n\nHere is your invoice:\n{{INVOICE_LINK}}\n\nI'll send it for final review and then for your signature.\n\nPlease don't pay the invoice, as you've already paid by bank transfer`,
+  de: 'Deine geschätzte Steuerrückerstattung beträgt {{AMOUNT}}.\n\nHier ist deine Rechnung:\n{{INVOICE_LINK}}\n\nIch schicke sie zur finalen Prüfung und dann zur Unterschrift.\n\nBitte zahle die Rechnung nicht, da du bereits per Banküberweisung bezahlt hast',
+  ja: 'あなたの推定還付金額は{{AMOUNT}}です。\n\nこちらが請求書です:\n{{INVOICE_LINK}}\n\n最終確認後、署名のためにお送りします。\n\nすでに銀行振込でお支払い済みのため、請求書のお支払いは不要です',
 };
 
 /** Jo, 1 Oct: the estimate when the customer OWES the ATO. Same shape, the
  *  amount is "payable", and no refund is ever mentioned. Library key
  *  estimate_payable / estimate_payable_<lang>, same Meta template names. */
 export const ESTIMATE_PAYABLE_MSG: Record<'en' | 'de' | 'ja', string> = {
-  en: `Your return is ready. The estimated amount payable to the ATO is {{AMOUNT}}.\n\nHere is your invoice:\n{{INVOICE_LINK}}\n\nI'll send it for final review and then for your signature. The team will walk you through the ATO payment once it's lodged.`,
-  de: 'Deine Steuererklärung ist fertig. Der geschätzte an das ATO zu zahlende Betrag ist {{AMOUNT}}.\n\nHier ist deine Rechnung:\n{{INVOICE_LINK}}\n\nIch schicke sie zur finalen Prüfung und dann zur Unterschrift. Das Team erklärt dir die Zahlung an das ATO, sobald sie eingereicht ist.',
-  ja: '確定申告書の準備ができました。ATOへの推定納付額は{{AMOUNT}}です。\n\nこちらが請求書です:\n{{INVOICE_LINK}}\n\n最終確認後、署名のためにお送りします。提出後、ATOへの納付方法はチームがご案内します。',
+  en: `Your return is ready. The estimated amount payable to the ATO is {{AMOUNT}}.\n\nHere is your invoice:\n{{INVOICE_LINK}}\n\nI'll send it for final review and then for your signature. The team will walk you through the ATO payment once it's lodged.\n\nPlease don't pay the invoice, as you've already paid by bank transfer`,
+  de: 'Deine Steuererklärung ist fertig. Der geschätzte an das ATO zu zahlende Betrag ist {{AMOUNT}}.\n\nHier ist deine Rechnung:\n{{INVOICE_LINK}}\n\nIch schicke sie zur finalen Prüfung und dann zur Unterschrift. Das Team erklärt dir die Zahlung an das ATO, sobald sie eingereicht ist.\n\nBitte zahle die Rechnung nicht, da du bereits per Banküberweisung bezahlt hast',
+  ja: '確定申告書の準備ができました。ATOへの推定納付額は{{AMOUNT}}です。\n\nこちらが請求書です:\n{{INVOICE_LINK}}\n\n最終確認後、署名のためにお送りします。提出後、ATOへの納付方法はチームがご案内します。\n\nすでに銀行振込でお支払い済みのため、請求書のお支払いは不要です',
 };
 export function estimatePayableMessage(lang?: string | null): string {
   const key = (lang && lang in ESTIMATE_PAYABLE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';

@@ -166,7 +166,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             </h1>
 
             <p className="hero-sub mx-auto"
-              style={{ fontSize: '16.5px', lineHeight: 1.8, color: '#2A3C34', maxWidth: '34ch' }}>
+              style={{ fontSize: '16.5px', lineHeight: 1.8, color: '#0F1A16', maxWidth: '34ch' }}>
               収入と源泉徴収額を入力してください。数秒で目安の金額が出ます。
             </p>
           </div>
@@ -182,7 +182,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
               <div>
                 <label htmlFor="ci" className={LABEL} style={LABEL_S}>総収入</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
                   <input
                     id="ci" type="number" placeholder="0" value={income} min={0} max={10000000}
                     inputMode="decimal" enterKeyHint="next"
@@ -196,7 +196,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
               <div>
                 <label htmlFor="cw" className={LABEL} style={LABEL_S}>源泉徴収された税額</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
                   <input
                     id="cw" type="number" placeholder="0" value={withheld} min={0} max={5000000}
                     inputMode="decimal" enterKeyHint="next"
@@ -205,7 +205,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     style={{ ...FIELD, paddingLeft: '60px' }}
                   />
                 </div>
-                <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
+                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
                   インカムステートメント（Income Statement）またはPayment Summaryに記載されています。すべての勤務先を合計してください。
                 </p>
               </div>
@@ -216,17 +216,17 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   <select
                     id="cv" value={visa} onChange={e => setVisa(e.target.value)}
                     className="input-base appearance-none cursor-pointer pr-10"
-                    style={{ ...FIELD, color: visa ? undefined : '#4C6459' }}
+                    style={{ ...FIELD, color: visa ? undefined : '#525A57' }}
                   >
                     <option value="">ステータスを選択</option>
                     <option value="whm">ワーキングホリデーメーカー（417 / 462）</option>
                     <option value="res">オーストラリア税務居住者</option>
                   </select>
                   <svg className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
-                    <path d="M1 1l5 5 5-5" stroke="#4C6459" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M1 1l5 5 5-5" stroke="#525A57" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
+                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
                   ビザがワーキングホリデー（417・462）の方は、ほとんどの場合こちらを選びます。
                 </p>
               </div>
@@ -236,7 +236,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   スーパー残高 <span style={{ opacity: 0.7 }}>（任意）</span>
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
                   <input
                     id="cs" type="number" placeholder="0" value={superBal} min={0} max={5000000}
                     inputMode="decimal" enterKeyHint="done"
@@ -245,12 +245,12 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     style={{ ...FIELD, paddingLeft: '60px' }}
                   />
                 </div>
-                <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px', lineHeight: 1.7 }}>
+                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px', lineHeight: 1.7 }}>
                   417・462ビザを一度でも保持した場合、残高全額に65%のDASP税率が適用されます。
                 </p>
               </div>
 
-              <div className="rounded-xl" style={{ border: '1.5px solid #E2EFE9', background: '#F7FBF9' }}>
+              <div className="rounded-xl" style={{ border: '1.5px solid #DCE0DE', background: '#F7FBF9' }}>
                 <label htmlFor="cabn" className="flex items-start gap-3 cursor-pointer" style={{ padding: '14px 16px', minHeight: '44px' }}>
                   <input
                     id="cabn" type="checkbox" checked={hasAbn}
@@ -261,7 +261,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     <span className="font-semibold text-ink" style={{ fontSize: '15px', display: 'block' }}>
                       ABNでの請求もありました
                     </span>
-                    <span style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.7 }}>
+                    <span style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.7 }}>
                       デリバリー、業務委託など請求書を出した仕事です。
                     </span>
                   </span>
@@ -289,8 +289,8 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   borderRadius: '16px',
                   overflow: 'hidden',
                   outline: 'none',
-                  border: `1.5px solid ${result.owing ? '#FDBA74' : '#C8EAE0'}`,
-                  background: result.owing ? '#FEF3F0' : '#EAF6F1',
+                  border: `1.5px solid ${result.owing ? '#FDBA74' : '#DCE0DE'}`,
+                  background: result.owing ? '#FEF3F0' : '#F2FAF7',
                 }}>
 
                 <div style={{ padding: '22px 20px 18px', textAlign: 'center' }}>
@@ -302,7 +302,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     style={{ fontSize: 'clamp(30px,6vw,42px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: result.owing ? '#9A3412' : '#0B5240' }}>
                     {result.amount}
                   </p>
-                  <p style={{ fontSize: '14px', lineHeight: 1.7, marginTop: '9px', color: '#2A3C34' }}>
+                  <p style={{ fontSize: '14px', lineHeight: 1.7, marginTop: '9px', color: '#0F1A16' }}>
                     {result.sub}
                   </p>
                 </div>
@@ -310,7 +310,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 <div style={{ padding: '0 20px 18px' }}>
                   {/* 「それを詰めるのが確認作業です。」は、直前で挙げた3点に
                       事実を足さない締めの一文だったので落とした。 */}
-                  <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#2A3C34', marginBottom: '14px' }}>
+                  <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#0F1A16', marginBottom: '14px' }}>
                     あくまで目安の数字です。実際の金額は、このページでは決められない3つの点で変わります。どちらの居住区分が当てはまるか、メディケア税の免除が使えるか、そしてあなたの職種で何を控除できるか。
                   </p>
                   <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
@@ -318,7 +318,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     style={{ minHeight: '50px', fontSize: '15px', borderRadius: '100px' }}>
                     この試算をWhatsAppで送る
                   </a>
-                  <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '9px', textAlign: 'center' }}>
+                  <p style={{ fontSize: '13px', color: '#525A57', marginTop: '9px', textAlign: 'center' }}>
                     入力した数字がメッセージに入ります。返信は約1時間以内。
                   </p>
                 </div>
@@ -330,18 +330,18 @@ export function CalculatorClient({ faqs = [] }: Props) {
                       スーパー受取（DASP）
                     </p>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '6px' }}>
-                      <span style={{ color: '#4C6459' }}>残高</span>
+                      <span style={{ color: '#525A57' }}>残高</span>
                       <span style={{ fontWeight: 500 }}>{money(result.sup.gross)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '9px', paddingBottom: '9px', borderBottom: '1px solid rgba(11,82,64,0.1)' }}>
-                      <span style={{ color: '#4C6459' }}>税金 {result.sup.rate}%</span>
+                      <span style={{ color: '#525A57' }}>税金 {result.sup.rate}%</span>
                       <span style={{ fontWeight: 500, color: '#9A3412' }}>-{money(result.sup.tax)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                       <span style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240' }}>受取額</span>
                       <span className="font-black" style={{ fontSize: '19px', letterSpacing: '-0.02em', color: '#0B5240' }}>{money(result.sup.net)}</span>
                     </div>
-                    <p style={{ fontSize: '13px', lineHeight: 1.7, marginTop: '11px', color: '#4C6459' }}>
+                    <p style={{ fontSize: '13px', lineHeight: 1.7, marginTop: '11px', color: '#525A57' }}>
                       スーパーの受け取りは、オーストラリアを出国し、ビザが失効または取り消された後に限られます。
                       <Link href="/ja/superannuation" style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
                         DASP申請の流れはこちら
@@ -361,7 +361,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
               </div>
             )}
 
-            <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '16px', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '13px', color: '#525A57', marginTop: '16px', lineHeight: 1.7 }}>
               この計算ツールが使うのは2025-26年度の税率と、入力された数字だけです。最終的な金額ではありません。
             </p>
           </div>
@@ -369,47 +369,47 @@ export function CalculatorClient({ faqs = [] }: Props) {
       </section>
 
       {/* 反論への回答、概算に即して */}
-      <section className="py-10 lg:py-14" style={{ background: '#fff', borderTop: '1px solid #E2EFE9' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#fff', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px]">
 
             <p className="font-medium uppercase"
-              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
+              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '12px' }}>
               自分でやる場合
             </p>
 
             <h2 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '16px' }}>
-              <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>少ない金額を入力すれば、</span>
+              <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>少ない金額を入力すれば、</span>
               <span style={{ display: 'block' }}>myGovはその金額のまま提出します。</span>
             </h2>
 
-            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#4C6459', maxWidth: '42ch', marginBottom: '20px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#525A57', maxWidth: '42ch', marginBottom: '20px' }}>
               概算の精度は、入力した数字までです。そこに入っていないものが、下の4つです。
             </p>
 
-            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
               {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
                   <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
                     {/* 見出しは1行目だけ。スマホでは行が縦に積まれるため、両方の
                         見出しを8回繰り返すと同じ2語が画面を下っていくだけになる。
                         デスクトップでは列見出し、スマホでは凡例として機能する。 */}
                     {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#525A57', marginBottom: '5px' }}>
                         myGovの場合
                       </p>
                     )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
+                    <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
                     style={{ padding: '13px 16px', background: '#F2FAF7' }}>
                     {i === 0 && (
                       <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
                         当社の場合
                       </p>
                     )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#080F0D', fontWeight: 500, margin: 0, overflowWrap: 'break-word' }}>{row.us}</p>
+                    <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', fontWeight: 500, margin: 0, overflowWrap: 'break-word' }}>{row.us}</p>
                   </div>
                 </div>
               ))}
@@ -423,38 +423,38 @@ export function CalculatorClient({ faqs = [] }: Props) {
       </section>
 
       {/* 確認作業で変わるところ */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px]">
             <h2 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '16px' }}>
               実際の金額が、この数字と変わる理由
             </h2>
-            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', marginBottom: '14px' }}>
               3つあり、どれもこのページには入っていません。1つ目は居住区分です。判断ひとつで1年全体の税率が変わることがあります。ご本人の状況によって決まる判断であり、他のどの要素よりも金額への影響が大きい部分です。
             </p>
             {/* 1段落に2つ目と3つ目が同居して5文の塊になっていた。メディケア税が
                 終わり控除が始まる転換点で切っている。 */}
-            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', marginBottom: '14px' }}>
               2つ目はメディケア税です。課税所得の2%が自動的に差し引かれますが、417・462ビザの多くはそもそも支払う義務がありません。外すにはほとんど誰も申請しない証明書が必要です。
             </p>
-            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#2A3C34', marginBottom: '14px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', marginBottom: '14px' }}>
               3つ目は控除で、myGovではただの空欄です。ファーム、カフェ、ホスピタリティで、申告できる項目はそれぞれ違います。
             </p>
             <div className="flex flex-wrap gap-3" style={{ marginTop: '18px' }}>
               <Link href="/ja/medicare"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
+                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
                 メディケア税の免除について
               </Link>
               <Link href="/ja/superannuation"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
+                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
                 帰国後のスーパー受取
               </Link>
               <Link href="/ja/expenses"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
+                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
                 実際に控除できるもの
               </Link>
             </div>

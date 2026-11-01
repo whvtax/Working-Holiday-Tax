@@ -9467,9 +9467,9 @@ export function getCategoryColor(category: Category): {
 } {
  switch (category) {
  case "TFN":
- return { bg: "#EAF6F1", text: "#0B5240", border: "#C8EAE0" };
+ return { bg: "#F2FAF7", text: "#0B5240", border: "#DCE0DE" };
  case "ABN":
- return { bg: "#FDF0D5", text: "#7A4A00", border: "#E9A020" };
+ return { bg: "#F2FAF7", text: "#7A4A00", border: "#0B5240" };
  case "Tax Return":
  return { bg: "#F0F4FF", text: "#2D3A8C", border: "#A5B4FC" };
  case "Super":

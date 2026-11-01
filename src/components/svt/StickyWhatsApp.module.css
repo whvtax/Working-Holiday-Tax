@@ -7,3 +7,7 @@
   box-shadow: 0 -1px 0 var(--svt-line);
 }
 @media (min-width: 900px) { .bar { display: none; } }
+/* Slides up once the hero button has gone (StickyReveal). It stays in flow
+ * either way, so nothing shifts; hidden state is also visibility:hidden. */
+.bar[data-motion='armed'] { transform: translateY(110%); visibility: hidden; transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 240ms; }
+.bar[data-motion='in'] { transform: none; visibility: visible; transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1); }

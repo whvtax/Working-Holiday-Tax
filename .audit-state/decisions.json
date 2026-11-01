@@ -1,0 +1,26 @@
+{
+ "baseline":"d9dbac0","fix_commit":"03599a8",
+ "APPROVE_FIXED":[
+  "A01-1 DASP 65% applies to whole payment (en/zh/vi, batch-08/10/11)",
+  "A01-2 o10a backpackers/WHM wording rebranded for SVT customers",
+  "A01-3 Medicare exemption message waits for statement (SVT)",
+  "A01-9 foreign resident no TFN 45% (en/zh/vi)",
+  "A01-10/A06-1/A07-1/A14-1 seal alt text names the supervising agent (en/zh/vi footer)",
+  "A02-1,A02-3,A13-2 zh contact wording and inLanguage",
+  "A02-2,A02-4,A02-5,A02-6 zh terminology (penalty rates, award, hospitality award, payment summary)",
+  "A03-1,A03-2,A03-3 vi làm thuê, lương phụ trội",
+  "A20-1/A18-1 scroll offset under sticky header, sticky TOC",
+  "A08-2 price check WhatsApp click tracked",
+  "A09-1 runtime lock on SVT form APIs",
+  "A06-2 final-week article after deadline shows the passed note"],
+ "DEFER_OR_NEEDS_HUMAN":[
+  "A12-1 findExistingClient WHT scoping: WHT query intentionally has no brand filter (column may be missing in prod); fix only after confirming migration 047 applied",
+  "A12-2 CRM file CSP sandbox: could break inline PDF viewer for staff; needs a real-session browser test",
+  "A17-1 privacy policy overseas disclosure: shared legal text live on WHT, Supabase region unverified; needs Jo",
+  "A01-4 refund within 14 business days, A01-5 guarantee wording vs WhatsApp rules: business wording decisions (Jo)",
+  "A01-6/7/8/12/13/14 UNVERIFIED tax figures ($1,000 standard deduction, penalty unit $364, min wage, agent-list date, 4-year amendment, credit cards): need human tax-agent check against ATO",
+  "A13-1/A08-1/A19-3 placeholder WhatsApp number: launch-day item",
+  "A19-1 error monitoring, A19-2 backups: operational, not in code",
+  "A20-2 dropdown Escape, A20-3 localized 404, A15-1 hero LCP, A15-2 image cache headers: post-launch polish"],
+ "REJECT_OR_ACCEPT_AS_IS":["A16-1..7 dead code/lint warnings","A13-3..7 SEO LOW","A03-4..17 optional wording","A02-7..22 optional"]
+}

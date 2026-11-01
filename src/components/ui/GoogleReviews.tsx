@@ -26,7 +26,7 @@ const T: Record<Lang, { based: (n: number) => string; view: string; more: string
 }
 
 const STAR_GOLD = '#FBBC04'
-const BORDER = '#E2EFE9'
+const BORDER = '#DCE0DE'
 
 function relativeDate(iso: string | null, lang: Lang): string {
   if (!iso) return ''

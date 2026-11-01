@@ -168,7 +168,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             </h1>
 
             <p className="hero-sub mx-auto"
-              style={{ fontSize: '16.5px', lineHeight: 1.62, color: '#2A3C34', maxWidth: '46ch' }}>
+              style={{ fontSize: '16.5px', lineHeight: 1.62, color: '#0F1A16', maxWidth: '46ch' }}>
               Trag ein, was du verdient hast und was einbehalten wurde. Die grobe Zahl kommt in Sekunden
               zurück.
             </p>
@@ -185,7 +185,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
               <div>
                 <label htmlFor="ci" className={LABEL} style={LABEL_S}>Gesamteinkommen</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
                   <input
                     id="ci" type="number" placeholder="0" value={income} min={0} max={10000000}
                     inputMode="decimal" enterKeyHint="next"
@@ -199,7 +199,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
               <div>
                 <label htmlFor="cw" className={LABEL} style={LABEL_S}>Von Arbeitgebern einbehaltene Steuer</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
                   <input
                     id="cw" type="number" placeholder="0" value={withheld} min={0} max={5000000}
                     inputMode="decimal" enterKeyHint="next"
@@ -208,7 +208,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     style={{ ...FIELD, paddingLeft: '60px' }}
                   />
                 </div>
-                <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
+                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
                   Steht auf deinem Income Statement oder Payment Summary, zusammengezählt über alle Jobs.
                 </p>
               </div>
@@ -219,17 +219,17 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   <select
                     id="cv" value={visa} onChange={e => setVisa(e.target.value)}
                     className="input-base appearance-none cursor-pointer pr-10"
-                    style={{ ...FIELD, color: visa ? undefined : '#4C6459' }}
+                    style={{ ...FIELD, color: visa ? undefined : '#525A57' }}
                   >
                     <option value="">Wähle deinen Status</option>
                     <option value="whm">Working Holiday Maker (417 / 462)</option>
                     <option value="res">Australischer Steuerresident</option>
                   </select>
                   <svg className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
-                    <path d="M1 1l5 5 5-5" stroke="#4C6459" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M1 1l5 5 5-5" stroke="#525A57" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
+                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
                   Die meisten wählen Working Holiday Maker, weil das auf dem Visum steht.
                 </p>
               </div>
@@ -239,7 +239,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   Superannuation-Guthaben <span style={{ textTransform: 'none', letterSpacing: 0, opacity: 0.7 }}>(optional)</span>
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
                   <input
                     id="cs" type="number" placeholder="0" value={superBal} min={0} max={5000000}
                     inputMode="decimal" enterKeyHint="done"
@@ -248,12 +248,12 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     style={{ ...FIELD, paddingLeft: '60px' }}
                   />
                 </div>
-                <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px', lineHeight: 1.6 }}>
+                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px', lineHeight: 1.6 }}>
                   Wer jemals ein 417- oder 462-Visum hatte, zahlt auf das gesamte Guthaben den DASP-Satz von 65 %.
                 </p>
               </div>
 
-              <div className="rounded-xl" style={{ border: '1.5px solid #E2EFE9', background: '#F7FBF9' }}>
+              <div className="rounded-xl" style={{ border: '1.5px solid #DCE0DE', background: '#F7FBF9' }}>
                 <label htmlFor="cabn" className="flex items-start gap-3 cursor-pointer" style={{ padding: '14px 16px', minHeight: '44px' }}>
                   <input
                     id="cabn" type="checkbox" checked={hasAbn}
@@ -264,7 +264,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     <span className="font-semibold text-ink" style={{ fontSize: '15px', display: 'block' }}>
                       Ich habe zusätzlich über eine ABN abgerechnet
                     </span>
-                    <span style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.6 }}>
+                    <span style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.6 }}>
                       Lieferdienst, Subunternehmer, alles, wofür du Rechnungen gestellt hast.
                     </span>
                   </span>
@@ -292,8 +292,8 @@ export function CalculatorClient({ faqs = [] }: Props) {
                   borderRadius: '16px',
                   overflow: 'hidden',
                   outline: 'none',
-                  border: `1.5px solid ${result.owing ? '#FDBA74' : '#C8EAE0'}`,
-                  background: result.owing ? '#FEF3F0' : '#EAF6F1',
+                  border: `1.5px solid ${result.owing ? '#FDBA74' : '#DCE0DE'}`,
+                  background: result.owing ? '#FEF3F0' : '#F2FAF7',
                 }}>
 
                 <div style={{ padding: '22px 20px 18px', textAlign: 'center' }}>
@@ -305,13 +305,13 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     style={{ fontSize: 'clamp(30px,6vw,42px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: result.owing ? '#9A3412' : '#0B5240' }}>
                     {result.amount}
                   </p>
-                  <p style={{ fontSize: '14px', lineHeight: 1.6, marginTop: '9px', color: '#2A3C34' }}>
+                  <p style={{ fontSize: '14px', lineHeight: 1.6, marginTop: '9px', color: '#0F1A16' }}>
                     {result.sub}
                   </p>
                 </div>
 
                 <div style={{ padding: '0 20px 18px' }}>
-                  <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '14px' }}>
+                  <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#0F1A16', marginBottom: '14px' }}>
                     Nimm das als groben Anhaltspunkt. Die echte Zahl hängt an drei Dingen, die diese Seite
                     nicht klären kann: welcher Residentenstatus für dich gilt, ob die Medicare-Levy-Befreiung
                     greift und was du in deinem Job absetzen kannst.
@@ -321,7 +321,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     style={{ minHeight: '50px', fontSize: '15px', borderRadius: '100px' }}>
                     Zahlen per WhatsApp schicken
                   </a>
-                  <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '9px', textAlign: 'center' }}>
+                  <p style={{ fontSize: '13px', color: '#525A57', marginTop: '9px', textAlign: 'center' }}>
                     Deine Zahlen stehen dann schon in der Nachricht. Antwort in etwa einer Stunde.
                   </p>
                 </div>
@@ -333,18 +333,18 @@ export function CalculatorClient({ faqs = [] }: Props) {
                       Superannuation (DASP)
                     </p>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '6px' }}>
-                      <span style={{ color: '#4C6459' }}>Guthaben</span>
+                      <span style={{ color: '#525A57' }}>Guthaben</span>
                       <span style={{ fontWeight: 500 }}>{money(result.sup.gross)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '9px', paddingBottom: '9px', borderBottom: '1px solid rgba(11,82,64,0.1)' }}>
-                      <span style={{ color: '#4C6459' }}>Steuer {result.sup.rate} %</span>
+                      <span style={{ color: '#525A57' }}>Steuer {result.sup.rate} %</span>
                       <span style={{ fontWeight: 500, color: '#9A3412' }}>-{money(result.sup.tax)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                       <span style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240' }}>Ausgezahlt wird</span>
                       <span className="font-black" style={{ fontSize: '19px', letterSpacing: '-0.02em', color: '#0B5240' }}>{money(result.sup.net)}</span>
                     </div>
-                    <p style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '11px', color: '#4C6459' }}>
+                    <p style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '11px', color: '#525A57' }}>
                       Super wird erst ausgezahlt, wenn du Australien verlassen hast und dein Visum
                       abgelaufen oder annulliert ist.{' '}
                       <Link href="/de/superannuation" style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
@@ -365,7 +365,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
               </div>
             )}
 
-            <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '16px', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '13px', color: '#525A57', marginTop: '16px', lineHeight: 1.6 }}>
               Der Rechner nutzt die Sätze für 2025/26 und ausschließlich die Zahlen, die du eingibst.
               Deine endgültige Zahl ist er also nicht.
             </p>
@@ -374,48 +374,48 @@ export function CalculatorClient({ faqs = [] }: Props) {
       </section>
 
       {/* Der Einwand, konkret zur Schätzung */}
-      <section className="py-10 lg:py-14" style={{ background: '#fff', borderTop: '1px solid #E2EFE9' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#fff', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px]">
 
             <p className="font-medium uppercase"
-              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
+              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '12px' }}>
               Selbst machen
             </p>
 
             <h2 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-              <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Tipp bei myGov eine zu niedrige Zahl ein{' '}</span>
+              <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>Tipp bei myGov eine zu niedrige Zahl ein{' '}</span>
               <span style={{ display: 'block' }}>und genau die wird eingereicht.{' '}</span>
             </h2>
 
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#525A57', maxWidth: '56ch', marginBottom: '20px' }}>
               Eine Schätzung ist nur so gut wie das, was du eingetippt hast, und drei Dinge fehlen darin.
             </p>
 
-            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
               {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
                   <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
                     {/* Nur in der ersten Zeile ausgegeben. Auf dem Handy stapeln
                         sich die Zeilen, beide Labels acht Mal zu wiederholen
                         waren also dieselben zwei Wörter untereinander. Auf dem
                         Desktop Spaltenköpfe, auf dem Handy die Legende. */}
                     {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#525A57', marginBottom: '5px' }}>
                         Auf myGov
                       </p>
                     )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', margin: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
+                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', margin: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
                     style={{ padding: '13px 16px', background: '#F2FAF7' }}>
                     {i === 0 && (
                       <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
                         Mit uns
                       </p>
                     )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#080F0D', fontWeight: 500, margin: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
+                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', fontWeight: 500, margin: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
                   </div>
                 </div>
               ))}
@@ -430,41 +430,41 @@ export function CalculatorClient({ faqs = [] }: Props) {
       </section>
 
       {/* Was die Prüfung ergänzt */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px]">
             <h2 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
               Was macht die echte Zahl anders als diese?
             </h2>
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', marginBottom: '14px' }}>
               Drei Dinge, und keins davon steht auf dieser Seite. Erstens dein Residentenstatus. Richtig
               eingeordnet, kann er die Sätze für dein ganzes Jahr ändern. Es ist eine Beurteilung deiner
               Umstände und oft entscheidender als alles andere zusammen.
             </p>
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', marginBottom: '14px' }}>
               Zweitens die Medicare Levy. Sie beträgt 2 % des zu versteuernden Einkommens, wird
               standardmäßig abgezogen, und die meisten mit einem 417- oder 462-Visum schuldeten sie nie.
               Weggenommen wird sie mit einer Bescheinigung, die kaum jemand beantragt.
             </p>
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', marginBottom: '14px' }}>
               Drittens die absetzbaren Kosten, bei myGov ein leeres Feld. Was ein Erntehelfer, ein
               Barista und jemand aus der Gastronomie jeweils absetzen kann, ist nicht dieselbe Liste.
             </p>
             <div className="flex flex-wrap gap-3" style={{ marginTop: '18px' }}>
               <Link href="/de/medicare"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
+                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
                 Die Medicare-Levy-Befreiung
               </Link>
               <Link href="/de/superannuation"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
+                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
                 Super nach der Abreise zurückholen
               </Link>
               <Link href="/de/expenses"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
+                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
                 Was du absetzen kannst
               </Link>
             </div>

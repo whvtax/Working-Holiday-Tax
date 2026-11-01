@@ -238,7 +238,7 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
   const renderInline = (raw: string) => {
     return raw
       .replace(/\*\*([^*]+)\*\*/g, '<strong style="font-weight:600;color:#0B5240;">$1</strong>')
-      // A real underline, not a 1px #C8EAE0 bottom border at 1.18:1 against
+      // A real underline, not a 1px #DCE0DE bottom border at 1.18:1 against
       // white. The border did not read as a link at all, which is the only
       // thing an inline link has to do.
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_: string, text: string, href: string) =>
@@ -273,7 +273,7 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
         <h3
           key={key++}
           className="font-serif"
-          style={{ fontSize: '17px', fontWeight: 700, color: '#1A2822', marginTop: '1.5rem', marginBottom: '0.5rem', letterSpacing: '-0.01em' }}
+          style={{ fontSize: '17px', fontWeight: 700, color: '#0F1A16', marginTop: '1.5rem', marginBottom: '0.5rem', letterSpacing: '-0.01em' }}
         >
           {line.replace('### ', '')}
         </h3>
@@ -293,7 +293,7 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
           {items.map((item, idx) => (
             <li
               key={idx}
-              style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '0.45rem', fontWeight: 400 }}
+              style={{ fontSize: '15.5px', color: '#0F1A16', lineHeight: 1.8, marginBottom: '0.45rem', fontWeight: 400 }}
               dangerouslySetInnerHTML={{ __html: renderInline(item) }}
             />
           ))}
@@ -313,7 +313,7 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
           {items.map((item, idx) => (
             <li
               key={idx}
-              style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '0.45rem', fontWeight: 400 }}
+              style={{ fontSize: '15.5px', color: '#0F1A16', lineHeight: 1.8, marginBottom: '0.45rem', fontWeight: 400 }}
               dangerouslySetInnerHTML={{ __html: renderInline(item) }}
             />
           ))}
@@ -327,22 +327,22 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
           <div
             key={key++}
             style={{
-              background: 'linear-gradient(135deg, #EAF6F1 0%, #F7F9F8 100%)',
-              borderLeft: '4px solid #2FA880',
+              background: 'linear-gradient(135deg, #F2FAF7 0%, #F7F9F8 100%)',
+              borderLeft: '4px solid #0B5240',
               borderRadius: '12px',
               padding: '18px 22px',
               marginBottom: '1.75rem',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#2FA880' }} aria-hidden="true" />
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0B5240' }} aria-hidden="true" />
               <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
                 {ui.quickAnswerLabel}
               </span>
             </div>
             <p
               className="quick-answer"
-              style={{ fontSize: '16px', color: '#1A2822', lineHeight: 1.65, margin: 0, fontWeight: 400 }}
+              style={{ fontSize: '16px', color: '#0F1A16', lineHeight: 1.65, margin: 0, fontWeight: 400 }}
               dangerouslySetInnerHTML={{ __html: renderInline(quickAnswerText) }}
             />
           </div>
@@ -352,7 +352,7 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
         elements.push(
           <p
             key={key++}
-            style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.8, marginBottom: '1rem', fontWeight: 400 }}
+            style={{ fontSize: '15.5px', color: '#0F1A16', lineHeight: 1.8, marginBottom: '1rem', fontWeight: 400 }}
             dangerouslySetInnerHTML={{ __html: renderInline(line) }}
           />
         )
@@ -470,10 +470,10 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
           first three pixels. It now sits below the nav and above the
           breadcrumbs, and the breadcrumbs start at 71px so the two no longer
           share the same three pixels at all. The fill is forest rather than
-          amber: amber on #E2EFE9 measures 1.87:1 and is effectively invisible. */}
+          amber: amber on #DCE0DE measures 1.87:1 and is effectively invisible. */}
       <div aria-hidden="true" style={{
         position: 'fixed', top: '68px', left: 0, right: 0, height: '3px',
-        background: '#E2EFE9', zIndex: 45,
+        background: '#DCE0DE', zIndex: 45,
       }}>
         <div style={{
           height: '100%', background: '#0B5240',
@@ -509,15 +509,15 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
 
           {/* Share */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2rem', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '13px', color: '#587066', fontWeight: 500 }}>{ui.shareThisArticle}</span>
+            <span style={{ fontSize: '13px', color: '#525A57', fontWeight: 500 }}>{ui.shareThisArticle}</span>
             <button
               onClick={handleCopy}
               className="share-btn"
               style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
                 minHeight: '44px', padding: '10px 18px', borderRadius: '100px',
-                border: '1px solid #E2EFE9', background: 'transparent',
-                fontSize: '13px', color: '#587066', cursor: 'pointer', fontWeight: 500,
+                border: '1px solid #DCE0DE', background: 'transparent',
+                fontSize: '13px', color: '#525A57', cursor: 'pointer', fontWeight: 500,
               }}
             >
               {copied ? ui.shareCopied : ui.shareCopy}
@@ -531,8 +531,8 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
               style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
                 minHeight: '44px', padding: '10px 18px', borderRadius: '100px',
-                border: '1px solid #E2EFE9', background: 'transparent',
-                fontSize: '13px', color: '#587066', textDecoration: 'none', fontWeight: 500,
+                border: '1px solid #DCE0DE', background: 'transparent',
+                fontSize: '13px', color: '#525A57', textDecoration: 'none', fontWeight: 500,
               }}
             >
               {ui.shareWhatsApp}
@@ -562,11 +562,11 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
         {/* Desktop TOC sidebar */}
         {showToc && (
           <aside className="toc-sidebar" aria-label={ui.tocAriaLabel}>
-            <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#16775C', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '12px' }}>
+            <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '12px' }}>
               {ui.onThisPage}
             </p>
             <nav>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, borderLeft: '2px solid #E2EFE9' }}>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, borderLeft: '2px solid #DCE0DE' }}>
                 {headings.map(h => {
                   const isActive = activeHeading === h.id
                   return (
@@ -579,7 +579,7 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
                           padding: '6px 0 6px 12px',
                           marginLeft: '-2px',
                           fontSize: '13px',
-                          color: isActive ? '#0B5240' : '#587066',
+                          color: isActive ? '#0B5240' : '#525A57',
                           textDecoration: 'none',
                           lineHeight: 1.45,
                           fontWeight: isActive ? 600 : 400,

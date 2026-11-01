@@ -236,7 +236,7 @@ export default async function CategoryPage({ params }: Props) {
         <section style={{ background: colors.bg }}>
           <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 20px 48px' }}>
 
-            <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#4C6459', marginBottom: '16px', flexWrap: 'wrap' }}>
+            <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#525A57', marginBottom: '16px', flexWrap: 'wrap' }}>
               <Link href="/" style={{ color: 'inherit', textDecoration: 'none', padding: '8px 0' }}>Home</Link>
               <span aria-hidden="true">/</span>
               <Link href="/blog" style={{ color: 'inherit', textDecoration: 'none', padding: '8px 0' }}>Blog</Link>
@@ -251,11 +251,11 @@ export default async function CategoryPage({ params }: Props) {
               </span>
             </div>
 
-            <h1 className="font-serif font-black" style={{ fontSize: 'clamp(26px, 4vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.03em', color: '#080F0D', marginBottom: '12px', maxWidth: '720px' }}>
+            <h1 className="font-serif font-black" style={{ fontSize: 'clamp(26px, 4vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.03em', color: '#0F1A16', marginBottom: '12px', maxWidth: '720px' }}>
               {meta.title}
             </h1>
 
-            <p style={{ fontSize: 'clamp(16px, 1.3vw, 17px)', lineHeight: 1.65, color: '#2A3C34', maxWidth: '640px', fontWeight: 400, marginBottom: '24px' }}>
+            <p style={{ fontSize: 'clamp(16px, 1.3vw, 17px)', lineHeight: 1.65, color: '#0F1A16', maxWidth: '640px', fontWeight: 400, marginBottom: '24px' }}>
               {meta.intro}
             </p>
 
@@ -282,7 +282,7 @@ export default async function CategoryPage({ params }: Props) {
                 At the section's full 740px they ran to about 95 characters a
                 line, which is where the eye starts losing the return sweep. */}
             {intro.paragraphs.map((p, i) => (
-              <p key={i} style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.8, fontWeight: 400, marginBottom: '1rem', maxWidth: '68ch' }}>
+              <p key={i} style={{ fontSize: '15.5px', color: '#0F1A16', lineHeight: 1.8, fontWeight: 400, marginBottom: '1rem', maxWidth: '68ch' }}>
                 {p}
               </p>
             ))}
@@ -302,7 +302,7 @@ export default async function CategoryPage({ params }: Props) {
         {/* Articles */}
         <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 24px' }}>
 
-          <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#080F0D', marginBottom: '24px', letterSpacing: '-0.02em' }}>
+          <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#0F1A16', marginBottom: '24px', letterSpacing: '-0.02em' }}>
             All {meta.category} articles ({articles.length})
           </h2>
 
@@ -312,7 +312,7 @@ export default async function CategoryPage({ params }: Props) {
                 key={article.slug}
                 href={`/blog/${article.slug}`}
                 className="category-card"
-                style={{ display: 'flex', flexDirection: 'column', gap: '0', padding: '0', background: '#fff', textDecoration: 'none', borderRadius: '16px', border: '1px solid #E2EFE9' }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '0', padding: '0', background: '#fff', textDecoration: 'none', borderRadius: '16px', border: '1px solid #DCE0DE' }}
               >
                 {/* Decorative category illustration */}
                 <div className="blog-card-hero" style={{ aspectRatio: '16/9', overflow: 'hidden', borderRadius: '15px 15px 0 0' }}>
@@ -333,13 +333,13 @@ export default async function CategoryPage({ params }: Props) {
                     }}>
                       {article.category}
                     </span>
-                    <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
-                    <span style={{ fontSize: '13px', color: '#4C6459' }}>{article.readTime} min read</span>
+                    <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
+                    <span style={{ fontSize: '13px', color: '#525A57' }}>{article.readTime} min read</span>
                   </div>
-                  <h3 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}>
+                  <h3 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#0F1A16', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}>
                     {article.title}
                   </h3>
-                  <p style={{ fontSize: '13.5px', color: '#4C6459', lineHeight: 1.65, margin: 0, fontWeight: 400, flex: 1 }}>
+                  <p style={{ fontSize: '13.5px', color: '#525A57', lineHeight: 1.65, margin: 0, fontWeight: 400, flex: 1 }}>
                     {article.description}
                   </p>
                   <span style={{ fontSize: '14px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
@@ -352,7 +352,7 @@ export default async function CategoryPage({ params }: Props) {
         </section>
 
         {/* FAQ */}
-        <section style={{ maxWidth: '780px', margin: '0 auto', padding: '48px 20px 60px', borderTop: '1px solid #E2EFE9', marginTop: '48px' }}>
+        <section style={{ maxWidth: '780px', margin: '0 auto', padding: '48px 20px 60px', borderTop: '1px solid #DCE0DE', marginTop: '48px' }}>
           <div style={{ marginBottom: '24px' }}>
             <p style={{ fontSize: '10.5px', fontWeight: 700, color: colors.text, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '8px' }}>
               Common questions
@@ -364,8 +364,8 @@ export default async function CategoryPage({ params }: Props) {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {meta.faq.map((f, i) => (
-              <details key={i} className="faq-item" style={{ borderBottom: '1px solid #E2EFE9', padding: '16px 0' }}>
-                <summary className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', letterSpacing: '-0.015em', listStyle: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', cursor: 'pointer', minHeight: '28px' }}>
+              <details key={i} className="faq-item" style={{ borderBottom: '1px solid #DCE0DE', padding: '16px 0' }}>
+                <summary className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#0F1A16', letterSpacing: '-0.015em', listStyle: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', cursor: 'pointer', minHeight: '28px' }}>
                   <span style={{ flex: 1, minWidth: 0 }}>{f.question}</span>
                   <span className="faq-plus" aria-hidden="true" style={{ flexShrink: 0, color: colors.text, fontSize: '20px', fontWeight: 300, lineHeight: 1 }}>+</span>
                 </summary>
@@ -374,7 +374,7 @@ export default async function CategoryPage({ params }: Props) {
                     the structured data is unchanged. The answers themselves live
                     in data.ts, which another rewrite owns. */}
                 {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.75, fontWeight: 400, marginTop: '12px', marginBottom: 0 }}>
+                  <p key={j} style={{ fontSize: '15px', color: '#0F1A16', lineHeight: 1.75, fontWeight: 400, marginTop: '12px', marginBottom: 0 }}>
                     {para}
                   </p>
                 ))}
@@ -388,7 +388,7 @@ export default async function CategoryPage({ params }: Props) {
           {/* 20px, matching "All X articles". At 16px this section heading was
               the same size as the article card titles below it, which flattened
               the hierarchy on the one page that has four H2s. */}
-          <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#080F0D', marginBottom: '16px', letterSpacing: '-0.02em' }}>
+          <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#0F1A16', marginBottom: '16px', letterSpacing: '-0.02em' }}>
             Other categories
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>

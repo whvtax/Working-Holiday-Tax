@@ -80,12 +80,12 @@ export interface JobExpensesContent {
 
 /* Tokens kept local so this template does not depend on shared CSS being
    finished. Identical in all 21 original files. */
-const INK = '#080F0D'
-const BODY = '#2A3C34'
-const MUTED = '#4C6459'
+const INK = '#0F1A16'
+const BODY = '#0F1A16'
+const MUTED = '#525A57'
 const FOREST = '#0B5240'
-const HAIR = '#E2EFE9'
-const SUNKEN = '#F5F9F7'
+const HAIR = '#DCE0DE'
+const SUNKEN = '#F2FAF7'
 const WARN = '#B54708'
 
 const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
@@ -255,7 +255,7 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
               <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
                 {c.crumbs.map((b, i) => (
                   <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    {i > 0 && <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>}
+                    {i > 0 && <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>}
                     {i === c.crumbs.length - 1 ? (
                       <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
                     ) : (
@@ -299,7 +299,7 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
               </h2>
               <p style={{ ...ps, color: MUTED, marginBottom: '20px' }}>{mg.ui.lede}</p>
 
-              <div style={{ background: '#fff', border: '1px solid #CDE3DB', borderRadius: '14px', overflow: 'hidden' }}>
+              <div style={{ background: '#fff', border: '1px solid #DCE0DE', borderRadius: '14px', overflow: 'hidden' }}>
                 {mg.rows.map((row, i) => (
                   <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : `1px solid ${HAIR}` }}>
                     <div style={{ padding: '13px 16px' }}>
@@ -427,7 +427,7 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
               )}
 
               {s.kind === 'note' && (
-                <div style={{ background: '#FDF0D5', border: '1px solid #F9D88A', borderLeft: '4px solid #E9A020', borderRadius: '12px', padding: '18px 18px' }}>
+                <div style={{ background: '#F2FAF7', border: '1px solid #DCE0DE', borderLeft: '4px solid #0B5240', borderRadius: '12px', padding: '18px 18px' }}>
                   <p style={{ fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, color: WARN, margin: '0 0 8px' }}>{s.label}</p>
                   <p style={{ ...h3s, marginBottom: '8px' }}>{s.title}</p>
                   {s.body.split('\n\n').map((para, j, arr) => (
@@ -458,8 +458,8 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
                   justifyContent: 'center',
                   minHeight: '52px',
                   padding: '0 28px',
-                  background: '#E9A020',
-                  color: '#1A2822',
+                  background: '#0B5240',
+                  color: '#0F1A16',
                   borderRadius: '999px',
                   fontSize: '16px',
                   fontWeight: 600,

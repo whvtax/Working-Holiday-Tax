@@ -316,7 +316,7 @@ export default async function JapaneseHomePage() {
               did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(27px, 4.6vw, 40px)', lineHeight: 1.32, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '16px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '16px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               オーストラリアのタックスリターン｜ワーホリ417・462ビザ専門
             </span>
             <span style={{ display: 'block' }}>送信ボタンは誰でも押せます。</span>
@@ -328,7 +328,7 @@ export default async function JapaneseHomePage() {
               答えているため矛盾していた。数はここでの論点ではなく、3つの数字の
               セクションは承認済みの文言なので、数のほうを外している。 */}
           <p className="mx-auto hero-animate-delay"
-            style={{ ...LEDE, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
+            style={{ ...LEDE, color: '#525A57', maxWidth: '58ch', marginBottom: '26px' }}>
             還付額は、送信する前の確認で決まります。どれも自動では反映されません。
           </p>
 
@@ -339,7 +339,7 @@ export default async function JapaneseHomePage() {
               <IconWhatsApp />
               WhatsAppで相談する
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               約1時間で返信します。
             </p>
           </div>
@@ -354,15 +354,15 @@ export default async function JapaneseHomePage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>みんなが聞くこと</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>みんなが聞くこと</p>
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.5vw, 29px)', lineHeight: 1.45, letterSpacing: '-0.01em', marginBottom: '14px' }}>
-            <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>myGovは間違った申告も、</span>
+            <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>myGovは間違った申告も、</span>
             <span style={{ display: 'block' }}>正しい申告と同じように受け付けます。</span>
           </h2>
 
-          <p style={{ ...LEDE, color: '#4C6459', maxWidth: '42ch', marginBottom: '26px' }}>
+          <p style={{ ...LEDE, color: '#525A57', maxWidth: '42ch', marginBottom: '26px' }}>
             居住者だったのか、メディケア税があなたの負担だったのか、その職種で何が控除できるのか。画面上でそれを確かめる人は誰もいません。
           </p>
 
@@ -372,17 +372,17 @@ export default async function JapaneseHomePage() {
               デスクトップでは列見出しとして、スマートフォンでは凡例として読める。
               以降は背景色の違いと「当社の場合」側の太さが区別を担う。表の文言自体は
               変えていない。 */}
-          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
             {COMPARISON.map((row, i) => (
-              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
                 <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
-                  {i === 0 && <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>myGovの場合</p>}
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{row.mygov}</p>
+                  {i === 0 && <p style={{ ...KICKER, color: '#525A57', marginBottom: '5px' }}>myGovの場合</p>}
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{row.mygov}</p>
                 </div>
-                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
                   style={{ padding: '13px 16px', background: '#F2FAF7' }}>
                   {i === 0 && <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>当社の場合</p>}
-                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500 }}>{row.us}</p>
+                  <p style={{ ...BODY, color: '#0F1A16', fontWeight: 500 }}>{row.us}</p>
                 </div>
               </div>
             ))}
@@ -399,21 +399,21 @@ export default async function JapaneseHomePage() {
               <IconWhatsApp />
               WhatsAppで相談する
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '10px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '10px' }}>
               約1時間で返信します。
             </p>
           </div>
         </div>
       </section>
       {/* ── 3. 3つの数字 ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
             タックスリターンの還付額は何で決まりますか？
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '30px' }}>
             多くの場合、次の3つです。
           </p>
 
@@ -424,7 +424,7 @@ export default async function JapaneseHomePage() {
                   style={{ fontSize: '33px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>
                   {f.figure}
                 </p>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{f.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{f.body}</p>
               </div>
             ))}
           </div>
@@ -434,7 +434,7 @@ export default async function JapaneseHomePage() {
       {/* ── 4. 料金 ──────────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>当社の保証</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>当社の保証</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 29px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
             当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
@@ -449,7 +449,7 @@ export default async function JapaneseHomePage() {
       <section id="how-it-works" className="py-12 lg:py-16 bg-white">
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>実際の作業</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>実際の作業</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             すべてのタックスリターンで確認していること
@@ -457,7 +457,7 @@ export default async function JapaneseHomePage() {
           {/* 見出しが「すべてのタックスリターンで確認していること」と言い切って
               いるので、「仕事が1つでも6つでも、同じ5つのステップを確認します」は
               同じことの繰り返しだった。残るのは事実を足している後半だけ。 */}
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '30px' }}>
             5つのうち4つは、タックスリターンに何かを入力する前に終わっています。
           </p>
 
@@ -465,11 +465,11 @@ export default async function JapaneseHomePage() {
             {ANALYSIS.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '4px' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '4px' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
@@ -479,22 +479,22 @@ export default async function JapaneseHomePage() {
 
 
       {/* ── 6. TFNのみか、TFNとABNか ─────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             あなたの1年はどちらでしたか？
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '26px' }}>
             申告の中身が変わります。当てはまる方をお選びください。
           </p>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="bg-white rounded-[14px] flex flex-col"
-              style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              style={{ padding: '22px 20px', border: '1px solid #DCE0DE', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFNのみ</h3>
-              <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
+              <p style={{ ...BODY, color: '#0F1A16', marginBottom: '18px', flex: 1 }}>
                 どの仕事も給与を通して支払われ、明細ごとに税金が引かれていました。
               </p>
               <WaLink href={waUrl({ topic: 'tax-return', lang: 'ja', tier: 'tfn' })} position="inline" topic="tax-return" lang="ja" tier="tfn"
@@ -506,9 +506,9 @@ export default async function JapaneseHomePage() {
             </div>
 
             <div className="bg-white rounded-[14px] flex flex-col"
-              style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              style={{ padding: '22px 20px', border: '1px solid #DCE0DE', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFNとABN</h3>
-              <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
+              <p style={{ ...BODY, color: '#0F1A16', marginBottom: '18px', flex: 1 }}>
                 収入の一部がABN宛てで、そこからは何も源泉徴収されていません。
               </p>
               <WaLink href={waUrl({ topic: 'abn', lang: 'ja', tier: 'tfn-abn' })} position="inline" topic="abn" lang="ja" tier="tfn-abn"
@@ -520,7 +520,7 @@ export default async function JapaneseHomePage() {
             </div>
           </div>
 
-          <p style={{ fontSize: '14px', color: '#4C6459', marginTop: '18px', lineHeight: 1.8 }}>
+          <p style={{ fontSize: '14px', color: '#525A57', marginTop: '18px', lineHeight: 1.8 }}>
             どちらか分からない場合は{' '}
             <WaLink href={waUrl({ topic: 'general', lang: 'ja', tier: 'unsure' })} position="inline" topic="general" lang="ja" tier="unsure"
               className="inline-flex items-center"
@@ -535,7 +535,7 @@ export default async function JapaneseHomePage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>サポート内容</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>サポート内容</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '26px' }}>
             最初の給与明細から、帰国後についてくるお金まで
@@ -555,7 +555,7 @@ export default async function JapaneseHomePage() {
                 <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
                   style={{ marginBottom: '10px' }}>{s.icon}</span>
                 <h3 className="font-semibold text-ink service-card-title" style={{ fontSize: '15px', marginBottom: '5px' }}>{s.title}</h3>
-                <p className="flex-1" style={{ fontSize: '13px', lineHeight: 1.75, color: '#4C6459', marginBottom: '12px' }}>{s.desc}</p>
+                <p className="flex-1" style={{ fontSize: '13px', lineHeight: 1.75, color: '#525A57', marginBottom: '12px' }}>{s.desc}</p>
                 <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3" style={{ fontSize: '13px' }}>
                   詳しく見る →
                 </span>
@@ -566,28 +566,28 @@ export default async function JapaneseHomePage() {
       </section>
 
       {/* ── 8. 信頼 ──────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '46ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '46ch', marginBottom: '28px' }}>
             作成するタックスリターンはすべて417・462ビザの方のもので、登録タックスエージェントが確認・承認したうえでATOに提出されます。
           </p>
 
           <GoogleReviewsServer lang="ja" />
 
           <div className="rounded-[12px] flex gap-3 mx-auto"
-            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A', width: 'fit-content', maxWidth: '100%' }}>
+            style={{ marginTop: '28px', padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE', width: 'fit-content', maxWidth: '100%' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>当社からmyGovのログイン情報をお尋ねすることは絶対にありません。</strong>
+            <p style={{ ...BODY, color: '#0F1A16' }}>
+              <strong style={{ color: '#0F1A16' }}>当社からmyGovのログイン情報をお尋ねすることは絶対にありません。</strong>
               尋ねてくる相手がいれば、それは当社ではありません。
             </p>
           </div>
@@ -619,7 +619,7 @@ export default async function JapaneseHomePage() {
             ))}
           </div>
 
-          <p style={{ fontSize: '14px', color: '#4C6459', marginTop: '24px', lineHeight: 1.8 }}>
+          <p style={{ fontSize: '14px', color: '#525A57', marginTop: '24px', lineHeight: 1.8 }}>
             ここにない質問は{' '}
             <Link href="/ja/contact" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>お問い合わせ</Link>
             からどうぞ。
@@ -628,10 +628,10 @@ export default async function JapaneseHomePage() {
       </section>
 
       {/* ── 10. ガイド ───────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>ガイド</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>ガイド</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
             先に全部読んでおきたい方へ
@@ -639,7 +639,7 @@ export default async function JapaneseHomePage() {
           {/* 「申告の結果を決める同じ4つの問いについて書いています」は、この
               セクションが4本のガイドを並べている以上、見出しとカードの言い直しに
               なっていた。事実を足している一文だけを残す。 */}
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '24px' }}>
             ご連絡いただくために、情報を小出しにすることはありません。
           </p>
 
@@ -647,9 +647,9 @@ export default async function JapaneseHomePage() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.75, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.75, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

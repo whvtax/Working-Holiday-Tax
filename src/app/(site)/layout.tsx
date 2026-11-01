@@ -114,7 +114,7 @@ export const viewport: Viewport = {
   //
   // Matching the page background lets the browser's chrome disappear into the
   // page, which is what it is there for.
-  themeColor: '#F5F9F7',
+  themeColor: '#F2FAF7',
 }
 
 export default function SiteRootLayout({ children }: { children: React.ReactNode }) {

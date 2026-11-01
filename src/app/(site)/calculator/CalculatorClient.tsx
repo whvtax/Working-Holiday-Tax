@@ -185,7 +185,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
             </h1>
 
             <p className="hero-sub mx-auto"
-              style={{ fontSize: '16.5px', lineHeight: 1.62, color: '#2A3C34', maxWidth: '46ch' }}>
+              style={{ fontSize: '16.5px', lineHeight: 1.62, color: '#0F1A16', maxWidth: '46ch' }}>
               Put in what you earned and what was withheld. An indicative figure comes back in a few seconds.
             </p>
           </div>
@@ -202,7 +202,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
               <div>
                 <label htmlFor="ci" className={LABEL} style={LABEL_S}>Total income earned</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
                   <input
                     id="ci" type="number" placeholder="0" value={income} min={0} max={10000000}
                     inputMode="decimal" enterKeyHint="next"
@@ -217,7 +217,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
               <div>
                 <label htmlFor="cw" className={LABEL} style={LABEL_S}>Tax withheld by your employers</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
                   <input
                     id="cw" type="number" placeholder="0" value={withheld} min={0} max={5000000}
                     inputMode="decimal" enterKeyHint="next"
@@ -226,7 +226,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                     style={{ ...FIELD, paddingLeft: '60px' }}
                   />
                 </div>
-                <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
+                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
                   On your income statement or payment summary, added up across every job.
                 </p>
               </div>
@@ -238,17 +238,17 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                   <select
                     id="cv" value={visa} onChange={e => setVisa(e.target.value)}
                     className="input-base appearance-none cursor-pointer pr-10"
-                    style={{ ...FIELD, color: visa ? undefined : '#4C6459' }}
+                    style={{ ...FIELD, color: visa ? undefined : '#525A57' }}
                   >
                     <option value="">Select your status</option>
                     <option value="whm">Working holiday maker (417 / 462)</option>
                     <option value="res">Australian tax resident</option>
                   </select>
                   <svg className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
-                    <path d="M1 1l5 5 5-5" stroke="#4C6459" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M1 1l5 5 5-5" stroke="#525A57" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px' }}>
+                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
                   Most people pick working holiday maker because that is the visa.
                 </p>
               </div>
@@ -259,7 +259,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                   Superannuation balance <span style={{ textTransform: 'none', letterSpacing: 0, opacity: 0.7 }}>(optional)</span>
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#4C6459' }}>AUD</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
                   <input
                     id="cs" type="number" placeholder="0" value={superBal} min={0} max={5000000}
                     inputMode="decimal" enterKeyHint="done"
@@ -268,13 +268,13 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                     style={{ ...FIELD, paddingLeft: '60px' }}
                   />
                 </div>
-                <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '8px', lineHeight: 1.6 }}>
+                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px', lineHeight: 1.6 }}>
                   If you have ever held a 417 or 462 visa, the 65% DASP rate applies to the whole balance.
                 </p>
               </div>
 
               {/* ABN, because it changes what the review has to do */}
-              <div className="rounded-xl" style={{ border: '1.5px solid #E2EFE9', background: '#F7FBF9' }}>
+              <div className="rounded-xl" style={{ border: '1.5px solid #DCE0DE', background: '#F7FBF9' }}>
                 <label htmlFor="cabn" className="flex items-start gap-3 cursor-pointer" style={{ padding: '14px 16px', minHeight: '44px' }}>
                   <input
                     id="cabn" type="checkbox" checked={hasAbn}
@@ -285,7 +285,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                     <span className="font-semibold text-ink" style={{ fontSize: '15px', display: 'block' }}>
                       I also invoiced under an ABN
                     </span>
-                    <span style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.6 }}>
+                    <span style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.6 }}>
                       Delivery riding, subcontracting, anything you invoiced for.
                     </span>
                   </span>
@@ -313,8 +313,8 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                   borderRadius: '16px',
                   overflow: 'hidden',
                   outline: 'none',
-                  border: `1.5px solid ${result.owing ? '#FDBA74' : '#C8EAE0'}`,
-                  background: result.owing ? '#FEF3F0' : '#EAF6F1',
+                  border: `1.5px solid ${result.owing ? '#FDBA74' : '#DCE0DE'}`,
+                  background: result.owing ? '#FEF3F0' : '#F2FAF7',
                 }}>
 
                 <div style={{ padding: '22px 20px 18px', textAlign: 'center' }}>
@@ -326,7 +326,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                     style={{ fontSize: 'clamp(30px,6vw,42px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: result.owing ? '#9A3412' : '#0B5240' }}>
                     {result.amount}
                   </p>
-                  <p style={{ fontSize: '14px', lineHeight: 1.6, marginTop: '9px', color: '#2A3C34' }}>
+                  <p style={{ fontSize: '14px', lineHeight: 1.6, marginTop: '9px', color: '#0F1A16' }}>
                     {result.sub}
                   </p>
                 </div>
@@ -335,7 +335,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                 <div style={{ padding: '0 20px 18px' }}>
                   {/* "That is what the review works out." was a closing line
                       that added no fact to the three already named. */}
-                  <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '14px' }}>
+                  <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#0F1A16', marginBottom: '14px' }}>
                     Treat this as indicative. The real number moves on three things this page cannot
                     settle: which residency position is true for you, whether the Medicare levy
                     exemption applies, and what your line of work can deduct.
@@ -345,7 +345,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                     style={{ minHeight: '50px', fontSize: '15px', borderRadius: '100px' }}>
                     Send this to us on WhatsApp
                   </a>
-                  <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '9px', textAlign: 'center' }}>
+                  <p style={{ fontSize: '13px', color: '#525A57', marginTop: '9px', textAlign: 'center' }}>
                     Your figures go into the message. Replies in about an hour.
                   </p>
                 </div>
@@ -357,18 +357,18 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
                       Superannuation (DASP)
                     </p>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '6px' }}>
-                      <span style={{ color: '#4C6459' }}>Balance</span>
+                      <span style={{ color: '#525A57' }}>Balance</span>
                       <span style={{ fontWeight: 500 }}>{money(result.sup.gross)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '9px', paddingBottom: '9px', borderBottom: '1px solid rgba(11,82,64,0.1)' }}>
-                      <span style={{ color: '#4C6459' }}>Tax at {result.sup.rate}%</span>
+                      <span style={{ color: '#525A57' }}>Tax at {result.sup.rate}%</span>
                       <span style={{ fontWeight: 500, color: '#9A3412' }}>-{money(result.sup.tax)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                       <span style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240' }}>You receive</span>
                       <span className="font-black" style={{ fontSize: '19px', letterSpacing: '-0.02em', color: '#0B5240' }}>{money(result.sup.net)}</span>
                     </div>
-                    <p style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '11px', color: '#4C6459' }}>
+                    <p style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '11px', color: '#525A57' }}>
                       Super is only paid out after you have left Australia and your visa has expired or been
                       cancelled.{' '}
                       <Link href="/superannuation" style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
@@ -389,7 +389,7 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
               </div>
             )}
 
-            <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '16px', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '13px', color: '#525A57', marginTop: '16px', lineHeight: 1.6 }}>
               The calculator uses the 2025-26 rates and only the figures you type in, so it is not your
               final number.
             </p>
@@ -398,50 +398,50 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
       </section>
 
       {/* The objection, answered about an estimate. */}
-      <section className="py-10 lg:py-14" style={{ background: '#fff', borderTop: '1px solid #E2EFE9' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#fff', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px]">
 
             <p className="font-medium uppercase"
-              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
+              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '12px' }}>
               Doing it yourself
             </p>
 
             <h2 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-              <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Type a low number into myGov{' '}</span>
+              <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>Type a low number into myGov{' '}</span>
               <span style={{ display: 'block' }}>and a low number is what gets lodged.{' '}</span>
             </h2>
 
             {/* Was "...and four things are missing from what you typed", which
                 said "what you typed" twice in one line. */}
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#525A57', maxWidth: '56ch', marginBottom: '20px' }}>
               An estimate is only as good as what you typed, and four things are missing from it.
             </p>
 
-            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
               {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
                   <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
                     {/* Printed on the first row only. On a phone the rows stack,
                         so repeating both labels eight times was the same two
                         words marching down the screen. Column headings on
                         desktop, the key on mobile. */}
                     {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#525A57', marginBottom: '5px' }}>
                         On myGov
                       </p>
                     )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
+                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
                     style={{ padding: '13px 16px', background: '#F2FAF7' }}>
                     {i === 0 && (
                       <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
                         With us
                       </p>
                     )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#080F0D', fontWeight: 500, margin: 0, overflowWrap: 'break-word' }}>{row.us}</p>
+                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', fontWeight: 500, margin: 0, overflowWrap: 'break-word' }}>{row.us}</p>
                   </div>
                 </div>
               ))}
@@ -455,14 +455,14 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
       </section>
 
       {/* What the review adds. The spine's "what you would get wrong alone". */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px]">
             <h2 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
               What makes the real number different from this one?
             </h2>
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', marginBottom: '14px' }}>
               Three things, none of them on this page. The first is your residency position. Read correctly,
               it can change which rates apply to your whole year. It is a judgement about your circumstances,
               worth more than everything else combined.
@@ -470,29 +470,29 @@ const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em'
             {/* Was one five sentence block carrying both the second and the
                 third thing. Split at the turn, where the levy ends and the
                 deductions begin. */}
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', marginBottom: '14px' }}>
               The second is the Medicare levy. It is 2% of taxable income, it comes off by default, and
               most 417 and 462 holders never owed it. Removing it needs a certificate almost nobody applies
               for.
             </p>
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', marginBottom: '14px' }}>
               The third is deductions, a blank box on myGov. What a farm hand, a barista and a hospitality
               worker can each claim is not the same list.
             </p>
             <div className="flex flex-wrap gap-3" style={{ marginTop: '18px' }}>
               <Link href="/medicare"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
+                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
                 The Medicare levy exemption
               </Link>
               <Link href="/superannuation"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
+                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
                 Claiming your super after you leave
               </Link>
               <Link href="/expenses"
                 className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#080F0D' }}>
+                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
                 What you can actually deduct
               </Link>
             </div>

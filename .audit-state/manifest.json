@@ -1,0 +1,28 @@
+{
+ "baseline": "d9dbac0",
+ "phase": "AGENTS_RUNNING",
+ "started": "2026-10-27T13:16:18.674518+00:00",
+ "agents": {
+  "A01-tax": "Australian tax & ATO compliance",
+  "A02-zh": "Native Chinese",
+  "A03-vi": "Native Vietnamese",
+  "A04-mobile": "Mobile UX",
+  "A05-desktop": "Desktop UX",
+  "A06-en": "English editorial",
+  "A07-marketing": "Marketing & conversion",
+  "A08-ads": "Advertising readiness",
+  "A09-arch": "Architecture & integration",
+  "A10-devil": "Devil's advocate (phase 2)",
+  "A11-ceo": "CEO (main session)",
+  "A12-security": "AppSec",
+  "A13-seo": "Technical SEO",
+  "A14-aiseo": "AI search",
+  "A15-perf": "Performance & CWV",
+  "A16-code": "Code integrity",
+  "A17-privacy": "Privacy & data protection",
+  "A18-qa": "End-to-end QA",
+  "A19-infra": "Infra & deployment",
+  "A20-a11y": "Accessibility"
+ },
+ "execution_note": "Real parallel subagents. Some adjacent roles are combined into one subagent prompt; the exact mapping is recorded in agent-status.json."
+}

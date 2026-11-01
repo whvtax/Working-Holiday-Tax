@@ -1,3 +1,6 @@
+'use client'
+
+import { useReveal } from './useReveal'
 import styles from './ChatThread.module.css'
 
 export interface ChatStep {
@@ -9,10 +12,11 @@ export interface ChatStep {
 /** Ordered steps drawn as a WhatsApp-like thread. It is an ordered list, so
  *  the sequence is read out in order. */
 export function ChatThread({ steps, label }: { steps: readonly ChatStep[]; label: string }) {
+  const ref = useReveal<HTMLOListElement>()
   return (
-    <ol className={styles.thread} aria-label={label}>
-      {steps.map(s => (
-        <li key={s.text} className={[styles.bubble, styles[s.from]].join(' ')}>{s.text}</li>
+    <ol ref={ref} className={styles.thread} aria-label={label}>
+      {steps.map((s, i) => (
+        <li key={s.text} className={[styles.bubble, styles[s.from]].join(' ')} style={{ '--i': i } as React.CSSProperties}>{s.text}</li>
       ))}
     </ol>
   )

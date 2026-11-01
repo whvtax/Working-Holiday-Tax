@@ -9,7 +9,9 @@ describe('the approved wordings', () => {
     expect(APPROVED.followups_pre_payment.h24).toBe('Hi {{1}}, are you still in Australia or have you already left? 😊');
     expect(APPROVED.followups_pre_payment.d3).toBe('Hi {{1}}, have you given up on your tax refund this year?');
     expect(APPROVED.followups_pre_payment.d7).toBe('Hi {{1}}, should I close your file for now?');
-    expect(APPROVED.followups_pre_payment.priceSent).toBe('Hi {{1}}, did the transfer go through on your end?');
+    expect(APPROVED.followups_pre_payment.priceSent).toBe('Hi {{1}}, did the transfer go through on your end?\n\nIf you have any question, just ask me here 😊');
+    expect(APPROVED.followups_pre_payment.priceSentDe).toBe('Hi {{1}}, hat die Überweisung bei dir geklappt?\n\nFalls du eine Frage hast, schreib mir einfach hier 😊');
+    expect(APPROVED.followups_pre_payment.priceSentJa).toBe('こんにちは、{{1}}さん。お振込はお済みでしょうか？\nご不明な点があれば、こちらにいつでもご連絡ください😊');
   });
   it('form', () => {
     expect(APPROVED.followups_form.h6).toBe('Hi {{1}}, did you get a chance to look at the form yet?');
@@ -24,7 +26,7 @@ describe('the approved wordings', () => {
   });
   it('none mentions doing it yourself or myGov, none has a dash', () => {
     const all = [...Object.values(APPROVED.followups_pre_payment), ...Object.values(APPROVED.followups_form), ...Object.values(APPROVED.followups_signature)];
-    for (const t of all) { expect(t).not.toMatch(/yourself|on your own|myGov|[—–]/i); expect(t.startsWith('Hi {{1}}')).toBe(true); }
+    for (const t of all) { expect(t).not.toMatch(/yourself|on your own|myGov|[—–]/i); expect(t.startsWith('Hi {{1}}') || t.startsWith('こんにちは、{{1}}さん')).toBe(true); }
   });
 });
 

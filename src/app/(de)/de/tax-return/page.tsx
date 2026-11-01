@@ -323,9 +323,9 @@ export default function TaxReturnPageDE() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
             <Link href="/de" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Startseite</Link>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page">Steuererklärung</span>
           </nav>
 
@@ -334,14 +334,14 @@ export default function TaxReturnPageDE() {
               did; the slogan below is unchanged. Was: "Working Holiday Visum 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(27px, 4.6vw, 41px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               Steuererklärung Australien&nbsp;&middot; Working Holiday Visum 417 &amp; 462
             </span>
             <span style={{ display: 'block' }}>Deine Daten und wohin die Erstattung gehen soll.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>Den Rest übernehmen wir.{' '}</span>
           </h1>
 
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '52ch', marginBottom: '26px' }}>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '52ch', marginBottom: '26px' }}>
             Keine Payslips, kein myGov-Konto, kein Formular zum Entziffern. Ein Fragebogen, eine Unterschrift,
             und eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus.
           </p>
@@ -353,7 +353,7 @@ export default function TaxReturnPageDE() {
               <IconWhatsApp />
               Schreib uns auf WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               Antwort in etwa einer Stunde.
             </p>
           </div>
@@ -365,25 +365,25 @@ export default function TaxReturnPageDE() {
       </section>
 
       {/* ── 1b. WHERE A REFUND COMES FROM ─────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Woher eine Erstattung kommt</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Woher eine Erstattung kommt</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
             Warum Working Holiday Maker oft eine Steuererstattung bekommen
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch', marginBottom: '26px' }}>
             Eine Erstattung ist keine Prämie fürs Backpacken. Sie ist die Lücke zwischen dem, was deine Arbeitgeber einbehalten haben, und dem, was du tatsächlich geschuldet hast, und in einem Working-Holiday-Jahr entsteht diese Lücke meist an den Stellen unten.
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             {REFUND_SOURCES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
               </div>
             ))}
           </div>
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '22px', maxWidth: '62ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '22px', maxWidth: '62ch' }}>
             Nichts davon passiert automatisch, und nichts wird einfach angenommen. Jeder Punkt wird vor der Einreichung mit deinem ATO-Datensatz abgeglichen.{' '}
             <Link href="/de/calculator" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Grobe Schätzung im Rechner ansehen</Link>.
           </p>
@@ -394,12 +394,12 @@ export default function TaxReturnPageDE() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Dein Teil</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Dein Teil</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
             Was wir von dir brauchen
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
             Drei Dinge, und das ist die ganze Liste.
           </p>
 
@@ -407,16 +407,16 @@ export default function TaxReturnPageDE() {
             {NEEDED.map((item) => (
               <div key={item.label} style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{item.label}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{item.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{item.body}</p>
               </div>
             ))}
           </div>
 
-          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #CDE3DB' }}>
+          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
             <p className="font-serif" style={{ fontSize: '19px', lineHeight: 1.45, color: '#0B5240', fontWeight: 700, marginBottom: '10px', maxWidth: '32ch' }}>
               Payslips brauchst du keine.
             </p>
-            <p style={{ ...BODY, color: '#2A3C34', maxWidth: '62ch' }}>
+            <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch' }}>
               Jeder Arbeitgeber, der dich auf eine Lohnabrechnung gesetzt hat, hat längst ein Income Statement zu deiner
               TFN gemeldet, und daraus entsteht die Erklärung. Belege für berufliche Ausgaben sind das Einzige, wonach
               sich Suchen lohnt, und wenn es keine gibt, beschreib uns stattdessen die Arbeit.
@@ -426,15 +426,15 @@ export default function TaxReturnPageDE() {
       </section>
 
       {/* ── 3. DER ABLAUF ────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Von Anfang bis Ende</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Von Anfang bis Ende</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             In welcher Reihenfolge das läuft
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
             Sieben Schritte. Du kommst in zweien davon vor, am Anfang und noch einmal zum Unterschreiben.
           </p>
 
@@ -442,17 +442,17 @@ export default function TaxReturnPageDE() {
             {SEQUENCE.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
           </ol>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '24px', maxWidth: '60ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '24px', maxWidth: '60ch' }}>
             Mehr zu Schritt 04:{' '}
             <Link href="/de/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>was eine ABN ändert</Link>, falls ein Teil deines Einkommens abgerechnet statt ausgezahlt wurde.
           </p>
@@ -472,9 +472,9 @@ export default function TaxReturnPageDE() {
 
           <div className="grid gap-4 md:grid-cols-2" style={{ marginTop: '22px' }}>
             {RULES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #E2EFE9', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{r.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
               </div>
             ))}
           </div>
@@ -484,7 +484,7 @@ export default function TaxReturnPageDE() {
       {/* ── 5. GEBÜHR ──────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
             Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
@@ -497,13 +497,13 @@ export default function TaxReturnPageDE() {
       </section>
 
       {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Fang mit einer Nachricht an, nicht mit einem Formular
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '56ch', marginBottom: '24px' }}>
             Schick uns die Orte, in denen du gearbeitet hast, ungefähr welche Monate, und ob du je über eine ABN
             abgerechnet hast. Daraus sagen wir dir, welche Jahre noch offen sind und wie dein Teil aussieht. Ob du vor
             zwei Jahren heimgeflogen bist, spielt keine Rolle.
@@ -514,7 +514,7 @@ export default function TaxReturnPageDE() {
             <IconWhatsApp />
             Schreib uns auf WhatsApp
           </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
             Antwort in etwa einer Stunde.
           </p>
         </div>
@@ -527,7 +527,7 @@ export default function TaxReturnPageDE() {
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
             Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Vorbereitet
             von unserem Team, von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO
             eingereicht wird.
@@ -535,14 +535,14 @@ export default function TaxReturnPageDE() {
 
           <GoogleReviewsServer lang="de" />
 
-          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>Niemand Seriöses fragt dich nach deinem myGov-Passwort.</strong>{' '}
+            <p style={{ ...BODY, color: '#0F1A16' }}>
+              <strong style={{ color: '#0F1A16' }}>Niemand Seriöses fragt dich nach deinem myGov-Passwort.</strong>{' '}
               Wir fragen nie danach, weil der Weg oben es nicht braucht. Fragt dich eine Nachricht danach, kommt sie
               nicht von uns.
             </p>
@@ -551,7 +551,7 @@ export default function TaxReturnPageDE() {
       </section>
 
       {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
@@ -580,7 +580,7 @@ export default function TaxReturnPageDE() {
       {/* ── 9. RATGEBER ──────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             Die lange Fassung der schwierigen Schritte
@@ -592,9 +592,9 @@ export default function TaxReturnPageDE() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

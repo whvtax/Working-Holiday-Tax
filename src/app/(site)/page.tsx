@@ -317,7 +317,7 @@ export default async function HomePage() {
               did; the slogan below is unchanged. Was: "Working holiday visas 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(31px, 5.4vw, 46px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '18px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '16px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '16px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               Working holiday tax returns&nbsp;&middot; 417 &amp; 462 visas
             </span>
             <span style={{ display: 'block' }}>Anyone can press submit.{' '}</span>
@@ -329,7 +329,7 @@ export default async function HomePage() {
               and answering "three things". The count is not the point, and the
               three figures block is approved copy, so the count comes out here. */}
           <p className="mx-auto hero-animate-delay"
-            style={{ ...LEDE, color: '#4C6459', maxWidth: '72ch', marginBottom: '26px' }}>
+            style={{ ...LEDE, color: '#525A57', maxWidth: '72ch', marginBottom: '26px' }}>
             Your refund is decided before anything is submitted, and none of it is automatic.
           </p>
 
@@ -340,7 +340,7 @@ export default async function HomePage() {
               <IconWhatsApp />
               Message us on WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               Replies in about an hour.
             </p>
           </div>
@@ -355,17 +355,17 @@ export default async function HomePage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>The question everyone asks</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>The question everyone asks</p>
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.7vw, 31px)', lineHeight: 1.2, letterSpacing: '-0.025em', maxWidth: '24ch', marginBottom: '14px' }}>
             {/* One sentence, wrapping on its own. Forcing the two halves onto
                 their own lines split it into four ragged lines at 390px. */}
-            <span style={{ color: '#2A3C34', fontWeight: 400 }}>myGov accepts a wrong return </span>
+            <span style={{ color: '#0F1A16', fontWeight: 400 }}>myGov accepts a wrong return </span>
             <span>as readily as a right one.</span>
           </h2>
 
-          <p style={{ ...LEDE, color: '#4C6459', maxWidth: '54ch', marginBottom: '26px' }}>
+          <p style={{ ...LEDE, color: '#525A57', maxWidth: '54ch', marginBottom: '26px' }}>
             Nothing on the screen checks whether you were a resident, whether the levy was yours, or what your line of
             work can claim.
           </p>
@@ -376,17 +376,17 @@ export default async function HomePage() {
               first row, where they read as column headings on desktop and as the
               key on mobile. The alternating ground and the heavier weight carry
               the distinction from there. The copy itself is unchanged. */}
-          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+          <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
             {COMPARISON.map((row, i) => (
-              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+              <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
                 <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
-                  {i === 0 && <p style={{ ...KICKER, color: '#4C6459', marginBottom: '5px' }}>On myGov</p>}
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{row.mygov}</p>
+                  {i === 0 && <p style={{ ...KICKER, color: '#525A57', marginBottom: '5px' }}>On myGov</p>}
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{row.mygov}</p>
                 </div>
-                <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
                   style={{ padding: '13px 16px', background: '#F2FAF7' }}>
                   {i === 0 && <p style={{ ...KICKER, color: '#0B5240', marginBottom: '5px' }}>With us</p>}
-                  <p style={{ ...BODY, color: '#080F0D', fontWeight: 500 }}>{row.us}</p>
+                  <p style={{ ...BODY, color: '#0F1A16', fontWeight: 500 }}>{row.us}</p>
                 </div>
               </div>
             ))}
@@ -403,21 +403,21 @@ export default async function HomePage() {
               <IconWhatsApp />
               Message us on WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '10px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '10px' }}>
               Replies in about an hour.
             </p>
           </div>
         </div>
       </section>
       {/* ── 3. THE THREE FIGURES ─────────────────────────────────────────── */}
-      <section className="py-9 sm:py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-9 sm:py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '12px' }}>
             What decides the size of a working holiday tax refund?
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '32px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '32px' }}>
             Three things, most of the time.
           </p>
 
@@ -428,7 +428,7 @@ export default async function HomePage() {
                   style={{ fontSize: '33px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>
                   {f.figure}
                 </p>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{f.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{f.body}</p>
               </div>
             ))}
           </div>
@@ -438,7 +438,7 @@ export default async function HomePage() {
       {/* ── 4. WHAT THE FEE COVERS ─────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Our guarantee</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Our guarantee</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '22ch' }}>
             Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
@@ -453,12 +453,12 @@ export default async function HomePage() {
       <section id="how-it-works" className="py-12 lg:py-16 bg-white">
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>The work</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>The work</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             What we go through on every return
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
             Four of the five happen before anything is entered into the return.
           </p>
 
@@ -466,11 +466,11 @@ export default async function HomePage() {
             {ANALYSIS.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px', letterSpacing: '-0.01em' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px', letterSpacing: '-0.01em' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
@@ -480,22 +480,22 @@ export default async function HomePage() {
 
 
       {/* ── 6. TFN OR TFN AND ABN ────────────────────────────────────────── */}
-      <section className="py-9 sm:py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-9 sm:py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Which of these two was your year?
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '26px' }}>
             It changes what your return has to say. Pick the one that matches.
           </p>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="bg-white rounded-[14px] flex flex-col"
-              style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              style={{ padding: '22px 20px', border: '1px solid #DCE0DE', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFN only</h3>
-              <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
+              <p style={{ ...BODY, color: '#0F1A16', marginBottom: '18px', flex: 1 }}>
                 Every job paid you through a payroll, with tax off each payslip.
               </p>
               <WaLink href={waUrl({ topic: 'tax-return', lang: 'en', tier: 'tfn' })} position="inline" topic="tax-return" lang="en" tier="tfn"
@@ -507,9 +507,9 @@ export default async function HomePage() {
             </div>
 
             <div className="bg-white rounded-[14px] flex flex-col"
-              style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
+              style={{ padding: '22px 20px', border: '1px solid #DCE0DE', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFN and ABN</h3>
-              <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
+              <p style={{ ...BODY, color: '#0F1A16', marginBottom: '18px', flex: 1 }}>
                 Part of your income was invoiced against an ABN, with nothing withheld.
               </p>
               <WaLink href={waUrl({ topic: 'abn', lang: 'en', tier: 'tfn-abn' })} position="inline" topic="abn" lang="en" tier="tfn-abn"
@@ -521,7 +521,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <p style={{ fontSize: '14px', color: '#4C6459', marginTop: '18px' }}>
+          <p style={{ fontSize: '14px', color: '#525A57', marginTop: '18px' }}>
             Not sure which one you were?{' '}
             <WaLink href={waUrl({ topic: 'general', lang: 'en', tier: 'unsure' })} position="inline" topic="general" lang="en" tier="unsure"
               className="inline-flex items-center"
@@ -536,7 +536,7 @@ export default async function HomePage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>What we help with</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>What we help with</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '26px' }}>
             From your first payslip to the money that follows you home
@@ -556,7 +556,7 @@ export default async function HomePage() {
                 <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
                   style={{ marginBottom: '10px' }}>{s.icon}</span>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '5px' }}>{s.title}</h3>
-                <p className="flex-1" style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459', marginBottom: '12px' }}>{s.desc}</p>
+                <p className="flex-1" style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57', marginBottom: '12px' }}>{s.desc}</p>
                 <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3" style={{ fontSize: '13px' }}>
                   Learn more →
                 </span>
@@ -573,7 +573,7 @@ export default async function HomePage() {
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginTop: '6px', marginBottom: '4px' }}>
                   UK passport holders
                 </h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>
                   Three years instead of one, Medicare access other backpackers do not get, and the Addy ruling.
                 </p>
               </div>
@@ -586,14 +586,14 @@ export default async function HomePage() {
       </section>
 
       {/* ── 8. TRUST ─────────────────────────────────────────────────────── */}
-      <section className="py-9 sm:py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-9 sm:py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working holiday tax is the only thing we do.
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
             Every return we prepare is for someone on a 417 or 462 visa, reviewed and signed off by a registered tax
             agent before being lodged with the ATO.
           </p>
@@ -601,14 +601,14 @@ export default async function HomePage() {
           <GoogleReviewsServer lang="en" />
 
           <div className="rounded-[12px] flex gap-3 mx-auto"
-            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A', width: 'fit-content', maxWidth: '100%' }}>
+            style={{ marginTop: '28px', padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE', width: 'fit-content', maxWidth: '100%' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>A tax agent will never ask for your myGov login details.</strong>{' '}
+            <p style={{ ...BODY, color: '#0F1A16' }}>
+              <strong style={{ color: '#0F1A16' }}>A tax agent will never ask for your myGov login details.</strong>{' '}
               Anyone who asks for them is not us.
             </p>
           </div>
@@ -640,7 +640,7 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <p style={{ fontSize: '14px', color: '#4C6459', marginTop: '24px' }}>
+          <p style={{ fontSize: '14px', color: '#525A57', marginTop: '24px' }}>
             Something not answered here?{' '}
             <Link href="/contact" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Get in touch</Link>
           </p>
@@ -648,15 +648,15 @@ export default async function HomePage() {
       </section>
 
       {/* ── 10. GUIDES ───────────────────────────────────────────────────── */}
-      <section className="py-9 sm:py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-9 sm:py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Guides</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Guides</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Read the whole answer first, if you would rather
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '24px' }}>
             Nothing is held back to make you get in touch.
           </p>
 
@@ -667,9 +667,9 @@ export default async function HomePage() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

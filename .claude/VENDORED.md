@@ -4,7 +4,7 @@ Everything here was copied from its official repository at a fixed commit, read 
 installation (SKILL.md, scripts, hooks, network calls, environment access), and pinned.
 To update: clone the upstream repo, review the diff since the commit below, then copy.
 
-Reviewed: 26 Oct 2026.
+Reviewed: 26 Oct 2026. Design skills added 31 Oct 2026.
 
 ## Skills (`.claude/skills/`)
 
@@ -26,6 +26,20 @@ Reviewed: 26 Oct 2026.
 | tob-sarif-parsing | trailofbits/skills `plugins/static-analysis/skills/sarif-parsing` | 196a907 | Local SARIF parsing |
 | next-bundle-optimizer | vercel/next.js `skills/next-bundle-optimizer` | cbf49db | Official Next.js skill |
 | building-components | vercel/components.build `skills/building-components` | ba72745 | Instructions and reference docs only. Do not follow its marketplace examples (`npx shadcn add <url>`) without a separate review |
+| apple-hig-designer | axiaoge2/Apple-Hig-Designer (MIT) | ff17b91 | Instructions, a reference doc, CSS tokens and a JSX example. No scripts. Built for iOS/macOS: use it for spacing, motion, hierarchy and accessibility ideas. Do NOT load SF Pro on the web (Apple font licence); our fonts stay Bricolage Grotesque, DM Sans, Zen Kaku Gothic New |
+| ux-heuristics | wondelai/skills `ux-heuristics` (MIT) | c172996 | Instructions only. Contains Amazon affiliate links in the reading list; ignore them |
+| refactoring-ui | wondelai/skills `refactoring-ui` (MIT) | c172996 | Instructions only |
+| web-typography | wondelai/skills `web-typography` (MIT) | c172996 | Instructions only |
+| steve-jobs-design-review | wondelai/skills `steve-jobs-design-review` (MIT) | c172996 | Instructions only |
+| microinteractions | wondelai/skills `microinteractions` (MIT) | c172996 | Instructions only |
+| emil-design-eng | emilkowalski/skill `skills/emil-design-eng` | a81dbca | Instructions only |
+| apple-design | emilkowalski/skill `skills/apple-design` | a81dbca | Instructions only. Principles, not SF Pro (licence) |
+| animate | emilkowalski/skill `skills/animate` (+RECIPES) | a81dbca | Instructions only |
+| animation-performance | emilkowalski/skill | a81dbca | Instructions only |
+| animation-vocabulary | emilkowalski/skill | a81dbca | Instructions only |
+| review-animations | emilkowalski/skill (+STANDARDS) | a81dbca | Instructions only |
+| improve-animations | emilkowalski/skill (+AUDIT, PLAN-TEMPLATE) | a81dbca | Instructions only. Removed 4 zero-width spaces before code fences in PLAN-TEMPLATE.md (formatting trick, harmless) |
+| find-animation-opportunities | emilkowalski/skill | a81dbca | Instructions only |
 
 ## Plugins (`.claude/vendor-marketplace/`, enabled in `.claude/settings.json`)
 
@@ -51,3 +65,9 @@ Reviewed: 26 Oct 2026.
 - trailofbits gh-cli (its hooks intercept every web fetch and curl), smart-contract, C/C++, Rust and binary-analysis plugins, codeql.
 - next.js next-dev-loop: it requires the `agent-browser` CLI installed globally at `@latest`, which is outside the approved list and was not reviewed. Playwright MCP covers browser verification.
 - next.js cache-components and partial-prefetching adoption/optimizer skills: they change the app's architecture; add only when adopting those features.
+- Hallmark (nutlope/hallmark): its scripts edit the user settings with a hook, call the Together AI image API with an API key, and drive a local Chrome. The SKILL.md depends on them. Not installed.
+- Taste Skill (Leonxlnx/taste-skill) and Impeccable (pbakaus/impeccable): large script and CLI tooling (browser control over CDP, Rust and npm packages, editor extensions). Not installed. Their design ideas are covered by frontend-design and ui-ux-pro-max.
+- The other 60 or so wondelai skills (marketing, strategy, architecture): not about the website design; skipped.
+- Impeccable (pbakaus/impeccable), reviewed again 31 Oct: its SKILL.md requires a launcher that runs a platform binary (downloaded and checksum-verified), and its plugin hooks run on SessionStart, after every Edit/Write and at Stop. A compiled binary plus always-on hooks cannot be read line by line. Not installed.
+- Taste Skill (Leonxlnx/taste-skill): Node scripts that drive a browser over CDP, plus an install script that symlinks into `~/.claude`. Not installed.
+- emilkowalski/skill: animate-expo, mobile-native, write-swift, ask-sonner, pick-ui-library, prototype, break-ui, remove-animations. Not for this website, or add libraries.

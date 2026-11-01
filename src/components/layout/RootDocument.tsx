@@ -1,5 +1,6 @@
 import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
-import { Fraunces, DM_Sans, Inter } from 'next/font/google'
+import { Noto_Sans_JP, Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import '@/app/globals.css'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
@@ -11,31 +12,44 @@ import PublicShellClient from '@/components/layout/PublicShellClient'
 import { MobileLanguageBanner } from '@/components/ui/MobileLanguageBanner'
 import { LangSync } from '@/components/ui/LangSync'
 
-// Fraunces replaces Playfair Display. Playfair is a display face: its hairlines
-// are drawn for 44px headlines and thin out at the 21px where most of this
-// site's headings actually sit on a phone. Fraunces holds its weight there, is
-// rounder, and is not on every other site. It is variable, so SOFT and opsz are
-// requested alongside the weight range and set in globals.css.
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  axes: ['SOFT', 'WONK', 'opsz'],
-  style: ['normal', 'italic'],
-  variable: '--font-serif',
-  display: 'swap',
-})
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  // 700-900 included because headings ask for them (the form title is 800).
-  // Without these the browser falls back to 600 or fakes the weight, and bold
-  // headings render noticeably softer than intended.
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
+// WHT brand type (locked 1 Nov): Be Vietnam Pro for headings and body, IBM Plex
+// Mono for prices, figures and small uppercase labels, Noto Sans JP for the
+// Japanese pages (Be Vietnam Pro has no kana or kanji). Latin faces are
+// self-hosted from a WHT-named folder. --font-serif is kept as an alias of the
+// sans face so every existing rule picks up the brand heading font.
+const brandSans = localFont({
+  src: [
+    { path: '../../../public/wht-assets/fonts/be-vietnam-pro-latin-400-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../../../public/wht-assets/fonts/be-vietnam-pro-latin-500-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../../../public/wht-assets/fonts/be-vietnam-pro-latin-600-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../../../public/wht-assets/fonts/be-vietnam-pro-latin-700-normal.woff2', weight: '700', style: 'normal' },
+  ],
   variable: '--font-sans',
   display: 'swap',
+  fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
+})
+
+const brandMono = localFont({
+  src: [
+    { path: '../../../public/wht-assets/fonts/ibm-plex-mono-latin-400-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../../../public/wht-assets/fonts/ibm-plex-mono-latin-500-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../../../public/wht-assets/fonts/ibm-plex-mono-latin-600-normal.woff2', weight: '600', style: 'normal' },
+  ],
+  variable: '--font-mono',
+  display: 'swap',
+  fallback: ['ui-monospace', 'Menlo', 'monospace'],
+})
+
+// Google splits this into unicode-range slices, so Latin visitors download none of it.
+const notoSansJp = Noto_Sans_JP({
+  weight: ['400', '500', '700'],
+  variable: '--font-jp',
+  display: 'swap',
+  preload: false,
 })
 
 // The admin's interface font — the CRM and Will only. It is NOT the site's font:
-// the public pages keep DM Sans, which is the brand.
+// the public pages use Be Vietnam Pro, which is the brand.
 //
 // Why a different face for the admin: DM Sans is a geometric sans, drawn for
 // headings and marketing copy. The admin is a dense reference tool read at
@@ -284,7 +298,7 @@ export function RootDocument({ lang, children }: { lang: string; children: React
   //               relying on 'strict-dynamic'. Verify in a preview deployment
   //               before enabling it in production.
   return (
-    <html lang={lang} className={`${fraunces.variable} ${dmSans.variable} ${inter.variable}`}>
+    <html lang={lang} className={`${brandSans.variable} ${brandMono.variable} ${notoSansJp.variable} ${inter.variable}`}>
       <head>
         {/* Fonts are self-hosted by next/font/google at build time, so no
             runtime connection to Google Font origins is needed. */}

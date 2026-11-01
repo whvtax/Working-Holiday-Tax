@@ -187,7 +187,7 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
         <section style={{ background: colors.bg }}>
           <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 20px 48px' }}>
 
-            <nav aria-label={cfg.breadcrumbAriaLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#4C6459', marginBottom: '16px' }}>
+            <nav aria-label={cfg.breadcrumbAriaLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#525A57', marginBottom: '16px' }}>
               <Link href={cfg.basePath} style={{ color: 'inherit', textDecoration: 'none' }}>{cfg.homeLabel}</Link>
               <span aria-hidden="true">/</span>
               <Link href={`${cfg.basePath}/blog`} style={{ color: 'inherit', textDecoration: 'none' }}>{cfg.blogLabel}</Link>
@@ -202,11 +202,11 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
               </span>
             </div>
 
-            <h1 className="font-serif font-black" style={{ fontSize: 'clamp(26px, 4vw, 42px)', lineHeight: S.h1.lineHeight, letterSpacing: S.h1.letterSpacing, color: '#080F0D', marginBottom: '12px', maxWidth: S.h1.maxWidth }}>
+            <h1 className="font-serif font-black" style={{ fontSize: 'clamp(26px, 4vw, 42px)', lineHeight: S.h1.lineHeight, letterSpacing: S.h1.letterSpacing, color: '#0F1A16', marginBottom: '12px', maxWidth: S.h1.maxWidth }}>
               {meta.title}
             </h1>
 
-            <p style={{ fontSize: 'clamp(16px, 1.3vw, 17px)', lineHeight: S.introP.lineHeight, color: '#2A3C34', maxWidth: S.introP.maxWidth, fontWeight: 400, marginBottom: '24px' }}>
+            <p style={{ fontSize: 'clamp(16px, 1.3vw, 17px)', lineHeight: S.introP.lineHeight, color: '#0F1A16', maxWidth: S.introP.maxWidth, fontWeight: 400, marginBottom: '24px' }}>
               {meta.intro}
             </p>
 
@@ -232,7 +232,7 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
             {/* 68ch is measured against the width of '0', so in Japanese it is
                 roughly 34 characters — the same value reads well in both. */}
             {intro.paragraphs.map((p, i) => (
-              <p key={i} style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: S.coversPLineHeight, fontWeight: 400, marginBottom: '1rem', maxWidth: '68ch' }}>
+              <p key={i} style={{ fontSize: '15.5px', color: '#0F1A16', lineHeight: S.coversPLineHeight, fontWeight: 400, marginBottom: '1rem', maxWidth: '68ch' }}>
                 {p}
               </p>
             ))}
@@ -251,7 +251,7 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
 
         <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 24px' }}>
 
-          <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#080F0D', marginBottom: '24px', letterSpacing: '-0.02em' }}>
+          <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#0F1A16', marginBottom: '24px', letterSpacing: '-0.02em' }}>
             {cfg.gridHeading(cfg.catLabel(meta.category), articles.length)}
           </h2>
 
@@ -261,7 +261,7 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
                 key={article.slug}
                 href={`${cfg.basePath}/blog/${article.slug}`}
                 className="category-card"
-                style={{ display: 'flex', flexDirection: 'column', gap: '0', padding: '0', background: '#fff', textDecoration: 'none', borderRadius: '16px', border: '1px solid #E2EFE9' }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '0', padding: '0', background: '#fff', textDecoration: 'none', borderRadius: '16px', border: '1px solid #DCE0DE' }}
               >
                 <div className="blog-card-hero" style={{ aspectRatio: '16/9', overflow: 'hidden', borderRadius: '15px 15px 0 0' }}>
                   <CategoryHero category={article.category} title={article.title} slug={article.slug} />
@@ -281,13 +281,13 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
                     }}>
                       {cfg.catLabel(article.category)}
                     </span>
-                    <span style={{ color: '#CDE3DB' }}>·</span>
-                    <span style={{ fontSize: '13px', color: '#4C6459' }}>{cfg.readTimeLabel(article.readTime)}</span>
+                    <span style={{ color: '#DCE0DE' }}>·</span>
+                    <span style={{ fontSize: '13px', color: '#525A57' }}>{cfg.readTimeLabel(article.readTime)}</span>
                   </div>
-                  <h3 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', lineHeight: S.cardTitleLineHeight, letterSpacing: '-0.015em', margin: 0 }}>
+                  <h3 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#0F1A16', lineHeight: S.cardTitleLineHeight, letterSpacing: '-0.015em', margin: 0 }}>
                     {article.title}
                   </h3>
-                  <p style={{ fontSize: '13.5px', color: '#4C6459', lineHeight: S.cardDescLineHeight, margin: 0, fontWeight: 400, flex: 1 }}>
+                  <p style={{ fontSize: '13.5px', color: '#525A57', lineHeight: S.cardDescLineHeight, margin: 0, fontWeight: 400, flex: 1 }}>
                     {article.description}
                   </p>
                   <span style={{ fontSize: '14px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
@@ -299,7 +299,7 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
           </div>
         </section>
 
-        <section style={{ maxWidth: '780px', margin: '0 auto', padding: '48px 20px 60px', borderTop: '1px solid #E2EFE9', marginTop: '48px' }}>
+        <section style={{ maxWidth: '780px', margin: '0 auto', padding: '48px 20px 60px', borderTop: '1px solid #DCE0DE', marginTop: '48px' }}>
           <div style={{ marginBottom: '24px' }}>
             <p style={{ ...S.faqKicker(colors.text), marginBottom: '8px' }}>
               {cfg.faqKickerLabel}
@@ -311,8 +311,8 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {meta.faq.map((f, i) => (
-              <details key={i} className="faq-item" style={{ borderBottom: '1px solid #E2EFE9', padding: '16px 0', cursor: 'pointer' }}>
-                <summary className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', letterSpacing: '-0.015em', listStyle: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+              <details key={i} className="faq-item" style={{ borderBottom: '1px solid #DCE0DE', padding: '16px 0', cursor: 'pointer' }}>
+                <summary className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#0F1A16', letterSpacing: '-0.015em', listStyle: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                   <span style={{ flex: 1 }}>{f.question}</span>
                   <span style={{ flexShrink: 0, color: colors.text, fontSize: '20px', fontWeight: 300, lineHeight: 1 }}>+</span>
                 </summary>
@@ -320,7 +320,7 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
                     on a phone. faqLd above uses the original f.answer, so the
                     structured data is unchanged. */}
                 {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} style={{ fontSize: '15px', color: '#2A3C34', lineHeight: S.faqAnswerLineHeight, fontWeight: 400, marginTop: '12px', marginBottom: 0 }}>
+                  <p key={j} style={{ fontSize: '15px', color: '#0F1A16', lineHeight: S.faqAnswerLineHeight, fontWeight: 400, marginTop: '12px', marginBottom: 0 }}>
                     {para}
                   </p>
                 ))}
@@ -330,7 +330,7 @@ export function LocalizedCategoryPage({ cfg, slug }: { cfg: CategoryLocaleConfig
         </section>
 
         <section style={{ maxWidth: '780px', margin: '0 auto', padding: '0 20px 80px' }}>
-          <h2 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', marginBottom: '16px', letterSpacing: '-0.015em' }}>
+          <h2 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#0F1A16', marginBottom: '16px', letterSpacing: '-0.015em' }}>
             {cfg.otherCategoriesHeading}
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>

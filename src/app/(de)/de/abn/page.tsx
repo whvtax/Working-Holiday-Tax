@@ -254,9 +254,9 @@ export default function ABNPageDE() {
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#4C6459', marginBottom: '10px' }}>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
             <Link href="/de" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Startseite</Link>
-            <span aria-hidden="true" style={{ color: '#CDE3DB' }}>/</span>
+            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
             <span aria-current="page">ABN</span>
           </nav>
 
@@ -265,14 +265,14 @@ export default function ABNPageDE() {
               did; the slogan below is unchanged. Was: "Working Holiday Visum 417 &amp; 462". */}
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(28px, 4.8vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#16775C', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
+            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
               ABN mit Working Holiday Visum&nbsp;&middot; 417 &amp; 462
             </span>
             <span style={{ display: 'block' }}>Eine ABN ändert nicht deinen Job.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>Sie ändert deine Steuererklärung.{' '}</span>
           </h1>
 
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '50ch', marginBottom: '26px' }}>
+          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '50ch', marginBottom: '26px' }}>
             Unversteuertes Einkommen, Betriebsausgaben, eine GST-Entscheidung, und unter allen dreien eine Frage: warst
             du überhaupt selbstständig.
           </p>
@@ -284,7 +284,7 @@ export default function ABNPageDE() {
               <IconWhatsApp />
               Schreib uns auf WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
               Antwort in etwa einer Stunde.
             </p>
           </div>
@@ -299,14 +299,14 @@ export default function ABNPageDE() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Aufteilung</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Die Aufteilung</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
             Was ändert sich mit einer ABN an deiner Erklärung?
           </h2>
           {/* "Eine Erklärung muss beide Hälften abgleichen" sagt die letzte
               Karte im Abschnitt darunter und noch einmal der NextStep am Fuß. */}
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '30px' }}>
             Vier Dinge, und sie verstärken sich gegenseitig.
           </p>
 
@@ -314,11 +314,11 @@ export default function ABNPageDE() {
             {THE_SPLIT.map((s) => (
               <li key={s.n} className="flex gap-4">
                 <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#16775C', width: '28px', paddingTop: '2px' }}
+                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px' }}
                   aria-hidden="true">{s.n}</span>
                 <div>
                   <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#2A3C34' }}>{s.body}</p>
+                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
                 </div>
               </li>
             ))}
@@ -327,33 +327,33 @@ export default function ABNPageDE() {
       </section>
 
       {/* ── 3. DIE WARNUNG ───────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
 
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '26ch', marginBottom: '16px' }}>
             Solltest du eine ABN anmelden, weil ein Arbeitgeber danach fragt?
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '16px' }}>
             Nicht, bevor jemand den Job angesehen hat. Eine ABN über Arbeit, die in Wahrheit Anstellung ist, kostet
             dich Superannuation und Steuerabzug, streicht den Unfallversicherungsschutz und schließt dich von
             Mindestlohn und Zuschlägen aus. All das geht auf deine Kosten. Das kommt häufig in der Farmarbeit, der
             Gastronomie, der Reinigung und auf dem Bau vor.
           </p>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '22px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '22px' }}>
             Entscheidend ist die Kontrolle, nicht das Papier. Wer bestimmt, wann du arbeitest, wer sagt, wie es gemacht
             wird, wer die Ausrüstung stellt, und wer das Risiko trägt, wenn es schiefgeht. Zeigen die Antworten auf ihn,
             ist eine ABN das falsche Mittel.
           </p>
 
-          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
               <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <p style={{ ...BODY, color: '#2A3C34' }}>
-              <strong style={{ color: '#080F0D' }}>Schick uns den Job, bevor du dich registrierst.</strong>{' '}
+            <p style={{ ...BODY, color: '#0F1A16' }}>
+              <strong style={{ color: '#0F1A16' }}>Schick uns den Job, bevor du dich registrierst.</strong>{' '}
               Was die Arbeit umfasst, wer was stellt, und wie du bezahlt werden sollst. Wir sagen dir, ob es Anstellung oder Selbstständigkeit ist.
             </p>
           </div>
@@ -364,21 +364,21 @@ export default function ABNPageDE() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
 
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Die Arbeit</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Die Arbeit</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Was wir dabei machen
           </h2>
-          <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
+          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '26px' }}>
             Die Registrierung selbst ist kostenlos und dauert Minuten. Alles, was darüber entscheidet, was sie dich
             kostet, passiert davor und danach.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
             {WHAT_WE_DO.map((c) => (
-              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F5F9F7', border: '1px solid #E2EFE9' }}>
+              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{c.title}</h3>
-                <p style={{ ...BODY, color: '#2A3C34' }}>{c.body}</p>
+                <p style={{ ...BODY, color: '#0F1A16' }}>{c.body}</p>
               </div>
             ))}
           </div>
@@ -388,7 +388,7 @@ export default function ABNPageDE() {
             Formular welches ist. Wir regeln das direkt mit dem ATO.
           </p>
 
-          <p style={{ ...BODY, color: '#4C6459', marginTop: '18px', maxWidth: '60ch' }}>
+          <p style={{ ...BODY, color: '#525A57', marginTop: '18px', maxWidth: '60ch' }}>
             Noch keine ABN und auch keine Steuernummer? Die{' '}
             <Link href="/de/tfn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>TFN kommt zuerst</Link>, weil der
             ABN-Antrag damit abgeglichen wird.
@@ -399,7 +399,7 @@ export default function ABNPageDE() {
       {/* ── 5. GEBÜHR ──────────────────────────────────────────────────── */}
       <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#F9D88A', marginBottom: '14px' }}>Unsere Garantie</p>
+          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Unsere Garantie</p>
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
             Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
@@ -411,13 +411,13 @@ export default function ABNPageDE() {
       </section>
 
       {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Beschreib uns die Arbeit
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
+          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '56ch', marginBottom: '24px' }}>
             Wem du Rechnungen schreiben würdest, was du dabei machst, und wer die Ausrüstung stellt. Das reicht uns für
             eine erste Einschätzung, ob eine ABN hier überhaupt sinnvoll ist.
           </p>
@@ -427,7 +427,7 @@ export default function ABNPageDE() {
             <IconWhatsApp />
             Schreib uns auf WhatsApp
           </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
+          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
             Antwort in etwa einer Stunde.
           </p>
         </div>
@@ -440,7 +440,7 @@ export default function ABNPageDE() {
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
             Deshalb sehen wir dieselben ABN-Konstruktionen immer wieder: der Farmvertrag, die Lieferplattform, die
             Baustelle, die alle als Subunternehmer bezahlt.
           </p>
@@ -449,7 +449,7 @@ export default function ABNPageDE() {
       </section>
 
       {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[820px] mx-auto px-5 md:px-8">
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
@@ -478,7 +478,7 @@ export default function ABNPageDE() {
       {/* ── 9. RATGEBER ──────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#16775C', marginBottom: '12px' }}>Ratgeber</p>
+          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Ratgeber</p>
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
             Mehr zu Selbstständigkeit, Betriebsausgaben und GST
@@ -489,9 +489,9 @@ export default function ABNPageDE() {
             {GUIDES.map((g) => (
               <Link key={g.href} href={g.href}
                 className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #E2EFE9', display: 'block' }}>
+                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459' }}>{g.desc}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
               </Link>
             ))}
           </div>

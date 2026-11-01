@@ -45,8 +45,8 @@ const styles = `
   /* Padding keeps a ~40px tap target even though the text is small. */
   /* #9DB5AC is 2.18:1 on white and was retired from the palette for exactly
      this reason. The inactive languages are the control's only affordance, so
-     they read at subtle var(--f-muted, #587066), 5.35:1, and the active one stays forest. */
-  .flang-btn { padding: 9px 10px; font-size: 12px; font-weight: 600; font-family: inherit; letter-spacing: .04em; color: var(--f-muted, #587066); background: none; border: none; border-bottom: 2px solid transparent; border-radius: 0; cursor: pointer; transition: color .15s, border-color .15s; }
+     they read at subtle var(--f-muted, #525A57), 5.35:1, and the active one stays forest. */
+  .flang-btn { padding: 9px 10px; font-size: 12px; font-weight: 600; font-family: inherit; letter-spacing: .04em; color: var(--f-muted, #525A57); background: none; border: none; border-bottom: 2px solid transparent; border-radius: 0; cursor: pointer; transition: color .15s, border-color .15s; }
   .flang-btn:hover { color: var(--f-brand, #0B5240); }
   .flang-btn.is-active { color: var(--f-brand, #0B5240); border-bottom-color: var(--f-brand, #0B5240); }
 `

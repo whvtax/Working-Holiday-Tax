@@ -2,25 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── SERIF SETTINGS ───────────────────────────────────────────────────────
-   Fraunces is a variable face. Left at its defaults it is heavier and wider
-   than Playfair was, which would add a wrapped line to most headings on a
-   phone. Weight 800 with a little negative tracking pays that back: measured
-   against Newsreader on a full page at 390px, both came out at exactly the
-   same height.
-
-   SOFT 40 rounds the terminals, which is the whole reason this face was
-   chosen. WONK 0 keeps the quirky alternate letterforms switched off, since
-   this is a tax service and not a coffee brand. opsz 36 is the optical size
-   the headings actually render at.
+/* ── BRAND TYPE (locked 1 Nov) ───────────────────────────────────────────
+   Be Vietnam Pro for headings and body, IBM Plex Mono for prices, figures and
+   small uppercase labels. --font-serif is an alias kept so every existing rule
+   uses the brand heading face. Japanese pages put Noto Sans JP first, because
+   Be Vietnam Pro has no kana or kanji; Latin letters and digits inside Japanese
+   text still come from Be Vietnam Pro through the fallback order.
    ─────────────────────────────────────────────────────────────────────── */
+html {
+  --font-serif: var(--font-sans);
+}
+html[lang|="ja"] {
+  --font-sans: var(--font-jp), 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+  --font-serif: var(--font-sans);
+}
 :where(h1, h2, h3, h4, .font-serif) {
-  font-variation-settings: 'SOFT' 40, 'WONK' 0, 'opsz' 36;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 .font-serif.font-black,
 h1.font-serif, h2.font-serif, h3.font-serif {
-  font-weight: 800;
-  letter-spacing: -0.022em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, Menlo, monospace;
 }
 
 /* Skip-to-content link - CSS-only (no JS event handlers, works in Server Components).
@@ -130,22 +136,22 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   /* ── Section label ── */
   .section-label {
     @apply inline-flex items-center gap-3 text-[11px] font-medium tracking-[0.12em] uppercase;
-    color: #E9A020;
+    color: #0B5240;
   }
   .section-label.light  { @apply text-forest-300; }
   .section-label.center { @apply justify-center; }
 
   /* ── Info callout ── */
-  .info-block { @apply pl-4 my-6; border-left: 2px solid #E9A020; }
+  .info-block { @apply pl-4 my-6; border-left: 2px solid #0B5240; }
   .info-block p { @apply text-[13.5px] text-body leading-[1.75]; }
 
   /* ── Input ── */
   .input-base {
     @apply w-full bg-white text-ink font-sans outline-none transition-all;
     height: 52px; padding: 0 16px; font-size: 16px;
-    border: 1.5px solid #E2EFE9; border-radius: 12px;
+    border: 1.5px solid #DCE0DE; border-radius: 12px;
   }
-  .input-base::placeholder { color: #4C6459; }
+  .input-base::placeholder { color: #525A57; }
   .input-base:focus { border-color: #0B5240; box-shadow: 0 0 0 3px rgba(11,82,64,0.08); }
 
   /* ══════════════════════════════════════════════════════════════════
@@ -159,21 +165,16 @@ h1.font-serif, h2.font-serif, h3.font-serif {
     padding: 0 28px;
     font-size: 14.5px;
     letter-spacing: -0.01em;
-    background: #E9A020;
-    color: #1A2822;
+    background: #0B5240;
+    color: #FFFFFF;
     border-radius: 100px;
-    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 3px 12px rgba(233,160,32,.18);
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 3px 12px rgba(11,82,64,.18);
   }
   .btn-primary:hover {
-    /* The dark ink stays on hover. White on #C47E10 measures 3.31:1 at this
-       size, below the 4.5:1 minimum, and the palette's own note on this colour
-       says so: "BUTTON FILL ONLY. dark ink on top, never white". Keeping the
-       resting ink gives 4.63:1. This is the button every conversion path on the
-       site runs through, and it was the one element that got harder to read the
-       moment somebody touched it. */
-    background: #C47E10; color: #1A2822;
+    /* White on forest and on its darker hover shade both pass 4.5:1. */
+    background: #083D30; color: #FFFFFF;
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,.1), 0 8px 24px rgba(233,160,32,.28);
+    box-shadow: 0 2px 4px rgba(0,0,0,.1), 0 8px 24px rgba(11,82,64,.28);
   }
   .btn-primary:active { transform: none; }
 
@@ -182,9 +183,9 @@ h1.font-serif, h2.font-serif, h3.font-serif {
     @apply inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap transition-all;
     height: 50px; padding: 0 22px; font-size: 14px;
     color: #0B5240; background: transparent;
-    border: 1.5px solid #C8EAE0; border-radius: 100px;
+    border: 1.5px solid #DCE0DE; border-radius: 100px;
   }
-  .btn-ghost-dark:hover { border-color: #0B5240; background: #EAF6F1; transform: translateY(-1px); }
+  .btn-ghost-dark:hover { border-color: #0B5240; background: #F2FAF7; transform: translateY(-1px); }
 
   /* Ghost light (on dark bg) */
   .btn-ghost-light {
@@ -250,7 +251,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 
     /* Ghost button - same visual weight as primary */
     .hero-cta-pair .btn-ghost-dark {
-      border: 1.5px solid #C8EAE0 !important;
+      border: 1.5px solid #DCE0DE !important;
       color: #0B5240 !important;
     }
 
@@ -322,8 +323,8 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 
   /* ── Hover utilities ── */
   .hover-forest:hover       { color: #0B5240; }
-  .hover-forest-light:hover { color: #16775C; }
-  .hover-forest-bg:hover    { background: #EAF6F1; border-color: #0B5240; }
+  .hover-forest-light:hover { color: #0B5240; }
+  .hover-forest-bg:hover    { background: #F2FAF7; border-color: #0B5240; }
   /* ── Mobile-first centered hero layout ── */
   @media (max-width: 639px) {
     /* Hero inner text alignment */
@@ -400,7 +401,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   margin-top: 32px;
   padding: 24px;
   background: #fff;
-  border: 1.5px solid #C8EAE0;
+  border: 1.5px solid #DCE0DE;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
@@ -419,17 +420,17 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   flex: 1;
 }
 .service-cta-heading {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(16px, 1.7vw, 19px);
   font-weight: 700;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.02em;
   line-height: 1.3;
   margin: 0 0 6px 0;
 }
 .service-cta-sub {
   font-size: 13.5px;
-  color: #587066;
+  color: #525A57;
   line-height: 1.65;
   font-weight: 300;
   margin: 0;
@@ -453,7 +454,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   -webkit-tap-highlight-color: transparent;
 }
 .service-cta-button:hover {
-  background: #16775C;
+  background: #0B5240;
   transform: translateY(-1px);
 }
 .service-cta-button:active {
@@ -464,9 +465,9 @@ h1.font-serif, h2.font-serif, h3.font-serif {
    TFN INTRO - "Your first step" / Step 01 motif
    ───────────────────────────────────────────────────────────────── */
 .tfn-intro-section {
-  background: #F5F9F7;
-  border-top: 1px solid #E2EFE9;
-  border-bottom: 1px solid #E2EFE9;
+  background: #F2FAF7;
+  border-top: 1px solid #DCE0DE;
+  border-bottom: 1px solid #DCE0DE;
   padding: 44px 0 48px;
 }
 @media (min-width: 1024px) {
@@ -506,17 +507,17 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   .tfn-intro-visual { order: 2; }
 }
 .tfn-intro-heading {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(26px, 3.2vw, 36px);
   font-weight: 900;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.025em;
   line-height: 1.15;
   margin: 0 0 16px 0;
 }
 .tfn-intro-body {
   font-size: clamp(14.5px, 1.4vw, 16px);
-  color: #2A3C34;
+  color: #0F1A16;
   line-height: 1.75;
   font-weight: 300;
   margin: 0 0 12px 0;
@@ -530,7 +531,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   gap: 10px;
   padding: 14px 16px;
   background: #fff;
-  border-left: 3px solid #2FA880;
+  border-left: 3px solid #0B5240;
   border-radius: 8px;
   margin-top: 16px;
 }
@@ -547,13 +548,13 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   border: 1.5px solid #FBD0BB;
 }
 .tfn-comparison-good {
-  background: #EAF6F1;
-  border: 1.5px solid #C8EAE0;
+  background: #F2FAF7;
+  border: 1.5px solid #DCE0DE;
 }
 .tfn-comparison-label {
   font-size: 11px;
   font-weight: 600;
-  color: #587066;
+  color: #525A57;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin: 0 0 8px 0;
@@ -561,7 +562,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .tfn-comparison-bad .tfn-comparison-label { color: #9A3412; }
 .tfn-comparison-good .tfn-comparison-label { color: #0B5240; }
 .tfn-comparison-rate {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 48px;
   font-weight: 900;
   letter-spacing: -0.04em;
@@ -575,7 +576,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .tfn-comparison-good .tfn-comparison-rate { color: #0B5240; }
 .tfn-comparison-detail {
   font-size: 12px;
-  color: #587066;
+  color: #525A57;
   font-weight: 300;
   margin: 0;
   line-height: 1.4;
@@ -586,14 +587,14 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .tfn-comparison-arrow {
   font-size: 22px;
-  color: #16775C;
+  color: #0B5240;
   line-height: 1;
   margin-bottom: 4px;
 }
 .tfn-comparison-savings {
   font-size: 12px;
   font-weight: 600;
-  color: #16775C;
+  color: #0B5240;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin: 0;
@@ -603,9 +604,9 @@ h1.font-serif, h2.font-serif, h3.font-serif {
    TAX RETURN INTRO - Money/refund motif
    ───────────────────────────────────────────────────────────────── */
 .taxret-intro-section {
-  background: #F5F9F7;
-  border-top: 1px solid #E2EFE9;
-  border-bottom: 1px solid #E2EFE9;
+  background: #F2FAF7;
+  border-top: 1px solid #DCE0DE;
+  border-bottom: 1px solid #DCE0DE;
   padding: 44px 0 48px;
 }
 @media (min-width: 1024px) {
@@ -640,23 +641,23 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .taxret-intro-eyebrow {
   font-size: 11px;
   font-weight: 600;
-  color: #E9A020;
+  color: #0B5240;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 10px 0;
 }
 .taxret-intro-heading {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(26px, 3.2vw, 36px);
   font-weight: 900;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.025em;
   line-height: 1.15;
   margin: 0 0 16px 0;
 }
 .taxret-intro-body {
   font-size: clamp(14.5px, 1.4vw, 16px);
-  color: #2A3C34;
+  color: #0F1A16;
   line-height: 1.75;
   font-weight: 300;
   margin: 0 0 12px 0;
@@ -684,11 +685,11 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   margin: 0 0 8px 0;
 }
 .taxret-refund-amount {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(21px, 2.8vw, 30px);
   font-weight: 800;
   letter-spacing: -0.01em;
-  color: #E9A020;
+  color: #FFFFFF;
   margin: 0 0 6px 0;
   line-height: 1.25;
 }
@@ -703,7 +704,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   display: inline-flex;
   gap: 3px;
   padding: 6px 14px;
-  background: rgba(233, 160, 32, 0.15);
+  background: rgba(11,82,64, 0.15);
   border-radius: 100px;
 }
 
@@ -712,7 +713,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   margin-top: 16px;
   padding: 14px 18px;
   background: #fff;
-  border: 1px solid #E2EFE9;
+  border: 1px solid #DCE0DE;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -724,19 +725,19 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   justify-content: space-between;
   font-size: 12px;
   font-weight: 600;
-  color: #587066;
+  color: #525A57;
 }
-.taxret-arrow-item span:first-child { color: #16775C; }
-.taxret-arrow-back span:last-child { color: #587066; }
+.taxret-arrow-item span:first-child { color: #0B5240; }
+.taxret-arrow-back span:last-child { color: #525A57; }
 .taxret-arrow-back span:first-child { color: #0B5240; font-size: 14px; }
 
 /* ─────────────────────────────────────────────────────────────────
    SUPER INTRO - "Don't leave it behind" / boarding pass motif
    ───────────────────────────────────────────────────────────────── */
 .super-intro-section {
-  background: #F5F9F7;
-  border-top: 1px solid #E2EFE9;
-  border-bottom: 1px solid #E2EFE9;
+  background: #F2FAF7;
+  border-top: 1px solid #DCE0DE;
+  border-bottom: 1px solid #DCE0DE;
   padding: 44px 0 48px;
 }
 @media (min-width: 1024px) {
@@ -777,23 +778,23 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .super-intro-eyebrow {
   font-size: 11px;
   font-weight: 600;
-  color: #E9A020;
+  color: #0B5240;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 10px 0;
 }
 .super-intro-heading {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(26px, 3.2vw, 36px);
   font-weight: 900;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.025em;
   line-height: 1.15;
   margin: 0 0 16px 0;
 }
 .super-intro-body {
   font-size: clamp(14.5px, 1.4vw, 16px);
-  color: #2A3C34;
+  color: #0F1A16;
   line-height: 1.75;
   font-weight: 300;
   margin: 0 0 12px 0;
@@ -806,7 +807,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 /* Boarding pass visual */
 .super-boarding-card {
   background: #fff;
-  border: 1.5px solid #E2EFE9;
+  border: 1.5px solid #DCE0DE;
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 12px 28px -10px rgba(11, 82, 64, 0.15);
@@ -818,7 +819,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #0B5240 0%, #2FA880 50%, #E9A020 100%);
+  background: linear-gradient(90deg, #0B5240 0%, #0B5240 50%, #0B5240 100%);
 }
 .super-boarding-header {
   display: flex;
@@ -828,7 +829,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   margin-bottom: 16px;
 }
 .super-boarding-from, .super-boarding-to {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 28px;
   font-weight: 900;
   color: #0B5240;
@@ -837,7 +838,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .super-boarding-divider {
   height: 1px;
-  background: repeating-linear-gradient(90deg, #E2EFE9 0, #E2EFE9 4px, transparent 4px, transparent 8px);
+  background: repeating-linear-gradient(90deg, #DCE0DE 0, #DCE0DE 4px, transparent 4px, transparent 8px);
   margin-bottom: 16px;
 }
 .super-boarding-meta {
@@ -849,7 +850,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .super-boarding-meta-label {
   font-size: 10px;
   font-weight: 600;
-  color: #4C6459;
+  color: #525A57;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin: 0 0 3px 0;
@@ -857,7 +858,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .super-boarding-meta-value {
   font-size: 13px;
   font-weight: 600;
-  color: #080F0D;
+  color: #0F1A16;
   margin: 0;
 }
 .super-boarding-status-warn {
@@ -865,7 +866,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .super-boarding-amount-block {
   padding: 14px 16px;
-  background: #EAF6F1;
+  background: #F2FAF7;
   border-radius: 10px;
   text-align: center;
 }
@@ -878,7 +879,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   margin: 0 0 4px 0;
 }
 .super-boarding-amount {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(20px, 2.6vw, 26px);
   font-weight: 900;
   color: #0B5240;
@@ -891,9 +892,9 @@ h1.font-serif, h2.font-serif, h3.font-serif {
    ABN INTRO - Employee vs Contractor motif
    ───────────────────────────────────────────────────────────────── */
 .abn-intro-section {
-  background: #F5F9F7;
-  border-top: 1px solid #E2EFE9;
-  border-bottom: 1px solid #E2EFE9;
+  background: #F2FAF7;
+  border-top: 1px solid #DCE0DE;
+  border-bottom: 1px solid #DCE0DE;
   padding: 44px 0 48px;
 }
 @media (min-width: 1024px) {
@@ -934,23 +935,23 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .abn-intro-eyebrow {
   font-size: 11px;
   font-weight: 600;
-  color: #16775C;
+  color: #0B5240;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 10px 0;
 }
 .abn-intro-heading {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(26px, 3.2vw, 36px);
   font-weight: 900;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.025em;
   line-height: 1.15;
   margin: 0 0 16px 0;
 }
 .abn-intro-body {
   font-size: clamp(14.5px, 1.4vw, 16px);
-  color: #2A3C34;
+  color: #0F1A16;
   line-height: 1.75;
   font-weight: 300;
   margin: 0 0 12px 0;
@@ -973,7 +974,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   padding: 18px 16px;
   background: #fff;
   border-radius: 14px;
-  border: 1.5px solid #E2EFE9;
+  border: 1.5px solid #DCE0DE;
   position: relative;
   transition: transform 0.2s ease;
 }
@@ -1001,20 +1002,20 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   width: 42px;
   height: 42px;
   border-radius: 10px;
-  background: #F5F9F7;
+  background: #F2FAF7;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
 }
 .abn-compare-icon-active {
-  background: #EAF6F1;
+  background: #F2FAF7;
 }
 .abn-compare-title {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   font-weight: 800;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.02em;
   margin: 0 0 2px 0;
   line-height: 1.2;
@@ -1023,12 +1024,12 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .abn-compare-subtitle {
   font-size: 11px;
   font-weight: 600;
-  color: #16775C;
+  color: #0B5240;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin: 0 0 12px 0;
 }
-.abn-compare-employee .abn-compare-subtitle { color: #4C6459; }
+.abn-compare-employee .abn-compare-subtitle { color: #525A57; }
 .abn-compare-list {
   list-style: none;
   padding: 0;
@@ -1039,7 +1040,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .abn-compare-list li {
   font-size: 11.5px;
-  color: #587066;
+  color: #525A57;
   line-height: 1.45;
   padding-left: 12px;
   position: relative;
@@ -1052,19 +1053,19 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #2FA880;
+  background: #0B5240;
 }
 .abn-compare-employee .abn-compare-list li::before {
-  background: #C8EAE0;
+  background: #F2FAF7;
 }
 
 /* ─────────────────────────────────────────────────────────────────
    MEDICARE INTRO - 2% levy / exemption motif
    ───────────────────────────────────────────────────────────────── */
 .medicare-intro-section {
-  background: #F5F9F7;
-  border-top: 1px solid #E2EFE9;
-  border-bottom: 1px solid #E2EFE9;
+  background: #F2FAF7;
+  border-top: 1px solid #DCE0DE;
+  border-bottom: 1px solid #DCE0DE;
   padding: 44px 0 48px;
 }
 @media (min-width: 1024px) {
@@ -1105,23 +1106,23 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .medicare-intro-eyebrow {
   font-size: 11px;
   font-weight: 600;
-  color: #E9A020;
+  color: #0B5240;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 10px 0;
 }
 .medicare-intro-heading {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(26px, 3.2vw, 36px);
   font-weight: 900;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.025em;
   line-height: 1.15;
   margin: 0 0 16px 0;
 }
 .medicare-intro-body {
   font-size: clamp(14.5px, 1.4vw, 16px);
-  color: #2A3C34;
+  color: #0F1A16;
   line-height: 1.75;
   font-weight: 300;
   margin: 0 0 12px 0;
@@ -1134,7 +1135,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 /* Eligibility check card */
 .medicare-check-card {
   background: #fff;
-  border: 1.5px solid #E2EFE9;
+  border: 1.5px solid #DCE0DE;
   border-radius: 16px;
   padding: 22px;
   box-shadow: 0 12px 28px -10px rgba(11, 82, 64, 0.12);
@@ -1143,20 +1144,20 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   text-align: center;
   margin-bottom: 18px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #E2EFE9;
+  border-bottom: 1px solid #DCE0DE;
 }
 .medicare-check-title {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 17px;
   font-weight: 800;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.02em;
   margin: 0 0 4px 0;
   line-height: 1.3;
 }
 .medicare-check-subtitle {
   font-size: 12px;
-  color: #587066;
+  color: #525A57;
   margin: 0;
   font-weight: 300;
 }
@@ -1171,12 +1172,12 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
-  background: #F5F9F7;
+  background: #F2FAF7;
   border-radius: 10px;
 }
 .medicare-check-result {
-  background: #EAF6F1;
-  border: 1px solid #C8EAE0;
+  background: #F2FAF7;
+  border: 1px solid #DCE0DE;
 }
 .medicare-check-icon {
   width: 28px;
@@ -1193,7 +1194,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .medicare-check-v {
   background: #fff;
-  border: 1.5px solid #2FA880;
+  border: 1.5px solid #0B5240;
 }
 .medicare-check-arrow {
   display: flex;
@@ -1204,14 +1205,14 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .medicare-check-label {
   font-size: 13px;
   font-weight: 600;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.01em;
   margin: 0;
   line-height: 1.3;
 }
 .medicare-check-desc {
   font-size: 11.5px;
-  color: #587066;
+  color: #525A57;
   margin: 1px 0 0 0;
   line-height: 1.3;
   font-weight: 300;
@@ -1232,10 +1233,10 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   margin: 0 0 4px 0;
 }
 .medicare-check-savings-amount {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(22px, 2.8vw, 28px);
   font-weight: 900;
-  color: #E9A020;
+  color: #FFFFFF;
   letter-spacing: -0.03em;
   margin: 0 0 3px 0;
   line-height: 1;
@@ -1252,7 +1253,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
    ───────────────────────────────────────────────────────────────── */
 .taxres-table-card {
   background: #fff;
-  border: 1.5px solid #E2EFE9;
+  border: 1.5px solid #DCE0DE;
   border-radius: 14px;
   padding: 20px 18px;
   transition: all 0.2s ease;
@@ -1261,10 +1262,10 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   .taxres-table-card { padding: 24px 22px; }
 }
 .taxres-table-title {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 14.5px;
   font-weight: 700;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.01em;
   margin: 0 0 14px 0;
   line-height: 1.3;
@@ -1277,17 +1278,17 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .taxres-table th {
   font-size: 10.5px;
   font-weight: 600;
-  color: #16775C;
+  color: #0B5240;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 8px 6px;
   text-align: left;
-  border-bottom: 1.5px solid #C8EAE0;
+  border-bottom: 1.5px solid #DCE0DE;
 }
 .taxres-table th:last-child { text-align: right; }
 .taxres-table td {
   font-size: 13px;
-  color: #2A3C34;
+  color: #0F1A16;
   padding: 10px 6px;
   border-bottom: 1px solid #F0F5F2;
   font-weight: 500;
@@ -1305,15 +1306,15 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .taxres-savings-box {
   margin-top: 24px;
   padding: 18px 20px;
-  background: linear-gradient(135deg, #EAF6F1 0%, #F5F9F7 100%);
-  border: 1.5px solid #C8EAE0;
+  background: linear-gradient(135deg, #F2FAF7 0%, #F2FAF7 100%);
+  border: 1.5px solid #DCE0DE;
   border-radius: 14px;
   display: flex;
   gap: 14px;
   align-items: flex-start;
 }
 .taxres-savings-heading {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 14.5px;
   font-weight: 700;
   color: #0B5240;
@@ -1323,7 +1324,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .taxres-savings-body {
   font-size: 15px;
-  color: #2A3C34;
+  color: #0F1A16;
   line-height: 1.6;
   font-weight: 300;
   margin: 0;
@@ -1336,7 +1337,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   align-items: center;
   padding: 14px 18px;
   background: #fff;
-  border: 1px solid #C8EAE0;
+  border: 1px solid #DCE0DE;
   border-radius: 12px;
 }
 .taxres-condition-num {
@@ -1345,7 +1346,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   border-radius: 50%;
   background: #0B5240;
   color: #fff;
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-weight: 700;
   display: flex;
@@ -1355,7 +1356,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .taxres-condition-text {
   font-size: 13.5px;
-  color: #2A3C34;
+  color: #0F1A16;
   line-height: 1.55;
   margin: 0;
   font-weight: 300;
@@ -1367,7 +1368,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .taxres-notes p {
   font-size: 12.5px;
-  color: #587066;
+  color: #525A57;
   line-height: 1.6;
   font-weight: 300;
   margin: 0 0 6px 0;
@@ -1389,7 +1390,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .exp-card {
   background: #fff;
-  border: 1.5px solid #E2EFE9;
+  border: 1.5px solid #DCE0DE;
   border-radius: 16px;
   padding: 20px 20px 22px;
 }
@@ -1401,17 +1402,17 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .exp-card-emoji { font-size: 28px; line-height: 1; flex-shrink: 0; }
 .exp-card-title {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 16.5px;
   font-weight: 700;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.01em;
   margin: 0;
   line-height: 1.25;
 }
 .exp-card-subtitle {
   font-size: 12px;
-  color: #4C6459;
+  color: #525A57;
   margin: 2px 0 0;
   font-weight: 500;
 }
@@ -1434,7 +1435,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .exp-card-list li {
   font-size: 15px;
-  color: #2A3C34;
+  color: #0F1A16;
   line-height: 1.55;
   font-weight: 300;
 }
@@ -1446,7 +1447,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 
 /* Breadcrumb link */
 .contact-breadcrumb-link {
-  color: #587066;
+  color: #525A57;
   transition: color 0.2s ease;
   display: inline-block;
   padding: 4px 0; /* Better touch target on mobile */
@@ -1462,7 +1463,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   gap: 14px;
   padding: 16px;
   background: #fff;
-  border: 1.5px solid #E2EFE9;
+  border: 1.5px solid #DCE0DE;
   border-radius: 14px;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -1480,7 +1481,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   transform: scale(0.985);
 }
 .contact-option-card:hover {
-  border-color: #C8EAE0;
+  border-color: #DCE0DE;
   background: #FAFCFB;
 }
 @media (min-width: 1024px) {
@@ -1523,20 +1524,20 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .contact-option-label {
   font-size: 15px;
   font-weight: 600;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.01em;
   margin: 0 0 3px 0;
   line-height: 1.2;
 }
 .contact-option-detail {
   font-size: 13.5px;
-  color: #587066;
+  color: #525A57;
   font-weight: 300;
   margin: 0;
   line-height: 1.3;
 }
 .contact-option-arrow {
-  color: #587066;
+  color: #525A57;
   flex-shrink: 0;
   transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -1552,7 +1553,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   gap: 10px;
   padding: 14px 14px;
   background: #fff;
-  border: 1.5px solid #E2EFE9;
+  border: 1.5px solid #DCE0DE;
   border-radius: 12px;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -1569,13 +1570,13 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   transform: scale(0.98);
 }
 .contact-option-card-small:hover {
-  border-color: #C8EAE0;
+  border-color: #DCE0DE;
   background: #FAFCFB;
 }
 .contact-option-label-small {
   font-size: 14px;
   font-weight: 600;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.01em;
 }
 
@@ -1583,9 +1584,9 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .contact-hours-block {
   margin-top: 20px;
   padding: 16px;
-  background: #F5F9F7;
+  background: #F2FAF7;
   border-radius: 12px;
-  border: 1px solid #E2EFE9;
+  border: 1px solid #DCE0DE;
 }
 .contact-hours-title {
   font-size: 11px;
@@ -1599,7 +1600,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .contact-hours-detail {
   font-size: 13px;
-  color: #587066;
+  color: #525A57;
   line-height: 1.6;
   margin: 0;
   font-weight: 300;
@@ -1609,7 +1610,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 /* ─── FAQ ─── MOBILE OPTIMIZED */
 .contact-faq-item {
   background: #fff;
-  border: 1px solid #E2EFE9;
+  border: 1px solid #DCE0DE;
   border-radius: 12px;
   padding: 18px 18px;
   cursor: pointer;
@@ -1622,17 +1623,17 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   }
 }
 .contact-faq-item:hover {
-  border-color: #C8EAE0;
+  border-color: #DCE0DE;
 }
 .contact-faq-item[open] {
-  border-color: #C8EAE0;
+  border-color: #DCE0DE;
   background: #FAFCFB;
 }
 .contact-faq-summary {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 15.5px;
   font-weight: 700;
-  color: #080F0D;
+  color: #0F1A16;
   letter-spacing: -0.015em;
   display: flex;
   align-items: center;
@@ -1653,7 +1654,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .contact-faq-plus {
   flex-shrink: 0;
-  color: #16775C;
+  color: #0B5240;
   font-size: 22px;
   font-weight: 300;
   line-height: 1;
@@ -1669,7 +1670,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 .contact-faq-answer {
   font-size: 15px;
-  color: #2A3C34;
+  color: #0F1A16;
   line-height: 1.7;
   font-weight: 300;
   margin: 14px 0 0 0;
@@ -1694,7 +1695,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   transition: background-color 0.2s ease;
 }
 .nav-cta:hover {
-  background: #16775C !important;
+  background: #F2FAF7 !important;
 }
 .services-dropdown-item {
   transition: background-color 0.2s ease;
@@ -1718,7 +1719,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   padding: 5px 0;
   transition: color 0.2s ease;
   font-size: 12.5px;
-  color: #587066;
+  color: #525A57;
 }
 .footer-link:hover {
   color: #0B5240;
@@ -1928,7 +1929,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 .mobile-toc-panel-handle {
   width: 40px;
   height: 4px;
-  background: #E2EFE9;
+  background: #DCE0DE;
   border-radius: 2px;
   margin: 12px auto 8px;
 }
@@ -2215,7 +2216,7 @@ input:focus, select:focus, textarea:focus {
 /* ── Premium section divider ── */
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, #C8EAE0 20%, #C8EAE0 80%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #F2FAF7 20%, #F2FAF7 80%, transparent 100%);
   margin: 0 auto;
   max-width: 600px;
 }
@@ -2291,7 +2292,7 @@ input:focus, select:focus, textarea:focus {
 /* ── Why Us cards - mobile left border accent ── */
 @media (max-width: 1023px) {
   .why-us-card {
-    border-left: 3px solid #EAF6F1;
+    border-left: 3px solid #F2FAF7;
     padding-left: 12px;
   }
 }
@@ -2399,7 +2400,7 @@ textarea:focus {
 /* ── Section gradient divider ── */
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, #C8EAE0 30%, #C8EAE0 70%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #F2FAF7 30%, #F2FAF7 70%, transparent 100%);
   margin: 0 auto;
   max-width: 480px;
   border: none;
@@ -2433,7 +2434,7 @@ textarea:focus {
   .footer-brand-col {
     grid-column: 1 / -1 !important;
     padding-bottom: 8px;
-    border-bottom: 1px solid #E2EFE9;
+    border-bottom: 1px solid #DCE0DE;
     margin-bottom: 4px;
   }
 }
@@ -2453,7 +2454,7 @@ textarea:focus {
   top: -60px; left: 50%;
   transform: translateX(-50%);
   width: 300px; height: 200px;
-  background: radial-gradient(ellipse at center, rgba(233,160,32,0.12) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(11,82,64,0.12) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -2474,7 +2475,7 @@ textarea:focus {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #C8EAE0;
+  background: #F2FAF7;
   border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover { background: #0B5240; }
@@ -2482,14 +2483,14 @@ textarea:focus {
 /* ── Why Us cards left accent ── */
 @media (max-width: 1023px) {
   .why-us-card {
-    border-left: 3px solid #EAF6F1 !important;
+    border-left: 3px solid #F2FAF7 !important;
     padding-left: 14px !important;
     border-top: none !important;
   }
 }
 @media (min-width: 1024px) {
   .why-us-card {
-    border-top: 2px solid #E2EFE9 !important;
+    border-top: 2px solid #DCE0DE !important;
     border-left: none !important;
     padding-top: 20px !important;
   }
@@ -2507,7 +2508,7 @@ a { transition: color 0.15s ease, opacity 0.15s ease; }
   background: #F8FBF9 !important;
 }
 .contact-faq-item[open] {
-  background: #F5F9F7 !important;
+  background: #F2FAF7 !important;
 }
 
 /* ── Stats section premium ── */
@@ -2519,7 +2520,7 @@ a { transition: color 0.15s ease, opacity 0.15s ease; }
   position: absolute;
   top: 0; left: 10%; right: 10%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #E2EFE9 50%, transparent);
+  background: linear-gradient(90deg, transparent, #DCE0DE 50%, transparent);
 }
 
 /* ── Hero gradient bg ── */
@@ -2554,7 +2555,7 @@ a { transition: color 0.15s ease, opacity 0.15s ease; }
 }
 
 /* ── Focus outline ──
-   Was amber #E9A020, which measures 2.21:1 against white and fails WCAG 1.4.11.
+   Was amber #0B5240, which measures 2.21:1 against white and fails WCAG 1.4.11.
    Forest 500 measures 8.9:1 and stays visible in direct sunlight, which is
    where a lot of this audience actually reads. */
 a:focus-visible, button:focus-visible {
@@ -2589,7 +2590,7 @@ a:focus-visible, button:focus-visible {
 .form-step-dot {
   width: 8px; height: 8px;
   border-radius: 50%;
-  background: #C8EAE0;
+  background: #F2FAF7;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 .form-step-dot.active {
@@ -2597,7 +2598,7 @@ a:focus-visible, button:focus-visible {
   transform: scale(1.3);
 }
 .form-step-dot.done {
-  background: #2FA880;
+  background: #0B5240;
 }
 
 /* Form field labels */
@@ -2616,13 +2617,13 @@ a:focus-visible, button:focus-visible {
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 40px rgba(11,82,64,0.09), 0 1px 8px rgba(0,0,0,0.04);
-  border: 1px solid #E2EFE9;
+  border: 1px solid #DCE0DE;
   overflow: hidden;
 }
 
 /* Form header band */
 .form-header-band {
-  background: linear-gradient(135deg, #0B5240 0%, #16775C 100%);
+  background: linear-gradient(135deg, #0B5240 0%, #0B5240 100%);
   padding: 20px 28px 18px;
   color: white;
 }
@@ -2633,7 +2634,7 @@ a:focus-visible, button:focus-visible {
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #4C6459;
+  color: #525A57;
   margin-top: 16px;
 }
 
@@ -2644,7 +2645,7 @@ a:focus-visible, button:focus-visible {
 .field-group input,
 .field-group select,
 .field-group textarea {
-  border: 1.5px solid #E2EFE9;
+  border: 1.5px solid #DCE0DE;
   border-radius: 10px;
   padding: 11px 14px;
   font-size: 15px;
@@ -2668,18 +2669,18 @@ a:focus-visible, button:focus-visible {
   font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  background: #E9A020;
-  color: #1A2822;
+  background: #0B5240;
+  color: #FFFFFF;
   border: none;
   cursor: pointer;
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-  box-shadow: 0 4px 16px rgba(233,160,32,0.28);
+  box-shadow: 0 4px 16px rgba(11,82,64,0.28);
 }
 .form-submit-btn:hover {
-  background: #C47E10;
+  background: #083D30;
   color: #fff;
   transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(233,160,32,0.36);
+  box-shadow: 0 6px 24px rgba(11,82,64,0.36);
 }
 .form-submit-btn:active {
   transform: none;
@@ -2696,7 +2697,7 @@ a:focus-visible, button:focus-visible {
   padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(8px);
-  border-top: 1px solid #E2EFE9;
+  border-top: 1px solid #DCE0DE;
   transform: translateY(110%);
   opacity: 0;
   transition: transform 0.25s ease, opacity 0.2s ease;
@@ -2732,7 +2733,7 @@ a:focus-visible, button:focus-visible {
 /* And some ask for more contrast, so the bar gets a defined edge instead of a
    hairline that disappears against a pale page. */
 @media (prefers-contrast: more) {
-  .mobile-cta-bar { background: #FFFFFF; backdrop-filter: none; border-top: 2px solid #080F0D; }
+  .mobile-cta-bar { background: #FFFFFF; backdrop-filter: none; border-top: 2px solid #0F1A16; }
   .mobile-cta-sub { opacity: 1; }
 }
 
@@ -2768,7 +2769,7 @@ a:focus-visible, button:focus-visible {
   margin: 2.5rem 0 0.5rem;
   padding: 22px 22px 24px;
   background: #F2FAF7;
-  border: 1px solid #CDE3DB;
+  border: 1px solid #DCE0DE;
   border-radius: 14px;
 }
 .guide-cta-eyebrow {
@@ -2776,22 +2777,22 @@ a:focus-visible, button:focus-visible {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #16775C;
+  color: #0B5240;
   margin-bottom: 10px;
 }
 .guide-cta-heading {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: var(--font-serif), 'Helvetica Neue', Arial, sans-serif;
   font-size: 22px;
   line-height: 1.22;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #080F0D;
+  color: #0F1A16;
   margin-bottom: 10px;
 }
 .guide-cta-body {
   font-size: 15px;
   line-height: 1.6;
-  color: #2A3C34;
+  color: #0F1A16;
   margin-bottom: 18px;
 }
 .guide-cta-btn {
@@ -2814,7 +2815,7 @@ a:focus-visible, button:focus-visible {
 .guide-cta-under {
   font-size: 12.5px;
   line-height: 1.5;
-  color: #4C6459;
+  color: #525A57;
   text-align: center;
   margin-top: 10px;
 }
@@ -2824,7 +2825,7 @@ a:focus-visible, button:focus-visible {
   .guide-cta-btn { width: auto; min-width: 280px; padding: 0 28px; }
 }
 @media (prefers-contrast: more) {
-  .guide-cta { border-color: #080F0D; border-width: 2px; }
+  .guide-cta { border-color: #0F1A16; border-width: 2px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .guide-cta-btn { transition: none; }
@@ -2839,8 +2840,8 @@ a:focus-visible, button:focus-visible {
   max-width: 780px;
   margin: 2rem 0;
   padding: 16px 18px;
-  border-left: 3px solid #E9A020;
-  background: #FDF0D5;
+  border-left: 3px solid #0B5240;
+  background: #F2FAF7;
   border-radius: 0 12px 12px 0;
 }
 .guide-inline-cta p {
@@ -2905,12 +2906,12 @@ html[lang^="ja"] .section-label { letter-spacing: 0.04em !important; }
    Contrast on #0B5240:
      #FFFFFF               9.15:1  AAA
      rgba(255,255,255,.80) 6.2:1   AA at 13.5px
-     #F9D88A               7.35:1  AAA (active link)
-     #E9A020 fill + #1A2822 text   the standing amber pair
+     #DCE0DE               7.35:1  AAA (active link)
+     #0B5240 fill + #0F1A16 text   the standing amber pair
    ------------------------------------------------------------ */
 .nav-dark .nav-link:hover { color: #FFFFFF !important; }
-.nav-dark .nav-link::after { background: #F9D88A !important; }
-.nav-dark .nav-cta:hover { background: #C47E10 !important; color: #FFFFFF !important; }
+.nav-dark .nav-link::after { background: #FFFFFF !important; }
+.nav-dark .nav-cta:hover { background: #F2FAF7 !important; color: #0B5240 !important; }
 
 
 /* ── Reply line under every WhatsApp button ─────────────────

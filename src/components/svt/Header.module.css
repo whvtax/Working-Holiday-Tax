@@ -25,10 +25,33 @@
   background: var(--svt-paper);
   border-top: 1px solid var(--svt-line);
   box-shadow: 0 12px 24px rgb(18 22 31 / 0.08);
-  padding: 8px var(--svt-gutter) 20px;
   display: flex; flex-direction: column;
+  /* Tall menus scroll inside the panel; the WhatsApp button below stays put. */
+  max-height: calc(100dvh - 73px);
 }
-.panel a { display: flex; align-items: center; min-height: var(--svt-tap); font-size: var(--svt-text-md); text-decoration: none; border-bottom: 1px solid var(--svt-line); }
+.panelScroll { overflow-y: auto; overscroll-behavior: contain; padding: 4px var(--svt-gutter) 8px; }
+.mainList { list-style: none; }
+.mainList a, .group > summary, .group li a {
+  display: flex; align-items: center; min-height: var(--svt-tap);
+  text-decoration: none; border-bottom: 1px solid var(--svt-line);
+}
+.mainList a { font-size: var(--svt-text-md); font-weight: 700; }
+.group > summary {
+  list-style: none; justify-content: space-between; cursor: pointer;
+  font-size: var(--svt-text-md); font-weight: 700;
+}
+.group > summary::-webkit-details-marker { display: none; }
+.group > summary::after { content: '+'; font-weight: 400; font-size: 22px; line-height: 1; }
+.group[open] > summary::after { content: '\2212'; }
+.group ul { list-style: none; padding-left: 12px; background: var(--svt-lime-pale); margin: 0 calc(var(--svt-gutter) * -1); padding-inline: var(--svt-gutter); }
+.group li a { font-size: 15px; }
+.panelCta { padding: 12px var(--svt-gutter) calc(14px + env(safe-area-inset-bottom)); border-top: 1px solid var(--svt-line); background: var(--svt-paper); }
+.panelWa {
+  display: flex; align-items: center; justify-content: center; min-height: var(--svt-tap);
+  background: var(--svt-ink); color: var(--svt-paper); border-radius: var(--svt-radius-button);
+  font-weight: 700; text-decoration: none;
+}
+.panelWa:hover { color: var(--svt-paper); background: #000; }
 
 /* Desktop: inline links and the WhatsApp action. */
 .nav { display: none; }

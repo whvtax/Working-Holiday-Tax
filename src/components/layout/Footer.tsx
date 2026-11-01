@@ -137,7 +137,7 @@ export function Footer() {
     <footer role="contentinfo" style={{ background: '#0B5240' }}>
 
       {/* ─── Main footer section ─ light grey background ──────────────────── */}
-      <div style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>
+      <div style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
         <div className="max-w-[1080px] mx-auto px-5 md:px-8 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-12">
 
           {/* Main grid - 4 columns */}
@@ -152,8 +152,8 @@ export function Footer() {
                 <svg width="26" height="26" viewBox="0 0 30 30" fill="none" aria-hidden="true">
                   <rect x="2" y="2" width="16" height="16" rx="4" stroke="#0B5240" strokeWidth="1.4"/>
                   <rect x="12" y="12" width="16" height="16" rx="4" fill="#0B5240"/>
-                  <line x1="2" y1="2" x2="12" y2="12" stroke="#E9A020" strokeWidth="1.0" strokeLinecap="round" opacity="0.7"/>
-                  <circle cx="2" cy="2" r="1.4" fill="#E9A020" opacity="0.7"/>
+                  <line x1="2" y1="2" x2="12" y2="12" stroke="#0B5240" strokeWidth="1.0" strokeLinecap="round" opacity="0.7"/>
+                  <circle cx="2" cy="2" r="1.4" fill="#0B5240" opacity="0.7"/>
                   <path d="M20 14.5 L24 16 L24 19.5 Q24 23 20 24.5 Q16 23 16 19.5 L16 16 Z" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="1.0" strokeLinejoin="round"/>
                   <polyline points="18,19.5 19.8,21.5 22.5,18" fill="none" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -163,7 +163,7 @@ export function Footer() {
               <p className="font-serif" style={{ fontSize: '17px', color: '#0B5240', fontWeight: 700, lineHeight: 1.3, marginBottom: '8px', letterSpacing: '-0.02em' }}>
                 {t.tagline}
               </p>
-              <p className="font-light" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.7, marginBottom: '18px', maxWidth: '300px' }}>
+              <p className="font-light" style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.7, marginBottom: '18px', maxWidth: '300px' }}>
                 {t.intro}
               </p>
 

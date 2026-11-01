@@ -192,17 +192,17 @@ export default function MobileTOC({
         <div style={{ padding: '20px 24px', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <div>
-              <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#16775C', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '4px' }}>
+              <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '4px' }}>
                 {ui.onThisPage}
               </p>
-              <p className="font-serif" style={{ fontSize: '17px', fontWeight: 700, color: '#080F0D', margin: 0, letterSpacing: '-0.015em' }}>
+              <p className="font-serif" style={{ fontSize: '17px', fontWeight: 700, color: '#0F1A16', margin: 0, letterSpacing: '-0.015em' }}>
                 {headings.length} {headings.length === 1 ? ui.section : ui.sections}
               </p>
             </div>
             <button
               ref={closeRef}
               onClick={() => setOpen(false)}
-              style={{ background: 'transparent', border: 'none', cursor: 'pointer', width: '44px', height: '44px', margin: '-10px -10px 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#587066', flexShrink: 0 }}
+              style={{ background: 'transparent', border: 'none', cursor: 'pointer', width: '44px', height: '44px', margin: '-10px -10px 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#525A57', flexShrink: 0 }}
               aria-label={ui.closeLabel}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -213,7 +213,7 @@ export default function MobileTOC({
           </div>
 
           <nav>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, borderLeft: '2px solid #E2EFE9' }}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, borderLeft: '2px solid #DCE0DE' }}>
               {headings.map(h => {
                 const isActive = activeHeading === h.id
                 return (
@@ -232,7 +232,7 @@ export default function MobileTOC({
                         padding: '12px',
                         marginLeft: '-2px',
                         fontSize: '15px',
-                        color: isActive ? '#0B5240' : '#587066',
+                        color: isActive ? '#0B5240' : '#525A57',
                         background: isActive ? '#F7F9F8' : 'transparent',
                         textDecoration: 'none',
                         lineHeight: 1.4,

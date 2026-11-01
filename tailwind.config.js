@@ -9,46 +9,42 @@ const config = {
       // against white is noted on each value: 4.5 is the minimum for text,
       // 3.0 for a border or an icon that carries meaning.
       colors: {
+        // LOCKED BRAND PALETTE (1 Nov). Ink for text, forest for brand, buttons
+        // and links, amber only as a highlighter band behind words (never text,
+        // never a button fill), pale green only for small strips, page white.
         forest: {
-          50:  '#F2FAF7',   // page tint
-          100: '#EAF6F1',   // card tint
-          200: '#C8EAE0',   // strong border
-          300: '#2FA880',   // 2.99 on white. FILL AND BORDER ONLY, never text.
-          400: '#16775C',   // 5.49. the accessible bright green, use for small text
-          500: '#0B5240',   // 9.15. the brand
-          600: '#083D30',   // 12.21. pressed and hover states on 500
+          50:  '#F2FAF7',
+          100: '#F2FAF7',
+          200: '#DCE0DE',
+          300: '#0B5240',
+          400: '#0B5240',
+          500: '#0B5240',
+          600: '#083D30',   // pressed and hover state of the brand green
           DEFAULT: '#0B5240',
         },
         amber: {
-          50:  '#FDF0D5',   // callout background
-          100: '#F9D88A',   // callout border
-          200: '#E9A020',   // 2.21. BUTTON FILL ONLY. dark ink on top, never white
-          300: '#C47E10',   // 3.31. the darker amber, for an icon or a rule
-          DEFAULT: '#E9A020',
+          50:  '#F2FAF7',
+          100: '#F2B632',
+          200: '#F2B632',
+          300: '#F2B632',
+          DEFAULT: '#F2B632',
         },
-        // Four levels of text, every one green tinted. That tint is why the
-        // site reads as calm and as one thing, and it is deliberate.
         ink: {
-          DEFAULT: '#080F0D',   // 18.9. headings
-          2: '#1A2822',         // 15.1. subheadings
+          DEFAULT: '#0F1A16',
+          2: '#0F1A16',
         },
-        body:    '#2A3C34',     // 11.70. running text
-        // #8AADA3 was the old subtle. It measured 2.45 on white, so it is gone
-        // entirely rather than left available to reach for.
-        muted:   '#4C6459',     // 6.41. captions and secondary text
-        subtle:  '#587066',     // 5.35. the lightest text that still passes
-        border:  '#CDE3DB',
-        border2: '#E2EFE9',
-        canvas:  '#F5F9F7',
-        // The one colour outside the brand. Warnings and the claims that get
-        // knocked back, nothing else.
-        danger:  '#9A3412',     // 7.31
-        // WhatsApp's own green. It belongs to their mark and is deliberately
-        // not one of ours, so it is only ever used inside their icon.
+        body:    '#0F1A16',
+        muted:   '#525A57',   // ink at 72% on white
+        subtle:  '#525A57',
+        border:  '#DCE0DE',   // ink at 14% on white
+        border2: '#DCE0DE',
+        canvas:  '#FFFFFF',
+        danger:  '#9A3412',
         wa:      '#22C55E',
       },
       fontFamily: {
-        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        serif: ['var(--font-serif)', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        mono:  ['var(--font-mono)', 'ui-monospace', 'Menlo', 'monospace'],
         sans:  ['var(--font-sans)', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       transitionTimingFunction: {

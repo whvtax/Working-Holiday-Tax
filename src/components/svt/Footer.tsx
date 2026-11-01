@@ -31,7 +31,6 @@ export function Footer({ locale = 'en' }: { locale?: SvtLocale }) {
             <span className={styles.seal}>
               <img src="/svt-assets/img/tpb-registered.png" alt={fill(t.sealAlt, { agent: AGENT_NAME, tpb: AGENT_TPB })} width={509} height={319} loading="lazy" decoding="async" />
             </span>
-            <p className={styles.supervision}>{fill(t.supervision, { agent: AGENT_NAME, tpb: AGENT_TPB })}</p>
           </div>
           <nav aria-label={t.guidesAria}>
             <p className={styles.head}>{t.guidesAria}</p>

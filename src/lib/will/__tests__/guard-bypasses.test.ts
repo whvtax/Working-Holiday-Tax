@@ -42,7 +42,11 @@ describe('a personal tax determination is blocked before AND after payment', () 
 
   // THE FIX. Every one of these was ALLOWED once `paid` was true, and `paid` is
   // set on the customer's own unverified word that they have paid.
-  it.each(determinations)('paid: %p', (t) => {
+  // Jo, 1 Nov: after payment Will answers "can I claim X?" from the ATO rules,
+  // so the two English claim patterns no longer fire for a PAID customer
+  // (guard-paid-expense-answers-1nov.test.ts). Every other determination does.
+  const EXPENSE_CLAIM = /you can claim|is deductible|are deductible/i;
+  it.each(determinations.filter((d: string) => !EXPENSE_CLAIM.test(d)))('paid: %p', (t) => {
     expect(has(t, 'TAX_DETERMINATION', { paid: true, state: 'PAID' })).toBe(true);
   });
 

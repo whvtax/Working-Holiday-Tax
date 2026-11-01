@@ -131,7 +131,7 @@ export function MobileLanguageBanner() {
         background: '#fff',
         borderRadius: '16px',
         boxShadow: '0 8px 28px rgba(11, 82, 64, 0.18), 0 2px 8px rgba(11, 82, 64, 0.08)',
-        border: '1px solid #C8EAE0',
+        border: '1px solid #DCE0DE',
         padding: '16px 16px 14px',
         animation: 'wht-banner-up 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
       }}>
@@ -157,7 +157,7 @@ export function MobileLanguageBanner() {
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
-          color: '#587066',
+          color: '#525A57',
           padding: 0,
           display: 'flex',
           alignItems: 'center',
@@ -187,7 +187,7 @@ export function MobileLanguageBanner() {
 
       <p style={{
         fontSize: '12.5px',
-        color: '#587066',
+        color: '#525A57',
         margin: '0 0 12px',
         lineHeight: 1.45,
       }}>
@@ -202,11 +202,11 @@ export function MobileLanguageBanner() {
             flex: 1,
             height: '44px',
             background: '#fff',
-            border: '1px solid #E2EFE9',
+            border: '1px solid #DCE0DE',
             borderRadius: '100px',
             fontSize: '13px',
             fontWeight: 500,
-            color: '#587066',
+            color: '#525A57',
             cursor: 'pointer',
             display: 'inline-flex',
             alignItems: 'center',

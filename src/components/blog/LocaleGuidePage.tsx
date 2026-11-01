@@ -695,20 +695,20 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
 
         <div style={{ background: categoryColors.bg }}>
           <div style={{ padding: '12px 0' }}>
-            <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '10px', alignItems: 'center', fontSize: '13px', color: '#4C6459', flexWrap: 'wrap' }}>
-              <Link href={cfg.basePath} style={{ color: '#587066', textDecoration: 'none' }}>{cfg.homeLabel}</Link>
+            <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '10px', alignItems: 'center', fontSize: '13px', color: '#525A57', flexWrap: 'wrap' }}>
+              <Link href={cfg.basePath} style={{ color: '#525A57', textDecoration: 'none' }}>{cfg.homeLabel}</Link>
               <span>/</span>
-              <Link href={`${cfg.basePath}/blog`} style={{ color: '#587066', textDecoration: 'none' }}>{cfg.blogLabel}</Link>
+              <Link href={`${cfg.basePath}/blog`} style={{ color: '#525A57', textDecoration: 'none' }}>{cfg.blogLabel}</Link>
               <span>/</span>
               {categoryInfo && (
                 <>
-                  <Link href={`${cfg.basePath}/blog/category/${categoryInfo.slug}`} style={{ color: '#587066', textDecoration: 'none' }}>
+                  <Link href={`${cfg.basePath}/blog/category/${categoryInfo.slug}`} style={{ color: '#525A57', textDecoration: 'none' }}>
                     {cfg.catLabel(categoryInfo.category)}
                   </Link>
                   <span>/</span>
                 </>
               )}
-              <span style={{ color: '#4C6459', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50%' }}>{guide.title}</span>
+              <span style={{ color: '#525A57', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50%' }}>{guide.title}</span>
             </div>
           </div>
 
@@ -740,25 +740,25 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
                   {/* Publication and review shown separately: "last updated"
                       used to show the publication date, which on many guides
                       was one to two tax years old. That was not true. */}
-                  <span style={{ fontSize: '13px', color: '#4C6459' }}>{cfg.publishedLabel}{cfg.formatDate(guide.date)}</span>
+                  <span style={{ fontSize: '13px', color: '#525A57' }}>{cfg.publishedLabel}{cfg.formatDate(guide.date)}</span>
                   {reviewedDate && (
                     <>
-                      <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
-                      <span style={{ fontSize: '13px', color: '#4C6459' }}>{cfg.reviewedLabel}{cfg.formatDate(reviewedDate)}</span>
+                      <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
+                      <span style={{ fontSize: '13px', color: '#525A57' }}>{cfg.reviewedLabel}{cfg.formatDate(reviewedDate)}</span>
                     </>
                   )}
-                  <span aria-hidden="true" style={{ color: '#CDE3DB' }}>·</span>
-                  <span style={{ fontSize: '13px', color: '#4C6459' }}>{cfg.readTimeLabel(readTime)}</span>
+                  <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
+                  <span style={{ fontSize: '13px', color: '#525A57' }}>{cfg.readTimeLabel(readTime)}</span>
                 </div>
 
                 <h1
                   className="font-serif font-black"
-                  style={{ fontSize: 'clamp(28px, 4.5vw, 42px)', lineHeight: S.h1.lineHeight, letterSpacing: S.h1.letterSpacing, marginBottom: '1rem', color: '#080F0D' }}
+                  style={{ fontSize: 'clamp(28px, 4.5vw, 42px)', lineHeight: S.h1.lineHeight, letterSpacing: S.h1.letterSpacing, marginBottom: '1rem', color: '#0F1A16' }}
                 >
                   {guide.title}
                 </h1>
 
-                <p className="guide-lead" style={{ fontSize: 'clamp(16.5px, 1.5vw, 18px)', color: '#2A3C34', lineHeight: S.leadLineHeight, marginBottom: '0', fontWeight: 400 }}>
+                <p className="guide-lead" style={{ fontSize: 'clamp(16.5px, 1.5vw, 18px)', color: '#0F1A16', lineHeight: S.leadLineHeight, marginBottom: '0', fontWeight: 400 }}>
                   {guide.description}
                 </p>
               </div>
@@ -785,8 +785,8 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
               alignItems: 'flex-start',
             }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
-                <circle cx="12" cy="12" r="9" stroke="#C47E10" strokeWidth="1.6"/>
-                <path d="M12 7v6M12 16h.01" stroke="#C47E10" strokeWidth="1.8" strokeLinecap="round"/>
+                <circle cx="12" cy="12" r="9" stroke="#083D30" strokeWidth="1.6"/>
+                <path d="M12 7v6M12 16h.01" stroke="#083D30" strokeWidth="1.8" strokeLinecap="round"/>
               </svg>
               <p style={{ fontSize: '13px', color: '#7A4A00', lineHeight: S.noticeLineHeight, margin: 0 }}>
                 {cfg.englishOnlyNotice}
@@ -809,18 +809,18 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
               No invented author name, no photo, no invented person. */}
           <aside
             aria-labelledby="about-this-guide"
-            style={{ maxWidth: '780px', margin: '0 0 2rem 0', padding: '18px 20px', border: '1px solid #E2EFE9', borderRadius: '12px', background: '#F7F9F8' }}
+            style={{ maxWidth: '780px', margin: '0 0 2rem 0', padding: '18px 20px', border: '1px solid #DCE0DE', borderRadius: '12px', background: '#F7F9F8' }}
           >
             <p id="about-this-guide" style={{ ...S.asideLabel, margin: '0 0 8px' }}>
               {cfg.aside.label}
             </p>
-            <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: S.asideBodyLineHeight, margin: 0, fontWeight: 400 }}>
+            <p style={{ fontSize: '15px', color: '#0F1A16', lineHeight: S.asideBodyLineHeight, margin: 0, fontWeight: 400 }}>
               {cfg.aside.p1}
             </p>
-            <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: S.asideBodyLineHeight, margin: '10px 0 0', fontWeight: 400 }}>
+            <p style={{ fontSize: '15px', color: '#0F1A16', lineHeight: S.asideBodyLineHeight, margin: '10px 0 0', fontWeight: 400 }}>
               {cfg.aside.p2}
             </p>
-            <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: S.asideDateLineHeight, margin: '12px 0 0', fontWeight: 400 }}>
+            <p style={{ fontSize: '13px', color: '#525A57', lineHeight: S.asideDateLineHeight, margin: '12px 0 0', fontWeight: 400 }}>
               {cfg.publishedLabel}{cfg.formatDate(guide.date)}{reviewedDate ? ` · ${cfg.reviewedLabel.trim()} ${cfg.formatDate(reviewedDate)}` : ''}
             </p>
           </aside>
@@ -835,7 +835,7 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
           />
 
           {relatedGuides.length > 0 && (
-            <div style={{ borderTop: '1px solid #E2EFE9', paddingTop: '2.5rem', paddingBottom: '3rem', maxWidth: '780px' }}>
+            <div style={{ borderTop: '1px solid #DCE0DE', paddingTop: '2.5rem', paddingBottom: '3rem', maxWidth: '780px' }}>
               <p style={{ ...S.relatedHeader, marginBottom: '1.25rem' }}>
                 {cfg.whatsNextLabel}
               </p>
@@ -844,7 +844,7 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
                   const gColors = getCategoryColor(g.category)
                   return (
                     <Link key={g.slug} href={`${cfg.basePath}/blog/${g.slug}`} style={{ textDecoration: 'none' }} className="related-link">
-                      <div style={{ border: '1px solid #E2EFE9', borderRadius: '12px', padding: '1.1rem 1.4rem', transition: 'border-color 0.2s ease, transform 0.2s ease' }} className="related-card">
+                      <div style={{ border: '1px solid #DCE0DE', borderRadius: '12px', padding: '1.1rem 1.4rem', transition: 'border-color 0.2s ease, transform 0.2s ease' }} className="related-card">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                           <span style={{
                             fontSize: '13px',
@@ -858,12 +858,12 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
                           }}>
                             {cfg.catLabel(g.category)}
                           </span>
-                          <span style={{ fontSize: '13px', color: '#4C6459' }}>{cfg.readTimeLabel(g.body ? calcReadTime(g.body) : g.readTime)}</span>
+                          <span style={{ fontSize: '13px', color: '#525A57' }}>{cfg.readTimeLabel(g.body ? calcReadTime(g.body) : g.readTime)}</span>
                         </div>
                         <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: S.relatedTitleLineHeight }}>
                           {g.title}
                         </p>
-                        <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: S.relatedDescLineHeight, margin: 0, fontWeight: 400 }}>
+                        <p style={{ fontSize: '13px', color: '#525A57', lineHeight: S.relatedDescLineHeight, margin: 0, fontWeight: 400 }}>
                           {g.description}
                         </p>
                       </div>
@@ -874,14 +874,14 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
                 {/* The one link here that is not another article. */}
                 {service && (
                   <Link href={service.path} style={{ textDecoration: 'none' }} className="related-link">
-                    <div style={{ border: '1px solid #C8EAE0', background: '#F2FAF7', borderRadius: '12px', padding: '1.1rem 1.4rem' }} className="related-card">
+                    <div style={{ border: '1px solid #DCE0DE', background: '#F2FAF7', borderRadius: '12px', padding: '1.1rem 1.4rem' }} className="related-card">
                       <p style={{ ...S.serviceLabel, margin: '0 0 8px' }}>
                         {cfg.whatWeDoLabel}
                       </p>
                       <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: 1.45 }}>
                         {service.label}
                       </p>
-                      <p style={{ fontSize: '13px', color: '#2A3C34', lineHeight: 1.7, margin: 0, fontWeight: 400 }}>
+                      <p style={{ fontSize: '13px', color: '#0F1A16', lineHeight: 1.7, margin: 0, fontWeight: 400 }}>
                         {service.blurb}
                       </p>
                     </div>

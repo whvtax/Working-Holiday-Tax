@@ -175,7 +175,7 @@ const H2: React.CSSProperties = {
 const BODY: React.CSSProperties = {
   fontSize: '15px',
   lineHeight: 1.7,
-  color: '#2A3C34',
+  color: '#0F1A16',
   marginBottom: '14px',
 }
 
@@ -192,7 +192,7 @@ export default function GermanMedicarePage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '13px', color: '#4C6459' }}>
+            style={{ fontSize: '13px', color: '#525A57' }}>
             <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
             <span aria-hidden="true">/</span>
             <span aria-current="page">Medicare</span>
@@ -233,7 +233,7 @@ export default function GermanMedicarePage() {
               </a>
             </div>
 
-            <p style={{ fontSize: '13px', color: '#4C6459' }}>
+            <p style={{ fontSize: '13px', color: '#525A57' }}>
               Antwort in etwa einer Stunde.
             </p>
           </div>
@@ -246,16 +246,16 @@ export default function GermanMedicarePage() {
           <div className="max-w-[680px] mx-auto">
 
             <p className="font-medium uppercase"
-              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
+              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '12px' }}>
               Selbst machen
             </p>
 
             <h2 className="font-serif font-black text-ink" style={H2}>
-              <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Ob die Levy je deine war, fragt niemand.{' '}</span>
+              <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>Ob die Levy je deine war, fragt niemand.{' '}</span>
               <span style={{ display: 'block' }}>myGov zieht sie ab und ist fertig.{' '}</span>
             </h2>
 
-            <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '20px' }}>
+            <p style={{ ...BODY, color: '#525A57', maxWidth: '56ch', marginBottom: '20px' }}>
               Sie beträgt 2 % des zu versteuernden Einkommens, rund 500 $ bei 25.000 $ im Jahr. Auf keinem
               Payslip taucht sie auf.
             </p>
@@ -266,25 +266,25 @@ export default function GermanMedicarePage() {
                 Spaltenüberschrift, auf dem Handy als Legende. Den Rest tragen
                 der Wechsel im Hintergrund und das schwerere Gewicht. Copy
                 unverändert. */}
-            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #CDE3DB' }}>
+            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
               {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #E2EFE9' }}>
+                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
                   <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
                     {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#4C6459', marginBottom: '5px' }}>
+                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#525A57', marginBottom: '5px' }}>
                         Auf myGov
                       </p>
                     )}
                     <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.mygov}</p>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l border-[#E2EFE9]"
+                  <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
                     style={{ padding: '13px 16px', background: '#F2FAF7' }}>
                     {i === 0 && (
                       <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
                         Mit uns
                       </p>
                     )}
-                    <p style={{ ...BODY, color: '#080F0D', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
+                    <p style={{ ...BODY, color: '#0F1A16', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word', hyphens: 'auto' }}>{row.us}</p>
                   </div>
                 </div>
               ))}
@@ -322,7 +322,7 @@ export default function GermanMedicarePage() {
       </section>
 
       {/* ── DER ENTSCHEIDENDE PUNKT ────────────────────────────────────────── */}
-      <section id="who-is-exempt" className="py-8 lg:py-11" style={{ background: '#F5F9F7' }}>
+      <section id="who-is-exempt" className="py-8 lg:py-11" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={H2}>
@@ -346,27 +346,27 @@ export default function GermanMedicarePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[880px] mx-auto" style={{ marginTop: '20px' }}>
-            <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0' }}>
+            <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #DCE0DE' }}>
               <p className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '8px' }}>
                 Aus einem Abkommensland
               </p>
-              <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '12px' }}>
+              <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#0F1A16', marginBottom: '12px' }}>
                 In der Regel anspruchsberechtigt, also in der Regel nicht befreit. Wir sorgen dafür, dass
                 die Levy korrekt angesetzt wird, und prüfen, ob ein Teil des Jahres anders lag.
               </p>
-              <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#4C6459' }}>
+              <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#525A57' }}>
                 {RHCA.join(' · ')}
               </p>
             </div>
-            <div className="rounded-2xl" style={{ padding: '20px', background: '#EAF6F1', border: '1.5px solid #C8EAE0' }}>
+            <div className="rounded-2xl" style={{ padding: '20px', background: '#F2FAF7', border: '1.5px solid #DCE0DE' }}>
               <p className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '8px' }}>
                 Aus allen anderen Ländern
               </p>
-              <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#2A3C34', marginBottom: '12px' }}>
+              <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#0F1A16', marginBottom: '12px' }}>
                 Normalerweise kein Anspruch, also normalerweise befreit. Deutschland, Österreich und die
                 Schweiz gehören alle in diese Gruppe.
               </p>
-              <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#4C6459' }}>
+              <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#525A57' }}>
                 Die Befreiung wird in Tagen gerechnet, nicht als ein einziges Ja oder Nein für das Jahr.
               </p>
             </div>
@@ -385,11 +385,11 @@ export default function GermanMedicarePage() {
               Wir klären, ob und für welchen Teil des Jahres du Anspruch auf Medicare hattest.
             </p>
 
-            <div className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1.5px solid #C8EAE0', margin: '20px 0' }}>
+            <div className="rounded-2xl" style={{ padding: '20px', background: '#F2FAF7', border: '1.5px solid #DCE0DE', margin: '20px 0' }}>
               <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
                 Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
               </p>
-              <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
+              <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#525A57' }}>
                 Von einem registrierten australischen Tax Agent geprüft und freigegeben,
                 bevor sie beim ATO eingereicht wird.
               </p>
@@ -400,7 +400,7 @@ export default function GermanMedicarePage() {
               style={{ minHeight: '54px', width: '100%', maxWidth: '360px', fontSize: '15px', borderRadius: '100px' }}>
               Schreib uns auf WhatsApp
             </WaLink>
-            <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '10px' }}>
+            <p style={{ fontSize: '13px', color: '#525A57', marginTop: '10px' }}>
               Antwort in etwa einer Stunde.
             </p>
           </div>
@@ -408,7 +408,7 @@ export default function GermanMedicarePage() {
       </section>
 
       {/* ── VIDEO ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="font-serif font-black text-ink mx-auto" style={{ ...H2, maxWidth: '24ch' }}>
@@ -462,7 +462,7 @@ export default function GermanMedicarePage() {
       </section>
 
       {/* ── RATGEBER ───────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[900px] mx-auto">
           <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
@@ -479,7 +479,7 @@ export default function GermanMedicarePage() {
             ].map(g => (
               <Link key={g.href} href={g.href}
                 className="block rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '16px', fontSize: '14px', lineHeight: 1.5, color: '#080F0D', minHeight: '44px' }}>
+                style={{ padding: '16px', fontSize: '14px', lineHeight: 1.5, color: '#0F1A16', minHeight: '44px' }}>
                 {g.label}
               </Link>
             ))}

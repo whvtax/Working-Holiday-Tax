@@ -156,7 +156,7 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
           background: '#fff',
           borderRadius: '12px',
           boxShadow: '0 10px 28px -8px rgba(11, 82, 64, 0.18), 0 4px 12px -4px rgba(11, 82, 64, 0.08)',
-          border: '1px solid #E2EFE9',
+          border: '1px solid #DCE0DE',
           padding: '6px',
           zIndex: 60,
           visibility: open ? 'visible' : 'hidden',
