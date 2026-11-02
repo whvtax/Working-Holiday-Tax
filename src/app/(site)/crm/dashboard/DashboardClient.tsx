@@ -851,7 +851,7 @@ export default function DashboardClient() {
     const allParts = (activeTask.notes||'').split(' | ')
     // Keep ALL structured form data AND reviewer notes (with 📝 prefix)
     const structuredParts = allParts.filter(p =>
-      p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
+      p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|Other income:|⚠️ Other income:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
       || p.startsWith('📝 ')
       || p === '🔄 Returning client'
       || p === '🔶 In Progress'
@@ -956,7 +956,7 @@ export default function DashboardClient() {
     const userParts = parts
       .filter(p =>
         // Strip ALL auto-generated form data - only keep human-written admin notes
-        !p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
+        !p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|Other income:|⚠️ Other income:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
         && !p.startsWith('📝 ')
         && p !== '🔄 Returning client'
       )
@@ -1176,6 +1176,16 @@ export default function DashboardClient() {
         + (() => {
             const expVal = (task.notes||'').match(/Expenses: ([^|]+)/)?.[1]?.trim()||''
             return radioField('Did you have work-related expenses?', expVal || '', ['Yes','No'])
+          })()
+        + sec('Additional income')
+        + (() => {
+            // Stored in notes by the tax-form route: "Other income: No" or
+            // "⚠️ Other income: Yes - <what the client wrote>".
+            const m = (task.notes||'').match(/Other income: (Yes|No)(?: - ([^|]*))?/)
+            const answer = m ? m[1] : ''
+            const what = (m?.[2] || '').trim()
+            return radioField('Do you have any additional income?', answer, ['Yes','No'])
+              + (answer === 'Yes' ? field('What additional income?', what || 'Not described, ask the client') : '')
           })()
         + (() => {
             // Parse and display TFN/ABN invoices stored in notes by the tax-form route.
@@ -2031,6 +2041,20 @@ export default function DashboardClient() {
                         <div className="frow" style={{background: expVal==='Yes'?'color-mix(in srgb, var(--warn) 8%, transparent)':'var(--surface2)',borderTop:'1px solid var(--line)'}}>
                           <span className="fk" style={{fontWeight:700}}>📎 Work expenses</span>
                           <span className="fv" style={{color:expVal==='Yes'?'var(--warn)':'var(--brand1)',fontWeight:600}}>{expVal==='Yes'?'Yes - needs receipts':'No'}</span>
+                        </div>
+                      )
+                    })()}
+                    {(()=>{
+                      // Additional income answer, stored in notes by the tax-form route as
+                      // "Other income: No" or "⚠️ Other income: Yes - <what the client wrote>".
+                      const m = (activeTask.notes||'').match(/Other income: (Yes|No)(?: - ([^|]*))?/)
+                      if (!m) return null
+                      const yes = m[1]==='Yes'
+                      const what = (m[2]||'').trim()
+                      return (
+                        <div className="frow" style={{background: yes?'color-mix(in srgb, var(--warn) 8%, transparent)':'var(--surface2)',borderTop:'1px solid var(--line)'}}>
+                          <span className="fk" style={{fontWeight:700}}>💰 Additional income</span>
+                          <span className="fv" style={{color:yes?'var(--warn)':'var(--brand1)',fontWeight:600,textAlign:'right'}}>{yes ? (what ? `Yes - ${what}` : 'Yes - not described, ask') : 'No'}</span>
                         </div>
                       )
                     })()}

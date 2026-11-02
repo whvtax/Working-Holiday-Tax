@@ -7,27 +7,26 @@ import { trackWhatsApp } from '@/lib/analytics'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
 import { AGENT_TPB } from '@/lib/constants'
+import { LogoMark } from '@/components/wht/LogoMark'
+import styles from './Nav.module.css'
 
-const Logo = ({ locale }: { locale: 'en' | 'de' | 'ja' }) => {
-  const href = locale === 'de' ? '/de' : locale === 'ja' ? '/ja' : '/'
-  const aria = locale === 'de'
+const Logo = ({ locale }: { locale: 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es' }) => {
+  const href = locale === 'de' ? '/de' : locale === 'ja' ? '/ja' : locale === 'fr' ? '/fr' : locale === 'it' ? '/it' : locale === 'es' ? '/es' : '/'
+  const aria = locale === 'es'
+    ? 'Working Holiday Tax - Inicio'
+    : locale === 'it'
+    ? 'Working Holiday Tax - Home'
+    : locale === 'fr'
+    ? 'Working Holiday Tax - Accueil'
+    : locale === 'de'
     ? 'Working Holiday Tax - Startseite'
     : locale === 'ja'
     ? 'Working Holiday Tax - ホーム'
     : 'Working Holiday Tax - Home'
   return (
-  <Link href={href} className="flex items-center gap-2.5 flex-shrink-0" aria-label={aria}>
-    {/* The bar is forest green now, so the mark inverts: the filled square
-        carries the tick in green on white instead of white on green. */}
-    <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
-      <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#FFFFFF" strokeWidth="2" opacity="0.85"/>
-      <rect x="13" y="13" width="19" height="19" rx="4.5" fill="#FFFFFF"/>
-      <line x1="2" y1="2" x2="13" y2="13" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round"/>
-      <circle cx="2" cy="2" r="1.6" fill="#0B5240"/>
-      <path d="M22.5 17 L27 19 L27 23.5 Q27 27 22.5 29 Q18 27 18 23.5 L18 19 Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
-      <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-    <span className="font-serif text-[15px] font-bold text-white" style={{ letterSpacing: '-0.02em' }}>Working Holiday Tax</span>
+  <Link href={href} className={styles.brand} aria-label={aria}>
+    <LogoMark size={36} />
+    <span>Working Holiday Tax</span>
   </Link>
   )
 }
@@ -72,14 +71,41 @@ export function Nav() {
   // Detect locale from URL
   const isGerman = pathname === '/de' || pathname?.startsWith('/de/')
   const isJapanese = pathname === '/ja' || pathname?.startsWith('/ja/')
-  const locale: 'en' | 'de' | 'ja' = isJapanese ? 'ja' : isGerman ? 'de' : 'en'
+  const isFrench = pathname === '/fr' || pathname?.startsWith('/fr/')
+  const isItalian = pathname === '/it' || pathname?.startsWith('/it/')
+  const isSpanish = pathname === '/es' || pathname?.startsWith('/es/')
+  const locale: 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es' = isSpanish ? 'es' : isItalian ? 'it' : isFrench ? 'fr' : isJapanese ? 'ja' : isGerman ? 'de' : 'en'
   // Every WhatsApp link on the site carries context now, so the chat does
   // not open on an anonymous "hi" that costs two messages to unpick.
   const waHref = waUrl({ topic: 'general', lang: locale })
 
   // Localized link sets
   const servicesLinks =
-    locale === 'de'
+    locale === 'es'
+      ? [
+          { label: 'Número TFN',               href: '/es/tfn',            desc: 'Obtén tu Tax File Number' },
+          { label: 'Registro de ABN',          href: '/es/abn',            desc: 'Trabaja por cuenta propia' },
+          { label: 'Declaración de impuestos', href: '/es/tax-return',     desc: 'Presenta tu declaración anual' },
+          { label: 'Retiro de la super',       href: '/es/superannuation', desc: 'Recupera el DASP después de irte' },
+          { label: 'Medicare',                 href: '/es/medicare',       desc: 'Exención del Medicare levy' },
+        ]
+      : locale === 'it'
+      ? [
+          { label: 'Richiesta del TFN',              href: '/it/tfn',            desc: 'Ottieni il tuo Tax File Number' },
+          { label: 'Registrazione ABN',         href: '/it/abn',            desc: 'Lavora come autonomo' },
+          { label: 'Dichiarazione dei redditi', href: '/it/tax-return',     desc: 'Presenta la dichiarazione annuale' },
+          { label: 'Rimborso della super',      href: '/it/superannuation', desc: 'Richiedi il DASP dopo la partenza' },
+          { label: 'Medicare',                  href: '/it/medicare',       desc: 'Esenzione dalla Medicare levy' },
+        ]
+      :     locale === 'fr'
+      ? [
+          { label: 'Demande de TFN',        href: '/fr/tfn',            desc: 'Obtenez votre Tax File Number' },
+          { label: 'Inscription à l’ABN',   href: '/fr/abn',            desc: 'Travaillez en indépendant' },
+          { label: 'Tax return',            href: '/fr/tax-return',     desc: 'Déposez votre déclaration annuelle' },
+          { label: 'Récupérer sa super',    href: '/fr/superannuation', desc: 'Récupérez votre DASP après votre départ' },
+          { label: 'Medicare',              href: '/fr/medicare',       desc: 'Exemption de la Medicare levy' },
+        ]
+      : locale === 'de'
       ? [
           { label: 'Steuernummer (TFN)',     href: '/de/tfn',            desc: 'Deine TFN beantragen' },
           { label: 'ABN-Registrierung',      href: '/de/abn',            desc: 'Als Selbstständiger arbeiten' },
@@ -98,7 +124,40 @@ export function Nav() {
       : SERVICES_LINKS
 
   const expensesLinks =
-    locale === 'de'
+    locale === 'es'
+      ? [
+          { label: 'Todos los gastos',   href: '/es/expenses',                   desc: 'La guía completa de deducciones' },
+          { label: 'Repartos',           href: '/es/expenses/delivery-drivers',  desc: 'Uber Eats, DoorDash y más' },
+          { label: 'Bares y restaurantes', href: '/es/expenses/hospitality',       desc: 'Bares, cafés y restaurantes' },
+          { label: 'Trabajo agrícola',   href: '/es/expenses/farm-work',         desc: 'Cosecha de fruta y trabajo en granjas' },
+          { label: 'Construcción',       href: '/es/expenses/construction',      desc: 'Herramientas, equipo de protección y White Card' },
+          { label: 'Trabajo de peón',  href: '/es/expenses/labouring',         desc: 'Almacenes y agencias de empleo temporal' },
+          { label: 'Limpieza',           href: '/es/expenses/cleaners',          desc: 'ABN, GST y traslados entre sitios' },
+          { label: 'FIFO',               href: '/es/expenses/fifo',              desc: 'Zone offset y viajes por turnos' },
+        ]
+      : locale === 'it'
+      ? [
+          { label: 'Tutte le spese',     href: '/it/expenses',                   desc: 'La guida completa alle deduzioni' },
+          { label: 'Consegne',           href: '/it/expenses/delivery-drivers',  desc: 'Uber Eats, DoorDash e altri' },
+          { label: 'Ristorazione',       href: '/it/expenses/hospitality',       desc: 'Bar, caffè e ristoranti' },
+          { label: 'Lavoro in fattoria', href: '/it/expenses/farm-work',         desc: 'Raccolta della frutta e lavori agricoli' },
+          { label: 'Edilizia',           href: '/it/expenses/construction',      desc: 'Attrezzi, DPI e White Card' },
+          { label: 'Manovalanza',        href: '/it/expenses/labouring',         desc: 'Magazzini e agenzie interinali' },
+          { label: 'Pulizie',            href: '/it/expenses/cleaners',          desc: 'ABN, GST e spostamenti tra più sedi' },
+          { label: 'FIFO',               href: '/it/expenses/fifo',              desc: 'Zone offset e trasferte' },
+        ]
+      :     locale === 'fr'
+      ? [
+          { label: 'Tous les frais',     href: '/fr/expenses',                   desc: 'Le guide complet des déductions' },
+          { label: 'Livraison',          href: '/fr/expenses/delivery-drivers',  desc: 'Uber Eats, DoorDash et autres' },
+          { label: 'Restauration',       href: '/fr/expenses/hospitality',       desc: 'Bars, cafés et restaurants' },
+          { label: 'Travail agricole',   href: '/fr/expenses/farm-work',         desc: 'Cueillette et travail à la ferme' },
+          { label: 'Bâtiment',           href: '/fr/expenses/construction',      desc: 'Outils, EPI et White Card' },
+          { label: 'Manutention',        href: '/fr/expenses/labouring',         desc: 'Entrepôts et agences d’intérim' },
+          { label: 'Nettoyage',          href: '/fr/expenses/cleaners',          desc: 'ABN, GST et trajets entre sites' },
+          { label: 'FIFO',               href: '/fr/expenses/fifo',              desc: 'Zone offset et déplacements en rotation' },
+        ]
+      : locale === 'de'
       ? [
           { label: 'Alle Ausgaben',        href: '/de/expenses',                   desc: 'Vollständiger Abzugs-Guide' },
           { label: 'Essenslieferung',      href: '/de/expenses/delivery-drivers',  desc: 'Uber Eats, DoorDash & mehr' },
@@ -123,7 +182,25 @@ export function Nav() {
       : EXPENSES_LINKS
 
   const topLinks =
-    locale === 'de'
+    locale === 'es'
+      ? [
+          { label: 'Calculadora', href: '/es/calculator' },
+          { label: 'Blog',        href: '/es/blog' },
+          { label: 'Contacto',    href: '/es/contact' },
+        ]
+      : locale === 'it'
+      ? [
+          { label: 'Calcolatore', href: '/it/calculator' },
+          { label: 'Blog',        href: '/it/blog' },
+          { label: 'Contatti',    href: '/it/contact' },
+        ]
+      :     locale === 'fr'
+      ? [
+          { label: 'Calculateur', href: '/fr/calculator' },
+          { label: 'Blog',       href: '/fr/blog' },
+          { label: 'Contact',    href: '/fr/contact' },
+        ]
+      : locale === 'de'
       ? [
           { label: 'Rechner',  href: '/de/calculator' },
           { label: 'Blog',     href: '/de/blog' },
@@ -138,14 +215,23 @@ export function Nav() {
       : TOP_LINKS
 
   const servicesLabel =
+    locale === 'es' ? 'Servicios' :
+    locale === 'it' ? 'Servizi' :
+    locale === 'fr' ? 'Services' :
     locale === 'de' ? 'Leistungen' :
     locale === 'ja' ? 'サービス' :
     'Services'
   const expensesLabel =
+    locale === 'es' ? 'Gastos deducibles' :
+    locale === 'it' ? 'Spese deducibili' :
+    locale === 'fr' ? 'Frais déductibles' :
     locale === 'de' ? 'Ausgaben' :
     locale === 'ja' ? '経費' :
     'Expenses'
   const ctaLabel =
+    locale === 'es' ? 'Empezar mi declaración' :
+    locale === 'it' ? 'Inizia la tua dichiarazione' :
+    locale === 'fr' ? 'Démarrer ma déclaration' :
     locale === 'de' ? 'Steuererklärung starten' :
     locale === 'ja' ? 'タックスリターンを依頼する' :
     'Start your tax return'
@@ -205,281 +291,143 @@ export function Nav() {
   const isServicePage = servicesLinks.some(s => pathname === s.href)
   const isExpensePage = expensesLinks.some(e => pathname === e.href)
 
+  const chevron = (isOpen: boolean) => (
+    <svg className={styles.chev} width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0)' }} aria-hidden="true">
+      <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+
+  const dropdown = (
+    ref: React.RefObject<HTMLDivElement | null>,
+    label: string,
+    links: ReadonlyArray<{ label: string; href: string; desc: string }>,
+    isOpen: boolean,
+    setIsOpen: (v: boolean) => void,
+    isActivePage: boolean,
+  ) => (
+    <div ref={ref} className={styles.drop}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        onMouseEnter={() => setIsOpen(true)}
+        className={`${styles.dropBtn} ${isActivePage ? styles.active : ''}`}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
+      >
+        {label}
+        {chevron(isOpen)}
+      </button>
+      {isOpen && (
+        <div onMouseLeave={() => setIsOpen(false)} className={styles.panel}>
+          {links.map(l => (
+            <Link
+              key={l.href}
+              href={l.href}
+              onClick={() => setIsOpen(false)}
+              className={`${styles.item} ${pathname === l.href ? styles.itemActive : ''}`}
+            >
+              <div className={styles.itemLabel}>{l.label}</div>
+              <div className={styles.itemDesc}>{l.desc}</div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+
   return (
     <>
-      {/* The bar is forest green on every page and every language. On pages
-          with a dark hero it merges into it; everywhere else it reads as a
-          solid brand band. The scrolled state only adds a shadow now, because
-          fading to white would break that band halfway down the page. */}
-      <nav className="nav-dark fixed top-0 left-0 right-0 z-50 transition-shadow duration-300"
-        style={{ background: '#0B5240', ...(scrolled ? { boxShadow: '0 2px 14px rgba(8,15,13,0.22)' } : {}) }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="h-[68px] flex items-center justify-between gap-5">
-            <Logo locale={locale} />
+      {/* White bar on every page and language (shared layout system, ADR 012):
+          brand left, text links and the two dropdowns, language selector and
+          the forest pill on the right. The scrolled state only adds a shadow. */}
+      <nav className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
+        <div className={styles.bar}>
+          <Logo locale={locale} />
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-7">
+          <div className={styles.desktop}>
+            {dropdown(dropdownRef, servicesLabel, servicesLinks, servicesOpen, setServicesOpen, isServicePage)}
+            {dropdown(expensesDropdownRef, expensesLabel, expensesLinks, expensesOpen, setExpensesOpen, isExpensePage)}
+            {topLinks.map(l => {
+              const active = pathname === l.href || (l.href.endsWith('/blog') && pathname?.startsWith(l.href))
+              return (
+                <Link key={l.href} href={l.href} className={`${styles.link} ${active ? styles.active : ''}`}>
+                  {l.label}
+                </Link>
+              )
+            })}
+          </div>
 
-              {/* Services Dropdown */}
-              <div ref={dropdownRef} style={{ position: 'relative' }}>
-                <button
-                  type="button"
-                  onClick={() => setServicesOpen(!servicesOpen)}
-                  onMouseEnter={() => setServicesOpen(true)}
-                  className="nav-link inline-flex items-center gap-1 text-[13.5px] cursor-pointer bg-transparent border-none p-0"
-                  style={{ color: isServicePage ? '#DCE0DE' : 'rgba(255,255,255,0.80)', fontWeight: isServicePage ? 600 : 400 }}
-                  aria-expanded={servicesOpen}
-                  aria-haspopup="true"
-                >
-                  {servicesLabel}
-                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
-                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  {isServicePage && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-amber-100" />}
-                </button>
+          <div className={styles.right}>
+            <LanguageSwitcher variant="desktop" />
+            <a
+              href={waHref}
+              onClick={() => trackWhatsApp({ position: 'nav', lang: locale })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.cta}
+            >
+              {ctaLabel}
+            </a>
+          </div>
 
-                {/* Dropdown Panel */}
-                {servicesOpen && (
-                  <div
-                    onMouseLeave={() => setServicesOpen(false)}
-                    style={{
-                      position: 'absolute',
-                      top: 'calc(100% + 16px)',
-                      left: '-16px',
-                      minWidth: '320px',
-                      background: '#fff',
-                      borderRadius: '14px',
-                      boxShadow: '0 12px 32px -8px rgba(11, 82, 64, 0.18), 0 4px 12px -4px rgba(11, 82, 64, 0.08)',
-                      border: '1px solid #DCE0DE',
-                      padding: '8px',
-                      zIndex: 60,
-                    }}
-                  >
-                    {servicesLinks.map(s => {
-                      const active = pathname === s.href
-                      return (
-                        <Link
-                          key={s.href}
-                          href={s.href}
-                          onClick={() => setServicesOpen(false)}
-                          className="services-dropdown-item"
-                          style={{
-                            display: 'block',
-                            padding: '12px 14px',
-                            borderRadius: '10px',
-                            textDecoration: 'none',
-                            background: active ? '#F7F9F8' : 'transparent',
-                          }}
-                        >
-                          <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240', marginBottom: '2px' }}>
-                            {s.label}
-                          </div>
-                          <div style={{ fontSize: '12px', color: '#525A57', fontWeight: 400, lineHeight: 1.4 }}>
-                            {s.desc}
-                          </div>
-                        </Link>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* Expenses Dropdown */}
-              <div ref={expensesDropdownRef} style={{ position: 'relative' }}>
-                <button
-                  type="button"
-                  onClick={() => setExpensesOpen(!expensesOpen)}
-                  onMouseEnter={() => setExpensesOpen(true)}
-                  className="nav-link inline-flex items-center gap-1 text-[13.5px] cursor-pointer bg-transparent border-none p-0"
-                  style={{ color: isExpensePage ? '#DCE0DE' : 'rgba(255,255,255,0.80)', fontWeight: isExpensePage ? 600 : 400 }}
-                  aria-expanded={expensesOpen}
-                  aria-haspopup="true"
-                >
-                  {expensesLabel}
-                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: expensesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
-                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  {isExpensePage && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-amber-100" />}
-                </button>
-
-                {/* Dropdown Panel */}
-                {expensesOpen && (
-                  <div
-                    onMouseLeave={() => setExpensesOpen(false)}
-                    style={{
-                      position: 'absolute',
-                      top: 'calc(100% + 16px)',
-                      left: '-16px',
-                      minWidth: '320px',
-                      background: '#fff',
-                      borderRadius: '14px',
-                      boxShadow: '0 12px 32px -8px rgba(11, 82, 64, 0.18), 0 4px 12px -4px rgba(11, 82, 64, 0.08)',
-                      border: '1px solid #DCE0DE',
-                      padding: '8px',
-                      zIndex: 60,
-                    }}
-                  >
-                    {expensesLinks.map(e => {
-                      const active = pathname === e.href
-                      return (
-                        <Link
-                          key={e.href}
-                          href={e.href}
-                          onClick={() => setExpensesOpen(false)}
-                          className="services-dropdown-item"
-                          style={{
-                            display: 'block',
-                            padding: '12px 14px',
-                            borderRadius: '10px',
-                            textDecoration: 'none',
-                            background: active ? '#F7F9F8' : 'transparent',
-                          }}
-                        >
-                          <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240', marginBottom: '2px' }}>
-                            {e.label}
-                          </div>
-                          <div style={{ fontSize: '12px', color: '#525A57', fontWeight: 400, lineHeight: 1.4 }}>
-                            {e.desc}
-                          </div>
-                        </Link>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* Top-level direct links */}
-              {topLinks.map(l => {
-                const active = pathname === l.href || (l.href.endsWith('/blog') && pathname?.startsWith(l.href))
-                return (
-                  <Link
-                    key={l.href}
-                    href={l.href}
-                    className="nav-link relative text-[13.5px]"
-                    style={{ color: active ? '#DCE0DE' : 'rgba(255,255,255,0.80)', fontWeight: active ? 600 : 400 }}
-                  >
-                    {l.label}
-                    {active && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-amber-100" />}
-                  </Link>
-                )
-              })}
-            </div>
-
-            {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center gap-3">
-              <LanguageSwitcher variant="desktop" />
-              <a
-                href={waHref}
-                onClick={() => trackWhatsApp({ position: 'nav', lang: locale })}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nav-cta inline-flex items-center gap-2 font-semibold"
-                style={{ height: '40px', padding: '0 18px', background: '#FFFFFF', color: '#0B5240', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,0.14)' }}
-              >
-                {ctaLabel}
-              </a>
-            </div>
-
-            {/* Mobile: language switcher + menu button */}
-            <div className="flex items-center gap-2 lg:hidden">
-              <LanguageSwitcher variant="desktop" />
-              <button type="button" onClick={() => setOpen(!open)}
-                aria-label={
-                  open
-                    ? (locale === 'de' ? 'Menü schließen' : locale === 'ja' ? 'メニューを閉じる' : 'Close menu')
-                    : (locale === 'de' ? 'Menü öffnen' : locale === 'ja' ? 'メニューを開く' : 'Open menu')
-                }
-                aria-expanded={open}
-                className="flex flex-col justify-center gap-[5px] w-11 h-11 bg-transparent border-none p-2">
-                <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-300 w-5 ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
-                <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-200 w-5 ${open ? 'opacity-0' : ''}`} />
-                <span className={`block h-[1.5px] bg-white rounded-sm transition-all duration-300 ${open ? 'w-5 -translate-y-[6.5px] -rotate-45' : 'w-3.5'}`} />
-              </button>
-            </div>
+          <div className={styles.mobileTools}>
+            <LanguageSwitcher variant="desktop" />
+            <button type="button" onClick={() => setOpen(!open)}
+              aria-label={
+                open
+                  ? (locale === 'es' ? 'Cerrar el menú' : locale === 'it' ? 'Chiudi il menu' : locale === 'fr' ? 'Fermer le menu' : locale === 'de' ? 'Menü schließen' : locale === 'ja' ? 'メニューを閉じる' : 'Close menu')
+                  : (locale === 'es' ? 'Abrir el menú' : locale === 'it' ? 'Apri il menu' : locale === 'fr' ? 'Ouvrir le menu' : locale === 'de' ? 'Menü öffnen' : locale === 'ja' ? 'メニューを開く' : 'Open menu')
+              }
+              aria-expanded={open}
+              className={`${styles.burger} ${open ? styles.burgerOpen : ''}`}>
+              <span />
+              <span />
+              <span className={open ? '' : styles.short} />
+            </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu - flat list, no categorization */}
-      {/* When closed, the drawer was translated off screen but still in the
-          accessibility tree and still focusable, so every page carried 18
-          phantom tab stops before a keyboard user reached any content, and
-          Next prefetched every link inside it. `inert` removes both: no focus,
-          no pointer events, no announcement, and no prefetch of hidden links. */}
+      {/* Phone menu. When closed it is off screen, `inert` (no focus, no
+          announcement, no prefetch of hidden links) and aria-hidden. Groups are
+          native collapsible blocks, so every link stays in the HTML. The
+          Google badge and the registered agent seal sit above the WhatsApp
+          button, which is pinned at the bottom. */}
       <div
         {...(open ? {} : { inert: '' as unknown as boolean })}
         aria-hidden={!open}
-        className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full invisible'}`}
+        className={`${styles.drawer} ${open ? '' : styles.drawerClosed}`}
       >
-
-        {/* Grouped by section, same groups as the desktop dropdowns, so the
-            menu reads as three short lists instead of sixteen equal rows.
-            The link sets are the localized ones defined above - one source. */}
-        {/* THE EXPENSES GROUP OPENS COLLAPSED.
-            Sixteen rows at ~44px each is roughly 830px of drawer, so on a
-            667px phone the CTA below and both trust marks sat entirely below
-            the fold of a menu the user opened in order to ACT. Expenses alone
-            is eight of those rows and is the least-used group. Collapsed by
-            default it costs one tap for the people who want it and lifts the
-            button above the fold for everyone else. The summary row keeps the
-            same 44px target and the same styling as the other headers. */}
-        {[
-          { title: servicesLabel, links: servicesLinks, collapsed: false },
-          { title: expensesLabel, links: expensesLinks, collapsed: true },
-          { title: locale === 'de' ? 'Mehr' : locale === 'ja' ? 'その他' : 'More', links: topLinks, collapsed: false },
-        ].map(group => {
-          const header = (
-            <p className="font-semibold uppercase"
-              style={{ fontSize: '11px', letterSpacing: '0.14em', color: '#0B5240', padding: '6px 0 4px', borderBottom: '1px solid #DCE0DE', marginBottom: '2px' }}>
-              {group.title}
-            </p>
-          );
-          const rows = group.links.map(l => (
-            <Link key={l.href} href={l.href} onClick={close}
-              className="block font-sans text-[16px] font-medium text-ink transition-colors hover:text-forest-500"
-              style={{ padding: '11px 0', borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
-              {l.label}
-            </Link>
-          ));
-          return (
-            <div key={group.title} style={{ marginBottom: '18px' }}>
-              {group.collapsed ? (
-                <details>
-                  <summary style={{ listStyle: 'none', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}>
-                    {header}
-                  </summary>
-                  {rows}
-                </details>
-              ) : (<>{header}{rows}</>)}
-            </div>
-          );
-        })}
-
-        {/* CTA */}
-        <div className="mt-6">
-          <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={() => { trackWhatsApp({ position: 'nav', lang: locale }); close() }} className="btn-primary w-full justify-center" style={{ height: '54px', borderRadius: '100px', fontSize: '15px' }}>
+        <div className={styles.scroll}>
+          <details className={styles.group}>
+            <summary>{servicesLabel}</summary>
+            <ul>{servicesLinks.map(l => <li key={l.href}><Link href={l.href} onClick={close}>{l.label}</Link></li>)}</ul>
+          </details>
+          <details className={styles.group}>
+            <summary>{expensesLabel}</summary>
+            <ul>{expensesLinks.map(l => <li key={l.href}><Link href={l.href} onClick={close}>{l.label}</Link></li>)}</ul>
+          </details>
+          <ul className={styles.list}>
+            {topLinks.map(l => <li key={l.href}><Link href={l.href} onClick={close}>{l.label}</Link></li>)}
+          </ul>
+        </div>
+        <div className={styles.panelCta}>
+          {/* Trust marks: the Google rating and the registered tax agent seal,
+              the same pair as the header of the tax refund form. */}
+          <div className={styles.trust}>
+            <GoogleReviewsBadge lang={locale} />
+            <img
+              src="/assets/tpb-registered.png"
+              alt={`${locale === 'es' ? 'Bajo la supervisión de un agente fiscal registrado, n.º' : locale === 'it' ? 'Sotto la supervisione di un agente fiscale registrato, n.' : locale === 'fr' ? 'Sous la supervision d’un agent fiscal enregistré, n°' : locale === 'de' ? 'Unter der Aufsicht eines registrierten Tax Agent, Nr.' : locale === 'ja' ? '監督するタックスエージェントの登録番号' : 'Supervising registered tax agent no.'} ${AGENT_TPB}`}
+              width={509}
+              height={319}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={() => { trackWhatsApp({ position: 'nav', lang: locale }); close() }} className={styles.panelWa}>
             {ctaLabel} →
           </a>
-        </div>
-
-        {/* Trust marks.
-            Xero used to sit here as an unexplained blue circle: a logo of a
-            product the reader has no relationship with, linking off the site,
-            saying nothing about who does the work. Replaced by the two marks
-            that DO answer "can I trust these people" — the same pair, in the
-            same order, as the header of the tax refund form: the Google rating
-            and the registered tax agent seal. */}
-        <div className="flex flex-row flex-wrap items-center justify-center gap-4 mt-5 pb-2">
-          <GoogleReviewsBadge lang={locale} />
-          <img
-            src="/assets/tpb-registered.png"
-            alt={`${locale === 'de' ? 'Unter der Aufsicht eines registrierten Tax Agent, Nr.' : locale === 'ja' ? '監督するタックスエージェントの登録番号' : 'Supervising registered tax agent no.'} ${AGENT_TPB}`}
-            width={509}
-            height={319}
-            loading="lazy"
-            decoding="async"
-            style={{ display: 'block', width: '116px', height: 'auto' }}
-          />
         </div>
       </div>
     </>

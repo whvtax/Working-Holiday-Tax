@@ -1,7 +1,9 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { guides, categoryMeta } from './data'
 import BlogClient from './BlogClient'
+import { PagePhoto } from '@/components/wht/PagePhoto'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
 
@@ -30,6 +32,7 @@ export const metadata: Metadata = {
       'en-AU': `${SITE_URL}/blog`,
       'de': `${SITE_URL}/de/blog`,
       'ja': `${SITE_URL}/ja/blog`,
+      ...newLocaleLanguages('/blog'),
       'x-default': `${SITE_URL}/blog`,
     },
   },
@@ -140,7 +143,7 @@ export default function BlogPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
       <div style={{ background: '#fff', minHeight: '100vh' }}>
-        <BlogClient guides={guideCards} />
+        <BlogClient guides={guideCards} photo={<PagePhoto page="tax-return" locale="en" />} />
       </div>
       <MobileCta href={waUrl({ topic: "guide", lang: "en" })} lang="en" topic="guide" />
     </>

@@ -8,7 +8,7 @@ interface Heading {
   id: string
 }
 
-type Locale = 'en' | 'de' | 'ja'
+type Locale = 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es'
 
 const MOBILE_TOC_UI = {
   en: {
@@ -34,6 +34,30 @@ const MOBILE_TOC_UI = {
     openLabel: '目次を開く',
     closeLabel: '閉じる',
     tocLabel: '目次',
+  },
+  fr: {
+    onThisPage: 'Sommaire',
+    section: 'section',
+    sections: 'sections',
+    openLabel: 'Ouvrir le sommaire',
+    closeLabel: 'Fermer',
+    tocLabel: 'Sommaire',
+  },
+  it: {
+    onThisPage: 'Indice',
+    section: 'sezione',
+    sections: 'sezioni',
+    openLabel: "Apri l'indice",
+    closeLabel: 'Chiudi',
+    tocLabel: 'Indice',
+  },
+  es: {
+    onThisPage: 'Contenido',
+    section: 'sección',
+    sections: 'secciones',
+    openLabel: 'Abrir el contenido',
+    closeLabel: 'Cerrar',
+    tocLabel: 'Contenido',
   },
 }
 

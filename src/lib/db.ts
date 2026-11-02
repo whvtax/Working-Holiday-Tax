@@ -265,7 +265,7 @@ export async function markTaskDone(id: string, refundAmount?: number): Promise<v
   const cleanedNotes = (task.notes ?? '')
     .split(' | ')
     .filter(p =>
-      !p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
+      !p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|Other income:|⚠️ Other income:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
       && p !== '🔄 Returning client'
     )
     .filter(Boolean)
@@ -323,7 +323,7 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   const cleanedNotes = (task.notes ?? '')
     .split(' | ')
     .filter(p =>
-      !p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
+      !p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|Other income:|⚠️ Other income:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
       && p !== '🔄 Returning client'
       && !p.startsWith('📝 ')
     )

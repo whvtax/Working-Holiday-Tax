@@ -115,7 +115,7 @@ const schemaOrg = {
       },
       currenciesAccepted: 'AUD',
       paymentAccepted: ['Cash', 'Credit Card', 'Bank Transfer'],
-      knowsLanguage: ['en', 'de', 'ja'],
+      knowsLanguage: ['en', 'de', 'ja', 'fr', 'it', 'es'],
       sameAs: [
         // Facebook is linked from every footer but was missing here, so the
         // entity graph AI search builds of the business had one profile fewer.
@@ -150,17 +150,17 @@ const schemaOrg = {
           telephone: '+61424513998',
           email: 'info@workingholidaytax.com.au',
           areaServed: 'AU',
-          // Replies are given in English, German and Japanese (see the /de and
-          // /ja sections). This said English only, and +61 424 513 998 is a
+          // Replies are given in English, German, Japanese, French, Italian and Spanish
+          // (see the /de, /ja, /fr, /it and /es sections). This said English only, and +61 424 513 998 is a
           // mobile number, not a toll-free line, so contactOption is gone.
-          availableLanguage: ['English', 'German', 'Japanese'],
+          availableLanguage: ['English', 'German', 'Japanese', 'French', 'Italian', 'Spanish'],
         },
         {
           '@type': 'ContactPoint',
           contactType: 'WhatsApp',
           telephone: '+61424513998',
           areaServed: 'AU',
-          availableLanguage: ['English', 'German', 'Japanese'],
+          availableLanguage: ['English', 'German', 'Japanese', 'French', 'Italian', 'Spanish'],
         },
       ],
       hasOfferCatalog: {
@@ -233,7 +233,7 @@ const schemaOrg = {
       name: 'Working Holiday Tax',
       description: 'Australian tax, sorted. For working holiday makers.',
       publisher: { '@id': 'https://workingholidaytax.com.au/#business' },
-      inLanguage: 'en-AU',
+      inLanguage: ['en-AU', 'de-DE', 'ja-JP', 'fr', 'it', 'es'],
       potentialAction: {
         '@type': 'SearchAction',
         target: {

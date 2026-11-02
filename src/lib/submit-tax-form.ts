@@ -127,14 +127,14 @@ async function uploadOne(
 /** Server field names, as a person would recognise them on the form. Only the
  *  fields validateIntake can actually reject appear here. */
 const FIELD_LABELS: Record<string, Record<AnyFormLang, string>> = {
-  email:     { en: 'email address',   de: 'E-Mail-Adresse',   ja: 'メールアドレス', zh: '邮箱地址', vi: 'địa chỉ email' },
-  tfn:       { en: 'TFN',             de: 'TFN',              ja: 'TFN', zh: 'TFN', vi: 'TFN' },
-  dob:       { en: 'date of birth',   de: 'Geburtsdatum',     ja: '生年月日', zh: '出生日期', vi: 'ngày sinh' },
-  taxYear:   { en: 'tax year',        de: 'Steuerjahr',       ja: '課税年度', zh: '报税年度', vi: 'năm thuế' },
-  marital:   { en: 'marital status',  de: 'Familienstand',    ja: '婚姻状況', zh: '婚姻状况', vi: 'tình trạng hôn nhân' },
-  taxStatus: { en: 'tax status',      de: 'Steuerstatus',     ja: '税務上の居住区分', zh: '税务身份', vi: 'tình trạng cư trú thuế' },
-  whatsapp:  { en: 'WhatsApp number', de: 'WhatsApp-Nummer',  ja: 'WhatsApp番号', zh: 'WhatsApp 号码', vi: 'số WhatsApp' },
-  fullName:  { en: 'name',            de: 'Name',             ja: 'お名前', zh: '姓名', vi: 'họ tên' },
+  email:     { en: 'email address',   de: 'E-Mail-Adresse',   ja: 'メールアドレス', zh: '邮箱地址', vi: 'địa chỉ email', fr: 'adresse e-mail', it: 'indirizzo e-mail', es: 'correo electrónico' },
+  tfn:       { en: 'TFN',             de: 'TFN',              ja: 'TFN', zh: 'TFN', vi: 'TFN', fr: 'TFN', it: 'TFN', es: 'TFN' },
+  dob:       { en: 'date of birth',   de: 'Geburtsdatum',     ja: '生年月日', zh: '出生日期', vi: 'ngày sinh', fr: 'date de naissance', it: 'data di nascita', es: 'fecha de nacimiento' },
+  taxYear:   { en: 'tax year',        de: 'Steuerjahr',       ja: '課税年度', zh: '报税年度', vi: 'năm thuế', fr: 'année fiscale', it: 'anno fiscale', es: 'año fiscal' },
+  marital:   { en: 'marital status',  de: 'Familienstand',    ja: '婚姻状況', zh: '婚姻状况', vi: 'tình trạng hôn nhân', fr: 'situation familiale', it: 'stato civile', es: 'estado civil' },
+  taxStatus: { en: 'tax status',      de: 'Steuerstatus',     ja: '税務上の居住区分', zh: '税务身份', vi: 'tình trạng cư trú thuế', fr: 'statut fiscal', it: 'stato fiscale', es: 'situación fiscal' },
+  whatsapp:  { en: 'WhatsApp number', de: 'WhatsApp-Nummer',  ja: 'WhatsApp番号', zh: 'WhatsApp 号码', vi: 'số WhatsApp', fr: 'numéro WhatsApp', it: 'numero WhatsApp', es: 'número de WhatsApp' },
+  fullName:  { en: 'name',            de: 'Name',             ja: 'お名前', zh: '姓名', vi: 'họ tên', fr: 'nom', it: 'nome', es: 'nombre' },
 }
 
 export async function submitTaxForm(

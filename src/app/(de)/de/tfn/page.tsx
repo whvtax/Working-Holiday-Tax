@@ -1,13 +1,19 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
-import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { WaLink } from '@/app/(site)/HomeWa'
+import { Accordion } from '@/components/ui/Accordion'
+import { WaButton } from '@/components/wht/WaButton'
+import { LinkButton } from '@/components/wht/Button'
+import { Section } from '@/components/wht/Section'
+import { Hero, heroStyles } from '@/components/wht/Hero'
+import { Lead, Mark } from '@/components/wht/Type'
+import { Figures, LinkRows, Steps, blocks } from '@/components/wht/Blocks'
+import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // Diese Seite gehört den Wochen zwischen Arbeitsbeginn und dem Moment, in dem
@@ -41,6 +47,7 @@ export const metadata: Metadata = {
       'en-AU': `${SITE_URL}/tfn`,
       de: `${SITE_URL}/de/tfn`,
       ja: `${SITE_URL}/ja/tfn`,
+      ...newLocaleLanguages('/tfn'),
       'x-default': `${SITE_URL}/tfn`,
     },
   },
@@ -62,13 +69,6 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
-
-// ─── ICONS ──────────────────────────────────────────────────────────────
-const IconWhatsApp = () => (
-  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
-    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
-  </svg>
-)
 
 // ─── COPY ───────────────────────────────────────────────────────────────
 
@@ -113,7 +113,7 @@ const WHAT_WE_DO = [
   },
   {
     title: 'Wir kümmern uns am Jahresende um die Lücke',
-    body: 'Was schon mit 45 % einbehalten wurde, lässt sich nur über eine Steuererklärung klären, und nur wenn sie das auch ausweist.',
+    body: 'Was schon mit 45 % einbehalten wurde, lässt sich nur über eine Steuererklärung klären, und nur, wenn die Erklärung diese Wochen auch enthält.',
   },
 ]
 
@@ -134,7 +134,7 @@ const FAQS = [
   {
     question: 'Was passiert, wenn ich ohne TFN anfange zu arbeiten?',
     answer:
-      'Dein Arbeitgeber muss 45 % einbehalten statt der 15 %, die für Working Holiday Maker auf die ersten 45.000 $ gelten, solange du ihm keine TFN mitgeteilt hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Bei 25 $ pro Stunde sind das rund 7,50 $ pro Stunde, die ans ATO gehen statt an dich.\n\nDas Geld ist nicht automatisch verloren. Es kann aber nur über eine Steuererklärung zurückkommen, die nach dem 30. Juni korrekt eingereicht wird.',
+      'Dein Arbeitgeber muss 45 % einbehalten statt des regulären Satzes, solange du ihm keine TFN mitgeteilt hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Der Unterschied geht ans ATO statt an dich.\n\nDas Geld ist nicht automatisch verloren. Es kann aber nur über eine Steuererklärung zurückkommen, die nach dem 30. Juni korrekt eingereicht wird.',
   },
   {
     question: 'Ich arbeite schon seit Wochen ohne TFN. Ist es zu spät?',
@@ -182,11 +182,6 @@ const GUIDES = [
 // an das Ende dieses Abschnitts gerückt.
 
 const WA_TFN = waUrl({ topic: 'tfn', lang: 'de' })
-
-// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
-const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
-const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.58 }
-const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.62 }
 
 export default function TFNPageDE() {
   const webPageLd = {
@@ -246,255 +241,116 @@ export default function TFNPageDE() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
-
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
-            <Link href="/de" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Startseite</Link>
-            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
-            <span aria-current="page">TFN</span>
-          </nav>
-
-          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
-              query words people type. It renders exactly where and how the old kicker
-              did; the slogan below is unchanged. Was: "Working Holiday Visum 417 &amp; 462". */}
-          <h1 className="font-serif font-black text-ink hero-animate"
-            style={{ fontSize: 'clamp(28px, 4.8vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
-              TFN beantragen&nbsp;&middot; Working Holiday Visum 417 &amp; 462
-            </span>
-            <span style={{ display: 'block' }}>Die Nummer ist kostenlos.{' '}</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>Die Wochen ohne sie nicht.{' '}</span>
-          </h1>
-
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '50ch', marginBottom: '26px' }}>
-            Solange dein Arbeitgeber die Nummer nicht hat, werden 45 % deines Lohns einbehalten statt 15 %.
-          </p>
-
-          <div className="hero-animate-delay-2">
-            <WaLink href={WA_TFN} position="hero" topic="tfn" lang="de"
-              className="btn-primary inline-flex items-center justify-center gap-2"
-              style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '340px', width: '100%' }}>
-              <IconWhatsApp />
-              Schreib uns auf WhatsApp
-            </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-              Antwort in etwa einer Stunde.
-            </p>
+      {/* SEO (Oct 2026): the kicker sits inside the H1 so the heading carries the query words people type. */}
+      <div className={blocks.underHeader}>
+        <Crumbs homeHref="/de" home="Startseite" current="TFN" />
+        <Hero
+          title={
+            <>
+              <span className={blocks.kicker}>TFN beantragen&nbsp;&middot; Working Holiday Visum 417 &amp; 462</span>
+            Die Nummer ist kostenlos.<br />
+            Die Wochen <Mark>ohne sie</Mark> nicht.
+            </>
+          }
+        >
+          <div className="hero-lede">
+            <Lead>
+              Solange dein Arbeitgeber die Nummer nicht hat, werden 45 % deines Lohns einbehalten statt 15 %.
+            </Lead>
           </div>
+          <WaButton href={WA_TFN} position="hero" topic="tfn" lang="de">Schreib uns auf WhatsApp</WaButton>
+          <p className={heroStyles.note}>Antwort in etwa einer Stunde.</p>
+          <GoogleRating variant="pill" lang="de" />
+        </Hero>
+        <PhotoBand page="tfn" locale="de" />
+      </div>
 
-          <div className="flex" style={{ marginTop: '20px' }}>
-            <GoogleRating variant="pill" lang="de" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── 2. WAS DIE LÜCKE KOSTET ──────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
-            Was kostet es, ohne TFN anzufangen?
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '28px' }}>
-            Hat dein Arbeitgeber deine TFN nicht innerhalb von 28 Tagen, muss er 45 % einbehalten statt der 15 % für
-            Working Holiday Maker. Die zu viel gezahlte Steuer ist nicht verloren und kann mit der Steuererklärung nach
+      <Section width="wide" title="Was kostet es, ohne TFN anzufangen?" titleId="gap-title">
+        <p className={blocks.text}>
+          Hat dein Arbeitgeber deine TFN nicht innerhalb von 28 Tagen, muss er 45 % einbehalten statt des
+            regulären Satzes. Die zu viel gezahlte Steuer ist nicht verloren und kann mit der Steuererklärung nach
             dem 30. Juni zurückkommen.
-          </p>
+        </p>
+        <Figures
+          items={[
+            { figure: '45 %', body: 'Werden von jedem Dollar einbehalten, solange keine TFN vorliegt, statt 15 %.' },
+            { figure: '28 Tage', body: 'Zeit, um deinem Arbeitgeber die TFN zu geben, und für das ATO, sie auszustellen.' },
+            { figure: '1 Erklärung', body: 'Der einzige Weg zurück für alles, was schon zum falschen Satz einbehalten wurde.' },
+          ]}
+        />
+      </Section>
 
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
-              <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>45 %</p>
-              <p style={{ ...BODY, color: '#0F1A16' }}>Werden von jedem Dollar einbehalten, solange keine TFN vorliegt, statt 15 %.</p>
-            </div>
-            <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
-              <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>28 Tage</p>
-              <p style={{ ...BODY, color: '#0F1A16' }}>Zeit, um deinem Arbeitgeber die TFN zu geben, und für das ATO, sie auszustellen.</p>
-            </div>
-            <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
-              <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>1 Erklärung</p>
-              <p style={{ ...BODY, color: '#0F1A16' }}>Der einzige Weg zurück für alles, was schon zum falschen Satz einbehalten wurde.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 3. WO ES SCHIEFGEHT ──────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Selbst machen</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            Warum scheitern TFN-Anträge von Backpackern?
-          </h2>
-          {/* Die Lede sagte "einer von drei Punkten" und die Liste darunter
-              sagte dasselbe dann dreimal. Was bleibt, sind die Kosten. */}
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '30px' }}>
-            Das Formular ist kurz. Jeder der drei Punkte, an denen es schiefgeht, kann einen weiteren Monat mit 45 %
+      <Section tone="pale" eyebrow="Selbst machen" title="Warum scheitern TFN-Anträge von Backpackern?" titleId="fail-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Das Formular ist kurz. Jeder der drei Punkte, an denen es schiefgeht, kann einen weiteren Monat mit 45 %
             bedeuten.
-          </p>
+        </p>
+        <Steps items={FAILURE_POINTS} />
+      </Section>
 
-          <ol className="flex flex-col" style={{ gap: '22px' }}>
-            {FAILURE_POINTS.map((s) => (
-              <li key={s.n} className="flex gap-4">
-                <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px' }}
-                  aria-hidden="true">{s.n}</span>
-                <div>
-                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+      <Section eyebrow="Die Arbeit" title="Was wir dagegen tun" titleId="work-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Du schickst uns deine Daten auf WhatsApp. Alles Weitere übernehmen wir.
+        </p>
+        <div className={tb.pairs}>
+          {WHAT_WE_DO.map(c => (
+            <div key={c.title} className={blocks.palePanel}>
+              <h3 className={blocks.cardTitle}>{c.title}</h3>
+              <p className={blocks.text}>{c.body}</p>
+            </div>
+          ))}
         </div>
-      </section>
-
-      {/* ── 4. WAS WIR MACHEN ────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Die Arbeit</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            Was wir dagegen tun
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '26px' }}>
-            Du schickst uns deine Daten auf WhatsApp. Alles Weitere übernehmen wir.
-          </p>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {WHAT_WE_DO.map((c) => (
-              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{c.title}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{c.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '48ch', fontWeight: 700 }}>
-            Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches
+        <p className={blocks.statement}>
+          Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches
             Formular welches ist. Wir regeln das direkt mit dem ATO.
-          </p>
+        </p>
+        <p className={blocks.text}>
+          Du hast die Nummer schon und willst die Wochen mit 45 % klären?{' '}
+            <Link href="/de/tax-return" className={tb.inlineLink}>Das ist die Steuererklärung</Link>.
+        </p>
+      </Section>
 
-          <p style={{ ...BODY, color: '#525A57', marginTop: '18px', maxWidth: '60ch' }}>
-            Du hast die Nummer schon und willst die Wochen mit 45 % klären?{' '}
-            <Link href="/de/tax-return" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Das ist die Steuererklärung</Link>.
-          </p>
-        </div>
-      </section>
+      {/* The one amber band: the guarantee. */}
+      <Section tone="amber" title="Unsere Garantie" titleId="guarantee-title">
+        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
+          Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.
+        </p>
+        <p className={blocks.text}>Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.</p>
+      </Section>
 
-      {/* ── 5. GEBÜHR ──────────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Unsere Garantie</p>
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
-          </p>
-          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
-            Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
-            Sag uns, wo du gerade stehst
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '56ch', marginBottom: '24px' }}>
-            Ob du schon gelandet bist, ob du einen Job angefangen hast, und ob schon etwas mit 45 % ausgezahlt
-            wurde. Drei Antworten, und wir sagen dir, was als Nächstes kommt.
-          </p>
-          <WaLink href={WA_TFN} position="section" topic="tfn" lang="de"
-            className="btn-primary inline-flex items-center justify-center gap-2"
-            style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '340px', width: '100%' }}>
-            <IconWhatsApp />
-            Schreib uns auf WhatsApp
-          </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-            Antwort in etwa einer Stunde.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 7. VERTRAUEN ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            Working-Holiday-Steuer ist das Einzige, was wir machen.
-          </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
-            Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Steuererklärungen werden von einem
+      <Section tone="pale" title="Working-Holiday-Steuer ist das Einzige, was wir machen." titleId="trust-title">
+        <p className={blocks.text}>
+          Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Steuererklärungen werden von einem
             registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
-          </p>
-          <GoogleReviewsServer lang="de" />
+        </p>
+        <GoogleReviewsServer lang="de" />
+      </Section>
+
+      <Section title="Fragen zur TFN, bevor du schreibst" titleId="faq-title">
+        {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
+        <Accordion items={FAQS} />
+      </Section>
+
+      <Section tone="pale" eyebrow="Ratgeber" title="Mehr zur TFN und den Wochen mit 45 %" titleId="guides-title">
+        <LinkRows items={GUIDES} />
+      </Section>
+
+      <Section eyebrow="Was kommt als Nächstes" title="Die Wochen mit 45 % lassen sich über die Erklärung klären" titleId="next-title">
+        <p className={blocks.text}>Sobald die Nummer hinterlegt ist, kann die Steuererklärung den zu viel einbehaltenen Teil zurückholen.</p>
+        <div className={blocks.stack}>
+          <LinkButton href="/de/tax-return" size="md">Wie die Erklärung läuft →</LinkButton>
         </div>
-      </section>
+      </Section>
 
-      {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
-            Fragen zur TFN, bevor du schreibst
-          </h2>
-
-          <div className="flex flex-col" style={{ gap: '4px' }}>
-            {FAQS.map((f, i) => (
-              <details key={i} name="tfn-faq-de" className="contact-faq-item">
-                <summary className="contact-faq-summary">
-                  <span style={{ flex: 1 }}>{f.question}</span>
-                  <span className="contact-faq-plus" aria-hidden="true">+</span>
-                </summary>
-                {/* An einer Leerzeile getrennt, damit eine lange Antwort als
-                    zwei kurze Absätze ankommt. faqLd oben nutzt weiter den
-                    Rohtext. */}
-                {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
-                ))}
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 9. RATGEBER ──────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Ratgeber</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
-            Mehr zur TFN und den Wochen mit 45 %
-          </h2>
-          {/* Die Lede zählte die drei Karten darunter auf. Das machen die Karten. */}
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {GUIDES.map((g) => (
-              <Link key={g.href} href={g.href}
-                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <NextStep
-        eyebrow="Was kommt als Nächstes"
-        heading="Die Wochen mit 45 % lassen sich über die Erklärung klären"
-        body="Sobald die Nummer hinterlegt ist, kann die Steuererklärung den zu viel einbehaltenen Teil zurückholen."
-        cta="Wie die Erklärung läuft →"
-        href="/de/tax-return"
-      />
+      {/* Closing CTA, forest band. */}
+      <Section tone="forest" title="Sag uns, wo du gerade stehst" titleId="cta-title">
+        <p className={`${blocks.text} ${blocks.onForest}`}>
+          Ob du schon gelandet bist, ob du einen Job angefangen hast, und ob schon etwas mit 45 % ausgezahlt
+            wurde. Drei Antworten, und wir sagen dir, was als Nächstes kommt.
+        </p>
+        <WaButton href={WA_TFN} position="section" topic="tfn" lang="de" tone="light">Schreib uns auf WhatsApp</WaButton>
+        <p className={`${blocks.small} ${blocks.onForest}`}>Antwort in etwa einer Stunde.</p>
+      </Section>
 
       <MobileCta href={WA_TFN} lang="de" topic="tfn" />
     </>

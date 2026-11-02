@@ -3,6 +3,8 @@ import { guideLinksFor, navFor } from '@/lib/svt/pages'
 import { longFor } from '@/lib/svt/content/long/library'
 import { UI, localePath, type SvtLocale } from '@/lib/svt/i18n'
 import { Logo } from './Logo'
+import { GoogleBadge } from './GoogleBadge'
+import { AGENT_NAME, AGENT_TPB } from '@/lib/agent'
 import styles from './Header.module.css'
 
 const DEDUCTION_MENU: ReadonlyArray<{ slug: string; label: Record<SvtLocale, string> }> = [
@@ -82,6 +84,15 @@ export function Header({ locale = 'en' }: { locale?: SvtLocale }) {
               </ul>
             </nav>
             <div className={styles.panelCta}>
+              {/* Trust marks above the button, as on the WHT phone menu (Jo, 1 Nov). */}
+              <div className={styles.trust}>
+                <GoogleBadge locale={locale} />
+                <img
+                  src="/svt-assets/img/tpb-registered.png"
+                  alt={t.footer.sealAlt.replace('{agent}', AGENT_NAME).replace('{tpb}', AGENT_TPB)}
+                  width={509} height={319} loading="lazy" decoding="async"
+                />
+              </div>
               <a className={styles.panelWa} href={svtWhatsappUrl(t.whatsappHello)} data-wa-pos="menu">{t.whatsappCta}</a>
             </div>
           </div>

@@ -1,8 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import { MobileCta } from '@/components/ui/MobileCta'
-import { WaLink } from '@/app/(site)/HomeWa'
 import { waUrl } from '@/lib/wa'
+import { ContactView, type ContactCopy } from '@/components/wht/ContactBlocks'
+import { Mark } from '@/components/wht/Type'
 import { WA_NUMBER, EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
@@ -27,6 +27,7 @@ export const metadata: Metadata = {
       'en-AU': `${SITE_URL}/contact`,
       'de': `${SITE_URL}/de/contact`,
       'ja': `${SITE_URL}/ja/contact`,
+      ...newLocaleLanguages('/contact'),
       'x-default': `${SITE_URL}/contact`,
     },
   },
@@ -95,7 +96,7 @@ const FAQS = [
   },
   {
     question: 'Was ist, wenn ich keine Rückerstattung bekomme?',
-    answer: 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das früh, statt den Auftrag anzunehmen und zu hoffen.',
+    answer: 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das früh, statt den Auftrag anzunehmen und zu hoffen.',
   },
   {
     question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',
@@ -160,7 +161,36 @@ const faqLd = {
     })),
 }
 
-const answerStyle = { fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', fontWeight: 300 } as const
+const copy: ContactCopy = {
+  lang: 'de',
+  wa: WA,
+  email: EMAIL,
+  mailtoHref: `mailto:${EMAIL}?subject=Steuerfrage%20von%20der%20Website`,
+  homeHref: "/de",
+  homeLabel: "Startseite",
+  crumbsLabel: "Brotkrümelnavigation",
+  crumbLabel: "Kontakt",
+  kicker: "Kontakt",
+  h1: <>Schreib uns auf <Mark>WhatsApp</Mark></>,
+  lead: "Wir lesen deine Nachricht und antworten, während der Geschäftszeiten meist in etwa einer Stunde.",
+  ctaHero: "WhatsApp öffnen →",
+  hours: "Montag bis Freitag, 9 bis 18 Uhr",
+  blockersEyebrow: "Bevor du fragst",
+  blockersTitle: "Die vier Dinge, die alle zuerst prüfen",
+  blockers,
+  otherEyebrow: "Andere Wege",
+  otherTitle: "Falls WhatsApp für dich nicht passt",
+  otherIntro: "E-Mail geht auch, die Social-Media-Kanäle ebenfalls, beides ist nur langsamer.",
+  emailLabel: "E-Mail",
+  hoursTitle: "Geschäftszeiten",
+  faqEyebrow: "Häufige Fragen",
+  faqTitle: "Alles andere, was gefragt wird",
+  faqs: FAQS,
+  closingEyebrow: "Wann immer du so weit bist",
+  closingTitle: "Schick einfach deine Frage. Mehr braucht der erste Schritt nicht.",
+  closingText: "Wo du gearbeitet hast, ungefähr wann, und ob du Australien schon verlassen hast. Das reicht uns für eine erste Einschätzung.",
+  ctaFooter: "Schreib uns auf WhatsApp →",
+}
 
 export default function GermanContactPage() {
   return (
@@ -168,194 +198,7 @@ export default function GermanContactPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-
-      {/* ── HERO ────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-5 pb-9 lg:pt-12 lg:pb-12">
-
-          <nav aria-label="Brotkrümelnavigation" className="mb-5 lg:mb-6">
-            <ol className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57' }}>
-              <li><Link href="/de" className="contact-breadcrumb-link">Startseite</Link></li>
-              <li aria-hidden="true" style={{ color: '#DCE0DE' }}>/</li>
-              <li aria-current="page" style={{ color: '#0B5240', fontWeight: 500 }}>Kontakt</li>
-            </ol>
-          </nav>
-
-          <div className="max-w-[560px] mx-auto text-center">
-            <div className="inline-flex items-center gap-2 mb-3 justify-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
-              <span className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240' }}>
-                Kontakt
-              </span>
-            </div>
-
-            <h1 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(26px,5vw,42px)', lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: '12px' }}>
-              Schreib uns auf WhatsApp
-            </h1>
-
-            <p className="contact-lead mx-auto"
-              style={{ fontSize: 'clamp(16px,1.4vw,17px)', lineHeight: 1.6, color: '#0F1A16', maxWidth: '44ch', marginBottom: '22px' }}>
-              Wir lesen deine Nachricht und antworten, während der Geschäftszeiten meist in etwa einer Stunde.
-            </p>
-
-            <WaLink href={WA} position="hero" topic="contact" lang="de"
-              className="btn-primary w-full sm:w-auto inline-flex justify-center"
-              style={{ minHeight: '56px', padding: '0 34px', fontSize: '16px', borderRadius: '100px', minWidth: '270px' }}>
-              WhatsApp öffnen →
-            </WaLink>
-
-            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-              Montag bis Freitag, 9 bis 18 Uhr
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── DIE VIER FRAGEN VOR DER NACHRICHT ───────────────────────────── */}
-      <section className="py-11 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px] mx-auto">
-            <span className="section-label">Bevor du fragst</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 20px' }}>
-              Die vier Dinge, die alle zuerst prüfen
-            </h2>
-
-            <div className="flex flex-col" style={{ gap: '12px' }}>
-              {blockers.map((b, i) => (
-                <div key={i} className="rounded-2xl" style={{ padding: '18px', background: '#fff', border: '1.5px solid #DCE0DE' }}>
-                  <h3 className="font-serif font-bold text-ink" style={{ fontSize: '17px', lineHeight: 1.35, letterSpacing: '-0.015em', marginBottom: '8px' }}>
-                    {b.q}
-                  </h3>
-                  {b.a.split('\n\n').map((para, j, all) => (
-                    <p key={j} style={{ ...answerStyle, marginBottom: j === all.length - 1 ? 0 : '10px' }}>{para}</p>
-                  ))}
-                  {b.link && (
-                    <Link href={b.link.href}
-                      style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', fontSize: '14.5px', fontWeight: 500, color: '#0B5240', textDecoration: 'underline' }}>
-                      {b.link.label} →
-                    </Link>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── ANDERE WEGE, BEWUSST ZWEITRANGIG ────────────────────────────── */}
-      <section className="py-11 lg:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[560px] mx-auto">
-            <span className="section-label">Andere Wege</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', margin: '10px 0 16px' }}>
-              Falls WhatsApp für dich nicht passt
-            </h2>
-            <p style={{ ...answerStyle, marginBottom: '20px' }}>
-              E-Mail geht auch, die Social-Media-Kanäle ebenfalls, beides ist nur langsamer.
-            </p>
-
-            <address style={{ fontStyle: 'normal' }}>
-              <a href={`mailto:${EMAIL}?subject=Steuerfrage%20von%20der%20Website`} className="contact-option-card">
-                <div className="contact-option-icon" style={{ background: '#fff', border: '1px solid #DCE0DE' }}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <rect x="2" y="5" width="20" height="14" rx="2" stroke="#0B5240" strokeWidth="1.8" />
-                    <path d="M2.5 6.5L12 13.5l9.5-7" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <div className="flex-1" style={{ minWidth: 0 }}>
-                  <p className="contact-option-label">E-Mail</p>
-                  <p className="contact-option-detail" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{EMAIL}</p>
-                </div>
-                <svg width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="contact-option-arrow">
-                  <path d="M2.5 7h9M8.5 4l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
-
-              <div className="grid grid-cols-2 gap-3" style={{ marginTop: '12px' }}>
-                <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className="contact-option-card-small">
-                  <div className="contact-option-icon-small" style={{ background: 'linear-gradient(45deg, #F58529 0%, #DD2A7B 50%, #8134AF 100%)', border: 'none' }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" aria-hidden="true">
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                    </svg>
-                  </div>
-                  <span className="contact-option-label-small">Instagram</span>
-                </a>
-                <a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="contact-option-card-small">
-                  <div className="contact-option-icon-small" style={{ background: '#010101', border: 'none' }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.79 1.52V6.76a4.85 4.85 0 01-1.02-.07z" fill="white" />
-                    </svg>
-                  </div>
-                  <span className="contact-option-label-small">TikTok</span>
-                </a>
-              </div>
-            </address>
-
-            <div className="contact-hours-block">
-              <p className="contact-hours-title">
-                <span className="w-1.5 h-1.5 rounded-full inline-block mr-1.5" style={{ background: '#0B5240' }} aria-hidden="true" />
-                Geschäftszeiten
-              </p>
-              <p className="contact-hours-detail" style={{ fontSize: '14px', color: '#525A57' }}>
-                Montag bis Freitag, 9 bis 18 Uhr
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ ─────────────────────────────────────────────────────────── */}
-      <section style={{ background: '#F2FAF7', paddingTop: '48px', paddingBottom: '48px' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px] mx-auto">
-          <div className="text-center mb-7">
-            <span className="section-label center">Häufige Fragen</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginTop: '10px' }}>
-              Alles andere, was gefragt wird
-            </h2>
-          </div>
-
-          <div className="flex flex-col" style={{ gap: '6px' }}>
-            {FAQS.map((f, i) => (
-              <details key={i} name="contact-faq" className="contact-faq-item" style={{ background: '#fff' }}>
-                <summary className="contact-faq-summary" style={{ minHeight: '44px' }}>
-                  <span style={{ flex: 1 }}>{f.question}</span>
-                  <span className="contact-faq-plus" aria-hidden="true">+</span>
-                </summary>
-                {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
-                ))}
-              </details>
-            ))}
-          </div>
-        </div>
-        </div>
-      </section>
-
-      {/* ── ABSCHLUSS-CTA ───────────────────────────────────────────────── */}
-      <section style={{ background: '#0B5240', paddingTop: '48px', paddingBottom: '56px' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[520px] mx-auto text-center">
-            <p className="font-medium uppercase" style={{ fontSize: '10.5px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.15em', marginBottom: '12px' }}>
-              Wann immer du so weit bist
-            </p>
-            <h2 className="font-serif font-black text-white" style={{ fontSize: 'clamp(21px,2.8vw,30px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '12px' }}>
-              Schick einfach deine Frage. Mehr braucht der erste Schritt nicht.
-            </h2>
-            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, marginBottom: '24px', fontWeight: 300 }}>
-              Wo du gearbeitet hast, ungefähr wann, und ob du Australien schon verlassen hast. Das reicht uns für eine erste Einschätzung.
-            </p>
-            <WaLink href={WA} position="footer" topic="contact" lang="de"
-              className="btn-primary w-full sm:w-auto"
-              style={{ minHeight: '54px', padding: '0 32px', fontSize: '15px', minWidth: '260px' }}>
-              Schreib uns auf WhatsApp →
-            </WaLink>
-          </div>
-        </div>
-      </section>
-
-      <MobileCta href={WA} lang="de" topic="contact" />
+      <ContactView t={copy} />
     </>
   )
 }

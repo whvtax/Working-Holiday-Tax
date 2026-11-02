@@ -22,6 +22,12 @@ export const SVT_PUBLIC = {
   gaMeasurementId: 'G-YHFJYVG620',
   /** Google Business Profile "Student Visa Tax", review link (Jo, 27 Oct). */
   googleReviewUrl: 'https://g.page/r/CW65-TcfMaArECE/review',
+  /**
+   * The real Google rating, set by hand once the first reviews exist, e.g.
+   * { score: '5.0', count: 3 }. While it is null the badge shows no score and
+   * no stars (a rating that does not exist must never be displayed).
+   */
+  googleRating: null as null | { score: string; count: number },
 } as const
 
 /** A wa.me link to the SVT number, with an optional prefilled message. */

@@ -1,6 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
+import { PagePhoto } from '@/components/wht/PagePhoto'
 import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
 
@@ -26,6 +28,7 @@ export const metadata: Metadata = {
       'en-AU': `${SITE_URL}/calculator`,
       'de': `${SITE_URL}/de/calculator`,
       'ja': `${SITE_URL}/ja/calculator`,
+      ...newLocaleLanguages('/calculator'),
       'x-default': `${SITE_URL}/calculator`,
     },
   },
@@ -61,7 +64,7 @@ const faqs = [
   {
     question: 'どの税率を使っていますか？',
     answer:
-      '417・462ビザのワーキングホリデーメーカーには、最初の45,000ドルまで15%、45,001ドルから135,000ドルは30%、135,001ドルから190,000ドルは37%、190,000ドル超は45%を、非課税枠なしで適用します。\n\nオーストラリア税務居住者には、18,200ドルまで非課税、45,000ドルまで16%、135,000ドルまで30%、190,000ドルまで37%、それ以上は45%を適用します。どちらが当てはまるかは設定ではなく、状況を踏まえた判断です。',
+      'ワーキングホリデーメーカー向けの税率表と、オーストラリア税務居住者向けの税率表の両方で計算できます。どちらが当てはまるかは設定ではなく、その年のご本人の事情を踏まえた判断で、最終的な判断はATOが行います。当社が1年の実態を確認します。',
   },
   {
     question: 'なぜメディケア税が含まれていないのですか？',
@@ -134,7 +137,7 @@ export default function JapaneseCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <CalculatorClient faqs={faqs} />
+      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="ja" />} />
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'ja' })} lang="ja" topic="calculator" />
     </>
   )

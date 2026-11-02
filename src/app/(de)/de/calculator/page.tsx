@@ -1,6 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
+import { PagePhoto } from '@/components/wht/PagePhoto'
 import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
 
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
     'WHM Steuersatz Rechner',
     'Superannuation Rechner DASP',
   ],
-  alternates: { canonical: '/de/calculator', languages: { 'en': '/calculator', 'en-AU': '/calculator', 'de': '/de/calculator', 'ja': '/ja/calculator', 'x-default': '/calculator' } },
+  alternates: { canonical: '/de/calculator', languages: { 'en': '/calculator', 'en-AU': '/calculator', 'de': '/de/calculator', 'ja': '/ja/calculator', ...newLocaleLanguages('/calculator'), 'x-default': '/calculator' } },
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax' }],
     type: 'website',
@@ -53,12 +55,12 @@ const faqs = [
   {
     question: 'Welche Steuersätze nutzt der Rechner?',
     answer:
-      'Für Working Holiday Maker mit einem 417- oder 462-Visum: 15 % auf die ersten 45.000 $, 30 % von 45.001 bis 135.000 $, 37 % von 135.001 bis 190.000 $ und 45 % darüber, ohne Freibetrag. Für australische Steuerresidenten: Freibetrag bis 18.200 $, dann 16 % bis 45.000 $, 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber. Welcher der beiden für dich gilt, ist eine Beurteilung deiner Umstände und keine Einstellung.',
+      'Der Rechner arbeitet mit den für 2025/26 veröffentlichten Sätzen, getrennt nach dem Status, den du auswählst. Welcher Status und damit welche Sätze für dich gelten, ist eine Beurteilung deiner Umstände und keine Einstellung, und am Ende entscheidet das ATO.',
   },
   {
     question: 'Warum berücksichtigt der Rechner die Medicare Levy nicht?',
     answer:
-      'Weil sie bei den meisten, die ihn benutzen, gar nicht anfallen dürfte. Die Medicare Levy beträgt zusätzlich 2 % des zu versteuernden Einkommens, und Working Holiday Maker aus Ländern ohne Sozialversicherungsabkommen, Deutschland eingeschlossen, können sie über eine Befreiung streichen lassen.\n\nSie standardmäßig einzurechnen, würde die Rückerstattung bei den meisten zu niedrig ausweisen, deshalb gehört sie in die Prüfung, wo dein Anspruch geklärt werden kann.',
+      'Weil sie bei den meisten, die ihn benutzen, gar nicht anfallen dürfte. Die Medicare Levy beträgt zusätzlich 2 % des zu versteuernden Einkommens, und Working Holiday Maker aus Ländern ohne Gesundheitsabkommen, Deutschland eingeschlossen, können sie über eine Befreiung streichen lassen.\n\nSie standardmäßig einzurechnen, würde die Rückerstattung bei den meisten zu niedrig ausweisen, deshalb gehört sie in die Prüfung, wo dein Anspruch geklärt werden kann.',
   },
   {
     question: 'Der Rechner zeigt eine Nachzahlung. Ist das das Ende?',
@@ -68,7 +70,7 @@ const faqs = [
   {
     question: 'Kann ich den Rechner auch nutzen, wenn ich schon zurück in Deutschland bin?',
     answer:
-      'Ja. Deine australische Steuerposition hängt vom Einkommen ab, das du in Australien verdient hast, und vom Visum, mit dem du es verdient hast, nicht davon, wo du jetzt wohnst.\n\nDer Rechner funktioniert aus Berlin genauso wie aus Sydney, und eine Steuererklärung lässt sich von überall einreichen. Neu ist nach der Abreise nur, dass auch deine Super über DASP beantragt werden kann.',
+      'Ja. Deine australische Steuerposition hängt vom Einkommen ab, das du in Australien verdient hast, und vom Visum, mit dem du es verdient hast, nicht davon, wo du jetzt wohnst.\n\nDer Rechner funktioniert aus Berlin genauso wie aus Sydney, und eine Steuererklärung lässt sich von überall einreichen. Nach der Abreise kommt hinzu, dass du auch deine Super über DASP beantragen kannst.',
   },
   {
     question: 'Was macht der Rechner mit dem Superannuation-Guthaben?',
@@ -126,7 +128,7 @@ export default function GermanCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <CalculatorClient faqs={faqs} />
+      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="de" />} />
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'de' })} lang="de" topic="calculator" />
     </>
   )

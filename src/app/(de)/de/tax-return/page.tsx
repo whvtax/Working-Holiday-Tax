@@ -1,13 +1,19 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
-import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { WaLink } from '@/app/(site)/HomeWa'
+import { WaButton } from '@/components/wht/WaButton'
+import { Section } from '@/components/wht/Section'
+import { Hero, heroStyles } from '@/components/wht/Hero'
+import { Lead, Mark } from '@/components/wht/Type'
+import { LinkButton } from '@/components/wht/Button'
+import { Steps, LinkRows, blocks } from '@/components/wht/Blocks'
+import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
+import { Accordion } from '@/components/ui/Accordion'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // Diese Seite beantwortet die transaktionale Suche: jemand hat sich bereits
@@ -44,6 +50,7 @@ export const metadata: Metadata = {
       'en-AU': `${SITE_URL}/tax-return`,
       de: `${SITE_URL}/de/tax-return`,
       ja: `${SITE_URL}/ja/tax-return`,
+      ...newLocaleLanguages('/tax-return'),
       'x-default': `${SITE_URL}/tax-return`,
     },
   },
@@ -65,13 +72,6 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
-
-// ─── ICONS ──────────────────────────────────────────────────────────────
-const IconWhatsApp = () => (
-  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
-    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
-  </svg>
-)
 
 // ─── COPY ───────────────────────────────────────────────────────────────
 
@@ -149,19 +149,19 @@ const REFUND_SOURCES = [
   },
   {
     "label": "Ein Arbeitgeber ohne Registrierung für Working Holiday Maker",
-    "body": "Der Satz von 15 % setzt voraus, dass der Arbeitgeber beim ATO als Arbeitgeber von Working Holiday Makern registriert ist. War er es nicht, musste er zum Satz für ausländische Steuerpflichtige einbehalten, der bei 30 Cent pro Dollar beginnt."
+    "body": "Für Working Holiday Maker gelten besondere Sätze, wenn der Arbeitgeber beim ATO als Arbeitgeber von Working Holiday Makern registriert ist. War er es nicht, kann zu einem anderen Satz einbehalten worden sein. Ob das bei dir so war, sehen wir in deinen ATO-Daten."
   },
   {
     "label": "Eine Medicare Levy, die nie deine war",
-    "body": "Die 2 % werden standardmäßig angesetzt. Viele Pässe haben keinen Anspruch auf Medicare, und mit der richtigen Bescheinigung fällt die Levy weg."
+    "body": "Die 2 % werden standardmäßig angesetzt. Ob sie bei dir überhaupt anfallen, hängt vom Einzelfall ab, und mit der richtigen Bescheinigung kann die Levy wegfallen."
   },
   {
     "label": "Arbeitskosten, die niemand angesetzt hat",
-    "body": "Schuhe, Arbeitskleidung, Werkzeug, Lizenzen und Fahrten zwischen Einsatzorten können dein steuerpflichtiges Einkommen senken, wenn sie mit deiner Arbeit zusammenhängen. Beim Satz von 15 % senken 100 $ an echten Abzügen die Steuer um 15 $."
+    "body": "Schuhe, Arbeitskleidung, Werkzeug, Lizenzen und Fahrten zwischen Einsatzorten können dein steuerpflichtiges Einkommen senken, wenn sie mit deiner Arbeit zusammenhängen. Wie viel das ausmacht, hängt vom Satz ab, der für dich gilt."
   },
   {
     "label": "Dein Pass und deine steuerliche Ansässigkeit",
-    "body": "Je nach Reisepass und Verlauf deines Jahres kann ein Gerichtsurteil die geltenden Steuersätze verändern. Ob das bei dir der Fall ist, klären wir in unserer Prüfung."
+    "body": "Je nach Verlauf deines Jahres kann ein Gerichtsurteil die geltenden Steuersätze verändern. Ob das bei dir der Fall ist, ist nichts, was du annehmen solltest, und das klären wir in unserer Prüfung."
   }
 ]
 
@@ -188,7 +188,7 @@ const FAQS = [
   {
     question: 'Bis wann muss die Steuererklärung eingereicht werden?',
     answer:
-      'Wenn du selbst einreichst, bis zum 31. Oktober nach Ende des Steuerjahres. Eine Erklärung für 2025/26 ist also am 31. Oktober 2026 fällig. Eine Erklärung nach Fristablauf ist verspätet, aber nicht verloren und kann weiterhin eingereicht werden.',
+      'Wenn du selbst einreichst, bis zum 31. Oktober nach Ende des Steuerjahres. Eine Erklärung für 2025/26 war also am 31. Oktober 2026 fällig; die für 2026/27 ist am 31. Oktober 2027 fällig. Eine Erklärung nach Fristablauf ist verspätet, aber nicht verloren und kann weiterhin eingereicht werden.',
   },
   {
     question: 'Braucht ihr meine Payslips?',
@@ -236,11 +236,6 @@ const GUIDES = [
 ]
 
 const WA_TR = waUrl({ topic: 'tax-return', lang: 'de' })
-
-// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
-const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
-const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.58 }
-const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.62 }
 
 export default function TaxReturnPageDE() {
   const webPageLd = {
@@ -319,295 +314,107 @@ export default function TaxReturnPageDE() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-      {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
-
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
-            <Link href="/de" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Startseite</Link>
-            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
-            <span aria-current="page">Steuererklärung</span>
-          </nav>
-
-          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
-              query words people type. It renders exactly where and how the old kicker
-              did; the slogan below is unchanged. Was: "Working Holiday Visum 417 &amp; 462". */}
-          <h1 className="font-serif font-black text-ink hero-animate"
-            style={{ fontSize: 'clamp(27px, 4.6vw, 41px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
-              Steuererklärung Australien&nbsp;&middot; Working Holiday Visum 417 &amp; 462
-            </span>
-            <span style={{ display: 'block' }}>Deine Daten und wohin die Erstattung gehen soll.{' '}</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>Den Rest übernehmen wir.{' '}</span>
-          </h1>
-
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '52ch', marginBottom: '26px' }}>
-            Keine Payslips, kein myGov-Konto, kein Formular zum Entziffern. Ein Fragebogen, eine Unterschrift,
-            und eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus.
-          </p>
-
-          <div className="hero-animate-delay-2">
-            <WaLink href={WA_TR} position="hero" topic="tax-return" lang="de"
-              className="btn-primary inline-flex items-center justify-center gap-2"
-              style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '340px', width: '100%' }}>
-              <IconWhatsApp />
-              Schreib uns auf WhatsApp
-            </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-              Antwort in etwa einer Stunde.
-            </p>
+      <div className={blocks.underHeader}>
+        <Crumb home="Startseite" current="Steuererklärung" label="Breadcrumb" href="/de" />
+        <Hero
+          title={
+            <>
+              <span className={blocks.kicker}>Steuererklärung Australien&nbsp;&middot; Working Holiday Visum 417 &amp; 462</span>
+              Deine Daten und wohin die Erstattung gehen soll. <Mark>Den Rest übernehmen wir.</Mark>
+            </>
+          }
+        >
+          <div className="hero-lede">
+            <Lead>Keine Payslips, kein myGov-Konto, kein Formular zum Entziffern. Ein Fragebogen, eine Unterschrift, und eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus.</Lead>
           </div>
+          <WaButton href={WA_TR} position="hero" topic="tax-return" lang="de">Schreib uns auf WhatsApp</WaButton>
+          <p className={heroStyles.note}>Antwort in etwa einer Stunde.</p>
+          <GoogleRating variant="pill" lang="de" />
+        </Hero>
+      </div>
 
-          <div className="flex" style={{ marginTop: '20px' }}>
-            <GoogleRating variant="pill" lang="de" />
-          </div>
+      <PhotoFrame page="tax-return" locale="de" />
+
+      <Section tone="pale" eyebrow="Woher eine Erstattung kommt" title="Warum Working Holiday Maker oft eine Steuererstattung bekommen" titleId="refund-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Eine Erstattung ist keine Prämie fürs Backpacken. Sie ist die Lücke zwischen dem, was deine Arbeitgeber einbehalten haben, und dem, was du tatsächlich geschuldet hast, und in einem Working-Holiday-Jahr entsteht diese Lücke meist an den Stellen unten.</p>
+        <div className={blocks.cards}>
+          {REFUND_SOURCES.map((r) => (
+            <div key={r.label} className={blocks.card}>
+              <h3 className={blocks.cardTitle}>{r.label}</h3>
+              <p className={blocks.text}>{r.body}</p>
+            </div>
+          ))}
         </div>
-      </section>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Nichts davon passiert automatisch, und nichts wird einfach angenommen. Jeder Punkt wird vor der Einreichung mit deinem ATO-Datensatz abgeglichen.{' '}
+          <Link href="/de/calculator" className={blocks.textLink}>Grobe Schätzung im Rechner ansehen</Link>.
+        </p>
+      </Section>
 
-      {/* ── 1b. WHERE A REFUND COMES FROM ─────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Woher eine Erstattung kommt</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
-            Warum Working Holiday Maker oft eine Steuererstattung bekommen
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch', marginBottom: '26px' }}>
-            Eine Erstattung ist keine Prämie fürs Backpacken. Sie ist die Lücke zwischen dem, was deine Arbeitgeber einbehalten haben, und dem, was du tatsächlich geschuldet hast, und in einem Working-Holiday-Jahr entsteht diese Lücke meist an den Stellen unten.
-          </p>
-          <div className="grid gap-4 md:grid-cols-2">
-            {REFUND_SOURCES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
-              </div>
-            ))}
-          </div>
-          <p style={{ ...BODY, color: '#525A57', marginTop: '22px', maxWidth: '62ch' }}>
-            Nichts davon passiert automatisch, und nichts wird einfach angenommen. Jeder Punkt wird vor der Einreichung mit deinem ATO-Datensatz abgeglichen.{' '}
-            <Link href="/de/calculator" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Grobe Schätzung im Rechner ansehen</Link>.
-          </p>
+      <Section eyebrow="Dein Teil" title="Was wir von dir brauchen" titleId="needed-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Drei Dinge, und das ist die ganze Liste.</p>
+        <PlainRows items={NEEDED} />
+        <div className={`${blocks.palePanel} ${blocks.stack}`}>
+          <p className={blocks.statement}>Payslips brauchst du keine.</p>
+          <p className={blocks.text}>Jeder Arbeitgeber, der dich auf eine Lohnabrechnung gesetzt hat, hat längst ein Income Statement zu deiner TFN gemeldet, und daraus entsteht die Erklärung. Belege für berufliche Ausgaben sind das Einzige, wonach sich Suchen lohnt, und wenn es keine gibt, beschreib uns stattdessen die Arbeit.</p>
         </div>
-      </section>
+      </Section>
 
-      {/* ── 2. WAS WIR VON DIR BRAUCHEN ──────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+      <Section id="how-it-works" tone="pale" eyebrow="Von Anfang bis Ende" title="In welcher Reihenfolge das läuft" titleId="sequence-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Sieben Schritte. Du kommst in zweien davon vor, am Anfang und noch einmal zum Unterschreiben.</p>
+        <Steps items={SEQUENCE} />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Mehr zu Schritt 04:{' '}
+          <Link href="/de/abn" className={blocks.textLink}>was eine ABN ändert</Link>, falls ein Teil deines Einkommens abgerechnet statt ausgezahlt wurde.
+        </p>
+      </Section>
 
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Dein Teil</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
-            Was wir von dir brauchen
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
-            Drei Dinge, und das ist die ganze Liste.
-          </p>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            {NEEDED.map((item) => (
-              <div key={item.label} style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{item.label}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-            <p className="font-serif" style={{ fontSize: '19px', lineHeight: 1.45, color: '#0B5240', fontWeight: 700, marginBottom: '10px', maxWidth: '32ch' }}>
-              Payslips brauchst du keine.
-            </p>
-            <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch' }}>
-              Jeder Arbeitgeber, der dich auf eine Lohnabrechnung gesetzt hat, hat längst ein Income Statement zu deiner
-              TFN gemeldet, und daraus entsteht die Erklärung. Belege für berufliche Ausgaben sind das Einzige, wonach
-              sich Suchen lohnt, und wenn es keine gibt, beschreib uns stattdessen die Arbeit.
-            </p>
-          </div>
+      <Section title="Zwei Regeln ändern die Reihenfolge" titleId="rules-title">
+        <div className={blocks.cards}>
+          {RULES.map((r) => (
+            <div key={r.label} className={`${blocks.palePanel} ${blocks.stack}`}>
+              <h3 className={blocks.cardTitle}>{r.label}</h3>
+              <p className={blocks.text}>{r.body}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </Section>
 
-      {/* ── 3. DER ABLAUF ────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+      <Section tone="amber" title="Unsere Garantie" titleId="guarantee-title">
+        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
+          Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.
+        </p>
+        <p className={blocks.text}>Von dem, was das ATO überweist, wird nie etwas abgezogen. Die Gebühr klären wir vor Beginn der Arbeit auf WhatsApp mit dir.</p>
+      </Section>
 
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Von Anfang bis Ende</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            In welcher Reihenfolge das läuft
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
-            Sieben Schritte. Du kommst in zweien davon vor, am Anfang und noch einmal zum Unterschreiben.
-          </p>
+      <Section tone="pale" title="Working-Holiday-Steuer ist das Einzige, was wir machen." titleId="trust-title">
+        <p className={blocks.text}>Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Vorbereitet von unserem Team, von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.</p>
+        <GoogleReviewsServer lang="de" />
+        <p className={`${blocks.text} ${blocks.notice}`}>
+          <strong>Niemand Seriöses fragt dich nach deinem myGov-Passwort.</strong>{' '}
+          Wir fragen nie danach, weil der Weg oben es nicht braucht. Fragt dich eine Nachricht danach, kommt sie nicht von uns.
+        </p>
+      </Section>
 
-          <ol className="flex flex-col" style={{ gap: '22px' }}>
-            {SEQUENCE.map((s) => (
-              <li key={s.n} className="flex gap-4">
-                <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px' }}
-                  aria-hidden="true">{s.n}</span>
-                <div>
-                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+      <Section title="Was gefragt wird, bevor jemand etwas schickt" titleId="faq-title">
+        {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
+        <Accordion items={FAQS} />
+      </Section>
 
-          <p style={{ ...BODY, color: '#525A57', marginTop: '24px', maxWidth: '60ch' }}>
-            Mehr zu Schritt 04:{' '}
-            <Link href="/de/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>was eine ABN ändert</Link>, falls ein Teil deines Einkommens abgerechnet statt ausgezahlt wurde.
-          </p>
-        </div>
-      </section>
+      <Section tone="pale" eyebrow="Ratgeber" title="Die lange Fassung der schwierigen Schritte" titleId="guides-title">
+        <LinkRows items={GUIDES} />
+      </Section>
 
-      {/* ── 4. ZWEI REGELN VORAB ─────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+      <Section eyebrow="Was kommt als Nächstes" title="Lass deine Super nicht liegen" titleId="next-title">
+        <p className={blocks.text}>Dein Arbeitgeber hat zusätzlich zum Lohn Superannuation für dich eingezahlt. Wenn du Australien endgültig verlässt, kannst du sie beantragen, getrennt von der Erklärung.</p>
+        <LinkButton href="/de/superannuation">Wie der Super-Antrag läuft →</LinkButton>
+      </Section>
 
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
-            Zwei Regeln ändern die Reihenfolge
-          </h2>
-          {/* Die Lede sagte die Überschrift noch einmal. Das Detail steht in
-              den beiden Karten. */}
-
-          <div className="grid gap-4 md:grid-cols-2" style={{ marginTop: '22px' }}>
-            {RULES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. GEBÜHR ──────────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Unsere Garantie</p>
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '24ch' }}>
-            Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.
-          </p>
-          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
-            Von dem, was das ATO überweist, wird nie etwas abgezogen. Die Gebühr klären wir vor Beginn der Arbeit auf WhatsApp
-            mit dir.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            Fang mit einer Nachricht an, nicht mit einem Formular
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '56ch', marginBottom: '24px' }}>
-            Schick uns die Orte, in denen du gearbeitet hast, ungefähr welche Monate, und ob du je über eine ABN
-            abgerechnet hast. Daraus sagen wir dir, welche Jahre noch offen sind und wie dein Teil aussieht. Ob du vor
-            zwei Jahren heimgeflogen bist, spielt keine Rolle.
-          </p>
-          <WaLink href={WA_TR} position="section" topic="tax-return" lang="de"
-            className="btn-primary inline-flex items-center justify-center gap-2"
-            style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '340px', width: '100%' }}>
-            <IconWhatsApp />
-            Schreib uns auf WhatsApp
-          </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-            Antwort in etwa einer Stunde.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 7. VERTRAUEN ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            Working-Holiday-Steuer ist das Einzige, was wir machen.
-          </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
-            Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Vorbereitet
-            von unserem Team, von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO
-            eingereicht wird.
-          </p>
-
-          <GoogleReviewsServer lang="de" />
-
-          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
-              <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
-              <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
-              <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <p style={{ ...BODY, color: '#0F1A16' }}>
-              <strong style={{ color: '#0F1A16' }}>Niemand Seriöses fragt dich nach deinem myGov-Passwort.</strong>{' '}
-              Wir fragen nie danach, weil der Weg oben es nicht braucht. Fragt dich eine Nachricht danach, kommt sie
-              nicht von uns.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
-            Was gefragt wird, bevor jemand etwas schickt
-          </h2>
-
-          <div className="flex flex-col" style={{ gap: '4px' }}>
-            {FAQS.map((f, i) => (
-              <details key={i} name="tax-return-faq-de" className="contact-faq-item">
-                <summary className="contact-faq-summary">
-                  <span style={{ flex: 1 }}>{f.question}</span>
-                  <span className="contact-faq-plus" aria-hidden="true">+</span>
-                </summary>
-                {/* An einer Leerzeile getrennt, damit eine lange Antwort als
-                    zwei kurze Absätze ankommt. faqLd oben nutzt weiter den
-                    Rohtext. */}
-                {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
-                ))}
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 9. RATGEBER ──────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Ratgeber</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
-            Die lange Fassung der schwierigen Schritte
-          </h2>
-          {/* Die Lede sagte die Überschrift noch einmal. Die drei Karten sagen,
-              um welche Schritte es geht. */}
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {GUIDES.map((g) => (
-              <Link key={g.href} href={g.href}
-                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <NextStep
-        eyebrow="Was kommt als Nächstes"
-        heading="Lass deine Super nicht liegen"
-        body="Dein Arbeitgeber hat zusätzlich zum Lohn Superannuation für dich eingezahlt. Wenn du Australien endgültig verlässt, kannst du sie beantragen, getrennt von der Erklärung."
-        cta="Wie der Super-Antrag läuft →"
-        href="/de/superannuation"
-      />
+      <Section tone="forest" title="Fang mit einer Nachricht an, nicht mit einem Formular" titleId="cta-title">
+        <p className={`${blocks.text} ${blocks.onForest}`}>Schick uns die Orte, in denen du gearbeitet hast, ungefähr welche Monate, und ob du je über eine ABN abgerechnet hast. Daraus sagen wir dir, welche Jahre noch offen sind und wie dein Teil aussieht. Ob du vor zwei Jahren heimgeflogen bist, spielt keine Rolle.</p>
+        <WaButton href={WA_TR} position="section" topic="tax-return" lang="de" tone="light">Schreib uns auf WhatsApp</WaButton>
+        <p className={`${blocks.small} ${blocks.onForest}`}>Antwort in etwa einer Stunde.</p>
+      </Section>
 
       <MobileCta href={WA_TR} lang="de" topic="tax-return" />
     </>

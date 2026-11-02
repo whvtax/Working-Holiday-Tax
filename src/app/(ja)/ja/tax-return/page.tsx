@@ -1,13 +1,19 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
-import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { WaLink } from '@/app/(site)/HomeWa'
+import { WaButton } from '@/components/wht/WaButton'
+import { Section } from '@/components/wht/Section'
+import { Hero, heroStyles } from '@/components/wht/Hero'
+import { Lead, Mark } from '@/components/wht/Type'
+import { LinkButton } from '@/components/wht/Button'
+import { Steps, LinkRows, blocks } from '@/components/wht/Blocks'
+import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
+import { Accordion } from '@/components/ui/Accordion'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // このページが答えるのは「依頼したら何が起きるか」です。「自分でやらない
@@ -19,7 +25,7 @@ export const metadata: Metadata = {
   // タイトルはモバイルの検索結果に収まる長さにしています。
   title: 'タックスリターン代行｜417・462ビザ',
   description:
-    '必要な情報と振込先だけ。給与明細は不要です。ATOの記録から作成し、還付金は提出からおおむね14営業日で届きます。',
+    '必要な情報と振込先だけ。給与明細は不要です。ATOの記録から作成し、還付金がある場合、ATOからの支払いは提出からおおむね14営業日が目安です。',
   keywords: [
     'タックスリターン 代行 オーストラリア',
     'オーストラリア タックスリターン 申請',
@@ -41,6 +47,7 @@ export const metadata: Metadata = {
       'en-AU': `${SITE_URL}/tax-return`,
       de: `${SITE_URL}/de/tax-return`,
       ja: `${SITE_URL}/ja/tax-return`,
+      ...newLocaleLanguages('/tax-return'),
       'x-default': `${SITE_URL}/tax-return`,
     },
   },
@@ -52,23 +59,16 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'タックスリターン代行の流れ｜417・462ビザ',
     description:
-      '必要な情報と還付金の振込先だけ。ATOの記録を確認して申告書を作成し、あなたが署名したうえで提出します。還付金は提出からおおむね14営業日で届きます。',
+      '必要な情報と還付金の振込先だけ。ATOの記録を確認して申告書を作成し、あなたが署名したうえで提出します。還付金がある場合、ATOからの支払いは提出からおおむね14営業日が目安です。',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
     title: 'タックスリターン代行の流れ｜417・462ビザ',
-    description: '必要な情報と振込先だけ。給与明細は不要。還付金は提出からおおむね14営業日で届きます。',
+    description: '必要な情報と振込先だけ。給与明細は不要。還付金がある場合、ATOからの支払いは提出からおおむね14営業日が目安です。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
-
-// ─── ICONS ──────────────────────────────────────────────────────────────
-const IconWhatsApp = () => (
-  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
-    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
-  </svg>
-)
 
 // ─── COPY ───────────────────────────────────────────────────────────────
 
@@ -123,7 +123,7 @@ const SEQUENCE = [
   {
     n: '07',
     title: 'ATOから入金',
-    body: '還付金は提出からおおむね14営業日で、ご指定のオーストラリアの口座に入金されます。先にATOから確認が入った場合は当社が対応し、何を聞かれたのかもお伝えします。',
+    body: '還付金がある場合、ATOは提出からおおむね14営業日で、ご指定のオーストラリアの口座に支払うのが通例です。先にATOから確認が入った場合は当社が対応し、何を聞かれたのかもお伝えします。',
   },
 ]
 
@@ -154,7 +154,7 @@ const REFUND_SOURCES = [
   },
   {
     "label": "誰も申告していなかった仕事の経費",
-    "body": "靴、制服、道具、資格、現場間の移動などは、実際の仕事に関係していれば課税所得を減らせます。15%の税率なら、正当な控除100ドルごとに税額が15ドル下がります。"
+    "body": "靴、制服、道具、資格、現場間の移動などは、実際の仕事に関係していれば課税所得を減らせます。控除がどれだけ税額に効くかは、その年に適用される税率によって変わります。"
   },
   {
     "label": "パスポートと税務上の居住者区分",
@@ -179,12 +179,12 @@ const FAQS = [
   {
     question: 'タックスリターンにはどれくらい時間がかかりますか？',
     answer:
-      '質問票をいただいた日から、複雑でない1年であれば作成と確認に数日で、提出後はATOがおおむね14営業日で還付金を支払います。\n\n雇用主が5社ある年、ABNで請求した収入がある年、居住区分を根拠づける必要がある年は、当社側の作業が長くなります。どれに当たるのかは、こちらからお伝えします。',
+      '質問票をいただいた日から、複雑でない1年であれば作成と確認に数日で、提出後、還付金がある場合はATOがおおむね14営業日で支払います。\n\n雇用主が5社ある年、ABNで請求した収入がある年、居住区分を根拠づける必要がある年は、当社側の作業が長くなります。どれに当たるのかは、こちらからお伝えします。',
   },
   {
     question: 'タックスリターンの提出期限はいつですか？',
     answer:
-      '自分で提出する場合は、会計年度終了後の10月31日です。2025-26年度の申告は2026年10月31日が期限です。期限を過ぎた年度も失われたわけではなく、いまからでも提出できます。',
+      '自分で提出する場合は、会計年度終了後の10月31日です。2025-26年度の申告は2026年10月31日が期限でした。期限を過ぎた年度も失われたわけではなく、いまからでも提出できます。',
   },
   {
     question: '給与明細は必要ですか？',
@@ -232,11 +232,6 @@ const GUIDES = [
 ]
 
 const WA_TR = waUrl({ topic: 'tax-return', lang: 'ja' })
-
-// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
-const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
-const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.85 }
-const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.9 }
 
 export default function TaxReturnPageJA() {
   const webPageLd = {
@@ -315,289 +310,108 @@ export default function TaxReturnPageJA() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-      {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
-
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
-            <Link href="/ja" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>ホーム</Link>
-            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
-            <span aria-current="page">タックスリターン</span>
-          </nav>
-
-          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
-              query words people type. It renders exactly where and how the old kicker
-              did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
-          <h1 className="font-serif font-black text-ink hero-animate"
-            style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
-              タックスリターン代行｜申告書は登録タックスエージェントが確認して承認
-            </span>
-            <span style={{ display: 'block' }}>必要な情報と、還付金の振込先だけ。</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>あとは当社が進めます。</span>
-          </h1>
-
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '40ch', marginBottom: '26px' }}>
-            給与明細も、myGovのアカウントも、読み解く書式もありません。質問票に1回答えて、1回署名するだけです。還付金は提出からおおむね14営業日で届きます。
-          </p>
-
-          <div className="hero-animate-delay-2">
-            <WaLink href={WA_TR} position="hero" topic="tax-return" lang="ja"
-              className="btn-primary inline-flex items-center justify-center gap-2"
-              style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-              <IconWhatsApp />
-              WhatsAppで相談する
-            </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-              約1時間で返信します。
-            </p>
+      <div className={blocks.underHeader}>
+        <Crumb home="ホーム" current="タックスリターン" label="Breadcrumb" href="/ja" />
+        <Hero
+          title={
+            <>
+              <span className={blocks.kicker}>タックスリターン代行｜申告書は登録タックスエージェントが確認して承認</span>
+              必要な情報と、還付金の振込先だけ。 <Mark>あとは当社が進めます。</Mark>
+            </>
+          }
+        >
+          <div className="hero-lede">
+            <Lead>給与明細も、myGovのアカウントも、読み解く書式もありません。質問票に1回答えて、1回署名するだけです。還付金がある場合、ATOからの支払いは提出からおおむね14営業日が目安です。</Lead>
           </div>
+          <WaButton href={WA_TR} position="hero" topic="tax-return" lang="ja">WhatsAppで相談する</WaButton>
+          <p className={heroStyles.note}>約1時間で返信します。</p>
+          <GoogleRating variant="pill" lang="ja" />
+        </Hero>
+      </div>
 
-          <div className="flex" style={{ marginTop: '20px' }}>
-            <GoogleRating variant="pill" lang="ja" />
-          </div>
+      <PhotoFrame page="tax-return" locale="ja" />
+
+      <Section tone="pale" eyebrow="還付金はどこから生まれるのか" title="ワーホリで還付金が生じることが多い理由" titleId="refund-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>還付金はバックパッカーであることへのご褒美ではありません。雇用主が源泉徴収した額と、本来払うべきだった額の差で、ワーホリの1年ではその差はたいてい下のような場所から生まれます。還付額は、どれが当てはまったかによって人それぞれ変わります。</p>
+        <div className={blocks.cards}>
+          {REFUND_SOURCES.map((r) => (
+            <div key={r.label} className={blocks.card}>
+              <h3 className={blocks.cardTitle}>{r.label}</h3>
+              <p className={blocks.text}>{r.body}</p>
+            </div>
+          ))}
         </div>
-      </section>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          どれも自動ではなく、決めつけもしません。提出前に、ひとつずつATOの記録と照らし合わせて確認します。{' '}
+          <Link href="/ja/calculator" className={blocks.textLink}>計算ツールで還付額の目安を見る</Link>。
+        </p>
+      </Section>
 
-      {/* ── 1b. WHERE A REFUND COMES FROM ─────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>還付金はどこから生まれるのか</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
-            ワーホリの多くがタックスリターンで還付を受けられる理由
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch', marginBottom: '26px' }}>
-            還付金はバックパッカーであることへのご褒美ではありません。雇用主が源泉徴収した額と、本来払うべきだった額の差で、ワーホリの1年ではその差はたいてい下のような場所から生まれます。還付額は、どれが当てはまったかによって人それぞれ変わります。
-          </p>
-          <div className="grid gap-4 md:grid-cols-2">
-            {REFUND_SOURCES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
-              </div>
-            ))}
-          </div>
-          <p style={{ ...BODY, color: '#525A57', marginTop: '22px', maxWidth: '62ch' }}>
-            どれも自動ではなく、決めつけもしません。提出前に、ひとつずつATOの記録と照らし合わせて確認します。{' '}
-            <Link href="/ja/calculator" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>計算ツールで還付額の目安を見る</Link>。
-          </p>
+      <Section eyebrow="あなたの側" title="ご用意いただくもの" titleId="needed-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>3つだけで、これが全部です。</p>
+        <PlainRows items={NEEDED} />
+        <div className={`${blocks.palePanel} ${blocks.stack}`}>
+          <p className={blocks.statement}>給与明細は必要ありません。</p>
+          <p className={blocks.text}>給与として支払った雇用主は、あなたのTFNに紐づくインカムステートメントをすでにATOへ報告しています。申告書はそこから組み立てます。</p>
+          <p className={blocks.text}>探す価値があるのは仕事に関する支出の領収書だけで、それも無い場合は、どんな仕事だったかを教えてください。</p>
         </div>
-      </section>
+      </Section>
 
-      {/* ── 2. ご用意いただくもの ────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+      <Section id="how-it-works" tone="pale" eyebrow="最初から最後まで" title="どんな順序で進むのか" titleId="sequence-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>手順は7つ。あなたの出番は、最初と、署名のときの2回だけです。</p>
+        <Steps items={SEQUENCE} />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          収入の一部を給与ではなく請求で受け取っていた場合は{' '}
+          <Link href="/ja/abn" className={blocks.textLink}>ABNで何が変わるか</Link>もご覧ください。
+        </p>
+      </Section>
 
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>あなたの側</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '16px' }}>
-            ご用意いただくもの
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '30px' }}>
-            3つだけで、これが全部です。
-          </p>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            {NEEDED.map((item) => (
-              <div key={item.label} style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.6, marginBottom: '8px' }}>{item.label}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-            <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.75, color: '#0B5240', fontWeight: 700, marginBottom: '10px', maxWidth: '28ch' }}>
-              給与明細は必要ありません。
-            </p>
-            {/* 1つの塊だと日本語では壁になるので、論の切れ目で2段落に割った。
-                「ATOを通して、当社にはすべて見えています」は直前の言い直し。 */}
-            <p style={{ ...BODY, color: '#0F1A16', maxWidth: '46ch', marginBottom: '12px' }}>
-              給与として支払った雇用主は、あなたのTFNに紐づくインカムステートメントをすでにATOへ報告しています。申告書はそこから組み立てます。
-            </p>
-            <p style={{ ...BODY, color: '#0F1A16', maxWidth: '46ch' }}>
-              探す価値があるのは仕事に関する支出の領収書だけで、それも無い場合は、どんな仕事だったかを教えてください。
-            </p>
-          </div>
+      <Section title="2つのルールが、進める順番を変えます" titleId="rules-title">
+        <div className={blocks.cards}>
+          {RULES.map((r) => (
+            <div key={r.label} className={`${blocks.palePanel} ${blocks.stack}`}>
+              <h3 className={blocks.cardTitle}>{r.label}</h3>
+              <p className={blocks.text}>{r.body}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </Section>
 
-      {/* ── 3. 進む順序 ──────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+      <Section tone="amber" title="当社の保証" titleId="guarantee-title">
+        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
+          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。
+        </p>
+        <p className={blocks.text}>ATOから届く金額から差し引くことは一切ありません。金額は手順01の前にWhatsAppで確定するので、質問票が届く時点で交渉の余地は残っていません。</p>
+      </Section>
 
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>最初から最後まで</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            どんな順序で進むのか
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '30px' }}>
-            手順は7つ。あなたの出番は、最初と、署名のときの2回だけです。
-          </p>
+      <Section tone="pale" title="ワーキングホリデーの税金だけを扱っています。" titleId="trust-title">
+        <p className={blocks.text}>質問票も、確認する項目も、上の順序も、たった1種類のビザの1年のために組み立てたものです。</p>
+        <GoogleReviewsServer lang="ja" />
+        <p className={`${blocks.text} ${blocks.notice}`}>
+          <strong>正規の窓口であれば、myGovのパスワードを尋ねることはありません。</strong>{' '}
+          当社はどの手順でも尋ねません。上の流れに必要ないからです。それを尋ねてくるメッセージは、当社からのものではありません。
+        </p>
+      </Section>
 
-          <ol className="flex flex-col" style={{ gap: '22px' }}>
-            {SEQUENCE.map((s) => (
-              <li key={s.n} className="flex gap-4">
-                <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '4px' }}
-                  aria-hidden="true">{s.n}</span>
-                <div>
-                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+      <Section title="依頼する前によく聞かれること" titleId="faq-title">
+        {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
+        <Accordion items={FAQS} />
+      </Section>
 
-          <p style={{ ...BODY, color: '#525A57', marginTop: '24px', maxWidth: '44ch' }}>
-            収入の一部を給与ではなく請求で受け取っていた場合は{' '}
-            <Link href="/ja/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>ABNで何が変わるか</Link>
-            もご覧ください。
-          </p>
-        </div>
-      </section>
+      <Section tone="pale" eyebrow="ガイド" title="難しい手順の詳しい版" titleId="guides-title">
+        <LinkRows items={GUIDES} />
+      </Section>
 
-      {/* ── 4. 先に知っておく2つのルール ─────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+      <Section eyebrow="次のステップ" title="スーパーアニュエーションの受け取りを忘れずに" titleId="next-title">
+        <p className={blocks.text}>オーストラリアで働いている間、雇用主は給与とは別にスーパーアニュエーションを積み立てています。完全に帰国するときに受け取ることができ、これは申告とは別の手続きです。</p>
+        <LinkButton href="/ja/superannuation">スーパー受取の流れ →</LinkButton>
+      </Section>
 
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '16px' }}>
-            2つのルールが、進める順番を変えます
-          </h2>
-          {/* リード文は見出しをもう一度言っているだけだった。中身は2枚のカードが持つ。 */}
-
-          <div className="grid gap-4 md:grid-cols-2" style={{ marginTop: '22px' }}>
-            {RULES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.6, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. 料金 ──────────────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>当社の保証</p>
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(21px, 2.8vw, 28px)', lineHeight: 1.6, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
-            当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
-          </p>
-          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
-            ATOから届く金額から差し引くことは一切ありません。金額は手順01の前にWhatsAppで確定するので、質問票が届く時点で交渉の余地は残っていません。
-          </p>
-        </div>
-      </section>
-
-      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            フォームではなく、メッセージから始めてください
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '42ch', marginBottom: '24px' }}>
-            働いた町、だいたいの月、そしてABNで請求したことがあるかどうか。それだけで、どの年度が未提出なのか、あなたの側の作業がどれくらいかをお伝えできます。2年前に帰国された方でも変わりません。
-          </p>
-          <WaLink href={WA_TR} position="section" topic="tax-return" lang="ja"
-            className="btn-primary inline-flex items-center justify-center gap-2"
-            style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-            <IconWhatsApp />
-            WhatsAppで相談する
-          </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-            約1時間で返信します。
-          </p>
-        </div>
-      </section>
-
-      {/* ── 7. 信頼 ──────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            ワーキングホリデーの税金だけを扱っています。
-          </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '28px' }}>
-            質問票も、確認する項目も、上の順序も、たった1種類のビザの1年のために組み立てたものです。
-          </p>
-
-          <GoogleReviewsServer lang="ja" />
-
-          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
-              <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
-              <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
-              <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <p style={{ ...BODY, color: '#0F1A16' }}>
-              <strong style={{ color: '#0F1A16' }}>正規の窓口であれば、myGovのパスワードを尋ねることはありません。</strong>
-              当社はどの手順でも尋ねません。上の流れに必要ないからです。それを尋ねてくるメッセージは、当社からのものではありません。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 8. よくある質問 ──────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
-            依頼する前によく聞かれること
-          </h2>
-
-          <div className="flex flex-col" style={{ gap: '4px' }}>
-            {FAQS.map((f, i) => (
-              <details key={i} name="tax-return-faq-ja" className="contact-faq-item">
-                <summary className="contact-faq-summary">
-                  <span style={{ flex: 1 }}>{f.question}</span>
-                  <span className="contact-faq-plus" aria-hidden="true">+</span>
-                </summary>
-                {/* 空行で区切り、長い回答を短い段落として出す。上のfaqLdは
-                    元の文字列をそのまま使っている。 */}
-                {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{para}</p>
-                ))}
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 9. ガイド ────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>ガイド</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
-            難しい手順の詳しい版
-          </h2>
-          {/* リード文は見出しの言い直しだった。どの手順かは3枚のカードが示す。 */}
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {GUIDES.map((g) => (
-              <Link key={g.href} href={g.href}
-                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px', lineHeight: 1.6 }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#525A57' }}>{g.desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <NextStep
-        eyebrow="次のステップ"
-        heading="スーパーアニュエーションの受け取りを忘れずに"
-        body="オーストラリアで働いている間、雇用主は給与とは別にスーパーアニュエーションを積み立てています。完全に帰国するときに受け取ることができ、これは申告とは別の手続きです。"
-        cta="スーパー受取の流れ →"
-        href="/ja/superannuation"
-      />
+      <Section tone="forest" title="フォームではなく、メッセージから始めてください" titleId="cta-title">
+        <p className={`${blocks.text} ${blocks.onForest}`}>働いた町、だいたいの月、そしてABNで請求したことがあるかどうか。それだけで、どの年度が未提出なのか、あなたの側の作業がどれくらいかをお伝えできます。2年前に帰国された方でも変わりません。</p>
+        <WaButton href={WA_TR} position="section" topic="tax-return" lang="ja" tone="light">WhatsAppで相談する</WaButton>
+        <p className={`${blocks.small} ${blocks.onForest}`}>約1時間で返信します。</p>
+      </Section>
 
       <MobileCta href={WA_TR} lang="ja" topic="tax-return" />
     </>

@@ -1,11 +1,17 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { WaLink } from '@/app/(site)/HomeWa'
-import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { WaButton } from '@/components/wht/WaButton'
+import { Section } from '@/components/wht/Section'
+import { Hero, heroStyles } from '@/components/wht/Hero'
+import { Lead, Mark } from '@/components/wht/Type'
+import { LinkButton } from '@/components/wht/Button'
+import { Compare, blocks } from '@/components/wht/Blocks'
+import { Crumb, PhotoFrame, TitleLinks, coreBlocks } from '@/components/wht/CoreBlocks'
 
 /*
  * The answer hub for the whole superannuation cluster.
@@ -53,6 +59,7 @@ export const metadata: Metadata = {
       'en': '/superannuation', 'en-AU': '/superannuation',
       'de': '/de/superannuation',
       'ja': '/ja/superannuation',
+      ...newLocaleLanguages('/superannuation'),
       'x-default': '/superannuation',
     },
   },
@@ -220,37 +227,25 @@ const howToSchema = {
   ].map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.name, text: s.text })),
 }
 
-/* ── Shared section shells, so every answer looks the same ───────────────── */
-const H2: React.CSSProperties = {
-  fontSize: 'clamp(21px,2.6vw,30px)',
-  lineHeight: 1.16,
-  letterSpacing: '-0.025em',
-  // 12px under a 21 to 30px serif heading is tight. Every H2 on the page runs
-  // through this object, so the air goes in once.
-  marginBottom: '16px',
-  scrollMarginTop: '84px',
-}
-const BODY: React.CSSProperties = {
-  fontSize: '15px',
-  lineHeight: 1.7,
-  color: '#0F1A16',
-  marginBottom: '14px',
-}
-
+/* ── Section shell: every answer on the page is one Section ──────────────── */
 function Answer({
-  id, heading, children, tint = false,
-}: { id: string; heading: string; children: React.ReactNode; tint?: boolean }) {
+  id, heading, children, tone = 'white',
+}: { id: string; heading: string; children: React.ReactNode; tone?: 'white' | 'pale' | 'amber' }) {
   return (
-    <section id={id} className="py-8 lg:py-11" style={{ background: tint ? '#F2FAF7' : '#fff' }}>
-      <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-        <div className="max-w-[680px] mx-auto">
-          <h2 className="font-serif font-black text-ink" style={H2}>{heading}</h2>
-          {children}
-        </div>
-      </div>
-    </section>
+    <Section id={id} tone={tone} title={heading} titleId={`${id}-title`}>
+      {children}
+    </Section>
   )
 }
+
+const GUIDES = [
+  { href: '/blog/how-long-does-dasp-take', label: 'How long a DASP takes, stage by stage' },
+  { href: '/blog/dasp-documents-required', label: 'The documents a DASP claim needs' },
+  { href: '/blog/dasp-tax-rate-65-percent-explained', label: 'Why DASP is taxed at 65%, and what is left' },
+  { href: '/blog/dasp-rejected-what-to-do', label: 'What to do if your DASP claim is rejected' },
+  { href: '/blog/super-multiple-funds-consolidation', label: 'Claiming when your super sits in several funds' },
+  { href: '/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'Claim now or leave it invested: the comparison' },
+]
 
 export default function SuperannuationPage() {
   return (
@@ -261,333 +256,170 @@ export default function SuperannuationPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
-      {/* ── HERO. The determinant this page owns is how many funds your money */}
-      {/*    landed in, and whether every one of them is actually found. ───── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
-
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '13px', color: '#525A57' }}>
-            <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
-            <span aria-hidden="true">/</span>
-            <span aria-current="page">Superannuation</span>
-          </nav>
-
-          <div className="max-w-[680px] mx-auto">
-
-            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
-              <span className="font-medium uppercase"
-                style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240' }}>
-                Superannuation &middot; DASP
-              </span>
-            </div>
-
-            <h1 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(28px,3.4vw,44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '12px' }}>
-              How to claim your superannuation after leaving Australia
-            </h1>
-
-            <p className="hero-sub font-semibold text-ink"
-              style={{ fontSize: 'clamp(16px,1.6vw,18px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
-              Your employer paid it on top of your wages, never out of them. It is still sitting in Australia.
-            </p>
-
-            <div className="flex flex-col gap-3 lg:flex-row lg:gap-4"
-              style={{ marginTop: '24px', marginBottom: '22px', maxWidth: '480px' }}>
-              <WaLink href={WA} position="hero" topic="super" lang="en"
-                className="btn-primary inline-flex justify-center"
-                style={{ minHeight: '54px', padding: '0 32px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
-                Ask us about your super
-              </WaLink>
-              <a href="#who-can-claim"
-                className="inline-flex btn-ghost-dark justify-center items-center"
-                style={{ minHeight: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
-                Start with eligibility
-              </a>
-            </div>
-
-            <p style={{ fontSize: '13px', color: '#525A57' }}>
-              Replies in about an hour.
-            </p>
+      <div className={blocks.underHeader}>
+        <Crumb home="Home" current="Superannuation" label="Breadcrumb" href="/" />
+        <Hero
+          eyebrow={<>Superannuation &middot; DASP</>}
+          title={<>How to claim your <Mark>superannuation</Mark> after leaving Australia</>}
+        >
+          <div className="hero-sub">
+            <Lead>Your employer paid it on top of your wages, never out of them. It is still sitting in Australia.</Lead>
           </div>
-        </div>
-      </section>
-
-      {/* ── 0b. THE OBJECTION, ANSWERED ABOUT SUPER ────────────────────────── */}
-      <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px] mx-auto">
-
-            <p className="font-medium uppercase"
-              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '12px' }}>
-              Doing it yourself
-            </p>
-
-            <h2 className="font-serif font-black text-ink" style={H2}>
-              <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>The claim form has one box for a super fund.{' '}</span>
-              <span style={{ display: 'block' }}>Four casual jobs can mean four.{' '}</span>
-            </h2>
-
-            <p style={{ ...BODY, color: '#525A57', maxWidth: '56ch', marginBottom: '20px' }}>
-              Two of those accounts were opened without you choosing anything.
-            </p>
-
-            {/* The two labels used to print on all eight cells, which on a phone
-                is the same words repeated eight times down the screen. They print
-                once, on the first row, where they read as column headings on
-                desktop and as the key on mobile. The alternating ground and the
-                heavier weight carry the distinction from there. Copy unchanged. */}
-            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
-              {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
-                  <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
-                    {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#525A57', marginBottom: '5px' }}>
-                        On the ATO portal
-                      </p>
-                    )}
-                    <p style={{ ...BODY, marginBottom: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
-                  </div>
-                  <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
-                    style={{ padding: '13px 16px', background: '#F2FAF7' }}>
-                    {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
-                        With us
-                      </p>
-                    )}
-                    <p style={{ ...BODY, color: '#0F1A16', fontWeight: 500, marginBottom: 0, overflowWrap: 'break-word' }}>{row.us}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
-              You will never log into myGov or work out which form is which. We deal with the ATO directly.
-            </p>
+          <div className={coreBlocks.actions}>
+            <WaButton href={WA} position="hero" topic="super" lang="en">Ask us about your super</WaButton>
+            <a href="#who-can-claim" className={coreBlocks.hint}>Start with eligibility</a>
           </div>
-        </div>
-      </section>
+          <p className={heroStyles.note}>Replies in about an hour.</p>
+        </Hero>
+      </div>
 
-      {/* ── 1 ──────────────────────────────────────────────────────────────── */}
-      <Answer id="who-can-claim" heading="Who can claim a DASP super refund?">
-        <p style={BODY}>
+      <PhotoFrame page="superannuation" locale="en" />
+
+      <Section eyebrow="Doing it yourself" title={<>The claim form has one box for a super fund. <Mark>Four casual jobs can mean four.</Mark></>} titleId="objection-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Two of those accounts were opened without you choosing anything.</p>
+        <Compare rows={MYGOV.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="On the ATO portal" rightLabel="With us" />
+        <p className={blocks.statement}>You will never log into myGov or work out which form is which. We deal with the ATO directly.</p>
+      </Section>
+
+      <Answer id="who-can-claim" heading="Who can claim a DASP super refund?" tone="pale">
+        <p className={blocks.text}>
           A Departing Australia Superannuation Payment is claimable once your temporary visa has expired
           or been cancelled and you have permanently left Australia. Both have to be true at once.
           Australian and New Zealand citizens and permanent residents cannot claim.
         </p>
-        <p style={BODY}>
+        <p className={blocks.text}>
           Your visa status is checked against Department of Home Affairs records, so there is nothing
           separate to prove. A bridging visa, or still being onshore on any valid visa, blocks the claim.
         </p>
       </Answer>
-
-      {/* ── 2 ──────────────────────────────────────────────────────────────── */}
-      <Answer id="how-much" heading="How much super will you actually get back?" tint>
-        <p style={BODY}>
-          Working holiday makers pay 65% withholding tax on the taxable component of a DASP, so roughly 35
-          cents in the dollar reaches you. The rate is fixed in law for anyone who has held a 417 or 462
-          visa, and no agent or waiting can reduce it.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ margin: '20px 0 14px' }}>
+            <Answer id="how-much" heading="How much super will you actually get back?" tone="white">
+        <p className={blocks.text}>Working holiday makers pay 65% withholding tax on the taxable component of a DASP, so roughly 35 cents in the dollar reaches you. The rate is fixed in law for anyone who has held a 417 or 462 visa, and no agent or waiting can reduce it.</p>
+        <div className={coreBlocks.threeUp}>
           {[
             { bal: '$3,000', net: '$1,050', note: 'a few months of casual work' },
             { bal: '$6,000', net: '$2,100', note: 'around six months full time' },
             { bal: '$10,000', net: '$3,500', note: 'a full working holiday year' },
           ].map((r, i) => (
-            <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #DCE0DE', textAlign: 'center' }}>
-              <p className="font-medium" style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#525A57', marginBottom: '6px' }}>
-                Super balance
-              </p>
-              <p className="font-semibold text-ink" style={{ fontSize: '17px', marginBottom: '10px' }}>{r.bal}</p>
-              <p className="font-serif font-black" style={{ fontSize: 'clamp(26px,3vw,33px)', color: '#0B5240', lineHeight: 1, marginBottom: '8px' }}>
-                {r.net}
-              </p>
-              <p style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.55 }}>
-                paid to you &middot; {r.note}
-              </p>
+            <div key={i} className={coreBlocks.stat}>
+              <p className={coreBlocks.statLabel}>Super balance</p>
+              <p className={blocks.cardTitle}>{r.bal}</p>
+              <p className={coreBlocks.statNet}>{r.net}</p>
+              <p className={blocks.small}>paid to you &middot; {r.note}</p>
             </div>
           ))}
         </div>
-
-        <p style={{ ...BODY, fontSize: '13px', color: '#525A57' }}>
-          Figures are after the 65% DASP withholding, on a balance made up entirely of taxed contributions.
-          An untaxed element, which some funds hold, is withheld at a higher rate, so treat these as
-          illustrations rather than a quote.
-        </p>
+        <p className={blocks.small}>Figures are after the 65% DASP withholding, on a balance made up entirely of taxed contributions. An untaxed element, which some funds hold, is withheld at a higher rate, so treat these as illustrations rather than a quote.</p>
       </Answer>
-
-      {/* ── 3 ──────────────────────────────────────────────────────────────── */}
-      <Answer id="documents" heading="What documents do you need for a DASP claim?">
-        <p style={BODY}>
+      <Answer id="documents" heading="What documents do you need for a DASP claim?" tone="pale">
+        <p className={blocks.text}>
           You need your passport, tax file number, visa details, each fund's name and ideally its member
           number, plus bank details, Australian or overseas. A missing member number is rarely fatal: a
           fund can match you from your TFN and date of birth.
         </p>
-        <p style={BODY}>
+        <p className={blocks.text}>
           The step that stalls claims is certification. Where a single fund holds $5,000 or more it will
           usually want certified copies of your passport and visa, which takes longer from overseas than
           people expect.
         </p>
       </Answer>
-
-      {/* ── 4 ──────────────────────────────────────────────────────────────── */}
-      <Answer id="how-long" heading="How long does a DASP payment take?" tint>
-        <p style={BODY}>
+      <Answer id="how-long" heading="How long does a DASP payment take?" tone="white">
+        <p className={blocks.text}>
           Payment typically arrives within 28 days of approval. The clock starts when the fund or the ATO
           has everything it needs, not when you apply, so a claim missing a certified document can sit for
           weeks before those 28 days begin.
         </p>
-        <p style={BODY}>
+        <p className={blocks.text}>
           If your money is spread across several funds, the claim is only as fast as the slowest of them.
           Balances already transferred to the ATO are claimed from the ATO, to the same standard.
         </p>
       </Answer>
-
-      {/* ── 5 ──────────────────────────────────────────────────────────────── */}
-      <Answer id="find-your-fund" heading="What if you do not know which super fund you were in?">
-        <p style={BODY}>
+      <Answer id="find-your-fund" heading="What if you do not know which super fund you were in?" tone="pale">
+        <p className={blocks.text}>
           This is the normal situation. Every fund an employer paid into is linked to your tax file
           number, so the accounts can be traced from it without you remembering a single fund name.
           Balances a fund has already handed to the ATO appear in the same search.
         </p>
-        <p style={BODY}>
+        <p className={blocks.text}>
           The claim is not automatic: finding an account lodges nothing, and each fund still needs its own
           application. The account people miss is almost always the first job.
         </p>
       </Answer>
-
-      {/* ── 6 ──────────────────────────────────────────────────────────────── */}
-      <Answer id="from-overseas" heading="Can you claim your super from the UK, Germany or Japan?" tint>
-        <p style={BODY}>
+      <Answer id="from-overseas" heading="Can you claim your super from the UK, Germany or Japan?" tone="white">
+        <p className={blocks.text}>
           Yes, and you have to. A DASP can only be made once you have left Australia, so every claim is
           made from overseas. Where you are living now has no bearing on it.
         </p>
-        <p style={BODY}>
+        <p className={blocks.text}>
           One thing to settle before you close your Australian bank account: not every fund transfers to
           an overseas account, and some issue a cheque, which is slow to bank. Whether your own country
           taxes the payment is a question for an adviser there.
         </p>
       </Answer>
-
-      {/* ── 7 ──────────────────────────────────────────────────────────────── */}
-      <Answer id="dasp-vs-leaving" heading="Is it better to claim your super or leave it in Australia?">
-        <p style={BODY}>
+      <Answer id="dasp-vs-leaving" heading="Is it better to claim your super or leave it in Australia?" tone="pale">
+        <p className={blocks.text}>
           For almost every working holiday maker, claiming is better. A balance left behind receives no
           contributions but keeps paying admin fees and often insurance premiums you cannot use from
           overseas. Whatever survives eventually lands with the ATO, uninvested.
         </p>
-        <p style={BODY}>
+        <p className={blocks.text}>
           The argument for leaving it only holds if you intend to return to Australia to live and work
           permanently. Waiting does not reduce the 65%.{' '}
-          <Link href="/blog/dasp-vs-leaving-super-in-australia-pros-cons" className="font-semibold"
-            style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+          <Link href="/blog/dasp-vs-leaving-super-in-australia-pros-cons" className={blocks.textLink}>
             The full comparison is here
           </Link>.
         </p>
       </Answer>
-
-      {/* ── 8 ──────────────────────────────────────────────────────────────── */}
-      <Answer id="while-in-australia" heading="Can you claim your super while you are still in Australia?" tint>
-        <p style={BODY}>
+      <Answer id="while-in-australia" heading="Can you claim your super while you are still in Australia?" tone="white">
+        <p className={blocks.text}>
           No. Super is preserved while you hold a valid visa and are in the country, with no early release
           on a working holiday visa for leaving a job or for hardship.
         </p>
-        <p style={BODY}>
+        <p className={blocks.text}>
           If you are flying home well before your visa runs out, the Department of Home Affairs can cancel
           the remaining visa once you have left, which usually brings the claim forward.
         </p>
       </Answer>
-
-      {/* ── 9 ──────────────────────────────────────────────────────────────── */}
-      <Answer id="never-claimed" heading="What happens to your super if you never claim it?">
-        <p style={BODY}>
+      <Answer id="never-claimed" heading="What happens to your super if you never claim it?" tone="pale">
+        <p className={blocks.text}>
           It is not lost. About six months after your visa expires and you have left, a fund must transfer
           an unclaimed balance to the ATO, where it sits in your name, fee free. A claim years later is
           still a claim, at the same 65% rate.
         </p>
-        <p style={BODY}>
+        <p className={blocks.text}>
           What is lost is whatever fees and insurance premiums took out of the balance before it
           transferred. On a small balance that can be a meaningful share.
         </p>
       </Answer>
-
-      {/* ── 10. The sales section, deliberately last. ──────────────────────── */}
-      <Answer id="with-us" heading="Claim it yourself, or have us do it" tint>
-        <p style={BODY}>
-          You can do it yourself. What you would be handing over is the search across every account linked
-          to your tax file number, ATO held super included, certified copies arranged from overseas, a
-          separate application to each fund, and the chasing when one goes quiet.
+            <Answer id="with-us" heading="Claim it yourself, or have us do it" tone="amber">
+        <p className={blocks.text}>You can do it yourself. What you would be handing over is the search across every account linked to your tax file number, ATO held super included, certified copies arranged from overseas, a separate application to each fund, and the chasing when one goes quiet.</p>
+        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
+          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.
         </p>
-
-        <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #DCE0DE', margin: '22px 0 20px' }}>
-          <p className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: '8px' }}>
-            Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
-          </p>
-          <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#525A57' }}>
-            Reviewed and signed off by a registered tax agent before it is lodged
-            with the ATO.
-          </p>
+        <p className={blocks.text}>Reviewed and signed off by a registered tax agent before it is lodged with the ATO.</p>
+        <div className={blocks.stack}>
+          <WaButton href={WA} position="section" topic="super" lang="en" size="md">Message us on WhatsApp</WaButton>
+          <p className={blocks.small} style={{ color: 'var(--wht-ink)' }}>Replies in about an hour.</p>
         </div>
-
-        <WaLink href={WA} position="section" topic="super" lang="en"
-          className="btn-primary flex justify-center"
-          style={{ minHeight: '54px', width: '100%', maxWidth: '360px', fontSize: '15px', borderRadius: '100px' }}>
-          Message us on WhatsApp
-        </WaLink>
-        <p style={{ fontSize: '13px', color: '#525A57', marginTop: '10px' }}>
-          Replies in about an hour.
-        </p>
       </Answer>
 
-      {/* ── FAQ ────────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#fff' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px] mx-auto">
-            <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '18px' }}>
-              Other questions people ask about DASP
-            </h2>
-            <Accordion items={faqs} />
-          </div>
-        </div>
-      </section>
+      <Section title="Other questions people ask about DASP" titleId="faq-title">
+        <Accordion items={faqs} />
+      </Section>
 
-      {/* ── RELATED GUIDES. The narrow guides that already rank, pointed at  */}
-      {/*    from the hub rather than competing with it. ───────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[900px] mx-auto">
-          <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
-            Go deeper on one part of the claim
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
-            {[
-              { href: '/blog/how-long-does-dasp-take', label: 'How long a DASP takes, stage by stage' },
-              { href: '/blog/dasp-documents-required', label: 'The documents a DASP claim needs' },
-              { href: '/blog/dasp-tax-rate-65-percent-explained', label: 'Why DASP is taxed at 65%, and what is left' },
-              { href: '/blog/dasp-rejected-what-to-do', label: 'What to do if your DASP claim is rejected' },
-              { href: '/blog/super-multiple-funds-consolidation', label: 'Claiming when your super sits in several funds' },
-              { href: '/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'Claim now or leave it invested: the comparison' },
-            ].map(g => (
-              <Link key={g.href} href={g.href}
-                className="block rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '16px', fontSize: '14px', lineHeight: 1.5, color: '#0F1A16', minHeight: '44px' }}>
-                {g.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-        </div>
-      </section>
+      <Section tone="pale" title="Go deeper on one part of the claim" titleId="guides-title">
+        <TitleLinks items={GUIDES} />
+      </Section>
 
-      <NextStep
-        eyebrow="What is next"
-        heading="The 2% Medicare levy is the other one nobody claims"
-        body="Most 417 and 462 holders never owed it. It comes off with a certificate almost nobody applies for."
-        cta="Read about the exemption"
-        href="/medicare"
-      />
+      <Section eyebrow="What is next" title="The 2% Medicare levy is the other one nobody claims" titleId="next-title">
+        <p className={blocks.text}>Most 417 and 462 holders never owed it. It comes off with a certificate almost nobody applies for.</p>
+        <LinkButton href="/medicare">Read about the exemption</LinkButton>
+      </Section>
+
+      <Section tone="forest" title="Ask us about your super" titleId="cta-title">
+        <p className={`${blocks.text} ${blocks.onForest}`}>Your employer paid it on top of your wages, never out of them. It is still sitting in Australia.</p>
+        <WaButton href={WA} position="footer" topic="super" lang="en" tone="light">Message us on WhatsApp</WaButton>
+        <p className={`${blocks.small} ${blocks.onForest}`}>Replies in about an hour.</p>
+      </Section>
 
       <MobileCta href={WA} lang="en" topic="super" />
     </>

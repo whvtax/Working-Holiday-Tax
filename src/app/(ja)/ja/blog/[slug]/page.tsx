@@ -132,7 +132,7 @@ const cfg: GuideLocaleConfig = {
     'Medicare & Other': {
       path: '/ja/medicare',
       label: 'メディケア税について当社がすること',
-      blurb: 'メディケア税は自動的に引かれます。免除には自分で申請する証明書が必要で、ワーホリの申告で最も見落とされやすい項目です。',
+      blurb: 'メディケア税は自動的に引かれます。免除には証明書が必要で、当社が手配します。ワーホリの申告で最も見落とされやすい項目です。',
     },
     'Work Rights': {
       path: '/ja/tax-return',

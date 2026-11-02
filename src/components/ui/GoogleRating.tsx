@@ -18,12 +18,12 @@
 
 import { useGoogleSummary } from '@/lib/googleSummary'
 
-type Lang = 'en' | 'de' | 'ja'
+type Lang = 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es'
 type Variant = 'pill' | 'number' | 'count'
 
 function fmtRating(r: number, lang: Lang) {
   const s = r.toFixed(1)
-  return lang === 'de' ? s.replace('.', ',') : s
+  return lang === 'de' || lang === 'fr' || lang === 'it' || lang === 'es' ? s.replace('.', ',') : s
 }
 
 /**
@@ -46,6 +46,9 @@ export function GoogleRating({ variant = 'pill', lang = 'en' }: { variant?: Vari
       en: `from ${s.count} reviews`,
       de: `von ${s.count} Bewertungen`,
       ja: `${s.count}件の口コミ`,
+      fr: `sur ${s.count}\u00A0avis`,
+      it: `su ${s.count} recensioni`,
+      es: `de ${s.count} reseñas`,
     }
     return <span>{txt[lang]}</span>
   }
@@ -57,6 +60,9 @@ export function GoogleRating({ variant = 'pill', lang = 'en' }: { variant?: Vari
     en: `${r}★ from ${s.count} reviews`,
     de: `${r}★ von ${s.count} Bewertungen`,
     ja: `${r}★（${s.count}件の口コミ）`,
+    fr: `${r}\u00A0★ sur ${s.count}\u00A0avis`,
+    it: `${r}★ su ${s.count} recensioni`,
+    es: `${r}★ de ${s.count} reseñas`,
   }
   return <span>{txt[lang]}</span>
 }

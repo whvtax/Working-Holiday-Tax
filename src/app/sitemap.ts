@@ -3,6 +3,10 @@ import { SITE_URL } from '@/lib/constants'
 import { guides, categoryMeta } from '@/app/(site)/blog/data'
 import { dePostTranslations } from '@/app/(de)/de/blog/data'
 import { jaPostTranslations } from '@/app/(ja)/ja/blog/data'
+import { getFrenchSitemapPaths } from '@/app/(fr)/fr/blog/data'
+import { getItalianSitemapPaths } from '@/app/(it)/it/blog/data'
+import { getSpanishSitemapPaths } from '@/app/(es)/es/blog/data'
+import { LOCALE_PAGES, LOCALE_ONLY_ROUTES, NEW_LOCALES, type NewLocale } from '@/lib/locale-pages'
 import { isoGuideDate, guideModifiedIso } from '@/lib/blog-dates'
 
 // A localized blog post is only "real" (indexable, sitemap-worthy) when it has a
@@ -29,7 +33,7 @@ function guideLastMod(dateString: string): Date {
 }
 
 /**
- * Site map - includes English (default), German (/de) and Japanese (/ja) versions.
+ * Site map - includes English (default), German (/de), Japanese (/ja), French (/fr), Italian (/it) and Spanish (/es) versions.
  * Each English URL gets matching /de and /ja entries. Search engines use these together
  * with hreflang tags on the pages themselves to serve the right language.
  *
@@ -100,6 +104,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: r.priority * 0.95,
     }))
 
+  // French, Italian and Spanish pages (ADR 013). Static pages come ONLY from
+  // the explicit allowlists in locale-pages (FR_PAGES, IT_PAGES, ES_PAGES) and
+  // the flagship routes (LOCALE_ONLY_ROUTES, canonical only, no hreflang twin);
+  // the blog index, category hubs and guides come from each language's chunk
+  // data, so a guide is listed exactly when its native body exists. Unlike
+  // de/ja this does not mirror the English routes.
+  const blogPaths: Record<NewLocale, string[]> = {
+    fr: getFrenchSitemapPaths(),
+    it: getItalianSitemapPaths(),
+    es: getSpanishSitemapPaths(),
+  }
+  const guideBySlug = new Map(guides.map(g => [g.slug, g]))
+  const newLocaleEntries: MetadataRoute.Sitemap = NEW_LOCALES.flatMap(locale => {
+    const url = (path: string) => (path === '/' ? `${SITE_URL}/${locale}` : `${SITE_URL}/${locale}${path}`)
+    const statics = [...LOCALE_PAGES[locale], ...LOCALE_ONLY_ROUTES[locale]].map(path => {
+      const route = routes.find(r => r.url === path)
+      return {
+        url: url(path),
+        lastModified: LAST_CONTENT_UPDATE,
+        changeFrequency: route?.changeFrequency ?? ('monthly' as const),
+        priority: (route?.priority ?? 0.8) * 0.95,
+      }
+    })
+    const blog = blogPaths[locale].map(path => {
+      const guide = path.startsWith('/blog/category/') ? undefined : guideBySlug.get(path.replace('/blog/', ''))
+      if (guide) {
+        return { url: url(path), lastModified: guideLastMod(guide.date), changeFrequency: 'monthly' as const, priority: 0.71 }
+      }
+      const isIndex = path === '/blog'
+      return {
+        url: url(path),
+        lastModified: LAST_CONTENT_UPDATE,
+        changeFrequency: 'weekly' as const,
+        priority: isIndex ? 0.85 * 0.95 : 0.76,
+      }
+    })
+    return [...statics, ...blog]
+  })
+
   // English category pages
   const englishCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
     url: `${SITE_URL}/blog/category/${c.slug}`,
@@ -162,5 +205,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...englishGuides,
     ...germanGuides,
     ...japaneseGuides,
+    ...newLocaleEntries,
   ]
 }

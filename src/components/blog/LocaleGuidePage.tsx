@@ -25,14 +25,17 @@ import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { guides, getCategoryColor } from '@/app/(site)/blog/data'
+import { guides } from '@/app/(site)/blog/data'
 import GuideArticle from '@/app/(site)/blog/[slug]/GuideArticle'
 import StickyBreadcrumbs from '@/app/(site)/blog/[slug]/StickyBreadcrumbs'
-import CategoryHero from '@/app/(site)/blog/[slug]/CategoryHero'
+import { Section } from '@/components/wht/Section'
+import { blocks, LinkRows } from '@/components/wht/Blocks'
+import { blog, PageHead, ArticleMeta, CtaBand } from '@/components/wht/BlogBlocks'
 import { isoGuideDate, guideModifiedIso } from '@/lib/blog-dates'
 import { GuideCta } from '@/components/ui/GuideCta'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
+import { newLocaleGuideLanguages } from '@/lib/guide-alternates'
 
 /* ── Types ─────────────────────────────────────────────────────────────── */
 
@@ -41,8 +44,8 @@ import type { Guide } from '@/app/(site)/blog/data'
 export type LocalizedGuide = Guide & { reviewed?: string }
 
 export interface GuideLocaleConfig {
-  /** 'de' | 'ja' — the short code used in paths and GuideArticle. */
-  locale: 'de' | 'ja'
+  /** The short code used in paths and GuideArticle. */
+  locale: 'de' | 'ja' | 'fr' | 'it' | 'es'
   /** '/de' | '/ja' */
   basePath: string
   /** 'de_DE' | 'ja_JP' for OpenGraph. */
@@ -56,7 +59,11 @@ export interface GuideLocaleConfig {
   /** Localized long-form date, e.g. formatGuideDateDe. */
   formatDate: (date: string) => string
   /** blogUI.englishOnlyNotice from the locale's data module. */
-  englishOnlyNotice: string
+  englishOnlyNotice?: string
+  /** fr / it / es: slugs that have a native body. When set, related guides come only from these. */
+  listedSlugs?: () => readonly string[]
+  /** fr / it / es: replaces the default hreflang map for a guide. */
+  alternateLanguages?: (slug: string) => Record<string, string>
 
   /* SEO */
   categoryKeywords: Record<string, string[]>
@@ -100,7 +107,7 @@ export interface GuideLocaleConfig {
   faq: FaqRules
   /** HowTo step name truncation length (60 latin, 30 CJK). */
   howToNameMax: number
-  isQuestionPost: (slug: string, title: string) => boolean
+  isQuestionPost?: (slug: string, title: string) => boolean
   /** Locale-aware entity regexes for the Article LD `mentions`. */
   orgEntities: Array<{ match: RegExp; name: string; sameAs: string }>
   placeEntities: Array<{ match: RegExp; name: string; sameAs: string }>
@@ -134,8 +141,8 @@ function ogForCategory(category: string): string {
 }
 
 /** Every localized blog mirrors the English corpus one-to-one. */
-export function localizedGuideStaticParams() {
-  return guides.map(g => ({ slug: g.slug }))
+export function localizedGuideStaticParams(slugs?: readonly string[]) {
+  return (slugs ? guides.filter(g => slugs.includes(g.slug)) : guides).map(g => ({ slug: g.slug }))
 }
 
 /* Ranked rather than shuffled: the guides closest to a decision in their
@@ -186,7 +193,8 @@ const DECISION_GUIDES: Record<string, string[]> = {
 }
 
 function getRelatedGuides(cfg: GuideLocaleConfig, current: { slug: string; category: string }, count = 3) {
-  const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category)
+  const listed = cfg.listedSlugs?.()
+  const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category && (!listed || listed.includes(g.slug)))
   const ranked = DECISION_GUIDES[current.category] ?? []
   const rank = (slug: string) => {
     const i = ranked.indexOf(slug)
@@ -449,10 +457,11 @@ export function buildGuideMetadata(cfg: GuideLocaleConfig, slug: string): Metada
       canonical: isTranslated
         ? `${SITE_URL}${cfg.basePath}/blog/${guide.slug}`
         : `${SITE_URL}/blog/${guide.slug}`,
-      languages: {
+      languages: cfg.alternateLanguages ? cfg.alternateLanguages(guide.slug) : {
         'en-AU': `${SITE_URL}/blog/${guide.slug}`,
         'de': `${SITE_URL}/de/blog/${guide.slug}`,
         'ja': `${SITE_URL}/ja/blog/${guide.slug}`,
+        ...newLocaleGuideLanguages(guide.slug),
         'x-default': `${SITE_URL}/blog/${guide.slug}`,
       },
     },
@@ -496,7 +505,6 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
   const { guide, isTranslated } = result
 
   const categoryInfo = cfg.categoryMeta.find(c => c.category === guide.category)
-  const categoryColors = getCategoryColor(guide.category)
   const relatedGuides = getRelatedGuides(cfg, guide)
   const readTime = calcReadTime(guide.body)
   const wordCount = calcWordCount(guide.body)
@@ -620,7 +628,7 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
       { '@type': 'ListItem', position: 1, name: cfg.homeLabel, item: `${SITE_URL}${cfg.basePath}` },
       { '@type': 'ListItem', position: 2, name: cfg.blogLabel, item: `${SITE_URL}${cfg.basePath}/blog` },
       ...(categoryInfo
-        ? [{ '@type': 'ListItem', position: 3, name: categoryInfo.category, item: `${SITE_URL}${cfg.basePath}/blog/category/${categoryInfo.slug}` }]
+        ? [{ '@type': 'ListItem', position: 3, name: cfg.catLabel(categoryInfo.category), item: `${SITE_URL}${cfg.basePath}/blog/category/${categoryInfo.slug}` }]
         : []),
       { '@type': 'ListItem', position: categoryInfo ? 4 : 3, name: guide.title, item: `${SITE_URL}${cfg.basePath}/blog/${guide.slug}` },
     ],
@@ -680,11 +688,11 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
           scoped to these routes and to phones. */}
       <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 767px){body > div[role="dialog"]{bottom:calc(88px + env(safe-area-inset-bottom, 0px)) !important}}` }} />
 
-      <div style={{ paddingTop: '68px', background: '#fff', minHeight: '100dvh' }}>
+      <div className={blocks.underHeader} style={{ background: '#fff', minHeight: '100dvh' }}>
 
         {categoryInfo && (
           <StickyBreadcrumbs
-            category={categoryInfo.category}
+            category={cfg.catLabel(categoryInfo.category)}
             categorySlug={categoryInfo.slug}
             title={guide.title}
             basePath={cfg.basePath}
@@ -693,108 +701,44 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
           />
         )}
 
-        <div style={{ background: categoryColors.bg }}>
-          <div style={{ padding: '12px 0' }}>
-            <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '10px', alignItems: 'center', fontSize: '13px', color: '#525A57', flexWrap: 'wrap' }}>
-              <Link href={cfg.basePath} style={{ color: '#525A57', textDecoration: 'none' }}>{cfg.homeLabel}</Link>
-              <span>/</span>
-              <Link href={`${cfg.basePath}/blog`} style={{ color: '#525A57', textDecoration: 'none' }}>{cfg.blogLabel}</Link>
-              <span>/</span>
-              {categoryInfo && (
-                <>
-                  <Link href={`${cfg.basePath}/blog/category/${categoryInfo.slug}`} style={{ color: '#525A57', textDecoration: 'none' }}>
-                    {cfg.catLabel(categoryInfo.category)}
-                  </Link>
-                  <span>/</span>
-                </>
-              )}
-              <span style={{ color: '#525A57', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50%' }}>{guide.title}</span>
-            </div>
-          </div>
+        <PageHead
+          titleId="article-title"
+          crumbs={[
+            { label: cfg.homeLabel, href: cfg.basePath },
+            { label: cfg.blogLabel, href: `${cfg.basePath}/blog` },
+            ...(categoryInfo ? [{ label: cfg.catLabel(categoryInfo.category), href: `${cfg.basePath}/blog/category/${categoryInfo.slug}` }] : []),
+            { label: guide.title },
+          ]}
+          top={
+            /* Publication and review shown separately: "last updated" used to
+               show the publication date, which on many guides was one to two
+               tax years old. That was not true. */
+            <ArticleMeta
+              chip={categoryInfo ? { href: `${cfg.basePath}/blog/category/${categoryInfo.slug}`, label: cfg.catLabel(guide.category) } : undefined}
+              parts={[
+                `${cfg.publishedLabel}${cfg.formatDate(guide.date)}`,
+                ...(reviewedDate ? [`${cfg.reviewedLabel}${cfg.formatDate(reviewedDate)}`] : []),
+                cfg.readTimeLabel(readTime),
+              ]}
+            />
+          }
+          title={guide.title}
+          titleStyle={{ lineHeight: S.h1.lineHeight, letterSpacing: S.h1.letterSpacing }}
+          lead={guide.description}
+          leadClassName="guide-lead"
+          leadStyle={{ lineHeight: S.leadLineHeight }}
+        />
 
-          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '1.5rem 20px 3rem' }}>
-            <div className="article-hero-layout">
-              <div className="article-hero-content">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', flexWrap: 'wrap' }}>
-                  {categoryInfo && (
-                    <>
-                      <Link
-                        href={`${cfg.basePath}/blog/category/${categoryInfo.slug}`}
-                        style={{
-                          fontSize: '13px',
-                          padding: '7px 14px',
-                          borderRadius: '100px',
-                          background: '#fff',
-                          color: categoryColors.text,
-                          fontWeight: 600,
-                          textDecoration: 'none',
-                          letterSpacing: '0.02em',
-                          border: `1px solid ${categoryColors.border}`,
-                        }}
-                      >
-                        {cfg.catLabel(guide.category)}
-                      </Link>
-                      <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
-                    </>
-                  )}
-                  {/* Publication and review shown separately: "last updated"
-                      used to show the publication date, which on many guides
-                      was one to two tax years old. That was not true. */}
-                  <span style={{ fontSize: '13px', color: '#525A57' }}>{cfg.publishedLabel}{cfg.formatDate(guide.date)}</span>
-                  {reviewedDate && (
-                    <>
-                      <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
-                      <span style={{ fontSize: '13px', color: '#525A57' }}>{cfg.reviewedLabel}{cfg.formatDate(reviewedDate)}</span>
-                    </>
-                  )}
-                  <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
-                  <span style={{ fontSize: '13px', color: '#525A57' }}>{cfg.readTimeLabel(readTime)}</span>
-                </div>
-
-                <h1
-                  className="font-serif font-black"
-                  style={{ fontSize: 'clamp(28px, 4.5vw, 42px)', lineHeight: S.h1.lineHeight, letterSpacing: S.h1.letterSpacing, marginBottom: '1rem', color: '#0F1A16' }}
-                >
-                  {guide.title}
-                </h1>
-
-                <p className="guide-lead" style={{ fontSize: 'clamp(16.5px, 1.5vw, 18px)', color: '#0F1A16', lineHeight: S.leadLineHeight, marginBottom: '0', fontWeight: 400 }}>
-                  {guide.description}
-                </p>
-              </div>
-
-              <div className="article-hero-image">
-                <CategoryHero category={guide.category} title={guide.title} slug={guide.slug} variant="badge" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px' }}>
+        <div className={blog.wrap}>
 
           {/* Translation notice - shown only when post body is still in English */}
-          {!isTranslated && (
-            <div style={{
-              marginTop: '2rem',
-              padding: '14px 18px',
-              background: '#FFF8E7',
-              border: '1px solid #FCD980',
-              borderRadius: '12px',
-              display: 'flex',
-              gap: '10px',
-              alignItems: 'flex-start',
-            }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
-                <circle cx="12" cy="12" r="9" stroke="#083D30" strokeWidth="1.6"/>
-                <path d="M12 7v6M12 16h.01" stroke="#083D30" strokeWidth="1.8" strokeLinecap="round"/>
-              </svg>
-              <p style={{ fontSize: '13px', color: '#7A4A00', lineHeight: S.noticeLineHeight, margin: 0 }}>
-                {cfg.englishOnlyNotice}
-              </p>
-            </div>
+          {!isTranslated && cfg.englishOnlyNotice && (
+            <p className={blog.notice} style={{ lineHeight: S.noticeLineHeight }}>
+              {cfg.englishOnlyNotice}
+            </p>
           )}
 
-          <article style={{ padding: '2rem 0 3rem 0' }} itemScope itemType="https://schema.org/Article">
+          <article className={blog.article} itemScope itemType="https://schema.org/Article">
             <meta itemProp="headline" content={guide.title} />
             <meta itemProp="datePublished" content={publishedIso} />
             <meta itemProp="dateModified" content={modifiedIso} />
@@ -802,106 +746,52 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
             <GuideArticle guide={guide} locale={cfg.locale} />
           </article>
 
-          {/* About this guide. Replaces the single grey "Written by Working
-              Holiday Tax" line, the weakest possible trust signal on a money
-              topic. The text describes only what the registered tax agent does
+          {/* About this guide. Describes only what the registered tax agent does
               with the work and never says Working Holiday Tax is one itself.
               No invented author name, no photo, no invented person. */}
-          <aside
-            aria-labelledby="about-this-guide"
-            style={{ maxWidth: '780px', margin: '0 0 2rem 0', padding: '18px 20px', border: '1px solid #DCE0DE', borderRadius: '12px', background: '#F7F9F8' }}
-          >
-            <p id="about-this-guide" style={{ ...S.asideLabel, margin: '0 0 8px' }}>
+          <aside aria-labelledby="about-this-guide" className={blog.about}>
+            <p id="about-this-guide" className={blog.aboutLabel}>
               {cfg.aside.label}
             </p>
-            <p style={{ fontSize: '15px', color: '#0F1A16', lineHeight: S.asideBodyLineHeight, margin: 0, fontWeight: 400 }}>
-              {cfg.aside.p1}
-            </p>
-            <p style={{ fontSize: '15px', color: '#0F1A16', lineHeight: S.asideBodyLineHeight, margin: '10px 0 0', fontWeight: 400 }}>
-              {cfg.aside.p2}
-            </p>
-            <p style={{ fontSize: '13px', color: '#525A57', lineHeight: S.asideDateLineHeight, margin: '12px 0 0', fontWeight: 400 }}>
+            <p style={{ lineHeight: S.asideBodyLineHeight }}>{cfg.aside.p1}</p>
+            <p style={{ lineHeight: S.asideBodyLineHeight }}>{cfg.aside.p2}</p>
+            <p className={blog.aboutDate} style={{ lineHeight: S.asideDateLineHeight }}>
               {cfg.publishedLabel}{cfg.formatDate(guide.date)}{reviewedDate ? ` · ${cfg.reviewedLabel.trim()} ${cfg.formatDate(reviewedDate)}` : ''}
             </p>
           </aside>
+        </div>
 
-          {/* The close. Until this shipped, guide pages carried no conversion
-              path in any language while taking most of the site's traffic. */}
+        {relatedGuides.length > 0 && (
+          <Section tone="pale" title={cfg.whatsNextLabel} titleId="related-title">
+            <LinkRows
+              items={[
+                ...relatedGuides.map(g => ({
+                  href: `${cfg.basePath}/blog/${g.slug}`,
+                  eyebrow: `${cfg.catLabel(g.category)} · ${cfg.readTimeLabel(g.body ? calcReadTime(g.body) : g.readTime)}`,
+                  title: g.title,
+                  desc: g.description,
+                })),
+                /* The one link here that is not another article. */
+                ...(service ? [{ href: service.path, eyebrow: cfg.whatWeDoLabel, title: service.label, desc: service.blurb }] : []),
+              ]}
+            />
+            {categoryInfo && (
+              <Link href={`${cfg.basePath}/blog/category/${categoryInfo.slug}`} className={blocks.textLink}>
+                {cfg.viewAllLabel(cfg.catLabel(categoryInfo.category))}
+              </Link>
+            )}
+          </Section>
+        )}
+
+        {/* The close. */}
+        <CtaBand>
           <GuideCta
             category={guide.category}
             slug={guide.slug}
             lang={cfg.locale}
             title={guide.title}
           />
-
-          {relatedGuides.length > 0 && (
-            <div style={{ borderTop: '1px solid #DCE0DE', paddingTop: '2.5rem', paddingBottom: '3rem', maxWidth: '780px' }}>
-              <p style={{ ...S.relatedHeader, marginBottom: '1.25rem' }}>
-                {cfg.whatsNextLabel}
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {relatedGuides.map(g => {
-                  const gColors = getCategoryColor(g.category)
-                  return (
-                    <Link key={g.slug} href={`${cfg.basePath}/blog/${g.slug}`} style={{ textDecoration: 'none' }} className="related-link">
-                      <div style={{ border: '1px solid #DCE0DE', borderRadius: '12px', padding: '1.1rem 1.4rem', transition: 'border-color 0.2s ease, transform 0.2s ease' }} className="related-card">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                          <span style={{
-                            fontSize: '13px',
-                            padding: '3px 10px',
-                            borderRadius: '100px',
-                            background: gColors.bg,
-                            color: gColors.text,
-                            fontWeight: 600,
-                            letterSpacing: '0.02em',
-                            border: `1px solid ${gColors.border}`,
-                          }}>
-                            {cfg.catLabel(g.category)}
-                          </span>
-                          <span style={{ fontSize: '13px', color: '#525A57' }}>{cfg.readTimeLabel(g.body ? calcReadTime(g.body) : g.readTime)}</span>
-                        </div>
-                        <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: S.relatedTitleLineHeight }}>
-                          {g.title}
-                        </p>
-                        <p style={{ fontSize: '13px', color: '#525A57', lineHeight: S.relatedDescLineHeight, margin: 0, fontWeight: 400 }}>
-                          {g.description}
-                        </p>
-                      </div>
-                    </Link>
-                  )
-                })}
-
-                {/* The one link here that is not another article. */}
-                {service && (
-                  <Link href={service.path} style={{ textDecoration: 'none' }} className="related-link">
-                    <div style={{ border: '1px solid #DCE0DE', background: '#F2FAF7', borderRadius: '12px', padding: '1.1rem 1.4rem' }} className="related-card">
-                      <p style={{ ...S.serviceLabel, margin: '0 0 8px' }}>
-                        {cfg.whatWeDoLabel}
-                      </p>
-                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: 1.45 }}>
-                        {service.label}
-                      </p>
-                      <p style={{ fontSize: '13px', color: '#0F1A16', lineHeight: 1.7, margin: 0, fontWeight: 400 }}>
-                        {service.blurb}
-                      </p>
-                    </div>
-                  </Link>
-                )}
-              </div>
-
-              {categoryInfo && (
-                <div style={{ marginTop: '24px' }}>
-                  <Link
-                    href={`${cfg.basePath}/blog/category/${categoryInfo.slug}`}
-                    style={{ fontSize: '15px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '8px 0' }}
-                  >
-                    {cfg.viewAllLabel(cfg.catLabel(categoryInfo.category))}
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+        </CtaBand>
 
         {/* The sticky CTA bar is fixed at the bottom of the viewport and
             renders no spacer of its own, so without this the last paragraph of

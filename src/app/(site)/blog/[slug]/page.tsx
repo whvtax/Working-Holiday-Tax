@@ -1,11 +1,14 @@
+import { newLocaleGuideLanguages } from '@/lib/guide-alternates'
 import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { guides, getGuideBySlug, getCategoryMeta, getCategoryColor } from '../data'
+import { guides, getGuideBySlug, getCategoryMeta } from '../data'
 import GuideArticle from './GuideArticle'
 import StickyBreadcrumbs from './StickyBreadcrumbs'
-import CategoryHero from './CategoryHero'
+import { Section } from '@/components/wht/Section'
+import { blocks, LinkRows } from '@/components/wht/Blocks'
+import { blog, PageHead, ArticleMeta, CtaBand } from '@/components/wht/BlogBlocks'
 
 import { isoGuideDate, guideModifiedIso } from '@/lib/blog-dates'
 import { GuideCta } from '@/components/ui/GuideCta'
@@ -189,6 +192,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         'en-AU': `${SITE_URL}/blog/${guide.slug}`,
         'de': `${SITE_URL}/de/blog/${guide.slug}`,
         'ja': `${SITE_URL}/ja/blog/${guide.slug}`,
+        ...newLocaleGuideLanguages(guide.slug),
         'x-default': `${SITE_URL}/blog/${guide.slug}`,
       },
     },
@@ -508,7 +512,6 @@ export default async function GuidePage({ params }: Props) {
   if (!guide) notFound()
 
   const categoryInfo = getCategoryMeta(guide.category)
-  const categoryColors = getCategoryColor(guide.category)
   const relatedGuides = getRelatedGuides(guide)
   const readTime = calcReadTime(guide.body)
   const wordCount = calcWordCount(guide.body)
@@ -736,9 +739,9 @@ export default async function GuidePage({ params }: Props) {
           that lands. */}
       <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 767px){body > div[role="dialog"]{bottom:calc(88px + env(safe-area-inset-bottom, 0px)) !important}}` }} />
 
-      <div style={{ paddingTop: '68px', background: '#fff', minHeight: '100dvh' }}>
+      <div className={blocks.underHeader} style={{ background: '#fff', minHeight: '100dvh' }}>
 
-        {/* Sticky breadcrumbs (appear after scrolling past hero) */}
+        {/* Sticky breadcrumbs (appear after scrolling past the header) */}
         {categoryInfo && (
           <StickyBreadcrumbs
             category={categoryInfo.category}
@@ -747,95 +750,32 @@ export default async function GuidePage({ params }: Props) {
           />
         )}
 
-        {/* Hero - uses category color for the background */}
-        <div style={{ background: categoryColors.bg }}>
-          <div style={{ padding: '12px 0' }}>
-            {/* This trail was a bare div. The sticky bar further down and the
-                blog index both announce themselves as breadcrumbs; this one
-                did not, and its last crumb was not marked as the current
-                page. */}
-            <nav aria-label="Breadcrumb" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '10px', alignItems: 'center', fontSize: '13px', color: '#525A57', flexWrap: 'wrap' }}>
-              <Link href="/" style={{ color: '#525A57', textDecoration: 'none', padding: '8px 0' }}>Home</Link>
-              <span aria-hidden="true">/</span>
-              <Link href="/blog" style={{ color: '#525A57', textDecoration: 'none', padding: '8px 0' }}>Blog</Link>
-              <span aria-hidden="true">/</span>
-              {categoryInfo && (
-                <>
-                  <Link href={`/blog/category/${categoryInfo.slug}`} style={{ color: '#525A57', textDecoration: 'none', padding: '8px 0' }}>
-                    {categoryInfo.category}
-                  </Link>
-                  <span aria-hidden="true">/</span>
-                </>
-              )}
-              <span aria-current="page" style={{ color: '#525A57', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0, maxWidth: '100%' }}>{guide.title}</span>
-            </nav>
-          </div>
+        <PageHead
+          titleId="article-title"
+          crumbsLabel="Breadcrumb"
+          crumbs={[
+            { label: 'Home', href: '/' },
+            { label: 'Blog', href: '/blog' },
+            ...(categoryInfo ? [{ label: categoryInfo.category, href: `/blog/category/${categoryInfo.slug}` }] : []),
+            { label: guide.title },
+          ]}
+          top={
+            /* "Last updated" was showing the publication date, so 77 of 154
+               guides told a reader in 2026 that a tax page had been updated
+               one or two financial years ago. Publication and review are shown
+               separately. */
+            <ArticleMeta
+              chip={categoryInfo ? { href: `/blog/category/${categoryInfo.slug}`, label: guide.category } : undefined}
+              parts={[`Published ${guide.date}`, ...(reviewedDate ? [`Reviewed ${reviewedDate}`] : []), `${readTime} min read`]}
+            />
+          }
+          title={guide.title}
+          lead={guide.description}
+          leadClassName="guide-lead"
+        />
 
-          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '1.5rem 20px 3rem' }}>
-            <div className="article-hero-layout">
-              <div className="article-hero-content">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', flexWrap: 'wrap' }}>
-                  {categoryInfo && (
-                    <>
-                      <Link
-                        href={`/blog/category/${categoryInfo.slug}`}
-                        style={{
-                          fontSize: '13px',
-                          padding: '7px 14px',
-                          borderRadius: '100px',
-                          background: '#fff',
-                          color: categoryColors.text,
-                          fontWeight: 600,
-                          textDecoration: 'none',
-                          letterSpacing: '0.02em',
-                          border: `1px solid ${categoryColors.border}`,
-                        }}
-                      >
-                        {guide.category}
-                      </Link>
-                      <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
-                    </>
-                  )}
-                  {/* "Last updated" was showing the publication date, so 77 of
-                      154 guides told a reader in 2026 that a tax page had been
-                      updated one or two financial years ago. On a money topic
-                      that is the worst freshness signal a page can send, and it
-                      was not true. It now says what it means. */}
-                  <span style={{ fontSize: '13px', color: '#525A57' }}>Published {guide.date}</span>
-                  {reviewedDate && (
-                    <>
-                      <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
-                      <span style={{ fontSize: '13px', color: '#525A57' }}>Reviewed {reviewedDate}</span>
-                    </>
-                  )}
-                  <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
-                  <span style={{ fontSize: '13px', color: '#525A57' }}>{readTime} min read</span>
-                </div>
-
-                {/* H1 - larger and clearer hierarchy vs H2 in body */}
-                <h1
-                  className="font-serif font-black"
-                  style={{ fontSize: 'clamp(28px, 4.5vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: '1rem', color: '#0F1A16' }}
-                >
-                  {guide.title}
-                </h1>
-
-                <p className="guide-lead" style={{ fontSize: 'clamp(16.5px, 1.5vw, 18px)', color: '#0F1A16', lineHeight: 1.62, marginBottom: '0', fontWeight: 400 }}>
-                  {guide.description}
-                </p>
-              </div>
-
-              {/* Article emoji - hidden on small mobile */}
-              <div className="article-hero-image">
-                <CategoryHero category={guide.category} title={guide.title} slug={guide.slug} variant="badge" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Article - wider container to fit the TOC sidebar on desktop */}
-        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px' }}>
-          <article style={{ padding: '2rem 0 3rem 0' }} itemScope itemType="https://schema.org/Article">
+        <div className={blog.wrap}>
+          <article className={blog.article} itemScope itemType="https://schema.org/Article">
             <meta itemProp="headline" content={guide.title} />
             <meta itemProp="datePublished" content={publishedIso} />
             <meta itemProp="dateModified" content={modifiedIso} />
@@ -843,122 +783,57 @@ export default async function GuidePage({ params }: Props) {
             <GuideArticle guide={guide} />
           </article>
 
-          {/* About this guide.
-              This replaces a single grey line reading "Written by Working
-              Holiday Tax", which is the weakest trust signal a money topic can
-              carry. Tax is a subject where a reader is entitled to know who
-              wrote a page and who checked it.
-
-              Every claim here is one the business can make. It describes what
-              the registered tax agent does to the work and never says that
-              Working Holiday Tax is one, because it is not. There is no named
-              author, no photograph and no invented person: the entity really
-              is the author, and a fabricated expert would be both dishonest and
-              the fastest way to fail the review this block exists to pass. */}
-          <aside
-            aria-labelledby="about-this-guide"
-            style={{ maxWidth: '780px', margin: '0 0 2rem 0', padding: '18px 20px', border: '1px solid #DCE0DE', borderRadius: '12px', background: '#F7F9F8' }}
-          >
-            <p id="about-this-guide" style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 8px' }}>
+          {/* About this guide. Says who wrote it and who checked it. It describes
+              only what the registered tax agent does with the work and never says
+              Working Holiday Tax is one. No invented author, no photo. */}
+          <aside aria-labelledby="about-this-guide" className={blog.about}>
+            <p id="about-this-guide" className={blog.aboutLabel}>
               About this guide
             </p>
-            {/* This block carried its opening sentence twice, once in each of
-                two drafts that were both left in. One sentence now, keeping
-                the two claims that matter: who wrote it, and what it is
-                checked against. */}
-            <p style={{ fontSize: '15px', color: '#0F1A16', lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
+            <p>
               Written by the Working Holiday Tax team, who work with 417 and 462 visa holders and nothing else, and checked against current ATO and Fair Work guidance. General information, not personal tax advice.
             </p>
-            <p style={{ fontSize: '15px', color: '#0F1A16', lineHeight: 1.65, margin: '10px 0 0', fontWeight: 400 }}>
+            <p>
               Tax returns are reviewed and signed off by a registered tax agent before they are lodged with the ATO.
             </p>
-            <p style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.6, margin: '12px 0 0', fontWeight: 400 }}>
+            <p className={blog.aboutDate}>
               Published {guide.date}{reviewedDate ? ` · Reviewed ${reviewedDate}` : ''}
             </p>
           </aside>
+        </div>
 
-          {/* The close. Until this shipped, guide pages carried no conversion
-              path in any language while taking most of the site's traffic. */}
+        {/* Where to go next */}
+        {relatedGuides.length > 0 && (
+          <Section tone="pale" title="Where to go next" titleId="related-title">
+            <LinkRows
+              items={[
+                ...relatedGuides.map(g => ({
+                  href: `/blog/${g.slug}`,
+                  eyebrow: `${g.category} · ${g.readTime} min read`,
+                  title: g.title,
+                  desc: g.description,
+                })),
+                /* The one link here that is not another article. */
+                ...(service ? [{ href: service.path, eyebrow: 'What we do', title: service.label, desc: service.blurb }] : []),
+              ]}
+            />
+            {categoryInfo && (
+              <Link href={`/blog/category/${categoryInfo.slug}`} className={blocks.textLink}>
+                View all {categoryInfo.category} articles →
+              </Link>
+            )}
+          </Section>
+        )}
+
+        {/* The close. */}
+        <CtaBand>
           <GuideCta
             category={guide.category}
             slug={guide.slug}
             lang="en"
             title={guide.title}
           />
-
-          {/* Where to go next */}
-          {relatedGuides.length > 0 && (
-            <div style={{ borderTop: '1px solid #DCE0DE', paddingTop: '2.5rem', paddingBottom: '3rem', maxWidth: '780px' }}>
-              <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
-                Where to go next
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {relatedGuides.map(g => {
-                  const gColors = getCategoryColor(g.category)
-                  return (
-                    <Link key={g.slug} href={`/blog/${g.slug}`} style={{ textDecoration: 'none' }} className="related-link">
-                      <div style={{ border: '1px solid #DCE0DE', borderRadius: '12px', padding: '1.1rem 1.4rem', transition: 'border-color 0.2s ease, transform 0.2s ease' }} className="related-card">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                          <span style={{
-                            fontSize: '13px',
-                            padding: '3px 10px',
-                            borderRadius: '100px',
-                            background: gColors.bg,
-                            color: gColors.text,
-                            fontWeight: 600,
-                            letterSpacing: '0.02em',
-                            border: `1px solid ${gColors.border}`,
-                          }}>
-                            {g.category}
-                          </span>
-                          <span style={{ fontSize: '13px', color: '#525A57' }}>{g.readTime} min read</span>
-                        </div>
-                        <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: 1.35 }}>
-                          {g.title}
-                        </p>
-                        <p style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.6, margin: 0, fontWeight: 400 }}>
-                          {g.description}
-                        </p>
-                      </div>
-                    </Link>
-                  )
-                })}
-
-                {/* The one link here that is not another article. Three related
-                    guides and then a way out of the blog, rather than four more
-                    reasons to keep reading. */}
-                {service && (
-                  <Link href={service.path} style={{ textDecoration: 'none' }} className="related-link">
-                    <div style={{ border: '1px solid #DCE0DE', background: '#F2FAF7', borderRadius: '12px', padding: '1.1rem 1.4rem' }} className="related-card">
-                      <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 8px' }}>
-                        What we do
-                      </p>
-                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#0B5240', marginBottom: '6px', lineHeight: 1.35 }}>
-                        {service.label}
-                      </p>
-                      <p style={{ fontSize: '13px', color: '#0F1A16', lineHeight: 1.6, margin: 0, fontWeight: 400 }}>
-                        {service.blurb}
-                      </p>
-                    </div>
-                  </Link>
-                )}
-              </div>
-
-              {/* related-card styles are in globals.css */}
-
-              {categoryInfo && (
-                <div style={{ marginTop: '24px' }}>
-                  <Link
-                    href={`/blog/category/${categoryInfo.slug}`}
-                    style={{ fontSize: '15px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '8px 0' }}
-                  >
-                    View all {categoryInfo.category} articles →
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+        </CtaBand>
 
         {/* The sticky CTA bar is fixed at the bottom of the viewport and
             renders no spacer of its own, so without this the last paragraph of

@@ -61,7 +61,7 @@ export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
   useEffect(() => {
     if (isAdminArea) return
     const first = pathname.split('/')[1] ?? ''
-    const lang = ['de', 'ja', 'zh', 'vi'].includes(first) ? first : 'en'
+    const lang = ['de', 'ja', 'fr', 'it', 'es', 'zh', 'vi'].includes(first) ? first : 'en'
     // rAF-THROTTLED.
     //
     // `scrollHeight` is a layout-forcing read, and this ran on every scroll

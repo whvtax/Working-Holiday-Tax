@@ -476,15 +476,50 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "lang": "en"
   },
   {
+    "intent": "started the return in myGov and wants advice on the correct tax treatment before lodging",
+    "question": "I have already started my return in myGov but cannot lodge it because of residency, Addy, Medicare, employer statement or health insurance questions. Can you advise me on the correct treatment before lodging, and what do you charge?",
+    "examples": [
+      "I have already started my tax return through myGov but cannot lodge it because of residency and Medicare questions",
+      "Do you have experience with the Addy decision and the double tax agreement, and could you advise me on the correct tax treatment before lodging?",
+      "I need professional assistance with my tax return, determining my residency status, incomplete employer income statements and a private health insurance error. Could you provide an estimate of your fees?",
+      "I started lodging in myGov but I am stuck, can you tell me what to do before I lodge?"
+    ],
+    "answer": "Thanks for the detailed message. These are exactly the situations we deal with for working holiday makers: tax residency, the Addy decision, the Medicare levy, health insurance and income statements that do not match. Our team reviews all of it as part of preparing your return, and it is reviewed and signed off by a registered tax agent before it is lodged with the ATO. We cannot give the tax treatment separately in advance, it is part of preparing the return for you.\n\nThe fee is $220 if your income was PAYG only, or $385 if you also had ABN income (GST included). If your refund turns out to be less than the fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe tax instead, the full fee applies.\n\nIf you would like to go ahead, I can send the payment details. In the meantime, please hold off lodging so we can prepare it properly.",
+    "keywords": [
+      "started",
+      "mygov",
+      "before lodging",
+      "advise",
+      "tax treatment",
+      "residency",
+      "addy",
+      "double tax agreement",
+      "employer income statement",
+      "health insurance",
+      "estimate",
+      "fees"
+    ],
+    "tags": [
+      "pricing",
+      "residency",
+      "brand:wht"
+    ],
+    "lang": "en"
+  },
+  {
     "intent": "IHI or Medicare Entitlement Statement trouble (do not troubleshoot)",
     "question": "I'm getting an error applying for the IHI / Medicare Entitlement Statement / the exemption form won't submit.",
     "examples": [
       "I need to apply for an IHI before I can link this",
       "I get a Forbidden error applying for the IHI",
       "the exemption form keeps taking me back to the same page",
-      "it won't let me submit the Medicare entitlement statement"
+      "it won't let me submit the Medicare entitlement statement",
+      "I couldn't link the service in myGov, any advice?",
+      "the IHI service could not be registered at this time, I need to complete the MS003 form",
+      "we are unable to process your request online due to technical difficulties, return to myGov",
+      "I can't get the Medicare exemption to work, can you help?"
     ],
-    "answer": "Your IHI and Medicare Entitlement Statement are handled directly by Services Australia, so unfortunately we can’t help with that part.\n\nPlease try again on a computer, as that usually works.",
+    "answer": "Unfortunately we can't help with anything that goes through Services Australia, so we can't get the Medicare exemption for you. We can still go ahead without it, but the Medicare levy will then be included in your tax return and will reduce the result. Is that OK with you?",
     "keywords": [
       "ihi",
       "medicare",
@@ -495,7 +530,14 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "australia",
       "forbidden",
       "error",
-      "submit"
+      "submit",
+      "ms003",
+      "mygov",
+      "link",
+      "linking",
+      "registered",
+      "technical",
+      "difficulties"
     ],
     "tags": [
       "medicare",

@@ -1,13 +1,19 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
-import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { WaLink } from '@/app/(site)/HomeWa'
+import { Accordion } from '@/components/ui/Accordion'
+import { WaButton } from '@/components/wht/WaButton'
+import { LinkButton } from '@/components/wht/Button'
+import { Section } from '@/components/wht/Section'
+import { Hero, heroStyles } from '@/components/wht/Hero'
+import { Lead, Mark } from '@/components/wht/Type'
+import { Figures, LinkRows, Steps, blocks } from '@/components/wht/Blocks'
+import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // このページが扱うのは「TFNが雇用主に届くまでの期間の損失」です。
@@ -40,6 +46,7 @@ export const metadata: Metadata = {
       'en-AU': `${SITE_URL}/tfn`,
       de: `${SITE_URL}/de/tfn`,
       ja: `${SITE_URL}/ja/tfn`,
+      ...newLocaleLanguages('/tfn'),
       'x-default': `${SITE_URL}/tfn`,
     },
   },
@@ -61,13 +68,6 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
-
-// ─── ICONS ──────────────────────────────────────────────────────────────
-const IconWhatsApp = () => (
-  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
-    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
-  </svg>
-)
 
 // ─── COPY ───────────────────────────────────────────────────────────────
 
@@ -181,11 +181,6 @@ const GUIDES = [
 
 const WA_TFN = waUrl({ topic: 'tfn', lang: 'ja' })
 
-// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
-const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
-const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.85 }
-const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.9 }
-
 export default function TFNPageJA() {
   const webPageLd = {
     '@context': 'https://schema.org',
@@ -244,251 +239,111 @@ export default function TFNPageJA() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
-
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
-            <Link href="/ja" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>ホーム</Link>
-            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
-            <span aria-current="page">TFN申請</span>
-          </nav>
-
-          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
-              query words people type. It renders exactly where and how the old kicker
-              did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
-          <h1 className="font-serif font-black text-ink hero-animate"
-            style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
-              TFN申請代行｜ワーホリ417・462ビザ
-            </span>
-            <span style={{ display: 'block' }}>番号は無料です。</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>無料でないのは、それがない期間です。</span>
-          </h1>
-
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '40ch', marginBottom: '26px' }}>
-            雇用主が番号を受け取るまで、給与は15%ではなく45%で源泉徴収されます。
-          </p>
-
-          <div className="hero-animate-delay-2">
-            <WaLink href={WA_TFN} position="hero" topic="tfn" lang="ja"
-              className="btn-primary inline-flex items-center justify-center gap-2"
-              style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-              <IconWhatsApp />
-              WhatsAppで相談する
-            </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-              約1時間で返信します。
-            </p>
+      {/* SEO (Oct 2026): the kicker sits inside the H1 so the heading carries the query words people type. */}
+      <div className={blocks.underHeader}>
+        <Crumbs homeHref="/ja" home="ホーム" current="TFN申請" />
+        <Hero
+          title={
+            <>
+              <span className={blocks.kicker}>TFN申請代行｜ワーホリ417・462ビザ</span>
+            番号は無料です。<br />
+            無料でないのは、<Mark>それがない期間</Mark>です。
+            </>
+          }
+        >
+          <div className="hero-lede">
+            <Lead>
+              雇用主が番号を受け取るまで、給与は15%ではなく45%で源泉徴収されます。
+            </Lead>
           </div>
+          <WaButton href={WA_TFN} position="hero" topic="tfn" lang="ja">WhatsAppで相談する</WaButton>
+          <p className={heroStyles.note}>約1時間で返信します。</p>
+          <GoogleRating variant="pill" lang="ja" />
+        </Hero>
+        <PhotoBand page="tfn" locale="ja" />
+      </div>
 
-          <div className="flex" style={{ marginTop: '20px' }}>
-            <GoogleRating variant="pill" lang="ja" />
-          </div>
-        </div>
-      </section>
+      <Section width="wide" title="TFNが届く前に働き始めると、いくら失いますか。" titleId="gap-title">
+        <p className={blocks.text}>
+          28日以内に雇用主へTFNを渡さないと、ワーキングホリデーの15%ではなく45%で源泉徴収されます。引かれすぎた税金は消えるわけではなく、6月30日以降にタックスリターンを提出すれば戻る場合があります。
+        </p>
+        <Figures
+          items={[
+            { figure: '45%', body: 'TFNが未提出の間、15%ではなくこの税率で全額から源泉徴収されます。' },
+            { figure: '28日', body: '雇用主にTFNを渡す期限であり、ATOが発行にかける目安でもあります。' },
+            { figure: '申告1回', body: '誤った税率で引かれた分を調整できる、唯一の経路です。' },
+          ]}
+        />
+      </Section>
 
-      {/* ── 2. 空白期間の代償 ────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+      <Section tone="pale" eyebrow="自分でやる場合" title="ワーホリのTFN申請はなぜ通らないのですか。" titleId="fail-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          フォームは短いものです。つまずき方は3つあり、どれも45%の課税がもう1か月延びることにつながります。
+        </p>
+        <Steps items={FAILURE_POINTS} />
+      </Section>
 
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '16px' }}>
-            TFNが届く前に働き始めると、いくら失いますか。
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '28px' }}>
-            28日以内に雇用主へTFNを渡さないと、ワーキングホリデーの15%ではなく45%で源泉徴収されます。引かれすぎた税金は消えるわけではなく、6月30日以降にタックスリターンを提出すれば戻る場合があります。
-          </p>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
-              <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '10px' }}>45%</p>
-              <p style={{ ...BODY, color: '#0F1A16' }}>TFNが未提出の間、15%ではなくこの税率で全額から源泉徴収されます。</p>
+      <Section eyebrow="当社の作業" title="当社が行うこと" titleId="work-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          必要な情報をWhatsAppでお送りいただくだけです。以下はすべて当社側で行います。
+        </p>
+        <div className={tb.pairs}>
+          {WHAT_WE_DO.map(c => (
+            <div key={c.title} className={blocks.palePanel}>
+              <h3 className={blocks.cardTitle}>{c.title}</h3>
+              <p className={blocks.text}>{c.body}</p>
             </div>
-            <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
-              <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '10px' }}>28日</p>
-              <p style={{ ...BODY, color: '#0F1A16' }}>雇用主にTFNを渡す期限であり、ATOが発行にかける目安でもあります。</p>
-            </div>
-            <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
-              <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '10px' }}>申告1回</p>
-              <p style={{ ...BODY, color: '#0F1A16' }}>誤った税率で引かれた分を調整できる、唯一の経路です。</p>
-            </div>
-          </div>
+          ))}
         </div>
-      </section>
-
-      {/* ── 3. どこでつまずくか ──────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>自分でやる場合</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            ワーホリのTFN申請はなぜ通らないのですか。
-          </h2>
-          {/* 「問題が起きる場合はほぼ次の3つのどれかで」は、下のリストが3つ並んで
-              いる時点で言い直しだった。残すのは、それぞれの代償のほう。 */}
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '30px' }}>
-            フォームは短いものです。つまずき方は3つあり、どれも45%の課税がもう1か月延びることにつながります。
-          </p>
-
-          <ol className="flex flex-col" style={{ gap: '22px' }}>
-            {FAILURE_POINTS.map((s) => (
-              <li key={s.n} className="flex gap-4">
-                <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '4px' }}
-                  aria-hidden="true">{s.n}</span>
-                <div>
-                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ── 4. 当社が行うこと ────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>当社の作業</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            当社が行うこと
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '26px' }}>
-            必要な情報をWhatsAppでお送りいただくだけです。以下はすべて当社側で行います。
-          </p>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {WHAT_WE_DO.map((c) => (
-              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{c.title}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{c.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <p className="font-serif" style={{ fontSize: '17px', lineHeight: 1.75, color: '#0B5240', marginTop: '22px', maxWidth: '36ch', fontWeight: 700 }}>
-            myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
-          </p>
-
-          <p style={{ ...BODY, color: '#525A57', marginTop: '18px', maxWidth: '44ch' }}>
-            すでに番号をお持ちで、45%で引かれた期間を精算したい方は{' '}
-            <Link href="/ja/tax-return" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>タックスリターンのページ</Link>
+        <p className={blocks.statement}>
+          myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
+        </p>
+        <p className={blocks.text}>
+          すでに番号をお持ちで、45%で引かれた期間を精算したい方は{' '}
+            <Link href="/ja/tax-return" className={tb.inlineLink}>タックスリターンのページ</Link>
             をご覧ください。
-          </p>
+        </p>
+      </Section>
+
+      {/* The one amber band: the guarantee. */}
+      <Section tone="amber" title="当社の保証" titleId="guarantee-title">
+        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
+          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。
+        </p>
+        <p className={blocks.text}>料金は定額制で、還付額に対する歩合ではありません。</p>
+      </Section>
+
+      <Section tone="pale" title="ワーキングホリデーの税金だけを扱っています。" titleId="trust-title">
+        <p className={blocks.text}>
+          提出するTFN申請は、すべて417・462ビザの方のものです。タックスリターンは登録タックスエージェントが確認・承認したうえでATOに提出します。
+        </p>
+        <GoogleReviewsServer lang="ja" />
+      </Section>
+
+      <Section title="相談前によく聞かれるTFNの質問" titleId="faq-title">
+        {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
+        <Accordion items={FAQS} />
+      </Section>
+
+      <Section tone="pale" eyebrow="ガイド" title="TFNと45%の期間をさらに詳しく" titleId="guides-title">
+        <LinkRows items={GUIDES} />
+      </Section>
+
+      <Section eyebrow="次のステップ" title="45%で引かれた期間は申告で精算します" titleId="next-title">
+        <p className={blocks.text}>番号が登録されたら、引かれすぎた分を調整するのはタックスリターンです。</p>
+        <div className={blocks.stack}>
+          <LinkButton href="/ja/tax-return" size="md">タックスリターンの流れ →</LinkButton>
         </div>
-      </section>
+      </Section>
 
-      {/* ── 5. 料金 ──────────────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>当社の保証</p>
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(21px, 2.8vw, 28px)', lineHeight: 1.6, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
-            当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
-          </p>
-          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
-            料金は定額制で、還付額に対する歩合ではありません。
-          </p>
-        </div>
-      </section>
-
-      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '16px' }}>
-            いまどの段階かをお知らせください
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '42ch', marginBottom: '24px' }}>
-            すでに入国しているか、仕事を始めているか、45%で支払われた給与がすでにあるか。この3点だけで、次に何をすべきかをお伝えできます。
-          </p>
-          <WaLink href={WA_TFN} position="section" topic="tfn" lang="ja"
-            className="btn-primary inline-flex items-center justify-center gap-2"
-            style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-            <IconWhatsApp />
-            WhatsAppで相談する
-          </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-            約1時間で返信します。
-          </p>
-        </div>
-      </section>
-
-      {/* ── 7. 信頼 ──────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            ワーキングホリデーの税金だけを扱っています。
-          </h2>
-          {/* 「だからこそ、つまずく箇所はいつも同じ3つです」は上のセクションを
-              言い直しているだけだったので外した。 */}
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '28px' }}>
-            提出するTFN申請は、すべて417・462ビザの方のものです。タックスリターンは登録タックスエージェントが確認・承認したうえでATOに提出します。
-          </p>
-          <GoogleReviewsServer lang="ja" />
-        </div>
-      </section>
-
-      {/* ── 8. よくある質問 ──────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
-            相談前によく聞かれるTFNの質問
-          </h2>
-
-          <div className="flex flex-col" style={{ gap: '4px' }}>
-            {FAQS.map((f, i) => (
-              <details key={i} name="tfn-faq-ja" className="contact-faq-item">
-                <summary className="contact-faq-summary">
-                  <span style={{ flex: 1 }}>{f.question}</span>
-                  <span className="contact-faq-plus" aria-hidden="true">+</span>
-                </summary>
-                {/* 空行で区切り、長い回答を短い段落2つとして出す。上のfaqLdは
-                    元の文字列をそのまま使っている。 */}
-                {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{para}</p>
-                ))}
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 9. ガイド ────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>ガイド</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
-            TFNと45%の期間をさらに詳しく
-          </h2>
-          {/* リード文は下に並ぶ3枚のカードを列挙していただけ。カードが担う。 */}
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {GUIDES.map((g) => (
-              <Link key={g.href} href={g.href}
-                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px', lineHeight: 1.6 }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#525A57' }}>{g.desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <NextStep
-        eyebrow="次のステップ"
-        heading="45%で引かれた期間は申告で精算します"
-        body="番号が登録されたら、引かれすぎた分を調整するのはタックスリターンです。"
-        cta="タックスリターンの流れ →"
-        href="/ja/tax-return"
-      />
+      {/* Closing CTA, forest band. */}
+      <Section tone="forest" title="いまどの段階かをお知らせください" titleId="cta-title">
+        <p className={`${blocks.text} ${blocks.onForest}`}>
+          すでに入国しているか、仕事を始めているか、45%で支払われた給与がすでにあるか。この3点だけで、次に何をすべきかをお伝えできます。
+        </p>
+        <WaButton href={WA_TFN} position="section" topic="tfn" lang="ja" tone="light">WhatsAppで相談する</WaButton>
+        <p className={`${blocks.small} ${blocks.onForest}`}>約1時間で返信します。</p>
+      </Section>
 
       <MobileCta href={WA_TFN} lang="ja" topic="tfn" />
     </>

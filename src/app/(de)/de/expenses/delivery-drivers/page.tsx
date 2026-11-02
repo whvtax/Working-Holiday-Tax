@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": "Lieferfahrer: Kilometer, Handy, GST",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/delivery-drivers",
       "de": "/de/expenses/delivery-drivers",
       "ja": "/ja/expenses/delivery-drivers",
+      ...newLocaleLanguages('/expenses/delivery-drivers'),
       "x-default": "/expenses/delivery-drivers"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Lieferdienst und Ride
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
   "guaranteeBody": "Fahrer auf Lieferplattformen mit 417- und 462-Visum sind ein großer Teil unserer Arbeit, deshalb sind die Fahrtenbuchfrage und die GST-Zeile geklärt, bevor die Erklärung geschrieben wird. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
@@ -259,7 +261,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Uber Eats, DoorDash, Menulog und Amazon Flex beauftragen dich als Selbstständigen: ABN, kein Einbehalt, keine Superannuation. Wer für eine einzelne Pizzeria im Dienstplan fährt und einen Payslip bekommt, ist angestellt, mit TFN. Ein einzelner Laden, der deine Schichten festlegt, deine Arbeit beaufsichtigt, das Rad stellt und dann eine ABN verlangt, kann ein Arbeitgeber sein, der dich nur auf dem Papier selbstständig macht (Scheinselbstständigkeit).",
       "Wo die absetzbaren Fahrten beginnen, folgt daraus. Bei Angestellten ist der Weg zum Laden privat, nur Laden bis Übergabepunkt zählt. Mit ABN sind die Fahrten die Arbeit.",
-      "Der steuerliche Wohnsitz entscheidet mit, wie dein Gewinn überhaupt besteuert wird. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
+      "Der steuerliche Wohnsitz entscheidet mit, wie dein Gewinn überhaupt besteuert wird. Ein Gerichtsurteil namens Addy kann beeinflussen, welche Sätze gelten. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -331,6 +333,7 @@ export default function Page() {
         articleHeadline: "Lieferfahrer Australien: Auto, Handy, GST absetzen",
         articleDescription: "Deine Kilometer und der Arbeitsanteil am Handy sind das ganze Spiel. Bußgelder und Privatfahrten waren es nie.",
         inLanguage: "de-DE",
+        photoKey: 'expenses/delivery-drivers',
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
       }}
     />

@@ -1,7 +1,9 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesWhtPage } from '@/components/wht/JobPageBlocks'
 
 export const metadata: Metadata = {
   "title": { absolute: "Labour Hire and Warehouse Tax Deductions Australia" },
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/labouring",
       "de": "/de/expenses/labouring",
       "ja": "/ja/expenses/labouring",
+      ...newLocaleLanguages('/expenses/labouring'),
       "x-default": "/expenses/labouring"
     }
   },
@@ -66,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Labour hire and wareh
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.",
+  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
   "guaranteeBody": "Pulling four agencies and a forgotten single shift into one return is ordinary work here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
@@ -203,7 +206,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "How itinerant the work was decides how much travel is deductible, and it is a question of fact rather than a rule. How often the site changed, whether one base kept pulling you back and whether the agency required the movement all feed in. Two people at the same agency can end up with very different travel claims.",
       "Every agency is a separate employer with its own Tax File Number Declaration, withholding relationship and income statement. Working holiday makers do not get a tax free threshold from any of them, so the risk is a rate applied wrongly, or an employer missing from the return.",
-      "Residency sits under all of it. A court ruling known as Addy may change which rates apply to some passports, and that can matter more than every deduction on this page. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review."
+      "Residency sits alongside all of it. A court ruling known as Addy may change which rates apply to some passports, and that is assessed separately from every deduction on this page. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review."
     ]
   }
 ]
@@ -268,7 +271,7 @@ const SERVICES = [
    every section renderer live in JobExpensesPage, once, for all 21 job pages. */
 export default function Page() {
   return (
-    <JobExpensesPage
+    <JobExpensesWhtPage
       content={{
         lang: 'en',
         path: '/expenses/labouring',

@@ -21,12 +21,19 @@ export default function PublicShellClient({
   // own header carries the brand. The tax-residency route is a step of that
   // same form, so it matches. TFN, ABN and Super are conversion forms on
   // exactly the same footing as /tax-form (with their /de and /ja variants).
+  //
+  // French, Italian and Spanish (ADR 013): there is no form UI in these
+  // languages yet (formStrings.ts is not translated in phase 1), so their pages
+  // send people to the ENGLISH form paths above. /fr/start, /it/start, /es/start
+  // and the other form slugs under those prefixes deliberately do not exist.
+  // They are listed anyway so that, if one is ever added, it hides the
+  // nav and footer like its de/ja twin instead of showing them on a form.
   const formRoutes = [
-    '/start', '/de/start', '/ja/start',
-    '/y8vwp4bf7', '/de/y8vwp4bf7', '/ja/y8vwp4bf7',
-    '/vukjw4byf', '/de/vukjw4byf', '/ja/vukjw4byf',
-    '/3cw5w5hcx', '/de/3cw5w5hcx', '/ja/3cw5w5hcx',
-    '/rh84sez58', '/de/rh84sez58', '/ja/rh84sez58',
+    '/start', '/de/start', '/ja/start', '/fr/start', '/it/start', '/es/start',
+    '/y8vwp4bf7', '/de/y8vwp4bf7', '/ja/y8vwp4bf7', '/fr/y8vwp4bf7', '/it/y8vwp4bf7', '/es/y8vwp4bf7',
+    '/vukjw4byf', '/de/vukjw4byf', '/ja/vukjw4byf', '/fr/vukjw4byf', '/it/vukjw4byf', '/es/vukjw4byf',
+    '/3cw5w5hcx', '/de/3cw5w5hcx', '/ja/3cw5w5hcx', '/fr/3cw5w5hcx', '/it/3cw5w5hcx', '/es/3cw5w5hcx',
+    '/rh84sez58', '/de/rh84sez58', '/ja/rh84sez58', '/fr/rh84sez58', '/it/rh84sez58', '/es/rh84sez58',
   ]
   const isTaxForm = !!pathname && formRoutes.includes(pathname)
 

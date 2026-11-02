@@ -1,13 +1,19 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
-import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { WaLink } from '@/app/(site)/HomeWa'
+import { WaButton } from '@/components/wht/WaButton'
+import { Section } from '@/components/wht/Section'
+import { Hero, heroStyles } from '@/components/wht/Hero'
+import { Lead, Mark } from '@/components/wht/Type'
+import { LinkButton } from '@/components/wht/Button'
+import { Steps, LinkRows, blocks } from '@/components/wht/Blocks'
+import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
+import { Accordion } from '@/components/ui/Accordion'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // This page answers the transactional query: someone who has already decided
@@ -44,6 +50,7 @@ export const metadata: Metadata = {
       'en': '/tax-return', 'en-AU': '/tax-return',
       de: '/de/tax-return',
       ja: '/ja/tax-return',
+      ...newLocaleLanguages('/tax-return'),
       'x-default': '/tax-return',
     },
   },
@@ -65,13 +72,6 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
-
-// ─── ICONS ──────────────────────────────────────────────────────────────
-const IconWhatsApp = () => (
-  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
-    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
-  </svg>
-)
 
 // ─── COPY ───────────────────────────────────────────────────────────────
 
@@ -187,7 +187,7 @@ const FAQS = [
   {
     question: 'When is a working holiday tax return due?',
     answer:
-      'If you lodge it yourself, 31 October after the financial year ends, so a 2025-26 return is due 31 October 2026. A year past its deadline is late rather than lost, and it can still be lodged.',
+      'If you lodge it yourself, 31 October after the financial year ends, so a 2025-26 return was due 31 October 2026, which has now passed. A year past its deadline is late rather than lost, and it can still be lodged.',
   },
   {
     question: 'Do you need my payslips?',
@@ -235,11 +235,6 @@ const GUIDES = [
 ]
 
 const WA_TR = waUrl({ topic: 'tax-return', lang: 'en' })
-
-// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
-const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
-const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.58 }
-const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.62 }
 
 export default function TaxReturnPage() {
   const webPageLd = {
@@ -318,291 +313,107 @@ export default function TaxReturnPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-      {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
-
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
-            <Link href="/" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Home</Link>
-            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
-            <span aria-current="page">Tax return</span>
-          </nav>
-
-          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
-              query words people type. It renders exactly where and how the old kicker
-              did; the slogan below is unchanged. Was: "Working holiday visas 417 &amp; 462". */}
-          <h1 className="font-serif font-black text-ink hero-animate"
-            style={{ fontSize: 'clamp(30px, 5vw, 43px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
-              Working holiday tax return&nbsp;&middot; 417 &amp; 462 visas
-            </span>
-            <span style={{ display: 'block' }}>Your details and where to deposit your refund.{' '}</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>We take it from there.{' '}</span>
-          </h1>
-
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '52ch', marginBottom: '26px' }}>
-            No payslips, no myGov account, no form to decipher. One questionnaire, one signature, and the refund usually
-            follows about 14 business days after lodgement.
-          </p>
-
-          <div className="hero-animate-delay-2">
-            <WaLink href={WA_TR} position="hero" topic="tax-return" lang="en"
-              className="btn-primary inline-flex items-center justify-center gap-2"
-              style={{ height: '54px', padding: '0 32px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-              <IconWhatsApp />
-              Message us on WhatsApp
-            </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-              Replies in about an hour.
-            </p>
+      <div className={blocks.underHeader}>
+        <Crumb home="Home" current="Tax return" label="Breadcrumb" href="/" />
+        <Hero
+          title={
+            <>
+              <span className={blocks.kicker}>Working holiday tax return&nbsp;&middot; 417 &amp; 462 visas</span>
+              Your details and where to deposit your refund. <Mark>We take it from there.</Mark>
+            </>
+          }
+        >
+          <div className="hero-lede">
+            <Lead>No payslips, no myGov account, no form to decipher. One questionnaire, one signature, and the refund usually follows about 14 business days after lodgement.</Lead>
           </div>
+          <WaButton href={WA_TR} position="hero" topic="tax-return" lang="en">Message us on WhatsApp</WaButton>
+          <p className={heroStyles.note}>Replies in about an hour.</p>
+          <GoogleRating variant="pill" lang="en" />
+        </Hero>
+      </div>
 
-          <div className="flex" style={{ marginTop: '20px' }}>
-            <GoogleRating variant="pill" lang="en" />
-          </div>
+      <PhotoFrame page="tax-return" locale="en" />
+
+      <Section tone="pale" eyebrow="Where a refund comes from" title="Why working holiday makers are often owed a tax refund" titleId="refund-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>A refund is not a bonus for being a backpacker. It is the gap between what your employers withheld and what you actually owed, and on a working holiday year that gap usually comes from the places below. Refunds for our clients range from a few hundred dollars to several thousand, depending on which of them applied.</p>
+        <div className={blocks.cards}>
+          {REFUND_SOURCES.map((r) => (
+            <div key={r.label} className={blocks.card}>
+              <h3 className={blocks.cardTitle}>{r.label}</h3>
+              <p className={blocks.text}>{r.body}</p>
+            </div>
+          ))}
         </div>
-      </section>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          None of these is automatic and none is assumed. Each one is checked against your ATO record before anything is lodged.{' '}
+          <Link href="/calculator" className={blocks.textLink}>See an indicative estimate in the calculator</Link>.
+        </p>
+      </Section>
 
-      {/* ── 1b. WHERE A REFUND COMES FROM ─────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Where a refund comes from</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
-            Why working holiday makers are often owed a tax refund
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch', marginBottom: '26px' }}>
-            A refund is not a bonus for being a backpacker. It is the gap between what your employers withheld and what you actually owed, and on a working holiday year that gap usually comes from the places below. Refunds for our clients range from a few hundred dollars to several thousand, depending on which of them applied.
-          </p>
-          <div className="grid gap-4 md:grid-cols-2">
-            {REFUND_SOURCES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '18px 20px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
-              </div>
-            ))}
-          </div>
-          <p style={{ ...BODY, color: '#525A57', marginTop: '22px', maxWidth: '62ch' }}>
-            None of these is automatic and none is assumed. Each one is checked against your ATO record before anything is lodged.{' '}
-            <Link href="/calculator" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>See an indicative estimate in the calculator</Link>.
-          </p>
+      <Section eyebrow="Your side of it" title="What we need from you" titleId="needed-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Three things, and that is the list.</p>
+        <PlainRows items={NEEDED} />
+        <div className={`${blocks.palePanel} ${blocks.stack}`}>
+          <p className={blocks.statement}>You do not need payslips.</p>
+          <p className={blocks.text}>Every employer who put you on a payroll has already reported an income statement against your tax file number, and that is what a return is built from. Receipts for work expenses are the one thing worth looking for, and if there are none, tell us what the work involved instead.</p>
         </div>
-      </section>
+      </Section>
 
-      {/* ── 2. WHAT WE NEED FROM YOU ─────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+      <Section id="how-it-works" tone="pale" eyebrow="Start to finish" title="The order it happens in" titleId="sequence-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Seven steps. You appear in two of them, at the start and again to sign.</p>
+        <Steps items={SEQUENCE} />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          More on step 04:{' '}
+          <Link href="/abn" className={blocks.textLink}>what an ABN changes</Link>if any of your income was invoiced rather than paid through a payroll.
+        </p>
+      </Section>
 
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Your side of it</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '16px' }}>
-            What we need from you
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
-            Three things, and that is the list.
-          </p>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            {NEEDED.map((item) => (
-              <div key={item.label} style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{item.label}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="rounded-[14px]" style={{ marginTop: '26px', padding: '20px 22px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-            <p className="font-serif" style={{ fontSize: '19px', lineHeight: 1.45, color: '#0B5240', fontWeight: 700, marginBottom: '10px', maxWidth: '30ch' }}>
-              You do not need payslips.
-            </p>
-            <p style={{ ...BODY, color: '#0F1A16', maxWidth: '62ch' }}>
-              Every employer who put you on a payroll has already reported an income statement against your tax file
-              number, and that is what a return is built from. Receipts for work expenses are the one thing worth
-              looking for, and if there are none, tell us what the work involved instead.
-            </p>
-          </div>
+      <Section title="Two rules change the order you do this in" titleId="rules-title">
+        <div className={blocks.cards}>
+          {RULES.map((r) => (
+            <div key={r.label} className={`${blocks.palePanel} ${blocks.stack}`}>
+              <h3 className={blocks.cardTitle}>{r.label}</h3>
+              <p className={blocks.text}>{r.body}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </Section>
 
-      {/* ── 3. THE SEQUENCE ──────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
+      <Section tone="amber" title="Our guarantee" titleId="guarantee-title">
+        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
+          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.
+        </p>
+        <p className={blocks.text}>Nothing is ever taken out of what the ATO sends you. The amount is settled with you on WhatsApp before step 01.</p>
+      </Section>
 
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Start to finish</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            The order it happens in
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '30px' }}>
-            Seven steps. You appear in two of them, at the start and again to sign.
-          </p>
+      <Section tone="pale" title="Working holiday tax is the only thing we do." titleId="trust-title">
+        <p className={blocks.text}>The questionnaire, the checks and the order above were built around one visa year and nothing else. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.</p>
+        <GoogleReviewsServer lang="en" />
+        <p className={`${blocks.text} ${blocks.notice}`}>
+          <strong>Nobody legitimate will ask you for your myGov password.</strong>{' '}
+          We never ask for it, because the lodgement route above does not use it. If a message asks for those details, it did not come from us.
+        </p>
+      </Section>
 
-          <ol className="flex flex-col" style={{ gap: '22px' }}>
-            {SEQUENCE.map((s) => (
-              <li key={s.n} className="flex gap-4">
-                <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px', letterSpacing: '-0.01em' }}
-                  aria-hidden="true">{s.n}</span>
-                <div>
-                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+      <Section title="What people ask before they send anything" titleId="faq-title">
+        {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
+        <Accordion items={FAQS} />
+      </Section>
 
-          <p style={{ ...BODY, color: '#525A57', marginTop: '24px', maxWidth: '60ch' }}>
-            More on step 04:{' '}
-            <Link href="/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>what an ABN changes</Link> if any of your income was invoiced rather than paid through a payroll.
-          </p>
-        </div>
-      </section>
+      <Section tone="pale" eyebrow="Guides" title="The longer version of the hard steps" titleId="guides-title">
+        <LinkRows items={GUIDES} />
+      </Section>
 
-      {/* ── 4. TWO RULES BEFORE YOU START ────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
+      <Section eyebrow="What is next" title="Do not leave your super behind" titleId="next-title">
+        <p className={blocks.text}>Your employer paid superannuation on top of your wages while you worked here. When you leave Australia for good it can be claimed, separately from the return.</p>
+        <LinkButton href="/superannuation">How the super claim works →</LinkButton>
+      </Section>
 
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
-            Two rules change the order you do this in
-          </h2>
-          {/* The lede said the heading again. The two cards carry the detail. */}
-
-          <div className="grid gap-4 md:grid-cols-2" style={{ marginTop: '22px' }}>
-            {RULES.map((r) => (
-              <div key={r.label} className="rounded-[14px]" style={{ padding: '20px 22px', border: '1px solid #DCE0DE', background: '#FFFFFF', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15.5px', lineHeight: 1.35, marginBottom: '8px' }}>{r.label}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{r.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. THE FEE ─────────────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Our guarantee</p>
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '22ch' }}>
-            Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
-          </p>
-          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
-            Nothing is ever taken out of what the ATO sends you. The amount is settled with you on WhatsApp before step
-            01.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            Start with a message, not a form
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '56ch', marginBottom: '24px' }}>
-            Send the towns you worked in, roughly which months, and whether you ever invoiced under an ABN. That is
-            enough to say which years are open and what your side looks like. Two years since you flew home makes no
-            difference.
-          </p>
-          <WaLink href={WA_TR} position="section" topic="tax-return" lang="en"
-            className="btn-primary inline-flex items-center justify-center gap-2"
-            style={{ height: '54px', padding: '0 32px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-            <IconWhatsApp />
-            Message us on WhatsApp
-          </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-            Replies in about an hour.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 7. TRUST ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            Working holiday tax is the only thing we do.
-          </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
-            The questionnaire, the checks and the order above were built around one visa year and nothing else.
-            Reviewed and signed off by a registered tax agent before it is lodged with the ATO.
-          </p>
-
-          <GoogleReviewsServer lang="en" />
-
-          <div className="rounded-[12px] flex gap-3" style={{ marginTop: '28px', padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
-              <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
-              <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
-              <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <p style={{ ...BODY, color: '#0F1A16' }}>
-              <strong style={{ color: '#0F1A16' }}>Nobody legitimate will ask you for your myGov password.</strong>{' '}
-              We never ask for it, because the lodgement route above does not use it. If a message asks for those
-              details, it did not come from us.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
-            What people ask before they send anything
-          </h2>
-
-          <div className="flex flex-col" style={{ gap: '4px' }}>
-            {FAQS.map((f, i) => (
-              <details key={i} name="tax-return-faq" className="contact-faq-item">
-                <summary className="contact-faq-summary">
-                  <span style={{ flex: 1 }}>{f.question}</span>
-                  <span className="contact-faq-plus" aria-hidden="true">+</span>
-                </summary>
-                {/* Split on a blank line so a long answer reads as two short
-                    paragraphs. faqLd above still uses the raw string. */}
-                {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
-                ))}
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 9. GUIDES ────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Guides</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
-            The longer version of the hard steps
-          </h2>
-          {/* The lede restated the heading. The three cards say which steps. */}
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {GUIDES.map((g) => (
-              <Link key={g.href} href={g.href}
-                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <NextStep
-        eyebrow="What is next"
-        heading="Do not leave your super behind"
-        body="Your employer paid superannuation on top of your wages while you worked here. When you leave Australia for good it can be claimed, separately from the return."
-        cta="How the super claim works →"
-        href="/superannuation"
-      />
+      <Section tone="forest" title="Start with a message, not a form" titleId="cta-title">
+        <p className={`${blocks.text} ${blocks.onForest}`}>Send the towns you worked in, roughly which months, and whether you ever invoiced under an ABN. That is enough to say which years are open and what your side looks like. Two years since you flew home makes no difference.</p>
+        <WaButton href={WA_TR} position="section" topic="tax-return" lang="en" tone="light">Message us on WhatsApp</WaButton>
+        <p className={`${blocks.small} ${blocks.onForest}`}>Replies in about an hour.</p>
+      </Section>
 
       <MobileCta href={WA_TR} lang="en" topic="tax-return" />
     </>

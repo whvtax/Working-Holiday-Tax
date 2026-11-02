@@ -223,6 +223,37 @@ const JA_PAGES = [
   ['お問い合わせ', '/ja/contact'],
 ]
 
+// ── French, Italian and Spanish (ADR 013): wording copied from the live pages ──
+const NEW_LOCALE_BLOCKS = [
+  {
+    code: 'fr',
+    heading: 'En français',
+    intro: 'Nous nous occupons de votre TFN, de votre déclaration d’impôts, du retrait de votre super et de votre ABN si vous êtes en visa vacances-travail en Australie. Vérifié et validé par un agent fiscal enregistré avant d’être déposé auprès de l’ATO.',
+    guarantee: 'Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.',
+    flagship: ['Tax return Australie PVT', '/fr/tax-return-australie-pvt'],
+    pages: [['Accueil', '/fr'], ['Tax return', '/fr/tax-return'], ['Demande de TFN', '/fr/tfn'], ['Récupérer sa super', '/fr/superannuation'], ['Inscription à l’ABN', '/fr/abn'], ['Medicare', '/fr/medicare'], ['Calculateur', '/fr/calculator'], ['Frais déductibles', '/fr/expenses'], ['Blog', '/fr/blog'], ['Contact', '/fr/contact']],
+    label: 'French / Français',
+  },
+  {
+    code: 'it',
+    heading: 'In italiano',
+    intro: 'Ci occupiamo di TFN, dichiarazione dei redditi, rimborso della super e ABN per chi è in Australia con un visto working holiday. Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.',
+    guarantee: 'La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.',
+    flagship: ['Dichiarazione dei redditi in Australia', '/it/dichiarazione-redditi-australia'],
+    pages: [['Home', '/it'], ['Tax return', '/it/tax-return'], ['TFN', '/it/tfn'], ['Super (DASP)', '/it/superannuation'], ['ABN', '/it/abn'], ['Medicare', '/it/medicare'], ['Calcolatore', '/it/calculator'], ['Spese deducibili', '/it/expenses'], ['Blog', '/it/blog'], ['Contatti', '/it/contact']],
+    label: 'Italian / Italiano',
+  },
+  {
+    code: 'es',
+    heading: 'En español',
+    intro: 'Nos encargamos del TFN, la declaración de impuestos, el retiro de la super y el ABN si estás en Australia con una visa working holiday. Revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO.',
+    guarantee: 'Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.',
+    flagship: ['Devolución de impuestos en Australia', '/es/devolucion-impuestos-australia'],
+    pages: [['Inicio', '/es'], ['Declaración de impuestos', '/es/tax-return'], ['Número TFN', '/es/tfn'], ['Retiro de la super', '/es/superannuation'], ['Registro de ABN', '/es/abn'], ['Medicare', '/es/medicare'], ['Calculadora', '/es/calculator'], ['Gastos deducibles', '/es/expenses'], ['Blog', '/es/blog'], ['Contacto', '/es/contact']],
+    label: 'Spanish / Español',
+  },
+]
+
 const KEY_FACTS = [
   'Working holiday maker tax rate: 15% on the first $45,000, 30% on $45,001 to $135,000, 37% on $135,001 to $190,000, 45% above $190,000. Effective 1 July 2026, unchanged from 2025-26. Source: ATO',
   'Superannuation Guarantee rate: 12% of ordinary time earnings. Reached 12% on 1 July 2025, unchanged for 2026-27. From 1 July 2026 "Payday Super" requires most employers to pay it within days of each payday rather than quarterly. Source: ATO',
@@ -238,7 +269,7 @@ const KEY_FACTS = [
   'Third working holiday visa: requires six months (179 days) of specified regional work. Source: Department of Home Affairs',
   'Working holiday visa application fee: $670, up from $495. Source: Department of Home Affairs',
   'UK passport holders applying from 1 July 2024: eligible up to and including age 35, and up to three Working Holiday visas with no specified work requirement. From 1 July 2026 the same age-35 eligibility was extended to Cyprus, Finland, Germany and South Korea. Source: Department of Home Affairs',
-  'Addy v Commissioner of Taxation [2021] HCA 34: a High Court ruling that may change which rates apply to some working holiday makers. Whether it applies depends on the passport and on how the year looked, and is part of the review of each return. Source: High Court of Australia',
+  'Addy v Commissioner of Taxation [2021] HCA 34: a High Court ruling that may change which rates apply to some working holiday makers. Whether it applies depends on the individual facts of the year and is assessed case by case, and is part of the review of each return. Source: High Court of Australia',
   'Reciprocal Health Care Agreement countries, which generally have Medicare access and so generally no levy exemption: United Kingdom, Ireland, Italy, Malta, Netherlands, Belgium, Finland, Norway, Sweden, Slovenia, New Zealand. Germany, Japan and Austria are not on this list. Source: Services Australia',
 ]
 
@@ -264,8 +295,8 @@ const SERVICE_PAGES = [
   { url: '/blog', priority: 0.85, freq: 'weekly', l10n: true, label: 'Guides', line: 'The full guide index, grouped by category.' },
   { url: '/contact', priority: 0.7, freq: 'monthly', l10n: true, label: 'Contact', line: 'How to reach us about a specific situation.' },
   { url: '/about', priority: 0.6, freq: 'monthly', l10n: true, label: 'About', line: 'Why the service exists and how a return is handled from start to lodgement.' },
-  { url: '/uk-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'UK Working Holiday Tax', line: 'Australian tax for UK passport holders: the age-35 and three visa arrangements, why UK citizens are generally not entitled to the Medicare levy exemption, why the Addy ruling may matter, and the UK and Australian tax year mismatch.' },
-  { url: '/german-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'German Working Holiday Tax', line: 'Australian tax for German passport holders: why Germans are generally not entitled to Medicare and so can claim the levy exemption, why the Addy ruling may matter, the age-35 change from 1 July 2026, and claiming super from Germany.' },
+  { url: '/uk-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'UK Working Holiday Tax', line: 'Australian tax for UK passport holders: the age-35 and three visa arrangements, how the Medicare levy question is reviewed, why the Addy ruling may matter in some cases, and the UK and Australian tax year mismatch.' },
+  { url: '/german-working-holiday-tax', priority: 0.7, freq: 'monthly', l10n: false, label: 'German Working Holiday Tax', line: 'Australian tax for German passport holders: how the Medicare levy question is reviewed, why the Addy ruling may matter in some cases, the age-35 change from 1 July 2026, and claiming super from Germany.' },
 ]
 
 const SOURCES = [
@@ -362,7 +393,7 @@ function buildLlms({ guides, groups, deCount, jaCount, generatedAt }) {
   p()
   p(`${SPECIALISM} We work only with subclass 417 (Working Holiday) and 462 (Work and Holiday) visa holders, during their time in Australia and after they leave. Everything is done remotely.`)
   p()
-  p('The site is written in English, with German sections under /de and Japanese sections under /ja. We reply to each person in their own language.')
+  p('The site is written in English, with German sections under /de, Japanese under /ja, French under /fr, Italian under /it and Spanish under /es. We reply to each person in their own language.')
   p()
   p('## How a return is handled')
   p()
@@ -443,9 +474,20 @@ function buildLlms({ guides, groups, deCount, jaCount, generatedAt }) {
   p()
   for (const [label, url] of JA_PAGES) p(`- [${label}](${SITE}${url})`)
   p()
+  for (const b of NEW_LOCALE_BLOCKS) {
+    p(`## ${b.heading}`)
+    p()
+    p(b.intro)
+    p()
+    p(b.guarantee)
+    p()
+    for (const [label, url] of b.pages) p(`- [${label}](${SITE}${url})`)
+    p(`- [${b.flagship[0]}](${SITE}${b.flagship[1]})`)
+    p()
+  }
   p('## Full content feed')
   p()
-  p(`An expanded index with a description for every guide, in all three sections, is at ${SITE}/llms-full.txt. The machine readable URL list is at ${SITE}/sitemap-llms.xml and the standard sitemap is at ${SITE}/sitemap.xml.`)
+  p(`An expanded index with a description for every guide, in every language section, is at ${SITE}/llms-full.txt. The machine readable URL list is at ${SITE}/sitemap-llms.xml and the standard sitemap is at ${SITE}/sitemap.xml.`)
   p()
   p('## Citation guidance')
   p()
@@ -459,12 +501,29 @@ function buildLlms({ guides, groups, deCount, jaCount, generatedAt }) {
   return L.join('\n')
 }
 
+/** Number of English guides that have a native body in a new locale's chunk files (ADR 013). */
+function nativeSlugs(code) {
+  const dir = path.join(ROOT, `src/app/(${code})/${code}/blog/chunks`)
+  const slugs = new Set()
+  for (const f of fs.readdirSync(dir)) {
+    if (!f.endsWith('.ts')) continue
+    const src = fs.readFileSync(path.join(dir, f), 'utf8')
+    for (const m of src.matchAll(/^ {2}['"]([a-z0-9-]+)['"]:\s*\{/gm)) slugs.add(m[1])
+  }
+  return slugs
+}
+
+function countNativeGuides(code, guides) {
+  const slugs = nativeSlugs(code)
+  return guides.filter((g) => slugs.has(g.slug)).length
+}
+
 function buildLlmsFull({ groups, deGroups, jaGroups, guides, deCount, jaCount, generatedAt }) {
   const L = []
   const p = (s = '') => L.push(s)
   const rule = '# ' + '='.repeat(60)
 
-  p('# Working Holiday Tax - expanded content index (EN / DE / JA)')
+  p('# Working Holiday Tax - expanded content index (EN / DE / JA / FR / IT / ES)')
   p()
   p(`> A complete, current map of every guide on ${SITE}, with the description for each. Generated from the live guide data, so it cannot list an article that no longer exists.`)
   p()
@@ -472,7 +531,7 @@ function buildLlmsFull({ groups, deGroups, jaGroups, guides, deCount, jaCount, g
   p()
   p(`Generated ${generatedAt} by scripts/generate-llms.mjs. Do not hand edit.`)
   p()
-  p(`This file is an index, not a dump of article bodies. It lists ${guides.length} English guides, ${deCount} German translations and ${jaCount} Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted.`)
+  p(`This file is an index, not a dump of article bodies. It lists ${guides.length} English guides, ${deCount} German translations and ${jaCount} Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted. French, Italian and Spanish sections list their language pages and, per guide, the canonical URL, category and publication date (the summary is the English one).`)
   p()
   p(`Authoritative current figures, with effective dates and sources, are in ${SITE}/llms.txt. Prefer that file for any rate or threshold.`)
   p()
@@ -526,6 +585,40 @@ function buildLlmsFull({ groups, deGroups, jaGroups, guides, deCount, jaCount, g
   localeSection('de', 'German / Deutsch', '/de', deGroups, deCount)
   localeSection('ja', 'Japanese / 日本語', '/ja', jaGroups, jaCount)
 
+  // French, Italian and Spanish (ADR 013): language homes, service pages and the
+  // flagship page, plus the number of guides that have a native body.
+  for (const b of NEW_LOCALE_BLOCKS) {
+    const n = countNativeGuides(b.code, guides)
+    p(rule)
+    p(`# ${b.label} (${b.code}) - ${n} native guides`)
+    p(rule)
+    p()
+    p(b.intro)
+    p()
+    p(b.guarantee)
+    p()
+    for (const [label, url] of b.pages) p(`- ${label}: ${SITE}${url}`)
+    p(`- ${b.flagship[0]}: ${SITE}${b.flagship[1]}`)
+    p(`Guides are listed at ${SITE}/${b.code}/blog (${n} guides with a native body; the canonical URL of each is ${SITE}/${b.code}/blog/<slug>, with the same slug as the English guide).`)
+    p()
+    const native = nativeSlugs(b.code)
+    for (const grp of groups) {
+      const list = grp.guides.filter((g) => native.has(g.slug))
+      if (!list.length) continue
+      p(`## Category: ${grp.category} (${list.length})`)
+      p(`Index: ${SITE}/${b.code}/blog/category/${grp.slug}`)
+      p()
+      for (const g of list) {
+        p(`### ${g.title}`)
+        p(`URL: ${SITE}/${b.code}/blog/${g.slug}`)
+        p(`Category: ${g.category}`)
+        p(`Published: ${g.date}`)
+        p(`Summary (English): ${g.description}`)
+        p()
+      }
+    }
+  }
+
   p(rule)
   p('# Service pages')
   p(rule)
@@ -566,6 +659,15 @@ function buildSitemap({ guides, groups, deSlugs, jaSlugs }) {
   for (const s of SERVICE_PAGES) {
     if (!s.l10n) continue
     push(`${SITE}/ja${s.url === '/' ? '' : s.url}`, LAST_CONTENT_UPDATE, s.freq, s.priority * 0.95)
+  }
+
+  for (const b of NEW_LOCALE_BLOCKS) {
+    for (const [, url] of [...b.pages, b.flagship]) push(`${SITE}${url}`, LAST_CONTENT_UPDATE, 'monthly', 0.7)
+    for (const grp of groups) push(`${SITE}/${b.code}/blog/category/${grp.slug}`, LAST_CONTENT_UPDATE, 'weekly', 0.76)
+    const native = nativeSlugs(b.code)
+    for (const g of guides) {
+      if (native.has(g.slug)) push(`${SITE}/${b.code}/blog/${g.slug}`, isoDate(parseGuideDate(g.date)), 'monthly', 0.71)
+    }
   }
 
   for (const grp of groups) push(`${SITE}/blog/category/${grp.slug}`, LAST_CONTENT_UPDATE, 'weekly', 0.8)

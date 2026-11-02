@@ -15,7 +15,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { formStrings, type AnyFormLang, type FormLang } from '@/lib/formStrings'
+import { formStrings, isExtraFormLang, type AnyFormLang } from '@/lib/formStrings'
 import { useFormBrand, formText } from '@/components/ui/form-brand'
 import { submitTaxForm } from '@/lib/submit-tax-form'
 import { isNdaCountry, languageForCountry } from '@/lib/nda-countries'
@@ -79,9 +79,8 @@ const COPY = {
     confirmYes: 'はい、WHMとして提出してください',
     confirmNo: 'もう一度確認する',
   },
-  // Spanish is used ONLY for the WHM warning shown to a customer whose home
-  // country is Chile (a treaty/NDA country). The tax form UI itself is not
-  // offered in Spanish; see languageForCountry (Jo, 3 Sep).
+  // Spanish also serves the WHM warning shown to a customer whose home country
+  // is Chile (see languageForCountry, Jo, 3 Sep), and now the /es page itself.
   es: {
     intro: 'Tras revisar esta página y la información pertinente de la ATO, declaro que soy:',
     residentLabel: 'Residente fiscal australiano',
@@ -96,6 +95,44 @@ const COPY = {
     confirmNote: 'Las personas de tu país a veces pueden calificar como residente fiscal australiano y conservar el umbral libre de impuestos. Si esto podría aplicarte, revisa primero tus respuestas.',
     confirmYes: 'Sí, presentar como WHM',
     confirmNo: 'Déjame revisar de nuevo',
+  },
+  fr: {
+    intro: 'Après avoir lu cette page et les informations pertinentes de l’ATO, je déclare être :',
+    residentLabel: 'Résident fiscal australien',
+    whmLabel: 'Working Holiday Maker',
+    pickOne: 'Veuillez choisir votre statut de résidence fiscale',
+    secure: 'Vos informations sont conservées de manière sécurisée et confidentielle.',
+    answerAll: 'Veuillez répondre à toutes les questions pour continuer.',
+    confirmLead: 'D’après vos réponses, votre déclaration sera déposée en tant que Working Holiday Maker (WHM). Veuillez confirmer que vous comprenez ce que cela implique :',
+    confirmLeadNonNda: 'D’après vos réponses, votre déclaration sera déposée en tant que Working Holiday Maker (WHM). Cela signifie que vous pourriez ne pas avoir droit au Low Income Tax Offset, jusqu’à 700 $.',
+    confirmP1pre: 'Vous n’êtes ',
+    confirmP1strong: 'pas résident fiscal australien',
+    confirmP1post: '.',
+    confirmP2pre: 'Vous n’avez ',
+    confirmP2strong: 'pas droit au seuil d’exonération de 18 200 $',
+    confirmP2post: '.',
+    confirmNote: 'Les personnes de votre pays peuvent parfois être considérées comme résidentes fiscales australiennes et conserver le seuil d’exonération. Si cela pourrait vous concerner, revoyez d’abord vos réponses.',
+    confirmYes: 'Oui, déposer en tant que WHM',
+    confirmNo: 'Revoir mes réponses',
+  },
+  it: {
+    intro: 'Dopo aver letto questa pagina e le informazioni pertinenti dell’ATO, dichiaro di essere:',
+    residentLabel: 'Residente fiscale australiano',
+    whmLabel: 'Working Holiday Maker',
+    pickOne: 'Scegli il tuo stato di residenza fiscale',
+    secure: 'I tuoi dati sono protetti e trattati in modo riservato.',
+    answerAll: 'Rispondi a tutte le domande per continuare.',
+    confirmLead: 'In base alle tue risposte, la tua dichiarazione verrà presentata come Working Holiday Maker (WHM). Conferma di aver capito cosa significa:',
+    confirmLeadNonNda: 'In base alle tue risposte, la tua dichiarazione verrà presentata come Working Holiday Maker (WHM). Questo significa che potresti non avere diritto al Low Income Tax Offset fino a $700.',
+    confirmP1pre: 'Non sei ',
+    confirmP1strong: 'residente fiscale australiano',
+    confirmP1post: '.',
+    confirmP2pre: 'Non hai diritto ',
+    confirmP2strong: 'alla soglia di esenzione di $18.200',
+    confirmP2post: '.',
+    confirmNote: 'Le persone del tuo Paese a volte possono essere residenti fiscali australiani e mantenere la soglia di esenzione. Se potrebbe valere anche per te, rivedi prima le tue risposte.',
+    confirmYes: 'Sì, presenta come WHM',
+    confirmNo: 'Rivedo le risposte',
   },
 } as const
 
@@ -132,7 +169,7 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   // A brand with its own residency words (the student brand: resident or
   // foreign resident) uses them; otherwise the WHT words, unchanged.
   const own = brand.residency ? (brand.residency.copy[lang] ?? brand.residency.copy.en) : undefined
-  const c = COPY[lang as FormLang] ?? COPY.en
+  const c = COPY[lang as keyof typeof COPY] ?? COPY.en
   // Which WHM confirmation wording to show. Treaty (NDA) countries get the full
   // "you are giving up residency + the $18,200 threshold" explanation; everyone
   // else gets the one-line low-income-tax-offset note and nothing after it.
@@ -141,7 +178,9 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   // The WHM warning is shown in the language of the customer's HOME COUNTRY, not
   // the language they filled the form in: a German who used the English form
   // still sees the warning in German, a Japanese person in Japanese (Jo, 3 Sep).
-  const cAlert = COPY[languageForCountry(country)] ?? COPY.en
+  // On the French, Italian and Spanish pages the page language wins: there is
+  // no form in those languages, so their visitor reads the whole step in it.
+  const cAlert = isExtraFormLang(lang) ? COPY[lang] : (COPY[languageForCountry(country)] ?? COPY.en)
 
   const doSubmit = async (picked: 'resident' | 'whm') => {
     setLoading(true)
@@ -153,10 +192,13 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
     // The second status is the brand's own ('foreign' for the student brand).
     const status = picked === 'whm' && brand.residency ? brand.residency.status : picked
     // en/de/ja come from formStrings; a brand's zh and vi words come with it.
+    // The form itself is English-only for fr / it / es, so its hand-off says
+    // 'en'; the errors shown here follow the page the person is reading.
+    const submitLang = isExtraFormLang(lang) ? lang : handoff.lang
     const res = await submitTaxForm(
-      handoff.payload, status, handoff.lang, handoff.submitUrl,
+      handoff.payload, status, submitLang, handoff.submitUrl,
       (done, total) => { if (total > 1) setProgress({ done, total }) },
-      brand.text?.[handoff.lang],
+      brand.text?.[submitLang],
     )
     if (res.ok) {
       // Trim first: a leading space (autofill/paste) made "  Sarah".split(' ')[0]

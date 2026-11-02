@@ -1,0 +1,12 @@
+.hero { padding: 24px var(--wht-gutter) 28px; }
+.grid { max-width: var(--wht-max); margin: 0 auto; display: grid; gap: 28px; }
+.text { display: flex; flex-direction: column; gap: 18px; max-width: 600px; }
+.eyebrow { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wht-forest); font-weight: 600; }
+.h1 { font-size: var(--wht-h1); line-height: 1.06; font-weight: 700; letter-spacing: -0.025em; color: var(--wht-ink); }
+.media { margin: 0 calc(var(--wht-gutter) * -1) -28px; width: calc(100% + var(--wht-gutter) * 2); }
+.note { font-size: var(--wht-text-sm); color: var(--wht-ink-2); }
+@media (min-width: 1024px) {
+  .hero { padding-top: 56px; padding-bottom: 72px; }
+  .grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: center; gap: 56px; }
+  .media { margin: 0; width: 100%; aspect-ratio: 4 / 5; max-height: 600px; border-radius: var(--wht-radius-card); overflow: hidden; }
+}

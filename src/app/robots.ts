@@ -26,6 +26,9 @@ const DISALLOWED_PATHS = [
   '/y8vwp4bf7',
   '/de/y8vwp4bf7',
   '/ja/y8vwp4bf7',
+  '/fr/y8vwp4bf7',
+  '/it/y8vwp4bf7',
+  '/es/y8vwp4bf7',
 ]
 
 // Major AI crawlers (OpenAI, Anthropic, Perplexity, Google, Microsoft, Meta, Apple, ByteDance).

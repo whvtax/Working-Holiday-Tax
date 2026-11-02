@@ -1,13 +1,19 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
-import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { WaLink } from '@/app/(site)/HomeWa'
+import { Accordion } from '@/components/ui/Accordion'
+import { WaButton } from '@/components/wht/WaButton'
+import { LinkButton } from '@/components/wht/Button'
+import { Section } from '@/components/wht/Section'
+import { Hero, heroStyles } from '@/components/wht/Hero'
+import { Lead, Mark } from '@/components/wht/Type'
+import { LinkRows, Steps, blocks } from '@/components/wht/Blocks'
+import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // This page owns the split: what an ABN changes about the return itself.
@@ -42,6 +48,7 @@ export const metadata: Metadata = {
       'en': '/abn', 'en-AU': '/abn',
       de: '/de/abn',
       ja: '/ja/abn',
+      ...newLocaleLanguages('/abn'),
       'x-default': '/abn',
     },
   },
@@ -63,13 +70,6 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
-
-// ─── ICONS ──────────────────────────────────────────────────────────────
-const IconWhatsApp = () => (
-  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
-    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
-  </svg>
-)
 
 // ─── COPY ───────────────────────────────────────────────────────────────
 
@@ -189,11 +189,6 @@ const GUIDES = [
 
 const WA_ABN = waUrl({ topic: 'abn', lang: 'en' })
 
-// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
-const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
-const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.58 }
-const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.62 }
-
 export default function ABNPage() {
   const webPageLd = {
     '@context': 'https://schema.org',
@@ -252,259 +247,125 @@ export default function ABNPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
-
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
-            <Link href="/" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>Home</Link>
-            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
-            <span aria-current="page">ABN</span>
-          </nav>
-
-          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
-              query words people type. It renders exactly where and how the old kicker
-              did; the slogan below is unchanged. Was: "Working holiday visas 417 &amp; 462". */}
-          <h1 className="font-serif font-black text-ink hero-animate"
-            style={{ fontSize: 'clamp(31px, 5.2vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
-              ABN on a working holiday visa&nbsp;&middot; 417 &amp; 462
-            </span>
-            <span style={{ display: 'block' }}>An ABN does not change your job.{' '}</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>It changes your tax return.{' '}</span>
-          </h1>
-
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '50ch', marginBottom: '26px' }}>
-            Untaxed income, business expenses, a GST position, and one question underneath all three: were you a
+      {/* SEO (Oct 2026): the kicker sits inside the H1 so the heading carries the query words people type. */}
+      <div className={blocks.underHeader}>
+        <Crumbs homeHref="/" home="Home" current="ABN" />
+        <Hero
+          title={
+            <>
+              <span className={blocks.kicker}>ABN on a working holiday visa&nbsp;&middot; 417 &amp; 462</span>
+            An ABN does not change your job.<br />
+            It changes <Mark>your tax return.</Mark>
+            </>
+          }
+        >
+          <div className="hero-lede">
+            <Lead>
+              Untaxed income, business expenses, a GST position, and one question underneath all three: were you a
             contractor at all.
-          </p>
-
-          <div className="hero-animate-delay-2">
-            <WaLink href={WA_ABN} position="hero" topic="abn" lang="en"
-              className="btn-primary inline-flex items-center justify-center gap-2"
-              style={{ height: '54px', padding: '0 32px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-              <IconWhatsApp />
-              Message us on WhatsApp
-            </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-              Replies in about an hour.
-            </p>
+            </Lead>
           </div>
+          <WaButton href={WA_ABN} position="hero" topic="abn" lang="en">Message us on WhatsApp</WaButton>
+          <p className={heroStyles.note}>Replies in about an hour.</p>
+          <GoogleRating variant="pill" lang="en" />
+        </Hero>
+        <PhotoBand page="abn" locale="en" />
+      </div>
 
-          <div className="flex" style={{ marginTop: '20px' }}>
-            <GoogleRating variant="pill" lang="en" />
-          </div>
-        </div>
-      </section>
+      <Section eyebrow="The split" title="What changes on your return once you have an ABN?" titleId="split-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Four things, and they compound.
+        </p>
+        <Steps items={THE_SPLIT} />
+      </Section>
 
-      {/* ── 2. THE SPLIT ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>The split</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '16px' }}>
-            What changes on your return once you have an ABN?
-          </h2>
-          {/* "One return has to reconcile both halves" is said by the last card
-              in the section below and again by the NextStep at the foot. */}
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '30px' }}>
-            Four things, and they compound.
-          </p>
-
-          <ol className="flex flex-col" style={{ gap: '22px' }}>
-            {THE_SPLIT.map((s) => (
-              <li key={s.n} className="flex gap-4">
-                <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '2px', letterSpacing: '-0.01em' }}
-                  aria-hidden="true">{s.n}</span>
-                <div>
-                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ── 3. THE WARNING ───────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '16px' }}>
-            Should you register an ABN because an employer asked you to?
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '16px' }}>
+      <Section tone="pale" title="Should you register an ABN because an employer asked you to?" titleId="warn-title">
+        <p className={blocks.text}>
+          
             Not before somebody has looked at the job. An ABN over work that is really employment stops your
             superannuation and your tax withholding, drops workers compensation cover and puts you outside minimum wage
             and penalty rates. All of it becomes your cost. It is common in farm work, hospitality, cleaning and on
             building sites.
-          </p>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '60ch', marginBottom: '22px' }}>
+          
+        </p>
+        <p className={blocks.text}>
+          
             The test is control, not paperwork. Who decides when you work, who directs how it is done, who supplies the
             equipment, and who carries the risk if the job goes badly. If the answers point at them, an ABN is the wrong
             instrument.
-          </p>
-
-          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
-              <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
-              <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
-              <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <p style={{ ...BODY, color: '#0F1A16' }}>
-              <strong style={{ color: '#0F1A16' }}>Send us the job before you register.</strong>{' '}
-              What the work involves, who supplies what, and how you will be paid. We will tell you which of the two it
+          
+        </p>
+        <p className={`${blocks.text} ${blocks.notice}`}>
+          <strong>Send us the job before you register.</strong>{' '}
+          What the work involves, who supplies what, and how you will be paid. We will tell you which of the two it
               is.
-            </p>
-          </div>
-        </div>
-      </section>
+        </p>
+      </Section>
 
-      {/* ── 4. WHAT WE DO ────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>The work</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            What we do about it
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '58ch', marginBottom: '26px' }}>
-            Registration itself is free and takes minutes. Everything that decides what it costs you happens either side
+      <Section eyebrow="The work" title="What we do about it" titleId="work-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Registration itself is free and takes minutes. Everything that decides what it costs you happens either side
             of it.
-          </p>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {WHAT_WE_DO.map((c) => (
-              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.35, marginBottom: '6px' }}>{c.title}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{c.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
-            You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
-          </p>
-
-          <p style={{ ...BODY, color: '#525A57', marginTop: '18px', maxWidth: '60ch' }}>
-            No ABN yet and no tax file number either? The{' '}
-            <Link href="/tfn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>TFN comes first</Link>, because an
+        </p>
+        <div className={tb.pairs}>
+          {WHAT_WE_DO.map(c => (
+            <div key={c.title} className={blocks.palePanel}>
+              <h3 className={blocks.cardTitle}>{c.title}</h3>
+              <p className={blocks.text}>{c.body}</p>
+            </div>
+          ))}
+        </div>
+        <p className={blocks.statement}>
+          You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
+        </p>
+        <p className={blocks.text}>
+          No ABN yet and no tax file number either? The{' '}
+            <Link href="/tfn" className={tb.inlineLink}>TFN comes first</Link>, because an
             ABN application is matched against it.
-          </p>
-        </div>
-      </section>
+        </p>
+      </Section>
 
-      {/* ── 5. THE FEE ─────────────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>Our guarantee</p>
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '22ch' }}>
-            Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
-          </p>
-          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
-            The fee is flat and never a percentage of what comes back.
-          </p>
-        </div>
-      </section>
+      {/* The one amber band: the guarantee. */}
+      <Section tone="amber" title="Our guarantee" titleId="guarantee-title">
+        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
+          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.
+        </p>
+        <p className={blocks.text}>The fee is flat and never a percentage of what comes back.</p>
+      </Section>
 
-      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            Tell us what the work looks like
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '56ch', marginBottom: '24px' }}>
-            Who you would be invoicing, what you would be doing, and who supplies the equipment. That is enough to tell
-            you whether an ABN belongs in this at all.
-          </p>
-          <WaLink href={waUrl({ topic: 'abn', lang: 'en', tier: 'tfn-abn' })} position="section" topic="abn" lang="en" tier="tfn-abn"
-            className="btn-primary inline-flex items-center justify-center gap-2"
-            style={{ height: '54px', padding: '0 32px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-            <IconWhatsApp />
-            Message us on WhatsApp
-          </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-            Replies in about an hour.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 7. TRUST ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            Working holiday tax is the only thing we do.
-          </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '58ch', marginBottom: '28px' }}>
-            Which means we see the same ABN arrangements over and over: the farm contract, the delivery platform, the
+      <Section tone="pale" title="Working holiday tax is the only thing we do." titleId="trust-title">
+        <p className={blocks.text}>
+          Which means we see the same ABN arrangements over and over: the farm contract, the delivery platform, the
             site that pays everyone as a subcontractor.
-          </p>
-          <GoogleReviewsServer lang="en" />
+        </p>
+        <GoogleReviewsServer lang="en" />
+      </Section>
+
+      <Section title="ABN questions people ask before they message us" titleId="faq-title">
+        {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
+        <Accordion items={FAQS} />
+      </Section>
+
+      <Section tone="pale" eyebrow="Guides" title="More on contracting, expenses and GST" titleId="guides-title">
+        <LinkRows items={GUIDES} />
+      </Section>
+
+      <Section eyebrow="What is next" title="Both halves land on one return" titleId="next-title">
+        <p className={blocks.text}>Payslip income and invoiced income belong on the same tax return for the same year.</p>
+        <div className={blocks.stack}>
+          <LinkButton href="/tax-return" size="md">How the return works →</LinkButton>
         </div>
-      </section>
+      </Section>
 
-      {/* ── 8. FAQ ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
-            ABN questions people ask before they message us
-          </h2>
-
-          <div className="flex flex-col" style={{ gap: '4px' }}>
-            {FAQS.map((f, i) => (
-              <details key={i} name="abn-faq" className="contact-faq-item">
-                <summary className="contact-faq-summary">
-                  <span style={{ flex: 1 }}>{f.question}</span>
-                  <span className="contact-faq-plus" aria-hidden="true">+</span>
-                </summary>
-                {/* Split on a blank line so a long answer reads as two short
-                    paragraphs. faqLd above still uses the raw string. */}
-                {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px' }}>{para}</p>
-                ))}
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 9. GUIDES ────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>Guides</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '20px' }}>
-            More on contracting, expenses and GST
-          </h2>
-          {/* The lede named the three cards below it. The cards do that. */}
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {GUIDES.map((g) => (
-              <Link key={g.href} href={g.href}
-                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px' }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#525A57' }}>{g.desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <NextStep
-        eyebrow="What is next"
-        heading="Both halves land on one return"
-        body="Payslip income and invoiced income belong on the same tax return for the same year."
-        cta="How the return works →"
-        href="/tax-return"
-      />
+      {/* Closing CTA, forest band. */}
+      <Section tone="forest" title="Tell us what the work looks like" titleId="cta-title">
+        <p className={`${blocks.text} ${blocks.onForest}`}>
+          Who you would be invoicing, what you would be doing, and who supplies the equipment. That is enough to tell
+            you whether an ABN belongs in this at all.
+        </p>
+        <WaButton href={waUrl({ topic: 'abn', lang: 'en', tier: 'tfn-abn' })} position="section" topic="abn" lang="en" tier="tfn-abn" tone="light">Message us on WhatsApp</WaButton>
+        <p className={`${blocks.small} ${blocks.onForest}`}>Replies in about an hour.</p>
+      </Section>
 
       <MobileCta href={WA_ABN} lang="en" topic="abn" />
     </>

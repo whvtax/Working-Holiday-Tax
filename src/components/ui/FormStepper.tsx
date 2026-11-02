@@ -26,6 +26,9 @@ const STEPS: Record<AnyFormLang, [string, string, string]> = {
   ja: ['基本情報', '収入について', '税務上の居住区分'],
   zh: ['基本信息', '收入情况', '税务居民身份'],
   vi: ['Thông tin của bạn', 'Thu nhập', 'Cư trú về thuế'],
+  fr: ['Vos informations', 'Vos revenus', 'Résidence fiscale'],
+  it: ['I tuoi dati', 'Il tuo reddito', 'Residenza fiscale'],
+  es: ['Tus datos', 'Tus ingresos', 'Residencia fiscal'],
 }
 
 const OF: Record<AnyFormLang, (s: number, t: number) => string> = {
@@ -34,6 +37,9 @@ const OF: Record<AnyFormLang, (s: number, t: number) => string> = {
   ja: (s, t) => `ステップ ${s}/${t}`,
   zh: (s, t) => `第 ${s} 步，共 ${t} 步`,
   vi: (s, t) => `Bước ${s}/${t}`,
+  fr: (s, t) => `Étape ${s} sur ${t}`,
+  it: (s, t) => `Passaggio ${s} di ${t}`,
+  es: (s, t) => `Paso ${s} de ${t}`,
 }
 
 function Tick() {

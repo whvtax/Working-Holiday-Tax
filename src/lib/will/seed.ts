@@ -396,6 +396,15 @@ function fixesFromSeed(intents: string[]): { question: string; answer: string }[
 }
 LATER_FIXES.push({ marker: 'fix-30oct-b', fixes: fixesFromSeed(FIX_30OCT_B_INTENTS) });
 
+/** 2 Nov (Jo): whenever a customer cannot get through the IHI / Medicare
+ *  Entitlement Statement step at Services Australia, Will answers with Jo's
+ *  wording: we can't help with it, we can continue without the exemption, and
+ *  the levy then stays on the return. Pushed once into the existing row. */
+LATER_FIXES.push({
+  marker: 'fix-2nov-ihi',
+  fixes: fixesFromSeed(['IHI or Medicare Entitlement Statement trouble (do not troubleshoot)']),
+});
+
 export async function applyKnowledgeFixes(
   store: Pick<Store, 'listKnowledge' | 'updateKnowledge' | 'getSetting' | 'setSetting'>,
 ): Promise<number> {

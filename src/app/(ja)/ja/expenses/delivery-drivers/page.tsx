@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": "デリバリーの経費控除：車、携帯、GST",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/delivery-drivers",
       "de": "/de/expenses/delivery-drivers",
       "ja": "/ja/expenses/delivery-drivers",
+      ...newLocaleLanguages('/expenses/delivery-drivers'),
       "x-default": "/expenses/delivery-drivers"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "デリバリーとラ
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
   "ctaSub": "約1時間で返信します。",
-  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。",
+  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。",
   "guaranteeBody": "417・462ビザのプラットフォーム配達員は、当社の仕事の大きな部分を占めます。だから運転日誌の選択とGSTの線引きは、申告書を書き始める前に片づきます。申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。",
   "faqHeading": "よくある質問",
   "guidesHeading": "次に読むと役に立つガイド",
@@ -331,6 +333,7 @@ export default function Page() {
         articleHeadline: "デリバリーの経費控除：車、携帯、GST",
         articleDescription: "走行距離と携帯の仕事使用分がすべてです。罰金と私的な区間は最初から対象外です。",
         inLanguage: "ja-JP",
+        photoKey: 'expenses/delivery-drivers',
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
       }}
     />

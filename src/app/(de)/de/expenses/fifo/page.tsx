@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": "FIFO: Schutzausrüstung und Zone Offset",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/fifo",
       "de": "/de/expenses/fifo",
       "ja": "/ja/expenses/fifo",
+      ...newLocaleLanguages('/expenses/fifo'),
       "x-default": "/expenses/fifo"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "FIFO und Camp-Arbeit"
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
   "guaranteeBody": "Wir nehmen Steuerarbeit nur für die Visa 417 und 462 an, deshalb schauen wir Zone Offset, Wohnsitzfrage und die Super aus mehreren Fonds gemeinsam an. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Häufige Fragen dazu",
   "guidesHeading": "Danach lesenswert",
@@ -144,7 +146,7 @@ const SECTIONS: Section[] = [
     "kind": "note",
     "label": "Der größte FIFO-Irrtum",
     "title": "In einer Zone zu arbeiten ist nicht dasselbe wie dort zu wohnen.",
-    "body": "Seit einer Gesetzesänderung 2015 hängt der Zone Tax Offset davon ab, wo dein normaler Wohnsitz ist, und nicht davon, wohin dich der Roster bringt. Dein normaler Wohnsitz muss selbst mehr als 183 Tage im Einkommensjahr in einer ausgewiesenen abgelegenen Zone liegen.\n\nIn eine Zone einzufliegen, während du zwischen den Swings in Perth, Brisbane oder Darwin wohnst, erfüllt diesen Test nicht. Das Camp ist nicht dein normaler Wohnsitz, weil es vorübergehend und an den Roster gebunden ist.\n\nFür die meisten Working Holiday Maker im FIFO-Roster gilt der Offset nicht."
+    "body": "Seit einer Gesetzesänderung 2015 hängt der Zone Tax Offset davon ab, wo dein normaler Wohnsitz ist, und nicht davon, wohin dich der Roster bringt. Dein normaler Wohnsitz muss selbst über einen erheblichen Teil des Einkommensjahres in einer ausgewiesenen abgelegenen Zone liegen.\n\nIn eine Zone einzufliegen, während du zwischen den Swings in Perth, Brisbane oder Darwin wohnst, erfüllt die Voraussetzung in der Regel nicht. Ob der Offset bei dir gilt, prüfen wir im Einzelfall, und am Ende entscheidet das ATO."
   },
   {
     "kind": "answer",
@@ -209,7 +211,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Der Zone Tax Offset ist meistens falsch, nicht unmöglich. Lag deine Basis während der Working Holiday in einer ausgewiesenen Zone, etwa eine Wohnung in einem abgelegenen Ort statt in einer Großstadt, ist die Frage offen.",
       "Die Ausnahme für sperriges Werkzeug zählt eher für Handwerker, die mit eigenem Werkzeugsatz einfliegen, als für Camp-Service-Rollen. Entschieden wird sie davon, was du transportiert hast und was der Standort an Lagerung bot.",
-      "Der steuerliche Wohnsitz ist bei FIFO die größte Frage, weil es um höhere Beträge geht. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
+      "Der steuerliche Wohnsitz ist bei FIFO die größte Frage, weil es um höhere Beträge geht. Ein Gerichtsurteil namens Addy kann beeinflussen, welche Sätze gelten. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -217,7 +219,7 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Bekommen FIFO-Beschäftigte den Zone Tax Offset?",
-    "answer": "Meistens nicht, und das ist der größte Irrtum bei FIFO-Steuern. Seit einer Gesetzesänderung 2015 hängt der Anspruch davon ab, dass dein normaler Wohnsitz mehr als 183 Tage im Jahr in einer ausgewiesenen abgelegenen Zone liegt, und nicht davon, wo du körperlich arbeitest.\n\nIn eine Zone einzufliegen, während du zwischen den Swings in einer Großstadt wohnst, erfüllt diesen Test nicht, und das Camp ist nicht dein normaler Wohnsitz."
+    "answer": "Meistens nicht, und das ist der größte Irrtum bei FIFO-Steuern. Seit einer Gesetzesänderung 2015 hängt der Anspruch davon ab, dass dein normaler Wohnsitz über einen erheblichen Teil des Jahres in einer ausgewiesenen abgelegenen Zone liegt, und nicht davon, wo du körperlich arbeitest.\n\nIn eine Zone einzufliegen, während du zwischen den Swings in einer Großstadt wohnst, erfüllt die Voraussetzung in der Regel nicht. Wie das bei dir liegt, prüfen wir im Einzelfall."
   },
   {
     "question": "Kann ich Camp-Unterkunft oder Verpflegung absetzen?",
@@ -281,6 +283,7 @@ export default function Page() {
         articleHeadline: "FIFO Australien: Schutzausrüstung, Tickets, Zone Offset",
         articleDescription: "Camp-Essen und die Fahrt zum Flughafen sind nicht absetzbar. Der Zone Tax Offset ist vermutlich auch nicht deiner.",
         inLanguage: "de-DE",
+        photoKey: 'expenses/fifo',
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
       }}
     />

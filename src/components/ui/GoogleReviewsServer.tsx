@@ -7,7 +7,7 @@ import { fetchGoogleData } from '@/lib/googleReviewsServer'
  * crawlers that never run JS (most AI search bots) can read them.
  * See lib/googleReviewsServer.ts for why.
  */
-export async function GoogleReviewsServer({ lang = 'en' }: { lang?: 'en' | 'de' | 'ja' }) {
+export async function GoogleReviewsServer({ lang = 'en' }: { lang?: 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es' }) {
   const initial = await fetchGoogleData()
   return <GoogleReviews lang={lang} initial={initial} />
 }

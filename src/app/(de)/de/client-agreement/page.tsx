@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { PageHeader } from '@/components/ui/PageHeader'
+import { LegalDoc } from '@/components/wht/LegalBlocks'
 import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
@@ -212,52 +212,17 @@ const sections: Section[] = [
 
 export default function GermanClientAgreementPage() {
   return (
-    <>
-      <PageHeader
-        kicker="Rechtliches"
-        title="Mandantenvereinbarung"
-        titleEm=""
-        sub="Zuletzt aktualisiert: September 2026. Durch die Nutzung unserer Dienstleistungen stimmst du diesen Bedingungen zu."
-        breadcrumbs={[{ label: 'Startseite', href: '/de' }, { label: 'Mandantenvereinbarung' }]}
-      />
-
-      <section className="pt-0 pb-10 lg:pb-12 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-2xl">
-
-            <div className="rounded-xl px-5 py-4 mb-8" style={{ background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-              <p className="text-[13px] font-light text-body leading-[1.75]">
-                Working Holiday Tax ist unter der Aufsicht eines registrierten australischen Tax Agent tätig:{' '}
-                <strong className="font-semibold text-ink">{AGENT_NAME} (ABN: {AGENT_ABN}), Tax Agent Number {AGENT_TPB}</strong>.
-              </p>
-            </div>
-
-            <p className="text-[13px] font-light text-body leading-[1.75] mb-8">
-              Diese Vereinbarung wird zwischen dir (dem &bdquo;Mandanten&ldquo;) und Working Holiday Tax (dem &bdquo;Anbieter&ldquo;) geschlossen und regelt deine Nutzung unserer australischen Steuerdienstleistungen, einschließlich Vorbereitung und Einreichung der Steuererklärung sowie zugehörige Unterstützung.
-            </p>
-
-            {sections.map((s, i) => (
-              <div key={i} className={`mb-8 reveal delay-${(i % 4) + 1}`}>
-                <h2 className="font-serif text-[16px] font-bold text-ink mb-2">{s.title}</h2>
-                {s.body && (
-                  <p className="text-[13px] font-light text-body leading-[1.75] mb-2">{s.body}</p>
-                )}
-                {s.items && (
-                  <ul className="mt-2 space-y-1.5">
-                    {s.items.map((item, j) => (
-                      <li key={j} className="flex items-start gap-2.5">
-                        <span className="mt-[7px] flex-shrink-0 rounded-full" style={{ width: '5px', height: '5px', minWidth: '5px', background: '#0B5240' }} />
-                        <span className="text-[13px] font-light text-body leading-[1.75]">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
-
-          </div>
-        </div>
-      </section>
-    </>
+    <LegalDoc
+      kicker="Rechtliches"
+      title="Mandantenvereinbarung"
+      sub="Zuletzt aktualisiert: September 2026. Durch die Nutzung unserer Dienstleistungen stimmst du diesen Bedingungen zu."
+      crumbs={[{ label: 'Startseite', href: '/de' }, { label: 'Mandantenvereinbarung' }]}
+      notice={<>
+        Working Holiday Tax ist unter der Aufsicht eines registrierten australischen Tax Agent tätig:{' '}
+        <strong>{AGENT_NAME} (ABN: {AGENT_ABN}), Tax Agent Number {AGENT_TPB}</strong>.
+      </>}
+      intro={<>Diese Vereinbarung wird zwischen dir (dem &bdquo;Mandanten&ldquo;) und Working Holiday Tax (dem &bdquo;Anbieter&ldquo;) geschlossen und regelt deine Nutzung unserer australischen Steuerdienstleistungen, einschließlich Vorbereitung und Einreichung der Steuererklärung sowie zugehörige Unterstützung.</>}
+      sections={sections}
+    />
   )
 }

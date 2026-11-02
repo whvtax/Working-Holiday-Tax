@@ -15,8 +15,8 @@ interface Props {
 export function PageHeader({ kicker = 'Service guide', title, titleEm, sub, breadcrumbs, cta }: Props) {
   const ctaIsExternal = !cta?.href
   return (
-    <section className="relative overflow-hidden pt-[68px] bg-white">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-9 lg:py-12 relative z-10">
+    <section className="relative overflow-hidden pt-[68px] bg-white" style={{ borderBottom: '1px solid #DCE0DE' }}>
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14 relative z-10">
         {breadcrumbs && (
           // rgba(10,15,13,0.35) on white measures about 2.3:1 and fails WCAG
           // AA. #525A57 is the palette's caption colour, 6.41:1, and keeps the
@@ -33,25 +33,22 @@ export function PageHeader({ kicker = 'Service guide', title, titleEm, sub, brea
             ))}
           </nav>
         )}
-        <div className="max-w-[640px]">
-          <div className="inline-flex items-center gap-3 mb-5">
-            <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>{kicker}</span>
-          </div>
-          <h1 className="font-serif font-black text-ink mb-3" style={{ fontSize: 'clamp(22px,3.5vw,38px)', lineHeight: 1.06, letterSpacing: '-0.025em' }}>
+        <div className="max-w-[720px]">
+          <p className="mb-4 font-mono uppercase" style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.14em', color: '#0B5240' }}>{kicker}</p>
+          <h1 className="font-serif font-bold text-ink mb-4" style={{ fontSize: 'clamp(30px,5vw,48px)', lineHeight: 1.1, letterSpacing: '-0.02em' }}>
             {title}
             {titleEm && <><br /><span style={{ color: '#0B5240' }}>{titleEm}</span></>}
           </h1>
           {/* rgba(10,15,13,0.55) on white is 4.48:1, just under the 4.5 AA
               minimum for 14px text. #525A57 clears it at 6.41:1. */}
-          <p className="font-light leading-[1.7] mb-7" style={{ fontSize: '14px', color: '#525A57', maxWidth: '480px' }}>{sub}</p>
+          <p className="leading-[1.6] mb-7" style={{ fontSize: '17px', color: '#3F4A45', maxWidth: '560px' }}>{sub}</p>
           {cta && (
             <a
               href={cta.href ?? WA_URL}
               target={ctaIsExternal ? '_blank' : '_self'}
               rel={ctaIsExternal ? 'noopener noreferrer' : undefined}
               className="btn-primary"
-              style={{ height: '46px', padding: '0 22px', fontSize: '13.5px' }}
+              style={{ height: '52px', padding: '0 26px', fontSize: '16px' }}
             >
               {cta.label}
               <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>

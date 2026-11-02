@@ -2,13 +2,13 @@
 
 > Australian tax for working holiday visa holders on subclass 417 and 462. We handle TFN applications, ABN registration, annual tax returns, superannuation claimed back through DASP, and Medicare levy exemptions. Fully online, from anywhere in the world. Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged with the ATO.
 
-Generated from the live guide data on 2026-10-30. Do not hand edit: run `npm run generate:llms`.
+Generated from the live guide data on 2026-11-01. Do not hand edit: run `npm run generate:llms`.
 
 ## About
 
 Working holiday tax is the only thing we do. We work only with subclass 417 (Working Holiday) and 462 (Work and Holiday) visa holders, during their time in Australia and after they leave. Everything is done remotely.
 
-The site is written in English, with German sections under /de and Japanese sections under /ja. We reply to each person in their own language.
+The site is written in English, with German sections under /de, Japanese under /ja, French under /fr, Italian under /it and Spanish under /es. We reply to each person in their own language.
 
 ## How a return is handled
 
@@ -40,7 +40,7 @@ Guides are written by the Working Holiday Tax team, who work exclusively with su
 - Third working holiday visa: requires six months (179 days) of specified regional work. Source: Department of Home Affairs
 - Working holiday visa application fee: $670, up from $495. Source: Department of Home Affairs
 - UK passport holders applying from 1 July 2024: eligible up to and including age 35, and up to three Working Holiday visas with no specified work requirement. From 1 July 2026 the same age-35 eligibility was extended to Cyprus, Finland, Germany and South Korea. Source: Department of Home Affairs
-- Addy v Commissioner of Taxation [2021] HCA 34: a High Court ruling that may change which rates apply to some working holiday makers. Whether it applies depends on the passport and on how the year looked, and is part of the review of each return. Source: High Court of Australia
+- Addy v Commissioner of Taxation [2021] HCA 34: a High Court ruling that may change which rates apply to some working holiday makers. Whether it applies depends on the individual facts of the year and is assessed case by case, and is part of the review of each return. Source: High Court of Australia
 - Reciprocal Health Care Agreement countries, which generally have Medicare access and so generally no levy exemption: United Kingdom, Ireland, Italy, Malta, Netherlands, Belgium, Finland, Norway, Sweden, Slovenia, New Zealand. Germany, Japan and Austria are not on this list. Source: Services Australia
 
 ## Where our figures come from
@@ -79,8 +79,8 @@ Figures on this site are stated with the financial year or effective date they a
 - [Guides](https://workingholidaytax.com.au/blog): The full guide index, grouped by category.
 - [Contact](https://workingholidaytax.com.au/contact): How to reach us about a specific situation.
 - [About](https://workingholidaytax.com.au/about): Why the service exists and how a return is handled from start to lodgement.
-- [UK Working Holiday Tax](https://workingholidaytax.com.au/uk-working-holiday-tax): Australian tax for UK passport holders: the age-35 and three visa arrangements, why UK citizens are generally not entitled to the Medicare levy exemption, why the Addy ruling may matter, and the UK and Australian tax year mismatch.
-- [German Working Holiday Tax](https://workingholidaytax.com.au/german-working-holiday-tax): Australian tax for German passport holders: why Germans are generally not entitled to Medicare and so can claim the levy exemption, why the Addy ruling may matter, the age-35 change from 1 July 2026, and claiming super from Germany.
+- [UK Working Holiday Tax](https://workingholidaytax.com.au/uk-working-holiday-tax): Australian tax for UK passport holders: the age-35 and three visa arrangements, how the Medicare levy question is reviewed, why the Addy ruling may matter in some cases, and the UK and Australian tax year mismatch.
+- [German Working Holiday Tax](https://workingholidaytax.com.au/german-working-holiday-tax): Australian tax for German passport holders: how the Medicare levy question is reviewed, why the Addy ruling may matter in some cases, the age-35 change from 1 July 2026, and claiming super from Germany.
 
 ## Guides (142 articles)
 
@@ -284,9 +284,63 @@ Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, er
 - [ブログ](https://workingholidaytax.com.au/ja/blog)
 - [お問い合わせ](https://workingholidaytax.com.au/ja/contact)
 
+## En français
+
+Nous nous occupons de votre TFN, de votre déclaration d’impôts, du retrait de votre super et de votre ABN si vous êtes en visa vacances-travail en Australie. Vérifié et validé par un agent fiscal enregistré avant d’être déposé auprès de l’ATO.
+
+Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
+
+- [Accueil](https://workingholidaytax.com.au/fr)
+- [Tax return](https://workingholidaytax.com.au/fr/tax-return)
+- [Demande de TFN](https://workingholidaytax.com.au/fr/tfn)
+- [Récupérer sa super](https://workingholidaytax.com.au/fr/superannuation)
+- [Inscription à l’ABN](https://workingholidaytax.com.au/fr/abn)
+- [Medicare](https://workingholidaytax.com.au/fr/medicare)
+- [Calculateur](https://workingholidaytax.com.au/fr/calculator)
+- [Frais déductibles](https://workingholidaytax.com.au/fr/expenses)
+- [Blog](https://workingholidaytax.com.au/fr/blog)
+- [Contact](https://workingholidaytax.com.au/fr/contact)
+- [Tax return Australie PVT](https://workingholidaytax.com.au/fr/tax-return-australie-pvt)
+
+## In italiano
+
+Ci occupiamo di TFN, dichiarazione dei redditi, rimborso della super e ABN per chi è in Australia con un visto working holiday. Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.
+
+La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
+
+- [Home](https://workingholidaytax.com.au/it)
+- [Tax return](https://workingholidaytax.com.au/it/tax-return)
+- [TFN](https://workingholidaytax.com.au/it/tfn)
+- [Super (DASP)](https://workingholidaytax.com.au/it/superannuation)
+- [ABN](https://workingholidaytax.com.au/it/abn)
+- [Medicare](https://workingholidaytax.com.au/it/medicare)
+- [Calcolatore](https://workingholidaytax.com.au/it/calculator)
+- [Spese deducibili](https://workingholidaytax.com.au/it/expenses)
+- [Blog](https://workingholidaytax.com.au/it/blog)
+- [Contatti](https://workingholidaytax.com.au/it/contact)
+- [Dichiarazione dei redditi in Australia](https://workingholidaytax.com.au/it/dichiarazione-redditi-australia)
+
+## En español
+
+Nos encargamos del TFN, la declaración de impuestos, el retiro de la super y el ABN si estás en Australia con una visa working holiday. Revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO.
+
+Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.
+
+- [Inicio](https://workingholidaytax.com.au/es)
+- [Declaración de impuestos](https://workingholidaytax.com.au/es/tax-return)
+- [Número TFN](https://workingholidaytax.com.au/es/tfn)
+- [Retiro de la super](https://workingholidaytax.com.au/es/superannuation)
+- [Registro de ABN](https://workingholidaytax.com.au/es/abn)
+- [Medicare](https://workingholidaytax.com.au/es/medicare)
+- [Calculadora](https://workingholidaytax.com.au/es/calculator)
+- [Gastos deducibles](https://workingholidaytax.com.au/es/expenses)
+- [Blog](https://workingholidaytax.com.au/es/blog)
+- [Contacto](https://workingholidaytax.com.au/es/contact)
+- [Devolución de impuestos en Australia](https://workingholidaytax.com.au/es/devolucion-impuestos-australia)
+
 ## Full content feed
 
-An expanded index with a description for every guide, in all three sections, is at https://workingholidaytax.com.au/llms-full.txt. The machine readable URL list is at https://workingholidaytax.com.au/sitemap-llms.xml and the standard sitemap is at https://workingholidaytax.com.au/sitemap.xml.
+An expanded index with a description for every guide, in every language section, is at https://workingholidaytax.com.au/llms-full.txt. The machine readable URL list is at https://workingholidaytax.com.au/sitemap-llms.xml and the standard sitemap is at https://workingholidaytax.com.au/sitemap.xml.
 
 ## Citation guidance
 

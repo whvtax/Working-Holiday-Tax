@@ -2,8 +2,12 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { type Guide, type Category, categories, getCategoryColor, categoryMeta } from './data'
-import CategoryHero from './[slug]/CategoryHero'
+import { type Guide, type Category, categories, categoryMeta } from './data'
+import { Section } from '@/components/wht/Section'
+import { Mark } from '@/components/wht/Type'
+import { blocks } from '@/components/wht/Blocks'
+import { blog, PageHead, ArticleCard, CtaBand } from '@/components/wht/BlogBlocks'
+import { GuideCta } from '@/components/ui/GuideCta'
 import { fuzzySearch } from './search'
 import { trackEvent, trackSearchDebounced } from './analytics'
 
@@ -62,14 +66,28 @@ const enUI: BlogUIStrings = {
 
 const PER_PAGE = 9
 
+const STAT_UI: Record<'en' | 'de' | 'ja' | 'fr' | 'it' | 'es', { taxYear: string; freeNum: string; freeLabel: string }> = {
+  en: { taxYear: 'Tax year', freeNum: 'Free', freeLabel: 'No sign-up' },
+  de: { taxYear: 'Steuerjahr', freeNum: 'Frei', freeLabel: 'Kostenlos' },
+  ja: { taxYear: '税年度', freeNum: '無料', freeLabel: '登録不要' },
+  fr: { taxYear: 'Année fiscale', freeNum: 'Gratuit', freeLabel: 'Sans inscription' },
+  it: { taxYear: 'Anno fiscale', freeNum: 'Gratis', freeLabel: 'Senza registrazione' },
+  es: { taxYear: 'Año fiscal', freeNum: 'Gratis', freeLabel: 'Sin registro' },
+}
+
 // Icon-only prev/next controls need a name of their own, and the surrounding
 // nav needs one too. These are the only three strings Pagination adds, so they
 // live here rather than being pushed into BlogUIStrings, which is shared with
 // the German and Japanese blogs and typed against their own data files.
-const PAGINATION_UI: Record<'en' | 'de' | 'ja', { nav: string; prev: string; next: string; page: (n: number) => string }> = {
+type BlogLang = 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es'
+
+const PAGINATION_UI: Record<BlogLang, { nav: string; prev: string; next: string; page: (n: number) => string }> = {
   en: { nav: 'Pagination', prev: 'Previous page', next: 'Next page', page: (n) => `Page ${n}` },
   de: { nav: 'Seitennavigation', prev: 'Vorherige Seite', next: 'Nächste Seite', page: (n) => `Seite ${n}` },
   ja: { nav: 'ページ送り', prev: '前のページ', next: '次のページ', page: (n) => `${n}ページ目` },
+  fr: { nav: 'Pagination', prev: 'Page précédente', next: 'Page suivante', page: (n) => `Page ${n}` },
+  it: { nav: 'Paginazione', prev: 'Pagina precedente', next: 'Pagina successiva', page: (n) => `Pagina ${n}` },
+  es: { nav: 'Paginación', prev: 'Página anterior', next: 'Página siguiente', page: (n) => `Página ${n}` },
 }
 
 function Pagination({
@@ -81,7 +99,7 @@ function Pagination({
   total: number
   page: number
   onPage: (p: number) => void
-  lang?: 'en' | 'de' | 'ja'
+  lang?: BlogLang
 }) {
   const totalPages = Math.ceil(total / PER_PAGE)
   const t = PAGINATION_UI[lang] ?? PAGINATION_UI.en
@@ -103,64 +121,39 @@ function Pagination({
     return pages
   }
 
-  // 44px, not 40. Anything smaller is under the minimum comfortable tap target
-  // on a phone, and these sit close enough together to mis-hit.
-  const btnBase: React.CSSProperties = {
-    minWidth: '44px',
-    height: '44px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '10px',
-    border: '1px solid #DCE0DE',
-    background: 'transparent',
-    cursor: 'pointer',
-    fontSize: '13px',
-    fontWeight: 500,
-    color: '#525A57',
-    transition: 'all 0.2s ease',
-    padding: '0 12px',
-  }
-
   return (
-    <nav aria-label={t.nav} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '48px', flexWrap: 'wrap' }}>
+    <nav aria-label={t.nav} className={blog.pager}>
       <button
+        type="button"
         onClick={() => onPage(page - 1)}
         disabled={page === 1}
         aria-label={t.prev}
-        style={{ ...btnBase, opacity: page === 1 ? 0.3 : 1 }}
-        className="pagination-btn"
+        className={blog.pageBtn}
       >
         <span aria-hidden="true">‹</span>
       </button>
       {getPages().map((p, i) =>
         p === '...' ? (
-          <span key={`dot-${i}`} aria-hidden="true" style={{ ...btnBase, border: 'none', cursor: 'default', color: '#525A57' }}>…</span>
+          <span key={`dot-${i}`} aria-hidden="true" className={blog.pageBtn} style={{ border: 'none', background: 'transparent', cursor: 'default' }}>…</span>
         ) : (
           <button
+            type="button"
             key={p}
             onClick={() => onPage(p as number)}
             aria-label={t.page(p as number)}
             aria-current={page === p ? 'page' : undefined}
-            style={{
-              ...btnBase,
-              background: page === p ? '#0B5240' : 'transparent',
-              color: page === p ? '#fff' : '#525A57',
-              border: `1px solid ${page === p ? '#0B5240' : '#DCE0DE'}`,
-              fontWeight: page === p ? 700 : 500,
-            }}
-            className="pagination-btn"
+            className={`${blog.pageBtn} ${page === p ? blog.pageOn : ''}`}
           >
             {p}
           </button>
         )
       )}
       <button
+        type="button"
         onClick={() => onPage(page + 1)}
         disabled={page === totalPages}
         aria-label={t.next}
-        style={{ ...btnBase, opacity: page === totalPages ? 0.3 : 1 }}
-        className="pagination-btn"
+        className={blog.pageBtn}
       >
         <span aria-hidden="true">›</span>
       </button>
@@ -199,6 +192,9 @@ export default function BlogClient({
   homePath = '/',
   categoryBasePath = '/blog/category',
   categorySlugs = EN_CATEGORY_SLUGS,
+  visibleCategories,
+  categoryLabels,
+  photo,
 }: {
   /**
    * Deliberately without `body`.
@@ -211,7 +207,7 @@ export default function BlogClient({
    */
   guides: GuideCard[]
   initialCategory?: Category
-  lang?: 'en' | 'de' | 'ja'
+  lang?: BlogLang
   ui?: BlogUIStrings
   blogBasePath?: string
   homePath?: string
@@ -220,6 +216,12 @@ export default function BlogClient({
   /** Category -> slug for this locale. Must be a plain object: it crosses the
    *  server/client boundary, so it cannot be a function. */
   categorySlugs?: Record<string, string>
+  /** fr / it / es: only these categories get a pill and a count (those with at least one guide). Plain array: crosses the server/client boundary. */
+  visibleCategories?: Category[]
+  /** fr / it / es: display labels for the category pills and card meta. Plain object. */
+  categoryLabels?: Record<string, string>
+  /** Optional page photo, rendered by the server page (it reads the image manifest). */
+  photo?: React.ReactNode
 }) {
   const [page, setPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
@@ -270,300 +272,133 @@ export default function BlogClient({
     }
   }
 
+  const stat = STAT_UI[lang] ?? STAT_UI.en
+  const statTitle = stat.taxYear
+  const freeNum = stat.freeNum
+  const freeLabel = stat.freeLabel
+  const cats = visibleCategories ?? categories
+  const labelOf = (c: string) => categoryLabels?.[c] ?? c
+
   return (
-    <>
-      {/* All blog styles are in globals.css for cleanliness and proper SSR */}
+    <div className={blocks.underHeader}>
+      <PageHead
+        titleId="blog-title"
+        crumbsLabel="Breadcrumb"
+        crumbs={[
+          { label: ui.breadcrumbHome, href: homePath },
+          { label: ui.breadcrumbBlog },
+        ]}
+        top={<p className={blog.countRow}>{ui.blogLabel}</p>}
+        title={<>{ui.h1Line1} <Mark>{ui.h1Line2}</Mark></>}
+        lead={ui.description}
+      >
+        <ul className={blog.stats}>
+          <li className={blog.stat}><p className={blog.statNum}>{guides.length}</p><p className={blog.statLabel}>{ui.statsArticles}</p></li>
+          <li className={blog.stat}><p className={blog.statNum}>{cats.length}</p><p className={blog.statLabel}>{ui.statsCategories}</p></li>
+          <li className={blog.stat}><p className={blog.statNum}>2025-26</p><p className={blog.statLabel}>{statTitle}</p></li>
+          <li className={blog.stat}><p className={blog.statNum}>{freeNum}</p><p className={blog.statLabel}>{freeLabel}</p></li>
+        </ul>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-12">
-
-          {/* rgba(10,15,13,0.35) over this near white hero measures about
-              2.3:1 and fails WCAG AA. #525A57 is the palette's caption colour
-              at 6.41:1 and reads as the same quiet grey green. */}
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
-            style={{ fontSize: '12px', color: '#525A57' }}>
-            <a href={homePath} className="transition-colors hover:text-forest-500" style={{ color: 'inherit', textDecoration: 'none', padding: '6px 0' }}>{ui.breadcrumbHome}</a>
-            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
-            <span aria-current="page">{ui.breadcrumbBlog}</span>
-          </nav>
-
-          <div style={{ maxWidth: '720px', marginBottom: '32px' }}>
-
-            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
-              <span className="font-medium uppercase"
-                style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                {ui.blogLabel}
-              </span>
-            </div>
-
-            <h1 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '12px' }}>
-              <span style={{ display: 'block' }}>{ui.h1Line1}</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>{ui.h1Line2}</span>
-            </h1>
-
-            <p className="font-light"
-              style={{ fontSize: 'clamp(14px,1.2vw,16px)', lineHeight: 1.65, color: '#525A57', maxWidth: '52ch', marginBottom: '24px' }}>
-              {ui.description}
-            </p>
-
-            {/* Stats grid - credibility signals at the top, focused on what working holiday makers care about */}
-            <div className="hero-stats">
-              <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #DCE0DE' }}>
-                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>{guides.length}</div>
-                <div style={{ fontSize: '11.5px', color: '#525A57', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{ui.statsArticles}</div>
-              </div>
-              <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #DCE0DE' }}>
-                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>{categories.length}</div>
-                <div style={{ fontSize: '11.5px', color: '#525A57', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{ui.statsCategories}</div>
-              </div>
-              <div className="stat-card" style={{ padding: '16px 18px', background: '#F2FAF7', borderRadius: '12px', border: '1px solid #DCE0DE' }}>
-                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>2025-26</div>
-                <div style={{ fontSize: '11.5px', color: '#0B5240', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Steuerjahr' : lang === 'ja' ? '税年度' : 'Tax year'}</div>
-              </div>
-              <div className="stat-card" style={{ padding: '16px 18px', background: '#F2FAF7', borderRadius: '12px', border: '1px solid #0B5240' }}>
-                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#7A4A00', lineHeight: 1 }}>{lang === 'de' ? 'Frei' : lang === 'ja' ? '無料' : 'Free'}</div>
-                <div style={{ fontSize: '11.5px', color: '#7A4A00', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Kostenlos' : lang === 'ja' ? '登録不要' : 'No sign-up'}</div>
-              </div>
-            </div>
+        {/* Search input */}
+        <div className={blog.search}>
+          <div className={blog.searchIcon}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
           </div>
-
-          {/* Search input */}
-          <div style={{ maxWidth: '560px', marginBottom: '24px', position: 'relative' }}>
-            <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#525A57' }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder={ui.searchPlaceholder}
+            className={blog.input}
+            aria-label={ui.searchPlaceholder}
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => handleSearchChange('')}
+              className={blog.clear}
+              aria-label={ui.clearSearch}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
-            </div>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder={ui.searchPlaceholder}
-              className="search-input"
-              style={{
-                width: '100%',
-                padding: '12px 16px 12px 44px',
-                paddingRight: searchQuery ? '52px' : '16px',
-                borderRadius: '12px',
-                border: '1px solid #DCE0DE',
-                background: '#fff',
-                // 16px, not 14: anything smaller makes iOS zoom the whole page
-                // on focus, and the reader then has to pinch back out.
-                fontSize: '16px',
-                color: '#0F1A16',
-                fontWeight: 400,
-                transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-              }}
-              aria-label={ui.searchPlaceholder}
-            />
-            {searchQuery && (
-              <button
-                onClick={() => handleSearchChange('')}
-                className="clear-search-btn"
-                // 44x44, not a 4px pad around a 16px icon. The old target was
-                // 24px square and sat inside the input's rounded corner.
-                style={{ position: 'absolute', right: '4px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: '#525A57', width: '44px', height: '44px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                aria-label={ui.clearSearch}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-            )}
-          </div>
+            </button>
+          )}
+        </div>
 
-          {/* Category filter pills.
-              These were <button>s that filtered client-side, which meant the
-              blog hub linked to 9 of 141 guides and to none of the six
-              category hubs: 396 pages across the three languages with no
-              crawlable route in. They are anchors now, pointing at the real
-              category page, and a plain left click still preventDefaults into
-              the same instant client-side filter - no navigation, no reload,
-              identical behaviour and identical styling. A crawler, which only
-              reads href, follows them to the category hubs, and each hub lists
-              every one of its articles unpaginated.
-              prefetch={false} because the click does not navigate: without it
-              Next would fetch seven full category pages the moment the pills
-              scroll into view on a phone. */}
-          <nav aria-label={ui.statsCategories} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        {/* Category filter pills.
+            These are anchors pointing at the real category page, so a crawler
+            reaches every category hub; a plain left click still preventDefaults
+            into the same instant client-side filter. prefetch={false} because
+            the click does not navigate. */}
+        <nav aria-label={ui.statsCategories} className={blog.pills}>
+          <Link
+            href={blogBasePath}
+            prefetch={false}
+            onClick={(e) => {
+              if (!isPlainLeftClick(e)) return
+              e.preventDefault()
+              handleCategoryChange('All')
+            }}
+            aria-current={activeCategory === 'All' ? 'true' : undefined}
+            className={`${blog.pill} ${activeCategory === 'All' ? blog.pillOn : ''}`}
+          >
+            {ui.allArticles}
+            <span className={blog.pillCount}>{countsByCategory.All}</span>
+          </Link>
+          {cats.map(cat => (
             <Link
-              href={blogBasePath}
+              key={cat}
+              href={`${categoryBasePath}/${getCategorySlug(cat, categorySlugs)}`}
               prefetch={false}
               onClick={(e) => {
                 if (!isPlainLeftClick(e)) return
                 e.preventDefault()
-                handleCategoryChange('All')
+                handleCategoryChange(cat)
               }}
-              aria-current={activeCategory === 'All' ? 'true' : undefined}
-              className="category-pill"
-              style={{
-                textDecoration: 'none',
-                padding: '8px 16px',
-                borderRadius: '100px',
-                border: `1px solid ${activeCategory === 'All' ? '#0B5240' : '#DCE0DE'}`,
-                background: activeCategory === 'All' ? '#0B5240' : 'transparent',
-                color: activeCategory === 'All' ? '#0F1A16' : '#525A57',
-                fontSize: '13px',
-                fontWeight: activeCategory === 'All' ? 700 : 500,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-              }}
+              aria-current={activeCategory === cat ? 'true' : undefined}
+              className={`${blog.pill} ${activeCategory === cat ? blog.pillOn : ''}`}
             >
-              {ui.allArticles}
-              <span style={{
-                fontSize: '11px',
-                padding: '1px 6px',
-                borderRadius: '100px',
-                background: activeCategory === 'All' ? 'rgba(26,40,34,0.15)' : '#DCE0DE',
-                color: activeCategory === 'All' ? '#0F1A16' : '#525A57',
-                fontWeight: 600,
-              }}>
-                {countsByCategory.All}
-              </span>
+              {labelOf(cat)}
+              <span className={blog.pillCount}>{countsByCategory[cat] ?? 0}</span>
             </Link>
-            {categories.map(cat => {
-              const colors = getCategoryColor(cat)
-              const isActive = activeCategory === cat
-              return (
-                <Link
-                  key={cat}
-                  href={`${categoryBasePath}/${getCategorySlug(cat, categorySlugs)}`}
-                  prefetch={false}
-                  onClick={(e) => {
-                    if (!isPlainLeftClick(e)) return
-                    e.preventDefault()
-                    handleCategoryChange(cat)
-                  }}
-                  aria-current={isActive ? 'true' : undefined}
-                  className="category-pill"
-                  style={{
-                    textDecoration: 'none',
-                    padding: '8px 16px',
-                    borderRadius: '100px',
-                    border: `1px solid ${isActive ? colors.border : '#DCE0DE'}`,
-                    background: isActive ? colors.bg : 'transparent',
-                    color: isActive ? colors.text : '#525A57',
-                    fontSize: '13px',
-                    fontWeight: isActive ? 700 : 500,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                  }}
-                >
-                  {cat}
-                  <span style={{
-                    fontSize: '11px',
-                    padding: '1px 6px',
-                    borderRadius: '100px',
-                    background: isActive ? 'rgba(0,0,0,0.08)' : '#DCE0DE',
-                    color: isActive ? colors.text : '#525A57',
-                    fontWeight: 600,
-                  }}>
-                    {countsByCategory[cat] ?? 0}
-                  </span>
-                </Link>
-              )
-            })}
-          </nav>
+          ))}
+        </nav>
+      </PageHead>
 
-        </div>
-      </section>
+      {photo ? <div className={blog.photoWrap}>{photo}</div> : null}
 
-      {/* Grid */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 80px', borderTop: '1px solid #DCE0DE' }}>
-
+      <Section tone="pale" width="wide">
         {/* Result count + search context */}
         {searchQuery && (
-          <div style={{ marginBottom: '24px', padding: '12px 16px', background: '#F7F9F8', borderRadius: '10px', fontSize: '13px', color: '#525A57' }}>
+          <div className={blog.resultNote}>
             {filtered.length === 0
-              ? <>{ui.noResults} <strong style={{ color: '#0B5240' }}>&ldquo;{searchQuery}&rdquo;</strong>. {ui.tryDifferent}</>
-              : <>{ui.showingResults} <strong style={{ color: '#0B5240' }}>{filtered.length}</strong> {filtered.length === 1 ? ui.article : ui.articles} {ui.matching} <strong style={{ color: '#0B5240' }}>&ldquo;{searchQuery}&rdquo;</strong></>
+              ? <>{ui.noResults} <strong>&ldquo;{searchQuery}&rdquo;</strong>. {ui.tryDifferent}</>
+              : <>{ui.showingResults} <strong>{filtered.length}</strong> {filtered.length === 1 ? ui.article : ui.articles} {ui.matching} <strong>&ldquo;{searchQuery}&rdquo;</strong></>
             }
           </div>
         )}
 
         {filtered.length === 0 && !searchQuery ? (
-          <div style={{ textAlign: 'center', padding: '60px 20px', color: '#525A57' }}>
-            <p style={{ fontSize: '14px' }}>{ui.noArticlesCategory}</p>
+          <div className={blog.empty}>
+            <p>{ui.noArticlesCategory}</p>
           </div>
         ) : (
-          <div className="blog-grid">
-            {paginated.map(article => {
-              const colors = getCategoryColor(article.category)
-              return (
-                <Link
-                  key={article.slug}
-                  href={`${blogBasePath}/${article.slug}`}
-                  className="blog-card"
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '14px',
-                    padding: '0',
-                    background: '#fff',
-                    textDecoration: 'none',
-                    borderRadius: '16px',
-                    border: '1px solid #DCE0DE',
-                  }}
-                >
-                  {/* Decorative category illustration at the top of the card */}
-                  <div className="blog-card-hero" style={{ aspectRatio: '16/9', overflow: 'hidden', borderRadius: '15px 15px 0 0' }}>
-                    <CategoryHero category={article.category} title={article.title} slug={article.slug} />
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 22px 22px', flex: 1 }}>
-                    {/* Category badge + meta */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                      <span style={{
-                        fontSize: '10.5px',
-                        padding: '3px 10px',
-                        borderRadius: '100px',
-                        background: colors.bg,
-                        color: colors.text,
-                        fontWeight: 600,
-                        letterSpacing: '0.02em',
-                        border: `1px solid ${colors.border}`,
-                      }}>
-                        {article.category}
-                      </span>
-                      <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
-                      <span style={{ fontSize: '12px', color: '#525A57' }}>{article.readTime} {ui.minRead}</span>
-                    </div>
-
-                    {/* Title */}
-                    <h2
-                      className="font-serif blog-card-title"
-                      style={{ fontSize: '16px', fontWeight: 700, color: '#0F1A16', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}
-                    >
-                      {article.title}
-                    </h2>
-
-                    {/* Description */}
-                    {/* Weight 400, not 300. A 300 weight at 13px is thin
-                        enough to break up on a phone screen in daylight, which
-                        is where this listing is read. */}
-                    <p style={{ fontSize: '13.5px', color: '#525A57', lineHeight: 1.65, margin: 0, fontWeight: 400, flex: 1 }}>
-                      {article.description}
-                    </p>
-
-                    {/* CTA */}
-                    <span style={{ fontSize: '12.5px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                      {ui.readMore} <span className="read-arrow">→</span>
-                    </span>
-                  </div>
-                </Link>
-              )
-            })}
+          <div className={blog.grid}>
+            {paginated.map(article => (
+              <ArticleCard
+                key={article.slug}
+                href={`${blogBasePath}/${article.slug}`}
+                meta={`${labelOf(article.category)} · ${article.readTime} ${ui.minRead}`}
+                title={article.title}
+                desc={article.description}
+                cta={ui.readMore}
+              />
+            ))}
           </div>
         )}
 
@@ -577,11 +412,17 @@ export default function BlogClient({
 
         {/* Count */}
         {filtered.length > 0 && (
-          <p style={{ textAlign: 'center', fontSize: '12px', color: '#525A57', marginTop: '16px' }}>
+          <p className={blog.countNote}>
             {ui.showing} {(page - 1) * PER_PAGE + 1}-{Math.min(page * PER_PAGE, filtered.length)} {ui.of} {filtered.length} {filtered.length === 1 ? ui.article : ui.articles}
           </p>
         )}
-      </section>
-    </>
+      </Section>
+
+      <CtaBand>
+        <GuideCta category="Tax Return" slug="blog-index" lang={lang} />
+      </CtaBand>
+
+      <div aria-hidden="true" className="md:hidden" style={{ height: 'calc(84px + env(safe-area-inset-bottom, 0px))' }} />
+    </div>
   )
 }

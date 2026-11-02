@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
+import { CalculatorView, type CalcStrings } from '@/components/wht/CalculatorBlocks'
+import { Mark } from '@/components/wht/Type'
 import { waUrl } from '@/lib/wa'
 import { trackCalculator, trackWhatsApp } from '@/lib/analytics'
 
@@ -18,6 +19,7 @@ type FAQ = { question: string; answer: string }
 
 type Props = {
   faqs?: FAQ[]
+  photo?: React.ReactNode
 }
 
 const money = (n: number) => '$' + Math.round(n).toLocaleString('en-AU')
@@ -88,7 +90,59 @@ const MYGOV = [
   },
 ]
 
-export function CalculatorClient({ faqs = [] }: Props) {
+const T: CalcStrings = {
+  eyebrow: "まずは目安から",
+  h1: <>ワーホリのタックスリターン<Mark>計算ツール</Mark></>,
+  lead: "収入と源泉徴収額を入力してください。数秒で目安の金額が出ます。",
+  incomeLabel: "総収入",
+  withheldLabel: "源泉徴収された税額",
+  withheldHint: "インカムステートメント（Income Statement）またはPayment Summaryに記載されています。すべての勤務先を合計してください。",
+  visaLabel: "税務居住者ステータス",
+  visaPlaceholder: "ステータスを選択",
+  optWhm: "ワーキングホリデーメーカー（417 / 462）",
+  optRes: "オーストラリア税務居住者",
+  visaHint: "ビザがワーキングホリデー（417・462）の方は、ほとんどの場合こちらを選びます。",
+  superLabel: "スーパー残高",
+  optional: "（任意）",
+  superHint: "417・462ビザを一度でも保持した場合、課税対象部分に65%のDASP税率が適用され、ワーホリの場合は実質的に残高のほぼ全額です。",
+  abnLabel: "ABNでの請求もありました",
+  abnHint: "デリバリー、業務委託など請求書を出した仕事です。",
+  calculate: "計算する",
+  resultNote: "あくまで目安の数字です。実際の金額は、このページでは決められない3つの点で変わります。どちらの居住区分が当てはまるか、メディケア税の免除が使えるか、そしてあなたの職種で何を控除できるか。",
+  sendWa: "この試算をWhatsAppで送る",
+  sendNote: "入力した数字がメッセージに入ります。返信は約1時間以内。",
+  supTitle: "スーパー受取（DASP）",
+  balance: "残高",
+  taxAt: (rate) => `税金 ${rate}%`,
+  youReceive: "受取額",
+  supNote: "スーパーの受け取りは、オーストラリアを出国し、ビザが失効または取り消された後に限られます。",
+  supLink: "DASP申請の流れはこちら",
+  totalLabel: "合計の目安",
+  footnote: "この計算ツールが使うのは2025-26年度の税率と、入力された数字だけです。最終的な金額ではありません。",
+  doEyebrow: "自分でやる場合",
+  doTitle: <>少ない金額を入力すれば、<Mark>myGovはその金額のまま</Mark>提出します。</>,
+  doIntro: "概算の精度は、入力した数字までです。そこに入っていないものが、下の4つです。",
+  colMygov: "myGovの場合",
+  colUs: "当社の場合",
+  doStatement: "myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。",
+  diffTitle: "実際の金額が、この数字と変わる理由",
+  diffParas: [
+    "3つあり、どれもこのページには入っていません。1つ目は居住区分です。判断ひとつで1年全体の税率が変わることがあります。ご本人の状況によって決まる判断であり、他のどの要素よりも金額への影響が大きい部分です。",
+    "2つ目はメディケア税です。課税所得の2%が自動的に差し引かれますが、417・462ビザの多くはそもそも支払う義務がありません。外すにはほとんど誰も申請しない証明書が必要です。",
+    "3つ目は控除で、myGovではただの空欄です。ファーム、カフェ、ホスピタリティで、申告できる項目はそれぞれ違います。",
+  ],
+  linkMedicare: "メディケア税の免除について",
+  linkSuper: "帰国後のスーパー受取",
+  linkExpenses: "実際に控除できるもの",
+  faqTitle: "試算についてのよくある質問",
+  ctaTitle: "提出は誰でもできます。仕事はその前にあります。",
+  ctaText: "試算した数字をお送りください。あなたの1年で何が効くのかをお伝えします。当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。",
+  ctaNote: "申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。",
+  ctaButton: "WhatsAppで相談する",
+  ctaReply: "返信は約1時間以内。",
+}
+
+export function CalculatorClient({ faqs = [], photo }: Props) {
   const [income,   setIncome]   = useState('')
   const [withheld, setWithheld] = useState('')
   const [visa,     setVisa]     = useState('')
@@ -140,379 +194,16 @@ export function CalculatorClient({ faqs = [] }: Props) {
     trackWhatsApp({ position: 'calculator-result', topic: 'calculator', lang: 'ja', tier: hasAbn ? 'tfn-abn' : 'tfn' })
   }
 
-  const LABEL = 'block font-semibold text-muted'
-  const LABEL_S: React.CSSProperties = { fontSize: '12.5px', letterSpacing: '0.04em', marginBottom: '10px' }
-  // 16px未満だとiOSがフォーカス時にページ全体を拡大します。
-  const FIELD: React.CSSProperties = { fontSize: '16px', height: '54px' }
-
   return (
-    <>
-      {/* ページ冒頭 */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
-          <div className="max-w-[620px] mx-auto text-center">
-
-            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4 justify-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
-              <span className="font-medium uppercase"
-                style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240' }}>
-                まずは目安から
-              </span>
-            </div>
-
-            <h1 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(25px,3.2vw,40px)', lineHeight: 1.3, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-              ワーホリのタックスリターン計算ツール
-            </h1>
-
-            <p className="hero-sub mx-auto"
-              style={{ fontSize: '16.5px', lineHeight: 1.8, color: '#0F1A16', maxWidth: '34ch' }}>
-              収入と源泉徴収額を入力してください。数秒で目安の金額が出ます。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 計算フォーム */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-12 lg:px-14">
-          <div className="max-w-xl mx-auto w-full">
-
-            <div className="space-y-5 mb-6">
-              <div>
-                <label htmlFor="ci" className={LABEL} style={LABEL_S}>総収入</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
-                  <input
-                    id="ci" type="number" placeholder="0" value={income} min={0} max={10000000}
-                    inputMode="decimal" enterKeyHint="next"
-                    onChange={e => setIncome(e.target.value)}
-                    className="input-base"
-                    style={{ ...FIELD, paddingLeft: '60px' }}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="cw" className={LABEL} style={LABEL_S}>源泉徴収された税額</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
-                  <input
-                    id="cw" type="number" placeholder="0" value={withheld} min={0} max={5000000}
-                    inputMode="decimal" enterKeyHint="next"
-                    onChange={e => setWithheld(e.target.value)}
-                    className="input-base"
-                    style={{ ...FIELD, paddingLeft: '60px' }}
-                  />
-                </div>
-                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
-                  インカムステートメント（Income Statement）またはPayment Summaryに記載されています。すべての勤務先を合計してください。
-                </p>
-              </div>
-
-              <div>
-                <label htmlFor="cv" className={LABEL} style={LABEL_S}>税務居住者ステータス</label>
-                <div className="relative">
-                  <select
-                    id="cv" value={visa} onChange={e => setVisa(e.target.value)}
-                    className="input-base appearance-none cursor-pointer pr-10"
-                    style={{ ...FIELD, color: visa ? undefined : '#525A57' }}
-                  >
-                    <option value="">ステータスを選択</option>
-                    <option value="whm">ワーキングホリデーメーカー（417 / 462）</option>
-                    <option value="res">オーストラリア税務居住者</option>
-                  </select>
-                  <svg className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
-                    <path d="M1 1l5 5 5-5" stroke="#525A57" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
-                  ビザがワーキングホリデー（417・462）の方は、ほとんどの場合こちらを選びます。
-                </p>
-              </div>
-
-              <div>
-                <label htmlFor="cs" className={LABEL} style={LABEL_S}>
-                  スーパー残高 <span style={{ opacity: 0.7 }}>（任意）</span>
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
-                  <input
-                    id="cs" type="number" placeholder="0" value={superBal} min={0} max={5000000}
-                    inputMode="decimal" enterKeyHint="done"
-                    onChange={e => setSuperBal(e.target.value)}
-                    className="input-base"
-                    style={{ ...FIELD, paddingLeft: '60px' }}
-                  />
-                </div>
-                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px', lineHeight: 1.7 }}>
-                  417・462ビザを一度でも保持した場合、残高全額に65%のDASP税率が適用されます。
-                </p>
-              </div>
-
-              <div className="rounded-xl" style={{ border: '1.5px solid #DCE0DE', background: '#F7FBF9' }}>
-                <label htmlFor="cabn" className="flex items-start gap-3 cursor-pointer" style={{ padding: '14px 16px', minHeight: '44px' }}>
-                  <input
-                    id="cabn" type="checkbox" checked={hasAbn}
-                    onChange={e => setHasAbn(e.target.checked)}
-                    style={{ width: '20px', height: '20px', marginTop: '2px', accentColor: '#0B5240', flexShrink: 0 }}
-                  />
-                  <span>
-                    <span className="font-semibold text-ink" style={{ fontSize: '15px', display: 'block' }}>
-                      ABNでの請求もありました
-                    </span>
-                    <span style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.7 }}>
-                      デリバリー、業務委託など請求書を出した仕事です。
-                    </span>
-                  </span>
-                </label>
-              </div>
-
-              {err && <p role="alert" style={{ fontSize: '14px', color: '#9A3412', fontWeight: 500 }}>{err}</p>}
-            </div>
-
-            <button type="button" onClick={run}
-              className="btn-primary w-full flex items-center justify-center"
-              style={{ minHeight: '54px', fontSize: '16px', borderRadius: '100px' }}>
-              計算する
-            </button>
-
-            {result && (
-              <div
-                ref={resultRef}
-                tabIndex={-1}
-                role="status"
-                aria-live="polite"
-                style={{
-                  marginTop: '20px',
-                  scrollMarginTop: '80px',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  outline: 'none',
-                  border: `1.5px solid ${result.owing ? '#FDBA74' : '#DCE0DE'}`,
-                  background: result.owing ? '#FEF3F0' : '#F2FAF7',
-                }}>
-
-                <div style={{ padding: '22px 20px 18px', textAlign: 'center' }}>
-                  <p className="font-semibold"
-                    style={{ fontSize: '12px', letterSpacing: '0.08em', marginBottom: '7px', color: result.owing ? '#9A3412' : '#0B5240' }}>
-                    {result.label}
-                  </p>
-                  <p className="font-black"
-                    style={{ fontSize: 'clamp(30px,6vw,42px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: result.owing ? '#9A3412' : '#0B5240' }}>
-                    {result.amount}
-                  </p>
-                  <p style={{ fontSize: '14px', lineHeight: 1.7, marginTop: '9px', color: '#0F1A16' }}>
-                    {result.sub}
-                  </p>
-                </div>
-
-                <div style={{ padding: '0 20px 18px' }}>
-                  {/* 「それを詰めるのが確認作業です。」は、直前で挙げた3点に
-                      事実を足さない締めの一文だったので落とした。 */}
-                  <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#0F1A16', marginBottom: '14px' }}>
-                    あくまで目安の数字です。実際の金額は、このページでは決められない3つの点で変わります。どちらの居住区分が当てはまるか、メディケア税の免除が使えるか、そしてあなたの職種で何を控除できるか。
-                  </p>
-                  <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
-                    className="btn-primary w-full flex items-center justify-center"
-                    style={{ minHeight: '50px', fontSize: '15px', borderRadius: '100px' }}>
-                    この試算をWhatsAppで送る
-                  </a>
-                  <p style={{ fontSize: '13px', color: '#525A57', marginTop: '9px', textAlign: 'center' }}>
-                    入力した数字がメッセージに入ります。返信は約1時間以内。
-                  </p>
-                </div>
-
-                {result.sup && (
-                  <div style={{ borderTop: '1px solid rgba(11,82,64,0.12)', background: 'rgba(255,255,255,0.55)', padding: '16px 20px' }}>
-                    <p className="font-semibold"
-                      style={{ fontSize: '12px', letterSpacing: '0.08em', color: '#0B5240', marginBottom: '11px' }}>
-                      スーパー受取（DASP）
-                    </p>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '6px' }}>
-                      <span style={{ color: '#525A57' }}>残高</span>
-                      <span style={{ fontWeight: 500 }}>{money(result.sup.gross)}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '9px', paddingBottom: '9px', borderBottom: '1px solid rgba(11,82,64,0.1)' }}>
-                      <span style={{ color: '#525A57' }}>税金 {result.sup.rate}%</span>
-                      <span style={{ fontWeight: 500, color: '#9A3412' }}>-{money(result.sup.tax)}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                      <span style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240' }}>受取額</span>
-                      <span className="font-black" style={{ fontSize: '19px', letterSpacing: '-0.02em', color: '#0B5240' }}>{money(result.sup.net)}</span>
-                    </div>
-                    <p style={{ fontSize: '13px', lineHeight: 1.7, marginTop: '11px', color: '#525A57' }}>
-                      スーパーの受け取りは、オーストラリアを出国し、ビザが失効または取り消された後に限られます。
-                      <Link href="/ja/superannuation" style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
-                        DASP申請の流れはこちら
-                      </Link>
-                    </p>
-                  </div>
-                )}
-
-                {result.sup && !result.owing && (
-                  <div style={{ borderTop: '1px solid rgba(11,82,64,0.12)', padding: '15px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <span className="font-semibold" style={{ fontSize: '12.5px', letterSpacing: '0.04em', color: '#0B5240' }}>
-                      合計の目安
-                    </span>
-                    <span className="font-black" style={{ fontSize: '23px', letterSpacing: '-0.025em', color: '#0B5240' }}>{money(result.total)}</span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <p style={{ fontSize: '13px', color: '#525A57', marginTop: '16px', lineHeight: 1.7 }}>
-              この計算ツールが使うのは2025-26年度の税率と、入力された数字だけです。最終的な金額ではありません。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 反論への回答、概算に即して */}
-      <section className="py-10 lg:py-14" style={{ background: '#fff', borderTop: '1px solid #DCE0DE' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
-
-            <p className="font-medium uppercase"
-              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '12px' }}>
-              自分でやる場合
-            </p>
-
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '16px' }}>
-              <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>少ない金額を入力すれば、</span>
-              <span style={{ display: 'block' }}>myGovはその金額のまま提出します。</span>
-            </h2>
-
-            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#525A57', maxWidth: '42ch', marginBottom: '20px' }}>
-              概算の精度は、入力した数字までです。そこに入っていないものが、下の4つです。
-            </p>
-
-            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
-              {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
-                  <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
-                    {/* 見出しは1行目だけ。スマホでは行が縦に積まれるため、両方の
-                        見出しを8回繰り返すと同じ2語が画面を下っていくだけになる。
-                        デスクトップでは列見出し、スマホでは凡例として機能する。 */}
-                    {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#525A57', marginBottom: '5px' }}>
-                        myGovの場合
-                      </p>
-                    )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
-                  </div>
-                  <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
-                    style={{ padding: '13px 16px', background: '#F2FAF7' }}>
-                    {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
-                        当社の場合
-                      </p>
-                    )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', fontWeight: 500, margin: 0, overflowWrap: 'break-word' }}>{row.us}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="font-serif" style={{ fontSize: '17px', lineHeight: 1.75, color: '#0B5240', marginTop: '22px', maxWidth: '36ch', fontWeight: 700 }}>
-              myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 確認作業で変わるところ */}
-      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '16px' }}>
-              実際の金額が、この数字と変わる理由
-            </h2>
-            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', marginBottom: '14px' }}>
-              3つあり、どれもこのページには入っていません。1つ目は居住区分です。判断ひとつで1年全体の税率が変わることがあります。ご本人の状況によって決まる判断であり、他のどの要素よりも金額への影響が大きい部分です。
-            </p>
-            {/* 1段落に2つ目と3つ目が同居して5文の塊になっていた。メディケア税が
-                終わり控除が始まる転換点で切っている。 */}
-            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', marginBottom: '14px' }}>
-              2つ目はメディケア税です。課税所得の2%が自動的に差し引かれますが、417・462ビザの多くはそもそも支払う義務がありません。外すにはほとんど誰も申請しない証明書が必要です。
-            </p>
-            <p style={{ fontSize: '15px', lineHeight: 1.85, color: '#0F1A16', marginBottom: '14px' }}>
-              3つ目は控除で、myGovではただの空欄です。ファーム、カフェ、ホスピタリティで、申告できる項目はそれぞれ違います。
-            </p>
-            <div className="flex flex-wrap gap-3" style={{ marginTop: '18px' }}>
-              <Link href="/ja/medicare"
-                className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
-                メディケア税の免除について
-              </Link>
-              <Link href="/ja/superannuation"
-                className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
-                帰国後のスーパー受取
-              </Link>
-              <Link href="/ja/expenses"
-                className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
-                実際に控除できるもの
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      {faqs.length > 0 && (
-        <section style={{ background: '#fff', paddingTop: '50px', paddingBottom: '50px' }}>
-          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(20px,2.5vw,29px)', lineHeight: 1.3, letterSpacing: '-0.015em', marginBottom: '18px' }}>
-              試算についてのよくある質問
-            </h2>
-
-            <div className="flex flex-col" style={{ gap: '4px' }}>
-              {faqs.map((f, i) => (
-                <details key={i} name="calculator-faq" className="contact-faq-item">
-                  <summary className="contact-faq-summary">
-                    <span style={{ flex: 1 }}>{f.question}</span>
-                    <span className="contact-faq-plus" aria-hidden="true">+</span>
-                  </summary>
-                  {/* 段落ごとに1つの<p>。page.tsx の FAQPage スキーマは元の
-                      文字列を使うため、構造化データは変わらない。 */}
-                  {f.answer.split("\n\n").map((para, j) => (
-                    <p key={j} className="contact-faq-answer">{para}</p>
-                  ))}
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 最後のCTA */}
-      <section style={{ background: '#0B5240', paddingTop: '50px', paddingBottom: '60px' }}>
-        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-          <h2 className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(22px,2.8vw,32px)', lineHeight: 1.35, letterSpacing: '-0.015em', marginBottom: '14px', maxWidth: '20ch' }}>
-            提出は誰でもできます。仕事はその前にあります。
-          </h2>
-          <p className="mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.85, marginBottom: '10px', maxWidth: '34ch' }}>
-            試算した数字をお送りください。あなたの1年で何が効くのかをお伝えします。当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
-          </p>
-          <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: '22px', maxWidth: '34ch' }}>
-            申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。
-          </p>
-          <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
-            className="btn-primary w-full sm:w-auto"
-            style={{ minHeight: '54px', padding: '0 36px', fontSize: '16px', minWidth: '260px' }}>
-            WhatsAppで相談する
-          </a>
-          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '12px' }}>
-            返信は約1時間以内。
-          </p>
-        </div>
-      </section>
-    </>
+    <CalculatorView
+      t={T}
+      hrefs={{ superannuation: '/ja/superannuation', medicare: '/ja/medicare', expenses: '/ja/expenses' }}
+      photo={photo}
+      faqs={faqs}
+      mygov={MYGOV}
+      income={income} withheld={withheld} visa={visa} superBal={superBal} hasAbn={hasAbn} err={err}
+      setIncome={setIncome} setWithheld={setWithheld} setVisa={setVisa} setSuperBal={setSuperBal} setHasAbn={setHasAbn}
+      onRun={run} result={result} resultRef={resultRef} money={money} waHref={waHref} onWaTap={onWaTap}
+    />
   )
 }

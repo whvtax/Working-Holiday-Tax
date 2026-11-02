@@ -7,6 +7,7 @@ import ReadingProgress from './ReadingProgress'
 import { trackEvent } from './../analytics'
 import { waUrl, type WaTopic } from '@/lib/wa'
 import { trackGuideCta, trackWhatsApp } from '@/lib/analytics'
+import { blog } from '@/components/wht/BlogBlocks'
 
 interface Guide {
   slug: string
@@ -18,7 +19,7 @@ interface Guide {
   category: string
 }
 
-type Locale = 'en' | 'de' | 'ja'
+type Locale = 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es'
 
 // Localized UI strings for the article component
 const ARTICLE_UI = {
@@ -51,6 +52,36 @@ const ARTICLE_UI = {
     shareWhatsApp: 'WhatsAppでシェア',
     backToBlog: 'ブログ一覧へ戻る',
     tocAriaLabel: '目次',
+  },
+  fr: {
+    quickAnswerLabel: 'Réponse rapide',
+    onThisPage: 'Sommaire',
+    shareThisArticle: 'Partager cet article :',
+    shareCopy: 'Copier le lien',
+    shareCopied: '✓ Copié !',
+    shareWhatsApp: 'Partager sur WhatsApp',
+    backToBlog: 'Retour au blog',
+    tocAriaLabel: 'Sommaire',
+  },
+  it: {
+    quickAnswerLabel: 'Risposta rapida',
+    onThisPage: 'Indice',
+    shareThisArticle: 'Condividi questo articolo:',
+    shareCopy: 'Copia il link',
+    shareCopied: '✓ Copiato!',
+    shareWhatsApp: 'Condividi su WhatsApp',
+    backToBlog: 'Torna al blog',
+    tocAriaLabel: 'Indice',
+  },
+  es: {
+    quickAnswerLabel: 'Respuesta rápida',
+    onThisPage: 'Contenido',
+    shareThisArticle: 'Compartir este artículo:',
+    shareCopy: 'Copiar enlace',
+    shareCopied: '✓ ¡Copiado!',
+    shareWhatsApp: 'Compartir por WhatsApp',
+    backToBlog: 'Volver al blog',
+    tocAriaLabel: 'Contenido',
   },
 }
 
@@ -167,6 +198,84 @@ const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
       cta: '質問する',
     },
   },
+  fr: {
+    'TFN': {
+      body: "Imposé à 45\xa0% avant que votre TFN arrive à la paie\xa0? Rien n'est perdu définitivement\xa0: l'impôt retenu en trop revient lors du dépôt de la tax return. Dites-nous où vous avez travaillé et nous vous dirons où en est votre année.",
+      cta: 'Voir ma situation sur WhatsApp',
+    },
+    'ABN': {
+      body: "Si vous avez aussi facturé sous un ABN en plus de travailler avec un TFN, c'est cette répartition qui décide de votre tax return. Envoyez-nous ce que vous avez fait et nous verrons où vous en êtes.",
+      cta: 'Nous écrire sur WhatsApp',
+    },
+    'Tax Return': {
+      body: "Si vous préférez ne pas faire le calcul seul, parlez-nous de l'année que vous avez eue et nous vous dirons ce que cela change pour votre tax return.",
+      cta: 'Nous écrire sur WhatsApp',
+    },
+    'Super': {
+      body: 'Si vous préférez que nous retrouvions toutes les caisses rattachées à votre TFN et que nous déposions la demande une seule fois, envoyez-nous vos informations.',
+      cta: 'Poser une question sur ma super',
+    },
+    'Medicare & Other': {
+      body: "Pas sûr que l'exemption vous concerne\xa0? Dites-nous quel passeport vous avez et si vous vous êtes déjà inscrit, et nous vérifierons.",
+      cta: 'Nous écrire sur WhatsApp',
+    },
+    'Work Rights': {
+      body: 'Si un point de ce guide touche votre paie ou vos heures, il se retrouve souvent dans votre tax return aussi. Nous sommes sur WhatsApp si vous voulez poser une question.',
+      cta: 'Poser une question',
+    },
+  },
+  it: {
+    'TFN': {
+      body: "Tassato al 45% prima che il tuo TFN arrivasse all'ufficio paghe? Non si perde niente in modo definitivo, perché le imposte trattenute in eccesso tornano con la tax return. Dicci dove hai lavorato e ti diciamo a che punto è il tuo anno.",
+      cta: 'Controlla il mio anno su WhatsApp',
+    },
+    'ABN': {
+      body: 'Se oltre a lavorare con il TFN hai fatturato anche con un ABN, è proprio questa divisione a decidere la tua tax return. Mandaci quello che hai fatto e capiamo a che punto sei.',
+      cta: 'Scrivici su WhatsApp',
+    },
+    'Tax Return': {
+      body: "Se non vuoi fare i conti per conto tuo, raccontaci l'anno che hai avuto e ti diciamo cosa significa per la tua tax return.",
+      cta: 'Scrivici su WhatsApp',
+    },
+    'Super': {
+      body: 'Se vuoi che troviamo tutti i fondi collegati al tuo TFN e presentiamo la richiesta una volta sola, mandaci i tuoi dati.',
+      cta: 'Chiedi della tua super',
+    },
+    'Medicare & Other': {
+      body: "Non sai se l'esenzione vale per te? Dicci che passaporto hai e se hai mai fatto l'iscrizione a Medicare, e controlliamo.",
+      cta: 'Scrivici su WhatsApp',
+    },
+    'Work Rights': {
+      body: 'Se qualcosa di questa guida ha toccato la tua paga o le tue ore, di solito compare anche nella tax return. Siamo su WhatsApp se vuoi chiedere.',
+      cta: 'Facci una domanda',
+    },
+  },
+  es: {
+    'TFN': {
+      body: '¿Te retuvieron el 45\xa0% antes de que tu TFN llegara al payroll? No se pierde nada de forma definitiva, porque el impuesto retenido de más vuelve cuando presentas la tax return. Cuéntanos dónde trabajaste y te diremos cómo va tu año.',
+      cta: 'Revisar mi año por WhatsApp',
+    },
+    'ABN': {
+      body: 'Si además de trabajar con TFN facturaste con un ABN, esa división es lo que decide tu tax return. Cuéntanos qué hiciste y vemos cómo estás.',
+      cta: 'Escríbenos por WhatsApp',
+    },
+    'Tax Return': {
+      body: 'Si prefieres no hacer las cuentas por tu cuenta, cuéntanos cómo fue tu año y te diremos qué significa para tu tax return.',
+      cta: 'Escríbenos por WhatsApp',
+    },
+    'Super': {
+      body: 'Si prefieres que encontremos todos los fondos ligados a tu TFN y presentemos el reclamo una sola vez, envíanos tus datos.',
+      cta: 'Consulta sobre tu super',
+    },
+    'Medicare & Other': {
+      body: '¿No sabes si la exención aplica en tu caso? Dinos qué pasaporte tienes y si alguna vez te inscribiste, y lo revisamos.',
+      cta: 'Escríbenos por WhatsApp',
+    },
+    'Work Rights': {
+      body: 'Si algo de esta guía afectó tu pago o tus horas, normalmente también aparece en tu tax return. Estamos en WhatsApp si quieres preguntar.',
+      cta: 'Haznos una pregunta',
+    },
+  },
 }
 
 function InlineGuideCta({ guide, locale }: { guide: Guide; locale: Locale }) {
@@ -184,7 +293,7 @@ function InlineGuideCta({ guide, locale }: { guide: Guide; locale: Locale }) {
   }
 
   return (
-    <aside className="guide-inline-cta">
+    <aside className={blog.inlineCta}>
       <p>{copy.body}</p>
       {/* Layout only. Colour, size and underline come from .guide-inline-cta a
           in the stylesheet; this just gives the link a 44px tap target. */}
@@ -260,8 +369,7 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
         <h2
           key={key++}
           id={id}
-          className="font-serif"
-          style={{ fontSize: 'clamp(20px, 2.6vw, 24px)', fontWeight: 700, color: '#0B5240', marginTop: '2.5rem', marginBottom: '0.75rem', letterSpacing: '-0.022em', lineHeight: 1.25, scrollMarginTop: '90px' }}
+          className={blog.h2}
         >
           {text}
         </h2>
@@ -272,8 +380,7 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
       elements.push(
         <h3
           key={key++}
-          className="font-serif"
-          style={{ fontSize: '17px', fontWeight: 700, color: '#0F1A16', marginTop: '1.5rem', marginBottom: '0.5rem', letterSpacing: '-0.01em' }}
+          className={blog.h3}
         >
           {line.replace('### ', '')}
         </h3>
@@ -288,12 +395,11 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
       elements.push(
         <ul
           key={key++}
-          style={{ marginBottom: '1.1rem', paddingLeft: '1.4rem', listStyleType: 'disc' }}
+          className={blog.list}
         >
           {items.map((item, idx) => (
             <li
               key={idx}
-              style={{ fontSize: '15.5px', color: '#0F1A16', lineHeight: 1.8, marginBottom: '0.45rem', fontWeight: 400 }}
               dangerouslySetInnerHTML={{ __html: renderInline(item) }}
             />
           ))}
@@ -308,12 +414,11 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
       elements.push(
         <ol
           key={key++}
-          style={{ marginBottom: '1.1rem', paddingLeft: '1.4rem', listStyleType: 'decimal' }}
+          className={blog.list}
         >
           {items.map((item, idx) => (
             <li
               key={idx}
-              style={{ fontSize: '15.5px', color: '#0F1A16', lineHeight: 1.8, marginBottom: '0.45rem', fontWeight: 400 }}
               dangerouslySetInnerHTML={{ __html: renderInline(item) }}
             />
           ))}
@@ -324,25 +429,10 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
         // Quick Answer block - shortened to 2-3 sentences for AI snippets and quick scanning.
         const quickAnswerText = shortenQuickAnswer(line)
         elements.push(
-          <div
-            key={key++}
-            style={{
-              background: 'linear-gradient(135deg, #F2FAF7 0%, #F7F9F8 100%)',
-              borderLeft: '4px solid #0B5240',
-              borderRadius: '12px',
-              padding: '18px 22px',
-              marginBottom: '1.75rem',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0B5240' }} aria-hidden="true" />
-              <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                {ui.quickAnswerLabel}
-              </span>
-            </div>
+          <div key={key++} className={blog.quick}>
+            <p className={blog.quickLabel}>{ui.quickAnswerLabel}</p>
             <p
               className="quick-answer"
-              style={{ fontSize: '16px', color: '#0F1A16', lineHeight: 1.65, margin: 0, fontWeight: 400 }}
               dangerouslySetInnerHTML={{ __html: renderInline(quickAnswerText) }}
             />
           </div>
@@ -352,7 +442,7 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
         elements.push(
           <p
             key={key++}
-            style={{ fontSize: '15.5px', color: '#0F1A16', lineHeight: 1.8, marginBottom: '1rem', fontWeight: 400 }}
+            className={blog.p}
             dangerouslySetInnerHTML={{ __html: renderInline(line) }}
           />
         )
@@ -488,38 +578,25 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
       {/* Mobile TOC drawer (only renders FAB on mobile/tablet) */}
       <MobileTOC headings={headings} activeHeading={activeHeading} locale={locale} />
 
-      <div ref={articleRef} className={`article-layout ${showToc ? 'with-toc' : ''}`}>
+      <div ref={articleRef} className={`${blog.layout} ${showToc ? blog.withToc : ''}`}>
 
-        {/* Main article column.
-            The measure is capped in ch rather than px. Uncapped, the text ran
-            the full width of the grid cell, which on a desktop without the TOC
-            sidebar is over 1,000px, or roughly 130 characters a line. 70ch
-            keeps it inside the 60 to 75 the eye can track without losing its
-            place on the return sweep, and the share row and back link line up
-            with the text rather than running past it. */}
-        <div style={{ minWidth: 0, maxWidth: '70ch' }}>
+        {/* Main article column. The measure is capped (700px, about 70
+            characters at 17px) so the line never runs past what the eye can
+            track, and the share row and back link line up with the text. */}
+        <div className={blog.column}>
 
-          {/* overflowWrap catches the long unbroken strings that turn up in
+          {/* overflow-wrap catches the long unbroken strings that turn up in
               tax writing, ABNs, reference numbers and the occasional URL,
               which would otherwise push the column sideways on a 360px
               screen. */}
-          <div className="guide-body" style={{ marginBottom: '2.5rem', overflowWrap: 'break-word' }}>
+          <div className={`guide-body ${blog.body}`}>
             {parseBody(guide.body, locale, <InlineGuideCta guide={guide} locale={locale} />)}
           </div>
 
           {/* Share */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2rem', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '13px', color: '#525A57', fontWeight: 500 }}>{ui.shareThisArticle}</span>
-            <button
-              onClick={handleCopy}
-              className="share-btn"
-              style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                minHeight: '44px', padding: '10px 18px', borderRadius: '100px',
-                border: '1px solid #DCE0DE', background: 'transparent',
-                fontSize: '13px', color: '#525A57', cursor: 'pointer', fontWeight: 500,
-              }}
-            >
+          <div className={blog.shareRow}>
+            <span>{ui.shareThisArticle}</span>
+            <button type="button" onClick={handleCopy} className={blog.shareBtn}>
               {copied ? ui.shareCopied : ui.shareCopy}
             </button>
             <a
@@ -527,70 +604,39 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleWhatsAppShare}
-              className="share-btn"
-              style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                minHeight: '44px', padding: '10px 18px', borderRadius: '100px',
-                border: '1px solid #DCE0DE', background: 'transparent',
-                fontSize: '13px', color: '#525A57', textDecoration: 'none', fontWeight: 500,
-              }}
+              className={blog.shareBtn}
             >
               {ui.shareWhatsApp}
             </a>
           </div>
 
           {/* Back */}
-          <div style={{ marginTop: '2.5rem', paddingBottom: '1rem' }}>
+          <div>
             <Link
-              href={locale === 'de' ? '/de/blog' : locale === 'ja' ? '/ja/blog' : '/blog'}
-              className="back-link"
-              style={{
-                fontSize: '13px',
-                color: '#0B5240',
-                fontWeight: 600,
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-              }}
+              href={locale === 'en' ? '/blog' : `/${locale}/blog`}
+              className={blog.back}
             >
-              <span className="back-arrow">←</span> {ui.backToBlog}
+              <span aria-hidden="true">←</span> {ui.backToBlog}
             </Link>
           </div>
         </div>
 
         {/* Desktop TOC sidebar */}
         {showToc && (
-          <aside className="toc-sidebar" aria-label={ui.tocAriaLabel}>
-            <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '12px' }}>
-              {ui.onThisPage}
-            </p>
+          <aside className={blog.toc} aria-label={ui.tocAriaLabel}>
+            <p className={blog.tocLabel}>{ui.onThisPage}</p>
             <nav>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, borderLeft: '2px solid #DCE0DE' }}>
-                {headings.map(h => {
-                  const isActive = activeHeading === h.id
-                  return (
-                    <li key={h.id} style={{ marginBottom: '2px' }}>
-                      <a
-                        href={`#${h.id}`}
-                        className="toc-link"
-                        style={{
-                          display: 'block',
-                          padding: '6px 0 6px 12px',
-                          marginLeft: '-2px',
-                          fontSize: '13px',
-                          color: isActive ? '#0B5240' : '#525A57',
-                          textDecoration: 'none',
-                          lineHeight: 1.45,
-                          fontWeight: isActive ? 600 : 400,
-                          borderLeft: `2px solid ${isActive ? '#0B5240' : 'transparent'}`,
-                        }}
-                      >
-                        {h.text}
-                      </a>
-                    </li>
-                  )
-                })}
+              <ul className={blog.tocList}>
+                {headings.map(h => (
+                  <li key={h.id}>
+                    <a
+                      href={`#${h.id}`}
+                      className={`${blog.tocLink} ${activeHeading === h.id ? blog.tocActive : ''}`}
+                    >
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </nav>
           </aside>

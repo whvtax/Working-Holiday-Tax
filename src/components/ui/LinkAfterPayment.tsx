@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
 import { waUrl } from '@/lib/wa'
+import { Hero } from '@/components/wht/Hero'
+import { Lead } from '@/components/wht/Type'
+import { LinkButton } from '@/components/wht/Button'
+import { blocks } from '@/components/wht/Blocks'
 
 /**
  * Where the retired questionnaire links lead (Jo, 29 Oct): no form, no
@@ -37,16 +41,11 @@ export const linkAfterPaymentMetadata = (lang: LinkAfterPaymentLang): Metadata =
 export function LinkAfterPayment({ lang }: { lang: LinkAfterPaymentLang }) {
   const t = TEXT[lang]
   return (
-    <div className="relative bg-white min-h-svh flex items-center justify-center pt-[68px]">
-      <div className="max-w-xl mx-auto px-6 text-center py-20">
-        <h1 className="font-serif font-black text-ink mb-3" style={{ fontSize: 'clamp(22px,3.5vw,34px)', letterSpacing: '-0.025em', lineHeight: 1.15 }}>
-          {t.title}
-        </h1>
-        <p className="font-light text-muted leading-[1.7] mb-8" style={{ fontSize: '14.5px' }}>{t.body}</p>
-        <a href={waUrl({ topic: 'general', lang })} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '46px', padding: '0 24px', fontSize: '13.5px' }}>
-          {t.cta}
-        </a>
-      </div>
+    <div className={blocks.underHeader}>
+      <Hero title={t.title}>
+        <Lead>{t.body}</Lead>
+        <LinkButton href={waUrl({ topic: 'general', lang })} target="_blank" rel="noopener noreferrer">{t.cta}</LinkButton>
+      </Hero>
     </div>
   )
 }

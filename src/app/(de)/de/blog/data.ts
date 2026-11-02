@@ -80,11 +80,11 @@ export const deCategoryMeta: DeCategoryMeta[] = [
     slug: 'tfn',
     title: 'TFN-Guides: beantragen, warten, nutzen',
     description: 'Alles über die Tax File Number (TFN): wie du sie beantragst, wie lange das dauert und was du tust, wenn etwas schiefläuft.',
-    intro: 'Eine Tax File Number (TFN) ist die 9-stellige Identifikationsnummer, die das ATO (australisches Finanzamt) jeder Person ausstellt, die in Australien Einkommen hat. Als Working Holiday Maker brauchst du eine TFN, bevor du anfängst zu arbeiten. Sonst muss dein Arbeitgeber 45 % Steuern einbehalten statt der 15 %, die für Working Holiday Maker gelten. Diese Artikel decken alles ab, von deiner ersten TFN-Beantragung bis hin zu Verzögerungen, verlorenen Nummern und Rückkehr mit Zweitvisum.',
+    intro: 'Eine Tax File Number (TFN) ist die 9-stellige Identifikationsnummer, die das ATO (australisches Finanzamt) jeder Person ausstellt, die in Australien Einkommen hat. Als Working Holiday Maker brauchst du eine TFN, bevor du anfängst zu arbeiten. Sonst muss dein Arbeitgeber 45 % Steuern einbehalten statt des regulären Satzes. Diese Artikel decken alles ab, von deiner ersten TFN-Beantragung bis hin zu Verzögerungen, verlorenen Nummern und Rückkehr mit Zweitvisum.',
     faq: [
-      { question: 'Brauchen Working Holiday Maker eine TFN in Australien?', answer: 'Ja. Jeder Working Holiday Maker, der in Australien Einkommen hat, braucht eine Tax File Number. Ohne eine bei deinem Arbeitgeber registrierte TFN muss er gesetzlich 45 % Steuern einbehalten statt der 15 %, die für Working Holiday Maker gelten.' },
+      { question: 'Brauchen Working Holiday Maker eine TFN in Australien?', answer: 'Ja. Jeder Working Holiday Maker, der in Australien Einkommen hat, braucht eine Tax File Number. Ohne eine bei deinem Arbeitgeber registrierte TFN muss er gesetzlich 45 % Steuern einbehalten statt des regulären Satzes.' },
       { question: 'Wie lange dauert es, eine TFN zu bekommen?', answer: 'Das ATO (australisches Finanzamt) bearbeitet TFN-Anträge innerhalb von 28 Tagen. Deine TFN wird per Brief an deine australische Postadresse geschickt. Viele Antragsteller bekommen sie innerhalb von zwei Wochen.' },
-      { question: 'Ist der TFN-Antrag kostenlos?', answer: 'Ja. Für eine TFN fällt keine Behördengebühr an. Geld kostet die Lücke drumherum: Jede Lohnzahlung, bevor dein Arbeitgeber die Nummer hat, wird mit 45 % statt 15 % einbehalten, und das kommt nur über die Steuererklärung zurück.' },
+      { question: 'Ist der TFN-Antrag kostenlos?', answer: 'Ja. Für eine TFN fällt keine Behördengebühr an. Geld kostet die Lücke drumherum: Jede Lohnzahlung, bevor dein Arbeitgeber die Nummer hat, wird mit 45 % statt des regulären Satzes einbehalten, und das kommt nur über die Steuererklärung zurück.' },
       { question: 'Kann man in Australien ohne TFN anfangen zu arbeiten?', answer: 'Ja, du kannst ohne TFN anfangen zu arbeiten, aber dein Arbeitgeber muss 45 % Steuern einbehalten, bis du eine TFN bereitstellst. Die zu viel gezahlte Steuer kannst du dir mit deiner Steuererklärung zurückholen.' },
     ],
     relatedServicePath: '/de/tfn',
@@ -160,11 +160,11 @@ export const deCategoryMeta: DeCategoryMeta[] = [
     slug: 'medicare',
     title: 'Medicare, Levy-Befreiung und Wohnsitz',
     description: 'Medicare, Medicare-Levy-Befreiung, steuerlicher Wohnsitz, Doppelbesteuerung und andere Themen für Working Holiday Maker in Australien.',
-    intro: 'Medicare ist das öffentliche Gesundheitssystem in Australien. Es wird teilweise durch die 2-%-Medicare-Levy finanziert, die automatisch von deinem zu versteuernden Einkommen abgezogen wird. Die meisten Working Holiday Maker haben keinen Anspruch auf Medicare und sollten daher eine Befreiung beantragen. Diese Artikel decken die Medicare-Berechtigung, die Levy-Befreiung, Gesundheitsabkommen (RHCA) und andere wichtige Steuerthemen ab.',
+    intro: 'Medicare ist das öffentliche Gesundheitssystem in Australien. Es wird teilweise durch die 2-%-Medicare-Levy finanziert, die automatisch von deinem zu versteuernden Einkommen abgezogen wird. Ob du Anspruch auf Medicare hattest, hängt vom Einzelfall ab und wird bei der Vorbereitung deiner Erklärung geprüft. Diese Artikel decken die Medicare-Berechtigung, die Levy-Befreiung, Gesundheitsabkommen (RHCA) und andere wichtige Steuerthemen ab.',
     faq: [
-      { question: 'Habe ich als deutscher Working Holiday Maker Anspruch auf Medicare?', answer: 'Nein. Deutschland hat kein Gesundheitsabkommen (RHCA) mit Australien. Das heißt: Als deutscher Working Holiday Maker hast du keinen Anspruch auf Medicare. Stattdessen solltest du eine Medicare-Levy-Befreiung bei deiner Steuererklärung beantragen.' },
-      { question: 'Was ist die Medicare-Levy-Befreiung?', answer: 'Wenn du keinen Anspruch auf Medicare hast, was auf die meisten Inhaber eines Working-Holiday-Visums zutrifft, kannst du bei deiner Steuererklärung eine Medicare-Levy-Befreiung beantragen. Das spart dir die 2 %-Levy auf dein Einkommen, was Hunderte bis Tausende Dollar betragen kann.' },
-      { question: 'Welche Länder haben ein Gesundheitsabkommen (RHCA) mit Australien?', answer: 'Aktuell haben Großbritannien, Neuseeland, Irland, Schweden, Niederlande, Finnland, Belgien, Italien, Malta, Norwegen und Slowenien ein RHCA mit Australien. Deutschland nicht.' },
+      { question: 'Habe ich als deutscher Working Holiday Maker Anspruch auf Medicare?', answer: 'Das hängt von deinem Einzelfall ab und lässt sich nicht pauschal sagen. Ob du für einen Teil des Jahres Anspruch auf Medicare hattest und ob eine Medicare-Levy-Befreiung infrage kommt, prüfen wir als Teil deiner Steuererklärung, und am Ende entscheidet das ATO.' },
+      { question: 'Was ist die Medicare-Levy-Befreiung?', answer: 'Wenn du keinen Anspruch auf Medicare hattest, kann bei der Steuererklärung eine Medicare-Levy-Befreiung infrage kommen. Sie betrifft die 2 %-Levy auf das Einkommen. Ob und für welche Zeit sie bei dir gilt, hängt vom Einzelfall ab und wird geprüft.' },
+      { question: 'Welche Länder haben ein Gesundheitsabkommen (RHCA) mit Australien?', answer: 'Australien hat mit einigen Ländern ein Gesundheitsabkommen (RHCA). Wie sich das auf deine Steuererklärung auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das prüfen wir im Einzelfall.' },
       { question: 'Brauche ich eine private Krankenversicherung in Australien?', answer: 'Eine private Krankenversicherung ist nicht zwingend nötig, aber sehr empfehlenswert für Working Holiday Maker ohne Medicare-Anspruch. Sie deckt medizinische Kosten ab, die du sonst selbst zahlen müsstest. Das ist getrennt von der Medicare Levy.' },
     ],
     relatedServicePath: '/de/medicare',
@@ -201,7 +201,7 @@ Eine falsche Antwort scheitert nicht. Es entsteht eine Erklärung, die sauber du
 
 An fünf konkreten Stellen, und keine davon meldet sich. Eine Erklärung trägt jede davon leer oder falsch beantwortet mit, und der Verlust wird erst sichtbar, wenn jemand danach sucht.
 
-- **Die Medicare-Levy-Befreiung, übersprungen.** Sie braucht ein Medicare Entitlement Statement, das Wochen vorher bei Services Australia bestellt wird, und lässt sich am Tag der Abgabe nicht nachholen. Sie auszulassen kostet 2 % des zu versteuernden Einkommens, rund 500 $ bei 25.000 $.
+- **Die Medicare-Levy-Befreiung, übersprungen.** Sie braucht einen Nachweis mit Vorlauf und lässt sich am Tag der Abgabe nicht nachholen. Sie auszulassen kostet 2 % des zu versteuernden Einkommens, rund 500 $ bei 25.000 $.
 - **Wohnsitz falsch beantwortet.** Der häufigste Backpacker-Fehler und der, der am ehesten später zu einem geänderten Bescheid führt.
 - **Abzüge nie geltend gemacht.** RSA- und White-Card-Kurse, Sonnenschutz für Arbeit im Freien, Werkzeug, das Waschen vorgeschriebener Uniformen und die Gebühr für den Tax Agent im Vorjahr.
 - **Ein Arbeitgeber, der beim Abgleich fehlt.** Der Überabzug bei einem im September verlassenen Job fällt leicht unter den Tisch, und dort sitzt meist die größte Einzelsumme.
@@ -209,7 +209,7 @@ An fünf konkreten Stellen, und keine davon meldet sich. Eine Erklärung trägt 
 
 ## Gibt es Jahre, in denen es nichts zu finden gibt?
 
-Ja. Ein Jahr mit einem Arbeitgeber, beim ATO als Working-Holiday-Maker-Arbeitgeber registriert, der TFN ab der ersten Schicht hinterlegt, durchgehend 15 % Einbehalt, ohne ABN-Einkommen und ohne Abreise, landet beim Abgleich meist nahe null.
+Ja. Ein Jahr mit einem Arbeitgeber, beim ATO als Working-Holiday-Maker-Arbeitgeber registriert, der TFN ab der ersten Schicht hinterlegt, durchgehend korrektem Einbehalt, ohne ABN-Einkommen und ohne Abreise, landet beim Abgleich meist nahe null.
 
 Nur sehen die wenigsten Working-Holiday-Jahre so aus. Ein Arbeitgeberwechsel, eine Farmsaison, eine Lücke bevor die TFN kam oder ein Rückflug im März verschieben die Zahl, nicht den Papierkram.
 
@@ -234,46 +234,41 @@ Die Hürden aus dem Ausland sind Identität und Zugang, nicht die Steuer. Ein au
   },
   'working-holiday-visa-tax-guide-417-462': {
     title: 'Steuern mit 417/462-Visum: Sätze und Regeln',
-    description: 'Der komplette Steuerguide für Working Holiday Maker: 15 % auf die ersten 45.000 Dollar, was darüber gilt, Medicare-Levy-Befreiung, Super und Erstattungen.',
+    description: 'Der Überblick über Steuern für Working Holiday Maker: wie Sätze und Status im Einzelfall geprüft werden, Medicare-Levy-Befreiung, Super und Erstattungen.',
     body: `
-Working Holiday Maker mit 417- oder 462-Visum zahlen 2026/27 pauschal 15 % auf die ersten 45.000 $, die sie in Australien verdienen, ohne Steuerfreibetrag. Darüber gelten die normalen Sätze. Die 15 % erreichen dich nur, wenn dein Arbeitgeber registriert ist, und alles über dem korrekten Satz kommt über deine [Steuererklärung](/de/tax-return) zurück.
+Für Working Holiday Maker mit 417- oder 462-Visum gelten in Australien besondere Steuersätze. Welche Sätze bei dir zur Anwendung kommen, hängt von den Umständen deines Jahres ab und wird im Einzelfall geprüft, und am Ende entscheidet das ATO. Was zu viel einbehalten wurde, kann über deine [Steuererklärung](/de/tax-return) zurückkommen.
 
 ## Was sind die Working-Holiday-Maker-Sätze?
 
-Fünfzehn Prozent vom ersten Dollar bis 45.000 $, darüber steigt die Skala im Gleichklang mit den Foreign-Resident-Stufen. Fast jeder bleibt in einem Steuerjahr in der ersten Stufe, 15 % entscheidet also über das Jahr.
+Für Working Holiday Maker gelten eigene Steuerstufen, die sich von der gewöhnlichen australischen Besteuerung unterscheiden. Welche Stufen und ob ein Freibetrag bei dir zur Anwendung kommen, hängt vom Einzelfall ab und ist nichts, was du anhand einer Zahl aus dem Internet oder von einem Hostel-Aushang annehmen solltest.
 
-Der fehlende Steuerfreibetrag trennt das von der gewöhnlichen australischen Besteuerung. Australier zahlen auf ihre ersten 18.200 $ nichts, ein Working Holiday Maker darauf 15 %, ein Unterschied von 2.730 $.
-
-- Erste 45.000 $: 15 %
-- 45.001 bis 135.000 $: 30 %
-- 135.001 bis 190.000 $: 37 %
-- Über 190.000 $: 45 %
+Wir prüfen das als Teil deiner Erklärung, und am Ende entscheidet das ATO.
 
 ## Kann ein Working Holiday Maker den Freibetrag je bekommen?
 
-Ja, aber selten, und es hängt nicht vom Visum ab. Der Weg führt über den steuerlichen Wohnsitz, der von deinen persönlichen Umständen abhängt und ordentlich geprüft werden muss. Dazu kommt eine zweite Bedingung, die von Fall zu Fall verschieden ausgeht.
+Das hängt vom Einzelfall ab und nicht vom Visum allein. Entscheidend ist der steuerliche Wohnsitz, der von deinen persönlichen Umständen abhängt und ordentlich geprüft werden muss.
 
 Verlass dich auf keine Hostelweisheit: Die Frage ist in beide Richtungen leicht falsch zu beantworten, und beide Fehler kosten Geld. Warum sie so schwer zu greifen ist, steht in unserem Guide zum [steuerlichen Wohnsitz für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers). Ob sie sich in deinem Jahr stellt, klären wir, nachdem wir es durchgegangen sind.
 
 ## Warum zählt die Registrierung deines Arbeitgebers?
 
-Weil sie entscheidet, welchen Satz er anwenden darf. Ein Betrieb muss sich beim ATO als Arbeitgeber von Working Holiday Makern registrieren, bevor er 15 % einbehalten darf. Wer das nicht getan hat, wendet Foreign-Resident-Sätze an, derzeit 30 % auf die betreffende Stufe.
+Weil sie beeinflusst, nach welchen Sätzen ein Arbeitgeber einbehalten darf. Ein Betrieb muss sich beim ATO als Arbeitgeber von Working Holiday Makern registrieren, damit die besonderen Sätze zur Anwendung kommen. Wer das nicht getan hat, behält unter Umständen nach höheren Sätzen ein.
 
-Von außen erkennst du das nicht, und am häufigsten nicht registriert sind Farmen und kleine regionale Gastronomiebetriebe, also genau dort, wo viele Backpacker arbeiten. Verloren geht nichts: Der Überschuss wird bei Abgabe der Erklärung erstattet. Aber die Differenz zwischen 30 % und 15 % über eine Erntesaison ist meist der größte Einzelposten der Jahreserstattung, und sie zu finden verlangt, jeden Arbeitgeber getrennt anzusehen statt die Gesamtsumme.
+Von außen erkennst du das nicht, und am häufigsten nicht registriert sind Farmen und kleine regionale Gastronomiebetriebe, also genau dort, wo viele Backpacker arbeiten. Ein Überschuss kann bei der Veranlagung berücksichtigt werden, was davon bei dir ankommt, hängt von deinem Jahr ab, und das ATO entscheidet. Die Differenz über eine Erntesaison kann aber einer der größeren Posten der Jahreserstattung sein, und sie zu finden verlangt, jeden Arbeitgeber getrennt anzusehen statt die Gesamtsumme.
 
 ## Was ändert deine TFN?
 
-Den Satz, sofort und vollständig. Ohne eine über eine Tax File Number Declaration erfasste Tax File Number behält ein Arbeitgeber 45 % ein, unabhängig von seinem Registrierungsstatus, also 30 Cent pro Dollar mehr, als du zahlen solltest.
+Den Satz, sofort und vollständig. Ohne eine über eine Tax File Number Declaration erfasste Tax File Number behält ein Arbeitgeber 45 % ein, unabhängig von seinem Registrierungsstatus, und das ist deutlich mehr, als die meisten schulden.
 
-Für den Antrag auf eine [TFN](/de/tfn) musst du in Australien sein, die Nummer ist kostenlos, und die Obergrenze des ATO für die Ausstellung liegt bei 28 Tagen. Geld kostet nicht der Antrag, sondern das Declaration-Formular: Jeder Arbeitgeber braucht ein eigenes. Der häufigste stille Verlust ist ein Job korrekt bei 15 %, während ein zweiter monatelang bei 45 % läuft, weil niemand ein zweites Formular ausgefüllt hat.
+Für den Antrag auf eine [TFN](/de/tfn) musst du in Australien sein, die Nummer ist kostenlos, und die Obergrenze des ATO für die Ausstellung liegt bei 28 Tagen. Geld kostet nicht der Antrag, sondern das Declaration-Formular: Jeder Arbeitgeber braucht ein eigenes. Der häufigste stille Verlust ist ein Job mit korrektem Einbehalt, während ein zweiter monatelang bei 45 % läuft, weil niemand ein zweites Formular ausgefüllt hat.
 
 ## Was ist die Medicare-Levy-Befreiung wert?
 
 Zwei Prozent des zu versteuernden Einkommens, also rund 500 $ bei 25.000 $ Verdienst, und die meisten Berechtigten beantragen sie nie. Die Medicare Levy von 2 % kommt zur Einkommensteuer hinzu und wird Personen mit Anspruch auf Medicare berechnet, nicht Residenten als solchen.
 
-Ob du sie loswirst, hängt von deinem Pass ab, oft anders herum als erwartet. Britische und irische Staatsangehörige haben nach den Gesundheitsabkommen in der Regel Anspruch auf Medicare, die Levy gilt also. Deutsche und japanische Staatsangehörige haben in der Regel keinen Anspruch, für sie steht die Befreiung offen.
+Ob du sie loswirst, hängt vom Einzelfall ab, oft anders als erwartet. Ein Anspruch auf Medicare, etwa über ein Gesundheitsabkommen, kann die Befreiung ausschließen. Ob das bei dir eine Rolle spielt, prüfen wir im Einzelfall.
 
-Automatisch ist sie in keinem Fall. Die Befreiung braucht ein Medicare Entitlement Statement von Services Australia, dessen Beschaffung Wochen dauert, und dieser Vorlauf ist der ganze Grund, warum sie unbeansprucht bleibt. Die Details stehen in unserem [Guide zur Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers).
+Automatisch ist sie in keinem Fall. Die Befreiung braucht einen Nachweis, dessen Beschaffung Wochen dauern kann, und dieser Vorlauf ist ein Grund, warum sie oft unbeansprucht bleibt. Die Details stehen in unserem [Guide zur Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers).
 
 ## Was passiert mit deiner Superannuation?
 
@@ -283,7 +278,7 @@ Sobald du ausgereist bist und dein Visum beendet ist, wird sie als Departing Aus
 
 ## Zählt es, welche Subclass du hältst?
 
-Steuerlich nicht. Die 417 und die 462 werden identisch behandelt: derselbe Satz von 15 %, dieselben 65 % DASP-Einbehalt, dieselbe Medicare-Regelung, dieselben Abgabetermine. Wer etwas anderes sagt, liegt falsch.
+Steuerlich nicht. Die 417 und die 462 werden identisch behandelt: dieselben Steuersätze, dieselben 65 % DASP-Einbehalt, dieselbe Medicare-Regelung, dieselben Abgabetermine. Wer etwas anderes sagt, liegt falsch.
 
 Wo sich die Subclasses unterscheiden, ist die Visumsmechanik. Die 417 deckt unter anderem Großbritannien, Irland, weite Teile Europas, Japan, Korea und Taiwan ab und verlängert sich über Specified Work (bestimmte Arbeit in regionalen Gebieten). Die 462 deckt die USA, China, Israel und weite Teile Lateinamerikas ab, trägt Bildungsanforderungen und Länderkontingente und hat eigene Regeln zu Specified Work, einschließlich Optionen in Nordaustralien.
 
@@ -300,34 +295,34 @@ Ein Termin ist anders, wenn du endgültig abreist. Wer Australien mitten im Steu
     title: 'Wie hoch fällt deine Steuererstattung aus?',
     description: 'Wovon die Höhe einer Erstattung abhängt: Einbehalt, Einkommen, Abzüge und Medicare. Mit Rechenbeispielen für 417/462.',
     body: `
-Es gibt keinen Durchschnittswert, der dir weiterhilft. Eine Erstattung ist keine Prämie fürs Backpacken, sondern die Lücke zwischen dem Einbehalt deiner Arbeitgeber und dem, was du tatsächlich geschuldet hast: 15 % auf die ersten 45.000 $. War der Einbehalt das ganze Jahr korrekt, ist diese Lücke nahe null.
+Es gibt keinen Durchschnittswert, der dir weiterhilft. Eine Erstattung ist keine Prämie fürs Backpacken, sondern die Lücke zwischen dem Einbehalt deiner Arbeitgeber und dem, was du tatsächlich geschuldet hast. War der Einbehalt das ganze Jahr korrekt, ist diese Lücke nahe null.
 
 ## Wovon die Höhe deiner Erstattung abhängt
 
 Drei Zahlen, und zwei davon hast du längst: dein Gesamteinkommen im Steuerjahr vom 1. Juli bis 30. Juni, die einbehaltene Steuer über alle Arbeitgeber, und die Befreiungen und Werbungskosten, die deine Schuld senken. Die Erstattung ist die zweite Zahl minus der Steuer auf die erste, korrigiert um die dritte.
 
-Deshalb sind zitierte Durchschnittswerte für Working Holiday Maker wertlos. Bei einem australischen Residenten enthält die Einbehaltsskala den Freibetrag von 18.200 $ bereits, seine Abrechnung landet also nahe null. Bei einem Working Holiday Maker läuft der Einbehalt pauschal bei 15 %, und Fehler laufen nur in eine Richtung: zu viel. Die Erstattung ist der Betrag, der durch solche Fehler zu viel einbehalten wurde.
+Deshalb sind zitierte Durchschnittswerte für Working Holiday Maker wertlos. Welche Sätze für dich gelten, hängt vom Einzelfall ab und wird bei der Veranlagung geprüft. Fehler im Einbehalt führen bei Working Holiday Makern häufig dazu, dass zu viel genommen wurde. Die Erstattung ist der Betrag, der dadurch zu viel einbehalten wurde.
 
 ## Wann fällt eine Erstattung groß aus?
 
-Fast nie geschickte Werbungskosten. Große Erstattungen entstehen, wenn ein Teil des Jahres falsch einbehalten wurde: Wochen oder Monate, in denen jemand 45 % oder einen Foreign-Resident-Satz statt 15 % genommen hat.
+Fast nie geschickte Werbungskosten. Große Erstattungen entstehen, wenn ein Teil des Jahres falsch einbehalten wurde: Wochen oder Monate, in denen jemand 45 % oder einen höheren Satz genommen hat, als nötig war.
 
 Vier Konstellationen machen den Großteil davon aus, und jede ist eine Tatsache über dein eigenes Jahr und keine allgemeine Regel.
 
-- **Wochen, bevor deine TFN beim Arbeitgeber ankam.** Bis das [Declaration-Formular](/de/blog/tax-file-number-declaration-form) ausgefüllt ist, gilt ein Einbehalt von 45 % statt 15 %, ein Unterschied von 30 Cent auf jeden Dollar in dieser Zeit.
-- **Ein Arbeitgeber, der beim ATO nicht als Working-Holiday-Maker-Arbeitgeber registriert ist.** Er muss zu Foreign-Resident-Sätzen einbehalten statt zu 15 %. Das ist nicht dein Fehler und in voller Höhe erstattungsfähig.
+- **Wochen, bevor deine TFN beim Arbeitgeber ankam.** Bis das [Declaration-Formular](/de/blog/tax-file-number-declaration-form) ausgefüllt ist, gilt ein Einbehalt von 45 % statt des regulären Satzes.
+- **Ein Arbeitgeber, der beim ATO nicht als Working-Holiday-Maker-Arbeitgeber registriert ist.** Er behält dann unter Umständen nach höheren Sätzen ein. Das ist nicht dein Fehler, und ein Überschuss kann bei der Veranlagung berücksichtigt werden.
 - **Eine Abreise mitten im Steuerjahr.** Der Einbehalt unterstellt, dass das Einkommen weiterläuft, eine Abreise im Januar hinterlässt also meist mehr Einbehalt, als je geschuldet war.
-- **Eine nie beantragte Medicare-Levy-Befreiung.** Sie ist 2 % des zu versteuernden Einkommens wert für jeden ohne Medicare-Anspruch, und sie braucht ein Medicare Entitlement Statement von Services Australia statt eines Häkchens.
+- **Eine nie beantragte Medicare-Levy-Befreiung.** Sie kann 2 % des zu versteuernden Einkommens wert sein, wenn kein Medicare-Anspruch bestand, und sie braucht einen Nachweis statt eines Häkchens.
 
 ## Wann fällt sie klein aus?
 
-Ein Arbeitgeber, korrekt registriert, deine TFN ab Woche eins hinterlegt, ein volles Jahr gearbeitet. Dann liegen die genommenen 15 % nahe an den geschuldeten 15 %, und die Erstattung besteht aus der Medicare-Levy-Befreiung und den belegbaren Werbungskosten.
+Ein Arbeitgeber, korrekt registriert, deine TFN ab Woche eins hinterlegt, ein volles Jahr gearbeitet. Dann liegt der genommene Einbehalt nahe an der geschuldeten Steuer, und die Erstattung besteht aus der Medicare-Levy-Befreiung und den belegbaren Werbungskosten.
 
 Das ist ein normales Ergebnis und kein Hinweis auf einen Fehler. Es bedeutet, dass das eigentliche Geld deines Jahres in der [Superannuation](/de/superannuation) liegt und nicht in der Steuer, denn Super läuft mit 12 % auf, unabhängig vom Einbehalt.
 
 ## Wie kommst du an deine eigene Zahl?
 
-Addiere Einkommen und einbehaltene Steuer über jeden Job und vergleiche den Gesamteinbehalt mit 15 % des Gesamteinkommens bis 45.000 $. Alles darüber ist der Ausgangspunkt deiner Erstattung, bevor Medicare-Levy-Befreiung und Werbungskosten angerechnet werden. Unser [Steuerrechner](/de/calculator) macht dieselbe Rechnung, wenn du die Payslips vor dir liegen hast.
+Addiere Einkommen und einbehaltene Steuer über jeden Job. Ob der Gesamteinbehalt der geschuldeten Steuer entspricht, hängt von den Sätzen ab, die für dich gelten, und das prüfen wir im Einzelfall. Unser [Steuerrechner](/de/calculator) gibt dir eine grobe Zahl, wenn du die Payslips vor dir liegen hast.
 
 Die Schwierigkeit sind fehlende Informationen, nicht schwierige Rechnungen. Income Statements liegen in den Systemen des ATO und nicht beim Arbeitgeber. Ein Job, den du im Streit verlassen hast, oder eine geschlossene Leiharbeitsfirma rückt dieses Einkommen also nicht außer Reichweite, die Zahlen müssen nur erst beschafft werden.
 
@@ -342,27 +337,27 @@ Bei der Abreise fällig wird die Super, ein völlig eigenes System. Ein [DASP-An
     title: 'Zu viel gezahlte Steuer in Australien: so läuft es',
     description: 'Zu viel einbehaltene Steuer kommt über die Steuererklärung zurück. Was erstattet wird, wovon die Höhe abhängt und wie das auch aus Deutschland läuft.',
     body: `
-„Tax back“ bezeichnet den Betrag, den dein Arbeitgeber über deine tatsächliche Schuld hinaus einbehalten hat. Geltend machst du ihn über eine [Steuererklärung](/de/tax-return) nach dem 30. Juni, oder früher, wenn du Australien endgültig verlässt. Deine korrekte Schuld sind 15 % auf die ersten 45.000 $. Was darüber einbehalten wurde, wird bei der Veranlagung berücksichtigt.
+„Tax back“ bezeichnet den Betrag, den dein Arbeitgeber über deine tatsächliche Schuld hinaus einbehalten hat. Geltend machst du ihn über eine [Steuererklärung](/de/tax-return) nach dem 30. Juni, oder früher, wenn du Australien endgültig verlässt. Wie hoch deine tatsächliche Schuld ist, hängt von den Sätzen ab, die für dich gelten. Was darüber einbehalten wurde, wird bei der Veranlagung berücksichtigt.
 
 ## Warum gibt es überhaupt etwas zurückzuholen?
 
 Weil der Einbehalt eine Schätzung ist, die Lohnzahlung für Lohnzahlung angewendet wird, während deine tatsächliche Schuld einmal am Jahresende auf das Gesamtbild berechnet wird. Beide stimmen nur überein, wenn nichts Ungewöhnliches passiert ist, und bei Working Holiday Makern ist meistens etwas Ungewöhnliches passiert.
 
-Die Lücke läuft dabei nur in eine Richtung. Bei einem australischen Residenten wird gegen eine Skala einbehalten, die auf ein Ergebnis nahe null zielt. Bei einem Working Holiday Maker ist der Einbehalt pauschal, und jeder Fehler darin, eine fehlende TFN, ein nicht registrierter Arbeitgeber, eine frühe Abreise, bedeutet, dass zu viel genommen wurde und nicht zu wenig. Das ist der strukturelle Grund für Backpacker-Erstattungen.
+Bei Working Holiday Makern entsteht sie häufig durch Fehler im Einbehalt, etwa eine fehlende TFN, ein nicht registrierter Arbeitgeber oder eine frühe Abreise. Dann wurde zu viel genommen und nicht zu wenig. Das ist der strukturelle Grund für Backpacker-Erstattungen.
 
 ## Welche Teile deines Jahres führen zu einer Erstattung?
 
 Fünf konkrete Dinge, jedes eine Tatsache über deine Umstände und kein allgemeiner Anspruch. Welche zutreffen, sagt grob, was zu erwarten ist.
 
-- **Eine Phase mit 45 %.** Alle Wochen, bevor deine TFN beim Arbeitgeber ankam, wurden mit 45 % statt 15 % einbehalten, und die gesamte Differenz kommt zurück.
-- **Ein Arbeitgeber, der nicht als Working-Holiday-Maker-Arbeitgeber registriert ist.** Er muss zu Foreign-Resident-Sätzen einbehalten, und dieser Überschuss ist in voller Höhe erstattungsfähig. Häufig auf Farmen und in kleinen Betrieben.
-- **Die Medicare-Levy-Befreiung.** Die meisten 417- und 462-Inhaber haben keinen Medicare-Anspruch und können die 2-%-Abgabe entfernen lassen, aber das braucht ein Medicare Entitlement Statement von Services Australia und kein Häkchen.
+- **Eine Phase mit 45 %.** Alle Wochen, bevor deine TFN beim Arbeitgeber ankam, wurden mit 45 % statt des regulären Satzes einbehalten, und die Differenz kann zurückkommen.
+- **Ein Arbeitgeber, der nicht als Working-Holiday-Maker-Arbeitgeber registriert ist.** Er behält unter Umständen nach höheren Sätzen ein, und ein Überschuss kann bei der Veranlagung berücksichtigt werden. Häufig auf Farmen und in kleinen Betrieben.
+- **Die Medicare-Levy-Befreiung.** Ob ein Medicare-Anspruch bestand, hängt vom Einzelfall ab. Bestand keiner, kann die 2-%-Abgabe entfallen, aber das braucht einen Nachweis und kein Häkchen.
 - **Berufsbezogene Werbungskosten.** Werkzeug, vorgeschriebene Uniformen und deren Wäsche, Sonnenschutz bei Arbeit im Freien, RSA- und White-Card-Kurse und Fahrten zwischen zwei Arbeitsstätten am selben Tag.
 - **Eine Abreise mitten im Jahr.** Der Einbehalt unterstellt, dass das Einkommen weiterläuft, eine Abreise im Januar hinterlässt also in der Regel mehr Einbehalt, als je fällig war.
 
 ## Wie viel solltest du erwarten?
 
-Niemand kann dir das sagen, bevor er gesehen hat, was einbehalten wurde, und wer ohne diese Zahlen einen Betrag nennt, rät auf deine Kosten. Die Rechnung selbst ist nicht schwer, sobald die Zahlen existieren: gesamte einbehaltene Steuer, minus 15 % des Einkommens bis 45.000 $, plus Levy-Befreiung und Werbungskosten.
+Niemand kann dir das sagen, bevor er gesehen hat, was einbehalten wurde, und wer ohne diese Zahlen einen Betrag nennt, rät auf deine Kosten. Die Zahlen müssen erst existieren: die gesamte einbehaltene Steuer, die nach dem für dich geltenden Satz geschuldete Steuer, dazu Levy-Befreiung und Werbungskosten. Welcher Satz das ist, prüfen wir im Einzelfall.
 
 Die Höhe deiner Erstattung hängt davon ab, wie falsch dein Einbehalt war, und nicht davon, wie viel du verdient hast. Wer 40.000 $ mit ganzjährig korrektem Einbehalt verdient hat, hat weniger zurückzuholen als jemand mit 20.000 $ und sechs Wochen bei 45 %. Unser [Steuerrechner](/de/calculator) macht dieselbe Rechnung mit den Summen von den Payslips.
 
@@ -391,7 +386,7 @@ Der [Departing Australia Superannuation Payment](/de/superannuation) wird verfü
     title: 'Was ist eine TFN und wozu brauchst du sie?',
     description: 'Eine Tax File Number ist das Erste, was du zum Arbeiten in Australien brauchst. Ohne TFN behält dein Arbeitgeber fast die Hälfte deines Lohns ein.',
     body: `
-Eine Tax File Number ist eine neunstellige Kennung, die das ATO jedem ausstellt, der in Australien Einkommen erzielt. Sie ist kostenlos und dauerhaft, und sie erlaubt deinem Arbeitgeber, zum Working-Holiday-Maker-Satz von 15 % einzubehalten statt zu den 45 %, die ohne sie gelten. Alles Weitere hängt davon ab.
+Eine Tax File Number ist eine neunstellige Kennung, die das ATO jedem ausstellt, der in Australien Einkommen erzielt. Sie ist kostenlos und dauerhaft, und sie erlaubt deinem Arbeitgeber, zu den für dich vorgesehenen Sätzen einzubehalten statt zu den 45 %, die ohne sie gelten. Alles Weitere hängt davon ab.
 
 ## Warum zählt eine einzige Nummer so viel?
 
@@ -401,25 +396,21 @@ Ein TFN-Problem zeigt sich deshalb als falscher Prozentsatz auf einem Payslip, a
 
 ## Was kostet es, keine hinterlegt zu haben?
 
-Dreißig Cent von jedem Dollar. Mit erfasster TFN wird der Lohn eines Working Holiday Makers mit 15 % einbehalten. Ohne sie muss der Arbeitgeber 45 % einbehalten, und er hat dabei keinen Spielraum.
+Fast die Hälfte jedes Dollars, solange sie fehlt. Mit erfasster TFN behält der Arbeitgeber nach den für dich vorgesehenen Sätzen ein. Ohne sie muss er 45 % einbehalten, und er hat dabei keinen Spielraum.
 
-- 1.000 $ pro Woche: 150 $ bei 15 %, 450 $ bei 45 %, ein Unterschied von 300 $
-- 1.500 $ pro Woche: 225 $ gegen 675 $, ein Unterschied von 450 $
-- 2.000 $ pro Woche: 300 $ gegen 900 $, ein Unterschied von 600 $
-
-Dauerhaft verloren ist nichts, denn zu viel einbehaltene Steuer kommt mit der Erklärung zurück. Verloren ist der Zugriff auf das Geld in den Monaten dazwischen.
+Zu viel einbehaltene Steuer wird bei der Veranlagung berücksichtigt, was zurückkommt, hängt von deinem Jahr ab, und das ATO entscheidet. Sicher ist, dass du in den Monaten dazwischen keinen Zugriff auf das Geld hast.
 
 ## Wer bekommt eine, und wie schwer ist das?
 
 Jeder mit Arbeitsrecht in Australien: die Working-Holiday-Visa 417 und 462, Studentenvisa mit Arbeitsrecht und die meisten temporären Fachkräftevisa. Der Antrag ist kostenlos und setzt voraus, dass du in Australien bist.
 
-Er ist leicht, und du solltest niemanden dafür bezahlen. Schwerer wird das Declaration-Formular, das dir dein Arbeitgeber an Tag eins hinlegt: Das Wohnsitzfeld darauf ist dieselbe Frage, die am Jahresende über deine Erstattung entscheidet, und sie wird am häufigsten falsch beantwortet.
+Er ist leicht, und du solltest niemanden dafür bezahlen. Schwerer wird das Declaration-Formular, das dir dein Arbeitgeber an Tag eins hinlegt: Das Wohnsitzfeld darauf ist eine Frage, die von deinen Umständen abhängt und die am Jahresende eine Rolle spielt.
 
 ## Warum zählt das Declaration-Formular mehr als die Nummer?
 
 Weil das Formular deinen Satz setzt. Einem Manager die TFN mündlich zu nennen oder ihm ein Foto des Briefs zu zeigen ändert an der Lohnbuchhaltung nichts. Die Tax File Number Declaration hält zweierlei fest: deine Nummer und deinen Status als Working Holiday Maker.
 
-Jeder Arbeitgeber braucht eine eigene. Deine TFN einer Packhalle bei Shepparton zu geben bringt einer Bar in Melbourne nichts. Der häufigste stille Verlust in einem Backpacker-Jahr ist ein Job korrekt bei 15 % und ein zweiter, der monatelang bei 45 % läuft, weil niemand ein zweites Formular ausgefüllt hat.
+Jeder Arbeitgeber braucht eine eigene. Deine TFN einer Packhalle bei Shepparton zu geben bringt einer Bar in Melbourne nichts. Der häufigste stille Verlust in einem Backpacker-Jahr ist ein Job mit korrektem Einbehalt und ein zweiter, der monatelang bei 45 % läuft, weil niemand ein zweites Formular ausgefüllt hat.
 
 ## Wie lange dauert es, und was, wenn du schon arbeitest?
 
@@ -440,7 +431,7 @@ Eine TFN zu bekommen ist für alle dieselbe kurze Aufgabe. Unterschiedlich ist, 
 - Ob du je zuvor in Australien gearbeitet hast, denn die Nummer ist dauerhaft und ein neuer Antrag führt zu einem Doppeldatensatz, der alles verzögert.
 - Ob die Postanschrift in deinem Antrag in einem Monat noch Post hält, was die Hauptursache für Verzögerungen ist.
 - Wie viele Arbeitgeber du hast, denn jeder braucht ein eigenes Declaration-Formular.
-- Ob die Fragen zu Wohnsitz und Freibetrag auf diesem Formular richtig beantwortet wurden, was den Unterschied zwischen Erstattung und Schuld ausmacht.
+- Ob die Fragen zu Wohnsitz und Freibetrag auf diesem Formular richtig beantwortet wurden. Das ist eine Frage deiner Umstände und gehört geprüft.
 - Ob dein Superfonds deine TFN hat, denn ein Fonds ohne sie besteuert Beiträge höher und tut sich später schwer, das Konto dir zuzuordnen.
 
 Die Nummer ist das, was deine [Steuererklärung als Working Holiday Maker](/de/tax-return) und jeden [Superantrag nach der Abreise](/de/superannuation) erst möglich macht, und du kannst deine [Steuererstattung schätzen](/de/calculator), zu jedem Zeitpunkt im Jahr.
@@ -467,11 +458,11 @@ Eine Hostel-Adresse geht, wenn du sicher bist, dass du bleibst; ein Hostel, das 
 
 ## Kannst du anfangen zu arbeiten, bevor sie ankommt?
 
-Ja, und hier entscheidet sich das Geld. Dein Arbeitgeber muss 45 % statt 15 % einbehalten, solange keine TFN hinterlegt ist, aber eine Tax File Number Declaration, die einen laufenden Antrag festhält, hält dich für ein Fenster von 28 Tagen auf dem Working-Holiday-Satz.
+Ja, und hier entscheidet sich das Geld. Dein Arbeitgeber muss 45 % einbehalten, solange keine TFN hinterlegt ist, aber eine Tax File Number Declaration, die einen laufenden Antrag festhält, hält dich für ein Fenster von 28 Tagen beim regulären Satz.
 
 Entscheidend ist nicht der Antrag, sondern dass der Arbeitgeber am ersten Tag vom laufenden Antrag weiß und die Declaration ihn festhält. Ohne das beginnen die 45 % sofort. Der Unterschied bei einer 1.000-$-Woche sind 300 $, jede Woche, bis es korrigiert ist.
 
-Alles zu viel Einbehaltene kommt mit der Erklärung zurück, dauerhaft verloren geht nichts. Verloren geht die Verfügbarkeit über das Geld in den Monaten dazwischen, und das zählt, wenn Miete wöchentlich fällig wird.
+Zu viel Einbehaltenes wird bei der Veranlagung berücksichtigt, was zurückkommt, hängt von deinem Jahr ab, und das ATO entscheidet. Sicher ist, dass du in den Monaten dazwischen nicht über das Geld verfügst, und das zählt, wenn Miete wöchentlich fällig wird.
 
 ## Was passiert, sobald sie da ist?
 
@@ -499,7 +490,7 @@ Der Antrag ist für alle gleich, die Kosten einer Verzögerung nicht. Das entsch
 - Ob du dem Arbeitgeber gesagt hast, dass der Antrag läuft, und ob es in der Declaration festgehalten wurde.
 - Ob die Postadresse noch deine sein wird, wenn der Brief ankommt.
 - Ob deine Passdaten exakt so eingetragen wurden, wie sie gedruckt sind.
-- Ob der Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist, denn ein nicht registrierter behält auch nach Ankunft der TFN zu Foreign-Resident-Sätzen ein.
+- Ob der Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist, denn bei einem nicht registrierten kann auch nach Ankunft der TFN nach höheren Sätzen einbehalten werden.
 - Wie viele Arbeitgeber du annimmst, denn jeder braucht seine eigene Declaration.
 
 Alles, was während der Wartezeit zu viel einbehalten wurde, holst du über die [Working-Holiday-Steuererklärung](/de/tax-return) zurück, und du kannst jederzeit im Jahr deine [Steuererstattung schätzen](/de/calculator).
@@ -514,7 +505,7 @@ Die meisten TFNs kommen nach etwa zwei Wochen. Die Obergrenze des ATO liegt bei 
 
 ## Warum ist die 28-Tage-Zahl wichtiger als die zwei Wochen?
 
-Es laufen zwei verschiedene 28-Tage-Uhren gleichzeitig, und sie werden ständig verwechselt. Die erste ist die Bearbeitungsobergrenze des ATO für die Ausstellung deiner Tax File Number. Die zweite ist das Fenster ab deinem ersten Arbeitstag, um deinem Arbeitgeber die TFN zu geben, bevor er statt der 15 % für Working Holiday Maker 45 % einbehalten muss. Sie starten an verschiedenen Tagen, und die zweite kostet Geld.
+Es laufen zwei verschiedene 28-Tage-Uhren gleichzeitig, und sie werden ständig verwechselt. Die erste ist die Bearbeitungsobergrenze des ATO für die Ausstellung deiner Tax File Number. Die zweite ist das Fenster ab deinem ersten Arbeitstag, um deinem Arbeitgeber die TFN zu geben, bevor er 45 % einbehalten muss. Sie starten an verschiedenen Tagen, und die zweite kostet Geld.
 
 Landest du im Oktober in Cairns, nimmst in der ersten Woche einen Bar-Job an und beantragst in derselben Woche deine TFN, laufen beide Uhren parallel und eine 45-%-Abrechnung siehst du kaum. Reist du erst drei Wochen die Küste hoch und fängst dann sofort an zu arbeiten, ist die Beschäftigungsuhr weit voraus, und in dieser Lücke geht das Geld verloren.
 
@@ -532,7 +523,7 @@ Zwei Angaben in deinem eigenen Antrag erklären fast jede Verzögerung über 28 
 
 Nur dann, wenn sie sich mit bezahlter Arbeit überschneidet und du deinem Arbeitgeber nicht gesagt hast, dass der Antrag läuft. Steht auf der Tax File Number Declaration, dass du eine TFN beantragt hast, behält dein Arbeitgeber während des 28-Tage-Fensters zum Working-Holiday-Maker-Satz ein statt zu 45 %. Sagst du nichts, beginnen die 45 % mit der ersten Abrechnung.
 
-Dauerhaft verloren geht nichts. Zu viel einbehaltene Steuer wird bei der Abgabe deiner Steuererklärung angerechnet, weil die Steuerschuld auf dein Jahreseinkommen berechnet wird und nicht auf den wöchentlichen Abzug. Du verlierst die Verfügbarkeit über das Geld in den Monaten dazwischen, und wer die Hostelmiete aus jeder Abrechnung zahlt, spürt genau das.
+Zu viel einbehaltene Steuer wird bei der Abgabe deiner Steuererklärung berücksichtigt, weil die Steuerschuld auf dein Jahreseinkommen berechnet wird und nicht auf den wöchentlichen Abzug. Wie viel zurückkommt, hängt von deinem Jahr ab, und das ATO entscheidet. Du hast in den Monaten dazwischen keinen Zugriff auf das Geld, und wer die Hostelmiete aus jeder Abrechnung zahlt, spürt genau das.
 
 ## Kannst du arbeiten, bevor deine TFN ankommt?
 
@@ -556,7 +547,7 @@ Die Wartezeit ist für fast alle gleich. Was sie kostet, ist es nicht, und das s
 
 - Ob du während der Wartezeit überhaupt arbeitest. Wer bei Ankunft beantragt und erst sechs Wochen später anfängt, hat nichts zu verlieren.
 - Ob dein Arbeitgeber den laufenden Antrag auf deinem Declaration-Formular vermerkt hat.
-- Ob dein Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist. Ein nicht registrierter behält auch nach Ankunft deiner TFN zu Foreign-Resident-Sätzen ein, was ein zusätzlicher Überabzug ist, der ebenfalls über die Steuererklärung zurückkommt.
+- Ob dein Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist. Bei einem nicht registrierten kann auch nach Ankunft deiner TFN nach höheren Sätzen einbehalten werden, was ein zusätzlicher Überabzug sein kann, der über die Steuererklärung geklärt wird.
 - Ob deine Adresse einen Monat lang Post hält. Saisonarbeit bewegt dich, und Erntestädte am schnellsten.
 - Ob du auf einem früheren australischen Visum schon einmal eine TFN hattest. Sie gilt lebenslang, und ein neuer Antrag führt genau zum Doppelproblem von oben.
 
@@ -572,7 +563,7 @@ Ja. Nichts hindert dich daran, zu arbeiten, bevor deine Tax File Number ankommt,
 
 ## Was besagt die 28-Tage-Regel genau?
 
-Die 28 Tage laufen ab dem Tag, an dem du bei diesem Arbeitgeber anfängst, nicht ab dem Tag deines TFN-Antrags und nicht ab deiner Ankunft in Australien. Liegt dem Arbeitgeber eine Tax File Number Declaration mit dem Vermerk über den laufenden Antrag vor, behält er in diesen 28 Tagen zum normalen Working-Holiday-Maker-Satz von 15 % ein. Verstreichen die 28 Tage ohne TFN, sind es ab dann 45 % auf jede Lohnzahlung.
+Die 28 Tage laufen ab dem Tag, an dem du bei diesem Arbeitgeber anfängst, nicht ab dem Tag deines TFN-Antrags und nicht ab deiner Ankunft in Australien. Liegt dem Arbeitgeber eine Tax File Number Declaration mit dem Vermerk über den laufenden Antrag vor, behält er in diesen 28 Tagen nach dem normalen Satz ein. Verstreichen die 28 Tage ohne TFN, sind es ab dann 45 % auf jede Lohnzahlung.
 
 Die Uhr läuft pro Arbeitgeber. Fängst du im März in einem Café in Perth an und im Mai in einer Packhalle bei Shepparton, startet bei jedem eine eigene 28-Tage-Frist und jeder braucht ein eigenes Formular.
 
@@ -607,39 +598,32 @@ Die 28-Tage-Regel ist für alle gleich. Was das Fenster dich kostet, hängt von 
 - Ob du vor oder nach Arbeitsbeginn beantragt hast. Wer zuerst beantragt, sieht fast nie eine 45-%-Abrechnung.
 - Ob die Erklärung den laufenden Antrag vermerkt hat. Ohne diesen Vermerk starten die 45 % sofort statt nach 28 Tagen.
 - Ob die Adresse auf deinem Antrag einen Monat lang Post hält. Saisonarbeit bewegt Leute, und ein Rückläufer verlängert die Wartezeit über die 28 Tage hinaus.
-- Ob dein Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist. Wenn nicht, behält er auch mit vorliegender TFN zu Foreign-Resident-Sätzen ein, was ein zusätzlicher Überabzug ist, den du ebenfalls zurückbekommst.
+- Ob dein Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist. Wenn nicht, kann er auch mit vorliegender TFN nach höheren Sätzen einbehalten, was ein zusätzlicher Überabzug sein kann, der über die Erklärung geklärt wird.
 - Wie viele Arbeitgeber du im Jahr hattest. Jeder ist ein eigenes Formular und eine eigene Uhr.
 
-Jede Phase mit mehr als 15 % Einbehalt ist Geld, das du über deine [Steuererklärung als Working Holiday Maker](/de/tax-return) zurückholst, und du kannst deine [Steuererstattung schätzen](/de/calculator), bevor du irgendetwas entscheidest.
+Jede Phase mit zu hohem Einbehalt ist Geld, das du über deine [Steuererklärung als Working Holiday Maker](/de/tax-return) zurückholst, und du kannst deine [Steuererstattung schätzen](/de/calculator), bevor du irgendetwas entscheidest.
 `,
   },
 
   'what-happens-without-your-tfn': {
-    title: '45 % statt 15 %: was ohne TFN passiert',
-    description: 'Ohne TFN muss dein Arbeitgeber 45 % statt 15 % einbehalten. Wie du das schnell korrigierst und was bei der Steuererklärung damit passiert.',
+    title: 'Was ohne TFN passiert: 45 % Einbehalt',
+    description: 'Ohne TFN muss dein Arbeitgeber 45 % einbehalten. Wie du das schnell korrigierst und was bei der Steuererklärung damit passiert.',
     body: `
-Dreißig Cent von jedem Dollar, solange es dauert. Mit hinterlegter TFN behält dein Arbeitgeber 15 % ein, ohne muss er 45 % einbehalten. Bei 1.000 $ pro Woche gehen so 300 $ ans ATO statt auf dein Konto, und bei einem Job für 25 $ die Stunde sind es rund 7,50 $ pro Stunde.
+Fast die Hälfte jedes Dollars, solange es dauert. Mit hinterlegter TFN behält dein Arbeitgeber nach dem für dich vorgesehenen Satz ein, ohne muss er 45 % einbehalten. Der Unterschied geht ans ATO statt auf dein Konto.
 
-## Warum nimmt dein Arbeitgeber 45 % und nicht 15 %?
+## Warum nimmt dein Arbeitgeber 45 %?
 
-Dein Arbeitgeber hat hier keinen Ermessensspielraum, und es ist kein Urteil über dich. Das australische Steuerrecht verlangt von einem Arbeitgeber ohne die Tax File Number eines Angestellten den Einbehalt zum höchsten Grenzsteuersatz von 45 %. Wer sich darüber hinwegsetzt, haftet selbst gegenüber dem ATO, nicht du. Den Working-Holiday-Maker-Satz von 15 % schaltet ein Dokument frei, nicht ein Visum.
+Dein Arbeitgeber hat hier keinen Ermessensspielraum, und es ist kein Urteil über dich. Das australische Steuerrecht verlangt von einem Arbeitgeber ohne die Tax File Number eines Angestellten den Einbehalt zum höchsten Grenzsteuersatz von 45 %. Wer sich darüber hinwegsetzt, haftet selbst gegenüber dem ATO, nicht du. Den für dich vorgesehenen Satz schaltet ein Dokument frei, nicht ein Visum.
 
 Dieses Dokument ist die Tax File Number Declaration. Das Visum vorzuzeigen oder ein Foto des TFN-Briefs zu schicken, reicht nicht. Bis die Erklärung in der Lohnbuchhaltung liegt, wendet das Lohnsystem den Satz an, den es gesetzlich anwenden muss.
 
 ## Was kostet dich der Einbehalt von 45 % konkret?
 
-Der Abstand beträgt 30 Prozentpunkte. Unten die Wochenunterschiede bei Löhnen, die für Vollzeit-Saison- und Gastronomiearbeit realistisch sind.
-
-- 800 $ pro Woche: 120 $ Einbehalt bei 15 % gegen 360 $ bei 45 %, ein Unterschied von 240 $
-- 1.000 $ pro Woche: 150 $ gegen 450 $, ein Unterschied von 300 $
-- 1.500 $ pro Woche: 225 $ gegen 675 $, ein Unterschied von 450 $
-- 2.000 $ pro Woche: 300 $ gegen 900 $, ein Unterschied von 600 $
-
-Ein Monat Vollzeit-Farmarbeit in der Saison um Bundaberg oder Mildura zu diesen Sätzen ergibt locker einen vierstelligen Überabzug.
+Der Abstand zum regulären Satz ist groß. Bei Vollzeit-Saison- und Gastronomiearbeit ergibt schon ein Monat locker einen vierstelligen Überabzug. Wie hoch er bei dir ausfällt, hängt von deinem Lohn und davon ab, wie lange die Lücke lief.
 
 ## Bekommst du das Geld zurück?
 
-Zu viel einbehaltene Steuer wird bei der Veranlagung angerechnet. Sie ist keine Strafe, sondern eine Vorauszahlung auf eine Schuld, die du nicht in dieser Höhe hast. Wie viel das bei dir ist, steht erst nach der Erklärung fest.
+Zu viel einbehaltene Steuer wird bei der Veranlagung berücksichtigt. Sie ist keine Strafe, sondern eine Vorauszahlung auf eine Schuld. Ob und wie viel zurückkommt, hängt von deinem Jahr ab, steht erst nach der Erklärung fest, und das ATO entscheidet.
 
 Bei der Abgabe deiner Steuererklärung ermittelt das ATO, was du über das ganze Steuerjahr geschuldet hast. Ist mehr einbehalten worden, wird die Differenz auf ein australisches Bankkonto erstattet. Wer Monate zum falschen Satz gearbeitet hat, bei dem ist dieser Posten oft der größte seines Steuerjahres.
 
@@ -647,7 +631,7 @@ Was du verlierst, ist der Zugriff auf das Geld in der Zwischenzeit. Wer die Host
 
 ## Wie stoppst du es?
 
-Gib deinem Arbeitgeber eine ausgefüllte Tax File Number Declaration mit deiner TFN. Ab der nächsten Abrechnung gilt der korrekte Satz. Frühere Abrechnungen berechnet dein Arbeitgeber nicht mit 15 % neu, und er muss es auch nicht: Den früheren Überabzug korrigiert das ATO zur Steuerzeit.
+Gib deinem Arbeitgeber eine ausgefüllte Tax File Number Declaration mit deiner TFN. Ab der nächsten Abrechnung gilt der korrekte Satz. Frühere Abrechnungen berechnet dein Arbeitgeber nicht neu, und er muss es auch nicht: Den früheren Überabzug korrigiert das ATO zur Steuerzeit.
 
 Wenn dein Antrag noch läuft, vermerke das auf der Erklärung. Ein Arbeitgeber, dem dieser Vermerk vorliegt, wendet im 28-Tage-Fenster den Working-Holiday-Maker-Satz an statt 45 %, was meist bedeutet, dass du nie eine hoch besteuerte Abrechnung siehst.
 
@@ -659,9 +643,9 @@ Vier Dinge, und keines davon ist ein langsames ATO. Deshalb fällt die Dauer der
 
 **Ob die Postanschrift auf deinem Antrag stimmte.** Deine TFN kommt als Brief. Eine falsche Adresse ist die häufigste Ursache für Verzögerungen über 28 Tage hinaus, und jede weitere Woche ist eine weitere Woche bei 45 %.
 
-**Ob dein Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist.** Ein nicht registrierter Arbeitgeber muss zu Foreign-Resident-Sätzen einbehalten, auch wenn deine TFN vorliegt. Das ist eine andere Regel und ein zusätzlicher Überabzug, nicht dein Fehler, und auch er kommt zur Steuerzeit zurück. Rechne den Prozentsatz auf dem Payslip nach, statt anzunehmen, die TFN habe alles gelöst.
+**Ob dein Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist.** Bei einem nicht registrierten Arbeitgeber kann auch bei vorliegender TFN nach höheren Sätzen einbehalten werden. Das ist eine andere Regel und ein zusätzlicher Überabzug, nicht dein Fehler, und auch er kommt zur Steuerzeit zurück. Rechne den Prozentsatz auf dem Payslip nach, statt anzunehmen, die TFN habe alles gelöst.
 
-**Wie viele Arbeitgeber du hattest.** Jeder Arbeitgeber braucht eine eigene Erklärung. Die TFN der Packhalle zu geben, gibt sie nicht dem Pub, und ein häufiges Muster ist ein Job korrekt bei 15 % und ein zweiter, der zwei Monate lang still bei 45 % läuft.
+**Wie viele Arbeitgeber du hattest.** Jeder Arbeitgeber braucht eine eigene Erklärung. Die TFN der Packhalle zu geben, gibt sie nicht dem Pub, und ein häufiges Muster ist ein Job mit korrektem Einbehalt und ein zweiter, der zwei Monate lang still bei 45 % läuft.
 
 ## Gilt das auch für Arbeit auf die Hand?
 
@@ -673,7 +657,7 @@ War ein Teil deines Jahres bar bezahlt, gehört dieses Einkommen trotzdem in dei
 
 In der Regel wartest du das Ende des Steuerjahres am 30. Juni ab. Die Ausnahme ist die endgültige Ausreise: Wer abreist und in diesem Jahr kein australisches Einkommen mehr erzielt, kann eine vorzeitige Steuererklärung schon vor dem 30. Juni einreichen.
 
-Ob das der richtige Schritt ist, hängt von deinem Wohnsitz für das Jahr ab, davon, ob gleichzeitig Super zu beantragen ist, und davon, ob noch ein Arbeitgeber ein abschließendes Income Statement ausstellen muss. Du kannst vorher deine [Steuererstattung schätzen](/de/calculator), und eine Phase mit 45 % ist genau die Situation, in der Schätzung und Endbetrag am weitesten auseinanderliegen.
+Ob das der richtige Schritt ist, hängt von den Umständen deines Jahres ab, davon, ob gleichzeitig Super zu beantragen ist, und davon, ob noch ein Arbeitgeber ein abschließendes Income Statement ausstellen muss. Du kannst vorher deine [Steuererstattung schätzen](/de/calculator), und eine Phase mit 45 % ist genau die Situation, in der Schätzung und Endbetrag am weitesten auseinanderliegen.
 `,
   },
 
@@ -719,7 +703,7 @@ Eine Anzeige, die eine ABN für beaufsichtigte Schichtarbeit zu festen Zeiten ve
 
 Auf einer ABN zu sein, obwohl du Angestellter sein solltest, kostet dich die 12 % Super, den Award-Mindestsatz, Zuschläge und jeden Unfallversicherungsschutz, und verlagert die gesamte Steuerrechnung ans Jahresende auf dich. Das ist die teuerste Fehleinstufung für einen Backpacker.
 
-Der umgekehrte Fehler ist billiger, aber nicht kostenlos. Ohne hinterlegte TFN zu arbeiten bedeutet 45 % Einbehalt statt 15 %, was mit der Erklärung zurückkommt, aber erst nach Monaten ohne das Geld, und keine ABN auf einer Rechnung bedeutet 47 % Einbehalt durch den Zahler.
+Der umgekehrte Fehler ist billiger, aber nicht kostenlos. Ohne hinterlegte TFN zu arbeiten bedeutet 45 % Einbehalt statt des regulären Satzes, was mit der Erklärung zurückkommen kann, aber erst nach Monaten ohne das Geld, und keine ABN auf einer Rechnung bedeutet 47 % Einbehalt durch den Zahler.
 
 ## Was entscheidet, welche du dieses Jahr brauchst?
 
@@ -743,7 +727,7 @@ Ein monatelang vorher erteiltes Visum ändert daran nichts. Der Antrag hängt ni
 
 ## Macht es einen Unterschied, an Tag eins zu beantragen?
 
-Ja. Ab deinem ersten Arbeitstag hast du 28 Tage, um einem Arbeitgeber die TFN zu geben, bevor er statt der 15 % für Working Holiday Maker 45 % einbehalten muss. Das ATO braucht bis zu 28 Tage für die Ausstellung. Beide Uhren sind fast gleich lang, die einzige echte Variable ist die Zeit zwischen Landung und Antrag.
+Ja. Ab deinem ersten Arbeitstag hast du 28 Tage, um einem Arbeitgeber die TFN zu geben, bevor er 45 % einbehalten muss. Das ATO braucht bis zu 28 Tage für die Ausstellung. Beide Uhren sind fast gleich lang, die einzige echte Variable ist die Zeit zwischen Landung und Antrag.
 
 Antrag an Tag eins und Arbeitsbeginn in Woche zwei: Der Brief kommt mit hoher Wahrscheinlichkeit innerhalb des Beschäftigungsfensters an. Erst einen Monat die Küste hoch und dann Arbeitsbeginn am Tag nach dem Antrag: Das ist eine Lücke, die 30 Cent pro Dollar kostet, bis sie sich schließt.
 
@@ -775,7 +759,7 @@ Der Antrag wird für alle aus Australien heraus gestellt. Die Variable ist, was 
 - Ob du schon einmal mit irgendeinem Visum mit Arbeitsrecht in Australien warst. Dann hast du bereits eine TFN, und ein neuer Antrag führt zu einem Doppeldatensatz, der alles verzögert.
 - Wie schnell du arbeiten willst. Wer im Juni mit einem festen Job in eine Skisaison in Thredbo startet, hat eine deutlich engere Marge als jemand, der erst reist.
 - Ob du eine stabile australische Adresse hast oder jemanden im Land, der eine für dich sein kann.
-- Ob dein erster Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist, denn ein nicht registrierter behält auch mit vorliegender TFN zu Foreign-Resident-Sätzen ein.
+- Ob dein erster Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist, denn bei einem nicht registrierten kann auch mit vorliegender TFN nach höheren Sätzen einbehalten werden.
 - Ob deine Adresse den Brief tatsächlich erreicht, denn ein Rückläufer setzt die Wartezeit zurück und schiebt dich über die 28 Tage.
 
 Sobald du arbeitest, kommt die Steuer, die vor Hinterlegung der Nummer einbehalten wurde, über deine [Steuererklärung als Working Holiday Maker](/de/tax-return) zurück, und du kannst deine [Steuererstattung schätzen](/de/calculator), zu jedem Zeitpunkt im Jahr.
@@ -820,7 +804,7 @@ Zu klären ist zweierlei: ob die TFN ausgestellt wurde und an welche Adresse. Wu
 
 ## Kannst du weiterarbeiten, solange es ungeklärt ist?
 
-Ja, und das solltest du auch. Die Verzögerung berührt dein Recht zu arbeiten nicht, und sie muss auch deinen Steuersatz nicht berühren. Dein Arbeitgeber hält dich im 28-Tage-Beschäftigungsfenster beim Working-Holiday-Maker-Satz von 15 %, wenn die Tax File Number Declaration den laufenden Antrag vermerkt, und die Bestätigungsmail ist dein Beleg dafür.
+Ja, und das solltest du auch. Die Verzögerung berührt dein Recht zu arbeiten nicht, und sie muss auch deinen Steuersatz nicht berühren. Dein Arbeitgeber hält dich im 28-Tage-Beschäftigungsfenster beim regulären Satz, wenn die Tax File Number Declaration den laufenden Antrag vermerkt, und die Bestätigungsmail ist dein Beleg dafür.
 
 Läuft dein eigenes 28-Tage-Fenster ab, während der ATO-Antrag noch offen ist, sag das der Lohnbuchhaltung offen. Manche Arbeitgeber halten den Satz auf Basis der ATO-Korrespondenz. Andere wenden 45 % an, weil die Regel das sagt, und der Überschuss kommt dann über deine [Steuererklärung als Working Holiday Maker](/de/tax-return) zurück.
 
@@ -880,7 +864,7 @@ Hast du sie nicht beantragt, gehört sie weiterhin dir. Sie liegt noch beim ursp
 
 ## Funktionieren die Steuerregeln beim zweiten Mal gleich?
 
-Im Wesentlichen ja. Das Steuerjahr läuft vom 1. Juli bis 30. Juni, für jedes Jahr mit australischem Einkommen ist eine Erklärung fällig, die Standardfrist ist der 31. Oktober, und der Working-Holiday-Maker-Satz von 15 % gilt bis 45.000 $, sofern deine Arbeitgeber deine TFN haben und als Working-Holiday-Maker-Arbeitgeber registriert sind.
+Im Wesentlichen ja. Das Steuerjahr läuft vom 1. Juli bis 30. Juni, für jedes Jahr mit australischem Einkommen ist eine Erklärung fällig, die Standardfrist ist der 31. Oktober, und welche Sätze für dich gelten, hängt unter anderem davon ab, ob deine Arbeitgeber deine TFN haben und als Working-Holiday-Maker-Arbeitgeber registriert sind.
 
 Anders ist, dass du jetzt eine Historie hast. Ein Vorjahr, für das du nie eingereicht hast, ist weiterhin offen, und es enthält oft eine Erstattung statt einer Schuld, wenn im ersten Jahr zu viel einbehalten wurde.
 
@@ -984,7 +968,7 @@ Der einbehaltene Betrag wird bei der Abgabe wie zu viel einbehaltene PAYG-Steuer
 
 Für dich wird nichts mehr einbehalten. Beim Lohn nimmt dein Arbeitgeber die Steuer heraus, bevor du das Geld siehst. Beim ABN-Einkommen landet die volle Rechnungssumme auf deinem Konto, und die Steuer ist trotzdem geschuldet, veranlagt am Jahresende bei der Abgabe.
 
-Der Working-Holiday-Maker-Satz von 15 % auf die ersten 45.000 $ gilt für ABN-Einkommen genauso wie für Lohn; die Höhe ist nicht die Überraschung, der Zeitpunkt ist es. Wer 20.000 $ über eine ABN verdient und nichts zurückgelegt hat, hat bei der Abgabe eine echte Rechnung statt einer Erstattung.
+Welche Sätze für dich gelten, hängt vom Einzelfall ab und wird im Einzelfall geprüft. Die Höhe ist nicht die Überraschung, der Zeitpunkt ist es. Wer 20.000 $ über eine ABN verdient und nichts zurückgelegt hat, hat bei der Abgabe eine echte Rechnung statt einer Erstattung.
 
 ## Was kannst du gegen ABN-Einkommen absetzen, was gegen Lohn nicht ginge?
 
@@ -1039,7 +1023,7 @@ Eine versehentlich übernommene GST-Registrierung ist nicht harmlos. Sie begrün
 
 ## Was ändert die ABN, sobald du sie hast?
 
-Sie ändert vollständig, wer für deine Steuer zuständig ist. Von einer Rechnung wird nichts einbehalten, die ganze Schuld liegt also bei dir, bis die [Steuererklärung](/de/tax-return) eingereicht ist, zum Working-Holiday-Maker-Satz von 15 % auf die ersten 45.000 $ des kombinierten Einkommens. Dagegen sind echte Betriebsausgaben absetzbar, der Ausgleich dafür, dass du das Risiko trägst.
+Sie ändert vollständig, wer für deine Steuer zuständig ist. Von einer Rechnung wird nichts einbehalten, die ganze Schuld liegt also bei dir, bis die [Steuererklärung](/de/tax-return) eingereicht ist, nach den Sätzen, die für dein kombiniertes Einkommen gelten. Dagegen sind echte Betriebsausgaben absetzbar, der Ausgleich dafür, dass du das Risiko trägst.
 
 Sie ändert auch, was deine Rechnungen tragen müssen. Ein Zahler, der eine Rechnung ohne gültige ABN erhält, muss 47 % der Zahlung einbehalten, und das ist eine Regel über die fehlende Nummer und nicht über dich. Der Überschuss kommt zur Steuerzeit zurück, und die korrekt angegebene Nummer vermeidet die ganze Lage. Eine Rechnung sollte deshalb enthalten:
 
@@ -1058,59 +1042,55 @@ Zu früh zu beenden macht Probleme, wenn noch eine letzte Rechnung offen ist, un
 
   // ─── Tax Return - Strategic posts (full body translations) ────────────────
   'backpacker-tax-rate-australia': {
-    title: 'Backpackersteuer 2025/26: 15 % und danach',
-    description: 'Auf die ersten 45.000 Dollar zahlst du pauschal 15 %, darüber gelten die regulären Stufensätze. Ohne TFN behält dein Arbeitgeber stattdessen 45 % ein.',
+    title: 'Backpackersteuer 2025/26: wie die Sätze geprüft werden',
+    description: 'Für Working Holiday Maker gelten besondere Sätze, und welche bei dir zur Anwendung kommen, wird im Einzelfall geprüft. Ohne TFN behält dein Arbeitgeber 45 % ein.',
     body: `
-Der Working-Holiday-Maker-Satz beträgt pauschal 15 % auf die ersten 45.000 $ Einkommen pro Steuerjahr, für Visa der Subclass 417 und 462 gleichermaßen. Er ersetzt die Residentenstufen: kein Steuerfreibetrag, keine steuerfreie Stufe am unteren Ende. Dass er auch angewendet wird, hängt von drei Dingen ab, nicht von einem.
+Für Working Holiday Maker mit Visa der Subclass 417 und 462 gelten in Australien besondere Steuersätze. Welche Sätze auf dein Einkommen angewendet werden, hängt nicht von einer einzigen Zahl ab, sondern von mehreren Dingen aus deinem Jahr, und am Ende entscheidet das ATO.
 
-## Was muss stimmen, damit 15 % angewendet werden?
+## Wovon hängt es ab, welche Sätze angewendet werden?
 
-Drei Bedingungen, und die meisten kennen nur die erste. Deine TFN muss beim Arbeitgeber liegen, die Tax File Number Declaration muss dich als Working Holiday Maker ausweisen, und der Arbeitgeber muss beim ATO als Arbeitgeber von Working Holiday Makern registriert sein.
+Von mehreren Dingen, und die meisten kennen nur das erste: Deine TFN muss beim Arbeitgeber liegen, die Tax File Number Declaration muss richtig ausgefüllt sein, und der Arbeitgeber muss beim ATO als Arbeitgeber von Working Holiday Makern registriert sein.
 
-Fehlt die TFN, sind es 45 % Einbehalt. Ist der Arbeitgeber nicht registriert, sind es 30 % auch bei korrekter TFN und Erklärung, denn er muss dann Foreign-Resident-Sätze anwenden. Diese dritte Bedingung ist für dich unsichtbar und die häufigste Ursache für einen Payslip, der grundlos falsch aussieht.
+Fehlt die TFN, sind es 45 % Einbehalt. Ist der Arbeitgeber nicht registriert, kann auch bei korrekter TFN und Erklärung nach höheren Sätzen einbehalten werden. Diese Bedingung ist für dich unsichtbar und eine häufige Ursache für einen Payslip, der grundlos falsch aussieht.
 
-## Wie sieht der Satz in der Praxis aus?
+## Wie sieht der Einbehalt in der Praxis aus?
 
-Die Rechnung ist jede Woche gleich, ohne Stufe und ohne Abschmelzen über die ersten 45.000 $. Jeder Payslip lässt sich in einer Division prüfen: einbehaltene Steuer geteilt durch Brutto sollte nahe 0,15 liegen.
+Auf dem Payslip siehst du nur den Einbehalt, und der ist eine Schätzung, die Abrechnung für Abrechnung angewendet wird. Welche Sätze für dein Jahr am Ende wirklich gelten, steht erst bei der Veranlagung fest. Deshalb lässt sich ein Payslip nicht mit einer einfachen Division prüfen.
 
-- 1.000 $ pro Woche: 150 $ einbehalten, 850 $ für dich
-- 1.500 $ pro Woche: 225 $ einbehalten, 1.275 $ für dich
-- 2.000 $ pro Woche: 300 $ einbehalten, 1.700 $ für dich
+Auch hohe Einkommen werden nach höheren Stufen besteuert. Sehr wenige erreichen das in einem Jahr; Bergbau, Spezialhandwerk und lange Phasen gut bezahlter Bauarbeit kommen gelegentlich dorthin.
 
-Über 45.000 $ steigt der Satz: 30 % von 45.001 bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber. Sehr wenige erreichen das in einem Jahr; Bergbau, Spezialhandwerk und lange Phasen gut bezahlter Bauarbeit kommen gelegentlich dorthin.
+## Wie stehen die Sätze im Vergleich zu anderen da?
 
-## Wie steht er im Vergleich zu Residenten- und Foreign-Resident-Sätzen?
+Das lässt sich nicht pauschal sagen. Welche Sätze für dich gelten, hängt von deinen Umständen ab, und im Vergleich mit anderen Gruppen von Steuerpflichtigen kann das besser oder schlechter ausgehen.
 
-Er liegt zwischen beiden. Ein australischer Steuerresident zahlt auf die ersten 18.200 $ nichts und danach steigende Sätze. Ein gewöhnlicher Foreign Resident zahlt 30 % ab dem ersten Dollar, ein Working Holiday Maker 15 %.
+In seltenen Konstellationen wird jemand am Ende anders veranlagt, und dann ändert sich die Rechnung für das ganze Jahr. Ob dein Jahr dazugehört, hängt von deinen eigenen Umständen ab, lässt sich nicht am Visum ablesen und gehört ordentlich geprüft. Warum, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
 
-Bei typischen Backpacker-Einkommen steht ein Working Holiday Maker damit besser da als ein Foreign Resident und schlechter als ein Resident. In seltenen Konstellationen wird er am Ende anders veranlagt, und dann ändert sich die Rechnung für das ganze Jahr. Ob dein Jahr dazugehört, hängt von deinen eigenen Umständen ab, lässt sich nicht am Visum ablesen und gehört ordentlich geprüft. Warum, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
+## Warum bekommen Leute mit passendem Einbehalt trotzdem Erstattungen?
 
-## Warum bekommen Leute mit korrekten 15 % trotzdem Erstattungen?
+Weil ein ganzes Jahr mit durchgehend passendem Einbehalt die Ausnahme ist. Das typische Jahr enthält mindestens eine Phase, in der etwas anderes galt, und daraus kann eine Erstattung entstehen.
 
-Weil ein ganzes Jahr korrekt einbehaltene 15 % hier die Ausnahme sind. Das typische Jahr enthält mindestens eine Phase, in der etwas anderes galt, und daraus kommt die Erstattung.
-
-- Wochen, bevor die TFN beim Arbeitgeber ankam, einbehalten mit 45 % statt 15 %
-- Arbeit für einen Arbeitgeber, der nicht als Working-Holiday-Maker-Arbeitgeber registriert war, einbehalten mit 30 %
-- Eine Erklärung, die als Foreign Resident statt als Working Holiday Maker ausgefüllt wurde
+- Wochen, bevor die TFN beim Arbeitgeber ankam, einbehalten mit 45 %
+- Arbeit für einen Arbeitgeber, der nicht als Working-Holiday-Maker-Arbeitgeber registriert war
+- Eine Erklärung, die mit dem falschen Status ausgefüllt wurde
 - Abzüge für berufsbezogene Ausgaben, die erst beim Bescheid greifen
-- Die Medicare Levy von 2 %, die nur wegfällt, wenn die Befreiung beantragt wird
+- Die Medicare Levy von 2 %, die nur wegfallen kann, wenn die Befreiung beantragt wird
 
-Ein Jahr mit 37.000 $ Verdienst, davon drei Wochen bei einem neuen Arbeitgeber vor Erfassung der TFN: Bei 15 % sind 5.550 $ geschuldet. Wurden 4.000 $ davon mit 45 % statt 15 % einbehalten, sind 1.200 $ zu viel genommen worden. Genau das holt die Erklärung zurück, bevor überhaupt ein Abzug betrachtet wird.
+Wie viel davon bei dir zurückkommt, hängt vom Einzelfall ab, und am Ende entscheidet das ATO.
 
 ## Welche Mythen gibt es zur Backpacker-Steuer?
 
 Vier Behauptungen kursieren dauerhaft in Hostels und Backpacker-Gruppen, und jede kostet jedes Jahr jemanden Geld.
 
-- Dass Backpacker gar keine Steuern zahlen. Die 15 % gelten ab dem ersten Dollar, ohne Freibetrag.
+- Dass Backpacker gar keine Steuern zahlen. Steuern fallen an, und wie sie berechnet werden, hängt vom Einzelfall ab.
 - Dass es bei korrektem Einbehalt nichts zu holen gibt. Abzüge, die Medicare-Levy-Befreiung und jede falsch einbehaltene Phase bleiben.
 - Dass der Satz je Bundesstaat variiert. Tut er nicht. Es ist ein Bundessatz, auch wenn Lohnfehler bei kleineren regionalen Arbeitgebern häufiger sind.
 - Dass die Abreise die Sache beendet. Eine Erklärung kann aus dem Ausland eingereicht und die Erstattung auf ein australisches Konto gezahlt werden.
 
-## Kommt die Medicare Levy auf die 15 % obendrauf?
+## Kommt die Medicare Levy obendrauf?
 
-Im Regelfall nicht, aber nur, wenn die Befreiung beantragt wird. Die Levy von 2 % gilt für Personen mit Anspruch auf Medicare; die meisten Working Holiday Maker haben keinen. Automatisch entfällt sie trotzdem nicht.
+Das hängt vom Einzelfall ab. Die Levy von 2 % gilt für Personen mit Anspruch auf Medicare. Ob ein solcher Anspruch bestand, prüfen wir im Einzelfall, und automatisch entfällt sie nie.
 
-Die Befreiung wird in der Erklärung beantragt und mit einem Medicare Entitlement Statement von Services Australia belegt, dessen Ausstellung üblicherweise Wochen dauert. Der Anspruch folgt dem Pass: mit britischem Pass besteht in der Regel Anspruch und damit die Pflicht zu zahlen, mit deutschem oder japanischem in der Regel nicht.
+Die Befreiung wird in der Erklärung beantragt und braucht einen Nachweis, dessen Beschaffung üblicherweise Wochen dauert.
 
 ## Was passiert, wenn dein Aufenthalt zwei Steuerjahre überspannt?
 
@@ -1118,9 +1098,9 @@ Du bekommst zwei Bescheide statt einem, jeder berechnet, als wäre er ein ganzes
 
 Der Grund ist mechanisch. Die Lohnbuchhaltung behält von jeder Abrechnung so ein, als liefe dieser Verdienst das ganze Jahr weiter. Wer acht Monate gearbeitet und 30.000 $ verdient hat, wurde im Startjahr auf eine viel größere Jahressumme hin behandelt. Die Korrektur erfolgt beim Bescheid, zu deinen Gunsten, in beiden Jahren.
 
-## Wird ABN-Einkommen zum selben Satz besteuert?
+## Wird ABN-Einkommen genauso besteuert?
 
-Ja. Unter einer ABN in Rechnung gestelltes Einkommen wird mit denselben 15 % auf die ersten 45.000 $ veranlagt, aber unterwegs wurde nichts einbehalten. Die Steuer kommt als Zahlbetrag statt als etwas bereits Erledigtes.
+Es wird in dieselbe Erklärung aufgenommen. Unter einer ABN in Rechnung gestelltes Einkommen wird nach den Sätzen veranlagt, die für dich gelten, aber unterwegs wurde nichts einbehalten. Die Steuer kommt als Zahlbetrag statt als etwas bereits Erledigtes.
 
 Bei Löhnen und ABN-Einkommen im selben Jahr saugt die vom Lohn einbehaltene PAYG-Steuer meist die Steuer auf die ABN-Seite auf. Wer nur ABN-Einkommen hatte und nichts zurückgelegt hat, bekommt eine Rechnung statt der erwarteten Erstattung.
 
@@ -1131,7 +1111,7 @@ Der Satz steht im Gesetz. Was du gezahlt hast und was zurückkommt, entscheiden 
 - Ob jeder Arbeitgeber deine TFN ab der ersten Abrechnung hatte und wie lange eine Lücke lief.
 - Ob jeder Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert war.
 - Wie die Felder zu Wohnsitz und Working Holiday Maker ausgefüllt wurden.
-- Welchen Pass du hältst, denn davon hängt die Medicare-Frage ab.
+- Wie es um deinen Medicare-Anspruch steht, denn davon hängt die Medicare-Frage ab.
 - Ob du zusätzlich ABN-Einkommen ohne jeden Einbehalt hattest.
 - Ob es ein Teiljahr war, denn Teiljahres-Einbehalt schießt routinemäßig über das Ziel hinaus.
 
@@ -1144,71 +1124,70 @@ Alles davon wird in der [Steuererklärung als Working Holiday Maker](/de/tax-ret
   // ─── Medicare - Critical for Germans (no RHCA) ─────────────────────────────
   'what-is-medicare-working-holiday-makers': {
     title: 'Medicare mit 417/462: bist du versichert?',
-    description: 'Die meisten 417/462-Inhaber sind nicht über Medicare versichert, außer ihr Land hat ein Abkommen. Wer abgedeckt ist und was Notfälle kosten.',
+    description: 'Ob du mit einem 417/462-Visum über Medicare abgedeckt bist, hängt vom Einzelfall ab. Was Medicare leistet und was Notfälle kosten.',
     body: `
-Meistens nicht. [Medicare](/de/medicare) deckt australische Staatsbürger und ständige Einwohner ab, und ein 417- oder 462-Visum macht dich zu keinem von beidem. Die Ausnahme ist dein Pass: Elf Länder haben ein Gesundheitsabkommen mit Australien, ihre Staatsangehörigen bekommen begrenzten Schutz. Alle anderen zahlen privat.
+Das hängt vom Einzelfall ab. [Medicare](/de/medicare) deckt australische Staatsbürger und ständige Einwohner ab, und ein 417- oder 462-Visum macht dich zu keinem von beidem. Für manche Reisende gibt es über Gesundheitsabkommen begrenzten Schutz. Wer nicht abgedeckt ist, zahlt privat.
 
 ## Was entscheidet, ob du abgedeckt bist?
 
-Eine einzige Tatsache, und es ist dein Pass, nicht dein Visum. Australien unterhält Reciprocal Health Care Agreements mit Großbritannien, Irland, Neuseeland, Schweden, den Niederlanden, Finnland, Norwegen, Belgien, Slowenien, Malta und Italien. Ihre Staatsangehörigen können sich für begrenzte Medicare-Leistungen registrieren, solange das Visum gültig ist.
+Deine individuellen Umstände, nicht allein das Visum. Australien unterhält mit einigen Ländern Gesundheitsabkommen (Reciprocal Health Care Agreements), die begrenzte Medicare-Leistungen ermöglichen, solange das Visum gültig ist.
 
-Ist dein Pass deutsch, französisch, japanisch, koreanisch, kanadisch, amerikanisch oder irgendein anderer, gibt es kein Abkommen und kein Medicare. Deutschland steht nicht auf der Liste, und für deutsche Backpacker ist das die entscheidende Auskunft. Die [vollständige Länderliste](/de/blog/countries-with-medicare-agreement-australia) lohnt einen Blick, denn es wird regelmäßig in beide Richtungen falsch geraten.
+Ob und wie das auf dich zutrifft, ist nichts, was du dir annehmen solltest, und es wird regelmäßig in beide Richtungen falsch geraten. Wir prüfen es im Einzelfall.
 
 ## Was bringt dir ein Abkommen?
 
 Weniger, als das Wort Medicare vermuten lässt. Der reziproke Schutz gilt für medizinisch notwendige Behandlung, die nicht bis zur Heimreise warten kann: ein bezuschusster Hausarztbesuch, Behandlung im öffentlichen Krankenhaus als Kassenpatient und Rezepte zum subventionierten Satz.
 
-Nicht abgedeckt ist der Krankenwagen, der in den meisten Bundesstaaten getrennt abgerechnet wird und für eine einzige Fahrt in die Hunderte geht. Ebenfalls nicht abgedeckt sind Zahnbehandlung, Optiker, Physiotherapie, Wahleingriffe, Privatkliniken und meist Vorerkrankungen. Deshalb tragen auch britische und irische Backpacker mit formalem Schutz üblicherweise eine Versicherung, und deshalb ist die Krankenwagenlücke die häufigste teure Überraschung.
+Nicht abgedeckt ist der Krankenwagen, der in den meisten Bundesstaaten getrennt abgerechnet wird und für eine einzige Fahrt in die Hunderte geht. Ebenfalls nicht abgedeckt sind Zahnbehandlung, Optiker, Physiotherapie, Wahleingriffe, Privatkliniken und meist Vorerkrankungen. Deshalb tragen auch Backpacker mit formalem Schutz üblicherweise eine Versicherung, und deshalb ist die Krankenwagenlücke die häufigste teure Überraschung.
 
 ## Was kostet es dich, wenn du nicht abgedeckt bist?
 
 Du wirst als Privatpatient behandelt und zahlst den ausgewiesenen Preis. Ein Hausarztbesuch liegt üblicherweise bei 80 bis 120 $. Ein Facharzttermin beginnt bei etwa 200 $. Rezepte kosten den vollen Verkaufspreis statt des subventionierten. Notaufnahmen öffentlicher Krankenhäuser behandeln dich, aber Nachbehandlung und jede Aufnahme sind kostenpflichtig.
 
-Eine Krankenversicherung ist Bedingung für das 462-Visum und wird beim 417 dringend erwartet, und das ist der Grund. Ein gebrochenes Handgelenk nach einem Sturz in einer Packhalle ist mit Versicherung eine beherrschbare Ausgabe und ohne eine ernste.
+Die Visumsbedingung 8501 verlangt eine angemessene Krankenversicherung; ob und wie sie bei deinem 417 oder 462 durchgesetzt wird, liegt im Ermessen der Behörde, und es lohnt sich, den Visumsbescheid zu prüfen. Genau deshalb ist eine Versicherung sinnvoll. Ein gebrochenes Handgelenk nach einem Sturz in einer Packhalle ist mit Versicherung eine beherrschbare Ausgabe und ohne eine ernste.
 
 ## Wie wirkt sich das auf deine Steuer aus?
 
-Direkt, und hier wird aus Risiko Geld. Die Medicare Levy beträgt 2 % des zu versteuernden Einkommens und wird Personen berechnet, die Anspruch auf Medicare haben. Wenn du keinen Anspruch hast, sollte die Levy für dich nicht gelten, und bei 25.000 $ Verdienst sind das rund 500 $.
+Direkt, und hier wird aus Risiko Geld. Die Medicare Levy beträgt 2 % des zu versteuernden Einkommens und wird Personen berechnet, die Anspruch auf Medicare haben. Bestand für dich kein Anspruch, kann die Levy entfallen.
 
-Für deutsche Staatsangehörige heißt das: Kein Abkommen, kein Anspruch, und die Befreiung greift in aller Regel. Automatisch ist sie nicht. Sie muss in der Steuererklärung beantragt werden, und dafür brauchst du ein Medicare Entitlement Statement von Services Australia, für jedes Steuerjahr einzeln, mit üblicherweise bis zu sechs Wochen Ausstellungsdauer. Diese sechs Wochen sind das Problem: Die meisten erfahren im Oktober davon, wenn die Erklärung längst fällig ist.
+Automatisch ist das nicht. Die Befreiung muss in der Steuererklärung beantragt werden und braucht einen Nachweis mit mehreren Wochen Vorlauf, für jedes Steuerjahr einzeln. Dieser Vorlauf ist das Problem: Viele erfahren davon erst, wenn die Erklärung längst fällig ist. Ob und für welche Zeit die Befreiung bei dir infrage kommt, prüfen wir im Einzelfall, und am Ende entscheidet das ATO.
 
 ## Ändert eine private Versicherung etwas an der Befreiung?
 
 Nein, und das führt in beide Richtungen in die Irre. Die Befreiung hängt vom Anspruch auf Medicare ab, nicht davon, ob du etwas anderes gekauft hast. Eine private Versicherung schafft keine Befreiung und nimmt keine weg.
 
-Die Kehrseite ist schmerzhafter. Ein britischer oder irischer Reisender, der sich nie registriert und Medicare nie genutzt hat, hat in der Regel trotzdem Anspruch, und geprüft wird der Anspruch. Die Levy gilt.
+Die Kehrseite ist schmerzhafter. Wer Anspruch auf Medicare hatte, hat ihn auch dann, wenn er sich nie registriert und Medicare nie genutzt hat, und geprüft wird der Anspruch. Dann gilt die Levy.
 
-## Wo verschiebt dein Pass das Ergebnis?
+## Was verschiebt das Ergebnis?
 
-Abdeckung und Levy-Befreiung entscheiden sich an derselben Tatsache, deinem Pass, und bewegen sich in entgegengesetzte Richtungen. Diese Umstände verändern eine der beiden Hälften.
+Abdeckung und Levy-Befreiung hängen an denselben Umständen und bewegen sich in entgegengesetzte Richtungen. Diese Dinge verändern das Ergebnis.
 
-- Dein Pass, denn das ist die ganze Frage. Elf Länder drin, alle anderen draußen.
-- Ob du dich mitten im Jahr registriert hast, was zu einer anteiligen Befreiung für die nicht abgedeckten Tage führt statt zu alles oder nichts.
-- Ob du das Medicare Entitlement Statement rechtzeitig bestellt hast. Sechs Wochen Vorlauf stehen zwischen den meisten Leuten und rund 500 $.
-- Ob du zwei Staatsangehörigkeiten hast. Das Abkommen folgt dem Pass, mit dem du hier bist, und ein zweiter Pass kann die Antwort komplett ändern.
-- Ob du ein Jahr bereits ohne die Befreiung eingereicht hast, denn die Levy lässt sich meist über eine Berichtigung zurückholen, in der Regel binnen zwei Jahren nach der ursprünglichen Abgabe.
+- Ob und wann ein Anspruch auf Medicare bestand, denn das ist die ganze Frage.
+- Ob du dich mitten im Jahr registriert hast, was zu einer anteiligen Befreiung für die nicht abgedeckten Tage führen kann statt zu alles oder nichts.
+- Ob der Nachweis rechtzeitig vorlag. Der Vorlauf steht zwischen vielen Leuten und der Befreiung.
+- Ob du ein Jahr bereits ohne die Befreiung eingereicht hast, denn die Levy lässt sich oft über eine Berichtigung zurückholen, in der Regel binnen zwei Jahren nach der ursprünglichen Abgabe.
 
-Die Befreiung wird als Teil deiner [Steuererklärung als Working Holiday Maker](/de/tax-return) beantragt, und was sie bei deinem Einkommen ausmacht, siehst du im [Erstattungsrechner](/de/calculator), einmal mit und einmal ohne.
+Die Befreiung wird als Teil deiner [Steuererklärung als Working Holiday Maker](/de/tax-return) geprüft und beantragt, und was die Levy bei deinem Einkommen ausmacht, siehst du im [Erstattungsrechner](/de/calculator).
 `,
   },
 
   'medicare-levy-working-holiday-makers': {
     title: 'Medicare-Levy-Befreiung: die 2 % vermeiden',
-    description: 'Die meisten Working Holiday Maker haben keinen Medicare-Anspruch und können die 2 % Medicare Levy über die Befreiung vermeiden.',
+    description: 'Ob du die 2 % Medicare Levy über eine Befreiung vermeiden kannst, hängt vom Einzelfall ab. Was die Befreiung ist und wie sie in die Erklärung gehört.',
     body: `
-Meistens nicht. Die Medicare Levy von 2 % wird Personen berechnet, die Anspruch auf Medicare haben, und die meisten Inhaber eines 417- oder 462-Visums haben keinen, die Levy sollte also nicht greifen. Bei 25.000 $ Verdienst sind das rund 500 $. Sie entfällt nicht automatisch, und genau dort geht das Geld verloren.
+Das hängt vom Einzelfall ab. Die Medicare Levy von 2 % wird Personen berechnet, die Anspruch auf Medicare haben. Bestand kein Anspruch, kann die Levy entfallen. Sie entfällt nicht automatisch, und genau dort geht Geld verloren.
 
 ## Was entscheidet, ob du die Befreiung bekommst?
 
-Dein Pass, und ein Stück Papier, von dem die meisten Backpacker nie erfahren. Der Test ist der Anspruch auf Medicare, und der besteht mit dem Pass eines der elf Länder mit Reciprocal Health Care Agreement: Großbritannien, Irland, Neuseeland, Italien, Malta, Niederlande, Belgien, Finnland, Norwegen, Schweden und Slowenien.
+Ob für dich ein Anspruch auf Medicare bestand, und ein Nachweis, von dem die meisten Backpacker nie erfahren. Der Test ist der Anspruch auf Medicare. Ob er bestand, hängt von deinen Umständen ab und lässt sich nicht pauschal nach Land oder Visum beantworten, und am Ende entscheidet das ATO.
 
-Deutschland, Japan, Frankreich, Korea, Taiwan, Kanada, die USA und alle anderen stehen nicht auf dieser Liste; ihre Staatsangehörigen haben in der Regel keinen Anspruch, und die Befreiung greift üblicherweise. Für Deutsche ist die Levy damit meist ein Betrag, der gar nicht anfallen müsste.
+Wir prüfen das als Teil deiner Erklärung.
 
 ## Was ist das Stück Papier?
 
-Ein Medicare Entitlement Statement von Services Australia. Es weist nach, dass du für einen bestimmten Zeitraum keinen Anspruch auf Medicare hattest, und mit ihm wird die Befreiung in der Steuererklärung beantragt. Für jedes Steuerjahr ist ein eigenes Statement nötig.
+Ein Nachweis von Services Australia. Er belegt, dass du für einen bestimmten Zeitraum keinen Anspruch auf Medicare hattest, und mit ihm wird die Befreiung in der Steuererklärung belegt. Für jedes Steuerjahr ist ein eigener nötig.
 
-Die Ausstellung dauert üblicherweise bis zu sechs Wochen, und dieser Vorlauf ist das ganze praktische Problem. Die meisten erfahren im Oktober davon, wenn die Erklärung längst fällig ist, und geben rund 500 $ still auf, statt einen sechswöchigen Prozess zu starten. Es im Juli zu bestellen ist die eine Änderung, die den Unterschied macht.
+Die Ausstellung hat mehrere Wochen Vorlauf, und dieser Vorlauf ist das ganze praktische Problem. Viele erfahren davon erst, wenn die Erklärung längst fällig ist, und geben die Befreiung still auf. Bei uns gehört die Beschaffung des Nachweises zur Vorbereitung deiner Erklärung.
 
 ## Wie viel ist sie wert?
 
@@ -1221,11 +1200,11 @@ Zwei Prozent des zu versteuernden Einkommens, sie skaliert also mit dem Verdiens
 
 Dieser Betrag wirkt sich über die Veranlagung aus, nicht über den Payslip: Die Levy wird am Jahresende veranlagt, nicht Abrechnung für Abrechnung einbehalten.
 
-## Was gilt, wenn du aus einem Abkommensland kommst?
+## Was gilt, wenn ein Gesundheitsabkommen eine Rolle spielt?
 
-Dann läuft die Antwort meist umgekehrt. Wer einen Pass aus einem der elf Abkommensländer hält, hat in der Regel Anspruch auf Medicare, ganz gleich, ob er sich je registriert oder es je genutzt hat. Der Test ist der Anspruch, nicht die Nutzung.
+Dann kann die Antwort anders ausfallen. Wer Anspruch auf Medicare hat, hat ihn ganz gleich, ob er sich je registriert oder es je genutzt hat. Der Test ist der Anspruch, nicht die Nutzung.
 
-Für die meisten britischen und irischen Reisenden ist die Befreiung damit vom Tisch, und die Levy gilt als Teil des Bescheids. Teilfälle gibt es weiterhin: Wer den Anspruch erst mitten im Jahr erworben hat oder dessen Umstände sich geändert haben, kann für die Tage ohne Anspruch befreit sein, und dafür müssen die Daten stimmen.
+Teilfälle gibt es weiterhin: Wer den Anspruch erst mitten im Jahr erworben hat oder dessen Umstände sich geändert haben, kann für die Tage ohne Anspruch befreit sein, und dafür müssen die Daten stimmen.
 
 ## Was, wenn du bereits ohne die Befreiung eingereicht hast?
 
@@ -1235,16 +1214,15 @@ Das lohnt für alle, die ihre erste australische Erklärung selbst eingereicht h
 
 ## Steht dir die Befreiung überhaupt zu?
 
-Die Befreiung ist bei 25.000 $ rund 500 $ wert. Ob du sie beanspruchen kannst, hängt von Fakten ab, die du schon kennst.
+Die Befreiung kann bei 25.000 $ Verdienst rund 500 $ wert sein. Ob sie dir zusteht, hängt vom Einzelfall ab, und diese Dinge spielen hinein.
 
-- Dein Pass, der über den Anspruch und damit über die ganze Frage entscheidet.
-- Ob du dich mitten im Jahr bei Medicare registriert hast, was eine anteilige Befreiung für die nicht abgedeckten Tage ergibt.
-- Ob das Medicare Entitlement Statement rechtzeitig bestellt wurde. Die sechs Wochen Vorlauf sind der Grund, warum das aufgegeben wird.
-- Ob du zwei Staatsangehörigkeiten hast, denn das Abkommen folgt dem Pass und nicht dem Visum.
-- Über wie viele Steuerjahre dein Aufenthalt läuft. Jedes Jahr braucht ein eigenes Statement und einen eigenen Antrag.
-- Ob ein Vorjahr ohne sie eingereicht wurde, was sich meist binnen zwei Jahren berichtigen lässt.
+- Ob und wann für dich ein Anspruch auf Medicare bestand.
+- Ob du dich mitten im Jahr bei Medicare registriert hast, was eine anteilige Befreiung für die nicht abgedeckten Tage ergeben kann.
+- Ob der Nachweis rechtzeitig vorlag. Der Vorlauf ist der Grund, warum die Befreiung oft aufgegeben wird.
+- Über wie viele Steuerjahre dein Aufenthalt läuft. Jedes Jahr braucht einen eigenen Nachweis und einen eigenen Antrag.
+- Ob ein Vorjahr ohne sie eingereicht wurde, was sich oft binnen zwei Jahren berichtigen lässt.
 
-Die Befreiung wird als Teil deiner [Steuererklärung als Working Holiday Maker](/de/tax-return) beantragt. Was die 2 % bei deinem Einkommen ausmachen, rechnet dir der [Erstattungsrechner](/de/calculator) aus.
+Die Befreiung wird als Teil deiner [Steuererklärung als Working Holiday Maker](/de/tax-return) geprüft und beantragt. Was die 2 % bei deinem Einkommen ausmachen, rechnet dir der [Erstattungsrechner](/de/calculator) aus.
 `,
   },
 
@@ -1338,11 +1316,11 @@ Maßgeblich ist deshalb dein Income Statement und nicht deine Erinnerung: Es wir
 
 Das ATO vergleicht die auf das Gesamteinkommen geschuldete Steuer mit dem, was deine Arbeitgeber von jeder Abrechnung einbehalten haben. Wurde mehr einbehalten als geschuldet, wird die Differenz erstattet; wurde weniger einbehalten, ist sie zu zahlen.
 
-Bei vielen Working Holiday Makern liegt die Bilanz aus strukturellen Gründen auf der Erstattungsseite: Wochen vor Ankunft der TFN beim Arbeitgeber wurden mit 45 % statt 15 % einbehalten, Teiljahres-Einkommen wird konstruktionsbedingt zu hoch einbehalten, und Abzüge sowie die Medicare-Levy-Befreiung greifen erst beim Bescheid.
+Bei vielen Working Holiday Makern liegt die Bilanz aus strukturellen Gründen auf der Erstattungsseite: Wochen vor Ankunft der TFN beim Arbeitgeber wurden mit 45 % statt des regulären Satzes einbehalten, Teiljahres-Einkommen wird konstruktionsbedingt zu hoch einbehalten, und Abzüge sowie die Medicare-Levy-Befreiung greifen erst beim Bescheid.
 
 ## Wann ist die Frist, und was verschiebt sie?
 
-Der 31. Oktober nach Ende des Steuerjahres, für alle, die selbst einreichen. Das Jahr 2025/26 endete am 30. Juni 2026, die Frist ist also der 31. Oktober 2026, und für 2026/27 läuft sie bis zum 31. Oktober 2027.
+Der 31. Oktober nach Ende des Steuerjahres, für alle, die selbst einreichen. Das Jahr 2025/26 endete am 30. Juni 2026, die Frist war also der 31. Oktober 2026 und ist inzwischen vorbei. Eine verspätete Erklärung lässt sich weiterhin einreichen. Für 2026/27 läuft die Frist bis zum 31. Oktober 2027.
 
 Erklärungen über einen registrierten Tax Agent fallen in der Regel unter einen späteren Termin, häufig weit ins Folgejahr hinein. Das zählt, wenn deine Unterlagen unvollständig sind oder der Oktober vorbei ist: Eine verpasste Oktoberfrist ist nicht das Ende der Sache, und Strafen sind nicht automatisch.
 
@@ -1364,7 +1342,7 @@ Die Termine stehen fest, was sie für dein Geld bedeuten nicht. Die meisten Work
 
 - Auf welcher Seite des 30. Juni deine erste und deine letzte Zahlung lagen, was bestimmt, wie viele Erklärungen du abgeben musst.
 - Ob eines der Jahre ein Teiljahr war, denn Teiljahres-Einbehalt schießt über das Ziel hinaus.
-- Ob es eine Phase gab, bevor deine TFN beim Arbeitgeber ankam, einbehalten mit 45 % statt 15 %.
+- Ob es eine Phase gab, bevor deine TFN beim Arbeitgeber ankam, einbehalten mit 45 %.
 - Ob du selbst einreichst oder über einen registrierten Tax Agent, was die Frist ändert.
 - Ob ein australisches Bankkonto noch offen ist.
 - Ob ein früheres Jahr nie eingereicht wurde, was sich meist noch nachholen lässt.
@@ -1406,7 +1384,7 @@ Nicht absetzbar:
 
 Werkzeug, das du selbst für die Arbeit kaufst, ist absetzbar, und die Größe der Anschaffung entscheidet, ob sofort oder über mehrere Jahre. Messerrollen, Kochjacken, Arbeitsschuhe, Handwerkzeug und Contracting-Ausrüstung qualifizieren, wo der Arbeitgeber sie nicht gestellt hat.
 
-Gegenstände bis 300 $ pro Stück werden im Kaufjahr voll geltend gemacht. Größere Anschaffungen werden über ihre Nutzungsdauer abgeschrieben, und ab dem 1. Juli 2026 steigt die Grenze für den Sofortabzug bei geeigneten Gegenständen auf 1.000 $, was unser Guide zur [1.000-$-Sofortabschreibung](/de/blog/1000-dollar-instant-deduction-rule-2026) behandelt.
+Gegenstände bis 300 $ pro Stück werden im Kaufjahr voll geltend gemacht. Größere Anschaffungen werden über ihre Nutzungsdauer abgeschrieben. Eine Pauschale von 1.000 $ gibt es erst ab dem Einkommensjahr 2026/27, und sie ist eine eigene Regel, die die 300-$-Grenze pro Gegenstand nicht anhebt. Sie steht in unserem Guide zur [1.000-$-Pauschale](/de/blog/1000-dollar-instant-deduction-rule-2026).
 
 ## Welche Fahrten kannst du absetzen, und welche sind privat?
 
@@ -1468,7 +1446,7 @@ Die zweite Beurteilung ist die Zuordnung zu den Arbeitgebern. Ein Jahr mit vier 
     title: 'Steuererklärung Australien: so gehst du vor',
     description: 'Du brauchst TFN, Income Statements aller Arbeitgeber und eine Bankverbindung. Eingereicht wird ab dem 1. Juli, auch wenn du längst wieder zu Hause bist.',
     body: `
-Eine australische [Steuererklärung](/de/tax-return) deckt das Jahr bis zum 30. Juni ab und ist bei Selbstabgabe bis zum 31. Oktober fällig. Du kannst sie von überall auf der Welt einreichen. Wie unkompliziert das wird, entscheidet sich daran, ob jeder Arbeitgeber seine Meldung abgeschlossen hat und ob du dich noch ausweisen kannst.
+Eine australische [Steuererklärung](/de/tax-return) deckt das Jahr bis zum 30. Juni ab und ist bei Selbstabgabe bis zum 31. Oktober fällig. Du kannst sie von überall auf der Welt einreichen lassen. Wie unkompliziert das wird, entscheidet sich daran, ob jeder Arbeitgeber seine Meldung abgeschlossen hat und ob du dich noch ausweisen kannst.
 
 ## Wann kannst du einreichen?
 
@@ -1476,16 +1454,16 @@ Nicht am 1. Juli. Arbeitgeber haben bis Mitte Juli Zeit, ihre Lohnmeldungen abzu
 
 Vorher einzureichen ist der häufigste selbstverschuldete Fehler der Saison. Die Erklärung geht gegen unvollständige Daten hinein, der Arbeitgeber schließt eine Woche später mit einer anderen Summe ab, und der Bescheid muss geändert werden, was länger dauert als Warten. Die Ausnahme ist eine vorgezogene Erklärung, weil du Australien mitten im Jahr endgültig verlässt, ein anderes Verfahren mit eigenen Regeln.
 
-## Was brauchst du dafür?
+## Was solltest du bereithalten?
 
 Weniger als die meisten annehmen, denn die Einkommensseite kommt vom ATO. Income Statements werden von den Arbeitgebern direkt gemeldet, Payslips sind also eine Gegenprobe und keine Voraussetzung, und ein Job ohne jede Unterlage steckt trotzdem im System.
 
-Liefern musst du alles, was das ATO nicht ohnehin hat.
+Von dir brauchen wir alles, was das ATO nicht ohnehin hat.
 
 - Deine TFN und Ausweisdokumente
 - Ein australisches Bankkonto für die Erstattung, das, was viele zuerst verlieren
 - Aufzeichnungen zu allen Werbungskosten, die du geltend machen willst
-- Ein Medicare Entitlement Statement, wenn du die Levy-Befreiung beantragst, Wochen vorher bei Services Australia bestellt
+- Wenn die Levy-Befreiung infrage kommt: Sag uns früh Bescheid, denn der Nachweis braucht Wochen Vorlauf, und wir kümmern uns darum
 - Angaben zu ABN- oder Contractor-Einkommen, das nicht vorausgefüllt wird
 
 ## Was entscheidet, ob du aus dem Ausland einreichen kannst?
@@ -1504,7 +1482,7 @@ Zwei Dinge verlängern das. Eine Erklärung, die nicht zu den vorausgefüllten D
 
 Die Abstimmung wird zur eigentlichen Arbeit. Jeder Arbeitgeber, der Einkommen unter deiner TFN gemeldet hat, muss auftauchen, und das Risiko ist nicht, dass du zu viel erklärst, sondern dass du einen vergisst und das ATO deinen Bescheid nachträglich anpasst.
 
-Dort liegt außerdem meist das Geld. Der Überabzug konzentriert sich auf einen Arbeitgeber statt sich zu verteilen: Der Job, der sechs Wochen bei 45 % lief, oder die Leiharbeitsfirma, die nie registriert war, entscheidet über die Höhe der Erstattung. Herauszufinden, welcher Arbeitgeber deutlich über 15 % lag, ist etwas anderes als das bloße Addieren der Summen.
+Dort liegt außerdem meist das Geld. Der Überabzug konzentriert sich auf einen Arbeitgeber statt sich zu verteilen: Der Job, der sechs Wochen bei 45 % lief, oder die Leiharbeitsfirma, die nie registriert war, entscheidet über die Höhe der Erstattung. Herauszufinden, bei welchem Arbeitgeber zu viel einbehalten wurde, ist etwas anderes als das bloße Addieren der Summen.
 
 ## Was, wenn du zusätzlich ABN-Einkommen hattest?
 
@@ -1548,7 +1526,7 @@ Deine Pflicht verschwindet dadurch nicht. Das Einkommen ist weiterhin erklärung
 
 Ob jeder Arbeitgeber, für den du gearbeitet hast, auf der Liste steht, und ob die Zahlen zu dem passen, was du bekommen hast. Die Daten des ATO sind üblicherweise korrekt, aber nicht immer, und eine Abweichung ist vor der Abgabe deutlich billiger zu klären als danach.
 
-Gezielt suchen lohnt sich nach zwei Fehlern: einem fehlenden Arbeitgeber, also dem Abschlussproblem von oben, und einem Einbehaltssatz, der nicht zu deiner Erwartung passt. Ein Arbeitgeber bei 45 %, weil deine TFN ihn nie erreicht hat, oder bei Foreign-Resident-Sätzen, weil er nicht als Working-Holiday-Maker-Arbeitgeber registriert ist, zeigt sich als Prozentsatz, der nicht 15 % ist. Beides kann bedeuten, dass bei diesem einen Arbeitgeber zu viel einbehalten wurde.
+Gezielt suchen lohnt sich nach zwei Fehlern: einem fehlenden Arbeitgeber, also dem Abschlussproblem von oben, und einem Einbehaltssatz, der nicht zu deiner Erwartung passt. Ein Arbeitgeber bei 45 %, weil deine TFN ihn nie erreicht hat, oder bei höheren Sätzen, weil er unter Umständen nicht als Working-Holiday-Maker-Arbeitgeber registriert ist, zeigt sich als Prozentsatz, der nicht zu deiner Erwartung passt. Beides kann bedeuten, dass bei diesem einen Arbeitgeber zu viel einbehalten wurde.
 
 ## Wann kannst du gefahrlos einreichen?
 
@@ -1595,9 +1573,9 @@ Deshalb führen gerade die kürzesten Einsätze oft zum höchsten Anteil an zu v
 
 ## Was kann bei einem kurzen Aufenthalt noch ins Gewicht fallen?
 
-Drei Posten, und die ersten beiden macht von selbst niemand geltend. Eine Phase, bevor deine TFN beim Arbeitgeber ankam, mit 45 % statt 15 % einbehalten, bedeutet 30 Cent auf jeden Dollar, die du über die Erklärung geltend machen kannst. Ein Arbeitgeber, der beim ATO nicht als Working-Holiday-Maker-Arbeitgeber registriert ist, behält zu Foreign-Resident-Sätzen ein, ein eigener zusätzlicher Überabzug.
+Drei Posten, und die ersten beiden macht von selbst niemand geltend. Eine Phase, bevor deine TFN beim Arbeitgeber ankam, mit 45 % statt des regulären Satzes einbehalten, kann über die Erklärung geklärt werden. Bei einem Arbeitgeber, der beim ATO nicht als Working-Holiday-Maker-Arbeitgeber registriert ist, kann nach höheren Sätzen einbehalten worden sein, ein eigener zusätzlicher Überabzug.
 
-Der dritte ist die Medicare-Lage. Die 2-%-Abgabe trifft Leute mit Medicare-Anspruch, wer aufgrund seines Passes keinen Anspruch hat, sollte sie also nicht zahlen, und die Befreiung braucht ein Medicare Entitlement Statement von Services Australia. Das sind rund 500 $ bei 25.000 $ Verdienst, und wer dafür infrage kommt, steht in unserem Guide zur [Medicare-Abgabe](/de/blog/medicare-levy-working-holiday-makers).
+Der dritte ist die Medicare-Lage. Die 2-%-Abgabe trifft Leute mit Medicare-Anspruch. Ob ein Anspruch bestand, hängt vom Einzelfall ab, und die Befreiung braucht einen Nachweis. Wie das funktioniert, steht in unserem Guide zur [Medicare-Abgabe](/de/blog/medicare-levy-working-holiday-makers).
 
 ## Kannst du einreichen, nachdem du zu Hause bist?
 
@@ -1692,7 +1670,7 @@ Ein Tax Agent ist nach australischem Recht registriert, um Erklärungen für and
 
 Drei Dinge, und nur eines ist die Abgabe selbst. Ein Tax Agent ruft deine Einkommensaufzeichnung direkt aus den ATO-Systemen ab, statt sich auf deine Erinnerung zu verlassen, nutzt die Fristverlängerung des Abgabeprogramms für Tax Agents und steht zwischen dir und dem ATO, falls danach etwas hinterfragt wird.
 
-Auf Absenden zu drücken war nie der schwere Teil. Schwer ist die Entscheidung, was vor dem Absenden hineingehört: welcher Wohnsitz für dein Jahr zutrifft, ob die Medicare-Levy-Befreiung bei deinem Pass verfügbar ist, und welche Ausgaben die Nachweisregeln erfüllen, statt sich nur beruflich anzufühlen.
+Auf Absenden zu drücken war nie der schwere Teil. Schwer ist die Entscheidung, was vor dem Absenden hineingehört: wie dein Wohnsitz für das Jahr einzuordnen ist, ob die Medicare-Levy-Befreiung bei dir infrage kommt, und welche Ausgaben die Nachweisregeln erfüllen, statt sich nur beruflich anzufühlen.
 
 ## Wer erstellt deine Erklärung, und wer gibt sie frei?
 
@@ -1716,9 +1694,9 @@ Am deutlichsten zeigt sich der Unterschied bei der Beschaffung. Income Statement
 
 ## Welche Jahre sind fast eine Formalität?
 
-Die einfachen, und die gibt es fairerweise. Ein Arbeitgeber das ganze Jahr, eine TFN ab der ersten Woche hinterlegt, durchgehend korrekte 15 % einbehalten, kein ABN-Einkommen, keine belegenswerten Werbungskosten und ein Pass, an dem keine Medicare-Frage hängt. Da gibt es für niemanden viel zu finden.
+Die einfachen, und die gibt es fairerweise. Ein Arbeitgeber das ganze Jahr, eine TFN ab der ersten Woche hinterlegt, durchgehend korrekt einbehalten, kein ABN-Einkommen, keine belegenswerten Werbungskosten und keine Medicare-Frage. Da gibt es für niemanden viel zu finden.
 
-Die Jahre, in denen es keine Formalität mehr ist, sind die für dieses Publikum üblichen: mehrere Arbeitgeber, eine Lücke, bevor die TFN ankam, eine Phase auf einer ABN, ein Wohnsitz, der nicht ordentlich geprüft wurde, ein Pass, der die Medicare-Antwort ändert, oder ein Jahr, für das du das Land bereits verlassen hast. Wo genau Geld verloren geht, steht in unserem Vergleich [Selbstabgabe gegen Tax Agent](/de/blog/diy-tax-return-vs-tax-agent-working-holiday).
+Die Jahre, in denen es keine Formalität mehr ist, sind die für dieses Publikum üblichen: mehrere Arbeitgeber, eine Lücke, bevor die TFN ankam, eine Phase auf einer ABN, ein Wohnsitz, der nicht ordentlich geprüft wurde, eine Medicare-Frage, die geprüft werden muss, oder ein Jahr, für das du das Land bereits verlassen hast. Wo genau Geld verloren geht, steht in unserem Vergleich [Selbstabgabe gegen Tax Agent](/de/blog/diy-tax-return-vs-tax-agent-working-holiday).
 
 ## Ist die Gebühr für den Tax Agent absetzbar?
 
@@ -1731,8 +1709,8 @@ Für einen Working Holiday Maker, dessen Aufenthalt zwei Steuerjahre umspannt, s
 Das ist keine allgemeine Frage, sondern eine Frage zu deinem Jahr. Je mehr der folgenden Punkte passen, desto weiter entfernt sich die Erklärung von einer Formalität.
 
 - Wie viele Arbeitgeber du hattest, denn Einkommen eines vergessenen ist die häufigste Auslassung in einer selbst eingereichten Erklärung.
-- Ob es eine Phase gab, bevor deine TFN beim Arbeitgeber ankam, mit 45 % statt 15 % einbehalten.
-- Welchen Pass du hältst, denn davon hängt ab, ob die Befreiung von der 2-%-Medicare-Abgabe überhaupt verfügbar ist.
+- Ob es eine Phase gab, bevor deine TFN beim Arbeitgeber ankam, mit 45 % einbehalten.
+- Ob die Befreiung von der 2-%-Medicare-Abgabe bei dir infrage kommt, was vom Einzelfall abhängt.
 - Ob dein steuerlicher Wohnsitz ordentlich geprüft wurde, denn er hängt von deinen persönlichen Umständen ab und nicht von einer einzelnen Tatsache.
 - Ob du ABN-Einkommen neben Lohn hast, was sowohl die Berechnung als auch den Papierkram ändert.
 - Ob du Australien bereits verlassen hast, was fast jeden Beschaffungsschritt allein schwerer macht.
@@ -1745,30 +1723,30 @@ Das ganze Jahr wird in der [Working-Holiday-Steuererklärung](/de/tax-return) er
     title: 'PAYG: wie der Steuerabzug vom Lohn läuft',
     description: 'Dein Arbeitgeber behält die Steuer bei jeder Abrechnung ein und führt sie ans ATO ab. Am Jahresende wird abgeglichen, und zu viel Einbehaltenes wird angerechnet.',
     body: `
-PAYG-Einbehaltung heißt, dass dein Arbeitgeber bei jeder Lohnzahlung Steuer herausnimmt und sie auf deine Rechnung an das ATO abführt. Für einen Working Holiday Maker mit hinterlegter [TFN](/de/tfn) sollten das 15 % sein. Ob sie es sind, entscheiden zwei Dinge: dein Declaration-Formular und ob dein Arbeitgeber registriert ist.
+PAYG-Einbehaltung heißt, dass dein Arbeitgeber bei jeder Lohnzahlung Steuer herausnimmt und sie auf deine Rechnung an das ATO abführt. Für einen Working Holiday Maker mit hinterlegter [TFN](/de/tfn) gelten besondere Sätze. Welche zur Anwendung kommen, entscheiden unter anderem zwei Dinge: dein Declaration-Formular und ob dein Arbeitgeber registriert ist.
 
 ## Wovon hängt der Einbehaltungssatz ab?
 
 Zuerst vom Declaration-Formular. Die Lohnbuchhaltung wendet den Satz an, der sich aus den Angaben im Tax File Number Declaration ergibt. Einer Führungskraft deine Nummer mündlich zu nennen oder ein Foto des Briefs zu zeigen ändert nichts, solange das Formular nicht ausgefüllt ist. Bis dahin verlangt das Gesetz 45 %.
 
-Der zweite Punkt ist weniger bekannt: die Registrierung des Arbeitgebers selbst. Ein Betrieb muss sich beim ATO als Arbeitgeber von Working Holiday Makern registrieren, bevor er den 15-%-Satz anwenden darf. Ein nicht registrierter behält zu Foreign-Resident-Sätzen ein, derzeit 30 % in der maßgeblichen Stufe, egal wie perfekt deine Unterlagen sind.
+Der zweite Punkt ist weniger bekannt: die Registrierung des Arbeitgebers selbst. Ein Betrieb muss sich beim ATO als Arbeitgeber von Working Holiday Makern registrieren, bevor er die besonderen Sätze anwenden darf. Bei einem nicht registrierten kann nach höheren Sätzen einbehalten werden, egal wie perfekt deine Unterlagen sind.
 
-- TFN Declaration ausgefüllt, Arbeitgeber registriert: 15 %
+- TFN Declaration ausgefüllt, Arbeitgeber registriert: die besonderen Sätze für Working Holiday Maker
 - TFN bei diesem Arbeitgeber noch nicht hinterlegt: 45 %
-- Arbeitgeber nicht als WHM-Arbeitgeber registriert: Foreign-Resident-Sätze, derzeit 30 %
-- Freibetrag versehentlich angekreuzt: zu wenig einbehalten und später eine Rechnung
+- Arbeitgeber nicht als WHM-Arbeitgeber registriert: unter Umständen höhere Sätze
+- Auf der Declaration eine Angabe gemacht, die nicht zum Fall passt: unter Umständen zu wenig einbehalten und später eine Rechnung
 
-## Wie liest du den Satz von deinem eigenen Payslip ab?
+## Wie erkennst du einen auffälligen Einbehalt?
 
-Teile die einbehaltene Steuer durch den Bruttolohn derselben Periode. Das ist die ganze Prüfung, und sie ist der einzige verlässliche Weg, einen falschen Satz zu bemerken, bevor sich Monate davon angesammelt haben.
+Ein Payslip sollte Bruttolohn, einbehaltene Steuer, Super und Nettolohn als getrennte Zeilen zeigen. Die 12 % Super zahlt der Arbeitgeber zusätzlich zu deinem Lohn und nicht davon abgezogen, sie sollte den Nettobetrag also nie mindern. Ein Payslip, auf dem Super aus deinem Lohn zu kommen scheint, gehört hinterfragt.
 
-Ein Payslip sollte Bruttolohn, einbehaltene Steuer, Super und Nettolohn als getrennte Zeilen zeigen. Die 12 % Super zahlt der Arbeitgeber zusätzlich zu deinem Lohn und nicht davon abgezogen, sie sollte den Nettobetrag also nie mindern. Ein Payslip, auf dem Super aus deinem Lohn zu kommen scheint, gehört hinterfragt. Ergibt die Rechnung 45 %, obwohl dein Declaration-Formular vor Wochen eingegangen ist, ist das ein Lohnbuchhaltungsproblem für sofort und kein Steuerproblem für den Oktober.
+Ob der einbehaltene Betrag zu dir passt, hängt von den Sätzen ab, die für dich gelten, und lässt sich nicht mit einer einfachen Division prüfen. Wirkt er falsch, schick uns die Payslips, dann sehen wir sie uns an. Liegt dein Declaration-Formular schon seit Wochen vor und der Einbehalt beträgt trotzdem rund 45 %, ist das ein Lohnbuchhaltungsproblem für sofort und kein Steuerproblem für den Oktober.
 
 ## Ist zu viel einbehaltene Steuer verloren?
 
-Nein. Jeder einbehaltene Dollar ist eine Vorauszahlung, die auf deine tatsächliche Schuld angerechnet wird, wurden also 45 % genommen und 15 % geschuldet, wird die Differenz mit der [Steuererklärung](/de/tax-return) berücksichtigt. Es verschwindet nichts.
+Nein. Jeder einbehaltene Dollar ist eine Vorauszahlung, die auf deine tatsächliche Schuld angerechnet wird, wurde also zu viel genommen, wird die Differenz mit der [Steuererklärung](/de/tax-return) berücksichtigt. Es verschwindet nichts.
 
-Verloren ist die Verfügbarkeit über das Geld in der Zwischenzeit. Dreißig Cent auf jeden Dollar, die von Februar bis August beim ATO liegen, sind der Unterschied zwischen einer Fahrt die Küste hoch und keiner Fahrt. Deshalb korrigiert man einen falschen Satz jetzt, statt auf eine größere Erstattung später zu setzen.
+Verloren ist die Verfügbarkeit über das Geld in der Zwischenzeit. Ein zu hoher Einbehalt, der von Februar bis August beim ATO liegt, sind der Unterschied zwischen einer Fahrt die Küste hoch und keiner Fahrt. Deshalb korrigiert man einen falschen Satz jetzt, statt auf eine größere Erstattung später zu setzen.
 
 ## Was passiert am Jahresende mit den Zahlen?
 
@@ -1780,7 +1758,7 @@ Einkommen liegt also in ATO-Systemen, auch wenn deine eigenen Aufzeichnungen es 
 
 Denen, die den Satz über einen längeren Zeitraum verändert haben, und nicht einem einzelnen merkwürdigen Payslip. Ein Monat bei 45 %, bevor ein Declaration-Formular verarbeitet war, eine ganze Erntesaison bei einer nicht registrierten Leiharbeitsfirma oder ein Zweitjob, der das ganze Jahr auf dem falschen Satz lief, sind jeweils echtes Geld wert und lassen sich alle über die Erklärung geltend machen.
 
-Zwei weitere laufen in die andere Richtung. Den Freibetrag als Working Holiday Maker auf einem Declaration-Formular zu beanspruchen heißt zu wenig Einbehalt und führt zu einer Rechnung statt einer Erstattung. Bar bezahlte Arbeit hat gar keinen Einbehalt, die Steuer darauf wird also in voller Höhe zum Jahresende fällig. Beides lässt sich vorher leichter einplanen als im Oktober entdecken. Jede Lohnperiode zu prüfen, [was die Zeile mit der einbehaltenen Steuer auf deinem Payslip bedeutet](/de/blog/what-does-tax-withheld-mean-payslip), verhindert, dass eines davon monatelang läuft.
+Zwei weitere laufen in die andere Richtung. Eine falsche Angabe zum Freibetrag auf dem Declaration-Formular kann zu wenig Einbehalt bedeuten und führt dann zu einer Rechnung statt einer Erstattung. Bar bezahlte Arbeit hat gar keinen Einbehalt, die Steuer darauf wird also in voller Höhe zum Jahresende fällig. Beides lässt sich vorher leichter einplanen als im Oktober entdecken. Jede Lohnperiode zu prüfen, [was die Zeile mit der einbehaltenen Steuer auf deinem Payslip bedeutet](/de/blog/what-does-tax-withheld-mean-payslip), verhindert, dass eines davon monatelang läuft.
 `,
   },
 
@@ -1822,7 +1800,7 @@ Ob das der richtige Schritt ist, hängt von drei Punkten ab: ob jeder Arbeitgebe
 
 Zwei weitere Fristen zählen für abreisende Working Holiday Maker, und beide liegen außerhalb der Steuererklärung. Der eine entscheidet, ob deine letzten Superbeiträge schon existieren, der andere, wann du sie beantragen kannst.
 
-Superannuation wird vierteljährlich gezahlt, fällig am 28. Oktober, 28. Januar, 28. April und 28. Juli. Reist du im Mai ab, sind die Beiträge deines letzten Quartals bis Ende Juli nicht gezahlt, ein häufiger Grund für einen zu niedrigen Superantrag.
+Seit dem 1. Juli 2026 gilt Payday Super: Arbeitgeber zahlen Super in der Regel innerhalb von sieben Werktagen nach jedem Zahltag. Für Zeiträume vor dem 1. Juli 2026 galt noch die vierteljährliche Zahlung (28. Oktober, 28. Januar, 28. April, 28. Juli), und die letzten Beiträge solcher Zeiträume können bei einem Superantrag noch offen sein, ein häufiger Grund für einen zu niedrigen Antrag.
 
 Dein Visa-Enddatum startet eine eigene Uhr: Es steuert, ab wann du deine [Superannuation nach der Abreise auszahlen lassen](/de/superannuation) kannst. Ein Fonds, der den Kontakt zu dir verliert, überträgt das Guthaben irgendwann als unclaimed super ans ATO.
 
@@ -1834,7 +1812,7 @@ Die Termine sind für alle gleich; wie viele Erklärungen du abgeben musst und w
 - Ob du vor dem 30. Juni abreist, was die vorgezogene Abgabe eröffnet.
 - Ob jeder Arbeitgeber dein Income Statement abgeschlossen hat.
 - Ob du nicht eingereichte Vorjahre aus einem früheren Visum hast.
-- Ob dein letztes Superquartal schon gezahlt wurde, ein Juli-Ereignis auch bei Abreise im April.
+- Ob deine letzten Superbeiträge schon gezahlt wurden.
 
 Das Jahr, für das du einreichst, entscheidet über die Sätze und Grenzen deiner [Steuererklärung als Working Holiday Maker](/de/tax-return). Du kannst deine [Steuererstattung schätzen](/de/calculator), für jedes gearbeitete Jahr getrennt.
 `,
@@ -1936,15 +1914,15 @@ Ein registrierter australischer Tax Agent, der dein Jahr vollständig durchgeht,
     title: 'Steuererstattung: wann steht sie dir zu?',
     description: 'Eine Steuererstattung ist Geld, das das ATO zurückzahlt, wenn übers Jahr zu viel einbehalten wurde. Ob dir etwas zusteht, hängt davon ab, wie viel einbehalten wurde.',
     body: `
-Eine Steuererstattung ist die Differenz zwischen dem, was deine Arbeitgeber einbehalten haben, und dem, was du für das Jahr tatsächlich geschuldet hast. Ob dir etwas zusteht, hängt davon ab, ob mehr einbehalten wurde als geschuldet, denn der Einbehalt wird Woche für Woche gegen Annahmen über ein volles Jahr gesetzt wird, zu denen ein Backpacker-Jahr selten passt.
+Eine Steuererstattung ist die Differenz zwischen dem, was deine Arbeitgeber einbehalten haben, und dem, was du für das Jahr tatsächlich geschuldet hast. Ob dir etwas zusteht, hängt davon ab, ob mehr einbehalten wurde als geschuldet, denn der Einbehalt wird Woche für Woche so berechnet, als würde sich ein volles Jahr wiederholen, und dazu passt ein Backpacker-Jahr selten.
 
 ## Warum wird bei einem Working-Holiday-Jahr so oft zu viel einbehalten?
 
 Der Einbehalt ist eine laufende Schätzung und keine Berechnung. Die Lohnbuchhaltung zieht jede Woche so ab, als wiederhole sich diese Woche zwölf Monate lang. Ein Jahr, das spät beginnt, früh endet oder seine Form ändert, ergibt also eine Summe, die nicht zur echten Schuld passt, und ein Working-Holiday-Jahr tut alle drei Dinge.
 
 - Ankunft oder Abreise mitten im Steuerjahr, das vom 1. Juli bis 30. Juni läuft
-- Wochen, die gearbeitet wurden, bevor die TFN beim Arbeitgeber ankam, einbehalten mit 45 % statt 15 %
-- Ein Arbeitgeber, der beim ATO nicht als Working-Holiday-Maker-Arbeitgeber registriert ist und zu Foreign-Resident-Sätzen einbehält
+- Wochen, die gearbeitet wurden, bevor die TFN beim Arbeitgeber ankam, einbehalten mit 45 %
+- Ein Arbeitgeber, der beim ATO nicht als Working-Holiday-Maker-Arbeitgeber registriert ist und unter Umständen nach höheren Sätzen einbehält
 - Abzüge, die das zu versteuernde Einkommen senken und im laufenden Jahr nie berücksichtigt wurden
 - Eine Medicare Levy von 2 %, berechnet an jemanden ohne Anspruch auf Medicare
 
@@ -1958,10 +1936,10 @@ Es gibt keine durchschnittliche Erstattung, und wer eine nennt, beschreibt das J
 
 Fünf Fakten über dein eigenes Jahr entscheiden fast alles, und vier davon kennst du, ohne irgendwo nachzusehen. Der fünfte, dein Wohnsitz, muss ermittelt statt erinnert werden.
 
-- **Ob es eine Phase ohne hinterlegte TFN gab.** Jede Woche mit 45 % statt 15 % sind 30 Cent pro Dollar, die beim ATO liegen und auf einen Antrag warten.
-- **Ob jeder Arbeitgeber als Working-Holiday-Maker-Arbeitgeber registriert war.** Ein nicht registrierter behält zu Foreign-Resident-Sätzen ein, und der Überschuss lässt sich über die Erklärung geltend machen.
+- **Ob es eine Phase ohne hinterlegte TFN gab.** Jede Woche mit 45 % ist ein Einbehalt, der bei der Veranlagung berücksichtigt wird, wie viel davon zurückkommt, entscheidet das ATO.
+- **Ob jeder Arbeitgeber als Working-Holiday-Maker-Arbeitgeber registriert war.** Bei einem nicht registrierten kann nach höheren Sätzen einbehalten werden, und ein Überschuss kann über die Erklärung geklärt werden.
 - **Wann du angekommen bist und wann du gegangen bist.** Ein Teiljahr ist die verlässlichste Quelle von Überabzug.
-- **Deine Medicare-Frage.** Der Anspruch auf Medicare lässt die Levy von 2 % greifen, ein Pass aus einem Land ohne Abkommen heißt also meist, dass sie gar nicht hätte berechnet werden dürfen.
+- **Deine Medicare-Frage.** Der Anspruch auf Medicare lässt die Levy von 2 % greifen. Ob ein Anspruch bestand, hängt vom Einzelfall ab, und das wird geprüft.
 - **Was du an Abzügen belegen kannst.** Sicherheitsschuhe, Werkzeug, Sonnenschutz, der berufliche Anteil eines Handys und die Gebühr für den Tax Agent im Vorjahr.
 
 ## Wo hört das Rechnen auf?
@@ -2103,46 +2081,41 @@ Ein Jahr, das mitten drin endet, im Dezember oder Februar, ist oft ein Jahr, in 
   },
 
   'low-income-tax-offset-working-holiday': {
-    title: 'Low Income Tax Offset: gilt er für dich?',
-    description: 'Der Low Income Tax Offset senkt die Steuer bei niedrigem Einkommen um bis zu 700 $. Wer Anspruch hat, wie er berechnet wird und was für dich gilt.',
+    title: 'Low Income Tax Offset: was dahintersteckt',
+    description: 'Der Low Income Tax Offset ist eine Entlastung im australischen Steuersystem. Ob er bei dir eine Rolle spielt, hängt vom Einzelfall ab und wird geprüft.',
     body: `
-Der Low Income Tax Offset ist bis zu 700 $ wert und steht australischen Steuerresidenten zu. Auf Einkommen, das zu Working-Holiday-Maker-Sätzen besteuert wird, gibt es ihn nicht. Ob überhaupt etwas davon bei dir ankommt, hängt vollständig von deinem Wohnsitz für das Jahr ab, und der ist eine Frage der Tatsachen und nicht des Visums.
+Der Low Income Tax Offset (LITO) ist eine Entlastung im australischen Steuersystem. Ob er bei dir eine Rolle spielt, hängt von deinem Wohnsitz für das Jahr ab, und der ist eine Frage der Tatsachen und nicht des Visums. Das wird im Einzelfall geprüft, und am Ende entscheidet das ATO.
 
-## Was ist ein Offset, und warum ist er mehr wert als ein Abzug?
+## Was ist ein Offset, und warum ist er etwas anderes als ein Abzug?
 
 Ein Offset senkt die Steuer, die du schuldest. Ein Abzug senkt das Einkommen, auf das die Steuer berechnet wird. Derselbe Dollarbetrag führt damit zu sehr unterschiedlichen Ergebnissen.
 
-- Ein Abzug von 700 $ gegen Einkommen, das mit 15 % besteuert wird, spart dir 105 $
-- Ein Offset von 700 $ senkt deine Steuerrechnung um die vollen 700 $
+Ein Offset ist außerdem nicht erstattungsfähig: Er kann die Steuer auf null senken, wird aber von sich aus nie zu einer Auszahlung.
 
-LITO ist bis zu 700 $ wert bei einem zu versteuernden Einkommen bis 37.500 $, läuft zwischen 37.500 $ und 66.667 $ schrittweise aus und verschwindet darüber ganz. Er ist außerdem nicht erstattungsfähig, kann die Steuer also auf null senken, wird aber von sich aus nie zu einer Auszahlung.
+## Warum lässt sich das nicht einfach nachschlagen?
 
-## Warum können die meisten Working Holiday Maker ihn nicht beantragen?
+Weil LITO zu einem anderen Regelwerk gehört als die besondere Besteuerung, die für Working Holiday Maker vorgesehen ist, und weil offen ist, welches Regelwerk in deinem Jahr zur Anwendung kommt. Keine Tabelle und kein Rechner kann das für dich beantworten.
 
-Weil LITO eine Vergünstigung für Residenten ist und Working-Holiday-Maker-Einkommen nach einem eigenen Schema besteuert wird. Wer ab dem ersten Dollar mit 15 % besteuert wird, wird auf dieses Einkommen nicht als Resident besteuert, und der Offset greift dafür nicht.
+## Wann spielt er eine Rolle?
 
-Für die meisten, die das hier lesen, ist LITO nicht verfügbar, und keine Sorgfalt bei der Abgabe ändert daran etwas.
+Das hängt vom steuerlichen Wohnsitz für das Jahr ab. Der Wohnsitz ist ein echter Befund und keine Formalie: Er lässt sich nicht am Visum ablesen, hängt von deinen persönlichen Umständen ab und muss ordentlich geprüft werden.
 
-## Wann wird er verfügbar?
+Was ein festgestellter Wohnsitz wert ist, fällt von Person zu Person verschieden aus. Aus einer Tabelle lässt sich das nicht ablesen. Warum die Frage schwerer ist, als sie aussieht, steht in unserem Guide zum [steuerlichen Wohnsitz](/de/blog/tax-residency-working-holiday-makers).
 
-Wenn du für das Jahr australischer Steuerresident bist, und das ist eine Minderheit der Working Holiday Maker. Der Wohnsitz ist ein echter Befund und keine Formalie: Er lässt sich nicht am Visum ablesen, hängt von deinen persönlichen Umständen ab und muss ordentlich geprüft werden.
+## Was spielt sonst noch eine Rolle?
 
-Was ein festgestellter Wohnsitz wert ist, fällt von Person zu Person verschieden aus. Für manche Residenten ist das wertvollere Ergebnis nicht LITO, sondern eine insgesamt günstigere Veranlagung des Jahres, für andere sind es die bis zu 700 $. Aus einer Tabelle lässt sich das nicht ablesen. Warum die Frage schwerer ist, als sie aussieht, steht in unserem Guide zum [steuerlichen Wohnsitz](/de/blog/tax-residency-working-holiday-makers).
+Neben dem Wohnsitz kommen bei Working Holiday Makern Befreiungen und Werbungskosten ins Spiel. Zusammengenommen können diese Posten viel ausmachen.
 
-## Was kannst du stattdessen geltend machen?
-
-Die Entlastung, die Working Holiday Maker tatsächlich erreicht, kommt über Befreiungen und Werbungskosten, nicht über das Offset-System für Residenten. Zusammengenommen sind diese Posten deutlich mehr wert, als LITO es gewesen wäre.
-
-- Die [Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers), rund 500 $ wert bei 25.000 $ Verdienst für jemanden ohne Medicare-Anspruch
-- Der [Small Business Income Tax Offset](/de/blog/small-business-tax-offset-working-holiday-abn) auf ABN-Sole-Trader-Einkommen, bis zu 1.000 $ wert
+- Die [Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers), wenn kein Medicare-Anspruch bestand
+- Der [Small Business Income Tax Offset](/de/blog/small-business-tax-offset-working-holiday-abn) auf ABN-Sole-Trader-Einkommen
 - Die Geltendmachung jeder Phase, die mit 45 % einbehalten wurde, bevor deine TFN beim Arbeitgeber ankam
-- Berufsbezogene Werbungskosten, die auf einer Working-Holiday-Erklärung anteilig mehr wert sind als auf einer Residenten-Erklärung
+- Berufsbezogene Werbungskosten
 
-LITO hinterherzujagen ist für die meisten verlorene Mühe. Dieselbe Aufmerksamkeit zahlt sich bei der Medicare-Lage und einer vollständigen Werbungskostenliste aus.
+Welche davon bei dir zutreffen, prüfen wir im Einzelfall. Dieselbe Aufmerksamkeit zahlt sich bei der Medicare-Lage und einer vollständigen Werbungskostenliste aus.
 
 ## Was passiert, wenn ein Offset deine Steuer übersteigt?
 
-Es wird nichts ausgezahlt. LITO ist nicht erstattungsfähig: Liegt deine Schuld bei 500 $ und der Offset bei 700 $, wird die Steuer null und die verbleibenden 200 $ verfallen.
+Es wird nichts ausgezahlt. Ein Offset ist nicht erstattungsfähig: Übersteigt er die Steuerschuld, wird die Steuer null, und der Rest verfällt.
 
 Deshalb werden Offsets und Erstattungen ständig verwechselt. Deine Erstattung kommt aus der Steuer, die im Laufe des Jahres von deinem Lohn einbehalten wurde, und nicht aus dem Offset. Der Offset senkt die Endschuld, und eine kleinere Endschuld lässt mehr von der einbehaltenen Steuer zurückkommen.
 
@@ -2156,7 +2129,7 @@ Bei dieser Kombination wird eine Erklärung zur Rechnung statt zum Formular, bes
 
 Dein Wohnsitz für das Jahr, und der ist keine Tatsache, die du einfach nennen kannst, sondern eine Beurteilung. Sie hängt von Umständen ab, an die die meisten nie denken, und kann bei fast gleichen Jahren verschieden ausgehen.
 
-Das ist kein Kästchen, das man beim ersten Lesen zuversichtlich ankreuzt. Der Wohnsitz ist der Posten, der auf einer selbst eingereichten Erklärung am häufigsten falsch beantwortet wird, und er bewegt mehr Geld als sämtliche Offsets in diesem Guide zusammen. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind, bei der Vorbereitung der [Steuererklärung](/de/tax-return).
+Das ist kein Kästchen, das man beim ersten Lesen zuversichtlich ankreuzt. Der Wohnsitz ist der Posten, der auf einer selbst eingereichten Erklärung am häufigsten falsch beantwortet wird. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind, bei der Vorbereitung der [Steuererklärung](/de/tax-return).
 `,
   },
 
@@ -2165,7 +2138,7 @@ Das ist kein Kästchen, das man beim ersten Lesen zuversichtlich ankreuzt. Der W
     title: 'Wie viel Super zahlt dein Arbeitgeber ein?',
     description: 'Dein Arbeitgeber zahlt 12 % deines Verdienstes zusätzlich in einen Superfonds. Woran du siehst, ob das Geld angekommen ist, und was gilt, wenn nicht.',
     body: `
-Zwölf Prozent deiner regulären Arbeitseinkünfte, mindestens quartalsweise in einen Superfonds gezahlt, zusätzlich zu deinem Lohn und nicht daraus abgezogen. So ist der Satz seit dem 1. Juli 2025, und es ist die letzte gesetzlich vorgesehene Stufe. Bei 8.000 $ Verdienst im Quartal sollten 960 $ erscheinen.
+Zwölf Prozent deiner regulären Arbeitseinkünfte, seit dem 1. Juli 2026 mit Payday Super in der Regel innerhalb von sieben Werktagen nach jedem Zahltag in einen Superfonds gezahlt (davor quartalsweise), zusätzlich zu deinem Lohn und nicht daraus abgezogen. So ist der Satz seit dem 1. Juli 2025, und es ist die letzte gesetzlich vorgesehene Stufe. Bei 8.000 $ Verdienst im Quartal sollten 960 $ erscheinen.
 
 ## Was zählt als Ordinary Time Earnings?
 
@@ -2175,9 +2148,9 @@ Nicht erfasst sind Überstundenzahlungen, erstattete Auslagen und echte Abfindun
 
 ## Wann sollte das Geld auftauchen?
 
-Quartalsweise, und das ist die Tatsache, die den meisten Fehlalarm auslöst. Arbeitgeber müssen bis zum 28. Oktober, 28. Januar, 28. April und 28. Juli für das jeweils vorangegangene Quartal zahlen, Arbeit aus dem Juli erscheint in deinem Fonds also möglicherweise erst Ende Oktober.
+Seit dem 1. Juli 2026 gilt Payday Super: Arbeitgeber zahlen in der Regel innerhalb von sieben Werktagen nach dem Zahltag. Davor war es quartalsweise (28. Oktober, 28. Januar, 28. April, 28. Juli), und das war die Tatsache, die den meisten Fehlalarm auslöste. Bei Arbeit aus der Zeit vor Juli 2026 kann ein Beitrag also noch verspätet eintreffen.
 
-Für Abreisende hat das eine teure Folge. Fliegst du im Mai nach Hause, sind die Beiträge deines letzten Quartals erst am 28. Juli fällig, und ein im Juni gestellter Superantrag enthält sie nicht. Das ist einer der häufigsten Gründe, warum eine Auszahlung bei der Abreise zu niedrig ausfällt.
+Für Abreisende hatte das eine teure Folge. Bei Arbeit vor dem 1. Juli 2026 waren die Beiträge des letzten Quartals erst am 28. Juli fällig, und ein im Juni gestellter Superantrag enthielt sie nicht. Mit Payday Super sollte sich diese Lücke verkleinern, aber ein Beitrag kann trotzdem noch offen sein, wenn du früh beantragst.
 
 ## Wie prüfst du, ob gezahlt wurde?
 
@@ -2210,8 +2183,8 @@ Bar bezahlte Arbeit ist die Stelle, an der das am häufigsten scheitert, weil es
 Zwölf Prozent sind der Satz für alle, eine Unterzahlung liegt also meist an der Bemessungsgrundlage oder am Zeitpunkt, nicht am Prozentsatz. Diese Tatsachen entscheiden deinen Fall.
 
 - Ob deine Bezüge Überstunden enthalten, die außerhalb der Ordinary Time Earnings liegen und zu Recht keine Super auslösen.
-- Welches Quartal du prüfst, denn Beiträge sind bis zu vier Monate nach der Arbeit fällig.
-- Wann du abreist, denn das letzte Quartal ist an deinem Abreisetag meist noch nicht gezahlt.
+- Welchen Zeitraum du prüfst, denn vor Juli 2026 waren Beiträge bis zu vier Monate nach der Arbeit fällig, danach in der Regel innerhalb von sieben Werktagen.
+- Wann du abreist, denn die letzten Beiträge sind an deinem Abreisetag möglicherweise noch nicht gezahlt.
 - Wie viele Arbeitgeber du hattest, denn so viele Fonds und so viele getrennte Ansprüche hast du wahrscheinlich.
 - Ob dich ein Arbeitgeber bar ohne Payslip bezahlt hat, denn dort existiert Super am häufigsten schlicht nicht.
 - In welches Steuerjahr die Arbeit fällt, denn der Satz stieg über 11 %, 11,5 % und 12 %.
@@ -2276,15 +2249,13 @@ Die vollständige Berechtigung und die Quellensteuer stehen dort, wo du deine [S
   // Medicare
   'countries-with-medicare-agreement-australia': {
     title: 'Welche Länder haben ein Gesundheitsabkommen?',
-    description: '11 Länder haben ein Gesundheitsabkommen (RHCA) mit Australien, Deutschland nicht. Welche Dokumente du brauchst.',
+    description: 'Australien hat mit einigen Ländern Gesundheitsabkommen (RHCA). Was ein Abkommen leistet und warum es für deine Steuer auf den Einzelfall ankommt.',
     body: `
-Elf. Australien hat Reciprocal Health Care Agreements mit Großbritannien, der Republik Irland, Neuseeland, Schweden, den Niederlanden, Finnland, Norwegen, Belgien, Slowenien, Malta und Italien. Staatsangehörige dieser Länder mit gültigem Working-Holiday-Visum haben Zugang zu begrenzten [Medicare](/de/medicare)-Leistungen. Staatsangehörige aller anderen Länder nicht.
+Australien hat Reciprocal Health Care Agreements (RHCA) mit einer begrenzten Zahl von Ländern. Wer darunter fällt, hat mit gültigem Working-Holiday-Visum Zugang zu begrenzten [Medicare](/de/medicare)-Leistungen. Ob und wie das auf dich zutrifft, hängt vom Einzelfall ab.
 
-## Welche Länder stehen auf der Liste, und welche nicht?
+## Wie findest du heraus, ob ein Abkommen für dich zählt?
 
-Die elf Abkommensländer sind Großbritannien, die Republik Irland, Neuseeland, Schweden, die Niederlande, Finnland, Norwegen, Belgien, Slowenien, Malta und Italien. Das ist die vollständige Liste, und sie folgt keiner regionalen Logik.
-
-Nicht auf der Liste, aber häufig dafür gehalten: Deutschland, Frankreich, Spanien, Kanada, die USA, Japan, Südkorea, Taiwan und Hongkong. Deutschland und Japan zählen praktisch am meisten, weil ihre großen Working-Holiday-Gruppen oft eine europäische oder allgemeine Gegenseitigkeit unterstellen, die es nicht gibt.
+Die offizielle Liste führt Services Australia, und sie kann sich ändern. Wir geben sie hier bewusst nicht wieder: Es wird regelmäßig in beide Richtungen falsch geraten, und für deine Erklärung zählt nicht die Liste allein, sondern deine Umstände. Wir prüfen das im Einzelfall.
 
 ## Was deckt der Schutz ab?
 
@@ -2300,61 +2271,58 @@ Es ist ein Sicherheitsnetz und keine Krankenversicherung. Die Ausschlüsse über
 - Wahl- und Schönheitseingriffe
 - Vorerkrankungen, in den meisten Fällen
 
-Die Krankenwagenlücke überrascht britische und irische Reisende am meisten, weil es sie zu Hause nicht gibt. Eine einzige Fahrt nach einem Sturz auf einer Farm bei Bundaberg ist eine Rechnung, Abkommen hin oder her.
+Die Krankenwagenlücke überrascht viele Reisende am meisten, weil es sie zu Hause nicht gibt. Eine einzige Fahrt nach einem Sturz auf einer Farm bei Bundaberg ist eine Rechnung, Abkommen hin oder her.
 
-## Wie meldest du dich an?
+## Was ist mit der Anmeldung?
 
-Persönlich in einem Service Centre von Services Australia, mit Pass, dem Nachweis deiner Visumserteilung und einem Nachweis der Staatsangehörigkeit des Abkommenslandes, falls der Pass das nicht zeigt. Du bekommst eine Medicare-Karte, gültig für den berechtigenden Zeitraum deines Visums.
-
-Die Anmeldung lohnt sich, wenn du berechtigt bist: Die Karte macht einen Bulk-Billing-Hausarzt am Tresen kostenlos statt rund hundert Dollar für einen Termin. Eine Versicherung ersetzt sie nicht.
+Wenn ein Abkommen für dich gilt, läuft die Anmeldung über Services Australia, und welche Unterlagen nötig sind, hängt vom Einzelfall ab. Eine Anmeldung kann Folgen für die Steuer haben. Wenn du unsicher bist, schreib uns, bevor du dich anmeldest.
 
 ## Was macht ein Abkommen mit deiner Steuer?
 
-Die Medicare Levy von 2 % gilt für Personen mit Anspruch auf Medicare, und den Anspruch schafft ein Abkommen. Ein Abkommenspass nimmt dir also in der Regel die Möglichkeit, die Levy-Befreiung zu beantragen, ganz gleich, ob du dich je registriert oder je einen Arzt gesehen hast.
+Die Medicare Levy von 2 % gilt für Personen mit Anspruch auf Medicare, und den Anspruch kann ein Abkommen schaffen. Dann kann die Möglichkeit entfallen, die Levy-Befreiung zu beantragen, ganz gleich, ob du dich je registriert oder je einen Arzt gesehen hast.
 
-Für deutsche und japanische Reisende ohne Abkommen ist die [Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers) üblicherweise verfügbar und die Levy von 2 % entspricht bei 25.000 $ Verdienst 500 $. Für britische und irische Reisende gilt die Levy meist schlicht. Gleiches Einkommen, gleiches Visum, anderer Pass, anderer Bescheid.
+Ob die [Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers) für dich infrage kommt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Gleiches Einkommen und gleiches Visum können je nach Einzelfall zu einem anderen Bescheid führen.
 
-## Was außer dem Pass noch zählt
+## Was außer dem Abkommen noch zählt
 
-Die Elferliste steht fest, aber was sie für dich bedeutet, hängt von mehr ab als vom Pass in deiner Tasche.
+Was ein Abkommen für dich bedeutet, hängt von mehr ab als von einer Liste.
 
-- Dein Pass, der den gesamten Test für den Gesundheitsschutz und den größten Teil des Tests für die Levy ausmacht.
-- Doppelte Staatsangehörigkeit, die die Antwort kippen kann und die du ansprechen solltest, statt anzunehmen, der Visumspass entscheide.
+- Deine individuellen Umstände, die den größten Teil des Tests für den Gesundheitsschutz und für die Levy ausmachen.
+- Doppelte Staatsangehörigkeit, die die Antwort kippen kann und die du ansprechen solltest, statt anzunehmen, das Visum entscheide.
 - Ob und wann du dich angemeldet hast. Eine Anmeldung mitten im Jahr kann eine anteilige Levy-Befreiung für die Tage davor ergeben.
 - In welchem Bundesstaat du bist, denn Krankentransport ist Ländersache und überall die größte Lücke im reziproken Schutz.
-- Ob du eine Vorerkrankung hast, die auch für die elf in der Regel außerhalb des Abkommens liegt. Für Deutsche gilt ohnehin: Eine [eigene Krankenversicherung](/de/blog/german-european-health-insurance-australia-working-holiday) ist Pflicht, und die Levy-Befreiung ist der eine Vorteil der Nichtabdeckung.
+- Ob du eine Vorerkrankung hast, die in der Regel außerhalb des Abkommens liegt. Eine [eigene Krankenversicherung](/de/blog/german-european-health-insurance-australia-working-holiday) ist in jedem Fall sinnvoll.
 
 Die Levy-Frage wird mit deiner [Steuererklärung als Working Holiday Maker](/de/tax-return) geklärt, und was die 2 % in beide Richtungen bedeuten, zeigt dir der [Erstattungsrechner](/de/calculator).
 `,
   },
 
   'tax-file-number-declaration-form': {
-    title: 'TFN Declaration: so füllst du sie korrekt',
-    description: 'Mit diesem Formular meldest du deinem Arbeitgeber deine TFN. Als Working Holiday Maker kreuzt du den Freibetrag nicht an, sonst entsteht eine Steuerschuld.',
+    title: 'TFN Declaration: worauf es ankommt',
+    description: 'Mit diesem Formular meldest du deinem Arbeitgeber deine TFN. Warum die Angaben darauf wichtig sind und weshalb eine falsche Angabe später Geld kosten kann.',
     body: `
-Das Tax File Number Declaration ist das Formular, das du einem neuen Arbeitgeber gibst, damit er zum richtigen Satz einbehalten kann. Drei Antworten darauf setzen deine Steuer: ob du steuerlich australischer Resident bist, ob du Working Holiday Maker bist und ob du den Freibetrag beanspruchst. Alles Übrige darauf ist Identifikation.
+Das Tax File Number Declaration ist das Formular, das du einem neuen Arbeitgeber gibst, damit er zum richtigen Satz einbehalten kann. Drei Angaben darauf beeinflussen deine Steuer: dein steuerlicher Status, ob du Working Holiday Maker bist und ob du den Freibetrag beanspruchst. Alles Übrige darauf ist Identifikation.
 
 ## Warum entscheidet dieses Formular mehr als die TFN selbst?
 
-Weil die Lohnbuchhaltung des Arbeitgebers das Formular liest und nicht deine Absichten. Ohne hinterlegtes Declaration gilt standardmäßig ein Einbehalt von 45 %, bei einer 1.000-$-Woche also 300 $ statt 150 $. Die korrekte Working-Holiday-Maker-Behandlung sind 15 % auf die ersten 45.000 $, und nur das Formular löst sie aus.
+Weil die Lohnbuchhaltung des Arbeitgebers das Formular liest und nicht deine Absichten. Ohne hinterlegtes Declaration gilt standardmäßig ein Einbehalt von 45 %. Welcher Satz sonst zur Anwendung kommt, hängt von den Angaben auf dem Formular ab.
 
 Das Geld wird also beim Declaration entschieden, nicht beim TFN-Antrag. Die Nummer selbst ist kostenlos. Das Formular ändert deinen Payslip, und es wird dir an deinem ersten Tag in die Hand gedrückt, meist genau dann, wenn du am wenigsten darüber nachdenken kannst.
 
-## Was bewirken die drei Antworten?
+## Was bewirken die Angaben?
 
-Jede verschiebt den Satz an eine andere Stelle, und zwei der drei falschen Kombinationen erzeugen eine Schuld statt einer Verzögerung.
+Jede Angabe verschiebt den Einbehalt an eine andere Stelle, und falsche Kombinationen können eine Schuld statt einer Verzögerung erzeugen.
 
-- Working Holiday Maker, mit Ja beantwortet, führt zum 15-%-Satz. Das ist die Antwort für einen Inhaber eines 417- oder 462-Visums.
-- Foreign Resident, stattdessen gewählt, führt zu 30 % Einbehalt ab dem ersten Dollar. Das ist ein Überabzug, der bei der Veranlagung angerechnet wird.
-- Australian Resident mit beanspruchtem Freibetrag führt über das Jahr zu wenig Einbehalt, und die Differenz wird bei der Veranlagung zum Zahlbetrag.
+- Ein zu hoher Einbehalt kann bei der Veranlagung angerechnet werden.
+- Ein zu niedriger Einbehalt wird bei der Veranlagung zum Zahlbetrag.
 
-Die letzte ist der teure Fehler, weil sie sich in jeder Lohnzahlung wie mehr Geld anfühlt und Monate später als Rechnung ankommt. Warum der Freibetrag nicht neben Working-Holiday-Maker-Sätzen steht, erklärt unser Guide zum [Freibetrag und dem Working-Holiday-Visum](/de/blog/tax-free-threshold-working-holiday-visa).
+Der zweite Fall ist der teure Fehler, weil er sich in jeder Lohnzahlung wie mehr Geld anfühlt und Monate später als Rechnung ankommt. Warum die Angabe zum Freibetrag keine Frage für das Bauchgefühl ist, erklärt unser Guide zum [Freibetrag und dem Working-Holiday-Visum](/de/blog/tax-free-threshold-working-holiday-visa).
 
 ## Was, wenn deine TFN noch nicht da ist?
 
-Du kannst das Declaration trotzdem ausfüllen, und darum geht es beim 28-Tage-Fenster. Ein festgehaltener laufender Antrag samt Referenznummer hält dich durch dieses Fenster auf dem Working-Holiday-Satz, statt am ersten Tag bei 45 % zu beginnen.
+Du kannst das Declaration trotzdem ausfüllen, und darum geht es beim 28-Tage-Fenster. Ein festgehaltener laufender Antrag samt Referenznummer hält dich durch dieses Fenster beim regulären Satz, statt am ersten Tag bei 45 % zu beginnen.
 
-Sagst du nichts, gilt der höhere Satz sofort, und jede Woche bei 45 % ist Lohn, der beim ATO liegt, bis die Erklärung eingereicht ist. Was du dem Arbeitgeber in der Zwischenzeit gibst, steht in unserem Guide zum [Arbeiten, bevor die TFN ankommt](/de/blog/tfn-reference-number-before-tfn-arrives).
+Sagst du nichts, gilt der höhere Satz sofort, und jede Woche bei 45 % ist ein höherer Einbehalt, der erst bei der Erklärung berücksichtigt wird. Was du dem Arbeitgeber in der Zwischenzeit gibst, steht in unserem Guide zum [Arbeiten, bevor die TFN ankommt](/de/blog/tfn-reference-number-before-tfn-arrives).
 
 ## Deckt ein Formular jeden Job ab?
 
@@ -2364,25 +2332,25 @@ Das ist der mechanische Grund, warum Jahre mit mehreren Arbeitgebern so oft schi
 
 ## Was steckt hinter der Wohnsitzfrage auf dem Formular?
 
-Dieselbe Frage, die später über dein Ergebnis bei der Veranlagung entscheidet, gestellt zum denkbar schlechtesten Zeitpunkt. Der steuerliche Wohnsitz ist nicht der aufenthaltsrechtliche. Er hängt von deinen persönlichen Umständen ab, muss ordentlich geprüft werden und ist selten so eindeutig, wie das Formular es aussehen lässt.
+Eine Frage, die später beim Ergebnis der Veranlagung eine große Rolle spielt, gestellt zum denkbar schlechtesten Zeitpunkt. Der steuerliche Wohnsitz ist nicht der aufenthaltsrechtliche. Er hängt von deinen persönlichen Umständen ab, muss ordentlich geprüft werden und ist selten so eindeutig, wie das Formular es aussehen lässt.
 
-Für die meisten Working Holiday Maker ist die Working-Holiday-Maker-Antwort die richtige und das Wohnsitzfeld unkompliziert. Bei einem längeren Aufenthalt ist die Frage in beide Richtungen leicht falsch zu beantworten. Warum sie so schwer zu greifen ist, steht in unserem Guide zum [steuerlichen Wohnsitz für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
+Die Frage ist in beide Richtungen leicht falsch zu beantworten. Warum sie so schwer zu greifen ist, steht in unserem Guide zum [steuerlichen Wohnsitz für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
 
 ## Was, wenn es falsch ausgefüllt wurde?
 
-Reiche beim Arbeitgeber ein korrigiertes Declaration ein. Die Lohnbuchhaltung aktualisiert ab diesem Zeitpunkt und nicht rückwirkend, die Korrektur repariert also künftige Zahlungen, und die frühere Differenz wird über die Erklärung geregelt.
+Sag es uns, dann gehen wir es mit dir durch. Ein korrigiertes Declaration wirkt für den Arbeitgeber ab diesem Zeitpunkt und nicht rückwirkend, die frühere Differenz wird über die Erklärung geregelt.
 
-Wo zu viel einbehalten wurde, wird das bei der Veranlagung angerechnet. Wo zu wenig einbehalten wurde, weil der Freibetrag beansprucht wurde, ist die Differenz zahlbar, und das im Juli statt im Oktober zu erfahren gibt Zeit, es einzuplanen. Prüfe nach jeder Korrektur den nächsten Payslip.
+Wo zu viel einbehalten wurde, wird das bei der Veranlagung angerechnet. Wo zu wenig einbehalten wurde, ist die Differenz zahlbar, und das im Juli statt im Oktober zu erfahren gibt Zeit, es einzuplanen.
 
 ## Was hast du beim Unterschreiben festgelegt?
 
 Das Formular ist kurz. Was es dich kostet, hängt von deinen Umständen in dem Moment ab, in dem du es unterschrieben hast.
 
-- Ob das Working-Holiday-Maker-Kästchen gesetzt war, denn das ist das eine Feld, das den 15-%-Satz auslöst.
-- Ob der Freibetrag beansprucht wurde, denn das ist der Fehler, der eine Schuld statt einer Erstattung aufbaut.
+- Ob die Angaben zu deinem Status richtig waren.
+- Ob eine Angabe zum Freibetrag gemacht wurde und ob sie zu deinem Fall passte.
 - Ob deine TFN angekommen war und ob ein laufender Antrag mit Referenznummer festgehalten wurde.
 - Wie vielen Arbeitgebern du ein Declaration gegeben hast, denn jedes zählt für sich.
-- Ob der Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist, denn ein nicht registrierter behält unabhängig von deinem Formular zu Foreign-Resident-Sätzen ein.
+- Ob der Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert ist, denn bei einem nicht registrierten kann unabhängig von deinem Formular nach höheren Sätzen einbehalten werden.
 - Ob dein Wohnsitz wirklich so einfach ist, wie das Formular unterstellt.
 
 Jeder Überabzug wird in der [Working-Holiday-Steuererklärung](/de/tax-return) abgerechnet, und was ein falsch ausgefülltes Formular gekostet hat, macht der [Erstattungsrechner](/de/calculator) sichtbar.
@@ -2390,10 +2358,10 @@ Jeder Überabzug wird in der [Working-Holiday-Steuererklärung](/de/tax-return) 
   },
 
   'what-does-tax-withheld-mean-payslip': {
-    title: 'Tax Withheld auf dem Payslip: stimmen 15 %?',
-    description: 'Auf den ersten 45.000 $ sollten 15 % einbehalten werden. So liest du deinen Payslip und erkennst zu hohe Abzüge.',
+    title: 'Tax Withheld auf dem Payslip: was die Zeile bedeutet',
+    description: 'Was die Zeile Tax Withheld auf deinem Payslip bedeutet, wie Einbehalt und Steuerschuld zusammenhängen und warum du Payslips aufbewahren solltest.',
     body: `
-Tax withheld ist die Einkommensteuer, die dein Arbeitgeber aus deinem Bruttolohn ans ATO abführt, bevor der Rest auf dein Konto geht. Auf einem Working-Holiday-Visum sollten das rund 15 % des Bruttoverdienstes bis 45.000 $ sein. Teile die einbehaltene Steuer durch den Bruttolohn, und es sollte ungefähr 0,15 herauskommen.
+Tax withheld ist die Einkommensteuer, die dein Arbeitgeber aus deinem Bruttolohn ans ATO abführt, bevor der Rest auf dein Konto geht. Welcher Anteil das bei dir ist, hängt von den Sätzen ab, die für dich gelten, und das wird im Einzelfall geprüft.
 
 ## Welche drei Zahlen stehen auf einem Payslip, und wie hängen sie zusammen?
 
@@ -2401,26 +2369,21 @@ Jeder regelkonforme australische Payslip zeigt gross pay, tax withheld und net p
 
 Tax withheld ist eine Vorauszahlung und keine endgültige Rechnung: eine Schätzung Abrechnung für Abrechnung gegen eine Schuld, die nur einmal berechnet wird, am Ende des Steuerjahres über dein gesamtes Einkommen. Ein zu hoher Einbehalt kann zu einer Erstattung führen, ein zu niedriger zu einer Nachzahlung.
 
-## Wie prüfst du, ob der Satz stimmt?
+## Wie erkennst du einen auffälligen Einbehalt?
 
-Teile auf einem beliebigen Payslip die einbehaltene Steuer durch den Bruttolohn. Ein Working Holiday Maker mit korrekt ausgefüllter Tax File Number Declaration und registriertem Arbeitgeber landet nahe bei 0,15.
+Ein einzelner Payslip beantwortet das nicht sicher. Der Einbehalt ist eine Schätzung, und welche Sätze für dein Jahr am Ende gelten, steht erst bei der Veranlagung fest. Das ist auch der Grund, warum das häufigste Muster nicht ein durchgehend falscher Payslip ist, sondern ein Arbeitgeber mit korrektem Einbehalt und ein zweiter, der monatelang still im Falschen läuft.
 
-- 600 $ brutto pro Woche: etwa 90 $ Einbehalt
-- 900 $ brutto pro Woche: etwa 135 $ Einbehalt
-- 1.200 $ brutto pro Woche: etwa 180 $ Einbehalt
-- 2.000 $ brutto pro Woche: etwa 300 $ Einbehalt
-
-Mach es auf mehr als einem Payslip und für jeden Arbeitgeber getrennt. Das häufigste Muster ist nicht ein durchgehend falscher Payslip, sondern ein Arbeitgeber korrekt und ein zweiter monatelang still im Falschen.
+Auffällig ist ein Payslip, dessen Einbehalt stark von den anderen abweicht. Schick uns die Payslips aller Arbeitgeber, dann sehen wir sie uns an.
 
 ## Was bedeutet welcher falsche Prozentsatz?
 
-Der Prozentsatz sagt dir, welche Regel schiefgelaufen ist, und jede hat eine andere Ursache und Lösung.
+Ein auffälliger Prozentsatz sagt etwas über die Ursache, und jede hat eine andere Lösung.
 
 **Rund 45 %.** Deine Tax File Number Declaration ist nicht in der Lohnbuchhaltung angekommen, oder das 28-Tage-Fenster ist ohne deine TFN abgelaufen. Der teuerste und häufigste Fall. Er löst sich ab der nächsten Abrechnung, sobald die Erklärung vorliegt.
 
-**Rund 30 % oder etwas darüber.** Dein Arbeitgeber ist beim ATO nicht als Arbeitgeber von Working Holiday Makern registriert und wendet Foreign-Resident-Sätze an statt der Working-Holiday-Maker-Tabelle. Nicht dein Fehler, und auf deinem Formular gibt es nichts zu reparieren. Der Überschuss wird zur Steuerzeit angerechnet.
+**Deutlich höher als bei anderen Payslips.** Dein Arbeitgeber ist unter Umständen beim ATO nicht als Arbeitgeber von Working Holiday Makern registriert. Nicht dein Fehler, und auf deinem Formular gibt es dann nichts zu reparieren. Der Überschuss wird zur Steuerzeit geklärt.
 
-**Spürbar unter 15 % oder auf normalen Löhnen fast nichts.** Auf deiner Tax File Number Declaration wurde der Freibetrag beansprucht. Das ist der einzige Fall hier, der zu einer Schuld statt zu einer Erstattung führt, weil das ganze Jahr zu wenig einbehalten wurde und die Differenz mit dem Bescheid fällig wird.
+**Spürbar niedriger oder auf normalen Löhnen fast nichts.** Auf der Declaration kann eine Angabe gemacht worden sein, die nicht zu deinem Fall passt. Das kann zu einer Schuld statt zu einer Erstattung führen, weil das ganze Jahr zu wenig einbehalten wurde und die Differenz mit dem Bescheid fällig wird.
 
 **Gar nichts, und auch keine Superzeile.** Du wirst außerhalb der Lohnbuchhaltung bezahlt, egal wie es genannt wurde. Es gibt keinen Einbehalt zurückzuholen und kein Income Statement, aus dem sich einreichen ließe, und das Einkommen ist trotzdem erklärungspflichtig.
 
@@ -2438,11 +2401,11 @@ Lohnfehler bei Backpacker-Löhnen sind nicht selten und meist nicht böswillig. 
 
 ## Warum steht auf deinem Payslip ein anderer Satz?
 
-Der Richtwert von 15 % gilt für jeden Working Holiday Maker. Ein Payslip, der etwas anderes zeigt, sagt etwas Konkretes über deine Situation, und diese Situationen zeigen nicht alle in dieselbe Richtung.
+Ein Payslip, der etwas Ungewöhnliches zeigt, sagt etwas Konkretes über deine Situation, und diese Situationen zeigen nicht alle in dieselbe Richtung.
 
 - Wie viele Arbeitgeber du hattest. Jeder ist eine eigene Erklärung, ein eigener Satz und ein eigenes Income Statement, und der Überabzug konzentriert sich meist bei einem davon.
-- Ob ein Arbeitgeber nicht als Working-Holiday-Maker-Arbeitgeber registriert war, was zu einem Foreign-Resident-Einbehalt führt, den du selbst nicht beheben kannst.
-- Ob der Freibetrag angekreuzt wurde. Das ist der Zweig, der eine Rechnung statt einer Erstattung erzeugt.
+- Ob ein Arbeitgeber nicht als Working-Holiday-Maker-Arbeitgeber registriert war, was zu einem höheren Einbehalt führen kann, den du selbst nicht beheben kannst.
+- Ob auf der Declaration eine Angabe gemacht wurde, die nicht zu deinem Fall passte. Das ist der Zweig, der eine Rechnung statt einer Erstattung erzeugen kann.
 - Ob ein Teil deines Einkommens ABN-Arbeit war, wo nichts einbehalten wird und die Steuer vollständig beim Bescheid abgerechnet wird.
 - Ob eine Phase lief, bevor deine TFN vorlag, was einen Block Abrechnungen auf 45 % setzt und deine Erstattung dort konzentriert.
 
@@ -2474,10 +2437,10 @@ Ein Verstoß ist eine Visums- und keine Steuerangelegenheit, und die Folge kann 
 Eine lange Liste, die das meiste abdeckt, was Working Holiday Maker tatsächlich machen. Du kannst ohne Erlaubnis über sechs Monate hinaus beim selben Arbeitgeber bleiben, wenn die Arbeit in einen dieser Sektoren fällt.
 
 - Pflanzen- und Tierzucht, also Land- und Gartenbau
-- Fischerei und Perlenfischerei
-- Baumzucht und Holzeinschlag
-- Bergbau
-- Bauwesen
+- Fischerei und Perlenfischerei (nur in Nordaustralien)
+- Baumzucht und Holzeinschlag (nur in Nordaustralien)
+- Bergbau (nur in Nordaustralien)
+- Bauwesen (nur in Nordaustralien)
 - Tourismus und Gastronomie, an jedem Ort
 - Gesundheit, Altenpflege und Behindertenpflege
 - Kinderbetreuung
@@ -2500,7 +2463,7 @@ Viele Branchen mit Specified Work sind zugleich von der Sechsmonatsregel ausgeno
 
 ## Was machen lange Arbeitszeiten mit deiner Steuer?
 
-Sie schieben dich die Working-Holiday-Maker-Skala hinauf. Der Satz beträgt 15 % bis 45.000 $ und 30 % auf den Teil darüber. Zwei Jobs gleichzeitig erreichen diesen Punkt schneller als erwartet, weil keine der beiden Lohnbuchhaltungen von der anderen weiß.
+Sie schieben dich die Working-Holiday-Maker-Skala hinauf. Welche Sätze für dich gelten, wird im Einzelfall geprüft. Zwei Jobs gleichzeitig erreichen diesen Punkt schneller als erwartet, weil keine der beiden Lohnbuchhaltungen von der anderen weiß.
 
 Das ist der Mechanismus hinter der häufigsten Jahresend-Überraschung: Jeder Arbeitgeber behält auf Basis seiner eigenen Zahlen korrekt ein, und das kombinierte Einkommen überschreitet eine Grenze, die keiner von beiden sehen kann. Superannuation folgt dem Verdienst und nicht den Stunden, mit 12 % zusätzlich zum Lohn und seit 2022 ohne monatliche Mindestverdienstgrenze.
 
@@ -2589,7 +2552,7 @@ Löhne in bar zu zahlen ist in Australien legal. Kein Gesetz verlangt eine Über
 
 ## Wie sieht eine rechtmäßige Barvereinbarung aus?
 
-Genau wie jeder andere Job, nur ist das Geld physisch. Dein Arbeitgeber behält weiterhin PAYG-Steuer ein, mit hinterlegter TFN 15 % und ohne 45 %, zahlt 12 % Superannuation zusätzlich zum Lohn, stellt für jede Lohnperiode einen Payslip aus, erfüllt Mindestlohn und den zuständigen Award und zahlt Zuschläge für Wochenenden, Feiertage und späte Nächte.
+Genau wie jeder andere Job, nur ist das Geld physisch. Dein Arbeitgeber behält weiterhin PAYG-Steuer ein, ohne TFN 45 %, zahlt 12 % Superannuation zusätzlich zum Lohn, stellt für jede Lohnperiode einen Payslip aus, erfüllt Mindestlohn und den zuständigen Award und zahlt Zuschläge für Wochenenden, Feiertage und späte Nächte.
 
 Passiert all das und dir werden am Freitag Scheine in die Hand gedrückt, ist nichts falsch. Das ist selten, kommt aber vor, vor allem in kleinen Familienbetrieben ohne elektronische Zahlungen.
 
@@ -2715,10 +2678,10 @@ Was von diesen Löhnen einbehalten wurde, wird am Ende des Steuerjahres abgerech
 
   // ─── More TFN posts ────────────────────────────────────────────────────────
   'how-to-update-address-with-ato': {
-    title: 'ATO-Adresse ändern: drei Wege, fünf Minuten',
-    description: 'Drei Wege, deine Adresse beim ATO zu aktualisieren, bevor TFN-Brief, Steuererstattung oder Super-Post verloren gehen.',
+    title: 'ATO-Adresse: warum sie aktuell sein muss',
+    description: 'Warum deine Adresse beim ATO aktuell sein muss, bevor TFN-Brief, Steuererstattung oder Super-Post verloren gehen.',
     body: `
-Deine Adresse lässt sich beim ATO online über dessen eigene Dienste ändern, telefonisch unter 13 28 61 oder durch einen registrierten Tax Agent, der für dich handelt. Alle drei Wege wirken zügig auf deinem Datensatz. Entscheidend ist, es zu tun, bevor das Nächste verschickt wird, denn Post, die schon unterwegs ist, folgt der alten Adresse.
+Deine Adresse beim ATO lässt sich aktualisieren, auch durch einen registrierten Tax Agent, der für dich handelt, und wir kümmern uns darum, wenn du uns schreibst. Entscheidend ist, es zu tun, bevor das Nächste verschickt wird, denn Post, die schon unterwegs ist, folgt der alten Adresse.
 
 ## Warum führt das ATO überhaupt eine Adresse, wenn Erstattungen aufs Konto gehen?
 
@@ -2728,7 +2691,7 @@ Die Erstattung selbst wird nahezu immer elektronisch auf ein australisches Bankk
 
 ## Was geht konkret schief, wenn die Adresse alt ist?
 
-Der teuerste Ausfall ist der TFN-Brief: Ein Rückläufer startet eine Wartezeit von 28 Tagen neu, während du möglicherweise mit 45 % statt 15 % arbeitest. Hier kostet eine veraltete Adresse einen wöchentlichen Dollarbetrag.
+Der teuerste Ausfall ist der TFN-Brief: Ein Rückläufer startet eine Wartezeit von 28 Tagen neu, während du möglicherweise mit 45 % Einbehalt arbeitest. Hier kostet eine veraltete Adresse einen wöchentlichen Dollarbetrag.
 
 Der zweite ist die Superannuation. Fonds und ATO führen jeweils eine eigene Adresse, und ein Fonds, der dich nicht erreicht, meldet das Konto irgendwann als unclaimed und überträgt es ans ATO. Das Geld bleibt deins und beanspruchbar, ist aber einen Schritt weiter weg, genau wenn du das Land verlässt.
 
@@ -2769,7 +2732,7 @@ Wenn du mit Super in Australien abreist, ist die Adresse eines der Details, die 
     title: 'TFN-Referenznummer: reicht sie zum Job?',
     description: 'Während du auf deine TFN wartest, bekommst du eine Referenznummer vom ATO. Was sie kann, wie du sie nutzt und was dein Arbeitgeber wissen muss.',
     body: `
-Die Referenznummer kommt in dem Moment, in dem du deinen TFN-Antrag abschickst, und sie ist der Beleg dafür, dass der Antrag läuft. Dieser Beleg ist das, was dich im 28-Tage-Fenster auf dem Working-Holiday-Maker-Satz von 15 % hält statt bei 45 %. Sie ist nicht deine TFN und kann auch nicht als eine verwendet werden.
+Die Referenznummer kommt in dem Moment, in dem du deinen TFN-Antrag abschickst, und sie ist der Beleg dafür, dass der Antrag läuft. Dieser Beleg ist das, was dich im 28-Tage-Fenster beim regulären Satz hält statt bei 45 %. Sie ist nicht deine TFN und kann auch nicht als eine verwendet werden.
 
 ## Was ist die Referenznummer und woher kommt sie?
 
@@ -2803,7 +2766,7 @@ Die Referenznummer hört an dem Tag auf zu zählen, an dem der Brief ankommt. Bi
 
 Gib sie jedem Arbeitgeber mit einer aktualisierten Erklärung, nicht nur dem aktuellen. Jeder Arbeitgeber führt seinen eigenen Datensatz und seine eigene Erklärung, die Packhalle, die deine TFN kennt, bringt dem Pub also nichts.
 
-Ab dann gilt der korrekte Satz für die Zukunft. Alles, was vor Hinterlegung der Nummer über 15 % einbehalten wurde, korrigiert die Lohnbuchhaltung nicht, es wird über deine Erklärung angerechnet.
+Ab dann gilt der korrekte Satz für die Zukunft. Alles, was vor Hinterlegung der Nummer zu viel einbehalten wurde, korrigiert die Lohnbuchhaltung nicht, es wird über deine Erklärung angerechnet.
 
 ## Zählt die Referenznummer in deiner Lage?
 
@@ -2820,58 +2783,48 @@ Alles, was über den korrekten Satz hinaus einbehalten wurde, wird in deiner [St
   },
 
   'tax-free-threshold-working-holiday-visa': {
-    title: 'Freibetrag 18.200 $: gilt er für dich?',
-    description: 'Working Holiday Maker zahlen ab dem ersten Dollar 15 %. Wer im TFN-Formular den Freibetrag ankreuzt, baut Steuerschulden auf. Und die eine Ausnahme.',
+    title: 'Freibetrag 18.200 $: was dahintersteckt',
+    description: 'Ob der Freibetrag für dich gilt, hängt vom Einzelfall ab. Warum die Angabe im TFN-Formular nicht aus dem Bauch heraus gemacht werden sollte.',
     body: `
-Working Holiday Maker bekommen den Freibetrag von 18.200 $ nicht, außer in einer seltenen Ausnahme, die von zwei Bedingungen zugleich abhängt und nur eine Minderheit erreicht.
+Ob der Freibetrag von 18.200 $ für dich gilt, hängt von deinen individuellen Umständen ab und wird im Einzelfall geprüft. Am Ende entscheidet das ATO.
 
-Für fast alle lautet die Antwort auf der Tax File Number Declaration deshalb Nein. Ein Ja führt zu Schulden statt zu einer Ersparnis.
+Die Angabe dazu auf der Tax File Number Declaration aus dem Bauch heraus zu machen, ist in beide Richtungen riskant: Eine falsche Antwort kann zu Schulden statt zu einer Ersparnis führen.
 
 ## Was ist der Freibetrag, und für wen ist er gedacht?
 
-Der Freibetrag ist eine Vergünstigung für australische Steuerresidenten, mit der die ersten 18.200 $ Einkommen eines Steuerjahres steuerfrei bleiben. Es gibt ihn, weil Australiens Residentensätze progressiv sind und Residenten mit niedrigem Einkommen entlastet werden. Working Holiday Maker werden nach einer anderen Tabelle besteuert: 15 % ab dem ersten Dollar bis 45.000 $, ohne Nullsatzstufe. Deshalb passen Freibetrag und Working-Holiday-Sätze nicht zusammen, und deshalb fragt das Formular danach.
+Der Freibetrag ist eine Vergünstigung im australischen Steuersystem, mit der die ersten 18.200 $ Einkommen eines Steuerjahres steuerfrei bleiben können. Ob und wie er bei einem Working Holiday Maker zur Anwendung kommt, ist keine Frage des Visums allein. Deshalb fragt das Formular danach.
 
-## Warum verursacht ein Kreuz dort ein Problem, statt Geld zu sparen?
+## Warum verursacht eine falsche Angabe dort ein Problem?
 
-Weil ein Kreuz dort ändert, was dein Arbeitgeber einbehält, und nicht, was du am Ende schuldest. Die Steuerschuld eines Working Holiday Makers wird nach den Working-Holiday-Sätzen berechnet, ganz gleich, was auf dem Formular steht. Ein niedrigerer Einbehalt verschiebt die Rechnung nur nach hinten.
+Weil die Angabe ändert, was dein Arbeitgeber einbehält, und nicht, was du am Ende schuldest. Deine tatsächliche Steuer wird am Jahresende bei der Veranlagung festgelegt. Ein zu niedriger Einbehalt verschiebt die Rechnung nur nach hinten, und aus einer erwarteten Erstattung kann eine Nachzahlung werden. Ihre Höhe folgt der Dauer des Fehlers.
 
-Ein Ja sagt der Lohnbuchhaltung, sie soll die Residentenskala mit der Nullsatzstufe anwenden. Es kommt spürbar weniger Steuer aus jeder Abrechnung heraus und dein Wochennetto steigt.
-
-An deiner tatsächlichen Steuerschuld ändert das nichts. Sie wird am Jahresende nach den Working-Holiday-Maker-Sätzen berechnet, und die Differenz zum Einbehaltenen ist mit dem Bescheid fällig. Was eine Erstattung hätte sein sollen, wird zur Rechnung, und ihre Höhe folgt der Dauer des Fehlers.
-
-Bei 1.000 $ pro Woche liegt der korrekte Einbehalt bei etwa 150 $. Mit fälschlich beanspruchtem Freibetrag kann er deutlich niedriger sein oder, bei geringeren Wochenlöhnen, ganz ausfallen. Ein halbes Jahr davon ergibt eine Schuld im hohen dreistelligen Bereich, ein volles Jahr kann über tausend Dollar hinausgehen.
-
-## Wie lautet die Ausnahme genau?
+## Wie kommt der steuerliche Wohnsitz ins Spiel?
 
 Mehrere Punkte spielen zusammen, und sie lassen sich nicht am Visum ablesen. Der steuerliche Wohnsitz ist eine Beurteilung, die in beide Richtungen leicht falsch ausfällt, und sie fällt von Person zu Person verschieden aus.
 
-Der Hintergrund ist ein Urteil des High Court, Addy v Commissioner of Taxation [2021] HCA 34, ein Fall, über den die Gerichte jahrelang gestritten haben. Wenn selbst Richter sich uneins waren, ist das kein Anspruch, den man sich im Hostel selbst zuspricht. Warum die Frage so schwer zu greifen ist, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers). Wie du eingestuft wirst, wird erst bei der Erstellung der Steuererklärung festgelegt, nachdem dein ganzes Jahr durchgegangen wurde. Jede Erklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
+Der Hintergrund ist ein Urteil des High Court, Addy v Commissioner of Taxation [2021] HCA 34, ein Fall, über den die Gerichte jahrelang gestritten haben. Wenn selbst Richter sich uneins waren, ist das kein Anspruch, den man sich im Hostel selbst zuspricht, und die Auswirkung ist von Person zu Person verschieden und nichts, was du annehmen solltest. Warum die Frage so schwer zu greifen ist, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers). Wie du eingestuft wirst, wird erst bei der Erstellung der Steuererklärung festgelegt, nachdem dein ganzes Jahr durchgegangen wurde. Jede Erklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
 
-So oder so wird die Frage beim Bescheid geklärt, nicht in der Lohnbuchhaltung. Auch wer am Ende qualifizieren könnte, sollte während des Jahres Nein ankreuzen.
+So oder so wird die Frage beim Bescheid geklärt, nicht in der Lohnbuchhaltung.
 
-## Wie reparierst du es, wenn das Kästchen schon angekreuzt ist?
+## Was tun, wenn die Angabe schon gemacht ist?
 
-Gib deinem Arbeitgeber eine neue Tax File Number Declaration mit der korrigierten Antwort, dann wendet die Lohnbuchhaltung ab der nächsten Abrechnung den richtigen Satz an. Rückwirkend korrigiert sie nicht: je früher entdeckt, desto kleiner die Nachzahlung.
+Sag es uns. Wir gehen mit dir durch, was auf dem Formular steht und was das für den Einbehalt bedeutet. Ein zu niedriger Einbehalt verschwindet nicht und wird nicht erlassen, sondern bei der Abgabe abgerechnet, und je früher er auffällt, desto kleiner ist die Lücke. Seine ungefähre Größe vor dem Oktober zu kennen ist der Unterschied zwischen einer beherrschbaren Anpassung und einem Schock.
 
-Dann plane die Lücke ein. Der zu wenig einbehaltene Betrag verschwindet nicht und wird nicht erlassen, sondern bei der Abgabe abgerechnet. Seine ungefähre Größe vor dem Oktober zu kennen ist der Unterschied zwischen einer beherrschbaren Anpassung und einem Schock. Bei mehreren Arbeitgebern prüfe jeden einzelnen. Dieser Fehler wird meist einmal gemacht, auf dem ersten Formular am ersten Tag in Australien, und danach brav auf jedes weitere übertragen.
+## Woran fallen Probleme beim Payslip auf?
 
-## Wie erkennst du es am Payslip?
+Ein auffälliger Einbehalt kann viele Ursachen haben: eine fehlende TFN, ein Arbeitgeber, der nicht als Working-Holiday-Maker-Arbeitgeber registriert ist, oder eine falsche Angabe auf dem Formular. Welche davon bei dir vorliegt, lässt sich vom Payslip allein nicht sicher ablesen. Schick uns die Payslips, dann sehen wir sie uns an.
 
-Teile die einbehaltene Steuer durch den Bruttolohn. Ein Working Holiday Maker mit korrektem Satz landet nahe bei 0,15. Ein Wert deutlich darunter deutet bei normalen Löhnen auf einen beanspruchten Freibetrag hin, den einzigen häufigen Fehler, der zu wenig statt zu viel Einbehalt zur Folge hat.
+## Was spielt bei der Einordnung eine Rolle?
 
-Die anderen Richtungen bedeuten etwas anderes. Rund 45 % heißt, deine TFN liegt nicht vor. Rund 30 % heißt, dein Arbeitgeber ist nicht als Working-Holiday-Maker-Arbeitgeber registriert. Beides kann zu einer Erstattung führen. Nur der Freibetrag führt zu einer Schuld.
+Die Einordnung wird im Einzelfall geprüft, und diese Dinge spielen hinein.
 
-## Fällst du unter die enge Ausnahme?
-
-Für fast alle lautet die Antwort auf dem Formular Nein, und die Ausnahme ist eng genug, dass sie während des Jahres nichts daran ändern sollte.
-
-- Ob dein Jahr die Wohnsitzhälfte überhaupt tragen kann, was die schwierigere der beiden ist und sich nicht zuverlässig selbst beurteilen lässt.
-- Ob die zweite Bedingung in deinem Fall erfüllt ist, was geprüft gehört statt geraten.
-- Wie viele Arbeitgeber eine Erklärung mit der falschen Antwort bekommen haben.
-- Wie lange der falsche Satz lief, bevor er auffiel, denn davon hängt die ganze Größe des Problems ab.
+- Wie dein steuerlicher Wohnsitz für das Jahr einzuordnen ist, was sich nicht zuverlässig selbst beurteilen lässt.
+- Weitere Bedingungen, die geprüft gehören statt geraten.
+- Wie viele Arbeitgeber eine Erklärung mit einer falschen Angabe bekommen haben.
+- Wie lange ein falscher Satz lief, bevor er auffiel, denn davon hängt die ganze Größe des Problems ab.
 - Ob du zusätzlich ABN-Einkommen hast, das unversteuert zufließt und dieselbe Lücke vergrößert.
 
-Endgültig festgelegt wird die Position mit deiner [Steuererklärung als Working Holiday Maker](/de/tax-return), und ob dein Jahr auf eine Erstattung oder auf eine Rechnung hinausläuft, schätzt der [Erstattungsrechner](/de/calculator) ab.
+Endgültig festgelegt wird die Position mit deiner [Steuererklärung als Working Holiday Maker](/de/tax-return), und eine grobe Zahl liefert dir vorab der [Erstattungsrechner](/de/calculator).
 `,
   },
 
@@ -2900,9 +2853,9 @@ Der letzte Punkt zählt am meisten für Rückkehrer. Eine TFN ist dauerhaft und 
 
 ## Was kostet es dich, solange es ungelöst ist?
 
-Dreißig Cent auf jeden Dollar, so lange es dauert. Ohne hinterlegte gültige TFN behält dein Arbeitgeber 45 % statt 15 % ein, und das sind bei einer 1.000-$-Woche 300 $ pro Woche, die zurückgehalten statt ausgezahlt werden.
+Fast die Hälfte jedes Dollars, so lange es dauert. Ohne hinterlegte gültige TFN behält dein Arbeitgeber 45 % ein, und der Unterschied zum regulären Satz wird zurückgehalten statt ausgezahlt.
 
-Das Geld ist nicht verloren. Es wird bei der Abgabe angerechnet, der Preis ist also der Zeitpunkt und nicht der Betrag. Für jemanden mit wöchentlicher Miete ist genau das der Grund, eine Ablehnung schnell zu lösen.
+Zu viel Einbehaltenes wird bei der Abgabe berücksichtigt, was davon zurückkommt, hängt von deinem Jahr ab, und das ATO entscheidet. Der Preis ist also zunächst der Zeitpunkt. Für jemanden mit wöchentlicher Miete ist genau das der Grund, eine Ablehnung schnell zu lösen.
 
 ## Wirkt sich die Ablehnung auch auf das Declaration beim Arbeitgeber aus?
 
@@ -2975,7 +2928,7 @@ Dieser Weg ist langsam, besonders aus dem Ausland, und deshalb lohnt es sich, fr
 
 ## Was kostet eine Verzögerung?
 
-Dreißig Cent auf jeden Dollar, den du in der Zwischenzeit verdienst. Ohne hinterlegte TFN behält der Arbeitgeber 45 % statt 15 % ein, das sind bei einer 1.000-$-Woche 300 $ zurückgehalten statt ausgezahlt, und es läuft weiter, bis die Nummer erfasst ist.
+Dreißig Cent auf jeden Dollar, den du in der Zwischenzeit verdienst. Ohne hinterlegte TFN behält der Arbeitgeber 45 % ein, und der Unterschied zum regulären Satz wird zurückgehalten statt ausgezahlt, bis die Nummer erfasst ist.
 
 Das 28-Tage-Fenster des Declarations ist die Abmilderung. Auf dem Tax File Number Declaration festhalten zu lassen, dass der Antrag läuft, hält dich durch dieses Fenster auf dem Working-Holiday-Satz. Zu viel Einbehaltenes wird bei der Veranlagung angerechnet, der Preis ist also der Zeitpunkt und nicht der Betrag.
 
@@ -3733,13 +3686,13 @@ Du kannst, und gerade diese Erklärung lohnt einen genauen Blick. Ohne hinterleg
 
 Dreißig Cent von jedem verdienten Dollar, solange sie dauerte. Mit erfasster TFN gilt der Working-Holiday-Satz von 15 % auf die ersten 45.000 $. Ohne sie werden ab dem ersten Dollar 45 % einbehalten, und bei 1.000 $ pro Woche sind das 300 $ pro Woche, die zurückgehalten statt ausgezahlt werden.
 
-Verloren ist nichts davon. Zu viel einbehaltene Steuer wird bei der Abgabe angerechnet, das Geld ist aufgeschoben und nicht verfallen. In der Zwischenzeit kostet es Liquidität, und das ist der Teil, der wehtut. Deshalb lohnt sich bei einem Jahr ohne TFN der genaue Blick in die Erklärung.
+Zu viel einbehaltene Steuer wird bei der Abgabe berücksichtigt. Was davon zurückkommt, hängt von deinem Jahr ab, und das ATO entscheidet. In der Zwischenzeit kostet es Liquidität, und das ist der Teil, der wehtut. Deshalb lohnt sich bei einem Jahr ohne TFN der genaue Blick in die Erklärung.
 
 ## Warum kannst du ohne TFN nicht einreichen?
 
 Weil die TFN die Kennung ist, die das gemeldete Einkommen mit dir verbindet. Löhne und Einbehalt liegen beim ATO unter der Meldung des Arbeitgebers, aber ohne TFN, an die sich das anhängen lässt, gibt es keinen Bescheid zu erstellen.
 
-Deshalb geben Leute das Geld auf: Sie nehmen an, die Steuer sei im System verschwunden, weil sie nie eine Nummer hatten. Ist sie nicht. Sie wartet unter der Meldung des Arbeitgebers auf die Zuordnung, und der TFN-Antrag ordnet zu. Er ist kostenlos und kann mit Identitätsprüfung auch aus dem Ausland gestellt werden.
+Deshalb geben Leute auf: Sie nehmen an, die Steuer sei im System verschwunden, weil sie nie eine Nummer hatten. Die Meldung des Arbeitgebers liegt beim ATO und lässt sich über den TFN-Antrag zuordnen. Was dabei zurückkommt, hängt von deinem Jahr ab, und das ATO entscheidet. Er ist kostenlos und kann mit Identitätsprüfung auch aus dem Ausland gestellt werden.
 
 ## Was passiert mit den Unterlagen, wenn du nichts aufgehoben hast?
 
@@ -3845,7 +3798,7 @@ Die Failure-to-Lodge-Strafe beträgt eine Strafeinheit für jeweils 28 Tage, die
 
 ## Wann ist die Erklärung tatsächlich fällig?
 
-Fällig ist sie am 31. Oktober nach Ende des Steuerjahres, wenn du selbst einreichst, eine Erklärung für 2024/25 also bis zum 31. Oktober 2025 und eine für 2025/26 bis zum 31. Oktober 2026. Die Daten für dieses Jahr stehen im [Guide zur Frist 2026](/de/blog/tax-return-deadline-31-october-working-holiday). Das Steuerjahr läuft vom 1. Juli bis 30. Juni, und die Frist verschiebt sich nicht dadurch, dass du das Land verlassen hast.
+Fällig ist sie am 31. Oktober nach Ende des Steuerjahres, wenn du selbst einreichst, eine Erklärung für 2024/25 also bis zum 31. Oktober 2025 und eine für 2025/26 bis zum 31. Oktober 2026 (diese Frist ist inzwischen vorbei, eine verspätete Erklärung lässt sich weiterhin einreichen). Die Daten für dieses Jahr stehen im [Guide zur Frist 2026](/de/blog/tax-return-deadline-31-october-working-holiday). Das Steuerjahr läuft vom 1. Juli bis 30. Juni, und die Frist verschiebt sich nicht dadurch, dass du das Land verlassen hast.
 
 Die Abgabe über einen registrierten Tax Agent verschiebt das Datum erheblich. Tax Agents arbeiten nach einem begünstigten Abgabeprogramm, das bis in den Mai des Folgejahres läuft, und die Verlängerung gilt, sofern du vor der regulären Oktoberfrist auf der Mandantenliste standest. Diese letzte Bedingung wird übersehen: Eine Anmeldung im Februar verlängert keine Frist rückwirkend, die im Oktober abgelaufen ist.
 
@@ -3898,17 +3851,17 @@ Eine Berichtigung heißt, dass eine Erklärung eingereicht wurde und etwas darin
   },
 
   'tax-return-deadline-31-october-working-holiday': {
-    title: 'Steuererklärung Frist 2026: 31. Oktober',
-    description: 'Erklärung 2025/26 selbst einreichen? Fällig am 31. Oktober 2026. Was gilt, wenn du sie verpasst?',
+    title: 'Steuererklärung Frist 2025/26: 31. Oktober 2026',
+    description: 'Erklärung 2025/26 selbst einreichen? Die Frist war der 31. Oktober 2026. Was gilt, wenn du sie verpasst hast?',
     body: `
-Wenn du sie selbst einreichst, ist deine australische Steuererklärung für 2025/26 am 31. Oktober 2026 fällig. Das Steuerjahr läuft vom 1. Juli 2025 bis zum 30. Juni 2026, und die Frist gilt genauso, wenn du schon wieder zu Hause bist.
+Die australische Steuererklärung für 2025/26 war für alle, die selbst einreichen, am 31. Oktober 2026 fällig. Das Steuerjahr lief vom 1. Juli 2025 bis zum 30. Juni 2026, und die Frist galt genauso, wenn du schon wieder zu Hause warst. Hast du sie verpasst, ist das Jahr verspätet, aber nicht verloren.
 
-## Welches Steuerjahr ist gerade fällig?
+## Welches Steuerjahr war zuletzt fällig?
 
 Das Jahr 2025/26, also jeder Dollar, der dir zwischen dem 1. Juli 2025 und dem 30. Juni 2026 gezahlt wurde. Das australische Steuerjahr folgt nicht dem Kalender, deshalb entscheidet dein Ankunftsmonat, wie sich dein Work and Travel aufteilt.
 
-- November 2025 bis Mai 2026 gearbeitet: eine Erklärung, die für 2025/26, jetzt fällig.
-- März bis September 2026 gearbeitet: zwei Erklärungen. März bis Juni gehört zu 2025/26 und ist jetzt fällig, Juli bis September gehört zu 2026/27 und ist erst am 31. Oktober 2027 fällig.
+- November 2025 bis Mai 2026 gearbeitet: eine Erklärung, die für 2025/26, die am 31. Oktober 2026 fällig war.
+- März bis September 2026 gearbeitet: zwei Erklärungen. März bis Juni gehört zu 2025/26 und war am 31. Oktober 2026 fällig, Juli bis September gehört zu 2026/27 und ist erst am 31. Oktober 2027 fällig.
 - Australien vor dem 1. Juli 2025 verlassen: Das Jahr 2024/25 war im Oktober 2025 fällig und kann trotzdem noch eingereicht werden.
 
 Der [Guide zum australischen Steuerjahr](/de/blog/australian-financial-year-dates) erklärt die Aufteilung genauer, auch die vorgezogene Erklärung für alle, die vor dem 30. Juni ausreisen.
@@ -3937,12 +3890,12 @@ Die Frist verschiebt sich nicht, weil du nach Hause geflogen bist, und die Erkl�
 
 Das ATO zahlt eine Steuererstattung nur auf ein australisches Bankkonto. Die Super über [DASP](/de/superannuation) kann ins Ausland gezahlt werden, eine Steuererstattung nicht. Ist dein australisches Konto noch offen, lass es offen, bis die Erstattung angekommen ist. Ist es schon geschlossen, kläre das vor der Einreichung, nicht danach.
 
-## Was solltest du diese Woche vor der Einreichung prüfen?
+## Was solltest du vor der Einreichung prüfen?
 
 Drei Dinge, denn eine hastig eingereichte Erklärung mit einem Fehler darin muss später berichtigt werden, und eine Berichtigung dauert länger, als es gleich richtig zu machen.
 
 - Jeder Arbeitgeber hat dein Income Statement abgeschlossen. Ein Arbeitgeber, der das noch nicht getan hat, kann in der Erklärung komplett fehlen.
-- Dein steuerlicher Wohnsitz für das Jahr. Er entscheidet, zu welchem Satz das ganze Jahr veranlagt wird, und ist die Frage, die am häufigsten falsch beantwortet wird.
+- Dein steuerlicher Wohnsitz für das Jahr. Er wird anhand der Fakten deines Jahres beurteilt, und das ATO trifft die endgültige Entscheidung. Wir prüfen ihn bei der Vorbereitung deiner Erklärung.
 - Ob die Medicare Levy überhaupt deine war. Viele Pässe sind befreit, aber nur mit der richtigen Bescheinigung. Die [Medicare-Seite](/de/medicare) erklärt, wer infrage kommt.
 
 ## Musst du überhaupt einreichen?
@@ -3959,7 +3912,7 @@ Schreib uns auf WhatsApp, ungefähr wo und wann du gearbeitet hast. Working-Holi
     title: 'Werkzeug unter 300 $: sofort voll absetzen',
     description: 'Arbeitswerkzeuge unter 300 $ kannst du als Working Holiday Maker komplett im Kaufjahr absetzen. Was qualifiziert, wie du Belege aufbewahrst und Beispiele.',
     body: `
-Jeder einzelne Arbeitsgegenstand, der 300 $ oder weniger kostet, ist im Kaufjahr voll absetzbar statt über Jahre abzuschreiben. Schuhe, Messer, Gartenscheren, Helme, Warnhemden, Werkzeuggürtel und Handwerkzeug qualifizieren alle. Ab dem 1. Juli 2026 gilt zusätzlich eine breitere Sofortabschreibung bis 1.000 $.
+Jeder einzelne Arbeitsgegenstand, der 300 $ oder weniger kostet, ist im Kaufjahr voll absetzbar statt über Jahre abzuschreiben. Schuhe, Messer, Gartenscheren, Helme, Warnhemden, Werkzeuggürtel und Handwerkzeug qualifizieren alle. Ab dem Einkommensjahr 2026/27 kommt eine eigene Pauschale von 1.000 $ hinzu, die die 300-$-Grenze pro Gegenstand nicht anhebt.
 
 ## Was sind die drei Bedingungen?
 
@@ -3999,7 +3952,7 @@ Was funktioniert: die Quittung an der Kasse fotografieren und sich selbst mailen
 
 Es geht nichts verloren, es wird nur über die Zeit geltend gemacht. Gegenstände über der Grenze werden über ihre Nutzungsdauer abgeschrieben, bei Handwerkzeug und kleinen Maschinen meist über drei bis fünf Jahre. Eine Kettensäge für 400 $ läuft also über mehrere Jahre.
 
-Das greift mit der neuen Regel ab dem 1. Juli 2026 ineinander, die die Grenze für den Sofortabzug auf 1.000 $ hebt und die Rechnung für jeden ändert, der ein ordentliches Elektrowerkzeug oder ein E-Bike kauft. Wie beides zusammenwirkt, steht in der [1.000-$-Sofortabschreibung](/de/blog/1000-dollar-instant-deduction-rule-2026).
+Daneben gibt es ab dem Einkommensjahr 2026/27 eine Pauschale von 1.000 $, die eine eigene Regel ist und die 300-$-Grenze pro Gegenstand nicht anhebt. Wie beides zusammenhängt, steht in der [1.000-$-Pauschale](/de/blog/1000-dollar-instant-deduction-rule-2026).
 
 ## Was deine Käufe für den Abzug bedeuten
 
@@ -4055,7 +4008,7 @@ Der DASP zahlt 35 % dessen aus, was der Fonds hält: Ein Guthaben von 1.500 $ br
 
 Nachdem dein Visum abgelaufen oder aufgehoben ist und nachdem du Australien verlassen hast, und beides sind Zulässigkeitsvoraussetzungen und keine Vorlieben. Die Genehmigung dauert nach Einreichung typischerweise etwa 28 Tage, danach folgt die Zahlung.
 
-Die Zeitfrage, die wirklich zählt, ist das letzte Quartal. Super wird quartalsweise gezahlt, hörst du also im Mai auf zu arbeiten und fliegst im Juni, ist der Beitrag deines Arbeitgebers für April bis Juni erst am 28. Juli fällig. Vor diesem Datum zu beantragen heißt, gegen ein Guthaben zu beantragen, in das dein Arbeitgeber noch nicht fertig eingezahlt hat, und der Rest muss dann getrennt hinterhergejagt werden. Dagegen steht, dass jeder Monat im Fonds ein weiterer Monat Verwaltungsgebühren auf Geld ist, das du nicht mehr aufstockst. Die richtige Antwort hängt davon ab, wie viel das ausstehende Quartal im Verhältnis zu den Gebühren wert ist.
+Die Zeitfrage, die wirklich zählt, sind die letzten Beiträge. Seit dem 1. Juli 2026 gilt Payday Super, die Beiträge kommen also in der Regel innerhalb von sieben Werktagen nach jedem Zahltag, und bei Arbeit vor diesem Datum galt noch die quartalsweise Zahlung (für April bis Juni 2026 etwa erst am 28. Juli fällig). Zu früh zu beantragen heißt, gegen ein Guthaben zu beantragen, in das dein Arbeitgeber noch nicht fertig eingezahlt hat, und der Rest muss dann getrennt hinterhergejagt werden. Dagegen steht, dass jeder Monat im Fonds ein weiterer Monat Verwaltungsgebühren auf Geld ist, das du nicht mehr aufstockst. Die richtige Antwort hängt davon ab, wie viel die ausstehenden Beiträge im Verhältnis zu den Gebühren wert sind.
 `,
   },
 
@@ -4273,7 +4226,7 @@ Für Wochenendarbeit lohnt hier eine Payslip-Prüfung. Sind die Sonntagszuschlag
 
 Indem du den Fonds prüfst und nicht den Payslip. Eine Payslip-Zeile mit Super sagt, was der Arbeitgeber zu zahlen beabsichtigt, und nicht, dass sie ankam.
 
-Super muss nur quartalsweise gezahlt werden, bis zum 28. Oktober, 28. Januar, 28. April und 28. Juli, ein Abstand von einigen Wochen zwischen Payslip und Geldeingang ist also normal. Ein Abstand, der die Quartalsfrist überlebt, ist es nicht. Die Beitragshistorie des Fonds über ein volles Quartal gegen die Payslips zu halten klärt es.
+Seit dem 1. Juli 2026 muss Super in der Regel innerhalb von sieben Werktagen nach dem Zahltag eingehen (Payday Super). Für Zeiträume davor galt die Quartalsfrist (28. Oktober, 28. Januar, 28. April, 28. Juli), ein Abstand von einigen Wochen war dort normal. Ein Abstand, der die jeweilige Frist überlebt, ist es nicht. Die Beitragshistorie des Fonds gegen die Payslips zu halten klärt es.
 
 ## Was passiert mit der Super, wenn du gehst?
 
@@ -4304,21 +4257,21 @@ Nicht gezahlte Super und eine nicht eingereichte Erklärung finden sich meist zu
 
   'how-to-check-super-balance-working-holiday': {
     title: 'Superguthaben prüfen: wo es liegt',
-    description: 'Deine Super liegt bei einem Fonds und nicht beim Arbeitgeber. Beiträge werden quartalsweise gezahlt, ein Guthaben kann also Monate nach der Arbeit noch leer aussehen.',
+    description: 'Deine Super liegt bei einem Fonds und nicht beim Arbeitgeber. Beiträge kommen seit dem 1. Juli 2026 in der Regel innerhalb von sieben Werktagen nach dem Zahltag, bei früherer Arbeit kann ein Guthaben aber noch Monate später leer aussehen.',
     body: `
 Dein Superguthaben liegt bei dem Fonds, in den dein Arbeitgeber eingezahlt hat, und du erreichst es mit der Mitgliedsnummer, die dieser Fonds dir geschickt hat. Ob das Guthaben, das du siehst, das ganze Guthaben ist, entscheidet die Zahl deiner Jobs, denn jeder Arbeitgeber hat ein weiteres Konto eröffnet.
 
 ## Warum muss das Guthaben überhaupt geprüft werden?
 
-Weil Super das einzige Geld ist, das du in Australien verdienst und das nie auf deinem Bankkonto erscheint. Es geht zusätzlich zum Lohn direkt in einen Fonds, quartalsweise statt pro Lohnlauf, dein Kontostand würde dir also nie sagen, dass es zu wenig ist.
+Weil Super das einzige Geld ist, das du in Australien verdienst und das nie auf deinem Bankkonto erscheint. Es geht zusätzlich zum Lohn direkt in einen Fonds, dein Kontostand würde dir also nie sagen, dass es zu wenig ist.
 
 Deshalb bleibt nicht gezahlte [Super](/de/superannuation) so lange unbemerkt. Ein Arbeitgeber, der Lohn zu niedrig zahlt, fliegt binnen zwei Wochen auf, weil der Eingang sichtbar falsch ist. Ein Arbeitgeber, der nie Super zahlt, kommt durch eine ganze Saison, und die Entdeckung fällt meist auf die Abreise, wenn sie am schwersten zu verfolgen ist.
 
 ## Wann sollten Beiträge auftauchen?
 
-Nach der Quartalsfrist und nicht nach jedem Zahltag. Arbeitgeber müssen Super quartalsweise zahlen, ein Abstand von bis zu drei Monaten zwischen Arbeit und Geldeingang im Fonds ist also normal und der häufigste Grund, warum Leute Super für fehlend halten, obwohl sie es nicht ist.
+Seit dem 1. Juli 2026 in der Regel innerhalb von sieben Werktagen nach dem Zahltag (Payday Super). Für Arbeit davor mussten Arbeitgeber quartalsweise zahlen, ein Abstand von bis zu drei Monaten war also normal und der häufigste Grund, warum Leute Super für fehlend hielten, obwohl sie es nicht war.
 
-Die vier Fristen sind der 28. Oktober für das Quartal Juli bis September, der 28. Januar für Oktober bis Dezember, der 28. April für Januar bis März und der 28. Juli für April bis Juni. Das Geld landet meist ein paar Tage um diese Termine herum im Fonds. Ein Quartal, das ein bis zwei Wochen nach seiner Frist noch leer ist, ist eine echte Lücke, dann lohnt der Vergleich von Payslip-Zeile und Fondsauszug.
+Für Zeiträume vor dem 1. Juli 2026 gelten die alten vier Fristen: der 28. Oktober für das Quartal Juli bis September, der 28. Januar für Oktober bis Dezember, der 28. April für Januar bis März und der 28. Juli für April bis Juni. Das Geld landet meist ein paar Tage um diese Termine herum im Fonds. Ein Quartal, das ein bis zwei Wochen nach seiner Frist noch leer ist, ist eine echte Lücke, dann lohnt der Vergleich von Payslip-Zeile und Fondsauszug.
 
 ## Was, wenn du nicht weißt, in welchem Fonds du bist?
 
@@ -4339,7 +4292,7 @@ Ob Zusammenführen der richtige Schritt ist, hängt von deinem Zeitplan ab. Blei
 
 ## Was sollte vor einem DASP-Antrag bestätigt sein?
 
-Dass jedes Konto gefunden wurde und dass das letzte Quartal tatsächlich gezahlt ist. Ein DASP-Antrag schließt das Konto, gegen das er gestellt wird, jeder danach eintreffende Beitrag muss also getrennt hinterhergejagt werden, und das letzte Arbeitsquartal steht bei einer Abreise am ehesten noch offen.
+Dass jedes Konto gefunden wurde und dass die letzten Beiträge tatsächlich gezahlt sind. Ein DASP-Antrag schließt das Konto, gegen das er gestellt wird, jeder danach eintreffende Beitrag muss also getrennt hinterhergejagt werden, und die letzten Arbeitswochen stehen bei einer Abreise am ehesten noch offen.
 
 Entscheidend ist der Zeitpunkt. Hörst du im Mai auf zu arbeiten und fliegst im Juni nach Hause, ist der Beitrag für April bis Juni erst am 28. Juli fällig, sofort zu beantragen heißt also, vor der Zahlungspflicht deines Arbeitgebers zu beantragen. Bis nach der Frist zu warten bringt meist mehr ein, abzuwägen gegen den [Einbehalt von 65 %](/de/blog/tax-on-super-withdrawal-backpacker), der ohnehin auf die Zahlung angewendet wird, und gegen die rund 28 Tage, die eine DASP-Genehmigung nach Einreichung dauert.
 `,
@@ -4435,7 +4388,7 @@ Gross payments, tax withheld und die daneben ausgewiesene Super. Diese drei sage
 
 - **Gross payments.** Vergleiche mit deiner eigenen laufenden Summe aus den Payslips. Eine Lücke heißt entweder eine fehlende Lohnperiode oder eine Unterbezahlung.
 - **Tax withheld.** Teile durch das Brutto. Rund 15 % ist für einen Working Holiday Maker bei einem registrierten Arbeitgeber richtig. Deutlich mehr heißt eine Phase ohne hinterlegte TFN oder ein Arbeitgeber, der sich nie registriert hat.
-- **Super.** Beiträge laufen quartalsweise, eine im Juli dünn aussehende Zahl ist also möglicherweise schlicht noch nicht gezahlt.
+- **Super.** Seit dem 1. Juli 2026 kommen Beiträge in der Regel innerhalb von sieben Werktagen nach dem Zahltag, bei früherer Arbeit kann eine dünn aussehende Zahl aber schlicht noch nicht gezahlt sein.
 
 ## Was, wenn ein Arbeitgeber fehlt?
 
@@ -4734,11 +4687,11 @@ Eine Klausel entscheidet mehr als der Preis: körperliche Arbeit. Viele Auslands
 
 ## Wie ändert das deine Steuersituation?
 
-Die Medicare Levy von 2 % wird Personen mit Anspruch auf Medicare berechnet. Deutsche Staatsangehörige haben ohne Abkommen in der Regel keinen Anspruch, die Levy sollte also nicht gelten. Die Befreiung ist bei 25.000 $ Verdienst rund 500 $ wert, und fast niemand beansprucht sie.
+Die Medicare Levy von 2 % wird Personen mit Anspruch auf Medicare berechnet. Ob sie in deinem Fall anfällt, hängt von deiner individuellen Situation ab und ist nichts, was du annehmen solltest. Wir prüfen das bei der Vorbereitung deiner Erklärung.
 
-Automatisch ist sie nicht, und das ATO wendet sie nicht von sich aus an. Sie wird in der Erklärung beantragt und braucht ein Medicare Entitlement Statement von Services Australia, eines je beanspruchtem Steuerjahr. Services Australia braucht dafür üblicherweise Wochen, und deshalb bekommen die meisten es nie: Sie erfahren im Oktober davon, wenn die Erklärung schon fällig ist. Den Ablauf beschreibt unser Guide zur [Medicare Levy](/de/blog/medicare-levy-working-holiday-makers).
+Automatisch ist sie nicht, und das ATO wendet sie nicht von sich aus an. Ob sie in deinem Fall in Frage kommt, hängt von deiner individuellen Situation ab. Wird sie beantragt, braucht es dafür Unterlagen, und das dauert üblicherweise Wochen. Wir sagen dir bei der Vorbereitung deiner Erklärung, was wir dafür brauchen. Den Ablauf beschreibt unser Guide zur [Medicare Levy](/de/blog/medicare-levy-working-holiday-makers).
 
-Britische Backpacker haben über das Abkommen Anspruch und zahlen die Levy in der Regel, ob sie je einen Arzt gesehen haben oder nicht. Deutsche haben in der Regel keinen Anspruch und können die Befreiung beantragen, sofern das Papier vorliegt.
+Ob die Levy anfällt, hängt von deiner individuellen Situation ab und wird vom ATO entschieden.
 
 ## Wie hoch ist das finanzielle Risiko ohne Schutz?
 
@@ -4748,13 +4701,13 @@ Für ein Working Holiday zählt das mehr als für eine zweiwöchige Reise. Farma
 
 ## Wann solltest du das Medicare Entitlement Statement beantragen?
 
-Früh. Das Statement kommt von Services Australia, wird je Steuerjahr ausgestellt und dauert üblicherweise Wochen statt Tage. Es muss also lange vor der Erklärung angestoßen werden.
+Das hängt von deiner Situation ab. Der dafür nötige Nachweis dauert üblicherweise Wochen statt Tage, also sprich uns früh genug vor der Erklärung an.
 
-In den ersten Monaten beantragt, liegt das Dokument lange vor Fälligkeit der Erklärung vor. Im Oktober beantragt, wenn die meisten zum ersten Mal davon hören, heißt es entweder ohne die Befreiung einzureichen oder zu warten. Die Variante, in der Leute mehrere hundert Dollar aufgeben, ist mit Abstand das häufigste Ergebnis dieses Timings.
+Wer früh dran ist, hat die Unterlagen rechtzeitig. Wer erst kurz vor der Frist anfängt, muss unter Umständen warten oder ohne sie einreichen.
 
 ## Worauf kommt es bei dir an?
 
-Drei Punkte. Deine Staatsangehörigkeit, die die Anspruchsfrage und damit die Levy klärt. Ob du das Medicare Entitlement Statement besorgt hast, denn davon hängt ab, ob die Befreiung tatsächlich beantragt wird und nicht nur verfügbar ist. Und ob dein Versicherungsschutz zu deiner Arbeit passt, denn eine Police für einen Backpacker, der Sehenswürdigkeiten anschaut, ist nicht dieselbe wie eine, die nach einem Sturz auf einer Baustelle zahlt.
+Drei Punkte. Deine individuelle Situation, die die Anspruchsfrage und damit die Levy beeinflusst. Ob die nötigen Unterlagen rechtzeitig vorliegen. Und ob dein Versicherungsschutz zu deiner Arbeit passt, denn eine Police für einen Backpacker, der Sehenswürdigkeiten anschaut, ist nicht dieselbe wie eine, die nach einem Sturz auf einer Baustelle zahlt.
 
 Das Statement solltest du früh beantragen. Ein Antrag in den ersten Monaten kostet nichts und nimmt es vom kritischen Pfad. Ein Antrag im Oktober bedeutet, ohne es einzureichen und danach zu berichtigen, wie unser Guide zum [Berichtigen einer Steuererklärung](/de/blog/amending-tax-return-australia) beschreibt. Das funktioniert, ist aber die langsamere Fassung eines Ergebnisses, das beim ersten Mal möglich gewesen wäre. Die Medicare-Frage wird geklärt, bevor eine [Steuererklärung](/de/tax-return) eingereicht wird, denn sie ist einer der wenigen Punkte, die verlässlich mehrere hundert Dollar ausmachen. Du kannst deine [Steuererstattung schätzen](/de/calculator), mit und ohne sie.
 `,
@@ -4896,8 +4849,8 @@ Jeder Arbeitgeber braucht eine eigene Tax File Number Declaration, die Nummer al
 
 - Deine TFN, dieselbe Nummer für jeden Job
 - Eine ausgefüllte Tax File Number Declaration für diesen Arbeitgeber
-- Working Holiday Maker als Status ausgewählt
-- Nein bei der Frage zum Steuerfreibetrag
+- Die Angaben zu deinem Status wahrheitsgemäß gemacht
+- Die Frage zum Steuerfreibetrag nach deiner tatsächlichen Situation beantwortet
 
 Das ist der stille Verlust in einem Mehrarbeitgeber-Jahr: ein Job korrekt bei 15 % und ein zweiter, der monatelang bei 45 % läuft, weil niemand ein zweites Formular ausgefüllt hat. Der Überschuss wird zur Steuerzeit berücksichtigt, aber erst nach Monaten ohne dieses Geld.
 
@@ -5325,7 +5278,7 @@ Home Affairs setzt die Liste und hat sie mehr als einmal angepasst. Prüfe die a
 
 Dann hast du drei Optionen, und nur eine davon ist bequem. Zur Sechsmonatsmarke den Arbeitgeber wechseln, die sauberste und die, die von niemandem etwas verlangt. Home Affairs schriftlich um Erlaubnis zur Fortsetzung bitten, was vor Ablauf der sechs Monate geschehen muss; die Entscheidung liegt im Ermessen der Behörde und ist kein Anspruch. Oder zu einem wirklich anderen Arbeitgeber wechseln.
 
-Die Erlaubnis wirkt nicht rückwirkend. Du musst an der Sechsmonatsmarke aufhören und warten, statt in der Annahme weiterzumachen, dass die Zustimmung kommt. Über die Grenze hinaus ohne Ausnahme oder Genehmigung zu arbeiten ist der Verstoß, was der Papierkram später auch sagt.
+Die Erlaubnis wirkt nicht rückwirkend, der Antrag muss also vor Ablauf der sechs Monate gestellt sein. Wurde er rechtzeitig gestellt, kannst du in der Regel bis zur schriftlichen Entscheidung weiterarbeiten. Ohne rechtzeitigen Antrag gilt: an der Sechsmonatsmarke aufhören, statt in der Annahme weiterzumachen, dass die Zustimmung kommt. Über die Grenze hinaus ohne Ausnahme oder Genehmigung zu arbeiten ist der Verstoß, was der Papierkram später auch sagt.
 
 ## Was sind die Folgen, wenn es schiefgeht?
 
@@ -5387,7 +5340,7 @@ Abzüge, die eine dieser Bedingungen verfehlen, sind unzulässig, und überhöht
 
 ## Was ist mit der Superannuation?
 
-Einem Angestellten auf einer Farm sind 12 % Superannuation auf die Ordinary Time Earnings geschuldet, quartalsweise in einen Fonds gezahlt, ganz gleich wie wenige Stunden gearbeitet wurden. Akkordeinkünfte sind Lohn, die Garantie gilt also auch für sie.
+Einem Angestellten auf einer Farm sind 12 % Superannuation auf die Ordinary Time Earnings geschuldet, in einen Fonds gezahlt (ab 1. Juli 2026 in der Regel innerhalb von sieben Geschäftstagen nach dem Zahltag), ganz gleich wie wenige Stunden gearbeitet wurden. Akkordeinkünfte sind Lohn, die Garantie gilt also auch für sie.
 
 Farmarbeitgeber überspringen sie häufiger als jede andere Branche. Sie lässt sich über das Verfahren zur Superannuation Guarantee Charge einfordern und als Departing Australia Superannuation Payment beantragen, sobald dein Visum abgelaufen und du ausgereist bist. Warst du unter einer ABN beschäftigt, gilt nichts davon: Behandelt wird das in unserem Guide zu [Farmarbeit und ABNs](/de/blog/farm-work-and-abns).
 
@@ -5434,18 +5387,18 @@ Die Superannuation Guarantee Charge (SGC) ist das, was ein Arbeitgeber dem ATO s
 
 ## Was löst die Abgabe aus?
 
-Das Verpassen einer Quartalsfrist, um welche Spanne auch immer. Super ist viermal im Jahr fällig, und ein Arbeitgeber, der einen Tag zu spät zahlt, haftet technisch für die Abgabe auf das ganze Quartal und nicht nur auf die Verzögerung.
+Das Verpassen des Fälligkeitstermins, um welche Spanne auch immer. Ein Arbeitgeber, der zu spät zahlt, kann für die Abgabe haften und nicht nur für die Verzögerung. Die Einzelheiten richten sich nach den jeweils geltenden ATO-Regeln.
 
-Die vier Termine stehen fest und sagen dir, ob eine Lücke in deinem Fonds ein Problem ist oder schlicht früh. Beiträge für Juli bis September sind bis zum 28. Oktober fällig, Oktober bis Dezember bis zum 28. Januar, Januar bis März bis zum 28. April und April bis Juni bis zum 28. Juli. Ein Quartal, das eine Woche nach der Frist leer ist, ist eine echte Lücke. Vor der Frist sagt ein leeres Quartal dagegen überhaupt nichts aus.
+Für Lohn ab dem 1. Juli 2026 ist der Termin in der Regel sieben Geschäftstage nach jedem Zahltag (Payday Super). Davor galten Quartalstermine: Beiträge für Juli bis September waren bis zum 28. Oktober fällig, Oktober bis Dezember bis zum 28. Januar, Januar bis März bis zum 28. April und April bis Juni bis zum 28. Juli. Für einen Zeitraum, dessen Termin schon verstrichen ist, gilt: Was eine oder zwei Wochen danach im Fonds fehlt, ist eine echte Lücke. Vor dem Termin sagt ein leerer Fonds dagegen nichts aus.
 
 - Gar nichts zahlen
 - Weniger als 12 % der Ordinary Time Earnings zahlen
-- Nach der Quartalsfrist zahlen
+- Nach dem Fälligkeitstermin zahlen (vor Juli 2026 quartalsweise, danach sieben Geschäftstage nach dem Zahltag)
 - Unter Umständen in einen Fonds zahlen, den du nicht genannt hast
 
 ## Warum ist die Abgabe für einen Arbeitgeber schlimmer als einfach zu zahlen?
 
-Weil sie so gebaut ist. Die Abgabe besteht aus dem Fehlbetrag selbst, plus einer nominellen Zinskomponente von 10 % pro Jahr ab Quartalsbeginn, plus einem Verwaltungsanteil je Angestelltem und je betroffenem Quartal, und nichts davon ist gegen die eigene Steuer des Arbeitgebers absetzbar.
+Weil sie so gebaut ist. Die Abgabe besteht aus dem Fehlbetrag selbst, plus einer nominellen Zinskomponente von 10 % pro Jahr ab Beginn des betroffenen Zeitraums, plus einem Verwaltungsanteil je Angestelltem, und nichts davon ist gegen die eigene Steuer des Arbeitgebers absetzbar.
 
 Der letzte Punkt gibt der Regel ihre Zähne. Ein gewöhnlicher Superbeitrag senkt das zu versteuernde Einkommen eines Arbeitgebers, die Abgabe nicht. Ein Betrieb, der Super überspringt und erwischt wird, zahlt also real mehr als einer, der pünktlich gezahlt hat, zusätzlich zu den Zinsen. Das ist einer der wenigen Durchsetzungsmechanismen im australischen Arbeitsrecht, der für den Betrieb wirklich schmerzhaft ist.
 
@@ -5457,7 +5410,7 @@ Auch die Zinsen gehören dir. Die Regel soll deine Lage so wiederherstellen, als
 
 ## Woran erkennst du, dass dein Arbeitgeber im Rückstand ist?
 
-Indem du zwei Dinge vergleichst, die du bereits hast. Deine Payslips nennen für jede Lohnperiode eine Superzahl, dein Fondsauszug nennt, was tatsächlich ankam und wann. Zeigt die Payslip-Zeile das ganze Quartal über Super und der Fonds nach Ablauf der Frist nichts, wurde das Geld ausgewiesen, aber nicht gezahlt.
+Indem du zwei Dinge vergleichst, die du bereits hast. Deine Payslips nennen für jede Lohnperiode eine Superzahl, dein Fondsauszug nennt, was tatsächlich ankam und wann. Zeigt die Payslip-Zeile über eine Lohnperiode Super und der Fonds nach Ablauf des Fälligkeitstermins nichts, wurde das Geld ausgewiesen, aber nicht gezahlt.
 
 Zwei Sonderfälle ändern, worauf du achten musst. Ein Payslip ganz ohne Superzeile bedeutet meist, dass der Arbeitgeber dich als Contractor behandelt, dann lautet die Frage, ob die [Einstufung stimmt](/de/blog/employee-vs-contractor-australia). Und ein Fondskonto, in das du nie eingeloggt warst, erhält womöglich Zahlungen, die du nie gesehen hast.
 
@@ -5855,10 +5808,10 @@ Werbungskosten senken neben der Steuer auch den Offset, denn ein kleineres Netto
 Ja, und bei einem Working Holiday Maker mit gemischtem Einkommen ist er das meistens. Jeder Offset wird getrennt berechnet und auf die endgültige Steuerschuld angewendet.
 
 - Der Small Business Tax Offset, auf die dem Geschäftseinkommen zuzurechnende Steuer, gedeckelt bei 1.000 $
-- Der Low Income Tax Offset, der gilt, wo du als Resident veranlagt wirst, bis zu 700 $ wert
+- Der Low Income Tax Offset, dessen Anwendung von den individuellen Fakten deines Jahres abhängt
 - Die Medicare-Levy-Befreiung, die die 2-%-Abgabe entfernt, wo du keinen Medicare-Anspruch hast
 
-Ihr Zusammenspiel macht Jahre mit gemischtem Einkommen kompliziert: Der Wohnsitz entscheidet, ob der Low Income Tax Offset überhaupt verfügbar ist, der Pass entscheidet die Medicare-Frage. Das behandelt unser Guide zum [Low Income Tax Offset](/de/blog/low-income-tax-offset-working-holiday).
+Ihr Zusammenspiel macht Jahre mit gemischtem Einkommen kompliziert: Ob der Low Income Tax Offset überhaupt in Betracht kommt und wie die Medicare-Frage ausfällt, hängt von den individuellen Fakten deines Jahres ab. Das behandelt unser Guide zum [Low Income Tax Offset](/de/blog/low-income-tax-offset-working-holiday).
 
 ## Was passiert, wenn du Lohn und ABN-Einkommen hattest?
 
@@ -5886,7 +5839,7 @@ Satz und Deckelung stehen fest. Was der Offset für dich wert ist, entscheidet d
 - Worauf deine Werbungskosten hinausliefen, denn der Offset wirkt auf die Steuer des Netto-Geschäftseinkommens.
 - Ob du auch Lohn hattest, dessen Einbehalt die Geschäftssteuer oft aufsaugt, bevor der Offset greift.
 - Ob das Contracting echt war, denn eine Neueinstufung nimmt ihn weg.
-- Ob du als Resident veranlagt wirst, denn davon hängt ab, ob der Low Income Tax Offset danebensteht.
+- Ob weitere Offsets in Betracht kommen, denn das hängt von den individuellen Fakten deines Jahres ab und wird vom ATO entschieden.
 - Ob ein Vorjahr ohne ihn eingereicht wurde, was sich meist innerhalb von zwei Jahren ändern lässt.
 
 Jeder berechtigte Offset wird bei der Vorbereitung der [Working-Holiday-Steuererklärung](/de/tax-return) angewendet, und wie die beiden Einkommensarten zusammenwirken, spielst du am schnellsten im [Erstattungsrechner](/de/calculator) durch.
@@ -5972,7 +5925,7 @@ PSI, Scheinselbstständigkeit und gewöhnliches Contracting sehen auf einem Kont
 
   'appealing-ato-decision-australia': {
     title: 'ATO-Bescheid anfechten: so läuft es ab',
-    description: 'Gegen einen Bescheid kannst du innerhalb der Frist Einspruch einlegen. Zuerst prüft das ATO selbst, danach steht der Weg zum AAT und zum Gericht offen.',
+    description: 'Gegen einen Bescheid kannst du innerhalb der Frist Einspruch einlegen. Zuerst prüft das ATO selbst, danach steht der Weg zum Administrative Review Tribunal (ART) und zum Gericht offen.',
     body: `
 Du kannst gegen eine ATO-Entscheidung Einspruch einlegen, und die Einreichung kostet nichts. Bei einem gewöhnlichen Einkommensteuerbescheid für Privatpersonen beträgt das Fenster in der Regel zwei Jahre ab dem Datum auf dem Bescheid, bei den meisten anderen Entscheidungen 60 Tage. Working Holiday Maker haben dieselben Rechte wie alle anderen.
 
@@ -6008,7 +5961,7 @@ Wer den ganzen Bescheid bestreitet, bekommt eine Zurückweisung. Wer die Festste
 
 ## Was kostet das?
 
-Die Einreichung kostet nichts. Es gibt keine ATO-Gebühr für einen Einspruch, und das Verfahren ist ohne Vertretung nutzbar. Kosten entstehen nur, wenn du jemanden mit der Erstellung beauftragst oder die Sache zum Administrative Appeals Tribunal eskaliert, das eine eigene Gebühr hat.
+Die Einreichung kostet nichts. Es gibt keine ATO-Gebühr für einen Einspruch, und das Verfahren ist ohne Vertretung nutzbar. Kosten entstehen nur, wenn du jemanden mit der Erstellung beauftragst oder die Sache zum Administrative Review Tribunal (ART) eskaliert, das eine eigene Gebühr hat.
 
 Wo der strittige Betrag ein paar hundert Dollar ist, ist ein kostenloser Einspruch die Einreichung wert, ein Tribunalantrag in der Regel nicht.
 
@@ -6020,7 +5973,7 @@ Hat der Einspruch Erfolg, können Zinsen und Strafen auf den strittigen Teil erl
 
 ## Was, wenn der Einspruch abgelehnt wird?
 
-Das ATO gibt in der Regel innerhalb von etwa 60 Werktagen eines von drei Ergebnissen aus: vollständig stattgegeben, teilweise stattgegeben oder abgelehnt. Nach einer Ablehnung folgt die unabhängige Überprüfung durch das Administrative Appeals Tribunal und darüber hinaus der Federal Court.
+Das ATO gibt in der Regel innerhalb von etwa 60 Werktagen eines von drei Ergebnissen aus: vollständig stattgegeben, teilweise stattgegeben oder abgelehnt. Nach einer Ablehnung folgt die unabhängige Überprüfung durch das Administrative Review Tribunal (ART) und darüber hinaus der Federal Court.
 
 Für Working Holiday Maker ist das Tribunal die realistische Obergrenze. Verfahren am Federal Court kosten mehr, als ein individueller Erstattungsstreit wert ist, und die meisten berechtigten Backpacker-Streitigkeiten enden Monate früher mit einem korrigierten Bescheid.
 
@@ -6178,7 +6131,7 @@ Alles deutlich darüber hat eine bestimmte Ursache, und die Ursachen werden unte
 
 - Rund 45 %: Deine TFN ist bei diesem Arbeitgeber noch nicht erfasst, meist weil das Declaration-Formular nicht verarbeitet wurde
 - Rund 30 %: Der Arbeitgeber ist beim ATO nicht als Working-Holiday-Maker-Arbeitgeber registriert
-- Deutlich unter 15 %: Der Freibetrag wurde womöglich versehentlich auf der Declaration beansprucht, was später eher zu einer Nachzahlung als zu einer Erstattung führt
+- Deutlich unter 15 %: Auf der Declaration wurde womöglich eine Angabe gemacht, die zu deinem Fall nicht passt, was später eher zu einer Nachzahlung als zu einer Erstattung führen kann
 
 Nichts vom Überabzug ist verloren, er wird bei der [Steuererklärung](/de/tax-return) angerechnet, aber das Geld liegt bis dahin beim ATO. Deshalb lohnt es, einen falschen Satz in der ersten Woche anzusprechen und nicht am Jahresende.
 
@@ -6186,7 +6139,7 @@ Nichts vom Überabzug ist verloren, er wird bei der [Steuererklärung](/de/tax-r
 
 Teile die Superzahl durch den Bruttolohn und erwarte 12 %, den Satz seit dem 1. Juli 2025. Super zahlt der Arbeitgeber zusätzlich zu deinem Lohn, sie sollte deinen Nettolohn also nie mindern, und ein Payslip, auf dem Super aus deinem Verdienst zu kommen scheint, gehört hinterfragt.
 
-Wichtig ist die Unterscheidung zwischen aufgelaufen und gezahlt. Eine Superzahl auf einem Payslip hält fest, was der Arbeitgeber für diese Periode schuldet, nicht was deinen Fonds erreicht hat, und dazwischen liegen bis zu drei Monate, weil Super quartalsweise gezahlt wird. Ob das Geld ankam, sagt dir nur der Fonds selbst. Was zu tun ist, wenn nicht, behandelt unser Guide zu [nicht gezahlter Super](/de/blog/super-employer-not-paying-what-to-do).
+Wichtig ist die Unterscheidung zwischen aufgelaufen und gezahlt. Eine Superzahl auf einem Payslip hält fest, was der Arbeitgeber für diese Periode schuldet, nicht was deinen Fonds erreicht hat, und dazwischen liegt eine Frist: ab 1. Juli 2026 in der Regel sieben Geschäftstage nach dem Zahltag, davor bis zu drei Monate, weil Super quartalsweise gezahlt wurde. Ob das Geld ankam, sagt dir nur der Fonds selbst. Was zu tun ist, wenn nicht, behandelt unser Guide zu [nicht gezahlter Super](/de/blog/super-employer-not-paying-what-to-do).
 
 ## Was sagt dir der Nettolohn?
 
@@ -6276,9 +6229,9 @@ Die Backpackersteuer ist der pauschale Satz auf Einkommen aus den Subclasses 417
 
 ## Wie hoch ist der Satz heute?
 
-Er beträgt 15 % ab dem ersten Dollar bis 45.000 $ und darüber die Foreign-Resident-Skala. Beide Visumsklassen werden identisch behandelt, und fast jeder Working Holiday Maker verdient innerhalb der ersten Stufe.
+Er beträgt 15 % ab dem ersten Dollar bis 45.000 $ und darüber gelten höhere Stufen. Beide Visumsklassen werden identisch behandelt, und fast jeder Working Holiday Maker verdient innerhalb der ersten Stufe.
 
-Das Fehlen eines Freibetrags trennt dies von gewöhnlicher australischer Besteuerung. Ein Resident zahlt auf die ersten 18.200 $ nichts, ein Working Holiday Maker zahlt darauf 15 %. Dieser Unterschied ist rund 2.730 $ im Jahr wert, und deshalb ist das Urteil weiter unten nicht akademisch.
+Das trennt dies von gewöhnlicher australischer Besteuerung. Wie sich das im Einzelfall auswirkt, hängt von den Umständen deines Jahres ab, und deshalb ist das Urteil weiter unten nicht akademisch.
 
 - 15 % auf Einkommen bis 45.000 $
 - 30 % von 45.001 $ bis 135.000 $
@@ -6287,7 +6240,7 @@ Das Fehlen eines Freibetrags trennt dies von gewöhnlicher australischer Besteue
 
 ## Wie war die Lage vor 2017?
 
-Vor 2017 entschied der Wohnsitz alles. Ein Working Holiday Maker, der als australischer Steuerresident veranlagt wurde, zahlte gewöhnliche Residentensätze mit dem Freibetrag von 18.200 $, als Nichtresident 32,5 % ab dem ersten Dollar. Zwei Leute mit identischer Arbeit konnten also sehr unterschiedliche Rechnungen bekommen, und die Grenze war schon damals eine Beurteilung und keine klare Linie.
+Vor 2017 spielte der steuerliche Wohnsitz eine große Rolle, und je nach Einstufung fiel die Steuer sehr unterschiedlich aus. Zwei Leute mit identischer Arbeit konnten also sehr unterschiedliche Rechnungen bekommen, und die Grenze war schon damals eine Beurteilung und keine klare Linie.
 
 Viele Backpacker wurden damals als Residenten veranlagt, und die Regierung betrachtete die niedrigen Steuerrechnungen als unbeabsichtigtes Ergebnis und nicht als Politik. Aus dieser Sicht entstand der Vorschlag von 2016.
 
@@ -6305,13 +6258,13 @@ Der Fall lief über Jahre und nicht durchgehend in eine Richtung: Die Steuerpfli
 
 ## Wem hilft Addy?
 
-Nur manchen, und wer dazugehört, lässt sich nicht an einer Liste ablesen. Ein Gerichtsurteil kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung.
+Nur manchen, und wer dazugehört, lässt sich nicht an einer Liste ablesen. Ein Gerichtsurteil kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von den Umständen deines Jahres ab, und das gehört zu unserer Prüfung.
 
 Wer von dem Fall liest und eine Erstattung erwartet, überspringt meist genau diese Prüfung. Ob dein Jahr trägt, ist eine Beurteilung deiner eigenen Umstände und nichts, was die Satztabelle oder ein Forum beantworten kann.
 
 ## Was ändert das alles an deiner Erklärung?
 
-Bei vielen entsteht eine mögliche Erstattung aus dem Überabzug und der Medicare-Levy-Befreiung und nicht aus Addy. Ein Gerichtsurteil kann ändern, welche Sätze für manche Pässe gelten, und ob das für dich zutrifft, gehört zu unserer Prüfung.
+Bei vielen entsteht eine mögliche Erstattung aus dem Überabzug und der Medicare-Levy-Befreiung und nicht aus Addy. Ein Gerichtsurteil kann in manchen Fällen ändern, welche Sätze gelten, und ob das für dich zutrifft, gehört zu unserer Prüfung.
 
 Wo es etwas ändert, ändert es viel, und zwar für das ganze Jahr. Deshalb gehört die Frage geprüft, bevor eine [Steuererklärung](/de/tax-return) abgegeben wird, denn später zu ändern ist schwerer, als es einmal richtig zu machen. Ob dein Fall trägt, entscheidet sich an der [Wohnsitzprüfung](/de/blog/tax-residency-working-holiday-makers), und wir legen uns dort erst fest, nachdem wir dein Jahr durchgegangen sind. Alte Bescheide lassen sich innerhalb der normalen Berichtigungsfrist noch korrigieren.
 `,
@@ -6347,7 +6300,7 @@ Alles, was beruflich und privat genutzt wird, ist nur zum beruflichen Anteil abs
 
 Für jeden Posten eine Quittung oder Tax Invoice mit Lieferant, Datum, Betrag und dem gekauften Gegenstand. Anteilige Posten brauchen zusätzlich eine Grundlage für den Prozentsatz: bei Fahrzeugen ein Fahrtenbuch, bei Telefon und Internet einen repräsentativen Nutzungszeitraum.
 
-Zwei Schwellen ändern, was nötig ist. Ein Gegenstand von 300 $ oder weniger ist im Kaufjahr voll absetzbar, statt abgeschrieben zu werden. Ab dem 1. Juli 2026 gibt es einen pauschalen berufsbezogenen Abzug von 1.000 $ ohne Belege, der bei leichterem Contracting mehr bringen kann als Posten für Posten. Wann sich welcher Weg lohnt, behandelt unser Guide zum [1.000-$-Sofortabzug](/de/blog/1000-dollar-instant-deduction-rule-2026).
+Zwei Schwellen ändern, was nötig ist. Ein Gegenstand von 300 $ oder weniger ist im Kaufjahr voll absetzbar, statt abgeschrieben zu werden. Getrennt davon gibt es ab dem Einkommensjahr 2026/27 für berechtigte Personen einen Standardabzug von 1.000 $ ohne Belege, nicht für Erklärungen 2025/26 und früher. Bei leichterem Contracting kann er mehr bringen als Posten für Posten. Wann sich welcher Weg lohnt, behandelt unser Guide zum [1.000-$-Sofortabzug](/de/blog/1000-dollar-instant-deduction-rule-2026).
 
 ## Was lässt sich nicht absetzen, so sehr es sich auch danach anfühlt?
 
@@ -6381,7 +6334,7 @@ Welche Posten verfügbar sind und ob sie standhalten, hängt davon ab, wie die A
 - Ob du Belege laufend aufgehoben hast, denn das macht einen Posten verteidigungsfähig.
 - Ob für die Fahrzeugkosten ein Fahrtenbuch existiert, denn das ist der am häufigsten gestrichene Posten.
 - Ob einzelne Gegenstände mehr oder weniger als 300 $ gekostet haben, denn davon hängt ab, ob du sofort abziehst oder abschreibst.
-- Ob die Pauschale von 1.000 $ ab dem 1. Juli 2026 übersteigt, was du einzeln belegen könntest.
+- Ob ab 2026/27 die Pauschale von 1.000 $ übersteigt, was du einzeln belegen könntest.
 - Ob du im selben Jahr Lohn hattest, denn dessen Einbehalt saugt die ABN-Steuer oft auf.
 - Ob du für GST registriert warst, denn das ändert, ob Beträge inklusive oder exklusive GST geltend gemacht werden.
 
@@ -6697,30 +6650,32 @@ Erst diagnostizieren, dann beheben, dann neu einreichen. Ein blinder Zweitantrag
 
   'super-employer-not-paying-what-to-do': {
     title: 'Arbeitgeber zahlt keine Super? Was tun',
-    description: 'Super muss mindestens vierteljährlich mit 12 % eingezahlt werden. Was gilt, wenn sie fehlt, wie die Meldung beim ATO läuft und welche Fristen realistisch sind.',
+    description: 'Super muss mit 12 % eingezahlt werden, ab 1. Juli 2026 in der Regel binnen sieben Geschäftstagen nach dem Zahltag. Was gilt, wenn sie fehlt, wie die Meldung beim ATO läuft und welche Fristen realistisch sind.',
     body: `
-Nicht gezahlte [Super](/de/superannuation) lässt sich einfordern, und einfordern wird sie das ATO und nicht du. Arbeitgeber müssen mindestens quartalsweise 12 % der Ordinary Time Earnings in deinen Fonds zahlen, und ein verpasstes Quartal führt zu einer Schuld, die das ATO mit Befugnissen verfolgen kann, die kein einzelner Arbeitnehmer hat. Die Frage ist, ob du es findest, bevor du gehst.
+Nicht gezahlte [Super](/de/superannuation) lässt sich einfordern, und einfordern wird sie das ATO und nicht du. Arbeitgeber müssen 12 % der Ordinary Time Earnings in deinen Fonds zahlen (ab 1. Juli 2026 in der Regel binnen sieben Geschäftstagen nach dem Zahltag, davor quartalsweise), und eine verpasste Zahlung führt zu einer Schuld, die das ATO mit Befugnissen verfolgen kann, die kein einzelner Arbeitnehmer hat. Die Frage ist, ob du es findest, bevor du gehst.
 
 ## Wie erkennst du, ob Super gezahlt wurde?
 
 Indem du auf den Fonds siehst und nicht auf den Payslip. Eine Superzeile auf dem Payslip heißt, dass der Betrag gegen deine Bezahlung aufgelaufen ist, nicht dass etwas überwiesen wurde, und diese Lücke ist die häufigste Form nicht gezahlter Super in Australien.
 
-Der einzige Beleg für die Zahlung ist der Fondsauszug oder die Beitragsaufzeichnung des ATO. Ist ein Quartal abgeschlossen, seine Frist eine oder zwei Wochen verstrichen und der Fonds zeigt für diesen Zeitraum weiterhin nichts, ist die Super nicht gezahlt und nicht bloß verspätet. Davor ist ein leeres Quartal normal, denn Super läuft quartalsweise und nicht mit jeder Lohnzahlung.
+Der einzige Beleg für die Zahlung ist der Fondsauszug oder die Beitragsaufzeichnung des ATO. Ist der Fälligkeitstermin für einen Zeitraum eine oder zwei Wochen verstrichen und der Fonds zeigt dafür weiterhin nichts, ist die Super nicht gezahlt und nicht bloß verspätet. Davor ist ein leerer Fonds normal, denn zwischen Lohn und Eingang liegt eine Frist (bei Lohn vor Juli 2026 bis zu einem Quartal).
 
 ## Wozu ist der Arbeitgeber verpflichtet?
 
-Nach dem Superannuation Guarantee (Administration) Act zu 12 % deiner Ordinary Time Earnings bis zu vier festen Terminen im Jahr in deinen genannten Fonds, für jeden Angestellten einschließlich Casuals. Es gibt keine Verdienstschwelle, unter der das aufhört zu gelten, und ein 417- oder 462-Visum ändert an der Pflicht nichts.
+Nach dem Superannuation Guarantee (Administration) Act zu 12 % deiner Ordinary Time Earnings in deinen genannten Fonds (ab 1. Juli 2026 in der Regel binnen sieben Geschäftstagen nach jedem Zahltag, davor zu vier festen Quartalsterminen), für jeden Angestellten einschließlich Casuals. Es gibt keine Verdienstschwelle, unter der das aufhört zu gelten, und ein 417- oder 462-Visum ändert an der Pflicht nichts.
 
 Eine verpasste Frist führt nicht nur zu einer verspäteten Zahlung, sondern zu einer Haftung für die [Superannuation Guarantee Charge](/de/blog/what-is-superannuation-guarantee-charge): Fehlbetrag plus Zinsen plus Verwaltungsanteil, gegen die Steuer des Arbeitgebers nicht absetzbar. Genau das macht es lohnenswert, ihn zu melden statt ihn hinzunehmen.
 
+- Bis 30. Juni 2026 galten Quartalstermine:
 - 1. Juli bis 30. September, fällig bis 28. Oktober
 - 1. Oktober bis 31. Dezember, fällig bis 28. Januar
 - 1. Januar bis 31. März, fällig bis 28. April
 - 1. April bis 30. Juni, fällig bis 28. Juli
+- Seit 1. Juli 2026: in der Regel sieben Geschäftstage nach dem Zahltag
 
 ## Wie bekommst du sie zurück?
 
-Ob der Arbeitgeber noch tätig ist und ob das Versäumnis vorsätzlich wirkt. Ein kleiner Betrieb, der ein Quartal aus Unordnung verpasst hat, repariert es oft nach einer schriftlichen Anfrage, und das ist mit Abstand der schnellste Weg.
+Ob der Arbeitgeber noch tätig ist und ob das Versäumnis vorsätzlich wirkt. Ein kleiner Betrieb, der eine Zahlung aus Unordnung verpasst hat, repariert es oft nach einer schriftlichen Anfrage, und das ist mit Abstand der schnellste Weg.
 
 Bleibt die Anfrage unbeantwortet, ist der Weg über das ATO derjenige mit Biss. Es hält bereits beide Hälften des Vergleichs: die Löhne, die dein Arbeitgeber über Single Touch Payroll gemeldet hat, und die Beiträge, die dein Fonds als erhalten gemeldet hat. Kommen weitere Verstöße dazu wie unterbezahlter Lohn oder fehlende Payslips, bearbeitet der Fair Work Ombudsman diese Seite, und die beiden Forderungen können nebeneinander laufen.
 
@@ -6912,7 +6867,7 @@ Zwei praktische Punkte. Bewahre die Aufzeichnung außerhalb der Systeme des Arbe
 
 Häufig. Ein Arbeitsplatz, der ein Regelwerk bricht, bricht oft auch andere, und die, die dich Geld kosten, sind leiser als die, die dich unglücklich machen.
 
-Prüfe drei Dinge: ob du für die tatsächlich gearbeiteten Stunden den Award-Satz bekommen hast, ob 12 % [Super](/de/superannuation) für jedes abgeschlossene Quartal deinen Fonds erreicht haben und ob Payslips ausgestellt wurden. Das sind getrennte Forderungen mit getrennten Verfahren, und sie überleben es, dass du den Job verlässt. Wie jede verfolgt wird, behandeln unsere Guides zu [einem Arbeitgeber, der nicht korrekt zahlt](/de/blog/employer-not-paying-correctly) und zu [nicht gezahlter Super](/de/blog/super-employer-not-paying-what-to-do).
+Prüfe drei Dinge: ob du für die tatsächlich gearbeiteten Stunden den Award-Satz bekommen hast, ob 12 % [Super](/de/superannuation) für jede fällige Periode deinen Fonds erreicht haben und ob Payslips ausgestellt wurden. Das sind getrennte Forderungen mit getrennten Verfahren, und sie überleben es, dass du den Job verlässt. Wie jede verfolgt wird, behandeln unsere Guides zu [einem Arbeitgeber, der nicht korrekt zahlt](/de/blog/employer-not-paying-correctly) und zu [nicht gezahlter Super](/de/blog/super-employer-not-paying-what-to-do).
 `,
   },
 
@@ -7084,9 +7039,9 @@ Die Ausschlüsse sind erheblich und decken das meiste ab, was ein Backpacker tat
 
 ## Wie ändert das deine Medicare-Levy-Lage?
 
-Hier liegt das Geld, und hier läuft die Intuition rückwärts. Die 2-%-Medicare-Abgabe wird Leuten mit Anspruch auf Medicare berechnet, die Befreiung existiert für Leute ohne. Weil das Abkommen britischen Staatsangehörigen diesen Anspruch gibt, ist die Befreiung in der Regel nicht verfügbar und die Abgabe fällt an.
+Hier liegt das Geld, und hier läuft die Intuition rückwärts. Die 2-%-Medicare-Abgabe hängt am Medicare-Anspruch, und ob sie bei dir anfällt oder eine Befreiung in Frage kommt, hängt von deinen Umständen ab.
 
-Es zählt der Anspruch und nicht, ob du dich je angemeldet oder die Karte je benutzt hast. Ein britischer Backpacker, der nie in der Nähe einer Praxis war, ist trotzdem anspruchsberechtigt, und die Abgabe fällt trotzdem an. Deutsche und japanische Staatsangehörige stehen umgekehrt da: kein Abkommen, in der Regel kein Anspruch, und deshalb die Befreiung, sofern die Unterlagen vorliegen. Das Verfahren setzt unser Guide zur [Medicare-Abgabe für Working Holiday Maker](/de/blog/medicare-levy-working-holiday-makers) auseinander.
+Es zählt der Anspruch und nicht, ob du dich je angemeldet oder die Karte je benutzt hast. Wie das in deinem Fall ausgeht, klären wir bei der Steuererklärung. Das Verfahren setzt unser Guide zur [Medicare-Abgabe für Working Holiday Maker](/de/blog/medicare-levy-working-holiday-makers) auseinander.
 
 ## Wie meldest du dich an?
 
@@ -7122,13 +7077,13 @@ Die Teiljahresfälle lohnt es zu markieren. Wer im März angekommen ist, ist ab 
 
   'private-health-insurance-working-holiday-australia': {
     title: 'Krankenversicherung: Pflicht mit 417/462?',
-    description: 'Eine private Krankenversicherung ist Visumsbedingung für viele Working Holiday Visa und praktisch notwendig für alle ohne RHCA, also auch für Deutsche.',
+    description: 'Eine private Krankenversicherung kann Visumsbedingung (8501) sein, je nach Bescheid, und ist praktisch notwendig für alle ohne RHCA, also auch für Deutsche.',
     body: `
-Ob du auf einem Working-Holiday-Visum eine private Krankenversicherung brauchst, entscheiden zwei Dinge: deine Visa-Subclass und dein Pass. Viele der bilateralen Vereinbarungen hinter der Subclass 462 verlangen einen ausreichenden Krankenversicherungsschutz für den gesamten Aufenthalt. Mit einem Pass außerhalb der australischen Gesundheitsabkommen bleibt dir nur die Versicherung.
+Ob du auf einem Working-Holiday-Visum eine private Krankenversicherung brauchst, entscheiden zwei Dinge: dein Visumsbescheid und dein Pass. Manche Visa, auf beiden Subclasses, tragen die Bedingung 8501, die einen ausreichenden Krankenversicherungsschutz für den gesamten Aufenthalt verlangt. Mit einem Pass außerhalb der australischen Gesundheitsabkommen bleibt dir nur die Versicherung.
 
 ## Ist eine Krankenversicherung Visumsbedingung?
 
-Das hängt an der Subclass. Das Working Holiday Visum der Subclass 417 macht Versicherung für die meisten Nationalitäten in der Regel nicht zur strikten Bedingung, obwohl Home Affairs sie empfiehlt. Viele der länderweisen Vereinbarungen hinter dem Work and Holiday Visum der Subclass 462 verlangen ausreichenden Krankenversicherungsschutz für die Dauer des Aufenthalts, und die genaue Formulierung hängt vom Abkommen ab, unter dem du eingereist bist.
+Die Bedingung 8501 verlangt, dass du während deines Aufenthalts angemessene Vorkehrungen für eine Krankenversicherung triffst. Sie kann sowohl bei der Subclass 417 als auch bei der Subclass 462 auferlegt werden und wird im Einzelfall angewendet. Verlässlich beantwortet sich die Frage deshalb nur damit, ob 8501 in deinem eigenen Visumsbescheid steht. Wenn ja, ist sie bindend. Wenn nicht, empfiehlt Home Affairs trotzdem Versicherungsschutz. Prüfe deinen Bescheid, statt dich allein auf die Subclass zu verlassen.
 
 Am Flughafen prüft es niemand, weshalb weithin angenommen wird, die Anforderung gebe es nicht. Geprüft wird sie an den Stellen, die am meisten zählen: wenn ein weiteres Visum beurteilt wird und wenn ein Krankenhaus fragt, wer zahlt.
 
@@ -7172,9 +7127,9 @@ Wo du bist, wenn es passiert, ändert die Antwort. Queensland und Tasmanien betr
 
 ## Ändert irgendetwas davon deine Steuer?
 
-Nur in eine Richtung. Private Deckung senkt deine australische Steuer nicht, denn die Rückvergütung für private Krankenversicherung steht Medicare-berechtigten australischen Residenten zu und erstreckt sich nicht auf OVHC von Working Holiday Makern.
+Nur in eine Richtung. Private Deckung senkt deine australische Steuer nicht, denn ob eine Rückvergütung für private Krankenversicherung in Frage kommt, hängt von deinen Umständen ab und ist bei OVHC nicht zu erwarten.
 
-Was deine [Steuererklärung](/de/tax-return) sehr wohl beeinflusst, ist der Medicare-Anspruch selbst. Die Medicare Levy von 2 % wird Personen mit Anspruch auf Medicare berechnet, wer also einen Pass ohne Abkommen hält, kann üblicherweise die [Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers) beantragen, mit britischem oder irischem Pass in der Regel nicht. Die Befreiung ist nicht automatisch und braucht ein Medicare Entitlement Statement von Services Australia, dessen Beschaffung Wochen dauert. Was sie bei deinem Einkommen wert ist, kannst du im [Rechner](/de/calculator) durchspielen.
+Was deine [Steuererklärung](/de/tax-return) sehr wohl beeinflusst, ist der Medicare-Anspruch selbst. Die Medicare Levy von 2 % wird Personen mit Anspruch auf Medicare berechnet, und ob für dich eine [Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers) in Frage kommt, hängt von deinen Umständen ab. Sie ist nicht automatisch, und wir klären das für dich im Rahmen deiner Steuererklärung. Was sie bei deinem Einkommen wert ist, kannst du im [Rechner](/de/calculator) durchspielen.
 
 ## Wann solltest du die Deckung abschließen?
 
@@ -7186,7 +7141,7 @@ Die zweite Prüfung lohnt beim Wechsel des Bundesstaats, weil die Krankentranspo
 
 Die Deckung folgt dem Visum nicht automatisch. Eine Police, die für die Dauer des ersten Visums gekauft wurde, endet mit ihrer eigenen Laufzeit, nicht mit dem Visum, und eine Lücke zwischen zwei Visa ist genau der Zeitraum, in dem viele ohne Schutz dastehen, ohne es zu merken.
 
-Für die Steuerseite ändert ein zweites Visum nichts: Ohne Abkommen bleibt der Medicare-Anspruch aus, und die Befreiung wird für jedes Steuerjahr getrennt beantragt, mit einem eigenen Medicare Entitlement Statement je Jahr.
+Für die Steuerseite ändert ein zweites Visum nichts: Die Medicare-Frage wird für jedes Steuerjahr getrennt geprüft, und wir kümmern uns darum für dich.
 `,
   },
 
@@ -7206,10 +7161,10 @@ Besorgniserregend, aber nicht lebensbedrohlich: healthdirect unter 1800 022 222 
 
 Erheblich. Australien hat mit elf Ländern ein Reciprocal Health Care Agreement. Staatsangehörige dieser Länder sind während des Aufenthalts in Australien in der Regel für medizinisch notwendige Behandlung anspruchsberechtigt, einschließlich Notfallversorgung im öffentlichen Krankenhaus und bezuschusster Medikamente.
 
-Die Liste umfasst Großbritannien, Irland, Neuseeland, Italien, Malta, die Niederlande, Belgien, Finnland, Norwegen, Schweden und Slowenien. Ein britischer Backpacker kommt also mit einem Zugang zum öffentlichen System an, den ein deutscher, japanischer, französischer oder kanadischer nicht hat. Derselbe Anspruch lässt zur Steuerzeit die [Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers) entfallen: Wessen Staatsangehörige im Krankenhaus gedeckt sind, zahlt die 2-%-Abgabe auf der [Steuererklärung](/de/tax-return).
+Die Liste umfasst Großbritannien, Irland, Neuseeland, Italien, Malta, die Niederlande, Belgien, Finnland, Norwegen, Schweden und Slowenien. Ein britischer Backpacker kommt also mit einem Zugang zum öffentlichen System an, den ein deutscher, japanischer, französischer oder kanadischer nicht hat. Der Anspruch spielt auch zur Steuerzeit eine Rolle, bei der [Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers), und was das für dich bedeutet, klären wir bei der [Steuererklärung](/de/tax-return).
 
-- RHCA-Pass: Notfallbehandlung im öffentlichen Krankenhaus und bezuschusste Medikamente, Abgabe in der Regel zu zahlen
-- Nicht-RHCA-Pass, wie der deutsche: Abrechnung als Privatpatient, Abgabe in der Regel mit einem Medicare Entitlement Statement befreit
+- RHCA-Pass: Notfallbehandlung im öffentlichen Krankenhaus und bezuschusste Medikamente, die Abgabe wird im Einzelfall geprüft
+- Nicht-RHCA-Pass, wie der deutsche: Abrechnung als Privatpatient, die Abgabe in der Steuererklärung wird im Einzelfall geprüft
 - Keiner der beiden Wege deckt die Rückführung nach Hause, das ist ausschließlich Versicherungsgebiet
 
 ## Was deckt eine Versicherung tatsächlich?
@@ -7284,7 +7239,7 @@ Bei der Arbeit gedeckt bist du also fast nie über die Reisepolice. Wie der Work
 
 Nur für Leute mit Anspruch, und der folgt dem Pass. Staatsangehörige der elf Reciprocal-Health-Care-Agreement-Länder, darunter Großbritannien und Irland, sind in der Regel anspruchsberechtigt und können sich anmelden.
 
-Alle anderen, einschließlich Inhabern deutscher und japanischer Pässe, sind in der Regel nicht anspruchsberechtigt, und für sie ist die Versicherung außerhalb der Workers Compensation das gesamte Sicherheitsnetz. Dieselbe Anspruchsfrage entscheidet auch die 2-%-Medicare-Abgabe auf deiner Erklärung, und zwar in die andere Richtung: Anspruchsberechtigt zu sein macht die Abgabe zahlbar, und nicht anspruchsberechtigt zu sein macht die Befreiung verfügbar. Diese Seite behandelt unser Guide zur [Medicare-Abgabe](/de/blog/medicare-levy-working-holiday-makers).
+Alle anderen, einschließlich Inhabern deutscher und japanischer Pässe, sind in der Regel nicht anspruchsberechtigt, und für sie ist die Versicherung außerhalb der Workers Compensation das gesamte Sicherheitsnetz. Dieselbe Anspruchsfrage spielt auch bei der 2-%-Medicare-Abgabe auf deiner Erklärung eine Rolle, und wie sie bei dir ausgeht, klären wir bei der Steuererklärung. Diese Seite behandelt unser Guide zur [Medicare-Abgabe](/de/blog/medicare-levy-working-holiday-makers).
 
 ## Was solltest du in einer Police tatsächlich prüfen?
 
@@ -7302,7 +7257,7 @@ Die Ausschlüsse, nicht die beworbene Deckung. Die beworbene Deckung ist über d
 
 Sehr wenig. Prämien sind gegen Working-Holiday-Einkommen nicht absetzbar, und Auszahlungen sind in der Regel nicht steuerpflichtig.
 
-Der Medicare Levy Surcharge gilt für Working Holiday Maker meist nicht, weil er dem Wohnsitz folgt, und die Private-Health-Rückerstattung gilt für OVHC in dieser Gruppe nicht. Deine Erklärung betrifft die 2-%-Medicare-Abgabe selbst und ob eine Befreiung beantragt wird, und das hängt am Anspruch und nicht am Versicherungskauf.
+Ob der Medicare Levy Surcharge oder die Private-Health-Rückerstattung bei dir eine Rolle spielt, hängt von deinen Umständen ab. Deine Erklärung betrifft die 2-%-Medicare-Abgabe selbst und ob eine Befreiung beantragt wird, und das hängt an deinem Fall und nicht am Versicherungskauf.
 
 ## Wann solltest du welche kaufen?
 
@@ -7680,20 +7635,20 @@ Die Ausnahme macht vorsätzliche Auslassung zu einer anderen Risikokategorie. Wo
   },
 
   '1000-dollar-instant-deduction-rule-2026': {
-    title: 'Neuer 1.000-$-Sofortabzug ab 1. Juli 2026',
-    description: 'Ab 1. Juli 2026 gibt es einen Pauschalabzug von 1.000 $ für Arbeitskosten ohne Belege. Wer profitiert und wann sich die tatsächlichen Kosten mehr lohnen.',
+    title: 'Der 1.000-$-Pauschalabzug ab 2026/27',
+    description: 'Ein pauschaler Abzug von 1.000 $ für Arbeitskosten ohne Belege gilt ab dem Einkommensjahr 2026/27, nicht für Erklärungen 2025/26. Für wen er gedacht ist und wann die tatsächlichen Kosten mehr lohnen.',
     body: `
-Ab dem 1. Juli 2026 kannst du pauschal 1.000 $ für berufsbezogene Ausgaben ohne Belege geltend machen oder deine tatsächlichen Kosten mit vollständigen Aufzeichnungen. Du wählst für das Jahr eines von beidem, nicht beides. Was besser ist, hängt davon ab, was dein Job dich hat kaufen lassen.
+Ab dem Einkommensjahr 2026/27 (1. Juli 2026 bis 30. Juni 2027) können berechtigte Personen mit dem neuen Standardabzug des ATO 1.000 $ für berufsbezogene Ausgaben ohne Belege geltend machen. Er ist getrennt von der langjährigen Regel für günstige Arbeitsgegenstände, gilt nicht für Erklärungen 2025/26, und nach Angaben des ATO ist er für Personen gedacht, die steuerlich in Australien ansässig sind. Ob das auf dich zutrifft, hängt von den Fakten deines Jahres ab, und das ATO entscheidet am Ende.
 
 ## Was ersetzen die pauschalen 1.000 $?
 
-Sie ersetzen die Nachweispflicht, nicht die Werbungskostenposition selbst. Du schreibst 1.000 $ in die Zeile für berufsbezogene Ausgaben, ohne Belege, Fahrtenbücher oder Aufzeichnungen dahinter. Das beseitigt den häufigsten Grund, warum Working Holiday Maker gar nichts geltend machen.
+Sie ersetzen die Nachweispflicht, nicht den Abzug selbst. Nach Angaben des ATO können die 1.000 $ geltend gemacht werden, ohne dass du das Geld ausgegeben oder Aufzeichnungen geführt hast.
 
-Sie decken dasselbe Gebiet ab wie die Nachweisregeln, also die gewöhnlichen Arbeitsausgaben eines Backpacker-Jahres: Schutzkleidung und ihre Wäsche, Werkzeug und kleine Ausrüstung, der Arbeitsanteil eines Handytarifs, berufsbezogene Fahrzeugnutzung, Lizenzen und Registrierungen, Weiterbildung mit Bezug zu deinem bestehenden Job. Nicht erfasst ist alles außerhalb der Kategorie berufsbezogen, etwa Spenden oder Anlagekosten. Die behalten ihre eigenen Regeln und werden weiterhin getrennt geltend gemacht.
+Gedacht ist der Abzug für gewöhnliche Arbeitsausgaben wie Schutzkleidung und ihre Wäsche, Werkzeug und kleine Ausrüstung, den Arbeitsanteil eines Handytarifs und ähnliche Kosten. Alles außerhalb dieser Kategorie, etwa Spenden oder Anlagekosten, behält seine eigenen Regeln. Prüfe deshalb die aktuelle ATO-Liste, bevor du dich auf diese Zusammenfassung verlässt.
 
 ## Wann sind die pauschalen 1.000 $ die bessere Wahl?
 
-Wenn deine echten Arbeitsausgaben im Jahr unter 1.000 $ lagen, die gewöhnliche Lage in Gastronomie, Einzelhandel und Cafearbeit. Wer als einzige echte Kosten ein paar schwarze Hemden, Wäsche und einen Anteil seines Handytarifs hatte, macht rechtmäßig mehr geltend, als er ausgegeben hat.
+Wenn deine echten Arbeitsausgaben im Jahr unter 1.000 $ lagen, die gewöhnliche Lage in Gastronomie, Einzelhandel und Cafearbeit. Wer als einzige echte Kosten ein paar schwarze Hemden, Wäsche und einen Anteil seines Handytarifs hatte, macht rechtmäßig mehr geltend, als er ausgegeben hat, sofern der Abzug auf ihn zutrifft.
 
 Sie ist auch dann die bessere Wahl, wenn die Ausgaben echt waren, die Aufzeichnungen aber nicht. Beim Hostelwechsel verlorene Quittungen, Dutzende kleiner Käufe ohne Papiere: Das wird irrelevant, sobald der Pauschalbetrag übersteigt, was du hättest beweisen können.
 
@@ -7710,33 +7665,31 @@ Die Fahrzeugnutzung entscheidet das am häufigsten. Mit 91 Cent pro Kilometer na
 
 ## Kannst du den Pauschalbetrag nehmen und etwas dazulegen?
 
-Nein. Es ist die eine oder die andere Methode für die gesamte Kategorie berufsbezogener Ausgaben im Jahr. Pauschale plus einen belegten Werkzeugkauf obendrauf geht nicht.
+Nicht on top. Nach Angaben des ATO senken die Ausgaben, die du geltend machst, den Standardabzug Dollar für Dollar, und sobald sie 1.000 $ übersteigen, fällt der Standardabzug auf null und du brauchst schriftliche Nachweise für das, was du geltend machst.
 
-Die Wahl muss deshalb nach dem Rechnen getroffen werden, nicht davor. Ausgaben von 1.200 $, unter dem Pauschalbetrag geltend gemacht, verschenken 200 $. Dieselben 1.200 $ mit Belegen werden voll geltend gemacht. Liegen die Methoden nah beieinander, ist der Pauschalbetrag meist trotzdem besser, sobald der Aufwand fürs Sammeln gegen die Differenz gewogen wird.
+Die Wahl muss deshalb nach dem Rechnen getroffen werden, nicht davor. Ausgaben von 1.200 $ mit Belegen werden voll geltend gemacht, dasselbe Jahr ohne Belege ist auf die 1.000 $ begrenzt. Liegen die Werte nah beieinander, kann der Pauschalbetrag trotzdem einfacher sein, sobald der Aufwand fürs Sammeln gegen die Differenz gewogen wird.
 
 ## Für welches Steuerjahr gilt sie?
 
-Für das Jahr 2026/27, das vom 1. Juli 2026 bis 30. Juni 2027 läuft und ab Juli 2027 eingereicht wird. Sie wirkt nicht rückwirkend. Für eine Erklärung 2025/26 oder früher tut sie nichts, und diese folgen weiterhin den bestehenden Nachweisregeln, einschließlich der [300-$-Schwelle für Werkzeug und Ausrüstung](/de/blog/tools-equipment-under-300-instant-deduction-whv).
+Für das Jahr 2026/27, das vom 1. Juli 2026 bis 30. Juni 2027 läuft und ab Juli 2027 eingereicht wird. Nach Angaben des ATO gilt sie nicht für den Tax Time 2025/26. Eine Erklärung 2025/26 oder früher wird deshalb nach den bestehenden Regeln erstellt, einschließlich der [300-$-Regel für Werkzeug und Ausrüstung](/de/blog/tools-equipment-under-300-instant-deduction-whv).
 
-Für einen Working Holiday Maker entscheidet der Zuschnitt deines Jahres. Wer Anfang 2026 angekommen ist, hat Einkommen über zwei Steuerjahre unter zwei Regelwerken, und dieselbe Ausgabe kann je nach Seite des 30. Juni 2026 unterschiedlich behandelt werden. Das lohnt es zu wissen, bevor du Quittungen wegwirfst.
+Entscheidend ist der Zeitpunkt. Wer eine Working Holiday über beide Jahre erlebt, hat Einkommen in zwei Steuerjahren unter zwei Regelwerken, und dieselbe Ausgabe kann je nach Seite des 30. Juni 2026 unterschiedlich behandelt werden. Die Einzelheiten des ATO dazu werden noch festgelegt, prüfe also die aktuelle Lage, bevor du dich auf eine Zahl hier verlässt.
 
 ## Was ist die Position für dich tatsächlich wert?
 
-Weniger als die Schlagzeile, denn eine Werbungskostenposition senkt das zu versteuernde Einkommen, nicht die Steuer. Zum Working-Holiday-Maker-Satz von 15 % senkt eine Position von 1.000 $ die zahlbare Steuer um 150 $. Das ist die Zahl für die Entscheidung, ob sich die Belegarbeit lohnt.
-
-Über 45.000 $ steigt der Satz auf 30 % und dieselbe Position ist 300 $ wert, aber sehr wenige Working Holiday Maker erreichen diese Stufe in einem Jahr. Die Regel ist visastatusneutral und gilt für 417- wie 462-Inhaber und australische Residenten gleich. An der [Steuererklärung](/de/tax-return) ändert sich nichts außer der Wahl der Methode.
+Weniger als die Schlagzeile, denn ein Abzug senkt das zu versteuernde Einkommen, nicht die Steuer. Wie viel das in Dollar ausmacht, hängt vom Steuersatz ab, der auf dein Einkommen anwendbar ist. Das ist von Person zu Person verschieden und gehört zu dem, was unser Team bei der Vorbereitung deiner [Steuererklärung](/de/tax-return) prüft. Ob der Standardabzug überhaupt für dich gilt, ist ebenfalls eine Einzelfallfrage, über die das ATO entscheidet.
 
 ## Was braucht auch unter dem Pauschalbetrag noch Aufzeichnungen?
 
-Alles außerhalb der berufsbezogenen Ausgaben, denn nur dort ersetzt der Pauschalbetrag den Nachweis. Spenden, die Kosten für die Verwaltung deiner Steuerangelegenheiten einschließlich der Gebühr für deinen Tax Agent im Vorjahr und Prämien für Einkommensschutz stehen in eigenen Posten der Erklärung und behalten ihre eigenen Aufzeichnungsregeln.
+Alles außerhalb der berufsbezogenen Ausgaben. Spenden, die Kosten für die Verwaltung deiner Steuerangelegenheiten einschließlich der Gebühr für deinen Tax Agent im Vorjahr und Prämien für Einkommensschutz behalten ihre eigenen Aufzeichnungsregeln.
 
 Dasselbe gilt auf der Einkommensseite. Bareinkommen, ABN-Einnahmen und Plattformzahlungen müssen weiterhin erfasst und erklärt werden. Der Pauschalbetrag vereinfacht eine Zeile der Erklärung, nicht die Erklärung als Ganzes.
 
 ## Ändert das, was du im Laufe des Jahres aufheben solltest?
 
-Nicht sofort. Du kannst nicht wissen, ob die pauschalen 1.000 $ oder die tatsächliche Summe besser sind, bevor das Jahr vorbei ist. Quittungen im Oktober wegzuwerfen, weil du den Pauschalbetrag nehmen willst, verbaut die Wahl, bevor du sie treffen kannst.
+Nicht sofort. Du kannst nicht wissen, was besser ist, bevor das Jahr vorbei ist. Quittungen im Oktober wegzuwerfen, weil du den Pauschalbetrag nehmen willst, verbaut die Wahl, bevor du sie treffen kannst.
 
-Die Gewohnheit, die nichts kostet, ist Quittungen bei ihrem Anfall zu fotografieren und im Juli zu entscheiden. Für ein Gastronomie- oder Einzelhandelsjahr gewinnt der Pauschalbetrag fast sicher und die Fotos waren unnötig. Für ein Bau- oder Fahrjahr wird die Summe sehr wahrscheinlich über 1.000 $ liegen, und die Fotos sind der Unterschied zwischen der echten Zahl und der gedeckelten.
+Fotografiere Quittungen bei ihrem Anfall und entscheide, wenn das Jahr vorbei ist. Bei einem leichten Jahr kann der Pauschalbetrag reichen. Bei einem Bau- oder Fahrjahr kann die Summe gut über 1.000 $ liegen, und die Fotos sind der Unterschied zwischen der echten Zahl und der gedeckelten.
 `,
   },
 
@@ -7756,7 +7709,7 @@ Ein Lieferfahrer mit ABN, der für Uber Eats, DoorDash oder Menulog fährt, nutz
 
 Das Fahrzeug selbst und was sein Betrieb kostet, jeweils zum beruflichen Nutzungsanteil. Das Wirtschaftsgut wird je nach Anschaffungspreis sofort oder über die Nutzungsdauer geltend gemacht, die Betriebskosten dann, wenn sie anfallen.
 
-- Das Fahrrad, E-Bike oder der Scooter selbst. Unter 300 $ ist es sofort in voller Höhe absetzbar, und ab dem 1. Juli 2026 gilt eine Sofortabschreibungsgrenze von 1.000 $. Darüber wird über die Nutzungsdauer abgeschrieben, typischerweise drei bis fünf Jahre.
+- Das Fahrrad, E-Bike oder der Scooter selbst. Unter 300 $ ist es sofort in voller Höhe absetzbar (Stand 2025/26 und früher). Darüber wird über die Nutzungsdauer abgeschrieben, typischerweise drei bis fünf Jahre.
 - Reparaturen und Verschleißteile: Schläuche, Reifen, Ketten, Bremsbeläge, Inspektionen.
 - Ausrüstung: Helm, Lichter, Schloss, Satteltaschen, Liefertasche, Handyhalter.
 - Strom zum Laden eines E-Bike-Akkus, auf Basis einer nachvollziehbaren Schätzung des beruflichen Anteils.
@@ -8060,7 +8013,7 @@ Eine Ausnahme zählt auf Farmen. Bist du als Contractor auf einer [ABN](/de/blog
 
 Die Ausrüstung, die der Job dich hat kaufen lassen, auf einer Farm eine längere Liste als in den meisten Rollen. Schutz- und wasserdichte Stiefel, Arbeitskleidung einschließlich Warnkleidung, Sonnenschutz, Handschuhe, kleine Handwerkzeuge und Messer, die du gestellt hast, ein Arbeitsanteil deines Telefons und Fahrzeugkosten für Fahrten zwischen getrennten Arbeitsorten.
 
-Ob du einzeln aufführst, hängt vom Jahr und von der Summe ab. Ab 2026/27 steht die [Pauschale von 1.000 $ ohne Belege](/de/blog/1000-dollar-instant-deduction-rule-2026) als Alternative zur Verfügung, und für viele Farm Hands landet die echte Summe nah genug an 1.000 $, dass die Pauschale die sinnvolle Wahl ist. Was in beiden Fällen zählt, behandelt unser Guide zu [Werbungskosten für Working Holiday Maker](/de/blog/tax-deductions-working-holiday-makers).
+Ob du einzeln aufführst, hängt vom Jahr und von der Summe ab. Ab 2026/27 steht für berechtigte Personen die [Pauschale von 1.000 $ ohne Belege](/de/blog/1000-dollar-instant-deduction-rule-2026) als Alternative zur Verfügung, nicht für Erklärungen 2025/26. Für viele Farm Hands landet die echte Summe nah genug an 1.000 $, dass sie eine Überlegung wert ist. Was in beiden Fällen zählt, behandelt unser Guide zu [Werbungskosten für Working Holiday Maker](/de/blog/tax-deductions-working-holiday-makers).
 `,
   },
 
@@ -8117,7 +8070,7 @@ Schließen ist nicht das Ende der Schicht. Ein Dienstplan, der bis zum Schließe
 
 Überschaubare Beträge. Die selbst getragene und nicht erstattete RSA-Kursgebühr, rutschfeste Schuhe, wo das Lokal sie verlangt, eigene Barausrüstung in den seltenen Fällen, in denen du sie stellst, der berufliche Anteil der Handykosten und Fahrzeugkosten, wo Schichten an Orten ohne Verkehrsanbindung liegen.
 
-Ab dem 1. Juli 2026 steht ein pauschaler berufsbezogener Abzug von 1.000 $ ohne Belege, bei den meisten Barkräften mehr als sich Posten für Posten belegen ließe. Die Details stehen in unserem Guide zur [1.000-$-Regel](/de/blog/1000-dollar-instant-deduction-rule-2026).
+Ab dem Einkommensjahr 2026/27 gibt es für berechtigte Personen einen Standardabzug von 1.000 $ ohne Belege (nicht für 2025/26), der bei Barkräften mehr sein kann, als sich Posten für Posten belegen ließe. Die Details stehen in unserem Guide zur [1.000-$-Regel](/de/blog/1000-dollar-instant-deduction-rule-2026).
 
 ## Kannst du ohne Barerfahrung anfangen?
 
@@ -8333,7 +8286,7 @@ Ein Arbeitgeber darf dich nicht rechtmäßig unter Druck setzen, keinen Anspruch
 
 Weniger als ein Handwerker und mehr als nichts. Rutschfeste Arbeitsschuhe, eine Schürze oder Arbeitskleidung, wo sie ausdrücklich verlangt und nicht gestellt wird, das Schleifen von Messern, wenn du eigene stellst, und der berufliche Anteil der Handykosten für Schichtkommunikation.
 
-Ab dem 1. Juli 2026 gibt es außerdem einen pauschalen berufsbezogenen Abzug von 1.000 $ ohne Belege, der bei den meisten Kitchen Hands über dem liegt, was sie einzeln belegen könnten. Wann der Pauschalbetrag das Einzelaufführen schlägt, erklärt unser Guide zur [1.000-$-Sofortabzug](/de/blog/1000-dollar-instant-deduction-rule-2026).
+Ab dem Einkommensjahr 2026/27 gibt es außerdem für berechtigte Personen einen Standardabzug von 1.000 $ ohne Belege (nicht für 2025/26), der bei Kitchen Hands über dem liegen kann, was sie einzeln belegen könnten. Wann der Pauschalbetrag das Einzelaufführen schlägt, erklärt unser Guide zur [1.000-$-Sofortabzug](/de/blog/1000-dollar-instant-deduction-rule-2026).
 
 ## Wie kommst du vom Kitchen Hand weiter?
 
@@ -8409,7 +8362,7 @@ Die zwei Dinge, die schiefgehen, betreffen beide die ersten 48 Stunden. Eine Ver
 
 Mehr als in den meisten Working-Holiday-Maker-Rollen, denn der Bau zwingt dich zu Käufen. Stahlkappenstiefel, Warnkleidung, ein Helm und Handschuhe, wo du sie stellst, Sonnenschutz für Außenarbeit, Handwerkzeug und die White-Card-Kursgebühr sind alle berufsbezogene Ausgaben.
 
-Ob du sie einzeln aufführst, hängt vom Steuerjahr ab. Ab 2026/27 kannst du die [Pauschale von 1.000 $ ohne Belege](/de/blog/1000-dollar-instant-deduction-rule-2026) nehmen oder den tatsächlichen Betrag belegen. Der Bau ist eine der wenigen Backpacker-Tätigkeiten, in denen die echte Summe 1.000 $ übersteigen kann, dann lohnt es sich, ab Tag eins Belege zu sammeln. Fahrten zwischen zwei Baustellen an einem Tag sind absetzbar, der Weg von zu Hause zur ersten Baustelle nicht.
+Ob du sie einzeln aufführst, hängt vom Steuerjahr ab. Ab 2026/27 kommt für berechtigte Personen die [Pauschale von 1.000 $ ohne Belege](/de/blog/1000-dollar-instant-deduction-rule-2026) in Frage, nicht für Erklärungen 2025/26. Alternativ wird der tatsächliche Betrag belegt. Der Bau ist eine der wenigen Backpacker-Tätigkeiten, in denen die echte Summe 1.000 $ übersteigen kann, dann lohnt es sich, ab Tag eins Belege zu sammeln. Fahrten zwischen zwei Baustellen an einem Tag sind absetzbar, der Weg von zu Hause zur ersten Baustelle nicht.
 `,
   },
 
@@ -8492,9 +8445,9 @@ Rideshare trägt die strengsten Steuerregeln aller Gig-Arbeit in Australien. Du 
 
 Weil Personenbeförderung für GST-Zwecke wie Taxiverkehr behandelt wird und Taxiverkehr keine Registrierungsschwelle hat. Gewöhnliche ABN-Arbeit verlangt eine GST-Registrierung erst über 75.000 $ Jahresumsatz. Rideshare verlangt sie ab der ersten Fahrt, ob du 500 $ oder 50.000 $ verdienst.
 
-Sie gilt für Uber, Ola, Didi und jede Plattform, die Passagiere gegen Entgelt befördert, nicht für Uber Eats, andere Essenslieferung oder Paket- und Logistikarbeit, die der Standardschwelle folgen. Diese Seite behandelt unser Guide zum [Lieferfahren](/de/blog/uber-eats-delivery-rider-working-holiday-australia).
+Sie gilt für Uber, Ola, Didi und jede Plattform, die Passagiere gegen Entgelt befördert, nicht für Uber Eats, andere Essenslieferung oder Paket- und Logistikarbeit, die der Standardschwelle folgen. Das Lieferfahren behandelt unser Guide zum [Lieferfahren](/de/blog/uber-eats-delivery-rider-working-holiday-australia).
 
-Multi-Apper erwischt es so: Sobald du Passagiere fährst, liegt die Pflicht über deiner gesamten Tätigkeit, nicht über einer App.
+Wer mehrere Apps nutzt, gerät hier schnell hinein: Sobald du Passagiere fährst, liegt die Pflicht über deiner gesamten Tätigkeit, nicht über einer App.
 
 ## Was verlangt die GST-Registrierung tatsächlich von dir?
 
@@ -8727,7 +8680,7 @@ Stationsarbeit trägt höhere Verletzungsraten als die meisten Branchen: Verletz
 
 Mehr als in den meisten Working-Holiday-Rollen, denn Station Hands stellen echte Ausrüstung: Arbeits- und Reitstiefel, einen Schutzhut, langärmlige Arbeitskleidung und Sonnenschutz, Handschuhe, persönliches Werkzeug wie ein Messer oder Zaunwerkzeug und Sattel und Zaumzeug, wo du eigenes stellst.
 
-Der Test ist, ob der Gegenstand überwiegend beruflich genutzt wird, geradlinig bei einer Zaunzange und weniger bei einem Hut, den du auch an freien Tagen trägst. Ab dem 1. Juli 2026 gibt es außerdem den pauschalen berufsbezogenen Abzug von 1.000 $ ohne Belege, für viele Station Hands einfacher als das Einzelaufführen.
+Der Test ist, ob der Gegenstand überwiegend beruflich genutzt wird, geradlinig bei einer Zaunzange und weniger bei einem Hut, den du auch an freien Tagen trägst. Ab dem Einkommensjahr 2026/27 gibt es außerdem für berechtigte Personen den Standardabzug von 1.000 $ ohne Belege (nicht für 2025/26), der für Station Hands einfacher sein kann als das Einzelaufführen.
 
 ## Was solltest du vor der Zusage klären?
 

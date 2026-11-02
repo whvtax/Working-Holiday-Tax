@@ -1,7 +1,9 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesWhtPage } from '@/components/wht/JobPageBlocks'
 
 export const metadata: Metadata = {
   "title": "Zeitarbeit und Lager: was du absetzt",
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/labouring",
       "de": "/de/expenses/labouring",
       "ja": "/ja/expenses/labouring",
+      ...newLocaleLanguages('/expenses/labouring'),
       "x-default": "/expenses/labouring"
     }
   },
@@ -66,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Zeitarbeit und Lagera
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
   "guaranteeBody": "Vier Agenturen und eine vergessene Einzelschicht in einer Erklärung zusammenzuführen ist für uns normale Arbeit, und alle unsere Kunden haben ein 417- oder 462-Visum. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Häufige Fragen dazu",
   "guidesHeading": "Danach lesenswert",
@@ -193,7 +196,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Wochen mit zu hohem Steuereinbehalt",
-        "d": "Eine neue Agentur, die deine Tax File Number Declaration noch nicht verarbeitet hat oder nicht als Arbeitgeber von Working Holiday Makern registriert ist, behält deutlich mehr als 15 Prozent ein. Das lässt sich nur mit der Erklärung klären, die alle Agenturen zusammenführt."
+        "d": "Eine neue Agentur, die deine Tax File Number Declaration noch nicht verarbeitet hat oder nicht als Arbeitgeber von Working Holiday Makern registriert ist, behält unter Umständen einen deutlich höheren Satz ein. Das lässt sich nur mit der Erklärung klären, die alle Agenturen zusammenführt."
       }
     ]
   },
@@ -202,8 +205,8 @@ const SECTIONS: Section[] = [
     "h2": "Welche Teile hängen daran, wie dein Jahr lief?",
     "paras": [
       "Wie wechselnd die Arbeit war, entscheidet, wie viel deiner Fahrten absetzbar ist, und das ist eine Tatsachenfrage, keine Regel. Wie oft der Ort wechselte, ob es eine Basis gab, zu der du immer zurückkehrtest, und ob die Agentur die Bewegung verlangt hat, fließt alles ein. Zwei Personen derselben Agentur können sehr unterschiedliche Fahrtabzüge haben.",
-      "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Steuereinbehalt und eigenem Income Statement. Working Holiday Maker bekommen von keiner davon einen Steuerfreibetrag, das Risiko ist also ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt.",
-      "Darunter liegt der steuerliche Wohnsitz, der mehr ausmachen kann als alle Abzüge auf dieser Seite. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
+      "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Steuereinbehalt und eigenem Income Statement. Das Risiko ist ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt. Welcher Satz für dich gilt, prüfen wir im Einzelfall.",
+      "Darunter liegt der steuerliche Wohnsitz, der mehr ausmachen kann als alle Abzüge auf dieser Seite. Ein Gerichtsurteil namens Addy kann beeinflussen, welche Sätze gelten. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -211,7 +214,7 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "Ich bin bei drei Agenturen registriert. Ändert das meine Steuer?",
-    "answer": "Jede Agentur ist rechtlich ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement am Jahresende. Alles kommt in eine Erklärung.\n\nDein Lohn wird zum Working-Holiday-Maker-Satz besteuert statt gegen einen Steuerfreibetrag, das eigentliche Risiko bei mehreren Agenturen ist also, dass eine davon fehlt."
+    "answer": "Jede Agentur ist rechtlich ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement am Jahresende. Alles kommt in eine Erklärung.\n\nWelcher Satz für dich gilt, hängt von deinem Jahr ab und wird im Einzelfall geprüft. Das eigentliche Risiko bei mehreren Agenturen ist, dass eine davon fehlt."
   },
   {
     "question": "Kann ich Fahrten zwischen verschiedenen Einsatzorten absetzen?",
@@ -268,7 +271,7 @@ const SERVICES = [
    every section renderer live in JobExpensesPage, once, for all 21 job pages. */
 export default function Page() {
   return (
-    <JobExpensesPage
+    <JobExpensesWhtPage
       content={{
         lang: 'de',
         path: '/de/expenses/labouring',

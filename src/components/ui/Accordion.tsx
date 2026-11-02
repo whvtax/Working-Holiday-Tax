@@ -6,13 +6,13 @@ export interface AccItem { question: string; answer: string }
 export function Accordion({ items }: { items: AccItem[] }) {
   const [open, setOpen] = useState<number | null>(null)
   return (
-    <div>
+    <div className="flex flex-col gap-1.5">
       {items.map((item, i) => {
         const contentId = `acc-body-${i}`
         const triggerId   = `acc-trigger-${i}`
         const isOpen = open === i
         return (
-          <div key={i} className="border-b border-border first:border-t">
+          <div key={i} className="rounded-[10px] overflow-hidden" style={{ background: '#F2FAF7' }}>
             {/* H4: proper aria-controls/id pairing; H5: aria-expanded as string */}
             <button
               type="button"
@@ -20,17 +20,14 @@ export function Accordion({ items }: { items: AccItem[] }) {
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
               aria-controls={contentId}
-              className="w-full flex items-center justify-between gap-3 py-3.5 text-left text-[13px] font-medium text-ink transition-colors hover:text-forest-500"
+              className="w-full flex items-center justify-between gap-3 min-h-[52px] px-4 py-3.5 text-left text-[16px] font-semibold text-ink transition-colors hover:text-forest-500"
             >
               <span>{item.question}</span>
-              <span
-                aria-hidden="true"
-                className={`w-6 h-6 rounded-full border border-border flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isOpen ? 'bg-forest-500 border-forest-500 rotate-45' : ''}`}
-              >
-                {/* A plus when closed. The rotate-45 on the wrapper turns it
-                    into a cross when open, which is the state people expect. */}
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M5 1v8M1 5h8" stroke={isOpen ? '#fff' : '#0B5240'} strokeWidth="1.3" strokeLinecap="round" />
+              {/* A plus when closed, a minus when open. */}
+              <span aria-hidden="true" className="flex-shrink-0 flex items-center justify-center w-6 h-6 text-forest-500">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M1.5 7h11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                  {!isOpen && <path d="M7 1.5v11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />}
                 </svg>
               </span>
             </button>
@@ -56,11 +53,11 @@ export function Accordion({ items }: { items: AccItem[] }) {
                   the answer now becomes a paragraph break. Pages that build
                   FAQPage structured data still pass the raw string to it, so the
                   schema is unchanged. */}
-              <div className="acc-inner text-[15px] text-body leading-[1.65]">
+              <div className="acc-inner"><div className="px-4 pb-4 text-[15px] text-body leading-[1.65]">
                 {item.answer.split('\n\n').map((para, j) => (
                   <p key={j} style={j > 0 ? { marginTop: '12px' } : undefined}>{para}</p>
                 ))}
-              </div>
+              </div></div>
             </div>
           </div>
         )

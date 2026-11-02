@@ -1,0 +1,21 @@
+.head { padding: 68px var(--wht-gutter) 0; background: var(--wht-pale); }
+.headInner { max-width: var(--wht-max); margin: 0 auto; padding: 22px 0 32px; display: flex; flex-direction: column; gap: 14px; }
+.crumbs { display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; color: var(--wht-ink-2); }
+.crumb { display: inline-flex; gap: 6px; }
+.crumb a { color: var(--wht-ink-2); text-decoration: none; display: inline-flex; align-items: center; min-height: 32px; }
+.crumb a:hover { color: var(--wht-forest); text-decoration: underline; }
+.sep { color: var(--wht-line); }
+.kicker { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wht-forest); font-weight: 600; }
+.h1 { font-size: clamp(30px, 9vw, var(--wht-h1)); hyphens: auto; overflow-wrap: break-word; line-height: 1.06; font-weight: 700; letter-spacing: -0.025em; color: var(--wht-ink); max-width: 720px; }
+.sub { font-size: var(--wht-text-md); line-height: 1.5; color: var(--wht-ink-2); max-width: 600px; }
+.doc { background: var(--wht-paper); padding: var(--wht-section-y) var(--wht-gutter); }
+.docInner { max-width: var(--wht-max); margin: 0 auto; }
+.docInner > * { max-width: var(--wht-measure); }
+.notice { background: var(--wht-pale); border: 1px solid var(--wht-line); border-radius: var(--wht-radius-card); padding: 16px 18px; margin-bottom: 24px; font-size: var(--wht-text-base); line-height: 1.6; color: var(--wht-ink); }
+.notice strong { font-weight: 700; }
+.p { font-size: var(--wht-text-base); line-height: 1.65; color: var(--wht-ink); margin-bottom: 8px; overflow-wrap: break-word; }
+.block { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--wht-line); }
+.h2 { hyphens: auto; overflow-wrap: break-word; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: var(--wht-ink); margin-bottom: 10px; }
+.list { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.list li { position: relative; padding-left: 18px; font-size: var(--wht-text-base); line-height: 1.6; color: var(--wht-ink); overflow-wrap: break-word; }
+.list li::before { content: ''; position: absolute; left: 2px; top: 0.7em; width: 6px; height: 6px; border-radius: 50%; background: var(--wht-forest); }

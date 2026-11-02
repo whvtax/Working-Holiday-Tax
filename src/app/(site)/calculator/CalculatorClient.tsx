@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
+import { CalculatorView, type CalcStrings } from '@/components/wht/CalculatorBlocks'
+import { Mark } from '@/components/wht/Type'
 import { waUrl } from '@/lib/wa'
 import { trackCalculator, trackWhatsApp } from '@/lib/analytics'
 
@@ -22,6 +23,7 @@ type FAQ = { question: string; answer: string }
 
 type Props = {
   faqs?: FAQ[]
+  photo?: React.ReactNode
 }
 
 const money = (n: number) => '$' + Math.round(n).toLocaleString('en-AU')
@@ -83,8 +85,8 @@ const MYGOV = [
     us: 'We start from the same figure, then go through what it does not include.',
   },
   {
-    mygov: 'Residency is a tick box. Nothing tells you which answer is true for you.',
-    us: 'Read correctly, residency can change the rates for your whole year. We take a position on it and stand behind it.',
+    mygov: 'Residency is a tick box. Nothing there explains how it is assessed.',
+    us: 'Residency can change the rates for a year. It depends on your individual facts and is for the ATO to decide, and we review it as part of your return.',
   },
   {
     mygov: 'Deductions are a blank box, and no estimate can fill one in for you.',
@@ -96,7 +98,59 @@ const MYGOV = [
   },
 ]
 
-export function CalculatorClient({ faqs = [] }: Props) {
+const T: CalcStrings = {
+  eyebrow: "Rough figure first",
+  h1: <>Working holiday tax <Mark>refund calculator</Mark></>,
+  lead: "Put in what you earned and what was withheld. An indicative figure comes back in a few seconds.",
+  incomeLabel: "Total income earned",
+  withheldLabel: "Tax withheld by your employers",
+  withheldHint: "On your income statement or payment summary, added up across every job.",
+  visaLabel: "Tax residency status",
+  visaPlaceholder: "Select your status",
+  optWhm: "Working holiday maker (417 / 462)",
+  optRes: "Australian tax resident",
+  visaHint: "Most people pick working holiday maker because that is the visa.",
+  superLabel: "Superannuation balance",
+  optional: "(optional)",
+  superHint: "If you have ever held a 417 or 462 visa, the 65% DASP rate applies to the whole balance.",
+  abnLabel: "I also invoiced under an ABN",
+  abnHint: "Delivery riding, subcontracting, anything you invoiced for.",
+  calculate: "Calculate",
+  resultNote: "Treat this as indicative. The real number moves on three things this page cannot settle: which residency position applies to you, whether the Medicare levy exemption applies, and what your line of work can deduct.",
+  sendWa: "Send this to us on WhatsApp",
+  sendNote: "Your figures go into the message. Replies in about an hour.",
+  supTitle: "Superannuation (DASP)",
+  balance: "Balance",
+  taxAt: (rate) => `Tax at ${rate}%`,
+  youReceive: "You receive",
+  supNote: "Super is only paid out after you have left Australia and your visa has expired or been cancelled.",
+  supLink: "How the DASP claim works",
+  totalLabel: "Indicative total",
+  footnote: "The calculator uses the 2025-26 rates and only the figures you type in, so it is not your final number.",
+  doEyebrow: "Doing it yourself",
+  doTitle: <>Type a low number into myGov and <Mark>a low number is what gets lodged.</Mark></>,
+  doIntro: "An estimate is only as good as what you typed, and four things are missing from it.",
+  colMygov: "On myGov",
+  colUs: "With us",
+  doStatement: "You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.",
+  diffTitle: "What makes the real number different from this one?",
+  diffParas: [
+    "Three things, none of them on this page. The first is your residency position. It can change which rates apply to a year. It depends on your individual circumstances, is assessed case by case and is for the ATO to decide.",
+    "The second is the Medicare levy. It is 2% of taxable income, it comes off by default, and most 417 and 462 holders never owed it. Removing it needs a certificate almost nobody applies for.",
+    "The third is deductions, a blank box on myGov. What a farm hand, a barista and a hospitality worker can each claim is not the same list.",
+  ],
+  linkMedicare: "The Medicare levy exemption",
+  linkSuper: "Claiming your super after you leave",
+  linkExpenses: "What you can actually deduct",
+  faqTitle: "Questions about the estimate",
+  ctaTitle: "Anyone can press submit. The work happens before that.",
+  ctaText: "Send us your figures and we will tell you what is in play for your year. Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
+  ctaNote: "Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
+  ctaButton: "Message us on WhatsApp",
+  ctaReply: "Replies in about an hour.",
+}
+
+export function CalculatorClient({ faqs = [], photo }: Props) {
   const [income,   setIncome]   = useState('')
   const [withheld, setWithheld] = useState('')
   const [visa,     setVisa]     = useState('')
@@ -156,403 +210,16 @@ export function CalculatorClient({ faqs = [] }: Props) {
     trackWhatsApp({ position: 'calculator-result', topic: 'calculator', lang: 'en', tier: hasAbn ? 'tfn-abn' : 'tfn' })
   }
 
-  const LABEL = 'block font-semibold uppercase text-muted'
-  // 11.5px, uppercase and tracked out is the hardest setting to read at arm's
-// length, and these are the labels naming what to type on the page that
-// qualifies the lead. The inputs themselves were already a correct 16px.
-const LABEL_S: React.CSSProperties = { fontSize: '13px', letterSpacing: '0.06em', marginBottom: '10px' }
-  // 16px minimum, or iOS zooms the whole page on focus.
-  const FIELD: React.CSSProperties = { fontSize: '16px', height: '54px' }
-
   return (
-    <>
-      {/* Page header */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
-          <div className="max-w-[620px] mx-auto text-center">
-
-            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4 justify-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
-              <span className="font-medium uppercase"
-                style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240' }}>
-                Rough figure first
-              </span>
-            </div>
-
-            <h1 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(26px,3.2vw,42px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '12px' }}>
-              Working holiday tax refund calculator
-            </h1>
-
-            <p className="hero-sub mx-auto"
-              style={{ fontSize: '16.5px', lineHeight: 1.62, color: '#0F1A16', maxWidth: '46ch' }}>
-              Put in what you earned and what was withheld. An indicative figure comes back in a few seconds.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Calculator body */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-12 lg:px-14">
-          <div className="max-w-xl mx-auto w-full">
-
-            <div className="space-y-5 mb-6">
-              {/* Income */}
-              <div>
-                <label htmlFor="ci" className={LABEL} style={LABEL_S}>Total income earned</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
-                  <input
-                    id="ci" type="number" placeholder="0" value={income} min={0} max={10000000}
-                    inputMode="decimal" enterKeyHint="next"
-                    onChange={e => setIncome(e.target.value)}
-                    className="input-base"
-                    style={{ ...FIELD, paddingLeft: '60px' }}
-                  />
-                </div>
-              </div>
-
-              {/* Withheld */}
-              <div>
-                <label htmlFor="cw" className={LABEL} style={LABEL_S}>Tax withheld by your employers</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
-                  <input
-                    id="cw" type="number" placeholder="0" value={withheld} min={0} max={5000000}
-                    inputMode="decimal" enterKeyHint="next"
-                    onChange={e => setWithheld(e.target.value)}
-                    className="input-base"
-                    style={{ ...FIELD, paddingLeft: '60px' }}
-                  />
-                </div>
-                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
-                  On your income statement or payment summary, added up across every job.
-                </p>
-              </div>
-
-              {/* Visa */}
-              <div>
-                <label htmlFor="cv" className={LABEL} style={LABEL_S}>Tax residency status</label>
-                <div className="relative">
-                  <select
-                    id="cv" value={visa} onChange={e => setVisa(e.target.value)}
-                    className="input-base appearance-none cursor-pointer pr-10"
-                    style={{ ...FIELD, color: visa ? undefined : '#525A57' }}
-                  >
-                    <option value="">Select your status</option>
-                    <option value="whm">Working holiday maker (417 / 462)</option>
-                    <option value="res">Australian tax resident</option>
-                  </select>
-                  <svg className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
-                    <path d="M1 1l5 5 5-5" stroke="#525A57" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px' }}>
-                  Most people pick working holiday maker because that is the visa.
-                </p>
-              </div>
-
-              {/* Superannuation balance - optional */}
-              <div>
-                <label htmlFor="cs" className={LABEL} style={LABEL_S}>
-                  Superannuation balance <span style={{ textTransform: 'none', letterSpacing: 0, opacity: 0.7 }}>(optional)</span>
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-medium" style={{ fontSize: '14px', color: '#525A57' }}>AUD</span>
-                  <input
-                    id="cs" type="number" placeholder="0" value={superBal} min={0} max={5000000}
-                    inputMode="decimal" enterKeyHint="done"
-                    onChange={e => setSuperBal(e.target.value)}
-                    className="input-base"
-                    style={{ ...FIELD, paddingLeft: '60px' }}
-                  />
-                </div>
-                <p style={{ fontSize: '13px', color: '#525A57', marginTop: '8px', lineHeight: 1.6 }}>
-                  If you have ever held a 417 or 462 visa, the 65% DASP rate applies to the whole balance.
-                </p>
-              </div>
-
-              {/* ABN, because it changes what the review has to do */}
-              <div className="rounded-xl" style={{ border: '1.5px solid #DCE0DE', background: '#F7FBF9' }}>
-                <label htmlFor="cabn" className="flex items-start gap-3 cursor-pointer" style={{ padding: '14px 16px', minHeight: '44px' }}>
-                  <input
-                    id="cabn" type="checkbox" checked={hasAbn}
-                    onChange={e => setHasAbn(e.target.checked)}
-                    style={{ width: '20px', height: '20px', marginTop: '2px', accentColor: '#0B5240', flexShrink: 0 }}
-                  />
-                  <span>
-                    <span className="font-semibold text-ink" style={{ fontSize: '15px', display: 'block' }}>
-                      I also invoiced under an ABN
-                    </span>
-                    <span style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.6 }}>
-                      Delivery riding, subcontracting, anything you invoiced for.
-                    </span>
-                  </span>
-                </label>
-              </div>
-
-              {err && <p role="alert" style={{ fontSize: '14px', color: '#9A3412', fontWeight: 500 }}>{err}</p>}
-            </div>
-
-            <button type="button" onClick={run}
-              className="btn-primary w-full flex items-center justify-center"
-              style={{ minHeight: '54px', fontSize: '16px', borderRadius: '100px' }}>
-              Calculate
-            </button>
-
-            {result && (
-              <div
-                ref={resultRef}
-                tabIndex={-1}
-                role="status"
-                aria-live="polite"
-                style={{
-                  marginTop: '20px',
-                  scrollMarginTop: '80px',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  outline: 'none',
-                  border: `1.5px solid ${result.owing ? '#FDBA74' : '#DCE0DE'}`,
-                  background: result.owing ? '#FEF3F0' : '#F2FAF7',
-                }}>
-
-                <div style={{ padding: '22px 20px 18px', textAlign: 'center' }}>
-                  <p className="font-semibold uppercase"
-                    style={{ fontSize: '11px', letterSpacing: '0.14em', marginBottom: '7px', color: result.owing ? '#9A3412' : '#0B5240' }}>
-                    {result.label}
-                  </p>
-                  <p className="font-black"
-                    style={{ fontSize: 'clamp(30px,6vw,42px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: result.owing ? '#9A3412' : '#0B5240' }}>
-                    {result.amount}
-                  </p>
-                  <p style={{ fontSize: '14px', lineHeight: 1.6, marginTop: '9px', color: '#0F1A16' }}>
-                    {result.sub}
-                  </p>
-                </div>
-
-                {/* What the figure cannot know, then the handoff. */}
-                <div style={{ padding: '0 20px 18px' }}>
-                  {/* "That is what the review works out." was a closing line
-                      that added no fact to the three already named. */}
-                  <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#0F1A16', marginBottom: '14px' }}>
-                    Treat this as indicative. The real number moves on three things this page cannot
-                    settle: which residency position is true for you, whether the Medicare levy
-                    exemption applies, and what your line of work can deduct.
-                  </p>
-                  <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
-                    className="btn-primary w-full flex items-center justify-center"
-                    style={{ minHeight: '50px', fontSize: '15px', borderRadius: '100px' }}>
-                    Send this to us on WhatsApp
-                  </a>
-                  <p style={{ fontSize: '13px', color: '#525A57', marginTop: '9px', textAlign: 'center' }}>
-                    Your figures go into the message. Replies in about an hour.
-                  </p>
-                </div>
-
-                {result.sup && (
-                  <div style={{ borderTop: '1px solid rgba(11,82,64,0.12)', background: 'rgba(255,255,255,0.55)', padding: '16px 20px' }}>
-                    <p className="font-semibold uppercase"
-                      style={{ fontSize: '11px', letterSpacing: '0.14em', color: '#0B5240', marginBottom: '11px' }}>
-                      Superannuation (DASP)
-                    </p>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '6px' }}>
-                      <span style={{ color: '#525A57' }}>Balance</span>
-                      <span style={{ fontWeight: 500 }}>{money(result.sup.gross)}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '9px', paddingBottom: '9px', borderBottom: '1px solid rgba(11,82,64,0.1)' }}>
-                      <span style={{ color: '#525A57' }}>Tax at {result.sup.rate}%</span>
-                      <span style={{ fontWeight: 500, color: '#9A3412' }}>-{money(result.sup.tax)}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                      <span style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240' }}>You receive</span>
-                      <span className="font-black" style={{ fontSize: '19px', letterSpacing: '-0.02em', color: '#0B5240' }}>{money(result.sup.net)}</span>
-                    </div>
-                    <p style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '11px', color: '#525A57' }}>
-                      Super is only paid out after you have left Australia and your visa has expired or been
-                      cancelled.{' '}
-                      <Link href="/superannuation" style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
-                        How the DASP claim works
-                      </Link>
-                    </p>
-                  </div>
-                )}
-
-                {result.sup && !result.owing && (
-                  <div style={{ borderTop: '1px solid rgba(11,82,64,0.12)', padding: '15px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <span className="font-semibold uppercase" style={{ fontSize: '11.5px', letterSpacing: '0.1em', color: '#0B5240' }}>
-                      Indicative total
-                    </span>
-                    <span className="font-black" style={{ fontSize: '23px', letterSpacing: '-0.025em', color: '#0B5240' }}>{money(result.total)}</span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <p style={{ fontSize: '13px', color: '#525A57', marginTop: '16px', lineHeight: 1.6 }}>
-              The calculator uses the 2025-26 rates and only the figures you type in, so it is not your
-              final number.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* The objection, answered about an estimate. */}
-      <section className="py-10 lg:py-14" style={{ background: '#fff', borderTop: '1px solid #DCE0DE' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
-
-            <p className="font-medium uppercase"
-              style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '12px' }}>
-              Doing it yourself
-            </p>
-
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-              <span style={{ display: 'block', color: '#0F1A16', fontWeight: 400 }}>Type a low number into myGov{' '}</span>
-              <span style={{ display: 'block' }}>and a low number is what gets lodged.{' '}</span>
-            </h2>
-
-            {/* Was "...and four things are missing from what you typed", which
-                said "what you typed" twice in one line. */}
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#525A57', maxWidth: '56ch', marginBottom: '20px' }}>
-              An estimate is only as good as what you typed, and four things are missing from it.
-            </p>
-
-            <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid #DCE0DE' }}>
-              {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : '1px solid #DCE0DE' }}>
-                  <div style={{ padding: '13px 16px', background: '#FFFFFF' }}>
-                    {/* Printed on the first row only. On a phone the rows stack,
-                        so repeating both labels eight times was the same two
-                        words marching down the screen. Column headings on
-                        desktop, the key on mobile. */}
-                    {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#525A57', marginBottom: '5px' }}>
-                        On myGov
-                      </p>
-                    )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
-                  </div>
-                  <div className="border-t md:border-t-0 md:border-l border-[#DCE0DE]"
-                    style={{ padding: '13px 16px', background: '#F2FAF7' }}>
-                    {i === 0 && (
-                      <p className="font-medium uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#0B5240', marginBottom: '5px' }}>
-                        With us
-                      </p>
-                    )}
-                    <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', fontWeight: 500, margin: 0, overflowWrap: 'break-word' }}>{row.us}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="font-serif" style={{ fontSize: '18px', lineHeight: 1.45, color: '#0B5240', marginTop: '22px', maxWidth: '46ch', fontWeight: 700 }}>
-              You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* What the review adds. The spine's "what you would get wrong alone". */}
-      <section className="py-10 lg:py-14" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-              What makes the real number different from this one?
-            </h2>
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', marginBottom: '14px' }}>
-              Three things, none of them on this page. The first is your residency position. Read correctly,
-              it can change which rates apply to your whole year. It is a judgement about your circumstances,
-              worth more than everything else combined.
-            </p>
-            {/* Was one five sentence block carrying both the second and the
-                third thing. Split at the turn, where the levy ends and the
-                deductions begin. */}
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', marginBottom: '14px' }}>
-              The second is the Medicare levy. It is 2% of taxable income, it comes off by default, and
-              most 417 and 462 holders never owed it. Removing it needs a certificate almost nobody applies
-              for.
-            </p>
-            <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#0F1A16', marginBottom: '14px' }}>
-              The third is deductions, a blank box on myGov. What a farm hand, a barista and a hospitality
-              worker can each claim is not the same list.
-            </p>
-            <div className="flex flex-wrap gap-3" style={{ marginTop: '18px' }}>
-              <Link href="/medicare"
-                className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
-                The Medicare levy exemption
-              </Link>
-              <Link href="/superannuation"
-                className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
-                Claiming your super after you leave
-              </Link>
-              <Link href="/expenses"
-                className="inline-flex items-center rounded-xl border border-ink/10 transition-colors hover:border-forest-500 hover:text-forest-500"
-                style={{ padding: '12px 16px', minHeight: '44px', fontSize: '14px', color: '#0F1A16' }}>
-                What you can actually deduct
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ section */}
-      {faqs.length > 0 && (
-        <section style={{ background: '#fff', paddingTop: '50px', paddingBottom: '50px' }}>
-          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
-            <h2 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(21px,2.6vw,30px)', lineHeight: 1.16, letterSpacing: '-0.025em', marginBottom: '18px' }}>
-              Questions about the estimate
-            </h2>
-
-            <div className="flex flex-col" style={{ gap: '4px' }}>
-              {faqs.map((f, i) => (
-                <details key={i} name="calculator-faq" className="contact-faq-item">
-                  <summary className="contact-faq-summary">
-                    <span style={{ flex: 1 }}>{f.question}</span>
-                    <span className="contact-faq-plus" aria-hidden="true">+</span>
-                  </summary>
-                  {/* One <p> per paragraph. The FAQPage schema in page.tsx
-                      still uses the raw string, so the structured data is
-                      unchanged. */}
-                  {f.answer.split('\n\n').map((para, j) => (
-                    <p key={j} className="contact-faq-answer">{para}</p>
-                  ))}
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Final CTA */}
-      <section style={{ background: '#0B5240', paddingTop: '50px', paddingBottom: '60px' }}>
-        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-          <h2 className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(23px,2.8vw,33px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px', maxWidth: '22ch' }}>
-            Anyone can press submit. The work happens before that.
-          </h2>
-          <p className="mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.7, marginBottom: '10px', maxWidth: '46ch' }}>
-            Send us your figures and we will tell you what is in play for your year. Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
-          </p>
-          <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '22px', maxWidth: '46ch' }}>
-            Reviewed and signed off by a registered tax agent before it is lodged
-            with the ATO.
-          </p>
-          <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
-            className="btn-primary w-full sm:w-auto"
-            style={{ minHeight: '54px', padding: '0 36px', fontSize: '16px', minWidth: '260px' }}>
-            Message us on WhatsApp
-          </a>
-          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '12px' }}>
-            Replies in about an hour.
-          </p>
-        </div>
-      </section>
-    </>
+    <CalculatorView
+      t={T}
+      hrefs={{ superannuation: '/superannuation', medicare: '/medicare', expenses: '/expenses' }}
+      photo={photo}
+      faqs={faqs}
+      mygov={MYGOV}
+      income={income} withheld={withheld} visa={visa} superBal={superBal} hasAbn={hasAbn} err={err}
+      setIncome={setIncome} setWithheld={setWithheld} setVisa={setVisa} setSuperBal={setSuperBal} setHasAbn={setHasAbn}
+      onRun={run} result={result} resultRef={resultRef} money={money} waHref={waHref} onWaTap={onWaTap}
+    />
   )
 }

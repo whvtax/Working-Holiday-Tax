@@ -1,0 +1,16 @@
+.section { padding: var(--wht-section-y) var(--wht-gutter); }
+.inner { max-width: var(--wht-max); margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+.body { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.narrow > *, .narrow > .body > * { max-width: var(--wht-measure); width: 100%; }
+.white { background: var(--wht-paper); }
+.pale { background: var(--wht-pale); }
+.amber { background: var(--wht-amber); }
+.forest { background: var(--wht-forest); color: #fff; }
+.forest .title, .forest .eyebrow { color: #fff; }
+.eyebrow { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wht-forest); font-weight: 600; }
+.title { font-size: var(--wht-h2); line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; color: var(--wht-ink); }
+/* Desktop: heading on the left, content on the right, one shared grid with the hero. */
+@media (min-width: 1024px) {
+  .narrow { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 64px; align-items: start; }
+  .narrow > *, .narrow > .body > * { max-width: none; }
+}

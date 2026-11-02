@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": "飲食の経費控除：RSA、靴、制服、チップ",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/hospitality",
       "de": "/de/expenses/hospitality",
       "ja": "/ja/expenses/hospitality",
+      ...newLocaleLanguages('/expenses/hospitality'),
       "x-default": "/expenses/hospitality"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "飲食、バー、キ
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
   "ctaSub": "約1時間で返信します。",
-  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。",
+  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。",
   "guaranteeBody": "4店舗、4通のインカムステートメント、4つのファンドに散ったスーパー。飲食では珍しくない1年で、お客様は全員417・462ビザの方です。申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。",
   "faqHeading": "よくある質問",
   "guidesHeading": "次に読むと役に立つガイド",
@@ -202,7 +204,7 @@ const SECTIONS: Section[] = [
     "h2": "調べるのではなく判断が要るのはどこですか？",
     "paras": [
       "まず衣類です。ある品が必須制服かどうかは、どれだけ識別性があるか、雇用主が義務づけているかで決まります。靴が保護具かどうかは、あなたの店にある危険で決まります。制服規程の文書と品物の写真があれば、たいていどちらかに結論が出ます。",
-      "専門家の目が効くのは収入側です。ワーキングホリデーメーカーには非課税枠がないので、非課税枠がある前提で源泉徴収した店は、あとで納税額を残します。ただし、Addy判決という裁判所の判断が適用されるなら、その前提は変わる可能性があります。当てはまるかどうかは、パスポートとその年の状況によって決まり、当社の確認の一部です。"
+      "専門家の目が効くのは収入側です。源泉徴収の前提が合っていない店は、あとで納税額を残すことがあります。Addy判決という裁判所の判断が影響する場合もありますが、人によって異なります。当てはまるかどうかは、パスポートとその年の状況によって決まり、当社の確認の一部です。"
     ]
   }
 ]
@@ -222,7 +224,7 @@ const FAQS = [
   },
   {
     "question": "3店舗で働いています。税金は変わりますか？",
-    "answer": "店ごとに別の雇用主で、それぞれにTax File Number Declaration、それぞれの源泉徴収、それぞれのインカムステートメントがあり、そのすべてが同じ1つの申告に入ります。\n\nワーキングホリデーメーカーはどの雇用主からも非課税枠を受けられないので、非課税枠がある前提で源泉徴収した店は、還付ではなく納税額を残します。"
+    "answer": "店ごとに別の雇用主で、それぞれにTax File Number Declaration、それぞれの源泉徴収、それぞれのインカムステートメントがあり、そのすべてが同じ1つの申告に入ります。\n\n源泉徴収の前提が合っていない店は、還付ではなく納税額を残すことがあります。"
   },
   {
     "question": "カジュアルの仕事でもスーパーはもらえますか？",
@@ -274,6 +276,7 @@ export default function Page() {
         articleHeadline: "飲食の経費控除：RSA、靴、制服、チップ",
         articleDescription: "滑り止めの靴とコックコートは控除できます。店が指定する黒一色の服は控除できません。",
         inLanguage: "ja-JP",
+        photoKey: 'expenses/hospitality',
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
       }}
     />

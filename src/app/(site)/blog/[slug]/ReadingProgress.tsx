@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from 'react'
 
-type Locale = 'en' | 'de' | 'ja'
+type Locale = 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es'
 
 const READING_UI = {
   en: { minLeft: 'min left' },
   de: { minLeft: 'Min. übrig' },
   ja: { minLeft: '分残り' },
+  fr: { minLeft: 'min restantes' },
+  it: { minLeft: 'min rimanenti' },
+  es: { minLeft: 'min restantes' },
 }
 
 /**

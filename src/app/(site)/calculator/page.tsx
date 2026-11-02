@@ -1,6 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
+import { PagePhoto } from '@/components/wht/PagePhoto'
 import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
 
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
       'en': '/calculator', 'en-AU': '/calculator',
       'de': '/de/calculator',
       'ja': '/ja/calculator',
+      ...newLocaleLanguages('/calculator'),
       'x-default': '/calculator',
     },
   },
@@ -53,7 +56,7 @@ const faqs = [
   {
     question: 'I have the figure. Can I just lodge it myself?',
     answer:
-      'You can, and lodging really is the easy part. What an estimate cannot do is change the figure, because it is arithmetic on the numbers you already have.\n\nThree judgements decide the real result, and none is a field on this page: which residency position is true for you, whether the Medicare levy should ever have been charged, and what your line of work is entitled to deduct.',
+      'You can, and lodging really is the easy part. What an estimate cannot do is change the figure, because it is arithmetic on the numbers you already have.\n\nThree judgements decide the real result, and none is a field on this page: which residency position applies to you, whether the Medicare levy should ever have been charged, and what your line of work is entitled to deduct.',
   },
   {
     question: 'How accurate is this tax calculator?',
@@ -63,7 +66,7 @@ const faqs = [
   {
     question: 'What tax rates does the calculator use?',
     answer:
-      'For working holiday makers on a 417 or 462 visa it applies 15% on the first $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000 and 45% above $190,000, with no tax free threshold.\n\nFor Australian tax residents it applies the tax free threshold up to $18,200, then 16% up to $45,000, 30% up to $135,000, 37% up to $190,000 and 45% above that. Which applies to you is a judgement about your circumstances, not a setting.',
+      'For working holiday makers on a 417 or 462 visa it applies 15% on the first $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000 and 45% above $190,000, as an indicative scale.\n\nIt can also show a resident scale for comparison. Which scale applies to you depends on the facts of your year, is assessed case by case and is for the ATO to decide, so it is not a setting you can pick for yourself.',
   },
   {
     question: 'Why does the calculator not include the Medicare levy?',
@@ -139,7 +142,7 @@ export default function CalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <CalculatorClient faqs={faqs} />
+      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="en" />} />
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'en' })} lang="en" topic="calculator" />
     </>
   )

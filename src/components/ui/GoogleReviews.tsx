@@ -17,12 +17,15 @@
 import { useState } from 'react'
 import { useGoogleData, type RGReview, type GoogleData } from '@/lib/googleSummary'
 
-type Lang = 'en' | 'de' | 'ja'
+type Lang = 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es'
 
 const T: Record<Lang, { based: (n: number) => string; view: string; more: string; less: string }> = {
   en: { based: (n) => `Based on ${n} Google review${n === 1 ? '' : 's'}`, view: 'View us on Google', more: 'Read more', less: 'Show less' },
   de: { based: (n) => `Basierend auf ${n} Google-Bewertung${n === 1 ? '' : 'en'}`, view: 'Auf Google ansehen', more: 'Mehr lesen', less: 'Weniger anzeigen' },
   ja: { based: (n) => `${n}件のGoogleレビューに基づく`, view: 'Googleで見る', more: 'もっと読む', less: '閉じる' },
+  fr: { based: (n) => `Basé sur ${n}\u00A0avis Google`, view: 'Voir notre fiche Google', more: 'Lire la suite', less: 'Réduire' },
+  it: { based: (n) => `Basato su ${n} recension${n === 1 ? 'e' : 'i'} su Google`, view: 'Vedici su Google', more: 'Leggi tutto', less: 'Mostra meno' },
+  es: { based: (n) => `Basado en ${n} reseña${n === 1 ? '' : 's'} de Google`, view: 'Vernos en Google', more: 'Leer más', less: 'Mostrar menos' },
 }
 
 const STAR_GOLD = '#FBBC04'

@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": { absolute: "Delivery Driver Tax Deductions Australia: Car, Phone, GST" },
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/delivery-drivers",
       "de": "/de/expenses/delivery-drivers",
       "ja": "/ja/expenses/delivery-drivers",
+      ...newLocaleLanguages('/expenses/delivery-drivers'),
       "x-default": "/expenses/delivery-drivers"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Delivery driving and 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.",
+  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
   "guaranteeBody": "Platform riders on 417 and 462 visas are a large part of what we do, which is why the logbook question and the GST line get settled before the return is written. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
@@ -259,7 +261,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Uber Eats, DoorDash, Menulog and Amazon Flex engage riders as contractors: an ABN, nothing withheld, no super. A roster at one pizza shop that hands you a payslip is employment under a TFN. A shop that sets your shifts, supervises your work and supplies the bike, then asks you to register an ABN, may be an employer in disguise.",
       "Where the deductible driving starts follows from that. An employee's trip to the shop is private, and only shop to drop off counts. Under an ABN the driving is the work.",
-      "Residency decides how the profit is taxed at all. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review."
+      "Residency is a separate question for the profit. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review."
     ]
   }
 ]
@@ -331,6 +333,7 @@ export default function Page() {
         articleHeadline: "Delivery Driver Tax Deductions Australia: Car, Phone, GST",
         articleDescription: "Your kilometres and the work share of your phone are the whole game. Fines and the private leg never were.",
         inLanguage: "en-AU",
+        photoKey: 'expenses/delivery-drivers',
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
       }}
     />

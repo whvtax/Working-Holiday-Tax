@@ -1,9 +1,16 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { guides, categoryMeta, getCategoryBySlug, getCategoryColor } from '../../data'
-import CategoryHero from '../../[slug]/CategoryHero'
+import { guides, categoryMeta, getCategoryBySlug } from '../../data'
+import { Section } from '@/components/wht/Section'
+import { LinkButton } from '@/components/wht/Button'
+import { PagePhoto } from '@/components/wht/PagePhoto'
+import { blocks } from '@/components/wht/Blocks'
+import { blog, PageHead, ArticleCard, CtaBand, categoryPhotoKey } from '@/components/wht/BlogBlocks'
+import { Accordion } from '@/components/ui/Accordion'
+import { GuideCta } from '@/components/ui/GuideCta'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
 
@@ -41,6 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           'en-AU': `${SITE_URL}/blog/category/${meta.slug}`,
           'de': `${SITE_URL}/de/blog/category/${other}`,
           'ja': `${SITE_URL}/ja/blog/category/${other}`,
+          ...newLocaleLanguages(`/blog/category/${meta.slug}`),
           'x-default': `${SITE_URL}/blog/category/${meta.slug}`,
         }
       })(),
@@ -157,8 +165,8 @@ export default async function CategoryPage({ params }: Props) {
   if (!meta) notFound()
 
   const articles = guides.filter(g => g.category === meta.category)
-  const colors = getCategoryColor(meta.category)
   const intro = CATEGORY_INTRO[meta.slug]
+  const photoKey = categoryPhotoKey(meta.slug)
 
   const collectionLd = {
     '@context': 'https://schema.org',
@@ -221,210 +229,87 @@ export default async function CategoryPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
-      {/* All blog styles are in globals.css, except these two, which have no
-          rule there at all. `list-style: none` on a <summary> is ignored by
-          Safari and iOS, so every question on this page carried a native
-          disclosure triangle next to the "+" that is meant to be the only
-          indicator. And the "+" never became a "−": once a question was open
-          the control still read as "expand". Same rotate the contact page FAQ
-          already uses. */}
-      <style dangerouslySetInnerHTML={{ __html: `.faq-item > summary::-webkit-details-marker{display:none}.faq-item > summary::marker{content:""}.faq-plus{transition:transform .25s ease}.faq-item[open] .faq-plus{transform:rotate(45deg)}@media (prefers-reduced-motion: reduce){.faq-plus{transition:none}}` }} />
+      <div className={blocks.underHeader} style={{ background: '#fff', minHeight: '100vh' }}>
 
-      <div style={{ background: '#fff', minHeight: '100vh', paddingTop: '68px' }}>
+        <PageHead
+          titleId="category-title"
+          crumbsLabel="Breadcrumb"
+          crumbs={[
+            { label: 'Home', href: '/' },
+            { label: 'Blog', href: '/blog' },
+            { label: meta.category },
+          ]}
+          top={<p className={blog.countRow}>{articles.length} {articles.length === 1 ? 'article' : 'articles'}</p>}
+          title={meta.title}
+          lead={meta.intro}
+        >
+          {meta.relatedServicePath && (
+            <LinkButton href={meta.relatedServicePath} size="md">{meta.relatedServiceLabel} →</LinkButton>
+          )}
+        </PageHead>
 
-        {/* Hero - now uses the category's color for the accent */}
-        <section style={{ background: colors.bg }}>
-          <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 20px 48px' }}>
-
-            <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#525A57', marginBottom: '16px', flexWrap: 'wrap' }}>
-              <Link href="/" style={{ color: 'inherit', textDecoration: 'none', padding: '8px 0' }}>Home</Link>
-              <span aria-hidden="true">/</span>
-              <Link href="/blog" style={{ color: 'inherit', textDecoration: 'none', padding: '8px 0' }}>Blog</Link>
-              <span aria-hidden="true">/</span>
-              <span aria-current="page" style={{ color: colors.text }}>{meta.category}</span>
-            </nav>
-
-            <div className="inline-flex items-center gap-2" style={{ marginBottom: '12px' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: colors.text, display: 'inline-block' }} aria-hidden="true" />
-              <span style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: colors.text, textTransform: 'uppercase', fontWeight: 600 }}>
-                {articles.length} {articles.length === 1 ? 'article' : 'articles'}
-              </span>
-            </div>
-
-            <h1 className="font-serif font-black" style={{ fontSize: 'clamp(26px, 4vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.03em', color: '#0F1A16', marginBottom: '12px', maxWidth: '720px' }}>
-              {meta.title}
-            </h1>
-
-            <p style={{ fontSize: 'clamp(16px, 1.3vw, 17px)', lineHeight: 1.65, color: '#0F1A16', maxWidth: '640px', fontWeight: 400, marginBottom: '24px' }}>
-              {meta.intro}
-            </p>
-
-            {meta.relatedServicePath && (
-              <Link
-                href={meta.relatedServicePath}
-                className="topic-pill"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 18px', borderRadius: '100px', background: '#0B5240', color: '#fff', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}
-              >
-                {meta.relatedServiceLabel} →
-              </Link>
-            )}
-
-          </div>
-        </section>
+        {photoKey && (
+          <div className={blog.photoWrap}><PagePhoto page={photoKey} locale="en" /></div>
+        )}
 
         {/* What this category covers, and who it is for */}
         {intro && (
-          <section style={{ maxWidth: '780px', margin: '0 auto', padding: '40px 20px 8px' }}>
-            <h2 className="font-serif" style={{ fontSize: 'clamp(21px, 2.4vw, 26px)', fontWeight: 700, color: '#0B5240', letterSpacing: '-0.022em', lineHeight: 1.25, marginBottom: '16px' }}>
-              What {meta.category} covers, and who it is for
-            </h2>
-            {/* 68ch keeps these two long paragraphs inside a readable measure.
-                At the section's full 740px they ran to about 95 characters a
-                line, which is where the eye starts losing the return sweep. */}
+          <Section title={`What ${meta.category} covers, and who it is for`} titleId="covers-title">
             {intro.paragraphs.map((p, i) => (
-              <p key={i} style={{ fontSize: '15.5px', color: '#0F1A16', lineHeight: 1.8, fontWeight: 400, marginBottom: '1rem', maxWidth: '68ch' }}>
-                {p}
-              </p>
+              <p key={i} className={blocks.text}>{p}</p>
             ))}
             {intro.service && (
-              <p style={{ fontSize: '15.5px', lineHeight: 1.8, fontWeight: 400, marginBottom: 0 }}>
-                <Link
-                  href={intro.service.path}
-                  style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: '3px' }}
-                >
-                  {intro.service.label}
-                </Link>
-              </p>
+              <Link href={intro.service.path} className={blocks.textLink}>{intro.service.label}</Link>
             )}
-          </section>
+          </Section>
         )}
 
         {/* Articles */}
-        <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 24px' }}>
-
-          <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#0F1A16', marginBottom: '24px', letterSpacing: '-0.02em' }}>
-            All {meta.category} articles ({articles.length})
-          </h2>
-
-          <div className="category-grid">
+        <Section tone="pale" width="wide" title={`All ${meta.category} articles (${articles.length})`} titleId="articles-title">
+          <div className={blog.grid}>
             {articles.map(article => (
-              <Link
+              <ArticleCard
                 key={article.slug}
                 href={`/blog/${article.slug}`}
-                className="category-card"
-                style={{ display: 'flex', flexDirection: 'column', gap: '0', padding: '0', background: '#fff', textDecoration: 'none', borderRadius: '16px', border: '1px solid #DCE0DE' }}
-              >
-                {/* Decorative category illustration */}
-                <div className="blog-card-hero" style={{ aspectRatio: '16/9', overflow: 'hidden', borderRadius: '15px 15px 0 0' }}>
-                  <CategoryHero category={article.category} title={article.title} slug={article.slug} />
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 22px 22px', flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                    <span style={{
-                      fontSize: '13px',
-                      padding: '4px 11px',
-                      borderRadius: '100px',
-                      background: colors.bg,
-                      color: colors.text,
-                      fontWeight: 600,
-                      letterSpacing: '0.02em',
-                      border: `1px solid ${colors.border}`,
-                    }}>
-                      {article.category}
-                    </span>
-                    <span aria-hidden="true" style={{ color: '#DCE0DE' }}>·</span>
-                    <span style={{ fontSize: '13px', color: '#525A57' }}>{article.readTime} min read</span>
-                  </div>
-                  <h3 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#0F1A16', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}>
-                    {article.title}
-                  </h3>
-                  <p style={{ fontSize: '13.5px', color: '#525A57', lineHeight: 1.65, margin: 0, fontWeight: 400, flex: 1 }}>
-                    {article.description}
-                  </p>
-                  <span style={{ fontSize: '14px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    Read more <span className="read-arrow">→</span>
-                  </span>
-                </div>
-              </Link>
+                meta={`${article.category} · ${article.readTime} min read`}
+                title={article.title}
+                desc={article.description}
+                cta="Read more"
+              />
             ))}
           </div>
-        </section>
+        </Section>
 
-        {/* FAQ */}
-        <section style={{ maxWidth: '780px', margin: '0 auto', padding: '48px 20px 60px', borderTop: '1px solid #DCE0DE', marginTop: '48px' }}>
-          <div style={{ marginBottom: '24px' }}>
-            <p style={{ fontSize: '10.5px', fontWeight: 700, color: colors.text, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '8px' }}>
-              Common questions
-            </p>
-            <h2 className="font-serif" style={{ fontSize: 'clamp(22px, 2.5vw, 28px)', fontWeight: 700, color: '#0B5240', marginBottom: '0', letterSpacing: '-0.025em' }}>
-              Frequently asked questions
-            </h2>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {meta.faq.map((f, i) => (
-              <details key={i} className="faq-item" style={{ borderBottom: '1px solid #DCE0DE', padding: '16px 0' }}>
-                <summary className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#0F1A16', letterSpacing: '-0.015em', listStyle: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', cursor: 'pointer', minHeight: '28px' }}>
-                  <span style={{ flex: 1, minWidth: 0 }}>{f.question}</span>
-                  <span className="faq-plus" aria-hidden="true" style={{ flexShrink: 0, color: colors.text, fontSize: '20px', fontWeight: 300, lineHeight: 1 }}>+</span>
-                </summary>
-                {/* One <p> per paragraph, so a long answer is not one block on
-                    a phone. faqLd above still uses the raw f.answer string, so
-                    the structured data is unchanged. The answers themselves live
-                    in data.ts, which another rewrite owns. */}
-                {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} style={{ fontSize: '15px', color: '#0F1A16', lineHeight: 1.75, fontWeight: 400, marginTop: '12px', marginBottom: 0 }}>
-                    {para}
-                  </p>
-                ))}
-              </details>
-            ))}
-          </div>
-        </section>
+        {/* FAQ. The FAQPage schema above uses the raw answers, so it is unchanged. */}
+        <Section eyebrow="Common questions" title="Frequently asked questions" titleId="faq-title">
+          <Accordion items={meta.faq} />
+        </Section>
 
         {/* Other categories */}
-        <section style={{ maxWidth: '780px', margin: '0 auto', padding: '0 20px 80px' }}>
-          {/* 20px, matching "All X articles". At 16px this section heading was
-              the same size as the article card titles below it, which flattened
-              the hierarchy on the one page that has four H2s. */}
-          <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#0F1A16', marginBottom: '16px', letterSpacing: '-0.02em' }}>
-            Other categories
-          </h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <Section tone="pale" title="Other categories" titleId="other-title">
+          <div className={blog.pills}>
             {categoryMeta
               .filter(c => c.slug !== meta.slug)
-              .map(c => {
-                const cColors = getCategoryColor(c.category)
-                return (
-                  <Link
-                    key={c.slug}
-                    href={`/blog/category/${c.slug}`}
-                    className="topic-pill"
-                    style={{
-                      padding: '8px 16px',
-                      borderRadius: '100px',
-                      border: `1px solid ${cColors.border}`,
-                      background: cColors.bg,
-                      fontSize: '13px',
-                      color: cColors.text,
-                      textDecoration: 'none',
-                      fontWeight: 600,
-                    }}
-                  >
-                    {c.category}
-                  </Link>
-                )
-              })}
-            <Link
-              href="/blog"
-              className="topic-pill"
-              style={{ padding: '8px 16px', borderRadius: '100px', border: '1px solid #0B5240', background: '#0B5240', fontSize: '13px', color: '#fff', textDecoration: 'none', fontWeight: 600 }}
-            >
+              .map(c => (
+                <Link key={c.slug} href={`/blog/category/${c.slug}`} className={blog.pill}>
+                  {c.category}
+                </Link>
+              ))}
+            <Link href="/blog" className={`${blog.pill} ${blog.pillOn}`}>
               All articles →
             </Link>
           </div>
-        </section>
+        </Section>
+
+        <CtaBand>
+          <GuideCta category={meta.category} slug={`category-${meta.slug}`} lang="en" title={meta.title} />
+        </CtaBand>
+
+        <div
+          aria-hidden="true"
+          className="md:hidden"
+          style={{ height: 'calc(84px + env(safe-area-inset-bottom, 0px))' }}
+        />
 
       </div>
       <MobileCta href={waUrl({ topic: "guide", lang: "en" })} lang="en" topic="guide" />

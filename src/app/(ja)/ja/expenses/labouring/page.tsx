@@ -1,7 +1,9 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesWhtPage } from '@/components/wht/JobPageBlocks'
 
 export const metadata: Metadata = {
   "title": "派遣と倉庫の経費控除：保護具、資格、移動",
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/labouring",
       "de": "/de/expenses/labouring",
       "ja": "/ja/expenses/labouring",
+      ...newLocaleLanguages('/expenses/labouring'),
       "x-default": "/expenses/labouring"
     }
   },
@@ -66,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "派遣と倉庫の仕
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
   "ctaSub": "約1時間で返信します。",
-  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。",
+  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。",
   "guaranteeBody": "4社のエージェンシーと、忘れられた1日だけのシフトを1つの申告にまとめるのは、当社では普通の仕事です。お客様は全員417・462ビザの方。申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。",
   "faqHeading": "よくある質問",
   "guidesHeading": "次に読むと役に立つガイド",
@@ -202,7 +205,7 @@ const SECTIONS: Section[] = [
     "h2": "1年の回り方で決まるのはどこですか？",
     "paras": [
       "どれだけ巡回的な働き方だったかが、移動のどこまでを控除できるかを決めます。ルールではなく事実認定です。現場がどれだけ変わったか、いつも戻る拠点があったか、エージェンシーが移動を求めていたか。同じエージェンシーの2人でも控除額は大きく変わります。",
-      "エージェンシーはそれぞれ別の雇用主なので、Tax File Number Declarationも源泉徴収の関係もインカムステートメントも別々になります。ワーキングホリデーメーカーはどの雇用主からも非課税枠を受けられないので、注意すべきなのは、誤った税率の適用と、申告から抜ける雇用主です。",
+      "エージェンシーはそれぞれ別の雇用主なので、Tax File Number Declarationも源泉徴収の関係もインカムステートメントも別々になります。注意すべきなのは、誤った税率の適用と、申告から抜ける雇用主です。",
       "その下にあるのが税務上の居住区分で、このページのすべての控除より価値があります。Addy判決という裁判所の判断により、一部のパスポートに適用される税率が変わる可能性があります。ご自身に当てはまるかどうかは、パスポートとその年の状況によって決まり、当社の確認の一部です。"
     ]
   }
@@ -211,7 +214,7 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "3社のエージェンシーに登録しています。税金は変わりますか？",
-    "answer": "エージェンシーはそれぞれ法的に別の雇用主で、Tax File Number Declarationも源泉徴収も、年度末のインカムステートメントも各社別々です。それらはすべて1つの申告に入ります。\n\nワーキングホリデーメーカーの賃金は非課税枠ではなく専用の税率で課税されるため、複数社で注意すべきなのは、どこか1社が抜けることです。"
+    "answer": "エージェンシーはそれぞれ法的に別の雇用主で、Tax File Number Declarationも源泉徴収も、年度末のインカムステートメントも各社別々です。それらはすべて1つの申告に入ります。\n\n複数社で注意すべきなのは、どこか1社が抜けることです。"
   },
   {
     "question": "別々の現場の間の移動は控除できますか？",
@@ -268,7 +271,7 @@ const SERVICES = [
    every section renderer live in JobExpensesPage, once, for all 21 job pages. */
 export default function Page() {
   return (
-    <JobExpensesPage
+    <JobExpensesWhtPage
       content={{
         lang: 'ja',
         path: '/ja/expenses/labouring',

@@ -17,7 +17,7 @@ describe('redirects', () => {
   })
   it('the live form pages are never a redirect source', async () => {
     const rules = await nextConfig.redirects()
-    const live = [...Object.values(WHT), ...Object.values(SVT)].flatMap((s) => [`/${s}`, `/de/${s}`, `/ja/${s}`, `/zh/${s}`, `/vi/${s}`])
+    const live = [...Object.values(WHT), ...Object.values(SVT)].flatMap((s) => [`/${s}`, `/de/${s}`, `/ja/${s}`, `/fr/${s}`, `/it/${s}`, `/es/${s}`, `/zh/${s}`, `/vi/${s}`])
     expect(rules.filter((r) => live.includes(r.source))).toEqual([])
   })
 })

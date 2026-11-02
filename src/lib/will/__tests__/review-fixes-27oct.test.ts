@@ -53,6 +53,6 @@ it('knowledge fixes run each batch once, in order, never re-running an earlier o
   // 'a' by the 27 Oct batch; 'b' only by the 30 Oct batch b (DASP: not available at the moment), never by the 25 Oct batch.
   expect(await applyKnowledgeFixes(store)).toBe(2);
   expect(updates).toEqual(['a', 'b']);
-  expect(settings.knowledge_fix).toBe('fix-30oct-b');
+  expect(settings.knowledge_fix).toBe('fix-2nov-ihi');
   expect(await applyKnowledgeFixes(store)).toBe(0);
 });

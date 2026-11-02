@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": "オーストラリアの経費控除、職種別ガイド",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses",
       "de": "/de/expenses",
       "ja": "/ja/expenses",
+      ...newLocaleLanguages('/expenses'),
       "x-default": "/expenses"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "自分の職種で控
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
   "ctaSub": "約1時間で返信します。",
-  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。",
+  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。",
   "guaranteeBody": "ワーキングホリデーの税金だけを専門にしています。申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。",
   "faqHeading": "よくある質問",
   "guidesHeading": "次に読むと役に立つガイド",
@@ -324,7 +326,7 @@ const FAQS = [
   },
   {
     "question": "ワーキングホリデーメーカーの控除はオーストラリア人より少ないですか？",
-    "answer": "いいえ。417ビザや462ビザでも、控除のルールはオーストラリアで収入を得る他の人とまったく同じです。\n\n違うのは支出側ではなく収入側です。ワーキングホリデーメーカーの収入は非課税枠ではなく45,000ドルまで15%で課税されますが、居住区分によっては変わります。"
+    "answer": "いいえ。417ビザや462ビザでも、控除のルールはオーストラリアで収入を得る他の人とまったく同じです。\n\n違うのは支出側ではなく収入側です。どの税率が適用されるかは、居住区分を含むその年の個別の事情によって決まります。"
   },
   {
     "question": "1年で4つの仕事をしました。リストは4つに分かれますか？",
@@ -392,6 +394,7 @@ export default function Page() {
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
         mygov: { ui: MYGOV_UI, rows: MYGOV },
         hubLink: false,
+        heroSlot: { id: 'IMG-W30', subject: 'Seven working holiday jobs in one frame: fruit picking, kitchen, building site, delivery bike, cleaning, warehouse, camp', alt: "オーストラリアで働くワーホリの人たち" },
       }}
     />
   )

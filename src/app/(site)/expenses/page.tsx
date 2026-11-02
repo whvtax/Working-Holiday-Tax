@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": "Backpacker Tax Deductions, Job by Job",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses",
       "de": "/de/expenses",
       "ja": "/ja/expenses",
+      ...newLocaleLanguages('/expenses'),
       "x-default": "/expenses"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Deductions for my lin
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.",
+  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
   "guaranteeBody": "Working holiday tax is the only thing we do. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
@@ -206,8 +208,8 @@ const SECTIONS: Section[] = [
   {
     "kind": "note",
     "label": "Changing from 1 July 2026",
-    "title": "A flat $1,000, or your actual costs. Not both.",
-    "body": "From 1 July 2026 you can claim a flat $1,000 of work related expenses with no receipts, or your actual costs with full records. It is one or the other for the whole year: if your real expenses come to $1,400 and you take the flat amount, you have given up $400.\n\nThe choice first applies to the 2026-27 return, lodged from July 2027. The 2025-26 return most people are lodging now still runs on the old rules."
+    "title": "The $1,000 standard deduction, or your actual costs.",
+    "body": "From the 2026-27 income year the ATO has a $1,000 standard deduction for work related expenses that needs no receipts, for people it applies to. Expenses you claim reduce it, so the two are not added together.\n\nIt first applies to the 2026-27 return, lodged from July 2027. 2025-26 returns still run on the old rules."
   },
   {
     "kind": "tables",
@@ -313,7 +315,7 @@ const SECTIONS: Section[] = [
     "h2": "Where does it depend on your own situation?",
     "paras": [
       "Whether your travel counts as itinerant work rather than commuting depends on how your week was structured: how often the site changed, whether there was one base, and whether your employer required the movement.",
-      "Your residency for tax purposes is the other one, and it is worth more than every deduction on this page put together. It is a judgement, the same question the High Court ruled on in the Addy case. We take a position on it only after going through your year."
+      "Your residency for tax purposes is the other one, and it depends on the individual facts of your year. It is assessed case by case, the ATO makes the final decision, and our team reviews it as part of preparing your return."
     ]
   }
 ]
@@ -358,7 +360,7 @@ const GUIDES = [
   },
   {
     "href": "/blog/1000-dollar-instant-deduction-rule-2026",
-    "label": "The $1,000 instant deduction from 1 July 2026",
+    "label": "The $1,000 standard deduction from 2026-27",
     "desc": "A flat claim with no receipts, or your actual costs. You only get one."
   }
 ]
@@ -393,6 +395,7 @@ export default function Page() {
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
         mygov: { ui: MYGOV_UI, rows: MYGOV },
         hubLink: false,
+        heroSlot: { id: 'IMG-W30', subject: 'Seven working holiday jobs in one frame: fruit picking, kitchen, building site, delivery bike, cleaning, warehouse, camp', alt: "Backpackers on a working holiday at work in Australia" },
       }}
     />
   )

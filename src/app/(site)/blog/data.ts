@@ -44,7 +44,7 @@ Thirty cents in every dollar. With a TFN recorded, a working holiday maker's wag
 - $1,500 a week: $225 against $675, a difference of $450
 - $2,000 a week: $300 against $900, a difference of $600
 
-Nothing is lost permanently, because over-withheld tax comes back when the return is lodged. What is lost is access to the money for the months in between, which matters for anyone paying rent out of each pay.
+The extra withholding is reconciled when the return is lodged and assessed, and any over-withheld amount can be refunded, though the outcome depends on your year. What is certain is that you lose access to the money for the months in between, which matters for anyone paying rent out of each pay.
 
 ## Who can get one, and how hard is it?
 
@@ -111,7 +111,7 @@ Yes, and this is where the money is decided. Your employer must withhold 45% rat
 
 What matters is telling the employer on day one and completing the declaration accordingly. Say nothing and the 45% starts immediately. The difference on a $1,000 week is $300, every week, until it is corrected.
 
-Any excess withheld comes back when the return is lodged. What is lost is the use of the money in between.
+Any excess withheld is dealt with when the return is lodged and assessed, with the outcome depending on your year. What is lost for certain is the use of the money in between.
 
 ## What happens once it arrives?
 
@@ -176,7 +176,7 @@ Two facts about your own application account for nearly every delay past 28 days
 
 Only if it overlaps with paid work and you have not told your employer the application is in progress. If the Tax File Number Declaration records that you have applied, your employer withholds at the working holiday maker rate through the 28 day window rather than at 45%. Say nothing, and the 45% starts on the first pay.
 
-Even at worst nothing is lost permanently. Over-withheld tax is credited back when your return is lodged, because your liability is worked out on your income for the whole year. What you lose is the use of the money in between.
+Withholding is not the final tax. Your liability is worked out on your income for the whole year when your return is lodged, and any over-withheld amount can be credited back, though the outcome depends on your year. What you lose for certain is the use of the money in between.
 
 ## Can you start work before your TFN arrives?
 
@@ -204,7 +204,7 @@ The wait is close to identical for everyone. The cost of it is not.
 - Whether your address holds mail for a month. Seasonal work moves you, and harvest towns move you fastest.
 - Whether you have held a TFN before on an earlier Australian visa. You keep it for life, and applying again creates the duplicate problem above.
 
-If you have already worked a period at 45%, that money is sitting with the ATO waiting to be claimed back through your [working holiday tax return](/tax-return), and you can [estimate your tax refund](/calculator) before you lodge anything.
+If you have already worked a period at 45%, the extra withholding is reconciled when your [working holiday tax return](/tax-return) is assessed, and you can [estimate your tax](/calculator) before you lodge anything.
  `,
  }, {
  slug: "can-you-start-work-without-a-tfn",
@@ -234,7 +234,7 @@ Showing a manager a photo of your TFN letter, or telling them the number verball
 
 No. If the 28 days lapse, the higher rate applies to each subsequent pay in full. It is not applied retrospectively to pays you have already received, and no employer claws money back out of past wages.
 
-Hand in the TFN and the correct rate resumes from the next pay run. The over-withheld portion from the gap is not fixed in payroll; it comes back through the ATO when your return is lodged, with anything else over-withheld that year.
+Hand in the TFN and the correct rate resumes from the next pay run. The over-withheld portion from the gap is not fixed in payroll; it is reconciled by the ATO when your return is assessed, along with anything else withheld that year.
 
 ## What should you actually say to your employer on day one?
 
@@ -263,7 +263,7 @@ Any period withheld above 15% is money you claim back through your [working holi
  }, {
  slug: "what-happens-without-your-tfn",
  title:
- "No TFN on File? 45% Withheld, Not Lost",
+ "No TFN on File? 45% Withheld, Reconciled Later",
  description:
  "Without a TFN your employer must withhold 45% instead of 15%, about $7.50 an hour on a $25 job. What gets it back and what decides how long it lasts.",
  category: "TFN",
@@ -291,9 +291,9 @@ A month of full time farm work in the Bundaberg or Mildura seasons at those rate
 
 ## Do you get the money back?
 
-Yes.
+It depends on your year, and the ATO decides.
 
-Over-withheld tax is not a penalty and it is not lost. When your return is lodged the ATO works out what you owed across the financial year and refunds the difference to an Australian bank account. For most people who spent months at the wrong rate, that refund is the largest single payment of their year in Australia.
+Higher withholding is not a penalty. When your return is lodged the ATO works out what you owed across the financial year and compares it with what was withheld; if more was withheld than owed, the difference can be refunded to an Australian bank account. Many people who spent months at the wrong rate see a sizeable adjustment, but no outcome is guaranteed.
 
 What you lose is access to the money in the meantime. Paying hostel rent week to week, several months without $300 a week is a genuine problem even though the ledger balances in the end. That is why fixing the declaration is worth more per hour than most of the shifts it affects.
 
@@ -1063,7 +1063,7 @@ For most working holiday makers the balance falls on the refund side for structu
 
 ## When is the deadline, and what moves it?
 
-31 October following the end of the financial year, for anyone lodging their own return. The 2025-26 year ended 30 June 2026, so its self lodgement deadline is 31 October 2026, and the 2026-27 year runs to 31 October 2027.
+31 October following the end of the financial year, for anyone lodging their own return. The 2025-26 year ended 30 June 2026, so its self lodgement deadline was 31 October 2026 (now passed, though a late return can still be lodged), and the 2026-27 year runs to 31 October 2027.
 
 Returns lodged with the ATO under a registered tax agent generally fall under a later concessional date, often well into the following year. A missed October deadline is not the end of the matter, and penalties are not automatic.
 
@@ -1101,7 +1101,7 @@ Both years are worked out in the [working holiday tax return](/tax-return), and 
  date: "27 October 2024",
  readTime: 5,
  body: `
-The working holiday maker rate is a flat 15% on the first $45,000 of income each financial year, for both subclass 417 and 462 visas. It replaces the resident brackets, so there is no tax free threshold. Getting that rate applied depends on two things being in place, not one.
+The working holiday maker rate is a flat 15% on the first $45,000 of income each financial year, for both subclass 417 and 462 visas. It is a different basis from the ordinary resident brackets, and how that applies to your year is assessed case by case. Getting that rate applied depends on two things being in place, not one.
 
 ## What has to be true before 15% is actually applied?
 
@@ -1119,11 +1119,9 @@ A flat rate is the same every week, with no step and no tapering across the firs
 
 Above $45,000 the rate rises: 30% from $45,001 to $135,000, 37% to $190,000, and 45% above that. Few working holiday makers reach those levels, though mining and specialist trades occasionally do.
 
-## How does it compare with resident and ordinary foreign resident rates?
+## How does it compare with other rates?
 
-It sits between the two. An Australian tax resident pays nothing on the first $18,200 and then rising rates. An ordinary foreign resident pays 30% from the first dollar. A working holiday maker pays 15% from the first dollar.
-
-At typical backpacker earnings that beats a foreign resident and trails a resident. A narrow exception exists where a year is assessed differently, but it hangs on a residency judgement that is easy to call wrongly in both directions, and a position is taken only after the whole year has been reviewed. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) covers why it is not a box you can tick yourself.
+Different rates apply to different categories of taxpayer, and which one applies to you depends on the individual facts of your year. It is assessed case by case and the ATO makes the final decision. Our team reviews it as part of preparing the return, and a registered tax agent signs it off before it is lodged. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) covers why it is not a box you can tick yourself.
 
 ## Why do people with correct 15% withholding still get refunds?
 
@@ -1148,9 +1146,9 @@ Four claims circulate in hostels and backpacker groups, and each costs somebody 
 
 ## Does the Medicare levy sit on top of the 15%?
 
-Generally not, but only if it is claimed. The 2% levy applies to people entitled to Medicare, and most working holiday makers are not entitled. It is not removed automatically.
+Generally not, but only if it is claimed. The 2% levy applies to people entitled to Medicare, and whether that is you depends on your individual circumstances. It is not removed automatically.
 
-The exemption has to be claimed on the return and evidenced by a Medicare Entitlement Statement from Services Australia, which commonly takes weeks to issue. Entitlement follows the passport: a British passport holder is generally entitled and therefore pays the levy, while German and Japanese passport holders generally are not.
+Any exemption has to be claimed on the return with the right supporting evidence. We handle that as part of preparing it, and the outcome is assessed case by case.
 
 ## What happens when your stay crosses two financial years?
 
@@ -1203,7 +1201,7 @@ You supply what the ATO does not already hold.
 - Your TFN and identity documents
 - An Australian bank account for the refund, the item people lose first
 - Records for any deductions you intend to claim
-- A Medicare Entitlement Statement if you are claiming the levy exemption, ordered from Services Australia weeks in advance
+- Details of your Medicare position, so we can review the levy as part of your return
 - Details of any ABN or contractor income, which is not pre-filled
 
 ## What decides whether you can lodge from overseas?
@@ -1323,7 +1321,7 @@ Not deductible:
 
 Tools you buy yourself are deductible, and the size of the purchase decides whether you claim at once or over several years. Knife rolls, chef whites, work boots, trade tools and contracting equipment all qualify where the employer did not supply them.
 
-Items costing $300 or less each are claimed in full in the year you buy them. Larger items are written off over their effective life, and from 1 July 2026 the immediate write off threshold rises to $1,000 for eligible items, which is covered in our guide to [the $1,000 instant deduction](/blog/1000-dollar-instant-deduction-rule-2026).
+Items costing $300 or less each are claimed in full in the year you buy them. Larger items are written off over their effective life. Separately, a $1,000 standard deduction starts with the 2026-27 income year, which is covered in our guide to [the $1,000 standard deduction](/blog/1000-dollar-instant-deduction-rule-2026).
 
 ## Which travel can you claim, and which is private?
 
@@ -1366,7 +1364,7 @@ Some costs feel work related and are not, and they account for most rejected cla
 
 Three things, and only one of them is what you spent. Your line of work, because the same $400 of boots and gloves is ordinary for a construction labourer and unusual for a receptionist. What you can substantiate. And whether the expense was yours or the employer's.
 
-A limited concession lets you claim up to $300 of work related expenses in total without receipts. It is not a free $300. You still have to have spent the money and be able to explain the figure, and once your total claim passes $300 the concession falls away for the whole claim, not just the excess.
+For 2025-26 and earlier years, a limited concession lets you claim up to $300 of work related expenses in total without receipts (from 2026-27 the ATO's standard deduction takes a different approach). It is not a free $300. You still have to have spent the money and be able to explain the figure, and once your total claim passes $300 the concession falls away for the whole claim, not just the excess.
 
 ## Where does this stop being a list and start being a judgement?
 
@@ -1413,7 +1411,7 @@ Eight weeks of harvest, taxed week by week at working holiday maker rates, commo
 
 Three items, and the first two are the ones nobody claims on their own. A period before your TFN reached the employer, withheld at 45% instead of 15%, is 30 cents in the dollar waiting to be claimed. An employer not registered with the ATO as a working holiday maker employer withholds at foreign resident rates, a separate over-withholding.
 
-The third is Medicare. The 2% levy applies to people entitled to Medicare, so someone whose passport gives no entitlement should not be paying it, and reclaiming it needs a Medicare Entitlement Statement from Services Australia. That is worth about $500 on $25,000 of earnings, and our guide to [the Medicare levy](/blog/medicare-levy-working-holiday-makers) covers who qualifies.
+The third is Medicare. The 2% levy applies to people entitled to Medicare, and whether that is you depends on your circumstances. Our team reviews it as part of preparing the return, and our guide to [the Medicare levy](/blog/medicare-levy-working-holiday-makers) covers who qualifies.
 
 ## Can you lodge after you have gone home?
 
@@ -1515,7 +1513,7 @@ A tax agent is registered under Australian law to prepare and lodge returns for 
 
 Three things, and only one is the lodgement itself. An agent retrieves your income record directly from ATO systems rather than relying on you remembering every employer, applies the deadline concession that comes with an agent's lodgement program, and stands between you and the ATO if anything is questioned afterwards.
 
-Pressing submit was never the hard part. The hard part is what goes into the return: which residency position is actually true for your year, whether the Medicare levy exemption is available on your passport, and which of your expenses meet the substantiation rules rather than merely feeling work related.
+Pressing submit was never the hard part. The hard part is what goes into the return: how your residency position is assessed for your year, whether the Medicare levy exemption applies to you, and which of your expenses meet the substantiation rules rather than merely feeling work related.
 
 ## Who prepares your return, and who signs it off?
 
@@ -1652,7 +1650,7 @@ Whether that is right depends on whether every employer has issued a final incom
 
 Two other sets of dates sit outside the return itself and are commonly missed. One decides whether your final super contributions exist yet, the other when you can claim them.
 
-Superannuation is paid quarterly, due 28 October, 28 January, 28 April and 28 July. Leave in May and your final quarter's contributions are not paid until late July, a common reason a super claim comes up short.
+Until 30 June 2026 super was paid quarterly (28 October, 28 January, 28 April, 28 July). From 1 July 2026 Payday Super applies, and employers generally have to pay within seven business days of each payday, so a final contribution should now reach the fund soon after your last pay. Older quarterly timing can still matter for earlier pay periods, and a delayed final contribution is a common reason a super claim comes up short.
 
 Your visa end date starts its own clock. It governs when you become eligible to [claim your superannuation after leaving Australia](/superannuation), and a fund that loses contact with you eventually transfers the balance to the ATO as unclaimed.
 
@@ -1664,7 +1662,7 @@ The dates are the same for everyone. How many returns you owe and when you can l
 - Whether you are leaving before 30 June, which opens the early lodgement option.
 - Whether every employer has finalised your income statement, which decides whether it is safe to lodge yet.
 - Whether you have prior unlodged years from an earlier visa, usually refunds sitting still.
-- Whether your final quarter of super has been paid, a July event even if you leave in April.
+- Whether your final super contribution has been paid (under Payday Super, generally within seven business days of your last payday).
 
 The year you lodge for decides which rates and thresholds apply to your [working holiday tax return](/tax-return). You can [estimate your tax refund](/calculator) separately for each year you worked.
  `,
@@ -1742,12 +1740,12 @@ The combined position is worked out in the [working holiday tax return](/tax-ret
  title:
  "How Much Super Should You Have Been Paid?",
  description:
- "12% of your ordinary time earnings, paid at least quarterly, on top of your wages. How to check it landed and what to do when it did not.",
+ "12% of your ordinary time earnings, paid on top of your wages (within seven business days of payday from 1 July 2026). How to check it landed and what to do when it did not.",
  category: "Super",
  date: "2 December 2024",
  readTime: 5,
  body: `
-Twelve per cent of your ordinary time earnings, paid at least quarterly into a super fund, on top of your wages rather than out of them. That has been the rate since 1 July 2025 and it is the final legislated step, so it stays at 12%. On $8,000 earned in a quarter, $960 should appear.
+Twelve per cent of your ordinary time earnings, paid into a super fund on top of your wages rather than out of them. That has been the rate since 1 July 2025 and it is the final legislated step, so it stays at 12%. On $8,000 of ordinary time earnings, $960 should appear.
 
 ## What counts as ordinary time earnings?
 
@@ -1757,9 +1755,9 @@ It does not cover overtime, reimbursed expenses or genuine redundancy payments. 
 
 ## When should the money actually appear?
 
-Quarterly, which causes most false alarms. Employers must pay by 28 October, 28 January, 28 April and 28 July for the preceding quarter, so work done in July may not show in your fund until late October.
+For pay from 1 July 2026, generally within seven business days of payday under Payday Super, plus a few days for the fund to process it. For earlier pay periods the old quarterly dates applied (28 October, 28 January, 28 April, 28 July), which is why older gaps caused most false alarms.
 
-That lag is expensive for anyone leaving. Fly home in May and your final quarter's contributions are not due until 28 July, so a super claim lodged in June will not include them. This is one of the most common reasons a departing payment comes up short.
+That lag used to be expensive for anyone leaving: under the old quarterly system a final contribution was not due until the quarter ended, so an early super claim would not include it. Payday Super (from 1 July 2026) shortens this, but a claim lodged too soon can still miss the last payment. This is one of the most common reasons a departing payment comes up short.
 
 ## How do you check it was paid?
 
@@ -1901,7 +1899,7 @@ The DASP pays 35% of whatever the fund holds, so a $1,500 balance returns about 
 
 After your visa has ceased or been cancelled and after you have left Australia, which are both conditions of eligibility rather than preferences. Approval typically takes around 28 days once lodged, and the payment follows.
 
-The timing question that actually matters is the last quarter. Super is paid quarterly, so if you stop work in May and fly out in June, your employer's contribution for April to June is not due until 28 July. Claiming before that date means claiming against a balance your employer has not finished paying into, and the leftover then has to be chased separately. Against that, every month the balance sits in the fund is another month of administration fees on money you are no longer adding to. The answer depends on what the outstanding quarter is worth relative to the fees.
+The timing question that actually matters is the last quarter. Under Payday Super (from 1 July 2026) final contributions are generally due within seven business days of your last payday, while under the old quarterly system they were not due until the quarter ended. Claiming before your final contribution has landed means claiming against a balance your employer has not finished paying into, and the leftover then has to be chased separately. Against that, every month the balance sits in the fund is another month of administration fees on money you are no longer adding to. The answer depends on what the outstanding quarter is worth relative to the fees.
 `,
  }, {
  slug: "what-happens-to-unclaimed-super",
@@ -2194,24 +2192,18 @@ Breaching it is a visa matter, not a tax matter, and the consequence can be canc
 
 ## Which work is exempt from the six month limit?
 
-A long list covering most of what working holiday makers actually do, which is why the six month rule binds far fewer people than expect it to. In these sectors you can work beyond six months with the same employer without seeking permission.
+A long list covering most of what working holiday makers actually do, which is why the six month rule binds far fewer people than expect it to. In these cases you can work beyond six months with the same employer without seeking permission. Home Affairs states these exemptions apply from 1 January 2024 until the Government makes further decisions, so confirm the current list before relying on it.
 
-- Plant and animal cultivation, meaning agriculture and horticulture
-- Fishing and pearling
-- Tree farming and felling
-- Mining
-- Construction
-- Tourism and hospitality, in any location
-- Health, aged care and disability care
-- Childcare
-- Food processing
-- Natural disaster recovery
+- Plant and animal cultivation, anywhere in Australia
+- Natural disaster recovery, anywhere in Australia
+- Agriculture, health, aged and disability care, childcare, and tourism and hospitality, anywhere in Australia
+- Fishing and pearling, tree farming and felling, construction and mining, in northern Australia only (defined by postcode in Queensland, Western Australia and the Northern Territory)
 
 Different locations of the same employer count separately, so long as no single location exceeds six months. A hospitality group moving you from a Melbourne venue to a Byron Bay one is a different position from a year in the same kitchen.
 
 ## What if your work is not exempt?
 
-You can ask the Department of Home Affairs for written permission to continue, before the six months elapses. Permission is discretionary and not guaranteed, so it is not something to plan a job around.
+You can ask the Department of Home Affairs for permission to continue, and the request has to be made before the six months end, because permission is not retroactive. If you asked in time you can keep working until you receive the written decision; if you asked late you must stop working for that employer until you get an outcome. Permission is discretionary and not guaranteed, so it is not something to plan a job around.
 
 The practical alternative is to change employers. For most working holiday makers the six month rule is a reason to move on they were going to have anyway.
 
@@ -2244,7 +2236,7 @@ Multiple employers all reconcile in one [working holiday tax return](/tax-return
  slug: "penalty-rates-australia",
  title: "Penalty Rates: What Weekends Really Pay",
  description:
- "Sundays commonly pay 150-200% and public holidays up to 250% under awards. The rates by industry and how to check your payslip is honouring them.",
+ "Sundays commonly pay 150-175% and public holidays 225-250% under awards. The rates by industry and how to check your payslip is honouring them.",
  category: "Work Rights",
  date: "10 February 2025",
  readTime: 5,
@@ -2259,12 +2251,12 @@ So the question is not what your boss pays on Sundays. It is which award covers 
 
 ## What do penalty rates look like in hospitality?
 
-The Hospitality Industry (General) Award covers cafes, restaurants, pubs and hotels, and covers most working holiday makers. Casuals get the 25% loading in addition to the penalty rather than instead of it.
+The Hospitality Industry (General) Award covers cafes, restaurants, pubs and hotels, and covers most working holiday makers. The award sets separate full-time and part-time and casual percentages, and the casual figures already include the 25% loading.
 
 - Weekday evening after 7pm: around 110 to 115% of the ordinary rate
-- Saturday: around 125%
-- Sunday: around 175%
-- Public holiday: around 225%
+- Saturday: around 125% (150% for casuals)
+- Sunday: around 150% for full-time and part-time staff, around 175% for casuals
+- Public holiday: around 225% for permanent staff, around 250% for casuals
 
 Exact figures depend on your classification level and shift pattern, and the award itself is the authority. A casual on a Sunday is on a materially different hourly rate from the same person on a Tuesday.
 
@@ -2806,13 +2798,13 @@ It does not cover ambulance transport, billed separately in most states and runn
 
 You are treated as a private patient and you pay the published fee. A GP consultation is commonly $80 to $120. A specialist appointment runs from $200 upward. Prescriptions are full retail rather than subsidised. Public hospital emergency departments will treat you, but the follow up and any admission is chargeable.
 
-Health insurance is a condition of the 462 visa and is strongly expected on the 417, and this is why. A broken wrist falling off a ladder in a Mildura packing shed is a manageable expense with cover and a genuinely serious one without.
+Health insurance (condition 8501) can be a condition of either the 417 or the 462 visa, depending on your grant letter, and is strongly recommended either way, and this is why. A broken wrist falling off a ladder in a Mildura packing shed is a manageable expense with cover and a genuinely serious one without.
 
 ## How does this affect your tax?
 
 Directly. The Medicare levy is 2% of taxable income charged to people who are entitled to Medicare. If you are not entitled, the levy should not apply to you, and on $25,000 of earnings that is about $500.
 
-The exemption is not automatic. It has to be claimed on your return, and claiming it requires a Medicare Entitlement Statement from Services Australia, which commonly takes up to six weeks to issue and is needed separately for each financial year. Six weeks is the whole problem: most people learn the document exists in October, when the return is already due.
+The exemption is not automatic. It has to be claimed on your return with the right supporting evidence, and that is needed separately for each financial year. Most people only learn this when the return is already due, which is why it is often missed. We handle it as part of preparing your return.
 
 ## Does having private insurance change the exemption?
 
@@ -2826,7 +2818,7 @@ Coverage and the levy exemption are decided by the same fact, your passport, and
 
 - Your passport, which is the whole question. Eleven countries in, everyone else out.
 - Whether you enrolled part way through the year, which produces a partial exemption for the days you were not covered rather than an all or nothing result.
-- Whether you ordered the Medicare Entitlement Statement in time. Six weeks of lead time is what stands between most people and about $500.
+- Whether the supporting evidence was in place when the return was prepared.
 - Whether you hold dual nationality. The agreement follows the passport you are here on, and a second passport can change the answer completely.
 - Whether you already lodged a year without claiming it, since the levy can usually be recovered by amending the return, generally within two years of the original lodgement.
 
@@ -2906,13 +2898,11 @@ Usually not. The 2% Medicare levy is charged to people entitled to Medicare, and
 
 Your passport, and one piece of paper most backpackers never learn exists. Entitlement to Medicare is the test, and it comes from holding a passport from one of the eleven Reciprocal Health Care Agreement countries: the United Kingdom, Ireland, New Zealand, Italy, Malta, the Netherlands, Belgium, Finland, Norway, Sweden and Slovenia.
 
-Germany, Japan, France, Korea, Taiwan, Canada, the United States and everywhere else are not on that list, so their nationals are usually in the clear and the exemption usually applies. That covers the great majority of working holiday makers.
+Whether the exemption applies to you depends on your individual circumstances and is assessed case by case. It is not something to assume either way.
 
 ## What is the piece of paper?
 
-A Medicare Entitlement Statement from Services Australia. It is the evidence that you were not entitled to Medicare for a given period, and the exemption is claimed on the return using it. A separate statement is needed for every financial year you claim.
-
-The statement commonly takes up to six weeks to issue, and that lead time is the whole practical problem. Most people find out it exists in October, when the return is already due, and give up on about $500 rather than start a six week process. Ordering it in July is the change that makes the difference.
+A Medicare Entitlement Statement is the kind of evidence used to support an exemption claim for a given period, and a separate one is needed for every financial year. Most people only find out it exists when the return is already due. We take care of this for you as part of preparing your return.
 
 ## How much is it actually worth?
 
@@ -2943,7 +2933,7 @@ The exemption is worth about $500 on $25,000, but whether you can claim it at al
 
 - Your passport, which decides entitlement and therefore the whole question.
 - Whether you enrolled in Medicare part way through the year, which produces a partial exemption for the days you were not covered.
-- Whether the Medicare Entitlement Statement was ordered in time. Six weeks of lead time is why this gets abandoned.
+- Whether the supporting evidence was in place, which is why this is often missed.
 - Whether you hold dual nationality, since the agreement follows the passport, not the visa.
 - How many financial years your stay spans. Each year needs its own statement and its own claim.
 - Whether a prior year was lodged without it, which is usually amendable within two years.
@@ -2960,11 +2950,11 @@ The exemption is claimed as part of your [working holiday tax return](/tax-retur
  date: "2 April 2025",
  readTime: 5,
  body: `
-The Tax File Number Declaration is the form you give a new employer so they can withhold at the right rate. Three answers on it set your tax: whether you are an Australian resident for tax purposes, whether you are a working holiday maker, and whether you are claiming the tax free threshold. Everything else is identification.
+The Tax File Number Declaration is the form you give a new employer so they can withhold at the right rate. A few answers on it set your tax, including your residency status and whether the working holiday maker rate applies. Everything else is identification.
 
 ## Why does this form decide more than the TFN itself?
 
-Because the employer's payroll reads the form, not your intentions. Without a completed declaration on file the default is 45% withholding, which on a $1,000 week is $300 held back instead of $150. The correct working holiday maker treatment is 15% on the first $45,000, and only the form triggers it.
+Because the employer's payroll reads the form, not your intentions. Without a completed declaration on file the default is 45% withholding, which on a $1,000 week is $450 withheld instead of $150, so $300 more. The correct working holiday maker treatment is 15% on the first $45,000, and only the form triggers it.
 
 So the declaration, not the TFN application, is where the money is decided. It is handed to you on your first day, usually when you are least equipped to think about it.
 
@@ -2973,10 +2963,9 @@ So the declaration, not the TFN application, is where the money is decided. It i
 Each moves the rate to a different place, and two of the three wrong combinations create a debt rather than a delay.
 
 - Working holiday maker, answered yes, is what produces the 15% rate. This is the answer for a 417 or 462 visa holder.
-- Foreign resident, selected instead, produces 30% withholding from the first dollar. Over withholding, recoverable at assessment.
-- Australian resident with the tax free threshold claimed produces too little withholding across the year, and the shortfall becomes an amount owing when the return is assessed.
+- Other answers lead to different withholding, and the difference is settled when the return is assessed.
 
-The last is the expensive mistake, because it feels like more money in every pay and arrives as a bill months later. Our guide to [the tax free threshold and working holiday visas](/blog/tax-free-threshold-working-holiday-visa) explains why the threshold does not sit alongside working holiday maker rates.
+A wrong combination can mean over withholding or an amount owing later. Which answers are right depends on your individual facts, and our guide to [the tax free threshold and working holiday visas](/blog/tax-free-threshold-working-holiday-visa) explains why it is worth having it reviewed.
 
 ## What if your TFN has not arrived yet?
 
@@ -2994,7 +2983,7 @@ This is why multi employer years go wrong so often. Four jobs means four declara
 
 The same question that later decides your refund, asked at the worst possible moment. Residency for tax purposes is not immigration residency. It depends on your own circumstances, it has to be properly reviewed, and it is rarely as obvious as the form makes it look.
 
-For most working holiday makers the working holiday maker answer is right and the residency box is straightforward. For someone in a second or third year it may not be, and calling it wrongly is expensive in either direction. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) covers why it is not a question to answer on instinct.
+Which answers apply depends on the individual facts of your year, and calling it wrongly can be expensive in either direction. The ATO makes the final decision, and our team reviews it as part of preparing the return. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) covers why it is not a question to answer on instinct.
 
 ## What if it was filled in wrong?
 
@@ -3110,7 +3099,7 @@ Gross payments, tax withheld, and the super shown alongside them. Those three te
 
 - **Gross payments.** Compare against your own running total from payslips. A gap means either a missing pay period or an underpayment.
 - **Tax withheld.** Divide it by gross. Around 15% is right for a working holiday maker at a registered employer. Substantially more means a period without your TFN on file, or an employer who never registered.
-- **Super.** Contributions are quarterly, so a figure that looks light in July may simply not have been paid yet.
+- **Super.** Employers generally pay within seven business days of payday from 1 July 2026 (quarterly before that), so a figure that looks light may simply not have reached the fund yet.
 
 ## What if an employer is missing?
 
@@ -3607,7 +3596,7 @@ A hospitality casual whose Sunday penalty hours are ordinary rostered hours shou
 
 By checking the fund, not the payslip. A payslip line showing super states what the employer intends to pay, not that it arrived, and the two diverge more often than people realise.
 
-Super is only required to be paid quarterly, by 28 October, 28 January, 28 April and 28 July, so a gap of a few weeks between the payslip and the money appearing is normal. A gap that survives the quarterly deadline is not. Comparing the fund's contribution history against your payslips for a full quarter settles it.
+From 1 July 2026 super is generally due within seven business days of each payday (Payday Super); before that it was paid quarterly. A gap of a week or two between the payslip and the money appearing can be normal. A gap that survives the due date is not. Comparing the fund's contribution history against your payslips settles it.
 
 ## What happens to it when you leave?
 
@@ -3657,27 +3646,21 @@ It restricts one relationship, not your total work. You can work for as many emp
 
 ## Which work is exempt from the limit?
 
-A broad list, and it covers most of what working holiday makers actually do. If your work falls inside it, the exemption applies automatically and there is nothing to apply for.
+A broad list, and it covers most of what working holiday makers actually do. If your work falls inside it, no permission is needed.
 
-- Plant and animal cultivation, which covers agriculture and horticulture
-- Fishing and pearling
-- Tree farming and felling
-- Mining
-- Construction
-- Tourism and hospitality
-- Health, aged care and disability care
-- Childcare
-- Food processing
-- Natural disaster recovery work
+- Plant and animal cultivation, anywhere in Australia
+- Natural disaster recovery work, anywhere in Australia
+- Agriculture, health, aged and disability care, childcare, and tourism and hospitality, anywhere in Australia
+- Fishing and pearling, tree farming and felling, construction and mining, in northern Australia only (defined by postcode in Queensland, Western Australia and the Northern Territory)
 - Different locations of the same employer, where no single location exceeds six months
 
 The list is set by Home Affairs and has been adjusted more than once, so confirm the current version against their published conditions.
 
 ## What if your work is not exempt?
 
-You can change employers at the six month mark, which requires nothing from anybody. Or you can ask Home Affairs in writing for permission to continue, which has to be done before the six months elapses and is granted at their discretion rather than as of right.
+You can change employers at the six month mark, which requires nothing from anybody. Or you can ask Home Affairs for permission to continue, which has to be done before the six months elapse and is granted at their discretion rather than as of right.
 
-Permission is not retrospective, so you must stop at the six month mark and wait rather than continuing on the assumption that approval will come. Working past the limit without an exemption or an approval is the breach, whatever the paperwork eventually says.
+Permission is not retroactive, so the request has to go in before the six months end. If you asked in time, Home Affairs says you can keep working for that employer until you receive its written decision. If you asked late, you must stop working for that employer and wait for the outcome. Working past the limit without an exemption or an approval is the breach, whatever the paperwork eventually says.
 
 ## What are the consequences of getting it wrong?
 
@@ -3743,7 +3726,7 @@ Deductions failing any of those conditions are unlawful, and overcharging for ho
 
 ## What about superannuation?
 
-An employee on a farm is owed 12% superannuation on ordinary time earnings, paid quarterly into a fund, regardless of how few hours were worked. Piece rate earnings are wages, so the guarantee applies to them.
+An employee on a farm is owed 12% superannuation on ordinary time earnings, paid into a fund (generally within seven business days of payday from 1 July 2026), regardless of how few hours were worked. Piece rate earnings are wages, so the guarantee applies to them.
 
 Farm employers skip it more often than any other sector this audience works in. It is recoverable through the Superannuation Guarantee Charge process, and claimable as a Departing Australia Superannuation Payment once your visa has ceased and you have left. On an ABN none of that applies, which is why the classification question matters: our guide to [farm work and ABNs](/blog/farm-work-and-abns) covers it.
 
@@ -3788,7 +3771,7 @@ Whatever was withheld across each farm reconciles at the end of the financial ye
  title:
  "SGC: When an Employer Skips Your Super",
  description:
- "Miss a quarterly super payment and employers owe the Super Guarantee Charge - with interest and penalties. How to report unpaid super and get it recovered.",
+ "Miss a super payment deadline and employers can owe the Super Guarantee Charge - with interest and penalties. How to report unpaid super and get it recovered.",
  category: "Medicare & Other",
  date: "20 June 2025",
  readTime: 5,
@@ -3797,13 +3780,13 @@ The Superannuation Guarantee Charge is what an employer owes the ATO when they p
 
 ## What triggers the charge?
 
-Missing a quarterly deadline, by any margin. Super is due four times a year, and an employer who pays a day late is liable for the charge on the whole quarter, not just on the delay.
+Missing the due date, by any margin. From 1 July 2026 that is generally seven business days after payday; before then it was the quarterly date. An employer who pays late can be liable for the charge, not just for the delay, and the detail depends on the ATO's rules at the time.
 
-The four dates are fixed. Contributions for July to September are due by 28 October, October to December by 28 January, January to March by 28 April, and April to June by 28 July. A quarter with nothing in it a week after the deadline is a genuine gap. Before the deadline, an empty quarter tells you nothing.
+For pay from 1 July 2026 the date is generally seven business days after each payday. Before that, quarterly dates applied: contributions for July to September were due by 28 October, October to December by 28 January, January to March by 28 April, and April to June by 28 July. For a pay period already past its due date, nothing in the fund is a genuine gap.
 
 - Paying nothing at all
 - Paying less than 12% of ordinary time earnings
-- Paying after the quarterly deadline
+- Paying after the due date (quarterly before 1 July 2026, seven business days after payday since)
 - Paying into a fund you did not nominate, in some circumstances
 
 ## Why is the charge worse for an employer than just paying?
@@ -3820,7 +3803,7 @@ The interest belongs to you as well, which is the part people do not expect. The
 
 ## How would you know your employer is behind?
 
-By comparing two things you already have. Your payslips state a super figure for each pay period; your fund statement states what actually arrived and when. If the payslip line has been showing super all quarter and the fund shows nothing after the deadline has passed, the money was accrued but not paid.
+By comparing two things you already have. Your payslips state a super figure for each pay period; your fund statement states what actually arrived and when. If the payslip line has been showing super and the fund shows nothing after the due date has passed, the money was accrued but not paid.
 
 Two branch points change what you are looking at. A payslip with no super line at all usually means the employer is treating you as a contractor, in which case the question is whether the [classification is right](/blog/employee-vs-contractor-australia). And a fund account you have never logged into may be receiving payments you have simply never seen.
 
@@ -3901,36 +3884,36 @@ Anything withheld above the correct rate comes back through your [working holida
  title:
  "Do You Get the Tax-Free Threshold on a WHV?",
  description:
- "Working holiday makers pay 15% from the first dollar, so ticking the tax-free threshold box creates a debt rather than a saving. The narrow exception.",
+ "Why the tax-free threshold box on the withholding declaration is not one to guess, and why the answer depends on the facts of your year.",
  category: "TFN" as const,
  date: "29 July 2026",
  readTime: 5,
  body: `
-Working holiday makers do not get the $18,200 tax free threshold. A narrow exception exists, it is uncommon, and whether it applies cannot be judged from the outside.
+Working holiday makers are generally taxed under their own schedule, which has no tax free threshold in it. Whether anything different applies to you depends on the facts of your year and cannot be judged from the outside.
 
-So for almost everyone the answer on the withholding declaration is no. Ticking yes creates a debt rather than a saving.
+So the withholding declaration is not a place to guess. Getting it wrong can create a debt rather than a saving.
 
 ## What is the threshold and who is it for?
 
-A concession for Australian tax residents that lets the first $18,200 of income in a financial year be received without tax. Australia's resident rates are progressive, and low income residents get relief at the bottom of the scale. Working holiday makers are taxed under a different schedule: 15% from the first dollar up to $45,000, with no zero rate band in it. That is why the threshold and the working holiday rates do not sit together, and why the declaration form asks.
+A concession in the ordinary resident tax scale that lets the first part of income in a financial year be received without tax. Working holiday makers are generally taxed under a different schedule, and whether the concession plays any part in your year depends on your individual circumstances. That is why the declaration form asks.
 
 ## Why does ticking it cause a problem rather than saving money?
 
 Because it changes what your employer withholds, not what you owe.
 
-Answering yes tells payroll to apply resident scales with a zero rate band, so less tax comes out of each pay and your take home rises. It feels like a win for a few months.
+Answering yes tells payroll to apply a different scale, so less tax may come out of each pay and your take home rises. It feels like a win for a few months.
 
-None of that changes your actual liability, calculated at the end of the year on the working holiday maker rates. The shortfall is payable at assessment. What should have been a refund becomes a bill, and its size tracks how long the error ran.
+None of that changes your actual liability, which is worked out at the end of the year. Any shortfall is payable at assessment. What should have been a refund can become a bill, and its size tracks how long the error ran.
 
-On $1,000 a week, correct withholding is about $150. With the threshold wrongly claimed it can be materially less or, at lower weekly earnings, nothing at all. Six months of that is a debt in the high hundreds; a full year can pass a thousand.
+With the threshold wrongly claimed, withholding can be materially less than it should be. Over months, that can build into a debt at assessment.
 
 ## What is the exception, exactly?
 
-Narrower than almost everyone who has heard of it assumes. It traces back to the High Court's decision in Addy v Commissioner of Taxation [2021] HCA 34, and hangs on a residency judgement that turns on details most people never think to check. Most claims to it fail, usually on facts the claimant felt confident about.
+Not something to assume. It traces back to the High Court's decision in Addy v Commissioner of Taxation [2021] HCA 34, and its effect varies from person to person, because it turns on a residency judgement about your whole year.
 
 See [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) for why the question resists self assessment, and expect the final call to be made when the return is prepared and reviewed by a registered tax agent, not settled by you in July.
 
-Either way it is settled at assessment, not in payroll. Even someone who might ultimately qualify should answer no during the year.
+Either way it is settled at assessment, not in payroll, so it is worth having the position reviewed rather than guessing on the form.
 
 ## How do you fix it if the box is already ticked?
 
@@ -4324,25 +4307,19 @@ Check the ABN on your payslip to know which entity employs you. Two venues with 
 
 ## Which work is exempt?
 
-The Department of Home Affairs exempts a long list of sectors covering the substantial majority of working holiday employment. On this list you can stay with the same employer beyond six months without asking anyone.
+The Department of Home Affairs exempts a long list of sectors covering the substantial majority of working holiday employment. On this list you can stay with the same employer beyond six months without asking anyone. Home Affairs states these exemptions apply from 1 January 2024 until the Government makes further decisions, so confirm the current list before relying on it.
 
-- Plant and animal cultivation, including agriculture and horticulture
-- Fishing and pearling
-- Tree farming and felling
-- Mining
-- Construction
-- Tourism and hospitality, anywhere in Australia
-- Health, aged care and disability care
-- Childcare
-- Food processing
-- Natural disaster recovery
+- Plant and animal cultivation, anywhere in Australia
+- Natural disaster recovery, anywhere in Australia
+- Agriculture, health, aged and disability care, childcare, and tourism and hospitality, anywhere in Australia
+- Fishing and pearling, tree farming and felling, construction and mining, in northern Australia only (defined by postcode in Queensland, Western Australia and the Northern Territory)
 - Different locations of the same employer, where no single location exceeds six months
 
-Tourism and hospitality being exempt nationwide removes the concern entirely for the largest single group of working holiday workers.
+Tourism and hospitality is on the nationwide list, which removes the concern for the largest single group of working holiday workers, for as long as the exemption stays in place.
 
 ## What if your work is not exempt?
 
-Permission has to be requested in writing from the Department of Home Affairs before the six months ends, not after. You can keep working while the request is being decided, and you must stop if it is refused.
+Permission has to be requested from the Department of Home Affairs (online form) before the six months ends, not after, and it is not retroactive. If you asked in time you can keep working for that employer until you receive the written decision, and you must stop if it is refused. If you ask late, you must stop working for that employer until you get an outcome.
 
 Approval is discretionary, and the grounds that succeed are practical: a new visa application already lodged that would allow full time work, a priority sector with employer support, or a genuine operational reason. Leaving the request until week 25 is the most common reason it does not go smoothly.
 
@@ -4447,7 +4424,7 @@ The Tourist Refund Scheme returns the 10% GST on goods you buy in Australia and 
 
 ## What is the Tourist Refund Scheme actually for?
 
-GST is a tax on consumption in Australia, so goods leaving the country with you were never meant to carry it. The Tourist Refund Scheme gives it back, run by the Australian Border Force at international airports and some seaports. It refunds the 10% GST, and 14.5% Wine Equalisation Tax on wine.
+GST is a tax on consumption in Australia, so goods leaving the country with you were never meant to carry it. The Tourist Refund Scheme gives it back, run by the Australian Border Force at international airports and some seaports. It refunds the 10% GST, and it can also refund Wine Equalisation Tax on eligible wine.
 
 It is open to every departing traveller, including working holiday makers. Nothing about your visa affects eligibility, and using it has no bearing on your tax return or your [super](/superannuation) claim.
 
@@ -4513,7 +4490,7 @@ The refund at the airport is worth tens or low hundreds of dollars. The return a
  date: "11 August 2025",
  readTime: 5,
  body: `
-No. Moving your own money out of Australia is not a taxable event. Wages are taxed when you earn them, not when you spend or transfer them, so an after tax balance can leave the country freely. Transfers of $10,000 or more are reported to AUSTRAC, which is monitoring, not taxation.
+No. Moving your own money out of Australia is not a taxable event. Wages are taxed when you earn them, not when you spend or transfer them, so an after tax balance can leave the country freely. International transfers are reported to AUSTRAC, which is monitoring, not taxation.
 
 ## Why is a transfer not taxed?
 
@@ -4523,7 +4500,7 @@ What the ATO taxes is what you earned here: wages at the working holiday maker r
 
 ## What is actually reported when you send money home?
 
-Two reporting rules exist and neither creates a liability. Banks and money transfer services report international transfers to AUSTRAC, generally at $10,000 or more, automatically and without any action from you. Physical cash of $10,000 or more crossing the border must be declared to the Australian Border Force.
+Two reporting rules exist and neither creates a liability. Banks and money transfer services report international transfers to AUSTRAC automatically and without any action from you. Physical cash of $10,000 or more crossing the border must be declared to the Australian Border Force.
 
 Both are anti money laundering measures. Visibility is not taxation, and honest wage money moves without difficulty. What is an offence is deliberately splitting a transfer to stay under the reporting threshold. That is called structuring, and it is treated far more seriously than the transfer would have been.
 
@@ -4672,10 +4649,10 @@ Deductions reduce the offset as well as the tax, because a smaller net business 
 Yes, and for a working holiday maker with mixed income it usually is. Each offset is calculated separately and applied to the final position.
 
 - The small business tax offset, on the tax attributable to business income, capped at $1,000
-- The low income tax offset, which applies where you are assessed as a resident, worth up to $700
+- The low income tax offset, which depends on how your year is assessed
 - The Medicare levy exemption, which removes the 2% levy where you are not entitled to Medicare
 
-The residency position decides whether the low income offset is available, and the passport decides the Medicare question. Our guide to [the low income tax offset](/blog/low-income-tax-offset-working-holiday) sets out that side.
+How your year is assessed affects whether the low income offset is available, and your individual facts affect the Medicare question. Our guide to [the low income tax offset](/blog/low-income-tax-offset-working-holiday) sets out that side.
 
 ## What happens when you had both wages and ABN income?
 
@@ -4703,7 +4680,7 @@ The rate and the cap are fixed. What it is worth to you is decided by the shape 
 - What your deductions came to.
 - Whether you also had wages, whose withholding often absorbs the business tax before the offset is reached.
 - Whether the contracting was genuine, since reclassification removes it.
-- Whether you are assessed as a resident, which decides whether the low income offset stacks alongside it.
+- How your year is assessed, which affects whether the low income offset can apply alongside it.
 - Whether a prior year was lodged without claiming it, amendable within two years.
 
 Every eligible offset is applied when the [working holiday tax return](/tax-return) is prepared, and you can [estimate your tax refund](/calculator) to see how the two income types combine.
@@ -4870,12 +4847,12 @@ PSI, sham contracting and ordinary contracting all look identical on a bank stat
  title:
  "Can You Claim the Low Income Tax Offset?",
  description:
- "LITO is for Australian tax residents - most working holiday makers do not qualify. The residency exception, and the offsets and exemptions you can claim.",
+ "Whether the Low Income Tax Offset reaches a working holiday maker depends on how the year is assessed. Background on LITO and the other offsets and exemptions.",
  category: "Tax Return" as const,
  date: "15 September 2025",
  readTime: 5,
  body: `
-The Low Income Tax Offset is worth up to $700 and it belongs to Australian tax residents. Income taxed at working holiday maker rates does not attract it. Whether any of it reaches you depends entirely on your residency position for the year, which is a question of facts rather than of visa.
+The Low Income Tax Offset is a concession in the ordinary resident tax system. Whether any of it reaches you depends on how your year is assessed, which is a question of facts rather than of visa, and is decided case by case.
 
 ## What is an offset, and why is it worth more than a deduction?
 
@@ -4886,28 +4863,26 @@ An offset reduces the tax you owe. A deduction reduces the income the tax is cal
 
 LITO is worth up to $700 for taxable income up to $37,500, shading down through $37,500 to $66,667 and disappearing above that. It is also non-refundable, meaning it can reduce tax to zero but never turns into a payment on its own.
 
-## Why can most working holiday makers not claim it?
+## Does it apply to working holiday makers?
 
-Because LITO is a resident concession and working holiday maker income is taxed under its own schedule. A person taxed at 15% from the first dollar under the working holiday maker rates is not being taxed as a resident on that income, and the offset does not attach to it.
-
-For most people reading this, LITO is not available, and no amount of care at lodgement changes it.
+LITO sits in the ordinary resident tax system, while working holiday maker income is generally taxed under its own schedule. Whether the offset attaches to your income depends on how your year is assessed, and you should not assume either way.
 
 ## When does it become available?
 
-It becomes available when you are an Australian tax resident for the year, which a minority of working holiday makers genuinely are. Residency depends on your own circumstances, has to be properly reviewed, and is easy to call wrongly in both directions.
+That depends on how your year is assessed. Residency depends on your own circumstances, has to be properly reviewed, and is easy to call wrongly in both directions.
 
-What a resident finding is then worth varies. For some it is considerably more than LITO, for others LITO of up to $700 is the whole of it, and which outcome applies is assessed case by case when the return is prepared. Our guide to [tax residency](/blog/tax-residency-working-holiday-makers) covers why the question is harder than it looks.
+What any finding is worth varies from person to person and is assessed case by case when the return is prepared, with the ATO making the final decision. Our guide to [tax residency](/blog/tax-residency-working-holiday-makers) covers why the question is harder than it looks.
 
 ## What can you claim instead?
 
-Relief reaches working holiday makers through exemptions and deductions rather than through the resident offset system. Between them these items are worth considerably more than LITO would have been.
+Relief can also reach working holiday makers through exemptions and deductions. Whether and how much applies depends on your own year.
 
-- The [Medicare levy exemption](/blog/medicare-levy-working-holiday-makers), worth about $500 on $25,000 of earnings for someone not entitled to Medicare
+- The [Medicare levy exemption](/blog/medicare-levy-working-holiday-makers), for someone not entitled to Medicare
 - The [small business income tax offset](/blog/small-business-tax-offset-working-holiday-abn) on ABN sole trader income, worth up to $1,000
 - Recovery of any period withheld at 45% before your TFN reached the employer
-- Work related deductions, which are proportionally more valuable on a working holiday return than on a resident one
+- Work related deductions, where they are properly substantiated
 
-Chasing LITO is wasted effort for most people. The Medicare position and a complete deduction list are where the same attention actually pays.
+Rather than assuming anything about LITO, it is better to have the whole position reviewed, including the Medicare position and a complete deduction list.
 
 ## What happens if an offset exceeds your tax?
 
@@ -4923,9 +4898,9 @@ That combination is where a return stops being a form and becomes a calculation,
 
 ## What decides your position?
 
-Mostly one question: whether you were an Australian tax resident for the year or any part of it. That depends on your own circumstances and has to be properly reviewed.
+Mostly how your year is assessed for residency purposes. That depends on your own circumstances and has to be properly reviewed.
 
-It is not a box you tick with confidence on a first reading. It is the item most often answered wrongly on a self lodged return, and it moves more money than every offset in this guide combined. It is worth resolving properly when the [tax return](/tax-return) is prepared.
+It is not a box to tick with confidence on a first reading, and it is worth resolving properly when the [tax return](/tax-return) is prepared.
 `,
  }, {
  slug: "appealing-ato-decision-australia",
@@ -4970,7 +4945,7 @@ Disputing the whole assessment, rather than the residency determination or the d
 
 ## What does it cost?
 
-Nothing to lodge. There is no ATO filing fee for an objection. Costs arise only if you engage someone to prepare it, or if the matter eventually escalates to the Administrative Appeals Tribunal, which has its own fee.
+Nothing to lodge. There is no ATO filing fee for an objection. Costs arise only if you engage someone to prepare it, or if the matter eventually escalates to the Administrative Review Tribunal, which replaced the Administrative Appeals Tribunal in October 2024 and has its own fee.
 
 Where the disputed amount is a few hundred dollars, a free objection is worth lodging and a tribunal application usually is not.
 
@@ -4982,7 +4957,7 @@ If the objection succeeds, interest and penalties on the disputed portion can be
 
 ## What if the objection is disallowed?
 
-The ATO issues one of three outcomes: allowed in full, allowed in part, or disallowed, generally within about 60 business days. If it is disallowed, the next step is independent review by the Administrative Appeals Tribunal, and beyond that the Federal Court.
+The ATO issues one of three outcomes: allowed in full, allowed in part, or disallowed, generally within about 60 business days. If it is disallowed, the next step is independent review by the Administrative Review Tribunal (which replaced the Administrative Appeals Tribunal in October 2024), and beyond that the Federal Court.
 
 For working holiday makers the tribunal is the realistic ceiling. Federal Court costs make no sense for an individual refund dispute, and most legitimate backpacker disputes end months earlier at a corrected assessment.
 
@@ -5292,7 +5267,7 @@ Over-withholding is not lost, since it is credited back when the [tax return](/t
 
 Divide the super figure by gross pay and expect 12%, the rate since 1 July 2025. Super is paid by the employer on top of your wages, so it should never reduce your net pay, and a payslip where super appears to come out of your earnings needs a question asked about it.
 
-Accrued is not paid. A super figure on a payslip records what the employer owes for that period, not what has reached your fund, and the two are separated by up to three months because super is paid quarterly. Only the fund itself tells you whether the money actually arrived. Our guide to [unpaid super](/blog/super-employer-not-paying-what-to-do) covers what to do when it has not.
+Accrued is not paid. A super figure on a payslip records what the employer owes for that period, not what has reached your fund, and the two can be separated by days or, for periods before 1 July 2026, up to three months, because super used to be paid quarterly. Only the fund itself tells you whether the money actually arrived. Our guide to [unpaid super](/blog/super-employer-not-paying-what-to-do) covers what to do when it has not.
 
 ## What does net pay tell you?
 
@@ -5388,13 +5363,13 @@ What gets harder is evidence and contact. Rosters and payslips left in a system 
  date: "14 October 2025",
  readTime: 6,
  body: `
-The backpacker tax is the flat rate applied to subclass 417 and 462 income: 15% on the first $45,000, with no tax free threshold. It has been that rate since 1 January 2017. The part that still decides individual cases is what the High Court said about it in 2021, and that turns on your passport.
+The backpacker tax is the flat rate applied to subclass 417 and 462 income: 15% on the first $45,000, with no tax free threshold. It has been that rate since 1 January 2017. The part that still decides individual cases is what the High Court said about it in 2021, and its effect varies from person to person.
 
 ## What is the rate today?
 
 Fifteen per cent from the first dollar up to $45,000, then the foreign resident scale above it. Both visa subclasses are treated identically, and almost every working holiday maker earns inside the first bracket.
 
-The absence of a tax free threshold is what separates this from ordinary Australian taxation. A resident pays nothing on the first $18,200; a working holiday maker pays 15% on it. That single difference is worth about $2,730 a year to anyone it applies to.
+The working holiday maker schedule is what separates this from ordinary Australian taxation. How it applies to you, compared with ordinary resident rates, depends on how your year is assessed and is not something to assume.
 
 - 15% on income up to $45,000
 - 30% from $45,001 to $135,000
@@ -5403,9 +5378,9 @@ The absence of a tax free threshold is what separates this from ordinary Austral
 
 ## What was the position before 2017?
 
-Residency decided everything. A working holiday maker assessed as an Australian tax resident paid ordinary resident rates with the $18,200 threshold; one assessed as a non-resident paid 32.5% from the first dollar. Two people doing identical work could face very different bills, and which side they fell on was a judgement, contested then for the same reasons it is contested now.
+Residency mattered a great deal. Two people doing identical work could face very different bills, depending on how their year was assessed, and that was a judgement, contested then for the same reasons it is contested now.
 
-Many backpackers did qualify as residents, and the government regarded the resulting low tax bills as an unintended outcome rather than a policy. That view produced the 2016 proposal.
+The government regarded some of the resulting low tax bills as an unintended outcome rather than a policy. That view produced the 2016 proposal.
 
 ## How did the 2017 rate come about?
 
@@ -5427,7 +5402,7 @@ The question is a judgement about your own circumstances, turning on details mos
 
 ## What does any of this change on your return?
 
-For many people, the refund comes from over-withholding and the Medicare levy exemption rather than from *Addy*. A court ruling may change which rates apply to some passports, and whether it applies to you depends on your passport and on how your year looked.
+For many people, the refund comes from over-withholding and the Medicare levy exemption rather than from *Addy*. A court ruling may change which rates apply in some cases, and whether it applies to you depends on how your year looked and is assessed case by case.
 
 Where it does apply it changes things substantially, in ways that differ from person to person for reasons that are not obvious from the outside. That is the branch worth having checked before a [tax return](/tax-return) is lodged, because amending later is harder than getting it right once, and the position taken has to be one that can be defended.
 `,
@@ -5436,7 +5411,7 @@ Where it does apply it changes things substantially, in ways that differ from pe
  title:
  "How to Check Your Super Balance on a WHV",
  description:
- "Your super sits with a fund, not with your employer. Contributions are paid quarterly, so a balance can look empty months after the work was actually done.",
+ "Your super sits with a fund, not with your employer. Contributions arrive after payday, so a balance can look empty for a while after the work was done.",
  category: "Super" as const,
  date: "16 October 2025",
  readTime: 4,
@@ -5445,15 +5420,15 @@ Your super balance sits with the fund your employer paid into, and you reach it 
 
 ## Why does the balance need checking at all?
 
-Because super is the only money you earn in Australia that never appears in your bank account. It is paid on top of your wages, straight into a fund, quarterly rather than per pay, so nothing in your day to day banking would tell you it is short.
+Because super is the only money you earn in Australia that never appears in your bank account. It is paid on top of your wages, straight into a fund, so nothing in your day to day banking would tell you it is short.
 
 That is why unpaid [super](/superannuation) goes unnoticed for so long. An employer who underpays wages is found out within a fortnight because the deposit is visibly wrong. An employer who never pays super can go a full season unnoticed, and for a working holiday maker the discovery usually comes at the point of leaving, when it is hardest to chase.
 
 ## When should contributions actually appear?
 
-After the quarterly deadline, not after each payday. Employers are required to pay super quarterly, so a gap of up to three months between working and seeing the money in your fund is normal, and it is the most common reason people think super is missing when it is not.
+For pay from 1 July 2026, generally within seven business days of each payday under Payday Super. Before that, employers paid quarterly, so a gap of up to three months was normal, and for older periods it is still the most common reason people think super is missing when it is not.
 
-The four deadlines are 28 October for the July to September quarter, 28 January for October to December, 28 April for January to March, and 28 July for April to June. Money generally lands within a few days either side. A quarter still empty a week or two after its deadline is a real gap, and that is when comparing the payslip line against the fund statement is worth doing.
+The old quarterly deadlines were 28 October, 28 January, 28 April and 28 July, and they still apply to pay periods before 1 July 2026. Since then the due date is generally seven business days after payday. Anything still missing a week or two after its due date is a real gap, and that is when comparing the payslip line against the fund statement is worth doing.
 
 ## What if you do not know which fund you are with?
 
@@ -5474,7 +5449,7 @@ Whether consolidating is right depends on your timing. If you are staying and wo
 
 ## What should be confirmed before you claim DASP?
 
-That every account has been found and that the final quarter has actually been paid. A Departing Australia Superannuation Payment claim closes the account it is made against, so any contribution arriving afterwards has to be chased separately, and the last quarter of work is the one most likely to still be outstanding.
+That every account has been found and that the final quarter has actually been paid. A Departing Australia Superannuation Payment claim closes the account it is made against, so any contribution arriving afterwards has to be chased separately, and the last pay period of work is the one most likely to still be outstanding.
 
 Timing is the branch point. If you finish work in May and fly home in June, the April to June contribution is not due until 28 July, so claiming immediately means claiming before your own employer is required to pay. Waiting until after the deadline usually collects more, which has to be weighed against the [65% withholding](/blog/tax-on-super-withdrawal-backpacker) applied either way and the roughly 28 days a DASP approval takes once lodged.
 `,
@@ -5623,7 +5598,7 @@ Anything over withheld during the wait comes back through the [working holiday t
  date: "25 October 2025",
  readTime: 6,
  body: `
-Five parties may ask for your TFN: your employer once you have started, your bank, your super fund, your tax agent, and government agencies administering payments you are entitled to. Nobody else has any right to it. Anyone outside that list asking for it is either mistaken or attempting fraud.
+Six groups may lawfully ask for your TFN: your employer once you have started, the ATO, your bank, your super fund, a registered tax agent acting for you, and government agencies such as Services Australia administering payments you are entitled to. Nobody else has any right to it. Anyone outside that list asking for it is either mistaken or attempting fraud.
 
 ## Why is a TFN worth stealing?
 
@@ -5915,7 +5890,7 @@ Anything used for both work and private purposes is claimable only at the work p
 
 A receipt or tax invoice showing the supplier, the date, the amount and what was bought, for every claim. Apportioned items also need a basis for the percentage: a logbook for vehicles, a representative period of usage for phone and internet.
 
-Two thresholds change what is needed. An item costing $300 or less is deductible in full in the year you buy it rather than depreciated. From 1 July 2026 a flat $1,000 work related deduction is available with no receipts at all, which for lighter contracting can beat itemising. Our guide to [the $1,000 instant deduction](/blog/1000-dollar-instant-deduction-rule-2026) sets out when to take the flat figure and when to itemise.
+Two thresholds change what is needed. An item costing $300 or less is deductible in full in the year you buy it rather than depreciated. From the 2026-27 income year a $1,000 standard deduction exists for eligible people, with no receipts needed, though it is not available for 2025-26 returns. Our guide to [the $1,000 standard deduction](/blog/1000-dollar-instant-deduction-rule-2026) sets out who it is for and when itemising may be better.
 
 ## What cannot be claimed, however much it feels like it should be?
 
@@ -5949,7 +5924,7 @@ Which deductions are available, and whether they survive scrutiny, depends on ho
 - Whether you kept receipts as you went, which is what makes a claim defensible.
 - Whether a logbook exists for any vehicle claim, the most commonly disallowed item.
 - Whether individual items cost more or less than $300, which decides immediate deduction or depreciation.
-- Whether the flat $1,000 deduction from 1 July 2026 exceeds what you could itemise.
+- Whether the $1,000 standard deduction (2026-27 onwards, where it applies to you) exceeds what you could itemise.
 - Whether you had wages in the same year, since that withholding often absorbs the ABN tax.
 - Whether you registered for GST, which decides whether amounts are claimed inclusive or exclusive of it.
 
@@ -6157,7 +6132,7 @@ This is where multi employer years get amended unnecessarily. Lodge in early Jul
  date: "24 November 2025",
  readTime: 6,
  body: `
-The rate does not change. A second or third year 417 or 462 visa is still taxed at working holiday maker rates, 15% on the first $45,000. What can change is your residency position, because a longer stay turns a question that was once a formality into a genuine judgement, and that is where the money moves.
+The working holiday maker rates themselves do not change with a second or third year visa. What can change is your residency position, because a longer stay turns a question that was once a formality into a genuine judgement, and that is where the money moves.
 
 ## Why does the rate stay the same when everything else has changed?
 
@@ -6466,19 +6441,21 @@ The eligibility rules and documents are set out where you [claim your superannua
  date: "29 December 2025",
  readTime: 5,
  body: `
-Unpaid [super](/superannuation) is recoverable, and the ATO rather than you is the one who recovers it. Employers must pay 12% of ordinary time earnings into your fund at least quarterly, and a missed quarter creates a debt the ATO can pursue with powers no individual worker has. The question is whether you find it before you leave.
+Unpaid [super](/superannuation) is recoverable, and the ATO rather than you is the one who recovers it. Employers must pay 12% of ordinary time earnings into your fund (within seven business days of payday from 1 July 2026, quarterly before that), and a missed payment creates a debt the ATO can pursue with powers no individual worker has. The question is whether you find it before you leave.
 
 ## How do you tell whether super has actually been paid?
 
 By looking at the fund, not the payslip. A super line on a payslip means the amount was accrued against your pay, not that anything was transferred. That gap is the most common shape unpaid super takes in Australia.
 
-The only proof of payment is the fund statement or the ATO's record of contributions. If a quarter has closed, its deadline has passed by a week or two, and the fund still shows nothing, the super is unpaid rather than late. Before that, an empty quarter is normal, because super is paid quarterly and not with each pay.
+The only proof of payment is the fund statement or the ATO's record of contributions. If the due date has passed by a week or two and the fund still shows nothing, the super is unpaid rather than late. Before that, a short gap is normal, and for pay periods before 1 July 2026 a gap of up to a quarter was normal because super was paid quarterly.
 
 ## What is the employer actually obliged to do?
 
-Pay 12% of your ordinary time earnings into your nominated fund by four fixed dates a year, for every employee including casuals, under the Superannuation Guarantee (Administration) Act. There is no minimum earnings threshold, and a 417 or 462 visa makes no difference.
+Pay 12% of your ordinary time earnings into your nominated fund on time (generally within seven business days of payday from 1 July 2026), for every employee including casuals, under the Superannuation Guarantee (Administration) Act. There is no minimum earnings threshold, and a 417 or 462 visa makes no difference.
 
 Missing a deadline does not create a late payment. It creates a liability for the [Superannuation Guarantee Charge](/blog/what-is-superannuation-guarantee-charge): the shortfall plus interest plus an administration component, none of it deductible against the employer's tax. That is what makes it worth reporting rather than absorbing.
+
+For pay periods before 1 July 2026 the old quarterly dates applied:
 
 - 1 July to 30 September, due by 28 October
 - 1 October to 31 December, due by 28 January
@@ -6691,7 +6668,7 @@ Keep the record somewhere that is not the employer's system, because access to a
 
 Frequently. A workplace prepared to break one set of rules is often breaking others, and the ones that cost you money are quieter than the ones that make you miserable.
 
-Check whether you have been paid the award rate for the hours worked, whether 12% [super](/superannuation) has reached your fund for each completed quarter, and whether payslips have been issued at all. Those are separate claims with separate processes, and they survive your leaving the job. Our guides on [an employer not paying correctly](/blog/employer-not-paying-correctly) and [unpaid super](/blog/super-employer-not-paying-what-to-do) cover how each is pursued.
+Check whether you have been paid the award rate for the hours worked, whether 12% [super](/superannuation) has reached your fund for each pay period, and whether payslips have been issued at all. Those are separate claims with separate processes, and they survive your leaving the job. Our guides on [an employer not paying correctly](/blog/employer-not-paying-correctly) and [unpaid super](/blog/super-employer-not-paying-what-to-do) cover how each is pursued.
 `,
  }, {
  slug: "unpaid-trial-shifts-australia-legal",
@@ -6991,11 +6968,11 @@ Our guide to [amending a return](/blog/amending-tax-return-australia) covers the
  date: "15 February 2026",
  readTime: 4,
  body: `
-Whether you need private health cover on a working holiday visa is decided by two things: your visa subclass and your passport. Many of the bilateral arrangements behind the subclass 462 require adequate health insurance for the whole stay. A passport outside Australia's reciprocal health agreements leaves insurance as your only cover.
+Whether you need private health cover on a working holiday visa is decided by two things: your visa subclass and your passport. Some visa grants, on either subclass, carry condition 8501, which requires adequate health insurance for the whole stay. A passport outside Australia's reciprocal health agreements leaves insurance as your only cover.
 
 ## Is health insurance a condition of your visa?
 
-The two subclasses are not treated the same way. The subclass 417 Working Holiday visa generally does not impose insurance as a strict condition for most nationalities, although Home Affairs recommends it. Many of the country by country arrangements behind the subclass 462 Work and Holiday visa do require adequate health insurance for the period of stay, and the wording varies by which agreement you came in under.
+Condition 8501 requires you to maintain adequate arrangements for health insurance during your stay. It can be imposed on either the subclass 417 or the subclass 462, and it is applied case by case, so the only reliable answer is whether condition 8501 appears on your own visa grant letter. If it does, it is binding; if it does not, Home Affairs still recommends cover. Check your grant notice or VEVO rather than relying on the subclass alone.
 
 Nobody checks it at the airport, which is why the requirement is widely assumed not to exist. It is checked where it matters: when a further visa is assessed, and when a hospital asks who is paying.
 
@@ -7039,7 +7016,7 @@ Where you are when it happens changes the answer. Queensland and Tasmania run st
 
 ## Does any of this change your tax?
 
-Only in one direction, and it is the opposite of what people expect. Private cover does not reduce your Australian tax: the private health insurance rebate is available to Medicare eligible Australian residents and does not extend to working holiday maker OVHC.
+Only in one direction, and it is the opposite of what people expect. Private cover does not reduce your Australian tax: whether any private health insurance rebate applies depends on your individual circumstances, and it should not be assumed for overseas visitor cover.
 
 What does affect your [tax return](/tax-return) is Medicare entitlement. The 2% levy is charged to people entitled to Medicare, so a non-RHCA passport holder can usually claim the [Medicare levy exemption](/blog/medicare-levy-working-holiday-makers), and a British or Irish passport holder with access to the public system usually cannot. The exemption is not automatic and needs a Medicare Entitlement Statement from Services Australia, which takes weeks to obtain and is why most people who qualify never claim it.
 `,
@@ -7489,11 +7466,11 @@ Whatever was withheld across each job reconciles at the end of the financial yea
  date: "3 March 2026",
  readTime: 4,
  body: `
-The Failure to Lodge penalty is one penalty unit for each 28 days a [tax return](/tax-return) is overdue, capped at five. At $364 a unit, the value from 1 July 2026 (it was $330 before), the maximum is $1,820. It can apply even when the ATO owes you money. What decides whether you pay it is your compliance history.
+The Failure to Lodge penalty is one penalty unit for each 28 days a [tax return](/tax-return) is overdue, capped at five. At $364 a unit, the value from 1 July 2026 (it was $330 before), the maximum is $1,820. The ATO says it generally does not issue the penalty when a late return results in a refund or nil result, with some exceptions. What decides whether you pay it is mainly whether the return produces a debt, and your compliance history.
 
 ## When is the return actually due?
 
-31 October following the end of the financial year if you lodge it yourself, so a 2024-25 return was due by 31 October 2025 and a 2025-26 return by 31 October 2026. The [2026 deadline guide](/blog/tax-return-deadline-31-october-working-holiday) covers this year's dates. The financial year runs 1 July to 30 June, and the deadline does not move because you have left the country.
+31 October following the end of the financial year if you lodge it yourself, so a 2024-25 return was due by 31 October 2025 and a 2025-26 return by 31 October 2026, a date that has now passed. A late return can still be lodged. The [2026 deadline guide](/blog/tax-return-deadline-31-october-working-holiday) covers this year's dates. The financial year runs 1 July to 30 June, and the deadline does not move because you have left the country.
 
 Lodging through a registered tax agent changes the date substantially. Agents work to a concessional lodgement programme running into the following May, provided you were on the agent's client list before the standard October deadline. Signing up with an agent in February does not retrospectively extend a deadline that passed in October.
 
@@ -7509,9 +7486,9 @@ In steps of 28 days, not daily, so two days late and twenty days late cost the s
 
 ## Does the penalty apply if you are owed a refund?
 
-Legally yes, practically often not. The ATO's position is that the duty to lodge is separate from whether tax is payable, so a refund return lodged late is still a late return.
+Generally not. The duty to lodge is separate from whether tax is payable, so a refund return lodged late is still a late return, but the ATO says it generally does not issue a Failure to Lodge penalty notice when a late return results in a refund or nil result. There are exceptions, for example where a penalty was applied before the return was lodged.
 
-In practice the penalty is applied selectively, and the pattern decides it rather than the single year. A first late return from someone with no other history is treated very differently from a third consecutive year of nothing being lodged. Deliberate non lodgement, or several unlodged years discovered at once, is where refund returns get penalised in earnest.
+The pattern also matters rather than the single year. A first late return from someone with no other history is treated very differently from a third consecutive year of nothing being lodged. Several unlodged years discovered at once, or a return that produces a debt, is where penalties are more likely.
 
 ## When does interest get charged as well?
 
@@ -7547,34 +7524,32 @@ Amending means a return was filed and something in it was wrong. For individuals
  slug: "tax-return-deadline-31-october-working-holiday",
  title: "Tax Return Deadline 2026 for Working Holiday Makers",
  description:
-   "Lodging your 2025-26 return yourself? It is due 31 October 2026. Missed it, or already left Australia? Here is what changes.",
+   "The self-lodgement date for 2025-26 returns was 31 October 2026. Missed it, or already left Australia? A late return can still be lodged. Here is what changes.",
  category: "Tax Return",
  date: "21 October 2026",
  readTime: 5,
  body: `
-If you lodge it yourself, your 2025-26 Australian tax return is due on 31 October 2026. The year it covers runs 1 July 2025 to 30 June 2026, and the deadline is the same whether you are still in Australia or already home.
+If you lodge it yourself, the due date for your 2025-26 Australian tax return was 31 October 2026, which has now passed. A late return can still be lodged. The year it covers runs 1 July 2025 to 30 June 2026, and the deadline is the same whether you are still in Australia or already home.
 
-## Which tax year is due right now?
+## Which tax year was due on 31 October 2026?
 
 The 2025-26 year, which is every dollar paid to you between 1 July 2025 and 30 June 2026. The Australian financial year does not follow the calendar, so the month you arrived decides how your working holiday splits.
 
-- Worked November 2025 to May 2026: one return, the 2025-26 one, due now.
-- Worked March to September 2026: two returns. March to June is 2025-26 and due now; July to September is 2026-27 and not due until 31 October 2027.
+- Worked November 2025 to May 2026: one return, the 2025-26 one, due 31 October 2026.
+- Worked March to September 2026: two returns. March to June is 2025-26 and was due 31 October 2026; July to September is 2026-27 and not due until 31 October 2027.
 - Left Australia before 1 July 2025: that year was due in October 2025, and it can still be lodged.
 
 The [Australian tax year guide](/blog/australian-financial-year-dates) walks through the split in more detail, including the early return for people leaving before 30 June.
 
 ## Is the deadline later if a registered tax agent lodges it?
 
-Usually, yes. Most registered tax agents run a lodgement program that lets them lodge for their clients after 31 October, typically into the following May, provided the client was on the agent's list before 31 October.
+Often, yes. Many registered tax agents run a lodgement program that lets them lodge for their clients after 31 October, typically into the following May, provided the client was on the agent's list before 31 October. Whether that applies to you depends on your own situation and the agent's program.
 
 The ATO is explicit that the exact date depends on your own situation and on when you engaged the agent, so the condition that matters is timing. Joining an agent's client list after the October deadline has passed does not reach back and extend it. The [guide to tax agents](/blog/what-is-a-tax-agent) explains what else changes when an agent is involved.
 
 ## What actually happens if you miss 31 October?
 
-Nothing dramatic happens the day after, and for most working holiday makers who are owed money, the larger cost of a late return is usually time rather than a fine. The ATO can apply a Failure to Lodge penalty of one penalty unit for each 28 days a return is overdue, capped at five units. From 1 July 2026 a penalty unit is $364, so the maximum is $1,820.
-
-The ATO applies that penalty selectively. A first late return that produces a refund is treated very differently from several unlodged years or a return that produces a debt. The [late lodgement guide](/blog/late-tax-return-penalty-working-holiday) covers when the penalty is applied, when interest is added, and how remission works.
+Nothing dramatic happens the day after, and for most working holiday makers who are owed money, the larger cost of a late return is usually time rather than a fine. The ATO can apply a Failure to Lodge penalty of one penalty unit for each 28 days (or part of 28 days) a return is overdue, capped at five units. The ATO says it generally does not issue that penalty when a late return results in a refund or nil result, with some exceptions. A late return that produces a debt is treated differently. The [late lodgement guide](/blog/late-tax-return-penalty-working-holiday) covers when the penalty is applied, when interest is added, and how remission works.
 
 ## Does a refund expire if you lodge after the deadline?
 
@@ -7588,7 +7563,7 @@ The deadline does not move because you have gone home, and neither does the retu
 
 The ATO pays a tax refund only into an Australian bank account. Superannuation through [DASP](/superannuation) can be paid overseas, but a tax refund cannot. If your Australian account is still open, keep it open until the refund has landed. If it is already closed, deal with that before the return is lodged, not after.
 
-## What should you check before lodging this week?
+## What should you check before lodging?
 
 Three things, because a return lodged in a hurry with one of them wrong has to be amended later, and an amendment takes longer than getting it right the first time.
 
@@ -7683,7 +7658,7 @@ The exception makes deliberate omission a different category of risk. Where ther
  date: "29 July 2026",
  readTime: 4,
  body: `
-Any single work item costing $300 or less is deductible in full in the year you buy it, rather than depreciated over years. Boots, knives, secateurs, hard hats, high visibility shirts, tool belts and hand tools all qualify. From 1 July 2026 a broader $1,000 instant deduction rule also applies.
+Any single work item costing $300 or less is deductible in full in the year you buy it, rather than depreciated over years. Boots, knives, secateurs, hard hats, high visibility shirts, tool belts and hand tools all qualify. From the 2026-27 income year a separate $1,000 standard deduction also exists for eligible people, but it is not available for 2025-26 returns.
 
 ## What are the three conditions?
 
@@ -7723,7 +7698,7 @@ Photographing the receipt at the counter and mailing it to yourself takes ten se
 
 Nothing is lost, it is just claimed over time. Items above the threshold are depreciated over their effective life, generally three to five years for hand tools and small power equipment, so a $400 chainsaw is claimed across several years rather than in one.
 
-That interacts with the new rule from 1 July 2026, which raises the immediate deduction threshold to $1,000 and changes the arithmetic for anyone buying a decent power tool or an e-bike. The [$1,000 instant deduction rule](/blog/1000-dollar-instant-deduction-rule-2026) sets out how the two work together.
+That sits alongside the $1,000 standard deduction that starts with the 2026-27 income year. It does not raise the item threshold, but it can change the arithmetic for anyone buying a decent power tool or an e-bike. The [$1,000 standard deduction guide](/blog/1000-dollar-instant-deduction-rule-2026) sets out how the two fit together.
 
 ## Where do good purchases fail this rule?
 
@@ -7732,7 +7707,7 @@ The $300 rule sounds simple and fails on details rather than on principle.
 - Whether items were bought as a set or genuinely separately, which is the difference between an immediate deduction and depreciation.
 - Whether you kept receipts, which decides whether an honest expense is a claimable one.
 - Whether the item is used only for work, or also personally, and whether you can justify the split.
-- Which financial year the purchase falls in, since the threshold changed from 1 July 2026.
+- Which financial year the purchase falls in, since the $1,000 standard deduction only starts with 2026-27.
 - Whether you are an employee or on an ABN, which changes where the expense is claimed and what else can be claimed alongside it.
 - What industry you worked in, since farm, site and kitchen work each have a different set of items the ATO expects to see.
 
@@ -7740,20 +7715,20 @@ Deductions are claimed through your [working holiday tax return](/tax-return), a
  `,
  }, {
  slug: "1000-dollar-instant-deduction-rule-2026",
- title: "The $1,000 Instant Deduction From July 2026",
+ title: "The $1,000 Standard Deduction From 2026-27",
  description:
-   "The threshold for immediately deducting work items jumps from $300 to $1,000, covering laptops, tools and gear. Who benefits, and when actual costs are worth more.",
+   "A flat $1,000 work related deduction without receipts starts with the 2026-27 income year. Not for 2025-26 returns. Who it is for, and when actual costs are worth more.",
  category: "Tax Return",
  date: "21 March 2026",
  readTime: 4,
  body: `
-From 1 July 2026 you can claim a flat $1,000 for work related expenses without receipts, or claim your actual costs with full records. You choose one or the other for the year, not both.
+From the 2026-27 income year (1 July 2026 to 30 June 2027) the ATO's new standard deduction lets eligible people claim $1,000 for work related expenses without receipts. It is separate from the long standing rule for low cost work items, it does not apply to 2025-26 returns, and the ATO says it is for people who are Australian residents for tax purposes. Whether that describes you depends on the facts of your year, and the ATO makes the final call.
 
 ## What does the flat $1,000 replace?
 
-The requirement to substantiate, not the deduction itself. You put $1,000 on the work related expenses line without receipts, logbooks or diaries behind it.
+The requirement to substantiate, not the deduction itself. The ATO says the $1,000 can be claimed without having spent the money or kept records.
 
-It covers the ordinary work expenses of a backpacker year: protective clothing and its laundry, tools and small equipment, the work share of a phone plan, work related vehicle use, licences and registrations, and self education tied to the job you already have. It does not extend to items outside that category, such as donations or investment expenses, which keep their own rules and can still be claimed separately.
+It is aimed at ordinary work expenses such as protective clothing and its laundry, tools and small equipment, the work share of a phone plan and similar costs. Items outside that category, such as donations or investment expenses, keep their own rules, so confirm the current ATO list before relying on this summary.
 
 ## When is the flat $1,000 the better choice?
 
@@ -7774,21 +7749,19 @@ Vehicle use most often decides it. At 91c per kilometre under the cents per kilo
 
 ## Can you take the flat amount and add to it?
 
-No. It is one method or the other for the whole work related expenses category in that year.
+Not on top. The ATO says the expenses you claim reduce the standard deduction dollar for dollar, and once they pass $1,000 the standard deduction falls to nil and you need written evidence for what you claim.
 
-So the choice has to be made after the arithmetic. Expenses of $1,200 claimed under the flat rate forfeit $200; the same $1,200 substantiated is claimed in full. Where the two land close together, the flat rate is usually still better once the record keeping is weighed against the difference.
+So the choice has to be made after the arithmetic. Expenses of $1,200 with receipts are claimed in full; the same year without receipts is limited to the $1,000. Where the two land close together, the flat amount can still be simpler once the record keeping is weighed against the difference.
 
 ## Which financial year does it apply to?
 
-The 2026-27 year, which runs from 1 July 2026 to 30 June 2027 and is lodged from July 2027 onwards. It is not retrospective, so a 2025-26 return or any earlier year is still prepared under the existing substantiation rules including [the $300 threshold for tools and equipment](/blog/tools-equipment-under-300-instant-deduction-whv).
+The 2026-27 year, which runs from 1 July 2026 to 30 June 2027 and is lodged from July 2027 onwards. The ATO says it is not available for Tax Time 2025-26, so a 2025-26 return or any earlier year is prepared under the existing rules, including [the $300 rule for tools and equipment](/blog/tools-equipment-under-300-instant-deduction-whv).
 
-Timing decides it. Someone who arrived in early 2026 has income split across two financial years under two different sets of deduction rules, and the same expense can be treated differently depending on which side of 30 June 2026 it fell.
+Timing decides it. Someone whose working holiday spans both years has income split across two financial years under two different sets of deduction rules, and the same expense can be treated differently depending on which side of 30 June 2026 it fell. The ATO's rules on this are still being finalised, so check the current position before relying on any figure here.
 
 ## What is the deduction actually worth to you?
 
-Less than the headline, because a deduction reduces taxable income rather than tax. At the working holiday maker rate of 15%, a $1,000 deduction reduces tax payable by $150.
-
-Above $45,000 the rate rises to 30% and the same deduction is worth $300, but few working holiday makers reach that bracket in a single year. The measure is neutral on visa status and applies to a 417 or 462 holder the same way as to an Australian resident, so nothing about the [tax return](/tax-return) changes beyond the choice of method.
+Less than the headline, because a deduction reduces taxable income rather than tax. What it is worth in dollars depends on the tax rate that applies to your income, which varies from person to person and is something our team reviews as part of preparing your [tax return](/tax-return). Whether the standard deduction applies to you at all is also a case by case question for the ATO.
 
 ## What still needs records even under the flat rate?
 
@@ -7800,7 +7773,7 @@ The same is true on the income side. Cash income, ABN receipts and platform paym
 
 Not immediately. You cannot know which is better until the year is over, so throwing receipts away in October forecloses the choice.
 
-Photograph receipts as they happen and decide in July. For a hospitality or retail year the flat rate will almost certainly win. For a construction or driving year the total will very likely exceed $1,000, and the photographs are the difference between claiming the real figure and the capped one.
+Photograph receipts as they happen and decide when the year is over. For a light year the flat amount may be enough. For a construction or driving year the total may well exceed $1,000, and the photographs are the difference between claiming the real figure and the capped one.
 `,
  }, {
  slug: "bicycle-motorcycle-vehicle-deductions-working-holiday",
@@ -7824,7 +7797,7 @@ A delivery rider on an ABN riding for Uber Eats, DoorDash or Menulog is producin
 
 Both the vehicle itself and what it costs to run, in the proportion you use it for work. The asset is claimed in full or over its effective life depending on what it cost; running costs are claimed as you incur them.
 
-- The bicycle, e-bike or scooter itself. Under $300 it is deductible in full immediately, and from 1 July 2026 an instant deduction threshold of $1,000 applies. Above the threshold it is depreciated over its effective life, typically three to five years.
+- The bicycle, e-bike or scooter itself. Under $300 it is generally deductible in full immediately (in the work use proportion). Above that it is depreciated over its effective life, typically three to five years.
 - Repairs and consumables: tubes, tyres, chains, brake pads, servicing.
 - Equipment: helmet, lights, lock, panniers, delivery bag, phone mount.
 - Electricity to charge an e-bike battery, on a reasonable estimate of the work portion.
@@ -7862,7 +7835,7 @@ Vehicle deductions vary more between two riders than almost any other claim, bec
 - Which vehicle class it is. A motorcycle or a heavy ute is claimed on actual costs, with a receipt behind every item.
 - Whether a twelve week logbook exists, because it cannot be created retrospectively.
 - What proportion of use is genuinely work, and whether you have a defensible basis for that number.
-- Whether the vehicle cost sits under or over the instant deduction threshold for the year in question.
+- Whether the vehicle cost sits under or over the $300 immediate deduction limit.
 - Whether most of your ABN income comes from one payer, since personal services income rules can restrict what is deductible against it.
 
 Vehicle claims are made through your [working holiday tax return](/tax-return), and you can [estimate your tax refund](/calculator) once you have a rough figure for the year's costs.
@@ -8092,7 +8065,7 @@ If you are engaged as a contractor on an [ABN](/blog/farm-work-and-abns), automa
 
 The gear the job made you buy, which on a farm is a longer list than in most roles. Protective and waterproof boots, work clothing including high visibility gear, sun protection, gloves, small hand tools and knives you supplied, a work share of your phone, and vehicle running costs for movement between separate work locations.
 
-Whether to itemise depends on the total. For 2026-27 onwards the [flat $1,000 without receipts](/blog/1000-dollar-instant-deduction-rule-2026) is available as an alternative to substantiating everything, and for many farm hands the real total lands close enough to $1,000 that the flat amount is the sensible choice. Our guide to [deductions for working holiday makers](/blog/tax-deductions-working-holiday-makers) covers what qualifies either way.
+Whether to itemise depends on the total. From the 2026-27 income year the [$1,000 standard deduction](/blog/1000-dollar-instant-deduction-rule-2026) may be available without receipts, where it applies to you, and for many farm hands the real total lands close enough to $1,000 that the comparison is worth making. Our guide to [deductions for working holiday makers](/blog/tax-deductions-working-holiday-makers) covers what qualifies either way.
 `,
  },
 
@@ -8155,7 +8128,7 @@ Close is not the end of the shift, and a roster written to close rather than to 
 
 Modest amounts. The RSA course fee where you paid it and were not reimbursed, non slip shoes where the venue requires them, your own bar equipment where you supply it, the work share of phone costs, and vehicle running costs where shifts are in locations without transport.
 
-From 1 July 2026 the flat $1,000 work related deduction is available without receipts, which for most bar staff exceeds what could be substantiated item by item.
+From the 2026-27 income year a $1,000 standard deduction may be available without receipts where it applies to you (not for 2025-26 returns), which for bar staff can exceed what could be substantiated item by item.
 
 ## Can you start without bar experience?
 
@@ -8380,7 +8353,7 @@ An employer cannot lawfully pressure you not to claim, and a working holiday vis
 
 Less than a tradesperson and more than nothing. Non slip work shoes, an apron or work clothing where it is required and not provided, knife sharpening if you supply your own knives, and the work related share of phone costs.
 
-From 1 July 2026 there is also a flat $1,000 work related deduction available without receipts, which for most kitchen hands exceeds what they could substantiate. Our guide to [the $1,000 instant deduction](/blog/1000-dollar-instant-deduction-rule-2026) explains when the flat figure beats itemising.
+From the 2026-27 income year there is also a $1,000 standard deduction without receipts for eligible people (not for 2025-26 returns), which can exceed what a kitchen hand could substantiate. Our guide to [the $1,000 standard deduction](/blog/1000-dollar-instant-deduction-rule-2026) explains who it is for and when itemising may be better.
 
 ## How do you move up from kitchen hand?
 
@@ -8462,7 +8435,7 @@ Both things that go wrong happen in the first 48 hours. An injury not reported t
 
 More than most working holiday maker roles, because construction requires you to buy things. Steel capped boots, high visibility clothing, a hard hat and gloves where you supply them, sun protection for outdoor work, hand tools, and the White Card course fee itself are all work related expenses.
 
-Whether you itemise them depends on the financial year. For 2026-27 onwards you can take the [flat $1,000 without receipts](/blog/1000-dollar-instant-deduction-rule-2026) or substantiate the actual amount, and construction is one of the few backpacker occupations where the real total genuinely exceeds $1,000, so keeping receipts from day one is worth doing. Travel between two sites in a day is deductible; the commute from home to the first site is not.
+Whether you itemise them depends on the financial year. For 2026-27 onwards the [$1,000 standard deduction](/blog/1000-dollar-instant-deduction-rule-2026) may be an alternative to substantiating the actual amount where it applies to you, and construction is one of the few backpacker occupations where the real total genuinely exceeds $1,000, so keeping receipts from day one is worth doing. Travel between two sites in a day is deductible; the commute from home to the first site is not.
 `,
  },
 
@@ -8808,7 +8781,7 @@ Station work carries higher injury rates than most industries: animal handling i
 
 More than most working holiday roles, because station hands supply real gear. Work boots and riding boots, a protective hat, long sleeved work clothing and sun protection, gloves, personal tools such as a knife or fencing tools, and saddle and tack where you provide your own.
 
-The test is whether the item is principally for the work rather than personal use. From 1 July 2026 the flat $1,000 work related deduction is also available without receipts, which for many station hands will be simpler than itemising.
+The test is whether the item is principally for the work rather than personal use. From the 2026-27 income year a $1,000 standard deduction may also be available without receipts where it applies to you (not for 2025-26 returns), which can be simpler than itemising.
 
 ## What should you settle before you accept a job?
 
@@ -8851,7 +8824,7 @@ The year is reconciled in the [working holiday tax return](/tax-return), and you
  date: "1 June 2026",
  readTime: 4,
  body: `
-There is no limit on how much money you can bring into Australia, and bringing it in is not taxed. Physical currency of A$10,000 or more must be declared at the border, and electronic transfers at that level are reported automatically by the bank. Reporting is monitoring, not taxation.
+There is no limit on how much money you can bring into Australia, and bringing it in is not taxed. Physical currency of A$10,000 or more must be declared at the border, and international transfers are reported to AUSTRAC by the bank or transfer service. Reporting is monitoring, not taxation.
 
 ## What is the $10,000 rule actually about?
 
@@ -8859,11 +8832,11 @@ An anti money laundering rule administered by AUSTRAC, Australia's financial int
 
 The threshold covers cash carried on you, in luggage, in the post or by courier, and applies to everyone crossing the border. The report is made on a Cross-Border Movement Report.
 
-For electronic transfers, the same threshold triggers automatic reporting by the bank or transfer service. You do nothing; the provider handles it.
+International electronic transfers are reported by the bank or transfer service, and the $10,000 threshold is specifically about physical cash. You do nothing; the provider handles it.
 
 ## Does declaring create a tax bill?
 
-No. AUSTRAC and the ATO are separate agencies, and a report to one is not information handed to the other. Bringing $25,000 of savings from Germany to start a working holiday is reported at the border and taxed nowhere.
+No. AUSTRAC and the ATO are separate agencies, but the ATO can access AUSTRAC data, so a report is not hidden from it. A report does not itself create tax: bringing $25,000 of savings from Germany to start a working holiday is reported at the border and taxed nowhere.
 
 The savings were earned before you arrived and are not Australian source income. Australian tax attaches to what you earn here. Our guide to [transferring money out of Australia](/blog/transferring-money-overseas-australia-tax) covers the same principle in the other direction.
 
@@ -8887,7 +8860,7 @@ Enough to answer one question: where the money came from. A home country bank st
 - The AUSTRAC declaration receipt, if you declared cash at the border
 - Documentation for a gift, a vehicle sale or an investment sale that funded the trip
 
-The ATO has data matching access to AUSTRAC reports and Australian bank records, so a mismatch between visible funds and declared income can prompt a question. Ordinary explanations are easy to substantiate. The real difficulty is unreported Australian income, most often cash work that was never declared.
+The ATO can access AUSTRAC reports and receives Australian bank records, so a mismatch between visible funds and declared income can prompt a question. Ordinary explanations are easy to substantiate. The real difficulty is unreported Australian income, most often cash work that was never declared.
 
 ## How should you actually bring the money?
 
@@ -9021,7 +8994,7 @@ Tax back is the amount withheld from your pay above what you actually owed, reco
 
 Because withholding is an estimate applied pay by pay, while your actual liability is calculated once, at the end of the year, on the whole picture. The two only match if nothing unusual happened, and for working holiday makers something unusual usually did.
 
-The gap runs in one direction. An Australian resident's withholding is calculated against a scale designed to land near zero. A working holiday maker's is flat, and every error in it, a missing TFN, an unregistered employer, an early departure, means too much was taken rather than too little.
+The gap runs in one direction. The way withholding is calculated depends on your individual circumstances, and the rate applied during the year is not always the rate your return is assessed at. Errors in it, a missing TFN, an unregistered employer, an early departure, can mean the wrong amount was taken.
 
 ## Which parts of your year create the refund?
 
@@ -9043,7 +9016,7 @@ The size of your refund is decided by how wrong your withholding was, not by how
 
 The Australian tax year runs 1 July to 30 June, self lodgement is due by 31 October, and lodging through a registered agent extends that into the following May. Start mid July rather than 1 July, because income statements are not final until employers complete their reporting.
 
-Lodging your own return is free. What it does not settle is the two items that move the number most: the residency position, which depends on your circumstances and has to be properly reviewed, and the Medicare levy exemption, which needs a Medicare Entitlement Statement ordered weeks ahead rather than a tick box. An agent fee is itself deductible on the following year's return. From overseas the obstacles are identity verification and an open Australian bank account, neither a tax problem. Refunds are usually paid about 14 business days after lodgement, and longer through the July to September peak.
+Lodging your own return is free. What it does not settle is the two items that move the number most: the residency position, which depends on your circumstances and has to be properly reviewed, and the Medicare levy position, which depends on your individual situation and supporting documents. An agent fee is itself deductible on the following year's return. From overseas the obstacles are identity verification and an open Australian bank account, neither a tax problem. Refunds are usually paid about 14 business days after lodgement, and longer through the July to September peak.
 
 ## Can you claim for years you have already left?
 
@@ -9073,7 +9046,7 @@ There is no average worth quoting, because a refund is not a payment for being a
 
 Three figures, two of which you already hold. Your total income for the financial year running 1 July to 30 June, the total tax withheld across every employer, and the offsets, exemptions and deductions that reduce what you owed. The refund is the second minus the tax due on the first, adjusted by the third.
 
-Quoted averages are meaningless here. An Australian resident's withholding runs against a scale that already includes the $18,200 tax free threshold, so their reconciliation lands near zero by design. A working holiday maker's withholding runs flat at 15%, and every error in it runs one way: too much. The refund is the accumulated error.
+Quoted averages are meaningless here. How withholding compares with the tax actually assessed depends on the individual facts of your year, and it is worked out case by case when the return is prepared. Errors in withholding, where there are any, are what a return can correct.
 
 ## Which situations produce a large refund?
 
@@ -9121,7 +9094,7 @@ Working holiday makers on 417 and 462 visas pay 15% on the first $45,000 earned 
 
 Fifteen per cent applies from the first dollar to $45,000. Almost every working holiday maker stays inside the first bracket for a single financial year, so 15% is the rate that decides their year.
 
-No tax free threshold is what separates this from ordinary Australian taxation. An Australian pays nothing on their first $18,200; a working holiday maker pays 15% on it, a difference of $2,730.
+How the tax free threshold and the rates apply to you depends on the individual facts of your year. It is assessed case by case, the ATO makes the final decision, and it is not something to assume either way.
 
 - First $45,000: 15%
 - $45,001 to $135,000: 30%
@@ -9138,7 +9111,7 @@ Residency depends on your own circumstances and has to be properly reviewed, and
 
 Because it decides which rate they are allowed to apply. A business must register with the ATO as an employer of working holiday makers before it can withhold at 15%, and one that has not registered is required to use foreign resident rates instead, currently 30% on the relevant bracket.
 
-You cannot tell from the outside, and the employers who most often have not registered are farms and small regional hospitality businesses. Nothing is lost when it happens: the excess is refunded when the return is lodged. The difference between 30% and 15% on a season of harvest work is usually the largest single item in that year's refund, and finding it requires looking at each employer separately rather than at the total.
+You cannot tell from the outside, and the employers who most often have not registered are farms and small regional hospitality businesses. The excess is reconciled when the return is assessed, though the outcome depends on your year. The difference between 30% and 15% on a season of harvest work can be a large item in that year's return, and finding it requires looking at each employer separately rather than at the total.
 
 ## What does your TFN change?
 
@@ -9148,7 +9121,7 @@ You must be in Australia to apply for a [TFN](/tfn), the number itself is free, 
 
 ## What is the Medicare levy exemption worth?
 
-Two per cent of taxable income, which is about $500 on $25,000 of earnings, and most people who qualify never claim it. Australians pay a 2% Medicare levy on top of income tax, and it is charged to people entitled to Medicare rather than to residents as such.
+Two per cent of taxable income, which is about $500 on $25,000 of earnings, and most people who qualify never claim it. Whether the Medicare levy applies to you depends on your individual circumstances and is assessed case by case.
 
 Whether you can remove it depends on your passport, often in the opposite direction to what people expect. A British or Irish national is generally entitled to Medicare under the reciprocal health care arrangements, so the levy applies. German and Japanese nationals generally are not entitled, so the exemption is available to them.
 
@@ -9440,7 +9413,7 @@ export const categoryMeta: CategoryMeta[] = [
  {
  question: "Do working holiday makers need private health insurance?",
  answer:
- "Yes for most. Private health insurance is a visa condition for many working holiday visas and is essential for backpackers who are not covered by a Reciprocal Health Care Agreement with Australia.",
+ "Usually worth having. Private health insurance (condition 8501) is a visa condition on some working holiday visas, so check your grant letter, and it is essential for backpackers who are not covered by a Reciprocal Health Care Agreement with Australia.",
  },
  ],
  relatedServicePath: "/medicare",

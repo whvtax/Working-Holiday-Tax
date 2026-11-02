@@ -3,14 +3,21 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type React from 'react'
 import { useState, useRef, useEffect } from 'react'
+import { NEW_LOCALES, type NewLocale, LOCALE_ONLY_ROUTES, hasLocalePage, isLocaleOnlyRoute } from '@/lib/locale-pages'
 
 /**
  * LanguageSwitcher
  * Shows current language + flag, opens dropdown with the other options.
  * Smart pathing: if on /tfn, switching to DE goes to /de/tfn; to JA → /ja/tfn.
+ * French, Italian and Spanish (ADR 013) show the language name, not a flag, and
+ * are only offered for routes that exist in that language (see locale-pages),
+ * falling back to that language's home, and hidden altogether while nothing in
+ * that language is live.
  * Used in Nav (desktop + mobile - same variant since the mobile menu now shows
  * the pill button beside the burger instead of an inline mobile variant).
  */
+const NEW_LABEL: Record<NewLocale, string> = { fr: 'Français', it: 'Italiano', es: 'Español' }
+
 export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 'desktop' | 'mobile' }) {
   const pathname = usePathname() || '/'
   const [open, setOpen] = useState(false)
@@ -19,19 +26,22 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
   // Determine current locale from pathname
   const isGerman   = pathname === '/de' || pathname.startsWith('/de/')
   const isJapanese = pathname === '/ja' || pathname.startsWith('/ja/')
-  const currentLocale: 'en' | 'de' | 'ja' = isJapanese ? 'ja' : isGerman ? 'de' : 'en'
+  type Locale = 'en' | 'de' | 'ja' | NewLocale
+  const newLocale = NEW_LOCALES.find(l => pathname === `/${l}` || pathname.startsWith(`/${l}/`))
+  const currentLocale: Locale = newLocale ?? (isJapanese ? 'ja' : isGerman ? 'de' : 'en')
 
   // Build equivalent URLs by swapping the locale prefix
   const stripLocale = (p: string) =>
-    p.replace(/^\/de(\/|$)/, '/').replace(/^\/ja(\/|$)/, '/') || '/'
+    p.replace(/^\/de(\/|$)/, '/').replace(/^\/ja(\/|$)/, '/').replace(/^\/(fr|it|es)(\/|$)/, '/') || '/'
 
   // Routes that only exist in English - switching locale falls back to that locale's home
   const EN_ONLY_ROUTES = ['/uk-working-holiday-tax']
   // The Medicare category slug differs between locales (EN: medicare-and-other, DE/JA: medicare)
   const toLocalizedPath = (p: string) =>
-    EN_ONLY_ROUTES.includes(p) ? '/' : p.replace(/^\/blog\/category\/medicare-and-other$/, '/blog/category/medicare')
+    EN_ONLY_ROUTES.includes(p) || isLocaleOnlyRoute(p) ? '/' : p.replace(/^\/blog\/category\/medicare-and-other$/, '/blog/category/medicare')
+  // A route that exists only in French has no English twin either.
   const toEnglishPath = (p: string) =>
-    p.replace(/^\/blog\/category\/medicare$/, '/blog/category/medicare-and-other')
+    isLocaleOnlyRoute(p) ? '/' : p.replace(/^\/blog\/category\/medicare$/, '/blog/category/medicare-and-other')
 
   const baseUrl = stripLocale(pathname)
   const enBase  = toEnglishPath(baseUrl)
@@ -39,6 +49,15 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
   const englishHref  = enBase === '/' ? '/'   : enBase
   const germanHref   = locBase === '/' ? '/de' : `/de${locBase}`
   const japaneseHref = locBase === '/' ? '/ja' : `/ja${locBase}`
+  // New locales: the same page if it exists in that language, else that
+  // language's home if that exists, else null (the option is not offered). The
+  // language we are already on is always offered.
+  const newHref = (l: NewLocale): string | null => {
+    if (LOCALE_ONLY_ROUTES[l].includes(baseUrl)) return `/${l}${baseUrl}`
+    if (enBase !== '/' && hasLocalePage(l, enBase)) return `/${l}${enBase}`
+    if (hasLocalePage(l, '/')) return `/${l}`
+    return l === newLocale ? pathname : null
+  }
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -87,18 +106,26 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
   )
 
   // Pill button (desktop and beside-burger on mobile)
-  const currentFlag = currentLocale === 'ja' ? <FlagJP /> : currentLocale === 'de' ? <FlagDE /> : <FlagUK />
-  const currentCode = currentLocale === 'ja' ? 'JA' : currentLocale === 'de' ? 'DE' : 'EN'
+  // fr, it and es have no flag (ADR 013): the pill shows the code only.
+  const currentFlag = newLocale ? null : currentLocale === 'ja' ? <FlagJP /> : currentLocale === 'de' ? <FlagDE /> : <FlagUK />
+  const currentCode = newLocale ? newLocale.toUpperCase() : currentLocale === 'ja' ? 'JA' : currentLocale === 'de' ? 'DE' : 'EN'
   const ariaLabel =
+    currentLocale === 'fr' ? 'Changer de langue' :
+    currentLocale === 'it' ? 'Cambia lingua' :
+    currentLocale === 'es' ? 'Cambiar idioma' :
     currentLocale === 'de' ? 'Sprache wechseln' :
     currentLocale === 'ja' ? '言語を切り替える' :
     'Switch language'
 
   // Order: current first (highlighted), others below
-  const options: Array<{ code: 'en'|'de'|'ja'; label: string; href: string; flag: React.JSX.Element }> = [
+  const options: Array<{ code: Locale; label: string; href: string; flag: React.JSX.Element | null }> = [
     { code: 'en', label: 'English',  href: englishHref,  flag: <FlagUK /> },
     { code: 'de', label: 'Deutsch',  href: germanHref,   flag: <FlagDE /> },
     { code: 'ja', label: '日本語',    href: japaneseHref, flag: <FlagJP /> },
+    ...NEW_LOCALES.flatMap(l => {
+      const href = newHref(l)
+      return href ? [{ code: l, label: NEW_LABEL[l], href, flag: null }] : []
+    }),
   ]
 
   return (
@@ -111,19 +138,17 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
         aria-label={ariaLabel}
         className="inline-flex items-center gap-1.5 transition-all"
         style={{
-          height: '32px',
-          padding: '0 10px',
-          // The switcher only ever sits in the nav, and the nav is forest
-          // green, so the pill is drawn light instead of dark.
-          background: open ? 'rgba(255,255,255,0.16)' : 'transparent',
-          // The border is the only thing that makes this read as a control.
-          // At 0.34 alpha over the forest nav it measured 2.4:1 and failed
-          // WCAG 1.4.11, which asks 3:1 of a component boundary. 0.5 is 3.5:1.
-          border: '1px solid rgba(255,255,255,0.5)',
+          height: '40px',
+          padding: '0 12px',
+          // The switcher sits in the white header bar: a quiet outlined pill.
+          // The border is #8A948F (3.1:1 on white) so the control boundary
+          // meets WCAG 1.4.11.
+          background: open ? '#F2FAF7' : '#FFFFFF',
+          border: '1px solid #8A948F',
           borderRadius: '100px',
           fontSize: '12px',
           fontWeight: 500,
-          color: 'rgba(255,255,255,0.92)',
+          color: '#0F1A16',
           cursor: 'pointer',
         }}>
         {currentFlag}
@@ -154,8 +179,8 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
           right: 0,
           minWidth: '160px',
           background: '#fff',
-          borderRadius: '12px',
-          boxShadow: '0 10px 28px -8px rgba(11, 82, 64, 0.18), 0 4px 12px -4px rgba(11, 82, 64, 0.08)',
+          borderRadius: '10px',
+          boxShadow: '0 16px 32px rgba(15, 26, 22, 0.10)',
           border: '1px solid #DCE0DE',
           padding: '6px',
           zIndex: 60,
@@ -169,11 +194,13 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
               <Link
                 key={opt.code}
                 href={opt.href}
+                lang={opt.code}
+                hrefLang={opt.code}
                 onClick={() => setOpen(false)}
                 aria-current={isCurrent ? 'true' : undefined}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
                 style={{
-                  background: isCurrent ? '#F4F9F6' : 'transparent',
+                  background: isCurrent ? '#F2FAF7' : 'transparent',
                   textDecoration: 'none',
                   fontSize: '13px',
                   fontWeight: isCurrent ? 600 : 400,

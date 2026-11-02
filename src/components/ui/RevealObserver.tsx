@@ -15,7 +15,8 @@ export function RevealObserver() {
     document
       .querySelectorAll<HTMLElement>('main section h2, main section .card, main section .card-premium, main section .stat-card')
       .forEach(el => {
-        if (el.closest('.reveal,.reveal-left,.reveal-right') || el.matches(selectors)) return
+        // The WHT layout layer (data-layer="wht") keeps its headings still: content, not motion.
+        if (el.closest('.reveal,.reveal-left,.reveal-right,[data-layer="wht"]') || el.matches(selectors)) return
         el.classList.add('reveal')
         const sibs = el.parentElement ? Array.from(el.parentElement.children).filter(c => c.matches('.card,.card-premium,.stat-card')) : []
         const i = sibs.indexOf(el)

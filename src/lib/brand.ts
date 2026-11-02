@@ -47,7 +47,7 @@ export const BRANDS: Readonly<Record<Brand, BrandConfig>> = {
     phone: '0424 513 998',
     whatsappNumber: '61424513998',
     whatsappIsPlaceholder: false,
-    locales: ['en-AU', 'de', 'ja'],
+    locales: ['en-AU', 'de', 'ja', 'fr', 'it', 'es'],
     defaultLocale: 'en-AU',
   },
   svt: {

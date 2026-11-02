@@ -1,7 +1,9 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesWhtPage } from '@/components/wht/JobPageBlocks'
 
 export const metadata: Metadata = {
   "title": "Farm Work Tax Deductions in Australia",
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/farm-work",
       "de": "/de/expenses/farm-work",
       "ja": "/ja/expenses/farm-work",
+      ...newLocaleLanguages('/expenses/farm-work'),
       "x-default": "/expenses/farm-work"
     }
   },
@@ -66,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Farm work and fruit p
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.",
+  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
   "guaranteeBody": "A season of short farm jobs, several contractors and one return is a thing we untangle every week, for people on 417 and 462 visas and nobody else. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
@@ -202,7 +205,7 @@ const SECTIONS: Section[] = [
     "h2": "What turns on how your season was structured?",
     "paras": [
       "Itinerant work or commuting is a question of fact. Sent between three properties by a contractor with no single base is a different position from driving to the same orchard for eleven weeks. How often the site changed, whether the job required the travel, and whether you had a fixed workplace decide it.",
-      "Residency is bigger. It is a judgement, not a formula, and the Addy case in the High Court shows how much can hang on it. We take a position on it only after going through your year.",
+      "Residency is a separate question. It depends on the individual facts of your year, the ATO makes the final decision, and our team reviews it as part of preparing your return.",
       "Farm work also feeds a further visa, and that part is immigration rather than tax. Which industries, postcodes and dates count is set by the Department of Home Affairs and has changed more than once, so check the current official guidance or a registered migration agent before you rely on a job counting."
     ]
   }
@@ -268,7 +271,7 @@ const SERVICES = [
    every section renderer live in JobExpensesPage, once, for all 21 job pages. */
 export default function Page() {
   return (
-    <JobExpensesPage
+    <JobExpensesWhtPage
       content={{
         lang: 'en',
         path: '/expenses/farm-work',

@@ -5,21 +5,134 @@ import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
 import { EMAIL, AGENT_TPB } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
 import { trackWhatsApp } from '@/lib/analytics'
+import { LogoMark } from '@/components/wht/LogoMark'
+import styles from './Footer.module.css'
 
 export function Footer() {
   const pathname = usePathname() || '/'
   const isGerman   = pathname === '/de' || pathname.startsWith('/de/')
   const isJapanese = pathname === '/ja' || pathname.startsWith('/ja/')
-  const locale: 'en' | 'de' | 'ja' = isJapanese ? 'ja' : isGerman ? 'de' : 'en'
+  const isFrench   = pathname === '/fr' || pathname.startsWith('/fr/')
+  const isItalian  = pathname === '/it' || pathname.startsWith('/it/')
+  const isSpanish  = pathname === '/es' || pathname.startsWith('/es/')
+  const locale: 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es' = isSpanish ? 'es' : isItalian ? 'it' : isFrench ? 'fr' : isJapanese ? 'ja' : isGerman ? 'de' : 'en'
   const waHref = waUrl({ topic: 'general', lang: locale })
   // /about is the one page that must not mention the supervising agent at all.
   // The sticky bar already switches to its neutral variant there, and the footer
   // has to agree with it or the exclusion is pointless.
-  const isAbout = /^\/(de\/|ja\/)?about\/?$/.test(pathname)
+  const isAbout = /^\/(de\/|ja\/|fr\/|it\/|es\/)?about\/?$/.test(pathname)
 
   // Localized strings + paths
   const t =
-    locale === 'de'
+    locale === 'es'
+    ? {
+        tagline: 'Tus impuestos en Australia, resueltos.',
+        intro: 'Nos encargamos del TFN, la declaración de impuestos, el retiro de la super y el ABN si estás en Australia con una visa working holiday.',
+        askUs: 'Pregúntanos lo que quieras',
+        services: 'Servicios',
+        serviceLinks: [
+          { label: 'Número TFN',               href: '/es/tfn' },
+          { label: 'Registro de ABN',          href: '/es/abn' },
+          { label: 'Declaración de impuestos', href: '/es/tax-return' },
+          { label: 'Retiro de la super',       href: '/es/superannuation' },
+          { label: 'Medicare',                 href: '/es/medicare' },
+        ],
+        learn: 'Guías',
+        learnLinks: [
+          { label: 'Blog',                              href: '/es/blog' },
+          { label: 'Gastos deducibles por oficio',      href: '/es/expenses' },
+          { label: 'Calcula tu devolución',             href: '/es/calculator' },
+          { label: 'Artículos sobre el TFN',            href: '/es/blog/category/tfn' },
+          { label: 'Artículos sobre la declaración',    href: '/es/blog/category/tax-return' },
+        ],
+        connect: 'Contacto',
+        connectLinks: [
+          { label: 'Facebook',   href: 'https://www.facebook.com/workingholidaytax', external: true },
+          { label: 'Correo',     href: `mailto:${EMAIL}`, external: false },
+          { label: 'WhatsApp',   href: waUrl({ topic: 'general', lang: locale }), external: true },
+          { label: 'TikTok',     href: 'https://www.tiktok.com/@workingholidaytax', external: true },
+          { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
+        ],
+        copyright: 'Working Holiday Tax. Todos los derechos reservados.',
+        about: 'Quiénes somos',
+        // The legal texts are not translated in phase 1 (ADR 013): the links go
+        // to the English pages and the label says so.
+        clientAgreement: 'Acuerdo con el cliente (en inglés)',
+        privacyPolicy: 'Política de privacidad (en inglés)',
+      }
+    :     locale === 'it'
+    ? {
+        tagline: 'Le tue tasse australiane, sistemate.',
+        intro: 'Ci occupiamo di TFN, dichiarazione dei redditi, rimborso della super e ABN per chi è in Australia con un visto working holiday.',
+        askUs: 'Chiedici quello che vuoi',
+        services: 'Servizi',
+        serviceLinks: [
+          { label: 'Richiesta del TFN',          href: '/it/tfn' },
+          { label: 'Registrazione ABN',         href: '/it/abn' },
+          { label: 'Dichiarazione dei redditi', href: '/it/tax-return' },
+          { label: 'Rimborso della super',      href: '/it/superannuation' },
+          { label: 'Medicare',                  href: '/it/medicare' },
+        ],
+        learn: 'Guide',
+        learnLinks: [
+          { label: 'Blog',                              href: '/it/blog' },
+          { label: 'Spese deducibili per lavoro',       href: '/it/expenses' },
+          { label: 'Stima il tuo rimborso',             href: '/it/calculator' },
+          { label: 'Articoli sul TFN',                  href: '/it/blog/category/tfn' },
+          { label: 'Articoli sulla tax return',      href: '/it/blog/category/tax-return' },
+        ],
+        connect: 'Contatti',
+        connectLinks: [
+          { label: 'Facebook',   href: 'https://www.facebook.com/workingholidaytax', external: true },
+          { label: 'E-mail',     href: `mailto:${EMAIL}`, external: false },
+          { label: 'WhatsApp',   href: waUrl({ topic: 'general', lang: locale }), external: true },
+          { label: 'TikTok',     href: 'https://www.tiktok.com/@workingholidaytax', external: true },
+          { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
+        ],
+        copyright: 'Working Holiday Tax. Tutti i diritti riservati.',
+        about: 'Chi siamo',
+        // The legal texts are not translated in phase 1 (ADR 013): the links go
+        // to the English pages and the label says so.
+        clientAgreement: 'Contratto con il cliente (in inglese)',
+        privacyPolicy: 'Informativa sulla privacy (in inglese)',
+      }
+    : locale === 'fr'
+    ? {
+        tagline: 'Vos impôts australiens, réglés.',
+        intro: 'Nous nous occupons de votre TFN, de votre déclaration d’impôts, du retrait de votre super et de votre ABN si vous êtes en visa vacances-travail en Australie.',
+        askUs: 'Posez-nous vos questions',
+        services: 'Services',
+        serviceLinks: [
+          { label: 'Demande de TFN',        href: '/fr/tfn' },
+          { label: 'Inscription à l’ABN',   href: '/fr/abn' },
+          { label: 'Tax return',            href: '/fr/tax-return' },
+          { label: 'Récupérer sa super',    href: '/fr/superannuation' },
+          { label: 'Medicare',              href: '/fr/medicare' },
+        ],
+        learn: 'Guides',
+        learnLinks: [
+          { label: 'Blog',                          href: '/fr/blog' },
+          { label: 'Frais déductibles par métier',  href: '/fr/expenses' },
+          { label: 'Estimer un remboursement',     href: '/fr/calculator' },
+          { label: 'Articles sur le TFN',           href: '/fr/blog/category/tfn' },
+          { label: 'Articles sur la tax return',   href: '/fr/blog/category/tax-return' },
+        ],
+        connect: 'Nous contacter',
+        connectLinks: [
+          { label: 'Facebook',   href: 'https://www.facebook.com/workingholidaytax', external: true },
+          { label: 'E-mail',     href: `mailto:${EMAIL}`, external: false },
+          { label: 'WhatsApp',   href: waUrl({ topic: 'general', lang: locale }), external: true },
+          { label: 'TikTok',     href: 'https://www.tiktok.com/@workingholidaytax', external: true },
+          { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
+        ],
+        copyright: 'Working Holiday Tax. Tous droits réservés.',
+        about: 'À propos',
+        // The legal texts are not translated in phase 1 (ADR 013): the links go
+        // to the English pages and the label says so.
+        clientAgreement: 'Contrat client (en anglais)',
+        privacyPolicy: 'Politique de confidentialité (en anglais)',
+      }
+    : locale === 'de'
     ? {
         tagline: 'Australische Steuer, erledigt.',
         intro: 'Wir kümmern uns um TFN, Steuererklärung, Super-Auszahlung und ABN für Working Holiday Maker in Australien.',
@@ -133,144 +246,83 @@ export function Footer() {
         privacyPolicy: 'Privacy Policy',
       }
 
+  const base = locale === 'de' ? '/de' : locale === 'ja' ? '/ja' : locale === 'fr' ? '/fr' : locale === 'it' ? '/it' : locale === 'es' ? '/es' : ''
+  // French, Italian and Spanish legal pages do not exist yet: link the English ones (labels say "en anglais", "in inglese", "en inglés").
+  const legalBase = locale === 'fr' || locale === 'it' || locale === 'es' ? '' : base
+  const sealAlt = `${locale === 'es' ? 'Bajo la supervisión de un agente fiscal registrado, n.º' : locale === 'it' ? 'Sotto la supervisione di un agente fiscale registrato, n.' : locale === 'fr' ? 'Sous la supervision d’un agent fiscal enregistré, n°' : locale === 'de' ? 'Unter der Aufsicht eines registrierten Tax Agent, Nr.' : locale === 'ja' ? '監督するタックスエージェントの登録番号' : 'Supervising registered tax agent no.'} ${AGENT_TPB}`
+
   return (
-    <footer role="contentinfo" style={{ background: '#0B5240' }}>
+    <footer role="contentinfo">
+      <div className={styles.main}>
+        <div className={styles.inner}>
+          <div className={styles.grid}>
 
-      {/* ─── Main footer section ─ light grey background ──────────────────── */}
-      <div style={{ background: '#F2FAF7', borderTop: '1px solid #DCE0DE' }}>
-        <div className="max-w-[1080px] mx-auto px-5 md:px-8 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-12">
-
-          {/* Main grid - 4 columns */}
-          {/* The three link columns hug their content and the brand column absorbs
-              the slack, so the last column finishes at the container edge and the
-              footer reads as centered on wide screens instead of left weighted. */}
-          <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-6 md:gap-10 mb-10">
-
-            {/* Brand column */}
-            <div className="footer-brand-col col-span-2 md:col-span-1">
-              <div className="flex items-center gap-2 mb-3">
-                <svg width="26" height="26" viewBox="0 0 30 30" fill="none" aria-hidden="true">
-                  <rect x="2" y="2" width="16" height="16" rx="4" stroke="#0B5240" strokeWidth="1.4"/>
-                  <rect x="12" y="12" width="16" height="16" rx="4" fill="#0B5240"/>
-                  <line x1="2" y1="2" x2="12" y2="12" stroke="#0B5240" strokeWidth="1.0" strokeLinecap="round" opacity="0.7"/>
-                  <circle cx="2" cy="2" r="1.4" fill="#0B5240" opacity="0.7"/>
-                  <path d="M20 14.5 L24 16 L24 19.5 Q24 23 20 24.5 Q16 23 16 19.5 L16 16 Z" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="1.0" strokeLinejoin="round"/>
-                  <polyline points="18,19.5 19.8,21.5 22.5,18" fill="none" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span className="font-serif font-bold text-ink" style={{ fontSize: '15px' }}>Working Holiday Tax</span>
+            <div className={styles.brandCol}>
+              <div className={styles.brand}>
+                <LogoMark size={30} />
+                <span>Working Holiday Tax</span>
               </div>
-
-              <p className="font-serif" style={{ fontSize: '17px', color: '#0B5240', fontWeight: 700, lineHeight: 1.3, marginBottom: '8px', letterSpacing: '-0.02em' }}>
-                {t.tagline}
-              </p>
-              <p className="font-light" style={{ fontSize: '13px', color: '#525A57', lineHeight: 1.7, marginBottom: '18px', maxWidth: '300px' }}>
-                {t.intro}
-              </p>
-
-              <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsApp({ position: 'footer', lang: locale })}
-                className="font-medium"
-                style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, marginBottom: 0, display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}>
+              <p className={styles.tagline}>{t.tagline}</p>
+              <p className={styles.intro}>{t.intro}</p>
+              <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsApp({ position: 'footer', lang: locale })} className={styles.ask}>
                 {t.askUs}
                 <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
-
-              {/* Jo, 29 Aug: exactly the form's trust row, scaled down a
-                  touch — the Google Reviews mark and the TPB seal side by
-                  side. The "Reviewed and signed off" pill and the review-count
-                  pill are gone at his request; the seal asset itself carries
-                  the agent number, so the credential is still on the page. */}
-              {!isAbout ? (
-                <div className="mt-6 flex flex-row flex-wrap items-center gap-x-4 gap-y-2"
-                  style={{ transform: 'scale(0.92)', transformOrigin: 'left center' }}>
-                  <GoogleReviewsBadge lang={locale === 'de' ? 'de' : locale === 'ja' ? 'ja' : 'en'} />
-                  <img
-                    src="/assets/tpb-registered.png"
-                    alt={`${locale === 'de' ? 'Unter der Aufsicht eines registrierten Tax Agent, Nr.' : locale === 'ja' ? '監督するタックスエージェントの登録番号' : 'Supervising registered tax agent no.'} ${AGENT_TPB}`}
-                    width={509}
-                    height={319}
-                    loading="lazy"
-                    decoding="async"
-                    style={{ display: 'block', width: '104px', height: 'auto' }}
-                  />
-                </div>
-              ) : (
-                /* Jo's rule: the about page carries no tax agent mention at
-                   all, which covers the seal as well as the sentence. */
-                <div className="mt-6">
-                  <GoogleReviewsBadge lang={locale === 'de' ? 'de' : locale === 'ja' ? 'ja' : 'en'} />
-                </div>
-              )}
+              {/* The Google Reviews mark and the TPB seal side by side. The
+                  seal carries the agent number. /about carries no tax agent
+                  mention at all (Jo's rule), seal included. */}
+              <div className={styles.trust}>
+                <GoogleReviewsBadge lang={locale} />
+                {!isAbout && (
+                  <img src="/assets/tpb-registered.png" alt={sealAlt} width={509} height={319} loading="lazy" decoding="async" />
+                )}
+              </div>
             </div>
 
-            {/* Services column */}
             <nav aria-label={t.services}>
-              <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>{t.services}</p>
-              {t.serviceLinks.map(l => (
-                <Link key={l.href} href={l.href} className="footer-link">{l.label}</Link>
-              ))}
+              <p className={styles.head}>{t.services}</p>
+              <div className={styles.col}>
+                {t.serviceLinks.map(l => <Link key={l.href} href={l.href}>{l.label}</Link>)}
+              </div>
             </nav>
 
-            {/* Learn column */}
             <nav aria-label={t.learn}>
-              <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>{t.learn}</p>
-              {t.learnLinks.map(l => (
-                <Link key={l.href} href={l.href} className="footer-link">{l.label}</Link>
-              ))}
+              <p className={styles.head}>{t.learn}</p>
+              <div className={styles.col}>
+                {t.learnLinks.map(l => <Link key={l.href} href={l.href}>{l.label}</Link>)}
+              </div>
             </nav>
 
-            {/* Connect column */}
             <nav aria-label={t.connect}>
-              <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>{t.connect}</p>
-              {t.connectLinks.map(l => (
-                l.external
-                  ? <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="footer-link">{l.label}</a>
-                  : <a key={l.href} href={l.href} className="footer-link">{l.label}</a>
-              ))}
+              <p className={styles.head}>{t.connect}</p>
+              <div className={styles.col}>
+                {t.connectLinks.map(l => (
+                  l.external
+                    ? <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
+                    : <a key={l.href} href={l.href}>{l.label}</a>
+                ))}
+              </div>
             </nav>
           </div>
         </div>
       </div>
 
-      {/* ─── Bottom bar - DARK GREEN brand layer ──────────────────────────── */}
-      <div style={{ background: '#0B5240' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
-
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
-
-            <div style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }} suppressHydrationWarning>
-              {locale === 'ja' ? (
-                <span>© {new Date().getFullYear()} Working Holiday Tax. 無断複写・転載を禁じます。</span>
-              ) : (
-                <span>© {new Date().getFullYear()} {t.copyright}</span>
-              )}
-            </div>
-
-            <div className="flex items-center justify-center md:justify-end gap-4 md:gap-5 flex-wrap" style={{ fontSize: '11.5px' }}>
-              <Link
-                href={locale === 'de' ? '/de/about' : locale === 'ja' ? '/ja/about' : '/about'}
-                className="footer-link-dark"
-              >
-                {t.about}
-              </Link>
-              <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
-              <Link
-                href={locale === 'de' ? '/de/client-agreement' : locale === 'ja' ? '/ja/client-agreement' : '/client-agreement'}
-                className="footer-link-dark"
-              >
-                {t.clientAgreement}
-              </Link>
-              <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
-              <Link
-                href={locale === 'de' ? '/de/privacy' : locale === 'ja' ? '/ja/privacy' : '/privacy'}
-                className="footer-link-dark"
-              >
-                {t.privacyPolicy}
-              </Link>
-            </div>
+      <div className={styles.bottom}>
+        <div className={styles.bar}>
+          <div suppressHydrationWarning>
+            {locale === 'ja' ? (
+              <span>© {new Date().getFullYear()} Working Holiday Tax. 無断複写・転載を禁じます。</span>
+            ) : (
+              <span>© {new Date().getFullYear()} {t.copyright}</span>
+            )}
           </div>
+          <ul className={styles.links}>
+            <li><Link href={`${base}/about`}>{t.about}</Link></li>
+            <li><Link href={`${legalBase}/client-agreement`}>{t.clientAgreement}</Link></li>
+            <li><Link href={`${legalBase}/privacy`}>{t.privacyPolicy}</Link></li>
+          </ul>
         </div>
       </div>
-
     </footer>
   )
 }

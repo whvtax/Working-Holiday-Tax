@@ -20,7 +20,11 @@ export function LangSync() {
   useEffect(() => {
     const isDE = pathname === '/de' || pathname.startsWith('/de/')
     const isJA = pathname === '/ja' || pathname.startsWith('/ja/')
-    document.documentElement.lang = isJA ? 'ja-JP' : isDE ? 'de-DE' : 'en-AU'
+    const isFR = pathname === '/fr' || pathname.startsWith('/fr/')
+    const isIT = pathname === '/it' || pathname.startsWith('/it/')
+    const isES = pathname === '/es' || pathname.startsWith('/es/')
+    // fr, it and es match the lang set in their root layouts: hreflang is by language, not country (ADR 013).
+    document.documentElement.lang = isJA ? 'ja-JP' : isDE ? 'de-DE' : isFR ? 'fr' : isIT ? 'it' : isES ? 'es' : 'en-AU'
   }, [pathname])
   return null
 }

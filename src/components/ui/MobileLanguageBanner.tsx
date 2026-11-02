@@ -3,22 +3,24 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type React from 'react'
 import { useEffect, useState } from 'react'
+import { hasLocalePage } from '@/lib/locale-pages'
 
 /**
  * MobileLanguageBanner
  * Pops up on mobile (max-width 1023px) on first visit to suggest a translated
  * version if the browser's preferred language matches a supported locale.
  *
- * Supported locales: German (de), Japanese (ja).
+ * Supported locales: German (de), Japanese (ja), French, Italian and Spanish (fr, it, es: no flag, and
+ * only suggested once that language's home page is live, see locale-pages).
  * Detection: navigator.language / navigator.languages
  * Trigger: first mobile visit, browser language matches a supported locale,
  *          and user is not already on that locale's pages.
  * Persistence: localStorage key 'wht-lang-banner-seen' (banner only shows once).
  */
-type SupportedLocale = 'de' | 'ja'
+type SupportedLocale = 'de' | 'ja' | 'fr' | 'it' | 'es'
 
 type LocaleConfig = {
-  flag: () => React.JSX.Element
+  flag: (() => React.JSX.Element) | null
   name: string
   headerText: string
   bodyText: string
@@ -54,6 +56,30 @@ const LOCALES: Record<SupportedLocale, LocaleConfig> = {
     closeLabel: '閉じる',
     dialogLabel: '言語を選択',
   },
+  fr: {
+    flag: null,
+    name: 'Français',
+    headerText: 'Choisir la langue',
+    bodyText: 'Cette page existe aussi en français. Quelle version souhaitez-vous consulter ?',
+    closeLabel: 'Fermer',
+    dialogLabel: 'Choisir la langue',
+  },
+  it: {
+    flag: null,
+    name: 'Italiano',
+    headerText: 'Scegli la lingua',
+    bodyText: 'Questa pagina esiste anche in italiano. Quale versione preferisci?',
+    closeLabel: 'Chiudi',
+    dialogLabel: 'Scegli la lingua',
+  },
+  es: {
+    flag: null,
+    name: 'Español',
+    headerText: 'Elige el idioma',
+    bodyText: 'Esta página también está en español. ¿Qué versión prefieres?',
+    closeLabel: 'Cerrar',
+    dialogLabel: 'Elige el idioma',
+  },
 }
 
 export function MobileLanguageBanner() {
@@ -79,12 +105,20 @@ export function MobileLanguageBanner() {
     let detected: SupportedLocale | null = null
     if (lower.some(l => l.startsWith('ja'))) detected = 'ja'
     else if (lower.some(l => l.startsWith('de'))) detected = 'de'
+    // Only suggest fr, it or es once that language's home page is live
+    // (locale-pages), so the banner never sends anyone to a 404.
+    else if (hasLocalePage('fr', '/') && lower.some(l => l.startsWith('fr'))) detected = 'fr'
+    else if (hasLocalePage('it', '/') && lower.some(l => l.startsWith('it'))) detected = 'it'
+    else if (hasLocalePage('es', '/') && lower.some(l => l.startsWith('es'))) detected = 'es'
 
     if (!detected) return
 
     const currentLocale: SupportedLocale | 'en' =
       pathname === '/ja' || pathname.startsWith('/ja/') ? 'ja' :
       pathname === '/de' || pathname.startsWith('/de/') ? 'de' :
+      pathname === '/fr' || pathname.startsWith('/fr/') ? 'fr' :
+      pathname === '/it' || pathname.startsWith('/it/') ? 'it' :
+      pathname === '/es' || pathname.startsWith('/es/') ? 'es' :
       'en'
 
     if (currentLocale === detected) return
@@ -105,6 +139,13 @@ export function MobileLanguageBanner() {
     const withoutLocale = pathname
       .replace(/^\/de(\/|$)/, '/')
       .replace(/^\/ja(\/|$)/, '/')
+      .replace(/^\/(fr|it|es)(\/|$)/, '/')
+    // fr, it, es: same page if it is live in that language, else its home.
+    if (locale === 'fr' || locale === 'it' || locale === 'es') {
+      // The de and ja Medicare category slug is 'medicare'; fr, it and es keep the English one.
+      const enPath = withoutLocale.replace(/^\/blog\/category\/medicare$/, '/blog/category/medicare-and-other')
+      return enPath !== '/' && hasLocalePage(locale, enPath) ? `/${locale}${enPath}` : `/${locale}`
+    }
     return withoutLocale === '/' ? `/${locale}` : `/${locale}${withoutLocale}`
   }
 
@@ -242,7 +283,7 @@ export function MobileLanguageBanner() {
             justifyContent: 'center',
             gap: '6px',
           }}>
-          <LocaleFlag />
+          {LocaleFlag && <LocaleFlag />}
           {cfg.name}
         </Link>
       </div>

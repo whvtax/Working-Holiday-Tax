@@ -1,0 +1,26 @@
+/* WHT footer: pale section with a brand column and link columns, then a dark
+ * forest strip with the copyright and legal links (shared layout system). */
+.main { background: var(--wht-pale); border-top: 1px solid var(--wht-line); padding: 56px var(--wht-gutter) 40px; color: var(--wht-ink); }
+.inner { max-width: var(--wht-max); margin: 0 auto; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } .brandCol { grid-column: 1 / -1; } }
+@media (min-width: 900px) { .grid { grid-template-columns: 1.5fr 1fr 1fr 0.8fr; gap: 40px; } .brandCol { grid-column: auto; } }
+.brandCol { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
+.tagline { font-size: 18px; font-weight: 700; margin-top: 6px; letter-spacing: -0.01em; color: var(--wht-forest); }
+.intro { font-size: 14px; line-height: 1.65; color: var(--wht-ink-2); max-width: 34ch; }
+.ask { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-size: 14px; font-weight: 600; color: var(--wht-forest); text-decoration: none; }
+.ask:hover { color: var(--wht-forest-dark); text-decoration: underline; }
+.trust { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 6px; }
+.trust img { display: block; width: 104px; height: auto; }
+.head { font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--wht-forest); margin-bottom: 10px; }
+.col { display: flex; flex-direction: column; }
+.col a { display: inline-flex; align-items: center; min-height: 40px; font-size: 14px; color: var(--wht-ink-2); text-decoration: none; }
+.col a:hover { color: var(--wht-forest); text-decoration: underline; }
+.bottom { background: var(--wht-forest-dark); color: rgb(255 255 255 / 0.78); padding: 10px var(--wht-gutter); }
+.bar { max-width: var(--wht-max); margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 24px; font-size: 13px; }
+.links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; }
+.links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; color: rgb(255 255 255 / 0.88); text-decoration: none; }
+.links a:hover { color: #fff; text-decoration: underline; }
+.main :focus-visible { outline: 2px solid transparent; box-shadow: var(--wht-focus); border-radius: 4px; }
+.bottom :focus-visible { outline: 2px solid transparent; box-shadow: 0 0 0 3px var(--wht-forest-dark), 0 0 0 5px #fff; border-radius: 4px; }

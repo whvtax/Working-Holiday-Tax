@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": "Steuerabzüge nach Job in Australien",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses",
       "de": "/de/expenses",
       "ja": "/ja/expenses",
+      ...newLocaleLanguages('/expenses'),
       "x-default": "/expenses"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Absetzbare Kosten in 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
   "guaranteeBody": "Working-Holiday-Steuer ist das Einzige, was wir machen. Deine Steuererklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
@@ -325,7 +327,7 @@ const FAQS = [
   },
   {
     "question": "Haben Working Holiday Maker weniger Abzüge als Australier?",
-    "answer": "Nein. Die Abzugsregeln sind für Inhaber eines 417- oder 462-Visums dieselben wie für alle anderen, die in Australien Einkommen verdienen.\n\nDer Unterschied liegt bei den Einnahmen, nicht bei den Ausgaben: Einkommen von Working Holiday Makern wird bis 45.000 Dollar mit 15 Prozent besteuert und ohne Steuerfreibetrag, sofern dein steuerlicher Wohnsitz daran nichts ändert."
+    "answer": "Nein. Die Abzugsregeln sind für Inhaber eines 417- oder 462-Visums dieselben wie für alle anderen, die in Australien Einkommen verdienen.\n\nDer Unterschied liegt bei den Einnahmen, nicht bei den Ausgaben: Für Einkommen von Working Holiday Makern gelten besondere Sätze, die von deinem Einzelfall abhängen. Welche für dich gelten, prüfen wir, und am Ende entscheidet das ATO."
   },
   {
     "question": "Ich hatte vier verschiedene Jobs in einem Jahr. Sind das vier Listen?",
@@ -393,6 +395,7 @@ export default function Page() {
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
         mygov: { ui: MYGOV_UI, rows: MYGOV },
         hubLink: false,
+        heroSlot: { id: 'IMG-W30', subject: 'Seven working holiday jobs in one frame: fruit picking, kitchen, building site, delivery bike, cleaning, warehouse, camp', alt: "Rucksackreisende bei der Arbeit in Australien" },
       }}
     />
   )

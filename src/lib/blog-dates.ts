@@ -11,6 +11,10 @@ const MONTHS: Record<string, number> = {
   july: 7, august: 8, september: 9, october: 10, november: 11, december: 12,
 }
 
+const MONTHS_FR = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+const MONTHS_IT = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre']
+const MONTHS_ES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+
 const MONTHS_DE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
 
 function parseGuideDateParts(s: string): { d: number; m: number; y: number } | null {
@@ -40,6 +44,27 @@ export function formatGuideDateJa(s: string): string {
   const p = parseGuideDateParts(s)
   if (!p) return s
   return `${p.y}年${p.m}月${p.d}日`
+}
+
+/** "1 July 2024" → "1er juillet 2024" (French uses 1er for the first, plain numerals after). */
+export function formatGuideDateFr(s: string): string {
+  const p = parseGuideDateParts(s)
+  if (!p) return s
+  return `${p.d === 1 ? '1er' : p.d} ${MONTHS_FR[p.m - 1]} ${p.y}`
+}
+
+/** "1 July 2024" → "1 luglio 2024" (Italian months are lower case). */
+export function formatGuideDateIt(s: string): string {
+  const p = parseGuideDateParts(s)
+  if (!p) return s
+  return `${p.d} ${MONTHS_IT[p.m - 1]} ${p.y}`
+}
+
+/** "1 July 2024" → "1 de julio de 2024". */
+export function formatGuideDateEs(s: string): string {
+  const p = parseGuideDateParts(s)
+  if (!p) return s
+  return `${p.d} de ${MONTHS_ES[p.m - 1]} de ${p.y}`
 }
 
 /**

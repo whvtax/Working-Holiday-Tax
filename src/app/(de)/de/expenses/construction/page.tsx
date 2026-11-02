@@ -1,7 +1,9 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesWhtPage } from '@/components/wht/JobPageBlocks'
 
 export const metadata: Metadata = {
   "title": "Bauarbeiter: Werkzeug, Schutzkleidung",
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/construction",
       "de": "/de/expenses/construction",
       "ja": "/ja/expenses/construction",
+      ...newLocaleLanguages('/expenses/construction'),
       "x-default": "/expenses/construction"
     }
   },
@@ -66,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Bau und Baustelle" })
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
   "guaranteeBody": "Baustellenerklärungen, Ticketverlängerungen und der Streit um den Ute sind hier Wochengeschäft, und jeder Kunde hat ein 417- oder 462-Visum. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
@@ -217,7 +220,7 @@ const SECTIONS: Section[] = [
     "h2": "Welche Teile hängen an deinen eigenen Fakten?",
     "paras": [
       "Zuerst die Ausnahme für sperriges Werkzeug. Was du transportierst, was die Baustelle an Stauraum bietet und ob das Werkzeug an diesem Tag nötig war, gibt den Ausschlag. Zwei Helfer derselben Crew können unterschiedlich dastehen.",
-      "Der steuerliche Wohnsitz kann mehr ins Gewicht fallen als alles Werkzeug auf der Liste. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
+      "Der steuerliche Wohnsitz kann mehr ins Gewicht fallen als alles Werkzeug auf der Liste. Ein Gerichtsurteil namens Addy kann beeinflussen, welche Sätze gelten. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -282,7 +285,7 @@ const SERVICES = [
    every section renderer live in JobExpensesPage, once, for all 21 job pages. */
 export default function Page() {
   return (
-    <JobExpensesPage
+    <JobExpensesWhtPage
       content={{
         lang: 'de',
         path: '/de/expenses/construction',

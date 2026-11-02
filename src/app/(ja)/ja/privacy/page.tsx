@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { PageHeader } from '@/components/ui/PageHeader'
+import { LegalDoc } from '@/components/wht/LegalBlocks'
 import { EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
@@ -108,45 +108,13 @@ const sections: Section[] = [
 
 export default function JapanesePrivacyPage() {
   return (
-    <>
-      <PageHeader
-        kicker="法的情報"
-        title="プライバシーポリシー"
-        titleEm=""
-        sub={<><span className="hidden lg:inline">最終更新日：2026年5月。お客様のプライバシー保護に努めています。</span><span className="lg:hidden">最終更新日：2026年5月。<br />お客様のプライバシー保護に努めています。</span></>}
-        breadcrumbs={[{ label: 'ホーム', href: '/ja' }, { label: 'プライバシーポリシー' }]}
-      />
-
-      <section className="pt-0 pb-10 lg:pb-12 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-2xl">
-
-            <p className="text-[13px] font-light text-body leading-[1.75] mb-8">
-              当社はお客様のプライバシー保護に努め、個人情報を責任を持って取り扱います。
-            </p>
-
-            {sections.map((s, i) => (
-              <div key={i} className={`mb-8 reveal delay-${(i % 4) + 1}`}>
-                <h2 className="font-serif text-[16px] font-bold text-ink mb-2">{s.title}</h2>
-                {s.body && (
-                  <p className="text-[13px] font-light text-body leading-[1.75] mb-2">{s.body}</p>
-                )}
-                {s.items && (
-                  <ul className="mt-2 space-y-1.5">
-                    {s.items.map((item, j) => (
-                      <li key={j} className="flex items-start gap-2.5">
-                        <span className="mt-[7px] flex-shrink-0 rounded-full" style={{ width: '5px', height: '5px', minWidth: '5px', background: '#0B5240' }} />
-                        <span className="text-[13px] font-light text-body leading-[1.75]">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
-
-          </div>
-        </div>
-      </section>
-    </>
+    <LegalDoc
+      kicker="法的情報"
+      title="プライバシーポリシー"
+      sub={<><span className="hidden lg:inline">最終更新日：2026年5月。お客様のプライバシー保護に努めています。</span><span className="lg:hidden">最終更新日：2026年5月。<br />お客様のプライバシー保護に努めています。</span></>}
+      crumbs={[{ label: 'ホーム', href: '/ja' }, { label: 'プライバシーポリシー' }]}
+      intro={'当社はお客様のプライバシー保護に努め、個人情報を責任を持って取り扱います。'}
+      sections={sections}
+    />
   )
 }

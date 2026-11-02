@@ -167,7 +167,142 @@ const JA: Record<Category, Copy> = {
   },
 }
 
-const COPY: Record<WaLang, Record<Category, Copy>> = { en: EN, de: DE, ja: JA }
+const FR: Record<Category, Copy> = {
+  'TFN': {
+    eyebrow: 'Avant de déposer',
+    heading: "Le TFN, c'est la partie facile.",
+    body: "Ce qui coûte, ce sont les semaines avant qu'il arrive chez votre employeur, quand l'impôt est retenu au taux maximal au lieu de quinze pour cent. Cela ne se corrige pas tout seul. Dites-nous où vous avez travaillé et nous vous dirons où en est votre année.",
+    cta: 'Poser une question sur ma situation',
+    under: 'Réponse en environ une heure.',
+  },
+  'ABN': {
+    eyebrow: 'Avant de déposer',
+    heading: 'Un ABN change ce que votre tax return doit dire.',
+    body: "Les revenus facturés, les frais professionnels et la GST ne se traitent pas comme un salaire, et une mauvaise répartition est la première raison pour laquelle la tax return d'un backpacker doit être refaite. Envoyez-nous ce que vous avez fait et nous verrons où vous en êtes.",
+    cta: 'Poser une question sur ma situation',
+    under: 'Réponse en environ une heure.',
+  },
+  'Tax Return': {
+    eyebrow: 'Avant de déposer',
+    heading: 'Tout le monde sait cliquer sur «\xa0Envoyer\xa0».',
+    body: "Le vrai travail se fait avant\xa0: votre résidence fiscale, les semaines retenues au mauvais taux, l'exemption de la Medicare levy et les déductions qui correspondent au travail que vous avez réellement fait. C'est cela qui détermine le montant.",
+    cta: 'Nous écrire sur WhatsApp',
+    under: 'Réponse en environ une heure.',
+  },
+  'Super': {
+    eyebrow: 'Avant de réclamer',
+    heading: "La plupart des gens ont plus d'une caisse.",
+    body: 'Le travail casual et saisonnier éparpille la super sur plusieurs comptes, et une demande de DASP faite depuis le mauvais compte, au mauvais moment ou avec les mauvais papiers prend du retard ou revient plus basse. Nous retrouvons toutes vos caisses grâce à votre TFN et déposons la demande une seule fois.',
+    cta: 'Poser une question sur ma super',
+    under: 'Réponse en environ une heure.',
+  },
+  'Medicare & Other': {
+    eyebrow: 'À vérifier',
+    heading: 'La levy est retenue par défaut.',
+    body: "Savoir si vous la deviez vraiment dépend de votre passeport, pas de votre visa. Certaines nationalités ont droit à Medicare et la paient\xa0; d'autres n'y ont pas droit et peuvent être exemptées, ce qui exige une attestation qu'il faut demander. On se trompe dans les deux sens.",
+    cta: 'Vérifier si cela vous concerne',
+    under: 'Réponse en environ une heure.',
+  },
+  'Work Rights': {
+    eyebrow: 'Pendant que vous êtes là',
+    heading: "Les impôts des working holiday makers, c'est notre seul métier.",
+    body: 'Si un point ci-dessus touche votre paie, vos heures ou votre visa, il se retrouve souvent dans votre tax return aussi. Quand vous serez prêt à déposer, ou si vous voulez simplement savoir où vous en êtes, nous sommes sur WhatsApp.',
+    cta: 'Poser une question',
+    under: "Réponse en environ une heure. Aucune obligation d'aller plus loin.",
+  },
+}
+
+const IT: Record<Category, Copy> = {
+  'TFN': {
+    eyebrow: 'Prima di presentare',
+    heading: 'Il TFN è la parte facile.',
+    body: "A costare sono le settimane prima che arrivi al datore di lavoro, quando le imposte vengono trattenute all'aliquota massima invece che al quindici per cento. Non si sistema da sola. Dicci dove hai lavorato e ti diciamo a che punto è il tuo anno.",
+    cta: 'Chiedi della tua situazione',
+    under: "Risposta in circa un'ora.",
+  },
+  'ABN': {
+    eyebrow: 'Prima di presentare',
+    heading: 'Con un ABN cambia quello che la tua tax return deve dire.',
+    body: 'Redditi fatturati, spese di attività e GST funzionano in modo diverso dallo stipendio, e sbagliare la divisione è il motivo più frequente per cui la tax return di un backpacker va rifatta. Mandaci quello che hai fatto e capiamo a che punto sei.',
+    cta: 'Chiedi della tua situazione',
+    under: "Risposta in circa un'ora.",
+  },
+  'Tax Return': {
+    eyebrow: 'Prima di presentare',
+    heading: 'Premere invio lo sanno fare tutti.',
+    body: "Il lavoro vero viene prima: la tua residenza fiscale, le settimane trattenute con l'aliquota sbagliata, l'esenzione dalla Medicare levy e le detrazioni che corrispondono al lavoro che hai davvero fatto. È questo che decide la cifra.",
+    cta: 'Scrivici su WhatsApp',
+    under: "Risposta in circa un'ora.",
+  },
+  'Super': {
+    eyebrow: 'Prima di richiedere',
+    heading: 'La maggior parte delle persone ha più di un fondo.',
+    body: 'Il lavoro casual e stagionale sparge la super su più conti, e una richiesta DASP fatta dal conto sbagliato, al momento sbagliato o con i documenti sbagliati si blocca o torna più bassa. Troviamo tutti i fondi con il tuo TFN e presentiamo la richiesta una sola volta.',
+    cta: 'Chiedi della tua super',
+    under: "Risposta in circa un'ora.",
+  },
+  'Medicare & Other': {
+    eyebrow: 'Da controllare',
+    heading: 'La levy viene trattenuta di default.',
+    body: 'Se la dovevi davvero dipende dal tuo passaporto, non dal visto. Alcune nazionalità hanno diritto a Medicare e la pagano; altre non ne hanno diritto e possono essere esentate, cosa che richiede un certificato da chiedere. Si sbaglia in entrambe le direzioni.',
+    cta: 'Verifica se vale per te',
+    under: "Risposta in circa un'ora.",
+  },
+  'Work Rights': {
+    eyebrow: 'Già che sei qui',
+    heading: 'Ci occupiamo solo di tasse per il Working Holiday.',
+    body: 'Se qualcosa di quanto hai letto ha toccato la tua paga, le tue ore o il tuo visto, di solito compare anche nella tua tax return. Quando è il momento di presentarla, o se vuoi solo sapere a che punto sei, siamo su WhatsApp.',
+    cta: 'Facci una domanda',
+    under: "Risposta in circa un'ora. Nessun obbligo di andare oltre.",
+  },
+}
+
+const ES: Record<Category, Copy> = {
+  'TFN': {
+    eyebrow: 'Antes de presentar',
+    heading: 'El TFN es la parte fácil.',
+    body: 'Lo que cuesta son las semanas antes de que llegue a tu empleador, cuando el impuesto se retiene a la tasa máxima en lugar del quince por ciento. Eso no se corrige solo. Cuéntanos dónde trabajaste y te diremos cómo va tu año.',
+    cta: 'Consulta sobre tu situación',
+    under: 'Respuesta en aproximadamente una hora.',
+  },
+  'ABN': {
+    eyebrow: 'Antes de presentar',
+    heading: 'Un ABN cambia lo que tiene que decir tu tax return.',
+    body: 'Los ingresos facturados, los gastos del negocio y la GST se tratan distinto que un sueldo, y repartirlos mal es la razón más común por la que hay que rehacer la tax return de un backpacker. Cuéntanos qué hiciste y vemos cómo estás.',
+    cta: 'Consulta sobre tu situación',
+    under: 'Respuesta en aproximadamente una hora.',
+  },
+  'Tax Return': {
+    eyebrow: 'Antes de presentar',
+    heading: 'Enviar el formulario lo hace cualquiera.',
+    body: 'El trabajo está antes: tu residencia fiscal, las semanas retenidas a la tasa equivocada, la exención de la Medicare levy y las deducciones que corresponden al trabajo que realmente hiciste. Eso es lo que define el monto.',
+    cta: 'Escríbenos por WhatsApp',
+    under: 'Respuesta en aproximadamente una hora.',
+  },
+  'Super': {
+    eyebrow: 'Antes de reclamar',
+    heading: 'La mayoría tiene más de un fondo.',
+    body: 'El trabajo casual y de temporada reparte la super en varias cuentas, y un reclamo de DASP hecho desde la cuenta equivocada, en el momento equivocado o con los documentos equivocados se retrasa o sale por menos. Encontramos todas con tu TFN y lo presentamos una sola vez.',
+    cta: 'Consulta sobre tu super',
+    under: 'Respuesta en aproximadamente una hora.',
+  },
+  'Medicare & Other': {
+    eyebrow: 'Vale la pena revisar',
+    heading: 'La levy se retiene por defecto.',
+    body: 'Si realmente la debías depende de tu pasaporte, no de tu visa. Algunas nacionalidades tienen derecho a Medicare y la pagan; otras no lo tienen y pueden quedar exentas, lo que exige un certificado que hay que solicitar. Se suele suponer mal en ambas direcciones.',
+    cta: 'Comprobar si aplica en tu caso',
+    under: 'Respuesta en aproximadamente una hora.',
+  },
+  'Work Rights': {
+    eyebrow: 'Ya que estás aquí',
+    heading: 'Solo hacemos impuestos para working holiday.',
+    body: 'Si algo de lo anterior afectó tu pago, tus horas o tu visa, normalmente también aparece en tu tax return. Cuando quieras presentarla, o simplemente saber cómo estás, estamos en WhatsApp.',
+    cta: 'Haznos una pregunta',
+    under: 'Respuesta en aproximadamente una hora. Sin ninguna obligación de seguir adelante.',
+  },
+}
+
+const COPY: Partial<Record<WaLang, Record<Category, Copy>>> & { en: Record<Category, Copy> } = { en: EN, de: DE, ja: JA, fr: FR, it: IT, es: ES }
 
 const TOPIC: Record<Category, WaTopic> = {
   // Oct 2026: the tax return is the core service, and a TFN or Work Rights

@@ -56,7 +56,7 @@ export interface MygovUi {
 }
 
 export interface JobExpensesContent {
-  lang: 'en' | 'de' | 'ja'
+  lang: 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es'
   /** The page's own path, e.g. '/de/expenses/hospitality'. */
   path: string
   articleHeadline: string

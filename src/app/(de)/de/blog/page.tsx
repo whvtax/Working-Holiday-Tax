@@ -1,7 +1,9 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import BlogClient from '@/app/(site)/blog/BlogClient'
 import { getGermanGuides, deCategoryMeta, blogUI } from './data'
+import { PagePhoto } from '@/components/wht/PagePhoto'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
 
@@ -30,6 +32,7 @@ export const metadata: Metadata = {
       'en-AU': `${SITE_URL}/blog`,
       'de': `${SITE_URL}/de/blog`,
       'ja': `${SITE_URL}/ja/blog`,
+      ...newLocaleLanguages('/blog'),
       'x-default': `${SITE_URL}/blog`,
     },
   },
@@ -135,6 +138,7 @@ export default function GermanBlogPage() {
       <div style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient
           guides={guideCards}
+          photo={<PagePhoto page="tax-return" locale="de" />}
           lang="de"
           ui={blogUI}
           blogBasePath="/de/blog"

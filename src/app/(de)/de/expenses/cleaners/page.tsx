@@ -1,7 +1,9 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesWhtPage } from '@/components/wht/JobPageBlocks'
 
 export const metadata: Metadata = {
   "title": "Reinigungskraft: Fahrten, Ausrüstung",
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/cleaners",
       "de": "/de/expenses/cleaners",
       "ja": "/ja/expenses/cleaners",
+      ...newLocaleLanguages('/expenses/cleaners'),
       "x-default": "/expenses/cleaners"
     }
   },
@@ -66,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Reinigungsarbeit" })
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
   "guaranteeBody": "Reinigungserklärungen landen hier jede Woche auf dem Tisch, und jede gehört jemandem mit 417- oder 462-Visum. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
@@ -243,7 +246,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Wochen mit falschem Einbehalt bei einer Reinigungsfirma",
-        "d": "Hat eine Firma deine Tax File Number Declaration nie erhalten oder ist sie nicht als Arbeitgeber von Working Holiday Makern registriert, sind weit mehr als 15 Prozent abgeflossen. Das lässt sich nur mit der Erklärung klären, nicht vorher."
+        "d": "Hat eine Firma deine Tax File Number Declaration nie erhalten oder ist sie nicht als Arbeitgeber von Working Holiday Makern registriert, ist unter Umständen deutlich mehr Steuer abgeflossen. Das lässt sich nur mit der Erklärung klären, nicht vorher."
       }
     ]
   },
@@ -255,7 +258,7 @@ const SECTIONS: Section[] = [
       "Von einer Reinigungsfirma auf Objekte und Schichten eingeteilt zu werden ist Anstellung mit TFN, mit Einbehalt und Super obendrauf.",
       "Eine Firma, die deinen Dienstplan macht, deine Arbeit beaufsichtigt und die Mittel stellt und dann eine ABN von dir verlangt, kann ein Arbeitgeber sein, der dich nur auf dem Papier selbstständig macht (Scheinselbstständigkeit).",
       "Für Einzelunternehmer wird die GST erst ab 75.000 Dollar Reinigungsumsatz im Jahr Pflicht, und dahin kommt Teilzeitreinigung selten.",
-      "Unter allem liegt der steuerliche Wohnsitz, der mehr ins Gewicht fallen kann als die ganze Abzugsliste. Ein Gerichtsurteil namens Addy kann ändern, welche Sätze für manche Pässe gelten. Ob das für dich zutrifft, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
+      "Unter allem liegt der steuerliche Wohnsitz, der mehr ins Gewicht fallen kann als die ganze Abzugsliste. Ein Gerichtsurteil namens Addy kann beeinflussen, welche Sätze gelten. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -320,7 +323,7 @@ const SERVICES = [
    every section renderer live in JobExpensesPage, once, for all 21 job pages. */
 export default function Page() {
   return (
-    <JobExpensesPage
+    <JobExpensesWhtPage
       content={{
         lang: 'de',
         path: '/de/expenses/cleaners',

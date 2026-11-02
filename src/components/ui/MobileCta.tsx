@@ -2,18 +2,24 @@
 import { useEffect, useRef, useState } from 'react'
 import { trackWhatsApp } from '@/lib/analytics'
 
-type Lang = 'en' | 'de' | 'ja'
+type Lang = 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es'
 
 const LABEL: Record<Lang, string> = {
   en: 'Message us on WhatsApp',
   de: 'Schreib uns auf WhatsApp',
   ja: 'WhatsAppで相談する',
+  fr: 'Écrivez-nous sur WhatsApp',
+  it: 'Scrivici su WhatsApp',
+  es: 'Escríbenos por WhatsApp',
 }
 
 const SUB: Record<Lang, string> = {
   en: 'Signed off by a registered tax agent · reply in ~1 hour',
   de: 'Von einem registrierten Tax Agent geprüft und freigegeben · Antwort in ca. 1 Std.',
   ja: '登録タックスエージェントが確認 · 約1時間で返信',
+  fr: 'Validée par un agent fiscal enregistré · réponse en 1 h environ',
+  it: 'Rivista e approvata da un agente fiscale registrato · risposta in circa 1 ora',
+  es: 'Revisada y aprobada por un agente tributario registrado · respuesta en 1 hora aprox.',
 }
 
 /**
@@ -27,6 +33,9 @@ const SUB_NEUTRAL: Record<Lang, string> = {
   en: 'We usually reply within the hour',
   de: 'Antwort meist innerhalb einer Stunde',
   ja: '担当者が約1時間以内に返信します',
+  fr: 'Réponse en général sous une heure',
+  it: 'Di solito rispondiamo entro un\u2019ora',
+  es: 'Solemos responder en menos de una hora',
 }
 
 /**

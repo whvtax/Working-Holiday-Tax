@@ -1,7 +1,9 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesWhtPage } from '@/components/wht/JobPageBlocks'
 
 export const metadata: Metadata = {
   "title": "Farmarbeit: Sonnenschutz und Fahrten",
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/farm-work",
       "de": "/de/expenses/farm-work",
       "ja": "/ja/expenses/farm-work",
+      ...newLocaleLanguages('/expenses/farm-work'),
       "x-default": "/expenses/farm-work"
     }
   },
@@ -66,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Farmarbeit und Fruit 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
   "guaranteeBody": "Eine Saison aus kurzen Farmjobs, mehreren Contractors und einer Erklärung entwirren wir jede Woche, für Leute auf 417 und 462 und sonst niemanden. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
@@ -192,8 +195,8 @@ const SECTIONS: Section[] = [
         "d": "Ein kurzer Einsatz, hastig über einen Contractor ausgezahlt, fehlt schnell in der Erklärung, und fehlendes Einkommen ist schlimmer als ein vergessener Abzug."
       },
       {
-        "t": "Einbehalt über 15 Prozent bei einem nicht registrierten Arbeitgeber",
-        "d": "Ein beim ATO als Arbeitgeber von Working Holiday Makern registrierter Betrieb behält ab dem ersten Dollar 15 Prozent ein. Ein nicht registrierter muss zum Satz für ausländische Steuerpflichtige einbehalten, der über 30 Prozent beginnt. Die Differenz lässt sich nur mit der Steuererklärung klären."
+        "t": "Höherer Einbehalt bei einem nicht registrierten Arbeitgeber",
+        "d": "Ein beim ATO als Arbeitgeber von Working Holiday Makern registrierter Betrieb behält nach besonderen Sätzen ein. Bei einem nicht registrierten kann deutlich mehr einbehalten worden sein. Die Differenz lässt sich nur mit der Steuererklärung klären."
       }
     ]
   },
@@ -268,7 +271,7 @@ const SERVICES = [
    every section renderer live in JobExpensesPage, once, for all 21 job pages. */
 export default function Page() {
   return (
-    <JobExpensesPage
+    <JobExpensesWhtPage
       content={{
         lang: 'de',
         path: '/de/expenses/farm-work',

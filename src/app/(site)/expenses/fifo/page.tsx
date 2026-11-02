@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": { absolute: "FIFO Tax Deductions Australia: PPE, Tickets, Zone Offset" },
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/fifo",
       "de": "/de/expenses/fifo",
       "ja": "/ja/expenses/fifo",
+      ...newLocaleLanguages('/expenses/fifo'),
       "x-default": "/expenses/fifo"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "FIFO and camp work" }
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.",
+  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
   "guaranteeBody": "417 and 462 visas are the only tax work we take, so the zone offset, the residency position and the super sitting in three funds all get looked at together. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
@@ -209,7 +211,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "The Zone Tax Offset is usually wrong rather than impossible. If your home base during the working holiday sat inside a specified zone, a rental in a remote town rather than a capital city, the question is live.",
       "The bulky tools exception matters more to a tradesperson flying in with a personal kit than to a camp services role. What you carried and what the site offered for storage settle it.",
-      "Residency is the largest question on a FIFO file, because the sums are larger. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review."
+      "Residency is a separate question on a FIFO file. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review."
     ]
   }
 ]
@@ -245,7 +247,7 @@ const GUIDES = [
   },
   {
     "href": "/blog/1000-dollar-instant-deduction-rule-2026",
-    "label": "The $1,000 instant deduction from 1 July 2026",
+    "label": "The $1,000 standard deduction from 2026-27",
     "desc": "A flat claim with no receipts, or your actual costs. You only get one."
   },
   {
@@ -281,6 +283,7 @@ export default function Page() {
         articleHeadline: "FIFO Tax Deductions Australia: PPE, Tickets, Zone Offset",
         articleDescription: "Camp food and the drive to the airport are not deductible. The Zone Tax Offset is probably not yours either. Here is what is.",
         inLanguage: "en-AU",
+        photoKey: 'expenses/fifo',
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
       }}
     />

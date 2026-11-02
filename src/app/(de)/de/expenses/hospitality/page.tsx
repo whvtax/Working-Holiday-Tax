@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": "Gastronomie: Schuhe, Kochjacke, Wäsche",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/hospitality",
       "de": "/de/expenses/hospitality",
       "ja": "/ja/expenses/hospitality",
+      ...newLocaleLanguages('/expenses/hospitality'),
       "x-default": "/expenses/hospitality"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Gastronomie, Bar und 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
   "guaranteeBody": "Vier Betriebe, vier Income Statements und Super in vier Fonds sind in der Gastronomie ein ganz normales Jahr, und alle unsere Kunden haben ein 417- oder 462-Visum. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Häufige Fragen dazu",
   "guidesHeading": "Danach lesenswert",
@@ -185,7 +187,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Ein zweiter oder dritter Arbeitgeber mit falschem Einbehalt",
-        "d": "Hat ein Betrieb deine Tax File Number Declaration nie bekommen oder ist er nicht als Arbeitgeber von Working Holiday Makern registriert, behält er weit mehr als 15 Prozent ein. Nichts davon ist verloren, lässt sich aber nur mit einer Erklärung klären, die alle Arbeitgeber zusammenführt."
+        "d": "Hat ein Betrieb deine Tax File Number Declaration nie bekommen oder ist er nicht als Arbeitgeber von Working Holiday Makern registriert, behält er unter Umständen einen deutlich höheren Satz ein. Nichts davon ist verloren, lässt sich aber nur mit einer Erklärung klären, die alle Arbeitgeber zusammenführt."
       },
       {
         "t": "Superannuation in mehreren verschiedenen Fonds",
@@ -202,7 +204,7 @@ const SECTIONS: Section[] = [
     "h2": "Was muss beurteilt statt nachgeschlagen werden?",
     "paras": [
       "Zuerst die Kleidungsfrage. Ob ein Teil eine vorgeschriebene Uniform ist, hängt daran, wie unverwechselbar es ist und ob der Arbeitgeber es verlangt. Ob Schuhe Schutzschuhe sind, hängt an der Gefahr in deinem Betrieb. Eine schriftliche Uniformregel und ein Foto klären das meistens.",
-      "Auf der Einnahmenseite zahlt sich ein fachlicher Blick aus. Working Holiday Maker bekommen keinen Steuerfreibetrag, ein Betrieb, der so einbehält, als hättest du einen, behält also zu wenig ein und hinterlässt eine Nachzahlung. Das kann sich ändern, wenn ein Gerichtsurteil namens Addy für dich gilt. Ob das so ist, hängt von deinem Pass und von deinem Jahr ab, und das gehört zu unserer Prüfung."
+      "Auf der Einnahmenseite zahlt sich ein fachlicher Blick aus. Wird zu einem falschen Satz einbehalten, kann am Ende eine Nachzahlung stehen. Welcher Satz für dich gilt, hängt von deinem Jahr ab, und ein Gerichtsurteil namens Addy kann dabei eine Rolle spielen. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -222,7 +224,7 @@ const FAQS = [
   },
   {
     "question": "Ich arbeite in drei Betrieben. Ändert das etwas an meiner Steuer?",
-    "answer": "Jeder Betrieb ist ein eigener Arbeitgeber mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement, und jeder davon gehört in dieselbe Erklärung.\n\nWorking Holiday Maker bekommen von keinem Arbeitgeber einen Steuerfreibetrag, ein Betrieb, der so einbehält, als hättest du einen, hinterlässt also eine Nachzahlung."
+    "answer": "Jeder Betrieb ist ein eigener Arbeitgeber mit eigener Tax File Number Declaration, eigenem Einbehalt und eigenem Income Statement, und jeder davon gehört in dieselbe Erklärung.\n\nWird irgendwo zu einem falschen Satz einbehalten, kann das zu einer Nachzahlung führen. Welcher Satz für dich gilt, prüfen wir im Einzelfall."
   },
   {
     "question": "Bekomme ich Superannuation in einem Casual-Job?",
@@ -274,6 +276,7 @@ export default function Page() {
         articleHeadline: "Gastronomie in Australien: was du absetzen kannst",
         articleDescription: "Rutschfeste Schuhe und Kochjacke sind absetzbar. Das schwarze Outfit, auf dem dein Betrieb besteht, nicht.",
         inLanguage: "de-DE",
+        photoKey: 'expenses/hospitality',
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
       }}
     />

@@ -1,13 +1,19 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
-import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { NextStep } from '@/components/ui/NextStep'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { WaLink } from '@/app/(site)/HomeWa'
+import { Accordion } from '@/components/ui/Accordion'
+import { WaButton } from '@/components/wht/WaButton'
+import { LinkButton } from '@/components/wht/Button'
+import { Section } from '@/components/wht/Section'
+import { Hero, heroStyles } from '@/components/wht/Hero'
+import { Lead, Mark } from '@/components/wht/Type'
+import { LinkRows, Steps, blocks } from '@/components/wht/Blocks'
+import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // このページが扱うのは「収入の切り分け」です。ABNがタックスリターンの
@@ -41,6 +47,7 @@ export const metadata: Metadata = {
       'en-AU': `${SITE_URL}/abn`,
       de: `${SITE_URL}/de/abn`,
       ja: `${SITE_URL}/ja/abn`,
+      ...newLocaleLanguages('/abn'),
       'x-default': `${SITE_URL}/abn`,
     },
   },
@@ -62,13 +69,6 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
-
-// ─── ICONS ──────────────────────────────────────────────────────────────
-const IconWhatsApp = () => (
-  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
-    <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z" />
-  </svg>
-)
 
 // ─── COPY ───────────────────────────────────────────────────────────────
 
@@ -187,11 +187,6 @@ const GUIDES = [
 
 const WA_ABN = waUrl({ topic: 'abn', lang: 'ja' })
 
-// ─── SHARED INLINE STYLES ───────────────────────────────────────────────
-const KICKER: CSSProperties = { fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }
-const BODY: CSSProperties = { fontSize: '15px', lineHeight: 1.85 }
-const LEDE: CSSProperties = { fontSize: '16.5px', lineHeight: 1.9 }
-
 export default function ABNPageJA() {
   const webPageLd = {
     '@context': 'https://schema.org',
@@ -250,249 +245,115 @@ export default function ABNPageJA() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F2FAF7 100%)' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 pt-8 pb-11 lg:pt-12 lg:pb-14">
-
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2" style={{ fontSize: '13px', color: '#525A57', marginBottom: '10px' }}>
-            <Link href="/ja" className="inline-flex items-center transition-colors hover:text-forest-500" style={{ minHeight: '44px' }}>ホーム</Link>
-            <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>
-            <span aria-current="page">ABN登録</span>
-          </nav>
-
-          {/* SEO (Oct 2026): the kicker now sits inside the H1 so the heading carries the
-              query words people type. It renders exactly where and how the old kicker
-              did; the slogan below is unchanged. Was: "ワーキングホリデービザ 417・462". */}
-          <h1 className="font-serif font-black text-ink hero-animate"
-            style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            <span style={{ ...KICKER, display: 'block', color: '#0B5240', marginBottom: '14px', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, textWrap: 'balance' }}>
-              ワーホリのABN登録｜417・462ビザ
-            </span>
-            <span style={{ display: 'block' }}>ABNは仕事を変えません。</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>変えるのはタックスリターンです。</span>
-          </h1>
-
-          <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#525A57', maxWidth: '40ch', marginBottom: '26px' }}>
-            源泉徴収のない収入、必要経費、GSTの立場。その3つの下にもう1つ、あなたは本当に個人事業主だったのかという問いがあります。
-          </p>
-
-          <div className="hero-animate-delay-2">
-            <WaLink href={WA_ABN} position="hero" topic="abn" lang="ja"
-              className="btn-primary inline-flex items-center justify-center gap-2"
-              style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-              <IconWhatsApp />
-              WhatsAppで相談する
-            </WaLink>
-            <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-              約1時間で返信します。
-            </p>
+      {/* SEO (Oct 2026): the kicker sits inside the H1 so the heading carries the query words people type. */}
+      <div className={blocks.underHeader}>
+        <Crumbs homeHref="/ja" home="ホーム" current="ABN登録" />
+        <Hero
+          title={
+            <>
+              <span className={blocks.kicker}>ワーホリのABN登録｜417・462ビザ</span>
+            ABNは仕事を変えません。<br />
+            変えるのは<Mark>タックスリターン</Mark>です。
+            </>
+          }
+        >
+          <div className="hero-lede">
+            <Lead>
+              源泉徴収のない収入、必要経費、GSTの立場。その3つの下にもう1つ、あなたは本当に個人事業主だったのかという問いがあります。
+            </Lead>
           </div>
+          <WaButton href={WA_ABN} position="hero" topic="abn" lang="ja">WhatsAppで相談する</WaButton>
+          <p className={heroStyles.note}>約1時間で返信します。</p>
+          <GoogleRating variant="pill" lang="ja" />
+        </Hero>
+        <PhotoBand page="abn" locale="ja" />
+      </div>
 
-          <div className="flex" style={{ marginTop: '20px' }}>
-            <GoogleRating variant="pill" lang="ja" />
-          </div>
-        </div>
-      </section>
+      <Section eyebrow="収入の切り分け" title="ABNを持つと、申告の何が変わりますか。" titleId="split-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          変わるのは4つで、しかも互いに影響し合います。
+        </p>
+        <Steps items={THE_SPLIT} />
+      </Section>
 
-      {/* ── 2. 収入の切り分け ────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>収入の切り分け</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '16px' }}>
-            ABNを持つと、申告の何が変わりますか。
-          </h2>
-          {/* 「その両方を突き合わせる1つの申告です」は、下のリスト最後の項目と
-              ページ末のNextStepがすでに言っている。 */}
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '30px' }}>
-            変わるのは4つで、しかも互いに影響し合います。
-          </p>
-
-          <ol className="flex flex-col" style={{ gap: '22px' }}>
-            {THE_SPLIT.map((s) => (
-              <li key={s.n} className="flex gap-4">
-                <span className="font-serif font-black flex-shrink-0"
-                  style={{ fontSize: '15px', color: '#0B5240', width: '28px', paddingTop: '4px' }}
-                  aria-hidden="true">{s.n}</span>
-                <div>
-                  <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ ...BODY, color: '#0F1A16' }}>{s.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ── 3. 注意 ──────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 reveal">
-
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '28ch', marginBottom: '16px' }}>
-            雇用主に言われたという理由でABNを登録すべきですか。
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '16px' }}>
+      <Section tone="pale" title="雇用主に言われたという理由でABNを登録すべきですか。" titleId="warn-title">
+        <p className={blocks.text}>
+          
             誰かが仕事の中身を見るまでは、登録すべきではありません。実態は雇用なのにABNにすると、スーパーアニュエーションが積み立てられず、税金も源泉徴収されず、労災保険の対象から外れ、最低賃金や割増賃金の枠組みの外に出て、そのすべてがあなたの負担になります。ファーム、飲食、清掃、建設現場ではよくあることです。
-          </p>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '22px' }}>
+          
+        </p>
+        <p className={blocks.text}>
+          
             判断の基準は書類ではなく指揮命令です。働く時間を誰が決めるか、進め方を誰が指示するか、道具を誰が用意するか、うまくいかなかったときのリスクを誰が負うか。答えが相手を指しているなら、ABNは適切な手段ではありません。
-          </p>
+          
+        </p>
+        <p className={`${blocks.text} ${blocks.notice}`}>
+          <strong>登録する前に、その仕事の内容をお送りください。</strong>
+          作業の中身、誰が何を用意するか、どう支払われると言われているか。どちらに当たるかをお伝えします。
+        </p>
+      </Section>
 
-          <div className="rounded-[12px] flex gap-3" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
-              <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
-              <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
-              <line x1="12" y1="18" x2="12.01" y2="18" stroke="#B8770C" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <p style={{ ...BODY, color: '#0F1A16' }}>
-              <strong style={{ color: '#0F1A16' }}>登録する前に、その仕事の内容をお送りください。</strong>
-              作業の中身、誰が何を用意するか、どう支払われると言われているか。どちらに当たるかをお伝えします。
-            </p>
-          </div>
+      <Section eyebrow="当社の作業" title="当社が行うこと" titleId="work-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          登録そのものは無料で、数分で終わります。それがいくらの負担になるかを決めるのは、その前と後にあることです。
+        </p>
+        <div className={tb.pairs}>
+          {WHAT_WE_DO.map(c => (
+            <div key={c.title} className={blocks.palePanel}>
+              <h3 className={blocks.cardTitle}>{c.title}</h3>
+              <p className={blocks.text}>{c.body}</p>
+            </div>
+          ))}
         </div>
-      </section>
-
-      {/* ── 4. 当社が行うこと ────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[880px] mx-auto px-5 md:px-8 reveal">
-
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>当社の作業</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            当社が行うこと
-          </h2>
-          <p style={{ ...BODY, color: '#525A57', maxWidth: '44ch', marginBottom: '26px' }}>
-            登録そのものは無料で、数分で終わります。それがいくらの負担になるかを決めるのは、その前と後にあることです。
-          </p>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {WHAT_WE_DO.map((c) => (
-              <div key={c.title} className="rounded-[12px]" style={{ padding: '16px 18px', background: '#F2FAF7', border: '1px solid #DCE0DE' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '6px' }}>{c.title}</h3>
-                <p style={{ ...BODY, color: '#0F1A16' }}>{c.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <p className="font-serif" style={{ fontSize: '17px', lineHeight: 1.75, color: '#0B5240', marginTop: '22px', maxWidth: '36ch', fontWeight: 700 }}>
-            myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
-          </p>
-
-          <p style={{ ...BODY, color: '#525A57', marginTop: '18px', maxWidth: '44ch' }}>
-            ABNもTFNもまだお持ちでない場合は{' '}
-            <Link href="/ja/tfn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>TFNが先</Link>
+        <p className={blocks.statement}>
+          myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
+        </p>
+        <p className={blocks.text}>
+          ABNもTFNもまだお持ちでない場合は{' '}
+            <Link href="/ja/tfn" className={tb.inlineLink}>TFNが先</Link>
             です。ABNの申請はTFNと照合されます。
-          </p>
+        </p>
+      </Section>
+
+      {/* The one amber band: the guarantee. */}
+      <Section tone="amber" title="当社の保証" titleId="guarantee-title">
+        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
+          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。
+        </p>
+        <p className={blocks.text}>料金は定額制で、還付額に対する歩合ではありません。</p>
+      </Section>
+
+      <Section tone="pale" title="ワーキングホリデーの税金だけを扱っています。" titleId="trust-title">
+        <p className={blocks.text}>
+          だからこそ、同じABNの形を何度も見ています。ファームの請負契約、配達プラットフォーム、全員を下請け扱いにする建設現場。
+        </p>
+        <GoogleReviewsServer lang="ja" />
+      </Section>
+
+      <Section title="相談前によく聞かれるABNの質問" titleId="faq-title">
+        {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
+        <Accordion items={FAQS} />
+      </Section>
+
+      <Section tone="pale" eyebrow="ガイド" title="請負、必要経費、GSTをさらに詳しく" titleId="guides-title">
+        <LinkRows items={GUIDES} />
+      </Section>
+
+      <Section eyebrow="次のステップ" title="どちらの収入も1つの申告に載ります" titleId="next-title">
+        <p className={blocks.text}>給与所得と請求収入は、同じ年度の同じタックスリターンに載せます。切り分けがきちんと行われるかどうかは、そこで決まります。</p>
+        <div className={blocks.stack}>
+          <LinkButton href="/ja/tax-return" size="md">タックスリターンの流れ →</LinkButton>
         </div>
-      </section>
+      </Section>
 
-      {/* ── 5. 料金 ──────────────────────────────────────────────────────── */}
-      <section className="py-11 lg:py-14" style={{ background: '#0B5240' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
-          <p style={{ ...KICKER, color: '#FFFFFF', marginBottom: '14px' }}>当社の保証</p>
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(21px, 2.8vw, 28px)', lineHeight: 1.6, letterSpacing: '-0.01em', maxWidth: '24ch' }}>
-            当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。
-          </p>
-          <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
-            料金は定額制で、還付額に対する歩合ではありません。
-          </p>
-        </div>
-      </section>
-
-      {/* ── 6. CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            その仕事の内容を教えてください
-          </h2>
-          <p style={{ ...BODY, color: '#0F1A16', maxWidth: '42ch', marginBottom: '24px' }}>
-            誰に請求書を出すことになるのか、何をするのか、道具は誰が用意するのか。それだけあれば、そもそもABNが必要な話かどうかをお伝えできます。
-          </p>
-          <WaLink href={waUrl({ topic: 'abn', lang: 'ja', tier: 'tfn-abn' })} position="section" topic="abn" lang="ja" tier="tfn-abn"
-            className="btn-primary inline-flex items-center justify-center gap-2"
-            style={{ height: '54px', padding: '0 30px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '330px', width: '100%' }}>
-            <IconWhatsApp />
-            WhatsAppで相談する
-          </WaLink>
-          <p style={{ fontSize: '13.5px', color: '#525A57', marginTop: '12px' }}>
-            約1時間で返信します。
-          </p>
-        </div>
-      </section>
-
-      {/* ── 7. 信頼 ──────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink text-center"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            ワーキングホリデーの税金だけを扱っています。
-          </h2>
-          <p className="text-center mx-auto" style={{ ...BODY, color: '#0F1A16', maxWidth: '44ch', marginBottom: '28px' }}>
-            だからこそ、同じABNの形を何度も見ています。ファームの請負契約、配達プラットフォーム、全員を下請け扱いにする建設現場。
-          </p>
-          <GoogleReviewsServer lang="ja" />
-        </div>
-      </section>
-
-      {/* ── 8. よくある質問 ──────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F2FAF7' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8">
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
-            相談前によく聞かれるABNの質問
-          </h2>
-
-          <div className="flex flex-col" style={{ gap: '4px' }}>
-            {FAQS.map((f, i) => (
-              <details key={i} name="abn-faq-ja" className="contact-faq-item">
-                <summary className="contact-faq-summary">
-                  <span style={{ flex: 1 }}>{f.question}</span>
-                  <span className="contact-faq-plus" aria-hidden="true">+</span>
-                </summary>
-                {/* 空行で区切り、長い回答を短い段落として出す。上のfaqLdは
-                    元の文字列をそのまま使っている。 */}
-                {f.answer.split('\n\n').map((para, j) => (
-                  <p key={j} className="contact-faq-answer" style={{ fontSize: '15px', lineHeight: 1.85 }}>{para}</p>
-                ))}
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 9. ガイド ────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <p style={{ ...KICKER, color: '#0B5240', marginBottom: '12px' }}>ガイド</p>
-          <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '20px' }}>
-            請負、必要経費、GSTをさらに詳しく
-          </h2>
-          {/* リード文は下に並ぶ3枚のカードを列挙していただけ。カードが担う。 */}
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {GUIDES.map((g) => (
-              <Link key={g.href} href={g.href}
-                className="group bg-white rounded-[12px] transition-all hover:shadow-lg"
-                style={{ padding: '16px 18px', border: '1px solid #DCE0DE', display: 'block' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '4px', lineHeight: 1.6 }}>{g.title}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.8, color: '#525A57' }}>{g.desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <NextStep
-        eyebrow="次のステップ"
-        heading="どちらの収入も1つの申告に載ります"
-        body="給与所得と請求収入は、同じ年度の同じタックスリターンに載せます。切り分けがきちんと行われるかどうかは、そこで決まります。"
-        cta="タックスリターンの流れ →"
-        href="/ja/tax-return"
-      />
+      {/* Closing CTA, forest band. */}
+      <Section tone="forest" title="その仕事の内容を教えてください" titleId="cta-title">
+        <p className={`${blocks.text} ${blocks.onForest}`}>
+          誰に請求書を出すことになるのか、何をするのか、道具は誰が用意するのか。それだけあれば、そもそもABNが必要な話かどうかをお伝えできます。
+        </p>
+        <WaButton href={waUrl({ topic: 'abn', lang: 'ja', tier: 'tfn-abn' })} position="section" topic="abn" lang="ja" tier="tfn-abn" tone="light">WhatsAppで相談する</WaButton>
+        <p className={`${blocks.small} ${blocks.onForest}`}>約1時間で返信します。</p>
+      </Section>
 
       <MobileCta href={WA_ABN} lang="ja" topic="abn" />
     </>

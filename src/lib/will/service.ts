@@ -3,6 +3,7 @@
 // message, shared by the simulator and the future WhatsApp
 // webhook. Persists everything to the store.
 // ============================================================
+import { normaliseQuotes } from './quotes'
 import { FORM_LINK_ANY_BRAND } from './brand-voice';
 import { getStore, CustomerRow, CustomerState, Store, MessageRow, JobRow } from './store';
 import { reopenTarget, POST_PAYMENT_STATES, canTransition } from './state-machine';
@@ -202,6 +203,7 @@ export function handleIncoming(
   mode: AiMode,
   meta?: { name?: string; flag?: string; providerId?: string },
 ): Promise<HandleResult> {
+  text = normaliseQuotes(text)
   return queueForCustomer(waId, () => handleIncomingInner(waId, text, mode, meta));
 }
 

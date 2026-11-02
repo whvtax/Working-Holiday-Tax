@@ -130,7 +130,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
   /* ── Accordion ── */
   .acc-body { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows .28s cubic-bezier(.23,1,.32,1), padding .2s; }
   .acc-body > * { min-height: 0; }
-  .acc-body.open { grid-template-rows: 1fr; padding-bottom: 20px; }
+  .acc-body.open { grid-template-rows: 1fr; }
   .acc-inner { overflow: hidden; }
 
   /* ── Section label ── */
@@ -160,32 +160,26 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 
   /* Primary CTA */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 font-semibold whitespace-nowrap transition-all;
-    height: 50px;
+    @apply inline-flex items-center justify-center gap-2 font-bold whitespace-nowrap transition-colors;
+    height: 52px;
     padding: 0 28px;
-    font-size: 14.5px;
-    letter-spacing: -0.01em;
+    font-size: 16px;
     background: #0B5240;
     color: #FFFFFF;
-    border-radius: 100px;
-    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 3px 12px rgba(11,82,64,.18);
+    border-radius: 999px;
+    box-shadow: none;
   }
-  .btn-primary:hover {
-    /* White on forest and on its darker hover shade both pass 4.5:1. */
-    background: #083D30; color: #FFFFFF;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,.1), 0 8px 24px rgba(11,82,64,.28);
-  }
-  .btn-primary:active { transform: none; }
+  .btn-primary:hover { background: #083D30; color: #FFFFFF; }
+  .btn-primary:active { transform: translateY(1px); }
 
   /* Ghost dark */
   .btn-ghost-dark {
     @apply inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap transition-all;
     height: 50px; padding: 0 22px; font-size: 14px;
     color: #0B5240; background: transparent;
-    border: 1.5px solid #DCE0DE; border-radius: 100px;
+    border: 1.5px solid #0B5240; border-radius: 999px;
   }
-  .btn-ghost-dark:hover { border-color: #0B5240; background: #F2FAF7; transform: translateY(-1px); }
+  .btn-ghost-dark:hover { background: #F2FAF7; }
 
   /* Ghost light (on dark bg) */
   .btn-ghost-light {
@@ -1708,33 +1702,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
    FOOTER STYLES
    ============================================ */
 
-/* The 10px gap between footer links used to be margin, which is dead space:
-   the tappable area was the 19px line box only, with a 10px miss zone between
-   every pair of links. Turning the margin into padding makes the rows
-   contiguous and lifts each target to ~29px at identical visual spacing, so
-   nothing moves. Reaching the full 44px would mean a noticeably taller footer,
-   which is a design call rather than a defect fix. */
-.footer-link {
-  display: block;
-  padding: 5px 0;
-  transition: color 0.2s ease;
-  font-size: 12.5px;
-  color: #525A57;
-}
-.footer-link:hover {
-  color: #0B5240;
-}
-
-/* Dark variant - used in the dark green bottom bar */
-.footer-link-dark {
-  display: inline-block;
-  padding: 6px 0;
-  transition: color 0.2s ease;
-  color: rgba(255, 255, 255, 0.7);
-}
-.footer-link-dark:hover {
-  color: #fff;
-}
+/* Footer link rules live in layout/Footer.module.css now. */
 
 .footer-social-icon {
   transition: opacity 0.2s ease, transform 0.2s ease;
@@ -2316,22 +2284,6 @@ input:focus, select:focus, textarea:focus {
     animation: none;
   }
 }
-
-/* ── Premium btn-primary shimmer ── */
-.btn-primary {
-  position: relative;
-  overflow: hidden;
-}
-.btn-primary::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-  transition: left 0.55s ease;
-  pointer-events: none;
-}
-.btn-primary:hover::after { left: 150%; }
 
 /* ── Service cards premium hover ── */
 .services-grid a {
@@ -2931,13 +2883,39 @@ div:has(> .btn-primary:first-child + p) > p {
   text-align: center;
 }
 
-/* ── Mobile legibility floor (28 Aug) ────────────────────────────────────────
-   These sizes were fine in a desktop footer and are not fine on the phone this
-   audience actually uses. The footer stacks to one column there, so fifteen
-   12.5px grey links become fifteen 29px rows: the smallest text on the site, in
-   the lowest-contrast colour, at under two thirds of a 44px target. Costs about
-   90px of footer height and buys back both legibility and real tap targets. */
-@media (max-width: 767px) {
-  .footer-link { font-size: 14px; padding: 9px 0; }
-  .footer-link-dark { font-size: 13px; padding: 10px 0; }
+
+
+/* ─── WHT design layer (1 Nov): the shared layout system in WHT
+ *     colours. The ONLY place these tokens are defined. Forest is the brand,
+ *     amber is a highlighter band behind words (never text). ─── */
+:root {
+  --wht-ink: #0F1A16;
+  --wht-ink-2: #3F4A45;
+  --wht-paper: #FFFFFF;
+  --wht-forest: #0B5240;
+  --wht-forest-dark: #083D30;
+  --wht-pale: #F2FAF7;
+  --wht-amber: #F2B632;
+  --wht-line: #DCE0DE;
+  --wht-slot-a: #DDE6E1;
+  --wht-slot-b: #D5DCD8;
+  --wht-text-sm: 14px;
+  --wht-text-base: 16px;
+  --wht-text-md: 17px;
+  --wht-h2: 26px;
+  --wht-h1: 38px;
+  --wht-gutter: 20px;
+  --wht-section-y: 36px;
+  --wht-max: 1120px;
+  --wht-measure: 640px;
+  --wht-radius-button: 999px;
+  --wht-radius-card: 10px;
+  --wht-tap: 48px;
+  --wht-focus: 0 0 0 3px var(--wht-paper), 0 0 0 5px var(--wht-forest);
+}
+@media (min-width: 768px) {
+  :root { --wht-gutter: 32px; --wht-section-y: 56px; --wht-h2: 32px; --wht-h1: 48px; }
+}
+@media (min-width: 1024px) {
+  :root { --wht-section-y: 72px; --wht-h2: 36px; --wht-h1: 58px; }
 }

@@ -1,3 +1,4 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 
@@ -84,6 +85,7 @@ export const metadata: Metadata = {
       'en-AU': SITE_URL,
       'de': `${SITE_URL}/de`,
       'ja': `${SITE_URL}/ja`,
+      ...newLocaleLanguages('/'),
       'x-default': SITE_URL,
     },
   },

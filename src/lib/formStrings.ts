@@ -6,6 +6,14 @@
  */
 export type FormLang = 'en' | 'de' | 'ja'
 
+/** French, Italian and Spanish (ADR 013). There is no full form UI in these
+ *  languages: only the tax-residency step (/fr, /it, /es y8vwp4bf7) is written,
+ *  so only the keys that step shows (its button, its upload and submit
+ *  errors) carry fr / it / es words. Any other key falls back to English. */
+export type ExtraFormLang = 'fr' | 'it' | 'es'
+export const EXTRA_FORM_LANGS: readonly ExtraFormLang[] = ['fr', 'it', 'es']
+export const isExtraFormLang = (l: string): l is ExtraFormLang => (EXTRA_FORM_LANGS as readonly string[]).includes(l)
+
 export const formStrings = {
   // ─ Top banner ─
   langToggle: {
@@ -73,9 +81,9 @@ export const formStrings = {
   submit:              { en: 'Submit application →',               de: 'Antrag abschicken →',       ja: '申請を送信 →' },
   submitTFN:           { en: 'Submit TFN Application →',           de: 'TFN-Antrag abschicken →',   ja: 'TFN申請を送信 →' },
   submitABN:           { en: 'Submit ABN Application →',           de: 'ABN-Antrag abschicken →',   ja: 'ABN登録を送信 →' },
-  submitTax:           { en: 'Submit Tax Return →',                de: 'Steuererklärung abschicken →', ja: 'タックスリターンを送信 →' },
+  submitTax:           { en: 'Submit Tax Return →',                de: 'Steuererklärung abschicken →', ja: 'タックスリターンを送信 →', fr: 'Envoyer ma déclaration →', it: 'Invia la dichiarazione →', es: 'Enviar la declaración →' },
   submitSuper:         { en: 'Submit Super Claim →',               de: 'Superantrag abschicken →',  ja: 'スーパー申請を送信 →' },
-  submitting:          { en: 'Submitting…',                        de: 'Wird abgeschickt…',         ja: '送信中…' },
+  submitting:          { en: 'Submitting…',                        de: 'Wird abgeschickt…',         ja: '送信中…', fr: 'Envoi en cours…', it: 'Invio in corso…', es: 'Enviando…' },
   // Last step of the tax form: the declaration + submit happen on the tax-residency page.
   checkResidency:      { en: 'Continue to tax residency →',  de: 'Weiter zur Steuerresidenz →', ja: '税務上の居住区分へ進む →' },
   checkResidencyNote:  {
@@ -126,28 +134,28 @@ export const formStrings = {
   privacyPolicy:       { en: 'Privacy Policy',                      de: 'Datenschutzerklärung',     ja: 'プライバシーポリシー' },
 
   // ─ Submission errors ─
-  tooMany:             { en: 'Too many submissions. Please wait 15 minutes and try again.', de: 'Zu viele Anfragen. Bitte warte 15 Minuten und versuche es noch einmal.', ja: '送信回数が多すぎます。15分後にもう一度お試しください。' },
+  tooMany:             { en: 'Too many submissions. Please wait 15 minutes and try again.', de: 'Zu viele Anfragen. Bitte warte 15 Minuten und versuche es noch einmal.', ja: '送信回数が多すぎます。15分後にもう一度お試しください。', fr: 'Trop d’envois. Patientez 15 minutes, puis réessayez.', it: 'Troppi invii. Aspetta 15 minuti e riprova.', es: 'Demasiados envíos. Espera 15 minutos e inténtalo de nuevo.' },
   // Shown when the server named the fields it would not accept, instead of the
   // generic failure. Jo, 28 Aug: a form that only ever says "something went
   // wrong" cannot be reported, only abandoned.
   invalidPhone:        { en: 'Enter a valid phone number with country code, e.g. +44 7700 900123', de: 'Bitte gib eine gültige Nummer mit Ländervorwahl ein, z. B. +49 151 12345678', ja: '国番号を含む有効な電話番号をご入力ください（例：+81 90 1234 5678）' },
-  checkFields:         { en: 'Please check these and try again: ', de: 'Bitte prüfe diese Angaben und versuche es noch einmal: ', ja: '次の項目をご確認のうえ、もう一度お試しください：' },
-  somethingWrong:      { en: 'Something went wrong. Please try again or contact us directly.', de: 'Etwas ist schiefgelaufen. Bitte versuche es noch einmal oder kontaktiere uns direkt.', ja: '問題が発生しました。もう一度お試しいただくか、直接ご連絡ください。' },
+  checkFields:         { en: 'Please check these and try again: ', de: 'Bitte prüfe diese Angaben und versuche es noch einmal: ', ja: '次の項目をご確認のうえ、もう一度お試しください：', fr: 'Merci de vérifier ces informations, puis de réessayer : ', it: 'Controlla questi dati e riprova: ', es: 'Revisa estos datos e inténtalo de nuevo: ' },
+  somethingWrong:      { en: 'Something went wrong. Please try again or contact us directly.', de: 'Etwas ist schiefgelaufen. Bitte versuche es noch einmal oder kontaktiere uns direkt.', ja: '問題が発生しました。もう一度お試しいただくか、直接ご連絡ください。', fr: 'Un problème est survenu. Réessayez ou contactez-nous directement.', it: 'Qualcosa è andato storto. Riprova oppure contattaci direttamente.', es: 'Algo salió mal. Inténtalo de nuevo o contáctanos directamente.' },
   // The six characters that let a screenshot be matched to the server log.
-  refPrefix:           { en: 'reference ', de: 'Referenz ', ja: '参照番号 ' },
+  refPrefix:           { en: 'reference ', de: 'Referenz ', ja: '参照番号 ', fr: 'référence ', it: 'riferimento ', es: 'referencia ' },
   // The expense-invoice picker (Jo, 28 Aug). Optional, so the wording never
   // implies the form cannot be sent without them.
   invoicesLabel:       { en: 'Receipts or invoices', de: 'Belege oder Rechnungen', ja: '領収書または請求書' },
   invoicesHint:        { en: 'Add up to 10 invoices for free.', de: 'Bis zu 10 Belege oder Rechnungen kostenlos hinzufügen.', ja: '領収書・請求書は最大10件まで無料で追加できます。' },
   uploadInvoices:      { en: 'Upload receipts', de: 'Belege hochladen', ja: '領収書をアップロード' },
   invoicesRequired:    { en: 'Please upload at least one receipt or invoice, or change your answer to No above.', de: 'Bitte lade mindestens einen Beleg oder eine Rechnung hoch, oder ändere deine Antwort oben auf Nein.', ja: '少なくとも1件の領収書または請求書をアップロードするか、上の回答を「いいえ」に変更してください。' },
-  fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：' },
+  fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：', fr: 'Erreur de fichier : ', it: 'Errore del file: ', es: 'Error de archivo: ' },
   // The real client-side ceiling is MAX_UPLOAD_BYTES in compress-image.ts = 4MB.
   // This said 10MB while `fileTooLarge` directly below said 4 MB, so the two
   // upload errors a customer can see named different limits — and the wrong one
   // promised that a file would be accepted which never could be.
-  fileErrorGeneric:    { en: 'Please upload a valid image or PDF under 4 MB.', de: 'Bitte lade ein gültiges Bild oder PDF unter 4 MB hoch.', ja: '4MB未満の画像またはPDFファイルをアップロードしてください。' },
-  fileTooLarge:        { en: 'This file is too large to upload. Please use a file under 4 MB - for a PDF, try compressing it or photographing the document instead.', de: 'Diese Datei ist zu groß. Bitte verwende eine Datei unter 4 MB. Komprimiere ein PDF oder fotografiere das Dokument stattdessen.', ja: 'このファイルは大きすぎます。4MB未満のファイルをご利用ください。PDFは圧縮するか、書類を写真で撮影してください。' },
+  fileErrorGeneric:    { en: 'Please upload a valid image or PDF under 4 MB.', de: 'Bitte lade ein gültiges Bild oder PDF unter 4 MB hoch.', ja: '4MB未満の画像またはPDFファイルをアップロードしてください。', fr: 'Importez une image ou un PDF valide de moins de 4 Mo.', it: 'Carica un’immagine o un PDF valido sotto i 4 MB.', es: 'Sube una imagen o un PDF válido de menos de 4 MB.' },
+  fileTooLarge:        { en: 'This file is too large to upload. Please use a file under 4 MB - for a PDF, try compressing it or photographing the document instead.', de: 'Diese Datei ist zu groß. Bitte verwende eine Datei unter 4 MB. Komprimiere ein PDF oder fotografiere das Dokument stattdessen.', ja: 'このファイルは大きすぎます。4MB未満のファイルをご利用ください。PDFは圧縮するか、書類を写真で撮影してください。', fr: 'Ce fichier est trop volumineux. Utilisez un fichier de moins de 4 Mo : pour un PDF, compressez-le ou photographiez plutôt le document.', it: 'Questo file è troppo grande. Usa un file sotto i 4 MB: per un PDF prova a comprimerlo, oppure fotografa il documento.', es: 'Este archivo es demasiado grande. Usa un archivo de menos de 4 MB: si es un PDF, comprímelo o fotografía el documento.' },
   generic:             { en: 'Something went wrong. Please try again.', de: 'Etwas ist schiefgelaufen. Bitte versuche es noch einmal.', ja: 'エラーが発生しました。もう一度お試しください。' },
 
   // ─ Success screen ─
@@ -533,6 +541,9 @@ export const formStrings = {
     ja: '必要なファイルをアップロードできませんでした。4MB未満の画像またはPDFかをご確認のうえ、もう一度お試しください。',
     zh: '必需的文件上传失败。请确认是 4 MB 以内的图片或 PDF，然后再试一次。',
     vi: 'Không tải được các tệp bắt buộc. Vui lòng kiểm tra tệp là ảnh hoặc PDF dưới 4 MB rồi thử lại.',
+    fr: 'Les fichiers obligatoires n’ont pas pu être importés. Vérifiez qu’il s’agit d’images ou de PDF de moins de 4 Mo, puis réessayez.',
+    it: 'Non è stato possibile caricare i file obbligatori. Controlla che siano immagini o PDF sotto i 4 MB e riprova.',
+    es: 'No se pudieron subir los archivos obligatorios. Comprueba que sean imágenes o PDF de menos de 4 MB e inténtalo de nuevo.',
   },
   uploadFailedFile: {
     en: 'Upload failed for "{name}": {reason}',
@@ -540,8 +551,11 @@ export const formStrings = {
     ja: '「{name}」のアップロードに失敗しました：{reason}',
     zh: '“{name}”上传失败：{reason}',
     vi: 'Tải lên "{name}" không thành công: {reason}',
+    fr: 'Échec de l’importation de "{name}" : {reason}',
+    it: 'Caricamento non riuscito per "{name}": {reason}',
+    es: 'Error al subir "{name}": {reason}',
   },
-  unknownError:        { en: 'Unknown error', de: 'Unbekannter Fehler', ja: '不明なエラー', zh: '未知错误', vi: 'Lỗi không xác định' },
+  unknownError:        { en: 'Unknown error', de: 'Unbekannter Fehler', ja: '不明なエラー', zh: '未知错误', vi: 'Lỗi không xác định', fr: 'Erreur inconnue', it: 'Errore sconosciuto', es: 'Error desconocido' },
 
 } as const
 
@@ -568,4 +582,4 @@ export type FormStringKey = keyof typeof formStrings
 /** Every language a tax form can show: WHT's three plus the student brand's
  *  Chinese and Vietnamese (Jo, 27 Oct: one form, both brands). zh and vi
  *  words are supplied by the second brand's pages through the form brand context. */
-export type AnyFormLang = FormLang | 'zh' | 'vi'
+export type AnyFormLang = FormLang | 'zh' | 'vi' | ExtraFormLang

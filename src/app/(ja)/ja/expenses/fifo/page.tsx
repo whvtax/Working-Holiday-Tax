@@ -1,7 +1,8 @@
+import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
-import { JobExpensesPage, type Section } from '@/components/expenses/JobExpensesPage'
+import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
   "title": "FIFOの経費控除：保護具、資格、Zone Offset",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
       "en-AU": "/expenses/fifo",
       "de": "/de/expenses/fifo",
       "ja": "/ja/expenses/fifo",
+      ...newLocaleLanguages('/expenses/fifo'),
       "x-default": "/expenses/fifo"
     }
   },
@@ -66,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "FIFOとキャンプ�
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
   "ctaSub": "約1時間で返信します。",
-  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。",
+  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。",
   "guaranteeBody": "扱うのは417・462ビザだけなので、Zone Offset、居住区分、3つのファンドに散ったスーパーをまとめて見ます。申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。",
   "faqHeading": "よくある質問",
   "guidesHeading": "次に読むと役に立つガイド",
@@ -281,6 +283,7 @@ export default function Page() {
         articleHeadline: "FIFOの経費控除：保護具、資格、Zone Offset",
         articleDescription: "キャンプの食事も空港までの運転も控除できません。Zone Tax Offsetもおそらく対象外です。",
         inLanguage: "ja-JP",
+        photoKey: 'expenses/fifo',
         WA, UI, crumbs: CRUMBS, hero: HERO, sections: SECTIONS, faqs: FAQS, guides: GUIDES, services: SERVICES,
       }}
     />

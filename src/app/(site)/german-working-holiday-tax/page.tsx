@@ -3,8 +3,15 @@ import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { WaLink } from '@/app/(site)/HomeWa'
 import { waUrl } from '@/lib/wa'
+import { Accordion } from '@/components/ui/Accordion'
+import { WaButton } from '@/components/wht/WaButton'
+import { Section } from '@/components/wht/Section'
+import { Hero, heroStyles } from '@/components/wht/Hero'
+import { Lead, Mark } from '@/components/wht/Type'
+import { PagePhoto } from '@/components/wht/PagePhoto'
+import { Compare, LinkRows, blocks } from '@/components/wht/Blocks'
+import { Crumbs, Differences, NumberList, RateTable, countryStyles } from '@/components/wht/CountryBlocks'
 
 export const metadata: Metadata = {
   title: 'Australian Tax Refund for German Backpackers',
@@ -93,7 +100,7 @@ const MYGOV = [
     us: 'We deal with the ATO directly. Nothing on our side needs you to hold an Australian ID.',
   },
   {
-    mygov: 'The Medicare levy is applied by default, and nothing on the screen tells you a German passport usually takes it off.',
+    mygov: 'The Medicare levy is applied by default, and nothing on the screen tells you whether it should come off in your case.',
     us: 'We check your entitlement and apply for the statement the exemption needs before the return goes in.',
   },
   {
@@ -110,12 +117,12 @@ const FAQS = [
   {
     question: 'What is the Addy ruling and does it affect German working holiday makers?',
     answer:
-      'Addy is a 2021 High Court decision about how working holiday makers can be taxed. A court ruling may change which rates apply to some passports. Whether it applies to you depends on your passport and on how your year looked, and that is part of our review.',
+      'Addy is a 2021 High Court decision about how working holiday makers can be taxed. A court ruling may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review.',
   },
   {
     question: 'Do Germans pay the Medicare levy in Australia?',
     answer:
-      'Usually not, if the exemption is claimed. Germany has no Reciprocal Health Care Agreement with Australia, so German working holiday makers are generally not entitled to Medicare, and that is what makes the 2 per cent levy exemption available. It is not automatic: the exemption needs a Medicare Entitlement Statement from Services Australia, and the levy only applies to residents for tax purposes in the first place.',
+      'Usually not, if the exemption is claimed. Germany has no Reciprocal Health Care Agreement with Australia, so German working holiday makers are generally not entitled to Medicare, and that is what makes the 2 per cent levy exemption available. It is not automatic: the exemption needs a Medicare Entitlement Statement from Services Australia, and it also depends on your residency position, which is assessed case by case.',
   },
   {
     question: 'Can my tax refund be paid into my German bank account?',
@@ -135,7 +142,7 @@ const FAQS = [
   {
     question: 'Is there a deadline, and am I already late?',
     answer:
-      'A self lodged return for 2025-26 is due 31 October 2026. Past that, the year is late rather than lost, and late returns are still lodged and still refunded.',
+      'The date for a self lodged 2025-26 return was 31 October 2026 and has now passed. A late return can still be lodged: the year is late rather than lost.',
   },
 ]
 
@@ -158,7 +165,7 @@ const GUIDES = [
   {
     href: '/blog/tax-return-deadline-31-october-working-holiday',
     label: 'Tax return deadline 2026',
-    desc: 'The 31 October date, what this year looks like, and what happens if you miss it.',
+    desc: 'The 31 October date, what this year looks like, and what happens if it has passed.',
   },
 ]
 
@@ -206,68 +213,6 @@ const speakableSchema = {
 }
 
 /* Tokens kept local so this page does not depend on shared CSS being finished. */
-const INK = '#0F1A16'
-const BODY = '#0F1A16'
-const MUTED = '#525A57'
-const FOREST = '#0B5240'
-const HAIR = '#DCE0DE'
-const SUNKEN = '#F2FAF7'
-
-const wrap: React.CSSProperties = { maxWidth: '720px', margin: '0 auto', padding: '0 20px' }
-const h2s: React.CSSProperties = {
-  fontFamily: 'var(--font-serif), Georgia, serif',
-  fontSize: 'clamp(23px, 5.6vw, 30px)',
-  lineHeight: 1.22,
-  letterSpacing: '-0.02em',
-  fontWeight: 700,
-  color: INK,
-  // 16px, not 14. Under a 23 to 30px serif heading the old value read tight.
-  margin: '0 0 16px',
-}
-const h3s: React.CSSProperties = { fontSize: '16px', lineHeight: 1.35, fontWeight: 700, color: INK, margin: '0 0 6px' }
-const ps: React.CSSProperties = { fontSize: '15px', lineHeight: 1.62, color: BODY, margin: '0 0 14px' }
-const secLight: React.CSSProperties = { background: '#fff', padding: '34px 0' }
-const secSunk: React.CSSProperties = { background: SUNKEN, padding: '34px 0' }
-const kickerS: React.CSSProperties = {
-  fontSize: '11px',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
-  fontWeight: 600,
-  color: FOREST,
-  margin: '0 0 10px',
-}
-const linkS: React.CSSProperties = { color: FOREST, textDecoration: 'underline' }
-
-function Cta({ position }: { position: 'hero' | 'inline' | 'section' }) {
-  return (
-    <div style={{ margin: '20px 0 0' }}>
-      <WaLink
-        href={WA}
-        position={position}
-        topic="germany"
-        lang="en"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '52px',
-          padding: '0 28px',
-          background: FOREST,
-          color: '#fff',
-          borderRadius: '999px',
-          fontSize: '16px',
-          fontWeight: 600,
-          textDecoration: 'none',
-        }}
-      >
-        Message us on WhatsApp
-      </WaLink>
-      <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: MUTED, margin: '10px 0 0', textAlign: 'center' }}>
-        Replies in about an hour. Tell us the years you worked and we will tell you where you stand.
-      </p>
-    </div>
-  )
-}
 
 export default function GermanWorkingHolidayTaxPage() {
   return (
@@ -277,366 +222,111 @@ export default function GermanWorkingHolidayTaxPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
 
-      <div style={{ background: '#fff' }}>
-
-        {/* HERO */}
-        <section style={{ background: 'linear-gradient(160deg,#fff 0%,#F2FAF7 100%)', paddingTop: '68px' }}>
-          <div style={{ ...wrap, paddingTop: '18px', paddingBottom: '34px' }}>
-            <nav aria-label="Breadcrumb" style={{ marginBottom: '18px' }}>
-              <ol style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', listStyle: 'none', margin: 0, padding: 0, fontSize: '13px', color: MUTED }}>
-                {CRUMBS.map((b, i) => (
-                  <li key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    {i > 0 && <span aria-hidden="true" style={{ color: '#DCE0DE' }}>/</span>}
-                    {i === CRUMBS.length - 1 ? (
-                      <span aria-current="page" style={{ color: FOREST, fontWeight: 500 }}>{b.name}</span>
-                    ) : (
-                      <Link href={b.item} style={{ color: MUTED, minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>{b.name}</Link>
-                    )}
-                  </li>
-                ))}
-              </ol>
-            </nav>
-
-            <h1
-              style={{
-                fontFamily: 'var(--font-serif), Georgia, serif',
-                fontSize: 'clamp(30px, 8.2vw, 46px)',
-                lineHeight: 1.08,
-                letterSpacing: '-0.03em',
-                fontWeight: 700,
-                color: INK,
-                margin: '0 0 14px',
-              }}
-            >
-              <span style={{ ...kickerS, display: 'block', fontFamily: 'var(--font-sans), system-ui, sans-serif', lineHeight: 1.5, letterSpacing: '0.14em' }}>
-                Australian tax for German passport holders
-              </span>
-              You are back in Germany.{' '}
-              <span style={{ color: FOREST, fontStyle: 'italic' }}>Your Australian tax is not.</span>
-            </h1>
-            <p className="hero-sub" style={{ fontSize: '16.5px', lineHeight: 1.6, color: BODY, margin: 0 }}>
-              Years you left open, a Medicare levy your passport usually takes off, and super that becomes claimable the moment
-              you leave.
-            </p>
-            <Cta position="hero" />
-            <p style={{ fontSize: '13px', lineHeight: 1.5, color: MUTED, margin: '14px 0 0', textAlign: 'center' }}>
-              <GoogleRating variant="pill" lang="en" />
-            </p>
-          </div>
-        </section>
-
-        {/* THE OBJECTION, ANSWERED FROM GERMANY */}
-        <section style={secSunk}>
-          <div style={wrap}>
-            <p style={kickerS}>Doing it yourself</p>
-            <h2 style={h2s}>
-              <span style={{ display: 'block', color: BODY, fontWeight: 400 }}>A German passport changes the return.</span>
-              <span style={{ display: 'block' }}>myGov does not know that.</span>
-            </h2>
-            <p style={{ ...ps, color: MUTED, marginBottom: '20px' }}>
-              Four things on a German file are settled somewhere other than the form.
-            </p>
-
-            {/* The two labels used to print on all eight cells. On a phone the
-                rows stack, so that is the same two words marching down the
-                screen eight times. They print on the first row only, where they
-                read as column headings on desktop and as the key on mobile; the
-                alternating ground and the heavier weight carry the distinction
-                from there. Copy unchanged, padding tightened to 13px 16px. */}
-            <div style={{ background: '#fff', border: '1px solid #DCE0DE', borderRadius: '14px', overflow: 'hidden' }}>
-              {MYGOV.map((row, i) => (
-                <div key={i} className="grid md:grid-cols-2" style={{ borderTop: i === 0 ? 'none' : `1px solid ${HAIR}` }}>
-                  <div style={{ padding: '13px 16px' }}>
-                    {i === 0 && (
-                      <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: MUTED, margin: '0 0 5px' }}>
-                        On myGov
-                      </p>
-                    )}
-                    <p style={{ ...ps, margin: 0, overflowWrap: 'break-word' }}>{row.mygov}</p>
-                  </div>
-                  <div className="border-t md:border-t-0 md:border-l" style={{ padding: '13px 16px', background: '#F2FAF7', borderColor: HAIR }}>
-                    {i === 0 && (
-                      <p style={{ fontSize: '10.5px', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, color: FOREST, margin: '0 0 5px' }}>
-                        With us
-                      </p>
-                    )}
-                    <p style={{ ...ps, margin: 0, color: INK, fontWeight: 500, overflowWrap: 'break-word' }}>{row.us}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p style={{ fontFamily: 'var(--font-serif), Georgia, serif', fontSize: '18px', lineHeight: 1.45, fontWeight: 700, color: FOREST, margin: '22px 0 0' }}>
-              You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
-            </p>
-          </div>
-        </section>
-
-        {/* DIRECT ANSWER */}
-        <section style={secLight}>
-          <div style={wrap}>
-            <h2 style={h2s}>Can you still claim Australian tax back from Germany?</h2>
-            <p style={{ ...ps, marginBottom: 0 }}>
-              Yes. An Australian tax return can be prepared and lodged from anywhere, and leaving does not close a year or reduce
-              what you are owed. The superannuation half can only be claimed after you have left and your visa has ceased, so being
-              home is a requirement rather than an obstacle.
-            </p>
-          </div>
-        </section>
-
-        {/* FOUR DIFFERENCES */}
-        <section style={secSunk}>
-          <div style={wrap}>
-            <h2 style={h2s}>What is different about a German passport?</h2>
-            {/* Move 2: "Most guides treat every working holiday maker as the
-                same person" was setup the heading already carries. */}
-            <p style={ps}>
-              Four things about a German passport change the answer.
-            </p>
-            {DIFFERENCES.map((c, i) => (
-              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '15px 0' }}>
-                <p style={h3s}>{c.t}</p>
-                <p style={{ ...ps, margin: 0 }}>{c.d}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ADDY */}
-
-        {/* MEDICARE */}
-        <section style={secLight}>
-          <div style={wrap}>
-            <h2 style={h2s}>Do Germans pay the Medicare levy in Australia?</h2>
-            <p style={ps}>
-              Usually not, once the exemption is claimed. Germany has no Reciprocal Health Care Agreement with Australia, so a
-              German working holiday maker is generally not entitled to Medicare and pays for treatment privately.
-            </p>
-            <p style={ps}>
-              Not being entitled is exactly what makes the 2 per cent levy exemption available. It is not applied for you: the
-              return needs a Medicare Entitlement Statement from Services Australia, and without one the levy stays on by default.
-            </p>
-            <p style={{ ...ps, marginBottom: 0 }}>
-              The levy only applies to residents for tax purposes, so residency comes first. More on how the levy works on our{' '}
-              <Link href="/medicare" style={linkS}>Medicare page</Link>.
-            </p>
-          </div>
-        </section>
-
-        {/* RATES */}
-        <section style={secSunk}>
-          <div style={wrap}>
-            <h2 style={h2s}>What tax rate applies to a working holiday maker?</h2>
-            {/* The table below is captioned "Working holiday maker rates
-                2025-26", so the lede said the year twice. */}
-            <p style={ps}>
-              Working holiday maker rates apply to your Australian wages whether or not you are a resident for tax purposes, unless
-              a court ruling known as Addy changes that for you. That is part of our review.
-            </p>
-            <div style={{ background: '#fff', border: `1px solid ${HAIR}`, borderRadius: '14px', overflow: 'hidden' }}>
-              <p style={{ fontSize: '15px', fontWeight: 700, color: FOREST, margin: 0, padding: '13px 16px', borderBottom: `1px solid ${HAIR}` }}>
-                Working holiday maker rates 2025-26
-              </p>
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                  <tbody>
-                    {RATE_ROWS.map((r, i) => (
-                      <tr key={i} style={{ borderTop: i ? `1px solid ${HAIR}` : 'none' }}>
-                        <th scope="row" style={{ textAlign: 'left', fontSize: '13.5px', fontWeight: 600, color: INK, padding: '11px 16px', width: '42%' }}>{r[0]}</th>
-                        <td style={{ fontSize: '13.5px', color: BODY, padding: '11px 16px' }}>{r[1]}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <p style={{ ...ps, marginTop: '16px' }}>
-              Your employer had to be registered with the ATO as an employer of working holiday makers for the 15 per cent rate to
-              apply. If not, they had to withhold at the foreign resident rate, which starts at 30 cents in the dollar from your
-              first dollar.
-            </p>
-            <p style={{ ...ps, marginBottom: 0 }}>
-              That money is not gone, but it only comes back on a lodged return, and only into an Australian bank account. Full breakdown on our{' '}
-              <Link href="/tax-return" style={linkS}>tax return page</Link>.
-            </p>
-          </div>
-        </section>
-
-        {/* SUPER */}
-        <section style={secLight}>
-          <div style={wrap}>
-            <h2 style={h2s}>What happens to your superannuation once you are home?</h2>
-            <p style={ps}>
-              It sits there. Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages,
-              never out of them, from your first dollar and with no minimum monthly amount. Since 1 July 2026 it also has to be paid
-              with every pay run and reach the fund within seven business days, so an employer skipping it shows up in weeks rather
-              than after a quarter.
-            </p>
-            <p style={ps}>
-              After a long stay and several jobs you will usually have more than one fund account, each charging fees against a
-              balance you are not watching. Once you have left and your visa has ceased it is claimed as a Departing Australia
-              Superannuation Payment, with 65 per cent withheld, so roughly a third of the balance reaches your account.
-            </p>
-            <p style={{ ...ps, marginBottom: 0 }}>
-              Unlike a tax refund, a DASP payment can be made to a German bank account. There is no deadline on the claim. More on our{' '}
-              <Link href="/superannuation" style={linkS}>superannuation page</Link>.
-            </p>
-          </div>
-        </section>
-
-        {/* DEADLINES (the two tax years now sit once, in the differences list) */}
-        <section style={secSunk}>
-          <div style={wrap}>
-            <h2 style={h2s}>Are you late, and does it matter?</h2>
-            <p style={{ ...ps, marginBottom: 0 }}>
-              Australian returns can be lodged from 1 July. A self lodged 2025-26 return is due 31 October 2026. Past that, the year is late rather than lost, and late returns are still lodged and still
-              refunded. The{' '}
-              <Link href="/blog/tax-return-deadline-31-october-working-holiday" style={linkS}>2026 deadline guide</Link> has the detail.
-            </p>
-          </div>
-        </section>
-
-        {/* WHAT WE ACTUALLY DO */}
-        <section style={secLight}>
-          <div style={wrap}>
-            <h2 style={h2s}>What we do with a German file</h2>
-            <p style={ps}>
-              Anyone can press submit. The work happens before that, and on a German file it is the questions nobody else asks:
-              which years are open, which residency position is true for each, and whether the levy was ever yours to pay.
-            </p>
-            <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {WHAT_WE_DO.map((t, i) => (
-                <li
-                  key={i}
-                  style={{
-                    display: 'flex',
-                    gap: '12px',
-                    alignItems: 'flex-start',
-                    background: '#fff',
-                    border: `1px solid ${HAIR}`,
-                    borderRadius: '12px',
-                    padding: '14px 16px',
-                  }}
-                >
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      flex: '0 0 26px',
-                      width: '26px',
-                      height: '26px',
-                      borderRadius: '999px',
-                      background: FOREST,
-                      color: '#fff',
-                      fontSize: '13px',
-                      fontWeight: 700,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {i + 1}
-                  </span>
-                  <span style={{ fontSize: '15px', lineHeight: 1.55, color: BODY }}>{t}</span>
-                </li>
-              ))}
-            </ol>
-            <p style={{ ...ps, marginTop: '18px', marginBottom: 0 }}>
-              None of that asks anything of you beyond the years you worked and what you can still lay hands on.
-            </p>
-          </div>
-        </section>
-
-        {/* FEE LINE + CTA */}
-        <section style={{ background: '#0B5240', padding: '38px 0' }}>
-          <div style={wrap}>
-            <h2 style={{ ...h2s, color: '#fff', marginBottom: '12px' }}>
-              Our guarantee: if your tax refund is less than our fee, we refund the difference. If you owe money to the ATO instead, the fee covers the work completed and is non-refundable.
-            </h2>
-            <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
-              Working holiday tax is the only thing we do. Your return is reviewed and signed off by a
-              registered tax agent before it is lodged with the ATO.
-            </p>
-            <div style={{ marginTop: '18px' }}>
-              <WaLink
-                href={WA}
-                position="section"
-                topic="germany"
-                lang="en"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: '52px',
-                  padding: '0 28px',
-                  background: '#0B5240',
-                  color: '#0F1A16',
-                  borderRadius: '999px',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                }}
-              >
-                Message us on WhatsApp
-              </WaLink>
-              <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
-                Replies in about an hour.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section style={secLight}>
-          <div style={wrap}>
-            <h2 style={h2s}>Questions German travellers ask</h2>
-            {FAQS.map((f, i) => (
-              <div key={i} style={{ borderTop: `1px solid ${HAIR}`, padding: '16px 0' }}>
-                <h3 style={{ ...h3s, marginBottom: '8px' }}>{f.question}</h3>
-                <p style={{ ...ps, margin: 0 }}>{f.answer}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* GUIDES */}
-        <section style={secSunk}>
-          <div style={wrap}>
-            <h2 style={h2s}>Worth reading next</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {GUIDES.map((g, i) => (
-                <Link
-                  key={i}
-                  href={g.href}
-                  style={{
-                    display: 'block',
-                    background: '#fff',
-                    border: `1px solid ${HAIR}`,
-                    borderRadius: '12px',
-                    padding: '15px 16px',
-                    textDecoration: 'none',
-                    minHeight: '44px',
-                  }}
-                >
-                  <span style={{ display: 'block', fontSize: '15px', fontWeight: 700, color: FOREST, marginBottom: '3px' }}>{g.label}</span>
-                  <span style={{ display: 'block', fontSize: '15px', lineHeight: 1.5, color: BODY }}>{g.desc}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* DISCLAIMER */}
-        <section style={{ ...secLight, paddingBottom: '52px' }}>
-          <div style={wrap}>
-            <p style={{ fontSize: '13.5px', lineHeight: 1.62, color: MUTED, margin: 0 }}>
-              This is general information, not personal tax advice, and nothing here is advice on your German tax position. Residency
-              for Australian tax purposes depends on your own circumstances in each year, which is why German files are looked at
-              individually.
-            </p>
-          </div>
-        </section>
-
+      <div className={blocks.underHeader}>
+        <Crumbs items={CRUMBS} />
+        <Hero title={<><span className={blocks.kicker}>Australian tax for German passport holders</span>You are back in Germany. <Mark>Your Australian tax is not.</Mark></>}>
+          <div className="hero-sub"><Lead>Years you left open, a Medicare levy your passport usually takes off, and super that becomes claimable the moment you leave.</Lead></div>
+          <WaButton href={WA} position="hero" topic="germany" lang="en">Message us on WhatsApp</WaButton>
+          <p className={heroStyles.note}>Replies in about an hour. Tell us the years you worked and we will tell you where you stand.</p>
+          <GoogleRating variant="pill" lang="en" />
+        </Hero>
       </div>
+
+      <PagePhoto page="german-working-holiday-tax" locale="en" />
+
+      <Section eyebrow="Doing it yourself" title={<>A German passport changes the return. <Mark>myGov does not know that.</Mark></>} titleId="mygov-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Four things on a German file are settled somewhere other than the form.</p>
+        <Compare rows={MYGOV.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="On myGov" rightLabel="With us" />
+        <p className={blocks.statement}>You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.</p>
+      </Section>
+
+      <Section tone="pale" title="Can you still claim Australian tax back from Germany?" titleId="direct-answer-title">
+        <p className={blocks.text}>
+          Yes. An Australian tax return can be prepared and lodged from anywhere, and leaving does not close a year or reduce
+          what you are owed. The superannuation half can only be claimed after you have left and your visa has ceased, so being
+          home is a requirement rather than an obstacle.
+        </p>
+      </Section>
+
+      <Section title="What is different about a German passport?" titleId="differences-title">
+        <p className={blocks.text}>Four things about a German passport change the answer.</p>
+        <Differences items={DIFFERENCES} />
+      </Section>
+
+      <Section tone="pale" title="Do Germans pay the Medicare levy in Australia?" titleId="medicare-title">
+        <p className={blocks.text}>
+          Usually not, once the exemption is claimed. Germany has no Reciprocal Health Care Agreement with Australia, so a
+          German working holiday maker is generally not entitled to Medicare and pays for treatment privately.
+        </p>
+        <p className={blocks.text}>
+          Not being entitled is exactly what makes the 2 per cent levy exemption available. It is not applied for you: the
+          return needs a Medicare Entitlement Statement from Services Australia, and without one the levy stays on by default.
+        </p>
+        <p className={blocks.text}>
+          Your residency position is looked at first, case by case. More on how the levy works on our{' '}
+          <Link href="/medicare" className={countryStyles.inlineLink}>Medicare page</Link>.
+        </p>
+      </Section>
+
+      <Section title="What tax rate applies to a working holiday maker?" titleId="rates-title">
+        <p className={blocks.text}>Which rates apply to your Australian wages depends on the facts of your year, and a court ruling known as Addy may matter for some people. The ATO makes the final decision, and it is part of our review.</p>
+        <RateTable caption="Working holiday maker rates 2025-26" rows={RATE_ROWS} />
+        <p className={blocks.text}>
+          Your employer had to be registered with the ATO as an employer of working holiday makers for the 15 per cent rate to
+          apply. If not, they had to withhold at the foreign resident rate, which starts at 30 cents in the dollar from your
+          first dollar.
+        </p>
+        <p className={blocks.text}>
+          That money is not gone, but it only comes back on a lodged return, and only into an Australian bank account. Full breakdown on our{' '}
+          <Link href="/tax-return" className={countryStyles.inlineLink}>tax return page</Link>.
+        </p>
+      </Section>
+
+      <Section tone="pale" title="What happens to your superannuation once you are home?" titleId="super-title">
+        <p className={blocks.text}>
+          It sits there. Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages,
+          never out of them, from your first dollar and with no minimum monthly amount. Since 1 July 2026 it also has to be paid
+          with every pay run and reach the fund within seven business days, so an employer skipping it shows up in weeks rather
+          than after a quarter.
+        </p>
+        <p className={blocks.text}>
+          After a long stay and several jobs you will usually have more than one fund account, each charging fees against a
+          balance you are not watching. Once you have left and your visa has ceased it is claimed as a Departing Australia
+          Superannuation Payment, with 65 per cent withheld, so roughly a third of the balance reaches your account.
+        </p>
+        <p className={blocks.text}>
+          Unlike a tax refund, a DASP payment can be made to a German bank account. There is no deadline on the claim. More on our{' '}
+          <Link href="/superannuation" className={countryStyles.inlineLink}>superannuation page</Link>.
+        </p>
+      </Section>
+
+      <Section title="Are you late, and does it matter?" titleId="deadlines-title">
+        <p className={blocks.text}>
+          Australian returns can be lodged from 1 July. The date for a self lodged 2025-26 return was 31 October 2026 and has now passed. A late return can still be lodged: the year is late rather than lost. The{' '}
+          <Link href="/blog/tax-return-deadline-31-october-working-holiday" className={countryStyles.inlineLink}>2026 deadline guide</Link> has the detail.
+        </p>
+      </Section>
+
+      <Section tone="pale" title="What we do with a German file" titleId="what-we-do-title">
+        <p className={blocks.text}>Anyone can press submit. The work happens before that, and on a German file it is the questions nobody else asks: which years are open, which residency position is true for each, and whether the levy was ever yours to pay.</p>
+        <NumberList items={WHAT_WE_DO} />
+        <p className={blocks.text}>None of that asks anything of you beyond the years you worked and what you can still lay hands on.</p>
+      </Section>
+
+      <Section title="Questions German travellers ask" titleId="faq-title">
+        <Accordion items={FAQS.map(f => ({ question: f.question, answer: f.answer }))} />
+      </Section>
+
+      <Section tone="pale" title="Worth reading next" titleId="guides-title">
+        <LinkRows items={GUIDES.map(g => ({ href: g.href, title: g.label, desc: g.desc }))} />
+        <p className={blocks.small}>This is general information, not personal tax advice, and nothing here is advice on your German tax position. Residency for Australian tax purposes depends on your own circumstances in each year, which is why German files are looked at individually.</p>
+      </Section>
+
+      <Section tone="forest" title="Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies." titleId="cta-title">
+        <p className={`${blocks.text} ${blocks.onForest}`}>Working holiday tax is the only thing we do. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.</p>
+        <WaButton href={WA} position="section" topic="germany" lang="en" tone="light">Message us on WhatsApp</WaButton>
+        <p className={`${blocks.small} ${blocks.onForest}`}>Replies in about an hour.</p>
+      </Section>
 
       <MobileCta href={WA} lang="en" topic="germany" />
     </>

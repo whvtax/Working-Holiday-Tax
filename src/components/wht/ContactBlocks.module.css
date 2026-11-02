@@ -1,0 +1,14 @@
+.crumbs { display: flex; align-items: center; gap: 8px; max-width: var(--wht-max); margin: 0 auto; padding: 18px var(--wht-gutter) 0; font-size: 13px; color: var(--wht-ink-2); }
+.crumbs a { color: var(--wht-ink-2); text-decoration: none; display: inline-flex; align-items: center; min-height: 32px; }
+.crumbs a:hover { color: var(--wht-forest); text-decoration: underline; }
+.sep { color: var(--wht-line); }
+.cards { display: grid; gap: 14px; }
+@media (min-width: 768px) { .cards { grid-template-columns: 1fr 1fr; } }
+.address { font-style: normal; display: flex; flex-direction: column; gap: 12px; }
+.social { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.option { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 16px; background: var(--wht-pale); border-radius: var(--wht-radius-card); color: var(--wht-forest); text-decoration: none; min-width: 0; }
+.option:hover { background: #E6F3EE; }
+.optionLabel { font-weight: 700; color: var(--wht-ink); }
+.optionDetail { color: var(--wht-forest); font-weight: 600; margin-left: auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hoursTitle { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wht-forest); font-weight: 600; margin-bottom: 4px; }
+.cardP { font-size: var(--wht-text-base); line-height: 1.58; color: var(--wht-ink); }

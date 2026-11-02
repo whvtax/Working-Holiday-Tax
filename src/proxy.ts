@@ -56,7 +56,13 @@ export function proxy(req: NextRequest) {
     ? 'ja'
     : pathname === '/de' || pathname.startsWith('/de/')
       ? 'de'
-      : 'en-AU'
+      : pathname === '/fr' || pathname.startsWith('/fr/')
+        ? 'fr'
+        : pathname === '/it' || pathname.startsWith('/it/')
+          ? 'it'
+          : pathname === '/es' || pathname.startsWith('/es/')
+            ? 'es'
+            : 'en-AU'
 
   // Nonce CSP is CRM-ONLY, and that is empirical, not taste (29 Aug): with the
   // old site-wide behaviour every prerendered page broke in a real browser —
